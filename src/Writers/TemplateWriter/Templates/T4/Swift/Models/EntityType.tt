@@ -1,0 +1,63 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="$(SolutionDir)\ODataCodeGen\bin\Debug\ODataCodeGenModel.dll" #>
+<#@ include file="EF.Utility.CS.ttinclude"#>
+<#@ import namespace="ODataCodeGenModel" #>
+<#@ import namespace="ODataCodeGenModel.Types" #>
+<#@ import namespace="ODataCodeGenModel.Helpers.Swift" #>
+<#@ output extension="\\"#>
+<#
+var fileManager = EntityFrameworkTemplateFileManager.Create(this);
+
+Builder builder = new Builder();
+builder.Build();
+var entityTypes = builder.GetEntityTypes();
+
+foreach(var entity in entityTypes)
+{
+	fileManager.StartNewFile(entity.Name + ".swift");
+	string baseEntity = string.IsNullOrEmpty(entity.BaseType) ? "NSObject" : entity.BaseType.Substring(entity.BaseType.LastIndexOf(".") +1);
+#>//  
+//
+//  Copyright (c) 2014 Microsoft Open Technologies, Inc.
+//  All rights reserved.
+//
+
+import Foundation
+
+class <#= entity.Name#> : <#=baseEntity#>	
+{
+
+<#
+		if(entity.Actions != null && entity.Actions.Count > 0){
+#>
+	func getOperations() -> <#= entity.Name#>Actions{
+		return <#= entity.Name#>Actions();
+	}
+
+<#
+		}
+		foreach(var prop in entity.Properties)
+		{
+			string propertyType = prop.GetTypeString();
+			if(prop.IsCollection){
+				propertyType = string.Format("Array<{0}>",prop.GetTypeString());
+			}
+
+			if(prop.IsEnum){
+#>
+	var <#= prop.GetToLowerFirstCharName()#> : <#= propertyType #>?;			
+<#				
+			}
+			else
+			{
+#>
+	var <#= prop.GetToLowerFirstCharName()#> = <#= propertyType #>();
+<#		
+			}	
+		}
+#>
+
+}<#
+}
+fileManager.Process(true);
+#>

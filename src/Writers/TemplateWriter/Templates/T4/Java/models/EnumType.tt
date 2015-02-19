@@ -1,0 +1,29 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplateCustomHost.tt"#>
+<#@ output extension="\\" #>
+<#
+
+CustomHost host = (CustomHost)Host;
+var enumT = host.OdcmType.AsOdcmEnum();
+
+#>
+<#=GetCommentHeader()#>
+package <#=enumT.Namespace.ToLower()#>;
+
+/**
+ * The Enum <#=enumT.Name.SplitCamelCase()#>.
+*/
+public enum <#= enumT.Name#>	
+{
+<#
+    foreach(var value in enumT.Members)
+    {
+#>
+    /**
+    * <#= value.Name.SplitCamelCase()#>
+    */
+    <#= value.Name.GetSanitizedPropertyName()#>,
+<#
+    }
+#>
+}

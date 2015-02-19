@@ -1,0 +1,83 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplateCustomHost.tt"#>
+<#@ output extension="\\" #>
+<#
+CustomHost host = (CustomHost)Host;
+OdcmModel model = host.Model;
+#>
+<#=GetCommentHeader()#>
+package <#=model.Namespaces.FirstOrDefault().Name#>;
+
+//import com.microsoft.outlookservices.*;
+import com.microsoft.services.odata.*;
+import com.microsoft.services.odata.interfaces.DependencyResolver;
+
+/**
+ * The type <#="SomeContainer"#>Client.
+ */
+public class <#="SomeContainer"#>Client extends BaseODataContainer {
+
+     /**
+     * Instantiates a new <#="SomeContaine"#>Client.
+     *
+     * @param url the url
+     * @param resolver the resolver
+     */
+    public <#="SomeContainer"#>Client(String url, DependencyResolver resolver) {
+        super(url, resolver);
+    }
+
+	     /**
+     * Add parameter.
+     *
+     * @param name the name
+     * @param value the value
+     * @return the client
+     */
+    public <#="SomeCiontainer"#>Client addParameter(String name, Object value) {
+        addCustomParameter(name, value);
+        return this;
+    }
+
+     /**
+     * Add header.
+     *
+     * @param name the name
+     * @param value the value
+     * @return the client
+     */
+    public <#="SomeContainer"#>Client addHeader(String name, String value) {
+        addCustomHeader(name, value);
+        return this;
+    }
+
+<#
+
+foreach(var prop in model.EntityContainer.Properties){
+
+    if(prop.IsCollection()){
+#>
+     /**
+     * Gets <#=prop.Type.GetTypeString()#>.
+     *
+     * @return the <#=prop.Type.GetTypeString()#>
+     */
+    public ODataCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher, <#=prop.Type.GetTypeString()#>CollectionOperations> get<#=prop.Name#>() {
+        return new ODataCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher,<#=prop.Type.GetTypeString()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.GetTypeString()#>.class,<#=prop.Type.GetTypeString()#>CollectionOperations.class);
+    }
+<#
+    }else{
+#>
+     /**
+     * Gets <#=prop.Name#>.
+     *
+     * @return the <#=prop.Name#>
+     */
+    public <#=prop.Type.GetTypeString()#>Fetcher get<#=prop.Name#>() {
+        return new <#=prop.Type.GetTypeString()#>Fetcher("<#=prop.Name#>", this);
+    }
+<#  
+    
+    }
+}
+#>

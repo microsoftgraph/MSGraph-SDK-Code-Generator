@@ -1,0 +1,87 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplateCustomHost.tt"#>
+<#@ output extension="\\" #>
+<#
+
+CustomHost host = (CustomHost)Host;
+OdcmClass entity = host.OdcmType.AsOdcmClass();
+
+#>
+<#=GetCommentHeader()#>
+package <#=entity.Namespace.ToLower()#>;
+<#
+    string extends = entity.Base == null ? " extends ODataBaseEntity" : " extends " + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1);
+#>
+
+/**
+ * The type <#=entity.Name.SplitCamelCase()#>.
+*/
+public class <#=entity.Name#><#=extends#> {
+
+    public <#=entity.Name#>(){
+        setODataType("#<#=entity.Namespace#>.<#=entity.Name#>");
+    }
+
+    <#
+    foreach(var navProperty in entity.NavigationProperties()){
+        var navPropertyType = navProperty.IsCollection ? string.Format("java.util.List<{0}>", navProperty.GetTypeString()) : navProperty.GetTypeString();
+        var newType = navProperty.IsCollection ? string.Format("new java.util.ArrayList<{0}>();", navProperty.GetTypeString()) : "null;" ;
+    #>
+
+    private <#=navPropertyType#> <#=navProperty.GetSanitizedPropertyName()#> = <#=newType#>
+
+    /**
+    * Gets the <#=navProperty.Name.SplitCamelCase()#>.
+    *
+    * @return the <#=navProperty.Name#>
+    */
+    public <#=navPropertyType#> get<#=navProperty.Name#>() {
+        return this.<#=navProperty.GetSanitizedPropertyName()#>; 
+    }
+    <#
+    if (!navProperty.IsCollection)
+    {
+    #>
+
+    /**
+    * Sets the <#=navProperty.Name.SplitCamelCase()#>.
+    *
+    * @param value the <#=navPropertyType#>
+    */
+    public void set<#=navProperty.Name#>(<#=navPropertyType#> value) { 
+        this.<#=navProperty.GetSanitizedPropertyName()#> = value; 
+    }
+    <#
+    }#>
+    <#
+    }
+    #>
+<# 
+    foreach(var property in entity.Properties){
+    var propertyType = property.IsCollection ? string.Format("java.util.List<{0}>", property.GetTypeString()) : property.GetTypeString();
+#>
+    
+    private <#=propertyType#> <#=property.GetSanitizedPropertyName()#>;
+
+    /**
+    * Gets the <#=property.Name.SplitCamelCase()#>.
+    *
+    * @return the <#=propertyType#>
+    */
+    public <#=propertyType#> get<#=property.Name#>() {
+        return this.<#=property.GetSanitizedPropertyName()#>; 
+    }
+
+    /**
+    * Sets the <#=property.Name.SplitCamelCase()#>.
+    *
+    * @param value the <#=propertyType#>
+    */
+    public void set<#=property.Name#>(<#=propertyType#> value) { 
+        this.<#=property.GetSanitizedPropertyName()#> = value; 
+    }
+<#
+    }
+#>
+}
+

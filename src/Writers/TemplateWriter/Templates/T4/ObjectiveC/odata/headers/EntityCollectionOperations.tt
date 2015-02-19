@@ -1,0 +1,55 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplate.tt"#>
+<#@ output extension="\\" #>
+<#
+CustomHost host = (CustomHost)Host;
+
+OdcmModel model = host.OdcmEntity.AsEntityType();
+	
+var entityName = GetPrefix() +entity.Name + "CollectionOperations";
+
+string baseEntity = entity.Base == null ? "MSODataOperations" 
+					  : GetPrefix() + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) 
+					  + "CollectionOperations" ;
+
+#>
+<#=GetCommentHeader()#>
+
+#import <office365_odata_base/office365_odata_base.h>
+#import "<#=GetPreix()#>Models.h"
+<#
+if(entity.Base != null)
+{
+
+#>
+#import "<#=baseEntity#>.h"
+<#
+
+}
+
+#>
+
+<#=GetHeaderDoc(entityName)#>
+@interface <#=entityName#> : <#=baseEntity#>
+<#
+if(entity.HasActions())
+{
+	foreach(var action in entity.Actions())
+	{
+		if(action.IsBoundToCollection)
+		{
+#>
+-(NSURLSessionDataTask*)<#= action.Name.ToLowerFirstChar() #> <#=GetParamsString(action.Parameters)#>(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *error))callback;			
+<#
+			if(!action.IsFunction())
+			{
+
+#>
+-(NSURLSessionDataTask*)<#= action.Name.ToLowerFirstChar() #>Raw <#=GetParamsForRaw(action.Parameters.Select(p => p.Name))#>(void (^)(<#=GetParamRaw(action.ReturnType.Name)#>, MSODataException *error))callback;			
+<#	
+			}
+		}
+	}
+}
+#>
+@end

@@ -1,0 +1,57 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="$(SolutionDir)\ODataCodeGen\bin\Debug\ODataCodeGenModel.dll" #>
+<#@ include file="EF.Utility.CS.ttinclude"#>
+<#@ import namespace="ODataCodeGenModel" #>
+<#@ import namespace="ODataCodeGenModel.Types" #>
+<#@ import namespace="ODataCodeGenModel.Helpers.Swift" #>
+<#@ output extension="\\"#>
+<#
+var fileManager = EntityFrameworkTemplateFileManager.Create(this);
+
+Builder builder = new Builder();
+builder.Build();
+var entityTypes = builder.GetEntityTypes();
+
+foreach(var entity in entityTypes)
+{
+	if(entity.Actions != null && entity.Actions.Count > 0)
+	{
+
+		fileManager.StartNewFile(entity.Name + "Actions.swift");
+#>
+//  
+//
+//  Copyright (c) 2014 Microsoft Open Technologies, Inc.
+//  All rights reserved.
+//
+
+import Foundation
+
+class <#=entity.Name #>Actions : NSObject
+{
+
+<#
+		foreach(var action in entity.Actions)
+		{
+			var p = "";
+			var returnType = action.ReturnType.IsCollection ? string.Format("Array<{0}>",action.ReturnType.GetTypeString()) :  action.ReturnType.GetTypeString();
+			foreach(var parameter in action.Parameters)
+			{
+				var paramType = parameter.IsCollection ? string.Format("Array<{0}>",parameter.GetTypeString()) : parameter.GetTypeString();
+				
+				p += string.Format("{0} : {1}, ",parameter.Name,paramType);
+			}
+#>
+	func <#= action.Name #>(<#= p#>((<#= returnType#>!, NSURLResponse!, NSError!) -> Void)!)-> NSURLSessionDataTask
+	{
+		return NSURLSessionDataTask();
+	}
+
+<#
+		}
+#>
+}<#
+	}
+}
+fileManager.Process(true);
+#>

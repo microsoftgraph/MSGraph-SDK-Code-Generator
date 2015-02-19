@@ -1,0 +1,28 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplate.tt"#>
+<#@ output extension="\\" #>
+<#
+CustomHost host = (CustomHost)Host;
+var entity = host.OdcmType.AsOdcmClass();
+
+#>
+<#=GetCommentHeader()#>
+
+<#=GetImportsClass(entity.Properties)#>
+
+<#=GetInterfaceLine(entity)#>
+
+<#
+
+foreach(var prop in entity.Properties)
+{
+
+#>
+@property <#=prop.ToPropertyString()#>;
+<#			
+
+}
+
+#>
+
+@end

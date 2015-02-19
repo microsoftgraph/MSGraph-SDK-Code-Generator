@@ -1,0 +1,29 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplate.tt"#>
+<#@ output extension="\\" #>
+<#
+CustomHost host = (CustomHost)Host;
+var entity = host.OdcmType.AsOdcmEnum();
+
+#>
+<#=GetCommentHeader()#>
+
+@interface NSObject ()
+
+typedef enum {
+<#
+
+for(var i=1; i <= entity.Members.Count; i++)
+{
+
+string value = entity.Members[i -1].Name + (i == entity.Members.Count ? string.Empty : ",");
+
+#><#= value#>
+<#
+	
+}
+
+#>
+} <#=GetPrefix() + entity.Name #>;
+
+@end

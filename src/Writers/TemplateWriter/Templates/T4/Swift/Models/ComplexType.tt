@@ -1,0 +1,55 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="$(SolutionDir)\ODataCodeGen\bin\Debug\ODataCodeGenModel.dll" #>
+<#@ include file="EF.Utility.CS.ttinclude"#>
+<#@ import namespace="ODataCodeGenModel" #>
+<#@ import namespace="ODataCodeGenModel.Types" #>
+<#@ import namespace="ODataCodeGenModel.Helpers.Swift" #>
+<#@ output extension="\\"#>
+<#
+var fileManager = EntityFrameworkTemplateFileManager.Create(this);
+
+Builder builder = new Builder();
+builder.Build();
+var complexTypes = builder.GetComplexTypes();
+
+foreach(var complex in complexTypes)
+{
+	fileManager.StartNewFile(complex.Name + ".swift");
+	string baseEntity = string.IsNullOrEmpty(complex.BaseType) ? "NSObject" : complex.BaseType.Substring(complex.BaseType.LastIndexOf(".") +1);
+#>
+//  
+//
+//  Copyright (c) 2014 Microsoft Open Technologies, Inc.
+//  All rights reserved.
+//
+
+import Foundation
+
+class <#= complex.Name#> : <#=baseEntity#>	
+{
+
+<#
+		foreach(var prop in complex.Properties)
+		{
+			string propertyType = prop.GetTypeString();
+			if(prop.IsCollection){
+				propertyType = string.Format("Array<{0}>",prop.GetTypeString());
+			}
+			if(prop.IsEnum){
+#>
+	var <#= prop.GetToLowerFirstCharName()#> : <#= propertyType #>?;			
+<#				
+			}
+			else
+			{
+#>
+	var <#= prop.GetToLowerFirstCharName()#> = <#= propertyType #>();
+<#			
+			}
+		}
+#>
+
+}<#
+}
+fileManager.Process(true);
+#>

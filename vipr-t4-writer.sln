@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CLI", "CLI", "{7CA64789-13F6-405D-AADB-E3350A859180}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{865C3813-AE52-404A-8788-B7396A468271}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Writers", "Writers", "{55EB2B0B-4E88-4BDA-83DD-59AFE78091CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9CC17376-9B00-4D05-A07E-99EAFBFEEF71}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CliTemplateWriterTests", "CliTemplateWriterTests", "{1FD245E1-9E99-4DC1-9015-B47A03EF9F1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.CLI", "src\CLI\Vipr.CLI\Vipr.CLI.csproj", "{BE6AF3DC-831A-48E1-9563-03141EB0AE5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateWriter", "src\Writers\TemplateWriter\TemplateWriter.csproj", "{474D242F-9587-40A7-B4E4-CBB35F8B7C21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliTemplateWriterTests", "test\CliTemplateWriterTests\CliTemplateWriterTests.csproj", "{CF18F310-71FF-42EB-8E86-7E01C14F4BAD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Edmx", "Edmx", "{61CEB697-824E-4626-8693-541E32EC860B}"
+	ProjectSection(SolutionItems) = preProject
+		test\Edmx\ActiveDirectory.edmx.xml = test\Edmx\ActiveDirectory.edmx.xml
+		test\Edmx\CRM.edmx.xml = test\Edmx\CRM.edmx.xml
+		test\Edmx\Exchange.edmx.xml = test\Edmx\Exchange.edmx.xml
+		test\Edmx\OneNote.edmx.xml = test\Edmx\OneNote.edmx.xml
+		test\Edmx\Sharepoint.edmx.xml = test\Edmx\Sharepoint.edmx.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E31B5A83-FEAB-4275-807D-BB0FBE0B0D74}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE6AF3DC-831A-48E1-9563-03141EB0AE5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE6AF3DC-831A-48E1-9563-03141EB0AE5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE6AF3DC-831A-48E1-9563-03141EB0AE5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE6AF3DC-831A-48E1-9563-03141EB0AE5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{474D242F-9587-40A7-B4E4-CBB35F8B7C21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{474D242F-9587-40A7-B4E4-CBB35F8B7C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{474D242F-9587-40A7-B4E4-CBB35F8B7C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{474D242F-9587-40A7-B4E4-CBB35F8B7C21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF18F310-71FF-42EB-8E86-7E01C14F4BAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF18F310-71FF-42EB-8E86-7E01C14F4BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF18F310-71FF-42EB-8E86-7E01C14F4BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF18F310-71FF-42EB-8E86-7E01C14F4BAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7CA64789-13F6-405D-AADB-E3350A859180} = {865C3813-AE52-404A-8788-B7396A468271}
+		{55EB2B0B-4E88-4BDA-83DD-59AFE78091CE} = {865C3813-AE52-404A-8788-B7396A468271}
+		{1FD245E1-9E99-4DC1-9015-B47A03EF9F1A} = {9CC17376-9B00-4D05-A07E-99EAFBFEEF71}
+		{BE6AF3DC-831A-48E1-9563-03141EB0AE5B} = {7CA64789-13F6-405D-AADB-E3350A859180}
+		{474D242F-9587-40A7-B4E4-CBB35F8B7C21} = {55EB2B0B-4E88-4BDA-83DD-59AFE78091CE}
+		{CF18F310-71FF-42EB-8E86-7E01C14F4BAD} = {1FD245E1-9E99-4DC1-9015-B47A03EF9F1A}
+		{61CEB697-824E-4626-8693-541E32EC860B} = {9CC17376-9B00-4D05-A07E-99EAFBFEEF71}
+	EndGlobalSection
+EndGlobal

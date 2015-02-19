@@ -1,0 +1,48 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplate.tt"#>
+<#@ output extension="\\" #>
+<#
+CustomHost host = (CustomHost)Host;
+OdcmModel entity = host.OdcmType.AsEntityType();
+
+var entityName = GetPrefix() + entity.Name + "Operations";
+string baseEntity = entity.Base == null ? "MSODataOperations" 
+					  : GetPrefix() + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "Operations";
+
+#>
+<#=GetCommentHeader()#>
+					  		
+#import <office365_odata_base/office365_odata_base.h>
+#import "<#=GetPrefix()#>Models".h"
+
+<#=GetHeaderDoc(entityName)#>
+@interface <#=entityName#> : <#=baseEntity#>
+
+-(id)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent;
+
+<#
+if(entity.HasActions())
+{
+	foreach(var action in entity.Actions())
+	{
+		if(!action.IsBoundToCollection)
+		{
+
+#>
+<#=GetMethodHeader(action)#>
+<#				
+
+		}
+
+		if(action.IsFunction())
+		{
+
+#>
+<#=GetMethodHeaderRaw(action)#>
+<#
+
+		}
+	}
+}
+#>
+@end

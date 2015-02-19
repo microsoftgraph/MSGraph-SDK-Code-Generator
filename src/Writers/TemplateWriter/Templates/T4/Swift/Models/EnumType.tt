@@ -1,0 +1,41 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="$(SolutionDir)\ODataCodeGen\bin\Debug\ODataCodeGenModel.dll" #>
+<#@ include file="EF.Utility.CS.ttinclude"#>
+<#@ import namespace="ODataCodeGenModel" #>
+<#@ import namespace="ODataCodeGenModel.Types" #>
+<#@ import namespace="ODataCodeGenModel.Helpers.Swift" #>
+<#@ output extension="\\"#>
+<#
+var fileManager = EntityFrameworkTemplateFileManager.Create(this);
+
+Builder builder = new Builder();
+builder.Build();
+var enumTypes = builder.GetEnumTypes();
+
+foreach(var enumT in enumTypes)
+{
+	fileManager.StartNewFile(enumT.Name + ".swift");
+#>//  
+//
+//  Copyright (c) 2014 Microsoft Open Technologies, Inc.
+//  All rights reserved.
+//
+
+import Foundation
+
+enum <#= enumT.Name#> : String	
+{
+
+<#
+	foreach(var value in enumT.Values)
+	{
+#>
+	case <#= value.Key#> = "<#= value.Key #>"
+<#			
+	}
+#>
+
+}<#
+}
+fileManager.Process(true);
+#>

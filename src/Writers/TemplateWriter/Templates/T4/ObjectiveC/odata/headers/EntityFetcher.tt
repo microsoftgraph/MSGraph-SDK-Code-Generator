@@ -1,0 +1,109 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplate.tt"#>
+<#@ output extension="\\" #>
+<#
+CustomHost host = (CustomHost)Host;
+var entity = host.OdcmType.AsEntityType();
+var entityName = GetPrefix() + entity.Name + "Fetcher";
+var extends =  (entity.HasStream ? "MSODataMediaEntityFetcher<": "MSODataEntityFetcher<") + entityName+ ">";
+
+#>
+<#=GetCommentHeader()#>
+
+<#
+
+var clasess = new List<string>();
+	
+foreach(var prop in entity.NavigationProperties())
+{
+	var fetcher = string.Empty;
+	fetcher = GetPrefix() + prop.Type.Name + "Fetcher;";
+
+	if(!clasess.Contains(fetcher)) classes.Add(fetcher);
+
+	if(prop.IsCollection())
+	{
+		var collectionFetcher = GetPrefix() + prop.Type.Name + "CollectionFetcher;";
+
+		if(!clasess.Contains(collectionFetcher)) classes.Add(collectionFetcher);
+	}
+}
+
+foreach(var child in entity.ChildEntities())
+{
+	var fetcher = string.Empty;
+	fetcher = GetPrefix() + child.Name + "Fetcher;";
+
+	if(!clasess.Contains(fetcher)) classes.Add(fetcher);
+}
+
+foreach(var propertyClass in clasess)
+{
+
+#>
+<#=propertyClass#>
+<#
+
+}
+
+#>
+@class <#=GetPrefix() + entity.Name#>Operations;
+
+#import <office365_odata_base/office365_odata_base.h>
+#import "<#=GetPrefix()#>Models.h"
+
+<#=GetHeaderDoc(entityName)#>
+
+@protocol <#=entityName#><MSODataEntityFetcher>
+
+@optional
+-(NSURLSessionDataTask*) read:(void (^)(<#=GetPrefix() + entity.Name#>* <#=entity.Name.ToLowerFirstChar()#>, MSODataException *error))callback;
+-(NSURLSessionDataTask*) update<#=entity.Name#>:(id)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#>*, MSODataException * error))callback;
+-(NSURLSessionDataTask*) delete<#=entity.Name#>:(void (^)(int status, MSODataException * error))callback;
+-(id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomParameters : (NSString*)name : (id)value;
+-(id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomHeaderWithName : (NSString*)name andValue : (NSString*) value;
+-(id<<#=GetPrefix() + entity.Name#>Fetcher>)select : (NSString*) params;
+-(id<<#=GetPrefix() + entity.Name#>Fetcher>)expand : (NSString*) value;
+
+@required
+-(<#=GetPrefix() + entity.Name#>Operations*) getOperations;
+<#
+		
+foreach(var prop in entity.NavigationProperties())
+{
+	if(prop.IsCollection())
+	{
+
+#>
+-(<#=GetPrefix() + prop.Type.Name#>CollectionFetcher*) get<#=prop.Name#>;
+
+-(<#=GetPrefix() + prop.Type.Name#>Fetcher*) get<#=prop.Name#>ById : (NSString*)_id;
+<#
+
+	}
+	else
+	{
+
+#>
+-(<#=GetPrefix() + prop.Type.Name#>Fetcher*) get<#=prop.Name#>;
+<#		
+			
+	}
+}
+
+foreach(var child in entity.ChildEntities())
+{
+
+#>
+	
+-(<#=GetPrefix() + child.Name#>Fetcher*) as<#=child.Name#>;	
+<#
+
+}
+
+#>
+@end
+
+@interface <#=entityName#> : <#=extends#>
+
+@end
