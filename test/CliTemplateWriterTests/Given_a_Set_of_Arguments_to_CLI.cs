@@ -22,7 +22,7 @@ namespace CliTemplateWriterTests
             configBuilder.Setup(x => x.WithJsonConfig());
             configBuilder.Setup(x => x.Build()).Returns(configArguments.Object);
 
-            new CLIEntryPoint(configBuilder.Object, processorManager.Object).Should().NotBe(null);
+            new CLIEntryPoint(processorManager.Object, configBuilder.Object).Should().NotBe(null);
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace CliTemplateWriterTests
                          .Returns(configArguments.Object);
             processorManager.Setup(x => x.Process(configArguments.Object));
 
-            var entryPoint = new CLIEntryPoint(configBuilder.Object, processorManager.Object);
+            var entryPoint = new CLIEntryPoint(processorManager.Object, configBuilder.Object);
             entryPoint.Process();
 
             configBuilder.VerifyAll();
@@ -54,7 +54,7 @@ namespace CliTemplateWriterTests
             configBuilder.Setup(x => x.Build());
             processorManager.Setup(x => x.Process(configArguments.Object));
 
-            var entryPoint = new CLIEntryPoint(configBuilder.Object, processorManager.Object);
+            var entryPoint = new CLIEntryPoint(processorManager.Object, configBuilder.Object);
             entryPoint.Process();
 
             configBuilder.VerifyAll();
@@ -65,8 +65,10 @@ namespace CliTemplateWriterTests
         public void When_passing_specific_Arguments_should_procces_one_note_metadata()
         {
             var args = "--language=java --inputFile=Metadata\\OneNote.edmx.xml --outputDir=Out".Split(' ');
-            var builder = new ConfigurationBuilder().WithArguments(args);
-            var entrypoint = new CLIEntryPoint(builder, new TemplateProcessorManager());
+            var builder =
+                new ConfigurationBuilder().WithSpecificConfiguration(new OneNoteConfiguration())
+                                          .WithArguments(args);
+            var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
             entrypoint.Process();
         }
 
@@ -74,8 +76,10 @@ namespace CliTemplateWriterTests
         public void When_passing_specific_Arguments_should_procces_exchange_metadata()
         {
             var args = "--language=java --inputFile=Metadata\\Exchange.edmx.xml --outputDir=Out".Split(' ');
-            var builder = new ConfigurationBuilder().WithArguments(args);
-            var entrypoint = new CLIEntryPoint(builder, new TemplateProcessorManager());
+            var builder =
+                new ConfigurationBuilder().WithSpecificConfiguration(new ExchangeConfiguration())
+                                          .WithArguments(args);
+            var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
             entrypoint.Process();
         }
 
@@ -84,7 +88,7 @@ namespace CliTemplateWriterTests
         {
             var args = "--language=objectivec --inputFile=Metadata\\Exchange.edmx.xml --outputDir=Out".Split(' ');
             var builder = new ConfigurationBuilder().WithArguments(args);
-            var entrypoint = new CLIEntryPoint(builder, new TemplateProcessorManager());
+            var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
             entrypoint.Process();
         }
     }

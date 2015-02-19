@@ -8,6 +8,7 @@ namespace Vipr.CLI.Configuration
         IConfigArguments Build();
         IConfigurationBuilder WithArguments(params string[] args);
         IConfigurationBuilder WithJsonConfig();
+        IConfigurationBuilder WithSpecificConfiguration(ITemplateConfiguration configuration);
         void CreateOptionSet(params string[] args);
         OptionSet OptionSet { get; }
     }

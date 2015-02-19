@@ -6,7 +6,7 @@ namespace Vipr.CLI.Configuration
 {
     public class ConfigurationBuilder : IConfigurationBuilder
     {
-        private readonly ITemplateConfiguration _configuration;
+        private ITemplateConfiguration _configuration;
         private readonly BuilderArguments _arguments;
 
         public OptionSet OptionSet { get; private set; }
@@ -14,20 +14,13 @@ namespace Vipr.CLI.Configuration
         public ConfigurationBuilder()
         {
             _arguments = new BuilderArguments();
-            _configuration = new StubConfiguration();
-        }
-
-        public IConfigurationBuilder WithArguments(params string[] args)
-        {
-            CreateOptionSet(args);
-            return this;
         }
 
         public void CreateOptionSet(params string[] args)
         {
             if (_configuration == null)
             {
-                 //TODO: Load default config? fallback to default settings?
+                //TODO: Load default config? fallback to default settings?
             }
 
             Debug.Assert(_configuration != null, "_configuration != null");
@@ -45,6 +38,12 @@ namespace Vipr.CLI.Configuration
             OptionSet.Parse(args);
         }
 
+        public IConfigurationBuilder WithArguments(params string[] args)
+        {
+            CreateOptionSet(args);
+            return this;
+        }
+
         public IConfigurationBuilder WithJsonConfig()
         {
             return this;
@@ -52,6 +51,12 @@ namespace Vipr.CLI.Configuration
 
         public IConfigurationBuilder WithDefaultConfig()
         {
+            return this;
+        }
+
+        public IConfigurationBuilder WithSpecificConfiguration(ITemplateConfiguration configuration)
+        {
+            _configuration = configuration;
             return this;
         }
 

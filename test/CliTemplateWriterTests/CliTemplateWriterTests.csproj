@@ -78,7 +78,9 @@
   <ItemGroup>
     <Compile Include="Given_a_Set_of_Arguments_to_CLI.cs" />
     <Compile Include="Given_a_Single_File_Processing_Strategy.cs" />
+    <Compile Include="OneNoteConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ExchangeConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\CLI\Vipr.CLI\Vipr.CLI.csproj">

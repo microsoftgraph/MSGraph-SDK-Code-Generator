@@ -8,7 +8,7 @@ namespace Vipr.CLI
     {
         private readonly IConfigurationBuilder _configBuilder;
         private readonly ITemplateProcessorManager _processor;
-        public CLIEntryPoint(IConfigurationBuilder configBuilder, ITemplateProcessorManager processor)
+        public CLIEntryPoint(ITemplateProcessorManager processor, IConfigurationBuilder configBuilder)
         {
             _configBuilder = configBuilder;
             _processor = processor;
