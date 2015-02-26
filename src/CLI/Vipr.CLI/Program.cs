@@ -15,7 +15,7 @@ namespace Vipr.CLI
         {
             try
             {
-                var builder = new ConfigurationBuilder().WithArguments(args);
+                var builder = new ConfigurationBuilder().WithJsonConfig().WithArguments(args);
                 var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
                 entrypoint.Process();
             }

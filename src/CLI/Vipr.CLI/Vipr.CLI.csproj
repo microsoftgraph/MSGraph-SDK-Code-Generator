@@ -37,6 +37,10 @@
     <Reference Include="Mono.TextTemplating">
       <HintPath>..\..\..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="ODataReader.v4, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\dependencies\ODataReader.v4.dll</HintPath>
@@ -63,6 +67,7 @@
     </Compile>
     <Compile Include="Configuration\ConfigurationBuilder.cs" />
     <Compile Include="Configuration\IConfigurationBuilder.cs" />
+    <Compile Include="Configuration\StaticConfiguration.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Mono.Options\Options.cs" />
@@ -74,6 +79,9 @@
     <None Include="CodeGen.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>CodeGen1.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

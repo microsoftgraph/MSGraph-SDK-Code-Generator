@@ -1,0 +1,9 @@
+{
+  "PrimaryNamespaceName": "Microsoft.OutlookServices",
+  "Parameters": null,
+  "Languages": [
+    "java",
+    "objectivec"
+  ],
+  "NamespacePrefix": "com"
+}
