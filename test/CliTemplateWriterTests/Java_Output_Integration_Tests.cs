@@ -10,7 +10,7 @@ namespace CliTemplateWriterTests
         [Fact]
         public void When_passing_specific_Arguments_should_procces_one_note_metadata()
         {
-            var args = "--language=java --inputFile=Metadata\\OneNote.edmx.xml --outputDir=Out".Split(' ');
+			var args = string.Format("--language=java --inputFile=Metadata{0}OneNote.edmx.xml --outputDir=Out",System.IO.Path.DirectorySeparatorChar).Split(' ');
             var builder = new ConfigurationBuilder().WithConfiguration(new OneNoteConfiguration())
                                                     .WithArguments(args);
             var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
@@ -20,7 +20,7 @@ namespace CliTemplateWriterTests
         [Fact]
         public void When_passing_specific_Arguments_should_procces_exchange_metadata()
         {
-            var args = "--language=java --inputFile=Metadata\\Exchange.edmx.xml --outputDir=Out".Split(' ');
+			var args = string.Format("--language=java --inputFile=Metadata\\Exchange.edmx.xml --outputDir=Out",System.IO.Path.DirectorySeparatorChar).Split(' ');
             var builder = new ConfigurationBuilder().WithConfiguration(new ExchangeConfiguration())
                                                     .WithArguments(args);
             var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
@@ -30,7 +30,7 @@ namespace CliTemplateWriterTests
         [Fact]
         public void When_passing_specific_Arguments_should_procces_discovery_metadata()
         {
-            var args = "--language=java --inputFile=Metadata\\discovery.xml --outputDir=Out".Split(' ');
+			var args = string.Format("--language=java --inputFile=Metadata\\discovery.xml --outputDir=Out",System.IO.Path.DirectorySeparatorChar).Split(' ');
             var builder = new ConfigurationBuilder().WithConfiguration(new DisoveryConfiguration())
                                                     .WithArguments(args);
             var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
@@ -50,7 +50,7 @@ namespace CliTemplateWriterTests
         [Fact]
         public void When_passing_specific_Arguments_should_procces_files_metadata()
         {
-            var args = "--language=java --inputFile=Metadata\\files.xml --outputDir=Out".Split(' ');
+			var args = string.Format("--language=java --inputFile=Metadata{0}files.xml --outputDir=Out",System.IO.Path.DirectorySeparatorChar).Split(' ');
             var builder = new ConfigurationBuilder().WithConfiguration(new FilesConfiguration())
                                                     .WithArguments(args);
             var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
