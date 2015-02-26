@@ -185,3 +185,5 @@ UpgradeLog*.htm
 FakesAssemblies/
 *.v2.ncrunchproject
 *.v2.ncrunchsolution
+
+*.userprefs
