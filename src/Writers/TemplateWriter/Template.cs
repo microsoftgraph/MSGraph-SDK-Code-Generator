@@ -1,19 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TemplateWriter;
 
-namespace Vipr.CLI
+namespace TemplateWriter
 {
-    public enum TemplateType
-    {
-        Model,
-        OData,
-        Other
-    }
-
     public class Template
     {
         public TemplateType TemplateType { get; set; }

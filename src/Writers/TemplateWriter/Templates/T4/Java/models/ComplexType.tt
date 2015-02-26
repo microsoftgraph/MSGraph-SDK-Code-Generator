@@ -9,7 +9,7 @@ OdcmClass complex = (OdcmClass)host.OdcmType;
 
 #>
 <#=GetCommentHeader()#>
-package <#=complex.Namespace.ToLower()#>;
+package <#=model.NamespaceName()#>;
 <#
     string extends = complex.Base == null ? " extends ODataBaseEntity" : " extends " + complex.Base.Name.Substring(complex.Base.Name.LastIndexOf(".") +1);
 #>

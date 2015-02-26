@@ -1,14 +1,14 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseTemplate.tt"#>
 <#@ output extension="\\" #>
+<#=GetCommentHeader()#>
 <#
 CustomHost host = (CustomHost)Host;
-var entity = host.OdcmType.AsEntityType();
+var entity = host.OdcmType.AsOdcmClass();
 
 var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
 
 #>
-<#=GetCommentHeader()#>
 
 @class <#=GetPrefix() + entity.Name#>Fetcher;
 

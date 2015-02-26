@@ -34,14 +34,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Data.Edm, Version=5.6.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.Data.Edm.5.6.3\lib\net40\Microsoft.Data.Edm.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.TextTemplating">
       <HintPath>..\..\..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
     </Reference>
-    <Reference Include="ODataReader.v4">
+    <Reference Include="ODataReader.v4, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\dependencies\ODataReader.v4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -52,13 +49,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Vipr.Core">
+    <Reference Include="Vipr.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\dependencies\Vipr.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="ITemplateSourceReader.cs" />
     <Compile Include="CLIEntryPoint.cs" />
     <Compile Include="CodeGen1.Designer.cs">
       <DependentUpon>CodeGen.settings</DependentUpon>
@@ -67,25 +63,11 @@
     </Compile>
     <Compile Include="Configuration\ConfigurationBuilder.cs" />
     <Compile Include="Configuration\IConfigurationBuilder.cs" />
-    <Compile Include="ITemplateTempLocationFileWriter.cs" />
-    <Compile Include="Output\IFileWriter.cs" />
     <Compile Include="ILogger.cs" />
-    <Compile Include="Output\BaseFileWriter.cs" />
-    <Compile Include="Output\JavaFileWriter.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Mono.Options\Options.cs" />
-    <Compile Include="ITemplateProcessorManager.cs" />
-    <Compile Include="Strategies\BaseTemplateProcessor.cs" />
-    <Compile Include="Strategies\ITemplateProcessor.cs" />
-    <Compile Include="Strategies\JavaTemplateProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategies\ObjectiveCTemplateProcessor.cs" />
-    <Compile Include="TemplateProcessorManager.cs" />
-    <Compile Include="Template.cs" />
-    <Compile Include="TemplateSourceReader.cs" />
-    <Compile Include="TemplateTempLocationFileWriter.cs" />
-    <Compile Include="Output\ObjectiveCFileWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -100,9 +82,6 @@
       <Project>{474D242F-9587-40A7-B4E4-CBB35F8B7C21}</Project>
       <Name>TemplateWriter</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Plugins\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

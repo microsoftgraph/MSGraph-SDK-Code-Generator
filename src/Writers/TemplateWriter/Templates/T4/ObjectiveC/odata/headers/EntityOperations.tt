@@ -1,19 +1,24 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseTemplate.tt"#>
 <#@ output extension="\\" #>
+<#=GetCommentHeader()#>
 <#
 CustomHost host = (CustomHost)Host;
-OdcmModel entity = host.OdcmType.AsEntityType();
+var entity = host.OdcmType.AsOdcmClass();
 
 var entityName = GetPrefix() + entity.Name + "Operations";
 string baseEntity = entity.Base == null ? "MSODataOperations" 
 					  : GetPrefix() + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "Operations";
 
 #>
-<#=GetCommentHeader()#>
 					  		
 #import <office365_odata_base/office365_odata_base.h>
-#import "<#=GetPrefix()#>Models".h"
+#import "<#=GetPrefix()#>Models.h"
+<#if(entity.Base != null){
+#>
+#import "<#=baseEntity#>.h"
+<#
+}#>
 
 <#=GetHeaderDoc(entityName)#>
 @interface <#=entityName#> : <#=baseEntity#>
@@ -34,7 +39,7 @@ if(entity.HasActions())
 
 		}
 
-		if(action.IsFunction())
+		if(!action.IsFunction())
 		{
 
 #>

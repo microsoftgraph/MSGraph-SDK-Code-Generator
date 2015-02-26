@@ -1,0 +1,401 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+	<edmx:DataServices>
+		<Schema Namespace="Microsoft.DirectoryServices" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+			<EntityType Name="DirectoryObject" OpenType="true">
+				<Key>
+					<PropertyRef Name="objectId"/>
+				</Key>
+				<Property Name="objectType" Type="Edm.String"/>
+				<Property Name="objectId" Nullable="false" Type="Edm.String"/>
+				<Property Name="deletionTimestamp" Type="Edm.DateTimeOffset"/>
+				<!-- These all relate from source DirectoryObject to other DirectoryObjects -->
+				<NavigationProperty Name="createdOnBehalfOf" Type="Microsoft.DirectoryServices.DirectoryObject"/>
+				<NavigationProperty Name="createdObjects" Type="Collection(Microsoft.DirectoryServices.DirectoryObject)" />
+				<NavigationProperty Name="manager" Type="Microsoft.DirectoryServices.DirectoryObject"/>
+				<NavigationProperty Name="directReports" Type="Collection(Microsoft.DirectoryServices.DirectoryObject)"/>
+				<NavigationProperty Name="members" Type="Collection(Microsoft.DirectoryServices.DirectoryObject)"/>
+				<NavigationProperty Name="memberOf" Type="Collection(Microsoft.DirectoryServices.DirectoryObject)"/>
+				<NavigationProperty Name="owners" Type="Collection(Microsoft.DirectoryServices.DirectoryObject)"/>
+				<NavigationProperty Name="ownedObjects" Type="Collection(Microsoft.DirectoryServices.DirectoryObject)"/>
+			</EntityType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="Application" OpenType="true">
+				<Property Name="appId" Type="Edm.String"/>
+				<Property Name="appRoles" Nullable="false" Type="Collection(Microsoft.DirectoryServices.AppRole)"/>
+				<Property Name="availableToOtherTenants" Type="Edm.Boolean"/>
+				<Property Name="displayName" Type="Edm.String"/>
+				<Property Name="errorUrl" Type="Edm.String"/>
+				<Property Name="groupMembershipClaims" Type="Edm.String"/>
+				<Property Name="homepage" Type="Edm.String"/>
+				<Property Name="identifierUris" Nullable="false" Type="Collection(Edm.String)"/>
+				<Property Name="keyCredentials" Nullable="false" Type="Collection(Microsoft.DirectoryServices.KeyCredential)"/>
+				<Property Name="knownClientApplications" Nullable="false" Type="Collection(Edm.Guid)"/>
+				<Property Name="mainLogo" Nullable="false" Type="Edm.Stream"/>
+				<Property Name="logoutUrl" Type="Edm.String"/>
+				<Property Name="oauth2AllowImplicitFlow" Nullable="false" Type="Edm.Boolean"/>
+				<Property Name="oauth2AllowUrlPathMatching" Nullable="false" Type="Edm.Boolean"/>
+				<Property Name="oauth2Permissions" Nullable="false" Type="Collection(Microsoft.DirectoryServices.OAuth2Permission)"/>
+				<Property Name="oauth2RequirePostResponse" Nullable="false" Type="Edm.Boolean"/>
+				<Property Name="passwordCredentials" Nullable="false" Type="Collection(Microsoft.DirectoryServices.PasswordCredential)"/>
+				<Property Name="publicClient" Type="Edm.Boolean"/>
+				<Property Name="replyUrls" Nullable="false" Type="Collection(Edm.String)"/>
+				<Property Name="requiredResourceAccess" Nullable="false" Type="Collection(Microsoft.DirectoryServices.RequiredResourceAccess)"/>
+				<Property Name="samlMetadataUrl" Type="Edm.String"/>
+				<NavigationProperty Name="extensionProperties" Type="Collection(Microsoft.DirectoryServices.ExtensionProperty)"/>
+			</EntityType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="User" OpenType="true">
+				<Property Name="accountEnabled" Type="Edm.Boolean"/>
+				<Property Name="assignedLicenses" Nullable="false" Type="Collection(Microsoft.DirectoryServices.AssignedLicense)"/>
+				<Property Name="assignedPlans" Nullable="false" Type="Collection(Microsoft.DirectoryServices.AssignedPlan)"/>
+				<Property Name="city" Type="Edm.String"/>
+				<Property Name="country" Type="Edm.String"/>
+				<Property Name="department" Type="Edm.String"/>
+				<Property Name="dirSyncEnabled" Type="Edm.Boolean"/>
+				<Property Name="displayName" Type="Edm.String"/>
+				<Property Name="facsimileTelephoneNumber" Type="Edm.String"/>
+				<Property Name="givenName" Type="Edm.String"/>
+				<Property Name="immutableId" Type="Edm.String"/>
+				<Property Name="jobTitle" Type="Edm.String"/>
+				<Property Name="lastDirSyncTime" Type="Edm.DateTimeOffset"/>
+				<Property Name="mail" Type="Edm.String"/>
+				<Property Name="mailNickname" Type="Edm.String"/>
+				<Property Name="mobile" Type="Edm.String"/>
+				<Property Name="onPremisesSecurityIdentifier" Type="Edm.String"/>
+				<Property Name="otherMails" Nullable="false" Type="Collection(Edm.String)"/>
+				<Property Name="passwordPolicies" Type="Edm.String"/>
+				<Property Name="passwordProfile" Type="Microsoft.DirectoryServices.PasswordProfile"/>
+				<Property Name="physicalDeliveryOfficeName" Type="Edm.String"/>
+				<Property Name="postalCode" Type="Edm.String"/>
+				<Property Name="preferredLanguage" Type="Edm.String"/>
+				<Property Name="provisionedPlans" Nullable="false" Type="Collection(Microsoft.DirectoryServices.ProvisionedPlan)"/>
+				<Property Name="provisioningErrors" Nullable="false" Type="Collection(Microsoft.DirectoryServices.ProvisioningError)"/>
+				<Property Name="proxyAddresses" Nullable="false" Type="Collection(Edm.String)"/>
+				<Property Name="sipProxyAddress" Type="Edm.String"/>
+				<Property Name="state" Type="Edm.String"/>
+				<Property Name="streetAddress" Type="Edm.String"/>
+				<Property Name="surname" Type="Edm.String"/>
+				<Property Name="telephoneNumber" Type="Edm.String"/>
+				<Property Name="thumbnailPhoto" Nullable="false" Type="Edm.Stream"/>
+				<Property Name="usageLocation" Type="Edm.String"/>
+				<Property Name="userPrincipalName" Type="Edm.String"/>
+				<Property Name="userType" Type="Edm.String"/>
+				<NavigationProperty Name="appRoleAssignments" Type="Collection(Microsoft.DirectoryServices.AppRoleAssignment)"/>
+				<NavigationProperty Name="oauth2PermissionGrants" Type="Collection(Microsoft.DirectoryServices.OAuth2PermissionGrant)"/>
+				<NavigationProperty Name="ownedDevices" Type="Collection(Microsoft.DirectoryServices.DirectoryObject)" />
+				<NavigationProperty Name="registeredDevices" Type="Collection(Microsoft.DirectoryServices.DirectoryObject)" />
+			</EntityType>
+			<ComplexType Name="AssignedLicense">
+				<Property Name="disabledPlans" Nullable="false" Type="Collection(Edm.Guid)"/>
+				<Property Name="skuId" Type="Edm.Guid"/>
+			</ComplexType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="ExtensionProperty" OpenType="true">
+				<Property Name="appDisplayName" Type="Edm.String"/>
+				<Property Name="name" Type="Edm.String"/>
+				<Property Name="dataType" Type="Edm.String"/>
+				<Property Name="isSyncedFromOnPremises" Nullable="false" Type="Edm.Boolean"/>
+				<Property Name="targetObjects" Nullable="false" Type="Collection(Edm.String)"/>
+			</EntityType>
+			<ComplexType Name="AppRole">
+				<Property Name="allowedMemberTypes" Nullable="false" Type="Collection(Edm.String)"/>
+				<Property Name="description" Type="Edm.String"/>
+				<Property Name="displayName" Type="Edm.String"/>
+				<Property Name="id" Nullable="false" Type="Edm.Guid"/>
+				<Property Name="isEnabled" Nullable="false" Type="Edm.Boolean"/>
+				<Property Name="value" Type="Edm.String"/>
+			</ComplexType>
+			<ComplexType Name="KeyCredential">
+				<Property Name="customKeyIdentifier" Type="Edm.Binary"/>
+				<Property Name="endDate" Type="Edm.DateTimeOffset"/>
+				<Property Name="keyId" Type="Edm.Guid"/>
+				<Property Name="startDate" Type="Edm.DateTimeOffset"/>
+				<Property Name="type" Type="Edm.String"/>
+				<Property Name="usage" Type="Edm.String"/>
+				<Property Name="value" Type="Edm.Binary"/>
+			</ComplexType>
+			<ComplexType Name="OAuth2Permission">
+				<Property Name="adminConsentDescription" Type="Edm.String"/>
+				<Property Name="adminConsentDisplayName" Type="Edm.String"/>
+				<Property Name="id" Nullable="false" Type="Edm.Guid"/>
+				<Property Name="isEnabled" Nullable="false" Type="Edm.Boolean"/>
+				<Property Name="type" Type="Edm.String"/>
+				<Property Name="userConsentDescription" Type="Edm.String"/>
+				<Property Name="userConsentDisplayName" Type="Edm.String"/>
+				<Property Name="value" Type="Edm.String"/>
+			</ComplexType>
+			<ComplexType Name="PasswordCredential">
+				<Property Name="customKeyIdentifier" Type="Edm.Binary"/>
+				<Property Name="endDate" Type="Edm.DateTimeOffset"/>
+				<Property Name="keyId" Type="Edm.Guid"/>
+				<Property Name="startDate" Type="Edm.DateTimeOffset"/>
+				<Property Name="value" Type="Edm.String"/>
+			</ComplexType>
+			<ComplexType Name="RequiredResourceAccess">
+				<Property Name="resourceAppId" Type="Edm.String"/>
+				<Property Name="resourceAccess" Nullable="false" Type="Collection(Microsoft.DirectoryServices.ResourceAccess)"/>
+			</ComplexType>
+			<ComplexType Name="ResourceAccess">
+				<Property Name="id" Nullable="false" Type="Edm.Guid"/>
+				<Property Name="type" Type="Edm.String"/>
+			</ComplexType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="Contact" OpenType="true">
+				<Property Name="city" Type="Edm.String"/>
+				<Property Name="country" Type="Edm.String"/>
+				<Property Name="department" Type="Edm.String"/>
+				<Property Name="dirSyncEnabled" Type="Edm.Boolean"/>
+				<Property Name="displayName" Type="Edm.String"/>
+				<Property Name="facsimileTelephoneNumber" Type="Edm.String"/>
+				<Property Name="givenName" Type="Edm.String"/>
+				<Property Name="jobTitle" Type="Edm.String"/>
+				<Property Name="lastDirSyncTime" Type="Edm.DateTimeOffset"/>
+				<Property Name="mail" Type="Edm.String"/>
+				<Property Name="mailNickname" Type="Edm.String"/>
+				<Property Name="mobile" Type="Edm.String"/>
+				<Property Name="physicalDeliveryOfficeName" Type="Edm.String"/>
+				<Property Name="postalCode" Type="Edm.String"/>
+				<Property Name="provisioningErrors" Nullable="false" Type="Collection(Microsoft.DirectoryServices.ProvisioningError)"/>
+				<Property Name="proxyAddresses" Nullable="false" Type="Collection(Edm.String)"/>
+				<Property Name="sipProxyAddress" Type="Edm.String"/>
+				<Property Name="state" Type="Edm.String"/>
+				<Property Name="streetAddress" Type="Edm.String"/>
+				<Property Name="surname" Type="Edm.String"/>
+				<Property Name="telephoneNumber" Type="Edm.String"/>
+				<Property Name="thumbnailPhoto" Nullable="false" Type="Edm.Stream"/>
+			</EntityType>
+			<ComplexType Name="ProvisioningError">
+				<Property Name="errorDetail" Type="Edm.String"/>
+				<Property Name="resolved" Type="Edm.Boolean"/>
+				<Property Name="service" Type="Edm.String"/>
+				<Property Name="timestamp" Type="Edm.DateTimeOffset"/>
+			</ComplexType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="Device" OpenType="true">
+				<Property Name="accountEnabled" Type="Edm.Boolean"/>
+				<Property Name="alternativeSecurityIds" Nullable="false" Type="Collection(Microsoft.DirectoryServices.AlternativeSecurityId)"/>
+				<Property Name="approximateLastLogonTimestamp" Type="Edm.DateTimeOffset"/>
+				<Property Name="deviceId" Type="Edm.Guid"/>
+				<Property Name="deviceMetadata" Type="Edm.String" />
+				<Property Name="deviceObjectVersion" Type="Edm.Int32"/>
+				<Property Name="deviceOSType" Type="Edm.String"/>
+				<Property Name="deviceOSVersion" Type="Edm.String"/>
+				<Property Name="devicePhysicalIds" Nullable="false" Type="Collection(Edm.String)"/>
+				<Property Name="deviceTrustType" Type="Edm.String" />
+				<Property Name="dirSyncEnabled" Type="Edm.Boolean"/>
+				<Property Name="displayName" Type="Edm.String"/>
+				<Property Name="lastDirSyncTime" Type="Edm.DateTimeOffset"/>
+				<NavigationProperty Name="registeredOwners" Type="Collection(Microsoft.DirectoryServices.DirectoryObject)"/>
+				<NavigationProperty Name="registeredUsers" Type="Collection(Microsoft.DirectoryServices.DirectoryObject)"/>
+			</EntityType>
+			<ComplexType Name="AlternativeSecurityId">
+				<Property Name="type" Type="Edm.Int32"/>
+				<Property Name="identityProvider" Type="Edm.String"/>
+				<Property Name="key" Type="Edm.Binary"/>
+			</ComplexType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="DeviceConfiguration" OpenType="true">
+				<Property Name="publicIssuerCertificates" Nullable="false" Type="Collection(Edm.Binary)"/>
+				<Property Name="cloudPublicIssuerCertificates" Nullable="false" Type="Collection(Edm.Binary)"/>
+				<Property Name="registrationQuota" Type="Edm.Int32"/>
+				<Property Name="maximumRegistrationInactivityPeriod" Type="Edm.Int32"/>
+			</EntityType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="DirectoryLinkChange" OpenType="true">
+				<Property Name="associationType" Type="Edm.String"/>
+				<Property Name="sourceObjectId" Type="Edm.String"/>
+				<Property Name="sourceObjectType" Type="Edm.String"/>
+				<Property Name="sourceObjectUri" Type="Edm.String"/>
+				<Property Name="targetObjectId" Type="Edm.String"/>
+				<Property Name="targetObjectType" Type="Edm.String"/>
+				<Property Name="targetObjectUri" Type="Edm.String"/>
+			</EntityType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="AppRoleAssignment" OpenType="true">
+				<Property Name="creationTimestamp" Type="Edm.DateTimeOffset"/>
+				<Property Name="id" Nullable="false" Type="Edm.Guid"/>
+				<Property Name="principalDisplayName" Type="Edm.String"/>
+				<Property Name="principalId" Type="Edm.Guid"/>
+				<Property Name="principalType" Type="Edm.String"/>
+				<Property Name="resourceDisplayName" Type="Edm.String"/>
+				<Property Name="resourceId" Type="Edm.Guid"/>
+			</EntityType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="Group" OpenType="true">
+				<Property Name="description" Type="Edm.String"/>
+				<Property Name="dirSyncEnabled" Type="Edm.Boolean"/>
+				<Property Name="displayName" Type="Edm.String"/>
+				<Property Name="lastDirSyncTime" Type="Edm.DateTimeOffset"/>
+				<Property Name="mail" Type="Edm.String"/>
+				<Property Name="mailNickname" Type="Edm.String"/>
+				<Property Name="mailEnabled" Type="Edm.Boolean"/>
+				<Property Name="onPremisesSecurityIdentifier" Type="Edm.String"/>
+				<Property Name="provisioningErrors" Nullable="false" Type="Collection(Microsoft.DirectoryServices.ProvisioningError)"/>
+				<Property Name="proxyAddresses" Nullable="false" Type="Collection(Edm.String)"/>
+				<Property Name="securityEnabled" Type="Edm.Boolean"/>
+				<NavigationProperty Name="appRoleAssignments" Type="Collection(Microsoft.DirectoryServices.AppRoleAssignment)" />
+			</EntityType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="DirectoryRole" OpenType="true">
+				<Property Name="description" Type="Edm.String"/>
+				<Property Name="displayName" Type="Edm.String"/>
+				<Property Name="isSystem" Type="Edm.Boolean"/>
+				<Property Name="roleDisabled" Type="Edm.Boolean"/>
+				<Property Name="roleTemplateId" Type="Edm.String"/>
+			</EntityType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="DirectoryRoleTemplate" OpenType="true">
+				<Property Name="description" Type="Edm.String"/>
+				<Property Name="displayName" Type="Edm.String"/>
+			</EntityType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="ServicePrincipal" OpenType="true">
+				<Property Name="accountEnabled" Type="Edm.Boolean"/>
+				<Property Name="appDisplayName" Type="Edm.String"/>
+				<Property Name="appId" Type="Edm.String"/>
+				<Property Name="appOwnerTenantId" Type="Edm.Guid"/>
+				<Property Name="appRoleAssignmentRequired" Nullable="false" Type="Edm.Boolean"/>
+				<Property Name="appRoles" Nullable="false" Type="Collection(Microsoft.DirectoryServices.AppRole)"/>
+				<Property Name="displayName" Type="Edm.String"/>
+				<Property Name="errorUrl" Type="Edm.String"/>
+				<Property Name="homepage" Type="Edm.String"/>
+				<Property Name="keyCredentials" Nullable="false" Type="Collection(Microsoft.DirectoryServices.KeyCredential)"/>
+				<Property Name="logoutUrl" Type="Edm.String"/>
+				<Property Name="oauth2Permissions" Nullable="false" Type="Collection(Microsoft.DirectoryServices.OAuth2Permission)"/>
+				<Property Name="passwordCredentials" Nullable="false" Type="Collection(Microsoft.DirectoryServices.PasswordCredential)"/>
+				<Property Name="preferredTokenSigningKeyThumbprint" Type="Edm.String"/>
+				<Property Name="publisherName" Type="Edm.String"/>
+				<Property Name="replyUrls" Nullable="false" Type="Collection(Edm.String)"/>
+				<Property Name="samlMetadataUrl" Type="Edm.String"/>
+				<Property Name="servicePrincipalNames" Nullable="false" Type="Collection(Edm.String)"/>
+				<Property Name="tags" Nullable="false" Type="Collection(Edm.String)"/>
+				<NavigationProperty Name="appRoleAssignedTo" Type="Collection(Microsoft.DirectoryServices.AppRoleAssignment)"/>
+				<NavigationProperty Name="appRoleAssignments" Type="Collection(Microsoft.DirectoryServices.AppRoleAssignment)"/>
+				<NavigationProperty Name="oauth2PermissionGrants" Type="Collection(Microsoft.DirectoryServices.OAuth2PermissionGrant)"/>
+			</EntityType>
+			<EntityType BaseType="Microsoft.DirectoryServices.DirectoryObject" Name="TenantDetail" OpenType="true">
+				<Property Name="assignedPlans" Nullable="false" Type="Collection(Microsoft.DirectoryServices.AssignedPlan)"/>
+				<Property Name="city" Type="Edm.String"/>
+				<Property Name="companyLastDirSyncTime" Type="Edm.DateTimeOffset"/>
+				<Property Name="country" Type="Edm.String"/>
+				<Property Name="countryLetterCode" Type="Edm.String"/>
+				<Property Name="dirSyncEnabled" Type="Edm.Boolean"/>
+				<Property Name="displayName" Type="Edm.String"/>
+				<Property Name="marketingNotificationEmails" Nullable="false" Type="Collection(Edm.String)"/>
+				<Property Name="postalCode" Type="Edm.String"/>
+				<Property Name="preferredLanguage" Type="Edm.String"/>
+				<Property Name="provisionedPlans" Nullable="false" Type="Collection(Microsoft.DirectoryServices.ProvisionedPlan)"/>
+				<Property Name="provisioningErrors" Nullable="false" Type="Collection(Microsoft.DirectoryServices.ProvisioningError)"/>
+				<Property Name="state" Type="Edm.String"/>
+				<Property Name="street" Type="Edm.String"/>
+				<Property Name="technicalNotificationMails" Nullable="false" Type="Collection(Edm.String)"/>
+				<Property Name="telephoneNumber" Type="Edm.String"/>
+				<Property Name="verifiedDomains" Nullable="false" Type="Collection(Microsoft.DirectoryServices.VerifiedDomain)"/>
+			</EntityType>
+			<ComplexType Name="AssignedPlan">
+				<Property Name="assignedTimestamp" Type="Edm.DateTimeOffset"/>
+				<Property Name="capabilityStatus" Type="Edm.String"/>
+				<Property Name="service" Type="Edm.String"/>
+				<Property Name="servicePlanId" Type="Edm.Guid"/>
+			</ComplexType>
+			<ComplexType Name="ProvisionedPlan">
+				<Property Name="capabilityStatus" Type="Edm.String"/>
+				<Property Name="provisioningStatus" Type="Edm.String"/>
+				<Property Name="service" Type="Edm.String"/>
+			</ComplexType>
+			<ComplexType Name="VerifiedDomain">
+				<Property Name="capabilities" Type="Edm.String"/>
+				<Property Name="default" Type="Edm.Boolean"/>
+				<Property Name="id" Type="Edm.String"/>
+				<Property Name="initial" Type="Edm.Boolean"/>
+				<Property Name="name" Type="Edm.String"/>
+				<Property Name="type" Type="Edm.String"/>
+			</ComplexType>
+			<ComplexType Name="PasswordProfile">
+				<Property Name="password" Type="Edm.String"/>
+				<Property Name="forceChangePasswordNextLogin" Type="Edm.Boolean"/>
+			</ComplexType>
+			<EntityType Name="OAuth2PermissionGrant">
+				<Key>
+					<PropertyRef Name="objectId"/>
+				</Key>
+				<Property Name="clientId" Type="Edm.String"/>
+				<Property Name="consentType" Type="Edm.String"/>
+				<Property Name="expiryTime" Type="Edm.DateTimeOffset"/>
+				<Property Name="objectId" Nullable="false" Type="Edm.String"/>
+				<Property Name="principalId" Type="Edm.String"/>
+				<Property Name="resourceId" Type="Edm.String"/>
+				<Property Name="scope" Type="Edm.String"/>
+				<Property Name="startTime" Type="Edm.DateTimeOffset"/>
+			</EntityType>
+			<EntityType Name="SubscribedSku">
+				<Key>
+					<PropertyRef Name="objectId"/>
+				</Key>
+				<Property Name="capabilityStatus" Type="Edm.String"/>
+				<Property Name="consumedUnits" Type="Edm.Int32"/>
+				<Property Name="objectId" Nullable="false" Type="Edm.String"/>
+				<Property Name="prepaidUnits" Type="Microsoft.DirectoryServices.LicenseUnitsDetail"/>
+				<Property Name="servicePlans" Nullable="false" Type="Collection(Microsoft.DirectoryServices.ServicePlanInfo)"/>
+				<Property Name="skuId" Type="Edm.Guid"/>
+				<Property Name="skuPartNumber" Type="Edm.String"/>
+			</EntityType>
+			<ComplexType Name="LicenseUnitsDetail">
+				<Property Name="enabled" Type="Edm.Int32"/>
+				<Property Name="suspended" Type="Edm.Int32"/>
+				<Property Name="warning" Type="Edm.Int32"/>
+			</ComplexType>
+			<ComplexType Name="ServicePlanInfo">
+				<Property Name="servicePlanId" Type="Edm.Guid"/>
+				<Property Name="servicePlanName" Type="Edm.String"/>
+			</ComplexType>
+			<Function IsBound="true" Name="checkMemberGroups">
+				<Parameter Name="DirectoryObject" Type="Microsoft.DirectoryServices.DirectoryObject"/>
+				<Parameter Name="groupIds" Nullable="false" Type="Collection(Edm.String)"/>
+				<ReturnType Type="Collection(Edm.String)"/>
+			</Function>
+			<Function IsBound="true" Name="getMemberGroups">
+				<Parameter Name="DirectoryObject" Type="Microsoft.DirectoryServices.DirectoryObject"/>
+				<Parameter Name="securityEnabledOnly" Type="Edm.Boolean"/>
+				<ReturnType Type="Collection(Edm.String)"/>
+			</Function>
+			<Function IsBound="true" Name="getMemberObjects">
+				<Parameter Name="DirectoryObject" Type="Microsoft.DirectoryServices.DirectoryObject"/>
+				<Parameter Name="securityEnabledOnly" Type="Edm.Boolean"/>
+				<ReturnType Type="Collection(Edm.String)"/>
+			</Function>
+			<Function EntitySetPath="directoryObjects" IsBound="true" Name="restore">
+				<Parameter Name="Application" Type="Microsoft.DirectoryServices.Application"/>
+				<Parameter Name="identifierUris" Nullable="false" Type="Collection(Edm.String)"/>
+				<ReturnType Type="Microsoft.DirectoryServices.Application"/>
+			</Function>
+			<Function EntitySetPath="directoryObjects" IsBound="true" Name="assignLicense">
+				<Parameter Name="User" Type="Microsoft.DirectoryServices.User"/>
+				<Parameter Name="addLicenses" Nullable="false" Type="Collection(Microsoft.DirectoryServices.AssignedLicense)"/>
+				<Parameter Name="removeLicenses" Nullable="false" Type="Collection(Edm.Guid)"/>
+				<ReturnType Type="Microsoft.DirectoryServices.User"/>
+			</Function>
+			<Function EntitySetPath="directoryObjects" Name="getAvailableExtensionProperties" IsBound="false">
+				<Parameter Name="isSyncedFromOnPremises" Type="Edm.Boolean"/>
+				<ReturnType Type="Collection(Microsoft.DirectoryServices.ExtensionProperty)"/>
+			</Function>
+			<Function Name="isMemberOf" IsBound="false">
+				<Parameter Name="groupId" Type="Edm.String"/>
+				<Parameter Name="memberId" Type="Edm.String"/>
+				<ReturnType Type="Edm.Boolean"/>
+			</Function>
+			<EntityContainer Name="Directory">
+				<EntitySet EntityType="Microsoft.DirectoryServices.DirectoryObject" Name="directoryObjects"/>
+				<EntitySet EntityType="Microsoft.DirectoryServices.OAuth2PermissionGrant" Name="oauth2PermissionGrants"/>
+				<EntitySet EntityType="Microsoft.DirectoryServices.SubscribedSku" Name="subscribedSkus"/>
+				<EntitySet EntityType="Microsoft.DirectoryServices.DirectoryObject" Name="deletedDirectoryObjects"/>
+
+				<!-- augmented entity sets -->
+				<EntitySet Name="users" EntityType="Microsoft.DirectoryServices.User" />
+				<EntitySet Name="applications" EntityType="Microsoft.DirectoryServices.Application" />
+				<EntitySet Name="contacts" EntityType="Microsoft.DirectoryServices.Contact" />
+				<EntitySet Name="groups" EntityType="Microsoft.DirectoryServices.Group" />
+				<EntitySet Name="roles" EntityType="Microsoft.DirectoryServices.DirectoryRole" />
+				<EntitySet Name="servicePrincipals" EntityType="Microsoft.DirectoryServices.ServicePrincipal" />
+				<EntitySet Name="tenantDetails" EntityType="Microsoft.DirectoryServices.TenantDetail" />
+				<EntitySet Name="devices" EntityType="Microsoft.DirectoryServices.Device" />
+				<!-- /augmented entity sets -->
+
+				<FunctionImport Name="getAvailableExtensionProperties" EntitySet="directoryObjects" />
+				<FunctionImport Name="isMemberOf"/>
+			</EntityContainer>
+			<Annotations Target="Microsoft.DirectoryServices.Directory">
+				<ValueAnnotation String="KeyAsSegment" Term="Com.Microsoft.Data.Services.Conventions.V1.UrlConventions"/>
+			</Annotations>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

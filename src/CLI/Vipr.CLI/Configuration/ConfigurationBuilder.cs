@@ -16,6 +16,12 @@ namespace Vipr.CLI.Configuration
             _arguments = new BuilderArguments();
         }
 
+        public IConfigurationBuilder WithArguments(params string[] args)
+        {
+            CreateOptionSet(args);
+            return this;
+        }
+
         public void CreateOptionSet(params string[] args)
         {
             if (_configuration == null)
@@ -38,9 +44,10 @@ namespace Vipr.CLI.Configuration
             OptionSet.Parse(args);
         }
 
-        public IConfigurationBuilder WithArguments(params string[] args)
+        public IConfigurationBuilder WithConfiguration(ITemplateConfiguration configuration)
         {
-            CreateOptionSet(args);
+            ConfigurationService.Initialize(configuration);
+            _configuration = ConfigurationService.Configuration;
             return this;
         }
 
@@ -51,12 +58,6 @@ namespace Vipr.CLI.Configuration
 
         public IConfigurationBuilder WithDefaultConfig()
         {
-            return this;
-        }
-
-        public IConfigurationBuilder WithSpecificConfiguration(ITemplateConfiguration configuration)
-        {
-            _configuration = configuration;
             return this;
         }
 

@@ -1,47 +1,43 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseTemplate.tt"#>
 <#@ output extension="\\" #>
-<#
-CustomHost host = (CustomHost)Host;
-var entity = host.OdcmType.AsEntityType();
-var entityName = GetPrefix() + entity.Name + "Fetcher";
-var extends =  (entity.HasStream ? "MSODataMediaEntityFetcher<": "MSODataEntityFetcher<") + entityName+ ">";
-
-#>
 <#=GetCommentHeader()#>
 
 <#
-
+CustomHost host = (CustomHost)Host;
+var entity = host.OdcmType.AsOdcmClass();
+var entityName = GetPrefix() + entity.Name + "Fetcher";
+var extends =  (entity.Kind == OdcmClassKind.MediaEntity ? "MSODataMediaEntityFetcher<": "MSODataEntityFetcher<") + entityName+ ">";
 var clasess = new List<string>();
-	
+
 foreach(var prop in entity.NavigationProperties())
 {
 	var fetcher = string.Empty;
 	fetcher = GetPrefix() + prop.Type.Name + "Fetcher;";
 
-	if(!clasess.Contains(fetcher)) classes.Add(fetcher);
+	if(!clasess.Contains(fetcher)) clasess.Add(fetcher);
 
-	if(prop.IsCollection())
+	if(prop.IsCollection)
 	{
 		var collectionFetcher = GetPrefix() + prop.Type.Name + "CollectionFetcher;";
 
-		if(!clasess.Contains(collectionFetcher)) classes.Add(collectionFetcher);
+		if(!clasess.Contains(collectionFetcher)) clasess.Add(collectionFetcher);
 	}
 }
 
-foreach(var child in entity.ChildEntities())
+foreach(var child in entity.Derived)
 {
 	var fetcher = string.Empty;
 	fetcher = GetPrefix() + child.Name + "Fetcher;";
 
-	if(!clasess.Contains(fetcher)) classes.Add(fetcher);
+	if(!clasess.Contains(fetcher)) clasess.Add(fetcher);
 }
 
 foreach(var propertyClass in clasess)
 {
 
 #>
-<#=propertyClass#>
+@class <#=propertyClass#>;
 <#
 
 }
@@ -71,7 +67,7 @@ foreach(var propertyClass in clasess)
 		
 foreach(var prop in entity.NavigationProperties())
 {
-	if(prop.IsCollection())
+	if(prop.IsCollection)
 	{
 
 #>
@@ -91,7 +87,7 @@ foreach(var prop in entity.NavigationProperties())
 	}
 }
 
-foreach(var child in entity.ChildEntities())
+foreach(var child in entity.Derived)
 {
 
 #>

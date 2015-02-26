@@ -1,29 +1,28 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseTemplate.tt"#>
 <#@ output extension="\\" #>
+<#=GetCommentHeader()#>
+
 <#
 CustomHost host = (CustomHost)Host;
 OdcmModel model = host.Model;
 var containerProps = model.EntityContainer.Properties;
 var entityName = GetPrefix() + "Client"; 
 
-#>
-<#=GetCommentHeader()#>
-<#
 var clasess = new List<string>();
 
 foreach(var prop in containerProps)
 {
-	var classString =  prop.Type.GetTypeString() + (prop.IsCollection() ?  "CollectionFetcher;": "Fetcher;"
+	var classString =  prop.Type.GetTypeString() + (prop.IsCollection() ?  "CollectionFetcher;": "Fetcher;");
 
-	if(!clasess.Contains(classString)) classess.Add(classString);
+	if(!clasess.Contains(classString)) clasess.Add(classString);
 }
 
-foreach(var propertyClass in classess)
+foreach(var propertyClass in clasess)
 {
 
 #>
-<#=propertyClass#>
+@class <#=propertyClass#>
 <#
 
 }
@@ -31,7 +30,7 @@ foreach(var propertyClass in classess)
 #>
 
 #import <office365_odata_base/office365_odata_base.h>
-#import "<#=GetPrefix()#>Models".h"
+#import "<#=GetPrefix()#>Models.h"
 
 <#=GetHeaderDoc(entityName)#>
 @interface <#=entityName#> : MSODataBaseContainer
@@ -59,4 +58,5 @@ foreach(var prop in containerProps)
 }
 
 #>
+
 @end

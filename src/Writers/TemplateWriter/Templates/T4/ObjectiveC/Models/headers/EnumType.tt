@@ -1,16 +1,17 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseTemplate.tt"#>
 <#@ output extension="\\" #>
+<#=GetCommentHeader()#>
 <#
 CustomHost host = (CustomHost)Host;
 var entity = host.OdcmType.AsOdcmEnum();
 
 #>
-<#=GetCommentHeader()#>
 
 @interface NSObject ()
 
-typedef enum {
+typedef NS_ENUM(NSInteger, <#=GetPrefix() + entity.Name #>){
+
 <#
 
 for(var i=1; i <= entity.Members.Count; i++)
@@ -18,12 +19,14 @@ for(var i=1; i <= entity.Members.Count; i++)
 
 string value = entity.Members[i -1].Name + (i == entity.Members.Count ? string.Empty : ",");
 
-#><#= value#>
+#>
+	<#= value#>
 <#
 	
 }
 
 #>
-} <#=GetPrefix() + entity.Name #>;
+
+};
 
 @end

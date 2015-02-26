@@ -15,5 +15,10 @@ namespace TemplateWriter
         }
 
         public static string PrimaryNamespaceName { get { return _configuration.PrimaryNamespaceName; } }
+
+        public static ITemplateConfiguration Configuration
+        {
+            get { return _configuration; }
+        }
     }
 }

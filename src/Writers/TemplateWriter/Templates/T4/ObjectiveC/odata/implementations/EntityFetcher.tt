@@ -1,16 +1,16 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseTemplate.tt"#>
 <#@ output extension="\\" #>
+<#=GetCommentHeader()#>
 <#
 CustomHost host = (CustomHost)Host;
 
 OdcmModel model = host.Model;
 
-var entity = host.OdcmType.AsEntityType();
+var entity = host.OdcmType.AsOdcmClass();
 var entityName = GetPrefix() + entity.Name;
 
 #>
-<#=GetCommentHeader()#>
 
 #import "<#=GetPrefix()#>ODataEntities.h"
 
@@ -43,11 +43,11 @@ foreach(var prop in entity.NavigationProperties())
 	{
 #>
 -(<#=GetPrefix() + prop.Type.Name#>CollectionFetcher*) get<#=prop.Name#>{
-    return [[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass:[<#=GetPrefix() + prop.Type#> class]];
+    return [[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass:[<#=GetPrefix() + prop.Type.Name#> class]];
 }
 
 -(id<<#=GetPrefix() + prop.Type.Name#>Fetcher>) get<#=prop.Name#>ById : (NSString*)_id{
-    return [[[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass:[<#=GetPrefix() + prop.Type#> class]] getById:_id];
+    return [[[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass:[<#=GetPrefix() + prop.Type.Name#> class]] getById:_id];
 }
 <#
 	}
@@ -62,7 +62,7 @@ foreach(var prop in entity.NavigationProperties())
 	}
 }
 
-foreach(var child in entity.ChildEntities())
+foreach(var child in entity.Derived)
 {
 #>
 -(<#=GetPrefix() + child.Name#>Fetcher*) as<#=child.Name#>{

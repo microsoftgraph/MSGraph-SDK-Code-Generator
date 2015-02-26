@@ -4,23 +4,23 @@
 
 public string GetPrefix()
 {
-	return  "MSO" + ((CustomHost)Host).Model.EntityContainer.Namespace.Split('.')[1];
+	PropertyHelper.Prefix = "MS" + ((CustomHost)Host).Model.EntityContainer.Name;
+
+	return PropertyHelper.Prefix;
 }
 
 public string GetCommentHeader()
 {
-
-	return 
-@"/*******************************************************************************" +
-@"/* Copyright (c) Microsoft Open Technologies, Inc." +
-@"/* All Rights Reserved" +
-@"/* Licensed under the Apache License, Version 2.0." +
-@"/* See License.txt in the project root for license information." +
-@"/*" +
-@"/* Warning: This code was generated automatically. Edits will be overwritten." +
-@"/* To make changes to this code, please make changes to the generation framework itself:" +
-@"/* https://github.com/MSOpenTech/odata-codegen" +
-@"/*******************************************************************************/";
+return @"/*******************************************************************************
+ * Copyright (c) Microsoft Open Technologies, Inc.
+ * All Rights Reserved
+ * Licensed under the Apache License, Version 2.0.
+ * See License.txt in the project root for license information.
+ *
+ * Warning: This code was generated automatically. Edits will be overwritten.
+ * To make changes to this code, please make changes to the generation framework itself:
+ * https://github.com/MSOpenTech/odata-codegen
+ *******************************************************************************/";
 }
 
 public string GetInterfaceLine(OdcmClass e){
@@ -29,12 +29,12 @@ public string GetInterfaceLine(OdcmClass e){
 					  : GetPrefix() + e.Base.Name.Substring(e.Base.Name.LastIndexOf(".") +1);
 	
 	var s = new StringBuilder();
-	s.AppendLine("#import <Foundation/Foundation.h>");
 	s.AppendLine("#import \""+GetPrefix()+"Protocols.h\"");
 
 	if(baseEntity != "NSObject"){
 		s.AppendFormat("#import \"{0}.h\"", baseEntity);
 	}
+	s.AppendLine().AppendLine("#import <Foundation/Foundation.h>");
 
 	s.AppendLine().AppendLine().AppendLine(GetHeaderDoc(e.Name))
 	.AppendFormat("@interface {0}{1} : {2}",GetPrefix(), e.Name, baseEntity);
@@ -115,7 +115,7 @@ public string GetParamRaw(string type)
 public string GetType(OdcmType type)
 {
 	if(type.IsComplex()){
-		return type.IsSystem() ? string.Empty : type.GetTypeString() + " *";
+		return type.IsSystem() ? type.GetTypeString() : type.GetTypeString() + " *";
 	}
 
 	return type.GetTypeString();
@@ -127,12 +127,16 @@ public string GetImportsClass(List<OdcmProperty> references)
 	var classes = new StringBuilder();
 	foreach(var r in references){
 		if(r.Type is OdcmEnum){
-			imports.AppendFormat("#import \"{0}{1}.h\"", GetPrefix(), r.Name).AppendLine();
-		}else{
-			classes.AppendFormat("@class {0}{1};",GetPrefix(), r.Name).AppendLine();
+			imports.AppendFormat("#import \"{0}.h\"", r.Type.GetTypeString()).AppendLine();
+		}else if(r.Type.IsComplex() && !r.Type.IsSystem()){
+			classes.AppendFormat("@class {0};", r.Type.GetTypeString()).AppendLine();
 		}
 	}
-	return classes.ToString() + imports.ToString();
+
+	var classString = classes.AppendLine().ToString();
+	var importsString =imports.ToString();
+	return (string.IsNullOrWhiteSpace(classString.Trim()) ? "" : classString)  +
+		   (string.IsNullOrWhiteSpace(importsString.Trim()) ? "" : importsString)  ;
 }
 
 public string GetClass(OdcmProperty type)
@@ -150,14 +154,19 @@ public string GetParametersToJsonRaw(IEnumerable<string> parameters)
 	result.Append("NSArray* parameters = [[NSArray alloc] initWithObjects:");
 	
 	foreach(var name in parameters){
-		result.AppendLine().Append("\t").AppendFormat("[[NSDictionary alloc] initWithObjectsAndKeys :{0},@\"{1}\",nil ],",name.ToLowerFirstChar(),name);
+		result.AppendLine().Append("                          ")
+		.AppendFormat("[[NSDictionary alloc] initWithObjectsAndKeys :{0},@\"{1}\", nil],",name.ToLowerFirstChar(),name);
 	}
 
-	result.AppendLine("nil];");
+	result.Append(" nil];");
 	
 
-	result.AppendLine().Append("\t").Append("NSData* payload = " + (!parameters.Any() ? "nil;" :"[[MSODataBaseContainerHelper generatePayload:parameters :[self getResolver]]dataUsingEncoding:NSUTF8StringEncoding];"));
-	result.AppendLine().AppendLine("[request setContent:payload];");
+	result.AppendLine().AppendLine().Append("\t").Append("NSData* payload = " + 
+	(!parameters.Any() ? "nil;" :"[[MSODataBaseContainerHelper generatePayload : parameters")).
+			AppendLine().Append("                                                                  :[self getResolver]]dataUsingEncoding").AppendLine()
+			.Append("                                                                  :NSUTF8StringEncoding];")
+			;
+	result.AppendLine().Append("\t").AppendLine("[request setContent:payload];");
 	return result.ToString();
 }
 
@@ -169,7 +178,7 @@ public string GetParametersToJson(List<OdcmParameter> parameters)
 	
 	foreach(var param in parameters){
 
-		if(param.Type.GetTypeString() == "bool"){
+		if(param.Type.GetTypeString() == "BOOL"){
 			result.AppendLine().Append("\t").AppendFormat("NSString * {0}String = [[[self getResolver] getJsonSerializer] serialize:({0} ? @\"true\" : @\"false\") : @\"{1}\"];",param.Name.ToLowerFirstChar(),param.Name);
         }
 		else if(param.Type.GetTypeString() == "int"){
@@ -256,10 +265,56 @@ public string GetParamsString(List<OdcmParameter> parameters){
 
 public string GetParamString(OdcmType p){
 
+	p.GetFullType();
+	//if(p == null) return string.Empty;
 	if(p.IsComplex()){
 		return p.IsSystem() ? string.Empty : p.GetTypeString() + " *" + p.Name.ToLowerFirstChar();
 	}
 
 	return p.GetTypeString() + " " + p.Name;
+}
+
+public string GetTypeForAction(OdcmMethod action)
+{
+	if(action.ReturnType.IsComplex()){
+		if(action.IsCollection){
+
+			if(action.ReturnType.IsSystem()){
+				return "NSMutableArray *";
+			}
+			else{
+				return "NSMutableArra<" +  action.ReturnType.GetTypeString() +"> *";
+			}
+		}
+
+		return action.ReturnType.IsSystem() ? action.ReturnType.GetTypeString() : action.ReturnType.GetTypeString() + " *";
+	}
+
+	return action.ReturnType.GetTypeString();
+}
+
+public string GetMethodHeader(OdcmMethod action)
+{
+	
+	var returnString = action.ReturnType == null ? "int returnValue" 
+	: GetTypeForAction(action) + action.ReturnType.Name.ToLowerFirstChar();
+	return string.Format("-(NSURLSessionDataTask*) {0} {1} (void (^)({2}, MSODataException *error)) callback;",
+	action.Name.ToLowerFirstChar(),GetParamsString(action.Parameters),returnString );	
+}
+
+public string GetMethodHeaderRaw(OdcmMethod action)
+{
+	return string.Format("-(NSURLSessionDataTask*) {0}Raw {1} (void(^)(NSString* returnValue, MSODataException *error)) callback;",
+	action.Name.ToLowerFirstChar(),
+	GetParamsForRaw(action.Parameters.Select(p => p.Name)),(action.ReturnType == null ? "NSString* resultCode " : GetParamRaw(action.ReturnType.Name)));	
+}
+
+public string GetName(string name){
+			 
+   if(name.Trim() == "description") return "$$__description";
+
+   if(name.Trim() == "default") return "$$__default";
+
+   return name;
 }
 #>

@@ -9,7 +9,7 @@ OdcmModel model = host.Model;
 #>
 
 <#=GetCommentHeader()#>
-package <#=model.Namespaces.FirstOrDefault().Name#>;
+package <#=model.NamespaceName()#>;
 
 /**
  * The type ODataBaseEntity.

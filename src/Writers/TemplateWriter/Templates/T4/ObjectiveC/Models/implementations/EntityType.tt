@@ -1,28 +1,49 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseTemplate.tt"#>
 <#@ output extension="\\" #>
+<#=GetCommentHeader()#>
 <#
 CustomHost host = (CustomHost)Host;
 var entity = host.OdcmType.AsOdcmClass();
 
 #>
-<#=GetCommentHeader()#>
 
 #import "<#=GetPrefix()#>Models.h"
 
 <#=GetImplementationDoc(entity.Name)#>
 @implementation <#=GetPrefix() + entity.Name#>	
 
-<# 
-if(entity.Base == null)
-{
-#>
 -(id)init{
 	self.$$__ODataType = @"#<#=entity.Namespace#>.<#=entity.Name#>";
 	return self;
 }
-<#
-}
-#>
 
+<#
+foreach(var prop in entity.Properties)
+{
+	if(prop.Type is OdcmEnum && !prop.IsCollection){
+
+		var enumProp = host.Model.GetEnumTypes().First(e=> e.Name == prop.Type.Name);
+#>
+-(void)set<#=prop.Name#>String:(NSString*)value{
+<#
+		for(var i=1; i <= enumProp.Members.Count; i++)
+		{
+
+			string value = enumProp.Members[i -1].Name;
+
+#>
+	if([value isEqualToString:@"<#=value#>"]){
+		self.<#=prop.Name#> = <#=value#>;
+	}
+<#
+	
+		}
+#>
+}
+<#
+	}
+}
+
+#>
 @end

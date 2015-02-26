@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ODataReader.v4;
-using TemplateWriter;
-using Vipr.CLI.Output;
-using Vipr.CLI.Strategies;
+using TemplateWriter.Output;
+using TemplateWriter.Strategies;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 
-namespace Vipr.CLI
+namespace TemplateWriter
 {
     public class TemplateProcessorManager : ITemplateProcessorManager
     {
-        private readonly IReader _reader;
+        private readonly IOdcmReader _reader;
         private readonly ITemplateTempLocationFileWriter _tempLocationFileWriter;
         private readonly Dictionary<string, Func<OdcmModel, IConfigArguments, string, ITemplateProcessor>> _processors;
 
         public TemplateProcessorManager()
-            : this(new Reader(), new TemplateTempLocationFileWriter(new TemplateSourceReader()))
+            : this(new OdcmReader(), new TemplateTempLocationFileWriter(new TemplateSourceReader()))
         {
         }
 
-        public TemplateProcessorManager(IReader reader, ITemplateTempLocationFileWriter tempLocationFileWriter)
+        public TemplateProcessorManager(IOdcmReader reader, ITemplateTempLocationFileWriter tempLocationFileWriter)
         {
             _reader = reader;
             _tempLocationFileWriter = tempLocationFileWriter;
@@ -31,7 +30,7 @@ namespace Vipr.CLI
                 {"java", (model, configArguments, baseFilePath) => 
                     new JavaTemplateProcessor(new JavaFileWriter(model, configArguments), model,baseFilePath)},
                 {"objectivec", (model, configArguments,baseFilePath) =>
-                    new ObjectiveCTemplateProcessor(new BaseFileWriter(model, configArguments), model, baseFilePath )}
+					new ObjectiveCTemplateProcessor(new ObjectiveCFileWriter(model, configArguments), model, baseFilePath )}
             };
         }
 

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using Mono.Options;
+using TemplateWriter;
 using Vipr.CLI.Configuration;
 
 namespace Vipr.CLI

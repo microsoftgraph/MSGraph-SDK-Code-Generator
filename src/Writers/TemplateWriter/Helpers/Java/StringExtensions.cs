@@ -17,8 +17,8 @@ namespace TemplateWriter.Helpers.Java
 
         public static string Singularize(this string input)
         {
-            //return PluralizationService.CreateService(CultureInfo.CurrentCulture).Singularize(input);
-            return String.Empty;
+            var output = Inflector.Inflector.Singularize(input);
+            return output ?? input;
         }
     }
 }

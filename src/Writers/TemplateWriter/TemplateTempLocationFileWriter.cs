@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using TemplateWriter;
 
-namespace Vipr.CLI
+namespace TemplateWriter
 {
     public class TemplateTempLocationFileWriter : ITemplateTempLocationFileWriter
     {

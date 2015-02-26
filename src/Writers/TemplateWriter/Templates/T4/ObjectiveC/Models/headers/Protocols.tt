@@ -7,8 +7,8 @@ CustomHost host = (CustomHost)Host;
 OdcmModel model = host.Model;
 
 #>
-#import <Foundation/Foundation.h>
 
+#import <Foundation/Foundation.h>
 <#
 
 var enums = model.GetEnumTypes();
@@ -17,6 +17,7 @@ foreach(var e in enums)
 {
 
 #>
+
 @protocol <#=GetPrefix() + e.Name #>
 @end
 <#

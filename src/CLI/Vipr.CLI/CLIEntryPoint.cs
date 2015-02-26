@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using TemplateWriter;
 using Vipr.CLI.Configuration;
 
 namespace Vipr.CLI
