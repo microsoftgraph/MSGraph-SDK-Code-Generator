@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using TemplateWriter;
 using Vipr.Core.CodeModel;
 
-namespace Vipr.CLI.Output
+namespace TemplateWriter.Output
 {
 	class ObjectiveCFileWriter : BaseFileWriter
 	{
-		public ObjectiveCFileWriter(OdcmModel model, IConfigArguments configuration) : base(model, configuration)
+		public ObjectiveCFileWriter(OdcmModel model, IConfigArguments configuration)
+			: base(model, configuration)
 		{
 		}
 
@@ -26,15 +23,30 @@ namespace Vipr.CLI.Output
 			FileExtension = template.ResourceName.Contains("header") ? ".h" : ".m";
 
 			var fullPath = Path.Combine(destPath, destPath);
-			var filePath = Path.Combine(fullPath, string.Format("{0}{1}", identifier, FileExtension));
 
 			if (!DirectoryExists(fullPath))
 				CreateDirectory(fullPath);
+
+			fullPath = Path.Combine(fullPath, template.FolderName);
+
+			if (!DirectoryExists(fullPath))
+				CreateDirectory(fullPath);
+
+			var filePath = Path.Combine(fullPath, string.Format("{0}{1}", identifier, FileExtension));
 
 			using (var writer = new StreamWriter(filePath, false, Encoding.ASCII))
 			{
 				writer.Write(text);
 			}
 		}
+
+		protected override string FileName(Template template, string identifier)
+		{
+			return template.Name.Contains("Entity")
+				? (template.FolderName == "odata"
+					? template.Name.Replace("Entity", identifier)
+					: identifier)
+					: identifier;
+		}
 	}
-}	
+}

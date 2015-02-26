@@ -19,8 +19,7 @@ namespace TemplateWriter
                                            .ToList();
             if (filtered.Count() > 1)
             {
-                return model.Namespaces.Find(x => String.Equals(x.Name,
-                    ConfigurationService.PrimaryNamespaceName,
+                return model.Namespaces.Find(x => String.Equals(x.Name, ConfigurationService.PrimaryNamespaceName,
                     StringComparison.InvariantCultureIgnoreCase));
             }
             return filtered.Single();
@@ -35,7 +34,7 @@ namespace TemplateWriter
         public static IEnumerable<OdcmClass> GetEntityTypes(this OdcmModel model)
         {
             var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x.Kind == OdcmClassKind.Entity);
+            return @namespace.Classes.Where(x => x.Kind == OdcmClassKind.Entity || x.Kind == OdcmClassKind.MediaEntity);
         }
 
         public static IEnumerable<OdcmEnum> GetEnumTypes(this OdcmModel model)
@@ -85,6 +84,25 @@ namespace TemplateWriter
         public static OdcmEnum AsOdcmEnum(this OdcmObject odcmObject)
         {
             return odcmObject as OdcmEnum;
+        }
+
+        public static string NamespaceName(this OdcmModel model)
+        {
+            var @namespace = GetOdcmNamespace(model).Name;
+            var name = string.Format("{0}.{1}", ConfigurationService.Configuration.NamespacePrefix, @namespace);
+            return name.ToLower();
+        }
+
+        public static string ODataPackageNamespace(this OdcmModel model)
+        {
+            var @namespace = NamespaceName(model);
+            var package = string.Format("{0}.{1}", @namespace, "odata");
+            return package.ToLower();
+        }
+
+        public static string GetEntityContainer(this OdcmModel model)
+        {
+            return model.EntityContainer.Name;
         }
     }
 }

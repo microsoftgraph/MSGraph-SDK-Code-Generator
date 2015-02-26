@@ -6,35 +6,35 @@ CustomHost host = (CustomHost)Host;
 OdcmModel model = host.Model;
 #>
 <#=GetCommentHeader()#>
-package <#=model.Namespaces.FirstOrDefault().Name#>;
+package <#=model.ODataPackageNamespace()#>;
 
-//import com.microsoft.outlookservices.*;
+import <#=model.NamespaceName()#>.*;
 import com.microsoft.services.odata.*;
 import com.microsoft.services.odata.interfaces.DependencyResolver;
 
 /**
- * The type <#="SomeContainer"#>Client.
+ * The type <#=model.GetEntityContainer()#>Client.
  */
-public class <#="SomeContainer"#>Client extends BaseODataContainer {
+public class <#=model.GetEntityContainer()#>Client extends BaseODataContainer {
 
      /**
-     * Instantiates a new <#="SomeContaine"#>Client.
+     * Instantiates a new <#=model.GetEntityContainer()#>Client.
      *
      * @param url the url
      * @param resolver the resolver
      */
-    public <#="SomeContainer"#>Client(String url, DependencyResolver resolver) {
+    public <#=model.GetEntityContainer()#>Client(String url, DependencyResolver resolver) {
         super(url, resolver);
     }
 
-	     /**
+    /**
      * Add parameter.
      *
      * @param name the name
      * @param value the value
      * @return the client
      */
-    public <#="SomeCiontainer"#>Client addParameter(String name, Object value) {
+    public <#=model.GetEntityContainer()#>Client addParameter(String name, Object value) {
         addCustomParameter(name, value);
         return this;
     }
@@ -46,7 +46,7 @@ public class <#="SomeContainer"#>Client extends BaseODataContainer {
      * @param value the value
      * @return the client
      */
-    public <#="SomeContainer"#>Client addHeader(String name, String value) {
+    public <#=model.GetEntityContainer()#>Client addHeader(String name, String value) {
         addCustomHeader(name, value);
         return this;
     }
@@ -63,7 +63,7 @@ foreach(var prop in model.EntityContainer.Properties){
      * @return the <#=prop.Type.GetTypeString()#>
      */
     public ODataCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher, <#=prop.Type.GetTypeString()#>CollectionOperations> get<#=prop.Name#>() {
-        return new ODataCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher,<#=prop.Type.GetTypeString()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.GetTypeString()#>.class,<#=prop.Type.GetTypeString()#>CollectionOperations.class);
+        return new ODataCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher, <#=prop.Type.GetTypeString()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.GetTypeString()#>.class,<#=prop.Type.GetTypeString()#>CollectionOperations.class);
     }
 <#
     }else{
@@ -81,3 +81,4 @@ foreach(var prop in model.EntityContainer.Properties){
     }
 }
 #>
+}

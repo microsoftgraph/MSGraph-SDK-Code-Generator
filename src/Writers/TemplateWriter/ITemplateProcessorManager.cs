@@ -1,6 +1,4 @@
-using TemplateWriter;
-
-namespace Vipr.CLI
+namespace TemplateWriter
 {
     public interface ITemplateProcessorManager
     {

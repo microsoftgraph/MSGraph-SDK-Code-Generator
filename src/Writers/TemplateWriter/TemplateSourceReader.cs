@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TemplateWriter;
-using Vipr.CLI.Extensions;
+using TemplateWriter.Extensions;
 
-namespace Vipr.CLI
+namespace TemplateWriter
 {
     public class TemplateSourceReader : ITemplateSourceReader
     {

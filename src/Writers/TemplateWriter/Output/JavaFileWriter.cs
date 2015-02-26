@@ -1,10 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Text;
-using TemplateWriter;
 using Vipr.Core.CodeModel;
 
-namespace Vipr.CLI.Output
+namespace TemplateWriter.Output
 {
     public class JavaFileWriter : BaseFileWriter
     {

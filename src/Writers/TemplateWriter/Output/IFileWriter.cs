@@ -1,4 +1,4 @@
-namespace Vipr.CLI.Output
+namespace TemplateWriter.Output
 {
     public interface IFileWriter
     {

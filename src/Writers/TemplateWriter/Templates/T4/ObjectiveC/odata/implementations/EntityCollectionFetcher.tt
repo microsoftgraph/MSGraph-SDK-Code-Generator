@@ -3,7 +3,7 @@
 <#@ output extension="\\" #>
 <#
 CustomHost host = (CustomHost)Host;
-var entity = host.OdcmType.AsEntityType();
+var entity = host.OdcmType.AsOdcmClass();
 var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
 
 #>

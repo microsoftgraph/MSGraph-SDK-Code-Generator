@@ -4,11 +4,12 @@
 <#
 
 CustomHost host = (CustomHost)Host;
+OdcmModel model = host.Model;
 var enumT = host.OdcmType.AsOdcmEnum();
 
 #>
 <#=GetCommentHeader()#>
-package <#=enumT.Namespace.ToLower()#>;
+package <#=model.NamespaceName()#>;
 
 /**
  * The Enum <#=enumT.Name.SplitCamelCase()#>.

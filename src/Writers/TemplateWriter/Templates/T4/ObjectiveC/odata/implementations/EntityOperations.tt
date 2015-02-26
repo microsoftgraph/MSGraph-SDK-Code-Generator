@@ -1,13 +1,13 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseTemplate.tt"#>
 <#@ output extension="\\" #>
+<#=GetCommentHeader()#>
 <#
 CustomHost host = (CustomHost)Host;
-var entity = host.OdcmType.AsEntityType();	
+var entity = host.OdcmType.AsOdcmClass();	
 var entityName = GetPrefix() + entity.Name + "Operations";
 
 #>
-<#=GetCommentHeader()#>
 
 #import "<#=GetPrefix()#>ODataEntities.h"
 
@@ -30,7 +30,7 @@ if(entity.HasActions())
 			if (action.IsFunction())
 			{
 #>
--(NSURLSessionDataTask*)<#= action.Name.ToLowerFirstChar() #> <#=GetParamsString(action.Parameters)#>(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *error))callback{
+<#=GetMethodHeader(action)#>{
 
 	id<MSODataRequest> request = [[self getResolver] createODataRequest];
 	<#=GetFunctionParameters(action.Parameters)#>
@@ -41,7 +41,7 @@ if(entity.HasActions())
 
 	NSURLSessionDataTask* task = [super oDataExecuteWithRequest:request callback:^(id<MSODataResponse> r, MSODataException *error) {
        if(error == nil){
-			<#=GetType(action.ReturnType)#> result = (<#=GetType(action.ReturnType)#>)[[[self getResolver]getJsonSerializer] deserialize:[r getPayload] : <#=clazz#>];
+			<#=GetTypeForAction(action)#> result = (<#=GetTypeForAction(action)#>)[[[self getResolver]getJsonSerializer] deserialize:[r getPayload] : <#=clazz#>];
             callback(result, error);
         }
         else{
@@ -56,12 +56,14 @@ if(entity.HasActions())
     		else if(action != null)
     		{
 #>
--(NSURLSessionDataTask*)<#= action.Name.ToLowerFirstChar() #> <#=GetParamsString(action.Parameters)#>(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *error))callback{
+
+<#=GetMethodHeader(action)#>{
 	<#=GetParametersToJson(action.Parameters)#>
 
 	NSURLSessionDataTask* task = [self <#= action.Name.ToLowerFirstChar() #>Raw <#=GetParametersForRawCall(action.Parameters.Select(p => p.Name))#> :^(NSString *returnValue, MSODataException *error){
-       if(error == nil){
-			<#=GetType(action.ReturnType)#> result = (<#=GetType(action.ReturnType)#>)[[[self getResolver]getJsonSerializer] deserialize:[returnValue dataUsingEncoding:NSUTF8StringEncoding] : <#=clazz#>];
+       
+	   if(error == nil){
+			<#=GetTypeForAction(action)#> result = (<#=GetTypeForAction(action)#>)[[[self getResolver]getJsonSerializer] deserialize:[returnValue dataUsingEncoding:NSUTF8StringEncoding] : <#=clazz#>];
             callback(result, error);
         }
         else{
@@ -72,15 +74,18 @@ if(entity.HasActions())
     return task;
 }
 
--(NSURLSessionDataTask*)<#= action.Name.ToLowerFirstChar() #>Raw <#=GetParamsForRaw(action.Parameters.Select(p => p.Name))#>(void (^)(<#=GetParamRaw(action.ReturnType.Name)#>, MSODataException *error))callback{
+<#=GetMethodHeaderRaw(action)#>{
 
 	id<MSODataRequest> request = [[self getResolver] createODataRequest];
+	
 	<#=GetParametersToJsonRaw(action.Parameters.Select(p => p.Name))#>
+	
 	[[request getUrl] appendPathComponent:@"<#= action.Name#>"];
 	[request setVerb:POST];
 
 	NSURLSessionDataTask* task = [super oDataExecuteWithRequest:request callback:^(id<MSODataResponse> r, MSODataException *error) {
-        if(error == nil){
+        
+		if(error == nil){
             callback([[NSString alloc] initWithData:[r getPayload] encoding:NSUTF8StringEncoding], error);
         }
         else{

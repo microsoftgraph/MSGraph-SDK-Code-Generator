@@ -1,14 +1,7 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using Microsoft.VisualStudio.TextTemplating;
-using TemplateWriter;
-using Vipr.CLI.Output;
+﻿using TemplateWriter.Output;
 using Vipr.Core.CodeModel;
 
-namespace Vipr.CLI.Strategies
+namespace TemplateWriter.Strategies
 {
     public class JavaTemplateProcessor : BaseTemplateProcessor
     {

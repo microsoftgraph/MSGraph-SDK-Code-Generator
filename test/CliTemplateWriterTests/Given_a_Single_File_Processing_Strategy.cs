@@ -1,38 +1,36 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using Moq;
 using TemplateWriter;
-using Vipr.CLI;
 using Vipr.Core;
+using Xunit;
 
 namespace CliTemplateWriterTests
 {
-    [TestClass]
     public class Given_a_Single_File_Processing_Strategy
     {
 
-        [TestMethod]
+        [Fact]
         public void When_Instantiated_should_have_a_valid_state()
         {
-            var reader = new Mock<IReader>();
+            var reader = new Mock<IOdcmReader>();
             var tempLocationWriter = new Mock<ITemplateTempLocationFileWriter>();
             var processorManager = new TemplateProcessorManager(reader.Object, tempLocationWriter.Object);
 
-            Assert.IsNotNull(processorManager);
+            Assert.NotNull(processorManager);
         }
 
-        [TestMethod]
+        [Fact]
         public void Can_create_a_representation_of_templates_from_an_assembly()
         {
             var reader = new TemplateSourceReader();
             reader.Read(typeof(CustomHost), new BuilderArguments { Language = "Java" });
         }
 
-        [TestMethod]
+        [Fact]
         public void Can_write_template_into_temp_location()
         {
             var reader = new Mock<ITemplateSourceReader>();
             var templateWriter = new TemplateTempLocationFileWriter(reader.Object);
-            Assert.IsNotNull(templateWriter);
+            Assert.NotNull(templateWriter);
         }
     }
 }

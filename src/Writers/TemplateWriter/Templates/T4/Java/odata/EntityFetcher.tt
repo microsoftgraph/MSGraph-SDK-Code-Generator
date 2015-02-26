@@ -11,8 +11,9 @@ var className = entity.Kind == OdcmClassKind.MediaEntity ? "ODataMediaEntityFetc
 
 #>
 <#=GetCommentHeader()#>
-package <#=model.Namespaces.FirstOrDefault().Name#>;
+package <#=model.ODataPackageNamespace()#>;
 
+import <#=model.NamespaceName()#>.*;
 import com.google.common.util.concurrent.*;
 import com.microsoft.services.odata.*;
 import com.microsoft.services.odata.Readable;
@@ -62,7 +63,7 @@ public class <#=entity.Name#>Fetcher extends <#=className#><<#=entity.Name#>,<#=
 
     public <#=child.Name#>Fetcher as<#=child.Name#>(){
         return new <#=child.Name#>Fetcher(this.urlComponent, this.parent);
-    }	   
+    }   
 <#
 }
 #>
@@ -70,13 +71,14 @@ public class <#=entity.Name#>Fetcher extends <#=className#><<#=entity.Name#>,<#=
     foreach(var prop in entity.NavigationProperties()){
     if(prop.IsCollection()){
     #>
+
      /**
      * Gets <#=prop.Name.SplitCamelCase().ToLower()#>.
      *
      * @return the <#=prop.Name.SplitCamelCase().ToLower()#>
      */
-    public ODataCollectionFetcher<<#=prop.Type.Name#>, <#=prop.Type.Name#>Fetcher, <#=prop.Name#>CollectionOperations> get<#=prop.Name#>() {
-        return new ODataCollectionFetcher<<#=prop.Type.Name#>, <#=prop.Type.Name#>Fetcher,<#=prop.Type.Name#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name#>.class,<#=prop.Type.Name#>CollectionOperations.class);
+    public ODataCollectionFetcher<<#=prop.Type.Name#>, <#=prop.Type.Name#>Fetcher, <#=prop.Type.Name#>CollectionOperations> get<#=prop.Name#>() {
+        return new ODataCollectionFetcher<<#=prop.Type.Name#>, <#=prop.Type.Name#>Fetcher, <#=prop.Type.Name#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name#>.class, <#=prop.Type.Name#>CollectionOperations.class);
     }
 
     /**
@@ -85,7 +87,7 @@ public class <#=entity.Name#>Fetcher extends <#=className#><<#=entity.Name#>,<#=
      * @return the <#=prop.Name.SplitCamelCase().ToLower().Singularize()#>
      */
     public <#=prop.Type.Name#>Fetcher get<#=prop.Name.Singularize()#>(String id){
-         return new ODataCollectionFetcher<<#=prop.Type.Name#>, <#=prop.Type.Name#>Fetcher,<#=prop.Type.Name#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name#>.class,<#=prop.Type.Name#>CollectionOperations.class).getById(id);
+         return new ODataCollectionFetcher<<#=prop.Type.Name#>, <#=prop.Type.Name#>Fetcher, <#=prop.Type.Name#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name#>.class, <#=prop.Type.Name#>CollectionOperations.class).getById(id);
     }
 <#
     }else{
@@ -95,7 +97,7 @@ public class <#=entity.Name#>Fetcher extends <#=className#><<#=entity.Name#>,<#=
      *
      * @return the <#=prop.Name.SplitCamelCase().ToLower()#>
      */
-    public <#=prop.Type.Name#>Fetcher get<#=prop.Name#>() {
+    public <#=prop.Type.Name#>Fetcher get<#=prop.Name.Singularize()#>() {
         return new <#=prop.Type.Name#>Fetcher("<#=prop.Name#>", this);
     }
 <#             

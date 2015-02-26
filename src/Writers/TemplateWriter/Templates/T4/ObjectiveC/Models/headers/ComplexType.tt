@@ -1,26 +1,42 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseTemplate.tt"#>
 <#@ output extension="\\" #>
+<#=GetCommentHeader()#>
 <#
 CustomHost host = (CustomHost)Host;
 var entity = host.OdcmType.AsOdcmClass();
 
 #>
-<#=GetCommentHeader()#>
 
 <#=GetImportsClass(entity.Properties)#>
-
 <#=GetInterfaceLine(entity)#>
 
 <#
+if(entity.Base == null)
+{
+
+#>
+@property NSString *$$__ODataType;
+<#
+}
 
 foreach(var prop in entity.Properties)
 {
+	if(prop.Type is OdcmEnum && !prop.IsCollection){
+
+		var propertyString = string.Format("{0} {1}", prop.GetFullType(), GetName(prop.Name));
+#>
+@property <#=propertyString#>;
+-(void)set<#=prop.Name#>String:(NSString*)value;
+<#
+	}
+	else
+	{
 
 #>
 @property <#=prop.ToPropertyString()#>;
 <#			
-
+	}
 }
 
 #>

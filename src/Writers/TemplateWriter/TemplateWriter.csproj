@@ -11,8 +11,6 @@
     <AssemblyName>TemplateWriter</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Inflector">
+      <HintPath>..\..\..\packages\Inflector.1.0.0.0\lib\net45\Inflector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Mono.TextTemplating">
       <HintPath>..\..\..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
     </Reference>
@@ -59,19 +61,34 @@
     <Compile Include="ConfigArguments.cs" />
     <Compile Include="ConfigurationService.cs" />
     <Compile Include="CustomHost.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\Java\PropertyHelper.cs" />
     <Compile Include="Helpers\Java\StringExtensions.cs" />
     <Compile Include="Helpers\ObjectiveC\PropertyHelper.cs" />
     <Compile Include="Helpers\Swift\PropertyHelper.cs" />
     <Compile Include="IConfigArguments.cs" />
     <Compile Include="ITemplateConfiguration.cs" />
+    <Compile Include="ITemplateProcessorManager.cs" />
+    <Compile Include="ITemplateSourceReader.cs" />
+    <Compile Include="ITemplateTempLocationFileWriter.cs" />
     <Compile Include="OdcmModelExtensions.cs" />
+    <Compile Include="Output\BaseFileWriter.cs" />
+    <Compile Include="Output\IFileWriter.cs" />
+    <Compile Include="Output\JavaFileWriter.cs" />
+    <Compile Include="Output\ObjectiveCFileWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Strategies\BaseTemplateProcessor.cs" />
+    <Compile Include="Strategies\ITemplateProcessor.cs" />
+    <Compile Include="Strategies\JavaTemplateProcessor.cs" />
+    <Compile Include="Strategies\ObjectiveCTemplateProcessor.cs" />
+    <Compile Include="Template.cs" />
+    <Compile Include="TemplateProcessorManager.cs" />
+    <Compile Include="TemplateSourceReader.cs" />
+    <Compile Include="TemplateTempLocationFileWriter.cs" />
+    <Compile Include="TemplateType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
     <EmbeddedResource Include="Templates\T4\Java\Base\BaseTemplateCustomHost.tt" />
     <EmbeddedResource Include="Templates\T4\Java\Models\ComplexType.tt" />
     <EmbeddedResource Include="Templates\T4\Java\Models\EntityType.tt" />
@@ -80,7 +97,7 @@
     <EmbeddedResource Include="Templates\T4\Java\OData\EntityCollectionOperations.tt" />
     <EmbeddedResource Include="Templates\T4\Java\OData\EntityFetcher.tt" />
     <EmbeddedResource Include="Templates\T4\Java\OData\EntityOperations.tt" />
-    <EmbeddedResource Include="Templates\T4\Java\OData\EntryPoint.tt" />
+    <EmbeddedResource Include="Templates\T4\Java\OData\EntityClient.tt" />
     <EmbeddedResource Include="Templates\T4\ObjectiveC\Models\headers\ComplexType.tt" />
     <EmbeddedResource Include="Templates\T4\ObjectiveC\Models\headers\EntityType.tt" />
     <EmbeddedResource Include="Templates\T4\ObjectiveC\Models\headers\EnumType.tt" />
@@ -215,11 +232,4 @@
   </Target>
   -->
   <ItemGroup />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
 </Project>
