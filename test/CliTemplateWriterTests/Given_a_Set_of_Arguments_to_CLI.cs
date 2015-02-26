@@ -60,8 +60,9 @@ namespace CliTemplateWriterTests
         [Fact]
         public void When_passing_specific_Arguments_should_procces_templates_objc()
         {
-            var args = "--language=objectivec --inputFile=Metadata\\Exchange.edmx.xml --outputDir=Out".Split(' ');
-            var builder = new ConfigurationBuilder().WithArguments(args);
+
+			var args = string.Format("--language=objectivec --inputFile=Metadata{0}Exchange.edmx.xml --outputDir=Out",System.IO.Path.DirectorySeparatorChar).Split(' ');
+			var builder = new ConfigurationBuilder().WithConfiguration(new ExchangeConfiguration()).WithArguments(args);
             var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
             entrypoint.Process();
         }
@@ -69,7 +70,7 @@ namespace CliTemplateWriterTests
 		[Fact]
 		public void When_passing_specific_Arguments_should_procces_files_templates_objc()
 		{
-			var args = "--language=objectivec --inputFile=Metadata\\files.xml --outputDir=Out".Split(' ');
+			var args = string.Format("--language=objectivec --inputFile=Metadata{0}files.xml --outputDir=Out",System.IO.Path.DirectorySeparatorChar).Split(' ');
 			var builder = new ConfigurationBuilder().WithConfiguration(new FilesConfiguration()).WithArguments(args);
             var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
 			entrypoint.Process();
