@@ -20,7 +20,7 @@ namespace CliTemplateWriterTests
             configBuilder.Setup(x => x.WithJsonConfig());
             configBuilder.Setup(x => x.Build()).Returns(configArguments.Object);
 
-            var entryPoint = new CLIEntryPoint(configBuilder.Object, processorManager.Object);
+            var entryPoint = new CLIEntryPoint(processorManager.Object,configBuilder.Object);
             Assert.NotNull(entryPoint);
         }
 
@@ -35,7 +35,7 @@ namespace CliTemplateWriterTests
                          .Returns(configArguments.Object);
             processorManager.Setup(x => x.Process(configArguments.Object));
 
-            var entryPoint = new CLIEntryPoint(configBuilder.Object, processorManager.Object);
+            var entryPoint = new CLIEntryPoint(processorManager.Object, configBuilder.Object);
             entryPoint.Process();
 
             configBuilder.VerifyAll();
@@ -52,7 +52,7 @@ namespace CliTemplateWriterTests
             configBuilder.Setup(x => x.Build());
             processorManager.Setup(x => x.Process(configArguments.Object));
 
-            var entryPoint = new CLIEntryPoint(configBuilder.Object, processorManager.Object);
+            var entryPoint = new CLIEntryPoint(processorManager.Object, configBuilder.Object);
             Assert.Throws<InvalidOperationException>(() => entryPoint.Process());
         }
 
@@ -62,7 +62,7 @@ namespace CliTemplateWriterTests
         {
             var args = "--language=objectivec --inputFile=Metadata\\Exchange.edmx.xml --outputDir=Out".Split(' ');
             var builder = new ConfigurationBuilder().WithArguments(args);
-            var entrypoint = new CLIEntryPoint(builder, new TemplateProcessorManager());
+            var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
             entrypoint.Process();
         }
 
@@ -71,7 +71,7 @@ namespace CliTemplateWriterTests
 		{
 			var args = "--language=objectivec --inputFile=Metadata\\files.xml --outputDir=Out".Split(' ');
 			var builder = new ConfigurationBuilder().WithConfiguration(new FilesConfiguration()).WithArguments(args);
-			var entrypoint = new CLIEntryPoint(builder, new TemplateProcessorManager());
+            var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
 			entrypoint.Process();
 		}
     }

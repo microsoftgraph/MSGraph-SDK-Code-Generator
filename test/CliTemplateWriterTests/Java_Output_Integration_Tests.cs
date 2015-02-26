@@ -13,7 +13,7 @@ namespace CliTemplateWriterTests
             var args = "--language=java --inputFile=Metadata\\OneNote.edmx.xml --outputDir=Out".Split(' ');
             var builder = new ConfigurationBuilder().WithConfiguration(new OneNoteConfiguration())
                                                     .WithArguments(args);
-            var entrypoint = new CLIEntryPoint(builder, new TemplateProcessorManager());
+            var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
             entrypoint.Process();
         }
 
@@ -23,7 +23,7 @@ namespace CliTemplateWriterTests
             var args = "--language=java --inputFile=Metadata\\Exchange.edmx.xml --outputDir=Out".Split(' ');
             var builder = new ConfigurationBuilder().WithConfiguration(new ExchangeConfiguration())
                                                     .WithArguments(args);
-            var entrypoint = new CLIEntryPoint(builder, new TemplateProcessorManager());
+            var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
             entrypoint.Process();
         }
 
@@ -33,7 +33,7 @@ namespace CliTemplateWriterTests
             var args = "--language=java --inputFile=Metadata\\discovery.xml --outputDir=Out".Split(' ');
             var builder = new ConfigurationBuilder().WithConfiguration(new DisoveryConfiguration())
                                                     .WithArguments(args);
-            var entrypoint = new CLIEntryPoint(builder, new TemplateProcessorManager());
+            var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
             entrypoint.Process();
         }
 
@@ -53,7 +53,7 @@ namespace CliTemplateWriterTests
             var args = "--language=java --inputFile=Metadata\\files.xml --outputDir=Out".Split(' ');
             var builder = new ConfigurationBuilder().WithConfiguration(new FilesConfiguration())
                                                     .WithArguments(args);
-            var entrypoint = new CLIEntryPoint(builder, new TemplateProcessorManager());
+            var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
             entrypoint.Process();
         }
 

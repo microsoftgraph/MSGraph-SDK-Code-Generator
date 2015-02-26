@@ -5,11 +5,10 @@ namespace Vipr.CLI.Configuration
 {
     public interface IConfigurationBuilder
     {
-        IConfigArguments Build();
-        IConfigurationBuilder WithArguments(params string[] args);
-        IConfigurationBuilder WithJsonConfig();
-        IConfigurationBuilder WithSpecificConfiguration(ITemplateConfiguration configuration);
-        void CreateOptionSet(params string[] args);
-        OptionSet OptionSet { get; }
+		IConfigArguments Build();
+		IConfigurationBuilder WithArguments(params string[] args);
+		IConfigurationBuilder WithJsonConfig();
+		void CreateOptionSet(params string[] args);
+		OptionSet OptionSet { get; }
     }
 }
