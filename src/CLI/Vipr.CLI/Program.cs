@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
 using Mono.Options;
 using TemplateWriter;
@@ -33,7 +32,7 @@ namespace Vipr.CLI
                 Logger.Log("*-------------------------------------------------------------------*" + Environment.NewLine);
             }
 
-            Console.WriteLine("The log was saved in the file log.txt in the path " + Directory.GetCurrentDirectory());
+            Logger.Log("Generation finished");
             Logger.Log("Press a key to exit");
             Console.ReadKey();
         }

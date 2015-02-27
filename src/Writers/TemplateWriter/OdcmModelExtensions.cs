@@ -15,14 +15,26 @@ namespace TemplateWriter
 
         private static OdcmNamespace GetOdcmNamespace(OdcmModel model)
         {
+            OdcmNamespace namespaceFound;
             var filtered = model.Namespaces.Where(x => !x.Name.Equals("Edm", StringComparison.InvariantCultureIgnoreCase))
                                            .ToList();
-            if (filtered.Count() > 1)
+            if (filtered.Count() == 1)
             {
-                return model.Namespaces.Find(x => String.Equals(x.Name, ConfigurationService.PrimaryNamespaceName,
-                    StringComparison.InvariantCultureIgnoreCase));
+                namespaceFound = filtered.Single();
             }
-            return filtered.Single();
+            else
+            {
+                namespaceFound =
+                    model.Namespaces.Find(x => String.Equals(x.Name, ConfigurationService.PrimaryNamespaceName,
+                        StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            if (namespaceFound == null)
+            {
+                throw new InvalidOperationException("Multiple namespaces defined in metadata and no matches." +
+                                                    "\nPlease check 'PrimaryNamespace' Setting in 'config.json'");
+            }
+            return namespaceFound;
         }
 
         public static IEnumerable<OdcmClass> GetComplexTypes(this OdcmModel model)

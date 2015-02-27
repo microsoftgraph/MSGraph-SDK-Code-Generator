@@ -10,7 +10,7 @@ namespace Vipr.CLI.Configuration
 {
     public class ConfigurationBuilder : IConfigurationBuilder
     {
-        private const string StaticConfigFile = "config.json";
+        private const string StaticConfigFile = "config.json";  
 
         private ITemplateConfiguration _configuration;
         private readonly BuilderArguments _arguments;
@@ -64,14 +64,18 @@ namespace Vipr.CLI.Configuration
                 var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 var fullPath = string.Format("{0}{1}{2}", path, Path.DirectorySeparatorChar, StaticConfigFile);
                 var content = File.ReadAllText(fullPath);
-                _configuration = JsonConvert.DeserializeObject<StaticConfiguration>(content);
+                var configuration = JsonConvert.DeserializeObject<StaticConfiguration>(content);
+
+                ConfigurationService.Initialize(configuration);
+                _configuration = ConfigurationService.Configuration;
+
+                return this;
             }
             catch (Exception ex)
             {
                 var throwableEx = new InvalidOperationException(string.Format("Cannot load static configuration file '{0}'", StaticConfigFile), ex);
                 throw throwableEx;
             }
-            return this;
         }
 
         public IConfigurationBuilder WithDefaultConfig()
