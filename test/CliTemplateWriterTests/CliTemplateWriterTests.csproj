@@ -108,6 +108,9 @@
     <Content Include="Metadata\files.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Metadata\ODataV4apiversion15.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Metadata\OneNote.edmx.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
