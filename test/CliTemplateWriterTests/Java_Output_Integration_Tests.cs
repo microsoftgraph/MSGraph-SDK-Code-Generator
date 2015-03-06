@@ -19,6 +19,16 @@ namespace CliTemplateWriterTests
         }
 
         [Fact]
+        public void When_passing_specific_Arguments_should_procces_one_drive_consumer_metadata()
+        {
+            var args = string.Format("--language=java --inputFile=Metadata{0}OneDriveConsumer.xml --outputDir=Out", Path.DirectorySeparatorChar).Split(' ');
+            var builder = new ConfigurationBuilder().WithConfiguration(new OneDriveConsumerConfiguration())
+                                                    .WithArguments(args);
+            var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
+            entrypoint.Process();
+        }
+
+        [Fact]
         public void When_passing_specific_Arguments_should_procces_exchange_metadata()
         {
             var args = string.Format("--language=java --inputFile=Metadata{0}Exchange.edmx.xml --outputDir=Out", Path.DirectorySeparatorChar).Split(' ');
