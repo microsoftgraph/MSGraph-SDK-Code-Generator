@@ -12,9 +12,9 @@ var enumT = host.OdcmType.AsOdcmEnum();
 package <#=model.NamespaceName()#>;
 
 /**
- * The Enum <#=enumT.Name.SplitCamelCase()#>.
+ * The Enum <#=enumT.Name.ToCheckedCase().SplitCamelCase()#>.
 */
-public enum <#= enumT.Name#>	
+public enum <#= enumT.Name.ToCheckedCase()#>	
 {
 <#
     foreach(var value in enumT.Members)

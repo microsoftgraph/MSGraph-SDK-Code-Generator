@@ -15,11 +15,11 @@ package <#=model.NamespaceName().ToLower()#>;
 #>
 
 /**
- * The type <#=entity.Name.SplitCamelCase()#>.
+ * The type <#=entity.Name.ToCheckedCase().SplitCamelCase()#>.
 */
-public class <#=entity.Name#><#=extends#> {
+public class <#=entity.Name.ToCheckedCase()#><#=extends#> {
 
-    public <#=entity.Name#>(){
+    public <#=entity.Name.ToCheckedCase()#>(){
         setODataType("#<#=entity.Namespace#>.<#=entity.Name#>");
     }
 <# 

@@ -15,11 +15,11 @@ package <#=model.NamespaceName()#>;
 #>
 
 /**
- * The type <#=complex.Name.SplitCamelCase()#>.
+ * The type <#=complex.Name.ToCheckedCase().SplitCamelCase()#>.
 */
-public class <#=complex.Name#><#=extends#> {
+public class <#=complex.Name.ToCheckedCase()#><#=extends#> {
 
-    public <#=complex.Name#>(){
+    public <#=complex.Name.ToCheckedCase()#>(){
         setODataType("#<#=complex.Namespace#>.<#=complex.Name#>");
     }
 <# 

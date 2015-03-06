@@ -15,10 +15,10 @@ import com.microsoft.services.odata.interfaces.DependencyResolver;
 /**
  * The type <#=model.GetEntityContainer()#>Client.
  */
-public class <#=model.GetEntityContainer()#>Client extends BaseODataContainer {
+public class <#=model.GetEntityContainer().ToCheckedCase()#>Client extends BaseODataContainer {
 
      /**
-     * Instantiates a new <#=model.GetEntityContainer()#>Client.
+     * Instantiates a new <#=model.GetEntityContainer().ToCheckedCase()#>Client.
      *
      * @param url the url
      * @param resolver the resolver

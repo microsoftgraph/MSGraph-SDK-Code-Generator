@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
+using Inflector;
 
-namespace TemplateWriter.Extensions
+namespace TemplateWriter
 {
     public static class StringExtensions
     {
@@ -9,9 +11,11 @@ namespace TemplateWriter.Extensions
             return source.IndexOf(compare, comparison) >= 0;
         }
 
-        public static string Singularize(this string source)
+        public static string ToCheckedCase(this string input)
         {
-            return Inflector.Inflector.Singularize(source);
+            var output = input.Substring(0, 1).ToUpper() + input.Substring(1);
+            return output;
         }
+
     }
 }

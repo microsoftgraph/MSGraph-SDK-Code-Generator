@@ -19,17 +19,17 @@ import com.microsoft.services.odata.interfaces.*;
 import static com.microsoft.services.odata.Helpers.*;
 
 /**
- * The type <#=entity.Name#>Operations.
+ * The type <#=entity.Name.ToCheckedCase()#>Operations.
  */
-public class <#=entity.Name#>Operations <#=baseOperation#> {
+public class <#=entity.Name.ToCheckedCase()#>Operations <#=baseOperation#> {
 
      /**
-      * Instantiates a new <#=entity.Name#>Operations.
+      * Instantiates a new <#=entity.Name.ToCheckedCase()#>Operations.
       *
       * @param urlComponent the url component
       * @param parent the parent
       */
-    public <#=entity.Name#>Operations(String urlComponent, ODataExecutable parent) {
+    public <#=entity.Name.ToCheckedCase()#>Operations(String urlComponent, ODataExecutable parent) {
             super(urlComponent, parent);
     }
 
@@ -40,7 +40,7 @@ public class <#=entity.Name#>Operations <#=baseOperation#> {
      * @param value the value
      * @return the operations
      */
-    public <#=entity.Name#>Operations addParameter(String name, Object value) {
+    public <#=entity.Name.ToCheckedCase()#>Operations addParameter(String name, Object value) {
         addCustomParameter(name, value);
         return this;
     }
@@ -52,7 +52,7 @@ public class <#=entity.Name#>Operations <#=baseOperation#> {
      * @param value the value
      * @return the operations
      */
-    public <#=entity.Name#>Operations addHeader(String name, String value) {
+    public <#=entity.Name.ToCheckedCase()#>Operations addHeader(String name, String value) {
         addCustomHeader(name, value);
         return this;
     }

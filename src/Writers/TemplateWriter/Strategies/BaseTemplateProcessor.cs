@@ -79,7 +79,7 @@ namespace TemplateWriter.Strategies
                 throw new InvalidOperationException(errors);
             }
 
-            FileWriter.WriteText(template, template.Name, output);
+            FileWriter.WriteText(template, template.Name.ToCheckedCase(), output);
         }
 
         private void EnumTypes(Template template)
@@ -133,7 +133,7 @@ namespace TemplateWriter.Strategies
                 var errors = LogErrors(host, template);
                 throw new InvalidOperationException(errors);
             }
-            FileWriter.WriteText(template, odcmObject.Name, output);
+            FileWriter.WriteText(template, odcmObject.Name.ToCheckedCase(), output);
         }
 
         public string LogErrors(CustomHost host, Template template)
