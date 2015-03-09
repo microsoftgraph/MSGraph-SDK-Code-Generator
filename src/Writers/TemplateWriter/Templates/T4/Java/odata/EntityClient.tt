@@ -23,7 +23,7 @@ public class <#=model.GetEntityContainer().ToCheckedCase()#>Client extends BaseO
      * @param url the url
      * @param resolver the resolver
      */
-    public <#=model.GetEntityContainer()#>Client(String url, DependencyResolver resolver) {
+    public <#=model.GetEntityContainer().ToCheckedCase()#>Client(String url, DependencyResolver resolver) {
         super(url, resolver);
     }
 
@@ -34,7 +34,7 @@ public class <#=model.GetEntityContainer().ToCheckedCase()#>Client extends BaseO
      * @param value the value
      * @return the client
      */
-    public <#=model.GetEntityContainer()#>Client addParameter(String name, Object value) {
+    public <#=model.GetEntityContainer().ToCheckedCase()#>Client addParameter(String name, Object value) {
         addCustomParameter(name, value);
         return this;
     }

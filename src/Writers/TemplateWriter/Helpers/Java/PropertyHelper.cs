@@ -99,7 +99,7 @@ namespace TemplateWriter.Helpers.Java
                 case "Stream":
                     return "byte[]";
                 default:
-                    return method.Name;
+                    return method.Name.ToCheckedCase();
             }
         }
 
