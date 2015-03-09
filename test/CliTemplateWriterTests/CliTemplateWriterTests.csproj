@@ -74,6 +74,7 @@
     <Compile Include="FilesConfiguration.cs" />
     <Compile Include="Given_a_Set_of_Arguments_to_CLI.cs" />
     <Compile Include="Given_a_Single_File_Processing_Strategy.cs" />
+    <Compile Include="GraphConfiguration.cs" />
     <Compile Include="Java_Output_Integration_Tests.cs" />
     <Compile Include="OneDriveConsumerConfiguration.cs" />
     <Compile Include="OneNoteConfiguration.cs" />
@@ -107,6 +108,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Metadata\files.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Metadata\microsoftgraph.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Metadata\ODataV4apiversion15.xml">

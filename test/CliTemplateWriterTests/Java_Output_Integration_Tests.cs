@@ -9,6 +9,16 @@ namespace CliTemplateWriterTests
     public class Java_Output_Integration_Tests
     {
         [Fact]
+        public void When_passing_specific_Arguments_should_procces_ms_graph()
+        {
+            var args = string.Format("--language=java --inputFile=Metadata{0}microsoftgraph.xml --outputDir=Out", Path.DirectorySeparatorChar).Split(' ');
+            var builder = new ConfigurationBuilder().WithConfiguration(new GraphConfiguration())
+                                                    .WithArguments(args);
+            var entrypoint = new CLIEntryPoint(new TemplateProcessorManager(), builder);
+            entrypoint.Process();
+        }
+        
+        [Fact]
         public void When_passing_specific_Arguments_should_procces_one_note_metadata()
         {
             var args = string.Format("--language=java --inputFile=Metadata{0}OneNote.edmx.xml --outputDir=Out", Path.DirectorySeparatorChar).Split(' ');
