@@ -46,7 +46,7 @@ public class <#=model.GetEntityContainer().ToCheckedCase()#>Client extends BaseO
      * @param value the value
      * @return the client
      */
-    public <#=model.GetEntityContainer()#>Client addHeader(String name, String value) {
+    public <#=model.GetEntityContainer().ToCheckedCase()#>Client addHeader(String name, String value) {
         addCustomHeader(name, value);
         return this;
     }
