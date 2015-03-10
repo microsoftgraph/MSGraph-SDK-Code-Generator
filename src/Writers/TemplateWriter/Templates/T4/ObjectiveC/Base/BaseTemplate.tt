@@ -298,13 +298,13 @@ public string GetMethodHeader(OdcmMethod action)
 	
 	var returnString = action.ReturnType == null ? "int returnValue" 
 	: GetTypeForAction(action) + action.ReturnType.Name.ToLowerFirstChar();
-	return string.Format("-(NSURLSessionDataTask*) {0} {1} (void (^)({2}, MSODataException *error)) callback;",
+	return string.Format("-(NSURLSessionTask*) {0} {1} (void (^)({2}, MSODataException *error)) callback;",
 	action.Name.ToLowerFirstChar(),GetParamsString(action.Parameters),returnString );	
 }
 
 public string GetMethodHeaderRaw(OdcmMethod action)
 {
-	return string.Format("-(NSURLSessionDataTask*) {0}Raw {1} (void(^)(NSString* returnValue, MSODataException *error)) callback;",
+	return string.Format("-(NSURLSessionTask*) {0}Raw {1} (void(^)(NSString* returnValue, MSODataException *error)) callback;",
 	action.Name.ToLowerFirstChar(),
 	GetParamsForRaw(action.Parameters.Select(p => p.Name)),(action.ReturnType == null ? "NSString* resultCode " : GetParamRaw(action.ReturnType.Name)));	
 }

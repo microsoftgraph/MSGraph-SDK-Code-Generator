@@ -27,11 +27,11 @@ var entityName = GetPrefix() + entity.Name;
     return [super initWithUrl:urlComponent parent:parent andEntityClass : [<#=entityName#> class]];
 }
 
--(NSURLSessionDataTask*) update<#=entity.Name#>:(id)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#>*, MSODataException * error))callback{
+-(NSURLSessionTask*) update<#=entity.Name#>:(id)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#>*, MSODataException * error))callback{
 	return [super update:entity : callback];
 }
 
--(NSURLSessionDataTask*) delete<#=entity.Name#>:(void (^)(int status, MSODataException * error))callback{
+-(NSURLSessionTask*) delete<#=entity.Name#>:(void (^)(int status, MSODataException * error))callback{
 	return [super delete:callback];
 }
 

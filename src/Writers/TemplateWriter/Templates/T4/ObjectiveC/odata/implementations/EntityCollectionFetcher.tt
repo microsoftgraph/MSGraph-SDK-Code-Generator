@@ -18,7 +18,7 @@ var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
     return [super initWithUrl:urlComponent parent:parent andEntityClass:[<#=GetPrefix() + entity.Name#> class]];
 }
 
--(NSURLSessionDataTask*)add<#=entity.Name#>:(<#=GetPrefix() + entity.Name#>*)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *e))callback{
+-(NSURLSessionTask*)add<#=entity.Name#>:(<#=GetPrefix() + entity.Name#>*)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *e))callback{
 	
 	return [super add:entity :^(id r, MSODataException *e) {
         callback(r,e);

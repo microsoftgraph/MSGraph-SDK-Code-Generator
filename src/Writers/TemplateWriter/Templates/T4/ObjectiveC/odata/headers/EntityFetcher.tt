@@ -53,9 +53,9 @@ foreach(var propertyClass in clasess)
 @protocol <#=entityName#><MSODataEntityFetcher>
 
 @optional
--(NSURLSessionDataTask*) read:(void (^)(<#=GetPrefix() + entity.Name#>* <#=entity.Name.ToLowerFirstChar()#>, MSODataException *error))callback;
--(NSURLSessionDataTask*) update<#=entity.Name#>:(id)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#>*, MSODataException * error))callback;
--(NSURLSessionDataTask*) delete<#=entity.Name#>:(void (^)(int status, MSODataException * error))callback;
+-(NSURLSessionTask*) read:(void (^)(<#=GetPrefix() + entity.Name#>* <#=entity.Name.ToLowerFirstChar()#>, MSODataException *error))callback;
+-(NSURLSessionTask*) update<#=entity.Name#>:(id)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#>*, MSODataException * error))callback;
+-(NSURLSessionTask*) delete<#=entity.Name#>:(void (^)(int status, MSODataException * error))callback;
 -(id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomParameters : (NSString*)name : (id)value;
 -(id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomHeaderWithName : (NSString*)name andValue : (NSString*) value;
 -(id<<#=GetPrefix() + entity.Name#>Fetcher>)select : (NSString*) params;
