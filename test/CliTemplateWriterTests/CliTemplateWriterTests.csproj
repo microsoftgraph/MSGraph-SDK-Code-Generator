@@ -112,6 +112,7 @@
     </Content>
     <Content Include="Metadata\microsoftgraph.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Metadata\ODataV4apiversion15.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

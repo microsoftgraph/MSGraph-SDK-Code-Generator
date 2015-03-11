@@ -28,7 +28,7 @@ public class <#=complex.Name.ToCheckedCase()#><#=extends#> {
         var propertyType = property.IsCollection ? string.Format("java.util.List<{0}>", property.GetTypeString()) : property.GetTypeString();
 #>
 
-    private <#=propertyType#> <#=property.Name#>;
+    private <#=propertyType#> <#=property.GetSanitizedPropertyName()#>;
 
     /**
     * Gets the <#=property.Name.SplitCamelCase()#>.
@@ -36,7 +36,7 @@ public class <#=complex.Name.ToCheckedCase()#><#=extends#> {
     * @return the <#=propertyType#>
     */
     public <#=propertyType#> get<#=property.Name#>() {
-        return this.<#=property.Name#>; 
+        return this.<#=property.GetSanitizedPropertyName()#>; 
     }
 
     /**
@@ -45,7 +45,7 @@ public class <#=complex.Name.ToCheckedCase()#><#=extends#> {
     * @param value the <#=propertyType#>
     */
     public void set<#=property.Name#>(<#=propertyType#> value) { 
-        this.<#=property.Name#> = value; 
+        this.<#=property.GetSanitizedPropertyName()#> = value; 
     }
 <#
     }

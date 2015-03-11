@@ -7,7 +7,7 @@ namespace TemplateWriter.Helpers.Java
     public static class PropertyHelper
     {
         public const string ReservedPrefix = "$$__$$";
-        public static HashSet<string> GetReservedNames()
+        public static ICollection<string> GetReservedNames()
         {
             return new HashSet<string>{
                 "abstract",    
@@ -128,7 +128,7 @@ namespace TemplateWriter.Helpers.Java
 
         public static string GetSanitizedPropertyName(this string property)
         {
-            if (GetReservedNames().Contains(property))
+            if (GetReservedNames().Contains(property.ToLower()))
             {
                 return ReservedPrefix + property;
             }
