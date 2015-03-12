@@ -5,6 +5,8 @@ using System.IO;
 using System.Text;
 using Microsoft.VisualStudio.TextTemplating;
 using TemplateWriter.Output;
+using TemplateWriter.Settings;
+using TemplateWriter.Templates;
 using Vipr.Core.CodeModel;
 
 namespace TemplateWriter.Strategies

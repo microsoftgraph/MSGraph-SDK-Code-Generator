@@ -1,4 +1,4 @@
-namespace TemplateWriter
+namespace TemplateWriter.Templates
 {
     public enum TemplateType
     {

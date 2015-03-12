@@ -9,6 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{743E9D
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliTemplateWriterTests", "test\CliTemplateWriterTests\CliTemplateWriterTests.csproj", "{F5FD1FF0-AEEA-4A2A-AD3F-109AA1A4A953}"
+	ProjectSection(ProjectDependencies) = postProject
+		{474D242F-9587-40A7-B4E4-CBB35F8B7C21} = {474D242F-9587-40A7-B4E4-CBB35F8B7C21}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateWriter", "src\TemplateWriter\TemplateWriter.csproj", "{474D242F-9587-40A7-B4E4-CBB35F8B7C21}"
 EndProject

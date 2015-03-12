@@ -4,61 +4,60 @@ using System.IO;
 using System.Linq;
 using ODataReader.v4;
 using TemplateWriter.Output;
+using TemplateWriter.Templates;
+using TemplateWriter.Settings;
 using TemplateWriter.Strategies;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 
-namespace TemplateWriter
-{
-    public class TemplateProcessorManager : ITemplateProcessorManager
-    {
-        private readonly IOdcmReader _reader;
+namespace TemplateWriter.TemplateProcessors {
+    public class TemplateProcessorManager : IConfigurable, IOdcmWriter {
         private readonly ITemplateTempLocationFileWriter _tempLocationFileWriter;
-        private readonly Dictionary<string, Func<OdcmModel, IConfigArguments, string, ITemplateProcessor>> _processors;
+        private readonly Dictionary<string, Func<OdcmModel, TemplateWriterSettings, string /* path to base template */, ITemplateProcessor>> _processors;
 
         public TemplateProcessorManager()
-            : this(new OdcmReader(), new TemplateTempLocationFileWriter(new TemplateSourceReader()))
-        {
+            : this(new TemplateTempLocationFileWriter(new TemplateSourceReader())) {
         }
 
-        public TemplateProcessorManager(IOdcmReader reader, ITemplateTempLocationFileWriter tempLocationFileWriter)
-        {
-            _reader = reader;
+        public TemplateProcessorManager(ITemplateTempLocationFileWriter tempLocationFileWriter) {
             _tempLocationFileWriter = tempLocationFileWriter;
-            _processors = new Dictionary<string, Func<OdcmModel, IConfigArguments, string, ITemplateProcessor>>
+            _processors = new Dictionary<string, Func<OdcmModel, TemplateWriterSettings, string, ITemplateProcessor>>
             {
-                {"java", (model, configArguments, baseFilePath) => 
-                    new JavaTemplateProcessor(new JavaFileWriter(model, configArguments), model,baseFilePath)},
-                {"objectivec", (model, configArguments,baseFilePath) =>
-					new ObjectiveCTemplateProcessor(new ObjectiveCFileWriter(model, configArguments), model, baseFilePath )}
+                {"java", (model, config, baseFilePath) => 
+                    new JavaTemplateProcessor(new JavaFileWriter(model, config), model, baseFilePath)},
+                {"objectivec", (model, config ,baseFilePath) =>
+		 			new ObjectiveCTemplateProcessor(new ObjectiveCFileWriter(model, config), model, baseFilePath )}
             };
         }
 
-        public void Process(IConfigArguments configuration)
-        {
-            var runnableTemplates = _tempLocationFileWriter.WriteUsing(typeof(CustomHost), configuration.BuilderArguments)
-                                                           .Where(x => !x.IsBase &&
-                                                                        x.IsForLanguage(configuration.BuilderArguments.Language));
+        public void SetConfigurationProvider(IConfigurationProvider configurationProvider) {
+            ConfigurationService.Initialize(configurationProvider);
+        }
 
-            var baseTemplate = _tempLocationFileWriter.WriteUsing(typeof(CustomHost), configuration.BuilderArguments)
-                                                           .Single(x => x.IsBase && x.IsForLanguage(configuration.BuilderArguments.Language));
+        public TextFileCollection GenerateProxy(OdcmModel model) {
 
-            var model = _reader.GenerateOdcmModel(new Dictionary<string, string>
-            {
-                { "$metadata", File.ReadAllText(configuration.BuilderArguments.InputFile) }
-            });
+            // TODO: Collect output into TextFileCollection
+            var fileCollection = new TextFileCollection();
 
-            var processor = _processors[configuration.BuilderArguments.Language]
-                                .Invoke(model, configuration, baseTemplate.Path);
+            var runnableTemplates = _tempLocationFileWriter.WriteUsing(typeof(CustomHost), ConfigurationService.Settings)
+                                               .Where(x => !x.IsBase &&
+                                                            x.IsForLanguage(ConfigurationService.Settings.TargetLanguage));
 
-            foreach (var template in runnableTemplates)
-            {
+            var baseTemplate = _tempLocationFileWriter.WriteUsing(typeof(CustomHost), ConfigurationService.Settings)
+                                                           .Single(x => x.IsBase && x.IsForLanguage(ConfigurationService.Settings.TargetLanguage));
+
+            var processor = _processors[ConfigurationService.Settings.TargetLanguage]
+                                .Invoke(model, ConfigurationService.Settings, baseTemplate.Path);
+
+            foreach (var template in runnableTemplates) {
                 Action<Template> action;
-                if (processor.Templates.TryGetValue(template.Name, out action))
-                {
+                if (processor.Templates.TryGetValue(template.Name, out action)) {
                     action(template);
                 }
             }
+
+
+            return fileCollection;
         }
     }
 }

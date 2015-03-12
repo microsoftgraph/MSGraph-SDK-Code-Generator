@@ -1,5 +1,7 @@
 ﻿using System.IO;
 using System.Text;
+using TemplateWriter.Templates;
+using TemplateWriter.Settings;
 using Vipr.Core.CodeModel;
 
 namespace TemplateWriter.Output
@@ -7,20 +9,20 @@ namespace TemplateWriter.Output
     public class BaseFileWriter : IFileWriter
     {
         protected readonly OdcmModel Model;
-        protected readonly IConfigArguments Configuration;
+        protected readonly TemplateWriterSettings Configuration;
 
         public string FileExtension
         {
             get { return ".txt"; }
         }
 
-        public BaseFileWriter(OdcmModel model, IConfigArguments configuration)
+        public BaseFileWriter(OdcmModel model, TemplateWriterSettings configuration)
         {
             Model = model;
             Configuration = configuration;
         }
 
-		protected virtual string FileName(Template template, string identifier)
+        protected virtual string FileName(Template template, string identifier)
         {
             return template.FolderName == "odata" ? template.Name.Replace("Entity", identifier)
                                                   : identifier;
@@ -28,10 +30,10 @@ namespace TemplateWriter.Output
 
         public virtual void WriteText(Template template, string fileName, string text)
         {
-            var destPath = string.Format("{0}{1}", Path.DirectorySeparatorChar, Configuration.BuilderArguments.OutputDir);
+            var destPath = string.Format("{0}{1}", ConfigurationService.Settings.OutputDirectory, Path.DirectorySeparatorChar);
             var identifier = FileName(template, fileName);
-            var fullPath = Path.Combine(destPath, destPath);
-            var filePath = Path.Combine(fullPath, string.Format("{0}{1}", identifier, FileExtension));
+            // var fullPath = Path.Combine(destPath, destPath);
+            var filePath = Path.Combine(destPath, string.Format("{0}{1}", identifier, FileExtension));
 
             using (var writer = new StreamWriter(filePath, false, Encoding.ASCII))
             {

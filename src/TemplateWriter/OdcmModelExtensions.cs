@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Vipr.Core.CodeModel;
+using TemplateWriter.Settings;
 
 namespace TemplateWriter
 {
@@ -25,7 +26,7 @@ namespace TemplateWriter
             else
             {
                 namespaceFound =
-                    model.Namespaces.Find(x => String.Equals(x.Name, ConfigurationService.PrimaryNamespaceName,
+                    model.Namespaces.Find(x => String.Equals(x.Name, ConfigurationService.Settings.PrimaryNamespaceName,
                         StringComparison.InvariantCultureIgnoreCase));
             }
 
@@ -101,7 +102,7 @@ namespace TemplateWriter
         public static string NamespaceName(this OdcmModel model)
         {
             var @namespace = GetOdcmNamespace(model).Name;
-            var name = string.Format("{0}.{1}", ConfigurationService.Configuration.NamespacePrefix, @namespace);
+            var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace);
             return name.ToLower();
         }
 

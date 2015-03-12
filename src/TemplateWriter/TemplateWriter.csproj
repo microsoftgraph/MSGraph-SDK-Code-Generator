@@ -32,24 +32,32 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DocoptNet, Version=0.6.1.4, Culture=neutral, PublicKeyToken=7a38c71da49a547e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\docopt.net.0.6.1.6\lib\net40\DocoptNet.dll</HintPath>
+    </Reference>
     <Reference Include="Inflector">
-      <HintPath>..\..\..\packages\Inflector.1.0.0.0\lib\net45\Inflector.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Inflector.1.0.0.0\lib\net45\Inflector.dll</HintPath>
     </Reference>
     <Reference Include="Its.Configuration">
-      <HintPath>..\..\..\packages\Its.Configuration.0.10.1\lib\net40\Its.Configuration.dll</HintPath>
+      <HintPath>..\..\packages\Its.Configuration.0.10.1\lib\net40\Its.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Mono.TextTemplating">
-      <HintPath>..\..\..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
+      <HintPath>..\..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ODataReader.v4">
       <HintPath>..\..\dependencies\ODataReader.v4.dll</HintPath>
     </Reference>
+    <Reference Include="ReadOnlyCollectionsInterfaces">
+      <HintPath>..\..\packages\ReadOnlyCollectionInterfaces.1.0.0\lib\NET45\ReadOnlyCollectionsInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable.Net40">
+      <HintPath>..\..\packages\System.Collections.Immutable.Net40.1.0.30.17\lib\net40\System.Collections.Immutable.Net40.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Extensions" />
@@ -58,28 +66,21 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>..\..\..\packages\System.Collections.Immutable.1.1.32-beta\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="Vipr.Core">
       <HintPath>..\..\dependencies\Vipr.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuilderArguments.cs" />
-    <Compile Include="ConfigArguments.cs" />
-    <Compile Include="ConfigurationService.cs" />
     <Compile Include="CustomHost.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\Java\PropertyHelper.cs" />
     <Compile Include="Helpers\Java\StringExtensions.cs" />
     <Compile Include="Helpers\ObjectiveC\PropertyHelper.cs" />
     <Compile Include="Helpers\Swift\PropertyHelper.cs" />
-    <Compile Include="IConfigArguments.cs" />
-    <Compile Include="ITemplateConfiguration.cs" />
-    <Compile Include="ITemplateProcessorManager.cs" />
-    <Compile Include="ITemplateSourceReader.cs" />
-    <Compile Include="ITemplateTempLocationFileWriter.cs" />
+    <Compile Include="Settings\ConfigurationService.cs" />
+    <Compile Include="Settings\TemplateWriterSettings.cs" />
+    <Compile Include="Templates\ITemplateSourceReader.cs" />
+    <Compile Include="Templates\ITemplateTempLocationFileWriter.cs" />
     <Compile Include="OdcmModelExtensions.cs" />
     <Compile Include="Output\BaseFileWriter.cs" />
     <Compile Include="Output\IFileWriter.cs" />
@@ -90,13 +91,16 @@
     <Compile Include="Strategies\ITemplateProcessor.cs" />
     <Compile Include="Strategies\JavaTemplateProcessor.cs" />
     <Compile Include="Strategies\ObjectiveCTemplateProcessor.cs" />
-    <Compile Include="Template.cs" />
+    <Compile Include="Templates\Template.cs" />
     <Compile Include="TemplateProcessorManager.cs" />
-    <Compile Include="TemplateSourceReader.cs" />
-    <Compile Include="TemplateTempLocationFileWriter.cs" />
-    <Compile Include="TemplateType.cs" />
+    <Compile Include="Templates\TemplateSourceReader.cs" />
+    <Compile Include="Templates\TemplateTempLocationFileWriter.cs" />
+    <Compile Include="Templates\TemplateType.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".config\TemplateWriterSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <EmbeddedResource Include="Templates\T4\Java\Base\BaseTemplateCustomHost.tt" />
     <EmbeddedResource Include="Templates\T4\Java\Models\ComplexType.tt" />
@@ -213,6 +217,21 @@
     <EmbeddedResource Include="Templates\T4\ObjectiveC\Base\BaseTemplate.tt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Dependencies\DocoptNet.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencies\Microsoft.OData.Edm.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencies\ODataReader.v4.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencies\Vipr.Core.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencies\Vipr.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Templates\T4\Swift\Core\JsonParser\Headers\JsonParser.h">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

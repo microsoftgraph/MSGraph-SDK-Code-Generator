@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TemplateWriter
+namespace TemplateWriter.Templates
 {
     public class Template
     {

@@ -1,3 +1,5 @@
+using TemplateWriter.Templates;
+
 namespace TemplateWriter.Output
 {
     public interface IFileWriter
@@ -8,6 +10,6 @@ namespace TemplateWriter.Output
 
         bool DirectoryExists(string directoryPath);
 
-		string FileExtension { get; }
+        string FileExtension { get; }
     }
 }
