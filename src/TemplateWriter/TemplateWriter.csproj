@@ -41,6 +41,9 @@
     <Reference Include="Its.Configuration">
       <HintPath>..\..\packages\Its.Configuration.0.10.1\lib\net40\Its.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.OData.Edm">
+      <HintPath>..\..\packages\Microsoft.OData.Edm.6.10.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Edm.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.TextTemplating">
       <HintPath>..\..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
     </Reference>
