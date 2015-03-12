@@ -47,11 +47,17 @@
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="ODataReader.v4">
       <HintPath>..\..\dependencies\ODataReader.v4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -129,16 +135,6 @@
     <Content Include="Metadata\Sharepoint.edmx.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\CLI\Vipr.CLI\Vipr.CLI.csproj">
-      <Project>{BE6AF3DC-831A-48E1-9563-03141EB0AE5B}</Project>
-      <Name>Vipr.CLI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\Writers\TemplateWriter\TemplateWriter.csproj">
-      <Project>{474D242F-9587-40A7-B4E4-CBB35F8B7C21}</Project>
-      <Name>TemplateWriter</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
