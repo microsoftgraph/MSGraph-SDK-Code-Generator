@@ -66,6 +66,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Vipr, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\dependencies\Vipr.exe</HintPath>
+    </Reference>
     <Reference Include="Vipr.Core">
       <HintPath>..\..\dependencies\Vipr.Core.dll</HintPath>
     </Reference>
