@@ -1,0 +1,9 @@
+﻿{
+    "AvailableLanguages": [ "java", "objectivec" ],
+    "TargetLanguage": "java",
+    "Plugins": [ ],
+    "PrimaryNamespaceName": "oneDrive",
+    "NamespacePrefix": "com",
+    "OutputDirectory":  "c:\\VIPR.Output"
+
+}

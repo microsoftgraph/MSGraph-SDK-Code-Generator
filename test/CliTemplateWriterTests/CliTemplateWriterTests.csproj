@@ -44,6 +44,9 @@
     <Reference Include="FluentAssertions.Core">
       <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.OData.Edm">
+      <HintPath>..\..\packages\Microsoft.OData.Edm.6.10.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Edm.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -51,7 +54,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="ODataReader.v4">
+    <Reference Include="ODataReader.v4, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\dependencies\ODataReader.v4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -74,16 +78,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DirectoryConfiguration.cs" />
-    <Compile Include="DisoveryConfiguration.cs" />
-    <Compile Include="ExchangeConfiguration.cs" />
-    <Compile Include="FilesConfiguration.cs" />
-    <Compile Include="Given_a_Set_of_Arguments_to_CLI.cs" />
     <Compile Include="Given_a_Single_File_Processing_Strategy.cs" />
-    <Compile Include="GraphConfiguration.cs" />
     <Compile Include="Java_Output_Integration_Tests.cs" />
-    <Compile Include="OneDriveConsumerConfiguration.cs" />
-    <Compile Include="OneNoteConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +135,16 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CLI\Vipr\Vipr.csproj">
+      <Project>{d9e57059-bad6-483b-985c-c7d1da24ed7f}</Project>
+      <Name>Vipr</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Writer\T4TemplateWriter\T4TemplateWriter.csproj">
+      <Project>{474d242f-9587-40a7-b4e4-cbb35f8b7c21}</Project>
+      <Name>T4TemplateWriter</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -147,6 +153,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>copy  /Y $(SolutionDir)dependencies\*.*  $(TargetDir)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

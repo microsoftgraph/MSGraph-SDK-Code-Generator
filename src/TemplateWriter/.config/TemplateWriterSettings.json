@@ -1,9 +1,0 @@
-﻿{
-    "AvailableLanguages": [ "java", "objectivec" ],
-    "TargetLanguage": "java",
-    "Plugins": [ ],
-    "PrimaryNamespaceName": "",
-    "NamespacePrefix": "com",
-    "OutputDirectory":  "c:\\VIPR.Output"
-
-}
