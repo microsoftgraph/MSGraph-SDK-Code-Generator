@@ -79,7 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Given_a_Single_File_Processing_Strategy.cs" />
-    <Compile Include="Java_Output_Integration_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -136,10 +135,6 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CLI\Vipr\Vipr.csproj">
-      <Project>{d9e57059-bad6-483b-985c-c7d1da24ed7f}</Project>
-      <Name>Vipr</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Writer\T4TemplateWriter\T4TemplateWriter.csproj">
       <Project>{474d242f-9587-40a7-b4e4-cbb35f8b7c21}</Project>
       <Name>T4TemplateWriter</Name>

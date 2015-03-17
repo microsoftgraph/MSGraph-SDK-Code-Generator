@@ -14,14 +14,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{11E72B1B-B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliTemplateWriterTests", "test\CliTemplateWriterTests\CliTemplateWriterTests.csproj", "{F5FD1FF0-AEEA-4A2A-AD3F-109AA1A4A953}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr", "src\CLI\Vipr\Vipr.csproj", "{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T4TemplateWriter", "src\Writer\T4TemplateWriter\T4TemplateWriter.csproj", "{474D242F-9587-40A7-B4E4-CBB35F8B7C21}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dependencies", "dependencies", "{50FFAF71-28AC-4C09-AEDC-0F518AA62FA7}"
 	ProjectSection(SolutionItems) = preProject
 		dependencies\ODataReader.v4.dll = dependencies\ODataReader.v4.dll
 		dependencies\Vipr.Core.dll = dependencies\Vipr.Core.dll
+		dependencies\Vipr.exe = dependencies\Vipr.exe
 	EndProjectSection
 EndProject
 Global
@@ -34,10 +33,6 @@ Global
 		{F5FD1FF0-AEEA-4A2A-AD3F-109AA1A4A953}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5FD1FF0-AEEA-4A2A-AD3F-109AA1A4A953}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5FD1FF0-AEEA-4A2A-AD3F-109AA1A4A953}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{474D242F-9587-40A7-B4E4-CBB35F8B7C21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{474D242F-9587-40A7-B4E4-CBB35F8B7C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{474D242F-9587-40A7-B4E4-CBB35F8B7C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -48,7 +43,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F5FD1FF0-AEEA-4A2A-AD3F-109AA1A4A953} = {11E72B1B-B9DE-417E-8DC6-5DC50B8A57EE}
-		{D9E57059-BAD6-483B-985C-C7D1DA24ED7F} = {A3ABD420-9319-4C29-8262-C8A06DF4C01C}
 		{474D242F-9587-40A7-B4E4-CBB35F8B7C21} = {A3ABD420-9319-4C29-8262-C8A06DF4C01C}
 	EndGlobalSection
 EndGlobal
