@@ -32,13 +32,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Inflector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Inflector.1.0.0.0\lib\net45\Inflector.dll</HintPath>
+    <Reference Include="Inflector">
+      <HintPath>..\..\packages\Inflector.1.0.0.0\lib\net45\Inflector.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.TextTemplating, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
+    <Reference Include="Mono.TextTemplating">
+      <HintPath>..\..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

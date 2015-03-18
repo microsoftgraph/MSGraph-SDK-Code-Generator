@@ -23,6 +23,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataReader.v4", "submodule\Vipr\src\Readers\ODataReader.v4\ODataReader.v4.csproj", "{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T4TemplateWriter", "src\T4TemplateWriter\T4TemplateWriter.csproj", "{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D9E57059-BAD6-483B-985C-C7D1DA24ED7F} = {D9E57059-BAD6-483B-985C-C7D1DA24ED7F}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr", "submodule\Vipr\src\Core\Vipr\Vipr.csproj", "{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +51,10 @@ Global
 		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,5 +65,6 @@ Global
 		{04C24936-006A-4FD8-A872-EE55588C1CBE} = {0E8CEAD0-C87F-4EAF-B77B-AE418A9C244D}
 		{6D8D8008-0A34-490F-8B38-21D9C8BF25C0} = {0E8CEAD0-C87F-4EAF-B77B-AE418A9C244D}
 		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE} = {238E3542-5478-4630-AFBE-470BACFE17CE}
+		{D9E57059-BAD6-483B-985C-C7D1DA24ED7F} = {0E8CEAD0-C87F-4EAF-B77B-AE418A9C244D}
 	EndGlobalSection
 EndGlobal
