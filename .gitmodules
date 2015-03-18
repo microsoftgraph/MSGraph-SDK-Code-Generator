@@ -1,3 +1,4 @@
 [submodule "Vipr"]
 	path = submodule/Vipr
-	url = git@github.com:MSOpenTech/Vipr.git
+	url = https://github.com/msopentech/vipr
+	branch = dev-msot
