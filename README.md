@@ -1,6 +1,6 @@
 # VIPR T4 Writer
 
-Source code writers for [VIPR](https://github.com/microsoft/vipr) utilizing T4 templates. The TemplateWriter receives an OdcmModel from VIPR and uses it to fill in a T4 template.
+Source code writers for [VIPR](https://github.com/microsoft/vipr) utilizing T4 templates. The T4TemplateWriter receives an OdcmModel from VIPR and uses it to fill in a T4 template.
 
 Currently the following target languages are supported:
 - Java (for Android and JVM)
@@ -8,27 +8,19 @@ Currently the following target languages are supported:
 
 Generated code depends on an underlying HTTP client and other services. These are available for [Android and JVM](https://github.com/officedev/office-365-sdk-for-android) and [iOS](https://github.com/officedev/office-365-sdk-for-ios).
 
-## Get started
+## Getting started
 
-This project uses git submodules to fullfil Vipr depdendencies.
-Please follow the following instructions:
+This project uses git submodules to integrate upstream dependencies. When cloning this repo, use `git clone --recursive` to update submodules at the same time.
 
-```
-git clone --recursive git@github.com:MSOpenTech/vipr-t4-writer.git
-git submodule init
-git submodule update
-```
+If you clone without the "--recursive" switch, run `git submodule update --init` to manually update submodules.
 
-At this point you have the source code for vipr-t4-writer and the Vipr source code.
-Now, we need to build Vipr to retrieve the NuGet packages:
+You can build Vipr and its dependencies by executing `.\submodule\Vipr.build.cmd` from a Windows command prompt.
 
-```
-cd submodule\Vipr\build.cmd
-```
+You can now work with the vipr-t4-writer solution as usual.
 
-Now, we proceed to open the vipr-t4-writer as any regular Visual Studio Solution.
+> Note: We will integrate Vipr via public NuGet packages when these become available.
 
-> Note: When nuget packages are available for VIPR core we'll replace the script with them.
+For more information on submodules read [this chapter](http://git-scm.com/book/en/v2/Git-Tools-Submodules) from the Git book and search the Web.
 
 ## License
 
