@@ -3,25 +3,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{743E9D7E-681E-4DFF-83A7-CB411DB0D94E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{238E3542-5478-4630-AFBE-470BACFE17CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B121B9D8-097D-499E-B196-1677B0A80815}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "vipr", "vipr", "{0E8CEAD0-C87F-4EAF-B77B-AE418A9C244D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T4TemplateWriter", "src\writer\T4TemplateWriter\T4TemplateWriter.csproj", "{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliTemplateWriterTests", "test\CliTemplateWriterTests\CliTemplateWriterTests.csproj", "{43D6EB41-976A-4068-8C55-18DE8236C799}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6ACF6CEE-A594-4DFE-9286-C7154E91738B}"
 	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A3ABD420-9319-4C29-8262-C8A06DF4C01C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Core", "submodule\Vipr\src\Core\Vipr.Core\Vipr.Core.csproj", "{04C24936-006A-4FD8-A872-EE55588C1CBE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{11E72B1B-B9DE-417E-8DC6-5DC50B8A57EE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliTemplateWriterTests", "test\CliTemplateWriterTests\CliTemplateWriterTests.csproj", "{F5FD1FF0-AEEA-4A2A-AD3F-109AA1A4A953}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T4TemplateWriter", "src\Writer\T4TemplateWriter\T4TemplateWriter.csproj", "{474D242F-9587-40A7-B4E4-CBB35F8B7C21}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dependencies", "dependencies", "{50FFAF71-28AC-4C09-AEDC-0F518AA62FA7}"
-	ProjectSection(SolutionItems) = preProject
-		dependencies\ODataReader.v4.dll = dependencies\ODataReader.v4.dll
-		dependencies\Vipr.Core.dll = dependencies\Vipr.Core.dll
-		dependencies\Vipr.exe = dependencies\Vipr.exe
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataReader.v4", "submodule\Vipr\src\Readers\ODataReader.v4\ODataReader.v4.csproj", "{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,20 +30,31 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F5FD1FF0-AEEA-4A2A-AD3F-109AA1A4A953}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5FD1FF0-AEEA-4A2A-AD3F-109AA1A4A953}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5FD1FF0-AEEA-4A2A-AD3F-109AA1A4A953}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5FD1FF0-AEEA-4A2A-AD3F-109AA1A4A953}.Release|Any CPU.Build.0 = Release|Any CPU
-		{474D242F-9587-40A7-B4E4-CBB35F8B7C21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{474D242F-9587-40A7-B4E4-CBB35F8B7C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{474D242F-9587-40A7-B4E4-CBB35F8B7C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{474D242F-9587-40A7-B4E4-CBB35F8B7C21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43D6EB41-976A-4068-8C55-18DE8236C799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43D6EB41-976A-4068-8C55-18DE8236C799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43D6EB41-976A-4068-8C55-18DE8236C799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43D6EB41-976A-4068-8C55-18DE8236C799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04C24936-006A-4FD8-A872-EE55588C1CBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04C24936-006A-4FD8-A872-EE55588C1CBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C24936-006A-4FD8-A872-EE55588C1CBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C24936-006A-4FD8-A872-EE55588C1CBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F5FD1FF0-AEEA-4A2A-AD3F-109AA1A4A953} = {11E72B1B-B9DE-417E-8DC6-5DC50B8A57EE}
-		{474D242F-9587-40A7-B4E4-CBB35F8B7C21} = {A3ABD420-9319-4C29-8262-C8A06DF4C01C}
+		{0E8CEAD0-C87F-4EAF-B77B-AE418A9C244D} = {238E3542-5478-4630-AFBE-470BACFE17CE}
+		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE} = {238E3542-5478-4630-AFBE-470BACFE17CE}
+		{43D6EB41-976A-4068-8C55-18DE8236C799} = {B121B9D8-097D-499E-B196-1677B0A80815}
+		{04C24936-006A-4FD8-A872-EE55588C1CBE} = {0E8CEAD0-C87F-4EAF-B77B-AE418A9C244D}
+		{6D8D8008-0A34-490F-8B38-21D9C8BF25C0} = {0E8CEAD0-C87F-4EAF-B77B-AE418A9C244D}
 	EndGlobalSection
 EndGlobal
