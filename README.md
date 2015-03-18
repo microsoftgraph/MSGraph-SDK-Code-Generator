@@ -16,9 +16,16 @@ If you clone without the "--recursive" switch, run `git submodule update --init`
 
 You can now work with the vipr-t4-writer solution as usual. If you encounter problems, make sure NuGet packages and project references are all up-to-date.
 
-> Note: We will integrate Vipr via public NuGet packages when these become available.
+Note: We will integrate Vipr via public NuGet packages when these become available.
 
 For more information on submodules read [this chapter](http://git-scm.com/book/en/v2/Git-Tools-Submodules) from the Git book and search the Web.
+
+## Using Vipr with this Writer
+
+1. Build the solution in Visual Studio.
+2. Go to the root of this repo to the `bin\debug` folder.
+3. In that folder, modify `.config\TemplateWriterSettings.json` to specify target language and output folder.
+4. Open a command prompt as administrator in the same folder and run `vipr.exe <path-to-metdata> --reader="T4TemplateWriter"`.
 
 ## License
 
