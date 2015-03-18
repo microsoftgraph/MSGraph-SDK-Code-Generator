@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\debug</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -128,6 +128,10 @@
       <Project>{04c24936-006a-4fd8-a872-ee55588c1cbe}</Project>
       <Name>Vipr.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\submodule\Vipr\src\Core\Vipr\Vipr.csproj">
+      <Project>{d9e57059-bad6-483b-985c-c7d1da24ed7f}</Project>
+      <Name>Vipr</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\submodule\Vipr\src\Readers\ODataReader.v4\ODataReader.v4.csproj">
       <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>
       <Name>ODataReader.v4</Name>
@@ -141,7 +145,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
