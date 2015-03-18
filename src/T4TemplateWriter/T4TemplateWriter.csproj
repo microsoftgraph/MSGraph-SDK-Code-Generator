@@ -74,7 +74,9 @@
     <Compile Include="Templates\TemplateType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".config\TemplateWriterSettings.json" />
+    <None Include=".config\TemplateWriterSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <EmbeddedResource Include="Templates\T4\Java\Base\BaseTemplateCustomHost.tt" />
     <EmbeddedResource Include="Templates\T4\Java\Models\ComplexType.tt" />
     <EmbeddedResource Include="Templates\T4\Java\Models\EntityType.tt" />
