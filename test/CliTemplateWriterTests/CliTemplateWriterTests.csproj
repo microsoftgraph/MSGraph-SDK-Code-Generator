@@ -44,7 +44,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\writer\T4TemplateWriter\T4TemplateWriter.csproj">
+    <ProjectReference Include="..\..\src\T4TemplateWriter\T4TemplateWriter.csproj">
       <Project>{e6b5202f-4f66-428a-ab92-0aaa11ba81de}</Project>
       <Name>T4TemplateWriter</Name>
     </ProjectReference>
