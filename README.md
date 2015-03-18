@@ -19,7 +19,7 @@ git submodule init
 git submodule update
 ```
 
-At this point you have the source code for vipt t4 writer and Vipr source code.
+At this point you have the source code for vipr-t4-writer and the Vipr source code.
 Now, we need to build Vipr to retrieve the NuGet packages:
 
 ```
