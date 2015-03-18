@@ -10,9 +10,23 @@ Generated code depends on an underlying HTTP client and other services. These ar
 
 ## Get started
 
-From root folder of this repo, run prepDeps.cmd as an administrator. This clones the [VIPR source repo](https://github.com/microsoft/vipr), builds that project, and copies a couple DLLs to the `bin\debug` directory of this project.
+This project uses git submodules to fullfil Vipr depdendencies.
+Please follow the following instructions:
 
-After building this project, run `./vipr.exe "path_to_template.edmx" --writer=TemplateWriter` from the `bin\debug` folder to test.
+```
+git clone --recursive git@github.com:MSOpenTech/vipr-t4-writer.git
+git submodule init
+git submodule update
+```
+
+At this point you have the source code for vipt t4 writer and Vipr source code.
+Now, we need to build Vipr to retrieve the NuGet packages:
+
+```
+cd submodule\Vipr\build.cmd
+```
+
+Now, we proceed to open the vipr-t4-writer as any regular Visual Studio Solution.
 
 > Note: When nuget packages are available for VIPR core we'll replace the script with them.
 
