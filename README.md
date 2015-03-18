@@ -10,13 +10,11 @@ Generated code depends on an underlying HTTP client and other services. These ar
 
 ## Getting started
 
-This project uses git submodules to integrate upstream dependencies. When cloning this repo, use `git clone --recursive` to update submodules at the same time.
+This project uses git submodules to integrate upstream dependencies, and you must ensure submodules are updated before opening the solution in Visual Studio. When cloning this repo, use `git clone --recursive` to update submodules at the same time (Note that you may need to specify a specific branch with `-b <branchname>` as well).
 
 If you clone without the "--recursive" switch, run `git submodule update --init` to manually update submodules.
 
-You can build Vipr and its dependencies by executing `.\submodule\Vipr.build.cmd` from a Windows command prompt.
-
-You can now work with the vipr-t4-writer solution as usual.
+You can now work with the vipr-t4-writer solution as usual. If you encounter problems, make sure NuGet packages and project references are all up-to-date.
 
 > Note: We will integrate Vipr via public NuGet packages when these become available.
 
