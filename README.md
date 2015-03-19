@@ -3,10 +3,11 @@
 Source code writers for [VIPR](https://github.com/microsoft/vipr) utilizing T4 templates. The T4TemplateWriter receives an OdcmModel from VIPR and uses it to fill in a T4 template.
 
 Currently the following target languages are supported:
-- Java (for Android and JVM)
-- Objective-C (for iOS)
+- Android
+- Java
+- Objective-C for iOS
 
-Generated code depends on an underlying HTTP client and other services. These are available for [Android and JVM](https://github.com/officedev/office-365-sdk-for-android) and [iOS](https://github.com/officedev/office-365-sdk-for-ios).
+Generated code depends on an underlying HTTP client and other services. These are available for [Android](https://github.com/officedev/office-365-sdk-for-android), [Java](https://github.com/officedev/office-365-sdk-for-android) and [iOS](https://github.com/officedev/office-365-sdk-for-ios).
 
 ## Getting started
 
