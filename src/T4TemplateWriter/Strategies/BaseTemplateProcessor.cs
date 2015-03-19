@@ -2,12 +2,13 @@
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TextTemplating;
 using T4TemplateWriter.Extensions;
 using T4TemplateWriter.Output;
 using T4TemplateWriter.Templates;
-using TemplateWriter;
+using Vipr.Core;
 using Vipr.Core.CodeModel;
 
 namespace T4TemplateWriter.Strategies
@@ -31,7 +32,13 @@ namespace T4TemplateWriter.Strategies
 
         private static CustomHost _hostIntance;
 
-        public Dictionary<string, Action<Template>> Templates { get; set; }
+        public Dictionary<string, Func<Template, IEnumerable<TextFile>>> Templates { get; set; }
+
+        public IEnumerable<TextFile> Process(Template template)
+        {
+            Func<Template, IEnumerable<TextFile>> action;
+            return Templates.TryGetValue(template.Name, out action) ? action(template) : null;
+        }
 
         public string BaseFilePath { get; private set; }
 
@@ -42,7 +49,7 @@ namespace T4TemplateWriter.Strategies
             FileWriter = fileWriter;
             BaseFilePath = baseFilePath;
 
-            Templates = new Dictionary<string, Action<Template>>(StringComparer.InvariantCultureIgnoreCase)
+            Templates = new Dictionary<string, Func<Template, IEnumerable<TextFile>>>(StringComparer.InvariantCultureIgnoreCase)
             {
                 //Model
                 {EntityType, EntityTypes},
@@ -58,13 +65,13 @@ namespace T4TemplateWriter.Strategies
             };
         }
 
-        private void CreateEntryPoint(Template template)
+        private IEnumerable<TextFile> CreateEntryPoint(Template template)
         {
             var container = Model.EntityContainer;
-            ProcessTemplate(template, container);
+            return ProcessTemplate(template, container);
         }
 
-        private void BaseEntity(Template template)
+        private IEnumerable<TextFile> BaseEntity(Template template)
         {
             var host = new CustomHost(StrategyName, null)
             {
@@ -82,33 +89,31 @@ namespace T4TemplateWriter.Strategies
                 throw new InvalidOperationException(errors);
             }
 
-            FileWriter.WriteText(template, template.Name.ToCheckedCase(), output);
+            //FileWriter.WriteText(template, template.Name.ToCheckedCase(), output);
+            return new TextFile("", output).ToIEnumerable();
         }
 
-        private void EnumTypes(Template template)
+        private IEnumerable<TextFile> EnumTypes(Template template)
         {
             var enums = Model.GetEnumTypes();
-            ProcessingAction(enums, template);
+            return ProcessingAction(enums, template);
         }
 
-        public void ComplexTypes(Template template)
+        public IEnumerable<TextFile> ComplexTypes(Template template)
         {
             var complexTypes = Model.GetComplexTypes();
-            ProcessingAction(complexTypes, template);
+            return ProcessingAction(complexTypes, template);
         }
 
-        public void EntityTypes(Template template)
+        public IEnumerable<TextFile> EntityTypes(Template template)
         {
             var entityTypes = Model.GetEntityTypes();
-            ProcessingAction(entityTypes, template);
+            return ProcessingAction(entityTypes, template);
         }
 
-        public void ProcessingAction(IEnumerable<OdcmObject> source, Template template)
+        public IEnumerable<TextFile> ProcessingAction(IEnumerable<OdcmObject> source, Template template)
         {
-            foreach (var complexType in source)
-            {
-                ProcessTemplate(template, complexType);
-            }
+            return source.SelectMany(complexType => ProcessTemplate(template, complexType));
         }
 
         protected CustomHost GetCustomHost(Template template, OdcmObject odcmObject)
@@ -124,7 +129,7 @@ namespace T4TemplateWriter.Strategies
             return _hostIntance;
         }
 
-        protected virtual void ProcessTemplate(Template template, OdcmObject odcmObject)
+        protected virtual IEnumerable<TextFile> ProcessTemplate(Template template, OdcmObject odcmObject)
         {
             var host = GetCustomHost(template, odcmObject);
 
@@ -136,7 +141,10 @@ namespace T4TemplateWriter.Strategies
                 var errors = LogErrors(host, template);
                 throw new InvalidOperationException(errors);
             }
-            FileWriter.WriteText(template, odcmObject.Name.ToCheckedCase(), output);
+
+            //FileWriter.WriteText(template, odcmObject.Name.ToCheckedCase(), output);
+
+            return new TextFile("", output).ToIEnumerable();
         }
 
         public string LogErrors(CustomHost host, Template template)

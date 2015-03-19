@@ -1,64 +1,70 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using T4TemplateWriter.Extensions;
 using T4TemplateWriter.Output;
-using T4TemplateWriter.Strategies;
 using T4TemplateWriter.Templates;
+using Vipr.Core;
 using Vipr.Core.CodeModel;
 
-namespace TemplateWriter.Strategies
+namespace T4TemplateWriter.Strategies
 {
-	public class ObjectiveCTemplateProcessor : BaseTemplateProcessor
-	{
-		public ObjectiveCTemplateProcessor(IFileWriter fileWriter, OdcmModel model, string baseFilePath)
-			: base(fileWriter, model, baseFilePath)
-		{
-			StrategyName = "ObjectiveC";
-			Templates.Add("Models", ProcessSimpleFile);
-			Templates.Add("Protocols", ProcessSimpleFile);
-			Templates.Add("ODataEntities", ProcessSimpleFile);
-			Templates.Add("EntityCollectionFetcher", EntityTypes);
-			Templates.Add("EntryPoint", ProcessEntryPoint);
-		}
+    public class ObjectiveCTemplateProcessor : BaseTemplateProcessor
+    {
+        public ObjectiveCTemplateProcessor(IFileWriter fileWriter, OdcmModel model, string baseFilePath)
+            : base(fileWriter, model, baseFilePath)
+        {
+            StrategyName = "ObjectiveC";
+            Templates.Add("Models", ProcessSimpleFile);
+            Templates.Add("Protocols", ProcessSimpleFile);
+            Templates.Add("ODataEntities", ProcessSimpleFile);
+            Templates.Add("EntityCollectionFetcher", EntityTypes);
+            Templates.Add("EntryPoint", ProcessEntryPoint);
+        }
 
-		void ProcessSimpleFile(Template template)
-		{
-			ProcessTemplate(template, null);
-		}
+        IEnumerable<TextFile> ProcessSimpleFile(Template template)
+        {
+            return ProcessTemplate(template, null);
+        }
 
-		void ProcessEntryPoint(Template template)
-		{
-			var host = GetCustomHost(template, Model.EntityContainer);
+        IEnumerable<TextFile> ProcessEntryPoint(Template template)
+        {
+            var host = GetCustomHost(template, Model.EntityContainer);
 
-			var templateContent = File.ReadAllText(host.TemplateFile);
-			var output = Engine.ProcessTemplate(templateContent, host);
+            var templateContent = File.ReadAllText(host.TemplateFile);
+            var output = Engine.ProcessTemplate(templateContent, host);
 
-			if (host.Errors != null && host.Errors.HasErrors)
-			{
-				var errors = LogErrors(host, template);
-				throw new InvalidOperationException(errors);
-			}
+            if (host.Errors != null && host.Errors.HasErrors)
+            {
+                var errors = LogErrors(host, template);
+                throw new InvalidOperationException(errors);
+            }
 
-			FileWriter.WriteText(template, string.Format("{0}{1}{2}", "MS",
-				host.Model.EntityContainer.Name, "Client"), output);
-		}
+            //FileWriter.WriteText(template, string.Format("{0}{1}{2}", "MS",
+            //host.Model.EntityContainer.Name, "Client"), output);
 
-		protected override void ProcessTemplate(Template template, OdcmObject odcmObject)
-		{
-			var host = GetCustomHost(template, odcmObject);
+            return new TextFile("", output).ToIEnumerable();
+        }
 
-			var templateContent = File.ReadAllText(host.TemplateFile);
-			var output = Engine.ProcessTemplate(templateContent, host);
+        protected override IEnumerable<TextFile> ProcessTemplate(Template template, OdcmObject odcmObject)
+        {
+            var host = GetCustomHost(template, odcmObject);
 
-			if (host.Errors != null && host.Errors.HasErrors)
-			{
-				var errors = LogErrors(host, template);
-				throw new InvalidOperationException(errors);
-			}
+            var templateContent = File.ReadAllText(host.TemplateFile);
+            var output = Engine.ProcessTemplate(templateContent, host);
 
-			FileWriter.WriteText(template, string.Format("{0}{1}{2}", "MS", 
-				//TODO: Prefix should be in the configuration
-				host.Model.EntityContainer.Name, odcmObject == null 
-				? template.Name : odcmObject.Name ) , output);
-		}
-	}
+            if (host.Errors != null && host.Errors.HasErrors)
+            {
+                var errors = LogErrors(host, template);
+                throw new InvalidOperationException(errors);
+            }
+
+            FileWriter.WriteText(template, string.Format("{0}{1}{2}", "MS",
+                //TODO: Prefix should be in the configuration
+                host.Model.EntityContainer.Name, odcmObject == null
+                ? template.Name : odcmObject.Name), output);
+
+            return new TextFile("", output).ToIEnumerable();
+        }
+    }
 }

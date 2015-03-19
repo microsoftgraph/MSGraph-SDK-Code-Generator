@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace T4TemplateWriter.Extensions
 {
@@ -13,6 +14,11 @@ namespace T4TemplateWriter.Extensions
         {
             var output = input.Substring(0, 1).ToUpper() + input.Substring(1);
             return output;
+        }
+
+        public static IEnumerable<T> ToIEnumerable<T>(this T value)
+        {
+            yield return value;
         }
 
     }

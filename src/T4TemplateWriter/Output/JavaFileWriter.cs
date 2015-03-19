@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using T4TemplateWriter.Settings;
 using T4TemplateWriter.Templates;
-using TemplateWriter;
 using Vipr.Core.CodeModel;
 
 namespace T4TemplateWriter.Output

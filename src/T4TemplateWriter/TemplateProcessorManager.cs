@@ -5,7 +5,6 @@ using T4TemplateWriter.Output;
 using T4TemplateWriter.Settings;
 using T4TemplateWriter.Strategies;
 using T4TemplateWriter.Templates;
-using TemplateWriter.Strategies;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 
@@ -38,12 +37,9 @@ namespace T4TemplateWriter
             ConfigurationService.Initialize(configurationProvider);
         }
 
-        public TextFileCollection GenerateProxy(OdcmModel model)
+        TextFileCollection ProcessTemplates(OdcmModel model)
         {
-
-            // TODO: Collect output into TextFileCollection
             var fileCollection = new TextFileCollection();
-
             var runnableTemplates = _tempLocationFileWriter.WriteUsing(typeof(CustomHost), ConfigurationService.Settings)
                                                .Where(x => !x.IsBase &&
                                                             x.IsForLanguage(ConfigurationService.Settings.TargetLanguage));
@@ -54,17 +50,14 @@ namespace T4TemplateWriter
             var processor = _processors[ConfigurationService.Settings.TargetLanguage]
                                 .Invoke(model, ConfigurationService.Settings, baseTemplate.Path);
 
-            foreach (var template in runnableTemplates)
-            {
-                Action<Template> action;
-                if (processor.Templates.TryGetValue(template.Name, out action))
-                {
-                    action(template);
-                }
-            }
-
-
+            var textFiles = runnableTemplates.SelectMany(template => processor.Process(template));
+            fileCollection.AddRange(textFiles);
             return fileCollection;
+        }
+
+        public TextFileCollection GenerateProxy(OdcmModel model)
+        {
+            return ProcessTemplates(model);
         }
     }
 }
