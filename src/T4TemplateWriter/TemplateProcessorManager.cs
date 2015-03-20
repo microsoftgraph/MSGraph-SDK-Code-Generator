@@ -26,9 +26,9 @@ namespace T4TemplateWriter
             _processors = new Dictionary<string, Func<OdcmModel, TemplateWriterSettings, string, ITemplateProcessor>>
             {
                 {"java", (model, config, baseFilePath) => 
-                    new JavaTemplateProcessor(new JavaFileWriter(model, config), model, baseFilePath)},
+                    new JavaTemplateProcessor(new JavaPathWriter(model, config), model, baseFilePath)},
                 {"objectivec", (model, config ,baseFilePath) =>
-		 			new ObjectiveCTemplateProcessor(new ObjectiveCFileWriter(model, config), model, baseFilePath )}
+		 			new ObjectiveCTemplateProcessor(new ObjectiveCPathWriter(model, config), model, baseFilePath )}
             };
         }
 

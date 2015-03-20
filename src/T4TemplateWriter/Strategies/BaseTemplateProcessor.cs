@@ -26,13 +26,13 @@ namespace T4TemplateWriter.Strategies
         public const string EntityOperations = "EntityOperations";
         public const string EntryPoint = "EntityClient";
 
-        protected readonly IFileWriter FileWriter;
+        protected readonly IPathWriter PathWriter;
         protected readonly Engine Engine;
         protected readonly OdcmModel Model;
 
         private static CustomHost _hostIntance;
 
-        public Dictionary<string, Func<Template, IEnumerable<TextFile>>> Templates { get; set; }
+        public IDictionary<string, Func<Template, IEnumerable<TextFile>>> Templates { get; set; }
 
         public IEnumerable<TextFile> Process(Template template)
         {
@@ -42,11 +42,11 @@ namespace T4TemplateWriter.Strategies
 
         public string BaseFilePath { get; private set; }
 
-        public BaseTemplateProcessor(IFileWriter fileWriter, OdcmModel model, string baseFilePath)
+        public BaseTemplateProcessor(IPathWriter pathWriter, OdcmModel model, string baseFilePath)
         {
             Engine = new Engine();
             Model = model;
-            FileWriter = fileWriter;
+            PathWriter = pathWriter;
             BaseFilePath = baseFilePath;
 
             Templates = new Dictionary<string, Func<Template, IEnumerable<TextFile>>>(StringComparer.InvariantCultureIgnoreCase)
@@ -89,8 +89,8 @@ namespace T4TemplateWriter.Strategies
                 throw new InvalidOperationException(errors);
             }
 
-            //FileWriter.WriteText(template, template.Name.ToCheckedCase(), output);
-            return new TextFile("", output).ToIEnumerable();
+            var path = PathWriter.WritePath(template, template.Name.ToCheckedCase());
+            return new TextFile(path, output).ToIEnumerable();
         }
 
         private IEnumerable<TextFile> EnumTypes(Template template)
@@ -142,9 +142,8 @@ namespace T4TemplateWriter.Strategies
                 throw new InvalidOperationException(errors);
             }
 
-            //FileWriter.WriteText(template, odcmObject.Name.ToCheckedCase(), output);
-
-            return new TextFile("", output).ToIEnumerable();
+            var path = PathWriter.WritePath(template, odcmObject.Name.ToCheckedCase());
+            return new TextFile(path, output).ToIEnumerable();
         }
 
         public string LogErrors(CustomHost host, Template template)

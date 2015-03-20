@@ -7,8 +7,7 @@ namespace T4TemplateWriter.Strategies
 {
     interface ITemplateProcessor
     {
-        Dictionary<string, Func<Template, IEnumerable<TextFile>>> Templates { get; set; }
-
+        IDictionary<string, Func<Template, IEnumerable<TextFile>>> Templates { get; set; }
         IEnumerable<TextFile> Process(Template template);
     }
 }

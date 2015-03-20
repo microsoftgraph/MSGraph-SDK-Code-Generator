@@ -11,8 +11,8 @@ namespace T4TemplateWriter.Strategies
 {
     public class ObjectiveCTemplateProcessor : BaseTemplateProcessor
     {
-        public ObjectiveCTemplateProcessor(IFileWriter fileWriter, OdcmModel model, string baseFilePath)
-            : base(fileWriter, model, baseFilePath)
+        public ObjectiveCTemplateProcessor(IPathWriter pathWriter, OdcmModel model, string baseFilePath)
+            : base(pathWriter, model, baseFilePath)
         {
             StrategyName = "ObjectiveC";
             Templates.Add("Models", ProcessSimpleFile);
@@ -40,7 +40,7 @@ namespace T4TemplateWriter.Strategies
                 throw new InvalidOperationException(errors);
             }
 
-            //FileWriter.WriteText(template, string.Format("{0}{1}{2}", "MS",
+            //PathWriter.WritePath(template, string.Format("{0}{1}{2}", "MS",
             //host.Model.EntityContainer.Name, "Client"), output);
 
             return new TextFile("", output).ToIEnumerable();
@@ -59,10 +59,10 @@ namespace T4TemplateWriter.Strategies
                 throw new InvalidOperationException(errors);
             }
 
-            FileWriter.WriteText(template, string.Format("{0}{1}{2}", "MS",
+            PathWriter.WritePath(template, string.Format("{0}{1}{2}", "MS",
                 //TODO: Prefix should be in the configuration
                 host.Model.EntityContainer.Name, odcmObject == null
-                ? template.Name : odcmObject.Name), output);
+                ? template.Name : odcmObject.Name));
 
             return new TextFile("", output).ToIEnumerable();
         }
