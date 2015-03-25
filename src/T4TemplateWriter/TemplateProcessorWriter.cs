@@ -10,17 +10,17 @@ using Vipr.Core.CodeModel;
 
 namespace T4TemplateWriter
 {
-    public class TemplateProcessorManager : IConfigurable, IOdcmWriter
+    public class TemplateProcessorWriter : IConfigurable, IOdcmWriter
     {
         private readonly ITemplateTempLocationFileWriter _tempLocationFileWriter;
         private readonly Dictionary<string, Func<OdcmModel, TemplateWriterSettings, string /* path to base template */, ITemplateProcessor>> _processors;
 
-        public TemplateProcessorManager()
+        public TemplateProcessorWriter()
             : this(new TemplateTempLocationFileWriter(new TemplateSourceReader()))
         {
         }
 
-        public TemplateProcessorManager(ITemplateTempLocationFileWriter tempLocationFileWriter)
+        public TemplateProcessorWriter(ITemplateTempLocationFileWriter tempLocationFileWriter)
         {
             _tempLocationFileWriter = tempLocationFileWriter;
             _processors = new Dictionary<string, Func<OdcmModel, TemplateWriterSettings, string, ITemplateProcessor>>

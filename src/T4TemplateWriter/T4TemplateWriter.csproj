@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)bin\debug</OutputPath>
+    <OutputPath>..\..\bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -65,7 +65,7 @@
     <Compile Include="Strategies\ITemplateProcessor.cs" />
     <Compile Include="Strategies\JavaTemplateProcessor.cs" />
     <Compile Include="Strategies\ObjectiveCTemplateProcessor.cs" />
-    <Compile Include="TemplateProcessorManager.cs" />
+    <Compile Include="TemplateProcessorWriter.cs" />
     <Compile Include="Templates\ITemplateSourceReader.cs" />
     <Compile Include="Templates\ITemplateTempLocationFileWriter.cs" />
     <Compile Include="Templates\Template.cs" />
