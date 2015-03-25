@@ -29,9 +29,9 @@ namespace T4TemplateWriter.Output
 
         public virtual string WritePath(Template template, string fileName)
         {
-            var destPath = string.Format("{0}{1}", ConfigurationService.Settings.OutputDirectory, Path.DirectorySeparatorChar);
+            // we no longer specify our own base path, only the relative path
             var identifier = FileName(template, fileName);
-            var filePath = Path.Combine(destPath, string.Format("{0}{1}", identifier, FileExtension));
+            var filePath = string.Format("{0}{1}", identifier, FileExtension);
             return filePath;
         }
 

@@ -16,21 +16,10 @@ namespace T4TemplateWriter.Output
 
         public override string WritePath(Template template, string fileName)
         {
-            var destPath = string.Format("{0}{1}", ConfigurationService.Settings.OutputDirectory, Path.DirectorySeparatorChar);
             var identifier = FileName(template, fileName);
             FileExtension = template.ResourceName.Contains("header") ? ".h" : ".m";
 
-            if (!DirectoryExists(destPath))
-            {
-                CreateDirectory(destPath);
-            }
-
-            var fullPath = Path.Combine(destPath, template.FolderName);
-
-            if (!DirectoryExists(fullPath))
-            {
-                CreateDirectory(fullPath);
-            }
+            var fullPath = template.FolderName;
 
             var filePath = Path.Combine(fullPath, string.Format("{0}{1}", identifier, FileExtension));
             return filePath;

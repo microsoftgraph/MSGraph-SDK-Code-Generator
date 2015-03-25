@@ -20,23 +20,19 @@ namespace T4TemplateWriter.Output
 
         public override string WritePath(Template template, string fileName)
         {
-            var destPath = ConfigurationService.Settings.OutputDirectory;
+            // Originally we specified an output folder in the local TemplateWriterSettings.json
+            // config file. But now, we will rely on --outputPath from CLI instead.
+            // So here, we only build up the part of the path required for the source code.
             var @namespace = template.TemplateType == TemplateType.Model ? CreateNamespace(string.Empty).ToLower()
                                                                          : CreateNamespace(template.FolderName).ToLower();
 
             var pathFromNamespace = CreatePathFromNamespace(@namespace);
             var identifier = FileName(template, fileName);
-            var fullPath = Path.Combine(destPath, pathFromNamespace);
 
-            if (!DirectoryExists(fullPath))
-            {
-                CreateDirectory(fullPath);
-            }
-
-            var filePath = Path.Combine(fullPath, string.Format("{0}{1}", identifier, FileExtension));
+            var filePath = Path.Combine(pathFromNamespace, string.Format("{0}{1}", identifier, FileExtension));
             return filePath;
         }
-
+        
         private string CreateNamespace(string folderName)
         {
             var @namespace = Model.GetNamespace();

@@ -29,7 +29,5 @@ namespace T4TemplateWriter.Settings
 
         public string NamespacePrefix { get; set; }
 
-        // TODO: Remove and rely on CLI
-        public string OutputDirectory { get; set; }
     }
 }
