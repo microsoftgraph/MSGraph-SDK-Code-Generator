@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)bin\debug</OutputPath>
+    <OutputPath>..\..\bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -54,10 +54,10 @@
     <Compile Include="Helpers\ObjectiveC\PropertyHelper.cs" />
     <Compile Include="Helpers\Swift\PropertyHelper.cs" />
     <Compile Include="OdcmModelExtensions.cs" />
-    <Compile Include="Output\BaseFileWriter.cs" />
-    <Compile Include="Output\IFileWriter.cs" />
-    <Compile Include="Output\JavaFileWriter.cs" />
-    <Compile Include="Output\ObjectiveCFileWriter.cs" />
+    <Compile Include="Output\BasePathWriter.cs" />
+    <Compile Include="Output\IPathWriter.cs" />
+    <Compile Include="Output\JavaPathWriter.cs" />
+    <Compile Include="Output\ObjectiveCPathWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ConfigurationService.cs" />
     <Compile Include="Settings\TemplateWriterSettings.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="Strategies\ITemplateProcessor.cs" />
     <Compile Include="Strategies\JavaTemplateProcessor.cs" />
     <Compile Include="Strategies\ObjectiveCTemplateProcessor.cs" />
-    <Compile Include="TemplateProcessorManager.cs" />
+    <Compile Include="TemplateProcessorWriter.cs" />
     <Compile Include="Templates\ITemplateSourceReader.cs" />
     <Compile Include="Templates\ITemplateTempLocationFileWriter.cs" />
     <Compile Include="Templates\Template.cs" />
@@ -127,10 +127,6 @@
     <ProjectReference Include="..\..\submodule\Vipr\src\Core\Vipr.Core\Vipr.Core.csproj">
       <Project>{04c24936-006a-4fd8-a872-ee55588c1cbe}</Project>
       <Name>Vipr.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\submodule\Vipr\src\Core\Vipr\Vipr.csproj">
-      <Project>{d9e57059-bad6-483b-985c-c7d1da24ed7f}</Project>
-      <Name>Vipr</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\submodule\Vipr\src\Readers\ODataReader.v4\ODataReader.v4.csproj">
       <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>

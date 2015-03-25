@@ -1,12 +1,11 @@
 ﻿using System.IO;
-using System.Text;
 using T4TemplateWriter.Settings;
 using T4TemplateWriter.Templates;
 using Vipr.Core.CodeModel;
 
 namespace T4TemplateWriter.Output
 {
-    public class BaseFileWriter : IFileWriter
+    public class BasePathWriter : IPathWriter
     {
         protected readonly OdcmModel Model;
         protected readonly TemplateWriterSettings Configuration;
@@ -16,7 +15,7 @@ namespace T4TemplateWriter.Output
             get { return ".txt"; }
         }
 
-        public BaseFileWriter(OdcmModel model, TemplateWriterSettings configuration)
+        public BasePathWriter(OdcmModel model, TemplateWriterSettings configuration)
         {
             Model = model;
             Configuration = configuration;
@@ -28,17 +27,12 @@ namespace T4TemplateWriter.Output
                                                   : identifier;
         }
 
-        public virtual void WriteText(Template template, string fileName, string text)
+        public virtual string WritePath(Template template, string fileName)
         {
             var destPath = string.Format("{0}{1}", ConfigurationService.Settings.OutputDirectory, Path.DirectorySeparatorChar);
             var identifier = FileName(template, fileName);
-            // var fullPath = Path.Combine(destPath, destPath);
             var filePath = Path.Combine(destPath, string.Format("{0}{1}", identifier, FileExtension));
-
-            using (var writer = new StreamWriter(filePath, false, Encoding.ASCII))
-            {
-                writer.Write(text);
-            }
+            return filePath;
         }
 
         /// <summary>

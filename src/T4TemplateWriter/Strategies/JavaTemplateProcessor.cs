@@ -5,10 +5,9 @@ namespace T4TemplateWriter.Strategies
 {
     public class JavaTemplateProcessor : BaseTemplateProcessor
     {
-        public JavaTemplateProcessor(IFileWriter fileWriter, OdcmModel model, string baseFilePath) : base(fileWriter, model, baseFilePath)
+        public JavaTemplateProcessor(IPathWriter pathWriter, OdcmModel model, string baseFilePath) : base(pathWriter, model, baseFilePath)
         {
             StrategyName = "Java";
-
         }
     }
 }

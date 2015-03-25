@@ -2,9 +2,9 @@ using T4TemplateWriter.Templates;
 
 namespace T4TemplateWriter.Output
 {
-    public interface IFileWriter
+    public interface IPathWriter
     {
-        void WriteText(Template template, string odcmObject, string output);
+        string WritePath(Template template, string odcmObject);
 
         void CreateDirectory(string directoryPath);
 

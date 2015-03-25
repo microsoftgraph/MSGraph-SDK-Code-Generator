@@ -1,16 +1,14 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Text;
 using T4TemplateWriter.Settings;
 using T4TemplateWriter.Templates;
-using TemplateWriter;
 using Vipr.Core.CodeModel;
 
 namespace T4TemplateWriter.Output
 {
-    public class JavaFileWriter : BaseFileWriter
+    public class JavaPathWriter : BasePathWriter
     {
-        public JavaFileWriter(OdcmModel model, TemplateWriterSettings configuration)
+        public JavaPathWriter(OdcmModel model, TemplateWriterSettings configuration)
             : base(model, configuration)
         {
         }
@@ -20,9 +18,8 @@ namespace T4TemplateWriter.Output
             get { return ".java"; }
         }
 
-        public override void WriteText(Template template, string fileName, string text)
+        public override string WritePath(Template template, string fileName)
         {
-            // var destPath = string.Format("{0}{1}", Path.DirectorySeparatorChar, Configuration.OutputDirectory);
             var destPath = ConfigurationService.Settings.OutputDirectory;
             var @namespace = template.TemplateType == TemplateType.Model ? CreateNamespace(string.Empty).ToLower()
                                                                          : CreateNamespace(template.FolderName).ToLower();
@@ -31,16 +28,13 @@ namespace T4TemplateWriter.Output
             var identifier = FileName(template, fileName);
             var fullPath = Path.Combine(destPath, pathFromNamespace);
 
-            if (!DirectoryExists(fullPath)) {
+            if (!DirectoryExists(fullPath))
+            {
                 CreateDirectory(fullPath);
             }
-            
-            var filePath = Path.Combine(fullPath, string.Format("{0}{1}", identifier, FileExtension));
 
-            using (var writer = new StreamWriter(filePath, false, Encoding.ASCII))
-            {
-                writer.Write(text);
-            }
+            var filePath = Path.Combine(fullPath, string.Format("{0}{1}", identifier, FileExtension));
+            return filePath;
         }
 
         private string CreateNamespace(string folderName)
@@ -53,7 +47,6 @@ namespace T4TemplateWriter.Output
                 return string.IsNullOrEmpty(prefix) ? @namespace
                                                     : string.Format("{0}.{1}", prefix, @namespace);
             }
-
             return string.IsNullOrEmpty(prefix) ? string.Format("{0}.{1}", @namespace, folderName)
                                                 : string.Format("{0}.{1}.{2}", prefix, @namespace, folderName);
         }
@@ -64,9 +57,6 @@ namespace T4TemplateWriter.Output
 
             var destinationPath = splittedPaths.Aggregate(string.Empty, (current, path) =>
                                   current + string.Format("{0}{1}", path, Path.DirectorySeparatorChar));
-
-
-
             return destinationPath;
         }
     }
