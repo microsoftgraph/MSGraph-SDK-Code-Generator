@@ -20,7 +20,7 @@ package <#=model.NamespaceName().ToLower()#>;
 public class <#=entity.Name.ToCheckedCase()#><#=extends#> {
 
     public <#=entity.Name.ToCheckedCase()#>(){
-        setODataType("#<#=entity.Namespace#>.<#=entity.Name#>");
+        setODataType("#<#=model.GetNamespace()#>.<#=entity.Name#>");
     }
 <# 
     foreach(var property in entity.Properties){

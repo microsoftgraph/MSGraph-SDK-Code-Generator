@@ -20,7 +20,7 @@ package <#=model.NamespaceName()#>;
 public class <#=complex.Name.ToCheckedCase()#><#=extends#> {
 
     public <#=complex.Name.ToCheckedCase()#>(){
-        setODataType("#<#=complex.Namespace#>.<#=complex.Name#>");
+        setODataType("#<#=model.GetNamespace()#>.<#=complex.Name#>");
     }
 <# 
     foreach(var property in complex.Properties){
