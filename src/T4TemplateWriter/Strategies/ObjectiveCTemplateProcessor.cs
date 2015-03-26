@@ -11,6 +11,9 @@ namespace T4TemplateWriter.Strategies
 {
     public class ObjectiveCTemplateProcessor : BaseTemplateProcessor
     {
+        // TODO: replace with variable prefix from configuration
+         const string Prefix = "MS";
+
         public ObjectiveCTemplateProcessor(IPathWriter pathWriter, OdcmModel model, string baseFilePath)
             : base(pathWriter, model, baseFilePath)
         {
@@ -39,11 +42,15 @@ namespace T4TemplateWriter.Strategies
                 var errors = LogErrors(host, template);
                 throw new InvalidOperationException(errors);
             }
+            
 
-            //PathWriter.WritePath(template, string.Format("{0}{1}{2}", "MS",
-            //host.Model.EntityContainer.Name, "Client"), output);
+            var filePath = PathWriter.WritePath(template, string.Format("{0}{1}{2}",
+                                Prefix,
+                                host.Model.EntityContainer.Name,
+                                "Client")
+                                );
 
-            return new TextFile("", output).ToIEnumerable();
+            return new TextFile(filePath, output).ToIEnumerable();
         }
 
         protected override IEnumerable<TextFile> ProcessTemplate(Template template, OdcmObject odcmObject)
@@ -58,13 +65,14 @@ namespace T4TemplateWriter.Strategies
                 var errors = LogErrors(host, template);
                 throw new InvalidOperationException(errors);
             }
+           
+            var filePath = PathWriter.WritePath(template, string.Format("{0}{1}{2}",
+                                Prefix,
+                                host.Model.EntityContainer.Name,
+                                odcmObject == null ? template.Name : odcmObject.Name)
+                                );
 
-            PathWriter.WritePath(template, string.Format("{0}{1}{2}", "MS",
-                //TODO: Prefix should be in the configuration
-                host.Model.EntityContainer.Name, odcmObject == null
-                ? template.Name : odcmObject.Name));
-
-            return new TextFile("", output).ToIEnumerable();
+            return new TextFile(filePath, output).ToIEnumerable();
         }
     }
 }

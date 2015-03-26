@@ -19,19 +19,21 @@ namespace T4TemplateWriter.Output
             var identifier = FileName(template, fileName);
             FileExtension = template.ResourceName.Contains("header") ? ".h" : ".m";
 
-            var fullPath = template.FolderName;
-
-            var filePath = Path.Combine(fullPath, string.Format("{0}{1}", identifier, FileExtension));
+            var filePath = Path.Combine(template.FolderName, string.Format("{0}{1}", identifier, FileExtension));
             return filePath;
         }
 
         protected override string FileName(Template template, string identifier)
         {
-            return template.Name.Contains("Entity")
-                ? (template.FolderName == "odata"
-                    ? template.Name.Replace("Entity", identifier)
-                    : identifier)
-                    : identifier;
+            string ret;
+
+            if (template.Name.Contains("Entity") && (template.FolderName == "odata")) {
+                ret = template.Name.Replace("Entity", identifier);
+            } else {
+                ret = identifier;
+            }
+
+            return ret;
         }
     }
 }
