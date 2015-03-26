@@ -1,0 +1,44 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplate.tt"#>
+<#@ output extension="\\" #>
+<#=GetCommentHeader()#>
+<#
+CustomHost host = (CustomHost)Host;
+OdcmModel model = host.Model;
+var entityName = GetPrefix()  + "Client";
+#>
+
+#import "<#=GetPrefix()#>ODataEntities.h"
+
+<#=GetImplementationDoc(GetPrefix() + "Client")#>
+@implementation <#=entityName#>
+
+-(id)initWithUrl:(NSString *)url dependencyResolver:(id<MSODataDependencyResolver>)resolver{
+    return [super initWithUrl:url dependencyResolver:resolver];
+}
+
+<#
+var containerProps = model.EntityContainer.Properties;
+
+foreach(var prop in containerProps)
+{
+	if(prop.IsCollection())
+	{
+#>
+-(<#=prop.Type.GetTypeString()#>CollectionFetcher*) get<#=prop.Name#>{
+	return [[<#=prop.Type.GetTypeString()#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self];
+}
+<#
+	}
+	else
+	{
+#>
+-(<#=prop.Type.GetTypeString()#>Fetcher*) get<#=prop.Name#>{
+	return [[<#=prop.Type.GetTypeString()#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass: [<#=prop.Type.GetTypeString()#> class]];
+}
+
+<#	
+	}
+}
+#>
+@end

@@ -1,0 +1,7 @@
+﻿{
+    "AvailableLanguages": [ "java", "objectivec" ],
+    "TargetLanguage": "java",
+    "Plugins": [ ],
+    "PrimaryNamespaceName": "",
+    "NamespacePrefix": ""
+}

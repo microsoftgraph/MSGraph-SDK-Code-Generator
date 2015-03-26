@@ -1,0 +1,32 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplate.tt"#>
+<#@ output extension="\\" #>
+<#
+CustomHost host = (CustomHost)Host;
+var entity = host.OdcmType.AsOdcmClass();
+var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
+
+#>
+<#=GetCommentHeader()#>
+
+#import "<#=GetPrefix()#>ODataEntities.h"
+
+<#=GetImplementationDoc(entityName)#>
+@implementation <#=entityName#>
+
+-(id)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent;{
+    return [super initWithUrl:urlComponent parent:parent andEntityClass:[<#=GetPrefix() + entity.Name#> class]];
+}
+
+-(NSURLSessionTask*)add<#=entity.Name#>:(<#=GetPrefix() + entity.Name#>*)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *e))callback{
+	
+	return [super add:entity :^(id r, MSODataException *e) {
+        callback(r,e);
+    }];
+}
+
+-(<#=GetPrefix() + entity.Name#>Fetcher*)getById:(NSString *)Id{
+	[super getById:Id];
+    return [[<#=GetPrefix() + entity.Name#>Fetcher alloc] initWithUrl:[[NSString alloc] initWithFormat:@"('%@')" ,Id] parent : self andEntityClass :[<#=GetPrefix() + entity.Name#> class]];
+}
+@end

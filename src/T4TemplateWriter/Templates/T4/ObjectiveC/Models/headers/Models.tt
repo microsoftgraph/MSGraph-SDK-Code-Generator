@@ -1,0 +1,45 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplate.tt"#>
+<#@ output extension=".h" #>
+<#=GetCommentHeader()#>
+<#
+CustomHost host = (CustomHost)Host;
+OdcmModel model = host.Model;
+
+#>
+<#
+		
+var enums = model.GetEnumTypes();
+
+foreach(var e in enums)
+{
+
+#>
+#import "<#=GetPrefix() + e.Name #>.h"
+<#
+
+}
+
+var complexTypes = model.GetComplexTypes();
+
+foreach(var c in complexTypes)
+{
+
+#>
+#import "<#=GetPrefix() + c.Name #>.h"
+<#
+
+}
+
+var entityTypes = model.GetEntityTypes();
+
+foreach(var et in entityTypes)
+{
+		 
+#>
+#import "<#=GetPrefix() + et.Name #>.h"
+<#
+
+}
+
+#>

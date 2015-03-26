@@ -1,0 +1,76 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplate.tt"#>
+<#@ output extension="\\" #>
+<#=GetCommentHeader()#>
+<#
+CustomHost host = (CustomHost)Host;
+
+OdcmModel model = host.Model;
+
+var entity = host.OdcmType.AsOdcmClass();
+var entityName = GetPrefix() + entity.Name;
+
+#>
+
+#import "<#=GetPrefix()#>ODataEntities.h"
+
+@implementation <#=entityName#>Fetcher
+
+-(<#=entityName#>Operations*) getOperations{
+	return [[<#=entityName#>Operations alloc] initOperationWithUrl:self.UrlComponent parent:self.Parent];
+}
+
+-(id)initWithUrl:(NSString*)urlComponent :(id<MSODataExecutable>)parent{
+    self.Parent = parent;
+    self.UrlComponent = urlComponent;
+
+    return [super initWithUrl:urlComponent parent:parent andEntityClass : [<#=entityName#> class]];
+}
+
+-(NSURLSessionTask*) update<#=entity.Name#>:(id)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#>*, MSODataException * error))callback{
+	return [super update:entity : callback];
+}
+
+-(NSURLSessionTask*) delete<#=entity.Name#>:(void (^)(int status, MSODataException * error))callback{
+	return [super delete:callback];
+}
+
+<#
+
+foreach(var prop in entity.NavigationProperties())
+{
+	if(prop.IsCollection())
+	{
+#>
+-(<#=GetPrefix() + prop.Type.Name#>CollectionFetcher*) get<#=prop.Name#>{
+    return [[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass:[<#=GetPrefix() + prop.Type.Name#> class]];
+}
+
+-(id<<#=GetPrefix() + prop.Type.Name#>Fetcher>) get<#=prop.Name#>ById : (NSString*)_id{
+    return [[[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass:[<#=GetPrefix() + prop.Type.Name#> class]] getById:_id];
+}
+<#
+	}
+	else
+	{
+#>
+-(<#=GetPrefix() + prop.Type.Name#>Fetcher*) get<#=prop.Name#>{
+	 return [[<#=GetPrefix() + prop.Type.Name#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass: [<#=GetPrefix() + prop.Type.Name#> class]];
+}
+<#		
+			
+	}
+}
+
+foreach(var child in entity.Derived)
+{
+#>
+-(<#=GetPrefix() + child.Name#>Fetcher*) as<#=child.Name#>{
+	return [[<#=GetPrefix() +child.Name#>Fetcher alloc] initWithUrl :self.UrlComponent parent:self.Parent andEntityClass:[<#=GetPrefix() + child.Name#> class]];
+}
+<#
+
+}
+#>
+
+@end
