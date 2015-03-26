@@ -78,7 +78,7 @@ public class <#=entity.Name.ToCheckedCase()#>Fetcher extends <#=className#><<#=e
      * @return the <#=prop.Name.SplitCamelCase().ToLower()#>
      */
     public ODataCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations> get<#=prop.Name.ToCheckedCase()#>() {
-        return new ODataCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations>("<#=prop.Name.ToCheckedCase()#>", this, <#=prop.Type.Name.ToCheckedCase()#>.class, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations.class);
+        return new ODataCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToCheckedCase()#>.class, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations.class);
     }
 
     /**
@@ -87,7 +87,7 @@ public class <#=entity.Name.ToCheckedCase()#>Fetcher extends <#=className#><<#=e
      * @return the <#=prop.Name.ToCheckedCase().SplitCamelCase().ToLower().Singularize()#>
      */
     public <#=prop.Type.Name.ToCheckedCase()#>Fetcher get<#=prop.Name.ToCheckedCase().Singularize()#>(String id){
-         return new ODataCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations>("<#=prop.Name.ToCheckedCase()#>", this, <#=prop.Type.Name.ToCheckedCase()#>.class, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations.class).getById(id);
+         return new ODataCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToCheckedCase()#>.class, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations.class).getById(id);
     }
 <#
     }else{
@@ -98,7 +98,7 @@ public class <#=entity.Name.ToCheckedCase()#>Fetcher extends <#=className#><<#=e
      * @return the <#=prop.Name.ToCheckedCase().SplitCamelCase().ToLower()#>
      */
     public <#=prop.Type.Name.ToCheckedCase()#>Fetcher get<#=prop.Name.ToCheckedCase().Singularize()#>() {
-        return new <#=prop.Type.Name.ToCheckedCase()#>Fetcher("<#=prop.Name.ToCheckedCase()#>", this);
+        return new <#=prop.Type.Name.ToCheckedCase()#>Fetcher("<#=prop.Name#>", this);
     }
 <#             
 }
