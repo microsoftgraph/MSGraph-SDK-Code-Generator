@@ -1,4 +1,7 @@
-﻿using System.IO;
+# Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+# Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+
+using System.IO;
 using System.Linq;
 using T4TemplateWriter.Settings;
 using T4TemplateWriter.Templates;
@@ -32,7 +35,7 @@ namespace T4TemplateWriter.Output
             var filePath = Path.Combine(pathFromNamespace, string.Format("{0}{1}", identifier, FileExtension));
             return filePath;
         }
-        
+
         private string CreateNamespace(string folderName)
         {
             var @namespace = Model.GetNamespace();

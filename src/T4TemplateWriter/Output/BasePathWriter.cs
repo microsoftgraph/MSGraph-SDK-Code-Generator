@@ -1,4 +1,7 @@
-﻿using System.IO;
+# Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+# Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+
+using System.IO;
 using T4TemplateWriter.Settings;
 using T4TemplateWriter.Templates;
 using Vipr.Core.CodeModel;

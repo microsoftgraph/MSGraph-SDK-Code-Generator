@@ -1,4 +1,7 @@
-﻿using Moq;
+# Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+# Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+
+using Moq;
 using T4TemplateWriter;
 using T4TemplateWriter.Templates;
 using Xunit;

@@ -1,4 +1,7 @@
-﻿using System;
+# Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+# Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+
+using System;
 using Vipr.Core.CodeModel;
 
 namespace T4TemplateWriter.Helpers.ObjectiveC
@@ -71,7 +74,7 @@ namespace T4TemplateWriter.Helpers.ObjectiveC
 		{
 			string result;
 			if (property.IsCollection)
-				result = !property.IsSystem() && property.GetTypeString() != "NSData" ? 
+				result = !property.IsSystem() && property.GetTypeString() != "NSData" ?
 					string.Format("NSMutableArray<{0}>", property.GetTypeString()) : "NSMutableArray";
 			else
 				result = property.GetTypeString();

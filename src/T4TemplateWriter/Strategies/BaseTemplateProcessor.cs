@@ -1,4 +1,7 @@
-﻿using System;
+# Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+# Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
