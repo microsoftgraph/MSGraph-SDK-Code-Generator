@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+# Licensed under the MIT License. See LICENSE in the source repository root for license information.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +28,7 @@ namespace T4TemplateWriter
             _tempLocationFileWriter = tempLocationFileWriter;
             _processors = new Dictionary<string, Func<OdcmModel, TemplateWriterSettings, string, ITemplateProcessor>>
             {
-                {"java", (model, config, baseFilePath) => 
+                {"java", (model, config, baseFilePath) =>
                     new JavaTemplateProcessor(new JavaPathWriter(model, config), model, baseFilePath)},
                 {"objectivec", (model, config ,baseFilePath) =>
 		 			new ObjectiveCTemplateProcessor(new ObjectiveCPathWriter(model, config), model, baseFilePath )}

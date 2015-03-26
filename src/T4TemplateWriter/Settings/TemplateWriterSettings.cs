@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+# Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+# Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+
+using System.Collections.Generic;
 
 namespace T4TemplateWriter.Settings
 {
-    public class TemplateWriterSettings 
+    public class TemplateWriterSettings
     {
         //TODO: Differentiate between Java and Obj-C
         public TemplateWriterSettings() {
@@ -22,7 +25,7 @@ namespace T4TemplateWriter.Settings
         /// The code language to be targeted by this template writer instance.
         /// </summary>
         public string TargetLanguage { get; set; }
-		
+
 		public IList<string> Plugins { get; set; }
 
         public string PrimaryNamespaceName { get; set; }

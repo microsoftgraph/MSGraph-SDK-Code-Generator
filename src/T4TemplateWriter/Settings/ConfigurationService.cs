@@ -1,4 +1,7 @@
-﻿using Vipr.Core;
+# Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+# Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+
+using Vipr.Core;
 
 namespace T4TemplateWriter.Settings
 {

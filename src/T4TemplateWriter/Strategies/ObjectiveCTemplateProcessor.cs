@@ -1,4 +1,7 @@
-﻿using System;
+# Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+# Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using T4TemplateWriter.Extensions;
@@ -42,7 +45,7 @@ namespace T4TemplateWriter.Strategies
                 var errors = LogErrors(host, template);
                 throw new InvalidOperationException(errors);
             }
-            
+
 
             var filePath = PathWriter.WritePath(template, string.Format("{0}{1}{2}",
                                 Prefix,
@@ -65,7 +68,7 @@ namespace T4TemplateWriter.Strategies
                 var errors = LogErrors(host, template);
                 throw new InvalidOperationException(errors);
             }
-           
+
             var filePath = PathWriter.WritePath(template, string.Format("{0}{1}{2}",
                                 Prefix,
                                 host.Model.EntityContainer.Name,

@@ -1,4 +1,7 @@
-﻿using System;
+# Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+# Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -10,9 +13,9 @@ using Vipr.Core.CodeModel;
 
 namespace T4TemplateWriter
 {
-    //The text template transformation engine is responsible for running 
+    //The text template transformation engine is responsible for running
     //the transformation process.
-    //The host is responsible for all input and output, locating files, 
+    //The host is responsible for all input and output, locating files,
     //and anything else related to the external environment.
     //-------------------------------------------------------------------------
     public class CustomHost : ITextTemplatingEngineHost
@@ -68,7 +71,7 @@ namespace T4TemplateWriter
 
         //These are the errors that occur when the engine processes a template.
         //The engine passes the errors to the host when it is done processing,
-        //and the host can decide how to display them. For example, the host 
+        //and the host can decide how to display them. For example, the host
         //can display the errors in the UI or write them to a file.
         //---------------------------------------------------------------------
         public CompilerErrorCollection Errors
@@ -86,7 +89,7 @@ namespace T4TemplateWriter
                     typeof(IDynamicMetaObjectProvider).Assembly.Location,
                     typeof(ITextTemplatingEngineHost).Assembly.Location,
                     typeof(OdcmClass).Assembly.Location,
-                    typeof(CustomHost).Assembly.Location 
+                    typeof(CustomHost).Assembly.Location
         };
 
 
@@ -109,7 +112,7 @@ namespace T4TemplateWriter
         }
 
         //The host can provide standard imports or using statements.
-        //The engine will add these statements to the generated 
+        //The engine will add these statements to the generated
         //transformation class.
         //--------------------------------------------------------------
         public IList<string> StandardImports
@@ -172,10 +175,10 @@ namespace T4TemplateWriter
                 // Path.Combine(Directory.GetCurrentDirectory(), string.Format(BaseTemplateDirPattern, Language));
         }
 
-        //Called by the Engine to enquire about 
-        //the processing options you require. 
-        //If you recognize that option, return an 
-        //appropriate value. 
+        //Called by the Engine to enquire about
+        //the processing options you require.
+        //If you recognize that option, return an
+        //appropriate value.
         //Otherwise, pass back NULL.
         //--------------------------------------------------------------------
         public object GetHostOption(string optionName)
@@ -195,7 +198,7 @@ namespace T4TemplateWriter
         }
 
         //The engine calls this method to resolve assembly references used in
-        //the generated transformation class project and for the optional 
+        //the generated transformation class project and for the optional
         //assembly directive if the user has specified it in the text template.
         //This method can be called 0, 1, or more times.
         //---------------------------------------------------------------------
@@ -208,7 +211,7 @@ namespace T4TemplateWriter
             {
                 return assemblyReference;
             }
-            //Maybe the assembly is in the same folder as the text template that 
+            //Maybe the assembly is in the same folder as the text template that
             //called the directive.
             //----------------------------------------------------------------
             string candidate = Path.Combine(Path.GetDirectoryName(TemplateFile), assemblyReference);
@@ -227,14 +230,14 @@ namespace T4TemplateWriter
             return string.Empty;
         }
 
-        //The engine calls this method based on the directives the user has 
+        //The engine calls this method based on the directives the user has
         //specified in the text template.
         //This method can be called 0, 1, or more times.
         //---------------------------------------------------------------------
         public Type ResolveDirectiveProcessor(string processorName)
         {
             //This host will not resolve any specific processors.
-            //Check the processor name, and if it is the name of a processor the 
+            //Check the processor name, and if it is the name of a processor the
             //host wants to support, return the type of the processor.
             //---------------------------------------------------------------------
 
@@ -246,9 +249,9 @@ namespace T4TemplateWriter
             //throw new Exception("Directive Processor not found");
         }
 
-        //A directive processor can call this method if a file name does not 
+        //A directive processor can call this method if a file name does not
         //have a path.
-        //The host can attempt to provide path information by searching 
+        //The host can attempt to provide path information by searching
         //specific paths for the file and returning the file and path if found.
         //This method can be called 0, 1, or more times.
         //---------------------------------------------------------------------
@@ -265,7 +268,7 @@ namespace T4TemplateWriter
             {
                 return fileName;
             }
-            //Maybe the file is in the same folder as the text template that 
+            //Maybe the file is in the same folder as the text template that
             //called the directive.
             //----------------------------------------------------------------
             string candidate = Path.Combine(Path.GetDirectoryName(TemplateFile), fileName);
@@ -305,8 +308,8 @@ namespace T4TemplateWriter
             return String.Empty;
         }
 
-        //The engine calls this method to change the extension of the 
-        //generated text output file based on the optional output directive 
+        //The engine calls this method to change the extension of the
+        //generated text output file based on the optional output directive
         //if the user specifies it in the text template.
         //---------------------------------------------------------------------
         public void SetFileExtension(string extension)
@@ -314,8 +317,8 @@ namespace T4TemplateWriter
             FileExtension = extension;
         }
 
-        //The engine calls this method to change the encoding of the 
-        //generated text output file based on the optional output directive 
+        //The engine calls this method to change the encoding of the
+        //generated text output file based on the optional output directive
         //if the user specifies it in the text template.
         //----------------------------------------------------------------------
         public void SetOutputEncoding(Encoding encoding, bool fromOutputDirective)
@@ -337,17 +340,17 @@ namespace T4TemplateWriter
         //----------------------------------------------------------------------
         public AppDomain ProvideTemplatingAppDomain(string content)
         {
-            //This host will provide a new application domain each time the 
+            //This host will provide a new application domain each time the
             //engine processes a text template.
             //-------------------------------------------------------------
             return AppDomain.CurrentDomain;//.CreateDomain("Generation App Domain");
-            //This could be changed to return the current appdomain, but new 
+            //This could be changed to return the current appdomain, but new
             //assemblies are loaded into this AppDomain on a regular basis.
-            //If the AppDomain lasts too long, it will grow indefintely, 
+            //If the AppDomain lasts too long, it will grow indefintely,
             //which might be regarded as a leak.
-            //This could be customized to cache the application domain for 
+            //This could be customized to cache the application domain for
             //a certain number of text template generations (for example, 10).
-            //This could be customized based on the contents of the text 
+            //This could be customized based on the contents of the text
             //template, which are provided as a parameter for that purpose.
         }
     }

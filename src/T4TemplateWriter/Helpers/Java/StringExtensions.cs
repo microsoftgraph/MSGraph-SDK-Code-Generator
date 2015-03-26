@@ -1,4 +1,7 @@
-﻿using System.Text.RegularExpressions;
+# Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+# Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+
+using System.Text.RegularExpressions;
 
 namespace T4TemplateWriter.Helpers.Java
 {
