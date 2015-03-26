@@ -1,6 +1,6 @@
 ﻿{
     "AvailableLanguages": [ "java", "objectivec" ],
-    "TargetLanguage": "objectivec",
+    "TargetLanguage": "java",
     "Plugins": [ ],
     "PrimaryNamespaceName": "oneDrive",
     "NamespacePrefix": "com"
