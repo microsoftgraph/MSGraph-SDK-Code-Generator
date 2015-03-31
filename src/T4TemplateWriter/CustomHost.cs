@@ -129,6 +129,7 @@ namespace T4TemplateWriter
                     "Vipr.Core.CodeModel",
                     "T4TemplateWriter",
                     "T4TemplateWriter.Extensions",
+                    "T4TemplateWriter.Settings",
                     "T4TemplateWriter.Helpers." + Language,
                 };
             }

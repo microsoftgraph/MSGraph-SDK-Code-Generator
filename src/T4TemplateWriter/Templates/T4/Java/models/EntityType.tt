@@ -6,6 +6,7 @@
 CustomHost host = (CustomHost)Host;
 OdcmModel model = host.Model;
 OdcmClass entity = host.OdcmType.AsOdcmClass();
+TemplateWriterSettings settings = ConfigurationService.Settings;
 
 #>
 <#=GetCommentHeader()#>
@@ -31,7 +32,16 @@ public class <#=entity.Name.ToCheckedCase()#><#=extends#> {
     if (property.IsCollection) {
     #>
 
+    <# if (settings.InitializeCollections) { #>
+
     private <#=propertyType#> <#=property.GetSanitizedPropertyName()#> = <#=newType#>
+    
+    <# } else { #>
+    
+    private <#=propertyType#> <#=property.GetSanitizedPropertyName()#> = null;
+    
+    <#}#>
+
     <#}else{#>
         
     private <#=propertyType#> <#=property.GetSanitizedPropertyName()#>;

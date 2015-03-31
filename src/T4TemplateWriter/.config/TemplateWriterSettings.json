@@ -3,5 +3,7 @@
     "TargetLanguage": "java",
     "Plugins": [ ],
     "PrimaryNamespaceName": "oneDrive",
-    "NamespacePrefix": "com"
+    "NamespacePrefix": "com",
+    "InitializeCollections" : "true",
+    "MediaEntityImplementation" : "default"
 }
