@@ -4,6 +4,6 @@
     "Plugins": [ ],
     "PrimaryNamespaceName": "oneDrive",
     "NamespacePrefix": "com",
-    "InitializeCollections" : "true",
-    "MediaEntityImplementation" : "default"
+    "InitializeCollections": "true",
+    "AllowShortActions": "false"
 }

@@ -16,7 +16,6 @@ namespace T4TemplateWriter.Settings
             NamespacePrefix = "com";
             Plugins = new List<string>();
             InitializeCollections = true;
-            MediaEntityImplementation = "default";
         }
 
         /// <summary>
@@ -37,6 +36,6 @@ namespace T4TemplateWriter.Settings
 
         public bool InitializeCollections { get; set; }
 
-        public string MediaEntityImplementation { get; set; }
+        public bool AllowShortActions { get; set; }
     }
 }

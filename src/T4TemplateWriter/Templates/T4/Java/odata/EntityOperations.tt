@@ -6,6 +6,8 @@
 CustomHost host = (CustomHost)Host;
 OdcmModel model = host.Model;
 OdcmClass entity = host.OdcmType.AsOdcmClass();
+TemplateWriterSettings settings = ConfigurationService.Settings;
+
 
 var baseOperation = entity.Base == null ? "extends ODataOperations" : "extends " + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "Operations";
 #>
@@ -112,6 +114,11 @@ public class <#=entity.Name.ToCheckedCase()#>Operations <#=baseOperation#> {
         request.setVerb(HttpVerb.POST);
         request.setContent(serializeToJsonByteArray(map, getResolver()));
         String parameters = getFunctionParameters(map);
+         <# if (settings.AllowShortActions) { #>
+        request.getUrl().appendPathComponent("<#= someAction.Name #>(" + parameters + ")");   
+        <# } else { #>
+        request.getUrl().appendPathComponent("<#= someAction.FullName #>(" + parameters + ")");   
+        <#}#>
         request.getUrl().appendPathComponent("<#= someAction.Name #>(" + parameters + ")");   
         ListenableFuture<ODataResponse> future = oDataExecute(request);   
         <# if (someAction.ReturnType.GetTypeString() == "byte[]")
@@ -167,10 +174,16 @@ JsonSerializer serializer = getResolver().getJsonSerializer();<#}#>
 
         request.setContent(getResolver().getJsonSerializer()
                .jsonObjectFromJsonMap(map).getBytes(Constants.UTF8));
-
+        <#}#>
+        <# if (settings.AllowShortActions) { #>
+        
+        request.getUrl().appendPathComponent("<#= someAction.Name#>");
+        
+        <# } else { #>
+        
+        request.getUrl().appendPathComponent("<#= someAction.FullName#>");
         <#}#>
 
-        request.getUrl().appendPathComponent("<#= someAction.Name#>");
         ListenableFuture<ODataResponse> future = oDataExecute(request);
         return transformToStringListenableFuture(future);
     }
