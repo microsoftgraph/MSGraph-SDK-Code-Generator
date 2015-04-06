@@ -1,4 +1,4 @@
-[submodule "vipr"]
+[submodule "submodules/vipr"]
 	path = submodules/vipr
 	url = https://github.com/msopentech/vipr
 	branch = int-msot

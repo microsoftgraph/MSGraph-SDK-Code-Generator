@@ -13,6 +13,11 @@ namespace T4TemplateWriter.Extensions
             return source.IndexOf(compare, comparison) >= 0;
         }
 
+        public static bool ToBoolean(this string source)
+        {
+            return Boolean.Parse(source);
+        }
+
         public static string ToCheckedCase(this string input)
         {
             var output = input.Substring(0, 1).ToUpper() + input.Substring(1);
