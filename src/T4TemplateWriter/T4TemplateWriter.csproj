@@ -133,9 +133,9 @@
       <Name>Vipr</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\submodules\vipr\src\Readers\ODataReader.v4\ODataReader.v4.csproj">
+    <ProjectReference Include="..\..\submodules\vipr\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj">
       <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>
-      <Name>ODataReader.v4</Name>
+      <Name>Vipr.Reader.OData.v4</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
