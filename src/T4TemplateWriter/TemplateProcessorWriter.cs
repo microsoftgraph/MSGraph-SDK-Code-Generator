@@ -40,9 +40,8 @@ namespace T4TemplateWriter
             ConfigurationService.Initialize(configurationProvider);
         }
 
-        TextFileCollection ProcessTemplates(OdcmModel model)
+        IEnumerable<TextFile> ProcessTemplates(OdcmModel model)
         {
-            var fileCollection = new TextFileCollection();
             var runnableTemplates = _tempLocationFileWriter.WriteUsing(typeof(CustomHost), ConfigurationService.Settings)
                                                .Where(x => !x.IsBase &&
                                                             x.IsForLanguage(ConfigurationService.Settings.TargetLanguage));
@@ -53,12 +52,10 @@ namespace T4TemplateWriter
             var processor = _processors[ConfigurationService.Settings.TargetLanguage]
                                 .Invoke(model, ConfigurationService.Settings, baseTemplate.Path);
 
-            var textFiles = runnableTemplates.SelectMany(template => processor.Process(template));
-            fileCollection.AddRange(textFiles);
-            return fileCollection;
+            return runnableTemplates.SelectMany(template => processor.Process(template));
         }
 
-        public TextFileCollection GenerateProxy(OdcmModel model)
+        public IEnumerable<TextFile> GenerateProxy(OdcmModel model)
         {
             return ProcessTemplates(model);
         }

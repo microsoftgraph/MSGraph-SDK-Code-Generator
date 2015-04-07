@@ -2,6 +2,8 @@
     "AvailableLanguages": [ "java", "objectivec" ],
     "TargetLanguage": "java",
     "Plugins": [ ],
-    "PrimaryNamespaceName": "",
-    "NamespacePrefix": ""
+    "PrimaryNamespaceName": "oneDrive",
+    "NamespacePrefix": "com",
+    "InitializeCollections": "true",
+    "AllowShortActions": "false"
 }
