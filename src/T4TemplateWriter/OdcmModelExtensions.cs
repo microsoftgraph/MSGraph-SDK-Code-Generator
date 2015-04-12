@@ -67,9 +67,15 @@ namespace T4TemplateWriter
         public static IEnumerable<OdcmProperty> WhereIsNavigation(this IEnumerable<OdcmProperty> odcmProperties,
             bool isNavigation = true)
         {
+<<<<<<< HEAD
             return odcmProperties.Where(p => isNavigation == (p.Type is OdcmClass 
                                                              && ((((OdcmClass) p.Type).Kind == OdcmClassKind.Entity)
                                                               || (((OdcmClass) p.Type).Kind == OdcmClassKind.MediaEntity))));
+=======
+            return odcmProperties.Where(p => isNavigation == (p.Type is OdcmClass
+                                                              && ((((OdcmClass)p.Type).Kind == OdcmClassKind.Entity)
+                                                              || (((OdcmClass)p.Type).Kind == OdcmClassKind.MediaEntity))));
+>>>>>>> fixing invalid cast for media entities nav props
         }
 
 
