@@ -21,14 +21,14 @@ var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
 @optional
 -(NSURLSessionTask*)read:(void (^)(NSArray<<#=GetPrefix() + entity.Name#>> *<#=entity.Name.ToLowerFirstChar()#>s, MSODataException *error))callback;
 
--(id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)select : (NSString*) params;
--(id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)filter : (NSString*) params;
--(id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)top : (int) value;
--(id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)skip : (int) value;
--(id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)expand : (NSString*) value;
--(id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)orderBy : (NSString*) params;
--(id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)addCustomParameters : (NSString*)name : (id)value;
--(id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)addCustomHeaderWithName : (NSString*)name andValue : (NSString*) value;
+- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)select:(NSString *)params;
+- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)filter:(NSString *)params;
+- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)top:(int)value;
+- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)skip:(int)value;
+- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)expand:(NSString *)value;
+- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)orderBy:(NSString *)params;
+- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)addCustomParameters:(NSString *)name:(id)value;
+- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)addCustomHeaderWithName : (NSString*)name andValue : (NSString*) value;
 
 @required
 

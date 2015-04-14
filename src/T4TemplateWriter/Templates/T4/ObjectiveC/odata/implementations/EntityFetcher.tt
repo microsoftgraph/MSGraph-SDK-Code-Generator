@@ -16,23 +16,27 @@ var entityName = GetPrefix() + entity.Name;
 
 @implementation <#=entityName#>Fetcher
 
--(<#=entityName#>Operations*) getOperations{
-	return [[<#=entityName#>Operations alloc] initOperationWithUrl:self.UrlComponent parent:self.Parent];
+@synthesize parent = _parent;
+@synthesize operations = _operations;
+@synthesize urlComponent = _urlComponent;
+
+- (instancetype)initWithUrl:(NSString *)urlComponent andParent:(id<MSODataExecutable>)parent {
+
+    self = [super initWithUrl:urlComponent parent:parent andEntityClass:[<#=entityName#> class]];
+
+    _operations = [[<#=entityName#>Operations alloc] initOperationWithUrl:_urlComponent parent:_parent];
+    
+    return self;
 }
 
--(id)initWithUrl:(NSString*)urlComponent :(id<MSODataExecutable>)parent{
-    self.Parent = parent;
-    self.UrlComponent = urlComponent;
+- (NSURLSessionTask *)update<#=entity.Name#>:(id)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *exception))callback {
 
-    return [super initWithUrl:urlComponent parent:parent andEntityClass : [<#=entityName#> class]];
+	return [super updateEntity:entity withCallback:callback];
 }
 
--(NSURLSessionTask*) update<#=entity.Name#>:(id)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#>*, MSODataException * error))callback{
-	return [super update:entity : callback];
-}
+- (NSURLSessionTask *)delete<#=entity.Name#>:(void (^)(int status, MSODataException *exception))callback {
 
--(NSURLSessionTask*) delete<#=entity.Name#>:(void (^)(int status, MSODataException * error))callback{
-	return [super delete:callback];
+	return [super deleteWithCallback:callback];
 }
 
 <#
@@ -42,11 +46,13 @@ foreach(var prop in entity.NavigationProperties())
 	if(prop.IsCollection())
 	{
 #>
--(<#=GetPrefix() + prop.Type.Name#>CollectionFetcher*) get<#=prop.Name#>{
+- (<#=GetPrefix() + prop.Type.Name#>CollectionFetcher *)get<#=prop.Name#> {
+
     return [[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass:[<#=GetPrefix() + prop.Type.Name#> class]];
 }
 
--(id<<#=GetPrefix() + prop.Type.Name#>Fetcher>) get<#=prop.Name#>ById : (NSString*)_id{
+- (id<<#=GetPrefix() + prop.Type.Name#>Fetcher>)get<#=prop.Name#>ById:(NSString *)_id {
+
     return [[[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass:[<#=GetPrefix() + prop.Type.Name#> class]] getById:_id];
 }
 <#
@@ -54,8 +60,8 @@ foreach(var prop in entity.NavigationProperties())
 	else
 	{
 #>
--(<#=GetPrefix() + prop.Type.Name#>Fetcher*) get<#=prop.Name#>{
-	 return [[<#=GetPrefix() + prop.Type.Name#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass: [<#=GetPrefix() + prop.Type.Name#> class]];
+- (<#=GetPrefix() + prop.Type.Name#>Fetcher *) get<#=prop.Name#> {
+	 return [[<#=GetPrefix() + prop.Type.Name#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass:[<#=GetPrefix() + prop.Type.Name#> class]];
 }
 <#		
 			
@@ -65,8 +71,9 @@ foreach(var prop in entity.NavigationProperties())
 foreach(var child in entity.Derived)
 {
 #>
--(<#=GetPrefix() + child.Name#>Fetcher*) as<#=child.Name#>{
-	return [[<#=GetPrefix() +child.Name#>Fetcher alloc] initWithUrl :self.UrlComponent parent:self.Parent andEntityClass:[<#=GetPrefix() + child.Name#> class]];
+- (<#=GetPrefix() + child.Name#>Fetcher *)as<#=child.Name#> {
+
+	return [[<#=GetPrefix() +child.Name#>Fetcher alloc] initWithUrl:self.UrlComponent parent:self.Parent andEntityClass:[<#=GetPrefix() + child.Name#> class]];
 }
 <#
 

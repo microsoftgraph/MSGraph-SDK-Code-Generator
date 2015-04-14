@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, <#=GetPrefix() + entity.Name #>){
 for(var i=1; i <= entity.Members.Count; i++)
 {
 
-string value = entity.Members[i -1].Name + (i == entity.Members.Count ? string.Empty : ",");
+string value =GetPrefix() + entity.Name + entity.Members[i -1].Name + (i == entity.Members.Count ? string.Empty : ",");
 
 #>
 	<#= value#>

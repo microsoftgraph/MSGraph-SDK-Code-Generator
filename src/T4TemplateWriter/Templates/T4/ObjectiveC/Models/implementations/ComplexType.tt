@@ -13,8 +13,10 @@ var entity = host.OdcmType.AsOdcmClass();
 <#=GetImplementationDoc(entity.Name)#>
 @implementation <#=GetPrefix() + entity.Name#>	
 
+@synthesize odataType = _odataType;
+
 -(id)init{
-	self.$$__ODataType = @"#<#=entity.FullName#>";
+	_odataType = @"#<#=entity.FullName#>";
 	return self;
 }
 

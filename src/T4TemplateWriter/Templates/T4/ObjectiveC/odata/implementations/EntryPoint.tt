@@ -13,8 +13,9 @@ var entityName = GetPrefix()  + "Client";
 <#=GetImplementationDoc(GetPrefix() + "Client")#>
 @implementation <#=entityName#>
 
--(id)initWithUrl:(NSString *)url dependencyResolver:(id<MSODataDependencyResolver>)resolver{
-    return [super initWithUrl:url dependencyResolver:resolver];
+- (instancetype)initWithUrl:(NSString *)url dependencyResolver:(id<MSODataDependencyResolver>)resolver {
+
+    return [super initWithUrl:url andDependencyResolver:resolver];
 }
 
 <#
@@ -25,16 +26,18 @@ foreach(var prop in containerProps)
 	if(prop.IsCollection())
 	{
 #>
--(<#=prop.Type.GetTypeString()#>CollectionFetcher*) get<#=prop.Name#>{
-	return [[<#=prop.Type.GetTypeString()#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self];
+- (<#=prop.Type.GetTypeString()#>CollectionFetcher *) get<#=prop.Name#> {
+
+	return [[<#=prop.Type.GetTypeString()#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>"parent:self];
 }
 <#
 	}
 	else
 	{
 #>
--(<#=prop.Type.GetTypeString()#>Fetcher*) get<#=prop.Name#>{
-	return [[<#=prop.Type.GetTypeString()#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self andEntityClass: [<#=prop.Type.GetTypeString()#> class]];
+- (<#=prop.Type.GetTypeString()#>Fetcher *) get<#=prop.Name#> {
+
+	return [[<#=prop.Type.GetTypeString()#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>"parent:self andEntityClass:[<#=prop.Type.GetTypeString()#> class]];
 }
 
 <#	
