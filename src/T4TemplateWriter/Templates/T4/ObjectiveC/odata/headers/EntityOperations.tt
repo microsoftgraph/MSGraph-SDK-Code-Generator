@@ -23,7 +23,7 @@ string baseEntity = entity.Base == null ? "MSODataOperations"
 <#=GetHeaderDoc(entityName)#>
 @interface <#=entityName#> : <#=baseEntity#>
 
--(id)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent;
+- (instancetype)initWithUrl:(NSString *)urlComponent andParent:(id<MSODataExecutable>)parent;
 
 <#
 if(entity.HasActions())
@@ -34,7 +34,7 @@ if(entity.HasActions())
 		{
 
 #>
-<#=GetMethodHeader(action)#>
+<#=GetMethodHeader(action)#>;
 <#				
 
 		}
@@ -43,7 +43,7 @@ if(entity.HasActions())
 		{
 
 #>
-<#=GetMethodHeaderRaw(action)#>
+<#=GetMethodHeaderRaw(action)#>;
 <#
 
 		}

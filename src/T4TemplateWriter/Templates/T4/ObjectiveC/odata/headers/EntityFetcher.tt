@@ -53,7 +53,7 @@ foreach(var propertyClass in clasess)
 
 @optional
 - (NSURLSessionTask *) readWithCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *exception))callback;
-- (id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomParametersWithName:(NSString *)name andValue:(id)value;
+- (id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomParameters:(NSString *)name withValue:(id)value;
 - (id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomHeaderWithName:(NSString *)name andValue:(NSString *)value;
 - (id<<#=GetPrefix() + entity.Name#>Fetcher>)select:(NSString *)params;
 - (id<<#=GetPrefix() + entity.Name#>Fetcher>)expand:(NSString *)value;

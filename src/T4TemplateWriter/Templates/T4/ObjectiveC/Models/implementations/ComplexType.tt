@@ -14,9 +14,20 @@ var entity = host.OdcmType.AsOdcmClass();
 @implementation <#=GetPrefix() + entity.Name#>	
 
 @synthesize odataType = _odataType;
+<#
+foreach(var prop in entity.Properties)
+{
+	var propertyName = prop.IsEnum() ? GetPrefix() +  GetName(prop.Name) : prop.Name;
+#>
+@synthesize <#=propertyName#> = _<#=propertyName#>;
+<#
+}
+#>
 
--(id)init{
-	_odataType = @"#<#=entity.FullName#>";
+- (instancetype)init {
+
+	_odataType = @"#<#=entity.Namespace#>.<#=entity.Name#>";
+	
 	return self;
 }
 

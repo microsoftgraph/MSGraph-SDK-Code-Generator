@@ -35,7 +35,7 @@ foreach(var propertyClass in clasess)
 <#=GetHeaderDoc(entityName)#>
 @interface <#=entityName#> : MSODataBaseContainer
 
--(id)initWithUrl : (NSString *)url  dependencyResolver : (id<MSODataDependencyResolver>) resolver;
+- (instancetype)initWithUrl:(NSString *)url  dependencyResolver:(id<MSODataDependencyResolver>)resolver;
 <#
 
 foreach(var prop in containerProps)

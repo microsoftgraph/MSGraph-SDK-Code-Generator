@@ -14,7 +14,7 @@ var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
 <#=GetImplementationDoc(entityName)#>
 @implementation <#=entityName#>
 
-- (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent {
+- (instancetype)initWithUrl:(NSString *)urlComponent andParent:(id<MSODataExecutable>)parent {
 
     return [super initWithUrl:urlComponent parent:parent andEntityClass:[<#=GetPrefix() + entity.Name#> class]];
 }

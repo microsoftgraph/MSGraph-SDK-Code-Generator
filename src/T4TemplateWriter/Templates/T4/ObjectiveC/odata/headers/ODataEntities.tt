@@ -13,6 +13,7 @@ foreach(var et in entityTypes)
 {
 
 #>
+
 #import "<#=GetPrefix() + et.Name #>CollectionFetcher.h"
 #import "<#=GetPrefix() + et.Name #>CollectionOperations.h"
 #import "<#=GetPrefix() + et.Name #>Fetcher.h"

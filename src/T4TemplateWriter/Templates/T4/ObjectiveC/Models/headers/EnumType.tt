@@ -7,6 +7,7 @@ CustomHost host = (CustomHost)Host;
 var entity = host.OdcmType.AsOdcmEnum();
 
 #>
+#import <Foundation/Foundation.h>
 
 @interface NSObject ()
 

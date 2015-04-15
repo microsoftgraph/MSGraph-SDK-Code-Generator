@@ -15,7 +15,6 @@ var entity = host.OdcmType.AsOdcmClass();
 
 if(entity.Base == null)
 {
-
 #>
 @property (copy, nonatomic, readonly) NSString *odataType;
 <#
@@ -33,7 +32,7 @@ foreach(var prop in entity.Properties)
 	}
 	else
 	{
-	var propertyType = prop.IsComplex() ? "(copy, nonatomic) " + "(nonatomic) ";
+	var propertyType = prop.IsComplex() ? "(copy, nonatomic) " : "(nonatomic) ";
 #>
 @property <#=propertyType + prop.ToPropertyString()#>;
 <#			

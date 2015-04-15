@@ -15,12 +15,11 @@ var entity = host.OdcmType.AsOdcmClass();
 
 @synthesize odataType = _odataType;
 <#
-<#
 foreach(var prop in entity.Properties)
 {
-	var propertyName = GetPrefix() +  GetName(prop.Name);
+	var propertyName = prop.IsEnum() ? GetPrefix() +  GetName(prop.Name) : prop.Name;
 #>
-@synthesize <#= propertyName#> = _<#= propertyName#>;
+@synthesize <#=propertyName#> = _<#=propertyName#>;
 <#
 }
 #>
@@ -39,7 +38,7 @@ foreach(var prop in entity.Properties)
 
 		var enumProp = host.Model.GetEnumTypes().First(e=> e.Name == prop.Type.Name);
 #>
-- (void)set<#=prop.Name#>String:(NSString *)value {
+- (void)set<#=GetPrefix() + prop.Name#>String:(NSString *)value {
 <#
 		for(var i=1; i <= enumProp.Members.Count; i++)
 		{
@@ -48,7 +47,7 @@ foreach(var prop in entity.Properties)
 
 #>
 	if([value isEqualToString:@"<#=value#>"]){
-		_<#=prop.Name#> = <#=value#>;
+		_<#=GetPrefix() + prop.Name#> = <#=value#>;
 	}
 <#
 		}

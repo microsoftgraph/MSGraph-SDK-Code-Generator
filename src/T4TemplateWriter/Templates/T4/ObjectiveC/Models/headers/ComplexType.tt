@@ -32,9 +32,8 @@ foreach(var prop in entity.Properties)
 	}
 	else
 	{
-		var propertyType = prop.IsComplex() ? "(copy, nonatomic) " + "(nonatomic) ";
+		var propertyType = prop.IsComplex() ? "(copy, nonatomic) " : "(nonatomic) ";
 #>
-
 @property <#=propertyType + prop.ToPropertyString()#>;
 <#			
 	}

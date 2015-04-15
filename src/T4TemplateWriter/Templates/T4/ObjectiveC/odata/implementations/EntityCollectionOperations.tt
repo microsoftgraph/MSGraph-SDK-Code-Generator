@@ -29,22 +29,24 @@ if(entity.HasActions())
 			{
 #>
 
--(NSURLSessionTask*)<#= action.Name.ToLowerFirstChar() #> <#=GetParamsString(action.Parameters)#>(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *error))callback{
+- (NSURLSessionTask *)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#> callback:(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *exception))callback {
 
-	id<MSODataRequest> request = [[self getResolver] createODataRequest];
+	id<MSODataRequest> request = [[super resolver] createODataRequest];
 	<#=GetFunctionParameters(action.Parameters)#>
-	NSString* parameters = [MSODataBaseContainerHelper getFunctionParameters: params];
-	[[request getUrl] appendPathComponent:[[NSString alloc] initWithFormat:@"<#= action.Name#>(%@)",parameters]];
-	NSData* payload = nil;
+	NSString *parameters = [MSODataBaseContainerHelper getFunctionParameters:params];
+	
+	[[request url] appendPathComponent:[[NSString alloc] initWithFormat:@"<#= action.Name#>(%@)",parameters]];
 		
-	NSURLSessionTask* task = [super oDataExecuteWithRequest:request callback: ^(id<MSODataResponse> r, MSODataException *error){
+	NSURLSessionTask *task = [super oDataExecuteWithRequest:request andCallback:^(id<MSODataResponse> response, MSODataException *exception){
 
-       if(error == nil){
-			<#=GetType(action.ReturnType)#> result = (<#=GetType(action.ReturnType)#>)[[[self getResolver]getJsonSerializer] deserialize:[r getPayload] : <#=clazz#>];
-            callback(result, error);
+       if(exception == nil){
+
+			<#=GetType(action.ReturnType)#> result = (<#=GetType(action.ReturnType)#>)[[[super resolver] jsonSerializer] deserialize:[response data] asClass:<#=clazz#>];
+            callback(result, exception);
         }
         else{
-            callback(nil, error);
+
+            callback(nil, exception);
         }
     }];
     
@@ -56,38 +58,44 @@ if(entity.HasActions())
     		{
 #>
 
--(NSURLSessionTask*)<#= action.Name.ToLowerFirstChar() #> <#=GetParamsString(action.Parameters)#>(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *error))callback{
+- (NSURLSessionTask *)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#> callback:(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *error))callback {
 
 	<#=GetParametersToJson(action.Parameters)#>
 
-	NSURLSessionTask* task = [self <#= action.Name.ToLowerFirstChar() #>Raw <#=GetParametersForRawCall(action.Parameters.Select(p=> p.Name))#> :^(NSString *returnValue, MSODataException *error){
-       if(error == nil){
-			<#=GetType(action.ReturnType)#> result = (<#=GetType(action.ReturnType)#>)[[[self getResolver]getJsonSerializer] deserialize:[returnValue dataUsingEncoding:NSUTF8StringEncoding] : <#=clazz#>];
-            callback(result, error);
+	NSURLSessionTask *task = [self <#= action.Name.ToLowerFirstChar() #>Raw<#=GetParametersForRawCall(action.Parameters.Select(p=> p.Name))#> withCallback:^(NSString *returnValue, MSODataException *exception) {
+       
+	   if(exception == nil){
+
+			<#=GetType(action.ReturnType)#> result = (<#=GetType(action.ReturnType)#>)[[[super resolver] jsonSerializer] deserialize:[returnValue dataUsingEncoding:NSUTF8StringEncoding] asClass:<#=clazz#>];
+            
+			callback(result, exception);
         }
         else{
-            callback(<#=action.ReturnType.IsComplex() ? "nil" : "(int)[returnValue integerValue]"#>, error);
+
+            callback(<#=action.ReturnType.IsComplex() ? "nil" : "(int)[returnValue integerValue]"#>, exception);
         }
     }];
     
     return task;
 }
 
--(NSURLSessionTask*)<#= action.Name.ToLowerFirstChar() #>Raw <#=GetParamsForRaw(action.Parameters.Select(p => p.Name))#>(void (^)(<#=GetParamRaw(action.ReturnType.Name)#>, MSODataException *error))callback{
+- (NSURLSessionTask *)<#= action.Name.ToLowerFirstChar() #>Raw<#=GetParamsForRaw(action.Parameters.Select(p => p.Name))#> callback:(void (^)(<#=GetParamRaw(action.ReturnType.Name)#>, MSODataException *error))callback {
 
-	id<MSODataRequest> request = [[self getResolver] createODataRequest];
+	id<MSODataRequest> request = [[super resolver] createODataRequest];
 	<#=GetParametersToJsonRaw(action.Parameters.Select(p=>p.Name))#>
 
-	[[request getUrl] appendPathComponent:@"<#= action.Name#>"];
+	[[request url] appendPathComponent:@"<#= action.Name#>"];
 	[request setContent:payload];
 
-	NSURLSessionTask* task = [super oDataExecuteWithRequest:request 
-													   callback: ^(id<MSODataResponse> r, MSODataException *error){
-		if(error == nil){
-            callback([[NSString alloc] initWithData:[r getPayload] encoding:NSUTF8StringEncoding], error);
+	NSURLSessionTask *task = [super oDataExecuteWithRequest:request 
+										        andCallback:^(id<MSODataResponse> response, MSODataException *exception){
+		if(exception == nil){
+
+            callback([[NSString alloc] initWithData:[response data] encoding:NSUTF8StringEncoding], exception);
         }
         else{
-            callback([[NSString alloc] initWithFormat:@"%d",[r getStatus]], error);
+
+            callback([[NSString alloc] initWithFormat:@"%d",[response getStatus]], exception);
         }
     }];
     
