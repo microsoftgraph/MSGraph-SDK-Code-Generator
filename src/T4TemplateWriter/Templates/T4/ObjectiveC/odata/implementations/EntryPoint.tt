@@ -15,7 +15,7 @@ var entityName = GetPrefix()  + "Client";
 
 - (instancetype)initWithUrl:(NSString *)url dependencyResolver:(id<MSODataDependencyResolver>)resolver {
 
-    return [super initWithUrl:url andDependencyResolver:resolver];
+    return [super initWithUrl:url dependencyResolver:resolver];
 }
 
 <#
@@ -28,7 +28,7 @@ foreach(var prop in containerProps)
 #>
 - (<#=prop.Type.GetTypeString()#>CollectionFetcher *) get<#=prop.Name#> {
 
-	return [[<#=prop.Type.GetTypeString()#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" andParent:self];
+	return [[<#=prop.Type.GetTypeString()#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self];
 }
 <#
 	}
@@ -37,7 +37,7 @@ foreach(var prop in containerProps)
 #>
 - (<#=prop.Type.GetTypeString()#>Fetcher *) get<#=prop.Name#> {
 
-	return [[<#=prop.Type.GetTypeString()#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>"parent:self andEntityClass:[<#=prop.Type.GetTypeString()#> class]];
+	return [[<#=prop.Type.GetTypeString()#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self];
 }
 
 <#	

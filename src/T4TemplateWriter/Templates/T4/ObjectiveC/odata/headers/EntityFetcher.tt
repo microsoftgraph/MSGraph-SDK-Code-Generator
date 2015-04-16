@@ -53,8 +53,8 @@ foreach(var propertyClass in clasess)
 
 @optional
 - (NSURLSessionTask *) readWithCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *exception))callback;
-- (id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomParameters:(NSString *)name withValue:(id)value;
-- (id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomHeaderWithName:(NSString *)name andValue:(NSString *)value;
+- (id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomParametersWithName:(NSString *)name value:(id)value;
+- (id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
 - (id<<#=GetPrefix() + entity.Name#>Fetcher>)select:(NSString *)params;
 - (id<<#=GetPrefix() + entity.Name#>Fetcher>)expand:(NSString *)value;
 
@@ -100,7 +100,7 @@ foreach(var child in entity.Derived)
 
 @interface <#=entityName#> : <#=extends#>
 
-- (instancetype)initWithUrl:(NSString*)urlComponent andParent:(id<MSODataExecutable>)parent;
+- (instancetype)initWithUrl:(NSString*)urlComponent parent:(id<MSODataExecutable>)parent;
 - (NSURLSessionTask *) update<#=entity.Name#>:(<#=GetPrefix() + entity.Name#> *)<#=entity.Name.ToLowerFirstChar()#> withCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *error))callback;
 - (NSURLSessionTask *) delete<#=entity.Name#>:(void (^)(int status, MSODataException *exception))callback;
 

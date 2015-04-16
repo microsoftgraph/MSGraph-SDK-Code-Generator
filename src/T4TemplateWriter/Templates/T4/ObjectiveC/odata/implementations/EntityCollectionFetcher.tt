@@ -14,9 +14,9 @@ var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
 <#=GetImplementationDoc(entityName)#>
 @implementation <#=entityName#>
 
-- (instancetype)initWithUrl:(NSString *)urlComponent andParent:(id<MSODataExecutable>)parent {
+- (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent {
 
-    return [super initWithUrl:urlComponent parent:parent andEntityClass:[<#=GetPrefix() + entity.Name#> class]];
+    return [super initWithUrl:urlComponent parent:parent asClass:[<#=GetPrefix() + entity.Name#> class]];
 }
 
 - (NSURLSessionTask *)add<#=entity.Name#>:(<#=GetPrefix() + entity.Name#>*)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *exception))callback {
@@ -29,8 +29,6 @@ var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
 
 - (<#=GetPrefix() + entity.Name#>Fetcher *)getById:(NSString *)Id {
 
-	[super getById:Id];
-
-    return [[<#=GetPrefix() + entity.Name#>Fetcher alloc] initWithUrl:[[NSString alloc] initWithFormat:@"('%@')" ,Id] parent:self andEntityClass:[<#=GetPrefix() + entity.Name#> class]];
+    return [[<#=GetPrefix() + entity.Name#>Fetcher alloc] initWithUrl:[[NSString alloc] initWithFormat:@"('%@')" ,Id] parent:self];
 }
 @end

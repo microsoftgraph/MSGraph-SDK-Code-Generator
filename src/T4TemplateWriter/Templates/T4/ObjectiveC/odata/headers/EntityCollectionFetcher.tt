@@ -27,12 +27,12 @@ var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
 - (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)skip:(int)value;
 - (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)expand:(NSString *)value;
 - (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)orderBy:(NSString *)params;
-- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)addCustomParameters:(NSString *)name withValue:(id)value;
-- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)addCustomHeaderWithName:(NSString *)name andValue:(NSString *)value;
+- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)addCustomParametersWithName:(NSString *)name value:(id)value;
+- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
 
 @required
 
-- (instancetype)initWithUrl:(NSString *)urlComponent andParent:(id<MSODataExecutable>)parent;
+- (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent;
 - (<#=GetPrefix() + entity.Name#>Fetcher *)getById:(NSString *)Id;
 - (NSURLSessionTask *)add<#=entity.Name#>:(<#=GetPrefix() + entity.Name#> *)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *e))callback;
 
@@ -40,6 +40,6 @@ var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
 
 @interface <#=entityName#> : MSODataCollectionFetcher<<#=entityName#>>
 
-- (instancetype)initWithUrl:(NSString *)urlComponent andParent:(id<MSODataExecutable>)parent;
+- (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent;
 
 @end

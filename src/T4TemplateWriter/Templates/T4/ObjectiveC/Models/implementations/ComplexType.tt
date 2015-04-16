@@ -5,7 +5,7 @@
 <#
 CustomHost host = (CustomHost)Host;
 var entity = host.OdcmType.AsOdcmClass();
-
+OdcmModel model = host.Model;
 #>
 
 #import "<#=GetPrefix()#>Models.h"
@@ -26,7 +26,7 @@ foreach(var prop in entity.Properties)
 
 - (instancetype)init {
 
-	_odataType = @"#<#=entity.Namespace#>.<#=entity.Name#>";
+	_odataType = @"#<#=model.GetNamespace()#>.<#=entity.Name#>";
 	
 	return self;
 }

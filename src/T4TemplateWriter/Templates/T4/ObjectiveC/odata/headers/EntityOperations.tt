@@ -23,7 +23,7 @@ string baseEntity = entity.Base == null ? "MSODataOperations"
 <#=GetHeaderDoc(entityName)#>
 @interface <#=entityName#> : <#=baseEntity#>
 
-- (instancetype)initWithUrl:(NSString *)urlComponent andParent:(id<MSODataExecutable>)parent;
+- (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent;
 
 <#
 if(entity.HasActions())

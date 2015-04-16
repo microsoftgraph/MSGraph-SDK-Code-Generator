@@ -16,14 +16,13 @@ var entityName = GetPrefix() + entity.Name;
 
 @implementation <#=entityName#>Fetcher
 
-@synthesize parent = _parent;
 @synthesize operations = _operations;
 
-- (instancetype)initWithUrl:(NSString *)urlComponent andParent:(id<MSODataExecutable>)parent {
+- (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent {
 
-    self = [super initWithUrl:urlComponent parent:parent andEntityClass:[<#=entityName#> class]];
+    self = [super initWithUrl:urlComponent parent:parent asClass:[<#=entityName#> class]];
 
-    _operations = [[<#=entityName#>Operations alloc] initOperationWithUrl:super.urlComponent parent:super.parent];
+    _operations = [[<#=entityName#>Operations alloc] initOperationWithUrl:urlComponent parent:parent];
     
     return self;
 }
@@ -47,12 +46,12 @@ foreach(var prop in entity.NavigationProperties())
 #>
 - (<#=GetPrefix() + prop.Type.Name#>CollectionFetcher *)get<#=prop.Name#> {
 
-    return [[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:super.parent andEntityClass:[<#=GetPrefix() + prop.Type.Name#> class]];
+    return [[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=GetPrefix() + prop.Type.Name#> class]];
 }
 
 - (id<<#=GetPrefix() + prop.Type.Name#>Fetcher>)get<#=prop.Name#>ById:(NSString *)_id {
 
-    return [[[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:super.parent andEntityClass:[<#=GetPrefix() + prop.Type.Name#> class]] getById:_id];
+    return [[[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=GetPrefix() + prop.Type.Name#> class]] getById:_id];
 }
 <#
 	}
@@ -61,7 +60,7 @@ foreach(var prop in entity.NavigationProperties())
 #>
 - (<#=GetPrefix() + prop.Type.Name#>Fetcher *) get<#=prop.Name#> {
 
-	 return [[<#=GetPrefix() + prop.Type.Name#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:super.parent andEntityClass:[<#=GetPrefix() + prop.Type.Name#> class]];
+	 return [[<#=GetPrefix() + prop.Type.Name#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=GetPrefix() + prop.Type.Name#> class]];
 }
 <#		
 			
@@ -73,7 +72,7 @@ foreach(var child in entity.Derived)
 #>
 - (<#=GetPrefix() + child.Name#>Fetcher *)as<#=child.Name#> {
 
-	return [[<#=GetPrefix() +child.Name#>Fetcher alloc] initWithUrl:super.urlComponent parent:super.parent andEntityClass:[<#=GetPrefix() + child.Name#> class]];
+	return [[<#=GetPrefix() +child.Name#>Fetcher alloc] initWithUrl:self.urlComponent parent:self asClass:[<#=GetPrefix() + child.Name#> class]];
 }
 <#
 
