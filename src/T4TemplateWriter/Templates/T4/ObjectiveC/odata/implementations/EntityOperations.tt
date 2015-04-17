@@ -39,7 +39,7 @@ if(entity.HasActions())
 	NSString *parameters = [MSODataBaseContainerHelper getFunctionParameters:params];
 
 	[[request url] appendPathComponent:[[NSString alloc] initWithFormat:@"<#= action.Name#>(%@)",parameters]];
-	[request setVerb:POST];
+	[request setVerb:HTTP_VERB_POST];
 
 	NSURLSessionTask *task = [super oDataExecuteRequest:request 
 											   callback:^(id<MSODataResponse> response, MSODataException *exception) {
@@ -50,7 +50,7 @@ if(entity.HasActions())
             callback(result, exception);
         }
         else{
-            callback(<#=action.ReturnType.IsComplex() ? "nil" : "[response getStatus]"#>, exception);
+            callback(<#=action.ReturnType.IsComplex() ? "nil" : " response.status"#>, exception);
         }
     }];
     
@@ -87,7 +87,7 @@ if(entity.HasActions())
 	<#=GetParametersToJsonRaw(action.Parameters.Select(p => p.Name))#>
 	
 	[[request url] appendPathComponent:@"<#= action.Name#>"];
-	[request setVerb:POST];
+	[request setVerb:HTTP_VERB_POST];
 
 	NSURLSessionTask *task = [super oDataExecuteRequest:request 
 											   callback:^(id<MSODataResponse> response, MSODataException *exception) {
@@ -98,7 +98,7 @@ if(entity.HasActions())
         }
         else{
 
-            callback([[NSString alloc] initWithFormat:@"%d",[response getStatus]], exception);
+            callback([[NSString alloc] initWithFormat:@"%d", response.status], exception);
         }
     }];
     

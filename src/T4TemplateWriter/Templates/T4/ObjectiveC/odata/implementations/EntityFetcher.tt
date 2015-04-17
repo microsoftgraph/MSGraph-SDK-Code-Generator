@@ -27,9 +27,9 @@ var entityName = GetPrefix() + entity.Name;
     return self;
 }
 
-- (NSURLSessionTask *)update<#=entity.Name#>:(id)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *exception))callback {
+- (NSURLSessionTask *)update<#=entity.Name#>:(id)entity callback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *exception))callback {
 
-	return [super updateEntity:entity withCallback:callback];
+	return [super updateEntity:entity callback:callback];
 }
 
 - (NSURLSessionTask *)delete<#=entity.Name#>:(void (^)(int status, MSODataException *exception))callback {

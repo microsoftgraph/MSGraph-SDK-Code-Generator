@@ -34,7 +34,7 @@ var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
 
 - (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent;
 - (<#=GetPrefix() + entity.Name#>Fetcher *)getById:(NSString *)Id;
-- (NSURLSessionTask *)add<#=entity.Name#>:(<#=GetPrefix() + entity.Name#> *)entity withCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *e))callback;
+- (NSURLSessionTask *)add<#=entity.Name#>:(<#=GetPrefix() + entity.Name#> *)entity callback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *e))callback;
 
 @end
 

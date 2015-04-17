@@ -62,7 +62,7 @@ if(entity.HasActions())
 
 	<#=GetParametersToJson(action.Parameters)#>
 
-	NSURLSessionTask *task = [self <#= action.Name.ToLowerFirstChar() #>Raw<#=GetParametersForRawCall(action.Parameters.Select(p=> p.Name))#> withCallback:^(NSString *returnValue, MSODataException *exception) {
+	NSURLSessionTask *task = [self <#= action.Name.ToLowerFirstChar() #>Raw<#=GetParametersForRawCall(action.Parameters.Select(p=> p.Name))#> callback:^(NSString *returnValue, MSODataException *exception) {
        
 	   if(exception == nil){
 
@@ -95,7 +95,7 @@ if(entity.HasActions())
         }
         else{
 
-            callback([[NSString alloc] initWithFormat:@"%d",[response getStatus]], exception);
+            callback([[NSString alloc] initWithFormat:@"%d", response.status], exception);
         }
     }];
     
