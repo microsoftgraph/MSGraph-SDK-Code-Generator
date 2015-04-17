@@ -34,7 +34,6 @@ public string GetInterfaceLine(OdcmClass e){
 					  : GetPrefix() + e.Base.Name.Substring(e.Base.Name.LastIndexOf(".") +1);
 
 	var s = new StringBuilder();
-	s.AppendLine("#import \""+GetPrefix()+"Protocols.h\"");
 
 	if(baseEntity != "NSObject"){
 		s.AppendFormat("#import \"{0}.h\"", baseEntity);
@@ -145,8 +144,8 @@ public string GetImportsClass(List<OdcmProperty> references)
 
 	var classString = classes.AppendLine().ToString();
 	var importsString =imports.ToString();
-	return (string.IsNullOrWhiteSpace(classString.Trim()) ? "" : classString)  +
-		   (string.IsNullOrWhiteSpace(importsString.Trim()) ? "" : importsString)  ;
+	return (string.IsNullOrWhiteSpace(importsString.Trim()) ? null : importsString) +
+	(string.IsNullOrWhiteSpace(classString.Trim()) ? null : classString);
 }
 
 public string GetClass(OdcmProperty type)
@@ -157,7 +156,7 @@ public string GetClass(OdcmProperty type)
 
 public string GetParametersToJsonRaw(IEnumerable<string> parameters)
 {
-	if(!parameters.Any()) { return string.Empty;}
+	if(!parameters.Any()) { return new StringBuilder().AppendLine().ToString();}
 
 	var result = new StringBuilder();
 
@@ -174,7 +173,7 @@ public string GetParametersToJsonRaw(IEnumerable<string> parameters)
 		result.AppendLine().AppendLine().Append("\t").Append("NSData* payload = " +
 	  "[[MSODataBaseContainerHelper generatePayloadWithParameters:parameters dependencyResolver:self.resolver] dataUsingEncoding:NSUTF8StringEncoding];");
 	
-		result.AppendLine().AppendLine().Append("\t").AppendLine("[request setContent:payload];");
+		result.AppendLine().AppendLine().Append("\t").AppendLine("[request setContent:payload];").AppendLine();
 	}
 
 	return result.ToString();	
@@ -254,7 +253,7 @@ public string GetFunctionParameters(List<OdcmParameter> parameters)
 	}
 
 	if(parameters.Any()){
-		result.AppendLine("nil];");
+		result.AppendLine("nil];").AppendLine();
 	}
 
 	return result.ToString();

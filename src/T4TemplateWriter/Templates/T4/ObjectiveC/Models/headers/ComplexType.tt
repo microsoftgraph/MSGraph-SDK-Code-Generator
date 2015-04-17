@@ -7,8 +7,9 @@ CustomHost host = (CustomHost)Host;
 var entity = host.OdcmType.AsOdcmClass();
 
 #>
-
 #import <Foundation/Foundation.h>
+#import "<#=GetPrefix()+"Protocols.h"#>"
+
 <#=GetImportsClass(entity.Properties)#>
 <#=GetInterfaceLine(entity)#>
 

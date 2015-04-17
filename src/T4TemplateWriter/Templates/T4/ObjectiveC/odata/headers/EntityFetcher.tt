@@ -2,6 +2,7 @@
 <#@ include file="BaseTemplate.tt"#>
 <#@ output extension="\\" #>
 <#=GetCommentHeader()#>
+
 <#
 CustomHost host = (CustomHost)Host;
 var entity = host.OdcmType.AsOdcmClass();
@@ -36,7 +37,6 @@ foreach(var propertyClass in clasess)
 {
 
 #>
-
 @class <#=propertyClass#>
 <#
 
@@ -72,7 +72,6 @@ foreach(var prop in entity.NavigationProperties())
 
 #>
 - (<#=GetPrefix() + prop.Type.Name#>CollectionFetcher *)get<#=prop.Name#>;
-
 - (<#=GetPrefix() + prop.Type.Name#>Fetcher *) get<#=prop.Name#>ById:(NSString*)_id;
 <#
 
@@ -91,7 +90,6 @@ foreach(var child in entity.Derived)
 {
 
 #>
-	
 - (<#=GetPrefix() + child.Name#>Fetcher *)as<#=child.Name#>;	
 <#
 

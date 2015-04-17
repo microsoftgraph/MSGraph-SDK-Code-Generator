@@ -59,6 +59,7 @@ foreach(var prop in entity.NavigationProperties())
 	else
 	{
 #>
+
 - (<#=GetPrefix() + prop.Type.Name#>Fetcher *) get<#=prop.Name#> {
 
 	 return [[<#=GetPrefix() + prop.Type.Name#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=GetPrefix() + prop.Type.Name#> class]];

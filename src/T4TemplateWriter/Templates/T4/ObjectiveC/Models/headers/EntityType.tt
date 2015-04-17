@@ -8,15 +8,17 @@ var entity = host.OdcmType.AsOdcmClass();
 
 #>
 
-<#=GetImportsClass(entity.Properties)#>
-
 #import <Foundation/Foundation.h>
+#import "<#=GetPrefix()+"Protocols.h"#>"
+
+<#=GetImportsClass(entity.Properties)#>
 <#=GetInterfaceLine(entity)#>
 <#
 
 if(entity.Base == null)
 {
 #>
+
 @property (copy, nonatomic, readonly) NSString *odataType;
 <#
 }

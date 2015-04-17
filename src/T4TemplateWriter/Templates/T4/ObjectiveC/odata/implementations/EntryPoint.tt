@@ -26,6 +26,7 @@ foreach(var prop in containerProps)
 	if(prop.IsCollection())
 	{
 #>
+
 - (<#=prop.Type.GetTypeString()#>CollectionFetcher *) get<#=prop.Name#> {
 
 	return [[<#=prop.Type.GetTypeString()#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self];
@@ -35,13 +36,14 @@ foreach(var prop in containerProps)
 	else
 	{
 #>
+
 - (<#=prop.Type.GetTypeString()#>Fetcher *) get<#=prop.Name#> {
 
 	return [[<#=prop.Type.GetTypeString()#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self];
 }
-
 <#	
 	}
 }
 #>
+
 @end
