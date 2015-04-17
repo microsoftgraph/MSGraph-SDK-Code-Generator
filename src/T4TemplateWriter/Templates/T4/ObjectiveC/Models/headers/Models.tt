@@ -2,6 +2,7 @@
 <#@ include file="BaseTemplate.tt"#>
 <#@ output extension=".h" #>
 <#=GetCommentHeader()#>
+
 <#
 CustomHost host = (CustomHost)Host;
 OdcmModel model = host.Model;

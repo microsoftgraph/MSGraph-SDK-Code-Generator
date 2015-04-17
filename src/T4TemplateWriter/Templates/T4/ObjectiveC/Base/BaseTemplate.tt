@@ -11,6 +11,8 @@ public string GetPrefix()
 
 public string GetCommentHeader()
 {
+GetPrefix();
+
 return @"/*******************************************************************************
 Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 Licensed under the MIT or Apache License; see LICENSE in the source repository
@@ -36,8 +38,7 @@ public string GetInterfaceLine(OdcmClass e){
 
 	if(baseEntity != "NSObject"){
 		s.AppendFormat("#import \"{0}.h\"", baseEntity);
-	}
-	s.AppendLine().AppendLine("#import <Foundation/Foundation.h>");
+	};
 
 	s.AppendLine().AppendLine().AppendLine(GetHeaderDoc(e.Name))
 	.AppendFormat("@interface {0}{1} : {2}",GetPrefix(), e.Name, baseEntity);
@@ -74,12 +75,12 @@ public string GetMethodDoc(string name, List<OdcmProperty> parameters)
 
 public string GetParams(IEnumerable<OdcmProperty> parameters)
 {
-	string param = "";
+	string param = "With";
 
 	foreach(var p in parameters){
 
-	if(string.IsNullOrEmpty(param)){
-			param += string.Format("With{0}:({2} {3}) {1}", char.ToUpper(p.Name[0]) + p.Name.Substring(1)
+	if(param == "With"){
+			param += string.Format("{0}:({2} {3}) {1}", char.ToUpper(p.Name[0]) + p.Name.Substring(1)
 								,p.Name.ToLowerFirstChar(),p.Type.GetFullType(),( p.Type.IsComplex() ?"*": ""));
 		}
 		else{
@@ -94,12 +95,14 @@ public string GetParams(IEnumerable<OdcmProperty> parameters)
 
 public string GetParamsForRaw(IEnumerable<string> parameters)
 {
-	string param = "";//,p.ToLowerFirstChar());
+	string param = "With";//,p.ToLowerFirstChar());
 
 	foreach(var p in parameters){
-			param += string.IsNullOrEmpty(param) ? string.Format("With{0}:(NSString *) {1} ", char.ToUpper(p[0]) + p.Substring(1) ,p.ToLowerFirstChar()) : 
+			param += param == "With" ? string.Format("{0}:(NSString *) {1} ", char.ToUpper(p[0]) + p.Substring(1) ,p.ToLowerFirstChar()) : 
 			 string.Format("{0}:(NSString *) {0} ", p.ToLowerFirstChar());
 	}
+
+	param += parameters.Count() > 0 ? "callback" : "Callback";
 
 	return param;
 }
@@ -202,20 +205,23 @@ public string GetParametersToJson(List<OdcmParameter> parameters)
 
 public string GetParametersForRawCall(IEnumerable<String> parameters)
 {
-	if(!parameters.Any()) { return string.Empty;}
+	//if(!parameters.Any()) { return string.Empty;}
 
-	string result = "";
+	string result = "With";
 	foreach(var param in parameters){
-		if(string.IsNullOrEmpty(result)){
-			result += string.Format("With{0}:{1}String", char.ToUpper(param[0]) + param.Substring(1)
+		if(result == "With"){
+			result += string.Format("{0}:{1}String ", char.ToUpper(param[0]) + param.Substring(1)
 								,param.ToLowerFirstChar());
 		}
 		else{
 		
-			result += string.Format(" {0}:{0}String", param.ToLowerFirstChar());
+			result += string.Format("{0}:{0}String ", param.ToLowerFirstChar());
 		
 		}
 	}
+	
+	result += parameters.Count() > 0 ? "callback" : "Callback";
+
 	return result;
 }
 
@@ -261,12 +267,12 @@ public string CreateEndOfFile(string name)
 
 public string GetParamsString(List<OdcmParameter> parameters){
 
-	string param = "";
+	string param = "With";
 
 	foreach(OdcmParameter p in parameters){
 
-		if(string.IsNullOrEmpty(param)){
-			param += string.Format("With{0}:({2}{3}) {1} ", char.ToUpper(p.Name[0]) + p.Name.Substring(1)
+		if(param == "With"){
+			param += string.Format("{0}:({2}{3}) {1} ", char.ToUpper(p.Name[0]) + p.Name.Substring(1)
 								,p.Name.ToLowerFirstChar(),p.Type.GetFullType(),( p.Type.IsComplex() ?" *": ""));
 		}
 		else{
@@ -276,6 +282,7 @@ public string GetParamsString(List<OdcmParameter> parameters){
 		}
 	}
 
+	param += parameters.Count() > 0 ? "callback" : "Callback";
 	return param;
 }
 
@@ -314,13 +321,13 @@ public string GetMethodHeader(OdcmMethod action)
 
 	var returnString = action.ReturnType == null ? "int returnValue"
 	: GetTypeForAction(action) + action.ReturnType.Name.ToLowerFirstChar();
-	return string.Format("- (NSURLSessionTask *){0}{1}callback:(void (^)({2}, MSODataException *exception))callback",
+	return string.Format("- (NSURLSessionTask *){0}{1}:(void (^)({2}, MSODataException *exception))callback",
 	action.Name.ToLowerFirstChar(),GetParamsString(action.Parameters),returnString );
 }
 
 public string GetMethodHeaderRaw(OdcmMethod action)
 {
-	return string.Format("- (NSURLSessionTask *){0}Raw{1}callback:(void(^)(NSString *returnValue, MSODataException *exception))callback ",
+	return string.Format("- (NSURLSessionTask *){0}Raw{1}:(void(^)(NSString *returnValue, MSODataException *exception))callback",
 	action.Name.ToLowerFirstChar(),
 	GetParamsForRaw(action.Parameters.Select(p => p.Name)),(action.ReturnType == null ? "NSString * resultCode " : GetParamRaw(action.ReturnType.Name)));
 }

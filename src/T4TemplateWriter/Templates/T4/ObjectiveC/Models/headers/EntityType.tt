@@ -9,8 +9,9 @@ var entity = host.OdcmType.AsOdcmClass();
 #>
 
 <#=GetImportsClass(entity.Properties)#>
-<#=GetInterfaceLine(entity)#>
 
+#import <Foundation/Foundation.h>
+<#=GetInterfaceLine(entity)#>
 <#
 
 if(entity.Base == null)
@@ -32,7 +33,7 @@ foreach(var prop in entity.Properties)
 	}
 	else
 	{
-	var propertyType = prop.IsComplex() ? "(copy, nonatomic) " : "(nonatomic) ";
+	var propertyType = prop.IsComplex() ? "(copy, nonatomic, readwrite) " : "(nonatomic) ";
 #>
 @property <#=propertyType + prop.ToPropertyString()#>;
 <#			

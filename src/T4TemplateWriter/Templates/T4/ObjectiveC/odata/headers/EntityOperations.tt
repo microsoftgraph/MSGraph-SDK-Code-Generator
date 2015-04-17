@@ -50,4 +50,5 @@ if(entity.HasActions())
 	}
 }
 #>
+
 @end

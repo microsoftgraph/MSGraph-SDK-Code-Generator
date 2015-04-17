@@ -29,7 +29,7 @@ if(entity.HasActions())
 			{
 #>
 
-- (NSURLSessionTask *)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#> callback:(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *exception))callback {
+- (NSURLSessionTask *)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#>callback:(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *exception))callback {
 
 	id<MSODataRequest> request = [super.resolver createODataRequest];
 	<#=GetFunctionParameters(action.Parameters)#>
@@ -39,12 +39,12 @@ if(entity.HasActions())
 		
 	NSURLSessionTask *task = [super oDataExecuteRequest:request callback:^(id<MSODataResponse> response, MSODataException *exception){
 
-       if(exception == nil){
+       if (exception == nil) {
 
 			<#=GetType(action.ReturnType)#> result = (<#=GetType(action.ReturnType)#>)[super.resolver.jsonSerializer deserialize:response.data asClass:<#=clazz#>];
             callback(result, exception);
         }
-        else{
+        else {
 
             callback(nil, exception);
         }
@@ -58,19 +58,19 @@ if(entity.HasActions())
     		{
 #>
 
-- (NSURLSessionTask *)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#> callback:(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *error))callback {
+- (NSURLSessionTask *)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#>callback:(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *error))callback {
 
 	<#=GetParametersToJson(action.Parameters)#>
 
-	NSURLSessionTask *task = [self <#= action.Name.ToLowerFirstChar() #>Raw<#=GetParametersForRawCall(action.Parameters.Select(p=> p.Name))#> callback:^(NSString *returnValue, MSODataException *exception) {
+	NSURLSessionTask *task = [self <#= action.Name.ToLowerFirstChar() #>Raw<#=GetParametersForRawCall(action.Parameters.Select(p=> p.Name))#>callback:^(NSString *returnValue, MSODataException *exception) {
        
-	   if(exception == nil){
+	   if (exception == nil) {
 
 			<#=GetType(action.ReturnType)#> result = (<#=GetType(action.ReturnType)#>)[super.resolver.jsonSerializer deserialize:[returnValue dataUsingEncoding:NSUTF8StringEncoding] asClass:<#=clazz#>];
             
 			callback(result, exception);
         }
-        else{
+        else {
 
             callback(<#=action.ReturnType.IsComplex() ? "nil" : "(int)[returnValue integerValue]"#>, exception);
         }
@@ -88,12 +88,12 @@ if(entity.HasActions())
 	[request setContent:payload];
 
 	NSURLSessionTask *task = [super oDataExecuteRequest:request 
-										       callback:^(id<MSODataResponse> response, MSODataException *exception){
-		if(exception == nil){
+										       callback:^(id<MSODataResponse> response, MSODataException *exception) {
+		if (exception == nil) {
 
-            callback([[NSString alloc] initWithData:[response data] encoding:NSUTF8StringEncoding], exception);
+            callback([[NSString alloc] initWithData:response.data encoding:NSUTF8StringEncoding], exception);
         }
-        else{
+        else {
 
             callback([[NSString alloc] initWithFormat:@"%d", response.status], exception);
         }

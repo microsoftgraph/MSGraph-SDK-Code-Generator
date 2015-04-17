@@ -19,6 +19,7 @@ var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
 @protocol <#=entityName#><MSODataCollectionFetcher>
 
 @optional
+
 - (NSURLSessionTask *)readWithCallback:(void (^)(NSArray<<#=GetPrefix() + entity.Name#>> *<#=entity.Name.ToLowerFirstChar()#>s, MSODataException *exception))callback;
 
 - (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)select:(NSString *)params;

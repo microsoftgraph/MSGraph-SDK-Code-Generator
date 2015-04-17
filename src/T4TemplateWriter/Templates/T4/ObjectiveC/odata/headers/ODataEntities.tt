@@ -2,7 +2,6 @@
 <#@ include file="BaseTemplate.tt"#>
 <#@ output extension=".h" #>
 <#=GetCommentHeader()#>
-
 <#
 CustomHost host = (CustomHost)Host;
 OdcmModel model = host.Model;
@@ -18,10 +17,10 @@ foreach(var et in entityTypes)
 #import "<#=GetPrefix() + et.Name #>CollectionOperations.h"
 #import "<#=GetPrefix() + et.Name #>Fetcher.h"
 #import "<#=GetPrefix() + et.Name #>Operations.h"
-
 <#
 
 }
 
 #>
+
 #import "<#=GetPrefix()#>Client.h" 

@@ -38,18 +38,19 @@ if(entity.HasActions())
 	
 	NSString *parameters = [MSODataBaseContainerHelper getFunctionParameters:params];
 
-	[[request url] appendPathComponent:[[NSString alloc] initWithFormat:@"<#= action.Name#>(%@)",parameters]];
+	[request.url appendPathComponent:[[NSString alloc] initWithFormat:@"<#= action.Name#>(%@)",parameters]];
 	[request setVerb:HTTP_VERB_POST];
 
 	NSURLSessionTask *task = [super oDataExecuteRequest:request 
 											   callback:^(id<MSODataResponse> response, MSODataException *exception) {
        
-	   if(error == nil){
+	   if (error == nil) {
 
-			<#=GetTypeForAction(action)#> result = (<#=GetTypeForAction(action)#>)[super.resolver.jsonSerializer deserialize:[response data] asClass:<#=clazz#>];
+			<#=GetTypeForAction(action)#> result = (<#=GetTypeForAction(action)#>)[super.resolver.jsonSerializer deserialize:response.data asClass:<#=clazz#>];
             callback(result, exception);
         }
-        else{
+        else {
+
             callback(<#=action.ReturnType.IsComplex() ? "nil" : " response.status"#>, exception);
         }
     }];
@@ -61,18 +62,17 @@ if(entity.HasActions())
     		else if(action != null)
     		{
 #>
-
 <#=GetMethodHeader(action)#> {
 	<#=GetParametersToJson(action.Parameters)#>
-
-	NSURLSessionTask* task = [self <#= action.Name.ToLowerFirstChar() #>Raw<#=GetParametersForRawCall(action.Parameters.Select(p => p.Name))#> callback:^(NSString *returnValue, MSODataException *exception){
+	NSURLSessionTask *task = [self <#= action.Name.ToLowerFirstChar() #>Raw<#=GetParametersForRawCall(action.Parameters.Select(p => p.Name))#>:^(NSString *returnValue, MSODataException *exception) {
        
-	   if(exception == nil){
+	   if (exception == nil) {
 
 			<#=GetTypeForAction(action)#> result = (<#=GetTypeForAction(action)#>)[super.resolver.jsonSerializer deserialize:[returnValue dataUsingEncoding:NSUTF8StringEncoding] asClass:<#=clazz#>];
             callback(result, exception);
-        }
-        else{
+        } 
+		else {
+
             callback(<#=action.ReturnType.IsComplex() ? "nil" : "(int)[returnValue integerValue]"#>, exception);
         }
     }];
@@ -80,23 +80,21 @@ if(entity.HasActions())
     return task;
 }
 
-<#=GetMethodHeaderRaw(action)#>{
+<#=GetMethodHeaderRaw(action)#> {
 
 	id<MSODataRequest> request = [super.resolver createODataRequest];
-	
 	<#=GetParametersToJsonRaw(action.Parameters.Select(p => p.Name))#>
-	
-	[[request url] appendPathComponent:@"<#= action.Name#>"];
+	[request.url appendPathComponent:@"<#= action.Name#>"];
 	[request setVerb:HTTP_VERB_POST];
 
 	NSURLSessionTask *task = [super oDataExecuteRequest:request 
 											   callback:^(id<MSODataResponse> response, MSODataException *exception) {
         
-		if(exception == nil){
+		if (exception == nil) {
             
 			callback([[NSString alloc] initWithData:response.data encoding:NSUTF8StringEncoding], exception);
         }
-        else{
+        else {
 
             callback([[NSString alloc] initWithFormat:@"%d", response.status], exception);
         }

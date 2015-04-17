@@ -20,10 +20,11 @@ var entityName = GetPrefix() + entity.Name;
 
 - (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent {
 
-    self = [super initWithUrl:urlComponent parent:parent asClass:[<#=entityName#> class]];
+    if (self = [super initWithUrl:urlComponent parent:parent asClass:[<#=entityName#> class]]) {
 
-    _operations = [[<#=entityName#>Operations alloc] initOperationWithUrl:urlComponent parent:parent];
-    
+		_operations = [[<#=entityName#>Operations alloc] initOperationWithUrl:urlComponent parent:parent];
+    }
+
     return self;
 }
 
@@ -36,7 +37,6 @@ var entityName = GetPrefix() + entity.Name;
 
 	return [super deleteWithCallback:callback];
 }
-
 <#
 
 foreach(var prop in entity.NavigationProperties())
@@ -44,6 +44,7 @@ foreach(var prop in entity.NavigationProperties())
 	if(prop.IsCollection())
 	{
 #>
+
 - (<#=GetPrefix() + prop.Type.Name#>CollectionFetcher *)get<#=prop.Name#> {
 
     return [[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=GetPrefix() + prop.Type.Name#> class]];
@@ -66,10 +67,10 @@ foreach(var prop in entity.NavigationProperties())
 			
 	}
 }
-
 foreach(var child in entity.Derived)
 {
 #>
+
 - (<#=GetPrefix() + child.Name#>Fetcher *)as<#=child.Name#> {
 
 	return [[<#=GetPrefix() +child.Name#>Fetcher alloc] initWithUrl:self.urlComponent parent:self asClass:[<#=GetPrefix() + child.Name#> class]];

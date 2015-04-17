@@ -31,4 +31,5 @@ var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
 
     return [[<#=GetPrefix() + entity.Name#>Fetcher alloc] initWithUrl:[[NSString alloc] initWithFormat:@"('%@')" ,Id] parent:self];
 }
+
 @end
