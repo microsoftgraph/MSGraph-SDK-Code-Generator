@@ -271,12 +271,12 @@ public string GetParamsString(List<OdcmParameter> parameters){
 	foreach(OdcmParameter p in parameters){
 
 		if(param == "With"){
-			param += string.Format("{0}:({2}{3}) {1} ", char.ToUpper(p.Name[0]) + p.Name.Substring(1)
+			param += string.Format("{0}:({2}{3}){1} ", char.ToUpper(p.Name[0]) + p.Name.Substring(1)
 								,p.Name.ToLowerFirstChar(),p.Type.GetFullType(),( p.Type.IsComplex() ?" *": ""));
 		}
 		else{
 		
-			param += string.Format("{0}:({1} {2}) {0} ", p.Name.ToLowerFirstChar(),p.Type.GetFullType(),( p.Type.IsComplex() ?"*": ""));
+			param += string.Format("{0}:({1} {2}){0} ", p.Name.ToLowerFirstChar(),p.Type.GetFullType(),( p.Type.IsComplex() ?"*": ""));
 		
 		}
 	}

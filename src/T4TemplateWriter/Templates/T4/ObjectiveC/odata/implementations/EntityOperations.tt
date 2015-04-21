@@ -44,7 +44,7 @@ if(entity.HasActions())
 	NSURLSessionTask *task = [super oDataExecuteRequest:request 
 											   callback:^(id<MSODataResponse> response, MSODataException *exception) {
        
-	   if (error == nil) {
+	   if (exception == nil) {
 
 			<#=GetTypeForAction(action)#> result = (<#=GetTypeForAction(action)#>)[super.resolver.jsonSerializer deserialize:response.data asClass:<#=clazz#>];
             callback(result, exception);

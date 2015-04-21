@@ -39,13 +39,13 @@ if(entity.HasActions())
 		if(action.IsBoundToCollection)
 		{
 #>
-- (NSURLSessionTask *)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#> callback:(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *exception))callback;			
+- (NSURLSessionTask *)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#>:(void (^)(<#=GetParamString(action.ReturnType)#>, MSODataException *exception))callback;			
 <#
 			if(!action.IsFunction())
 			{
 
 #>
-- (NSURLSessionTask *)<#= action.Name.ToLowerFirstChar() #>Raw<#=GetParamsForRaw(action.Parameters.Select(p => p.Name))#> callback:(void (^)(<#=GetParamRaw(action.ReturnType.Name)#>, MSODataException *exception))callback;			
+- (NSURLSessionTask *)<#= action.Name.ToLowerFirstChar() #>Raw<#=GetParamsForRaw(action.Parameters.Select(p => p.Name))#>:(void (^)(<#=GetParamRaw(action.ReturnType.Name)#>, MSODataException *exception))callback;			
 <#	
 			}
 		}

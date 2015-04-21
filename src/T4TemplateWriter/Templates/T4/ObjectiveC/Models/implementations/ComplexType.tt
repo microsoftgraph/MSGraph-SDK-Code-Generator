@@ -18,7 +18,7 @@ OdcmModel model = host.Model;
 foreach(var prop in entity.Properties)
 {
 #>
-@synthesize <#=prop.Name#> = _<#=prop.Name#>;
+@synthesize <#=GetName(prop.Name)#> = _<#=GetName(prop.Name)#>;
 <#
 }
 #>

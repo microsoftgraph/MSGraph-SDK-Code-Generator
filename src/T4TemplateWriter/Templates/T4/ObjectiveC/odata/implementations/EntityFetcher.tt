@@ -74,7 +74,7 @@ foreach(var child in entity.Derived)
 
 - (<#=GetPrefix() + child.Name#>Fetcher *)as<#=child.Name#> {
 
-	return [[<#=GetPrefix() +child.Name#>Fetcher alloc] initWithUrl:self.urlComponent parent:self asClass:[<#=GetPrefix() + child.Name#> class]];
+	return [[<#=GetPrefix() +child.Name#>Fetcher alloc] initWithUrl:@"" parent:self asClass:[<#=GetPrefix() + child.Name#> class]];
 }
 <#
 

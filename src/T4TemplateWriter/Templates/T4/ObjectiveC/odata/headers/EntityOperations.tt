@@ -38,8 +38,8 @@ if(entity.HasActions())
 <#				
 
 		}
-
-		if(!action.IsFunction())
+		
+		if(!action.IsFunction() && !action.IsBoundToCollection)
 		{
 
 #>

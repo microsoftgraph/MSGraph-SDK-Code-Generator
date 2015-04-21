@@ -18,7 +18,7 @@ if(entity.Base == null)
 {
 
 #>
-@property (copy, nonatomic, readonly) NSString *odataType;
+@property (retain, nonatomic, readonly) NSString *odataType;
 <#
 }
 
@@ -34,7 +34,7 @@ foreach(var prop in entity.Properties)
 	}
 	else
 	{
-		var propertyType = prop.IsComplex() ? "(copy, nonatomic, readwrite) " : "(nonatomic) ";
+		var propertyType = prop.IsComplex() ? "(retain, nonatomic, readwrite) " : "(nonatomic) ";
 #>
 @property <#=propertyType + prop.ToPropertyString()#>;
 <#			
