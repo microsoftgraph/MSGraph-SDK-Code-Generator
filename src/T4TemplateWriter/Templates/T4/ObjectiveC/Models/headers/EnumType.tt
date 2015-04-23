@@ -9,25 +9,19 @@ var entity = host.OdcmType.AsOdcmEnum();
 
 #import <Foundation/Foundation.h>
 
-@interface NSObject ()
-
-typedef NS_ENUM(NSInteger, <#=GetPrefix() + entity.Name #>){
+typedef NS_ENUM(NSInteger, <#=GetPrefix() + entity.Name #>) {
 
 <#
 
 for(var i=1; i <= entity.Members.Count; i++)
 {
 
-string value =GetPrefix() + entity.Name + entity.Members[i -1].Name + (i == entity.Members.Count ? string.Empty : ",");
+string value =GetPrefix() + "_" + entity.Name + "_" + entity.Members[i -1].Name + (i == entity.Members.Count ? string.Empty : ",");
 
 #>
 	<#= value#>
 <#
 	
 }
-
 #>
-
 };
-
-@end

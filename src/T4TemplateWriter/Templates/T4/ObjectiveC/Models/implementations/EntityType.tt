@@ -51,7 +51,7 @@ foreach(var prop in entity.Properties)
 
 	if ([value isEqualToString:@"<#=value#>"]) {
 		
-		_<#=prop.Name#> = <#=GetPrefix() + prop.Type.Name + value#>;
+		_<#=prop.Name#> = <#=GetPrefix() + "_" + prop.Type.Name + "_" + value#>;
 	}
 <#
 		}
