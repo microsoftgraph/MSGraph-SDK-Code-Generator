@@ -28,12 +28,12 @@ var entityName = GetPrefix() + entity.Name;
     return self;
 }
 
-- (NSURLSessionTask *)update<#=entity.Name#>:(id)entity callback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *exception))callback {
+- (NSURLSessionTask *)update:(id)entity callback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *exception))callback {
 
 	return [super updateEntity:entity callback:callback];
 }
 
-- (NSURLSessionTask *)delete<#=entity.Name#>:(void (^)(int status, MSODataException *exception))callback {
+- (NSURLSessionTask *)delete:(void (^)(int status, MSODataException *exception))callback {
 
 	return [super deleteWithCallback:callback];
 }
@@ -45,14 +45,14 @@ foreach(var prop in entity.NavigationProperties())
 	{
 #>
 
-- (<#=GetPrefix() + prop.Type.Name#>CollectionFetcher *)get<#=prop.Name#> {
+- (<#=GetPrefix() + prop.Type.Name#>CollectionFetcher *)<#=prop.Name.ToLowerFirstChar()#> {
 
     return [[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=GetPrefix() + prop.Type.Name#> class]];
 }
 
-- (id<<#=GetPrefix() + prop.Type.Name#>Fetcher>)get<#=prop.Name#>ById:(NSString *)_id {
+- (<#=GetPrefix() + prop.Type.Name#>Fetcher *)get<#=prop.Name.ToUpperFirstChar()#>ById:(NSString *)id {
 
-    return [[[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=GetPrefix() + prop.Type.Name#> class]] getById:_id];
+    return [[[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=GetPrefix() + prop.Type.Name#> class]] getById:id];
 }
 <#
 	}
@@ -60,7 +60,7 @@ foreach(var prop in entity.NavigationProperties())
 	{
 #>
 
-- (<#=GetPrefix() + prop.Type.Name#>Fetcher *) get<#=prop.Name#> {
+- (<#=GetPrefix() + prop.Type.Name#>Fetcher *)<#=prop.Name.ToLowerFirstChar()#> {
 
 	 return [[<#=GetPrefix() + prop.Type.Name#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=GetPrefix() + prop.Type.Name#> class]];
 }
@@ -72,7 +72,7 @@ foreach(var child in entity.Derived)
 {
 #>
 
-- (<#=GetPrefix() + child.Name#>Fetcher *)as<#=child.Name#> {
+- (<#=GetPrefix() + child.Name#>Fetcher *)as<#=child.Name.ToUpperFirstChar()#> {
 
 	return [[<#=GetPrefix() +child.Name#>Fetcher alloc] initWithUrl:@"" parent:self asClass:[<#=GetPrefix() + child.Name#> class]];
 }

@@ -6,7 +6,7 @@
 CustomHost host = (CustomHost)Host;
 var entity = host.OdcmType.AsOdcmClass();	
 var entityName = GetPrefix() + entity.Name + "Operations";
-
+TemplateWriterSettings settings = ConfigurationService.Settings;
 #>
 
 #import "<#=GetPrefix()#>ODataEntities.h"
@@ -84,8 +84,13 @@ if(entity.HasActions())
 
 	id<MSODataRequest> request = [super.resolver createODataRequest];
 	<#=GetParametersToJsonRaw(action.Parameters.Select(p => p.Name))#>
-	[request.url appendPathComponent:@"<#= action.Name#>"];
+	
 	[request setVerb:HTTP_VERB_POST];
+	 <# if (settings.AllowShortActions) { #>    
+	[request.url appendPathComponent:@"<#= action.Name#>"];
+        <# } else { #>
+	[request.url appendPathComponent:@"<#= action.FullName#>"];
+     <#}#>
 
 	NSURLSessionTask *task = [super oDataExecuteRequest:request 
 											   callback:^(id<MSODataResponse> response, MSODataException *exception) {

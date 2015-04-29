@@ -115,6 +115,11 @@ namespace T4TemplateWriter.Helpers.ObjectiveC
 			return Char.ToLowerInvariant(name[0]) + name.Substring(1);
 		}
 
+        public static string ToUpperFirstChar(this string name)
+        {
+            return Char.ToUpperInvariant(name[0]) + name.Substring(1);
+        }
+
 		public static bool IsEnum(this OdcmProperty property)
 		{
 			return property.Type is OdcmEnum;

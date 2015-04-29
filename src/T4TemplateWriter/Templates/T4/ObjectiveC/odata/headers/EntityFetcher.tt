@@ -7,7 +7,7 @@
 CustomHost host = (CustomHost)Host;
 var entity = host.OdcmType.AsOdcmClass();
 var entityName = GetPrefix() + entity.Name + "Fetcher";
-var extends =  (entity.Kind == OdcmClassKind.MediaEntity ? "MSODataMediaEntityFetcher<": "MSODataEntityFetcher<") + entityName+ ">";
+var extends =  (entity.Kind == OdcmClassKind.MediaEntity ? "MSODataMediaEntityFetcher<": "MSODataEntityFetcher<") + entityName+ "Protocol>";
 var clasess = new List<string>();
 
 foreach(var prop in entity.NavigationProperties())
@@ -44,24 +44,33 @@ foreach(var propertyClass in clasess)
 
 #>
 @class <#=GetPrefix() + entity.Name#>Operations;
+@class <#=GetPrefix() + entity.Name#>Fetcher;
 
 #import <office365_odata_base/office365_odata_base.h>
 #import "<#=GetPrefix()#>Models.h"
 
 <#=GetHeaderDoc(entityName)#>
-@protocol <#=entityName#><MSODataEntityFetcher>
+@protocol <#=entityName#>Protocol<MSODataEntityFetcher>
 
 @optional
 
 - (NSURLSessionTask *) readWithCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *exception))callback;
-- (id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomParametersWithName:(NSString *)name value:(id)value;
-- (id<<#=GetPrefix() + entity.Name#>Fetcher>)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
-- (id<<#=GetPrefix() + entity.Name#>Fetcher>)select:(NSString *)params;
-- (id<<#=GetPrefix() + entity.Name#>Fetcher>)expand:(NSString *)value;
+- (<#=GetPrefix() + entity.Name#>Fetcher *)addCustomParametersWithName:(NSString *)name value:(id)value;
+- (<#=GetPrefix() + entity.Name#>Fetcher *)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
+- (<#=GetPrefix() + entity.Name#>Fetcher *)select:(NSString *)params;
+- (<#=GetPrefix() + entity.Name#>Fetcher *)expand:(NSString *)value;
 
 @required
 
 @property (copy, nonatomic, readonly) <#=GetPrefix() + entity.Name#>Operations *operations;
+
+@end
+
+@interface <#=entityName#> : <#=extends#>
+
+- (instancetype)initWithUrl:(NSString*)urlComponent parent:(id<MSODataExecutable>)parent;
+- (NSURLSessionTask *)update:(<#=GetPrefix() + entity.Name#> *)<#=entity.Name.ToLowerFirstChar()#> callback:(void(^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *error))callback;
+- (NSURLSessionTask *)delete:(void(^)(int status, MSODataException *exception))callback;
 
 <#
 		
@@ -71,8 +80,10 @@ foreach(var prop in entity.NavigationProperties())
 	{
 
 #>
-- (<#=GetPrefix() + prop.Type.Name#>CollectionFetcher *)get<#=prop.Name#>;
-- (<#=GetPrefix() + prop.Type.Name#>Fetcher *) get<#=prop.Name#>ById:(NSString*)_id;
+@property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=GetPrefix() + prop.Type.Name#>CollectionFetcher *<#=prop.Name.ToLowerFirstChar()#>;
+
+- (<#=GetPrefix() + prop.Type.Name#>Fetcher *)get<#=prop.Name.ToUpperFirstChar()#>ById:(NSString*)id;
+
 <#
 
 	}
@@ -80,7 +91,8 @@ foreach(var prop in entity.NavigationProperties())
 	{
 
 #>
-- (<#=GetPrefix() + prop.Type.Name#>Fetcher *)get<#=prop.Name#>;
+
+@property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=GetPrefix() + prop.Type.Name#>Fetcher *<#=prop.Name.ToLowerFirstChar()#>;
 <#		
 			
 	}
@@ -90,19 +102,11 @@ foreach(var child in entity.Derived)
 {
 
 #>
-- (<#=GetPrefix() + child.Name#>Fetcher *)as<#=child.Name#>;	
+- (<#=GetPrefix() + child.Name#>Fetcher *)as<#=child.Name.ToUpperFirstChar()#>;	
 <#
 
 }
 
 #>
-
-@end
-
-@interface <#=entityName#> : <#=extends#>
-
-- (instancetype)initWithUrl:(NSString*)urlComponent parent:(id<MSODataExecutable>)parent;
-- (NSURLSessionTask *) update<#=entity.Name#>:(<#=GetPrefix() + entity.Name#> *)<#=entity.Name.ToLowerFirstChar()#> callback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *error))callback;
-- (NSURLSessionTask *) delete<#=entity.Name#>:(void (^)(int status, MSODataException *exception))callback;
 
 @end

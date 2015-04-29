@@ -43,7 +43,7 @@ foreach(var prop in containerProps)
 	if(prop.IsCollection())
 	{
 #>
--(<#=prop.Type.GetTypeString()#>CollectionFetcher*) get<#=prop.Name#>;
+@property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=prop.Type.GetTypeString()#>CollectionFetcher *<#=prop.Name.ToLowerFirstChar()#>;
 <#
 
 	}
@@ -51,7 +51,7 @@ foreach(var prop in containerProps)
 	{
 
 #>
--(<#=prop.Type.GetTypeString()#>Fetcher*) get<#=prop.Name#>;
+@property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=prop.Type.GetTypeString()#>Fetcher *<#=prop.Name.ToLowerFirstChar()#>;
 <#	
 
 	}

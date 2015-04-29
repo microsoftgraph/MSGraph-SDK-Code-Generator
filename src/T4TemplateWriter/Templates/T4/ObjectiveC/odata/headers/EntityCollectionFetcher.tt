@@ -11,35 +11,37 @@ var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
 #>
 
 @class <#=GetPrefix() + entity.Name#>Fetcher;
+@class <#=GetPrefix() + entity.Name#>CollectionFetcher;
 
 #import <office365_odata_base/office365_odata_base.h>
 #import "<#=GetPrefix()#>Models.h"
 
 <#=GetHeaderDoc(entityName)#>
-@protocol <#=entityName#><MSODataCollectionFetcher>
+@protocol <#=entityName#>Protocol<MSODataCollectionFetcher>
 
 @optional
 
 - (NSURLSessionTask *)readWithCallback:(void (^)(NSArray<<#=GetPrefix() + entity.Name#>> *<#=entity.Name.ToLowerFirstChar()#>s, MSODataException *exception))callback;
 
-- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)select:(NSString *)params;
-- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)filter:(NSString *)params;
-- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)top:(int)value;
-- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)skip:(int)value;
-- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)expand:(NSString *)value;
-- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)orderBy:(NSString *)params;
-- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)addCustomParametersWithName:(NSString *)name value:(id)value;
-- (id<<#=GetPrefix() + entity.Name#>CollectionFetcher>)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
+- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)select:(NSString *)params;
+- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)filter:(NSString *)params;
+- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)search:(NSString *)params;
+- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)top:(int)value;
+- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)skip:(int)value;
+- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)expand:(NSString *)value;
+- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)orderBy:(NSString *)params;
+- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)addCustomParametersWithName:(NSString *)name value:(id)value;
+- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
 
 @required
 
 - (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent;
 - (<#=GetPrefix() + entity.Name#>Fetcher *)getById:(NSString *)Id;
-- (NSURLSessionTask *)add<#=entity.Name#>:(<#=GetPrefix() + entity.Name#> *)entity callback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *e))callback;
+- (NSURLSessionTask *)add:(<#=GetPrefix() + entity.Name#> *)entity callback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSODataException *e))callback;
 
 @end
 
-@interface <#=entityName#> : MSODataCollectionFetcher<<#=entityName#>>
+@interface <#=entityName#> : MSODataCollectionFetcher<<#=entityName#>Protocol>
 
 - (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSODataExecutable>)parent;
 

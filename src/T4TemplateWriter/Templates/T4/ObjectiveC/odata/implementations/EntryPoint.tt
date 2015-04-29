@@ -27,7 +27,7 @@ foreach(var prop in containerProps)
 	{
 #>
 
-- (<#=prop.Type.GetTypeString()#>CollectionFetcher *) get<#=prop.Name#> {
+- (<#=prop.Type.GetTypeString()#>CollectionFetcher *)<#=prop.Name.ToLowerFirstChar()#> {
 
 	return [[<#=prop.Type.GetTypeString()#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self];
 }
@@ -37,7 +37,7 @@ foreach(var prop in containerProps)
 	{
 #>
 
-- (<#=prop.Type.GetTypeString()#>Fetcher *) get<#=prop.Name#> {
+- (<#=prop.Type.GetTypeString()#>Fetcher *)<#=prop.Name.ToLowerFirstChar()#> {
 
 	return [[<#=prop.Type.GetTypeString()#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self];
 }
