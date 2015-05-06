@@ -7,7 +7,7 @@ CustomHost host = (CustomHost)Host;
 OdcmClass entity = host.OdcmType.AsOdcmClass();
 OdcmModel model = host.Model;
 
-var baseOperation = entity.Base == null ? "extends ODataOperations" : "extends " + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "CollectionOperations";
+var baseOperation = entity.Base == null ? "extends OrcOperations" : "extends " + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "CollectionOperations";
 
 #>
 <#=GetCommentHeader()#>
@@ -15,9 +15,9 @@ package <#=model.ODataPackageNamespace()#>;
 
 import <#=model.NamespaceName()#>.*;
 import com.google.common.util.concurrent.*;
-import com.microsoft.services.odata.*;
-import com.microsoft.services.odata.interfaces.*;
-import static com.microsoft.services.odata.Helpers.*;
+import com.microsoft.services.orc.*;
+import com.microsoft.services.orc.interfaces.*;
+import static com.microsoft.services.orc.Helpers.*;
 
 /**
  * The type <#=entity.Name.ToCheckedCase()#>CollectionOperations
@@ -30,7 +30,7 @@ public class <#=entity.Name.ToCheckedCase()#>CollectionOperations <#=baseOperati
      * @param urlComponent the url component
      * @param parent the parent
      */
-    public <#=entity.Name.ToCheckedCase()#>CollectionOperations(String urlComponent, ODataExecutable parent) {
+    public <#=entity.Name.ToCheckedCase()#>CollectionOperations(String urlComponent, OrcExecutable parent) {
         super(urlComponent, parent);
     }
 
@@ -111,7 +111,7 @@ public class <#=entity.Name.ToCheckedCase()#>CollectionOperations <#=baseOperati
 
         String parameters = getFunctionParameters(map);
         request.getUrl().appendPathComponent("<#= action.Name #>(" + parameters + ")");
-        ListenableFuture<ODataResponse> future = oDataExecute(request);   
+        ListenableFuture<OrcResponse> future = oDataExecute(request);   
         <# if (action.ReturnType.GetTypeString() == "byte[]")
         {#>
         
@@ -171,7 +171,7 @@ public class <#=entity.Name.ToCheckedCase()#>CollectionOperations <#=baseOperati
         <#}#>
 
         request.getUrl().appendPathComponent("<#= action.Name#>");
-        ListenableFuture<ODataResponse> future = oDataExecute(request);
+        ListenableFuture<OrcResponse> future = oDataExecute(request);
         return transformToStringListenableFuture(future);
     }
 

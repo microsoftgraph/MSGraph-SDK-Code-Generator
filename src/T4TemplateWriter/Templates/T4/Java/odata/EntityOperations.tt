@@ -9,16 +9,16 @@ OdcmClass entity = host.OdcmType.AsOdcmClass();
 TemplateWriterSettings settings = ConfigurationService.Settings;
 
 
-var baseOperation = entity.Base == null ? "extends ODataOperations" : "extends " + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "Operations";
+var baseOperation = entity.Base == null ? "extends OrcOperations" : "extends " + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "Operations";
 #>
 <#=GetCommentHeader()#>
 package <#=model.ODataPackageNamespace()#>;
 
 import <#=model.NamespaceName()#>.*;
 import com.google.common.util.concurrent.*;
-import com.microsoft.services.odata.*;
-import com.microsoft.services.odata.interfaces.*;
-import static com.microsoft.services.odata.Helpers.*;
+import com.microsoft.services.orc.*;
+import com.microsoft.services.orc.interfaces.*;
+import static com.microsoft.services.orc.Helpers.*;
 
 /**
  * The type <#=entity.Name.ToCheckedCase()#>Operations.
@@ -31,7 +31,7 @@ public class <#=entity.Name.ToCheckedCase()#>Operations <#=baseOperation#> {
       * @param urlComponent the url component
       * @param parent the parent
       */
-    public <#=entity.Name.ToCheckedCase()#>Operations(String urlComponent, ODataExecutable parent) {
+    public <#=entity.Name.ToCheckedCase()#>Operations(String urlComponent, OrcExecutable parent) {
             super(urlComponent, parent);
     }
 
@@ -120,7 +120,7 @@ public class <#=entity.Name.ToCheckedCase()#>Operations <#=baseOperation#> {
         request.getUrl().appendPathComponent("<#= someAction.FullName #>(" + parameters + ")");   
         <#}#>
         request.getUrl().appendPathComponent("<#= someAction.Name #>(" + parameters + ")");   
-        ListenableFuture<ODataResponse> future = oDataExecute(request);   
+        ListenableFuture<OrcResponse> future = oDataExecute(request);   
         <# if (someAction.ReturnType.GetTypeString() == "byte[]")
         {#>
 
@@ -184,7 +184,7 @@ JsonSerializer serializer = getResolver().getJsonSerializer();<#}#>
         request.getUrl().appendPathComponent("<#= someAction.FullName#>");
         <#}#>
 
-        ListenableFuture<ODataResponse> future = oDataExecute(request);
+        ListenableFuture<OrcResponse> future = oDataExecute(request);
         return transformToStringListenableFuture(future);
     }
 

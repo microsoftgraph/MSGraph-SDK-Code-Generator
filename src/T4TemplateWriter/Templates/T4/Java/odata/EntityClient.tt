@@ -9,13 +9,13 @@ OdcmModel model = host.Model;
 package <#=model.ODataPackageNamespace()#>;
 
 import <#=model.NamespaceName()#>.*;
-import com.microsoft.services.odata.*;
-import com.microsoft.services.odata.interfaces.DependencyResolver;
+import com.microsoft.services.orc.*;
+import com.microsoft.services.orc.interfaces.DependencyResolver;
 
 /**
  * The type <#=model.GetEntityContainer()#>Client.
  */
-public class <#=model.GetEntityContainer().ToCheckedCase()#>Client extends BaseODataContainer {
+public class <#=model.GetEntityContainer().ToCheckedCase()#>Client extends BaseOrcContainer {
 
      /**
      * Instantiates a new <#=model.GetEntityContainer().ToCheckedCase()#>Client.
@@ -63,7 +63,7 @@ foreach(var prop in model.EntityContainer.Properties){
      * @return the <#=prop.Type.GetTypeString()#>
      */
     public ODataCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher, <#=prop.Type.GetTypeString()#>CollectionOperations> get<#=prop.Name#>() {
-        return new ODataCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher, <#=prop.Type.GetTypeString()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.GetTypeString()#>.class,<#=prop.Type.GetTypeString()#>CollectionOperations.class);
+        return new OrcCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher, <#=prop.Type.GetTypeString()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.GetTypeString()#>.class,<#=prop.Type.GetTypeString()#>CollectionOperations.class);
     }
 <#
     }else{

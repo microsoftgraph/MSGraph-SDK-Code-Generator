@@ -7,7 +7,7 @@ CustomHost host = (CustomHost)Host;
 OdcmModel model = host.Model;
 OdcmClass entity = host.OdcmType.AsOdcmClass();
 
-var className = entity.Kind == OdcmClassKind.MediaEntity ? "ODataMediaEntityFetcher" :  "ODataEntityFetcher";
+var className = entity.Kind == OdcmClassKind.MediaEntity ? "OrcMediaEntityFetcher" :  "OrcEntityFetcher";
 
 #>
 <#=GetCommentHeader()#>
@@ -15,9 +15,9 @@ package <#=model.ODataPackageNamespace()#>;
 
 import <#=model.NamespaceName()#>.*;
 import com.google.common.util.concurrent.*;
-import com.microsoft.services.odata.*;
-import com.microsoft.services.odata.Readable;
-import com.microsoft.services.odata.interfaces.*;
+import com.microsoft.services.orc.*;
+import com.microsoft.services.orc.Readable;
+import com.microsoft.services.orc.interfaces.*;
 
 /**
  * The type  <#=entity.Name.ToCheckedCase()#>Fetcher.
@@ -31,7 +31,7 @@ public class <#=entity.Name.ToCheckedCase()#>Fetcher extends <#=className#><<#=e
      * @param urlComponent the url component
      * @param parent the parent
      */
-     public <#=entity.Name.ToCheckedCase()#>Fetcher(String urlComponent, ODataExecutable parent) {
+     public <#=entity.Name.ToCheckedCase()#>Fetcher(String urlComponent, OrcExecutable parent) {
         super(urlComponent, parent, <#=entity.Name.ToCheckedCase()#>.class, <#=entity.Name.ToCheckedCase()#>Operations.class);
     }
 
@@ -77,8 +77,8 @@ public class <#=entity.Name.ToCheckedCase()#>Fetcher extends <#=className#><<#=e
      *
      * @return the <#=prop.Name.SplitCamelCase().ToLower()#>
      */
-    public ODataCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations> get<#=prop.Name.ToCheckedCase()#>() {
-        return new ODataCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToCheckedCase()#>.class, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations.class);
+    public OrcCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations> get<#=prop.Name.ToCheckedCase()#>() {
+        return new OrcCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToCheckedCase()#>.class, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations.class);
     }
 
     /**
@@ -87,7 +87,7 @@ public class <#=entity.Name.ToCheckedCase()#>Fetcher extends <#=className#><<#=e
      * @return the <#=prop.Name.ToCheckedCase().SplitCamelCase().ToLower().Singularize()#>
      */
     public <#=prop.Type.Name.ToCheckedCase()#>Fetcher get<#=prop.Name.ToCheckedCase().Singularize()#>(String id){
-         return new ODataCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToCheckedCase()#>.class, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations.class).getById(id);
+         return new OrcCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToCheckedCase()#>.class, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations.class).getById(id);
     }
 <#
     }else{
