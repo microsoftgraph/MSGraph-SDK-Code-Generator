@@ -26,7 +26,7 @@ namespace T4TemplateWriter.Output
 
         protected virtual string FileName(Template template, string identifier)
         {
-            return template.FolderName == "odata" ? template.Name.Replace("Entity", identifier)
+            return template.FolderName == "orc" ? template.Name.Replace("Entity", identifier)
                                                   : identifier;
         }
 

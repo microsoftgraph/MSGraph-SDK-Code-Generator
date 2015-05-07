@@ -40,7 +40,7 @@ namespace T4TemplateWriter.Templates
                 return TemplateType.Model;
             }
 
-            if (name.Equals("odata", StringComparison.InvariantCultureIgnoreCase))
+            if (name.Equals("orc", StringComparison.InvariantCultureIgnoreCase))
             {
                 return TemplateType.OData;
             }
@@ -59,7 +59,7 @@ namespace T4TemplateWriter.Templates
             }
             if (resourceName.Contains(odataLocation, StringComparison.InvariantCultureIgnoreCase))
             {
-                return "odata";
+                return "orc";
             }
             return string.Empty;
         }
