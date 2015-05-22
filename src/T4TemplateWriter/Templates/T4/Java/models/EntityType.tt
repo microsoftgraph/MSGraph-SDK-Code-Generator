@@ -11,6 +11,11 @@ TemplateWriterSettings settings = ConfigurationService.Settings;
 #>
 <#=GetCommentHeader()#>
 package <#=model.NamespaceName().ToLower()#>;
+
+<# if (entity.Base == null) {#>
+import com.microsoft.services.orc.ODataBaseEntity;
+<#}#>
+
 <#
     string extends = entity.Base == null ? " extends ODataBaseEntity" : " extends " + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1);
 #>
@@ -62,6 +67,8 @@ public class <#=entity.Name.ToCheckedCase()#><#=extends#> {
     */
     public void set<#=property.Name#>(<#=propertyType#> value) { 
         this.<#=property.GetSanitizedPropertyName()#> = value; 
+        valueChanged("<#=property.Name#>", value);
+
     }
 <#
     }

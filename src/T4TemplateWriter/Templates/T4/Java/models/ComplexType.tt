@@ -10,6 +10,11 @@ OdcmClass complex = (OdcmClass)host.OdcmType;
 #>
 <#=GetCommentHeader()#>
 package <#=model.NamespaceName()#>;
+
+<# if (complex.Base == null){#>
+import com.microsoft.services.orc.ODataBaseEntity;
+<#}#>
+
 <#
     string extends = complex.Base == null ? " extends ODataBaseEntity" : " extends " + complex.Base.Name.Substring(complex.Base.Name.LastIndexOf(".") +1);
 #>
@@ -45,7 +50,9 @@ public class <#=complex.Name.ToCheckedCase()#><#=extends#> {
     * @param value the <#=propertyType#>
     */
     public void set<#=property.Name#>(<#=propertyType#> value) { 
-        this.<#=property.GetSanitizedPropertyName()#> = value; 
+        this.<#=property.GetSanitizedPropertyName()#> = value;
+        valueChanged("<#=property.Name#>", value);
+
     }
 <#
     }
