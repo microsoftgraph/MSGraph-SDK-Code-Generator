@@ -1,0 +1,104 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplate.tt"#>
+<#@ output extension="\\" #>
+<#=GetCommentHeader()#>
+<#
+CustomHost host = (CustomHost)Host;
+var entity = host.OdcmType.AsOdcmClass();
+var entityName = GetPrefix() + entity.Name + "CollectionOperations";
+
+#>
+
+#import "<#=entityName#>.h"
+#import "<#=GetPrefix()#>Fetchers.h"
+
+<#=GetImplementationDoc(entityName)#>
+@implementation <#=entityName#>
+<#
+
+if(entity.HasActions())
+{
+	foreach(var action in entity.Actions())
+	{
+		if(action.IsBoundToCollection)
+		{
+			var clazz = action.ReturnType.IsComplex() ? "[" + action.ReturnType.GetTypeString() + " class]" : "nil";
+#>
+<# 
+			if (action.IsFunction())
+			{
+#>
+
+- (void)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#>:(void (^)(<#=GetParamString(action.ReturnType)#>, MSOrcError *error))callback {
+
+	id<MSOrcRequest> request = [super.resolver createOrcRequest];
+	<#=GetFunctionParameters(action.Parameters)#>
+	NSString *parameters = [MSOrcBaseContainer getFunctionParameters:params];
+	
+	[request.url appendPathComponent:[[NSString alloc] initWithFormat:@"<#= action.Name#>(%@)",parameters]];
+		
+	return [super orcExecuteRequest:request callback:^(id<MSOrcResponse> response, MSOrcError *e){
+
+       if (e == nil) {
+
+			<#=GetType(action.ReturnType)#> result = (<#=GetType(action.ReturnType)#>)[super.resolver.jsonSerializer deserialize:response.data asClass:<#=clazz#>];
+            callback(result, e);
+        }
+        else {
+
+            callback(nil, e);
+        }
+    }];
+}		
+<#		
+    		}
+    		else
+    		{
+#>
+
+- (void)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#>:(void (^)(<#=GetParamString(action.ReturnType)#>, MSOrcError *error))callback {
+
+	<#=GetParametersToJson(action.Parameters)#>
+
+	return [self <#= action.Name.ToLowerFirstChar() #>Raw<#=GetParametersForRawCall(action.Parameters.Select(p=> p.Name))#>:^(NSString *returnValue, MSOrcError *e) {
+       
+	   if (e == nil) {
+
+			<#=GetType(action.ReturnType)#> result = (<#=GetType(action.ReturnType)#>)[super.resolver.jsonSerializer deserialize:[returnValue dataUsingEncoding:NSUTF8StringEncoding] asClass:<#=clazz#>];
+            
+			callback(result, e);
+        }
+        else {
+
+            callback(<#=action.ReturnType.IsComplex() ? "nil" : "(int)[returnValue integerValue]"#>, e);
+        }
+    }];
+}
+
+- (void)<#= action.Name.ToLowerFirstChar() #>Raw<#=GetParamsForRaw(action.Parameters.Select(p => p.Name))#>:(void (^)(<#=GetParamRaw(action.ReturnType.Name)#>, MSOrcError *error))callback {
+
+	id<MSOrcRequest> request = [super.resolver createOrcRequest];
+	<#=GetParametersToJsonRaw(action.Parameters.Select(p=>p.Name))#>
+
+	[request.url appendPathComponent:@"<#= action.Name#>"];
+	[request setContent:payload];
+
+	return [super orcExecuteRequest:request callback:^(id<MSOrcResponse> response, MSOrcError *e) {
+		
+		if (e == nil) {
+
+            callback([[NSString alloc] initWithData:response.data encoding:NSUTF8StringEncoding], e);
+        }
+        else {
+
+            callback([[NSString alloc] initWithFormat:@"%d", response.status], e);
+        }
+    }];
+}
+		
+<#			}
+		}
+	}
+}
+#>
+@end

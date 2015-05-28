@@ -15,7 +15,7 @@ namespace T4TemplateWriter.Strategies
     public class ObjectiveCTemplateProcessor : BaseTemplateProcessor
     {
         // TODO: replace with variable prefix from configuration
-         const string Prefix = "MS";
+        const string Prefix = "MS";
 
         public ObjectiveCTemplateProcessor(IPathWriter pathWriter, OdcmModel model, string baseFilePath)
             : base(pathWriter, model, baseFilePath)
@@ -23,7 +23,7 @@ namespace T4TemplateWriter.Strategies
             StrategyName = "ObjectiveC";
             Templates.Add("Models", ProcessSimpleFile);
             Templates.Add("Protocols", ProcessSimpleFile);
-            Templates.Add("ODataEntities", ProcessSimpleFile);
+            Templates.Add("Fetchers", ProcessSimpleFile);
             Templates.Add("EntityCollectionFetcher", EntityTypes);
             Templates.Add("EntryPoint", ProcessEntryPoint);
         }
