@@ -23,7 +23,6 @@ namespace T4TemplateWriter.Strategies
         public const string ComplexType = "ComplexType";
         public const string EntityType = "EntityType";
         public const string EnumType = "EnumType";
-        public const string ODataBaseEntity = "ODataBaseEntity";
         public const string EntityCollectionOperation = "EntityCollectionOperations";
         public const string EntityFetcher = "EntityFetcher";
         public const string EntityOperations = "EntityOperations";
@@ -58,7 +57,6 @@ namespace T4TemplateWriter.Strategies
                 {EntityType, EntityTypes},
                 {ComplexType, ComplexTypes},
                 {EnumType, EnumTypes},
-                {ODataBaseEntity, BaseEntity},
                 //OData
                 {EntityCollectionOperation, EntityTypes},
                 {EntityFetcher, EntityTypes},

@@ -80,7 +80,6 @@
     <EmbeddedResource Include="Templates\T4\Java\Models\ComplexType.tt" />
     <EmbeddedResource Include="Templates\T4\Java\Models\EntityType.tt" />
     <EmbeddedResource Include="Templates\T4\Java\Models\EnumType.tt" />
-    <EmbeddedResource Include="Templates\T4\Java\Models\ODataBaseEntity.tt" />
     <EmbeddedResource Include="Templates\T4\Java\OData\EntityClient.tt" />
     <EmbeddedResource Include="Templates\T4\Java\OData\EntityCollectionOperations.tt" />
     <EmbeddedResource Include="Templates\T4\Java\OData\EntityFetcher.tt" />

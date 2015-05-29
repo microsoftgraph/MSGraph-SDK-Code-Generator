@@ -2,8 +2,8 @@
     "AvailableLanguages": [ "java", "objectivec" ],
     "TargetLanguage": "java",
     "Plugins": [ ],
-    "PrimaryNamespaceName": "oneDrive",
+    "PrimaryNamespaceName": "Microsoft.CoreServices",
     "NamespacePrefix": "com",
-    "InitializeCollections": "true",
+    "InitializeCollections": "false",
     "AllowShortActions": "false"
 }
