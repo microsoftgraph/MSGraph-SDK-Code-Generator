@@ -42,7 +42,7 @@ namespace T4TemplateWriter.Templates
 
             if (name.Equals("orc", StringComparison.InvariantCultureIgnoreCase))
             {
-                return TemplateType.OData;
+                return TemplateType.Orc;
             }
 
             return TemplateType.Other;
@@ -51,7 +51,7 @@ namespace T4TemplateWriter.Templates
         private string FolderName(string resourceName, TemplateWriterSettings config)
         {
             var modelLocation = string.Format("{0}.Models", config.TargetLanguage);
-            var odataLocation = string.Format("{0}.OData", config.TargetLanguage);
+            var odataLocation = string.Format("{0}.Orc", config.TargetLanguage);
 
             if (resourceName.Contains(modelLocation, StringComparison.InvariantCultureIgnoreCase))
             {

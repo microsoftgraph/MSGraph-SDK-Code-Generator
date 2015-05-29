@@ -80,10 +80,10 @@
     <EmbeddedResource Include="Templates\T4\Java\Models\ComplexType.tt" />
     <EmbeddedResource Include="Templates\T4\Java\Models\EntityType.tt" />
     <EmbeddedResource Include="Templates\T4\Java\Models\EnumType.tt" />
-    <EmbeddedResource Include="Templates\T4\Java\OData\EntityClient.tt" />
-    <EmbeddedResource Include="Templates\T4\Java\OData\EntityCollectionOperations.tt" />
-    <EmbeddedResource Include="Templates\T4\Java\OData\EntityFetcher.tt" />
-    <EmbeddedResource Include="Templates\T4\Java\OData\EntityOperations.tt" />
+    <EmbeddedResource Include="Templates\T4\Java\Orc\EntityClient.tt" />
+    <EmbeddedResource Include="Templates\T4\Java\Orc\EntityCollectionOperations.tt" />
+    <EmbeddedResource Include="Templates\T4\Java\Orc\EntityFetcher.tt" />
+    <EmbeddedResource Include="Templates\T4\Java\Orc\EntityOperations.tt" />
     <EmbeddedResource Include="Templates\T4\ObjectiveC\Base\BaseTemplate.tt" />
     <EmbeddedResource Include="Templates\T4\ObjectiveC\Models\headers\ComplexType.tt" />
     <EmbeddedResource Include="Templates\T4\ObjectiveC\Models\headers\EntityType.tt" />
@@ -92,18 +92,20 @@
     <EmbeddedResource Include="Templates\T4\ObjectiveC\Models\headers\Protocols.tt" />
     <EmbeddedResource Include="Templates\T4\ObjectiveC\Models\implementations\ComplexType.tt" />
     <EmbeddedResource Include="Templates\T4\ObjectiveC\Models\implementations\EntityType.tt" />
-    <EmbeddedResource Include="Templates\T4\ObjectiveC\OData\headers\EntityCollectionFetcher.tt" />
-    <EmbeddedResource Include="Templates\T4\ObjectiveC\OData\headers\EntityCollectionOperations.tt" />
-    <EmbeddedResource Include="Templates\T4\ObjectiveC\OData\headers\EntityFetcher.tt" />
-    <EmbeddedResource Include="Templates\T4\ObjectiveC\OData\headers\EntityOperations.tt" />
-    <EmbeddedResource Include="Templates\T4\ObjectiveC\OData\headers\EntryPoint.tt" />
-    <EmbeddedResource Include="Templates\T4\ObjectiveC\OData\headers\ODataEntities.tt" />
-    <EmbeddedResource Include="Templates\T4\ObjectiveC\OData\implementations\EntityCollectionFetcher.tt" />
-    <EmbeddedResource Include="Templates\T4\ObjectiveC\OData\implementations\EntityCollectionOperations.tt" />
-    <EmbeddedResource Include="Templates\T4\ObjectiveC\OData\implementations\EntityFetcher.tt" />
-    <EmbeddedResource Include="Templates\T4\ObjectiveC\OData\implementations\EntityOperations.tt" />
-    <EmbeddedResource Include="Templates\T4\ObjectiveC\OData\implementations\EntryPoint.tt" />
+    <EmbeddedResource Include="Templates\T4\ObjectiveC\Orc\headers\EntityCollectionFetcher.tt" />
+    <EmbeddedResource Include="Templates\T4\ObjectiveC\Orc\headers\EntityCollectionOperations.tt" />
+    <EmbeddedResource Include="Templates\T4\ObjectiveC\Orc\headers\EntityFetcher.tt" />
+    <EmbeddedResource Include="Templates\T4\ObjectiveC\Orc\headers\EntityOperations.tt" />
+    <EmbeddedResource Include="Templates\T4\ObjectiveC\Orc\headers\EntryPoint.tt" />
+    <EmbeddedResource Include="Templates\T4\ObjectiveC\Orc\implementations\EntityCollectionFetcher.tt" />
+    <EmbeddedResource Include="Templates\T4\ObjectiveC\Orc\implementations\EntityCollectionOperations.tt" />
+    <EmbeddedResource Include="Templates\T4\ObjectiveC\Orc\implementations\EntityFetcher.tt" />
+    <EmbeddedResource Include="Templates\T4\ObjectiveC\Orc\implementations\EntityOperations.tt" />
+    <EmbeddedResource Include="Templates\T4\ObjectiveC\Orc\implementations\EntryPoint.tt" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Templates\T4\ObjectiveC\Orc\headers\Fetchers.tt">
+      <LastGenOutput>Fetchers.h</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

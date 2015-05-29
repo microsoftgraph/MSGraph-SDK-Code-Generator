@@ -1,0 +1,55 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplate.tt"#>
+<#@ output extension="\\" #>
+<#=GetCommentHeader()#>
+<#
+CustomHost host = (CustomHost)Host;
+
+var entity = host.OdcmType.AsOdcmClass();
+	
+var entityName = GetPrefix() +entity.Name + "CollectionOperations";
+
+string baseEntity = entity.Base == null ? "MSOrcOperations" 
+					  : GetPrefix() + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) 
+					  + "CollectionOperations" ;
+
+#>
+
+#import <core/core.h>
+#import "<#=GetPrefix()#>Models.h"
+<#
+if(entity.Base != null)
+{
+
+#>
+#import "<#=baseEntity#>.h"
+<#
+
+}
+
+#>
+
+<#=GetHeaderDoc(entityName)#>
+@interface <#=entityName#> : <#=baseEntity#>
+<#
+if(entity.HasActions())
+{
+	foreach(var action in entity.Actions())
+	{
+		if(action.IsBoundToCollection)
+		{
+#>
+- (void)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#>:(void (^)(<#=GetParamString(action.ReturnType)#>, MSOrcError *error))callback;			
+<#
+			if(!action.IsFunction())
+			{
+
+#>
+- (void)<#= action.Name.ToLowerFirstChar() #>Raw<#=GetParamsForRaw(action.Parameters.Select(p => p.Name))#>:(void (^)(<#=GetParamRaw(action.ReturnType.Name)#>, MSOrcError *error))callback;			
+<#	
+			}
+		}
+	}
+}
+#>
+@end
