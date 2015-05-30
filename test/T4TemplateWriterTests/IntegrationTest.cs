@@ -12,7 +12,7 @@ namespace T4TemplateWriterTests {
 
         private String inputFile  = @"http://services.odata.org/V4/OData/OData.svc/$metadata";
         private String readerName = @"--reader=Vipr.Reader.OData.v4";
-        private String writerName = @"--writer=T4TemplateWriter";
+        private String writerName = @"--writer=Vipr.T4TemplateWriter";
         private String outputPath = @"--outputPath=.\output";
 
         public IntegrationTest() {

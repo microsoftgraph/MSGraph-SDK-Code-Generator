@@ -9,31 +9,23 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Microsoft.VisualStudio.TextTemplating;
+using Vipr.T4TemplateWriter.Settings;
 using Vipr.Core.CodeModel;
 
-namespace T4TemplateWriter
-{
+namespace Vipr.T4TemplateWriter {
     //The text template transformation engine is responsible for running
     //the transformation process.
     //The host is responsible for all input and output, locating files,
     //and anything else related to the external environment.
     //-------------------------------------------------------------------------
-    public class CustomHost : ITextTemplatingEngineHost
-    {
+    public class CustomHost : ITextTemplatingEngineHost {
         private OdcmObject _odcmObject;
 
-        public CustomHost(string language, OdcmObject odcmObject)
-            : this(language)
-        {
+        public CustomHost(OdcmObject odcmObject) {
             _odcmObject = odcmObject;
+            Language = ConfigurationService.Settings.TargetLanguage;
         }
-
-        public CustomHost(String language)
-        {
-            Language = language;
-        }
-        public OdcmObject OdcmType
-        {
+        public OdcmObject OdcmType {
             get { return _odcmObject; }
             set { _odcmObject = value; }
         }
@@ -49,8 +41,7 @@ namespace T4TemplateWriter
         //The engine can change this value based on the optional output directive
         //if the user specifies it in the text template.
         //---------------------------------------------------------------------
-        public string FileExtension
-        {
+        public string FileExtension {
             get;
             set;
         }
@@ -64,8 +55,7 @@ namespace T4TemplateWriter
 
 
 
-        public Encoding FileEncoding
-        {
+        public Encoding FileEncoding {
             get { return _fileEncodingValue; }
         }
 
@@ -74,30 +64,26 @@ namespace T4TemplateWriter
         //and the host can decide how to display them. For example, the host
         //can display the errors in the UI or write them to a file.
         //---------------------------------------------------------------------
-        public CompilerErrorCollection Errors
-        {
+        public CompilerErrorCollection Errors {
             get;
             private set;
         }
 
-        readonly List<String> _standardAssemblyReferences = new List<string>()
-        {
-           Assembly.GetExecutingAssembly().Location,
-                    typeof(List<>).Assembly.Location,
-                    typeof(Uri).Assembly.Location,
-                    typeof(Binder).Assembly.Location,
-                    typeof(IDynamicMetaObjectProvider).Assembly.Location,
-                    typeof(ITextTemplatingEngineHost).Assembly.Location,
-                    typeof(OdcmClass).Assembly.Location,
-                    typeof(CustomHost).Assembly.Location
+        readonly List<String> _standardAssemblyReferences = new List<string>() {
+              Assembly.GetExecutingAssembly().Location,
+              typeof(List<>).Assembly.Location,
+              typeof(Uri).Assembly.Location,
+              typeof(Binder).Assembly.Location,
+              typeof(IDynamicMetaObjectProvider).Assembly.Location,
+              typeof(ITextTemplatingEngineHost).Assembly.Location,
+              typeof(OdcmClass).Assembly.Location,
+              typeof(CustomHost).Assembly.Location
         };
 
 
-        public void AddExternalAssemblyReferences(Assembly assembly)
-        {
+        public void AddExternalAssemblyReferences(Assembly assembly) {
             var location = assembly.Location;
-            if (!_standardAssemblyReferences.Contains(location))
-            {
+            if (!_standardAssemblyReferences.Contains(location)) {
                 _standardAssemblyReferences.Add(assembly.Location);
             }
         }
@@ -106,8 +92,7 @@ namespace T4TemplateWriter
         //The engine will use these references when compiling and
         //executing the generated transformation class.
         //--------------------------------------------------------------
-        public IList<string> StandardAssemblyReferences
-        {
+        public IList<string> StandardAssemblyReferences {
             get { return _standardAssemblyReferences; }
         }
 
@@ -115,10 +100,8 @@ namespace T4TemplateWriter
         //The engine will add these statements to the generated
         //transformation class.
         //--------------------------------------------------------------
-        public IList<string> StandardImports
-        {
-            get
-            {
+        public IList<string> StandardImports {
+            get {
 
                 return new[]
                 {
@@ -127,10 +110,10 @@ namespace T4TemplateWriter
                     "System.Text",
                     "System.Collections.Generic",
                     "Vipr.Core.CodeModel",
-                    "T4TemplateWriter",
-                    "T4TemplateWriter.Extensions",
-                    "T4TemplateWriter.Settings",
-                    "T4TemplateWriter.Helpers." + Language,
+                    "Vipr.T4TemplateWriter",
+                    "Vipr.T4TemplateWriter.Extensions",
+                    "Vipr.T4TemplateWriter.Settings",
+                    "Vipr.T4TemplateWriter.Helpers." + Language.Replace("-",""),
                 };
             }
         }
@@ -147,8 +130,7 @@ namespace T4TemplateWriter
         //or if the host searches multiple locations by default, the host can
         //return the final path of the include file in the location parameter.
         //---------------------------------------------------------------------
-        public bool LoadIncludeText(string requestFileName, out string content, out string location)
-        {
+        public bool LoadIncludeText(string requestFileName, out string content, out string location) {
             content = string.Empty;
             location = GetBaseTemplatePath();
 
@@ -158,8 +140,7 @@ namespace T4TemplateWriter
 
             var path = location;
 
-            if (File.Exists(path))
-            {
+            if (File.Exists(path)) {
                 content = File.ReadAllText(path);
                 return true;
             }
@@ -170,10 +151,9 @@ namespace T4TemplateWriter
             return false;
         }
 
-        string GetBaseTemplatePath()
-        {
+        string GetBaseTemplatePath() {
             return BaseTemplatePath;
-                // Path.Combine(Directory.GetCurrentDirectory(), string.Format(BaseTemplateDirPattern, Language));
+            // Path.Combine(Directory.GetCurrentDirectory(), string.Format(BaseTemplateDirPattern, Language));
         }
 
         //Called by the Engine to enquire about
@@ -182,11 +162,9 @@ namespace T4TemplateWriter
         //appropriate value.
         //Otherwise, pass back NULL.
         //--------------------------------------------------------------------
-        public object GetHostOption(string optionName)
-        {
+        public object GetHostOption(string optionName) {
             object returnObject;
-            switch (optionName)
-            {
+            switch (optionName) {
                 case "CacheAssemblies":
                     returnObject = true;
                     break;
@@ -203,13 +181,11 @@ namespace T4TemplateWriter
         //assembly directive if the user has specified it in the text template.
         //This method can be called 0, 1, or more times.
         //---------------------------------------------------------------------
-        public string ResolveAssemblyReference(string assemblyReference)
-        {
+        public string ResolveAssemblyReference(string assemblyReference) {
             //If the argument is the fully qualified path of an existing file,
             //then we are done. (This does not do any work.)
             //----------------------------------------------------------------
-            if (File.Exists(assemblyReference))
-            {
+            if (File.Exists(assemblyReference)) {
                 return assemblyReference;
             }
             //Maybe the assembly is in the same folder as the text template that
@@ -217,8 +193,7 @@ namespace T4TemplateWriter
             //----------------------------------------------------------------
             string candidate = Path.Combine(Path.GetDirectoryName(TemplateFile), assemblyReference);
 
-            if (File.Exists(candidate))
-            {
+            if (File.Exists(candidate)) {
                 return candidate;
             }
             //This can be customized to search specific paths for the file
@@ -235,8 +210,7 @@ namespace T4TemplateWriter
         //specified in the text template.
         //This method can be called 0, 1, or more times.
         //---------------------------------------------------------------------
-        public Type ResolveDirectiveProcessor(string processorName)
-        {
+        public Type ResolveDirectiveProcessor(string processorName) {
             //This host will not resolve any specific processors.
             //Check the processor name, and if it is the name of a processor the
             //host wants to support, return the type of the processor.
@@ -256,25 +230,21 @@ namespace T4TemplateWriter
         //specific paths for the file and returning the file and path if found.
         //This method can be called 0, 1, or more times.
         //---------------------------------------------------------------------
-        public string ResolvePath(string fileName)
-        {
-            if (fileName == null)
-            {
+        public string ResolvePath(string fileName) {
+            if (fileName == null) {
                 throw new ArgumentNullException("the file name cannot be null");
             }
             //If the argument is the fully qualified path of an existing file,
             //then we are done
             //----------------------------------------------------------------
-            if (File.Exists(fileName))
-            {
+            if (File.Exists(fileName)) {
                 return fileName;
             }
             //Maybe the file is in the same folder as the text template that
             //called the directive.
             //----------------------------------------------------------------
             string candidate = Path.Combine(Path.GetDirectoryName(TemplateFile), fileName);
-            if (File.Exists(candidate))
-            {
+            if (File.Exists(candidate)) {
                 return candidate;
             }
             //Look more places.
@@ -289,18 +259,14 @@ namespace T4TemplateWriter
         //from the host by calling this method.
         //This method can be called 0, 1, or more times.
         //---------------------------------------------------------------------
-        public string ResolveParameterValue(string directiveId, string processorName, string parameterName)
-        {
-            if (directiveId == null)
-            {
+        public string ResolveParameterValue(string directiveId, string processorName, string parameterName) {
+            if (directiveId == null) {
                 throw new ArgumentNullException("the directiveId cannot be null");
             }
-            if (processorName == null)
-            {
+            if (processorName == null) {
                 throw new ArgumentNullException("the processorName cannot be null");
             }
-            if (parameterName == null)
-            {
+            if (parameterName == null) {
                 throw new ArgumentNullException("the parameterName cannot be null");
             }
             //Code to provide "hard-coded" parameter values goes here.
@@ -313,8 +279,7 @@ namespace T4TemplateWriter
         //generated text output file based on the optional output directive
         //if the user specifies it in the text template.
         //---------------------------------------------------------------------
-        public void SetFileExtension(string extension)
-        {
+        public void SetFileExtension(string extension) {
             FileExtension = extension;
         }
 
@@ -322,8 +287,7 @@ namespace T4TemplateWriter
         //generated text output file based on the optional output directive
         //if the user specifies it in the text template.
         //----------------------------------------------------------------------
-        public void SetOutputEncoding(Encoding encoding, bool fromOutputDirective)
-        {
+        public void SetOutputEncoding(Encoding encoding, bool fromOutputDirective) {
             _fileEncodingValue = encoding;
         }
 
@@ -331,16 +295,14 @@ namespace T4TemplateWriter
         //template to pass any errors that occurred to the host.
         //The host can decide how to display them.
         //---------------------------------------------------------------------
-        public void LogErrors(CompilerErrorCollection errors)
-        {
+        public void LogErrors(CompilerErrorCollection errors) {
             Errors = errors;
         }
 
         //This is the application domain that is used to compile and run
         //the generated transformation class to create the generated text output.
         //----------------------------------------------------------------------
-        public AppDomain ProvideTemplatingAppDomain(string content)
-        {
+        public AppDomain ProvideTemplatingAppDomain(string content) {
             //This host will provide a new application domain each time the
             //engine processes a text template.
             //-------------------------------------------------------------

@@ -1,0 +1,60 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplateCustomHost.java.tt"#>
+<#@ output extension="\\" #>
+<#
+
+CustomHost host = (CustomHost)Host;
+OdcmModel model = host.Model;
+OdcmClass complex = (OdcmClass)host.OdcmType;
+
+#>
+<#=GetCommentHeader()#>
+package <#=model.NamespaceName()#>;
+
+<# if (complex.Base == null){#>
+import com.microsoft.services.orc.ODataBaseEntity;
+<#}#>
+
+<#
+    string extends = complex.Base == null ? " extends ODataBaseEntity" : " extends " + complex.Base.Name.Substring(complex.Base.Name.LastIndexOf(".") +1);
+#>
+
+/**
+ * The type <#=complex.Name.ToCheckedCase().SplitCamelCase()#>.
+*/
+public class <#=complex.Name.ToCheckedCase()#><#=extends#> {
+
+    public <#=complex.Name.ToCheckedCase()#>(){
+        setODataType("#<#=model.GetNamespace()#>.<#=complex.Name#>");
+    }
+<# 
+    foreach(var property in complex.Properties){
+
+        var propertyType = property.IsCollection ? string.Format("java.util.List<{0}>", property.GetTypeString()) : property.GetTypeString();
+#>
+
+    private <#=propertyType#> <#=property.GetSanitizedPropertyName()#>;
+
+    /**
+    * Gets the <#=property.Name.SplitCamelCase()#>.
+    *
+    * @return the <#=propertyType#>
+    */
+    public <#=propertyType#> get<#=property.Name.ToCheckedCase()#>() {
+        return this.<#=property.GetSanitizedPropertyName()#>; 
+    }
+
+    /**
+    * Sets the <#=property.Name.SplitCamelCase()#>.
+    *
+    * @param value the <#=propertyType#>
+    */
+    public void set<#=property.Name.ToCheckedCase()#>(<#=propertyType#> value) { 
+        this.<#=property.GetSanitizedPropertyName()#> = value;
+        valueChanged("<#=property.Name#>", value);
+
+    }
+<#
+    }
+#>
+}

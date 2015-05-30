@@ -4,10 +4,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using T4TemplateWriter.Settings;
+using Vipr.T4TemplateWriter.Settings;
 using Vipr.Core.CodeModel;
 
-namespace T4TemplateWriter
+namespace Vipr.T4TemplateWriter
 {
     public static class OdcmModelExtensions
     {

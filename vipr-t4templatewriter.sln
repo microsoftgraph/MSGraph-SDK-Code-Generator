@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6ACF6C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Core", "submodules\vipr\src\Core\Vipr.Core\Vipr.Core.csproj", "{04C24936-006A-4FD8-A872-EE55588C1CBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T4TemplateWriter", "src\T4TemplateWriter\T4TemplateWriter.csproj", "{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.T4TemplateWriter", "src\T4TemplateWriter\Vipr.T4TemplateWriter.csproj", "{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D9E57059-BAD6-483B-985C-C7D1DA24ED7F} = {D9E57059-BAD6-483B-985C-C7D1DA24ED7F}
 	EndProjectSection

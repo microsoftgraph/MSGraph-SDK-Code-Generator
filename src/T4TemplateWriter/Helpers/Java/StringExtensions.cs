@@ -3,7 +3,7 @@
 
 using System.Text.RegularExpressions;
 
-namespace T4TemplateWriter.Helpers.Java
+namespace Vipr.T4TemplateWriter.Helpers.Java
 {
     public static class StringExtensions
     {

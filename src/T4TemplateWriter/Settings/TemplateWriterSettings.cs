@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace T4TemplateWriter.Settings
+namespace Vipr.T4TemplateWriter.Settings
 {
     public class TemplateWriterSettings
     {

@@ -1,0 +1,108 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplateCustomHost.java.tt"#>
+<#@ output extension="\\" #>
+<#
+
+CustomHost host = (CustomHost)Host;
+OdcmModel model = host.Model;
+OdcmClass entity = host.OdcmType.AsOdcmClass();
+
+var className = entity.Kind == OdcmClassKind.MediaEntity ? "OrcMediaEntityFetcher" :  "OrcEntityFetcher";
+
+#>
+<#=GetCommentHeader()#>
+package <#=model.ODataPackageNamespace()#>;
+
+import <#=model.NamespaceName()#>.*;
+import com.google.common.util.concurrent.*;
+import com.microsoft.services.orc.*;
+import com.microsoft.services.orc.Readable;
+import com.microsoft.services.orc.interfaces.*;
+
+/**
+ * The type  <#=entity.Name.ToCheckedCase()#>Fetcher.
+ */
+public class <#=entity.Name.ToCheckedCase()#>Fetcher extends <#=className#><<#=entity.Name.ToCheckedCase()#>,<#=entity.Name.ToCheckedCase()#>Operations> 
+                                     implements Readable<<#=entity.Name.ToCheckedCase()#>> {
+
+     /**
+     * Instantiates a new <#=entity.Name.ToCheckedCase()#>Fetcher.
+     *
+     * @param urlComponent the url component
+     * @param parent the parent
+     */
+     public <#=entity.Name.ToCheckedCase()#>Fetcher(String urlComponent, OrcExecutable parent) {
+        super(urlComponent, parent, <#=entity.Name.ToCheckedCase()#>.class, <#=entity.Name.ToCheckedCase()#>Operations.class);
+    }
+
+     /**
+     * Add parameter.
+     *
+     * @param name the name
+     * @param value the value
+     * @return the fetcher
+     */
+    public <#=entity.Name.ToCheckedCase()#>Fetcher addParameter(String name, Object value) {
+        addCustomParameter(name, value);
+        return this;
+    }
+
+     /**
+     * Add header.
+     *
+     * @param name the name
+     * @param value the value
+     * @return the fetcher
+     */
+    public <#=entity.Name.ToCheckedCase()#>Fetcher addHeader(String name, String value) {
+        addCustomHeader(name, value);
+        return this;
+    }
+
+    <#foreach(var child in entity.Derived){#>
+
+    public <#=child.Name.ToCheckedCase()#>Fetcher as<#=child.Name.ToCheckedCase()#>(){
+        return new <#=child.Name.ToCheckedCase()#>Fetcher(this.urlComponent, this.parent);
+    }   
+<#
+}
+#>
+    <#
+    foreach(var prop in entity.NavigationProperties()){
+    if(prop.IsCollection()){
+    #>
+
+     /**
+     * Gets <#=prop.Name.SplitCamelCase().ToLower()#>.
+     *
+     * @return the <#=prop.Name.SplitCamelCase().ToLower()#>
+     */
+    public OrcCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations> get<#=prop.Name.ToCheckedCase()#>() {
+        return new OrcCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToCheckedCase()#>.class, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations.class);
+    }
+
+    /**
+     * Gets <#=prop.Name.ToCheckedCase().SplitCamelCase().ToLower().Singularize()#>.
+     *
+     * @return the <#=prop.Name.ToCheckedCase().SplitCamelCase().ToLower().Singularize()#>
+     */
+    public <#=prop.Type.Name.ToCheckedCase()#>Fetcher get<#=prop.Name.ToCheckedCase().Singularize()#>(String id){
+         return new OrcCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToCheckedCase()#>.class, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations.class).getById(id);
+    }
+<#
+    }else{
+#>
+     /**
+     * Gets <#=prop.Name.ToCheckedCase().ToLower()#>.
+     *
+     * @return the <#=prop.Name.ToCheckedCase().SplitCamelCase().ToLower()#>
+     */
+    public <#=prop.Type.Name.ToCheckedCase()#>Fetcher get<#=prop.Name.ToCheckedCase().Singularize()#>() {
+        return new <#=prop.Type.Name.ToCheckedCase()#>Fetcher("<#=prop.Name#>", this);
+    }
+<#             
+}
+}
+#>
+
+}

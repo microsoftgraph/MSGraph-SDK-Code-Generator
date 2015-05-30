@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace T4TemplateWriter.Extensions
+namespace Vipr.T4TemplateWriter.Extensions
 {
     public static class StringExtensions
     {

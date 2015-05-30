@@ -3,10 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using T4TemplateWriter.Extensions;
+using Vipr.T4TemplateWriter.Extensions;
 using Vipr.Core.CodeModel;
 
-namespace T4TemplateWriter.Helpers.Java
+namespace Vipr.T4TemplateWriter.Helpers.Java
 {
     public static class PropertyHelper
     {

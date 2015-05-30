@@ -4,7 +4,7 @@
 using System;
 using Vipr.Core.CodeModel;
 
-namespace T4TemplateWriter.Helpers.ObjectiveC
+namespace Vipr.T4TemplateWriter.Helpers.ObjC
 {
 	public static class PropertyHelper
 	{

@@ -1,0 +1,26 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseTemplate.m.tt"#>
+<#@ output extension=".h" #>
+<#=GetCommentHeader()#>
+<#
+CustomHost host = (CustomHost)Host;
+OdcmModel model = host.Model;
+
+var entityTypes = model.GetEntityTypes();
+
+foreach(var et in entityTypes)
+{
+
+#>
+
+#import "<#=GetPrefix() + et.Name #>CollectionFetcher.h"
+#import "<#=GetPrefix() + et.Name #>CollectionOperations.h"
+#import "<#=GetPrefix() + et.Name #>Fetcher.h"
+#import "<#=GetPrefix() + et.Name #>Operations.h"
+<#
+
+}
+
+#>
+
+#import "<#=GetPrefix()#>Client.h" 

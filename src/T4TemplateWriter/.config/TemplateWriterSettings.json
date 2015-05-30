@@ -1,6 +1,6 @@
 ﻿{
-    "AvailableLanguages": [ "java", "objectivec" ],
-    "TargetLanguage": "java",
+    "AvailableLanguages": [ "Java", "Obj-C" ],
+    "TargetLanguage": "Obj-C",
     "Plugins": [ ],
     "PrimaryNamespaceName": "Microsoft.CoreServices",
     "NamespacePrefix": "com",
