@@ -10,11 +10,16 @@ Currently the following target languages are supported by this writer:
 - Objective-C for iOS
 
 # Contents
+- [Prerequisites](#Prerequisites)
 - [Getting started](#Getting-started)
 - [Using Vipr with this writer](#Using-Vipr-with-this-Writer)
 - [Using generated code](#Using-generated-code)
 - [Contributing](#Contributing)
 - [License](#License)
+
+## Prerequisites
+- [Visual Studio SDK](https://www.microsoft.com/en-us/download/details.aspx?id=40758)
+- [Visual Studio Modeling SDK](https://www.microsoft.com/en-us/download/details.aspx?id=40754)
 
 ## Getting started
 
