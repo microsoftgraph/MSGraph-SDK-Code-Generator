@@ -62,7 +62,7 @@ foreach(var prop in model.EntityContainer.Properties){
      *
      * @return the <#=prop.Type.GetTypeString()#>
      */
-    public OrcCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher, <#=prop.Type.GetTypeString()#>CollectionOperations> get<#=prop.Name#>() {
+    public OrcCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher, <#=prop.Type.GetTypeString()#>CollectionOperations> get<#=prop.Name.ToCheckedCase()#>() {
         return new OrcCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher, <#=prop.Type.GetTypeString()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.GetTypeString()#>.class,<#=prop.Type.GetTypeString()#>CollectionOperations.class);
     }
 <#
