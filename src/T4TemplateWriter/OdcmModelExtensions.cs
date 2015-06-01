@@ -114,7 +114,7 @@ namespace T4TemplateWriter
         public static string ODataPackageNamespace(this OdcmModel model)
         {
             var @namespace = NamespaceName(model);
-            var package = string.Format("{0}.{1}", @namespace, "odata");
+            var package = string.Format("{0}.{1}", @namespace, "orc");
             return package.ToLower();
         }
 
