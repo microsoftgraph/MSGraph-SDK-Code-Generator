@@ -56,7 +56,7 @@ public class <#=entity.Name.ToCheckedCase()#><#=extends#> {
     *
     * @return the <#=propertyType#>
     */
-    public <#=propertyType#> get<#=property.Name#>() {
+    public <#=propertyType#> get<#=property.Name.ToCheckedCase()#>() {
         return this.<#=property.GetSanitizedPropertyName()#>; 
     }
 
@@ -65,7 +65,7 @@ public class <#=entity.Name.ToCheckedCase()#><#=extends#> {
     *
     * @param value the <#=propertyType#>
     */
-    public void set<#=property.Name#>(<#=propertyType#> value) { 
+    public void set<#=property.Name.ToCheckedCase()#>(<#=propertyType#> value) { 
         this.<#=property.GetSanitizedPropertyName()#> = value; 
         valueChanged("<#=property.Name#>", value);
 
