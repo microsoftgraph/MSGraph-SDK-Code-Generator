@@ -1,9 +1,9 @@
 ﻿{
-    "AvailableLanguages": [ "Java", "Obj-C" ],
-    "TargetLanguage": "Obj-C",
+    "AvailableLanguages": [ "Java", "ObjC" ],
+    "TargetLanguage": "ObjC",
     "Plugins": [ ],
     "PrimaryNamespaceName": "Microsoft.CoreServices",
-    "NamespacePrefix": "com",
+    "NamespacePrefix": "MS",
     "InitializeCollections": "false",
     "AllowShortActions": "false"
 }

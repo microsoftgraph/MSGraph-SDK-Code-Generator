@@ -47,12 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomHost.cs" />
+    <Compile Include="TemplateProcessor\CustomHost.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Helpers\Java\PropertyHelper.cs" />
-    <Compile Include="Helpers\Java\StringExtensions.cs" />
-    <Compile Include="Helpers\ObjectiveC\PropertyHelper.cs" />
-    <Compile Include="OdcmModelExtensions.cs" />
+    <Compile Include="CodeHelpers\Java\PropertyHelper.cs" />
+    <Compile Include="CodeHelpers\Java\StringExtensions.cs" />
+    <Compile Include="CodeHelpers\ObjC\PropertyHelper.cs" />
+    <Compile Include="Extensions\OdcmModelExtensions.cs" />
     <Compile Include="PathWriters\PathWriterBase.cs" />
     <Compile Include="PathWriters\IPathWriter.cs" />
     <Compile Include="PathWriters\JavaPathWriter.cs" />
@@ -60,98 +60,98 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ConfigurationService.cs" />
     <Compile Include="Settings\TemplateWriterSettings.cs" />
-    <Compile Include="TemplateProcessors\TemplateProcessor.cs" />
-    <Compile Include="TemplateProcessors\ITemplateProcessor.cs" />
-    <Compile Include="Templates\ITemplateInfo.cs" />
-    <Compile Include="Templates\TemplateInfoBase.cs" />
-    <Compile Include="Templates\TemplateWriter.cs" />
-    <Compile Include="Templates\TemplateFileInfo.cs" />
-    <Compile Include="Templates\Utilities.cs" />
+    <Compile Include="TemplateProcessor\TemplateProcessor.cs" />
+    <Compile Include="TemplateProcessor\ITemplateProcessor.cs" />
+    <Compile Include="TemplateProcessor\ITemplateInfo.cs" />
+    <Compile Include="TemplateProcessor\TemplateInfoBase.cs" />
+    <Compile Include="TemplateProcessor\TemplateWriter.cs" />
+    <Compile Include="TemplateProcessor\TemplateFileInfo.cs" />
+    <Compile Include="TemplateProcessor\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".config\TemplateWriterSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Java\Base\BaseTemplateCustomHost.java.tt">
+    <None Include="Templates\Java\Base\BaseTemplateCustomHost.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Java\Model\ComplexType.java.tt">
+    <None Include="Templates\Java\Model\ComplexType.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Java\Model\EntityType.java.tt">
+    <None Include="Templates\Java\Model\EntityType.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Java\Model\EnumType.java.tt">
+    <None Include="Templates\Java\Model\EnumType.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Java\Fetcher\EntityClient.java.tt">
+    <None Include="Templates\Java\Fetcher\EntityClient.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Java\Fetcher\EntityCollectionOperations.java.tt">
+    <None Include="Templates\Java\Fetcher\EntityCollectionOperations.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Java\Fetcher\EntityFetcher.java.tt">
+    <None Include="Templates\Java\Fetcher\EntityFetcher.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Java\Fetcher\EntityOperations.java.tt">
+    <None Include="Templates\Java\Fetcher\EntityOperations.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Base\BaseTemplate.m.tt">
+    <None Include="Templates\ObjC\Base\BaseTemplate.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Model\ComplexType.h.tt">
+    <None Include="Templates\ObjC\Model\ComplexType.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Model\EntityType.h.tt">
+    <None Include="Templates\ObjC\Model\EntityType.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Model\EnumType.h.tt">
+    <None Include="Templates\ObjC\Model\EnumType.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Model\Models.h.tt">
+    <None Include="Templates\ObjC\Model\Models.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Model\Protocols.h.tt">
+    <None Include="Templates\ObjC\Model\Protocols.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Model\ComplexType.m.tt">
+    <None Include="Templates\ObjC\Model\ComplexType.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Model\EntityType.m.tt">
+    <None Include="Templates\ObjC\Model\EntityType.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Fetcher\EntityCollectionFetcher.h.tt">
+    <None Include="Templates\ObjC\Fetcher\EntityCollectionFetcher.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Fetcher\EntityCollectionOperations.h.tt">
+    <None Include="Templates\ObjC\Fetcher\EntityCollectionOperations.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Fetcher\EntityFetcher.h.tt">
+    <None Include="Templates\ObjC\Fetcher\EntityFetcher.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Fetcher\EntityOperations.h.tt">
+    <None Include="Templates\ObjC\Fetcher\EntityOperations.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Fetcher\EntityClient.h.tt">
+    <None Include="Templates\ObjC\Fetcher\EntityClient.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Fetcher\EntityCollectionFetcher.m.tt">
+    <None Include="Templates\ObjC\Fetcher\EntityCollectionFetcher.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Fetcher\EntityCollectionOperations.m.tt">
+    <None Include="Templates\ObjC\Fetcher\EntityCollectionOperations.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Fetcher\EntityFetcher.m.tt">
+    <None Include="Templates\ObjC\Fetcher\EntityFetcher.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Fetcher\EntityOperations.m.tt">
+    <None Include="Templates\ObjC\Fetcher\EntityOperations.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="T4\Obj-C\Fetcher\EntityClient.m.tt">
+    <None Include="Templates\ObjC\Fetcher\EntityClient.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="T4\Obj-C\Fetcher\Fetchers.h.tt">
+    <None Include="Templates\ObjC\Fetcher\Fetchers.h.tt">
       <LastGenOutput>Fetchers.h</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

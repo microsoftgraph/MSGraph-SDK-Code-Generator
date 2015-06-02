@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using Vipr.T4TemplateWriter.Settings;
 
-namespace Vipr.T4TemplateWriter {
+namespace Vipr.T4TemplateWriter.TemplateProcessor {
     public static class Utilities {
 
         public static IEnumerable<TemplateFileInfo> ReadTemplateFiles(String rootPath) {

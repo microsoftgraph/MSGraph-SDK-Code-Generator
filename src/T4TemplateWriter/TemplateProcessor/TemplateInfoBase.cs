@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vipr.T4TemplateWriter {
+namespace Vipr.T4TemplateWriter.TemplateProcessor {
     abstract public class TemplateInfoBase : ITemplateInfo {
 
         abstract public String Id { get; }

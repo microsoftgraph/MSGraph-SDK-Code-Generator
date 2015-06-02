@@ -4,10 +4,10 @@
 using System;
 using System.IO;
 
-namespace Vipr.T4TemplateWriter
+namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
 
-    public class TemplateFileInfo : Vipr.T4TemplateWriter.TemplateInfoBase
+    public class TemplateFileInfo : Vipr.T4TemplateWriter.TemplateProcessor.TemplateInfoBase
     {
         public override String Id { get { return this.FullPath; } }
         public override TemplateType TemplateType { get; set; }

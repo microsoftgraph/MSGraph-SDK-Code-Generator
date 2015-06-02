@@ -11,9 +11,9 @@ namespace Vipr.T4TemplateWriter.Settings
         public TemplateWriterSettings()
         {
             // defaults
-            AvailableLanguages = new List<string> { "java", "objectivec" };
+            AvailableLanguages = new List<string> { "Java", "ObjC" };
             PrimaryNamespaceName = "";
-            NamespacePrefix = "com";
+            NamespacePrefix = "MS";
             Plugins = new List<string>();
             InitializeCollections = true;
         }

@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Vipr.T4TemplateWriter.Settings;
+using Vipr.T4TemplateWriter.TemplateProcessor;
 using Vipr.T4TemplateWriter;
 using Vipr.Core.CodeModel;
 

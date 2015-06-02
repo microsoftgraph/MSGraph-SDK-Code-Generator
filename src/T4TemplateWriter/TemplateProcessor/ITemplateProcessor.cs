@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Vipr.T4TemplateWriter;
 using Vipr.Core;
 
-namespace Vipr.T4TemplateWriter.TemplateProcessors
+namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
     interface ITemplateProcessor
     {

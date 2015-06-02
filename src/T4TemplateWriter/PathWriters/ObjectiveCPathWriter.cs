@@ -4,7 +4,7 @@
 using System;
 using System.IO;
 using Vipr.T4TemplateWriter.Settings;
-using Vipr.T4TemplateWriter;
+using Vipr.T4TemplateWriter.TemplateProcessor;
 using Vipr.Core.CodeModel;
 
 namespace Vipr.T4TemplateWriter.Output

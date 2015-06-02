@@ -7,18 +7,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Vipr.T4TemplateWriter.Output;
 using Vipr.T4TemplateWriter.Settings;
-using Vipr.T4TemplateWriter.TemplateProcessors;
+using Vipr.T4TemplateWriter.TemplateProcessor;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 
-namespace Vipr.T4TemplateWriter
+namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
     public class TemplateWriter : IConfigurable, IOdcmWriter
     {
         private String TemplateSourcePath { get; set; }
         private readonly Dictionary<String, Func<OdcmModel, String /* path to base template */, ITemplateProcessor>> _processors;
 
-        public TemplateWriter() : this(Path.Combine(Directory.GetCurrentDirectory(), "T4")) { }
+        public TemplateWriter() : this(Path.Combine(Directory.GetCurrentDirectory(), "Templates")) { }
 
         public TemplateWriter(String templateSourcePath) {
             this.TemplateSourcePath = templateSourcePath;
@@ -26,7 +26,7 @@ namespace Vipr.T4TemplateWriter
             _processors = new Dictionary<String, Func<OdcmModel, String, ITemplateProcessor>>
             {
                 {"Java",  (model, basePath) => new TemplateProcessor(new JavaPathWriter(), model, basePath)},
-                {"Obj-C", (model, basePath) => new TemplateProcessor(new ObjectiveCPathWriter(), model, basePath )}
+                {"ObjC", (model, basePath) => new TemplateProcessor(new ObjectiveCPathWriter(), model, basePath )}
             };
         }
 
@@ -41,8 +41,7 @@ namespace Vipr.T4TemplateWriter
             TemplateFileInfo baseTemplate = 
                 allTemplates.Single(templateInfo => templateInfo.TemplateType == TemplateType.Base);
 
-            var processor = _processors[ConfigurationService.Settings.TargetLanguage]
-                                .Invoke(model, baseTemplate.FullPath);
+            var processor = _processors[ConfigurationService.Settings.TargetLanguage](model, baseTemplate.FullPath);
 
             foreach (TemplateFileInfo runnableTemplate in runnableTemplates) {
                 foreach (TextFile outputFile in processor.Process(runnableTemplate)) {

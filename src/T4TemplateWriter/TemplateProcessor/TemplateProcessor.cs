@@ -15,7 +15,7 @@ using Vipr.T4TemplateWriter;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 
-namespace Vipr.T4TemplateWriter.TemplateProcessors {
+namespace Vipr.T4TemplateWriter.TemplateProcessor {
 
     public enum FileType {
         ComplexType,

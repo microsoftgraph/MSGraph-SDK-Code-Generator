@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
 using System;
-using Vipr.T4TemplateWriter;
+using Vipr.T4TemplateWriter.TemplateProcessor;
 using Vipr.Core.CodeModel;
 
 namespace Vipr.T4TemplateWriter.Output
