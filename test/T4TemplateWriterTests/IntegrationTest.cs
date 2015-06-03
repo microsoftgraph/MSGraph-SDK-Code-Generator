@@ -20,9 +20,9 @@ namespace T4TemplateWriterTests {
              bootstrapper = new Vipr.Bootstrapper();
         }
 
-        public void Run() {
+        public void Run(Boolean interactive) {
             bootstrapper.Start(new String[] { inputFile, readerName, writerName, outputPath });
-            Console.ReadKey();
+            if (interactive) Console.ReadKey();
         }
     }
 }

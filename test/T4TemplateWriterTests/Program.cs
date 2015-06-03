@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace T4TemplateWriterTests {
     static class Program {
         static public void Main(String[] args) {
-            new IntegrationTest().Run();
+            new IntegrationTest().Run(false);
         }
     }
 }
