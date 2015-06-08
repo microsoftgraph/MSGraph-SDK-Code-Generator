@@ -1,1 +1,0 @@
-powershell -ExecutionPolicy Bypass .\scripts\build_and_test.ps1
