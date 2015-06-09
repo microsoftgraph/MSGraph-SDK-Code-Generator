@@ -1,5 +1,5 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplateCustomHost.java.tt"#>
+<#@ include file="BaseTemplate.java.tt"#>
 <#@ output extension="\\" #>
 <#
 
@@ -21,11 +21,11 @@ import com.microsoft.services.orc.ODataBaseEntity;
 #>
 
 /**
- * The type <#=entity.Name.ToCheckedCase().SplitCamelCase()#>.
+ * The type <#=entity.Name.ToUpperFirstChar().SplitCamelCase()#>.
 */
-public class <#=entity.Name.ToCheckedCase()#><#=extends#> {
+public class <#=entity.Name.ToUpperFirstChar()#><#=extends#> {
 
-    public <#=entity.Name.ToCheckedCase()#>(){
+    public <#=entity.Name.ToUpperFirstChar()#>(){
         setODataType("#<#=model.GetNamespace()#>.<#=entity.Name#>");
     }
 <# 
@@ -39,25 +39,25 @@ public class <#=entity.Name.ToCheckedCase()#><#=extends#> {
 
     <# if (settings.InitializeCollections) { #>
 
-    private <#=propertyType#> <#=property.GetSanitizedPropertyName()#> = <#=newType#>
+    private <#=propertyType#> <#=property.SanitizePropertyName()#> = <#=newType#>
     
     <# } else { #>
     
-    private <#=propertyType#> <#=property.GetSanitizedPropertyName()#> = null;
+    private <#=propertyType#> <#=property.SanitizePropertyName()#> = null;
     
     <#}#>
 
     <#}else{#>
         
-    private <#=propertyType#> <#=property.GetSanitizedPropertyName()#>;
+    private <#=propertyType#> <#=property.SanitizePropertyName()#>;
     <#}#> 
     /**
     * Gets the <#=property.Name.SplitCamelCase()#>.
     *
     * @return the <#=propertyType#>
     */
-    public <#=propertyType#> get<#=property.Name.ToCheckedCase()#>() {
-        return this.<#=property.GetSanitizedPropertyName()#>; 
+    public <#=propertyType#> get<#=property.Name.ToUpperFirstChar()#>() {
+        return this.<#=property.SanitizePropertyName()#>; 
     }
 
     /**
@@ -65,8 +65,8 @@ public class <#=entity.Name.ToCheckedCase()#><#=extends#> {
     *
     * @param value the <#=propertyType#>
     */
-    public void set<#=property.Name.ToCheckedCase()#>(<#=propertyType#> value) { 
-        this.<#=property.GetSanitizedPropertyName()#> = value; 
+    public void set<#=property.Name.ToUpperFirstChar()#>(<#=propertyType#> value) { 
+        this.<#=property.SanitizePropertyName()#> = value; 
         valueChanged("<#=property.Name#>", value);
 
     }

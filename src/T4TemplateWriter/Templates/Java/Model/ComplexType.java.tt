@@ -1,5 +1,5 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplateCustomHost.java.tt"#>
+<#@ include file="BaseTemplate.java.tt"#>
 <#@ output extension="\\" #>
 <#
 
@@ -20,11 +20,11 @@ import com.microsoft.services.orc.ODataBaseEntity;
 #>
 
 /**
- * The type <#=complex.Name.ToCheckedCase().SplitCamelCase()#>.
+ * The type <#=complex.Name.ToUpperFirstChar().SplitCamelCase()#>.
 */
-public class <#=complex.Name.ToCheckedCase()#><#=extends#> {
+public class <#=complex.Name.ToUpperFirstChar()#><#=extends#> {
 
-    public <#=complex.Name.ToCheckedCase()#>(){
+    public <#=complex.Name.ToUpperFirstChar()#>(){
         setODataType("#<#=model.GetNamespace()#>.<#=complex.Name#>");
     }
 <# 
@@ -33,15 +33,15 @@ public class <#=complex.Name.ToCheckedCase()#><#=extends#> {
         var propertyType = property.IsCollection ? string.Format("java.util.List<{0}>", property.GetTypeString()) : property.GetTypeString();
 #>
 
-    private <#=propertyType#> <#=property.GetSanitizedPropertyName()#>;
+    private <#=propertyType#> <#=property.SanitizePropertyName()#>;
 
     /**
     * Gets the <#=property.Name.SplitCamelCase()#>.
     *
     * @return the <#=propertyType#>
     */
-    public <#=propertyType#> get<#=property.Name.ToCheckedCase()#>() {
-        return this.<#=property.GetSanitizedPropertyName()#>; 
+    public <#=propertyType#> get<#=property.Name.ToUpperFirstChar()#>() {
+        return this.<#=property.SanitizePropertyName()#>; 
     }
 
     /**
@@ -49,8 +49,8 @@ public class <#=complex.Name.ToCheckedCase()#><#=extends#> {
     *
     * @param value the <#=propertyType#>
     */
-    public void set<#=property.Name.ToCheckedCase()#>(<#=propertyType#> value) { 
-        this.<#=property.GetSanitizedPropertyName()#> = value;
+    public void set<#=property.Name.ToUpperFirstChar()#>(<#=propertyType#> value) { 
+        this.<#=property.SanitizePropertyName()#> = value;
         valueChanged("<#=property.Name#>", value);
 
     }

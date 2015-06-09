@@ -4,9 +4,9 @@
 
 public string GetPrefix()
 {
-	PropertyHelper.Prefix = "MS" + ((CustomT4Host)Host).CurrentModel.EntityContainer.Name;
+	TypeHelperObjC.Prefix = ConfigurationService.Settings.NamespacePrefix + ((CustomT4Host)Host).CurrentModel.EntityContainer.Name;
 
-	return PropertyHelper.Prefix;
+	return TypeHelperObjC.Prefix;
 }
 
 public string GetCommentHeader()

@@ -1,5 +1,5 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplateCustomHost.java.tt"#>
+<#@ include file="BaseTemplate.java.tt"#>
 <#@ output extension="\\" #>
 <#
 
@@ -21,17 +21,17 @@ import com.microsoft.services.orc.interfaces.*;
 import static com.microsoft.services.orc.Helpers.*;
 
 /**
- * The type <#=entity.Name.ToCheckedCase()#>Operations.
+ * The type <#=entity.Name.ToUpperFirstChar()#>Operations.
  */
-public class <#=entity.Name.ToCheckedCase()#>Operations <#=baseOperation#> {
+public class <#=entity.Name.ToUpperFirstChar()#>Operations <#=baseOperation#> {
 
      /**
-      * Instantiates a new <#=entity.Name.ToCheckedCase()#>Operations.
+      * Instantiates a new <#=entity.Name.ToUpperFirstChar()#>Operations.
       *
       * @param urlComponent the url component
       * @param parent the parent
       */
-    public <#=entity.Name.ToCheckedCase()#>Operations(String urlComponent, OrcExecutable parent) {
+    public <#=entity.Name.ToUpperFirstChar()#>Operations(String urlComponent, OrcExecutable parent) {
             super(urlComponent, parent);
     }
 
@@ -42,7 +42,7 @@ public class <#=entity.Name.ToCheckedCase()#>Operations <#=baseOperation#> {
      * @param value the value
      * @return the operations
      */
-    public <#=entity.Name.ToCheckedCase()#>Operations addParameter(String name, Object value) {
+    public <#=entity.Name.ToUpperFirstChar()#>Operations addParameter(String name, Object value) {
         addCustomParameter(name, value);
         return this;
     }
@@ -54,7 +54,7 @@ public class <#=entity.Name.ToCheckedCase()#>Operations <#=baseOperation#> {
      * @param value the value
      * @return the operations
      */
-    public <#=entity.Name.ToCheckedCase()#>Operations addHeader(String name, String value) {
+    public <#=entity.Name.ToUpperFirstChar()#>Operations addHeader(String name, String value) {
         addCustomHeader(name, value);
         return this;
     }
@@ -81,17 +81,17 @@ public class <#=entity.Name.ToCheckedCase()#>Operations <#=baseOperation#> {
                         foreach(var parameter in someAction.Parameters){
                             var paramType = parameter.IsCollection ? string.Format("java.util.List<{0}>",parameter.GetTypeString()) : parameter.GetTypeString();
                 
-                            inputParam += string.Format("{1} {0}, ",parameter.Name.ToLowerFirtsChar(),paramType);
-                            actionParams += string.Format("{1} {0}, ",parameter.Name.ToLowerFirtsChar(), "String");
+                            inputParam += string.Format("{1} {0}, ",parameter.Name.ToLowerFirstChar(),paramType);
+                            actionParams += string.Format("{1} {0}, ",parameter.Name.ToLowerFirstChar(), "String");
 
-                            sbParams.AppendFormat("@param {0} the {0} ", parameter.Name.ToLowerFirtsChar());
+                            sbParams.AppendFormat("@param {0} the {0} ", parameter.Name.ToLowerFirstChar());
 
                             sb.AppendFormat("map.put(\"{0}\", {1});", 
-                                            parameter.Name, parameter.Name.ToLowerFirtsChar());
+                                            parameter.Name, parameter.Name.ToLowerFirstChar());
                             sb.Append(Environment.NewLine);
                             sb.Append("\t\t");
 
-                            serializations.AppendFormat("String serialized{0} = serializer.serialize({1});", parameter.Name, parameter.Name.ToLowerFirtsChar());
+                            serializations.AppendFormat("String serialized{0} = serializer.serialize({1});", parameter.Name, parameter.Name.ToLowerFirstChar());
                             serializations.Append(Environment.NewLine);
                             serializations.Append("\t\t");
 
@@ -105,7 +105,7 @@ public class <#=entity.Name.ToCheckedCase()#>Operations <#=baseOperation#> {
      * <#= sbParams.ToString()#>
      * @return the listenable future
      */         
-    public ListenableFuture<<#=someAction.ReturnType.GetTypeString()#>> <#= someAction.Name.ToLowerFirtsChar() #>(<#=inputParam.Length > 0 ? inputParam.Substring(0, inputParam.Length -2) : string.Empty#>) { 
+    public ListenableFuture<<#=someAction.ReturnType.GetTypeString()#>> <#= someAction.Name.ToLowerFirstChar() #>(<#=inputParam.Length > 0 ? inputParam.Substring(0, inputParam.Length -2) : string.Empty#>) { 
 
     final SettableFuture<<#=someAction.ReturnType.GetTypeString()#>> result = SettableFuture.create();
         java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();
@@ -140,7 +140,7 @@ public class <#=entity.Name.ToCheckedCase()#>Operations <#=baseOperation#> {
      * <#= sbParams.ToString()#>
      * @return the listenable future
      */         
-    public ListenableFuture<<#= someAction.ReturnType == null ? "Integer" : someAction.ReturnType.GetTypeString()#>> <#= someAction.Name.ToLowerFirtsChar() #>(<#=inputParam.Length > 0 ? inputParam.Substring(0, inputParam.Length -2) : string.Empty#>) { 
+    public ListenableFuture<<#= someAction.ReturnType == null ? "Integer" : someAction.ReturnType.GetTypeString()#>> <#= someAction.Name.ToLowerFirstChar() #>(<#=inputParam.Length > 0 ? inputParam.Substring(0, inputParam.Length -2) : string.Empty#>) { 
         <# if (someAction.Parameters.Any()) {#>
 JsonSerializer serializer = getResolver().getJsonSerializer();<#}#>      
         <#= serializations.ToString() #>  
@@ -150,7 +150,7 @@ JsonSerializer serializer = getResolver().getJsonSerializer();<#}#>
         addByteArrayResultCallback(result, future, <#= someAction.ReturnType == null ? "Integer" : someAction.ReturnType.GetTypeString()#>.class);
         <#}else{#>
 
-        ListenableFuture<String> future = <#= someAction.Name.ToLowerFirtsChar() #>Raw(<#= paramNames.ToString() #>);
+        ListenableFuture<String> future = <#= someAction.Name.ToLowerFirstChar() #>Raw(<#= paramNames.ToString() #>);
         return transformToEntityListenableFuture(future, <#= someAction.ReturnType == null ? "Integer" : someAction.ReturnType.GetTypeString()#>.class, getResolver());
         <#}#>
 
@@ -161,7 +161,7 @@ JsonSerializer serializer = getResolver().getJsonSerializer();<#}#>
      * <#= sbParams.ToString()#>
      * @return the listenable future
      */ 
-    public ListenableFuture<String> <#= someAction.Name.ToLowerFirtsChar() #>Raw(<#=actionParams.Length > 0 ? actionParams.Substring(0, actionParams.Length -2) : string.Empty #>){
+    public ListenableFuture<String> <#= someAction.Name.ToLowerFirstChar() #>Raw(<#=actionParams.Length > 0 ? actionParams.Substring(0, actionParams.Length -2) : string.Empty #>){
         <#if (someAction.Parameters.Any()) { #>
 
         java.util.Map<String, String> map = new java.util.HashMap<String, String>();

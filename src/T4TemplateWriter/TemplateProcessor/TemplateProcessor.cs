@@ -144,7 +144,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor {
                 throw new InvalidOperationException(errors);
             }
 
-            String fileName = (odcmObject != null) ? odcmObject.Name.ToCheckedCase() : templateInfo.TemplateName.ToCheckedCase();
+            String fileName = (odcmObject != null) ? odcmObject.Name.ToUpperFirstChar() : templateInfo.TemplateName.ToUpperFirstChar();
             var path = this.PathWriter.WritePath(templateInfo, fileName);
 
             return new TextFile(path, output);

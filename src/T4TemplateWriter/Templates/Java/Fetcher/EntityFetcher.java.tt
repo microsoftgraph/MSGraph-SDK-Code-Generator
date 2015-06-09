@@ -1,5 +1,5 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplateCustomHost.java.tt"#>
+<#@ include file="BaseTemplate.java.tt"#>
 <#@ output extension="\\" #>
 <#
 
@@ -20,19 +20,19 @@ import com.microsoft.services.orc.Readable;
 import com.microsoft.services.orc.interfaces.*;
 
 /**
- * The type  <#=entity.Name.ToCheckedCase()#>Fetcher.
+ * The type  <#=entity.Name.ToUpperFirstChar()#>Fetcher.
  */
-public class <#=entity.Name.ToCheckedCase()#>Fetcher extends <#=className#><<#=entity.Name.ToCheckedCase()#>,<#=entity.Name.ToCheckedCase()#>Operations> 
-                                     implements Readable<<#=entity.Name.ToCheckedCase()#>> {
+public class <#=entity.Name.ToUpperFirstChar()#>Fetcher extends <#=className#><<#=entity.Name.ToUpperFirstChar()#>,<#=entity.Name.ToUpperFirstChar()#>Operations> 
+                                     implements Readable<<#=entity.Name.ToUpperFirstChar()#>> {
 
      /**
-     * Instantiates a new <#=entity.Name.ToCheckedCase()#>Fetcher.
+     * Instantiates a new <#=entity.Name.ToUpperFirstChar()#>Fetcher.
      *
      * @param urlComponent the url component
      * @param parent the parent
      */
-     public <#=entity.Name.ToCheckedCase()#>Fetcher(String urlComponent, OrcExecutable parent) {
-        super(urlComponent, parent, <#=entity.Name.ToCheckedCase()#>.class, <#=entity.Name.ToCheckedCase()#>Operations.class);
+     public <#=entity.Name.ToUpperFirstChar()#>Fetcher(String urlComponent, OrcExecutable parent) {
+        super(urlComponent, parent, <#=entity.Name.ToUpperFirstChar()#>.class, <#=entity.Name.ToUpperFirstChar()#>Operations.class);
     }
 
      /**
@@ -42,7 +42,7 @@ public class <#=entity.Name.ToCheckedCase()#>Fetcher extends <#=className#><<#=e
      * @param value the value
      * @return the fetcher
      */
-    public <#=entity.Name.ToCheckedCase()#>Fetcher addParameter(String name, Object value) {
+    public <#=entity.Name.ToUpperFirstChar()#>Fetcher addParameter(String name, Object value) {
         addCustomParameter(name, value);
         return this;
     }
@@ -54,15 +54,15 @@ public class <#=entity.Name.ToCheckedCase()#>Fetcher extends <#=className#><<#=e
      * @param value the value
      * @return the fetcher
      */
-    public <#=entity.Name.ToCheckedCase()#>Fetcher addHeader(String name, String value) {
+    public <#=entity.Name.ToUpperFirstChar()#>Fetcher addHeader(String name, String value) {
         addCustomHeader(name, value);
         return this;
     }
 
     <#foreach(var child in entity.Derived){#>
 
-    public <#=child.Name.ToCheckedCase()#>Fetcher as<#=child.Name.ToCheckedCase()#>(){
-        return new <#=child.Name.ToCheckedCase()#>Fetcher(this.urlComponent, this.parent);
+    public <#=child.Name.ToUpperFirstChar()#>Fetcher as<#=child.Name.ToUpperFirstChar()#>(){
+        return new <#=child.Name.ToUpperFirstChar()#>Fetcher(this.urlComponent, this.parent);
     }   
 <#
 }
@@ -77,28 +77,28 @@ public class <#=entity.Name.ToCheckedCase()#>Fetcher extends <#=className#><<#=e
      *
      * @return the <#=prop.Name.SplitCamelCase().ToLower()#>
      */
-    public OrcCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations> get<#=prop.Name.ToCheckedCase()#>() {
-        return new OrcCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToCheckedCase()#>.class, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations.class);
+    public OrcCollectionFetcher<<#=prop.Type.Name.ToUpperFirstChar()#>, <#=prop.Type.Name.ToUpperFirstChar()#>Fetcher, <#=prop.Type.Name.ToUpperFirstChar()#>CollectionOperations> get<#=prop.Name.ToUpperFirstChar()#>() {
+        return new OrcCollectionFetcher<<#=prop.Type.Name.ToUpperFirstChar()#>, <#=prop.Type.Name.ToUpperFirstChar()#>Fetcher, <#=prop.Type.Name.ToUpperFirstChar()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToUpperFirstChar()#>.class, <#=prop.Type.Name.ToUpperFirstChar()#>CollectionOperations.class);
     }
 
     /**
-     * Gets <#=prop.Name.ToCheckedCase().SplitCamelCase().ToLower().Singularize()#>.
+     * Gets <#=prop.Name.ToUpperFirstChar().SplitCamelCase().ToLower().Singularize()#>.
      *
-     * @return the <#=prop.Name.ToCheckedCase().SplitCamelCase().ToLower().Singularize()#>
+     * @return the <#=prop.Name.ToUpperFirstChar().SplitCamelCase().ToLower().Singularize()#>
      */
-    public <#=prop.Type.Name.ToCheckedCase()#>Fetcher get<#=prop.Name.ToCheckedCase().Singularize()#>(String id){
-         return new OrcCollectionFetcher<<#=prop.Type.Name.ToCheckedCase()#>, <#=prop.Type.Name.ToCheckedCase()#>Fetcher, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToCheckedCase()#>.class, <#=prop.Type.Name.ToCheckedCase()#>CollectionOperations.class).getById(id);
+    public <#=prop.Type.Name.ToUpperFirstChar()#>Fetcher get<#=prop.Name.ToUpperFirstChar().Singularize()#>(String id){
+         return new OrcCollectionFetcher<<#=prop.Type.Name.ToUpperFirstChar()#>, <#=prop.Type.Name.ToUpperFirstChar()#>Fetcher, <#=prop.Type.Name.ToUpperFirstChar()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToUpperFirstChar()#>.class, <#=prop.Type.Name.ToUpperFirstChar()#>CollectionOperations.class).getById(id);
     }
 <#
     }else{
 #>
      /**
-     * Gets <#=prop.Name.ToCheckedCase().ToLower()#>.
+     * Gets <#=prop.Name.ToUpperFirstChar().ToLower()#>.
      *
-     * @return the <#=prop.Name.ToCheckedCase().SplitCamelCase().ToLower()#>
+     * @return the <#=prop.Name.ToUpperFirstChar().SplitCamelCase().ToLower()#>
      */
-    public <#=prop.Type.Name.ToCheckedCase()#>Fetcher get<#=prop.Name.ToCheckedCase().Singularize()#>() {
-        return new <#=prop.Type.Name.ToCheckedCase()#>Fetcher("<#=prop.Name#>", this);
+    public <#=prop.Type.Name.ToUpperFirstChar()#>Fetcher get<#=prop.Name.ToUpperFirstChar().Singularize()#>() {
+        return new <#=prop.Type.Name.ToUpperFirstChar()#>Fetcher("<#=prop.Name#>", this);
     }
 <#             
 }

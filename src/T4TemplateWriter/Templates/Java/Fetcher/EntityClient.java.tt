@@ -1,5 +1,5 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplateCustomHost.java.tt"#>
+<#@ include file="BaseTemplate.java.tt"#>
 <#@ output extension="\\" #>
 <#
 CustomT4Host host = (CustomT4Host)Host;
@@ -15,15 +15,15 @@ import com.microsoft.services.orc.interfaces.DependencyResolver;
 /**
  * The type <#=model.GetEntityContainer()#>Client.
  */
-public class <#=model.GetEntityContainer().ToCheckedCase()#>Client extends BaseOrcContainer {
+public class <#=model.GetEntityContainer().ToUpperFirstChar()#>Client extends BaseOrcContainer {
 
      /**
-     * Instantiates a new <#=model.GetEntityContainer().ToCheckedCase()#>Client.
+     * Instantiates a new <#=model.GetEntityContainer().ToUpperFirstChar()#>Client.
      *
      * @param url the url
      * @param resolver the resolver
      */
-    public <#=model.GetEntityContainer().ToCheckedCase()#>Client(String url, DependencyResolver resolver) {
+    public <#=model.GetEntityContainer().ToUpperFirstChar()#>Client(String url, DependencyResolver resolver) {
         super(url, resolver);
     }
 
@@ -34,7 +34,7 @@ public class <#=model.GetEntityContainer().ToCheckedCase()#>Client extends BaseO
      * @param value the value
      * @return the client
      */
-    public <#=model.GetEntityContainer().ToCheckedCase()#>Client addParameter(String name, Object value) {
+    public <#=model.GetEntityContainer().ToUpperFirstChar()#>Client addParameter(String name, Object value) {
         addCustomParameter(name, value);
         return this;
     }
@@ -46,7 +46,7 @@ public class <#=model.GetEntityContainer().ToCheckedCase()#>Client extends BaseO
      * @param value the value
      * @return the client
      */
-    public <#=model.GetEntityContainer().ToCheckedCase()#>Client addHeader(String name, String value) {
+    public <#=model.GetEntityContainer().ToUpperFirstChar()#>Client addHeader(String name, String value) {
         addCustomHeader(name, value);
         return this;
     }
@@ -62,7 +62,7 @@ foreach(var prop in model.EntityContainer.Properties){
      *
      * @return the <#=prop.Type.GetTypeString()#>
      */
-    public OrcCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher, <#=prop.Type.GetTypeString()#>CollectionOperations> get<#=prop.Name.ToCheckedCase()#>() {
+    public OrcCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher, <#=prop.Type.GetTypeString()#>CollectionOperations> get<#=prop.Name.ToUpperFirstChar()#>() {
         return new OrcCollectionFetcher<<#=prop.Type.GetTypeString()#>, <#=prop.Type.GetTypeString()#>Fetcher, <#=prop.Type.GetTypeString()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.GetTypeString()#>.class,<#=prop.Type.GetTypeString()#>CollectionOperations.class);
     }
 <#
@@ -73,7 +73,7 @@ foreach(var prop in model.EntityContainer.Properties){
      *
      * @return the <#=prop.Name#>
      */
-    public <#=prop.Type.GetTypeString()#>Fetcher get<#=prop.Name.ToCheckedCase()#>() {
+    public <#=prop.Type.GetTypeString()#>Fetcher get<#=prop.Name.ToUpperFirstChar()#>() {
         return new <#=prop.Type.GetTypeString()#>Fetcher("<#=prop.Name#>", this);
     }
 <#  

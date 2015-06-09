@@ -68,7 +68,7 @@ namespace Vipr.T4TemplateWriter {
                "Vipr.T4TemplateWriter",
                "Vipr.T4TemplateWriter.Extensions",
                "Vipr.T4TemplateWriter.Settings",
-               "Vipr.T4TemplateWriter.Helpers." + ConfigurationService.Settings.TargetLanguage
+               "Vipr.T4TemplateWriter.CodeHelpers." + ConfigurationService.Settings.TargetLanguage
         };
 
 

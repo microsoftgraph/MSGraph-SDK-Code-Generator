@@ -1,5 +1,5 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplateCustomHost.java.tt"#>
+<#@ include file="BaseTemplate.java.tt"#>
 <#@ output extension="\\" #>
 <#
 
@@ -12,9 +12,9 @@ var enumT = host.CurrentType.AsOdcmEnum();
 package <#=model.NamespaceName()#>;
 
 /**
- * The Enum <#=enumT.Name.ToCheckedCase().SplitCamelCase()#>.
+ * The Enum <#=enumT.Name.ToUpperFirstChar().SplitCamelCase()#>.
 */
-public enum <#= enumT.Name.ToCheckedCase()#>	
+public enum <#= enumT.Name.ToUpperFirstChar()#>	
 {
 <#
     foreach(var value in enumT.Members)
@@ -23,7 +23,7 @@ public enum <#= enumT.Name.ToCheckedCase()#>
     /**
     * <#= value.Name.SplitCamelCase()#>
     */
-    <#= value.Name.GetSanitizedPropertyName()#>,
+    <#= value.Name.SanitizePropertyName()#>,
 <#
     }
 #>
