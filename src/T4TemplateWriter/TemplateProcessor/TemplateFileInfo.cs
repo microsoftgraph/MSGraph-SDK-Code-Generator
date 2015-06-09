@@ -16,6 +16,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         public override String TemplateLanguage { get; set; }
 
+        public String TemplateBaseName { get; set; }
+
         public String FullPath { get; set; }
 
         public String FileExtension { get; set; }
@@ -26,6 +28,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             // <rootPath>/<grandparent>/<parent>/<fileName>.<fileExtension>.tt
             this.TemplateName = Path.GetFileNameWithoutExtension(fullPath);  // <fileName>.<fileExtension>
             this.FileExtension = Path.GetExtension(this.TemplateName).Substring(1);  // <fileExtension>
+
+            this.TemplateBaseName = Path.GetFileNameWithoutExtension(this.TemplateName); // <fileName>
 
             String parentPath = Path.GetDirectoryName(fullPath);  // <rootPath>/<grandparent>/<parent>
             String parentName = Path.GetFileNameWithoutExtension(parentPath);  // <parent>

@@ -3,9 +3,9 @@
 <#@ output extension="\\" #>
 <#
 
-CustomHost host = (CustomHost)Host;
-OdcmClass entity = host.OdcmType.AsOdcmClass();
-OdcmModel model = host.Model;
+CustomT4Host host = (CustomT4Host)Host;
+OdcmClass entity = host.CurrentType.AsOdcmClass();
+OdcmModel model = host.CurrentModel;
 
 var baseOperation = entity.Base == null ? "extends OrcOperations" : "extends " + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "CollectionOperations";
 

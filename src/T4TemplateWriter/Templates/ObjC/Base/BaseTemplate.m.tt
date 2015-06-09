@@ -4,7 +4,7 @@
 
 public string GetPrefix()
 {
-	PropertyHelper.Prefix = "MS" + ((CustomHost)Host).Model.EntityContainer.Name;
+	PropertyHelper.Prefix = "MS" + ((CustomT4Host)Host).CurrentModel.EntityContainer.Name;
 
 	return PropertyHelper.Prefix;
 }

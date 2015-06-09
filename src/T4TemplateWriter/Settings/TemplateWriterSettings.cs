@@ -24,7 +24,7 @@ namespace Vipr.T4TemplateWriter.Settings
         public IList<string> AvailableLanguages { get; set; }
 
         /// <summary>
-        /// The code language to be targeted by this template writer instance.
+        /// The code language to be targeted by this templateInfo writer instance.
         /// </summary>
         public string TargetLanguage { get; set; }
 

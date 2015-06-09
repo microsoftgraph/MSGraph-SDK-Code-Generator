@@ -3,9 +3,9 @@
 <#@ output extension="\\" #>
 <#
 
-CustomHost host = (CustomHost)Host;
-OdcmModel model = host.Model;
-var enumT = host.OdcmType.AsOdcmEnum();
+CustomT4Host host = (CustomT4Host)Host;
+OdcmModel model = host.CurrentModel;
+var enumT = host.CurrentType.AsOdcmEnum();
 
 #>
 <#=GetCommentHeader()#>

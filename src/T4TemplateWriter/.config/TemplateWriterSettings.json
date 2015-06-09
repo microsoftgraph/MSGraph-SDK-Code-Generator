@@ -1,6 +1,6 @@
 ﻿{
     "AvailableLanguages": [ "Java", "ObjC" ],
-    "TargetLanguage": "ObjC",
+    "TargetLanguage": "Java",
     "Plugins": [ ],
     "PrimaryNamespaceName": "Microsoft.CoreServices",
     "NamespacePrefix": "MS",

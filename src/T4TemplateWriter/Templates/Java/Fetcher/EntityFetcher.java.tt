@@ -3,9 +3,9 @@
 <#@ output extension="\\" #>
 <#
 
-CustomHost host = (CustomHost)Host;
-OdcmModel model = host.Model;
-OdcmClass entity = host.OdcmType.AsOdcmClass();
+CustomT4Host host = (CustomT4Host)Host;
+OdcmModel model = host.CurrentModel;
+OdcmClass entity = host.CurrentType.AsOdcmClass();
 
 var className = entity.Kind == OdcmClassKind.MediaEntity ? "OrcMediaEntityFetcher" :  "OrcEntityFetcher";
 

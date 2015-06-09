@@ -14,57 +14,59 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr.T4TemplateWriter.TemplateProcessor {
     public class TemplateWriter : IConfigurable, IOdcmWriter {
-        private String TemplateSourcePath { get; set; }
-        private Dictionary<String, Func<OdcmModel, String /* path to base template */, ITemplateProcessor>> _processors;
+        private String TemplatesDirectory { get; set; }
+        private ITemplateProcessor Processor { get; set; }
+        private OdcmModel CurrentModel { get; set; }
+
+        private const String PathWriterClassNameFormatString = "Vipr.T4TemplateWriter.Output.{0}PathWriter";
 
         public TemplateWriter() : this(null) { }
 
-        public TemplateWriter(String templateSourcePath) {
-            if (String.IsNullOrEmpty(templateSourcePath)) {
+        public TemplateWriter(String templatesDirectory) {
+            if (String.IsNullOrEmpty(templatesDirectory)) {
                 String programDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 String templatesDir = Path.Combine(programDir, "Templates");
                 if (new DirectoryInfo(templatesDir).Exists) {
-                    this.TemplateSourcePath = templatesDir;
+                    this.TemplatesDirectory = templatesDir;
                 } else {
                     throw new Exception("No templates found.");
                 }
             } else {
-                this.TemplateSourcePath = templateSourcePath;
+                this.TemplatesDirectory = templatesDirectory;
             }
 
-            Console.WriteLine("Using templates from {0}", TemplateSourcePath);
-            _processors = new Dictionary<String, Func<OdcmModel, String, ITemplateProcessor>>
-            {
-                {"Java",  (model, basePath) => new TemplateProcessor(new JavaPathWriter(), model, basePath)},
-                {"ObjC", (model, basePath) => new TemplateProcessor(new ObjectiveCPathWriter(), model, basePath )}
-            };
+            Console.WriteLine("Using templates from {0}", TemplatesDirectory);
         }
 
 
-        IEnumerable<TextFile> ProcessTemplates(OdcmModel model) {
-            IEnumerable<TemplateFileInfo> allTemplates = Utilities.ReadTemplateFiles(this.TemplateSourcePath);
+        IEnumerable<TextFile> ProcessTemplates() {
+            IEnumerable<TemplateFileInfo> allTemplates = Utilities.ReadTemplateFiles(this.TemplatesDirectory);
 
             IEnumerable<TemplateFileInfo> runnableTemplates =
                 allTemplates.Where(templateInfo => templateInfo.TemplateType != TemplateType.Base);
 
-            TemplateFileInfo baseTemplate =
-                allTemplates.Single(templateInfo => templateInfo.TemplateType == TemplateType.Base);
-
-            var processor = _processors[ConfigurationService.Settings.TargetLanguage](model, baseTemplate.FullPath);
+            // Initialize processor.
+            String pathWriterClassName = String.Format(PathWriterClassNameFormatString,
+                ConfigurationService.Settings.TargetLanguage);
+            IPathWriter pathWriterInstance = (IPathWriter) Activator.CreateInstance(Type.GetType(pathWriterClassName));
+            this.Processor = new TemplateProcessor(pathWriterInstance, this.CurrentModel, this.TemplatesDirectory);
 
             foreach (TemplateFileInfo runnableTemplate in runnableTemplates) {
-                foreach (TextFile outputFile in processor.Process(runnableTemplate)) {
+                foreach (TextFile outputFile in this.Processor.Process(runnableTemplate)) {
                     yield return outputFile;
                 }
             }
         }
 
+        // IConfigurationProvider
         public void SetConfigurationProvider(IConfigurationProvider configurationProvider) {
             ConfigurationService.Initialize(configurationProvider);
         }
 
+        // IOdcmWriter
         public IEnumerable<TextFile> GenerateProxy(OdcmModel model) {
-            return this.ProcessTemplates(model);
+            this.CurrentModel = model;
+            return this.ProcessTemplates();
         }
     }
 }

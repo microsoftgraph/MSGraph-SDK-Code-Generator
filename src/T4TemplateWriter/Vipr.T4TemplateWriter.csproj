@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TemplateProcessor\CustomHost.cs" />
+    <Compile Include="TemplateProcessor\CustomT4Host.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="CodeHelpers\Java\PropertyHelper.cs" />
     <Compile Include="CodeHelpers\Java\StringExtensions.cs" />
@@ -56,7 +56,7 @@
     <Compile Include="PathWriters\PathWriterBase.cs" />
     <Compile Include="PathWriters\IPathWriter.cs" />
     <Compile Include="PathWriters\JavaPathWriter.cs" />
-    <Compile Include="PathWriters\ObjectiveCPathWriter.cs" />
+    <Compile Include="PathWriters\ObjCPathWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ConfigurationService.cs" />
     <Compile Include="Settings\TemplateWriterSettings.cs" />

@@ -3,9 +3,9 @@
 <#@ output extension="\\" #>
 <#=GetCommentHeader()#>
 <#
-CustomHost host = (CustomHost)Host;
-var entity = host.OdcmType.AsOdcmClass();
-OdcmModel model = host.Model;
+CustomT4Host host = (CustomT4Host)Host;
+var entity = host.CurrentType.AsOdcmClass();
+OdcmModel model = host.CurrentModel;
 #>
 
 #import "<#=GetPrefix()#>Models.h"
@@ -38,7 +38,7 @@ foreach(var prop in entity.Properties)
 {
 	if(prop.Type is OdcmEnum && !prop.IsCollection){
 
-		var enumProp = host.Model.GetEnumTypes().First(e=> e.Name == prop.Type.Name);
+		var enumProp = host.CurrentModel.GetEnumTypes().First(e=> e.Name == prop.Type.Name);
 #>
 - (void)set<#=prop.Name#>String:(NSString *)value {
 <#

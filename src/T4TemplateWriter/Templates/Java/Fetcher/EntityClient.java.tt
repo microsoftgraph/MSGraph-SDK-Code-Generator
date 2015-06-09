@@ -2,8 +2,8 @@
 <#@ include file="BaseTemplateCustomHost.java.tt"#>
 <#@ output extension="\\" #>
 <#
-CustomHost host = (CustomHost)Host;
-OdcmModel model = host.Model;
+CustomT4Host host = (CustomT4Host)Host;
+OdcmModel model = host.CurrentModel;
 #>
 <#=GetCommentHeader()#>
 package <#=model.ODataPackageNamespace()#>;

@@ -4,8 +4,8 @@
 <#=GetCommentHeader()#>
 
 <#
-CustomHost host = (CustomHost)Host;
-var entity = host.OdcmType.AsOdcmClass();
+CustomT4Host host = (CustomT4Host)Host;
+var entity = host.CurrentType.AsOdcmClass();
 var entityName = GetPrefix() + entity.Name + "Fetcher";
 var extends =  (entity.Kind == OdcmClassKind.MediaEntity ? "MSOrcMediaEntityFetcher<": "MSOrcEntityFetcher<") + entityName+ "Protocol>";
 var clasess = new List<string>();

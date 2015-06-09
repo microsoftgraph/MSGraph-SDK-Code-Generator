@@ -3,9 +3,9 @@
 <#@ output extension="\\" #>
 <#
 
-CustomHost host = (CustomHost)Host;
-OdcmModel model = host.Model;
-OdcmClass complex = (OdcmClass)host.OdcmType;
+CustomT4Host host = (CustomT4Host)Host;
+OdcmModel model = host.CurrentModel;
+OdcmClass complex = (OdcmClass)host.CurrentType;
 
 #>
 <#=GetCommentHeader()#>

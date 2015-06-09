@@ -4,8 +4,8 @@
 <#=GetCommentHeader()#>
 
 <#
-CustomHost host = (CustomHost)Host;
-OdcmModel model = host.Model;
+CustomT4Host host = (CustomT4Host)Host;
+OdcmModel model = host.CurrentModel;
 var containerProps = model.EntityContainer.Properties;
 var entityName = GetPrefix() + "Client"; 
 

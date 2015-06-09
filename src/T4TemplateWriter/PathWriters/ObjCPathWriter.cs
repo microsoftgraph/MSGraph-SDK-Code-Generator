@@ -9,7 +9,7 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr.T4TemplateWriter.Output
 {
-    class ObjectiveCPathWriter : PathWriterBase
+    class ObjCPathWriter : PathWriterBase
     {
 
         public override string WritePath(TemplateFileInfo template, String entityTypeName)

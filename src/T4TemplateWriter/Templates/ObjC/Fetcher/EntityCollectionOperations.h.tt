@@ -3,9 +3,9 @@
 <#@ output extension="\\" #>
 <#=GetCommentHeader()#>
 <#
-CustomHost host = (CustomHost)Host;
+CustomT4Host host = (CustomT4Host)Host;
 
-var entity = host.OdcmType.AsOdcmClass();
+var entity = host.CurrentType.AsOdcmClass();
 	
 var entityName = GetPrefix() +entity.Name + "CollectionOperations";
 
