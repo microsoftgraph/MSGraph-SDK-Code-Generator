@@ -1,17 +1,15 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension="\\" #>
-<#=GetCommentHeader()#>
+<#@ include file="Shared.template.tt"#>
+
 <#
-CustomT4Host host = (CustomT4Host)Host;
 var entity = host.CurrentType.AsOdcmClass();	
-var entityName = GetPrefix() + entity.Name + "Operations";
+var entityName = prefix + entity.Name + "Operations";
 TemplateWriterSettings settings = ConfigurationService.Settings;
 #>
 
-#import "<#=GetPrefix()#>Fetchers.h"
+#import "<#=prefix#>Fetchers.h"
 
-<#=GetImplementationDoc(entityName)#>
+<#=writer.GetImplementationDoc(entityName)#>
 @implementation <#=entityName#>
 
 - (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSOrcExecutable>)parent {
@@ -31,10 +29,10 @@ if(entity.HasActions())
 			if (action.IsFunction())
 			{
 #>
-<#=GetMethodHeader(action)#> {
+<#=writer.GetMethodHeader(action)#> {
 
 	id<MSOrcRequest> request = [self.resolver createOrcRequest];
-	<#=GetFunctionParameters(action.Parameters)#>
+	<#=writer.GetFunctionParameters(action.Parameters)#>
 	
 	NSString *parameters = [MSOrcBaseContainer getFunctionParameters:params];
 
@@ -45,7 +43,7 @@ if(entity.HasActions())
        
 	   if (e == nil) {
 
-			<#=GetTypeForAction(action)#> result = (<#=GetTypeForAction(action)#>)[super.resolver.jsonSerializer deserialize:response.data asClass:<#=clazz#>];
+			<#=writer.GetTypeForAction(action)#> result = (<#=writer.GetTypeForAction(action)#>)[super.resolver.jsonSerializer deserialize:response.data asClass:<#=clazz#>];
             callback(result, e);
         }
         else {
@@ -59,13 +57,13 @@ if(entity.HasActions())
     		else if(action != null)
     		{
 #>
-<#=GetMethodHeader(action)#> {
-	<#=GetParametersToJson(action.Parameters)#>
-	return [self <#= action.Name.ToLowerFirstChar() #>Raw<#=GetParametersForRawCall(action.Parameters.Select(p => p.Name))#>:^(NSString *returnValue, MSOrcError *e) {
+<#=writer.GetMethodHeader(action)#> {
+	<#=writer.GetParametersToJson(action.Parameters)#>
+	return [self <#= action.Name.ToLowerFirstChar() #>Raw<#=writer.GetParametersForRawCall(action.Parameters.Select(p => p.Name))#>:^(NSString *returnValue, MSOrcError *e) {
        
 	   if (e == nil) {
 
-			<#=GetTypeForAction(action)#> result = (<#=GetTypeForAction(action)#>)[super.resolver.jsonSerializer deserialize:[returnValue dataUsingEncoding:NSUTF8StringEncoding] asClass:<#=clazz#>];
+			<#=writer.GetTypeForAction(action)#> result = (<#=writer.GetTypeForAction(action)#>)[super.resolver.jsonSerializer deserialize:[returnValue dataUsingEncoding:NSUTF8StringEncoding] asClass:<#=clazz#>];
             callback(result, e);
         } 
 		else {
@@ -75,10 +73,10 @@ if(entity.HasActions())
     }];
 }
 
-<#=GetMethodHeaderRaw(action)#> {
+<#=writer.GetMethodHeaderRaw(action)#> {
 
 	id<MSOrcRequest> request = [super.resolver createOrcRequest];
-	<#=GetParametersToJsonRaw(action.Parameters.Select(p => p.Name))#>
+	<#=writer.GetParametersToJsonRaw(action.Parameters.Select(p => p.Name))#>
 	
 	[request setVerb:HTTP_VERB_POST];
 	 <# if (settings.AllowShortActions) { #>    

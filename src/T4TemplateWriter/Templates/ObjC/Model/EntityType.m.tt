@@ -1,24 +1,21 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension="\\" #>
-<#=GetCommentHeader()#>
+<#@ include file="Shared.template.tt"#>
+
 <#
-CustomT4Host host = (CustomT4Host)Host;
 var entity = host.CurrentType.AsOdcmClass();
-OdcmModel model = host.CurrentModel;
 #>
 
-#import "<#=GetPrefix()#>Models.h"
+#import "<#=prefix#>Models.h"
 
-<#=GetImplementationDoc(GetPrefix() + entity.Name)#>
-@implementation <#=GetPrefix() + entity.Name#>	
+<#=writer.GetImplementationDoc(prefix + entity.Name)#>
+@implementation <#=prefix + entity.Name#>	
 
 @synthesize odataType = _odataType;
 <#
 foreach(var prop in entity.Properties)
 {
 #>
-@synthesize <#=GetName(prop.Name)#> = _<#=GetName(prop.Name)#>;
+@synthesize <#=writer.GetName(prop.Name)#> = _<#=writer.GetName(prop.Name)#>;
 <#
 }
 #>
@@ -51,7 +48,7 @@ foreach(var prop in entity.Properties)
 
 	if ([value isEqualToString:@"<#=value#>"]) {
 		
-		_<#=prop.Name#> = <#=GetPrefix() + "_" + prop.Type.Name + "_" + value#>;
+		_<#=prop.Name#> = <#=prefix + "_" + prop.Type.Name + "_" + value#>;
 	}
 <#
 		}

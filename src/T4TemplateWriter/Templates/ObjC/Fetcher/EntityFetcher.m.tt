@@ -1,18 +1,12 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension="\\" #>
-<#=GetCommentHeader()#>
+<#@ include file="Shared.template.tt"#>
+
 <#
-CustomT4Host host = (CustomT4Host)Host;
-
-OdcmModel model = host.CurrentModel;
-
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = GetPrefix() + entity.Name;
-
+var entityName = prefix + entity.Name;
 #>
 
-#import "<#=GetPrefix()#>Fetchers.h"
+#import "<#=prefix#>Fetchers.h"
 
 @implementation <#=entityName#>Fetcher
 
@@ -28,7 +22,7 @@ var entityName = GetPrefix() + entity.Name;
     return self;
 }
 
-- (void)update:(id)entity callback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *e))callback {
+- (void)update:(id)entity callback:(void (^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *e))callback {
 
 	return [super update:entity callback:callback];
 }
@@ -45,14 +39,14 @@ foreach(var prop in entity.NavigationProperties())
 	{
 #>
 
-- (<#=GetPrefix() + prop.Type.Name#>CollectionFetcher *)<#=prop.Name.ToLowerFirstChar()#> {
+- (<#=prefix + prop.Type.Name#>CollectionFetcher *)<#=prop.Name.ToLowerFirstChar()#> {
 
-    return [[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=GetPrefix() + prop.Type.Name#> class]];
+    return [[<#=prefix + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=prefix + prop.Type.Name#> class]];
 }
 
-- (<#=GetPrefix() + prop.Type.Name#>Fetcher *)get<#=prop.Name.ToUpperFirstChar()#>ById:(NSString *)id {
+- (<#=prefix + prop.Type.Name#>Fetcher *)get<#=prop.Name.ToUpperFirstChar()#>ById:(NSString *)id {
 
-    return [[[<#=GetPrefix() + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=GetPrefix() + prop.Type.Name#> class]] getById:id];
+    return [[[<#=prefix + prop.Type.Name#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=prefix + prop.Type.Name#> class]] getById:id];
 }
 <#
 	}
@@ -60,9 +54,9 @@ foreach(var prop in entity.NavigationProperties())
 	{
 #>
 
-- (<#=GetPrefix() + prop.Type.Name#>Fetcher *)<#=prop.Name.ToLowerFirstChar()#> {
+- (<#=prefix + prop.Type.Name#>Fetcher *)<#=prop.Name.ToLowerFirstChar()#> {
 
-	 return [[<#=GetPrefix() + prop.Type.Name#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=GetPrefix() + prop.Type.Name#> class]];
+	 return [[<#=prefix + prop.Type.Name#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self asClass:[<#=prefix + prop.Type.Name#> class]];
 }
 <#		
 			
@@ -72,9 +66,9 @@ foreach(var child in entity.Derived)
 {
 #>
 
-- (<#=GetPrefix() + child.Name#>Fetcher *)as<#=child.Name.ToUpperFirstChar()#> {
+- (<#=prefix + child.Name#>Fetcher *)as<#=child.Name.ToUpperFirstChar()#> {
 
-	return [[<#=GetPrefix() +child.Name#>Fetcher alloc] initWithUrl:@"" parent:self asClass:[<#=GetPrefix() + child.Name#> class]];
+	return [[<#=prefix +child.Name#>Fetcher alloc] initWithUrl:@"" parent:self asClass:[<#=prefix + child.Name#> class]];
 }
 <#
 

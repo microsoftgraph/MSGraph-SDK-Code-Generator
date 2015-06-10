@@ -1,39 +1,36 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension="\\" #>
-<#=GetCommentHeader()#>
+<#@ include file="Shared.template.tt"#>
 
 <#
-CustomT4Host host = (CustomT4Host)Host;
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = GetPrefix() + entity.Name + "Fetcher";
+var entityName = prefix + entity.Name + "Fetcher";
 var extends =  (entity.Kind == OdcmClassKind.MediaEntity ? "MSOrcMediaEntityFetcher<": "MSOrcEntityFetcher<") + entityName+ "Protocol>";
-var clasess = new List<string>();
+var classes = new List<string>();
 
 foreach(var prop in entity.NavigationProperties())
 {
 	var fetcher = string.Empty;
-	fetcher = GetPrefix() + prop.Type.Name + "Fetcher;";
+	fetcher = prefix + prop.Type.Name + "Fetcher;";
 
-	if(!clasess.Contains(fetcher)) clasess.Add(fetcher);
+	if(!classes.Contains(fetcher)) classes.Add(fetcher);
 
 	if(prop.IsCollection)
 	{
-		var collectionFetcher = GetPrefix() + prop.Type.Name + "CollectionFetcher;";
+		var collectionFetcher = prefix + prop.Type.Name + "CollectionFetcher;";
 
-		if(!clasess.Contains(collectionFetcher)) clasess.Add(collectionFetcher);
+		if(!classes.Contains(collectionFetcher)) classes.Add(collectionFetcher);
 	}
 }
 
 foreach(var child in entity.Derived)
 {
 	var fetcher = string.Empty;
-	fetcher = GetPrefix() + child.Name + "Fetcher;";
+	fetcher = prefix + child.Name + "Fetcher;";
 
-	if(!clasess.Contains(fetcher)) clasess.Add(fetcher);
+	if(!classes.Contains(fetcher)) classes.Add(fetcher);
 }
 
-foreach(var propertyClass in clasess)
+foreach(var propertyClass in classes)
 {
 
 #>
@@ -43,33 +40,33 @@ foreach(var propertyClass in clasess)
 }
 
 #>
-@class <#=GetPrefix() + entity.Name#>Operations;
-@class <#=GetPrefix() + entity.Name#>Fetcher;
+@class <#=prefix + entity.Name#>Operations;
+@class <#=prefix + entity.Name#>Fetcher;
 
 #import <core/core.h>
-#import "<#=GetPrefix()#>Models.h"
+#import "<#=prefix#>Models.h"
 
-<#=GetHeaderDoc(entityName)#>
+<#=writer.GetHeaderDoc(entityName)#>
 @protocol <#=entityName#>Protocol<MSOrcEntityFetcher>
 
 @optional
 
-- (void) readWithCallback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
-- (<#=GetPrefix() + entity.Name#>Fetcher *)addCustomParametersWithName:(NSString *)name value:(id)value;
-- (<#=GetPrefix() + entity.Name#>Fetcher *)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
-- (<#=GetPrefix() + entity.Name#>Fetcher *)select:(NSString *)params;
-- (<#=GetPrefix() + entity.Name#>Fetcher *)expand:(NSString *)value;
+- (void) readWithCallback:(void (^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
+- (<#=prefix + entity.Name#>Fetcher *)addCustomParametersWithName:(NSString *)name value:(id)value;
+- (<#=prefix + entity.Name#>Fetcher *)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
+- (<#=prefix + entity.Name#>Fetcher *)select:(NSString *)params;
+- (<#=prefix + entity.Name#>Fetcher *)expand:(NSString *)value;
 
 @required
 
-@property (copy, nonatomic, readonly) <#=GetPrefix() + entity.Name#>Operations *operations;
+@property (copy, nonatomic, readonly) <#=prefix + entity.Name#>Operations *operations;
 
 @end
 
 @interface <#=entityName#> : <#=extends#>
 
 - (instancetype)initWithUrl:(NSString*)urlComponent parent:(id<MSOrcExecutable>)parent;
-- (void)update:(<#=GetPrefix() + entity.Name#> *)<#=entity.Name.ToLowerFirstChar()#> callback:(void(^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
+- (void)update:(<#=prefix + entity.Name#> *)<#=entity.Name.ToLowerFirstChar()#> callback:(void(^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
 - (void)delete:(void(^)(int status, MSOrcError *error))callback;
 
 <#
@@ -80,9 +77,9 @@ foreach(var prop in entity.NavigationProperties())
 	{
 
 #>
-@property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=GetPrefix() + prop.Type.Name#>CollectionFetcher *<#=prop.Name.ToLowerFirstChar()#>;
+@property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=prefix + prop.Type.Name#>CollectionFetcher *<#=prop.Name.ToLowerFirstChar()#>;
 
-- (<#=GetPrefix() + prop.Type.Name#>Fetcher *)get<#=prop.Name.ToUpperFirstChar()#>ById:(NSString*)id;
+- (<#=prefix + prop.Type.Name#>Fetcher *)get<#=prop.Name.ToUpperFirstChar()#>ById:(NSString*)id;
 
 <#
 
@@ -92,7 +89,7 @@ foreach(var prop in entity.NavigationProperties())
 
 #>
 
-@property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=GetPrefix() + prop.Type.Name#>Fetcher *<#=prop.Name.ToLowerFirstChar()#>;
+@property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=prefix + prop.Type.Name#>Fetcher *<#=prop.Name.ToLowerFirstChar()#>;
 <#		
 			
 	}
@@ -102,7 +99,7 @@ foreach(var child in entity.Derived)
 {
 
 #>
-- (<#=GetPrefix() + child.Name#>Fetcher *)as<#=child.Name.ToUpperFirstChar()#>;	
+- (<#=prefix + child.Name#>Fetcher *)as<#=child.Name.ToUpperFirstChar()#>;	
 <#
 
 }

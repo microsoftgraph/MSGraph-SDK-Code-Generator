@@ -1,15 +1,14 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.java.tt"#>
 <#@ output extension="\\" #>
 <#
-
-CustomT4Host host = (CustomT4Host)Host;
-OdcmModel model = host.CurrentModel;
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 TemplateWriterSettings settings = ConfigurationService.Settings;
 
 #>
-<#=GetCommentHeader()#>
+<#=writer.WriteHeader()#>
 package <#=model.NamespaceName().ToLower()#>;
 
 <# if (entity.Base == null) {#>

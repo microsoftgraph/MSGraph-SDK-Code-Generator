@@ -18,10 +18,13 @@ namespace Vipr.T4TemplateWriter.Output
             String coreFileName = this.TransformFileName(template, entityTypeName);
             String extension = template.FileExtension;
 
+            String containerName = entityTypeName == this.Model.EntityContainer.Name ? String.Empty : this.Model.EntityContainer.Name;
+
             return Path.Combine(
                 template.TemplateType.ToString(), 
-                String.Format("{0}{1}",
+                String.Format("{0}{1}{2}",
                     prefix,
+                    containerName,
                     coreFileName
                 )
             );

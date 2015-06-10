@@ -1,29 +1,23 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension="\\" #>
-<#=GetCommentHeader()#>
+<#@ include file="Shared.template.tt"#>
+
 <#
-CustomT4Host host = (CustomT4Host)Host;
 var entity = host.CurrentType.AsOdcmClass();
 
-#>
-<#
-//GetImportsClass(entity.Properties)
+var imports = new List<string>();
+var classes = new List<string>();
 
-	var imports = new List<string>();
-	var classes = new List<string>();
-
-	foreach(var r in entity.Properties){
-		if(r.Type is OdcmEnum){
-			string v = string.Format("#import \"{0}.h\"", r.Type.GetTypeString());
-			if(!imports.Contains(v))
-				imports.Add(v);
-		}else if(r.Type.IsComplex() && !r.Type.IsSystem()){
-			string v = string.Format("@class {0};", r.Type.GetTypeString());
-			if(!classes.Contains(v))
-				classes.Add(v);
-		}
+foreach(var r in entity.Properties){
+	if(r.Type is OdcmEnum){
+		string v = string.Format("#import \"{0}.h\"", r.Type.GetTypeString());
+		if(!imports.Contains(v))
+			imports.Add(v);
+	}else if(r.Type.IsComplex() && !r.Type.IsSystem()){
+		string v = string.Format("@class {0};", r.Type.GetTypeString());
+		if(!classes.Contains(v))
+			classes.Add(v);
 	}
+}
 if(classes.Any()){
 #>
 
@@ -37,7 +31,7 @@ if(classes.Any()){
 #>
 
 #import <Foundation/Foundation.h>
-#import "<#=GetPrefix()+"Protocols.h"#>"
+#import "<#=prefix+"Protocols.h"#>"
 <#
 	foreach(var imp in imports){
 #>
@@ -45,7 +39,7 @@ if(classes.Any()){
 <#
 	}
 #>
-<#=GetInterfaceLine(entity)#>
+<#=writer.GetInterfaceLine(entity)#>
 <#
 
 if(entity.Base == null)
@@ -67,7 +61,7 @@ foreach(var prop in entity.Properties)
 
 		string getterName =  Char.ToLowerInvariant(prop.Name[0]) + prop.Name.Substring(1);
 		string setterName =  Char.ToUpperInvariant(prop.Name[0]) + prop.Name.Substring(1);
-		var propertyString = string.Format(" (nonatomic, getter={2}, setter=set{3}:) {0} {1}", prop.GetFullType(), GetName(prop.Name),getterName,setterName);
+		var propertyString = string.Format(" (nonatomic, getter={2}, setter=set{3}:) {0} {1}", prop.GetFullType(), writer.GetName(prop.Name),getterName,setterName);
 
 #>
 @property <#=propertyString#>;

@@ -1,25 +1,22 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension="\\" #>
+<#@ include file="Shared.template.tt" #>
+
 <#
-CustomT4Host host = (CustomT4Host)Host;
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
-
+var entityName = prefix + entity.Name + "CollectionFetcher";
 #>
-<#=GetCommentHeader()#>
 
-#import "<#=GetPrefix()#>Fetchers.h"
+#import "<#=prefix#>Fetchers.h"
 
-<#=GetImplementationDoc(entityName)#>
+<#=writer.GetImplementationDoc(entityName)#>
 @implementation <#=entityName#>
 
 - (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSOrcExecutable>)parent {
 
-    return [super initWithUrl:urlComponent parent:parent asClass:[<#=GetPrefix() + entity.Name#> class]];
+    return [super initWithUrl:urlComponent parent:parent asClass:[<#=prefix + entity.Name#> class]];
 }
 
-- (void)add:(<#=GetPrefix() + entity.Name#>*)entity callback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback {
+- (void)add:(<#=prefix + entity.Name#>*)entity callback:(void (^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback {
 	
 	return [super add:entity callback:^(id entityAdded, MSOrcError *e) {
 
@@ -27,9 +24,9 @@ var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
     }];
 }
 
-- (<#=GetPrefix() + entity.Name#>Fetcher *)getById:(NSString *)id {
+- (<#=prefix + entity.Name#>Fetcher *)getById:(NSString *)id {
 
-    return [[<#=GetPrefix() + entity.Name#>Fetcher alloc] initWithUrl:[[NSString alloc] initWithFormat:@"('%@')" ,id] parent:self];
+    return [[<#=prefix + entity.Name#>Fetcher alloc] initWithUrl:[[NSString alloc] initWithFormat:@"('%@')" ,id] parent:self];
 }
 
 @end

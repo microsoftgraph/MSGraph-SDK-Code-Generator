@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeHelpers\CodeWriterBase.cs" />
+    <Compile Include="CodeHelpers\Java\CodeWriterJava.cs" />
+    <Compile Include="CodeHelpers\ObjC\CodeWriterObjC.cs" />
     <Compile Include="TemplateProcessor\CustomT4Host.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="CodeHelpers\Java\TypeHelperJava.cs" />
@@ -71,9 +74,6 @@
     <None Include=".config\TemplateWriterSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\Java\Base\BaseTemplate.java.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Templates\Java\Model\ComplexType.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -93,9 +93,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Templates\Java\Fetcher\EntityOperations.java.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Base\BaseTemplate.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Templates\ObjC\Model\ComplexType.h.tt">
@@ -172,6 +169,14 @@
       <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>
       <Name>Vipr.Reader.OData.v4</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Templates\Java\Base\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Templates\ObjC\Base\Shared.template.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

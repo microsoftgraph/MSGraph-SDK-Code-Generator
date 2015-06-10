@@ -1,16 +1,16 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.java.tt"#>
 <#@ output extension="\\" #>
+
 <#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
 
-CustomT4Host host = (CustomT4Host)Host;
 OdcmClass entity = host.CurrentType.AsOdcmClass();
-OdcmModel model = host.CurrentModel;
-
 var baseOperation = entity.Base == null ? "extends OrcOperations" : "extends " + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "CollectionOperations";
-
 #>
-<#=GetCommentHeader()#>
+
+<#=writer.WriteHeader()#>
 package <#=model.ODataPackageNamespace()#>;
 
 import <#=model.NamespaceName()#>.*;

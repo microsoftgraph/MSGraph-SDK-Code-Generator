@@ -1,12 +1,5 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension=".h" #>
-<#=GetCommentHeader()#>
-<#
-CustomT4Host host = (CustomT4Host)Host;
-OdcmModel model = host.CurrentModel;
-
-#>
+<#@ include file="Shared.template.tt"#>
 
 #import <Foundation/Foundation.h>
 <#
@@ -18,7 +11,7 @@ foreach(var e in enums)
 
 #>
 
-@protocol <#=GetPrefix() + e.Name #>
+@protocol <#=prefix + e.Name #>
 @end
 <#
 
@@ -31,7 +24,7 @@ foreach(var c in complexTypes)
 
 #>
 
-@protocol <#=GetPrefix() + c.Name #>
+@protocol <#=prefix + c.Name #>
 @end
 <#
 		
@@ -44,7 +37,7 @@ foreach(var et in entityTypes)
 		 
 #>
 
-@protocol <#=GetPrefix() + et.Name #>
+@protocol <#=prefix + et.Name #>
 @end
 <#
 		

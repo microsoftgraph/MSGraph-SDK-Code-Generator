@@ -1,16 +1,15 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.java.tt"#>
 <#@ output extension="\\" #>
 <#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
 
-CustomT4Host host = (CustomT4Host)Host;
-OdcmModel model = host.CurrentModel;
 OdcmClass entity = host.CurrentType.AsOdcmClass();
-
 var className = entity.Kind == OdcmClassKind.MediaEntity ? "OrcMediaEntityFetcher" :  "OrcEntityFetcher";
 
 #>
-<#=GetCommentHeader()#>
+<#=writer.WriteHeader()#>
 package <#=model.ODataPackageNamespace()#>;
 
 import <#=model.NamespaceName()#>.*;

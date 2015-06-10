@@ -1,18 +1,15 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension="\\" #>
-<#=GetCommentHeader()#>
-<#
-CustomT4Host host = (CustomT4Host)Host;
-var entity = host.CurrentType.AsOdcmClass();
-var entityName = GetPrefix() + entity.Name + "CollectionOperations";
+<#@ include file="Shared.template.tt"#>
 
+<#
+var entity = host.CurrentType.AsOdcmClass();
+var entityName = prefix + entity.Name + "CollectionOperations";
 #>
 
 #import "<#=entityName#>.h"
-#import "<#=GetPrefix()#>Fetchers.h"
+#import "<#=prefix#>Fetchers.h"
 
-<#=GetImplementationDoc(entityName)#>
+<#=writer.GetImplementationDoc(entityName)#>
 @implementation <#=entityName#>
 <#
 
@@ -22,26 +19,24 @@ if(entity.HasActions())
 	{
 		if(action.IsBoundToCollection)
 		{
-			var clazz = action.ReturnType.IsComplex() ? "[" + action.ReturnType.GetTypeString() + " class]" : "nil";
-#>
-<# 
+			var clazz = action.ReturnType.IsComplex() ? "[" + action.ReturnType.GetTypeString() + " class]" : "nil"; 
 			if (action.IsFunction())
 			{
 #>
 
-- (void)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#>:(void (^)(<#=GetParamString(action.ReturnType)#>, MSOrcError *error))callback {
+- (void)<#= action.Name.ToLowerFirstChar() #><#=writer.GetParamsString(action.Parameters)#>:(void (^)(<#=writer.GetParamString(action.ReturnType)#>, MSOrcError *error))callback {
 
 	id<MSOrcRequest> request = [super.resolver createOrcRequest];
-	<#=GetFunctionParameters(action.Parameters)#>
+	<#=writer.GetFunctionParameters(action.Parameters)#>
 	NSString *parameters = [MSOrcBaseContainer getFunctionParameters:params];
 	
-	[request.url appendPathComponent:[[NSString alloc] initWithFormat:@"<#= action.Name#>(%@)",parameters]];
+	[request.url appendPathComponent:[[NSString alloc] initWithFormat:@"<#=action.Name#>(%@)",parameters]];
 		
 	return [super orcExecuteRequest:request callback:^(id<MSOrcResponse> response, MSOrcError *e){
 
        if (e == nil) {
 
-			<#=GetType(action.ReturnType)#> result = (<#=GetType(action.ReturnType)#>)[super.resolver.jsonSerializer deserialize:response.data asClass:<#=clazz#>];
+			<#=writer.GetType(action.ReturnType)#> result = (<#=writer.GetType(action.ReturnType)#>)[super.resolver.jsonSerializer deserialize:response.data asClass:<#=clazz#>];
             callback(result, e);
         }
         else {
@@ -56,15 +51,15 @@ if(entity.HasActions())
     		{
 #>
 
-- (void)<#= action.Name.ToLowerFirstChar() #><#=GetParamsString(action.Parameters)#>:(void (^)(<#=GetParamString(action.ReturnType)#>, MSOrcError *error))callback {
+- (void)<#=action.Name.ToLowerFirstChar()#><#=writer.GetParamsString(action.Parameters)#>:(void (^)(<#=writer.GetParamString(action.ReturnType)#>, MSOrcError *error))callback {
 
-	<#=GetParametersToJson(action.Parameters)#>
+	<#=writer.GetParametersToJson(action.Parameters)#>
 
-	return [self <#= action.Name.ToLowerFirstChar() #>Raw<#=GetParametersForRawCall(action.Parameters.Select(p=> p.Name))#>:^(NSString *returnValue, MSOrcError *e) {
+	return [self <#= action.Name.ToLowerFirstChar() #>Raw<#=writer.GetParametersForRawCall(action.Parameters.Select(p => p.Name))#>:^(NSString *returnValue, MSOrcError *e) {
        
 	   if (e == nil) {
 
-			<#=GetType(action.ReturnType)#> result = (<#=GetType(action.ReturnType)#>)[super.resolver.jsonSerializer deserialize:[returnValue dataUsingEncoding:NSUTF8StringEncoding] asClass:<#=clazz#>];
+			<#=writer.GetType(action.ReturnType)#> result = (<#=writer.GetType(action.ReturnType)#>)[super.resolver.jsonSerializer deserialize:[returnValue dataUsingEncoding:NSUTF8StringEncoding] asClass:<#=clazz#>];
             
 			callback(result, e);
         }
@@ -75,10 +70,10 @@ if(entity.HasActions())
     }];
 }
 
-- (void)<#= action.Name.ToLowerFirstChar() #>Raw<#=GetParamsForRaw(action.Parameters.Select(p => p.Name))#>:(void (^)(<#=GetParamRaw(action.ReturnType.Name)#>, MSOrcError *error))callback {
+- (void)<#= action.Name.ToLowerFirstChar() #>Raw<#=writer.GetParamsForRaw(action.Parameters.Select(p => p.Name))#>:(void (^)(<#=writer.GetParamRaw(action.ReturnType.Name)#>, MSOrcError *error))callback {
 
 	id<MSOrcRequest> request = [super.resolver createOrcRequest];
-	<#=GetParametersToJsonRaw(action.Parameters.Select(p=>p.Name))#>
+	<#=writer.GetParametersToJsonRaw(action.Parameters.Select(p => p.Name))#>
 
 	[request.url appendPathComponent:@"<#= action.Name#>"];
 	[request setContent:payload];

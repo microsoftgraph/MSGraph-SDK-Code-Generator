@@ -1,11 +1,7 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension=".h" #>
-<#=GetCommentHeader()#>
-<#
-CustomT4Host host = (CustomT4Host)Host;
-OdcmModel model = host.CurrentModel;
+<#@ include file="Shared.template.tt"#>
 
+<#
 var entityTypes = model.GetEntityTypes();
 
 foreach(var et in entityTypes)
@@ -13,14 +9,14 @@ foreach(var et in entityTypes)
 
 #>
 
-#import "<#=GetPrefix() + et.Name #>CollectionFetcher.h"
-#import "<#=GetPrefix() + et.Name #>CollectionOperations.h"
-#import "<#=GetPrefix() + et.Name #>Fetcher.h"
-#import "<#=GetPrefix() + et.Name #>Operations.h"
+#import "<#=prefix + et.Name #>CollectionFetcher.h"
+#import "<#=prefix + et.Name #>CollectionOperations.h"
+#import "<#=prefix + et.Name #>Fetcher.h"
+#import "<#=prefix + et.Name #>Operations.h"
 <#
 
 }
 
 #>
 
-#import "<#=GetPrefix()#>Client.h" 
+#import "<#=prefix#>Client.h" 

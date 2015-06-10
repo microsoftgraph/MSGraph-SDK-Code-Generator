@@ -1,22 +1,20 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension="\\" #>
-<#=GetCommentHeader()#>
+<#@ include file="Shared.template.tt"#>
+
 <#
-CustomT4Host host = (CustomT4Host)Host;
 var entity = host.CurrentType.AsOdcmEnum();
 #>
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, <#=GetPrefix() + entity.Name #>) {
+typedef NS_ENUM(NSInteger, <#=prefix + entity.Name #>) {
 
 <#
 
 for(var i=1; i <= entity.Members.Count; i++)
 {
 
-string value =GetPrefix() + "_" + entity.Name + "_" + entity.Members[i -1].Name + (i == entity.Members.Count ? string.Empty : ",");
+string value =prefix + "_" + entity.Name + "_" + entity.Members[i -1].Name + (i == entity.Members.Count ? string.Empty : ",");
 
 #>
 	<#= value#>

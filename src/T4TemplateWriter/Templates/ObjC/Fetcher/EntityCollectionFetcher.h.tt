@@ -1,43 +1,39 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension="\\" #>
-<#=GetCommentHeader()#>
+<#@ include file="Shared.template.tt"#>
+
 <#
-CustomT4Host host = (CustomT4Host)Host;
-var entity = host.CurrentType.AsOdcmClass();
-
-var entityName = GetPrefix() + entity.Name + "CollectionFetcher";
-
+var entity     = host.CurrentType.AsOdcmClass();
+var entityName = prefix + entity.Name + "CollectionFetcher";
 #>
 
-@class <#=GetPrefix() + entity.Name#>Fetcher;
-@class <#=GetPrefix() + entity.Name#>CollectionFetcher;
+@class <#=prefix + entity.Name#>Fetcher;
+@class <#=prefix + entity.Name#>CollectionFetcher;
 
 #import <core/core.h>
-#import "<#=GetPrefix()#>Models.h"
+#import "<#=prefix#>Models.h"
 
-<#=GetHeaderDoc(entityName)#>
-@protocol <#=entityName#>Protocol<MSOrcCollectionFetcher>
+<#=writer.GetHeaderDoc(entityName)#>
+@protocol <#=entityName#>Protocol <MSOrcCollectionFetcher>
 
 @optional
 
-- (void)readWithCallback:(void (^)(NSArray<<#=GetPrefix() + entity.Name#>> *<#=entity.Name.ToLowerFirstChar()#>s, MSOrcError *error))callback;
+- (void)readWithCallback:(void (^)(NSArray<<#=prefix + entity.Name#>> *<#=entity.Name.ToLowerFirstChar()#>s, MSOrcError *error))callback;
 
-- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)select:(NSString *)params;
-- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)filter:(NSString *)params;
-- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)search:(NSString *)params;
-- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)top:(int)value;
-- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)skip:(int)value;
-- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)expand:(NSString *)value;
-- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)orderBy:(NSString *)params;
-- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)addCustomParametersWithName:(NSString *)name value:(id)value;
-- (<#=GetPrefix() + entity.Name#>CollectionFetcher *)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
+- (<#=prefix + entity.Name#>CollectionFetcher *)select:(NSString *)params;
+- (<#=prefix + entity.Name#>CollectionFetcher *)filter:(NSString *)params;
+- (<#=prefix + entity.Name#>CollectionFetcher *)search:(NSString *)params;
+- (<#=prefix + entity.Name#>CollectionFetcher *)top:(int)value;
+- (<#=prefix + entity.Name#>CollectionFetcher *)skip:(int)value;
+- (<#=prefix + entity.Name#>CollectionFetcher *)expand:(NSString *)value;
+- (<#=prefix + entity.Name#>CollectionFetcher *)orderBy:(NSString *)params;
+- (<#=prefix + entity.Name#>CollectionFetcher *)addCustomParametersWithName:(NSString *)name value:(id)value;
+- (<#=prefix + entity.Name#>CollectionFetcher *)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
 
 @required
 
 - (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSOrcExecutable>)parent;
-- (<#=GetPrefix() + entity.Name#>Fetcher *)getById:(NSString *)Id;
-- (void)add:(<#=GetPrefix() + entity.Name#> *)entity callback:(void (^)(<#=GetPrefix() + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
+- (<#=prefix + entity.Name#>Fetcher *)getById:(NSString *)Id;
+- (void)add:(<#=prefix + entity.Name#> *)entity callback:(void (^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
 
 @end
 

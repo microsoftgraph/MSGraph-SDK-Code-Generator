@@ -1,16 +1,13 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension="\\" #>
-<#=GetCommentHeader()#>
+<#@ include file="Shared.template.tt" #>
+
 <#
-CustomT4Host host = (CustomT4Host)Host;
-OdcmModel model = host.CurrentModel;
-var entityName = GetPrefix()  + "Client";
+var entityName = prefix  + "Client";
 #>
 
-#import "<#=GetPrefix()#>Fetchers.h"
+#import "<#=prefix#>Fetchers.h"
 
-<#=GetImplementationDoc(GetPrefix() + "Client")#>
+<#=writer.GetImplementationDoc(prefix + "Client")#>
 @implementation <#=entityName#>
 
 - (instancetype)initWithUrl:(NSString *)url dependencyResolver:(id<MSOrcDependencyResolver>)resolver {
@@ -21,12 +18,9 @@ var entityName = GetPrefix()  + "Client";
 <#
 var containerProps = model.EntityContainer.Properties;
 
-foreach(var prop in containerProps)
-{
-	if(prop.IsCollection())
-	{
+foreach(var prop in containerProps) {
+	if (prop.IsCollection()) {
 #>
-
 - (<#=prop.Type.GetTypeString()#>CollectionFetcher *)<#=prop.Name.ToLowerFirstChar()#> {
 
 	return [[<#=prop.Type.GetTypeString()#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self];

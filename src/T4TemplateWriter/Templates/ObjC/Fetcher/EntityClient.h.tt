@@ -1,62 +1,44 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="BaseTemplate.m.tt"#>
-<#@ output extension="\\" #>
-<#=GetCommentHeader()#>
+<#@ include file="Shared.template.tt" #>
 
 <#
-CustomT4Host host = (CustomT4Host)Host;
-OdcmModel model = host.CurrentModel;
+var entityName = prefix + "Client"; 
+
 var containerProps = model.EntityContainer.Properties;
-var entityName = GetPrefix() + "Client"; 
 
-var clasess = new List<string>();
+var classes = new List<string>();
 
-foreach(var prop in containerProps)
-{
+foreach (var prop in containerProps) {
 	var classString =  prop.Type.GetTypeString() + (prop.IsCollection() ?  "CollectionFetcher;": "Fetcher;");
-
-	if(!clasess.Contains(classString)) clasess.Add(classString);
+	if (!classes.Contains(classString)) { classes.Add(classString); }
 }
 
-foreach(var propertyClass in clasess)
-{
-
+foreach (var propertyClass in classes) {
 #>
 @class <#=propertyClass#>
 <#
-
 }
-
 #>
 
 #import <core/core.h>
-#import "<#=GetPrefix()#>Models.h"
+#import "<#=prefix#>Models.h"
 
-<#=GetHeaderDoc(entityName)#>
+<#=writer.GetHeaderDoc(entityName)#>
 @interface <#=entityName#> : MSOrcBaseContainer
 
 - (instancetype)initWithUrl:(NSString *)url  dependencyResolver:(id<MSOrcDependencyResolver>)resolver;
 <#
 
-foreach(var prop in containerProps)
-{
-	if(prop.IsCollection())
-	{
+foreach(var prop in containerProps) {
+	if (prop.IsCollection()) {
 #>
 @property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=prop.Type.GetTypeString()#>CollectionFetcher *<#=prop.Name.ToLowerFirstChar()#>;
 <#
-
-	}
-	else
-	{
-
+	} else {
 #>
 @property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=prop.Type.GetTypeString()#>Fetcher *<#=prop.Name.ToLowerFirstChar()#>;
 <#	
-
 	}
 }
-
 #>
-
 @end

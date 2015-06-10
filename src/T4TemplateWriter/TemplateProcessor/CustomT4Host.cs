@@ -8,11 +8,13 @@ using System.Dynamic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Microsoft.CSharp.RuntimeBinder;
 using Microsoft.VisualStudio.TextTemplating;
 
 using Vipr.T4TemplateWriter.TemplateProcessor;
 using Vipr.T4TemplateWriter.Settings;
 using Vipr.Core.CodeModel;
+using Vipr.T4TemplateWriter.CodeHelpers;
 
 namespace Vipr.T4TemplateWriter {
     public class CustomT4Host : ITextTemplatingEngineHost {
@@ -27,13 +29,28 @@ namespace Vipr.T4TemplateWriter {
             this.TemplatesDirectory = templatesDirectory;
             this.CurrentType = currentType;
             this.CurrentModel = currentModel;
-            this.Language = ConfigurationService.Settings.TargetLanguage;
         }
         public String TemplateFile { get; set; }
         public String TemplatesDirectory { get; set; }
         public OdcmObject CurrentType { get; set; }
         public OdcmModel CurrentModel { get; set; }
-        public String Language { get; private set; }
+
+        private CodeWriterBase _codeWriter;
+        public CodeWriterBase CodeWriter {
+            get {
+                if (_codeWriter == null) {
+                    String writerClassName = String.Format("Vipr.T4TemplateWriter.CodeHelpers.{0}.CodeWriter{0}",
+                        ConfigurationService.Settings.TargetLanguage);
+                    _codeWriter = (CodeWriterBase) Activator.CreateInstance(Type.GetType(writerClassName), new object[] {this.CurrentModel});
+                }
+                return _codeWriter;
+            }
+        }
+        public String Language {
+            get {
+                return ConfigurationService.Settings.TargetLanguage;
+            }
+        }
 
         /*
          *  ITextTemplatingEngineHost 
@@ -52,7 +69,8 @@ namespace Vipr.T4TemplateWriter {
               Assembly.GetExecutingAssembly().Location,
               typeof(List<>).Assembly.Location,
               typeof(Uri).Assembly.Location,
-              typeof(Binder).Assembly.Location,
+              typeof(System.Reflection.Binder).Assembly.Location,
+              typeof(Microsoft.CSharp.RuntimeBinder.Binder).Assembly.Location,
               typeof(IDynamicMetaObjectProvider).Assembly.Location,
               typeof(ITextTemplatingEngineHost).Assembly.Location,
               typeof(OdcmClass).Assembly.Location,
@@ -64,6 +82,8 @@ namespace Vipr.T4TemplateWriter {
                "System.Linq",
                "System.Text",
                "System.Collections.Generic",
+               "System.Dynamic",
+               "Microsoft.CSharp.RuntimeBinder",
                "Vipr.Core.CodeModel",
                "Vipr.T4TemplateWriter",
                "Vipr.T4TemplateWriter.Extensions",
