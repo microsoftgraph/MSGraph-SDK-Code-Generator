@@ -2,6 +2,8 @@
 
 # VIPR T4 Template Writer
 
+[![Build status](https://ci.appveyor.com/api/projects/status/8o1e5efpqp957kd3?svg=true)](https://ci.appveyor.com/project/joshgav/vipr-t4templatewriter-jqj22)
+
 Source code writers for [VIPR][vipr-source-repo] utilizing T4 templates. The T4TemplateWriter receives an OdcmModel from VIPR and uses it to fill in a T4 template.
 
 Currently the following target languages are supported by this writer:
