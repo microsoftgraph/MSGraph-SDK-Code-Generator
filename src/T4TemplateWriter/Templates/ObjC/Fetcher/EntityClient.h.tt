@@ -1,0 +1,44 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="Shared.template.tt" #>
+
+<#
+var entityName = prefix + "Client"; 
+
+var containerProps = model.EntityContainer.Properties;
+
+var classes = new List<string>();
+
+foreach (var prop in containerProps) {
+	var classString =  prop.Type.GetTypeString() + (prop.IsCollection() ?  "CollectionFetcher;": "Fetcher;");
+	if (!classes.Contains(classString)) { classes.Add(classString); }
+}
+
+foreach (var propertyClass in classes) {
+#>
+@class <#=propertyClass#>
+<#
+}
+#>
+
+#import <core/core.h>
+#import "<#=prefix#>Models.h"
+
+<#=writer.GetHeaderDoc(entityName)#>
+@interface <#=entityName#> : MSOrcBaseContainer
+
+- (instancetype)initWithUrl:(NSString *)url  dependencyResolver:(id<MSOrcDependencyResolver>)resolver;
+<#
+
+foreach(var prop in containerProps) {
+	if (prop.IsCollection()) {
+#>
+@property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=prop.Type.GetTypeString()#>CollectionFetcher *<#=prop.Name.ToLowerFirstChar()#>;
+<#
+	} else {
+#>
+@property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=prop.Type.GetTypeString()#>Fetcher *<#=prop.Name.ToLowerFirstChar()#>;
+<#	
+	}
+}
+#>
+@end

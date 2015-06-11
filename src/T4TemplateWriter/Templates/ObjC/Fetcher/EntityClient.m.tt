@@ -1,0 +1,43 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="Shared.template.tt" #>
+
+<#
+var entityName = prefix  + "Client";
+#>
+
+#import "<#=prefix#>Fetchers.h"
+
+<#=writer.GetImplementationDoc(prefix + "Client")#>
+@implementation <#=entityName#>
+
+- (instancetype)initWithUrl:(NSString *)url dependencyResolver:(id<MSOrcDependencyResolver>)resolver {
+
+    return [super initWithUrl:url dependencyResolver:resolver];
+}
+
+<#
+var containerProps = model.EntityContainer.Properties;
+
+foreach(var prop in containerProps) {
+	if (prop.IsCollection()) {
+#>
+- (<#=prop.Type.GetTypeString()#>CollectionFetcher *)<#=prop.Name.ToLowerFirstChar()#> {
+
+	return [[<#=prop.Type.GetTypeString()#>CollectionFetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self];
+}
+<#
+	}
+	else
+	{
+#>
+
+- (<#=prop.Type.GetTypeString()#>Fetcher *)<#=prop.Name.ToLowerFirstChar()#> {
+
+	return [[<#=prop.Type.GetTypeString()#>Fetcher alloc] initWithUrl:@"<#=prop.Name#>" parent:self];
+}
+<#	
+	}
+}
+#>
+
+@end

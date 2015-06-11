@@ -1,0 +1,109 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="Shared.template.tt"#>
+
+<#
+var entity = host.CurrentType.AsOdcmClass();
+var entityName = prefix + entity.Name + "Fetcher";
+var extends =  (entity.Kind == OdcmClassKind.MediaEntity ? "MSOrcMediaEntityFetcher<": "MSOrcEntityFetcher<") + entityName+ "Protocol>";
+var classes = new List<string>();
+
+foreach(var prop in entity.NavigationProperties())
+{
+	var fetcher = string.Empty;
+	fetcher = prefix + prop.Type.Name + "Fetcher;";
+
+	if(!classes.Contains(fetcher)) classes.Add(fetcher);
+
+	if(prop.IsCollection)
+	{
+		var collectionFetcher = prefix + prop.Type.Name + "CollectionFetcher;";
+
+		if(!classes.Contains(collectionFetcher)) classes.Add(collectionFetcher);
+	}
+}
+
+foreach(var child in entity.Derived)
+{
+	var fetcher = string.Empty;
+	fetcher = prefix + child.Name + "Fetcher;";
+
+	if(!classes.Contains(fetcher)) classes.Add(fetcher);
+}
+
+foreach(var propertyClass in classes)
+{
+
+#>
+@class <#=propertyClass#>
+<#
+
+}
+
+#>
+@class <#=prefix + entity.Name#>Operations;
+@class <#=prefix + entity.Name#>Fetcher;
+
+#import <core/core.h>
+#import "<#=prefix#>Models.h"
+
+<#=writer.GetHeaderDoc(entityName)#>
+@protocol <#=entityName#>Protocol<MSOrcEntityFetcher>
+
+@optional
+
+- (void) readWithCallback:(void (^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
+- (<#=prefix + entity.Name#>Fetcher *)addCustomParametersWithName:(NSString *)name value:(id)value;
+- (<#=prefix + entity.Name#>Fetcher *)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
+- (<#=prefix + entity.Name#>Fetcher *)select:(NSString *)params;
+- (<#=prefix + entity.Name#>Fetcher *)expand:(NSString *)value;
+
+@required
+
+@property (copy, nonatomic, readonly) <#=prefix + entity.Name#>Operations *operations;
+
+@end
+
+@interface <#=entityName#> : <#=extends#>
+
+- (instancetype)initWithUrl:(NSString*)urlComponent parent:(id<MSOrcExecutable>)parent;
+- (void)update:(<#=prefix + entity.Name#> *)<#=entity.Name.ToLowerFirstChar()#> callback:(void(^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
+- (void)delete:(void(^)(int status, MSOrcError *error))callback;
+
+<#
+		
+foreach(var prop in entity.NavigationProperties())
+{
+	if(prop.IsCollection)
+	{
+
+#>
+@property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=prefix + prop.Type.Name#>CollectionFetcher *<#=prop.Name.ToLowerFirstChar()#>;
+
+- (<#=prefix + prop.Type.Name#>Fetcher *)get<#=prop.Name.ToUpperFirstChar()#>ById:(NSString*)id;
+
+<#
+
+	}
+	else
+	{
+
+#>
+
+@property (retain, nonatomic, readonly, getter=<#=prop.Name.ToLowerFirstChar()#>) <#=prefix + prop.Type.Name#>Fetcher *<#=prop.Name.ToLowerFirstChar()#>;
+<#		
+			
+	}
+}
+
+foreach(var child in entity.Derived)
+{
+
+#>
+- (<#=prefix + child.Name#>Fetcher *)as<#=child.Name.ToUpperFirstChar()#>;	
+<#
+
+}
+
+#>
+
+@end

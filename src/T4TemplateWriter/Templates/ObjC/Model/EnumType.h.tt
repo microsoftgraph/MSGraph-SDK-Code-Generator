@@ -1,0 +1,25 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="Shared.template.tt"#>
+
+<#
+var entity = host.CurrentType.AsOdcmEnum();
+#>
+
+#import <Foundation/Foundation.h>
+
+typedef NS_ENUM(NSInteger, <#=prefix + entity.Name #>) {
+
+<#
+
+for(var i=1; i <= entity.Members.Count; i++)
+{
+
+string value =prefix + "_" + entity.Name + "_" + entity.Members[i -1].Name + (i == entity.Members.Count ? string.Empty : ",");
+
+#>
+	<#= value#>
+<#
+	
+}
+#>
+};

@@ -1,0 +1,46 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="Shared.template.tt"#>
+
+#import <Foundation/Foundation.h>
+<#
+
+var enums = model.GetEnumTypes();
+
+foreach(var e in enums)
+{
+
+#>
+
+@protocol <#=prefix + e.Name #>
+@end
+<#
+
+}
+
+var complexTypes = model.GetComplexTypes();
+
+foreach(var c in complexTypes)
+{
+
+#>
+
+@protocol <#=prefix + c.Name #>
+@end
+<#
+		
+}
+
+var entityTypes = model.GetEntityTypes();
+
+foreach(var et in entityTypes)
+{
+		 
+#>
+
+@protocol <#=prefix + et.Name #>
+@end
+<#
+		
+}
+
+#>

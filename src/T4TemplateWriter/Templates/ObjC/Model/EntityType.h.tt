@@ -1,0 +1,84 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="Shared.template.tt"#>
+
+<#
+var entity = host.CurrentType.AsOdcmClass();
+
+var imports = new List<string>();
+var classes = new List<string>();
+
+foreach(var r in entity.Properties){
+	if(r.Type is OdcmEnum){
+		string v = string.Format("#import \"{0}.h\"", r.Type.GetTypeString());
+		if(!imports.Contains(v))
+			imports.Add(v);
+	}else if(r.Type.IsComplex() && !r.Type.IsSystem()){
+		string v = string.Format("@class {0};", r.Type.GetTypeString());
+		if(!classes.Contains(v))
+			classes.Add(v);
+	}
+}
+if(classes.Any()){
+#>
+
+<#
+}
+	foreach(var cla in classes){
+#>
+<#=cla#>
+<#
+	}
+#>
+
+#import <Foundation/Foundation.h>
+#import "<#=prefix+"Protocols.h"#>"
+<#
+	foreach(var imp in imports){
+#>
+<#=imp#>
+<#
+	}
+#>
+<#=writer.GetInterfaceLine(entity)#>
+<#
+
+if(entity.Base == null)
+{
+#>
+
+@property (retain, nonatomic, readonly) NSString *odataType;
+<#
+}
+else{
+#>
+
+<#
+}
+
+foreach(var prop in entity.Properties)
+{
+	if(prop.Type is OdcmEnum && !prop.IsCollection){
+
+		string getterName =  Char.ToLowerInvariant(prop.Name[0]) + prop.Name.Substring(1);
+		string setterName =  Char.ToUpperInvariant(prop.Name[0]) + prop.Name.Substring(1);
+		var propertyString = string.Format(" (nonatomic, getter={2}, setter=set{3}:) {0} {1}", prop.GetFullType(), writer.GetName(prop.Name),getterName,setterName);
+
+#>
+@property <#=propertyString#>;
+- (void)set<#=prop.Name#>String:(NSString *)value;
+<#
+	}
+	else
+	{
+	string getterName =  Char.ToLowerInvariant(prop.Name[0]) + prop.Name.Substring(1);
+	string setterName =  Char.ToUpperInvariant(prop.Name[0]) + prop.Name.Substring(1);
+	var propertyType = prop.IsComplex() ? string.Format("(retain, nonatomic, readwrite, getter={0}, setter=set{1}:) ", getterName, setterName) : string.Format("(nonatomic, getter={0}, setter=set{1}:) ", getterName, setterName);
+#>
+@property <#=propertyType + prop.ToPropertyString()#>;
+<#			
+    }
+}
+
+#>
+
+@end

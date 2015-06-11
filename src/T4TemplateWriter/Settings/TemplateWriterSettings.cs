@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace T4TemplateWriter.Settings
+namespace Vipr.T4TemplateWriter.Settings
 {
     public class TemplateWriterSettings
     {
@@ -11,9 +11,9 @@ namespace T4TemplateWriter.Settings
         public TemplateWriterSettings()
         {
             // defaults
-            AvailableLanguages = new List<string> { "java", "objectivec" };
+            AvailableLanguages = new List<string> { "Java", "ObjC" };
             PrimaryNamespaceName = "";
-            NamespacePrefix = "com";
+            NamespacePrefix = "MS";
             Plugins = new List<string>();
             InitializeCollections = true;
         }
@@ -24,7 +24,7 @@ namespace T4TemplateWriter.Settings
         public IList<string> AvailableLanguages { get; set; }
 
         /// <summary>
-        /// The code language to be targeted by this template writer instance.
+        /// The code language to be targeted by this templateInfo writer instance.
         /// </summary>
         public string TargetLanguage { get; set; }
 

@@ -3,7 +3,7 @@
 
 using Vipr.Core;
 
-namespace T4TemplateWriter.Settings
+namespace Vipr.T4TemplateWriter.Settings
 {
     public static class ConfigurationService
     {

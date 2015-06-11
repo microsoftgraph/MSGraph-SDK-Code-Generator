@@ -1,0 +1,185 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
+
+OdcmClass entity = host.CurrentType.AsOdcmClass();
+var baseOperation = entity.Base == null ? "extends OrcOperations" : "extends " + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "CollectionOperations";
+#>
+
+<#=writer.WriteHeader()#>
+package <#=model.ODataPackageNamespace()#>;
+
+import <#=model.NamespaceName()#>.*;
+import com.google.common.util.concurrent.*;
+import com.microsoft.services.orc.*;
+import com.microsoft.services.orc.interfaces.*;
+import static com.microsoft.services.orc.Helpers.*;
+
+/**
+ * The type <#=entity.Name.ToUpperFirstChar()#>CollectionOperations
+ */
+public class <#=entity.Name.ToUpperFirstChar()#>CollectionOperations <#=baseOperation#>{
+
+    /**
+     * Instantiates a new <#=entity.Name.ToUpperFirstChar()#>CollectionOperations.
+     *
+     * @param urlComponent the url component
+     * @param parent the parent
+     */
+    public <#=entity.Name.ToUpperFirstChar()#>CollectionOperations(String urlComponent, OrcExecutable parent) {
+        super(urlComponent, parent);
+    }
+
+     /**
+     * Add parameter.
+     *
+     * @param name the name
+     * @param value the value
+     * @return the collection operations
+     */
+    public <#=entity.Name.ToUpperFirstChar()#>CollectionOperations addParameter(String name, Object value) {
+        addCustomParameter(name, value);
+        return this;
+    }
+
+     /**
+     * Add header.
+     *
+     * @param name the name
+     * @param value the value
+     * @return the collection operations
+     */
+    public <#=entity.Name.ToUpperFirstChar()#>CollectionOperations addHeader(String name, String value) {
+        addCustomHeader(name, value);
+        return this;
+    }
+<#
+    if(entity.HasActions()){
+            foreach(var action in entity.Actions()){
+                if(action.IsBoundToCollection){
+
+                        string inputParam = string.Empty;
+                        string actionParams = string.Empty;
+                        string paramNames = string.Empty;
+
+                        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                        System.Text.StringBuilder sbParams = new System.Text.StringBuilder();
+                        System.Text.StringBuilder serializations = new System.Text.StringBuilder();
+
+                        if (action.Parameters.Any())
+                        {
+                            paramNames = action.Parameters.Select(x => "serialized" + x.Name).Aggregate((current, next) => current + ", " + next);
+                        }
+
+                        foreach(var parameter in action.Parameters){
+                            var paramType = parameter.IsCollection ? string.Format("java.util.List<{0}>", parameter.GetTypeString()) : parameter.GetTypeString();
+                
+                            inputParam += string.Format("{1} {0}, ",parameter.Name.ToLowerFirstChar(),paramType);
+                            actionParams += string.Format("{1} {0}, ",parameter.Name.ToLowerFirstChar(), "String");
+
+                            sbParams.AppendFormat("@param {0} the {0} ", parameter.Name.ToLowerFirstChar());
+
+                            sb.AppendFormat("map.put(\"{0}\", {1});", 
+                                            parameter.Name, parameter.Name.ToLowerFirstChar());
+                            sb.Append(Environment.NewLine);
+                            sb.Append("\t\t");
+
+                            serializations.AppendFormat("String serialized{0} = serializer.serialize({1});", parameter.Name, parameter.Name.ToLowerFirstChar());
+                            serializations.Append(Environment.NewLine);
+                            serializations.Append("\t\t");
+                    }
+#>
+ 
+     <# if (action.IsFunction()) { #>
+
+     /**
+     * <#= action.Name#> listenable future.
+     * <#= sbParams.ToString()#>
+     * @return the listenable future
+     */         
+    public ListenableFuture<<#=action.ReturnType.GetTypeString()#>> <#= action.Name.ToLowerFirstChar() #>(<#=inputParam.Length > 0 ? inputParam.Substring(0, inputParam.Length -2) : string.Empty#>) { 
+
+        java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();
+        <#= sb.ToString() #>
+        Request request = getResolver().createRequest();
+        request.setVerb(HttpVerb.POST);
+        request.setContent(serializeToJsonByteArray(map, getResolver()));
+
+        String parameters = getFunctionParameters(map);
+        request.getUrl().appendPathComponent("<#= action.Name #>(" + parameters + ")");
+        ListenableFuture<OrcResponse> future = oDataExecute(request);   
+        <# if (action.ReturnType.GetTypeString() == "byte[]")
+        {#>
+        
+        return transformToByteArrayListenableFuture(future);
+        
+        <#}else{#>
+
+        return transformToEntityListenableFuture(transformToStringListenableFuture(future), <#= action.ReturnType.GetTypeString()#>.class, getResolver());
+        
+        <#}#>
+
+   }
+    <# }else{ #>
+
+    /**
+     * <#= action.Name#> listenable future.
+     * <#= sbParams.ToString()#>
+     * @return the listenable future
+     */         
+    public ListenableFuture<<#= action.ReturnType == null ? "Integer" : action.ReturnType.GetTypeString()#>> <#= action.Name.ToLowerFirstChar() #>(<#=inputParam.Length > 0 ? inputParam.Substring(0, inputParam.Length -2) : string.Empty#>) { 
+        <# if (action.Parameters.Any()) {#>
+
+        JsonSerializer serializer = getResolver().getJsonSerializer();<#}#>      
+        <#= serializations.ToString() #>  
+        <# if (action.ReturnType != null && action.ReturnType.GetTypeString() == "byte[]")
+        {#>
+        addByteArrayResultCallback(result, future, <#= action.ReturnType == null ? "Integer" : action.ReturnType.GetTypeString()#>.class);
+        <#}
+        else
+        {#>
+
+        ListenableFuture<String> future = <#= action.Name.ToLowerFirstChar() #>Raw(<#= paramNames.ToString() #>);
+        return transformToEntityListenableFuture(future, <#= action.ReturnType == null ? "Integer" : action.ReturnType.GetTypeString()#>.class, getResolver());
+        <#}#>
+
+    }
+
+     /**
+     * <#= action.Name#>Raw listenable future.
+     * <#= sbParams.ToString()#>
+     * @return the listenable future
+     */ 
+    public ListenableFuture<String> <#= action.Name.ToLowerFirstChar() #>Raw(<#=actionParams.Length > 0 ? actionParams.Substring(0, actionParams.Length -2) : string.Empty #>){
+        <#if (action.Parameters.Any()) { #>
+
+        java.util.Map<String, String> map = new java.util.HashMap<String, String>();
+        <#}#>
+
+        <#= sb.ToString() #>
+        Request request = getResolver().createRequest();
+        request.setVerb(HttpVerb.POST);
+        <#if (action.Parameters.Any()) { #>
+    
+        request.setContent(getResolver().getJsonSerializer()
+                                        .jsonObjectFromJsonMap(map).getBytes(Constants.UTF8));
+
+        <#}#>
+
+        request.getUrl().appendPathComponent("<#= action.Name#>");
+        ListenableFuture<OrcResponse> future = oDataExecute(request);
+        return transformToStringListenableFuture(future);
+    }
+
+<# } #>
+
+                
+<#              }
+            }
+        }
+#>
+}

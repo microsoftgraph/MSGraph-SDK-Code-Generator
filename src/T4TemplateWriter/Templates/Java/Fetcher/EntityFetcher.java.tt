@@ -1,0 +1,107 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
+
+OdcmClass entity = host.CurrentType.AsOdcmClass();
+var className = entity.Kind == OdcmClassKind.MediaEntity ? "OrcMediaEntityFetcher" :  "OrcEntityFetcher";
+
+#>
+<#=writer.WriteHeader()#>
+package <#=model.ODataPackageNamespace()#>;
+
+import <#=model.NamespaceName()#>.*;
+import com.google.common.util.concurrent.*;
+import com.microsoft.services.orc.*;
+import com.microsoft.services.orc.Readable;
+import com.microsoft.services.orc.interfaces.*;
+
+/**
+ * The type  <#=entity.Name.ToUpperFirstChar()#>Fetcher.
+ */
+public class <#=entity.Name.ToUpperFirstChar()#>Fetcher extends <#=className#><<#=entity.Name.ToUpperFirstChar()#>,<#=entity.Name.ToUpperFirstChar()#>Operations> 
+                                     implements Readable<<#=entity.Name.ToUpperFirstChar()#>> {
+
+     /**
+     * Instantiates a new <#=entity.Name.ToUpperFirstChar()#>Fetcher.
+     *
+     * @param urlComponent the url component
+     * @param parent the parent
+     */
+     public <#=entity.Name.ToUpperFirstChar()#>Fetcher(String urlComponent, OrcExecutable parent) {
+        super(urlComponent, parent, <#=entity.Name.ToUpperFirstChar()#>.class, <#=entity.Name.ToUpperFirstChar()#>Operations.class);
+    }
+
+     /**
+     * Add parameter.
+     *
+     * @param name the name
+     * @param value the value
+     * @return the fetcher
+     */
+    public <#=entity.Name.ToUpperFirstChar()#>Fetcher addParameter(String name, Object value) {
+        addCustomParameter(name, value);
+        return this;
+    }
+
+     /**
+     * Add header.
+     *
+     * @param name the name
+     * @param value the value
+     * @return the fetcher
+     */
+    public <#=entity.Name.ToUpperFirstChar()#>Fetcher addHeader(String name, String value) {
+        addCustomHeader(name, value);
+        return this;
+    }
+
+    <#foreach(var child in entity.Derived){#>
+
+    public <#=child.Name.ToUpperFirstChar()#>Fetcher as<#=child.Name.ToUpperFirstChar()#>(){
+        return new <#=child.Name.ToUpperFirstChar()#>Fetcher(this.urlComponent, this.parent);
+    }   
+<#
+}
+#>
+    <#
+    foreach(var prop in entity.NavigationProperties()){
+    if(prop.IsCollection()){
+    #>
+
+     /**
+     * Gets <#=prop.Name.SplitCamelCase().ToLower()#>.
+     *
+     * @return the <#=prop.Name.SplitCamelCase().ToLower()#>
+     */
+    public OrcCollectionFetcher<<#=prop.Type.Name.ToUpperFirstChar()#>, <#=prop.Type.Name.ToUpperFirstChar()#>Fetcher, <#=prop.Type.Name.ToUpperFirstChar()#>CollectionOperations> get<#=prop.Name.ToUpperFirstChar()#>() {
+        return new OrcCollectionFetcher<<#=prop.Type.Name.ToUpperFirstChar()#>, <#=prop.Type.Name.ToUpperFirstChar()#>Fetcher, <#=prop.Type.Name.ToUpperFirstChar()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToUpperFirstChar()#>.class, <#=prop.Type.Name.ToUpperFirstChar()#>CollectionOperations.class);
+    }
+
+    /**
+     * Gets <#=prop.Name.ToUpperFirstChar().SplitCamelCase().ToLower().Singularize()#>.
+     *
+     * @return the <#=prop.Name.ToUpperFirstChar().SplitCamelCase().ToLower().Singularize()#>
+     */
+    public <#=prop.Type.Name.ToUpperFirstChar()#>Fetcher get<#=prop.Name.ToUpperFirstChar().Singularize()#>(String id){
+         return new OrcCollectionFetcher<<#=prop.Type.Name.ToUpperFirstChar()#>, <#=prop.Type.Name.ToUpperFirstChar()#>Fetcher, <#=prop.Type.Name.ToUpperFirstChar()#>CollectionOperations>("<#=prop.Name#>", this, <#=prop.Type.Name.ToUpperFirstChar()#>.class, <#=prop.Type.Name.ToUpperFirstChar()#>CollectionOperations.class).getById(id);
+    }
+<#
+    }else{
+#>
+     /**
+     * Gets <#=prop.Name.ToUpperFirstChar().ToLower()#>.
+     *
+     * @return the <#=prop.Name.ToUpperFirstChar().SplitCamelCase().ToLower()#>
+     */
+    public <#=prop.Type.Name.ToUpperFirstChar()#>Fetcher get<#=prop.Name.ToUpperFirstChar().Singularize()#>() {
+        return new <#=prop.Type.Name.ToUpperFirstChar()#>Fetcher("<#=prop.Name#>", this);
+    }
+<#             
+}
+}
+#>
+
+}

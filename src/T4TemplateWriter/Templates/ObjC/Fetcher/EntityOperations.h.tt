@@ -1,0 +1,52 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="Shared.template.tt"#>
+
+<#
+var entity = host.CurrentType.AsOdcmClass();
+
+var entityName = prefix + entity.Name + "Operations";
+string baseEntity = entity.Base == null ? "MSOrcOperations" 
+					  : prefix + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "Operations";
+
+#>
+					  		
+#import <core/core.h>
+#import "<#=prefix#>Models.h"
+<#if(entity.Base != null){
+#>
+#import "<#=baseEntity#>.h"
+<#
+}#>
+
+<#=writer.GetHeaderDoc(entityName)#>
+@interface <#=entityName#> : <#=baseEntity#>
+
+- (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSOrcExecutable>)parent;
+
+<#
+if(entity.HasActions())
+{
+	foreach(var action in entity.Actions())
+	{
+		if(!action.IsBoundToCollection)
+		{
+
+#>
+<#=writer.GetMethodHeader(action)#>;
+<#				
+
+		}
+		
+		if(!action.IsFunction() && !action.IsBoundToCollection)
+		{
+
+#>
+<#=writer.GetMethodHeaderRaw(action)#>;
+<#
+
+		}
+	}
+}
+#>
+
+@end

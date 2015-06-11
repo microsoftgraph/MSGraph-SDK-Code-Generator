@@ -1,0 +1,39 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="Shared.template.tt"#>
+
+<#
+
+		
+var enums = model.GetEnumTypes();
+foreach(var e in enums)
+{
+
+#>
+#import "<#=prefix + e.Name #>.h"
+<#
+
+}
+
+var complexTypes = model.GetComplexTypes();
+
+foreach(var c in complexTypes)
+{
+
+#>
+#import "<#=prefix + c.Name #>.h"
+<#
+
+}
+
+var entityTypes = model.GetEntityTypes();
+
+foreach(var et in entityTypes)
+{
+		 
+#>
+#import "<#=prefix + et.Name #>.h"
+<#
+
+}
+
+#>

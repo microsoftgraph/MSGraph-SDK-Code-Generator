@@ -1,9 +1,9 @@
 ﻿{
-    "AvailableLanguages": [ "java", "objectivec" ],
-    "TargetLanguage": "java",
+    "AvailableLanguages": [ "Java", "ObjC" ],
+    "TargetLanguage": "Java",
     "Plugins": [ ],
     "PrimaryNamespaceName": "Microsoft.CoreServices",
-    "NamespacePrefix": "com",
+    "NamespacePrefix": "MS",
     "InitializeCollections": "false",
     "AllowShortActions": "false"
 }

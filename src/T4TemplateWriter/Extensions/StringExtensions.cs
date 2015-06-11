@@ -3,8 +3,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
-namespace T4TemplateWriter.Extensions
+namespace Vipr.T4TemplateWriter.Extensions
 {
     public static class StringExtensions
     {
@@ -18,15 +19,27 @@ namespace T4TemplateWriter.Extensions
             return Boolean.Parse(source);
         }
 
-        public static string ToCheckedCase(this string input)
-        {
-            var output = input.Substring(0, 1).ToUpper() + input.Substring(1);
-            return output;
-        }
 
         public static IEnumerable<T> ToIEnumerable<T>(this T value)
         {
             yield return value;
+        }
+
+        public static string ToLowerFirstChar(this string input) {
+            return Char.ToLowerInvariant(input[0]) + input.Substring(1);
+        }
+
+        public static string ToUpperFirstChar(this string input) {
+            return Char.ToUpperInvariant(input[0]) + input.Substring(1);
+        }
+
+        public static String SplitCamelCase(this String input) {
+            return Regex.Replace(input, "(?<=[a-z])([A-Z])", " $1", RegexOptions.Compiled);
+        }
+
+        public static string Singularize(this string input) {
+            var output = Inflector.Inflector.Singularize(input);
+            return output ?? input;
         }
 
     }

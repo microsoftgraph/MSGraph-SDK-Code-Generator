@@ -1,0 +1,64 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="Shared.template.tt"#>
+
+<#
+var entity = host.CurrentType.AsOdcmClass();
+#>
+
+#import "<#=prefix#>Models.h"
+
+<#=writer.GetImplementationDoc(entity.Name)#>
+@implementation <#=prefix + entity.Name#>	
+
+@synthesize odataType = _odataType;
+<#
+foreach(var prop in entity.Properties)
+{
+#>
+@synthesize <#=writer.GetName(prop.Name)#> = _<#=writer.GetName(prop.Name)#>;
+<#
+}
+#>
+
+- (instancetype)init {
+
+	if (self = [super init]) {
+
+		_odataType = @"#<#=model.GetNamespace()#>.<#=entity.Name#>";
+	}
+
+	return self;
+}
+
+<#
+foreach(var prop in entity.Properties)
+{
+	if(prop.Type is OdcmEnum && !prop.IsCollection){
+
+		var enumProp = host.CurrentModel.GetEnumTypes().First(e=> e.Name == prop.Type.Name);
+#>
+- (void)set<#=prop.Name#>String:(NSString *)value {
+<#
+		for(var i=1; i <= enumProp.Members.Count; i++)
+		{
+
+			string value = enumProp.Members[i -1].Name;
+
+#>
+
+	if ([value isEqualToString:@"<#=value#>"]) {
+
+		self.<#=prop.Name#> = <#=prefix + "_" + prop.Type.Name + "_" + value#>;
+	}
+<#
+	
+		}
+#>
+}
+<#
+	}
+}
+
+#>
+
+@end
