@@ -62,6 +62,11 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
             return property.Type.IsComplex();
 		}
 
+        public static string ToSetterTypeString(this OdcmProperty property)
+        {
+            return string.Format("{0} {1}", property.GetFullType(), (property.IsComplex() ? "*" : string.Empty));
+        }
+
 		public static string ToPropertyString(this OdcmProperty property)
 		{
 			return string.Format("{0} {1}{2}",property.GetFullType(), (property.IsComplex() ? "*" : string.Empty), SanitizePropertyName(property));

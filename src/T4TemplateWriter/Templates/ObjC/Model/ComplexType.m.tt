@@ -49,6 +49,7 @@ foreach(var prop in entity.Properties)
 	if ([value isEqualToString:@"<#=value#>"]) {
 
 		self.<#=prop.Name#> = <#=prefix + "_" + prop.Type.Name + "_" + value#>;
+        [self valueChanged:<#=prefix + "_" + prop.Type.Name + "_" + value#> forProperty:@"<#=GetName(prop.Name)#>"];
 	}
 <#
 	
@@ -56,7 +57,17 @@ foreach(var prop in entity.Properties)
 #>
 }
 <#
-	}
+	}else{
+    string setterName =  Char.ToUpperInvariant(prop.Name[0]) + prop.Name.Substring(1);
+    #>
+
+    - (void)set<#=setterName#>:(<#=prop.ToSetterTypeString()#>)  <#=GetName(prop.Name)#>;
+      {
+        _<#=GetName(prop.Name)#> =  <#=GetName(prop.Name)#>;
+        [self valueChanged:<#=GetName(prop.Name)#> forProperty:@"<#=GetName(prop.Name)#>"];
+      }
+    <#
+    }
 }
 
 #>
