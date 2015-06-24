@@ -8,9 +8,6 @@ $VIPR_CSPROJ        = '{0}\submodules\vipr\src\Core\Vipr\Vipr.csproj' -f $REPO_R
 $ASM_TEST           = 'T4TemplateWriterTests'
 $INSTRUCTION_TO_ADD = '[assembly: InternalsVisibleTo("{0}")]' -f $ASM_TEST
 
-$MSBUILD_VERSION    = '12.0'
-$MSBUILD            = Join-Path -Path ("${env:ProgramFiles(x86)}\MSBuild\{0}\Bin" -f $MSBUILD_VERSION) -ChildPath 'MSBuild.exe'
-
 Write-Host "Cloning submodules" -ForegroundColor Yellow
 & git submodule update --init --recursive
 Write-Host ("Error Details: {0}" -f $Error[0].Exception.InnerException) -ForegroundColor Yellow
