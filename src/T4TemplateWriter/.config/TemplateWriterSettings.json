@@ -2,7 +2,7 @@
     "AvailableLanguages": [ "java", "objectivec" ],
     "TargetLanguage": "java",
     "Plugins": [ ],
-    "PrimaryNamespaceName": "Microsoft.CoreServices",
+    "PrimaryNamespaceName": "Microsoft.FileServices",
     "NamespacePrefix": "com",
     "InitializeCollections": "false",
     "AllowShortActions": "false"

@@ -13,7 +13,7 @@ TemplateWriterSettings settings = ConfigurationService.Settings;
 package <#=model.NamespaceName().ToLower()#>;
 
 <# if (entity.Base == null) {#>
-import com.microsoft.services.orc.ODataBaseEntity;
+import com.microsoft.services.orc.core.ODataBaseEntity;
 <#}#>
 
 <#

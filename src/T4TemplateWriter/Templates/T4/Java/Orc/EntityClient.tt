@@ -9,8 +9,7 @@ OdcmModel model = host.Model;
 package <#=model.ODataPackageNamespace()#>;
 
 import <#=model.NamespaceName()#>.*;
-import com.microsoft.services.orc.*;
-import com.microsoft.services.orc.interfaces.DependencyResolver;
+import com.microsoft.services.orc.core.*;
 
 /**
  * The type <#=model.GetEntityContainer()#>Client.
