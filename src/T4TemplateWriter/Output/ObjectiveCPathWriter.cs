@@ -30,7 +30,7 @@ namespace T4TemplateWriter.Output
         {
             string ret;
 
-            if (template.Name.Contains("Entity") && (template.FolderName == "orc")) {
+            if (template.Name.Contains("Entity") && (template.FolderName == "fetchers")) {
                 ret = template.Name.Replace("Entity", identifier);
             } else {
                 ret = identifier;
