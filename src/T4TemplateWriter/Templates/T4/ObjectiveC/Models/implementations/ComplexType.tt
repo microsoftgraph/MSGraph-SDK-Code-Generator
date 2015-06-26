@@ -68,7 +68,7 @@ foreach(var prop in entity.Properties)
 - (void)set<#=setterName#>:(<#=prop.ToSetterTypeString()#>)  <#=GetName(prop.GetToLowerFirstCharName())#>;
 {
     _<#=GetName(prop.GetToLowerFirstCharName())#> =  <#=GetName(prop.GetToLowerFirstCharName())#>;
-    [self valueChanged:<#=GetName(prop.Name)#> forProperty:@"<#=GetName(prop.Name)#>"];
+    [self valueChanged:<#=GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=GetName(prop.Name)#>"];
 }
 
 <#

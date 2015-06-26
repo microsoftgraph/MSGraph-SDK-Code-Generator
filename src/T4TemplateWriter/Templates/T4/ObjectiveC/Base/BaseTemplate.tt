@@ -30,14 +30,12 @@ the T4TemplateWriter (https://github.com/msopentech/vipr-t4templatewriter).
 
 public string GetInterfaceLine(OdcmClass e){
 
-	string baseEntity = e.Base == null ? "NSObject"
+	string baseEntity = e.Base == null ? "MSOrcBaseEntity"
 					  : GetPrefix() + e.Base.Name.Substring(e.Base.Name.LastIndexOf(".") +1);
 
 	var s = new StringBuilder();
 
-	if(baseEntity != "NSObject"){
-		s.AppendFormat("#import \"{0}.h\"", baseEntity);
-	};
+    s.AppendFormat("#import \"{0}.h\"", baseEntity);
 
 	s.AppendLine().AppendLine().AppendLine(GetHeaderDoc(e.Name))
 	.AppendFormat("@interface {0}{1} : {2}",GetPrefix(), e.Name, baseEntity);
