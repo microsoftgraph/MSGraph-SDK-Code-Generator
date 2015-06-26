@@ -18,7 +18,7 @@ OdcmModel model = host.Model;
 foreach(var prop in entity.Properties)
 {
 #>
-@synthesize <#=GetName(prop.Name)#> = _<#=GetName(prop.Name)#>;
+@synthesize <#=GetName(prop.Name)#> = _<#=GetName(prop.GetToLowerFirstCharName())#>;
 <#
 }
 #>
@@ -40,6 +40,7 @@ foreach(var prop in entity.Properties)
 
 		var enumProp = host.Model.GetEnumTypes().First(e=> e.Name == prop.Type.Name);
 #>
+
 - (void)set<#=prop.Name#>String:(NSString *)value {
 <#
 		for(var i=1; i <= enumProp.Members.Count; i++)
@@ -51,14 +52,26 @@ foreach(var prop in entity.Properties)
 
 	if ([value isEqualToString:@"<#=value#>"]) {
 		
-		_<#=prop.Name#> = <#=GetPrefix() + "_" + prop.Type.Name + "_" + value#>;
+		_<#=GetName(prop.GetToLowerFirstCharName())#> = <#=GetPrefix() + "_" + prop.Type.Name + "_" + value#>;
+        [self valueChanged:value forProperty:@"<#=GetName(prop.Name)#>"];
 	}
 <#
 		}
 #>
 }
 <#
-	}
+    }else{
+     string setterName =  Char.ToUpperInvariant(prop.Name[0]) + prop.Name.Substring(1);
+     #>
+ 
+- (void)set<#=setterName#>:(<#=prop.ToSetterTypeString()#>)  <#=GetName(prop.GetToLowerFirstCharName())#>;
+{
+    _<#=GetName(prop.GetToLowerFirstCharName())#> =  <#=GetName(prop.GetToLowerFirstCharName())#>;
+    [self valueChanged:<#=GetName(prop.Name)#> forProperty:@"<#=GetName(prop.Name)#>"];
+}
+
+<#
+     }
 }
 
 #>
