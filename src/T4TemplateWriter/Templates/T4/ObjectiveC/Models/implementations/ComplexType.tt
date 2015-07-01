@@ -68,7 +68,21 @@ foreach(var prop in entity.Properties)
 - (void)set<#=setterName#>:(<#=prop.ToSetterTypeString()#>)  <#=GetName(prop.GetToLowerFirstCharName())#>;
 {
     _<#=GetName(prop.GetToLowerFirstCharName())#> =  <#=GetName(prop.GetToLowerFirstCharName())#>;
+<#
+    if(prop.Type.Name == "Int32" || prop.Type.Name == "Int64" ){
+#>
+    [self valueChangedForInt:<#=GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=GetName(prop.Name)#>"];
+<#
+    }else if(prop.Type.Name == "Boolean"){
+#>
+    [self valueChangedForBool:<#=GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=GetName(prop.Name)#>"];
+<#
+    }else{
+#>
     [self valueChanged:<#=GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=GetName(prop.Name)#>"];
+<#
+    }
+#>
 }
 
 <#
