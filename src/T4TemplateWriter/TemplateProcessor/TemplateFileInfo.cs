@@ -22,7 +22,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         public String FileExtension { get; set; }
 
-        public TemplateFileInfo(String fullPath) {
+        public TemplateFileInfo(String fullPath)
+        {
             this.FullPath = fullPath;
 
             // <rootPath>/<grandparent>/<parent>/<fileName>.<fileExtension>.tt
@@ -42,15 +43,18 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             TemplateType parsed;
             Boolean valid = Enum.TryParse(parentName, true, out parsed);
 
-            if (valid) {
+            if (valid)
+            {
                 this.TemplateType = parsed;
-            } else {
+            }
+            else
+            {
                 Console.WriteLine("Unknown template type. Recognized types are Base, Fetcher, Model, and Other.");
                 this.TemplateType = TemplateType.Unknown;
             }
 
         }
 
- 
+
     }
 }

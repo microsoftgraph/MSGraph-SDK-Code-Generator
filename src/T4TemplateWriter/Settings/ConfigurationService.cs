@@ -9,12 +9,15 @@ namespace Vipr.T4TemplateWriter.Settings
     {
         private static IConfigurationProvider _configurationProvider;
 
-        public static void Initialize(IConfigurationProvider configurationProvider) {
+        public static void Initialize(IConfigurationProvider configurationProvider)
+        {
             _configurationProvider = configurationProvider;
         }
 
-        public static TemplateWriterSettings Settings {
-            get {
+        public static TemplateWriterSettings Settings
+        {
+            get
+            {
                 return _configurationProvider != null
                     ? _configurationProvider.GetConfiguration<TemplateWriterSettings>()
                     : new TemplateWriterSettings();

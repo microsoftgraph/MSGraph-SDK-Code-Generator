@@ -15,9 +15,11 @@ using Vipr.T4TemplateWriter;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 
-namespace Vipr.T4TemplateWriter.TemplateProcessor {
+namespace Vipr.T4TemplateWriter.TemplateProcessor
+{
 
-    public enum FileType {
+    public enum FileType
+    {
         ComplexType,
         EntityType,
         EnumType,
@@ -30,30 +32,39 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor {
         Unknown
     }
 
-    public class TemplateProcessor : ITemplateProcessor {
+    public class TemplateProcessor : ITemplateProcessor
+    {
 
         private static CustomT4Host _host;
-        protected static CustomT4Host Host(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel) {
-            if (_host == null) {
+        protected static CustomT4Host Host(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel)
+        {
+            if (_host == null)
+            {
                 _host = new CustomT4Host(templateInfo, templatesDirectory, odcmObject, odcmModel);
-            } else {
+            }
+            else
+            {
                 _host.Reset(templateInfo, templatesDirectory, odcmObject, odcmModel);
             }
 
-            return _host;      
+            return _host;
         }
 
         protected Dictionary<FileType, Func<TemplateFileInfo, IEnumerable<TextFile>>> _subProcessors;
-        protected Dictionary<FileType, Func<TemplateFileInfo, IEnumerable<TextFile>>> SubProcessors {
-            get { 
-                if (null == _subProcessors) {
+        protected Dictionary<FileType, Func<TemplateFileInfo, IEnumerable<TextFile>>> SubProcessors
+        {
+            get
+            {
+                if (null == _subProcessors)
+                {
                     InitializeSubprocessors();
                 }
                 return _subProcessors;
             }
         }
 
-        protected void InitializeSubprocessors() {
+        protected void InitializeSubprocessors()
+        {
             _subProcessors = new Dictionary<FileType, Func<TemplateFileInfo, IEnumerable<TextFile>>>() {             
                 // Models
                 {FileType.EntityType,                   ProcessEntityTypes},
@@ -79,7 +90,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor {
         protected IPathWriter PathWriter { get; set; }
         protected String TemplatesDirectory { get; set; }
 
-        public TemplateProcessor(IPathWriter pathWriter, OdcmModel odcmModel, String templatesDirectory) {
+        public TemplateProcessor(IPathWriter pathWriter, OdcmModel odcmModel, String templatesDirectory)
+        {
             this.T4Engine = new Microsoft.VisualStudio.TextTemplating.Engine();
             this.CurrentModel = odcmModel;
             this.PathWriter = pathWriter;
@@ -87,59 +99,73 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor {
             this.TemplatesDirectory = templatesDirectory;
         }
 
-        public IEnumerable<TextFile> Process(TemplateFileInfo templateInfo) {
+        public IEnumerable<TextFile> Process(TemplateFileInfo templateInfo)
+        {
             FileType fileType;
             Func<TemplateFileInfo, IEnumerable<TextFile>> subProcessor;
 
             Boolean valid = Enum.TryParse(templateInfo.TemplateBaseName, true, out fileType);
 
-            if (valid) {
+            if (valid)
+            {
                 SubProcessors.TryGetValue(fileType, out subProcessor);
-            } else {
+            }
+            else
+            {
                 SubProcessors.TryGetValue(FileType.Other, out subProcessor);
             }
             return subProcessor(templateInfo);
         }
 
 
-        protected virtual IEnumerable<TextFile> ProcessEntityContainerType(TemplateFileInfo templateInfo) {
+        protected virtual IEnumerable<TextFile> ProcessEntityContainerType(TemplateFileInfo templateInfo)
+        {
             var container = this.CurrentModel.EntityContainer;
             yield return ProcessTemplate(templateInfo, container);
         }
 
-        protected virtual IEnumerable<TextFile> ProcessEnumTypes(TemplateFileInfo templateInfo) {
+        protected virtual IEnumerable<TextFile> ProcessEnumTypes(TemplateFileInfo templateInfo)
+        {
             var enumTypes = CurrentModel.GetEnumTypes();
-            foreach (OdcmObject enumType in enumTypes) {
+            foreach (OdcmObject enumType in enumTypes)
+            {
                 yield return ProcessTemplate(templateInfo, enumType);
             }
         }
 
-        protected virtual IEnumerable<TextFile> ProcessComplexTypes(TemplateFileInfo templateInfo) {
+        protected virtual IEnumerable<TextFile> ProcessComplexTypes(TemplateFileInfo templateInfo)
+        {
             var complexTypes = CurrentModel.GetComplexTypes();
-            foreach (OdcmObject complexType in complexTypes) {
+            foreach (OdcmObject complexType in complexTypes)
+            {
                 yield return ProcessTemplate(templateInfo, complexType);
             }
         }
 
-        protected virtual IEnumerable<TextFile> ProcessEntityTypes(TemplateFileInfo templateInfo) {
+        protected virtual IEnumerable<TextFile> ProcessEntityTypes(TemplateFileInfo templateInfo)
+        {
             var entityTypes = CurrentModel.GetEntityTypes();
-            foreach (OdcmObject entityType in entityTypes) {
+            foreach (OdcmObject entityType in entityTypes)
+            {
                 yield return ProcessTemplate(templateInfo, entityType);
             }
         }
 
-        protected IEnumerable<TextFile> ProcessTemplate(TemplateFileInfo templateInfo) {
+        protected IEnumerable<TextFile> ProcessTemplate(TemplateFileInfo templateInfo)
+        {
             yield return this.ProcessTemplate(templateInfo, null);
         }
 
-        protected TextFile ProcessTemplate(TemplateFileInfo templateInfo, OdcmObject odcmObject) {
+        protected TextFile ProcessTemplate(TemplateFileInfo templateInfo, OdcmObject odcmObject)
+        {
             var host = TemplateProcessor.Host(templateInfo, this.TemplatesDirectory, odcmObject, this.CurrentModel);
 
             var templateContent = File.ReadAllText(host.TemplateFile);
 
             var output = this.T4Engine.ProcessTemplate(templateContent, host);
 
-            if (host.Errors != null && host.Errors.HasErrors) {
+            if (host.Errors != null && host.Errors.HasErrors)
+            {
                 var errors = this.LogErrors(host, templateInfo);
                 throw new InvalidOperationException(errors);
             }
@@ -150,11 +176,13 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor {
             return new TextFile(path, output);
         }
 
-        public string LogErrors(CustomT4Host host, TemplateFileInfo templateInfo) {
+        public string LogErrors(CustomT4Host host, TemplateFileInfo templateInfo)
+        {
             var sb = new StringBuilder();
             if (host.Errors == null || host.Errors.Count <= 0) return sb.ToString();
 
-            foreach (CompilerError error in host.Errors) {
+            foreach (CompilerError error in host.Errors)
+            {
                 sb.AppendLine("TemplateProcessor ERROR").
                     AppendFormat(@"Name:     {0}{1}", templateInfo.TemplateName, Environment.NewLine).
                     AppendFormat(@"Line:     {0}{1}", error.Line, Environment.NewLine).

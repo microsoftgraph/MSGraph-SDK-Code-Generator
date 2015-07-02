@@ -1,6 +1,8 @@
 ﻿using System;
-namespace Vipr.T4TemplateWriter.TemplateProcessor {
-    interface ITemplateInfo {
+namespace Vipr.T4TemplateWriter.TemplateProcessor
+{
+    interface ITemplateInfo
+    {
         string Id { get; }
         string TemplateLanguage { get; set; }
         string TemplateName { get; set; }
@@ -8,7 +10,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor {
 
     }
 
-    public enum TemplateType {
+    public enum TemplateType
+    {
         Base,
         Model,
         Fetcher,

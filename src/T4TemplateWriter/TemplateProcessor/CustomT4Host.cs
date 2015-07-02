@@ -16,15 +16,19 @@ using Vipr.T4TemplateWriter.Settings;
 using Vipr.Core.CodeModel;
 using Vipr.T4TemplateWriter.CodeHelpers;
 
-namespace Vipr.T4TemplateWriter {
-    public class CustomT4Host : ITextTemplatingEngineHost {
+namespace Vipr.T4TemplateWriter
+{
+    public class CustomT4Host : ITextTemplatingEngineHost
+    {
         // see https://msdn.microsoft.com/en-us/library/bb126579(v=vs.110).aspx
 
-        public CustomT4Host(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel) {
+        public CustomT4Host(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel)
+        {
             this.Reset(templateInfo, templatesDirectory, currentType, currentModel);
         }
 
-        public void Reset(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel) {
+        public void Reset(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel)
+        {
             this.TemplateFile = templateInfo.FullPath;
             this.TemplatesDirectory = templatesDirectory;
             this.CurrentType = currentType;
@@ -36,18 +40,23 @@ namespace Vipr.T4TemplateWriter {
         public OdcmModel CurrentModel { get; set; }
 
         private CodeWriterBase _codeWriter;
-        public CodeWriterBase CodeWriter {
-            get {
-                if (_codeWriter == null) {
+        public CodeWriterBase CodeWriter
+        {
+            get
+            {
+                if (_codeWriter == null)
+                {
                     String writerClassName = String.Format("Vipr.T4TemplateWriter.CodeHelpers.{0}.CodeWriter{0}",
                         ConfigurationService.Settings.TargetLanguage);
-                    _codeWriter = (CodeWriterBase) Activator.CreateInstance(Type.GetType(writerClassName), new object[] {this.CurrentModel});
+                    _codeWriter = (CodeWriterBase)Activator.CreateInstance(Type.GetType(writerClassName), new object[] { this.CurrentModel });
                 }
                 return _codeWriter;
             }
         }
-        public String Language {
-            get {
+        public String Language
+        {
+            get
+            {
                 return ConfigurationService.Settings.TargetLanguage;
             }
         }
@@ -58,7 +67,8 @@ namespace Vipr.T4TemplateWriter {
         public String FileExtension { get; set; }
 
         private Encoding _fileEncoding = Encoding.UTF8;
-        public Encoding FileEncoding {
+        public Encoding FileEncoding
+        {
             get { return _fileEncoding; }
             set { _fileEncoding = value; }
         }
@@ -92,9 +102,11 @@ namespace Vipr.T4TemplateWriter {
         };
 
 
-        public void AddAssemblyReference(Assembly assembly) {
+        public void AddAssemblyReference(Assembly assembly)
+        {
             var location = assembly.Location;
-            if (!_standardAssemblyReferences.Contains(location)) {
+            if (!_standardAssemblyReferences.Contains(location))
+            {
                 _standardAssemblyReferences.Add(assembly.Location);
             }
         }
@@ -103,11 +115,13 @@ namespace Vipr.T4TemplateWriter {
 
         public IList<String> StandardImports { get { return _standardImports; } }
 
-        public bool LoadIncludeText(string requestFileName, out string content, out string location) {
+        public bool LoadIncludeText(string requestFileName, out string content, out string location)
+        {
             location = String.Empty;
             content = String.Empty;
 
-            if (File.Exists(requestFileName)) {
+            if (File.Exists(requestFileName))
+            {
                 location = requestFileName;
                 content = File.ReadAllText(location);
                 return true;
@@ -115,13 +129,18 @@ namespace Vipr.T4TemplateWriter {
 
             var candidates = Directory.GetFiles(TemplatesDirectory, "*" + requestFileName + "*", SearchOption.AllDirectories);
 
-            if (candidates.Length == 1 && File.Exists(candidates[0])) {
+            if (candidates.Length == 1 && File.Exists(candidates[0]))
+            {
                 location = candidates[0];
                 content = File.ReadAllText(location);
                 return true;
-            } else if (candidates.Length < 1) {
+            }
+            else if (candidates.Length < 1)
+            {
                 // file not found
-            } else if (candidates.Length > 1) {
+            }
+            else if (candidates.Length > 1)
+            {
                 // more than one file found
             }
 
@@ -129,9 +148,11 @@ namespace Vipr.T4TemplateWriter {
         }
 
 
-        public Object GetHostOption(String optionName) {
+        public Object GetHostOption(String optionName)
+        {
             object returnObject;
-            switch (optionName) {
+            switch (optionName)
+            {
                 case "CacheAssemblies":
                     returnObject = true;
                     break;
@@ -143,68 +164,84 @@ namespace Vipr.T4TemplateWriter {
             return returnObject;
         }
 
-        public string ResolveAssemblyReference(string assemblyReference) {
-            if (File.Exists(assemblyReference)) {
+        public string ResolveAssemblyReference(string assemblyReference)
+        {
+            if (File.Exists(assemblyReference))
+            {
                 return assemblyReference;
             }
 
             string candidate = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), assemblyReference);
 
-            if (File.Exists(candidate)) {
+            if (File.Exists(candidate))
+            {
                 return candidate;
             }
 
             return string.Empty;
         }
 
-        public Type ResolveDirectiveProcessor(string processorName) {
+        public Type ResolveDirectiveProcessor(string processorName)
+        {
             // No unique directive processors provided.
             throw new Exception("Directive Processor not found");
         }
 
-        public string ResolvePath(string fileName) {
-            if (fileName == null) {
+        public string ResolvePath(string fileName)
+        {
+            if (fileName == null)
+            {
                 throw new ArgumentNullException("the file name cannot be null");
             }
 
-            if (File.Exists(fileName)) {
+            if (File.Exists(fileName))
+            {
                 return fileName;
             }
 
             string candidate = Path.Combine(Path.GetDirectoryName(TemplateFile), fileName);
-            if (File.Exists(candidate)) {
+            if (File.Exists(candidate))
+            {
                 return candidate;
             }
 
             return fileName;
         }
 
-        public string ResolveParameterValue(string directiveId, string processorName, string parameterName) {
-            if (directiveId == null) {
+        public string ResolveParameterValue(string directiveId, string processorName, string parameterName)
+        {
+            if (directiveId == null)
+            {
                 throw new ArgumentNullException("the directiveId cannot be null");
             }
-            if (processorName == null) {
+            if (processorName == null)
+            {
                 throw new ArgumentNullException("the processorName cannot be null");
             }
-            if (parameterName == null) {
+            if (parameterName == null)
+            {
                 throw new ArgumentNullException("the parameterName cannot be null");
             }
             return String.Empty;
         }
 
-        public void SetFileExtension(string extension) {
+        public void SetFileExtension(string extension)
+        {
             this.FileExtension = extension;
         }
 
-        public void SetOutputEncoding(Encoding encoding, bool fromOutputDirective) {
+        public void SetOutputEncoding(Encoding encoding, bool fromOutputDirective)
+        {
             this.FileEncoding = encoding;
         }
 
-        public void LogErrors(CompilerErrorCollection errors) {
+        public void LogErrors(CompilerErrorCollection errors)
+        {
             Errors = errors;
         }
 
-        public AppDomain ProvideTemplatingAppDomain(string content) {
+        public AppDomain ProvideTemplatingAppDomain(string content)
+        {
             return AppDomain.CurrentDomain;
             // return AppDomain.CreateDomain("Generation App Domain");
         }

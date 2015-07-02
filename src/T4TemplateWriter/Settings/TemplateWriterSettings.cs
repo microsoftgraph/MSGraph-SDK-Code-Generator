@@ -16,6 +16,7 @@ namespace Vipr.T4TemplateWriter.Settings
             NamespacePrefix = "MS";
             Plugins = new List<string>();
             InitializeCollections = true;
+            TargetLanguage = "Java";
         }
 
         /// <summary>
