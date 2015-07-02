@@ -46,15 +46,7 @@ if(classes.Any()){
 	}
 #>
 <#=GetInterfaceLine(entity)#>
-
 <#
-if(entity.Base == null)
-{
-
-#>
-@property (retain, nonatomic, readonly) NSString *odataType;
-<#
-}
 
 foreach(var prop in entity.Properties)
 {
