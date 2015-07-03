@@ -12,10 +12,11 @@ namespace T4TemplateWriter.Settings
         {
             // defaults
             AvailableLanguages = new List<string> { "java", "objectivec" };
-            PrimaryNamespaceName = "";
+            PrimaryNamespaceName = "Microsoft.FileServices";
             NamespacePrefix = "com";
             Plugins = new List<string>();
             InitializeCollections = true;
+            TargetLanguage = "java";
         }
 
         /// <summary>
