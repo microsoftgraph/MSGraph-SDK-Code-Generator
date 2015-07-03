@@ -109,7 +109,7 @@ public class <#=entity.Name.ToCheckedCase()#>CollectionOperations <#=baseOperati
         java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();
         <#= sb.ToString() #>
         Request request = getResolver().createRequest();
-        request.setVerb(HttpVerb.POST);
+        request.setVerb(HttpVerb.GET);
         request.setContent(serializeToJsonByteArray(map, getResolver()));
 
         String parameters = getFunctionParameters(map);
