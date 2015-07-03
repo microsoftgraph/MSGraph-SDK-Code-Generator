@@ -72,6 +72,8 @@ namespace T4TemplateWriter.Helpers.ObjectiveC
 
             if (name.Trim() == "default") return "$$__default";
 
+            if (name.Trim() == "self") return "$$__self";
+
             return name;
         }
 
