@@ -115,13 +115,12 @@ public class <#=entity.Name.ToCheckedCase()#>Operations <#=baseOperation#> {
         Request request = getResolver().createRequest();
         request.setVerb(HttpVerb.GET);
         request.setContent(serializeToJsonByteArray(map, getResolver()));
-        String parameters = getFunctionParameters(map);
          <# if (settings.AllowShortActions) { #>
-        request.getUrl().appendPathComponent("<#= someAction.Name #>(" + parameters + ")");   
+        request.getUrl().appendPathComponent("<#= someAction.Name #>");   
         <# } else { #>
-        request.getUrl().appendPathComponent("<#= someAction.FullName #>(" + parameters + ")");   
+        request.getUrl().appendPathComponent("<#= someAction.FullName #>");   
         <#}#>
-        request.getUrl().appendPathComponent("<#= someAction.Name #>(" + parameters + ")");   
+
         ListenableFuture<OrcResponse> future = oDataExecute(request);   
         <# if (someAction.ReturnType.GetTypeString() == "byte[]")
         {#>
