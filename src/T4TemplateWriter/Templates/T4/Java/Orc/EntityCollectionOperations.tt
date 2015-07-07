@@ -6,7 +6,7 @@
 CustomHost host = (CustomHost)Host;
 OdcmClass entity = host.OdcmType.AsOdcmClass();
 OdcmModel model = host.Model;
-
+TemplateWriterSettings settings = ConfigurationService.Settings;
 var baseOperation = entity.Base == null ? "extends OrcOperations" : "extends " + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "CollectionOperations";
 
 #>
@@ -111,9 +111,12 @@ public class <#=entity.Name.ToCheckedCase()#>CollectionOperations <#=baseOperati
         Request request = getResolver().createRequest();
         request.setVerb(HttpVerb.GET);
         request.setContent(serializeToJsonByteArray(map, getResolver()));
+         <# if (settings.AllowShortActions) { #>
+        request.getUrl().appendPathComponent("<#= action.Name #>");   
+        <# } else { #>
+        request.getUrl().appendPathComponent("<#= action.FullName #>");   
+        <#}#>
 
-        String parameters = getFunctionParameters(map);
-        request.getUrl().appendPathComponent("<#= action.Name #>(" + parameters + ")");
         ListenableFuture<OrcResponse> future = oDataExecute(request);   
         <# if (action.ReturnType.GetTypeString() == "byte[]")
         {#>
