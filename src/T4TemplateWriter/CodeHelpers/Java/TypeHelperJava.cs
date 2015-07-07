@@ -9,18 +9,23 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr.T4TemplateWriter.CodeHelpers.Java
 {
-    public static class TypeHelperJava  {
+    public static class TypeHelperJava
+    {
         public const string ReservedPrefix = "$$__$$";
-        public static ICollection<string> ReservedNames {
-            get {
+        public static ICollection<string> ReservedNames
+        {
+            get
+            {
                 return new HashSet<string> {
                     "abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while"
                 };
             }
         }
 
-        public static string GetTypeString(this OdcmType @type) {
-            switch (@type.Name) {
+        public static string GetTypeString(this OdcmType @type)
+        {
+            switch (@type.Name)
+            {
                 case "Int32":
                     return "Integer";
                 case "Int64":
@@ -37,8 +42,10 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
             }
         }
 
-        public static string GetTypeString(this OdcmParameter parameter) {
-            switch (parameter.Type.Name) {
+        public static string GetTypeString(this OdcmParameter parameter)
+        {
+            switch (parameter.Type.Name)
+            {
                 case "Int32":
                     return "Integer";
                 case "Int64":
@@ -57,7 +64,8 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
 
 
 
-        public static string GetTypeString(this OdcmProperty property) {
+        public static string GetTypeString(this OdcmProperty property)
+        {
             return GetTypeString(property.Type);
         }
 
@@ -74,9 +82,10 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
             return property.Name.ToLowerFirstChar();
         }
 
-        public static string SanitizePropertyName(this OdcmProperty property)
+        public static string SanitizePropertyName(this OdcmObject property)
         {
-            if (ReservedNames.Contains(property.Name.ToLower())) {
+            if (ReservedNames.Contains(property.Name.ToLower()))
+            {
                 return ReservedPrefix + property.Name;
             }
             return property.Name;

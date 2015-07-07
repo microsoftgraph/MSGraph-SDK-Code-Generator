@@ -106,15 +106,19 @@ namespace Vipr.T4TemplateWriter
 
         public static string NamespaceName(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model).Name;
-            var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace);
-            return name.ToLower();
+            if (string.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
+            {
+                var @namespace = GetOdcmNamespace(model).Name;
+                var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace);
+                return name.ToLower();
+            }
+            return ConfigurationService.Settings.NamespaceOverride;
         }
 
         public static string ODataPackageNamespace(this OdcmModel model)
         {
             var @namespace = NamespaceName(model);
-            var package = string.Format("{0}.{1}", @namespace, "orc");
+            var package = string.Format("{0}.{1}", @namespace, "fetcher");
             return package.ToLower();
         }
 

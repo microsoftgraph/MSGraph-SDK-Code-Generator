@@ -6,21 +6,26 @@ using System.Threading.Tasks;
 
 using Vipr.Core.CodeModel;
 
-namespace Vipr.T4TemplateWriter.CodeHelpers.Java {
-    public class CodeWriterJava : CodeWriterBase {
+namespace Vipr.T4TemplateWriter.CodeHelpers.Java
+{
+    public class CodeWriterJava : CodeWriterBase
+    {
 
         public CodeWriterJava() : base() { }
         public CodeWriterJava(OdcmModel model) : base(model) { }
 
-        public override String WriteOpeningCommentLine() {
+        public override String WriteOpeningCommentLine()
+        {
             return "/*******************************************************************************\n";
         }
 
-        public override String WriteClosingCommentLine() {
+        public override String WriteClosingCommentLine()
+        {
             return "\n******************************************************************************/";
         }
 
-        public override string WriteInlineCommentChar() {
+        public override string WriteInlineCommentChar()
+        {
             return "// ";
         }
     }

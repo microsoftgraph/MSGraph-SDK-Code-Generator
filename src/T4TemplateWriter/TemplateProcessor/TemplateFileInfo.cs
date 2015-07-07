@@ -10,6 +10,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
     public class TemplateFileInfo : Vipr.T4TemplateWriter.TemplateProcessor.TemplateInfoBase
     {
         public override String Id { get { return this.FullPath; } }
+
         public override TemplateType TemplateType { get; set; }
 
         public override String TemplateName { get; set; }

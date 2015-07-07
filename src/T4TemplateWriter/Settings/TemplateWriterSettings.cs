@@ -17,6 +17,7 @@ namespace Vipr.T4TemplateWriter.Settings
             Plugins = new List<string>();
             InitializeCollections = true;
             TargetLanguage = "Java";
+            NamespaceOverride = "com.microsoft.services.onenote";
         }
 
         /// <summary>
@@ -32,6 +33,8 @@ namespace Vipr.T4TemplateWriter.Settings
         public IList<string> Plugins { get; set; }
 
         public string PrimaryNamespaceName { get; set; }
+
+        public string NamespaceOverride { get; set; }
 
         public string NamespacePrefix { get; set; }
 
