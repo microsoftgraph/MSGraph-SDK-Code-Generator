@@ -12,8 +12,8 @@ CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
 package <#=model.ODataPackageNamespace()#>;
 
 import <#=model.NamespaceName()#>.*;
-import com.microsoft.services.orc.*;
-import com.microsoft.services.orc.interfaces.DependencyResolver;
+import com.microsoft.services.orc.core.*;
+import com.microsoft.services.orc.core.DependencyResolver;
 
 /**
  * The type <#=model.GetEntityContainer()#>Client.

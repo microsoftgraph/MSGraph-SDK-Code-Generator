@@ -14,7 +14,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
     {
         Base,
         Model,
-        Fetcher,
+        Fetchers,
         Other,
         Unknown
     }

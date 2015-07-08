@@ -83,16 +83,16 @@
     <None Include="Templates\Java\Model\EnumType.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\Java\Fetcher\EntityClient.java.tt">
+    <None Include="Templates\Java\Fetchers\EntityClient.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\Java\Fetcher\EntityCollectionOperations.java.tt">
+    <None Include="Templates\Java\Fetchers\EntityCollectionOperations.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\Java\Fetcher\EntityFetcher.java.tt">
+    <None Include="Templates\Java\Fetchers\EntityFetcher.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\Java\Fetcher\EntityOperations.java.tt">
+    <None Include="Templates\Java\Fetchers\EntityOperations.java.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Templates\ObjC\Model\ComplexType.h.tt">

@@ -7,6 +7,7 @@ OdcmModel model         = host.CurrentModel;
 CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
+TemplateWriterSettings settings = ConfigurationService.Settings;
 var baseOperation = entity.Base == null ? "extends OrcOperations" : "extends " + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "CollectionOperations";
 #>
 
@@ -15,9 +16,10 @@ package <#=model.ODataPackageNamespace()#>;
 
 import <#=model.NamespaceName()#>.*;
 import com.google.common.util.concurrent.*;
-import com.microsoft.services.orc.*;
-import com.microsoft.services.orc.interfaces.*;
-import static com.microsoft.services.orc.Helpers.*;
+import com.microsoft.services.orc.core.*;
+import com.microsoft.services.orc.http.*;
+import com.microsoft.services.orc.serialization.JsonSerializer;
+import static com.microsoft.services.orc.core.Helpers.*;
 
 /**
  * The type <#=entity.Name.ToUpperFirstChar()#>CollectionOperations
@@ -106,11 +108,15 @@ public class <#=entity.Name.ToUpperFirstChar()#>CollectionOperations <#=baseOper
         java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();
         <#= sb.ToString() #>
         Request request = getResolver().createRequest();
-        request.setVerb(HttpVerb.POST);
+        request.setVerb(HttpVerb.GET);
         request.setContent(serializeToJsonByteArray(map, getResolver()));
 
-        String parameters = getFunctionParameters(map);
-        request.getUrl().appendPathComponent("<#= action.Name #>(" + parameters + ")");
+        <# if (settings.AllowShortActions) { #>
+        request.getUrl().appendPathComponent("<#= action.Name #>");
+        <# } else { #>
+        request.getUrl().appendPathComponent("<#= action.FullName #>");
+        <#}#>
+
         ListenableFuture<OrcResponse> future = oDataExecute(request);   
         <# if (action.ReturnType.GetTypeString() == "byte[]")
         {#>

@@ -34,7 +34,7 @@ namespace Vipr.T4TemplateWriter.Output
         {
             string result;
 
-            if (template.TemplateName.Contains("Entity") && (template.TemplateType == TemplateType.Fetcher)) {
+            if (template.TemplateName.Contains("Entity") && (template.TemplateType == TemplateType.Fetchers)) {
                 result = template.TemplateName.Replace("Entity", entityTypeName);
             } else {
                 result = String.Format("{0}.{1}", entityTypeName, template.FileExtension);

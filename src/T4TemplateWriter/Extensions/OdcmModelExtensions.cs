@@ -118,7 +118,7 @@ namespace Vipr.T4TemplateWriter
         public static string ODataPackageNamespace(this OdcmModel model)
         {
             var @namespace = NamespaceName(model);
-            var package = string.Format("{0}.{1}", @namespace, "fetcher");
+            var package = string.Format("{0}.{1}", @namespace, "fetchers");
             return package.ToLower();
         }
 

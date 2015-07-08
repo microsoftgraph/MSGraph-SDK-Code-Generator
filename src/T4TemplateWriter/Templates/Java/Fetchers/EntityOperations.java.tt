@@ -15,9 +15,10 @@ package <#=model.ODataPackageNamespace()#>;
 
 import <#=model.NamespaceName()#>.*;
 import com.google.common.util.concurrent.*;
-import com.microsoft.services.orc.*;
-import com.microsoft.services.orc.interfaces.*;
-import static com.microsoft.services.orc.Helpers.*;
+import com.microsoft.services.orc.core.*;
+import com.microsoft.services.orc.http.*;
+import static com.microsoft.services.orc.core.Helpers.*;
+import com.microsoft.services.orc.serialization.JsonSerializer;
 
 /**
  * The type <#=entity.Name.ToUpperFirstChar()#>Operations.
@@ -110,15 +111,14 @@ public class <#=entity.Name.ToUpperFirstChar()#>Operations <#=baseOperation#> {
         java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();
         <#= sb.ToString() #>
         Request request = getResolver().createRequest();
-        request.setVerb(HttpVerb.POST);
+        request.setVerb(HttpVerb.GET);
         request.setContent(serializeToJsonByteArray(map, getResolver()));
-        String parameters = getFunctionParameters(map);
+        
          <# if (settings.AllowShortActions) { #>
-        request.getUrl().appendPathComponent("<#= someAction.Name #>(" + parameters + ")");   
+        request.getUrl().appendPathComponent("<#= someAction.Name #>");
         <# } else { #>
-        request.getUrl().appendPathComponent("<#= someAction.FullName #>(" + parameters + ")");   
+        request.getUrl().appendPathComponent("<#= someAction.FullName #>");   
         <#}#>
-        request.getUrl().appendPathComponent("<#= someAction.Name #>(" + parameters + ")");   
         ListenableFuture<OrcResponse> future = oDataExecute(request);   
         <# if (someAction.ReturnType.GetTypeString() == "byte[]")
         {#>

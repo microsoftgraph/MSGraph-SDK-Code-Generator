@@ -10,7 +10,7 @@ OdcmClass complex = (OdcmClass)host.CurrentType;
 package <#=model.NamespaceName()#>;
 
 <# if (complex.Base == null){#>
-import com.microsoft.services.orc.ODataBaseEntity;
+import com.microsoft.services.orc.core.ODataBaseEntity;
 <#}#>
 
 <#
