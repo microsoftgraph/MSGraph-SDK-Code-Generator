@@ -116,38 +116,38 @@
     <None Include="Templates\ObjC\Model\EntityType.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\ObjC\Fetcher\EntityCollectionFetcher.h.tt">
+    <None Include="Templates\ObjC\Fetchers\EntityCollectionFetcher.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\ObjC\Fetcher\EntityCollectionOperations.h.tt">
+    <None Include="Templates\ObjC\Fetchers\EntityCollectionOperations.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\ObjC\Fetcher\EntityFetcher.h.tt">
+    <None Include="Templates\ObjC\Fetchers\EntityFetcher.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\ObjC\Fetcher\EntityOperations.h.tt">
+    <None Include="Templates\ObjC\Fetchers\EntityOperations.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\ObjC\Fetcher\EntityClient.h.tt">
+    <None Include="Templates\ObjC\Fetchers\EntityClient.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\ObjC\Fetcher\EntityCollectionFetcher.m.tt">
+    <None Include="Templates\ObjC\Fetchers\EntityCollectionFetcher.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\ObjC\Fetcher\EntityCollectionOperations.m.tt">
+    <None Include="Templates\ObjC\Fetchers\EntityCollectionOperations.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\ObjC\Fetcher\EntityFetcher.m.tt">
+    <None Include="Templates\ObjC\Fetchers\EntityFetcher.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\ObjC\Fetcher\EntityOperations.m.tt">
+    <None Include="Templates\ObjC\Fetchers\EntityOperations.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\ObjC\Fetcher\EntityClient.m.tt">
+    <None Include="Templates\ObjC\Fetchers\EntityClient.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="Templates\ObjC\Fetcher\Fetchers.h.tt">
+    <None Include="Templates\ObjC\Fetchers\Fetchers.h.tt">
       <LastGenOutput>Fetchers.h</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -15,7 +15,7 @@ var entity = host.CurrentType.AsOdcmClass();
 foreach(var prop in entity.Properties)
 {
 #>
-@synthesize <#=writer.GetName(prop.Name)#> = _<#=writer.GetName(prop.Name)#>;
+@synthesize <#=writer.GetName(prop.Name)#> = _<#=writer.GetName(prop.GetToLowerFirstCharName())#>;
 <#
 }
 #>
@@ -49,7 +49,7 @@ foreach(var prop in entity.Properties)
 	if ([value isEqualToString:@"<#=value#>"]) {
 		
 		_<#=prop.Name#> = <#=prefix + "_" + prop.Type.Name + "_" + value#>;
-        [self valueChanged:<#=prefix + "_" + prop.Type.Name + "_" + value#> forProperty:@"<#=GetName(prop.Name)#>"];
+        [self valueChanged:<#=prefix + "_" + prop.Type.Name + "_" + value#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
 	}
 <#
 		}
@@ -60,10 +60,24 @@ foreach(var prop in entity.Properties)
     string setterName =  Char.ToUpperInvariant(prop.Name[0]) + prop.Name.Substring(1);
     #>
 
-    - (void)set<#=setterName#>:(<#=prop.ToSetterTypeString()#>)  <#=GetName(prop.Name)#>;
+    - (void)set<#=setterName#>:(<#=prop.ToSetterTypeString()#>)  <#=writer.GetName(prop.GetToLowerFirstCharName())#>;
       {
-        _<#=GetName(prop.Name)#> =  <#=GetName(prop.Name)#>;
-        [self valueChanged:<#=GetName(prop.Name)#> forProperty:@"<#=GetName(prop.Name)#>"];
+        _<#=writer.GetName(prop.GetToLowerFirstCharName())#> =  <#=writer.GetName(prop.GetToLowerFirstCharName())#>;
+        <#
+     if(prop.Type.Name == "Int32" || prop.Type.Name == "Int64" ){
+ #>
+     [self valueChangedForInt:<#=writer.GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
+ <#
+     }else if(prop.Type.Name == "Boolean"){
+ #>
+     [self valueChangedForBool:<#=writer.GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
+ <#
+     }else{
+ #>
+      [self valueChanged:<#=writer.GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
+ <#
+     }
+ #>
       }
     <#
     }

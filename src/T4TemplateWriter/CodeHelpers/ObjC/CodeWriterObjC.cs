@@ -12,7 +12,11 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
     public class CodeWriterObjC : CodeWriterBase {
 
         public CodeWriterObjC() : base() { }
-        public CodeWriterObjC(OdcmModel model) : base(model) { }
+
+        public CodeWriterObjC(OdcmModel model) : base(model)
+        {
+            TypeHelperObjC.Prefix = GetPrefix();
+        }
 
         public string GetPrefix() {
             if (this.CurrentModel != null) {
@@ -35,14 +39,11 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
         }
         public string GetInterfaceLine(OdcmClass e) {
 
-            string baseEntity = e.Base == null ? "NSObject"
+            string baseEntity = e.Base == null ? "MSOrcBaseEntity"
                               : GetPrefix() + e.Base.Name.Substring(e.Base.Name.LastIndexOf(".") + 1);
 
             var s = new StringBuilder();
-
-            if (baseEntity != "NSObject") {
-                s.AppendFormat("#import \"{0}.h\"", baseEntity);
-            };
+            s.AppendFormat("#import \"{0}.h\"", baseEntity);
 
             s.AppendLine().AppendLine().AppendLine(GetHeaderDoc(e.Name))
             .AppendFormat("@interface {0}{1} : {2}", GetPrefix(), e.Name, baseEntity);
@@ -298,6 +299,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
         public string GetName(string name) {
             if (name.Trim() == "description") return "$$__description";
             if (name.Trim() == "default") return "$$__default";
+            if (name.Trim() == "self") return "$$__self";
             return name;
         }
     }

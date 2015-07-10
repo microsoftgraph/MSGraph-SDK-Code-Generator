@@ -12,7 +12,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 {
 	public static class TypeHelperObjC
 	{
-        public static string Prefix = ConfigurationService.Settings.NamespacePrefix;
+	    public static string Prefix = "";//ConfigurationService.Settings.NamespacePrefix;
 
         public const string ReservedPrefix = "$$__$$";
         public static ICollection<string> ReservedNames {
@@ -83,7 +83,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 			string result;
 			if (property.IsCollection)
 				result = !property.IsSystem() && property.Type.GetTypeString() != "NSData" ?
-                    string.Format("NSMutableArray<{0}>", property.Type.GetTypeString()) : "NSMutableArray";
+                    string.Format("NSMutableArray<{0}>", property.Type.GetFullType()) : "NSMutableArray";
 			else
                 result = property.Type.GetTypeString();
 

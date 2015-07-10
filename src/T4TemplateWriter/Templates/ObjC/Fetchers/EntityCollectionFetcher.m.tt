@@ -1,0 +1,32 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="Shared.template.tt" #>
+
+<#
+var entity = host.CurrentType.AsOdcmClass();
+var entityName = prefix + entity.Name + "CollectionFetcher";
+#>
+
+#import "<#=prefix#>Fetchers.h"
+
+<#=writer.GetImplementationDoc(entityName)#>
+@implementation <#=entityName#>
+
+- (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSOrcExecutable>)parent {
+
+    return [super initWithUrl:urlComponent parent:parent asClass:[<#=prefix + entity.Name#> class]];
+}
+
+- (void)add:(<#=prefix + entity.Name#>*)entity callback:(void (^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback {
+	
+	return [super add:entity callback:^(id entityAdded, MSOrcError *e) {
+
+        callback(entityAdded,e);
+    }];
+}
+
+- (<#=prefix + entity.Name#>Fetcher *)getById:(NSString *)id {
+
+    return [[<#=prefix + entity.Name#>Fetcher alloc] initWithUrl:[[NSString alloc] initWithFormat:@"('%@')" ,id] parent:self];
+}
+
+@end

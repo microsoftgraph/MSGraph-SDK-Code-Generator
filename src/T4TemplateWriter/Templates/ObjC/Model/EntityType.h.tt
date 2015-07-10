@@ -42,19 +42,6 @@ if(classes.Any()){
 <#=writer.GetInterfaceLine(entity)#>
 <#
 
-if(entity.Base == null)
-{
-#>
-
-@property (retain, nonatomic, readonly) NSString *odataType;
-<#
-}
-else{
-#>
-
-<#
-}
-
 foreach(var prop in entity.Properties)
 {
 	if(prop.Type is OdcmEnum && !prop.IsCollection){
