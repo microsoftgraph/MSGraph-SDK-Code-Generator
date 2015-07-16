@@ -6,7 +6,6 @@ var entity = host.CurrentType.AsOdcmClass();
 var entityName = prefix + entity.Name + "Operations";
 TemplateWriterSettings settings = ConfigurationService.Settings;
 #>
-
 #import "<#=prefix#>Fetchers.h"
 
 <#=writer.GetImplementationDoc(entityName)#>

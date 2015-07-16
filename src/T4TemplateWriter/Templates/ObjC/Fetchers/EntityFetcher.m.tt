@@ -5,7 +5,6 @@
 var entity = host.CurrentType.AsOdcmClass();
 var entityName = prefix + entity.Name;
 #>
-
 #import "<#=prefix#>Fetchers.h"
 
 @implementation <#=entityName#>Fetcher
@@ -30,6 +29,36 @@ var entityName = prefix + entity.Name;
 - (void)delete:(void (^)(int status, MSOrcError *e))callback {
 
 	return [super deleteWithCallback:callback];
+}
+
+- (<#=entityName#>Fetcher *)addCustomParametersWithName:(NSString *)name value:(id)value {
+    [super addCustomParametersWithName:name value:value];
+    
+    return self;
+}
+
+- (<#=entityName#>Fetcher *)addCustomHeaderWithName:(NSString *)name value:(NSString *)value {
+    [super addCustomHeaderWithName:name value:value];
+    
+    return self;
+}
+
+- (<#=entityName#>Fetcher *)select:(NSString *)params {
+    [super select:params];
+    
+    return self;
+}
+
+- (<#=entityName#>Fetcher *)expand:(NSString *)value {
+    [super select:value];
+    
+    return self;
+}
+
+- (void) readWithCallback:(void (^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback {
+    [super readWithCallback:^(id response, MSOrcError *error) {
+        callback(response, error);
+    }];
 }
 <#
 

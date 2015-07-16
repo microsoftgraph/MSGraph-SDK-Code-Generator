@@ -4,7 +4,7 @@
 <#
 var entity = host.CurrentType.AsOdcmClass();
 var entityName = prefix + entity.Name + "Fetcher";
-var extends =  (entity.Kind == OdcmClassKind.MediaEntity ? "MSOrcMediaEntityFetcher<": "MSOrcEntityFetcher<") + entityName+ "Protocol>";
+var extends =  entity.Kind == OdcmClassKind.MediaEntity ? "MSOrcMediaEntityFetcher": "MSOrcEntityFetcher";
 var classes = new List<string>();
 
 foreach(var prop in entity.NavigationProperties())
@@ -41,34 +41,24 @@ foreach(var propertyClass in classes)
 
 #>
 @class <#=prefix + entity.Name#>Operations;
-@class <#=prefix + entity.Name#>Fetcher;
 
 #import <core/core.h>
 #import "<#=prefix#>Models.h"
 
 <#=writer.GetHeaderDoc(entityName)#>
-@protocol <#=entityName#>Protocol<MSOrcEntityFetcher>
-
-@optional
-
-- (void) readWithCallback:(void (^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
-- (<#=prefix + entity.Name#>Fetcher *)addCustomParametersWithName:(NSString *)name value:(id)value;
-- (<#=prefix + entity.Name#>Fetcher *)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
-- (<#=prefix + entity.Name#>Fetcher *)select:(NSString *)params;
-- (<#=prefix + entity.Name#>Fetcher *)expand:(NSString *)value;
-
-@required
-
-@property (copy, nonatomic, readonly) <#=prefix + entity.Name#>Operations *operations;
-
-@end
 
 @interface <#=entityName#> : <#=extends#>
 
+@property (copy, nonatomic, readonly) <#=prefix + entity.Name#>Operations *operations;
+
 - (instancetype)initWithUrl:(NSString*)urlComponent parent:(id<MSOrcExecutable>)parent;
+- (void) readWithCallback:(void (^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
 - (void)update:(<#=prefix + entity.Name#> *)<#=entity.Name.ToLowerFirstChar()#> callback:(void(^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
 - (void)delete:(void(^)(int status, MSOrcError *error))callback;
-
+- (<#=entityName#> *)addCustomParametersWithName:(NSString *)name value:(id)value;
+- (<#=entityName#> *)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
+- (<#=entityName#> *)select:(NSString *)params;
+- (<#=entityName#> *)expand:(NSString *)value;
 <#
 		
 foreach(var prop in entity.NavigationProperties())

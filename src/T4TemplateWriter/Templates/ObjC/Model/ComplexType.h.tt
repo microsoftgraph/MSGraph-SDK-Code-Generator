@@ -30,7 +30,6 @@ if(classes.Any()){
 #>
 
 #import <Foundation/Foundation.h>
-#import "<#=prefix + "Protocols.h"#>"
 <#
 	foreach(var imp in imports){
 #>
@@ -58,7 +57,7 @@ foreach(var prop in entity.Properties)
 	{
 		string getterName =  Char.ToLowerInvariant(prop.Name[0]) + prop.Name.Substring(1);
 		string setterName =  Char.ToUpperInvariant(prop.Name[0]) + prop.Name.Substring(1);
-		var propertyType = prop.IsComplex() ? string.Format("(retain, nonatomic, readwrite, getter={0}, setter=set{1}:) ", getterName, setterName) 
+		var propertyType = prop.IsComplex() ? string.Format("(copy, nonatomic, readwrite, getter={0}, setter=set{1}:) ", getterName, setterName) 
 		: string.Format("(nonatomic, getter={0}, setter=set{1}:) ", getterName, setterName);
 #>
 @property <#=propertyType + prop.ToPropertyString()#>;

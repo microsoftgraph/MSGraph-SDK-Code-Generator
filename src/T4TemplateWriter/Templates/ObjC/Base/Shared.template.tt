@@ -4,5 +4,4 @@ OdcmModel model           = host.CurrentModel;
 CodeWriterObjC writer     = (CodeWriterObjC) host.CodeWriter;
 String prefix             = writer.GetPrefix();
 #>
-
 <#=writer.WriteHeader()#>

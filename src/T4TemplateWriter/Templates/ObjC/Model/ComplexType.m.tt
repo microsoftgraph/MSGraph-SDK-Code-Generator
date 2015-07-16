@@ -24,11 +24,20 @@ foreach(var prop in entity.Properties)
 	if (self = [super init]) {
 
 		_odataType = @"#<#=model.GetNamespace()#>.<#=entity.Name#>";
+<#
+foreach(var prop in entity.Properties) {
+	
+	if(prop.IsCollection){
+#>
+		_<#=writer.GetName(prop.GetToLowerFirstCharName())#>  = [[NSMutableArray alloc] initWithCollectionType:@"<#=writer.GetPrefix() + prop.Type.Name#>"];
+<#
+	}
+}
+#>
 	}
 
 	return self;
 }
-
 <#
 foreach(var prop in entity.Properties)
 {
@@ -48,7 +57,7 @@ foreach(var prop in entity.Properties)
 	if ([value isEqualToString:@"<#=value#>"]) {
 
 		_<#=writer.GetName(prop.GetToLowerFirstCharName())#> = <#=writer.GetPrefix() + "_" + prop.Type.Name + "_" + value#>;
-        [self valueChanged:<#=prefix + "_" + prop.Type.Name + "_" + value#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
+        [self valueChangedForInt:<#=prefix + "_" + prop.Type.Name + "_" + value#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
 	}
 <#
 		}
@@ -59,25 +68,24 @@ foreach(var prop in entity.Properties)
     string setterName =  Char.ToUpperInvariant(prop.Name[0]) + prop.Name.Substring(1);
     #>
 
-    - (void)set<#=setterName#>:(<#=prop.ToSetterTypeString()#>)  <#=writer.GetName(prop.GetToLowerFirstCharName())#>;
-      {
-        _<#=writer.GetName(prop.GetToLowerFirstCharName())#> =  <#=writer.GetName(prop.GetToLowerFirstCharName())#>;
-        <#
-     if(prop.Type.Name == "Int32" || prop.Type.Name == "Int64" ){
- #>
-     [self valueChangedForInt:<#=writer.GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
- <#
-     }else if(prop.Type.Name == "Boolean"){
- #>
-     [self valueChangedForBool:<#=writer.GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
- <#
-     }else{
- #>
-      [self valueChanged:<#=writer.GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
- <#
-     }
- #>
-      }
+- (void)set<#=setterName#>:(<#=prop.ToSetterTypeString()#>) <#=writer.GetName(prop.GetToLowerFirstCharName())#> {
+    _<#=writer.GetName(prop.GetToLowerFirstCharName())#> = <#=writer.GetName(prop.GetToLowerFirstCharName())#>;
+<#
+    if(prop.Type.Name == "Int32" || prop.Type.Name == "Int64" ){
+#>
+    [self valueChangedForInt:<#=writer.GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
+<#
+    }else if(prop.Type.Name == "Boolean"){
+#>
+    [self valueChangedForBool:<#=writer.GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
+<#
+    }else{
+#>
+	[self valueChanged:<#=writer.GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
+<#
+    }
+#>
+}
     <#
     }
 }

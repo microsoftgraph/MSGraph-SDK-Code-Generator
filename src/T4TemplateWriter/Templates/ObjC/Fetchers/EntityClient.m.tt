@@ -4,7 +4,6 @@
 <#
 var entityName = prefix  + "Client";
 #>
-
 #import "<#=prefix#>Fetchers.h"
 
 <#=writer.GetImplementationDoc(prefix + "Client")#>

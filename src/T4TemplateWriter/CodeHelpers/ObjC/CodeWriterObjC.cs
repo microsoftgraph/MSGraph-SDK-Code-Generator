@@ -248,11 +248,11 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
                 if (param == "With") {
                     param += string.Format("{0}:({2}{3}){1} ", char.ToUpper(p.Name[0]) + p.Name.Substring(1)
                                         , p.Name.ToLowerFirstChar(),
-                                        (p.IsCollection ? string.Format((p.Type.IsSystem() ? "NSArray" : "NSArray<{0}>"), p.Type.GetFullType()) : p.Type.GetFullType())
+                                        (p.IsCollection ?  "NSArray": p.Type.GetFullType())
                                         , (p.Type.IsComplex() ? " *" : ""));
                 } else {
                     param += string.Format("{0}:({1} {2}){0} ", p.Name.ToLowerFirstChar(),
-                    (p.IsCollection ? string.Format((p.Type.IsSystem() ? "NSArray" : "NSArray<{0}>"), p.Type.GetFullType()) : p.Type.GetFullType())
+                    (p.IsCollection ?"NSArray" : p.Type.GetFullType())
                     , (p.Type.IsComplex() ? "*" : ""));
                 }
             }
@@ -272,11 +272,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
         public string GetTypeForAction(OdcmMethod action) {
             if (action.ReturnType.IsComplex()) {
                 if (action.IsCollection) {
-                    if (action.ReturnType.IsSystem()) {
-                        return "NSMutableArray *";
-                    } else {
-                        return "NSMutableArra<" + action.ReturnType.GetTypeString() + "> *";
-                    }
+                        return "NSArray *";
                 }
                 return action.ReturnType.IsSystem() ? action.ReturnType.GetTypeString() : action.ReturnType.GetTypeString() + " *";
             }
@@ -297,9 +293,9 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
         }
 
         public string GetName(string name) {
-            if (name.Trim() == "description") return "$$__description";
-            if (name.Trim() == "default") return "$$__default";
-            if (name.Trim() == "self") return "$$__self";
+            if (name.Trim() == "description") return "$$__$$description";
+            if (name.Trim() == "default") return "$$__$$default";
+            if (name.Trim() == "self") return "$$__$$self";
             return name;
         }
     }

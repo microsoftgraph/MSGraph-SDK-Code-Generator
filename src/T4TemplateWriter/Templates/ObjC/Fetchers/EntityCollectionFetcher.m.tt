@@ -5,7 +5,6 @@
 var entity = host.CurrentType.AsOdcmClass();
 var entityName = prefix + entity.Name + "CollectionFetcher";
 #>
-
 #import "<#=prefix#>Fetchers.h"
 
 <#=writer.GetImplementationDoc(entityName)#>
@@ -27,6 +26,60 @@ var entityName = prefix + entity.Name + "CollectionFetcher";
 - (<#=prefix + entity.Name#>Fetcher *)getById:(NSString *)id {
 
     return [[<#=prefix + entity.Name#>Fetcher alloc] initWithUrl:[[NSString alloc] initWithFormat:@"('%@')" ,id] parent:self];
+}
+
+- (<#=entityName#> *)select:(NSString *)params {
+    [super select:params];
+    
+    return self;
+}
+
+- (<#=entityName#> *)filter:(NSString *)params{
+    [super filter:params];
+    
+    return self;
+}
+
+- (<#=entityName#> *)search:(NSString *)params {
+    [super search:params];
+    
+    return self;
+}
+
+- (<#=entityName#> *)top:(int)value {
+    [super top:value];
+    
+    return self;
+}
+
+- (<#=entityName#> *)skip:(int)value {
+    [super skip:value];
+    
+    return self;
+}
+
+- (<#=entityName#> *)expand:(NSString *)value {
+    [super expand:value];
+    
+    return self;
+}
+
+- (<#=entityName#> *)orderBy:(NSString *)params {
+    [super orderBy:params];
+    
+    return self;
+}
+
+- (<#=entityName#> *)addCustomParametersWithName:(NSString *)name value:(id)value {
+    [super addCustomParametersWithName:name value:value];
+    
+    return self;
+}
+
+- (<#=entityName#> *)addCustomHeaderWithName:(NSString *)name value:(NSString *)value {
+    [super addCustomHeaderWithName:name value:value];
+    
+    return self;
 }
 
 @end

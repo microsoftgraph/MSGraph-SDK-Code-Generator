@@ -8,8 +8,7 @@ var entityName = prefix + entity.Name + "Operations";
 string baseEntity = entity.Base == null ? "MSOrcOperations" 
 					  : prefix + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) + "Operations";
 
-#>
-					  		
+#>				  		
 #import <core/core.h>
 #import "<#=prefix#>Models.h"
 <#if(entity.Base != null){

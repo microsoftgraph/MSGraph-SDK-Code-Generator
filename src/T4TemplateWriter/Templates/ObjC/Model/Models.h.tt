@@ -1,6 +1,8 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="Shared.template.tt"#>
 
+#import "NSArray+Extension.h"
+
 <#
 
 		

@@ -8,7 +8,6 @@ foreach(var et in entityTypes)
 {
 
 #>
-
 #import "<#=prefix + et.Name #>CollectionFetcher.h"
 #import "<#=prefix + et.Name #>CollectionOperations.h"
 #import "<#=prefix + et.Name #>Fetcher.h"

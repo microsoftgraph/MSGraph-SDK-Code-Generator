@@ -18,7 +18,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
         public static ICollection<string> ReservedNames {
             get {
                 return new HashSet<string> {
-                    "description", "default"   
+                    "description", "default"  , "self" 
                 };
             }
         }
@@ -80,14 +80,10 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
         }
 
 		public static string GetFullType(this OdcmProperty property) {
-			string result;
 			if (property.IsCollection)
-				result = !property.IsSystem() && property.Type.GetTypeString() != "NSData" ?
-                    string.Format("NSMutableArray<{0}>", property.Type.GetFullType()) : "NSMutableArray";
+				return  "NSMutableArray";
 			else
-                result = property.Type.GetTypeString();
-
-			return result;
+                return property.Type.GetTypeString();
 		}
 
 		public static string GetFullType(this OdcmType type)

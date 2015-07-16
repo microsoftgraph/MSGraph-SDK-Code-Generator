@@ -2,22 +2,21 @@
 <#@ include file="Shared.template.tt"#>
 
 <#
-var entity     = host.CurrentType.AsOdcmClass();
+var entity = host.CurrentType.AsOdcmClass();
 var entityName = prefix + entity.Name + "CollectionFetcher";
 #>
-
 @class <#=prefix + entity.Name#>Fetcher;
-@class <#=prefix + entity.Name#>CollectionFetcher;
 
 #import <core/core.h>
 #import "<#=prefix#>Models.h"
 
 <#=writer.GetHeaderDoc(entityName)#>
-@protocol <#=entityName#>Protocol <MSOrcCollectionFetcher>
+@interface <#=entityName#> : MSOrcCollectionFetcher
 
-@optional
+- (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSOrcExecutable>)parent;
 
-- (void)readWithCallback:(void (^)(NSArray<<#=prefix + entity.Name#>> *<#=entity.Name.ToLowerFirstChar()#>s, MSOrcError *error))callback;
+- (<#=prefix + entity.Name#>Fetcher *)getById:(NSString *)Id;
+- (void)add:(<#=prefix + entity.Name#> *)entity callback:(void (^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
 
 - (<#=prefix + entity.Name#>CollectionFetcher *)select:(NSString *)params;
 - (<#=prefix + entity.Name#>CollectionFetcher *)filter:(NSString *)params;
@@ -28,17 +27,5 @@ var entityName = prefix + entity.Name + "CollectionFetcher";
 - (<#=prefix + entity.Name#>CollectionFetcher *)orderBy:(NSString *)params;
 - (<#=prefix + entity.Name#>CollectionFetcher *)addCustomParametersWithName:(NSString *)name value:(id)value;
 - (<#=prefix + entity.Name#>CollectionFetcher *)addCustomHeaderWithName:(NSString *)name value:(NSString *)value;
-
-@required
-
-- (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSOrcExecutable>)parent;
-- (<#=prefix + entity.Name#>Fetcher *)getById:(NSString *)Id;
-- (void)add:(<#=prefix + entity.Name#> *)entity callback:(void (^)(<#=prefix + entity.Name#> *<#=entity.Name.ToLowerFirstChar()#>, MSOrcError *error))callback;
-
-@end
-
-@interface <#=entityName#> : MSOrcCollectionFetcher<<#=entityName#>Protocol>
-
-- (instancetype)initWithUrl:(NSString *)urlComponent parent:(id<MSOrcExecutable>)parent;
 
 @end

@@ -9,7 +9,6 @@ string baseEntity = entity.Base == null ? "MSOrcOperations"
 					  : prefix + entity.Base.Name.Substring(entity.Base.Name.LastIndexOf(".") +1) 
 					  + "CollectionOperations" ;
 #>
-
 #import <core/core.h>
 #import "<#=prefix#>Models.h"
 <#

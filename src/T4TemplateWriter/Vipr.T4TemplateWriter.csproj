@@ -107,9 +107,6 @@
     <None Include="Templates\ObjC\Model\Models.h.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\ObjC\Model\Protocols.h.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Templates\ObjC\Model\ComplexType.m.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
