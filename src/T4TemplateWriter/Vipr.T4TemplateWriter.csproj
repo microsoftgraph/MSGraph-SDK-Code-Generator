@@ -38,15 +38,9 @@
     <Reference Include="Mono.TextTemplating">
       <HintPath>..\..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
     </Reference>
-    
-    <Reference Include="Vipr.Core">
-      <HintPath>bin\debug\Vipr.Core.dll</HintPath> 
-    </Reference>
-
     <Reference Include="Vipr">
- <HintPath>bin\debug\Vipr.exe</HintPath>
+      <HintPath>bin\debug\Vipr.exe</HintPath>
     </Reference>
-
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -183,24 +177,29 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-
   <PropertyGroup Condition=" '$(OS)' == 'Windows_NT'">
     <PreBuildEvent>
 	cd "$(SolutionDir)\submodules\vipr"
 	"$(MSBuildBinPath)\msbuild.exe" /p:Configuration=Debug;OutDir=$(TargetDir);Platform="Any CPU" /t:Clean;Rebuild "Vipr.sln"
     </PreBuildEvent>
   </PropertyGroup>
-
-  
-
   <PropertyGroup Condition=" '$(OS)' != 'Windows_NT'">
     <PreBuildEvent>
         cd "$(SolutionDir)submodules/vipr"
         xbuild /property:Configuration=Debug /property:OutDir=$(TargetDir) /property:Platform="Any CPU" /target:Rebuild "Vipr.sln"
     </PreBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>cd "$(SolutionDir)\submodules\vipr"
+copy /y "$(SolutionDir)\vipr.NuGet.targets.patch" "$(SolutionDir)\submodules\vipr\.nuget\NuGet.targets"
+.nuget\nuget.exe update "$(SolutionPath)"
+"$(MSBuildBinPath)\msbuild.exe" /p:Configuration=Debug;Platform="Any CPU" /t:Clean;Rebuild "Vipr.sln"
+copy "$(SolutionDir)\submodules\vipr\src\Core\Vipr\bin\Debug\*.exe" $(TargetPath)
+copy "$(SolutionDir)\submodules\vipr\src\Core\Vipr\bin\Debug\*.dll" $(TargetPath)
+copy "$(SolutionDir)\submodules\vipr\src\Core\Vipr\bin\Debug\*.pdb" $(TargetPath)
 
-  
+</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
