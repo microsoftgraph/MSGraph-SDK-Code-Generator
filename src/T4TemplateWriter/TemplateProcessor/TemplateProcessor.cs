@@ -31,11 +31,12 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         Other,
         Unknown
     }
-
+ 
     public class TemplateProcessor : ITemplateProcessor
     {
 
         private static CustomT4Host _host;
+
         protected static CustomT4Host Host(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel)
         {
             if (_host == null)
@@ -50,38 +51,33 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return _host;
         }
 
-        protected Dictionary<FileType, Func<TemplateFileInfo, IEnumerable<TextFile>>> _subProcessors;
-        protected Dictionary<FileType, Func<TemplateFileInfo, IEnumerable<TextFile>>> SubProcessors
+        private Dictionary<SubProcessorType, Func<TemplateFileInfo, IEnumerable<TextFile>>> subProcessors;
+
+        protected Dictionary<SubProcessorType, Func<TemplateFileInfo, IEnumerable<TextFile>>> SubProcessors
         {
             get
             {
-                if (null == _subProcessors)
+                if (this.subProcessors == null)
                 {
                     InitializeSubprocessors();
                 }
-                return _subProcessors;
+                return this.subProcessors;
             }
         }
 
         protected void InitializeSubprocessors()
         {
-            _subProcessors = new Dictionary<FileType, Func<TemplateFileInfo, IEnumerable<TextFile>>>() {             
+            this.subProcessors = new Dictionary<SubProcessorType, Func<TemplateFileInfo, IEnumerable<TextFile>>>() {             
                 // Models
-                {FileType.EntityType,                   ProcessEntityTypes},
-                {FileType.ComplexType,                  ProcessComplexTypes},
-                {FileType.EnumType,                     ProcessEnumTypes},
-               
-                // Fetchers
-                {FileType.EntityCollectionFetcher,      ProcessEntityTypes},
-                {FileType.EntityCollectionOperations,   ProcessEntityTypes},
-                {FileType.EntityFetcher,                ProcessEntityTypes},
-                {FileType.EntityOperations,             ProcessEntityTypes},
+                {SubProcessorType.EntityType,                   ProcessEntityTypes},
+                {SubProcessorType.ComplexType,                  ProcessComplexTypes},
+                {SubProcessorType.EnumType,                     ProcessEnumTypes},
 
                 // EntityContainer
-                {FileType.EntityClient,                 ProcessEntityContainerType},
+                {SubProcessorType.EntityContainer,                 ProcessEntityContainerType},
 
                 // Other
-                {FileType.Other,                        ProcessTemplate},
+                {SubProcessorType.Other,                        ProcessTemplate},
             };
         }
 
@@ -90,30 +86,26 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         protected IPathWriter PathWriter { get; set; }
         protected String TemplatesDirectory { get; set; }
 
-        public TemplateProcessor(IPathWriter pathWriter, OdcmModel odcmModel, String templatesDirectory)
+        private ITemplateMapping mapping;
+
+        public TemplateProcessor(IPathWriter pathWriter, OdcmModel odcmModel, String templatesDirectory, ITemplateMapping mapping)
         {
             this.T4Engine = new Microsoft.VisualStudio.TextTemplating.Engine();
             this.CurrentModel = odcmModel;
             this.PathWriter = pathWriter;
             this.PathWriter.Model = odcmModel;
             this.TemplatesDirectory = templatesDirectory;
+            this.mapping = mapping;
         }
 
         public IEnumerable<TextFile> Process(TemplateFileInfo templateInfo)
         {
-            FileType fileType;
-            Func<TemplateFileInfo, IEnumerable<TextFile>> subProcessor;
 
-            Boolean valid = Enum.TryParse(templateInfo.TemplateBaseName, true, out fileType);
+            SubProcessorType subProcessorType = this.mapping.GetSubProcessorType(templateInfo.TemplateBaseName);
+            Func<TemplateFileInfo, IEnumerable<TextFile>> subProcessor = ProcessTemplate;
 
-            if (valid)
-            {
-                SubProcessors.TryGetValue(fileType, out subProcessor);
-            }
-            else
-            {
-                SubProcessors.TryGetValue(FileType.Other, out subProcessor);
-            }
+            SubProcessors.TryGetValue(subProcessorType, out subProcessor);
+
             return subProcessor(templateInfo);
         }
 

@@ -66,6 +66,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ConfigurationService.cs" />
     <Compile Include="Settings\TemplateWriterSettings.cs" />
+    <Compile Include="TemplateProcessor\ITemplateMapping.cs" />
+    <Compile Include="TemplateProcessor\TemplateMapping.cs" />
     <Compile Include="TemplateProcessor\TemplateProcessor.cs" />
     <Compile Include="TemplateProcessor\ITemplateProcessor.cs" />
     <Compile Include="TemplateProcessor\ITemplateInfo.cs" />

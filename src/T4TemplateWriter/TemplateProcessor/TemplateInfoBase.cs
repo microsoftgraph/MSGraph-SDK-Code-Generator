@@ -46,7 +46,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         public override string ToString()
         {
             var dirSep = Path.DirectorySeparatorChar;
-            return (this.TemplateLanguage + dirSep + this.TemplateType.ToString() + dirSep + this.TemplateName.ToString());
+            return (this.TemplateLanguage + dirSep + this.TemplateName + dirSep + this.TemplateName);
         }
     }
 }

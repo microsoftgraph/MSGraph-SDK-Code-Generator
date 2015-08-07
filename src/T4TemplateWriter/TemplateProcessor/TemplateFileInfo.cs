@@ -11,11 +11,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
     {
         public override String Id { get { return this.FullPath; } }
 
-        public override TemplateType TemplateType { get; set; }
-
         public override String TemplateName { get; set; }
 
         public override String TemplateLanguage { get; set; }
+
+        public override TemplateType TemplateType { get; set; }
 
         public String TemplateBaseName { get; set; }
 
@@ -23,7 +23,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         public String FileExtension { get; set; }
 
-        public TemplateFileInfo(String fullPath)
+        public TemplateFileInfo(String fullPath, ITemplateMapping templateMapping=null)
         {
             this.FullPath = fullPath;
 
@@ -41,17 +41,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             this.TemplateLanguage = grandparentName;
 
-            TemplateType parsed;
-            Boolean valid = Enum.TryParse(parentName, true, out parsed);
-
-            if (valid)
+            if (templateMapping != null)
             {
-                this.TemplateType = parsed;
-            }
-            else
-            {
-                Console.WriteLine("Unknown template type. Recognized types are Base, Fetcher, Model, and Other.");
-                this.TemplateType = TemplateType.Unknown;
+                this.TemplateType = templateMapping.GetTemplateType(this.TemplateName);
             }
 
         }

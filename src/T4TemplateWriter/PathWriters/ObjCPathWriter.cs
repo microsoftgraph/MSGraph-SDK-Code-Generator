@@ -21,7 +21,7 @@ namespace Vipr.T4TemplateWriter.Output
             String containerName = entityTypeName == this.Model.EntityContainer.Name ? String.Empty : this.Model.EntityContainer.Name;
 
             return Path.Combine(
-                template.TemplateType.ToString(), 
+                template.TemplateName, 
                 String.Format("{0}{1}{2}",
                     prefix,
                     containerName,
@@ -34,9 +34,12 @@ namespace Vipr.T4TemplateWriter.Output
         {
             string result;
 
-            if (template.TemplateName.Contains("Entity") && (template.TemplateType == TemplateType.Fetchers)) {
+            if (template.TemplateName.Contains("Entity") && template.TemplateName.Contains("Fetcher"))
+            {
                 result = template.TemplateName.Replace("Entity", entityTypeName);
-            } else {
+            } 
+            else 
+            {
                 result = String.Format("{0}.{1}", entityTypeName, template.FileExtension);
             }
 

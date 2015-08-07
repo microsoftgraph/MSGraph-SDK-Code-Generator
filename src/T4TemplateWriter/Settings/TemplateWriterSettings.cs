@@ -18,6 +18,7 @@ namespace Vipr.T4TemplateWriter.Settings
             InitializeCollections = true;
             TargetLanguage = "Java";
             NamespaceOverride = "com.microsoft.services.onenote";
+            TemplateMapping = new Dictionary<string, Dictionary<string, string>>();
         }
 
         /// <summary>
@@ -29,6 +30,8 @@ namespace Vipr.T4TemplateWriter.Settings
         /// The code language to be targeted by this templateInfo writer instance.
         /// </summary>
         public string TargetLanguage { get; set; }
+
+        public Dictionary<string, Dictionary<string, string>> TemplateMapping { get; set; }
 
         public IList<string> Plugins { get; set; }
 

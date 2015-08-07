@@ -50,17 +50,18 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         IEnumerable<TextFile> ProcessTemplates()
         {
-            IEnumerable<TemplateFileInfo> allTemplates = Utilities.ReadTemplateFiles(this.TemplatesDirectory).ToList();
+            var templateMapping = new TemplateMapping(ConfigurationService.Settings.TemplateMapping);
+            IEnumerable<TemplateFileInfo> allTemplates = Utilities.ReadTemplateFiles(this.TemplatesDirectory, templateMapping).ToList();
 
             IEnumerable<TemplateFileInfo> runnableTemplates =
-                allTemplates.Where(templateInfo => templateInfo.TemplateType != TemplateType.Base);
+                allTemplates.Where(templateInfo => !templateInfo.TemplateName.Contains("Shared"));
 
             // Initialize processor.
             String pathWriterClassName = String.Format(PathWriterClassNameFormatString,
                 ConfigurationService.Settings.TargetLanguage);
             var type = Type.GetType(pathWriterClassName);
             IPathWriter pathWriterInstance = (IPathWriter)Activator.CreateInstance(type);
-            this.Processor = new TemplateProcessor(pathWriterInstance, this.CurrentModel, this.TemplatesDirectory);
+            this.Processor = new TemplateProcessor(pathWriterInstance, this.CurrentModel, this.TemplatesDirectory, templateMapping);
 
             foreach (TemplateFileInfo runnableTemplate in runnableTemplates)
             {

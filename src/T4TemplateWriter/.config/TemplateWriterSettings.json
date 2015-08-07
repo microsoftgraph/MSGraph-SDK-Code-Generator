@@ -2,9 +2,20 @@
     "AvailableLanguages": [ "Java", "ObjC" ],
     "TargetLanguage": "ObjC",
     "Plugins": [ ],
-    "PrimaryNamespaceName": "Microsoft.FileServices",
+    "PrimaryNamespaceName": "oneDrive",
     "NamespacePrefix": "MS",
     "InitializeCollections": "false",
     "AllowShortActions": "false",
-    "NamespaceOverride": "com.microsoft.onenote.services"
+    "NamespaceOverride": "com.microsoft.onenote.services",
+    "TemplateMapping": {
+        "EntityType": { "SubProcessor": "EntityType", "Type": "Model" },
+        "ComplexType": { "SubProcessor": "ComplexType", "Type": "Model" },
+        "EnumType": { "SubProcessor": "EnumType", "Type": "Model" },
+        "EntityClient": { "SubProcessor": "EntityContainer", "Type": "Client" },
+        "EntityFetcher": { "SubProcessor": "EntityType", "Type": "Request" },
+        "EntityCollectionFetcher": { "SubProcessor": "EntityType", "Type": "Request" },
+        "EntityCollectionOperations": { "SubProcessor": "EntityType", "Type": "Request" },
+        "EntityOperations": { "SubProcessor": "EntityType", "Type": "Request" }
+    }
+
 }

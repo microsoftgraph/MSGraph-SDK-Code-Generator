@@ -28,7 +28,7 @@ namespace Vipr.T4TemplateWriter.Output
         {
             String result;
 
-            if (template.TemplateType == TemplateType.Fetchers)
+            if (template.TemplateName.Contains("Fetcher"))
             {
                 result = template.TemplateName.Replace("Entity", entityTypeName);
             }
@@ -44,7 +44,7 @@ namespace Vipr.T4TemplateWriter.Output
         {
             return Path.Combine(
                 template.TemplateLanguage,
-                template.TemplateType.ToString(),
+                template.TemplateName,
                 this.TransformFileName(template, entityTypeName)
             );
         }

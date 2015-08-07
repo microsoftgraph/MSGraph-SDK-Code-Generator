@@ -11,11 +11,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
     public static class Utilities
     {
 
-        public static IEnumerable<TemplateFileInfo> ReadTemplateFiles(String rootPath)
+        public static IEnumerable<TemplateFileInfo> ReadTemplateFiles(String rootPath, ITemplateMapping templateMapping)
         {
             foreach (String path in (Directory.EnumerateFiles(Path.Combine(rootPath, ConfigurationService.Settings.TargetLanguage), "*", SearchOption.AllDirectories)))
             {
-                yield return new TemplateFileInfo(path);
+                yield return new TemplateFileInfo(path, type:templateMapping.GetTemplateType();
             }
         }
 

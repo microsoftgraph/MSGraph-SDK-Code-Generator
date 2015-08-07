@@ -16,7 +16,7 @@ namespace Vipr.T4TemplateWriter.Output
 
         public override String WritePath(TemplateFileInfo template, String entityTypeName)
         {
-            var theNamespace = CreateNamespace(template.TemplateType.ToString().ToLower());
+            var theNamespace = CreateNamespace(template.TemplateName.ToLower());
             var namespacePath = CreatePathFromNamespace(theNamespace);
             var fileName = TransformFileName(template, entityTypeName);
             String filePath = Path.Combine(namespacePath, fileName);
