@@ -43,7 +43,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             if (templateMapping != null)
             {
-                this.TemplateType = templateMapping.GetTemplateType(this.TemplateName);
+                this.TemplateType = templateMapping.GetTemplateType(this.TemplateBaseName);
             }
 
         }

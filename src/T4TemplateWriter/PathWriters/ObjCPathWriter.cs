@@ -30,20 +30,5 @@ namespace Vipr.T4TemplateWriter.Output
             );
         }
 
-        protected override String TransformFileName(TemplateFileInfo template, String entityTypeName)
-        {
-            string result;
-
-            if (template.TemplateName.Contains("Entity") && template.TemplateName.Contains("Fetcher"))
-            {
-                result = template.TemplateName.Replace("Entity", entityTypeName);
-            } 
-            else 
-            {
-                result = String.Format("{0}.{1}", entityTypeName, template.FileExtension);
-            }
-
-            return result;
-        }
     }
 }

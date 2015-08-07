@@ -54,7 +54,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             IEnumerable<TemplateFileInfo> allTemplates = Utilities.ReadTemplateFiles(this.TemplatesDirectory, templateMapping).ToList();
 
             IEnumerable<TemplateFileInfo> runnableTemplates =
-                allTemplates.Where(templateInfo => !templateInfo.TemplateName.Contains("Shared"));
+                allTemplates.Where(templateInfo => templateInfo.TemplateType != TemplateType.Shared);
 
             // Initialize processor.
             String pathWriterClassName = String.Format(PathWriterClassNameFormatString,

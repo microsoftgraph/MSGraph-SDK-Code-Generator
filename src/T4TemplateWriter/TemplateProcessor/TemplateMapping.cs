@@ -26,23 +26,33 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         private TEnum GetEnum<TEnum>(string templateName, string key, TEnum defaultValue) where TEnum : struct
         {
-            TEnum type = defaultValue;
-            TryGetValue<TEnum>(templateName, key, type);
+            TEnum type;
+            if (!TryGetValue<TEnum>(templateName, key, out type))
+            {
+                type = defaultValue;
+            }
             return type;
         }
 
         private bool TryGetValue<TEnum>(string templateName, string key, out TEnum type) where TEnum : struct  
         {
-            TEnum originalType = type;
+            bool success = false;
+            type = default(TEnum);
             Dictionary<string, string> templateDictionary;
             this.mapping.TryGetValue(templateName, out templateDictionary);
             if (templateDictionary!= null)
             {
+
+                TEnum outType = default(TEnum);
                 string enumType;
-                templateDictionary.TryGetValue(key, enumType);
-                Enum.TryParse(subProcessorType, out type);
+                templateDictionary.TryGetValue(key, out enumType);
+                success = Enum.TryParse(enumType, out outType);
+                if (success)
+                {
+                    type = outType;
+                }
             }
+            return success;
         }
-        return type != originalType;
     }
 }

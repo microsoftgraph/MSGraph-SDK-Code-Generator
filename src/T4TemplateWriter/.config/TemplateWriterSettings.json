@@ -15,7 +15,8 @@
         "EntityFetcher": { "SubProcessor": "EntityType", "Type": "Request" },
         "EntityCollectionFetcher": { "SubProcessor": "EntityType", "Type": "Request" },
         "EntityCollectionOperations": { "SubProcessor": "EntityType", "Type": "Request" },
-        "EntityOperations": { "SubProcessor": "EntityType", "Type": "Request" }
+        "EntityOperations": { "SubProcessor": "EntityType", "Type": "Request" },
+        "Shared" : {"SubProcessor" :  "Other", "Type" : "Shared"}
     }
 
 }

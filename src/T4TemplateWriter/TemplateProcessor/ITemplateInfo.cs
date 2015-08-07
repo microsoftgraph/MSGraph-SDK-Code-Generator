@@ -6,6 +6,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         Model,
         Request,
         Client,
+        Shared,
         Other
     }
     interface ITemplateInfo
