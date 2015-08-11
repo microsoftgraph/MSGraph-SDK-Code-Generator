@@ -11,19 +11,25 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
     public static class Utilities
     {
 
-        public static IEnumerable<TemplateFileInfo> ReadTemplateFiles(String rootPath, ITemplateMapping templateMapping = null)
+        /// <summary>
+        /// Reads the templates and generates an IEnumerable of TemplateFileInfos.  If 
+        /// </summary>
+        /// <param name="rootPath"></param>
+        /// <param name="templateMapping"></param>
+        /// <returns></returns>
+        public static IEnumerable<ITemplateInfo> ReadTemplateFiles(String rootPath, ITemplateConfiguration tempalteConfig)
         {
             foreach (String path in (Directory.EnumerateFiles(Path.Combine(rootPath, ConfigurationService.Settings.TargetLanguage), "*", SearchOption.AllDirectories)))
             {
-                yield return new TemplateFileInfo(path, templateMapping: templateMapping);
+                yield return tempalteConfig.CreateTemplateInfo(path);//new TemplateFileInfo(path, templateConfig: tempalteConfig);
             }
         }
 
-        public static IEnumerable<TemplateFileInfo> CopyAndReadTemplateFiles(String rootPath)
+        public static IEnumerable<ITemplateInfo> CopyAndReadTemplateFiles(String rootPath, ITemplateConfiguration templateConfig)
         {
             String tempPath = Path.Combine(Path.GetTempPath() + Guid.NewGuid().ToString("D"));
             CopyHelper.CopyDirectoryR(rootPath, tempPath);
-            return ReadTemplateFiles(tempPath);
+            return ReadTemplateFiles(tempPath, templateConfig);
         }
 
         class CopyHelper

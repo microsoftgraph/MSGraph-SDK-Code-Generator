@@ -14,11 +14,11 @@ namespace Vipr.T4TemplateWriter.Output
     public class JavaPathWriter : PathWriterBase
     {
 
-        public override String WritePath(TemplateFileInfo template, String entityTypeName)
+        public override string WritePath(ITemplateInfo template, String baseFileName)
         {
             var theNamespace = CreateNamespace(template.TemplateName.ToLower());
             var namespacePath = CreatePathFromNamespace(theNamespace);
-            var fileName = TransformFileName(template, entityTypeName);
+            var fileName = TransformFileName(template, baseFileName);
             String filePath = Path.Combine(namespacePath, fileName);
             return filePath;
         }

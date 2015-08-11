@@ -61,17 +61,21 @@ namespace Vipr.T4TemplateWriter
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
         {
-            return odcmClass.Properties.WhereIsNavigation();
+            return odcmClass.Properties.Where(prop => prop.IsNavigation());
         }
 
-        public static IEnumerable<OdcmProperty> WhereIsNavigation(this IEnumerable<OdcmProperty> odcmProperties,
-            bool isNavigation = true)
+        public static bool IsNavigation(this OdcmProperty property)
         {
-            return odcmProperties.Where(p => isNavigation == (p.Type is OdcmClass
-                                                             && ((((OdcmClass)p.Type).Kind == OdcmClassKind.Entity)
-                                                              || (((OdcmClass)p.Type).Kind == OdcmClassKind.MediaEntity))));
-        }
 
+            bool isNavigationProperty = false;
+            var classType = property.Type as OdcmClass;
+            if (classType != null)
+            {
+                isNavigationProperty = classType.Kind == OdcmClassKind.Entity
+                                     || classType.Kind == OdcmClassKind.MediaEntity;
+            }
+            return isNavigationProperty;
+        }
 
         public static bool HasActions(this OdcmClass odcmClass)
         {

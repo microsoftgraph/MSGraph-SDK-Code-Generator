@@ -66,12 +66,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ConfigurationService.cs" />
     <Compile Include="Settings\TemplateWriterSettings.cs" />
-    <Compile Include="TemplateProcessor\ITemplateMapping.cs" />
-    <Compile Include="TemplateProcessor\TemplateMapping.cs" />
+    <Compile Include="TemplateProcessor\ITemplateConfiguration.cs" />
+    <Compile Include="TemplateProcessor\TemplateConfiguration.cs" />
     <Compile Include="TemplateProcessor\TemplateProcessor.cs" />
     <Compile Include="TemplateProcessor\ITemplateProcessor.cs" />
     <Compile Include="TemplateProcessor\ITemplateInfo.cs" />
-    <Compile Include="TemplateProcessor\TemplateInfoBase.cs" />
     <Compile Include="TemplateProcessor\TemplateWriter.cs" />
     <Compile Include="TemplateProcessor\TemplateFileInfo.cs" />
     <Compile Include="TemplateProcessor\Utilities.cs" />
@@ -80,92 +79,12 @@
     <None Include=".config\TemplateWriterSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\Java\Model\ComplexType.java.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Java\Model\EntityType.java.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Java\Model\EnumType.java.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Java\Fetchers\EntityClient.java.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Java\Fetchers\EntityCollectionOperations.java.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Java\Fetchers\EntityFetcher.java.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Java\Fetchers\EntityOperations.java.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Model\ComplexType.h.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Model\EntityType.h.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Model\EnumType.h.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Model\Models.h.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Model\ComplexType.m.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Model\EntityType.m.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Fetchers\EntityCollectionFetcher.h.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Fetchers\EntityCollectionOperations.h.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Fetchers\EntityFetcher.h.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Fetchers\EntityOperations.h.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Fetchers\EntityClient.h.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Fetchers\EntityCollectionFetcher.m.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Fetchers\EntityCollectionOperations.m.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Fetchers\EntityFetcher.m.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Fetchers\EntityOperations.m.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\ObjC\Fetchers\EntityClient.m.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
-    <None Include="Templates\ObjC\Fetchers\Fetchers.h.tt">
-      <LastGenOutput>Fetchers.h</LastGenOutput>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Templates\Java\Base\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Templates\ObjC\Base\Shared.template.tt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

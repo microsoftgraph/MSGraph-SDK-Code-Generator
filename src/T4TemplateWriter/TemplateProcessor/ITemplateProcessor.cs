@@ -10,6 +10,6 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
     interface ITemplateProcessor
     {
-        IEnumerable<TextFile> Process(TemplateFileInfo template);
+        IEnumerable<TextFile> Process(ITemplateInfo template);
     }
 }

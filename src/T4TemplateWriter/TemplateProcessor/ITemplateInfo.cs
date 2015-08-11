@@ -7,13 +7,25 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         Request,
         Client,
         Shared,
-        Other
+        Other,
+        Unknown
     }
-    interface ITemplateInfo
+
+    public interface ITemplateInfo
     {
+        
         string Id { get; }
         string TemplateLanguage { get; set; }
         string TemplateName { get; set; }
+        TemplateType TemplateType { get; set; }
+        SubProcessorType SubprocessorType { get; set; }
+        string TemplateDirectoryName { get; set; }
+        string TemplateBaseName { get; set; }
+        string FullPath { get; set; }
+        string FileExtension { get; set; }
 
+        bool ShouldIncludeType(string typeName);
+
+        string BaseFileName(string className = "", string propertyName = "", string methodName = "");
     }
 }

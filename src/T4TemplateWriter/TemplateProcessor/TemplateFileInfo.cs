@@ -2,52 +2,101 @@
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.IO;
+
 
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
 
-    public class TemplateFileInfo : Vipr.T4TemplateWriter.TemplateProcessor.TemplateInfoBase
+    public class TemplateFileInfo : ITemplateInfo
     {
-        public override String Id { get { return this.FullPath; } }
+        public string Id { get { return this.FullPath; } }
 
-        public override String TemplateName { get; set; }
+        public string TemplateName { get; set; }
 
-        public override String TemplateLanguage { get; set; }
+        public string TemplateLanguage { get; set; }
 
-        public override TemplateType TemplateType { get; set; }
+        public TemplateType TemplateType { get; set; }
 
-        public String TemplateBaseName { get; set; }
+        public SubProcessorType SubprocessorType { get; set; }
 
-        public String FullPath { get; set; }
+        public string TemplateDirectoryName { get; set; }
 
-        public String FileExtension { get; set; }
+        public string TemplateBaseName { get; set; }
 
-        public TemplateFileInfo(String fullPath, ITemplateMapping templateMapping=null)
+        public string FullPath { get; set; }
+
+        public string NameFormat { get; set; }
+
+        public string FileExtension { get; set; }
+        public IEnumerable<string> IncludedTypes { get; set; }
+
+        public IEnumerable<string> ExcludedTypes { get; set; }
+
+        public bool ShouldIncludeType(string typeName)
         {
-            this.FullPath = fullPath;
-
-            // <rootPath>/<grandparent>/<parent>/<fileName>.<fileExtension>.tt
-            this.TemplateName = Path.GetFileNameWithoutExtension(fullPath);  // <fileName>.<fileExtension>
-            this.FileExtension = Path.GetExtension(this.TemplateName).Substring(1);  // <fileExtension>
-
-            this.TemplateBaseName = Path.GetFileNameWithoutExtension(this.TemplateName); // <fileName>
-
-            String parentPath = Path.GetDirectoryName(fullPath);  // <rootPath>/<grandparent>/<parent>
-            String parentName = Path.GetFileNameWithoutExtension(parentPath);  // <parent>
-
-            String grandparentPath = Path.GetDirectoryName(parentPath);  // <rootPath>/<grandparent>
-            String grandparentName = Path.GetFileNameWithoutExtension(grandparentPath);  // <grandparent>
-
-            this.TemplateLanguage = grandparentName;
-
-            if (templateMapping != null)
+            // Included and excluded are mutually exclusive
+            if (this.IncludedTypes != null)
             {
-                this.TemplateType = templateMapping.GetTemplateType(this.TemplateBaseName);
+                return this.IncludedTypes.Any(type => typeName.Contains(type));
+            }
+            else if (this.ExcludedTypes != null)
+            {
+                return this.ExcludedTypes.All(type => !typeName.Contains(type));
             }
 
+            return true;
         }
 
+        public string BaseFileName(string className= "", string propertyName = "", string methodName = "")
+        {
+            string coreName;
+            if (this.NameFormat != null)
+            {
+                coreName = this.NameFormat.Replace("<Class>", className).Replace("<Property>", propertyName).Replace("<Method>", methodName);
+            }
+            else
+            {
+                coreName = this.TemplateBaseName;
+            }
+            return coreName;
+        }
+
+        virtual protected bool Equals(TemplateFileInfo other)
+        {
+            return (this.Id == other.Id);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((TemplateFileInfo)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
+
+        public static bool operator ==(TemplateFileInfo left, TemplateFileInfo right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(TemplateFileInfo left, TemplateFileInfo right)
+        {
+            return !Equals(left, right);
+        }
+
+        public override string ToString()
+        {
+            var dirSep = Path.DirectorySeparatorChar;
+            return (this.TemplateLanguage + dirSep + this.TemplateName + dirSep + this.TemplateName);
+        }
 
     }
 }

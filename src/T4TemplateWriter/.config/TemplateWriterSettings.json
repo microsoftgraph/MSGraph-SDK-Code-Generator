@@ -3,20 +3,27 @@
     "TargetLanguage": "ObjC",
     "Plugins": [ ],
     "PrimaryNamespaceName": "oneDrive",
-    "NamespacePrefix": "MS",
+    "NamespacePrefix": "OD",
     "InitializeCollections": "false",
     "AllowShortActions": "false",
     "NamespaceOverride": "com.microsoft.onenote.services",
+    "TemplatesDirectory": "..\\..\\..\\..\\Templates",
     "TemplateMapping": {
-        "EntityType": { "SubProcessor": "EntityType", "Type": "Model" },
-        "ComplexType": { "SubProcessor": "ComplexType", "Type": "Model" },
-        "EnumType": { "SubProcessor": "EnumType", "Type": "Model" },
-        "EntityClient": { "SubProcessor": "EntityContainer", "Type": "Client" },
-        "EntityFetcher": { "SubProcessor": "EntityType", "Type": "Request" },
-        "EntityCollectionFetcher": { "SubProcessor": "EntityType", "Type": "Request" },
-        "EntityCollectionOperations": { "SubProcessor": "EntityType", "Type": "Request" },
-        "EntityOperations": { "SubProcessor": "EntityType", "Type": "Request" },
-        "Shared" : {"SubProcessor" :  "Other", "Type" : "Shared"}
+        "Shared": {
+            "EntityType": { "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
+            "ComplexType": { "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>" },
+            "EnumType": { "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
+            "EntityClient": { "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Class>Client" },
+            "EntityFetcher": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Fetcher" },
+            "EntityCollectionOperations": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>CollectionOperations" },
+            "EntityOperations": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Operations" }
+        },
+        "ObjC": {
+            "EntityCollectionFetcher": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>CollectionFetcher" },
+            "Shared": { "SubProcessor": "Other", "Type": "Shared" }
+        },
+        "Java": {
+        }
     }
 
 }

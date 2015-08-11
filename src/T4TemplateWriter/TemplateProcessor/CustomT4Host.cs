@@ -22,12 +22,12 @@ namespace Vipr.T4TemplateWriter
     {
         // see https://msdn.microsoft.com/en-us/library/bb126579(v=vs.110).aspx
 
-        public CustomT4Host(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel)
+        public CustomT4Host(ITemplateInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel)
         {
             this.Reset(templateInfo, templatesDirectory, currentType, currentModel);
         }
 
-        public void Reset(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel)
+        public void Reset(ITemplateInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel)
         {
             this.TemplateFile = templateInfo.FullPath;
             this.TemplatesDirectory = templatesDirectory;

@@ -7,6 +7,7 @@ namespace Vipr.T4TemplateWriter.Settings
 {
     public class TemplateWriterSettings
     {
+
         //TODO: Differentiate between Java and Obj-C
         public TemplateWriterSettings()
         {
@@ -18,8 +19,11 @@ namespace Vipr.T4TemplateWriter.Settings
             InitializeCollections = true;
             TargetLanguage = "Java";
             NamespaceOverride = "com.microsoft.services.onenote";
-            TemplateMapping = new Dictionary<string, Dictionary<string, string>>();
+            TemplateMapping = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
+            templateConfiguration = null;
+            TemplatesDirectory = null;
         }
+
 
         /// <summary>
         /// Target languages provided via templates.
@@ -31,7 +35,10 @@ namespace Vipr.T4TemplateWriter.Settings
         /// </summary>
         public string TargetLanguage { get; set; }
 
-        public Dictionary<string, Dictionary<string, string>> TemplateMapping { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Dictionary<string, Dictionary<string, Dictionary<string, string>>> TemplateMapping { get; set; }
 
         public IList<string> Plugins { get; set; }
 
@@ -44,5 +51,32 @@ namespace Vipr.T4TemplateWriter.Settings
         public bool InitializeCollections { get; set; }
 
         public bool AllowShortActions { get; set; }
+
+        public string TemplatesDirectory { get; set; }
+
+        private Dictionary<string, Dictionary<string, string>> templateConfiguration;
+
+        /// <summary>
+        /// The dictionary created by combining the "Shared" and current language mapping.
+        /// </summary>
+        public Dictionary<string, Dictionary<string, string>> TemplateConfiguration
+        {
+            get
+            {
+                if (templateConfiguration == null)
+                {
+                    this.TemplateMapping.TryGetValue(this.TargetLanguage, out templateConfiguration);
+                    Dictionary<string, Dictionary<string, string>> sharedConfiguration;
+                    if (templateConfiguration != null && this.TemplateMapping.TryGetValue("Shared", out sharedConfiguration))
+                    {
+                        foreach(var mapping in sharedConfiguration)
+                        {
+                            templateConfiguration.Add(mapping.Key, mapping.Value);
+                        }
+                    }
+                }
+                return templateConfiguration;
+            }
+        }
     }
 }

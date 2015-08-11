@@ -17,27 +17,13 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
-
-    public enum FileType
-    {
-        ComplexType,
-        EntityType,
-        EnumType,
-        EntityFetcher,
-        EntityOperations,
-        EntityCollectionFetcher,
-        EntityCollectionOperations,
-        EntityClient,
-        Other,
-        Unknown
-    }
  
     public class TemplateProcessor : ITemplateProcessor
     {
 
         private static CustomT4Host _host;
 
-        protected static CustomT4Host Host(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel)
+        protected static CustomT4Host Host(ITemplateInfo templateInfo, String templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel)
         {
             if (_host == null)
             {
@@ -51,9 +37,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return _host;
         }
 
-        private Dictionary<SubProcessorType, Func<TemplateFileInfo, IEnumerable<TextFile>>> subProcessors;
+        private Dictionary<SubProcessorType, Func<ITemplateInfo, IEnumerable<TextFile>>> subProcessors;
 
-        protected Dictionary<SubProcessorType, Func<TemplateFileInfo, IEnumerable<TextFile>>> SubProcessors
+        protected Dictionary<SubProcessorType, Func<ITemplateInfo, IEnumerable<TextFile>>> SubProcessors
         {
             get
             {
@@ -67,14 +53,14 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected void InitializeSubprocessors()
         {
-            this.subProcessors = new Dictionary<SubProcessorType, Func<TemplateFileInfo, IEnumerable<TextFile>>>() {             
+            this.subProcessors = new Dictionary<SubProcessorType, Func<ITemplateInfo, IEnumerable<TextFile>>>() {             
                 // Models
                 {SubProcessorType.EntityType,                   ProcessEntityTypes},
                 {SubProcessorType.ComplexType,                  ProcessComplexTypes},
                 {SubProcessorType.EnumType,                     ProcessEnumTypes},
 
                 // EntityContainer
-                {SubProcessorType.EntityContainer,                 ProcessEntityContainerType},
+                {SubProcessorType.EntityContainer,              ProcessEntityContainerType},
 
                 // Other
                 {SubProcessorType.Other,                        ProcessTemplate},
@@ -86,23 +72,23 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         protected IPathWriter PathWriter { get; set; }
         protected String TemplatesDirectory { get; set; }
 
-        private ITemplateMapping mapping;
+        private ITemplateConfiguration templateConfig;
 
-        public TemplateProcessor(IPathWriter pathWriter, OdcmModel odcmModel, String templatesDirectory, ITemplateMapping mapping)
+        public TemplateProcessor(IPathWriter pathWriter, OdcmModel odcmModel, String templatesDirectory, ITemplateConfiguration templateConfig)
         {
             this.T4Engine = new Microsoft.VisualStudio.TextTemplating.Engine();
             this.CurrentModel = odcmModel;
             this.PathWriter = pathWriter;
             this.PathWriter.Model = odcmModel;
             this.TemplatesDirectory = templatesDirectory;
-            this.mapping = mapping;
+            this.templateConfig = templateConfig;
         }
 
-        public IEnumerable<TextFile> Process(TemplateFileInfo templateInfo)
+        public IEnumerable<TextFile> Process(ITemplateInfo templateInfo)
         {
 
-            SubProcessorType subProcessorType = this.mapping.GetSubProcessorType(templateInfo.TemplateBaseName);
-            Func<TemplateFileInfo, IEnumerable<TextFile>> subProcessor = ProcessTemplate;
+            SubProcessorType subProcessorType = this.templateConfig.GetSubProcessorType(templateInfo.TemplateBaseName);
+            Func<ITemplateInfo, IEnumerable<TextFile>> subProcessor = ProcessTemplate;
 
             SubProcessors.TryGetValue(subProcessorType, out subProcessor);
 
@@ -110,45 +96,53 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         }
 
 
-        protected virtual IEnumerable<TextFile> ProcessEntityContainerType(TemplateFileInfo templateInfo)
+        protected virtual IEnumerable<TextFile> ProcessEntityContainerType(ITemplateInfo templateInfo)
         {
             var container = this.CurrentModel.EntityContainer;
-            yield return ProcessTemplate(templateInfo, container);
+            yield return ProcessTemplate(templateInfo, container, templateInfo.BaseFileName(className: container.Name));
         }
 
-        protected virtual IEnumerable<TextFile> ProcessEnumTypes(TemplateFileInfo templateInfo)
+        protected virtual IEnumerable<TextFile> ProcessEnumTypes(ITemplateInfo templateInfo)
         {
-            var enumTypes = CurrentModel.GetEnumTypes();
-            foreach (OdcmObject enumType in enumTypes)
+            foreach (OdcmObject enumType in GetClass(templateInfo, CurrentModel.GetEnumTypes))
             {
-                yield return ProcessTemplate(templateInfo, enumType);
+                yield return ProcessTemplate(templateInfo, enumType, templateInfo.BaseFileName(className: enumType.Name));
             }
         }
 
-        protected virtual IEnumerable<TextFile> ProcessComplexTypes(TemplateFileInfo templateInfo)
+        protected virtual IEnumerable<TextFile> ProcessComplexTypes(ITemplateInfo templateInfo)
         {
-            var complexTypes = CurrentModel.GetComplexTypes();
-            foreach (OdcmObject complexType in complexTypes)
+            foreach (OdcmObject complexType in GetClass(templateInfo, CurrentModel.GetComplexTypes))
             {
-                yield return ProcessTemplate(templateInfo, complexType);
+                yield return ProcessTemplate(templateInfo, complexType, templateInfo.BaseFileName(className:complexType.Name));
             }
         }
 
-        protected virtual IEnumerable<TextFile> ProcessEntityTypes(TemplateFileInfo templateInfo)
+        protected virtual IEnumerable<TextFile> ProcessEntityTypes(ITemplateInfo templateInfo)
         {
-            var entityTypes = CurrentModel.GetEntityTypes();
-            foreach (OdcmObject entityType in entityTypes)
+            foreach (OdcmClass entityType in GetClass(templateInfo, CurrentModel.GetEntityTypes))
             {
-                yield return ProcessTemplate(templateInfo, entityType);
+                yield return ProcessTemplate(templateInfo, entityType, templateInfo.BaseFileName(className: entityType.Name));
             }
         }
 
-        protected IEnumerable<TextFile> ProcessTemplate(TemplateFileInfo templateInfo)
+        protected virtual IEnumerable<OdcmObject> GetClass(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod) 
         {
-            yield return this.ProcessTemplate(templateInfo, null);
+            foreach (OdcmObject odcmObject in modelMethod() )
+            {
+                if (templateInfo.ShouldIncludeType(odcmObject.Name))
+                {
+                    yield return odcmObject;
+                }
+            }
         }
 
-        protected TextFile ProcessTemplate(TemplateFileInfo templateInfo, OdcmObject odcmObject)
+        protected IEnumerable<TextFile> ProcessTemplate(ITemplateInfo templateInfo)
+        {
+            yield return this.ProcessTemplate(templateInfo, null, templateInfo.BaseFileName());
+        }
+
+        protected TextFile ProcessTemplate(ITemplateInfo templateInfo, OdcmObject odcmObject, string fileName)
         {
             var host = TemplateProcessor.Host(templateInfo, this.TemplatesDirectory, odcmObject, this.CurrentModel);
 
@@ -162,13 +156,12 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 throw new InvalidOperationException(errors);
             }
 
-            String fileName = (odcmObject != null) ? odcmObject.Name.ToUpperFirstChar() : templateInfo.TemplateBaseName.ToUpperFirstChar();
             var path = this.PathWriter.WritePath(templateInfo, fileName);
 
             return new TextFile(path, output);
         }
 
-        public string LogErrors(CustomT4Host host, TemplateFileInfo templateInfo)
+        public string LogErrors(CustomT4Host host, ITemplateInfo templateInfo)
         {
             var sb = new StringBuilder();
             if (host.Errors == null || host.Errors.Count <= 0) return sb.ToString();
