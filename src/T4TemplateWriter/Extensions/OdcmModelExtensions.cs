@@ -130,5 +130,21 @@ namespace Vipr.T4TemplateWriter
         {
             return model.EntityContainer.Name;
         }
+
+        public static bool LongDescriptionContains(this OdcmObject odcmObject, string descriptionValue)
+        {
+            var descriptionParts = odcmObject.GetLongDescriptionSegments();
+            return descriptionParts != null && descriptionParts.Contains(descriptionValue);
+        }
+
+        public static string[] GetLongDescriptionSegments(this OdcmObject odcmObject)
+        {
+            if (odcmObject.LongDescription != null)
+            {
+                return odcmObject.LongDescription.Split(';');
+            }
+
+            return null;
+        }
     }
 }

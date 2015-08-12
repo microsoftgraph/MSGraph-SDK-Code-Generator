@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-
+using Vipr.Core.CodeModel;
 
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
@@ -31,30 +31,41 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         public string NameFormat { get; set; }
 
         public string FileExtension { get; set; }
-        public IEnumerable<string> IncludedTypes { get; set; }
+        public IEnumerable<string> IncludedObjects { get; set; }
 
-        public IEnumerable<string> ExcludedTypes { get; set; }
+        public IEnumerable<string> ExcludedObjects { get; set; }
 
-        public bool ShouldIncludeType(string typeName)
+        public IEnumerable<string> ObjectDescriptions { get; set; }
+
+        public bool ShouldIncludeObject(OdcmObject odcmObject)
         {
-            // Included and excluded are mutually exclusive
-            if (this.IncludedTypes != null)
+            bool shouldInclude = true;
+            if (this.IncludedObjects != null)
             {
-                return this.IncludedTypes.Any(type => typeName.Contains(type));
+                shouldInclude = this.IncludedObjects.Any(objectName => odcmObject.Name.Equals(objectName));
             }
-            else if (this.ExcludedTypes != null)
+            else if (this.ExcludedObjects != null)
             {
-                return this.ExcludedTypes.All(type => !typeName.Contains(type));
+                shouldInclude = this.ExcludedObjects.All(objectName => !odcmObject.Name.Equals(objectName));
             }
 
-            return true;
+            // Include and Exclude have priority over matches. 
+            // Only check if the description matches if we should include the object.
+            if (shouldInclude && this.ObjectDescriptions != null)
+            {
+                shouldInclude = this.ObjectDescriptions.Any(objDescp => odcmObject.LongDescriptionContains(objDescp));
+            }
+
+            return shouldInclude;
         }
 
-        public string BaseFileName(string className= "", string propertyName = "", string methodName = "")
+        public string BaseFileName(string className = "", string propertyName = "", string methodName = "")
         {
             string coreName;
             if (this.NameFormat != null)
             {
+                // TODO: aclev
+                // This is naive for now.  Once we add casing to the strings order will matter.
                 coreName = this.NameFormat.Replace("<Class>", className).Replace("<Property>", propertyName).Replace("<Method>", methodName);
             }
             else

@@ -54,15 +54,10 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         protected void InitializeSubprocessors()
         {
             this.subProcessors = new Dictionary<SubProcessorType, Func<ITemplateInfo, IEnumerable<TextFile>>>() {             
-                // Models
                 {SubProcessorType.EntityType,                   ProcessEntityTypes},
                 {SubProcessorType.ComplexType,                  ProcessComplexTypes},
                 {SubProcessorType.EnumType,                     ProcessEnumTypes},
-
-                // EntityContainer
                 {SubProcessorType.EntityContainer,              ProcessEntityContainerType},
-
-                // Other
                 {SubProcessorType.Other,                        ProcessTemplate},
             };
         }
@@ -70,7 +65,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         protected OdcmModel CurrentModel { get; set; }
         protected Microsoft.VisualStudio.TextTemplating.Engine T4Engine { get; set; }
         protected IPathWriter PathWriter { get; set; }
-        protected String TemplatesDirectory { get; set; }
+        protected string TemplatesDirectory { get; set; }
 
         private ITemplateConfiguration templateConfig;
 
@@ -128,9 +123,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmObject> GetClass(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod) 
         {
-            foreach (OdcmObject odcmObject in modelMethod() )
+            foreach (OdcmObject odcmObject in modelMethod())
             {
-                if (templateInfo.ShouldIncludeType(odcmObject.Name))
+                if (templateInfo.ShouldIncludeObject(odcmObject))
                 {
                     yield return odcmObject;
                 }

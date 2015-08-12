@@ -1,4 +1,6 @@
 ﻿using System;
+using Vipr.Core.CodeModel;
+
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
     public enum TemplateType
@@ -24,8 +26,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         string FullPath { get; set; }
         string FileExtension { get; set; }
 
-        bool ShouldIncludeType(string typeName);
+        bool ShouldIncludeObject(OdcmObject odcmObject);
 
         string BaseFileName(string className = "", string propertyName = "", string methodName = "");
+
     }
 }
