@@ -54,6 +54,7 @@
     <Compile Include="CodeHelpers\CodeWriterBase.cs" />
     <Compile Include="CodeHelpers\Java\CodeWriterJava.cs" />
     <Compile Include="CodeHelpers\ObjC\CodeWriterObjC.cs" />
+    <Compile Include="PathWriters\CSharpPathWriter.cs" />
     <Compile Include="TemplateProcessor\CustomT4Host.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="CodeHelpers\Java\TypeHelperJava.cs" />

@@ -1,5 +1,5 @@
 ﻿{
-    "AvailableLanguages": [ "Java", "ObjC" ],
+    "AvailableLanguages": [ "Java", "ObjC", "CSharp"],
     "TargetLanguage": "ObjC",
     "Plugins": [ ],
     "PrimaryNamespaceName": "oneDrive",
