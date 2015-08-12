@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using Vipr.Core.CodeModel;
+using Vipr.T4TemplateWriter.Extensions;
 
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
@@ -18,11 +19,13 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         public string TemplateLanguage { get; set; }
 
-        public TemplateType TemplateType { get; set; }
+        public Template TemplateType { get; set; }
 
-        public SubProcessorType SubprocessorType { get; set; }
+        public SubProcessor SubprocessorType { get; set; }
 
-        public string TemplateDirectoryName { get; set; }
+        public FileNameCasing Casing { get; set; }
+
+        public string OutputParentDirectory { get; set; }
 
         public string TemplateBaseName { get; set; }
 
@@ -59,14 +62,29 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return shouldInclude;
         }
 
-        public string BaseFileName(string className = "", string propertyName = "", string methodName = "")
+        public string BaseFileName(string entityContainer = "", string className = "", string propertyName = "", string methodName = "")
         {
             string coreName;
             if (this.NameFormat != null)
             {
-                // TODO: aclev
-                // This is naive for now.  Once we add casing to the strings order will matter.
-                coreName = this.NameFormat.Replace("<Class>", className).Replace("<Property>", propertyName).Replace("<Method>", methodName);
+                //Replace all values with UpperCamelCased values from Edmx (default for Edmx is lower camel case).
+                coreName = this.NameFormat.Replace("<Class>", className.ToUpperFirstChar())
+                                          .Replace("<Property>", propertyName.ToUpperFirstChar())
+                                          .Replace("<Method>", methodName.ToUpperFirstChar())
+                                          .Replace("<Container>", entityContainer.ToUpperFirstChar());
+                // replace with the proepr naming scheme.
+                switch (this.Casing)
+                {
+                    case FileNameCasing.UpperCamel:
+                        coreName = coreName.ToUpperFirstChar();
+                        break;
+                    case FileNameCasing.LowerCamel:
+                        coreName = coreName.ToLowerFirstChar();
+                        break;
+                    case FileNameCasing.Snake:
+                        coreName = coreName.ToLowerFirstChar().UnderScore();
+                        break;
+                }
             }
             else
             {

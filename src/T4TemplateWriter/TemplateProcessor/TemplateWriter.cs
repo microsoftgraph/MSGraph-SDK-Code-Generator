@@ -19,7 +19,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         private String TemplatesDirectory {get; set;}
         private ITemplateProcessor Processor { get; set; }
         private OdcmModel CurrentModel { get; set; }
-        private ITemplateConfiguration TemplateConfiguration { get; set; }
+        private ITemplateInfoProvider TemplateInfoProvider { get; set; }
 
         private const String PathWriterClassNameFormatString = "Vipr.T4TemplateWriter.Output.{0}PathWriter";
 
@@ -41,16 +41,16 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         IEnumerable<TextFile> ProcessTemplates()
         {
             // There is no need to process "shared" tempaltes, they are only meant to be imported from other templates.
-            var templates = Utilities.ReadTemplateFiles(this.TemplatesDirectory, this.TemplateConfiguration)
-                            .Where(templateInfo => templateInfo.TemplateType != TemplateType.Shared);
+            var templates = Utilities.ReadTemplateFiles(this.TemplatesDirectory, this.TemplateInfoProvider)
+                            .Where(templateInfo => templateInfo.TemplateType != Template.Shared);
 
             // Initialize processor.
             String pathWriterClassName = String.Format(PathWriterClassNameFormatString, ConfigurationService.Settings.TargetLanguage);
             var type = Type.GetType(pathWriterClassName);
             IPathWriter pathWriterInstance = (IPathWriter)Activator.CreateInstance(type);
-            this.Processor = new TemplateProcessor(pathWriterInstance, this.CurrentModel, this.TemplatesDirectory, this.TemplateConfiguration);
+            this.Processor = new TemplateProcessor(pathWriterInstance, this.CurrentModel, this.TemplatesDirectory);
 
-            foreach (TemplateFileInfo template in templates)
+            foreach (ITemplateInfo template in templates)
             {
                 foreach (TextFile outputFile in this.Processor.Process(template))
                 {
@@ -63,7 +63,13 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         public void SetConfigurationProvider(IConfigurationProvider configurationProvider)
         {
             ConfigurationService.Initialize(configurationProvider);
-            this.TemplateConfiguration = new TemplateConfiguration(ConfigurationService.Settings.TemplateConfiguration);
+            FileNameCasing nameCasing;
+            if(!Enum.TryParse(ConfigurationService.Settings.DefaultFileCasing, out nameCasing))
+            {
+                nameCasing = FileNameCasing.UpperCamel;
+            }
+            this.TemplateInfoProvider = new TemplateInfoProvider(ConfigurationService.Settings.TemplateConfiguration,
+                                                                defaultNameCasing: nameCasing);
             SetTemplatesDirectory(ConfigurationService.Settings.TemplatesDirectory);
         }
 

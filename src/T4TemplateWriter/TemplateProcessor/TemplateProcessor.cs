@@ -37,9 +37,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return _host;
         }
 
-        private Dictionary<SubProcessorType, Func<ITemplateInfo, IEnumerable<TextFile>>> subProcessors;
+        private Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>> subProcessors;
 
-        protected Dictionary<SubProcessorType, Func<ITemplateInfo, IEnumerable<TextFile>>> SubProcessors
+        protected Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>> SubProcessors
         {
             get
             {
@@ -53,12 +53,12 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected void InitializeSubprocessors()
         {
-            this.subProcessors = new Dictionary<SubProcessorType, Func<ITemplateInfo, IEnumerable<TextFile>>>() {             
-                {SubProcessorType.EntityType,                   ProcessEntityTypes},
-                {SubProcessorType.ComplexType,                  ProcessComplexTypes},
-                {SubProcessorType.EnumType,                     ProcessEnumTypes},
-                {SubProcessorType.EntityContainer,              ProcessEntityContainerType},
-                {SubProcessorType.Other,                        ProcessTemplate},
+            this.subProcessors = new Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>>() {             
+                {SubProcessor.EntityType,                   ProcessEntityTypes},
+                {SubProcessor.ComplexType,                  ProcessComplexTypes},
+                {SubProcessor.EnumType,                     ProcessEnumTypes},
+                {SubProcessor.EntityContainer,              ProcessEntityContainerType},
+                {SubProcessor.Other,                        ProcessTemplate},
             };
         }
 
@@ -67,25 +67,20 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         protected IPathWriter PathWriter { get; set; }
         protected string TemplatesDirectory { get; set; }
 
-        private ITemplateConfiguration templateConfig;
-
-        public TemplateProcessor(IPathWriter pathWriter, OdcmModel odcmModel, String templatesDirectory, ITemplateConfiguration templateConfig)
+        public TemplateProcessor(IPathWriter pathWriter, OdcmModel odcmModel, string templatesDirectory)
         {
             this.T4Engine = new Microsoft.VisualStudio.TextTemplating.Engine();
             this.CurrentModel = odcmModel;
             this.PathWriter = pathWriter;
             this.PathWriter.Model = odcmModel;
             this.TemplatesDirectory = templatesDirectory;
-            this.templateConfig = templateConfig;
         }
 
         public IEnumerable<TextFile> Process(ITemplateInfo templateInfo)
         {
 
-            SubProcessorType subProcessorType = this.templateConfig.GetSubProcessorType(templateInfo.TemplateBaseName);
             Func<ITemplateInfo, IEnumerable<TextFile>> subProcessor = ProcessTemplate;
-
-            SubProcessors.TryGetValue(subProcessorType, out subProcessor);
+            SubProcessors.TryGetValue(templateInfo.SubprocessorType, out subProcessor);
 
             return subProcessor(templateInfo);
         }

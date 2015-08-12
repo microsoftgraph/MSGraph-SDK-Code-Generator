@@ -22,6 +22,7 @@ namespace Vipr.T4TemplateWriter.Settings
             TemplateMapping = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
             templateConfiguration = null;
             TemplatesDirectory = null;
+            DefaultFileCasing = "UpperCamel";
         }
 
 
@@ -36,9 +37,14 @@ namespace Vipr.T4TemplateWriter.Settings
         public string TargetLanguage { get; set; }
 
         /// <summary>
-        /// 
+        /// The template configuration mapping for all platforms.
         /// </summary>
         public Dictionary<string, Dictionary<string, Dictionary<string, string>>> TemplateMapping { get; set; }
+
+        /// <summary>
+        /// The default casing method to be used for file names when a casing method ins't specified.
+        /// </summary>
+        public string DefaultFileCasing;
 
         public IList<string> Plugins { get; set; }
 

@@ -12,14 +12,13 @@ namespace Vipr.T4TemplateWriter.Output
     class ObjCPathWriter : PathWriterBase
     {
 
-        public override string WritePath(ITemplateInfo template, String entityTypeName)
+        public override string WritePath(ITemplateInfo template, string entityTypeName)
         {
-            String prefix = ConfigurationService.Settings.NamespacePrefix;
-            String coreFileName = this.TransformFileName(template, entityTypeName);
-            String extension = template.FileExtension;
+            string prefix = ConfigurationService.Settings.NamespacePrefix;
+            string coreFileName = this.TransformFileName(template, entityTypeName);
 
             return Path.Combine(
-                template.TemplateDirectoryName, 
+                template.OutputParentDirectory, 
                 String.Format("{0}{1}",
                     prefix,
                     coreFileName

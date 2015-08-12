@@ -33,7 +33,7 @@ namespace Vipr.T4TemplateWriter.Output
         {
             return Path.Combine(
                 template.TemplateLanguage,
-                template.TemplateDirectoryName,
+                template.OutputParentDirectory,
                 this.TransformFileName(template, baseFileName)
             );
         }
