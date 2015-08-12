@@ -8,7 +8,7 @@
     "AllowShortActions": "false",
     "NamespaceOverride": "com.microsoft.onenote.services",
     "TemplatesDirectory": "..\\..\\..\\..\\Templates",
-    "DefaultFileCasing" :  "Snake",
+    "DefaultFileCasing" :  "UpperCamel",
     "TemplateMapping": {
         "Shared": {
             "EntityType": { "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
