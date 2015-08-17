@@ -1,0 +1,59 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
+var clientNameLower = clientName.ToLowerFirstChar();
+
+var method = host.CurrentType.AsOdcmMethod();
+var returnType = method.ReturnType;
+var responseTypeName = returnType.Name.ToCheckedCase();
+var responseNamePrefix = returnType.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
+var entityCollectionRequest = responseNamePrefix + "CollectionRequest";
+var entityCollectionPage = responseNamePrefix + "CollectionPage";
+
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    /// <summary>
+    /// The type <#=entityCollectionPage#>.
+    /// </summary>
+    public partial class <#=entityCollectionPage#> : CollectionPage<<#=responseTypeName#>>, I<#=entityCollectionPage#>
+    {
+        /// <summary>
+        /// Gets the next page <see cref="I<#=entityCollectionRequest#>"/> instance.
+        /// </summary>
+        public I<#=entityCollectionRequest#> NextPageRequest { get; private set; }
+        <#
+        if (method.HasSpecialCollection())
+        {
+            var specialMethodParams = method.SpecialMethodParameters();
+            foreach (var parameter in specialMethodParams)
+            {
+        #>
+
+        /// <summary>
+        /// Gets or sets the <#=parameter.Name#>.
+        /// </summary>
+        public string <#=parameter.Name.ToCheckedCase()#> { get; set; }
+        <#
+            }
+        }
+        #>
+
+        /// <summary>
+        /// Initializes the NextPageRequest property.
+        /// </summary>
+        public void InitializeNextPageRequest(I<#=clientName#> <#=clientNameLower#>, string nextPageLinkString)
+        {
+            if (!string.IsNullOrEmpty(nextPageLinkString))
+            {
+                this.NextPageRequest = new <#=entityCollectionRequest#>(
+                    nextPageLinkString,
+                    <#=clientNameLower#>,
+                    null);
+            }
+        }
+    }
+}

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Linq;
 using Vipr.T4TemplateWriter.Settings;
 using Vipr.Core.CodeModel;
@@ -53,10 +54,27 @@ namespace Vipr.T4TemplateWriter
             return @namespace.Classes.Where(x => x.Kind == OdcmClassKind.Entity || x.Kind == OdcmClassKind.MediaEntity);
         }
 
+        public static IEnumerable<OdcmProperty> GetProperties(this OdcmModel model)
+        {
+            return model.GetEntityTypes().SelectMany(entityTypes => entityTypes.Properties)
+                        .Union(model.EntityContainer.Properties)
+                        .Union(model.GetComplexTypes().SelectMany(complexType => complexType.Properties));
+        }
+
+        public static IEnumerable<OdcmProperty> GetPropertyType(this OdcmClass entity, string propertyTypeName)
+        {
+            return entity.Properties.Where(prop => prop.Type.Name.Equals(propertyTypeName));
+        }
+
         public static IEnumerable<OdcmEnum> GetEnumTypes(this OdcmModel model)
         {
             var @namespace = GetOdcmNamespace(model);
             return @namespace.Types.OfType<OdcmEnum>();
+        }
+
+        public static IEnumerable<OdcmMethod> GetMethods(this OdcmModel model)
+        {
+            return model.GetEntityTypes().SelectMany(entityType => entityType.Methods);
         }
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
@@ -87,6 +105,11 @@ namespace Vipr.T4TemplateWriter
             return odcmClass.Methods;
         }
 
+        public static bool IsAction(this OdcmMethod method)
+        {
+            return method.Verbs == OdcmAllowedVerbs.Post;
+        }
+
         public static bool IsFunction(this OdcmMethod method)
         {
             return method.IsComposable; //TODO:REVIEW
@@ -106,6 +129,16 @@ namespace Vipr.T4TemplateWriter
         public static OdcmEnum AsOdcmEnum(this OdcmObject odcmObject)
         {
             return odcmObject as OdcmEnum;
+        }
+
+        public static OdcmProperty AsOdcmProperty(this OdcmObject odcmObject)
+        {
+            return odcmObject as OdcmProperty;
+        }
+
+        public static OdcmMethod AsOdcmMethod(this OdcmObject odcmObject)
+        {
+            return odcmObject as OdcmMethod;
         }
 
         public static string NamespaceName(this OdcmModel model)
@@ -137,6 +170,11 @@ namespace Vipr.T4TemplateWriter
             return descriptionParts != null && descriptionParts.Contains(descriptionValue);
         }
 
+        public static bool LongDescriptionStartsWith(this OdcmObject odcmObject, string descriptionValue)
+        {
+            var descriptionParts = odcmObject.GetLongDescriptionSegments();
+            return descriptionParts != null && descriptionParts.Any(value => value.StartsWith(descriptionValue));
+        }
         public static string[] GetLongDescriptionSegments(this OdcmObject odcmObject)
         {
             if (odcmObject.LongDescription != null)
@@ -146,5 +184,50 @@ namespace Vipr.T4TemplateWriter
 
             return null;
         }
+
+        public static bool HasSpecialCollection(this OdcmMethod method)
+        {
+            return method.LongDescriptionStartsWith("specialCollection");
+        }
+
+        public static IEnumerable<SpecialMethodParameter> SpecialMethodParameters(this OdcmMethod method)
+        {
+            var paramList = new List<SpecialMethodParameter>();
+            if (method.LongDescription != null)
+            {
+                var matches = Regex.Match(method.LongDescription, @"specialCollection=(([a-zA-Z0-9.]*):([a-zA-Z0-9.]*),*)*");
+                if (matches != null)
+                {
+                    var names = matches.Groups[2].Captures;
+                    var types = matches.Groups[3].Captures;
+                    for (int i = 0; i < names.Count; i++)
+                    {
+                        paramList.Add(new SpecialMethodParameter(names[i].Value, types[i].Value));
+                    }
+                }
+            }
+            return paramList;
+        }
+
+    }
+
+
+    public class SpecialMethodParameter : Object
+    {
+        private string typeString;
+        public string Name { get; private set; }
+
+        public string TypeString { get; private set; }
+
+        public string FullName { get; private set; }
+
+        public SpecialMethodParameter(string fullName, string typeString)
+        {
+            var strippedName = fullName.Split('.')[1];
+            this.Name = strippedName;
+            this.FullName = fullName;
+            this.TypeString = typeString;
+        }
+
     }
 }

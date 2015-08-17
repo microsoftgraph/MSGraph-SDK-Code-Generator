@@ -42,7 +42,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         {
             // There is no need to process "shared" tempaltes, they are only meant to be imported from other templates.
             var templates = Utilities.ReadTemplateFiles(this.TemplatesDirectory, this.TemplateInfoProvider)
-                            .Where(templateInfo => templateInfo.TemplateType != Template.Shared);
+                                     .Where(templateInfo => templateInfo.TemplateType != Template.Shared);
 
             // Initialize processor.
             String pathWriterClassName = String.Format(PathWriterClassNameFormatString, ConfigurationService.Settings.TargetLanguage);

@@ -1,0 +1,45 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
+var clientNameLower = clientName.ToLowerFirstChar();
+var prop = host.CurrentType.AsOdcmProperty();
+var propName = prop.Name;
+var propClass = prop.Class.Name.ToCheckedCase();
+var propRequest = propClass + prop.Name.ToCheckedCase() + "Request";
+var propRequestBuilder = propClass + prop.Name.ToCheckedCase() + "RequestBuilder";
+
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// The type <#=propRequestBuilder#>.
+    /// </summary>
+    public partial class <#=propRequestBuilder#> : BaseRequestBuilder, I<#=propRequestBuilder#>
+    {
+        /// <summary>
+        /// Constructs a new <#=propRequestBuilder#>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the built request.</param>
+        /// <param name="<#=clientNameLower#>">The <see cref="I<#=clientName#>"/> for handling requests.</param>
+        public <#=propRequestBuilder#>(
+            string requestUrl,
+            I<#=clientName#> <#=clientNameLower#>)
+            : base(requestUrl, <#=clientNameLower#>)
+        {
+        }
+
+        /// <summary>
+        /// Builds the request.
+        /// </summary>
+        /// <returns>The built request.</returns>
+        public I<#=propRequest#> Request()
+        {
+            return new <#=propRequest#>(this.RequestUrl, this.<#=clientName#>, null);
+        }
+    }
+}

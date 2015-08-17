@@ -62,16 +62,21 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return shouldInclude;
         }
 
-        public string BaseFileName(string entityContainer = "", string className = "", string propertyName = "", string methodName = "")
+        public string BaseFileName(string containerName = "", string className = "", string propertyName = "", string methodName = "")
         {
             string coreName;
             if (this.NameFormat != null)
             {
+                // If the namespace has been left on the method name, remove it.
+                if (!String.IsNullOrEmpty(methodName) && methodName.Contains('.'))
+                {
+                    methodName = methodName.Split('.')[1];
+                }
                 //Replace all values with UpperCamelCased values from Edmx (default for Edmx is lower camel case).
                 coreName = this.NameFormat.Replace("<Class>", className.ToUpperFirstChar())
                                           .Replace("<Property>", propertyName.ToUpperFirstChar())
                                           .Replace("<Method>", methodName.ToUpperFirstChar())
-                                          .Replace("<Container>", entityContainer.ToUpperFirstChar());
+                                          .Replace("<Container>", containerName.ToUpperFirstChar());
                 // replace with the proepr naming scheme.
                 switch (this.Casing)
                 {

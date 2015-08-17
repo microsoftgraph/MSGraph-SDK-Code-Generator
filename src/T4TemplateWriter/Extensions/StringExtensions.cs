@@ -19,6 +19,10 @@ namespace Vipr.T4TemplateWriter.Extensions
             return Boolean.Parse(source);
         }
 
+        public static string ToCheckedCase(this string input)
+        {
+            return input.Substring(0, 1).ToUpper() + input.Substring(1);
+        }
 
         public static IEnumerable<T> ToIEnumerable<T>(this T value)
         {

@@ -1,0 +1,62 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+OdcmClass complex = host.CurrentType.AsOdcmClass();
+var complexTypeName = complex.Name.ToCheckedCase();
+
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Runtime.Serialization;
+    using Newtonsoft.Json;
+
+    /// <summary>
+    /// The type <#=complexTypeName#>.
+    /// </summary>
+    [DataContract]
+    public partial class <#=complexTypeName#>
+    {
+    <# 
+        foreach(var property in complex.Properties){
+
+            var propertyType = property.IsCollection ? string.Format("IEnumerable<{0}>", property.GetTypeString()) : property.GetTypeString();
+            var propertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
+
+            if (property.IsTypeNullable())
+            {
+    #>
+
+        /// <summary>
+        /// Gets or sets <#=property.Name#>.
+        /// </summary>
+        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        public <#=propertyType#> <#=propertyName#> { get; set; }
+    <#
+        }
+        else
+        {
+    #>
+
+        /// <summary>
+        /// Gets or sets <#=property.Name#>.
+        /// </summary>
+        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        public <#=propertyType#>? <#=propertyName#> { get; set; }
+    <#
+            }
+        }
+    #>
+
+        /// <summary>
+        /// Gets or sets additional data.
+        /// </summary>
+        [JsonExtensionData(ReadData = false)]
+        public IDictionary<string, object> AdditionalData { get; set; }
+
+    }
+}

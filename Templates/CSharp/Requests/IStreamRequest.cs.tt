@@ -1,0 +1,52 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var prop = host.CurrentType.AsOdcmProperty();
+var propName = prop.Name;
+var propClass = prop.Class.Name.ToCheckedCase();
+var propRequest = propClass + prop.Name.ToCheckedCase() + "Request";
+
+
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// The interface I<#=propRequest#>.
+    /// </summary>
+    public interface I<#=propRequest#>
+    {
+        /// <summary>
+        /// Gets the stream.
+        /// </summary>
+        /// <returns>The stream.</returns>
+        Task<Stream> GetAsync();
+
+        /// <summary>
+        /// PUTs the specified stream.
+        /// </summary>
+        /// <typeparam name="T">The type returned by the PUT call.</typeparam>
+        /// <param name="<#=propName#>">The stream to PUT.</param>
+        /// <returns>The object returned by the PUT call.</returns>
+        Task<T> PutAsync<T>(Stream <#=propName#>) where T : <#=propClass#>;
+
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=propRequest#> Expand(string value);
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=propRequest#> Select(string value);
+    }
+}

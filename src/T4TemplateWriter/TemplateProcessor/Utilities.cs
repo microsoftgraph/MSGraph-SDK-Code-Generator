@@ -19,7 +19,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <returns></returns>
         public static IEnumerable<ITemplateInfo> ReadTemplateFiles(String rootPath, ITemplateInfoProvider templateInfoProvider)
         {
-            foreach (String path in (Directory.EnumerateFiles(Path.Combine(rootPath, ConfigurationService.Settings.TargetLanguage), "*", SearchOption.AllDirectories)))
+            foreach (String path in (Directory.EnumerateFiles(Path.Combine(rootPath, ConfigurationService.Settings.TargetLanguage), "*.*.tt", SearchOption.AllDirectories)))
             {
                 yield return templateInfoProvider.Create(path);
             }

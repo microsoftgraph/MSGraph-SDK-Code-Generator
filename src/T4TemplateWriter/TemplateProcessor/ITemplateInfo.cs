@@ -21,7 +21,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         bool ShouldIncludeObject(OdcmObject odcmObject);
 
-        string BaseFileName(string entityContainer = "", string className = "", string propertyName = "", string methodName = "");
+        string BaseFileName(string containerName = "", string className = "", string propertyName = "", string methodName = "");
 
     }
 }
