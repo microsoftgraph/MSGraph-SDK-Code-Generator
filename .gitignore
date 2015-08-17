@@ -70,5 +70,6 @@ ClientBin/
 *.dbproj.schemaview
 *.pfx
 *.publishsettings
+*sw*
 node_modules/
 bower_components/
