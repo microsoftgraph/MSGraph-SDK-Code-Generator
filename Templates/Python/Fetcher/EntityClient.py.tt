@@ -1,0 +1,124 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
+var entityName = writer.GetPrefix().ToUpperFirstChar()+"Client";
+#>
+<#=writer.WriteHeader()#>
+
+<#
+var containerProperties = model.EntityContainer.Properties;
+
+foreach(var prop in containerProperties){
+var builderName = prop.Name.ToUpperFirstChar()+"CollectionRequestBuilder";
+#>
+from ..requests.<#=(prop.Name+"Collection").ToUnderscore()#> import <#=builderName#>
+<#
+}
+#>
+import asyncio
+
+class OneDriveClient(object):
+
+    def __init__(self, base_url, auth_provider, http_provider, loop=asyncio.get_event_loop()):
+        """
+        Initialize the client to be used for all OneDrive API interactions
+        :param base_url: The OneDrive base url to use for API interactions
+        :type base_url: str
+        :param auth_provider: The authentication provider used by the client
+                              to auth with OneDrive services
+        :type auth_provider: AuthProviderBase
+        :param http_provider: The HTTP provider used by the client to send
+                              all requests to OneDrive
+        :type http_provider: HttpProviderBase
+        :param loop: The AsyncIO loop to use for all async requests
+        :type loop: BaseEventLoop
+        self.base_url = base_url
+        self.auth_provider = auth_provider
+        self.http_provider = http_provider
+        self._loop = loop
+
+    @property
+    def auth_provider(self):
+        """
+        Gets the client auth provider
+        :returns: The authentication provider
+        :rtype: AuthProviderBase
+        """
+        return self._auth_provider
+
+    @auth_provider.setter
+    def auth_provider(self, value):
+        """
+        Sets the client auth provider
+        :param value: The auth provider to set
+        :type value: AuthProviderBase
+        """
+        self._auth_provider = value
+
+    @property
+    def http_provider(self):
+        """
+        Gets the client HTTP provider
+        :returns: The HTTP provider
+        :rtype: HttpProviderBase
+        """
+        return self._http_provider
+
+    @http_provider.setter
+    def http_provider(self, value):
+        """
+        Sets the client HTTP provider
+        :param value: The HTTP provider to set
+        :type value: HttpProviderBase
+        """
+        self._http_provider = value
+
+    @property
+    def base_url(self):
+        """
+        Gets the base URL used by the client to make requests
+        :returns: The base URL
+        :rtype: str
+        """
+        return self._base_url
+
+    @base_url.setter
+    def base_url(self, value):
+        """
+        Sets the base URL for the client to use
+        :param value: The base URL
+        :type value: str
+        """
+        self._base_url = value
+<#
+foreach(var prop in containerProperties){
+    if (prop.IsCollection()){
+#>
+
+    @property
+    def <#=prop.Name.ToUnderscore()#>(self):
+        """
+        Get the <#=(prop.Name.ToUpperFirstChar()+"CollectionRequestBuilder").ToUpperFirstChar()#> for constructing requests
+        :returns: A <#=(prop.Name.ToUpperFirstChar()+"CollectionRequestBuilder").ToUpperFirstChar()#>
+        :rtype: <#=(prop.Name.ToUpperFirstChar()+"CollectionRequestBuilder").ToUpperFirstChar()#>
+        """
+        return <#=(prop.Name.ToUpperFirstChar()+"CollectionRequestBuilder").ToUpperFirstChar()#>(self.base_url + "<#=prop.Name#>", self)
+<#
+    } else {
+#>
+
+    @property
+    def <#=prop.Name.ToUnderscore()#>(self):
+        """
+        Get the <#=(prop.Type.GetTypeString()+"RequestBuilder").ToUpperFirstChar()#> for constructing requests
+        :returns: A <#=(prop.Type.GetTypeString()+"RequestBuilder").ToUpperFirstChar()#>
+        :rtype: <#=(prop.Type.GetTypeString()+"RequestBuilder").ToUpperFirstChar()#>
+        """
+        return <#=(prop.Type.GetTypeString()+"RequestBuilder").ToUpperFirstChar()#>(self.base_url + "<#=prop.Name#>", self)
+<#
+    }
+}
+#>

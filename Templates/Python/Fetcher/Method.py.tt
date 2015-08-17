@@ -1,0 +1,248 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
+var clientName          = model.GetEntityContainer().ToUpperFirstChar() + "Client";
+var clientNameLower     = clientName.ToLowerFirstChar();
+var method              = host.CurrentType as OdcmMethod;
+var entityName          = method.Class.Name.ToUpperFirstChar();
+var httpMethod          = method.IsAction ? "POST" : "GET";
+var requestType         = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Request";
+var requestBuilderType  = requestType + "Builder";
+var returnType          = method.ReturnType.Name.ToUpperFirstChar();
+var returnTypeCollection= "ItemsCollectionResponse";
+bool hasParameters      = method.Parameters != null && method.Parameters.Any();
+TemplateWriterSettings settings = ConfigurationService.Settings;
+
+#>
+<#=writer.WriteHeader()#>
+
+from ..models.<#=returnType.ToUnderscore()#> import <#=returnType#>
+<#=method.IsCollection ? "from ..collection_base import CollectionRequestBase" : "from ..request_base import RequestBase"#>
+<#
+if (method.IsCollection) {
+#>
+from ..requests.items_collection import ItemsCollectionResponse
+<#
+}
+#>
+from ..request_builder_base import RequestBuilderBase
+<#
+if (method.IsMethodAsync()){
+#>
+from ..async_operation_monitor import AsyncOperationMonitor
+<#
+}
+#>
+from ..options import *
+import asyncio
+import json
+
+
+class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "RequestBase"#>):
+<#
+    var paramStringBuilder = new System.Text.StringBuilder();
+    var requestBodyInitializerBuilder = new System.Text.StringBuilder();
+    paramStringBuilder.Append("self, request_url, client, options");
+
+    foreach (var param in method.Parameters.Where(p => !p.IsNullable)){
+        paramStringBuilder.Append(", " + param.Name.ToUnderscore());
+        requestBodyInitializerBuilder.Append(Environment.NewLine);
+        requestBodyInitializerBuilder.Append("        ");
+        requestBodyInitializerBuilder.Append("if " + param.Name.ToUnderscore() + ":");
+        requestBodyInitializerBuilder.Append(Environment.NewLine);
+        requestBodyInitializerBuilder.Append("            ");
+        requestBodyInitializerBuilder.Append(method.IsAction ? "self.body_options" : "self._query_options");
+        requestBodyInitializerBuilder.Append("[\""+param.Name+"\"]");
+        requestBodyInitializerBuilder.Append(" = "+param.Name.ToUnderscore());
+    }
+    foreach (var param in method.Parameters.Where(p => p.IsNullable)){
+        paramStringBuilder.Append(", " + param.Name.ToUnderscore() + "=None");
+        requestBodyInitializerBuilder.Append(Environment.NewLine);
+        requestBodyInitializerBuilder.Append("        ");
+        requestBodyInitializerBuilder.Append("if " + param.Name.ToUnderscore() + ":");
+        requestBodyInitializerBuilder.Append(Environment.NewLine);
+        requestBodyInitializerBuilder.Append("            ");
+        requestBodyInitializerBuilder.Append(method.IsAction ? "self.body_options" : "self._query_options");
+        requestBodyInitializerBuilder.Append("[\""+param.Name+"\"]");
+        requestBodyInitializerBuilder.Append(" = "+param.Name.ToUnderscore());
+    }
+
+#>
+
+    def __init__(<#=paramStringBuilder.ToString()#>):
+        super(<#=requestType#>, self).__init__(request_url, client, options)
+        self.method = "<#=httpMethod#>"
+<#
+        if (method.IsAction) {
+#>
+        self.body_options={}
+<#
+    }
+    if (hasParameters) {
+#>
+<#=requestBodyInitializerBuilder.ToString()#>
+<#
+    }
+    if (method.IsAction) {
+#>
+
+    @property
+    def body_options(self):
+        return self._body_options
+
+    @body_options.setter
+    def body_options(self, value):
+        self._body_options=value
+<#
+    }
+    if (hasParameters && method.IsAction){
+#>
+
+    def <#=httpMethod.ToLower()#>(self):
+        """
+        Sends the <#=httpMethod.ToUpper()#> request
+        :returns: The resulting <#=method.IsCollection ? "collection" : "entity"#> from the operation
+        :rtype: <#if (method.IsMethodAsync()){#>AsyncOperationMonitor<#} else {#><#=method.IsCollection ? returnTypeCollection+"\n" : returnType+"\n"#><#}#>
+        """
+        self.content_type = "application/json"
+<#
+        if (method.IsMethodAsync()){
+#>
+        self.append_option(HeaderOption("Prefer", "respond-async"))
+        response = self.send(self.body_options)
+        entity = AsyncOperationMonitor(response.headers["Location"], self._client, None)
+<#
+        } else {
+#>
+        <#=method.IsCollection ? "collection_response" : "entity"#> = <#=method.IsCollection ? returnTypeCollection : returnType#>(json.loads(self.send(self.body_options).content))
+<#
+        }
+#>
+        return <#=method.IsCollection ? "self._page_from_response(collection_response)" : "entity"#>
+
+    @asyncio.coroutine
+    def <#=httpMethod.ToLower()#>_async(self):
+        """
+        Sends the <#=httpMethod.ToUpper()#> request using an asyncio coroutine
+        :returns: The resulting <#=method.IsCollection ? "collection page" : "entity"#> from the operation
+        :rtype: <#if (method.IsMethodAsync()){#>AsyncOperationMonitor<#} else {#><#=method.IsCollection ? returnTypeCollection+"\n" : returnType+"\n"#><#}#>
+        """
+        future = self._client._loop.run_in_executor(None,
+                                                    self.<#=httpMethod.ToLower()#>)
+        <#=method.IsCollection ? "collection_response" : "entity"#> = yield from future
+        return <#=method.IsCollection ? "collection_response" : "entity"#>
+<#
+    } else {
+#>
+
+    def <#=httpMethod.ToLower()#>(self):
+        """
+        Sends the <#=httpMethod.ToUpper()#> request
+        :returns: The resulting <#=method.IsCollection ? "collection response" : "entity"#> from the operation
+        :rtype: <#if (method.IsMethodAsync()){#>AsyncOperationMonitor<#} else {#><#=method.IsCollection ? returnTypeCollection+"\n" : returnType+"\n"#><#}#>
+        """
+<#
+        if (method.IsMethodAsync()){
+#>
+        self.headers["Prefer"] = "respond-async"
+        entity = AsyncOperationMonitor(self.send().headers["Location"], self._client, None)
+<#
+        } else {
+#>
+        <#=method.IsCollection ? "collection_response" : "entity"#> = <#=method.IsCollection ? returnTypeCollection : returnType#>(json.loads(self.send().content))
+<#
+        }
+#>
+        return <#=method.IsCollection ? "self._page_from_response(collection_response)" : "entity"#>
+
+    @asyncio.coroutine
+    def <#=httpMethod.ToLower()#>_async(self):
+        """
+        Sends the <#=httpMethod.ToUpper()#> request using an asyncio coroutine
+        :returns: The resulting <#=method.IsCollection ? "collection response" : "entity"#> from the operation
+        :rtype: <#if (method.IsMethodAsync()){#>AsyncOperationMonitor<#} else {#><#=method.IsCollection ? returnTypeCollection+"\n" : returnType+"\n"#><#}#>
+        """
+        future = self._client._loop.run_in_executor(None,
+                                                    self.<#=httpMethod.ToLower()#>)
+        <#=method.IsCollection ? "collection_response" : "entity"#> = yield from future
+        return <#=method.IsCollection ? "collection_response" : "entity"#>
+<#
+    }
+#>
+
+
+class <#=requestBuilderType#>(RequestBuilderBase):
+<#
+    paramStringBuilder = new System.Text.StringBuilder();
+    var requestBuilderInitializerBuilder = new System.Text.StringBuilder();
+    var requestConstructorBuilder = new System.Text.StringBuilder();
+
+    requestConstructorBuilder.Append("self._request_url, self._client, options");
+    paramStringBuilder.Append("self, request_url, client");
+
+    foreach (var param in method.Parameters.Where(p => !p.IsNullable)){
+        requestConstructorBuilder.Append(", self._method_options[\""+param.Name+"\"]");
+        paramStringBuilder.Append(", " + param.Name.ToUnderscore());
+        requestBuilderInitializerBuilder.Append(Environment.NewLine);
+        requestBuilderInitializerBuilder.Append("        ");
+        requestBuilderInitializerBuilder.Append("self._method_options");
+        requestBuilderInitializerBuilder.Append("[\""+param.Name+"\"]");
+        requestBuilderInitializerBuilder.Append(" = "+param.Name.ToUnderscore());
+        if (param.Type.IsComplex())
+            requestBuilderInitializerBuilder.Append("._prop_dict");
+    }
+    foreach (var param in method.Parameters.Where(p => p.IsNullable)){
+        requestConstructorBuilder.Append(", "+param.Name.ToUnderscore()+"=self._method_options[\""+param.Name+"\"]");
+        paramStringBuilder.Append(", " + param.Name.ToUnderscore() + "=None");
+        requestBuilderInitializerBuilder.Append(Environment.NewLine);
+        requestBuilderInitializerBuilder.Append("        ");
+        requestBuilderInitializerBuilder.Append("self._method_options");
+        requestBuilderInitializerBuilder.Append("[\""+param.Name+"\"]");
+        requestBuilderInitializerBuilder.Append(" = "+param.Name.ToUnderscore());
+        if (param.Type.IsComplex())
+            requestBuilderInitializerBuilder.Append("._prop_dict");
+    }
+
+#>
+
+    def __init__(<#=paramStringBuilder.ToString()#>):
+        super(<#=requestBuilderType#>, self).__init__(request_url, client)
+<#
+    if (hasParameters) {
+#>
+        self._method_options = {}
+<#=requestBuilderInitializerBuilder.ToString()#>
+<#
+    }
+#>
+
+    def request(self, options=None):
+        """
+        Builds the request for the <#=requestType.Replace("Request","")#>
+        :param options: List of options to include in the request
+        :type options: List of type Options
+        :returns: The request
+        :rtype: <#=requestType#>
+        """
+        return <#=requestType#>(<#=requestConstructorBuilder#>)
+
+    def <#=httpMethod.ToLower()#>(self):
+        """
+        Sends the <#=httpMethod.ToUpper()#> request
+        :returns: The resulting <#=method.IsCollection ? "collection" : "entity"#> from the operation
+        :rtype: <#if (method.IsMethodAsync()){#>AsyncOperationMonitor<#} else {#><#=method.IsCollection ? returnTypeCollection+"\n" : returnType+"\n"#><#}#>
+        """
+        return self.request().<#=httpMethod.ToLower()#>()
+
+    @asyncio.coroutine
+    def <#=httpMethod.ToLower()#>_async(self):
+        """
+        Sends the <#=httpMethod.ToUpper()#> request using an asyncio coroutine
+        :returns: The resulting <#=method.IsCollection ? "collection page" : "entity"#> from the operation
+        :rtype: <#if (method.IsMethodAsync()){#>AsyncOperationMonitor<#} else {#><#=method.IsCollection ? returnTypeCollection+"\n" : returnType+"\n"#><#}#>
+        """
+        <#=method.IsCollection ? "collection_page" : "entity"#> = yield from self.request().<#=httpMethod.ToLower()#>_async()
+        return <#=method.IsCollection ? "collection_page" : "entity"#>

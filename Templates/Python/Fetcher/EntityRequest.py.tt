@@ -1,0 +1,110 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
+OdcmClass entity        = host.CurrentType.AsOdcmClass();
+var entityName          = entity.Name.ToUpperFirstChar();
+var entityRequest       = entityName + "Request";
+var jsonContentType     = "application/json";
+#>
+<#=writer.WriteHeader()#>
+
+from ..request_base import RequestBase
+from ..models.<#=entity.Name.ToUnderscore()#> import <#=entityName#>
+import asyncio
+import json
+
+class <#=entityRequest#>(RequestBase):
+    """The type <#=entityRequest#>."""
+    
+    def __init__(self, request_url, client, options):
+        """Constructs a new <#=entityRequest#>.
+
+        :param request_url: The request URL.
+        :type request_url: str
+        :param client: The client to make http calls with
+        :type client: BaseClient
+        :param options: Query option name value pairs for the request.
+        :type options: dict"""
+        super().__init__(request_url, client, options)
+
+    def delete(self):
+        """Deletes the specified <#=entityName#>."""
+        self.method = "DELETE"
+        self.send()
+
+    @asyncio.coroutine
+    def delete_async(self):
+        """Deletes the specified <#=entityName#>."""
+        future = self._client._loop.run_in_executor(None,
+                                                    self.delete)
+        yield from future
+
+    def get(self):
+        """Gets the specified <#=entityName#>.
+        :returns: The <#=entityName#>.
+        :rtype: <#=entityName#>"""
+        self.method = "GET"
+        entity = <#=entityName#>(json.loads(self.send().content))
+        self._initialize_collection_properties(entity)
+        return entity
+
+    @asyncio.coroutine
+    def get_async(self):
+        """Gets the specified <#=entityName#>.
+        :returns: The <#=entityName#>.
+        :rtype: <#=entityName#>"""
+        future = self._client._loop.run_in_executor(None,
+                                                    self.get)
+        entity = yield from future
+        return entity
+
+    def update(self, <#=entity.Name.ToUnderscore()#>):
+        """Updates the specified <#=entityName#>.
+        :param <#=entity.Name.ToUnderscore()#>: The <#=entityName#> to update.
+        :type <#=entity.Name.ToUnderscore()#>: <#=entityName#>
+        :returns: The updated <#=entityName#>.
+        :rtype: <#=entityName#>"""
+        self.content_type = "<#=jsonContentType#>"
+        self.method = "PATCH"
+        entity = <#=entityName#>(json.loads(self.send(<#=entity.Name.ToUnderscore()#>).content))
+        self._initialize_collection_properties(entity)
+        return entity
+
+    @asyncio.coroutine
+    def update_async(self, <#=entity.Name.ToUnderscore()#>):
+        """Updates the specified <#=entityName#>.
+        :param <#=entity.Name.ToUnderscore()#>: The <#=entityName#> to update.
+        :type <#=entity.Name.ToUnderscore()#>: <#=entityName#>
+        :returns: The updated <#=entityName#>.
+        :rtype: <#=entityName#>"""
+        future = self._client._loop.run_in_executor(None,
+                                                    self.update,
+                                                    <#=entity.Name.ToUnderscore()#>)
+        entity = yield from future
+        return entity
+
+<#
+        var collectionProperties = entity.Properties.Where(property => property.IsCollection() && property.Type.IsComplex());
+
+        if (collectionProperties.Any())
+        {
+#>
+    def _initialize_collection_properties(self, value):
+        if value and value._prop_dict:
+<#
+            foreach(var property in collectionProperties)
+            {
+                var propertyName = property.Name.ToUnderscore();
+                var propertyType = property.GetTypeString();
+#>
+            if value.<#=propertyName#> and value.<#=propertyName#>._prop_dict:
+                if "<#=propertyName.ToLowerFirstChar()#>@odata.nextLink" in value._prop_dict:
+                    next_page_link = value._prop_dict["<#=propertyName.ToLowerFirstChar()#>@odata.nextLink"]
+                    value.<#=propertyName#>._init_next_page_request(next_page_link, self._client, None)
+<#
+            }
+        }
+#>

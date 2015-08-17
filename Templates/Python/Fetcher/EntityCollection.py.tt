@@ -1,0 +1,244 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
+var clientName          = model.GetEntityContainer().ToUpperFirstChar() + "Client";
+var clientNameLower     = clientName.ToLowerFirstChar();
+var prop                = host.CurrentType as OdcmProperty;
+var innerEntity = prop.Type;
+var innerEntityType = innerEntity.IsComplex() ? innerEntity.GetTypeString().ToUpperFirstChar() : innerEntity.GetTypeString();
+var innerEntityRequestBuilder = innerEntityType + "RequestBuilder";
+var collectionRequest = prop.Name.ToUpperFirstChar() + "CollectionRequest";
+var collectionRequestBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+var collectionPage = prop.Name.ToUpperFirstChar() + "CollectionPage";
+var collectionResponse = prop.Name.ToUpperFirstChar() + "CollectionResponse";
+TemplateWriterSettings settings = ConfigurationService.Settings;
+var jsonContentType     = "application/json";
+
+#>
+<#=writer.WriteHeader()#>
+
+from ..collection_base import CollectionRequestBase
+from ..request_builder_base import RequestBuilderBase
+from ..models.collection_page import CollectionPage
+<#
+if (innerEntity.IsComplex()) {
+#>
+from ..models.<#=innerEntityType.ToUnderscore()#> import <#=innerEntityType#>
+<#
+}
+#>
+import asyncio
+import json
+
+
+class <#=collectionRequest#>(CollectionRequestBase):
+
+    def __init__(self, request_url, client, options):
+        """
+        Initialize the <#=collectionRequest#>
+        :param request_url: The url to perform the <#=collectionRequest#> on
+        :type request_url: str
+        :param client: The client which will be used for the request
+        :type client: OneDriveClient
+        :param options: A list of options to pass into the request
+        :type options: List of type Option
+        """
+        super(<#=collectionRequest#>, self).__init__(request_url, client, options)
+
+<#
+    if (prop.IsCollectionWritable()){
+#>
+    def add(self, entity):
+        """
+        Add a <#=innerEntityType#> to the collection
+        :param entity: The <#=innerEntityType#> that you would like to add to the collection
+        :type entity: <#=innerEntityType#>
+        :returns: The <#=innerEntityType#> that you added, with additional data from OneDrive
+        :rtype: <#=innerEntityType#>
+        """
+        self.content_type = "<#=jsonContentType#>"
+        self.method = "POST"
+        entity = <#=innerEntityType#>(json.loads(self.send(entity).content))
+        return entity
+
+    @asyncio.coroutine
+    def add_async(self, entity):
+        """
+        Add a <#=innerEntityType#> to the collection in async
+        :param entity: The <#=innerEntityType#> that you would like to add to the collection
+        :type entity: <#=innerEntityType#>
+        :returns: The <#=innerEntityType#> that you added, with additional data from OneDrive
+        :rtype: <#=innerEntityType#>
+        """
+        future = self._client._loop.run_in_executor(None,
+                                                    self.add
+                                                    entity)
+        entity = yield from future
+        return entity
+
+<#
+    }
+#>
+    def get(self):
+        """
+        Gets the <#=collectionPage#>
+        :returns: The <#=collectionPage#>
+        :rtype: <#=collectionPage#>
+        """
+        self.method = "GET"
+        collection_response = <#=collectionResponse#>(json.loads(self.send().content))
+        return self._page_from_response(collection_response)
+
+    @asyncio.coroutine
+    def get_async(self):
+        """
+        Gets the <#=collectionPage#> in async
+        :returns: The <#=collectionPage#>
+        :rtype: <#=collectionPage#>
+        """
+        future = self._client._loop.run_in_executor(None,
+                                                    self.get)
+        collection_page = yield from future
+        return collection_page
+
+
+class <#=collectionRequestBuilder#>(RequestBuilderBase):
+
+    def __getitem__(self, key):
+        """
+        Get the <#=innerEntityRequestBuilder#> with the specified key
+        :param key: The key to get a <#=innerEntityRequestBuilder#> for
+        :type key: str
+        :returns: A <#=innerEntityRequestBuilder#> for that key
+        :rtype: <#=innerEntityRequestBuilder#>
+        """
+        return <#=innerEntityRequestBuilder#>(self.append_to_request_url(str(key)), self._client)
+
+    def request(self, expand=None, select=None, top=None, order_by=None, options=None):
+        """
+        Builds the <#=collectionRequest#>
+        :param expand: Comma-seperated list of relationships to expand
+                       in the response
+        :type expand: str
+        :param select: Comma-seperated list of properties to include in
+                       the response
+        :type select: str
+        :param top: The number of items to return in a result
+        :type top: int
+        :param order_by: Comma-seperated list of properties that are used
+                         to sort the order of items in the response
+        :type order_by: str
+        :param options: List of options to include in the request
+        :type options: List of type Options
+        :returns: The request
+        :rtype: <#=collectionRequest#>
+        """
+        req = <#=collectionRequest#>(self._request_url, self._client, options)
+        req._set_query_options(expand=expand, select=select, top=top, order_by=order_by)
+        return req
+
+<#
+    if (prop.IsCollectionWritable()){
+#>
+    def add(self, entity):
+        """
+        Add a <#=innerEntityType#> to the collection
+        :param entity: The <#=innerEntityType#> that you would like to add to the collection
+        :type entity: <#=innerEntityType#>
+        :returns: The <#=innerEntityType#> that you added, with additional data from OneDrive
+        :rtype: <#=innerEntityType#>
+        """
+        return self.request().add(entity)
+
+    @asyncio.coroutine
+    def add_async(self, entity):
+        """
+        Add a <#=innerEntityType#> to the collection in async
+        :param entity: The <#=innerEntityType#> that you would like to add to the collection
+        :type entity: <#=innerEntityType#>
+        :returns: The <#=innerEntityType#> that you added, with additional data from OneDrive
+        :rtype: <#=innerEntityType#>
+        """
+        entity = yield from self.request().add_async(entity)
+        return entity
+
+<#
+    }
+#>
+    def get(self):
+        """
+        Gets the <#=collectionPage#>
+        :returns: The <#=collectionPage#>
+        :rtype: <#=collectionPage#>
+        """
+        return self.request().get()
+
+    @asyncio.coroutine
+    def get_async(self):
+        """
+        Gets the <#=collectionPage#> in async
+        :returns: The <#=collectionPage#>
+        :rtype: <#=collectionPage#>
+        """
+        collection_page = yield from self.request().get_async()
+        return collection_page
+
+
+class <#=collectionResponse#>(object):
+
+    def __init__(self, prop_dict={}):
+        self._prop_dict = prop_dict
+        self._collection_page = None
+
+    @property
+    def collection_page(self):
+        """
+        The collection page stored in the response JSON
+        :returns: The collection page
+        :rtype: <#=collectionPage#>
+        """
+        if self._collection_page:
+            self._collection_page._prop_list = self._prop_dict["value"]
+        else:
+            self._collection_page = <#=collectionPage#>(self._prop_dict["value"])
+
+        return self._collection_page
+
+
+class <#=collectionPage#>(CollectionPage):
+
+    def __getitem__(self, index):
+        """
+        Get the <#=innerEntityType#> at the index specified
+        :param index: The index of the item to get from the <#=collectionPage#>
+        :type index: int
+        :returns: The <#=innerEntityType#> at the index
+        :rtype: <#=innerEntityType#>
+        """
+        return <#=innerEntityType#>(self._prop_list[index])
+
+    def <#=prop.Name.ToUnderscore()#>(self):
+        """
+        Get a generator of <#=innerEntityType#> within the <#=collectionPage#>
+        :returns: Generator of <#=innerEntityType#>
+        :rtype: Generator of <#=innerEntityType#>
+        """
+        for item in self._prop_list:
+            yield <#=innerEntityType#>(item)
+
+    def _init_next_page_request(self, next_page_link, client, options):
+        """
+        Initialize the next page request for the <#=collectionPage#>
+        :param next_page_link: The URL for the next page request to be sent to
+        :type next_page_link: str
+        :param client: The client to be used for the request
+        :type client: OneDriveClient
+        :param options: A list of options 
+        :type options: List of type Option
+        self._next_page_request = <#=collectionRequest#>(next_page_link, client, options)
+
+
+from ..requests.<#=innerEntityRequestBuilder.ToUnderscore()#> import <#=innerEntityRequestBuilder#>

@@ -1,0 +1,305 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
+OdcmClass entity        = host.CurrentType.AsOdcmClass();
+var entityName          = entity.Name.ToUpperFirstChar();
+var entityRequest       = entityName + "Request";
+var entityBuilder       = entityName + "RequestBuilder";
+var jsonContentType     = "application/json";
+#>
+<#=writer.WriteHeader()#>
+
+from .<#=entityRequest.ToUnderscore()#> import <#=entityRequest#>
+from ..request_builder_base import RequestBuilderBase
+<#
+    foreach (var method in entity.Methods)
+    {
+        var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1);
+        var baseName = method.Class.Name.ToUpperFirstChar() + methodName.ToUpperFirstChar();
+#>
+from ..requests.<#=baseName.ToUnderscore()#> import <#=baseName#>RequestBuilder
+<#
+    }
+    foreach(var prop in entity.StreamProperties())
+    {
+        var propName = prop.Class.Name.ToUpperFirstChar()+prop.Name.ToUpperFirstChar();
+        var propRequestBuilder = propName+"RequestBuilder";
+#>
+from ..requests.<#=propName.ToUnderscore()#> import <#=propRequestBuilder#>
+<#
+    }
+    List<String> builders = new List<String>();
+    foreach(var prop in entity.NavigableComplexProperties())
+    {
+        var propName = prop.Type.GetTypeString().ToUpperFirstChar();
+        var propRequestBuilder = propName+"RequestBuilder";
+        if (!builders.Contains(propRequestBuilder)) builders.Add(propRequestBuilder);
+    }
+    foreach(var propRequestBuilder in builders) {
+#>
+from ..requests.<#=propRequestBuilder.ToUnderscore()#> import <#=propRequestBuilder#>
+<#
+    }
+#>
+import asyncio
+
+
+class <#=entityBuilder#>(RequestBuilderBase):
+
+    def __init__(self, request_url, client):
+        """
+        Initialize the <#=entityBuilder#>
+        :param request_url: The request URL to initialize the <#=entityBuilder#> at
+        :type request_url: str
+        :param client: The client to use for requests made by the <#=entityBuilder#>
+        :type client: OneDriveClient
+        """
+        super(<#=entityBuilder#>, self).__init__(request_url, client)
+
+    def request(self, expand=None, select=None, options=None):
+        """
+        Builds the <#=entityRequest#>
+        :param expand: Comma-seperated list of relationships to expand
+                       in the response
+        :type expand: str
+        :param select: Comma-seperated list of properties to include in
+                       the response
+        :type select: str
+        :param options: List of options to include in the request
+        :type options: List of type Options
+        :returns: The request
+        :rtype: <#=entityRequest#>
+        """
+        req = <#=entityRequest#>(self._request_url, self._client, options)
+        req._set_query_options(expand=expand, select=select)
+        return req
+
+    def delete(self):
+        """Deletes the specified <#=entityName#>."""
+        self.request().delete()
+
+    @asyncio.coroutine
+    def delete_async(self):
+        """Deletes the specified <#=entityName#>."""
+        yield from self.request().delete_async()
+
+    def get(self):
+        """Gets the specified <#=entityName#>.
+        :returns: The <#=entityName#>.
+        :rtype: <#=entityName#>"""
+        return self.request().get()
+
+    @asyncio.coroutine
+    def get_async(self):
+        """Gets the specified <#=entityName#>.
+        :returns: The <#=entityName#>.
+        :rtype: <#=entityName#>"""
+        entity = yield from self.request().get_async()
+        return entity
+
+    def update(self, <#=entity.Name.ToUnderscore()#>):
+        """Updates the specified <#=entityName#>.
+        :param <#=entity.Name.ToUnderscore()#>: The <#=entityName#> to update.
+        :type <#=entity.Name.ToUnderscore()#>: <#=entityName#>
+        :returns: The updated <#=entityName#>.
+        :rtype: <#=entityName#>"""
+        return self.request().update(<#=entity.Name.ToUnderscore()#>)
+
+    @asyncio.coroutine
+    def update_async(self, <#=entity.Name.ToUnderscore()#>):
+        """Updates the specified <#=entityName#>.
+        :param <#=entity.Name.ToUnderscore()#>: The <#=entityName#> to update.
+        :type <#=entity.Name.ToUnderscore()#>: <#=entityName#>
+        :returns: The updated <#=entityName#>.
+        :rtype: <#=entityName#>"""
+        entity = yield from self.request().update_async(<#=entity.Name.ToUnderscore()#>)
+        return entity
+<#
+    if (entity.StreamProperties().Where(t => !(t.Class as OdcmType).IsNavigable).Any()){
+#>
+
+    def upload(self, local_path):
+        """
+        Uploads the file using PUT
+        :param local_path: The path to the local file to upload.
+        :type local_path: str
+        :returns: The created entity.
+        """
+        return self.content.request().put(local_path)
+
+    @asyncio.coroutine
+    def upload_async(self, local_path):
+        """
+        Uploads the file using PUT in async
+        :param local_path: The path to the local file to upload.
+        :type local_path: str
+        :returns: The created entity.
+        """
+        entity = yield from self.content.request().upload_async(local_path)
+        return entity
+<#
+    }
+
+    if (entity.StreamProperties().Any()){
+#>
+
+    def download(self, local_path):
+        """
+        Downloads the specified entity.
+        :param local_path: The path where the entity should be downloaded to
+        :type local_path: str
+        """
+        return self.content.request().download(local_path)
+
+    @asyncio.coroutine
+    def download_async(self, local_path):
+        """
+        Downloads the specified entity in async.
+        :param local_path: The path where the entity should be downloaded to
+        :type local_path: str
+        """
+        entity = yield from self.content.request().download_async(local_path)
+        return entity
+<#
+    }
+
+    foreach(var child in entity.Derived)
+    {
+        var childName = child.Name.ToUnderscore();
+        var childNameBuilder = child.Name.ToUpperFirstChar() + "RequestBuilder";
+#>
+    @property
+    def <#=childName#>(self):
+        """
+        The <#=childName#> for the <#=entityBuilder#>
+        :returns: A request builder created from the <#=entityBuilder#>
+        :rtype: <#=childNameBuilder#>
+        """
+        return <#=childNameBuilder#>(self.append_to_request_url("<#=child.Name#>"), self._client)
+
+<#
+    }
+
+    foreach(var prop in entity.NavigationProperties()){
+
+        var propName = prop.Name.ToUnderscore();
+        var propRequestBuilder = prop.Name.ToUpperFirstChar() + "RequestBuilder";
+    
+        if(prop.IsCollection())
+        {
+            var collectionRequestBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+#>
+
+    @property
+    def <#=propName#>(self):
+        """
+        The <#=propName#> for the <#=entityBuilder#>
+        :returns: A request builder created from the <#=entityBuilder#>
+        :rtype: <#=collectionRequestBuilder#>
+        """
+        return <#=collectionRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+<#
+        }
+        else
+        {
+#>
+
+    @property
+    def <#=propName#>(self):
+        """
+        The <#=propName#> for the <#=entityBuilder#>
+        :returns: A request builder created from the <#=entityBuilder#>
+        :rtype: <#=propRequestBuilder#>
+        """
+        return <#=propRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+
+<#
+        }
+    }
+    foreach(var prop in entity.StreamProperties())
+    {
+        var propName = prop.Name.ToUnderscore();
+        var propRequestBuilder = prop.Class.Name.ToUpperFirstChar()+prop.Name.ToUpperFirstChar()+"RequestBuilder";
+#>
+
+    @property
+    def <#=propName#>(self):
+        """
+        The <#=propName#> for the <#=entityBuilder#>
+        :returns: A request builder created from the <#=entityBuilder#>
+        :rtype: <#=propRequestBuilder#>
+        """
+        return <#=propRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+<#
+    }
+
+    foreach(var prop in entity.NavigableComplexProperties()) {
+        var propName = prop.Name.ToUnderscore();
+        var propRequestBuilder = prop.Type.GetTypeString()+"RequestBuilder";
+#>
+
+    @property
+    def <#=propName#>(self):
+        """
+        The <#=propName#> for the <#=entityBuilder#>
+        :returns: A request builder created from the <#=entityBuilder#>
+        :rtype: <#=propRequestBuilder#>
+        """
+        return <#=propRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+<#
+    }
+
+    foreach(var method in entity.Methods) {
+        var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1);
+        var baseName = method.Class.Name.ToUpperFirstChar() + methodName.ToUpperFirstChar();
+
+        var paramStringBuilder = new System.Text.StringBuilder();
+        var builderInitializerBuilder = new System.Text.StringBuilder();
+
+        paramStringBuilder.Append("self");
+
+        builderInitializerBuilder.Append("self.append_to_request_url(\""+method.Name+"\"), ");
+        builderInitializerBuilder.Append("self._client");
+
+        if (method.Parameters != null && method.Parameters.Any()){
+            foreach (var param in method.Parameters.Where(p => !p.IsNullable)){
+                paramStringBuilder.Append(", " + param.Name.ToUnderscore());
+                builderInitializerBuilder.Append(", " + param.Name.ToUnderscore());
+            }
+            foreach (var param in method.Parameters.Where(p => p.IsNullable)){
+                paramStringBuilder.Append(", " + param.Name.ToUnderscore()+"=None");
+                builderInitializerBuilder.Append(", " + param.Name.ToUnderscore() + "=" + param.Name.ToUnderscore());
+            }
+        }
+#>
+    def <#=methodName.ToUnderscore()#>(<#=paramStringBuilder.ToString()#>):
+        """
+        Executes the <#=methodName#> method
+<#
+        if (method.Parameters != null && method.Parameters.Any()){
+            foreach (var param in method.Parameters){
+#>
+        :param <#=param.Name.ToUnderscore()#>: The <#=param.Name.ToUnderscore()#> to use in the method request
+        :type <#=param.Name.ToUnderscore()#>: <#=param.Type.GetTypeString()#>
+<#
+            }
+        }
+#>
+        :returns: A <#=baseName#>RequestBuilder for the method
+        :rtype: <#=baseName#>RequestBuilder
+        """
+        return <#=baseName#>RequestBuilder(<#=builderInitializerBuilder.ToString()#>)
+
+<#
+    }
+foreach (var prop in entity.NavigationProperties()){
+    var propCollection = prop.Name.ToUpperFirstChar() + "Collection";
+    var propCollectionRequestBuilder = (propCollection + "RequestBuilder");
+#>
+from ..requests.<#=propCollection.ToUnderscore()#> import <#=propCollectionRequestBuilder#>
+<#
+}
+#>
