@@ -1,0 +1,46 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+
+    /// <summary>
+    /// The interface I<#=clientName#>.
+    /// </summary>
+    public partial interface I<#=clientName#> : IBaseClient
+    {
+    <#
+
+    foreach(var prop in model.EntityContainer.Properties)
+    {
+        var propName = prop.Name.ToCheckedCase();
+        var sanitizedPropName = propName.GetSanitizedPropertyName();
+
+        if (prop.IsCollection())
+        {
+    #>
+
+        /// <summary>
+        /// Gets the <#=propName#> request builder.
+        /// </summary>
+        I<#=propName#>CollectionRequestBuilder <#=sanitizedPropName#> { get; }
+    <#
+        }
+        else
+        {
+    #>
+
+        /// <summary>
+        /// Gets the <#=propName#> request builder.
+        /// </summary>
+        I<#=propName#>RequestBuilder <#=sanitizedPropName#> { get; }
+    <#
+        }
+    }
+    #>
+
+    }
+}

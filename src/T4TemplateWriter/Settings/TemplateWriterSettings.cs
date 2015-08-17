@@ -71,12 +71,13 @@ namespace Vipr.T4TemplateWriter.Settings
             {
                 if (templateConfiguration == null)
                 {
-                    this.TemplateMapping.TryGetValue(this.TargetLanguage, out templateConfiguration);
-                    Dictionary<string, Dictionary<string, string>> sharedConfiguration;
-                    if (templateConfiguration != null && this.TemplateMapping.TryGetValue("Shared", out sharedConfiguration))
+                    this.TemplateMapping.TryGetValue("Shared", out templateConfiguration);
+                    Dictionary<string, Dictionary<string, string>> languageConfiguration;
+                    if (templateConfiguration != null && this.TemplateMapping.TryGetValue(this.TargetLanguage, out languageConfiguration))
                     {
-                        foreach(var mapping in sharedConfiguration)
+                        foreach(var mapping in languageConfiguration)
                         {
+                            // Any language specific setting will take precedent over the shared configurations.
                             templateConfiguration.Add(mapping.Key, mapping.Value);
                         }
                     }

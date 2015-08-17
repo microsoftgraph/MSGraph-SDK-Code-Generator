@@ -1,0 +1,63 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var method = host.CurrentType.AsOdcmMethod();
+var entityName = method.Class.Name.ToCheckedCase();
+var httpMethod = (method.IsAction()) ? "POST" : "GET";
+var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
+var requestType = entityName + methodName + "Request";
+var returnType = method.IsCollection ? "I" + method.ReturnType.Name.ToCheckedCase() + methodName + "CollectionPage" : method.ReturnType.Name.ToCheckedCase();
+bool hasParameters = method.Parameters != null && method.Parameters.Any();
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    using System.Threading.Tasks;
+    
+    /// <summary>
+    /// The interface I<#=requestType#>.
+    /// </summary>
+    public partial interface I<#=requestType#>
+    {
+    <#
+    if (hasParameters && method.IsAction())
+    {
+    #>
+
+        /// <summary>
+        /// Gets the request body.
+        /// </summary>
+        <#=requestType#>Body RequestBody { get; }
+    <#
+    }
+    #>
+
+        /// <summary>
+        /// Issues the <#=httpMethod#> request.
+        /// </summary>
+        Task<<#=returnType#>> <#=httpMethod.ToLower().ToCheckedCase()#>Async();
+
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=requestType#> Expand(string value);
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=requestType#> Select(string value);
+
+        /// <summary>
+        /// Adds the specified top value to the request.
+        /// </summary>
+        /// <param name="value">The top value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=requestType#> Top(string value);
+
+    }
+}

@@ -84,6 +84,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return fileInfo;
         }
 
+        /// <summary>
+        /// Gets the casing for the given template.
+        /// </summary>
+        /// <param name="templateName"></param>
+        /// <returns></returns>
         private FileNameCasing GetFileNameCasing(string templateName)
         {
             return GetEnum<FileNameCasing>(templateName, "Case",  this.defaultCasing);
@@ -109,6 +114,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return GetEnum<Template>(templateName, "Type", this.defaultTemplate);
         }
 
+        /// <summary>
+        /// Gets the list of strings in the "Matches" list from the template.
+        /// </summary>
+        /// <param name="templateName"></param>
+        /// <returns></returns>
         private IEnumerable<string>MatchingDescriptions(string templateName)
         {
             return GetConfigList(templateName, "Matches");
@@ -135,11 +145,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         }
 
         /// <summary>
-        /// Gets a list from the config file.  All lists will be ';' delmited.
+        /// Gets a list from the config file.  All lists are ';' delmited.
         /// </summary>
         /// <param name="templateName"></param>
         /// <param name="typeListName"></param>
-        /// <returns></returns>
+        /// <returns>An enumerable of the ";" delimited list.</returns>
         private IEnumerable<string> GetConfigList(string templateName, string listName)
         {
             var templateDictionary = TemplateDictionary(templateName);
@@ -161,7 +171,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// Gets the dictionary from the config file for the given templateName.
         /// </summary>
         /// <param name="templateName"></param>
-        /// <returns></returns>
+        /// <returns>A dictionary of string key value pairs</returns>
         private Dictionary<string, string> TemplateDictionary(string templateName)
         {
             Dictionary<string, string> templateDictionary = null;
@@ -169,6 +179,14 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return templateDictionary;
         }
 
+        /// <summary>
+        /// Gets the specfic enum for the given template and key
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="templateName"></param>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns>An anum value</returns>
         private TEnum GetEnum<TEnum>(string templateName, string key, TEnum defaultValue) where TEnum : struct
         {
             TEnum type;
@@ -182,17 +200,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <summary>
         /// Gets the correct Enum type from the given template
         /// </summary>
-        /// <example>
-        ///  SubProcessorType processorType;
-        ///  if (TryGetValuye<SubProcessorType>(<templateName>, "SubProcessorType", out processorType))
-        ///  {
-        ///  }
-        /// </example>
         /// <typeparam name="TEnum"></typeparam>
         /// <param name="templateName"></param>
         /// <param name="key"></param>
         /// <param name="type"></param>
-        /// <returns></returns>
+        /// <returns>true if successful false if not</returns>
         private bool TryGetValue<TEnum>(string templateName, string key, out TEnum type) where TEnum : struct  
         {
             bool success = false;

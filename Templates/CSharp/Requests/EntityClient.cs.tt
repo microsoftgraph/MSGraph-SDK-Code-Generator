@@ -1,0 +1,72 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+
+    /// <summary>
+    /// The type <#=clientName#>.
+    /// </summary>
+    public partial class <#=clientName#> : BaseClient, I<#=clientName#>
+    {
+
+        /// <summary>
+        /// Instantiates a new <#=clientName#>.
+        /// </summary>
+        public <#=clientName#>(
+            IAppConfig appConfig,
+            IWebUi webUi,
+            IHttpProvider httpProvider = null,
+            IServiceInfoProvider serviceInfoProvider = null)
+            : base(appConfig, webUi, httpProvider, serviceInfoProvider)
+        {
+        }
+    <#
+
+    foreach(var prop in model.EntityContainer.Properties)
+    {
+        var propName = prop.Name.ToCheckedCase();
+        var sanitizedPropName = propName.GetSanitizedPropertyName();
+
+        if (prop.IsCollection())
+        {
+            var collectionRequestBuilder = propName + "CollectionRequestBuilder";
+    #>
+
+        /// <summary>
+        /// Gets the <#=propName#> request builder.
+        /// </summary>
+        public I<#=collectionRequestBuilder#> <#=sanitizedPropName#>
+        {
+            get
+            {
+                return new <#=collectionRequestBuilder#>(this.BaseUrl + "/<#=prop.Name#>", this);
+            }
+        }
+    <#
+        }
+        else
+        {
+            var requestBuilder = propName + "RequestBuilder";
+    #>
+
+        /// <summary>
+        /// Gets the <#=propName#> request builder.
+        /// </summary>
+        public I<#=requestBuilder#> <#=sanitizedPropName#>
+        {
+            get
+            {
+                return new <#=requestBuilder#>(this.BaseUrl + "/<#=prop.Name#>", this);
+            }
+        }
+    <#
+        }
+    }
+    #>
+
+    }
+}

@@ -1,0 +1,41 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
+var clientNameLower = clientName.ToLowerFirstChar();
+var prop = host.CurrentType.AsOdcmProperty(); 
+var innerEntity = prop.Type;
+var innerEntityType = innerEntity.Name.ToCheckedCase();
+var entityCollectionRequest = prop.Name.ToCheckedCase() + "CollectionRequest";
+var entityCollectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
+
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    /// <summary>
+    /// The type <#=entityCollectionPage#>.
+    /// </summary>
+    public partial class <#=entityCollectionPage#> : CollectionPage<<#=innerEntityType#>>, I<#=entityCollectionPage#>
+    {
+        /// <summary>
+        /// Gets the next page <see cref="I<#=entityCollectionRequest#>"/> instance.
+        /// </summary>
+        public I<#=entityCollectionRequest#> NextPageRequest { get; private set; }
+
+        /// <summary>
+        /// Initializes the NextPageRequest property.
+        /// </summary>
+        public void InitializeNextPageRequest(I<#=clientName#> <#=clientNameLower#>, string nextPageLinkString)
+        {
+            if (!string.IsNullOrEmpty(nextPageLinkString))
+            {
+                this.NextPageRequest = new <#=entityCollectionRequest#>(
+                    nextPageLinkString,
+                    <#=clientNameLower#>,
+                    null);
+            }
+        }
+    }
+}

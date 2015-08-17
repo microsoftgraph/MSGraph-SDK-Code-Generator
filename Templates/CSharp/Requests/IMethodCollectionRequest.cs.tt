@@ -1,0 +1,51 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+
+var method = host.CurrentType.AsOdcmMethod();
+var returnType = method.ReturnType;
+var responseNamePrefix = returnType.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
+var collectionRequest = responseNamePrefix + "CollectionRequest";
+var collectionPage = responseNamePrefix + "CollectionPage";
+
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// The interface I<#=collectionRequest#>.
+    /// </summary>
+    public interface I<#=collectionRequest#>
+    {
+        /// <summary>
+        /// Gets the collection page.
+        /// </summary>
+        /// <returns>The collection page.</returns>
+        Task<I<#=collectionPage#>> GetAsync();
+
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=collectionRequest#> Expand(string value);
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=collectionRequest#> Select(string value);
+
+        /// <summary>
+        /// Adds the specified top value to the request.
+        /// </summary>
+        /// <param name="value">The top value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=collectionRequest#> Top(string value);
+    }
+}

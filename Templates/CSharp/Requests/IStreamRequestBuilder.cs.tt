@@ -1,0 +1,28 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var prop = host.CurrentType.AsOdcmProperty();
+var propName = prop.Name;
+var propClass = prop.Class.Name.ToCheckedCase();
+var propRequest = propClass + prop.Name.ToCheckedCase() + "Request";
+var propRequestBuilder = propClass + prop.Name.ToCheckedCase() + "RequestBuilder";
+
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// The interface I<#=propRequestBuilder#>.
+    /// </summary>
+    public partial interface I<#=propRequestBuilder#>
+    {
+        /// <summary>
+        /// Builds the request.
+        /// </summary>
+        /// <returns>The built request.</returns>
+        I<#=propRequest#> Request();
+    }
+}

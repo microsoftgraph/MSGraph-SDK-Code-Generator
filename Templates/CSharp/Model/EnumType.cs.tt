@@ -1,0 +1,31 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#@ output extension="\\" #>
+
+<#
+var enumT = host.CurrentType.AsOdcmEnum();
+var enumName = enumT.Name.ToCheckedCase();
+#>
+
+<#=GetCommentHeader()#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    /// <summary>
+    /// The enum <#=enumName#>.
+    /// </summary>
+    public partial enum <#=enumName#>
+    {
+    <#
+        foreach(var value in enumT.Members)
+        {
+    #>
+        /// <summary>
+        /// <#=value.Name.SplitCamelCase()#>
+        /// </summary>
+        <#=value.Name.GetSanitizedPropertyName()#>,
+    <#
+        }
+    #>
+}
+}

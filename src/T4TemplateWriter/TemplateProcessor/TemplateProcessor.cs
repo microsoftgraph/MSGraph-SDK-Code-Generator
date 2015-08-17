@@ -58,6 +58,12 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {SubProcessor.ComplexType,                  ProcessComplexTypes},
                 {SubProcessor.EnumType,                     ProcessEnumTypes},
                 {SubProcessor.EntityContainer,              ProcessEntityContainerType},
+                {SubProcessor.Property,                     ProcessProperties},
+                {SubProcessor.CollectionProperty,           ProcessCollections},
+                {SubProcessor.Method,                       ProcessMethods},
+                {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
+                {SubProcessor.CollectionMethod,             ProcessCollectionMethods},
+                {SubProcessor.MethodWithBody,               ProcessMethodsWithBody},
                 {SubProcessor.Other,                        ProcessTemplate},
             };
         }
@@ -79,7 +85,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         public IEnumerable<TextFile> Process(ITemplateInfo templateInfo)
         {
 
-            Func<ITemplateInfo, IEnumerable<TextFile>> subProcessor = ProcessTemplate;
+           Func<ITemplateInfo, IEnumerable<TextFile>> subProcessor = ProcessTemplate;
             SubProcessors.TryGetValue(templateInfo.SubprocessorType, out subProcessor);
 
             return subProcessor(templateInfo);
@@ -89,34 +95,118 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         protected virtual IEnumerable<TextFile> ProcessEntityContainerType(ITemplateInfo templateInfo)
         {
             var container = this.CurrentModel.EntityContainer;
-            yield return ProcessTemplate(templateInfo, container, templateInfo.BaseFileName(className: container.Name));
+            yield return ProcessTemplate(templateInfo, container, templateInfo.BaseFileName(containerName: container.Name));
         }
 
         protected virtual IEnumerable<TextFile> ProcessEnumTypes(ITemplateInfo templateInfo)
         {
-            foreach (OdcmObject enumType in GetClass(templateInfo, CurrentModel.GetEnumTypes))
+            foreach (OdcmObject enumType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEnumTypes))
             {
-                yield return ProcessTemplate(templateInfo, enumType, templateInfo.BaseFileName(className: enumType.Name));
+                yield return ProcessTemplate(templateInfo, 
+                                             enumType, 
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: enumType.Name));
             }
         }
 
         protected virtual IEnumerable<TextFile> ProcessComplexTypes(ITemplateInfo templateInfo)
         {
-            foreach (OdcmObject complexType in GetClass(templateInfo, CurrentModel.GetComplexTypes))
+            foreach (OdcmObject complexType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetComplexTypes))
             {
-                yield return ProcessTemplate(templateInfo, complexType, templateInfo.BaseFileName(className:complexType.Name));
+                yield return ProcessTemplate(templateInfo, 
+                                             complexType, 
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: complexType.Name));
             }
         }
 
         protected virtual IEnumerable<TextFile> ProcessEntityTypes(ITemplateInfo templateInfo)
         {
-            foreach (OdcmClass entityType in GetClass(templateInfo, CurrentModel.GetEntityTypes))
+            foreach (OdcmClass entityType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEntityTypes))
             {
-                yield return ProcessTemplate(templateInfo, entityType, templateInfo.BaseFileName(className: entityType.Name));
+                yield return ProcessTemplate(templateInfo, 
+                                             entityType, 
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: entityType.Name));
             }
         }
 
-        protected virtual IEnumerable<OdcmObject> GetClass(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod) 
+        protected virtual IEnumerable<TextFile> ProcessCollections(ITemplateInfo templateInfo)
+        {
+            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CollectionProperties))
+            {
+                yield return ProcessTemplate(templateInfo, 
+                                             property, 
+                                             templateInfo.BaseFileName(containerName:this.CurrentModel.EntityContainer.Name,
+                                                                       className:property.Class.Name,
+                                                                       propertyName:property.Name));
+            }
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo)
+        {
+            foreach(OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetProperties))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             property,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: property.Class.Name,
+                                                                       propertyName: property.Name));
+            }
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo)
+        {
+            return this.ProcessMethods(templateInfo, this.CurrentModel.GetMethods);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessMethodsWithBody(ITemplateInfo templateInfo)
+        {
+            return this.ProcessMethods(templateInfo, this.MethodsWithBody);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessCollectionMethods(ITemplateInfo templateInfo)
+        {
+            return this.ProcessMethods(templateInfo, this.CollectionMethods);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessNonCollectionMethods(ITemplateInfo templateInfo)
+        {
+            return this.ProcessMethods(templateInfo, this.NonColledtionMethods);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo, Func<IEnumerable<OdcmMethod>> methods)
+        {
+            foreach(OdcmMethod method in FilterOdcmEnumerable(templateInfo, methods))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                                   method,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: method.Class.Name,
+                                                                       methodName: method.Name));
+            }
+        }
+
+        protected virtual IEnumerable<OdcmMethod> NonColledtionMethods()
+        {
+            return this.CurrentModel.GetMethods().Where(method => !method.IsCollection);
+        }
+        protected virtual IEnumerable<OdcmMethod> MethodsWithBody()
+        {
+            return this.CurrentModel.GetMethods().Where(method => method.Parameters != null && method.Parameters.Any() && method.IsAction());
+        }
+
+        protected virtual IEnumerable<OdcmMethod> CollectionMethods()
+        {
+            return this.CurrentModel.GetMethods().Where(method => method.IsCollection);
+        }
+
+        protected virtual IEnumerable<OdcmProperty> CollectionProperties()
+        {
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection);
+        }
+
+        protected virtual IEnumerable<OdcmObject> FilterOdcmEnumerable(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod) 
         {
             foreach (OdcmObject odcmObject in modelMethod())
             {

@@ -129,19 +129,23 @@ namespace Vipr.T4TemplateWriter
 
             var candidates = Directory.GetFiles(TemplatesDirectory, "*" + requestFileName + "*", SearchOption.AllDirectories);
 
-            if (candidates.Length == 1 && File.Exists(candidates[0]))
+            if (candidates.Length >= 1)
             {
-                location = candidates[0];
-                content = File.ReadAllText(location);
-                return true;
+                foreach(var canidate in candidates)
+                {
+                    var canidateFileName = Path.GetFileName(canidate);
+                    if (canidateFileName.Equals(requestFileName))
+                    {
+                        location = canidate;
+                        content = File.ReadAllText(location);
+                        return true;
+                    }
+                }
             }
+
             else if (candidates.Length < 1)
             {
                 // file not found
-            }
-            else if (candidates.Length > 1)
-            {
-                // more than one file found
             }
 
             return false;
