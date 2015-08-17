@@ -1,14 +1,14 @@
 ﻿{
-    "AvailableLanguages": [ "Java", "ObjC", "CSharp" ],
-    "TargetLanguage": "CSharp",
+    "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python" ],
+    "TargetLanguage": "Python",
     "Plugins": [ ],
     "PrimaryNamespaceName": "oneDrive",
     "NamespacePrefix": "OD",
     "InitializeCollections": "false",
     "AllowShortActions": "false",
-    "NamespaceOverride": "com.microsoft.onedrive",
+    "NamespaceOverride": "",
     "TemplatesDirectory": "..\\..\\..\\..\\Templates",
-    "DefaultFileCasing": "UpperCamel",
+    "DefaultFileCasing": "Snake",
     "TemplateMapping": {
         "CSharp": {
             "IEntityClient": { "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
@@ -31,8 +31,8 @@
             "IMethodCollectionRequestBuilder": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionRequestBuilder" },
             "MethodRequestBody": { "SubProcessor": "MethodWithBody", "Type": "Model", "Name": "<Class><Method>RequestBody" },
             "MethodCollectionResponse": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionResponse" },
-            "MethodCollectionPage" :  {"SubProcessor":  "CollectionMethod", "Type" : "Request", "Name":  "<Class><Method>CollectionPage" },
-            "IMethodCollectionPage" :  {"SubProcessor":  "CollectionMethod", "Type" : "Request", "Name":  "I<Class><Method>CollectionPage" },
+            "MethodCollectionPage": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionPage" },
+            "IMethodCollectionPage": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionPage" },
             "SharedCSharp": { "SubProcessor": "Other", "Type": "Shared" }
         },
         "Shared": {
@@ -52,7 +52,15 @@
             "Shared": { "SubProcessor": "Other", "Type": "Shared" }
         },
         "Java": {
-        }
+        },
+        "Python": {
+            "EntityCollection": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection" },
+            "EntityRequest": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request" },
+            "EntityRequestBuilder": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request_builder" },
+            "Method": { "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>" },
+            "Stream": { "SubProcessor": "Property", "Type": "Request", "Name ": "<Class>_<Property>_request" },
+            "__init__" : {"SubProcessor" : "Other", "Type" :  "Other", "Name" :  "__init__"}
+        } 
     }
 
 }

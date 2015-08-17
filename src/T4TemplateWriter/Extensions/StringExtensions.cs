@@ -48,17 +48,17 @@ namespace Vipr.T4TemplateWriter.Extensions
             return Regex.Replace(input, "(?<=[a-z])([A-Z])", " $1", RegexOptions.Compiled);
         }
 
-        public static string Singularize(this string input) 
+        public static string ToSingularize(this string input) 
         {
             return Inflector.Inflector.Singularize(input);
         }
 
-        public static string Camelize (this string input)
+        public static string ToCamelize (this string input)
         {
             return Inflector.Inflector.Camelize(input);
         }
 
-        public static string UnderScore(this string input)
+        public static string ToUnderscore(this string input)
         {
             return Inflector.Inflector.Underscore(input);
         }

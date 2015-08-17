@@ -115,6 +115,11 @@ namespace Vipr.T4TemplateWriter
             return method.IsComposable; //TODO:REVIEW
         }
 
+        public static bool IsStream(this OdcmProperty property)
+        {
+            return property.Type.Name.Contains("stream");
+        }
+
         public static string GetNamespace(this OdcmModel model)
         {
             var @namespace = GetOdcmNamespace(model);

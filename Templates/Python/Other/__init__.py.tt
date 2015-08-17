@@ -18,7 +18,7 @@ from .models.<#=enumType.GetTypeString().ToUnderscore()#> import <#=enumType.Get
 
 //Complex
 var complexTypes = CurrentModel.GetComplexTypes();
-var complexNavigableTypes = CurrentModel.GetComplexTypes().WhereIsNavigable();
+var complexNavigableTypes = CurrentModel.GetComplexTypes().Where(complexType => complexType.IsNavigable);
 
 //remove the navigable types, as they will be taken care of in entities
 complexTypes = complexTypes.Where(t => !complexNavigableTypes.Any(c => c.GetTypeString() == t.GetTypeString()));

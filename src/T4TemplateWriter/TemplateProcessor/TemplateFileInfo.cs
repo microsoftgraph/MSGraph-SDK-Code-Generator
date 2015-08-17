@@ -87,7 +87,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                         coreName = coreName.ToLowerFirstChar();
                         break;
                     case FileNameCasing.Snake:
-                        coreName = coreName.ToLowerFirstChar().UnderScore();
+                        coreName = coreName.ToLowerFirstChar().ToUnderscore();
                         break;
                 }
             }

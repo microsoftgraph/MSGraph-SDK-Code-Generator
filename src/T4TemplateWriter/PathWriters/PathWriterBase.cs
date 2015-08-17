@@ -24,12 +24,12 @@ namespace Vipr.T4TemplateWriter.Output
 
         }
 
-        protected virtual string TransformFileName(ITemplateInfo template, String baseFileName)
+        protected virtual string TransformFileName(ITemplateInfo template, string baseFileName)
         {
             return String.Format("{0}.{1}", baseFileName, template.FileExtension);
         }
 
-        public virtual string WritePath(ITemplateInfo template, String baseFileName)
+        public virtual string WritePath(ITemplateInfo template, string baseFileName)
         {
             return Path.Combine(
                 template.TemplateLanguage,

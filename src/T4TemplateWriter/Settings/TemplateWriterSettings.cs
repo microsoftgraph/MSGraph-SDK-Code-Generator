@@ -78,7 +78,7 @@ namespace Vipr.T4TemplateWriter.Settings
                         foreach(var mapping in languageConfiguration)
                         {
                             // Any language specific setting will take precedent over the shared configurations.
-                            templateConfiguration.Add(mapping.Key, mapping.Value);
+                            templateConfiguration[mapping.Key] = mapping.Value;
                         }
                     }
                 }
