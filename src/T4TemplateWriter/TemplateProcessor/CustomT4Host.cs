@@ -22,12 +22,12 @@ namespace Vipr.T4TemplateWriter
     {
         // see https://msdn.microsoft.com/en-us/library/bb126579(v=vs.110).aspx
 
-        public CustomT4Host(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel)
+        public CustomT4Host(ITemplateInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel)
         {
             this.Reset(templateInfo, templatesDirectory, currentType, currentModel);
         }
 
-        public void Reset(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel)
+        public void Reset(ITemplateInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel)
         {
             this.TemplateFile = templateInfo.FullPath;
             this.TemplatesDirectory = templatesDirectory;
@@ -129,19 +129,23 @@ namespace Vipr.T4TemplateWriter
 
             var candidates = Directory.GetFiles(TemplatesDirectory, "*" + requestFileName + "*", SearchOption.AllDirectories);
 
-            if (candidates.Length == 1 && File.Exists(candidates[0]))
+            if (candidates.Length >= 1)
             {
-                location = candidates[0];
-                content = File.ReadAllText(location);
-                return true;
+                foreach(var canidate in candidates)
+                {
+                    var canidateFileName = Path.GetFileName(canidate);
+                    if (canidateFileName.Equals(requestFileName))
+                    {
+                        location = canidate;
+                        content = File.ReadAllText(location);
+                        return true;
+                    }
+                }
             }
+
             else if (candidates.Length < 1)
             {
                 // file not found
-            }
-            else if (candidates.Length > 1)
-            {
-                // more than one file found
             }
 
             return false;

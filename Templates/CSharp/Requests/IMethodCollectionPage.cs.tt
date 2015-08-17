@@ -1,0 +1,50 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
+var clientNameLower = clientName.ToLowerFirstChar();
+
+var method = host.CurrentType.AsOdcmMethod();
+var returnType = method.ReturnType;
+var responseTypeName = returnType.Name.ToCheckedCase();
+var responseNamePrefix = responseTypeName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
+var entityCollectionRequest = responseNamePrefix + "CollectionRequest";
+var entityCollectionPage = responseNamePrefix + "CollectionPage";
+
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    /// <summary>
+    /// The interface I<#=entityCollectionPage#>.
+    /// </summary>
+    public interface I<#=entityCollectionPage#> : ICollectionPage<<#=responseTypeName#>>
+    {
+        /// <summary>
+        /// Gets the next page <see cref="I<#=entityCollectionRequest#>"/> instance.
+        /// </summary>
+        I<#=entityCollectionRequest#> NextPageRequest { get; }
+        <#
+        if (method.HasSpecialCollection())
+        {
+            var specialMethodParams = method.SpecialMethodParameters();
+            foreach (var parameter in specialMethodParams)
+            {
+        #>
+
+        /// <summary>
+        /// Gets the <#=parameter.Name#>.
+        /// </summary>
+        string <#=parameter.Name.ToCheckedCase()#> { get; set; }
+        <#
+            }
+        }
+        #>
+
+        /// <summary>
+        /// Initializes the NextPageRequest property.
+        /// </summary>
+        void InitializeNextPageRequest(I<#=clientName#> <#=clientNameLower#>, string nextPageLinkString);
+    }
+}

@@ -1,0 +1,187 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
+var clientNameLower = clientName.ToLowerFirstChar();
+OdcmClass entity = host.CurrentType.AsOdcmClass();
+var entityName = entity.Name.ToCheckedCase();
+var request = entityName + "Request";
+var requestBuilder = entityName + "RequestBuilder";
+
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// The type  <#=entity.Name.ToCheckedCase()#>RequestBuilder.
+    /// </summary>
+    public partial class <#=requestBuilder#> : BaseRequestBuilder, I<#=requestBuilder#>
+    {
+        /// <summary>
+        /// Constructs a new <#=requestBuilder#>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the built request.</param>
+        /// <param name="<#=clientNameLower#>">The <see cref="I<#=clientName#>"/> for handling requests.</param>
+        public <#=requestBuilder#>(
+            string requestUrl,
+            I<#=clientName#> <#=clientNameLower#>)
+            : base(requestUrl, <#=clientNameLower#>)
+        {
+        }
+
+        /// <summary>
+        /// Builds the request.
+        /// </summary>
+        /// <returns>The built request.</returns>
+        public I<#=request#> Request()
+        {
+            return this.Request(null);
+        }
+
+        /// <summary>
+        /// Builds the request.
+        /// </summary>
+        /// <param name="options">The query and header options for the request.</param>
+        /// <returns>The built request.</returns>
+        public I<#=request#> Request(IList<Option> options)
+        {
+            return new <#=request#>(this.RequestUrl, this.<#=clientName#>, options);
+        }
+
+    <#foreach(var child in entity.Derived)
+    {
+        var childName = child.Name.ToCheckedCase();
+    #>
+
+        /// <summary>
+        /// Gets the request builder for <#=childName#>.
+        /// </summary>
+        /// <returns>The <see cref="I<#=childName#>RequestBuilder"/>.</returns>
+        public I<#=childName#>RequestBuilder <#=childName#>
+        {
+            get
+            {
+                return new <#=childName#>RequestBuilder(this.AppendSegmentToRequestUrl("<#=child.Name#>"), this.<#=clientName#>);
+            }
+        }  
+    <#
+    }
+
+    foreach(var prop in entity.NavigationProperties()){
+
+        var propName = prop.Name.ToCheckedCase();
+        var propRequestBuilder = propName + "RequestBuilder";
+
+        if(prop.IsCollection())
+        {
+            var collectionRequestBuilder = propName + "CollectionRequestBuilder";
+    #>
+
+        /// <summary>
+        /// Gets the request builder for <#=propName#>.
+        /// </summary>
+        /// <returns>The <see cref="I<#=collectionRequestBuilder#>"/>.</returns>
+        public I<#=collectionRequestBuilder#> <#=propName#>
+        {
+            get
+            {
+                return new <#=collectionRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.<#=clientName#>);
+            }
+        }
+    <#
+        }
+        else
+        {
+    #>
+
+        /// <summary>
+        /// Gets the request builder for <#=propName#>.
+        /// </summary>
+        /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
+        public I<#=propRequestBuilder#> <#=propName#>
+        {
+            get
+            {
+                return new <#=propRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.<#=clientName#>);
+            }
+        }
+    <#
+        }
+    }
+
+    foreach(var prop in entity.GetPropertyType("Stream"))
+    {
+        var propName = prop.Name.ToCheckedCase();
+        var propRequestBuilder = propName + "RequestBuilder";
+    #>
+
+        /// <summary>
+        /// Gets the request builder for <#=propName#>.
+        /// </summary>
+        /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
+        public I<#=entityName#><#=propRequestBuilder#> <#=propName#>
+        {
+            get
+            {
+                return new <#=entityName#><#=propRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.<#=clientName#>);
+            }
+        }
+    <#
+    }
+
+    foreach(var method in entity.Methods)
+    {
+        var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
+        var baseName = method.Class.Name.ToCheckedCase() + methodName;
+
+        var paramStringBuilder = new System.Text.StringBuilder();
+        var builderInitializerStringBuilder = new System.Text.StringBuilder();
+
+        builderInitializerStringBuilder.Append(Environment.NewLine);
+        builderInitializerStringBuilder.Append("                ");
+        builderInitializerStringBuilder.Append("this.AppendSegmentToRequestUrl(\"" + method.Name + "\"),");
+        builderInitializerStringBuilder.Append(Environment.NewLine);
+        builderInitializerStringBuilder.Append("                ");
+        builderInitializerStringBuilder.Append("this." + clientName + ",");
+
+        var hasParameters = method.Parameters != null && method.Parameters.Any();
+
+        if (hasParameters)
+        {
+            foreach (var param in method.Parameters)
+            {
+                var paramTypeString = param.Type.GetTypeString();
+
+                paramStringBuilder.Append(Environment.NewLine);
+                paramStringBuilder.Append("            ");
+                paramStringBuilder.Append(paramTypeString);
+                paramStringBuilder.Append(" " + param.Name.ToLowerFirstChar() + ",");
+
+                builderInitializerStringBuilder.Append(Environment.NewLine);
+                builderInitializerStringBuilder.Append("                ");
+                builderInitializerStringBuilder.Append(param.Name.ToLowerFirstChar() + ",");
+            }
+
+            paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);
+        }
+        
+        builderInitializerStringBuilder.Remove(builderInitializerStringBuilder.Length - 1, 1);
+    #>
+
+        /// <summary>
+        /// Gets the request builder for <#=baseName#>.
+        /// </summary>
+        /// <returns>The <see cref="I<#=baseName#>RequestBuilder"/>.</returns>
+        public I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>)
+        {
+            return new <#=baseName#>RequestBuilder(<#=builderInitializerStringBuilder.ToString()#>);
+        }
+    <#
+    }
+    #>
+
+    }
+}

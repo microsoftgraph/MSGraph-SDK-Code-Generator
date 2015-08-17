@@ -1,10 +1,58 @@
 ﻿{
-    "AvailableLanguages": [ "Java", "ObjC" ],
-    "TargetLanguage": "ObjC",
+    "AvailableLanguages": [ "Java", "ObjC", "CSharp" ],
+    "TargetLanguage": "CSharp",
     "Plugins": [ ],
-    "PrimaryNamespaceName": "Microsoft.FileServices",
-    "NamespacePrefix": "MS",
+    "PrimaryNamespaceName": "oneDrive",
+    "NamespacePrefix": "OD",
     "InitializeCollections": "false",
     "AllowShortActions": "false",
-    "NamespaceOverride": "com.microsoft.onenote.services"
+    "NamespaceOverride": "com.microsoft.onedrive",
+    "TemplatesDirectory": "..\\..\\..\\..\\Templates",
+    "DefaultFileCasing": "UpperCamel",
+    "TemplateMapping": {
+        "CSharp": {
+            "IEntityClient": { "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
+            "IEntityRequest": { "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>Request" },
+            "IEntityRequestBuilder": { "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>RequestBuilder" },
+            "EntityCollectionPage": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles" },
+            "IEntityCollectionPage": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "I<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles" },
+            "EntityCollectionRequest": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles" },
+            "IEntityCollectionRequest": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "I<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles" },
+            "EntityCollectionRequestBuilder": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles" },
+            "IEntityCollectionRequestBuilder": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "I<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles" },
+            "EntityCollectionResponse": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionReponse", "Exclude": "nextExpectedRanges;roles" },
+            "IStreamRequest": { "SubProcessor": "Property", "Type": "Request", "Name": "I<Class><Property>Request", "Include": "content" },
+            "IStreamRequestBuilder": { "SubProcessor": "Property", "Type": "Request", "Name": "I<Class><Property>RequestBuilder", "Include": "content" },
+            "IMethodRequest": { "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "I<Class><Method>Request" },
+            "IMethodRequestBuilder": { "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "I<Class><Method>RequestBuilder" },
+            "IMethodCollectionRequest": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionRequest" },
+            "MethodCollectionRequest": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionRequest" },
+            "MethodCollectionRequestBuilder": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionRequestBuilder" },
+            "IMethodCollectionRequestBuilder": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionRequestBuilder" },
+            "MethodRequestBody": { "SubProcessor": "MethodWithBody", "Type": "Model", "Name": "<Class><Method>RequestBody" },
+            "MethodCollectionResponse": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionResponse" },
+            "MethodCollectionPage" :  {"SubProcessor":  "CollectionMethod", "Type" : "Request", "Name":  "<Class><Method>CollectionPage" },
+            "IMethodCollectionPage" :  {"SubProcessor":  "CollectionMethod", "Type" : "Request", "Name":  "I<Class><Method>CollectionPage" },
+            "SharedCSharp": { "SubProcessor": "Other", "Type": "Shared" }
+        },
+        "Shared": {
+            "EntityType": { "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
+            "ComplexType": { "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>" },
+            "EnumType": { "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
+            "EntityClient": { "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
+            "EntityRequest": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
+            "EntityRequestBuilder": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
+            "StreamRequest": { "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>Request", "Include": "content" },
+            "StreamRequestBuilder": { "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>RequestBuilder", "Include": "content" },
+            "MethodRequest": { "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "<Class><Method>Request" },
+            "MethodRequestBuilder": { "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
+        },
+        "ObjC": {
+            "EntityCollectionFetcher": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>CollectionFetcher" },
+            "Shared": { "SubProcessor": "Other", "Type": "Shared" }
+        },
+        "Java": {
+        }
+    }
+
 }

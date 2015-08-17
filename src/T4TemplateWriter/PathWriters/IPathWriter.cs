@@ -10,6 +10,6 @@ namespace Vipr.T4TemplateWriter.Output
     public interface IPathWriter
     {
         OdcmModel Model { get; set; }
-        string WritePath(TemplateFileInfo template, String entityTypeName);
+        string WritePath(ITemplateInfo template, string entityTypeName);
     }
 }

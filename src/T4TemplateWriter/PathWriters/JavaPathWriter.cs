@@ -14,11 +14,11 @@ namespace Vipr.T4TemplateWriter.Output
     public class JavaPathWriter : PathWriterBase
     {
 
-        public override String WritePath(TemplateFileInfo template, String entityTypeName)
+        public override string WritePath(ITemplateInfo template, String baseFileName)
         {
-            var theNamespace = CreateNamespace(template.TemplateType.ToString().ToLower());
+            var theNamespace = CreateNamespace(template.OutputParentDirectory.ToLower());
             var namespacePath = CreatePathFromNamespace(theNamespace);
-            var fileName = TransformFileName(template, entityTypeName);
+            var fileName = TransformFileName(template, baseFileName);
             String filePath = Path.Combine(namespacePath, fileName);
             return filePath;
         }
@@ -41,7 +41,7 @@ namespace Vipr.T4TemplateWriter.Output
             }
 
             @namespace = ConfigurationService.Settings.NamespaceOverride;
-            return folderName != "model" ? string.Format("{0}.{1}", @namespace, folderName)
+            return folderName != null ? string.Format("{0}.{1}", @namespace, folderName)
                                          : @namespace;
         }
 

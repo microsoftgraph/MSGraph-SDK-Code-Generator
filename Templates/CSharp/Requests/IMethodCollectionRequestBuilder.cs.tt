@@ -1,0 +1,44 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var method = host.CurrentType.AsOdcmMethod();
+var returnType = method.ReturnType;
+var responseTypeName = returnType.Name.ToCheckedCase();
+var responseNamePrefix = responseTypeName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
+var collectionRequest = responseNamePrefix + "CollectionRequest";
+var collectionRequestBuilder = collectionRequest + "Builder";
+var entityRequestBuilder = responseNamePrefix + "CollectionRequestBuilder";
+
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// The interface I<#=collectionRequestBuilder#>.
+    /// </summary>
+    public interface I<#=collectionRequestBuilder#>
+    {
+        /// <summary>
+        /// Builds the request.
+        /// </summary>
+        /// <returns>The built request.</returns>
+        I<#=collectionRequest#> Request();
+
+        /// <summary>
+        /// Builds the request.
+        /// </summary>
+        /// <param name="options">The query and header options for the request.</param>
+        /// <returns>The built request.</returns>
+        I<#=collectionRequest#> Request(IList<Option> options);
+
+        /// <summary>
+        /// Gets an <see cref="I<#=entityRequestBuilder#>"/> for the specified <#=responseTypeName#>.
+        /// </summary>
+        /// <param name="id">The ID for the <#=responseTypeName#>.</param>
+        /// <returns>The <see cref="I<#=entityRequestBuilder#>"/>.</returns>
+        I<#=entityRequestBuilder#> this[string id] { get; }
+    }
+}

@@ -1,0 +1,83 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#@ output extension="\\" #>
+<#
+
+OdcmClass entity = host.CurrentType.AsOdcmClass();
+var entityName = entity.Name.ToCheckedCase();
+
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Runtime.Serialization;
+    using Newtonsoft.Json;
+
+    /// <summary>
+    /// The type <#=entityName.SplitCamelCase()#>.
+    /// </summary>
+    [DataContract]
+    public partial class <#=entityName#>
+    {
+    <# 
+        foreach(var property in entity.Properties)
+        {
+            var propertyType = property.IsTypeNullable() || property.IsCollection()
+                    ? property.GetTypeString()
+                    : property.GetTypeString() + "?";
+                    
+            var propertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
+            var propertyCollectionPage = propertyName + "CollectionPage";
+
+            if (property.IsCollection())
+            {
+                if (property.GetTypeString().IsComplex())
+                {
+    #>
+
+        /// <summary>
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+        /// </summary>
+        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        [JsonConverter(typeof(InterfaceConverter<<#=propertyCollectionPage#>>))]
+        public I<#=propertyCollectionPage#> <#=propertyName#> { get; set; }
+    <#
+                }
+                else
+                {
+    #>
+
+        /// <summary>
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+        /// </summary>
+        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        public IEnumerable<<#=propertyType#>> <#=propertyName#> { get; set; }
+    <#
+                }
+            }
+            else
+            {
+    #>
+
+        /// <summary>
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+        /// </summary>
+        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        public <#=propertyType#> <#=propertyName#> { get; set; }
+    <#
+            }
+        }
+    #>
+
+        /// <summary>
+        /// Gets or sets additional data.
+        /// </summary>
+        [JsonExtensionData(ReadData = true)]
+        public IDictionary<string, object> AdditionalData { get; set; }
+
+    }
+}
+

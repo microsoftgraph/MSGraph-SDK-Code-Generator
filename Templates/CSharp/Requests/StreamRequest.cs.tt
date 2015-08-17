@@ -1,0 +1,82 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
+var clientNameLower = clientName.ToLowerFirstChar();
+var prop = host.CurrentType.AsOdcmProperty();
+var propName = prop.Name;
+var propClass = prop.Class.Name.ToCheckedCase();
+var propRequest = propClass + prop.Name.ToCheckedCase() + "Request";
+#>
+
+namespace Microsoft.OneDrive.Sdk
+{
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// The type <#=propRequest#>.
+    /// </summary>
+    public partial class <#=propRequest#> : BaseRequest, I<#=propRequest#>
+    {
+        /// <summary>
+        /// Constructs a new <#=propRequest#>.
+        /// <param name="requestUrl">The request URL.</param>
+        /// <param name="<#=clientNameLower#>">The <see cref="I<#=clientName#>"/> for handling requests.</param>
+        /// <param name="options">Query option name value pairs for the request.</param>
+        /// </summary>
+        public <#=propRequest#>(
+            string requestUrl,
+            I<#=clientName#> <#=clientNameLower#>,
+            IList<Option> options)
+            : base(requestUrl, <#=clientNameLower#>, options)
+        {
+        }
+
+        /// <summary>
+        /// Gets the stream.
+        /// </summary>
+        /// <returns>The stream.</returns>
+        public Task<Stream> GetAsync()
+        {
+            this.Method = "GET";
+            return this.SendStreamRequestAsync(null);
+        }
+
+        /// <summary>
+        /// PUTs the specified stream.
+        /// </summary>
+        /// <typeparam name="T">The type returned by the PUT call.</typeparam>
+        /// <param name="<#=propName#>">The stream to PUT.</param>
+        /// <returns>The object returned by the PUT call.</returns>
+        public Task<T> PutAsync<T>(Stream <#=propName#>) where T : <#=propClass#>
+        {
+            this.Method = "PUT";
+            return this.SendAsync<T>(<#=propName#>);
+        }
+
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        public I<#=propRequest#> Expand(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("expand", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        public I<#=propRequest#> Select(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("select", value));
+            return this;
+        }
+    }
+}

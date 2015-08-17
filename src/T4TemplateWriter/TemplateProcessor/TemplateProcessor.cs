@@ -17,26 +17,13 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
-
-    public enum FileType
-    {
-        ComplexType,
-        EntityType,
-        EnumType,
-        EntityFetcher,
-        EntityOperations,
-        EntityCollectionFetcher,
-        EntityCollectionOperations,
-        EntityClient,
-        Other,
-        Unknown
-    }
-
+ 
     public class TemplateProcessor : ITemplateProcessor
     {
 
         private static CustomT4Host _host;
-        protected static CustomT4Host Host(TemplateFileInfo templateInfo, String templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel)
+
+        protected static CustomT4Host Host(ITemplateInfo templateInfo, String templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel)
         {
             if (_host == null)
             {
@@ -50,47 +37,43 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return _host;
         }
 
-        protected Dictionary<FileType, Func<TemplateFileInfo, IEnumerable<TextFile>>> _subProcessors;
-        protected Dictionary<FileType, Func<TemplateFileInfo, IEnumerable<TextFile>>> SubProcessors
+        private Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>> subProcessors;
+
+        protected Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>> SubProcessors
         {
             get
             {
-                if (null == _subProcessors)
+                if (this.subProcessors == null)
                 {
                     InitializeSubprocessors();
                 }
-                return _subProcessors;
+                return this.subProcessors;
             }
         }
 
         protected void InitializeSubprocessors()
         {
-            _subProcessors = new Dictionary<FileType, Func<TemplateFileInfo, IEnumerable<TextFile>>>() {             
-                // Models
-                {FileType.EntityType,                   ProcessEntityTypes},
-                {FileType.ComplexType,                  ProcessComplexTypes},
-                {FileType.EnumType,                     ProcessEnumTypes},
-               
-                // Fetchers
-                {FileType.EntityCollectionFetcher,      ProcessEntityTypes},
-                {FileType.EntityCollectionOperations,   ProcessEntityTypes},
-                {FileType.EntityFetcher,                ProcessEntityTypes},
-                {FileType.EntityOperations,             ProcessEntityTypes},
-
-                // EntityContainer
-                {FileType.EntityClient,                 ProcessEntityContainerType},
-
-                // Other
-                {FileType.Other,                        ProcessTemplate},
+            this.subProcessors = new Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>>() {             
+                {SubProcessor.EntityType,                   ProcessEntityTypes},
+                {SubProcessor.ComplexType,                  ProcessComplexTypes},
+                {SubProcessor.EnumType,                     ProcessEnumTypes},
+                {SubProcessor.EntityContainer,              ProcessEntityContainerType},
+                {SubProcessor.Property,                     ProcessProperties},
+                {SubProcessor.CollectionProperty,           ProcessCollections},
+                {SubProcessor.Method,                       ProcessMethods},
+                {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
+                {SubProcessor.CollectionMethod,             ProcessCollectionMethods},
+                {SubProcessor.MethodWithBody,               ProcessMethodsWithBody},
+                {SubProcessor.Other,                        ProcessTemplate},
             };
         }
 
         protected OdcmModel CurrentModel { get; set; }
         protected Microsoft.VisualStudio.TextTemplating.Engine T4Engine { get; set; }
         protected IPathWriter PathWriter { get; set; }
-        protected String TemplatesDirectory { get; set; }
+        protected string TemplatesDirectory { get; set; }
 
-        public TemplateProcessor(IPathWriter pathWriter, OdcmModel odcmModel, String templatesDirectory)
+        public TemplateProcessor(IPathWriter pathWriter, OdcmModel odcmModel, string templatesDirectory)
         {
             this.T4Engine = new Microsoft.VisualStudio.TextTemplating.Engine();
             this.CurrentModel = odcmModel;
@@ -99,64 +82,147 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             this.TemplatesDirectory = templatesDirectory;
         }
 
-        public IEnumerable<TextFile> Process(TemplateFileInfo templateInfo)
+        public IEnumerable<TextFile> Process(ITemplateInfo templateInfo)
         {
-            FileType fileType;
-            Func<TemplateFileInfo, IEnumerable<TextFile>> subProcessor;
 
-            Boolean valid = Enum.TryParse(templateInfo.TemplateBaseName, true, out fileType);
+           Func<ITemplateInfo, IEnumerable<TextFile>> subProcessor = ProcessTemplate;
+            SubProcessors.TryGetValue(templateInfo.SubprocessorType, out subProcessor);
 
-            if (valid)
-            {
-                SubProcessors.TryGetValue(fileType, out subProcessor);
-            }
-            else
-            {
-                SubProcessors.TryGetValue(FileType.Other, out subProcessor);
-            }
             return subProcessor(templateInfo);
         }
 
 
-        protected virtual IEnumerable<TextFile> ProcessEntityContainerType(TemplateFileInfo templateInfo)
+        protected virtual IEnumerable<TextFile> ProcessEntityContainerType(ITemplateInfo templateInfo)
         {
             var container = this.CurrentModel.EntityContainer;
-            yield return ProcessTemplate(templateInfo, container);
+            yield return ProcessTemplate(templateInfo, container, templateInfo.BaseFileName(containerName: container.Name));
         }
 
-        protected virtual IEnumerable<TextFile> ProcessEnumTypes(TemplateFileInfo templateInfo)
+        protected virtual IEnumerable<TextFile> ProcessEnumTypes(ITemplateInfo templateInfo)
         {
-            var enumTypes = CurrentModel.GetEnumTypes();
-            foreach (OdcmObject enumType in enumTypes)
+            foreach (OdcmObject enumType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEnumTypes))
             {
-                yield return ProcessTemplate(templateInfo, enumType);
+                yield return ProcessTemplate(templateInfo, 
+                                             enumType, 
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: enumType.Name));
             }
         }
 
-        protected virtual IEnumerable<TextFile> ProcessComplexTypes(TemplateFileInfo templateInfo)
+        protected virtual IEnumerable<TextFile> ProcessComplexTypes(ITemplateInfo templateInfo)
         {
-            var complexTypes = CurrentModel.GetComplexTypes();
-            foreach (OdcmObject complexType in complexTypes)
+            foreach (OdcmObject complexType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetComplexTypes))
             {
-                yield return ProcessTemplate(templateInfo, complexType);
+                yield return ProcessTemplate(templateInfo, 
+                                             complexType, 
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: complexType.Name));
             }
         }
 
-        protected virtual IEnumerable<TextFile> ProcessEntityTypes(TemplateFileInfo templateInfo)
+        protected virtual IEnumerable<TextFile> ProcessEntityTypes(ITemplateInfo templateInfo)
         {
-            var entityTypes = CurrentModel.GetEntityTypes();
-            foreach (OdcmObject entityType in entityTypes)
+            foreach (OdcmClass entityType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEntityTypes))
             {
-                yield return ProcessTemplate(templateInfo, entityType);
+                yield return ProcessTemplate(templateInfo, 
+                                             entityType, 
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: entityType.Name));
             }
         }
 
-        protected IEnumerable<TextFile> ProcessTemplate(TemplateFileInfo templateInfo)
+        protected virtual IEnumerable<TextFile> ProcessCollections(ITemplateInfo templateInfo)
         {
-            yield return this.ProcessTemplate(templateInfo, null);
+            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CollectionProperties))
+            {
+                yield return ProcessTemplate(templateInfo, 
+                                             property, 
+                                             templateInfo.BaseFileName(containerName:this.CurrentModel.EntityContainer.Name,
+                                                                       className:property.Class.Name,
+                                                                       propertyName:property.Name));
+            }
         }
 
-        protected TextFile ProcessTemplate(TemplateFileInfo templateInfo, OdcmObject odcmObject)
+        protected virtual IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo)
+        {
+            foreach(OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetProperties))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             property,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: property.Class.Name,
+                                                                       propertyName: property.Name));
+            }
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo)
+        {
+            return this.ProcessMethods(templateInfo, this.CurrentModel.GetMethods);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessMethodsWithBody(ITemplateInfo templateInfo)
+        {
+            return this.ProcessMethods(templateInfo, this.MethodsWithBody);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessCollectionMethods(ITemplateInfo templateInfo)
+        {
+            return this.ProcessMethods(templateInfo, this.CollectionMethods);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessNonCollectionMethods(ITemplateInfo templateInfo)
+        {
+            return this.ProcessMethods(templateInfo, this.NonColledtionMethods);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo, Func<IEnumerable<OdcmMethod>> methods)
+        {
+            foreach(OdcmMethod method in FilterOdcmEnumerable(templateInfo, methods))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                                   method,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: method.Class.Name,
+                                                                       methodName: method.Name));
+            }
+        }
+
+        protected virtual IEnumerable<OdcmMethod> NonColledtionMethods()
+        {
+            return this.CurrentModel.GetMethods().Where(method => !method.IsCollection);
+        }
+        protected virtual IEnumerable<OdcmMethod> MethodsWithBody()
+        {
+            return this.CurrentModel.GetMethods().Where(method => method.Parameters != null && method.Parameters.Any() && method.IsAction());
+        }
+
+        protected virtual IEnumerable<OdcmMethod> CollectionMethods()
+        {
+            return this.CurrentModel.GetMethods().Where(method => method.IsCollection);
+        }
+
+        protected virtual IEnumerable<OdcmProperty> CollectionProperties()
+        {
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection);
+        }
+
+        protected virtual IEnumerable<OdcmObject> FilterOdcmEnumerable(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod) 
+        {
+            foreach (OdcmObject odcmObject in modelMethod())
+            {
+                if (templateInfo.ShouldIncludeObject(odcmObject))
+                {
+                    yield return odcmObject;
+                }
+            }
+        }
+
+        protected IEnumerable<TextFile> ProcessTemplate(ITemplateInfo templateInfo)
+        {
+            yield return this.ProcessTemplate(templateInfo, null, templateInfo.BaseFileName());
+        }
+
+        protected TextFile ProcessTemplate(ITemplateInfo templateInfo, OdcmObject odcmObject, string fileName)
         {
             var host = TemplateProcessor.Host(templateInfo, this.TemplatesDirectory, odcmObject, this.CurrentModel);
 
@@ -170,13 +236,12 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 throw new InvalidOperationException(errors);
             }
 
-            String fileName = (odcmObject != null) ? odcmObject.Name.ToUpperFirstChar() : templateInfo.TemplateBaseName.ToUpperFirstChar();
             var path = this.PathWriter.WritePath(templateInfo, fileName);
 
             return new TextFile(path, output);
         }
 
-        public string LogErrors(CustomT4Host host, TemplateFileInfo templateInfo)
+        public string LogErrors(CustomT4Host host, ITemplateInfo templateInfo)
         {
             var sb = new StringBuilder();
             if (host.Errors == null || host.Errors.Count <= 0) return sb.ToString();

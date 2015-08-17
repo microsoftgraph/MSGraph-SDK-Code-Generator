@@ -1,0 +1,95 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="Shared.template.tt"#>
+
+#import "<#=prefix#>Models.h"
+<#
+var entity = host.CurrentType.AsOdcmClass();
+#>
+
+<#=writer.GetImplementationDoc(entity.Name)#>
+@implementation <#=prefix + entity.Name#>	
+
+@synthesize odataType = _odataType;
+<#
+foreach(var prop in entity.Properties)
+{
+#>
+@synthesize <#=writer.GetName(prop.Name)#> = _<#=writer.GetName(prop.GetToLowerFirstCharName())#>;
+<#
+}
+#>
+
+- (instancetype)init {
+
+	if (self = [super init]) {
+
+		_odataType = @"#<#=model.GetNamespace()#>.<#=entity.Name#>";
+<#
+foreach(var prop in entity.Properties) {
+	
+	if(prop.IsCollection){
+#>
+		_<#=writer.GetName(prop.GetToLowerFirstCharName())#>  = [[NSMutableArray alloc] initWithCollectionType:@"<#=writer.GetPrefix() + prop.Type.Name#>"];
+<#
+	}
+}
+#>
+	}
+
+	return self;
+}
+<#
+foreach(var prop in entity.Properties)
+{
+	if(prop.Type is OdcmEnum && !prop.IsCollection){
+
+		var enumProp = host.CurrentModel.GetEnumTypes().First(e=> e.Name == prop.Type.Name);
+#>
+- (void)set<#=prop.Name#>String:(NSString *)value {
+<#
+		for(var i=1; i <= enumProp.Members.Count; i++)
+		{
+
+			string value = enumProp.Members[i -1].Name;
+
+#>
+
+	if ([value isEqualToString:@"<#=value#>"]) {
+
+		_<#=writer.GetName(prop.GetToLowerFirstCharName())#> = <#=writer.GetPrefix() + "_" + prop.Type.Name + "_" + value#>;
+        [self valueChangedForInt:<#=prefix + "_" + prop.Type.Name + "_" + value#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
+	}
+<#
+		}
+#>
+}
+<#
+	}else{
+    string setterName =  Char.ToUpperInvariant(prop.Name[0]) + prop.Name.Substring(1);
+    #>
+
+- (void)set<#=setterName#>:(<#=prop.ToSetterTypeString()#>) <#=writer.GetName(prop.GetToLowerFirstCharName())#> {
+    _<#=writer.GetName(prop.GetToLowerFirstCharName())#> = <#=writer.GetName(prop.GetToLowerFirstCharName())#>;
+<#
+    if(prop.Type.Name == "Int32" || prop.Type.Name == "Int64" ){
+#>
+    [self valueChangedForInt:<#=writer.GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
+<#
+    }else if(prop.Type.Name == "Boolean"){
+#>
+    [self valueChangedForBool:<#=writer.GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
+<#
+    }else{
+#>
+	[self valueChanged:<#=writer.GetName(prop.GetToLowerFirstCharName())#> forProperty:@"<#=writer.GetName(prop.Name)#>"];
+<#
+    }
+#>
+}
+    <#
+    }
+}
+
+#>
+
+@end

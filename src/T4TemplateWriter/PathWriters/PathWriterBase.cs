@@ -24,28 +24,17 @@ namespace Vipr.T4TemplateWriter.Output
 
         }
 
-        protected virtual string TransformFileName(TemplateFileInfo template, String entityTypeName)
+        protected virtual string TransformFileName(ITemplateInfo template, String baseFileName)
         {
-            String result;
-
-            if (template.TemplateType == TemplateType.Fetchers)
-            {
-                result = template.TemplateName.Replace("Entity", entityTypeName);
-            }
-            else
-            {
-                result = String.Format("{0}.{1}", entityTypeName, template.FileExtension);
-            }
-
-            return result;
+            return String.Format("{0}.{1}", baseFileName, template.FileExtension);
         }
 
-        public virtual string WritePath(TemplateFileInfo template, String entityTypeName)
+        public virtual string WritePath(ITemplateInfo template, String baseFileName)
         {
             return Path.Combine(
                 template.TemplateLanguage,
-                template.TemplateType.ToString(),
-                this.TransformFileName(template, entityTypeName)
+                template.OutputParentDirectory,
+                this.TransformFileName(template, baseFileName)
             );
         }
 

@@ -2,60 +2,135 @@
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.IO;
+using Vipr.Core.CodeModel;
+using Vipr.T4TemplateWriter.Extensions;
 
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
 
-    public class TemplateFileInfo : Vipr.T4TemplateWriter.TemplateProcessor.TemplateInfoBase
+    public class TemplateFileInfo : ITemplateInfo
     {
-        public override String Id { get { return this.FullPath; } }
+        public string Id { get { return this.FullPath; } }
 
-        public override TemplateType TemplateType { get; set; }
+        public string TemplateName { get; set; }
 
-        public override String TemplateName { get; set; }
+        public string TemplateLanguage { get; set; }
 
-        public override String TemplateLanguage { get; set; }
+        public Template TemplateType { get; set; }
 
-        public String TemplateBaseName { get; set; }
+        public SubProcessor SubprocessorType { get; set; }
 
-        public String FullPath { get; set; }
+        public FileNameCasing Casing { get; set; }
 
-        public String FileExtension { get; set; }
+        public string OutputParentDirectory { get; set; }
 
-        public TemplateFileInfo(String fullPath)
+        public string TemplateBaseName { get; set; }
+
+        public string FullPath { get; set; }
+
+        public string NameFormat { get; set; }
+
+        public string FileExtension { get; set; }
+        public IEnumerable<string> IncludedObjects { get; set; }
+
+        public IEnumerable<string> ExcludedObjects { get; set; }
+
+        public IEnumerable<string> ObjectDescriptions { get; set; }
+
+        public bool ShouldIncludeObject(OdcmObject odcmObject)
         {
-            this.FullPath = fullPath;
-
-            // <rootPath>/<grandparent>/<parent>/<fileName>.<fileExtension>.tt
-            this.TemplateName = Path.GetFileNameWithoutExtension(fullPath);  // <fileName>.<fileExtension>
-            this.FileExtension = Path.GetExtension(this.TemplateName).Substring(1);  // <fileExtension>
-
-            this.TemplateBaseName = Path.GetFileNameWithoutExtension(this.TemplateName); // <fileName>
-
-            String parentPath = Path.GetDirectoryName(fullPath);  // <rootPath>/<grandparent>/<parent>
-            String parentName = Path.GetFileNameWithoutExtension(parentPath);  // <parent>
-
-            String grandparentPath = Path.GetDirectoryName(parentPath);  // <rootPath>/<grandparent>
-            String grandparentName = Path.GetFileNameWithoutExtension(grandparentPath);  // <grandparent>
-
-            this.TemplateLanguage = grandparentName;
-
-            TemplateType parsed;
-            Boolean valid = Enum.TryParse(parentName, true, out parsed);
-
-            if (valid)
+            bool shouldInclude = true;
+            if (this.IncludedObjects != null)
             {
-                this.TemplateType = parsed;
+                shouldInclude = this.IncludedObjects.Any(objectName => odcmObject.Name.Equals(objectName));
+            }
+            else if (this.ExcludedObjects != null)
+            {
+                shouldInclude = this.ExcludedObjects.All(objectName => !odcmObject.Name.Equals(objectName));
+            }
+
+            // Include and Exclude have priority over matches. 
+            // Only check if the description matches if we should include the object.
+            if (shouldInclude && this.ObjectDescriptions != null)
+            {
+                shouldInclude = this.ObjectDescriptions.Any(objDescp => odcmObject.LongDescriptionContains(objDescp));
+            }
+
+            return shouldInclude;
+        }
+
+        public string BaseFileName(string containerName = "", string className = "", string propertyName = "", string methodName = "")
+        {
+            string coreName;
+            if (this.NameFormat != null)
+            {
+                // If the namespace has been left on the method name, remove it.
+                if (!String.IsNullOrEmpty(methodName) && methodName.Contains('.'))
+                {
+                    methodName = methodName.Split('.')[1];
+                }
+                //Replace all values with UpperCamelCased values from Edmx (default for Edmx is lower camel case).
+                coreName = this.NameFormat.Replace("<Class>", className.ToUpperFirstChar())
+                                          .Replace("<Property>", propertyName.ToUpperFirstChar())
+                                          .Replace("<Method>", methodName.ToUpperFirstChar())
+                                          .Replace("<Container>", containerName.ToUpperFirstChar());
+                // replace with the proepr naming scheme.
+                switch (this.Casing)
+                {
+                    case FileNameCasing.UpperCamel:
+                        coreName = coreName.ToUpperFirstChar();
+                        break;
+                    case FileNameCasing.LowerCamel:
+                        coreName = coreName.ToLowerFirstChar();
+                        break;
+                    case FileNameCasing.Snake:
+                        coreName = coreName.ToLowerFirstChar().UnderScore();
+                        break;
+                }
             }
             else
             {
-                Console.WriteLine("Unknown template type. Recognized types are Base, Fetcher, Model, and Other.");
-                this.TemplateType = TemplateType.Unknown;
+                coreName = this.TemplateBaseName;
             }
-
+            return coreName;
         }
 
+        virtual protected bool Equals(TemplateFileInfo other)
+        {
+            return (this.Id == other.Id);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((TemplateFileInfo)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
+
+        public static bool operator ==(TemplateFileInfo left, TemplateFileInfo right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(TemplateFileInfo left, TemplateFileInfo right)
+        {
+            return !Equals(left, right);
+        }
+
+        public override string ToString()
+        {
+            var dirSep = Path.DirectorySeparatorChar;
+            return (this.TemplateLanguage + dirSep + this.TemplateName + dirSep + this.TemplateName);
+        }
 
     }
 }

@@ -19,27 +19,48 @@ namespace Vipr.T4TemplateWriter.Extensions
             return Boolean.Parse(source);
         }
 
+        public static string ToCheckedCase(this string input)
+        {
+            return input.Substring(0, 1).ToUpper() + input.Substring(1);
+        }
 
         public static IEnumerable<T> ToIEnumerable<T>(this T value)
         {
             yield return value;
         }
 
-        public static string ToLowerFirstChar(this string input) {
+        public static string ToLowerFirstChar(this string input) 
+        {
             return Char.ToLowerInvariant(input[0]) + input.Substring(1);
         }
 
-        public static string ToUpperFirstChar(this string input) {
-            return Char.ToUpperInvariant(input[0]) + input.Substring(1);
+        public static string ToUpperFirstChar(this string input) 
+        {
+            if (input.Length > 0)
+            {
+                return Char.ToUpperInvariant(input[0]) + input.Substring(1);
+            }
+            return input;
         }
 
-        public static String SplitCamelCase(this String input) {
+        public static string SplitCamelCase(this String input) 
+        {
             return Regex.Replace(input, "(?<=[a-z])([A-Z])", " $1", RegexOptions.Compiled);
         }
 
-        public static string Singularize(this string input) {
-            var output = Inflector.Inflector.Singularize(input);
-            return output ?? input;
+        public static string Singularize(this string input) 
+        {
+            return Inflector.Inflector.Singularize(input);
+        }
+
+        public static string Camelize (this string input)
+        {
+            return Inflector.Inflector.Camelize(input);
+        }
+
+        public static string UnderScore(this string input)
+        {
+            return Inflector.Inflector.Underscore(input);
         }
 
     }

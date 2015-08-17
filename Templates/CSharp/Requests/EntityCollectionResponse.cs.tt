@@ -1,0 +1,35 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var prop = host.CurrentType.AsOdcmProperty();
+var collectionResponse = prop.Name.ToCheckedCase() + "CollectionResponse";
+var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
+
+#>
+namespace Microsoft.OneDrive.Sdk
+{
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+    using Newtonsoft.Json;
+
+    /// <summary>
+    /// The type <#=collectionResponse#>.
+    /// </summary>
+    [DataContract]
+    public class <#=collectionResponse#>
+    {
+        /// <summary>
+        /// Gets or sets the <see cref="I<#=collectionPage#>"/> value.
+        /// </summary>
+        [JsonConverter(typeof(InterfaceConverter<<#=collectionPage#>>))]
+        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+        public I<#=collectionPage#> Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets additional data.
+        /// </summary>
+        [JsonExtensionData(ReadData = true)]
+        public IDictionary<string, object> AdditionalData { get; set; }
+    }
+}

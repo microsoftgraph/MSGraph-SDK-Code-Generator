@@ -12,35 +12,19 @@ namespace Vipr.T4TemplateWriter.Output
     class ObjCPathWriter : PathWriterBase
     {
 
-        public override string WritePath(TemplateFileInfo template, String entityTypeName)
+        public override string WritePath(ITemplateInfo template, string entityTypeName)
         {
-            String prefix = ConfigurationService.Settings.NamespacePrefix;
-            String coreFileName = this.TransformFileName(template, entityTypeName);
-            String extension = template.FileExtension;
-
-            String containerName = entityTypeName == this.Model.EntityContainer.Name ? String.Empty : this.Model.EntityContainer.Name;
+            string prefix = ConfigurationService.Settings.NamespacePrefix;
+            string coreFileName = this.TransformFileName(template, entityTypeName);
 
             return Path.Combine(
-                template.TemplateType.ToString(), 
-                String.Format("{0}{1}{2}",
+                template.OutputParentDirectory, 
+                String.Format("{0}{1}",
                     prefix,
-                    containerName,
                     coreFileName
                 )
             );
         }
 
-        protected override String TransformFileName(TemplateFileInfo template, String entityTypeName)
-        {
-            string result;
-
-            if (template.TemplateName.Contains("Entity") && (template.TemplateType == TemplateType.Fetchers)) {
-                result = template.TemplateName.Replace("Entity", entityTypeName);
-            } else {
-                result = String.Format("{0}.{1}", entityTypeName, template.FileExtension);
-            }
-
-            return result;
-        }
     }
 }
