@@ -112,7 +112,7 @@ namespace Microsoft.OneDrive.Sdk
         }
     }
 
-    foreach(var prop in entity.GetPropertyType("Stream"))
+    foreach(var prop in entity.GetProperties(typeName:"Stream"))
     {
         var propName = prop.Name.ToCheckedCase();
         var propRequestBuilder = propName + "RequestBuilder";
