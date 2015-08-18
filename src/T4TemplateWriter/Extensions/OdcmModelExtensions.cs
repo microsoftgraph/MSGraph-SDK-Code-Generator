@@ -56,14 +56,39 @@ namespace Vipr.T4TemplateWriter
 
         public static IEnumerable<OdcmProperty> GetProperties(this OdcmModel model)
         {
-            return model.GetEntityTypes().SelectMany(entityTypes => entityTypes.Properties)
-                        .Union(model.EntityContainer.Properties)
-                        .Union(model.GetComplexTypes().SelectMany(complexType => complexType.Properties));
+            return model.GetProperties(typeName: null, longDescriptionMatches: null);
         }
 
-        public static IEnumerable<OdcmProperty> GetPropertyType(this OdcmClass entity, string propertyTypeName)
+        public static IEnumerable<OdcmProperty> GetProperties(this OdcmModel model, string typeName = null, string longDescriptionMatches = null)
         {
-            return entity.Properties.Where(prop => prop.Type.Name.Equals(propertyTypeName));
+            var properties = model.GetEntityTypes().SelectMany(entityTypes => entityTypes.Properties)
+                                  .Union(model.EntityContainer.Properties)
+                                  .Union(model.GetComplexTypes().SelectMany(complexType => complexType.Properties));
+            return FilterProperties(properties, typeName, longDescriptionMatches);
+        }
+
+        public static IEnumerable<OdcmProperty> FilterProperties(IEnumerable<OdcmProperty> properties, string typeName = null, string longDescriptionMatches = null)
+        {
+            var allProperties = properties;
+            if (typeName != null)
+            {
+                allProperties = allProperties.Where(prop => prop.Type.Name.Equals(typeName));
+            }
+            if (longDescriptionMatches != null)
+            {
+                allProperties = allProperties.Where(prop => prop.LongDescriptionContains(longDescriptionMatches));
+            }
+            return allProperties;
+        }
+
+        public static IEnumerable<OdcmProperty> GetProperties(this OdcmClass entity, string typeName = null, string longDescriptionMatches = null)
+        {
+            return FilterProperties(entity.Properties, typeName, longDescriptionMatches);
+        }
+
+        public static IEnumerable<OdcmProperty> GetProperties(this OdcmComplexClass complexClass, string typeName = null, string longDescriptionMatches = null)
+        {
+            return FilterProperties(complexClass.Properties, typeName, longDescriptionMatches);
         }
 
         public static IEnumerable<OdcmEnum> GetEnumTypes(this OdcmModel model)
@@ -113,11 +138,6 @@ namespace Vipr.T4TemplateWriter
         public static bool IsFunction(this OdcmMethod method)
         {
             return method.IsComposable; //TODO:REVIEW
-        }
-
-        public static bool IsStream(this OdcmProperty property)
-        {
-            return property.Type.Name.Contains("stream");
         }
 
         public static string GetNamespace(this OdcmModel model)

@@ -10,6 +10,18 @@
     "TemplatesDirectory": "..\\..\\..\\..\\Templates",
     "DefaultFileCasing": "Snake",
     "TemplateMapping": {
+        "Shared": {
+            "EntityType": { "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
+            "ComplexType": { "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>" },
+            "EnumType": { "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
+            "EntityClient": { "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
+            "EntityRequest": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
+            "EntityRequestBuilder": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
+            "StreamRequest": { "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>Request", "Include": "content" },
+            "StreamRequestBuilder": { "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>RequestBuilder", "Include": "content" },
+            "MethodRequest": { "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "<Class><Method>Request" },
+            "MethodRequestBuilder": { "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
+        },
         "CSharp": {
             "IEntityClient": { "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
             "IEntityRequest": { "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>Request" },
@@ -35,18 +47,6 @@
             "IMethodCollectionPage": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionPage" },
             "SharedCSharp": { "SubProcessor": "Other", "Type": "Shared" }
         },
-        "Shared": {
-            "EntityType": { "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
-            "ComplexType": { "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>" },
-            "EnumType": { "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
-            "EntityClient": { "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
-            "EntityRequest": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
-            "EntityRequestBuilder": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
-            "StreamRequest": { "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>Request", "Include": "content" },
-            "StreamRequestBuilder": { "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>RequestBuilder", "Include": "content" },
-            "MethodRequest": { "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "<Class><Method>Request" },
-            "MethodRequestBuilder": { "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
-        },
         "ObjC": {
             "EntityCollectionFetcher": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>CollectionFetcher" },
             "Shared": { "SubProcessor": "Other", "Type": "Shared" }
@@ -54,13 +54,13 @@
         "Java": {
         },
         "Python": {
-            "EntityCollection": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection" },
-            "EntityRequest": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request" },
-            "EntityRequestBuilder": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request_builder" },
+            "EntityCollection": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection", "Exclude" : "nextExpectedRanges;roles" },
+            "EntityRequest": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request", "Exclude" :  "nextExpctedRanges;roles" },
+            "EntityRequestBuilder": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request_builder" , "Exclude" : "nextExpectedRanges;roles"},
             "Method": { "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>" },
-            "Stream": { "SubProcessor": "Property", "Type": "Request", "Name ": "<Class>_<Property>_request" },
-            "__init__" : {"SubProcessor" : "Other", "Type" :  "Other", "Name" :  "__init__"}
-        } 
+            "Stream": { "SubProcessor": "Property", "Type": "Request", "Name": "<Class>_<Property>_request", "Include" :  "content"},
+            "__init__": { "SubProcessor": "Other", "Type": "Other", "Name": "__init__" }
+        }
     }
 
 }
