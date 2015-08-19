@@ -18,40 +18,62 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             TypeHelperObjC.Prefix = GetPrefix();
         }
 
-        public string GetPrefix() {
-            if (this.CurrentModel != null) {
+        public string GetPrefix() 
+        {
+            if (this.CurrentModel != null) 
+            {
                 return ConfigurationService.Settings.NamespacePrefix + this.CurrentModel.EntityContainer.Name;
-            } else {
+            } 
+            else 
+            {
                 return ConfigurationService.Settings.NamespacePrefix;
             }
         }
 
-        public override String WriteOpeningCommentLine() {
+        public override string WriteOpeningCommentLine() 
+        {
             return "/*******************************************************************************\n";
         }
 
-        public override String WriteClosingCommentLine() {
+        public override string WriteClosingCommentLine() 
+        {
             return "\n******************************************************************************/";
         }
 
-        public override string WriteInlineCommentChar() {
+        public override string WriteInlineCommentChar() 
+        {
             return "// ";
         }
-        public string GetInterfaceLine(OdcmClass e) {
 
-            string baseEntity = e.Base == null ? "MSOrcBaseEntity"
-                              : GetPrefix() + e.Base.Name.Substring(e.Base.Name.LastIndexOf(".") + 1);
+        public string GetInterfaceLine(OdcmClass e, string baseClass = null) 
+        {
+            string baseEntity = null;
+            if (baseClass != null)
+            {
+                baseEntity = baseClass;
+            }
+            else
+            {
+                baseEntity = e.Base == null ? "NSObject"
+                                           : GetPrefix() + e.Base.Name.Substring(e.Base.Name.LastIndexOf(".") + 1);
+            }
+
+            
 
             var s = new StringBuilder();
-            s.AppendFormat("#import \"{0}.h\"", baseEntity);
+            if (!baseEntity.Equals("NSObject"))
+            {
+                s.AppendFormat("#import \"{0}.h\"", baseEntity);
+            }
 
-            s.AppendLine().AppendLine().AppendLine(GetHeaderDoc(e.Name))
-            .AppendFormat("@interface {0}{1} : {2}", GetPrefix(), e.Name, baseEntity);
+            s.AppendLine().AppendLine().AppendLine(this.GetHeaderDoc(e.Name))
+            .AppendFormat("@interface {0}{1} : {2}", this.GetPrefix(), e.Name, baseEntity);
 
             return s.ToString();
         }
 
-        public string GetHeaderDoc(string name) {
+        public string GetHeaderDoc(string name) 
+        {
 
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(@"/**");
@@ -123,21 +145,37 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             return type.GetTypeString();
         }
 
-        public string GetImportsClass(List<OdcmProperty> references) {
+        public string GetImportsClass(List<OdcmProperty> references) 
+        {
             var imports = new StringBuilder();
-            var classes = new StringBuilder();
-            foreach (var r in references) {
-                if (r.Type is OdcmEnum) {
+            var classes = new StringBuilder("@class ");
+            foreach (var r in references.Distinct())
+            {
+                if (r.Type is OdcmEnum)
+                {
                     imports.AppendFormat("#import \"{0}.h\"", r.Type.GetTypeString()).AppendLine();
-                } else if (r.Type.IsComplex() && !r.Type.IsSystem()) {
-                    classes.AppendFormat("@class {0};", r.Type.GetTypeString()).AppendLine();
+                }
+                else if (r.Type.IsComplex() && !r.Type.IsSystem() && r.Type.GetTypeString() != "id")
+                {
+                    classes.AppendFormat("{0}, ", r.Type.GetTypeString());
                 }
             }
 
             var classString = classes.AppendLine().ToString();
+            int lastOccurance = classString.LastIndexOf(',');
+            if (lastOccurance < 0)
+            {
+                classString = @"";
+            }
+            else
+            {
+                classString = classString.Remove(lastOccurance, 1).Insert(lastOccurance, ";");
+            }
+
             var importsString = imports.ToString();
-            return (string.IsNullOrWhiteSpace(importsString.Trim()) ? null : importsString) +
-                (string.IsNullOrWhiteSpace(classString.Trim()) ? null : classString);
+            return (string.IsNullOrWhiteSpace(classString.Trim()) ? "" : classString) +
+                   (string.IsNullOrWhiteSpace(importsString.Trim()) ? "" : importsString);
+
         }
 
         public string GetClass(OdcmProperty type) {

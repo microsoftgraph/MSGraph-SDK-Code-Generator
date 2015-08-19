@@ -12,7 +12,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 {
 	public static class TypeHelperObjC
 	{
-	    public static string Prefix = "";//ConfigurationService.Settings.NamespacePrefix;
+	    public static string Prefix = ConfigurationService.Settings.NamespacePrefix;
 
         public const string ReservedPrefix = "$$__$$";
         public static ICollection<string> ReservedNames {
@@ -31,9 +31,9 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 			case "String":
 				return "NSString";
 			case "Int32":
-				return "int";
+				return "NSInteger";
 			case "Int64":
-				return "int";
+				return "NSInteger";
 			case "Guid":
 				return "NSString";
 			case "DateTimeOffset":
@@ -49,16 +49,19 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 			}
 		}
 
-        public static string GetTypeString(this OdcmProperty property) {
+        public static string GetTypeString(this OdcmProperty property) 
+        {
             return property.Type.GetTypeString();
         }
 
-        public static bool IsComplex(this OdcmType type) {
+        public static bool IsComplex(this OdcmType type) 
+        {
             string t = GetTypeString(type);
             return !(t == "int" || t == "BOOL" || t == "Byte");
         }
 
-		public static bool IsComplex(this OdcmProperty property) {
+		public static bool IsComplex(this OdcmProperty property) 
+        {
             return property.Type.IsComplex();
 		}
 
@@ -72,18 +75,25 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 			return string.Format("{0} {1}{2}",property.GetFullType(), (property.IsComplex() ? "*" : string.Empty), SanitizePropertyName(property));
 		}
 
-        public static string SanitizePropertyName(this OdcmProperty property) {
-            if (ReservedNames.Contains(property.Name.ToLower())) {
+        public static string SanitizePropertyName(this OdcmProperty property) 
+        {
+            if (ReservedNames.Contains(property.Name.ToLower()))
+            {
                 return ReservedPrefix + property.Name;
             }
             return property.Name;
         }
 
-		public static string GetFullType(this OdcmProperty property) {
-			if (property.IsCollection)
-				return  "NSMutableArray";
-			else
+		public static string GetFullType(this OdcmProperty property)
+        {
+            if (property.IsCollection)
+            {
+                return "NSMutableArray";
+            }
+            else 
+            { 
                 return property.Type.GetTypeString();
+            }
 		}
 
 		public static string GetFullType(this OdcmType type)
@@ -112,7 +122,6 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 			var index = property.Type.Name.LastIndexOf('.');
 			return property.Type.Name.Substring(0, index).ToLower() + property.Type.Name.Substring(index);
 		}
-
 
 		public static bool IsEnum(this OdcmProperty property)
 		{
