@@ -57,8 +57,8 @@
             { "Template": "EntityCollection", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection", "Exclude": "nextExpectedRanges;roles" },
             { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request", "Exclude": "nextExpctedRanges;roles" },
             { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request_builder", "Exclude": "nextExpectedRanges;roles" },
-            { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>_request", "Matches": "Navigable" },
-            { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>_request_builder", "Matches": "Navigable" },
+            { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>_request", "Matches": "navigable" },
+            { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>_request_builder", "Matches": "navigable" },
             { "Template": "Method", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>" },
             { "Template": "Stream", "SubProcessor": "Property", "Type": "Request", "Name": "<Class>_<Property>_request", "Include": "content" },
             { "Template": "__init__", "SubProcessor": "Other", "Type": "Other", "Name": "__init__" }
