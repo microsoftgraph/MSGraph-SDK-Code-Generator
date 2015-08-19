@@ -28,7 +28,7 @@ from ..requests.<#=baseName.ToUnderscore()#> import <#=baseName#>RequestBuilder
         var propName = prop.Class.Name.ToUpperFirstChar()+prop.Name.ToUpperFirstChar();
         var propRequestBuilder = propName+"RequestBuilder";
 #>
-from ..requests.<#=propName.ToUnderscore()#> import <#=propRequestBuilder#>
+from ..requests.<#=propName.ToUnderscore()#>_request import <#=propRequestBuilder#>
 <#
     }
     List<String> builders = new List<String>();
@@ -137,7 +137,7 @@ class <#=entityBuilder#>(RequestBuilderBase):
         return entity
 <#
     //prevent navigable streams from being uploaded to
-    if (entity.GetProperties(typeName:"Stream").Where(t => !t.LongDescriptionContains("navigable")).Any())
+    if (entity.GetProperties(typeName:"Stream").Where(t => !t.LongDescriptionContains("navigable")).Any() && !entity.LongDescriptionContains("navigable"))
     {
 #>
 
