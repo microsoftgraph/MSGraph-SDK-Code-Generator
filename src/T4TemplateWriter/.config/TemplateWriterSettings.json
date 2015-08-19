@@ -1,6 +1,6 @@
 ﻿{
     "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python" ],
-    "TargetLanguage": "Python",
+    "TargetLanguage": "ObjC",
     "Plugins": [ ],
     "PrimaryNamespaceName": "oneDrive",
     "NamespacePrefix": "OD",
@@ -8,7 +8,7 @@
     "AllowShortActions": "false",
     "NamespaceOverride": "",
     "TemplatesDirectory": "..\\..\\..\\..\\Templates",
-    "DefaultFileCasing": "Snake",
+    "DefaultFileCasing": "UpperCamel",
     "TemplateMapping": {
         "Shared": [
             { "Template": "EntityType", "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
@@ -51,8 +51,8 @@
             { "Template": "EntityCollectionFetcher", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>CollectionFetcher" },
             { "Template": "Shared", "SubProcessor": "Other", "Type": "Shared" }
         ],
-        "Java": {
-        },
+        "Java": [
+        ],
         "Python": [
             { "Template": "EntityCollection", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "EntityCollectionMethod", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>_collection", "Exclude": "nextExpectedRanges;roles", "Matches": "specialCollection"},
