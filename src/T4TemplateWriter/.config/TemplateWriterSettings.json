@@ -48,8 +48,7 @@
             { "Template": "SharedCSharp", "SubProcessor": "Other", "Type": "Shared" }
         ],
         "ObjC": [
-            { "Template": "EntityCollectionFetcher", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>CollectionFetcher" },
-            { "Template": "Shared", "SubProcessor": "Other", "Type": "Shared" }
+            { "Template": "SharedObjC", "SubProcessor": "Other", "Type": "Shared" }
         ],
         "Java": [
         ],
