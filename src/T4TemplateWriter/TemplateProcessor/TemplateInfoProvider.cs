@@ -19,6 +19,14 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         private SubProcessor defaultSubProcessor;
         private Template defaultTemplate;
 
+        /// <summary>
+        /// Creates a TemplateInfoProvider
+        /// </summary>
+        /// <param name="mapping">A the mapping of templates to subprocessors fromt he config file.</param>
+        /// <param name="templatesDirectory">The tempaltes directory, this should be the Platform specific directory</param>
+        /// <param name="defaultNameCasing"></param>
+        /// <param name="defaultSubProcessor"></param>
+        /// <param name="defaultTempalte"></param>
         public TemplateInfoProvider(IList<Dictionary<string,string>> mapping, 
                                     string templatesDirectory,
                                     FileNameCasing defaultNameCasing = FileNameCasing.UpperCamel, 
@@ -34,7 +42,6 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         public IEnumerable<ITemplateInfo> Templates()
         {
-
             var templates = this.ReadTemplateFiles();
             foreach (var templateInfo in mapping)
             {
@@ -46,6 +53,10 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
+        /// <summary>
+        /// Reads all of the templates available from the given directory.
+        /// </summary>
+        /// <returns>A dictionary mapping of template name to path</returns>
         private Dictionary<string, string> ReadTemplateFiles()
         {
             var templates = new Dictionary<string, string>();
@@ -58,7 +69,13 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return templates;
         }
 
-        public ITemplateInfo Create(string fullPath, Dictionary<string, string> templateDictionary)
+        /// <summary>
+        /// Creates an ITemplateInfo with the given path to a template file and the dictioanry from the config file.
+        /// </summary>
+        /// <param name="fullPath">The path to the template file</param>
+        /// <param name="templateDictionary">the template dictionary from the config file</param>
+        /// <returns>A new ITemplateInfo</returns>
+        private ITemplateInfo Create(string fullPath, Dictionary<string, string> templateDictionary)
         {
             var fileInfo = new TemplateFileInfo();
             fileInfo.FullPath = fullPath;
@@ -81,9 +98,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             fileInfo.Casing = this.GetFileNameCasing(templateDictionary);
 
 
-            IEnumerable<string> includedObjects = IncludedObjects(templateDictionary);
-            IEnumerable<string> excludedObjects = ExcludedObjects(templateDictionary);
-            IEnumerable<string> matchingDescriptions = MatchingDescriptions(templateDictionary);
+            IEnumerable<string> includedObjects = this.IncludedObjects(templateDictionary);
+            IEnumerable<string> excludedObjects = this.ExcludedObjects(templateDictionary);
+            IEnumerable<string> matchingDescriptions = this.MatchingDescriptions(templateDictionary);
 
             //TODO aclev: these are mutally exclusive and should throw here if they are both set
             if (includedObjects.Count() != 0)
@@ -111,7 +128,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <summary>
         /// Gets the casing for the given template.
         /// </summary>
-        /// <param name="templateName"></param>
+        /// <param name="template">The template dictionary from the configuration file</param>
         /// <returns></returns>
         private FileNameCasing GetFileNameCasing(Dictionary<string,string> template)
         {
@@ -121,7 +138,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <summary>
         /// Gets the subprocessor type for the given template.
         /// </summary>
-        /// <param name="templateName"></param>
+        /// <param name="template">The template dictionary from the configuration file</param>
         /// <returns></returns>
         private SubProcessor GetSubProcessor(Dictionary<string, string> template)
         {
@@ -131,7 +148,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <summary>
         /// Gets the TemplateType for the given template.
         /// </summary>
-        /// <param name="templateName"></param>
+        /// <param name="template">The template dictionary from the configuration file</param>
         /// <returns></returns>
         private Template GetTemplate(Dictionary<string, string> template)
         {
@@ -141,7 +158,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <summary>
         /// Gets the list of strings in the "Matches" list from the template.
         /// </summary>
-        /// <param name="templateName"></param>
+        /// <param name="template">The template dictionary from the configuration file</param>
         /// <returns></returns>
         private IEnumerable<string>MatchingDescriptions(Dictionary<string, string> template)
         {
@@ -151,7 +168,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <summary>
         /// Gets the included types list from the TemplateInfo dictionary.
         /// </summary>
-        /// <param name="templateName"></param>
+        /// <param name="template">The template dictionary from the configuration file</param>
         /// <returns></returns>
         private IEnumerable<string> IncludedObjects(Dictionary<string, string> template)
         {
@@ -161,7 +178,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <summary>
         /// Gets the excluded types list from the TemplateInfo dictionary.
         /// </summary>
-        /// <param name="templateName"></param>
+        /// <param name="template">The template dictionary from the configuration file</param>
         /// <returns></returns>
         private IEnumerable<string> ExcludedObjects(Dictionary<string, string> template)
         {
@@ -171,7 +188,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <summary>
         /// Gets a list from the config file.  All lists are ';' delmited.
         /// </summary>
-        /// <param name="templateName"></param>
+        /// <param name="template">The template dictionary from the configuration file</param>
         /// <param name="typeListName"></param>
         /// <returns>An enumerable of the ";" delimited list.</returns>
         private IEnumerable<string> GetConfigList(Dictionary<string, string> template, string listName)
@@ -191,7 +208,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// Gets the specfic enum for the given template and key
         /// </summary>
         /// <typeparam name="TEnum"></typeparam>
-        /// <param name="templateName"></param>
+        /// <param name="template">The template dictionary from the configuration file</param>
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
         /// <returns>An anum value</returns>
@@ -209,7 +226,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// Gets the correct Enum type from the given template
         /// </summary>
         /// <typeparam name="TEnum"></typeparam>
-        /// <param name="templateName"></param>
+        /// <param name="template">The template dictionary from the configuration file</param>
         /// <param name="key"></param>
         /// <param name="type"></param>
         /// <returns>true if successful false if not</returns>

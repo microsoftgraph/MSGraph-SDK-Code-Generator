@@ -25,8 +25,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         private void SetTemplatesDirectory(string templatesDirectory, bool relative = true)
         {
-            String programDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            String relativeTemplatesDirectory = templatesDirectory ?? "Templates";
+            string programDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string relativeTemplatesDirectory = templatesDirectory ?? "Templates";
 
             this.TemplatesDirectory = (relative) ? Path.Combine(programDir, templatesDirectory) : templatesDirectory;
 
@@ -44,7 +44,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             var templates = this.TemplateInfoProvider.Templates().Where(templateInfo => templateInfo.TemplateType != Template.Shared);
 
             // Initialize processor.
-            String pathWriterClassName = String.Format(PathWriterClassNameFormatString, ConfigurationService.Settings.TargetLanguage);
+            string pathWriterClassName = String.Format(PathWriterClassNameFormatString, ConfigurationService.Settings.TargetLanguage);
             var type = Type.GetType(pathWriterClassName);
             IPathWriter pathWriterInstance = (IPathWriter)Activator.CreateInstance(type);
             this.Processor = new TemplateProcessor(pathWriterInstance, this.CurrentModel, this.TemplatesDirectory);

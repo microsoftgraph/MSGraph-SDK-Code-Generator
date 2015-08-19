@@ -23,7 +23,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         private static CustomT4Host _host;
 
-        protected static CustomT4Host Host(ITemplateInfo templateInfo, String templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel)
+        protected static CustomT4Host Host(ITemplateInfo templateInfo, string templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel)
         {
             if (_host == null)
             {
@@ -84,10 +84,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         public IEnumerable<TextFile> Process(ITemplateInfo templateInfo)
         {
-
-           Func<ITemplateInfo, IEnumerable<TextFile>> subProcessor = ProcessTemplate;
+            Func<ITemplateInfo, IEnumerable<TextFile>> subProcessor = ProcessTemplate;
             SubProcessors.TryGetValue(templateInfo.SubprocessorType, out subProcessor);
-
             return subProcessor(templateInfo);
         }
 

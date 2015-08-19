@@ -61,6 +61,7 @@ namespace Vipr.T4TemplateWriter.Settings
         public string TemplatesDirectory { get; set; }
 
         private List<Dictionary<string, string>> templateConfiguration;
+
         /// <summary>
         /// The dictionary created by combining the "Shared" and current language mapping.
         /// </summary>
