@@ -58,7 +58,7 @@ class <#=entity.Name.ToUpperFirstChar()#>(object):
     def <#=propertyName#>(self, val):
         """
         Sets the <#=property.Name#>
-        :param val: The value to set <#=property.Name#> to
+        :param val: This value will replace <#=property.Name#>
         :type val: <#=property.Type.GetTypeString()#>
         """
         if not isinstance(val, <#=propertyNameCap#>CollectionPage) and val is not None:
@@ -85,7 +85,7 @@ class <#=entity.Name.ToUpperFirstChar()#>(object):
     def <#=propertyName#>(self, val):
         """
         Sets the <#=property.Name#>
-        :param val: The value to set <#=property.Name#> to
+        :param val: This value will replace <#=property.Name#>
         :type val: <#=property.Type.GetTypeString()#>
         """
         if not isinstance(val, <#=property.Type.GetTypeString()#>) and val is not None:
@@ -123,7 +123,7 @@ class <#=entity.Name.ToUpperFirstChar()#>(object):
     def <#=propertyName#>(self, val):
         """
         Sets the <#=property.Name#>
-        :param val: The value to set <#=property.Name#> to
+        :param val: This value will replace <#=property.Name#>
         :type val: <#=property.Type.GetTypeString()#>
         """
         if not isinstance(val, <#=property.Type.GetTypeString()#>) and val is not None:
