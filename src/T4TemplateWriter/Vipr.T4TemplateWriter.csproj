@@ -82,7 +82,6 @@
     <Compile Include="TemplateProcessor\ITemplateInfo.cs" />
     <Compile Include="TemplateProcessor\TemplateWriter.cs" />
     <Compile Include="TemplateProcessor\TemplateFileInfo.cs" />
-    <Compile Include="TemplateProcessor\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".config\TemplateWriterSettings.json">

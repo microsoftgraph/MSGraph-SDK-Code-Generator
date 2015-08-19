@@ -76,8 +76,8 @@ namespace Vipr.T4TemplateWriter.Settings
                     if (templateConfiguration != null && this.TemplateMapping.TryGetValue(this.TargetLanguage, out languageConfig))
                     {
                         //TODO aclev this is niave for now..
-                        templateConfiguration.InsertRange(0,sharedConfig);
-                        templateConfiguration.InsertRange(0,languageConfig);
+                        templateConfiguration.InsertRange(0, sharedConfig);
+                        templateConfiguration.InsertRange(0, languageConfig);
                     }
                 }
                 return templateConfiguration;
