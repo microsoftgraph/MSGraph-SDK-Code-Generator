@@ -19,8 +19,8 @@ namespace Vipr.T4TemplateWriter.Settings
             InitializeCollections = true;
             TargetLanguage = "Java";
             NamespaceOverride = "com.microsoft.services.onenote";
-            TemplateMapping = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
-            templateConfiguration = null;
+            TemplateMapping = new Dictionary<string, List<Dictionary<string, string>>>();
+            this.templateConfiguration = new List<Dictionary<string, string>>();
             TemplatesDirectory = null;
             DefaultFileCasing = "UpperCamel";
         }
@@ -39,7 +39,7 @@ namespace Vipr.T4TemplateWriter.Settings
         /// <summary>
         /// The template configuration mapping for all platforms.
         /// </summary>
-        public Dictionary<string, Dictionary<string, Dictionary<string, string>>> TemplateMapping { get; set; }
+        public Dictionary<string, List<Dictionary<string, string>>> TemplateMapping { get; set; }
 
         /// <summary>
         /// The default casing method to be used for file names when a casing method ins't specified.
@@ -60,26 +60,24 @@ namespace Vipr.T4TemplateWriter.Settings
 
         public string TemplatesDirectory { get; set; }
 
-        private Dictionary<string, Dictionary<string, string>> templateConfiguration;
-
+        private List<Dictionary<string, string>> templateConfiguration;
         /// <summary>
         /// The dictionary created by combining the "Shared" and current language mapping.
         /// </summary>
-        public Dictionary<string, Dictionary<string, string>> TemplateConfiguration
+        public IList<Dictionary<string, string>> TemplateConfiguration
         {
             get
             {
-                if (templateConfiguration == null)
+                if (templateConfiguration.Count == 0)
                 {
-                    this.TemplateMapping.TryGetValue("Shared", out templateConfiguration);
-                    Dictionary<string, Dictionary<string, string>> languageConfiguration;
-                    if (templateConfiguration != null && this.TemplateMapping.TryGetValue(this.TargetLanguage, out languageConfiguration))
+                    List<Dictionary<string, string>> sharedConfig;
+                    this.TemplateMapping.TryGetValue("Shared", out sharedConfig);
+                    List<Dictionary<string, string>> languageConfig;
+                    if (templateConfiguration != null && this.TemplateMapping.TryGetValue(this.TargetLanguage, out languageConfig))
                     {
-                        foreach(var mapping in languageConfiguration)
-                        {
-                            // Any language specific setting will take precedent over the shared configurations.
-                            templateConfiguration[mapping.Key] = mapping.Value;
-                        }
+                        //TODO aclev this is niave for now..
+                        templateConfiguration.InsertRange(0,sharedConfig);
+                        templateConfiguration.InsertRange(0,languageConfig);
                     }
                 }
                 return templateConfiguration;

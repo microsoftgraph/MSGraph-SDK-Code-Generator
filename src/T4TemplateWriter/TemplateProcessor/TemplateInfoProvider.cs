@@ -13,23 +13,52 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
     class TemplateInfoProvider : ITemplateInfoProvider
     {
 
-        private Dictionary<string, Dictionary<string, string>> mapping;
+        private IList<Dictionary<string, string>> mapping;
+        private string templatesDirectory;
         private FileNameCasing defaultCasing;
         private SubProcessor defaultSubProcessor;
         private Template defaultTemplate;
 
-        public TemplateInfoProvider(Dictionary<string, Dictionary<string, string>> mapping, 
+        public TemplateInfoProvider(IList<Dictionary<string,string>> mapping, 
+                                    string templatesDirectory,
                                     FileNameCasing defaultNameCasing = FileNameCasing.UpperCamel, 
                                     SubProcessor defaultSubProcessor = SubProcessor.Other,
                                     Template defaultTempalte = Template.Other)
         {
             this.mapping = mapping;
+            this.templatesDirectory = templatesDirectory;
             this.defaultCasing = defaultNameCasing;
             this.defaultSubProcessor = defaultSubProcessor;
             this.defaultTemplate = defaultTemplate;
         }
 
-        public ITemplateInfo Create(string fullPath)
+        public IEnumerable<ITemplateInfo> Templates()
+        {
+
+            var templates = this.ReadTemplateFiles();
+            foreach (var templateInfo in mapping)
+            {
+                string templateName = null;
+                if (templateInfo.TryGetValue("Template", out templateName) && templates.ContainsKey(templateName))
+                {
+                    yield return this.Create(templates[templateName], templateInfo);
+                }
+            }
+        }
+
+        private Dictionary<string, string> ReadTemplateFiles()
+        {
+            var templates = new Dictionary<string, string>();
+            foreach (string path in (Directory.EnumerateFiles(this.templatesDirectory, "*.*.tt", SearchOption.AllDirectories)))
+            {
+                // Remove the .tt and then remove the file type extension
+                var templateName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
+                templates[templateName] = path;
+            }
+            return templates;
+        }
+
+        public ITemplateInfo Create(string fullPath, Dictionary<string, string> templateDictionary)
         {
             var fileInfo = new TemplateFileInfo();
             fileInfo.FullPath = fullPath;
@@ -47,14 +76,14 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             fileInfo.OutputParentDirectory = parentName;
             fileInfo.TemplateLanguage = grandparentName;
-            fileInfo.TemplateType = this.GetTemplate(fileInfo.TemplateBaseName);
-            fileInfo.SubprocessorType = this.GetSubProcessor(fileInfo.TemplateBaseName);
-            fileInfo.Casing = this.GetFileNameCasing(fileInfo.TemplateBaseName);
+            fileInfo.TemplateType = this.GetTemplate(templateDictionary);
+            fileInfo.SubprocessorType = this.GetSubProcessor(templateDictionary);
+            fileInfo.Casing = this.GetFileNameCasing(templateDictionary);
 
 
-            IEnumerable<string> includedObjects = IncludedObjects(fileInfo.TemplateBaseName);
-            IEnumerable<string> excludedObjects = ExcludedObjects(fileInfo.TemplateBaseName);
-            IEnumerable<string> matchingDescriptions = MatchingDescriptions(fileInfo.TemplateBaseName);
+            IEnumerable<string> includedObjects = IncludedObjects(templateDictionary);
+            IEnumerable<string> excludedObjects = ExcludedObjects(templateDictionary);
+            IEnumerable<string> matchingDescriptions = MatchingDescriptions(templateDictionary);
 
             //TODO aclev: these are mutally exclusive and should throw here if they are both set
             if (includedObjects.Count() != 0)
@@ -71,16 +100,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 fileInfo.ObjectDescriptions = matchingDescriptions;
             }
 
-            var templateDictionary = TemplateDictionary(fileInfo.TemplateBaseName);
-            if (templateDictionary != null)
-            {
-                string nameFormat;
-	            if (templateDictionary.TryGetValue("Name", out nameFormat))
-	            {
-	                fileInfo.NameFormat = nameFormat;
-	            }
-            }
-
+           string nameFormat;
+	       if (templateDictionary.TryGetValue("Name", out nameFormat))
+	       {
+               fileInfo.NameFormat = nameFormat;
+	       }
             return fileInfo;
         }
 
@@ -89,9 +113,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// </summary>
         /// <param name="templateName"></param>
         /// <returns></returns>
-        private FileNameCasing GetFileNameCasing(string templateName)
+        private FileNameCasing GetFileNameCasing(Dictionary<string,string> template)
         {
-            return GetEnum<FileNameCasing>(templateName, "Case",  this.defaultCasing);
+            return GetEnum<FileNameCasing>(template, "Case",  this.defaultCasing);
         }
 
         /// <summary>
@@ -99,9 +123,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// </summary>
         /// <param name="templateName"></param>
         /// <returns></returns>
-        private SubProcessor GetSubProcessor(string templateName)
+        private SubProcessor GetSubProcessor(Dictionary<string, string> template)
         {
-            return GetEnum<SubProcessor>(templateName, "SubProcessor", this.defaultSubProcessor);
+            return GetEnum<SubProcessor>(template, "SubProcessor", this.defaultSubProcessor);
         }
         
         /// <summary>
@@ -109,9 +133,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// </summary>
         /// <param name="templateName"></param>
         /// <returns></returns>
-        private Template GetTemplate(string templateName)
+        private Template GetTemplate(Dictionary<string, string> template)
         {
-            return GetEnum<Template>(templateName, "Type", this.defaultTemplate);
+            return GetEnum<Template>(template, "Type", this.defaultTemplate);
         }
 
         /// <summary>
@@ -119,9 +143,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// </summary>
         /// <param name="templateName"></param>
         /// <returns></returns>
-        private IEnumerable<string>MatchingDescriptions(string templateName)
+        private IEnumerable<string>MatchingDescriptions(Dictionary<string, string> template)
         {
-            return GetConfigList(templateName, "Matches");
+            return GetConfigList(template, "Matches");
         }
 
         /// <summary>
@@ -129,9 +153,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// </summary>
         /// <param name="templateName"></param>
         /// <returns></returns>
-        private IEnumerable<string> IncludedObjects(string templateName)
+        private IEnumerable<string> IncludedObjects(Dictionary<string, string> template)
         {
-            return GetConfigList(templateName, "Include");
+            return GetConfigList(template, "Include");
         }
 
         /// <summary>
@@ -139,9 +163,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// </summary>
         /// <param name="templateName"></param>
         /// <returns></returns>
-        private IEnumerable<string> ExcludedObjects(string templateName)
+        private IEnumerable<string> ExcludedObjects(Dictionary<string, string> template)
         {
-            return GetConfigList(templateName, "Exclude");
+            return GetConfigList(template, "Exclude");
         }
 
         /// <summary>
@@ -150,33 +174,17 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <param name="templateName"></param>
         /// <param name="typeListName"></param>
         /// <returns>An enumerable of the ";" delimited list.</returns>
-        private IEnumerable<string> GetConfigList(string templateName, string listName)
+        private IEnumerable<string> GetConfigList(Dictionary<string, string> template, string listName)
         {
-            var templateDictionary = TemplateDictionary(templateName);
-            if (templateDictionary != null)
+            string list;
+            // gets <typeListName> : "semicolon; seperated; types" from the dictionary.
+            if (template.TryGetValue(listName, out list))
             {
-                string list;
-                // gets <typeListName> : "semicolon; seperated; types" from the dictionary.
-                if (templateDictionary.TryGetValue(listName, out list))
+                foreach(var type in list.Split(';'))
                 {
-                    foreach(var type in list.Split(';'))
-                    {
-                        yield return type;
-                    }
+                    yield return type;
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the dictionary from the config file for the given templateName.
-        /// </summary>
-        /// <param name="templateName"></param>
-        /// <returns>A dictionary of string key value pairs</returns>
-        private Dictionary<string, string> TemplateDictionary(string templateName)
-        {
-            Dictionary<string, string> templateDictionary = null;
-            this.mapping.TryGetValue(templateName, out templateDictionary);
-            return templateDictionary;
         }
 
         /// <summary>
@@ -187,10 +195,10 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
         /// <returns>An anum value</returns>
-        private TEnum GetEnum<TEnum>(string templateName, string key, TEnum defaultValue) where TEnum : struct
+        private TEnum GetEnum<TEnum>(Dictionary<string, string> template, string key, TEnum defaultValue) where TEnum : struct
         {
             TEnum type;
-            if (!TryGetValue<TEnum>(templateName, key, out type))
+            if (!TryGetValue<TEnum>(template, key, out type))
             {
                 type = defaultValue;
             }
@@ -205,21 +213,17 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <param name="key"></param>
         /// <param name="type"></param>
         /// <returns>true if successful false if not</returns>
-        private bool TryGetValue<TEnum>(string templateName, string key, out TEnum type) where TEnum : struct  
+        private bool TryGetValue<TEnum>(Dictionary<string, string> template, string key, out TEnum type) where TEnum : struct  
         {
             bool success = false;
             type = default(TEnum);
-            var templateDictionary = TemplateDictionary(templateName);
-            if (templateDictionary != null)
+            TEnum outType = default(TEnum);
+            string enumType;
+            template.TryGetValue(key, out enumType);
+            success = Enum.TryParse(enumType, out outType);
+            if (success)
             {
-                TEnum outType = default(TEnum);
-                string enumType;
-                templateDictionary.TryGetValue(key, out enumType);
-                success = Enum.TryParse(enumType, out outType);
-                if (success)
-                {
-                    type = outType;
-                }
+                type = outType;
             }
             return success;
         }

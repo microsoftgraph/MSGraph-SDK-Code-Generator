@@ -41,8 +41,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         IEnumerable<TextFile> ProcessTemplates()
         {
             // There is no need to process "shared" tempaltes, they are only meant to be imported from other templates.
-            var templates = Utilities.ReadTemplateFiles(this.TemplatesDirectory, this.TemplateInfoProvider)
-                                     .Where(templateInfo => templateInfo.TemplateType != Template.Shared);
+            var templates = this.TemplateInfoProvider.Templates().Where(templateInfo => templateInfo.TemplateType != Template.Shared);
 
             // Initialize processor.
             String pathWriterClassName = String.Format(PathWriterClassNameFormatString, ConfigurationService.Settings.TargetLanguage);
@@ -68,9 +67,10 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             {
                 nameCasing = FileNameCasing.UpperCamel;
             }
-            this.TemplateInfoProvider = new TemplateInfoProvider(ConfigurationService.Settings.TemplateConfiguration,
-                                                                defaultNameCasing: nameCasing);
             SetTemplatesDirectory(ConfigurationService.Settings.TemplatesDirectory);
+            this.TemplateInfoProvider = new TemplateInfoProvider(ConfigurationService.Settings.TemplateConfiguration,
+                                                                 Path.Combine(ConfigurationService.Settings.TemplatesDirectory, ConfigurationService.Settings.TargetLanguage),
+                                                                defaultNameCasing: nameCasing);
         }
 
         // IOdcmWriter

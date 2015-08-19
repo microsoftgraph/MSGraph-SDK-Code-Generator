@@ -10,57 +10,59 @@
     "TemplatesDirectory": "..\\..\\..\\..\\Templates",
     "DefaultFileCasing": "Snake",
     "TemplateMapping": {
-        "Shared": {
-            "EntityType": { "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
-            "ComplexType": { "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>" },
-            "EnumType": { "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
-            "EntityClient": { "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
-            "EntityRequest": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
-            "EntityRequestBuilder": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
-            "StreamRequest": { "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>Request", "Include": "content" },
-            "StreamRequestBuilder": { "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>RequestBuilder", "Include": "content" },
-            "MethodRequest": { "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "<Class><Method>Request" },
-            "MethodRequestBuilder": { "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
-        },
-        "CSharp": {
-            "IEntityClient": { "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
-            "IEntityRequest": { "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>Request" },
-            "IEntityRequestBuilder": { "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>RequestBuilder" },
-            "EntityCollectionPage": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles" },
-            "IEntityCollectionPage": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "I<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles" },
-            "EntityCollectionRequest": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles" },
-            "IEntityCollectionRequest": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "I<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles" },
-            "EntityCollectionRequestBuilder": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles" },
-            "IEntityCollectionRequestBuilder": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "I<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles" },
-            "EntityCollectionResponse": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionReponse", "Exclude": "nextExpectedRanges;roles" },
-            "IStreamRequest": { "SubProcessor": "Property", "Type": "Request", "Name": "I<Class><Property>Request", "Include": "content" },
-            "IStreamRequestBuilder": { "SubProcessor": "Property", "Type": "Request", "Name": "I<Class><Property>RequestBuilder", "Include": "content" },
-            "IMethodRequest": { "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "I<Class><Method>Request" },
-            "IMethodRequestBuilder": { "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "I<Class><Method>RequestBuilder" },
-            "IMethodCollectionRequest": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionRequest" },
-            "MethodCollectionRequest": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionRequest" },
-            "MethodCollectionRequestBuilder": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionRequestBuilder" },
-            "IMethodCollectionRequestBuilder": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionRequestBuilder" },
-            "MethodRequestBody": { "SubProcessor": "MethodWithBody", "Type": "Model", "Name": "<Class><Method>RequestBody" },
-            "MethodCollectionResponse": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionResponse" },
-            "MethodCollectionPage": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionPage" },
-            "IMethodCollectionPage": { "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionPage" },
-            "SharedCSharp": { "SubProcessor": "Other", "Type": "Shared" }
-        },
-        "ObjC": {
-            "EntityCollectionFetcher": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>CollectionFetcher" },
-            "Shared": { "SubProcessor": "Other", "Type": "Shared" }
-        },
+        "Shared": [
+            { "Template": "EntityType", "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
+            { "Template": "ComplexType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>" },
+            { "Template": "EnumType", "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
+            { "Template": "EntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
+            { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
+            { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
+            { "Template": "StreamRequest", "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>Request", "Include": "content" },
+            { "Template": "StreamRequestBuilder", "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>RequestBuilder", "Include": "content" },
+            { "Template": "MethodRequest", "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "<Class><Method>Request" },
+            { "Template": "MethodRequestBuilder", "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
+        ],
+        "CSharp": [
+            { "Template": "IEntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
+            { "Template": "IEntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>Request" },
+            { "Template": "IEntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>RequestBuilder" },
+            { "Template": "EntityCollectionPage", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles" },
+            { "Template": "IEntityCollectionPage", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "I<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles" },
+            { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles" },
+            { "Template": "IEntityCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "I<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles" },
+            { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles" },
+            { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "I<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles" },
+            { "Template": "EntityCollectionResponse", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionReponse", "Exclude": "nextExpectedRanges;roles" },
+            { "Template": "IStreamRequest", "SubProcessor": "Property", "Type": "Request", "Name": "I<Class><Property>Request", "Include": "content" },
+            { "Template": "IStreamRequestBuilder", "SubProcessor": "Property", "Type": "Request", "Name": "I<Class><Property>RequestBuilder", "Include": "content" },
+            { "Template": "IMethodRequest", "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "I<Class><Method>Request" },
+            { "Template": "IMethodRequestBuilder", "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "I<Class><Method>RequestBuilder" },
+            { "Template": "IMethodCollectionRequest", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionRequest" },
+            { "Template": "MethodCollectionRequest", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionRequest" },
+            { "Template": "MethodCollectionRequestBuilder", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionRequestBuilder" },
+            { "Template": "IMethodCollectionRequestBuilder", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionRequestBuilder" },
+            { "Template": "MethodRequestBody", "SubProcessor": "MethodWithBody", "Type": "Model", "Name": "<Class><Method>RequestBody" },
+            { "Template": "MethodCollectionResponse", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionResponse" },
+            { "Template": "MethodCollectionPage", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionPage" },
+            { "Template": "IMethodCollectionPage", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionPage" },
+            { "Template": "SharedCSharp", "SubProcessor": "Other", "Type": "Shared" }
+        ],
+        "ObjC": [
+            { "Template": "EntityCollectionFetcher", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>CollectionFetcher" },
+            { "Template": "Shared", "SubProcessor": "Other", "Type": "Shared" }
+        ],
         "Java": {
         },
-        "Python": {
-            "EntityCollection": { "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection", "Exclude" : "nextExpectedRanges;roles" },
-            "EntityRequest": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request", "Exclude" :  "nextExpctedRanges;roles" },
-            "EntityRequestBuilder": { "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request_builder" , "Exclude" : "nextExpectedRanges;roles"},
-            "Method": { "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>" },
-            "Stream": { "SubProcessor": "Property", "Type": "Request", "Name": "<Class>_<Property>_request", "Include" :  "content"},
-            "__init__": { "SubProcessor": "Other", "Type": "Other", "Name": "__init__" }
-        }
+        "Python": [
+            { "Template": "EntityCollection", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection", "Exclude": "nextExpectedRanges;roles" },
+            { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request", "Exclude": "nextExpctedRanges;roles" },
+            { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request_builder", "Exclude": "nextExpectedRanges;roles" },
+            { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>_request", "Matches": "Navigable" },
+            { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>_request_builder", "Matches": "Navigable" },
+            { "Template": "Method", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>" },
+            { "Template": "Stream", "SubProcessor": "Property", "Type": "Request", "Name": "<Class>_<Property>_request", "Include": "content" },
+            { "Template": "__init__", "SubProcessor": "Other", "Type": "Other", "Name": "__init__" }
+        ]
     }
 
 }
