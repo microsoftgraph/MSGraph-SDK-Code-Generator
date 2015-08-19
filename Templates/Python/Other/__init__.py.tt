@@ -10,19 +10,16 @@ CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 <#
 //Enum
 var enumTypes = CurrentModel.GetEnumTypes();
-foreach(var enumType in enumTypes) 
-{
+foreach(var enumType in enumTypes) {
 #>
 from .models.<#=enumType.GetTypeString().ToUnderscore()#> import <#=enumType.GetTypeString().ToUpperFirstChar()#>
 <#
 }
 
 //Complex
-//remove the navigable types, as they will be taken care of in entities
 var complexTypes = CurrentModel.GetComplexTypes();
 
-foreach (var complex in complexTypes.Where(complexType => !complexType.LongDescriptionContains("Navigable")))
-{
+foreach (var complex in complexTypes.Where(complexType => !complexType.LongDescriptionContains("navigable"))){
 #>
 from .models.<#=complex.GetTypeString().ToUnderscore()#> import <#=complex.GetTypeString().ToUpperFirstChar()#>
 <#
@@ -30,18 +27,16 @@ from .models.<#=complex.GetTypeString().ToUnderscore()#> import <#=complex.GetTy
 
 //Entities
 var types = CurrentModel.GetEntityTypes();
-types = types.Union(complexTypes.Where(complexType => complexType.LongDescriptionContains("Navigable")));
+types = types.Union(complexTypes.Where(complexType => complexType.LongDescriptionContains("navigable")));
 
-foreach(var entity in types) 
-{
+foreach(var entity in types) {
 #>
 from .models.<#=entity.GetTypeString().ToUnderscore()#> import <#=entity.GetTypeString().ToUpperFirstChar()#>
 <#
 }
 
 //requests and Request Builders
-foreach(var entity in types) 
-{
+foreach(var entity in types) {
 var name = entity.GetTypeString()+"Request";
 #>
 from .requests.<#=name.ToUnderscore()#> import <#=name.ToUpperFirstChar()#>
@@ -51,10 +46,10 @@ from .requests.<#=(name+"Builder").ToUnderscore()#> import <#=(name+"Builder").T
 
 //Collections
 var collections = CurrentModel.GetProperties()
-                  .Where(prop => prop.IsCollection && prop.Type != null && prop.Type.Name != "String");
+                    .Where(prop => prop.IsCollection && prop.Type != null && prop.Type.Name != "String");
 
-foreach(OdcmProperty prop in collections)
-{
+
+foreach(OdcmProperty prop in collections){
     var collectionRequest = prop.Name.ToUpperFirstChar() + "CollectionRequest";
     var collectionRequestBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
     var collectionPage = prop.Name.ToUpperFirstChar() + "CollectionPage";
@@ -65,8 +60,8 @@ from .requests.<#=(prop.Name+"Collection").ToUnderscore()#> import <#=collection
 }
 
 //Methods
-foreach(OdcmMethod method in CurrentModel.GetMethods())
-{
+var methods = CurrentModel.GetEntityTypes().SelectMany(et => et.Methods);
+foreach(OdcmMethod method in methods){
     var name = method.Class.Name.ToUpperFirstChar() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar();
 #>
 from .requests.<#=name.ToUnderscore()#> import <#=name+"Request"#>
@@ -74,10 +69,15 @@ from .requests.<#=name.ToUnderscore()#> import <#=name+"Request"#>
 }
 
 //Streams
-var properties = CurrentModel.GetProperties("Stream");
+var properties = CurrentModel.GetProperties(typeName:"Stream");
 
-foreach(var p in properties)
-{
+//var complexStreamProperties = CurrentModel.GetComplexTypes()
+ //                                         .SelectMany(ct => ct.Properties)
+ //                                         .Where(prop => prop.IsStream);
+
+//properties = properties.Union(complexStreamProperties);
+
+foreach(var p in properties){
     var prop = p as OdcmProperty;
     var name = prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
 #>
@@ -96,11 +96,3 @@ from .requests.one_drive_client import OneDriveClient
 from .auth_provider import AuthProvider
 from .http_provider import HttpProvider
 from .extensions import *
-
-def get_default_client(client_id, scopes):
-
-    http_provider = HttpProvider()
-    auth_provider = AuthProvider(http_provider=http_provider,
-                                 client_id=client_id,
-                                 scopes=scopes)
-    return OneDriveClient("https://api.onedrive.com/v1.0/", auth_provider, http_provider)

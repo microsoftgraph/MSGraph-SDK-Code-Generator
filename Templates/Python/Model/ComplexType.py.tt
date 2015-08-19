@@ -40,10 +40,11 @@ class <#=complex.Name.ToUpperFirstChar()#>(object):
 #>
     @property
     def <#=propertyName#>(self):
-        """
-        Gets the <#=property.Name#>
-        :returns: The <#=property.Name#>
-        :rtype: <#=property.Type.GetTypeString()#>
+        """Gets and sets the <#=property.Name#>
+        
+        Returns: 
+            <#=property.Type.GetTypeString()#>:
+                The <#=property.Name#>
         """
         if "<#=property.Name#>" in self._prop_dict:
 <#
@@ -62,11 +63,6 @@ class <#=complex.Name.ToUpperFirstChar()#>(object):
 
     @<#=propertyName#>.setter
     def <#=propertyName#>(self, val):
-        """
-        Sets the <#=property.Name#>
-        :param val: This value will replace <#=property.Name#>
-        :type val: <#=property.Type.GetTypeString()#>
-        """
         if not isinstance(val, <#=property.Type.GetTypeString()#>) and val is not None:
             raise TypeError(
                 'Type provided is not of type ' + <#=property.Type.GetTypeString()#>.__name__)
@@ -87,9 +83,11 @@ class <#=complex.Name.ToUpperFirstChar()#>(object):
     @property
     def <#=propertyName#>(self):
         """
-        Gets the <#=property.Name#>
-        :returns: The <#=property.Name#>
-        :rtype: <#=property.Type.GetTypeString()#>
+        Gets and sets the <#=property.Name#>
+        
+        Returns: 
+            :class:`<#=property.Type.GetTypeString()#><onedrivesdk.models.<#=property.Type.GetTypeString().ToUnderscore()#>.<#=property.Type.GetTypeString()#>>`:
+                The <#=property.Name#>
         """
         if "<#=property.Name#>" in self._prop_dict:
             return <#=property.Type.GetTypeString()#>(self._prop_dict["<#=property.Name#>"])
@@ -98,11 +96,6 @@ class <#=complex.Name.ToUpperFirstChar()#>(object):
 
     @<#=propertyName#>.setter
     def <#=propertyName#>(self, val):
-        """
-        Sets the <#=property.Name#>
-        :param val: This value will replace <#=property.Name#>
-        :type val: <#=property.Type.GetTypeString()#>
-        """
         if not isinstance(val, <#=property.Type.GetTypeString()#>) and val is not None:
             raise TypeError(
                 'Type provided is not of type ' + <#=property.Type.GetTypeString()#>.__name__)

@@ -47,8 +47,7 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
     var requestBodyInitializerBuilder = new System.Text.StringBuilder();
     paramStringBuilder.Append("self, request_url, client, options");
 
-    foreach (var param in method.Parameters.Where(p => !p.IsNullable))
-    {
+    foreach (var param in method.Parameters.Where(p => !p.IsNullable)){
         paramStringBuilder.Append(", " + param.Name.ToUnderscore());
         requestBodyInitializerBuilder.Append(Environment.NewLine);
         requestBodyInitializerBuilder.Append("        ");
@@ -59,8 +58,7 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
         requestBodyInitializerBuilder.Append("[\""+param.Name+"\"]");
         requestBodyInitializerBuilder.Append(" = "+param.Name.ToUnderscore());
     }
-    foreach (var param in method.Parameters.Where(p => p.IsNullable))
-    {
+    foreach (var param in method.Parameters.Where(p => p.IsNullable)){
         paramStringBuilder.Append(", " + param.Name.ToUnderscore() + "=None");
         requestBodyInitializerBuilder.Append(Environment.NewLine);
         requestBodyInitializerBuilder.Append("        ");
@@ -104,10 +102,25 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 #>
 
     def <#=httpMethod.ToLower()#>(self):
-        """
-        Sends the <#=httpMethod.ToUpper()#> request
-        :returns: The resulting <#=method.IsCollection ? "collection" : "entity"#> from the operation
-        :rtype: <#if (method.LongDescriptionContains("async")){#>AsyncOperationMonitor<#} else {#><#=method.IsCollection ? returnTypeCollection+"\n" : returnType+"\n"#><#}#>
+        """Sends the <#=httpMethod.ToUpper()#> request
+        
+        Returns: 
+<#
+        if (method.LongDescriptionContains("async")){
+#>
+            :class:`AsyncOperationMonitor<onedrivesdk.async_operation_monitor.AsyncOperationMonitor>`:
+<#
+        } else if (method.IsCollection){
+#>
+            :class:`<#=returnTypeCollection#><onedrivesdk.requests.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+<#
+        } else {
+#>
+            :class:`<#=returnType#><onedrivesdk.models.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+<#
+        }
+#>
+                The resulting <#=method.IsCollection ? "collection page" : "entity"#> from the operation
         """
         self.content_type = "application/json"
 <#
@@ -127,10 +140,25 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 
     @asyncio.coroutine
     def <#=httpMethod.ToLower()#>_async(self):
-        """
-        Sends the <#=httpMethod.ToUpper()#> request using an asyncio coroutine
-        :returns: The resulting <#=method.IsCollection ? "collection page" : "entity"#> from the operation
-        :rtype: <#if (method.LongDescriptionContains("async")){#>AsyncOperationMonitor<#} else {#><#=method.IsCollection ? returnTypeCollection+"\n" : returnType+"\n"#><#}#>
+        """Sends the <#=httpMethod.ToUpper()#> request using an asyncio coroutine
+
+        Yields:
+<#
+        if (method.LongDescriptionContains("async")){
+#>
+            :class:`AsyncOperationMonitor<onedrivesdk.async_operation_monitor.AsyncOperationMonitor>`:
+<#
+        } else if (method.IsCollection){
+#>
+            :class:`<#=returnTypeCollection#><onedrivesdk.requests.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+<#
+        } else {
+#>
+            :class:`<#=returnType#><onedrivesdk.models.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+<#
+        }
+#>
+                The resulting <#=method.IsCollection ? "collection page" : "entity"#> from the operation
         """
         future = self._client._loop.run_in_executor(None,
                                                     self.<#=httpMethod.ToLower()#>)
@@ -141,10 +169,25 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 #>
 
     def <#=httpMethod.ToLower()#>(self):
-        """
-        Sends the <#=httpMethod.ToUpper()#> request
-        :returns: The resulting <#=method.IsCollection ? "collection response" : "entity"#> from the operation
-        :rtype: <#if (method.LongDescriptionContains("async")){#>AsyncOperationMonitor<#} else {#><#=method.IsCollection ? returnTypeCollection+"\n" : returnType+"\n"#><#}#>
+        """Sends the <#=httpMethod.ToUpper()#> request
+        
+        Returns:
+<#
+        if (method.LongDescriptionContains("async")){
+#>
+            :class:`AsyncOperationMonitor<onedrivesdk.async_operation_monitor.AsyncOperationMonitor>`:
+<#
+        } else if (method.IsCollection){
+#>
+            :class:`<#=returnTypeCollection#><onedrivesdk.requests.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+<#
+        } else {
+#>
+            :class:`<#=returnType#><onedrivesdk.models.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+<#
+        }
+#>
+                The resulting <#=method.IsCollection ? "collection page" : "entity"#> from the operation
         """
 <#
         if (method.LongDescriptionContains("async")){
@@ -162,10 +205,25 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 
     @asyncio.coroutine
     def <#=httpMethod.ToLower()#>_async(self):
-        """
-        Sends the <#=httpMethod.ToUpper()#> request using an asyncio coroutine
-        :returns: The resulting <#=method.IsCollection ? "collection response" : "entity"#> from the operation
-        :rtype: <#if (method.LongDescriptionContains("async")){#>AsyncOperationMonitor<#} else {#><#=method.IsCollection ? returnTypeCollection+"\n" : returnType+"\n"#><#}#>
+        """Sends the <#=httpMethod.ToUpper()#> request using an asyncio coroutine
+        
+        Yields:
+<#
+        if (method.LongDescriptionContains("async")){
+#>
+            :class:`AsyncOperationMonitor<onedrivesdk.async_operation_monitor.AsyncOperationMonitor>`:
+<#
+        } else if (method.IsCollection){
+#>
+            :class:`<#=returnTypeCollection#><onedrivesdk.requests.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+<#
+        } else {
+#>
+            :class:`<#=returnType#><onedrivesdk.models.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+<#
+        }
+#>
+                The resulting <#=method.IsCollection ? "collection page" : "entity"#> from the operation
         """
         future = self._client._loop.run_in_executor(None,
                                                     self.<#=httpMethod.ToLower()#>)
@@ -222,29 +280,54 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 #>
 
     def request(self, options=None):
-        """
-        Builds the request for the <#=requestType.Replace("Request","")#>
-        :param options: List of options to include in the request
-        :type options: List of type Options
-        :returns: The request
-        :rtype: <#=requestType#>
+        """Builds the request for the <#=requestType.Replace("Request","")#>
+        
+        Args:
+            options (list of :class:`Option<onedrivesdk.options.Option>`):
+                Default to None, list of options to include in the request
+
+        Returns: 
+            :class:`<#=requestType#><onedrivesdk.requests.<#=requestType.Replace("Request","").ToUnderscore()#>.<#=requestType#>>`:
+                The request
         """
         return <#=requestType#>(<#=requestConstructorBuilder#>)
 
     def <#=httpMethod.ToLower()#>(self):
-        """
-        Sends the <#=httpMethod.ToUpper()#> request
-        :returns: The resulting <#=method.IsCollection ? "collection" : "entity"#> from the operation
-        :rtype: <#if (method.LongDescriptionContains("async")){#>AsyncOperationMonitor<#} else {#><#=method.IsCollection ? returnTypeCollection+"\n" : returnType+"\n"#><#}#>
+        """Sends the <#=httpMethod.ToUpper()#> request
+        
+        Returns:
+<#
+        if (method.IsCollection){
+#>
+            :class:`<#=returnTypeCollection#><onedrivesdk.requests.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+<#
+        } else {
+#>
+            :class:`<#=returnType#><onedrivesdk.models.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+<#
+        }
+#>
+            The resulting <#=method.IsCollection ? returnTypeCollection : returnType#> from the operation
         """
         return self.request().<#=httpMethod.ToLower()#>()
 
     @asyncio.coroutine
     def <#=httpMethod.ToLower()#>_async(self):
-        """
-        Sends the <#=httpMethod.ToUpper()#> request using an asyncio coroutine
-        :returns: The resulting <#=method.IsCollection ? "collection page" : "entity"#> from the operation
-        :rtype: <#if (method.LongDescriptionContains("async")){#>AsyncOperationMonitor<#} else {#><#=method.IsCollection ? returnTypeCollection+"\n" : returnType+"\n"#><#}#>
+        """Sends the <#=httpMethod.ToUpper()#> request using an asyncio coroutine
+        
+        Yields:
+<#
+        if (method.IsCollection){
+#>
+            :class:`<#=returnTypeCollection#><onedrivesdk.requests.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+<#
+        } else {
+#>
+            :class:`<#=returnType#><onedrivesdk.models.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+<#
+        }
+#>
+            The resulting <#=method.IsCollection ? returnTypeCollection : returnType#> from the operation
         """
         <#=method.IsCollection ? "collection_page" : "entity"#> = yield from self.request().<#=httpMethod.ToLower()#>_async()
         return <#=method.IsCollection ? "collection_page" : "entity"#>
