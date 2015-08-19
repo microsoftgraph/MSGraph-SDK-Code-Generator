@@ -71,17 +71,11 @@ from .requests.<#=name.ToUnderscore()#> import <#=name+"Request"#>
 //Streams
 var properties = CurrentModel.GetProperties(typeName:"Stream");
 
-//var complexStreamProperties = CurrentModel.GetComplexTypes()
- //                                         .SelectMany(ct => ct.Properties)
- //                                         .Where(prop => prop.IsStream);
-
-//properties = properties.Union(complexStreamProperties);
-
 foreach(var p in properties){
     var prop = p as OdcmProperty;
     var name = prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
 #>
-from .requests.<#=name.ToUnderscore()#> import <#=name#>Request, <#=name#>RequestBuilder
+from .requests.<#=name.ToUnderscore()#>_request import <#=name#>Request, <#=name#>RequestBuilder
 <#
 }
 
