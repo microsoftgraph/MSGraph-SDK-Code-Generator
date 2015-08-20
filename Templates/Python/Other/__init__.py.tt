@@ -68,6 +68,16 @@ from .requests.<#=name.ToUnderscore()#> import <#=name+"Request"#>
 <#
 }
 
+//Method collections
+foreach(OdcmMethod method in methods){
+    if (method.HasSpecialCollection()){
+    var name = method.Class.Name.ToUpperFirstChar() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar()+"Collection";
+#>
+from .requests.<#=name.ToUnderscore()#> import <#=name#>Page, <#=name#>Response
+<#
+    }
+}
+
 //Streams
 var properties = CurrentModel.GetProperties(typeName:"Stream");
 
