@@ -14,40 +14,45 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 	{
 	    public static string Prefix = ConfigurationService.Settings.NamespacePrefix;
 
-        public const string ReservedPrefix = "$$__$$";
         public static ICollection<string> ReservedNames {
-            get {
+            get 
+            {
                 return new HashSet<string> {
-                    "description", "default"  , "self" 
+                    "description", "default"  , "self" , "id"
                 };
             }
         }
 
-		public static string GetTypeString(this OdcmType type) {
-			if (type == null) {
-				return "int";
-			}
-			switch (type.Name) {
-			case "String":
-				return "NSString";
-			case "Int32":
-				return "NSInteger";
-			case "Int64":
-				return "NSInteger";
-			case "Guid":
-				return "NSString";
-			case "DateTimeOffset":
-				return "NSDate";
-			case "Binary":
-				return "NSData";
-			case "Boolean":
-				return "BOOL";
-			case "Stream":
-				return "NSStream";
-			default:
-				return Prefix + type.Name;
-			}
-		}
+        public static string GetTypeString(this OdcmType type) 
+        {
+            if (type == null) 
+            {
+                return "id";
+            }
+            switch (type.Name) {
+                case "String":
+                    return "NSString";
+                case "Int32":
+                    return "NSInteger";
+                case "Int64":
+                    return "NSInteger";
+                case "Guid":
+                    return "NSString";
+                case "Double":
+                case "Float":
+                    return "CGFloat";
+                case "DateTimeOffset":
+                    return "NSDate";
+                case "Binary":
+                    return "NSData";
+                case "Boolean":
+                    return "BOOL";
+                case "Stream":
+                    return "NSStream";
+                default:
+                    return Prefix + type.Name.ToUpperFirstChar();
+            }
+        }
 
         public static string GetTypeString(this OdcmProperty property) 
         {
@@ -57,41 +62,41 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
         public static bool IsComplex(this OdcmType type) 
         {
             string t = GetTypeString(type);
-            return !(t == "int" || t == "BOOL" || t == "Byte");
+            return !(t == "int" || t == "BOOL" || t == "Byte" || t == "NSInteger" || t == "CGFloat" || t == "NSStream");
         }
 
 		public static bool IsComplex(this OdcmProperty property) 
         {
             return property.Type.IsComplex();
-		}
+        }
 
         public static string ToSetterTypeString(this OdcmProperty property)
         {
             return string.Format("{0} {1}", property.GetFullType(), (property.IsComplex() ? "*" : string.Empty));
         }
 
-		public static string ToPropertyString(this OdcmProperty property)
-		{
-			return string.Format("{0} {1}{2}",property.GetFullType(), (property.IsComplex() ? "*" : string.Empty), SanitizePropertyName(property));
-		}
+        public static string ToPropertyString(this OdcmProperty property)
+        {
+            return string.Format("{0} {1}{2}",property.GetFullType(), (property.IsComplex() ? "*" : string.Empty), SanitizePropertyName(property));
+        }
 
         public static string SanitizePropertyName(this OdcmProperty property) 
         {
-            if (ReservedNames.Contains(property.Name.ToLower()))
+            if (ReservedNames.Contains(property.Name.ToLower())) 
             {
-                return ReservedPrefix + property.Name;
+                return property.Class.Name.ToLowerFirstChar() + property.Name.ToUpperFirstChar();
             }
             return property.Name;
         }
 
-		public static string GetFullType(this OdcmProperty property)
+        public static string GetFullType(this OdcmProperty property) 
         {
             if (property.IsCollection)
             {
-                return "NSMutableArray";
+                return  "NSMutableArray";
             }
-            else 
-            { 
+            else
+            {
                 return property.Type.GetTypeString();
             }
 		}

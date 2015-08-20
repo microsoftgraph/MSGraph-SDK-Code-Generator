@@ -209,6 +209,7 @@ namespace Vipr.T4TemplateWriter
 
             return null;
         }
+
     }
 
 }

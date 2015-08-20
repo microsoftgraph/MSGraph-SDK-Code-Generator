@@ -51,23 +51,6 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 			// ------------------------------------------------------------------------------";
 			}
 
-		private List<string> enumerableCollections = new List<string>(){
-		                                         "drives",
-		                                         "special",
-		                                         "children",
-		                                         "permissions",
-		                                         "thumbnails" };
-
-		private List<string> queryableCollections = new List<string>(){
-		                                        "items",
-		                                        "shares",
-		                                        "special",
-		                                        "thumbnails",
-		                                        "drives"};
-
-		private List<string> writableCollections = new List<string>(){
-		                                       "children"};
-
-		public string jsonContentType = "application/json";
+        public string jsonContentType = "application/json";
     }
 }
