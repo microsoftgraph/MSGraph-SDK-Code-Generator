@@ -100,6 +100,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             IEnumerable<string> includedObjects = this.IncludedObjects(templateDictionary);
             IEnumerable<string> excludedObjects = this.ExcludedObjects(templateDictionary);
+            IEnumerable<string> ignoreDescriptions = this.IgnoreDescriptions(templateDictionary);
             IEnumerable<string> matchingDescriptions = this.MatchingDescriptions(templateDictionary);
 
             //TODO aclev: these are mutally exclusive and should throw here if they are both set
@@ -114,7 +115,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             if (matchingDescriptions.Count() != 0)
             {
-                fileInfo.ObjectDescriptions = matchingDescriptions;
+                fileInfo.MatchingDescriptions = matchingDescriptions;
+            }
+            if (ignoreDescriptions.Count() != 0)
+            {
+                fileInfo.IgnoreDescriptions = ignoreDescriptions;
             }
 
            string nameFormat;
@@ -153,6 +158,16 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         private Template GetTemplate(Dictionary<string, string> template)
         {
             return GetEnum<Template>(template, "Type", this.defaultTemplate);
+        }
+
+        /// <summary>
+        /// Gets the list of strings in the "Ignore" list from the template.
+        /// </summary>
+        /// <param name="template">Teh template dirctionary from the configuration file</param>
+        /// <returns></returns>
+        private IEnumerable<string>IgnoreDescriptions(Dictionary<string, string> template)
+        {
+            return GetConfigList(template, "Ignore");
         }
 
         /// <summary>

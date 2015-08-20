@@ -38,7 +38,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         public IEnumerable<string> ExcludedObjects { get; set; }
 
-        public IEnumerable<string> ObjectDescriptions { get; set; }
+        public IEnumerable<string> MatchingDescriptions { get; set; }
+
+        public IEnumerable<string> IgnoreDescriptions { get; set; }
 
         public bool ShouldIncludeObject(OdcmObject odcmObject)
         {
@@ -54,9 +56,14 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             // Include and Exclude have priority over matches. 
             // Only check if the description matches if we should include the object.
-            if (shouldInclude && this.ObjectDescriptions != null)
+            if (shouldInclude && this.MatchingDescriptions != null)
             {
-                shouldInclude = this.ObjectDescriptions.Any(objDescp => odcmObject.LongDescriptionContains(objDescp));
+                shouldInclude = this.MatchingDescriptions.Any(objDescp => odcmObject.LongDescriptionContains(objDescp));
+            }
+
+            if (shouldInclude && this.IgnoreDescriptions != null)
+            {
+                shouldInclude = !this.IgnoreDescriptions.Any(objDescp => odcmObject.LongDescriptionContains(objDescp));
             }
 
             return shouldInclude;
