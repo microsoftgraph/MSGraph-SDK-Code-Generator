@@ -1,0 +1,135 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
+var clientName          = model.GetEntityContainer().ToUpperFirstChar() + "Client";
+var clientNameLower     = clientName.ToLowerFirstChar();
+var method              = host.CurrentType as OdcmMethod;
+var innerEntityType     = method.ReturnType.IsComplex() ? method.ReturnType.GetTypeString().ToUpperFirstChar() : method.ReturnType.GetTypeString();
+var collectionRequest   = method.Class.Name.ToUpperFirstChar() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Request";
+var collectionPage      = collectionRequest.Replace("Request", "CollectionPage");
+var collectionResponse  = collectionRequest.Replace("Request", "CollectionResponse");
+TemplateWriterSettings settings = ConfigurationService.Settings;
+var jsonContentType     = "application/json";
+
+var specialParams = "";
+
+if (method.HasSpecialCollection())
+{
+    var specialMethodParams = method.SpecialMethodParameters();
+    foreach (var parameter in specialMethodParams)
+    {
+            specialParams += ", " + parameter.Name.ToUnderscore();
+    }
+}
+
+#>
+<#=writer.WriteHeader()#>
+
+from ..models.<#=innerEntityType.ToUnderscore()#> import <#=innerEntityType#>
+from ..requests.items_collection import ItemsCollectionResponse, ItemsCollectionPage
+import asyncio
+import json
+
+
+class <#=collectionResponse#>(ItemsCollectionResponse):
+
+    @property
+    def collection_page(self):
+        """The collection page stored in the response JSON
+        
+        Returns:
+            :class:`<#=collectionPage#><onedrivesdk.requests.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+                The collection page
+        """
+<#
+if (method.HasSpecialCollection())
+{
+    var specialMethodParams = method.SpecialMethodParameters();
+    foreach (var parameter in specialMethodParams)
+    {
+#>
+        <#=parameter.Name.ToUnderscore()#> = self._prop_dict["@<#=parameter.FullName#>"] if "@<#=parameter.FullName#>" in self._prop_dict else None
+<#
+    }
+}
+#>
+
+        if self._collection_page:
+            self._collection_page._prop_list = self._prop_dict["value"]
+<#
+if (method.HasSpecialCollection())
+{
+    var specialMethodParams = method.SpecialMethodParameters();
+    foreach (var parameter in specialMethodParams)
+    {
+#>
+            self._collection_page._<#=parameter.Name.ToUnderscore()#> = <#=parameter.Name.ToUnderscore()#>
+<#
+    }
+}
+#>
+        else:
+<#
+var specialParamsLookup = "";
+if (method.HasSpecialCollection())
+{
+    var specialMethodParams = method.SpecialMethodParameters();
+    foreach (var parameter in specialMethodParams)
+    {
+        specialParamsLookup += ",\n                                                            "+parameter.Name.ToUnderscore();
+    }
+}
+#>
+            self._collection_page = <#=collectionPage#>(self._prop_dict["value"]<#=specialParamsLookup#>)
+
+        return self._collection_page
+
+class <#=collectionPage#>(ItemsCollectionPage):
+
+    def __init__(self, prop_list<#=specialParams#>):
+        super(<#=collectionPage#>, self).__init__(prop_list)
+<#
+if (method.HasSpecialCollection())
+{
+    var specialMethodParams = method.SpecialMethodParameters();
+    foreach (var parameter in specialMethodParams)
+    {
+#>
+        self._<#=parameter.Name.ToUnderscore()#> = <#=parameter.Name.ToUnderscore()#>
+<#
+    }
+}
+#>
+
+    def _init_next_page_request(self, next_page_link, client, options):
+        """Initialize the next page request for the <#=collectionPage#>
+        
+        Args:
+            next_page_link (str): The URL for the next page request
+                to be sent to
+            client (:class:`OneDriveClient<onedrivesdk.models.one_drive_client.OneDriveClient>`:
+                The client to be used for the request
+            options (list of :class:`Option<onedrivesdk.options.Option>`:
+                A list of options
+        """
+        self._next_page_request = <#=collectionRequest#>(next_page_link, client, options)
+<#
+if (method.HasSpecialCollection())
+{
+    var specialMethodParams = method.SpecialMethodParameters();
+    foreach (var parameter in specialMethodParams)
+    {
+#>
+
+    @property
+    def <#=parameter.Name.ToUnderscore()#>(self):
+        return self._<#=parameter.Name.ToUnderscore()#>
+<#
+    }
+}
+#>
+
+from ..requests.<#=collectionRequest.Replace("Request", "").ToUnderscore()#> import <#=collectionRequest#>

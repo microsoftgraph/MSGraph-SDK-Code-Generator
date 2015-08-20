@@ -13,6 +13,10 @@ var requestType         = entityName + method.Name.Substring(method.Name.IndexOf
 var requestBuilderType  = requestType + "Builder";
 var returnType          = method.ReturnType.Name.ToUpperFirstChar();
 var returnTypeCollection= "ItemsCollectionResponse";
+if (method.HasSpecialCollection())
+{
+    returnTypeCollection=requestType.Replace("Request", "CollectionResponse");
+}
 bool hasParameters      = method.Parameters != null && method.Parameters.Any();
 TemplateWriterSettings settings = ConfigurationService.Settings;
 
@@ -21,13 +25,6 @@ TemplateWriterSettings settings = ConfigurationService.Settings;
 
 from ..models.<#=returnType.ToUnderscore()#> import <#=returnType#>
 <#=method.IsCollection ? "from ..collection_base import CollectionRequestBase" : "from ..request_base import RequestBase"#>
-<#
-if (method.IsCollection) {
-#>
-from ..requests.items_collection import ItemsCollectionResponse
-<#
-}
-#>
 from ..request_builder_base import RequestBuilderBase
 <#
 if (method.LongDescriptionContains("async")){
@@ -331,3 +328,11 @@ class <#=requestBuilderType#>(RequestBuilderBase):
         """
         <#=method.IsCollection ? "collection_page" : "entity"#> = yield from self.request().<#=httpMethod.ToLower()#>_async()
         return <#=method.IsCollection ? "collection_page" : "entity"#>
+
+<#
+if (method.IsCollection) {
+#>
+from ..requests.<#=returnTypeCollection.Replace("Response", "").ToUnderscore()#> import <#=returnTypeCollection#>
+<#
+}
+#>

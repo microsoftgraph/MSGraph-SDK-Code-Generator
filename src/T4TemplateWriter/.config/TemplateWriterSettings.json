@@ -55,6 +55,7 @@
         },
         "Python": [
             { "Template": "EntityCollection", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection", "Exclude": "nextExpectedRanges;roles" },
+            { "Template": "EntityCollectionMethod", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class>_<Method>_collection", "Exclude": "nextExpectedRanges;roles" },
             { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request", "Exclude": "nextExpctedRanges;roles" },
             { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request_builder", "Exclude": "nextExpectedRanges;roles" },
             { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>_request", "Matches": "navigable" },
