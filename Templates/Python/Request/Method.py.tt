@@ -13,9 +13,10 @@ var requestType         = entityName + method.Name.Substring(method.Name.IndexOf
 var requestBuilderType  = requestType + "Builder";
 var returnType          = method.ReturnType.Name.ToUpperFirstChar();
 var returnTypeCollection= "ItemsCollectionResponse";
-if (method.HasSpecialCollection())
+if (method.LongDescriptionContains("specialCollection"))
 {
     returnTypeCollection=requestType.Replace("Request", "CollectionResponse");
+    method.IsCollection = true;
 }
 bool hasParameters      = method.Parameters != null && method.Parameters.Any();
 TemplateWriterSettings settings = ConfigurationService.Settings;
@@ -23,7 +24,14 @@ TemplateWriterSettings settings = ConfigurationService.Settings;
 #>
 <#=writer.WriteHeader()#>
 
+<#
+if (!method.LongDescriptionContains("specialCollection"))
+{
+#>
 from ..models.<#=returnType.ToUnderscore()#> import <#=returnType#>
+<#
+}
+#>
 <#=method.IsCollection ? "from ..collection_base import CollectionRequestBase" : "from ..request_base import RequestBase"#>
 from ..request_builder_base import RequestBuilderBase
 <#

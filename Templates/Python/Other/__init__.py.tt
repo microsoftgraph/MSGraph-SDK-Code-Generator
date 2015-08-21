@@ -17,9 +17,11 @@ from .models.<#=enumType.GetTypeString().ToUnderscore()#> import <#=enumType.Get
 }
 
 //Complex
-var complexTypes = CurrentModel.GetComplexTypes();
+var complexTypes = CurrentModel.GetComplexTypes()
+                    .Where(complexType => 
+                        !complexType.LongDescriptionContains("methodResponse"));
 
-foreach (var complex in complexTypes.Where(complexType => !complexType.LongDescriptionContains("navigable"))){
+foreach (var complex in complexTypes){
 #>
 from .models.<#=complex.GetTypeString().ToUnderscore()#> import <#=complex.GetTypeString().ToUpperFirstChar()#>
 <#
@@ -27,13 +29,14 @@ from .models.<#=complex.GetTypeString().ToUnderscore()#> import <#=complex.GetTy
 
 //Entities
 var types = CurrentModel.GetEntityTypes();
-types = types.Union(complexTypes.Where(complexType => complexType.LongDescriptionContains("navigable")));
 
 foreach(var entity in types) {
 #>
 from .models.<#=entity.GetTypeString().ToUnderscore()#> import <#=entity.GetTypeString().ToUpperFirstChar()#>
 <#
 }
+
+types = types.Union(complexTypes.Where(complexType => complexType.LongDescriptionContains("navigable")));
 
 //requests and Request Builders
 foreach(var entity in types) {
@@ -46,7 +49,7 @@ from .requests.<#=(name+"Builder").ToUnderscore()#> import <#=(name+"Builder").T
 
 //Collections
 var collections = CurrentModel.GetProperties()
-                    .Where(prop => prop.IsCollection && prop.Type != null && prop.Type.Name != "String");
+                    .Where(prop => prop.IsCollection && prop.Type != null && prop.Type.Name != "String" && !prop.LongDescriptionContains("ignorableCollection"));
 
 
 foreach(OdcmProperty prop in collections){
@@ -68,9 +71,9 @@ from .requests.<#=name.ToUnderscore()#> import <#=name+"Request"#>
 <#
 }
 
-//Method collections
+//Special method collections
 foreach(OdcmMethod method in methods){
-    if (method.HasSpecialCollection()){
+    if (method.LongDescriptionContains("specialCollection")){
     var name = method.Class.Name.ToUpperFirstChar() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar()+"Collection";
 #>
 from .requests.<#=name.ToUnderscore()#> import <#=name#>Page, <#=name#>Response
