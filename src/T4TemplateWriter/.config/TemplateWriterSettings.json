@@ -1,6 +1,6 @@
 ﻿{
     "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python" ],
-    "TargetLanguage": "CSharp",
+    "TargetLanguage": "Java",
     "Plugins": [ ],
     "PrimaryNamespaceName": "oneDrive",
     "NamespacePrefix": "OD",
@@ -12,7 +12,7 @@
     "TemplateMapping": {
         "Shared": [
             { "Template": "EntityType", "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
-            { "Template": "ComplexType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Ignore" : "methodResponse"},
+            { "Template": "ComplexType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>" },
             { "Template": "EnumType", "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
             { "Template": "EntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
             { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
@@ -48,10 +48,10 @@
             { "Template": "SharedCSharp", "SubProcessor": "Other", "Type": "Shared" }
         ],
         "ObjC": [
-            { "Template": "SharedObjC", "SubProcessor": "Other", "Type": "Shared" }
+            { "Template" : "Models", "SubProcessor" : "Other", "Type": "Model", "Name" : "Models"}
         ],
-        "Java": [
-        ],
+        "Java": {
+        },
         "Python": [
             { "Template": "EntityCollection", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "EntityCollectionMethod", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>_collection", "Exclude": "nextExpectedRanges;roles", "Matches": "specialCollection"},
@@ -60,6 +60,7 @@
             { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>_request", "Matches": "navigable" },
             { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>_request_builder", "Matches": "navigable" },
             { "Template": "Method", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>" },
+            { "Template": "SpecialMethod", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>", "Matches": "specialMethod" },
             { "Template": "Stream", "SubProcessor": "Property", "Type": "Request", "Name": "<Class>_<Property>_request", "Include": "content" },
             { "Template": "__init__", "SubProcessor": "Other", "Type": "Other", "Name": "__init__" }
         ]
