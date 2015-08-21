@@ -48,7 +48,10 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 string templateName = null;
                 if (templateInfo.TryGetValue("Template", out templateName) && templates.ContainsKey(templateName))
                 {
-                    yield return this.Create(templates[templateName], templateInfo);
+                    foreach (var templatePath in templates[templateName])
+                    {
+                        yield return this.Create(templatePath, templateInfo);
+                    }
                 }
             }
         }
@@ -57,14 +60,22 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// Reads all of the templates available from the given directory.
         /// </summary>
         /// <returns>A dictionary mapping of template name to path</returns>
-        private Dictionary<string, string> ReadTemplateFiles()
+        private Dictionary<string, IList<string>> ReadTemplateFiles()
         {
-            var templates = new Dictionary<string, string>();
+            var templates = new Dictionary<string, IList<string>>();
             foreach (string path in (Directory.EnumerateFiles(this.templatesDirectory, "*.*.tt", SearchOption.AllDirectories)))
             {
                 // Remove the .tt and then remove the file type extension
                 var templateName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
-                templates[templateName] = path;
+                IList<string> templatePaths = null;
+                if (templates.TryGetValue(templateName, out templatePaths))
+                {
+                    templatePaths.Add(path);
+                }
+                else
+                {
+                    templates[templateName] = new List<string>() { path };
+                }
             }
             return templates;
         }

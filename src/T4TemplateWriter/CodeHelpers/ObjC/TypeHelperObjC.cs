@@ -114,8 +114,19 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 		public static bool IsSystem(this OdcmType type)
 		{
 			string t = GetTypeString(type);
-			return (t == "int" || t == "BOOL" || t == "Byte" || t == "NSString" || t == "NSDate");
+			return (t == "int" || t == "BOOL" || t == "Byte" || t == "NSString" || t == "NSDate" || t == "NSStream");
 		}
+
+        public static bool IsDate(this OdcmProperty prop)
+        {
+            return prop.Type.IsDate();
+        }
+
+        public static bool IsDate(this OdcmType type)
+        {
+            string typeString = GetTypeString(type);
+            return typeString.Equals("NSDate");
+        }
 
 		public static string GetToLowerFirstCharName(this OdcmProperty property)
 		{
@@ -128,9 +139,32 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 			return property.Type.Name.Substring(0, index).ToLower() + property.Type.Name.Substring(index);
 		}
 
+        public static string GetToUpperFirstCharName(this OdcmProperty property)
+        {
+            return property.Name.ToUpperFirstChar();
+        }
+
 		public static bool IsEnum(this OdcmProperty property)
 		{
 			return property.Type is OdcmEnum;
 		}
+        public static string GetPrimativeCastMethod(this OdcmType type)
+        {
+            string objectiveCType = type.GetTypeString();
+            if (objectiveCType.Equals("NSInteger"))
+            {
+                return "intValue";
+            }
+            else if(objectiveCType.Equals("BOOL"))
+            {
+                return "boolValue";
+            }
+            else if (objectiveCType.Equals("CGFloat"))
+            {
+                return "floatValue";
+            }
+
+            return null;
+        }
 	}
 }
