@@ -7,6 +7,7 @@ CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 var clientName          = model.GetEntityContainer().ToUpperFirstChar() + "Client";
 var clientNameLower     = clientName.ToLowerFirstChar();
 var method              = host.CurrentType as OdcmMethod;
+var returnType          = method.ReturnType.AsOdcmClass();
 var innerEntityType     = method.ReturnType.IsComplex() ? method.ReturnType.GetTypeString().ToUpperFirstChar() : method.ReturnType.GetTypeString();
 var collectionRequest   = method.Class.Name.ToUpperFirstChar() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Request";
 var collectionPage      = collectionRequest.Replace("Request", "CollectionPage");
@@ -14,24 +15,18 @@ var collectionResponse  = collectionRequest.Replace("Request", "CollectionRespon
 TemplateWriterSettings settings = ConfigurationService.Settings;
 var jsonContentType     = "application/json";
 
-var specialParams = "";
+var properties = returnType.Properties.Where(p => p.Name != "Value");
+var propertiesString = "";
 
-if (method.HasSpecialCollection())
+foreach (var property in properties)
 {
-    var specialMethodParams = method.SpecialMethodParameters();
-    foreach (var parameter in specialMethodParams)
-    {
-            specialParams += ", " + parameter.Name.ToUnderscore();
-    }
+        propertiesString += ", " + property.Name.Split('.')[1].ToUnderscore() + "=None";
 }
 
 #>
 <#=writer.WriteHeader()#>
 
-from ..models.<#=innerEntityType.ToUnderscore()#> import <#=innerEntityType#>
 from ..requests.items_collection import ItemsCollectionResponse, ItemsCollectionPage
-import asyncio
-import json
 
 
 class <#=collectionResponse#>(ItemsCollectionResponse):
@@ -45,62 +40,46 @@ class <#=collectionResponse#>(ItemsCollectionResponse):
                 The collection page
         """
 <#
-if (method.HasSpecialCollection())
+foreach (var property in properties)
 {
-    var specialMethodParams = method.SpecialMethodParameters();
-    foreach (var parameter in specialMethodParams)
-    {
 #>
-        <#=parameter.Name.ToUnderscore()#> = self._prop_dict["@<#=parameter.FullName#>"] if "@<#=parameter.FullName#>" in self._prop_dict else None
+        <#=property.Name.Split('.')[1].ToUnderscore()#> = self._prop_dict["<#=property.Name#>"] if "<#=property.Name#>" in self._prop_dict else None
 <#
-    }
 }
 #>
 
         if self._collection_page:
             self._collection_page._prop_list = self._prop_dict["value"]
 <#
-if (method.HasSpecialCollection())
+foreach (var property in properties)
 {
-    var specialMethodParams = method.SpecialMethodParameters();
-    foreach (var parameter in specialMethodParams)
-    {
 #>
-            self._collection_page._<#=parameter.Name.ToUnderscore()#> = <#=parameter.Name.ToUnderscore()#>
+            self._collection_page._<#=property.Name.Split('.')[1].ToUnderscore()#> = <#=property.Name.Split('.')[1].ToUnderscore()#>
 <#
-    }
 }
 #>
         else:
 <#
-var specialParamsLookup = "";
-if (method.HasSpecialCollection())
+var propLookup = "";
+foreach (var property in properties)
 {
-    var specialMethodParams = method.SpecialMethodParameters();
-    foreach (var parameter in specialMethodParams)
-    {
-        specialParamsLookup += ",\n                                                            "+parameter.Name.ToUnderscore();
-    }
+    propLookup += ",\n                                                            "+property.Name.Split('.')[1].ToUnderscore();
 }
 #>
-            self._collection_page = <#=collectionPage#>(self._prop_dict["value"]<#=specialParamsLookup#>)
+            self._collection_page = <#=collectionPage#>(self._prop_dict["value"]<#=propLookup#>)
 
         return self._collection_page
 
 class <#=collectionPage#>(ItemsCollectionPage):
 
-    def __init__(self, prop_list<#=specialParams#>):
+    def __init__(self, prop_list<#=propertiesString#>):
         super(<#=collectionPage#>, self).__init__(prop_list)
 <#
-if (method.HasSpecialCollection())
+foreach (var property in properties)
 {
-    var specialMethodParams = method.SpecialMethodParameters();
-    foreach (var parameter in specialMethodParams)
-    {
 #>
-        self._<#=parameter.Name.ToUnderscore()#> = <#=parameter.Name.ToUnderscore()#>
+        self._<#=property.Name.Split('.')[1].ToUnderscore()#> = <#=property.Name.Split('.')[1].ToUnderscore()#>
 <#
-    }
 }
 #>
 
@@ -117,18 +96,32 @@ if (method.HasSpecialCollection())
         """
         self._next_page_request = <#=collectionRequest#>(next_page_link, client, options)
 <#
-if (method.HasSpecialCollection())
+foreach (var property in properties)
 {
-    var specialMethodParams = method.SpecialMethodParameters();
-    foreach (var parameter in specialMethodParams)
-    {
 #>
 
     @property
-    def <#=parameter.Name.ToUnderscore()#>(self):
-        return self._<#=parameter.Name.ToUnderscore()#>
+    def <#=property.Name.Split('.')[1].ToUnderscore()#>(self):
+        """Gets the <#=property.Name.Split('.')[1]#> property from the
+        <#=collectionPage#>
+
+        Returns:
 <#
-    }
+        if (property.Type.IsComplex())
+        {
+#>
+            :class:`<#=property.Type.GetTypeString()#><onedrivesdk.models.<#=property.Type.GetTypeString().ToUnderscore()#>.<#=property.Type.GetTypeString()#>>`:
+<#
+        } else {
+#>
+            <#=property.Type.GetTypeString()#>:
+<#
+        }
+#>
+                The <#=property.Name.Split('.')[1]#> property from the <#=collectionPage#>
+        """
+        return self._<#=property.Name.Split('.')[1].ToUnderscore()#>
+<#
 }
 #>
 
