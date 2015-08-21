@@ -1,0 +1,25 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<# 
+var prop = host.CurrentType.AsOdcmProperty();
+var className = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar();
+var propName = className + prop.Name.ToUpperFirstChar() + "Request";
+var uploadCompletionHandler = className + "UploadCompletionHandler";
+#>
+@class ODURLSessionDownloadTask, ODURLSessionUploadTask, <#=className#>;
+
+typedef void(^<#=uploadCompletionHandler#>)(<#=className#> *response, NSError* error);
+
+#import "ODRequest.h"
+
+@interface <#=propName#> : ODRequest
+
+- (ODURLSessionDownloadTask *) downloadWithCompletion:(ODDownloadCompletionHandler)completionHandler;
+
+- (ODURLSessionUploadTask *) uploadFromData:(NSData *)data
+                                 completion:(<#=uploadCompletionHandler#>)completionHandler;
+                                           
+- (ODURLSessionUploadTask *) uploadFromFile:(NSURL *)fileUrl 
+                                 completion:(<#=uploadCompletionHandler#>)completionHandler;
+
+@end

@@ -1,0 +1,69 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+
+<#
+var func = host.CurrentType.AsOdcmMethod();
+var entityName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar();
+var requestType = entityName + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Request";
+var returnTypeObject = func.ReturnType.AsOdcmClass();
+var returnType = writer.GetPrefix() + func.ReturnType.Name.ToUpperFirstChar();
+    var superClass = writer.GetPrefix() + ((func.IsCollection || func.LongDescriptionContains("specialCollection")) ?  "CollectionRequest" : "Request");
+var method = ((func.Verbs & OdcmAllowedVerbs.Get) != OdcmAllowedVerbs.Get) ? "POST" : "GET";
+var isAsync = func.LongDescriptionContains("async");
+var specialCollectionType = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Collection";
+    
+if (func.LongDescriptionContains("specialCollection"))
+{
+#>
+@class ODURLSessionDataTask, <#=specialCollectionType#>;
+<#
+}
+else 
+{
+#>
+@class ODURLSessionDataTask;
+<#
+}
+#>
+
+#import "<#=superClass#>.h"
+
+@interface <#=requestType#> : <#=superClass#>
+
+@property (readonly) NSMutableURLRequest *mutableRequest;
+
+<#
+if (func.Parameters.Count > 0)
+{
+#>
+- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url options:(NSArray *)options client:(ODClient *)client;
+<#
+}
+string completionHandler;
+string taskType = "ODURLSessionDataTask *";
+if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
+{
+    string collectionType = "ODCollection";
+    if (func.LongDescriptionContains("specialCollection"))
+    {
+       collectionType = specialCollectionType; 
+    }
+    completionHandler = "(void (^)(" + collectionType + " *response, " + requestType + " *nextRequest, NSError *error))";
+
+}
+else if(isAsync)
+{
+    completionHandler = "(void (^)(" + returnType + " *response, ODAsyncOperationStatus *status, NSError *error))";
+    taskType = "ODAsyncURLSessionDataTask *";
+}
+else
+{
+
+    completionHandler = writer.GetNetworkCompletionBlock(returnType, "response"); 
+}
+
+#>
+
+- (<#=taskType#>)executeWithCompletion:<#=completionHandler#>completionHandler;
+
+@end

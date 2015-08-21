@@ -282,33 +282,47 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             return string.Format("/n{0} EndOfFile", name);
         }
 
-        public string GetParamsString(List<OdcmParameter> parameters) {
+        public string GetParamsString(IEnumerable<OdcmParameter> parameters)
+        {
+            string param = "";
+            foreach (OdcmParameter p in parameters)
+            {
+                string paramName = (p == parameters.First()) ? p.Name.ToUpperFirstChar() : p.Name.ToLowerFirstChar();
 
-            string param = "With";
-
-            foreach (OdcmParameter p in parameters) {
-                if (param == "With") {
-                    param += string.Format("{0}:({2}{3}){1} ", char.ToUpper(p.Name[0]) + p.Name.Substring(1)
-                                        , p.Name.ToLowerFirstChar(),
-                                        (p.IsCollection ?  "NSArray": p.Type.GetFullType())
-                                        , (p.Type.IsComplex() ? " *" : ""));
-                } else {
-                    param += string.Format("{0}:({1} {2}){0} ", p.Name.ToLowerFirstChar(),
-                    (p.IsCollection ?"NSArray" : p.Type.GetFullType())
-                    , (p.Type.IsComplex() ? "*" : ""));
+                if (p.Type.IsComplex())
+                {
+                    param += string.Format("{0}:({1} *){2}", paramName, p.Type.GetFullType(), p.Name.ToLowerFirstChar());
                 }
+                else
+                {
+                    param += string.Format("{0}:({1}){2}", paramName, p.Type.GetFullType(), p.Name.ToLowerFirstChar());
+                }
+                param += " ";
             }
-            param += parameters.Count() > 0 ? "callback" : "Callback";
+
             return param;
         }
 
-        public string GetParamString(OdcmType p) {
+        public string GetParamString(OdcmType p) 
+        {
             p.GetFullType();
-            //if(p == null) return string.Empty;
-            if (p.IsComplex()) {
+            if (p.IsComplex()) 
+            {
                 return p.IsSystem() ? string.Empty : p.GetTypeString() + " *" + p.Name.ToLowerFirstChar();
             }
             return p.GetTypeString() + " " + p.Name;
+        }
+
+        public string GetNetworkCompletionBlock(string parameterType, string parameterName)
+        {
+            if (!string.IsNullOrEmpty(parameterType) && !string.IsNullOrEmpty(parameterName))
+            {
+                return "(void (^)(" + parameterType + " *" + parameterName + ", NSError *error))";
+            }
+            else
+            {
+                return "(void(^)(NSError *error))";
+            }
         }
 
         public string GetTypeForAction(OdcmMethod action) {

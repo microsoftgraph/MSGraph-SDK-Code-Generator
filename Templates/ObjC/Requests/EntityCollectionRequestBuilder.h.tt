@@ -1,0 +1,42 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var prop = host.CurrentType.AsOdcmProperty();
+var innerEntity = prop.Type;
+var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
+
+var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+var entityRequestBuilder = innerEntityType + "RequestBuilder";
+var entityRequest = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest";
+var classStringBuilder = new StringBuilder("@class " + entityRequest);
+if (prop.LongDescriptionContains("queryable"))
+{
+    classStringBuilder.Append(", " + entityRequestBuilder + ";");
+}
+else 
+{
+    classStringBuilder.Append(";");
+}
+
+#>
+<#=classStringBuilder.ToString()#>
+
+#import "<#=writer.GetPrefix()#>Models.h"
+#import "ODCollectionRequestBuilder.h"
+
+@interface <#=propName#> : ODCollectionRequestBuilder
+
+- (<#=entityRequest#> *)request;
+
+- (<#=entityRequest#> *)requestWithOptions:(NSArray *)options;
+<#  
+    if (prop.LongDescriptionContains("queryable"))
+    {      
+#>
+
+- (<#=entityRequestBuilder#> *)<#=innerEntity.Name.ToLowerFirstChar()#>:(NSString *)<#=innerEntity.Name.ToLowerFirstChar()#>;
+
+<#
+    }
+#>
+@end

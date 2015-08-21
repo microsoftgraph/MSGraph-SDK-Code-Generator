@@ -1,0 +1,92 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+
+var prop = host.CurrentType.AsOdcmProperty();
+var innerEntity = prop.Type;
+
+var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
+var propNameRequest = propName + "CollectionRequest";
+var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
+var entityRequest = innerEntityType + "RequestBuilder";
+
+
+#>
+
+#import "<#=writer.GetPrefix()#>ODataEntities.h"
+#import "ODCollection.h"
+#import "ODURLSessionDataTask.h"
+
+@interface ODCollectionRequest()
+
+- (NSMutableURLRequest *)requestWithMethod:(NSString *)method 
+                                      body:(NSData *)body 
+                                   headers:(NSDictionary *)headers;
+@end 
+
+@implementation <#=propNameRequest#>
+
+<# 
+    if (prop.LongDescriptionContains("enumerable"))
+    {
+#>
+
+- (NSMutableURLRequest *)get
+{
+    return [self requestWithMethod:@"GET"
+                              body:nil
+                           headers:nil];
+}
+
+- (ODURLSessionDataTask *)getWithCompletion:(<#=propName#>CompletionHandler)completionHandler
+{
+
+    ODURLSessionDataTask * task = [self collectionTaskWithRequest:[self get]
+                                             odObjectWithDictionary:^(NSDictionary *response){
+                                            return [[<#=innerEntityType#> alloc] initWithDictionary:response];
+                                         }
+                                                        completion:^(ODCollection *collectionResponse, NSError *error){
+                                            if(!error && collectionResponse.nextLink && completionHandler){
+                                                <#=propNameRequest#> *nextRequest = [[<#=propNameRequest#> alloc] initWithURL:collectionResponse.nextLink options:nil client:self.client];
+                                                completionHandler(collectionResponse, nextRequest, nil); 
+                                            }
+                                            else if(completionHandler){
+                                                completionHandler(collectionResponse, nil, error);
+                                            } 
+                                        }];
+    [task execute];
+    return task;
+}
+
+<#
+    }
+    if (prop.LongDescriptionContains("writable"))
+    {
+#>
+- (NSMutableURLRequest *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#>
+{
+    NSData *body = [NSJSONSerialization dataWithJSONObject:[<#=innerEntity.Name.ToLowerFirstChar()#> dictionaryFromItem]
+                                                   options:0
+                                                     error:nil];
+    return [self requestWithMethod:@"POST"
+                              body:body
+                           headers:nil];
+
+}
+
+- (ODURLSessionDataTask *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#> withCompletion:(<#=innerEntityType#>CompletionHandler)completionHandler
+{
+    ODURLSessionDataTask *task = [self taskWithRequest:[self add<#=innerEntity.Name.ToUpperFirstChar()#>:<#=innerEntity.Name.ToLowerFirstChar()#>] 
+							     odObjectWithDictionary:^(NSDictionary *response){
+                                            return [[<#=innerEntityType#> alloc] initWithDictionary:response];
+                                        }
+                                              completion:completionHandler];
+    [task execute];
+    return task;
+}
+<#
+    }
+#>
+
+
+@end

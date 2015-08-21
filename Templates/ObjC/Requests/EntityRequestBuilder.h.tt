@@ -1,0 +1,150 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+
+<#
+var entity = host.CurrentType.AsOdcmClass();
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "RequestBuilder";
+var entityRequestName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "Request";
+var classes = new List<string>();
+classes.Add(entityRequestName);
+
+foreach(var prop in entity.NavigationProperties())
+{
+	var fetcher = string.Empty;
+	fetcher = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder";
+
+	if(!classes.Contains(fetcher)) classes.Add(fetcher);
+
+	if(prop.IsCollection)
+	{
+		var collectionFetcher = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+
+		if(!classes.Contains(collectionFetcher)) classes.Add(collectionFetcher);
+	}
+}
+
+foreach(var prop in entity.GetProperties(typeName:"Stream"))
+{
+    var streamRequest = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request";
+    if (!classes.Contains(streamRequest))
+    {
+        classes.Add(streamRequest);
+    }
+}
+
+foreach(var func in entity.Methods)
+{
+    var requestType = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + 
+                   func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "RequestBuilder";
+    if (!classes.Contains(requestType))
+    {
+        classes.Add(requestType);
+    }
+}
+
+foreach(var complexType in entity.GetProperties(longDescriptionMatches:"navigable").Where(prop => prop.Type is OdcmClass))
+{
+    var requestType = writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar() + "RequestBuilder";
+    if (!classes.Contains(requestType))
+    {
+        classes.Add(requestType);
+    }
+
+}
+
+
+var lastClass = classes[classes.Count -1];
+StringBuilder stringBuilder = new StringBuilder();
+foreach(var propertyClass in classes)
+{
+    stringBuilder.Append(propertyClass); 
+    if (propertyClass != lastClass)
+    {
+        stringBuilder.Append(", ");
+    }
+    else 
+    {
+        stringBuilder.Append(";");
+    }
+}
+if (classes.Count > 0)
+{
+#>
+@class <#=stringBuilder.ToString()#>
+<#
+}
+#>
+#import "<#=writer.GetPrefix()#>Models.h"
+#import "ODRequestBuilder.h"
+
+
+@interface <#=entityName#> : ODRequestBuilder
+
+<#
+		
+foreach(var prop in entity.NavigationProperties())
+{
+	if(prop.IsCollection)
+	{
+        var propInstanceName = prop.Name.ToLowerFirstChar();
+        var propTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
+        var collectionRequestName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+        var innerPropTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
+        var innerPropInstanceName = prop.Type.Name.ToLowerFirstChar();
+        var innerPropTypeRequestName = innerPropTypeName + "RequestBuilder";
+
+#>
+- (<#=collectionRequestName#> *)<#=propInstanceName#>;
+
+<#
+        if (prop.LongDescriptionContains("queryable"))
+        { 
+#>
+- (<#=innerPropTypeRequestName#> *)<#=propInstanceName#>:(NSString *)<#=innerPropInstanceName#>;
+
+<#
+        }
+
+	}
+}
+foreach(var complexType in entity.GetProperties(longDescriptionMatches:"navigable").Where(prop => prop.Type is OdcmClass))
+{
+#>
+- (<#=writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=complexType.Name#>;
+
+<#
+}
+
+#>
+- (<#=entityRequestName#> *)request;
+
+- (<#=entityRequestName#> *) requestWithOptions:(NSArray *)options;
+
+<#
+foreach(var prop in entity.GetProperties(typeName:"Stream"))
+{
+    var propName = prop.Name.ToUpperFirstChar();
+    var propRequestName = writer.GetPrefix() + propName + "Request";
+#>
+- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>RequestWithOptions:(NSArray *)options;
+
+- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>Request;
+
+<#
+}
+foreach(var func in entity.Methods)
+{
+    var methodName = func.Name.Substring(func.Name.IndexOf('.') + 1).ToLowerFirstChar();
+    var requestBuilderName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + methodName.ToUpperFirstChar() + "RequestBuilder";
+    if (func.Parameters.Count > 0)
+    {
+        methodName += ("With" + writer.GetParamsString(func.Parameters));
+    }
+#>
+- (<#=requestBuilderName#> *)<#=methodName#>;
+
+<#
+
+}
+#>
+@end

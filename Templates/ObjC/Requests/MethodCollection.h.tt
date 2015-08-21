@@ -1,0 +1,26 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+
+<#
+var func = host.CurrentType.AsOdcmMethod();
+var paramList = func.ReturnType.AsOdcmClass().Properties.Where(prop=> !prop.IsCollection);
+var collectionName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Collection";
+#>
+
+#import "ODCollection.h"
+
+@interface <#=collectionName#> : ODCollection
+
+<#
+foreach(var param in paramList)
+{
+    var paramName = param.Name.Substring(param.Name.IndexOf(".") + 1).ToLowerFirstChar();
+#>
+@property <#=param.Type.GetTypeString()#> *<#=paramName#>;
+<#
+}
+#>
+
+- (instancetype)initWithCollection:(ODCollection *)collection;
+
+@end

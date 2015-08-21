@@ -18,9 +18,8 @@
             { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
             { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
             { "Template": "StreamRequest", "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>Request", "Include": "content" },
-            { "Template": "StreamRequestBuilder", "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>RequestBuilder", "Include": "content" },
-            { "Template": "MethodRequest", "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "<Class><Method>Request" },
-            { "Template": "MethodRequestBuilder", "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
+            { "Template": "MethodRequest", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Request" },
+            { "Template": "MethodRequestBuilder", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
         ],
         "CSharp": [
             { "Template": "IEntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
@@ -35,6 +34,7 @@
             { "Template": "EntityCollectionResponse", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionReponse", "Exclude": "nextExpectedRanges;roles" },
             { "Template": "IStreamRequest", "SubProcessor": "Property", "Type": "Request", "Name": "I<Class><Property>Request", "Include": "content" },
             { "Template": "IStreamRequestBuilder", "SubProcessor": "Property", "Type": "Request", "Name": "I<Class><Property>RequestBuilder", "Include": "content" },
+            { "Template": "StreamRequestBuilder", "SubProcessor": "Property", "Type": "Request", "Name": "<Class><Property>RequestBuilder", "Include": "content" },
             { "Template": "IMethodRequest", "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "I<Class><Method>Request" },
             { "Template": "IMethodRequestBuilder", "SubProcessor": "NonCollectionMethod", "Type": "Request", "Name": "I<Class><Method>RequestBuilder" },
             { "Template": "IMethodCollectionRequest", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionRequest" },
@@ -48,7 +48,11 @@
             { "Template": "SharedCSharp", "SubProcessor": "Other", "Type": "Shared" }
         ],
         "ObjC": [
-            { "Template" : "Models", "SubProcessor" : "Other", "Type": "Model", "Name" : "Models"}
+            { "Template": "Models", "SubProcessor": "Other", "Type": "Model", "Name": "Models" },
+            { "Template": "ODataEntities", "SubProcessor": "Other", "Type": "Model", "Name": "ODataEntities" },
+            { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "MethodCollection", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Collection", "Matches": "specialCollection" }
         ],
         "Java": {
         },
