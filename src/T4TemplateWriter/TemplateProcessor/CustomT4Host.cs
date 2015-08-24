@@ -33,11 +33,13 @@ namespace Vipr.T4TemplateWriter
             this.TemplatesDirectory = templatesDirectory;
             this.CurrentType = currentType;
             this.CurrentModel = currentModel;
+            this.TemplateName = null;
         }
         public String TemplateFile { get; set; }
         public String TemplatesDirectory { get; set; }
         public OdcmObject CurrentType { get; set; }
         public OdcmModel CurrentModel { get; set; }
+        public string TemplateName { get; set; }
 
         private CodeWriterBase _codeWriter;
         public CodeWriterBase CodeWriter
