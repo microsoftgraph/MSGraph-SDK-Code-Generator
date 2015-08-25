@@ -7,7 +7,13 @@ var entityName = method.Class.Name.ToCheckedCase();
 var httpMethod = (method.IsAction()) ? "POST" : "GET";
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
-var returnType = method.IsCollection ? "I" + method.ReturnType.Name.ToCheckedCase() + methodName + "CollectionPage" : method.ReturnType.Name.ToCheckedCase();
+
+var returnEntityType = method.ReturnType.Name.ToCheckedCase();
+var returnTypeObject = method.ReturnType.AsOdcmClass();
+var isSpecialCollection = method.LongDescriptionContains("specialCollection");
+var isCollection = method.IsCollection || isSpecialCollection;
+
+var returnType = isCollection ? "I" + entityName + methodName + "CollectionPage" : returnEntityType;
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 #>
 
@@ -18,7 +24,7 @@ namespace Microsoft.OneDrive.Sdk
     /// <summary>
     /// The interface I<#=requestType#>.
     /// </summary>
-    public partial interface I<#=requestType#>
+    public partial interface I<#=requestType#> : IBaseRequest
     {
     <#
     if (hasParameters && method.IsAction())

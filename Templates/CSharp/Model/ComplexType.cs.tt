@@ -4,6 +4,7 @@
 
 OdcmClass complex = host.CurrentType.AsOdcmClass();
 var complexTypeName = complex.Name.ToCheckedCase();
+var isMethodResponse = complex.LongDescriptionContains("methodResponse");
 
 #>
 
@@ -22,10 +23,13 @@ namespace Microsoft.OneDrive.Sdk
     public partial class <#=complexTypeName#>
     {
     <# 
-        foreach(var property in complex.Properties){
+        foreach(var property in complex.Properties)
+        {
 
             var propertyType = property.IsCollection ? string.Format("IEnumerable<{0}>", property.GetTypeString()) : property.GetTypeString();
-            var propertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
+            var propertyName = isMethodResponse
+                ? property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase()
+                : property.Name.ToCheckedCase().GetSanitizedPropertyName();
 
             if (property.IsTypeNullable())
             {

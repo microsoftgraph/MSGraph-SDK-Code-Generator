@@ -170,7 +170,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<TextFile> ProcessNonCollectionMethods(ITemplateInfo templateInfo)
         {
-            return this.ProcessMethods(templateInfo, this.NonColledtionMethods);
+            return this.ProcessMethods(templateInfo, this.NonCollectionMethods);
         }
 
         protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo, Func<IEnumerable<OdcmMethod>> methods)
@@ -185,7 +185,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
-        protected virtual IEnumerable<OdcmMethod> NonColledtionMethods()
+        protected virtual IEnumerable<OdcmMethod> NonCollectionMethods()
         {
             return this.CurrentModel.GetMethods().Where(method => !method.IsCollection);
         }
