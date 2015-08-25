@@ -19,9 +19,10 @@ namespace Microsoft.OneDrive.Sdk
         public <#=clientName#>(
             IAppConfig appConfig,
             IWebUi webUi,
+            CredentialCache credentialCache = null,
             IHttpProvider httpProvider = null,
             IServiceInfoProvider serviceInfoProvider = null)
-            : base(appConfig, webUi, httpProvider, serviceInfoProvider)
+            : base(appConfig, webUi, credentialCache, httpProvider, serviceInfoProvider)
         {
         }
     <#

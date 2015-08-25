@@ -11,8 +11,13 @@ var entityName = method.Class.Name.ToCheckedCase();
 var httpMethod = (method.IsAction()) ? "POST" : "GET";
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
+
 var returnEntityType = method.ReturnType.Name.ToCheckedCase();
-var returnType = method.IsCollection ? "I" + returnEntityType + methodName + "CollectionPage" : returnEntityType;
+var returnTypeObject = method.ReturnType.AsOdcmClass();
+var isSpecialCollection = method.LongDescriptionContains("specialCollection");
+var isCollection = method.IsCollection || isSpecialCollection;
+
+var returnType = isCollection ? "I" + entityName + methodName + "CollectionPage" : returnEntityType;
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 #>
 
@@ -133,7 +138,7 @@ namespace Microsoft.OneDrive.Sdk
     <#
     }
 
-    var returnString = method.IsCollection ? "async Task<" + returnType + ">" : "Task<" + returnType + ">";
+    var returnString = isCollection ? "async Task<" + returnType + ">" : "Task<" + returnType + ">";
     #>
 
         /// <summary>
@@ -153,11 +158,11 @@ namespace Microsoft.OneDrive.Sdk
     <#
     }
 
-    if (method.IsCollection)
+    if (isCollection)
     {
     #>
 
-            var response = await this.SendAsync<<#=returnEntityType#><#=methodName#>CollectionResponse>(<#=methodParameter#>);
+            var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
                 if (response.AdditionalData != null)
@@ -175,15 +180,18 @@ namespace Microsoft.OneDrive.Sdk
                     }
                 }
             <#
-            if (method.HasSpecialCollection())
+            if (isSpecialCollection)
             {
-                var specialMethodParams = method.SpecialMethodParameters();
-                foreach (var parameter in specialMethodParams)
+                foreach (var property in returnTypeObject.Properties)
                 {
+                    if (!property.LongDescriptionContains("ignorableCollection"))
+                    {
+                        var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
             #>
 
-                response.Value.<#=parameter.Name.ToCheckedCase()#> = response.<#=parameter.Name.ToCheckedCase()#>;
+                response.Value.<#=propertyName#> = response.<#=propertyName#>;
             <#
+                    }
                 }
             }
             #>

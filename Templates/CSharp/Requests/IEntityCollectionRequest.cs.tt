@@ -18,7 +18,7 @@ namespace Microsoft.OneDrive.Sdk
     /// <summary>
     /// The interface I<#=collectionRequest#>.
     /// </summary>
-    public interface I<#=collectionRequest#>
+    public interface I<#=collectionRequest#> : IBaseRequest
     {
         <#
         if (prop.LongDescriptionContains("writable"))
