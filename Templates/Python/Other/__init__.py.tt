@@ -102,4 +102,5 @@ from .requests.one_drive_client import OneDriveClient
 #>
 from .auth_provider import AuthProvider
 from .http_provider import HttpProvider
+from .extensions.onedrivesdk_helper import get_default_client 
 from .extensions import *
