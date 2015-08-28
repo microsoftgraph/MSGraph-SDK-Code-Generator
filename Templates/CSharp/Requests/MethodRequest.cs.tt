@@ -167,6 +167,8 @@ namespace Microsoft.OneDrive.Sdk
             {
                 if (response.AdditionalData != null)
                 {
+                    response.Value.AdditionalData = response.AdditionalData;
+                    
                     object nextPageLink;
                     response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
 
