@@ -287,7 +287,7 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
     if (method.IsCollection) {
 #>
-    def request(self, expand=None, select=None, top=None<#=!method.LongDescriptionContains("excludeOrderBy") ? ", order_by=None," : ""#> options=None):
+    def request(self, expand=None, select=None, top=None<#=!method.LongDescriptionContains("excludeOrderBy") ? ", order_by=None" : ""#>, options=None):
 <#
     } else {
 #>
