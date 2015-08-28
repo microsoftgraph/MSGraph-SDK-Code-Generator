@@ -49,6 +49,11 @@ namespace Microsoft.OneDrive.Sdk
 
     if (hasParameters && method.IsAction())
     {
+        requestBodyInitializerBuilder.Append(Environment.NewLine);
+        requestBodyInitializerBuilder.Append("            ");
+        requestBodyInitializerBuilder.Append("this.ContentType = \"application/json\";");
+        requestBodyInitializerBuilder.Append(Environment.NewLine);
+        requestBodyInitializerBuilder.Append("            ");
         requestBodyInitializerBuilder.Append("this.RequestBody = new " + requestType + "Body();");
     }
 
@@ -152,10 +157,6 @@ namespace Microsoft.OneDrive.Sdk
     if (includeRequestBody)
     {
         methodParameter = "this.RequestBody";
-    #>
-
-            this.ContentType = "application/json";
-    <#
     }
 
     if (isCollection)
