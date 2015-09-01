@@ -15,7 +15,7 @@ var collectionResponse  = collectionRequest.Replace("Request", "CollectionRespon
 TemplateWriterSettings settings = ConfigurationService.Settings;
 var jsonContentType     = "application/json";
 
-var properties = returnType.Properties.Where(p => p.Name != "Value");
+var properties = returnType.Properties.Where(p => p.Name != "value");
 var propertiesString = "";
 
 foreach (var property in properties)
