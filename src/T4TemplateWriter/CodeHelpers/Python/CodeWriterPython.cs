@@ -27,11 +27,11 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Python {
         }
 
         public override String WriteOpeningCommentLine() {
-            return "\'\'\'\n";
+            return "\'\'\'" + this.NewLineCharacter;
         }
 
         public override String WriteClosingCommentLine() {
-            return "\n\'\'\'";
+            return "\'\'\'" + this.NewLineCharacter;
         }
 
         public override string WriteInlineCommentChar() {
