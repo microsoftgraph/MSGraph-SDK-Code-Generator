@@ -1,0 +1,90 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+    CustomT4Host host       = (CustomT4Host) Host;
+    OdcmModel model         = host.CurrentModel;
+    CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
+    var currentType = host.CurrentType;
+
+    if (currentType == null)
+    {
+        throw new InvalidOperationException("Unable to get the current type!");
+    }
+#>
+
+<#+
+    public string CreatePackageDef(OdcmModel model)
+    {
+        var format = @"package {0}.generated;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.JsonObject;
+
+import {0}.*;
+import {0}.extensions.*;
+
+import java.util.*;";
+        return string.Format(format,
+            model.NamespaceName());
+        }
+
+    public string CreateClassDef(string className, string extends = null, string implements = null)
+    {
+        var extendsStr = string.Empty;
+        if (!string.IsNullOrEmpty(extends))
+        {
+            extendsStr = string.Format(" extends {0}", extends);
+        }
+
+        var implementsStr = string.Empty;
+        if (!string.IsNullOrEmpty(implements))
+        {
+            implementsStr = string.Format(" implements {0}", implements);
+        }
+
+        var format = @"/**
+ * The type {0}.
+ */
+public class Base{1}{2}{3} {{";
+        return string.Format(format,
+            className.SplitCamelCase(),
+            className,
+            extendsStr,
+            implementsStr);
+        }
+
+    public string CreatePropertyDef(IEnumerable<OdcmProperty> properties)
+    {
+        var sb = new StringBuilder();
+
+        var format = 
+@"    /**
+     * The {0}.
+     */
+    @SerializedName(""{1}"")
+    public {2} {3};
+
+";
+        foreach (var property in properties)
+        {
+            var propertyName = property.Name.ToUpperFirstChar();
+            var propertyType = property.IsCollection ? string.Format("java.util.List<{0}>", property.GetTypeString()) : property.GetTypeString();
+            sb.AppendFormat(format,
+                propertyName.SplitCamelCase(),
+                propertyName,
+                propertyType,
+                property.SanitizePropertyName());
+        }
+        return sb.ToString();
+    }
+
+    public string CreateRawJsonObject() {
+        return
+@"    /**
+     * The raw representation of this class when deserialized
+     */
+    @Expose(serialize = false, deserialize = false)
+    public JsonObject rawObject;";
+    }
+#>

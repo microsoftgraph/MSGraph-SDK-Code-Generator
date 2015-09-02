@@ -1,6 +1,6 @@
 ﻿{
     "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python" ],
-    "TargetLanguage": "ObjC",
+    "TargetLanguage": "Java",
     "Plugins": [ ],
     "PrimaryNamespaceName": "oneDrive",
     "NamespacePrefix": "OD",
@@ -22,7 +22,7 @@
             { "Template": "MethodRequestBuilder", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
         ],
         "CSharp": [
-            { "Template": "EntityType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Matches":  "navigable" },
+            { "Template": "EntityType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Matches": "navigable" },
             { "Template": "IEntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "I<Container>Client" },
             { "Template": "IEntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>Request" },
             { "Template": "IEntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "I<Class>Request", "Matches": "navigable" },
@@ -58,8 +58,31 @@
             { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "MethodCollection", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Collection", "Matches": "specialCollection" }
         ],
-        "Java": {
-        },
+        "Java": [ 
+            { "Template": "SharedCSharp", "SubProcessor": "Other", "Type": "Shared" },
+            { "Template": "BaseEntity", "SubProcessor": "EntityType", "Type": "Model", "Name": "Base<Property>CollectionRequest" },
+            { "Template": "BaseCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "Base<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "IBase<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IEntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>Request" },
+            { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
+            { "Template": "IEntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "I<Class>Request", "Matches": "navigable" },
+            { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>Request", "Matches": "navigable" },
+            { "Template": "IEntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>RequestBuilder" },
+            { "Template": "IEntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "I<Class>RequestBuilder", "Matches": "navigable" },
+            { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>RequestBuilder", "Matches": "navigable" },
+            { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "IBase<Class>RequestBuilder" },
+            { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "IBase<Class>RequestBuilder", "Matches": "navigable" },
+            { "Template": "BaseEntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "Base<Class>RequestBuilder" },
+            { "Template": "BaseEntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "Base<Class>RequestBuilder", "Matches": "navigable" },
+            { "Template": "EntityCollectionPage", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IEntityCollectionPage", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "IBase<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "BaseEntityCollectionPage", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "Base<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseEntityCollectionPage", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "IBase<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "BaseEntityCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "Base<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseEntityCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "IBase<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "BaseEntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "Base<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseEntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "IBase<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" }
+        ],
         "Python": [
             { "Template": "EntityCollection", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "EntityCollectionMethod", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>_collection", "Exclude": "nextExpectedRanges;roles", "Matches": "specialCollection" },

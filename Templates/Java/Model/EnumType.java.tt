@@ -1,4 +1,5 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#
 CustomT4Host host       = (CustomT4Host) Host;
@@ -7,22 +8,21 @@ CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
 var enumT = host.CurrentType.AsOdcmEnum();
 #>
 <#=writer.WriteHeader()#>
-package <#=model.NamespaceName()#>;
+package <#=model.NamespaceName().ToLower()#>;
 
 /**
  * The Enum <#=enumT.Name.ToUpperFirstChar().SplitCamelCase()#>.
 */
-public enum <#= enumT.Name.ToUpperFirstChar()#>	
-{
+public enum <#= enumT.Name.ToUpperFirstChar()#> {
 <#
-    foreach(var value in enumT.Members)
-    {
+foreach(var value in enumT.Members)
+{
 #>
     /**
-    * <#= value.Name.SplitCamelCase()#>
-    */
-    <#= value.SanitizePropertyName() #>,
+     * <#= value.Name.SplitCamelCase()#>
+     */
+    <#= value.Name.SanitizePropertyName()#>,
 <#
-    }
+}
 #>
 }

@@ -1,0 +1,51 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
+var clientName = model.GetEntityContainer().ToUpperFirstChar() + "Client";
+var clientNameLower = clientName.ToLowerFirstChar();
+var entity = host.CurrentType as OdcmProperty;
+var innerEntity = entity.Type;
+var innerEntityType = innerEntity.Name.ToUpperFirstChar();
+var entityCollectionRequest = entity.Name.ToUpperFirstChar() + "CollectionRequest";
+var entityCollectionPage = entity.Name.ToUpperFirstChar() + "CollectionPage";
+
+#>
+<#=writer.WriteHeader()#>
+
+package com.onedrive.sdk.generated;
+
+import com.onedrive.sdk.*;
+import com.onedrive.sdk.extensions.*;
+import com.onedrive.sdk.options.*;
+
+import java.util.*;
+
+/**
+ * The type <#=entityCollectionPage#>.
+ */
+public class Base<#=entityCollectionPage#> extends BaseCollectionPage {
+
+	/**
+     * Gets the next page <see cref="I<#=entityCollectionRequest#>"/> instance.
+     */
+    private I<#=entityCollectionRequest#> mNextPageRequest;
+
+    public I<#=entityCollectionRequest#> getNextPageRequest() {
+        return mNextPageRequest;
+    }
+
+    /**
+     * Initializes the NextPageRequest property.
+     */
+    public void InitializeNextPageRequest(final I<#=clientName#> <#=clientNameLower#>, final String nextPageLinkString) {
+        if (nextPageLinkString != null && !nextPageLinkString.isEmpty()) {
+            this.NextPageRequest = new <#=entityCollectionRequest#>(
+                nextPageLinkString,
+                <#=clientNameLower#>,
+                null);
+        }
+    }
+}

@@ -1,0 +1,21 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+package com.onedrive.sdk.test.extensions;
+
+import com.onedrive.sdk.extensions.IOneDriveClient;
+import com.onedrive.sdk.options.Option;
+import com.onedrive.sdk.test.generated.BaseDriveCollectionRequest;
+
+import java.util.List;
+
+/**
+ * I am created by hand
+ *
+ * I extend the generated class BaseDriveCollectionRequest
+ * I have a hand generated interface IDriveCollectionRequest which contains my extra functionality as well
+ */
+public class DriveCollectionRequest extends BaseDriveCollectionRequest implements IDriveCollectionRequest {
+    public DriveCollectionRequest(String requestUrl, IOneDriveClient client, List<Option> options) {
+        super(requestUrl, client, options);
+    }
+}

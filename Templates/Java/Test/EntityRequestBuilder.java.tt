@@ -1,0 +1,18 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+package com.onedrive.sdk.test.extensions;
+
+import com.onedrive.sdk.extensions.IOneDriveClient;
+import com.onedrive.sdk.test.generated.BaseDriveRequestBuilder;
+
+/**
+ * I am created by hand
+ *
+ * I always extend the base version of the auto generated type I map to
+ */
+
+public class DriveRequestBuilder extends BaseDriveRequestBuilder implements IDriveRequestBuilder {
+    public DriveRequestBuilder(String requestUrl, IOneDriveClient client) {
+        super(requestUrl, client);
+    }
+}
