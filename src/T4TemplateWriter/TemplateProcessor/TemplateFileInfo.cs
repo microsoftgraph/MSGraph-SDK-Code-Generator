@@ -42,6 +42,13 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         public IEnumerable<string> IgnoreDescriptions { get; set; }
 
+        public IEnumerable<string> Flags { get; set; }
+
+        public bool ContainsFlag(string flag)
+        {
+            return this.Flags.Contains(flag);
+        }
+
         public bool ShouldIncludeObject(OdcmObject odcmObject)
         {
             bool shouldInclude = true;

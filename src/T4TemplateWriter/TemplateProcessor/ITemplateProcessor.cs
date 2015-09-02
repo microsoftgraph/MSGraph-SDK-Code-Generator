@@ -11,5 +11,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
     interface ITemplateProcessor
     {
         IEnumerable<TextFile> Process(ITemplateInfo template);
+
+        string GetProcessorVerboseOutput();
     }
 }
