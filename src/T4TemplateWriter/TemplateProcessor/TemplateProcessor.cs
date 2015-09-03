@@ -20,7 +20,6 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
  
     public class TemplateProcessor : ITemplateProcessor
     {
-
         private static CustomT4Host _host;
 
         protected static CustomT4Host Host(ITemplateInfo templateInfo, string templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel)
@@ -53,7 +52,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected void InitializeSubprocessors()
         {
-            this.subProcessors = new Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>>() {             
+            this.subProcessors = new Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>>() {
                 {SubProcessor.EntityType,                   ProcessEntityTypes},
                 {SubProcessor.ComplexType,                  ProcessComplexTypes},
                 {SubProcessor.EnumType,                     ProcessEnumTypes},
@@ -80,6 +79,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             this.PathWriter = pathWriter;
             this.PathWriter.Model = odcmModel;
             this.TemplatesDirectory = templatesDirectory;
+        }
+
+        public string GetProcessorVerboseOutput()
+        {
+            return _host.TemplateHostStats.ToString();
         }
 
         public IEnumerable<TextFile> Process(ITemplateInfo templateInfo)
@@ -204,15 +208,16 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection);
         }
 
-        protected virtual IEnumerable<OdcmObject> FilterOdcmEnumerable(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod) 
+        protected virtual IEnumerable<OdcmObject> FilterOdcmEnumerable(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod)
         {
-            foreach (OdcmObject odcmObject in modelMethod())
+            var filteredEnum = modelMethod().Where(o => templateInfo.ShouldIncludeObject(o));
+
+            if (!filteredEnum.Any())
             {
-                if (templateInfo.ShouldIncludeObject(odcmObject))
-                {
-                    yield return odcmObject;
-                }
+                _host.TemplateHostStats.RecordProcessedNothing(templateInfo);
             }
+
+            return filteredEnum;
         }
 
         protected IEnumerable<TextFile> ProcessTemplate(ITemplateInfo templateInfo)
@@ -240,6 +245,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             var path = this.PathWriter.WritePath(templateInfo, fileName);
 
+            host.TemplateHostStats.RecordProcessed(templateInfo, odcmObject != null ? odcmObject.Name : string.Empty, path);
             return new TextFile(path, output);
         }
 

@@ -56,6 +56,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                     yield return outputFile;
                 }
             }
+            Console.WriteLine("Done processing templates");
+            Console.WriteLine();
+            Console.WriteLine(this.Processor.GetProcessorVerboseOutput());
         }
 
         // IConfigurationProvider
