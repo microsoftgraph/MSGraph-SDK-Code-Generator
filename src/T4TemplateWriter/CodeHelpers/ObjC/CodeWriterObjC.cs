@@ -21,12 +21,12 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
         }
         public override string WriteOpeningCommentLine() 
         {
-            return "/*******************************************************************************\n";
+            return "/*******************************************************************************" + this.NewLineCharacter;
         }
 
         public override string WriteClosingCommentLine() 
         {
-            return "\n******************************************************************************/";
+            return "******************************************************************************/" + this.NewLineCharacter;
         }
 
         public override string WriteInlineCommentChar() 
