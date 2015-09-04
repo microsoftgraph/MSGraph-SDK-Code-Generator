@@ -14,6 +14,7 @@ var collectionPage      = collectionRequest.Replace("Request", "CollectionPage")
 var collectionResponse  = collectionRequest.Replace("Request", "CollectionResponse");
 TemplateWriterSettings settings = ConfigurationService.Settings;
 var jsonContentType     = "application/json";
+var isPython2           = host.CustomFlags.Contains("python2");
 
 var properties = returnType.Properties.Where(p => p.Name != "value");
 var propertiesString = "";
@@ -25,8 +26,8 @@ foreach (var property in properties)
 
 #>
 <#=writer.WriteHeader()#>
-
-from ..requests.items_collection import ItemsCollectionResponse, ItemsCollectionPage
+from __future__ import unicode_literals
+from ..request.items_collection import ItemsCollectionResponse, ItemsCollectionPage
 
 
 class <#=collectionResponse#>(ItemsCollectionResponse):
@@ -36,7 +37,7 @@ class <#=collectionResponse#>(ItemsCollectionResponse):
         """The collection page stored in the response JSON
         
         Returns:
-            :class:`<#=collectionPage#><onedrivesdk.requests.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+            :class:`<#=collectionPage#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
                 The collection page
         """
 <#
@@ -89,7 +90,7 @@ foreach (var property in properties)
         Args:
             next_page_link (str): The URL for the next page request
                 to be sent to
-            client (:class:`OneDriveClient<onedrivesdk.models.one_drive_client.OneDriveClient>`:
+            client (:class:`OneDriveClient<onedrivesdk.model.one_drive_client.OneDriveClient>`:
                 The client to be used for the request
             options (list of :class:`Option<onedrivesdk.options.Option>`:
                 A list of options
@@ -110,7 +111,7 @@ foreach (var property in properties)
         if (property.Type.IsComplex())
         {
 #>
-            :class:`<#=property.Type.GetTypeString()#><onedrivesdk.models.<#=property.Type.GetTypeString().ToUnderscore()#>.<#=property.Type.GetTypeString()#>>`:
+            :class:`<#=property.Type.GetTypeString()#><onedrivesdk.model.<#=property.Type.GetTypeString().ToUnderscore()#>.<#=property.Type.GetTypeString()#>>`:
 <#
         } else {
 #>
@@ -125,4 +126,4 @@ foreach (var property in properties)
 }
 #>
 
-from ..requests.<#=collectionRequest.Replace("Request", "").ToUnderscore()#> import <#=collectionRequest#>
+from ..request.<#=collectionRequest.Replace("Request", "").ToUnderscore()#> import <#=collectionRequest#>

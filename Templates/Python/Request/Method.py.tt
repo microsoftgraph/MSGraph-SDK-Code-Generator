@@ -20,6 +20,7 @@ if (method.LongDescriptionContains("specialCollection"))
 }
 bool hasParameters      = method.Parameters != null && method.Parameters.Any();
 TemplateWriterSettings settings = ConfigurationService.Settings;
+var isPython2           = host.CustomFlags.Contains("python2");
 
 #>
 <#=writer.WriteHeader()#>
@@ -28,7 +29,7 @@ TemplateWriterSettings settings = ConfigurationService.Settings;
 if (!method.LongDescriptionContains("specialCollection"))
 {
 #>
-from ..models.<#=returnType.ToUnderscore()#> import <#=returnType#>
+from ..model.<#=returnType.ToUnderscore()#> import <#=returnType#>
 <#
 }
 #>
@@ -42,8 +43,14 @@ from ..async_operation_monitor import AsyncOperationMonitor
 }
 #>
 from ..options import *
-import asyncio
 import json
+<#
+if (!isPython2) {
+#>
+import asyncio
+<#
+}
+#>
 
 
 class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "RequestBase"#>):
@@ -117,11 +124,11 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.requests.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.models.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -143,6 +150,9 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 #>
         return <#=method.IsCollection ? "self._page_from_response(collection_response)" : "entity"#>
 
+<#
+        if (!isPython2) {
+#>
     @asyncio.coroutine
     def <#=httpMethod.ToLower()#>_async(self):
         """Sends the <#=httpMethod.ToUpper()#> request using an asyncio coroutine
@@ -155,11 +165,11 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.requests.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.models.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -170,6 +180,7 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
         <#=method.IsCollection ? "collection_response" : "entity"#> = yield from future
         return <#=method.IsCollection ? "collection_response" : "entity"#>
 <#
+        }
     } else {
 #>
 
@@ -184,11 +195,11 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.requests.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.models.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -208,6 +219,9 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 #>
         return <#=method.IsCollection ? "self._page_from_response(collection_response)" : "entity"#>
 
+<#
+        if (!isPython2) {
+#>
     @asyncio.coroutine
     def <#=httpMethod.ToLower()#>_async(self):
         """Sends the <#=httpMethod.ToUpper()#> request using an asyncio coroutine
@@ -220,11 +234,11 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.requests.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.models.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -235,6 +249,7 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
         <#=method.IsCollection ? "collection_response" : "entity"#> = yield from future
         return <#=method.IsCollection ? "collection_response" : "entity"#>
 <#
+        }
     }
 #>
 
@@ -319,7 +334,7 @@ class <#=requestBuilderType#>(RequestBuilderBase):
                 Default to None, list of options to include in the request
 
         Returns: 
-            :class:`<#=requestType#><onedrivesdk.requests.<#=requestType.Replace("Request","").ToUnderscore()#>.<#=requestType#>>`:
+            :class:`<#=requestType#><onedrivesdk.request.<#=requestType.Replace("Request","").ToUnderscore()#>.<#=requestType#>>`:
                 The request
         """
         req = <#=requestType#>(<#=requestConstructorBuilder#>)
@@ -339,11 +354,11 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
         if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.requests.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.models.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -351,6 +366,9 @@ class <#=requestBuilderType#>(RequestBuilderBase):
         """
         return self.request().<#=httpMethod.ToLower()#>()
 
+<#
+        if (!isPython2) {
+#>
     @asyncio.coroutine
     def <#=httpMethod.ToLower()#>_async(self):
         """Sends the <#=httpMethod.ToUpper()#> request using an asyncio coroutine
@@ -359,23 +377,24 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
         if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.requests.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.models.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
-            The resulting <#=method.IsCollection ? returnTypeCollection : returnType#> from the operation
+                The resulting <#=method.IsCollection ? returnTypeCollection : returnType#> from the operation
         """
         <#=method.IsCollection ? "collection_page" : "entity"#> = yield from self.request().<#=httpMethod.ToLower()#>_async()
         return <#=method.IsCollection ? "collection_page" : "entity"#>
 
 <#
+        }
 if (method.IsCollection) {
 #>
-from ..requests.<#=returnTypeCollection.Replace("Response", "").ToUnderscore()#> import <#=returnTypeCollection#>
+from ..request.<#=returnTypeCollection.Replace("Response", "").ToUnderscore()#> import <#=returnTypeCollection#>
 <#
 }
 #>

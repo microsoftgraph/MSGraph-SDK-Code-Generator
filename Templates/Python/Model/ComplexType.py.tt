@@ -7,7 +7,7 @@ CodeWriterPython writer   = (CodeWriterPython) host.CodeWriter;
 OdcmClass complex = (OdcmClass)host.CurrentType;
 #>
 <#=writer.WriteHeader()#>
-
+from __future__ import unicode_literals
 <# 
     List<String> list = new List<String>();
     foreach(var property in complex.Properties){
@@ -17,7 +17,7 @@ OdcmClass complex = (OdcmClass)host.CurrentType;
             && !property.Type.GetTypeString().Equals(complex.Name.ToUpperFirstChar())) {
             list.Add(property.Type.GetTypeString());
 #>
-from ..models.<#=property.Type.GetTypeString().ToUnderscore()#> import <#=property.Type.GetTypeString()#>
+from ..model.<#=property.Type.GetTypeString().ToUnderscore()#> import <#=property.Type.GetTypeString()#>
 <#
         }
     }
@@ -27,8 +27,10 @@ from datetime import datetime
 <#
     }
 #>
+from ..one_drive_object_base import OneDriveObjectBase
 
-class <#=complex.Name.ToUpperFirstChar()#>(object):
+
+class <#=complex.Name.ToUpperFirstChar()#>(OneDriveObjectBase):
 
     def __init__(self, prop_dict={}):
         self._prop_dict = prop_dict
@@ -63,9 +65,6 @@ class <#=complex.Name.ToUpperFirstChar()#>(object):
 
     @<#=propertyName#>.setter
     def <#=propertyName#>(self, val):
-        if not isinstance(val, <#=property.Type.GetTypeString()#>) and val is not None:
-            raise TypeError(
-                'Type provided is not of type ' + <#=property.Type.GetTypeString()#>.__name__)
 <#
             if (property.Type.GetTypeString() == "datetime") {
 #>
@@ -86,21 +85,21 @@ class <#=complex.Name.ToUpperFirstChar()#>(object):
         Gets and sets the <#=property.Name#>
         
         Returns: 
-            :class:`<#=property.Type.GetTypeString()#><onedrivesdk.models.<#=property.Type.GetTypeString().ToUnderscore()#>.<#=property.Type.GetTypeString()#>>`:
+            :class:`<#=property.Type.GetTypeString()#><onedrivesdk.model.<#=property.Type.GetTypeString().ToUnderscore()#>.<#=property.Type.GetTypeString()#>>`:
                 The <#=property.Name#>
         """
         if "<#=property.Name#>" in self._prop_dict:
-            return <#=property.Type.GetTypeString()#>(self._prop_dict["<#=property.Name#>"])
-        else:
-            return None
+            if isinstance(self._prop_dict["<#=property.Name#>"], OneDriveObjectBase):
+                return self._prop_dict["<#=property.Name#>"]
+            else :
+                self._prop_dict["<#=property.Name#>"] = <#=property.Type.GetTypeString()#>(self._prop_dict["<#=property.Name#>"])
+                return self._prop_dict["<#=property.Name#>"]
+
+        return None
 
     @<#=propertyName#>.setter
     def <#=propertyName#>(self, val):
-        if not isinstance(val, <#=property.Type.GetTypeString()#>) and val is not None:
-            raise TypeError(
-                'Type provided is not of type ' + <#=property.Type.GetTypeString()#>.__name__)
-        self._prop_dict["<#=property.Name#>"] = val._prop_dict
-
+        self._prop_dict["<#=property.Name#>"] = val
 <#
         }
     }

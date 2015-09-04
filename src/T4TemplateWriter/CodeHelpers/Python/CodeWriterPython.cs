@@ -27,7 +27,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Python {
         }
 
         public override String WriteOpeningCommentLine() {
-            return "\'\'\'" + this.NewLineCharacter;
+            return "# -*- coding: utf-8 -*- " + this.NewLineCharacter + "\'\'\'" + this.NewLineCharacter;
         }
 
         public override String WriteClosingCommentLine() {
