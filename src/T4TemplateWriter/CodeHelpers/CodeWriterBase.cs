@@ -50,6 +50,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers
                     ConfigurationService.Settings.LicenseHeader
                         .Select(line => WriteInlineCommentChar() + line)
                         .ToArray()),
+                this.NewLineCharacter,
                 additionalHeader != null
                     ? string.Join(this.NewLineCharacter,
                         additionalHeader
