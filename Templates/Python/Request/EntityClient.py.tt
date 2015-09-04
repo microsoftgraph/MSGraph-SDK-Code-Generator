@@ -5,10 +5,10 @@ CustomT4Host host       = (CustomT4Host) Host;
 OdcmModel model         = host.CurrentModel;
 CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 var entityName = writer.GetPrefix().ToUpperFirstChar()+"Client";
-var isPython2           = host.CustomFlags.Contains("python2");
+var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
 
 #>
-<#=writer.WriteHeader()#>
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
 from __future__ import unicode_literals
 <#
 var containerProperties = model.EntityContainer.Properties;

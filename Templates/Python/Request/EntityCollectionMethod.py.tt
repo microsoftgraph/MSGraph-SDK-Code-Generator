@@ -14,7 +14,7 @@ var collectionPage      = collectionRequest.Replace("Request", "CollectionPage")
 var collectionResponse  = collectionRequest.Replace("Request", "CollectionResponse");
 TemplateWriterSettings settings = ConfigurationService.Settings;
 var jsonContentType     = "application/json";
-var isPython2           = host.CustomFlags.Contains("python2");
+var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
 
 var properties = returnType.Properties.Where(p => p.Name != "value");
 var propertiesString = "";
@@ -25,7 +25,7 @@ foreach (var property in properties)
 }
 
 #>
-<#=writer.WriteHeader()#>
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
 from __future__ import unicode_literals
 from ..request.items_collection import ItemsCollectionResponse, ItemsCollectionPage
 

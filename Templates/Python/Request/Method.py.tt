@@ -20,11 +20,10 @@ if (method.LongDescriptionContains("specialCollection"))
 }
 bool hasParameters      = method.Parameters != null && method.Parameters.Any();
 TemplateWriterSettings settings = ConfigurationService.Settings;
-var isPython2           = host.CustomFlags.Contains("python2");
+var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
 
 #>
-<#=writer.WriteHeader()#>
-
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
 <#
 if (!method.LongDescriptionContains("specialCollection"))
 {

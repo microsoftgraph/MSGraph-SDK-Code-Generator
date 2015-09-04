@@ -8,9 +8,9 @@ OdcmClass entity        = host.CurrentType.AsOdcmClass();
 var entityName          = entity.Name.ToUpperFirstChar();
 var entityRequest       = entityName + "Request";
 var jsonContentType     = "application/json";
-var isPython2           = host.CustomFlags.Contains("python2");
+var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
 #>
-<#=writer.WriteHeader()#>
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
 from ..request_base import RequestBase
 from ..model.<#=entity.Name.ToUnderscore()#> import <#=entityName#>
 import json

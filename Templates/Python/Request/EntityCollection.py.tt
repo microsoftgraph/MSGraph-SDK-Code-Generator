@@ -16,10 +16,10 @@ var collectionPage = prop.Name.ToUpperFirstChar() + "CollectionPage";
 var collectionResponse = prop.Name.ToUpperFirstChar() + "CollectionResponse";
 TemplateWriterSettings settings = ConfigurationService.Settings;
 var jsonContentType     = "application/json";
-var isPython2           = host.CustomFlags.Contains("python2");
+var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
 
 #>
-<#=writer.WriteHeader()#>
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
 from __future__ import unicode_literals
 from ..collection_base import CollectionRequestBase, CollectionResponseBase, CollectionPageBase
 from ..request_builder_base import RequestBuilderBase

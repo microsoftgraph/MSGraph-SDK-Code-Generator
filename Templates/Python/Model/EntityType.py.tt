@@ -8,7 +8,7 @@ OdcmClass entity        = host.CurrentType.AsOdcmClass();
 TemplateWriterSettings settings = ConfigurationService.Settings;
 
 #>
-<#=writer.WriteHeader()#>
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
 from __future__ import unicode_literals
 <# 
     List<String> list = new List<String>();
