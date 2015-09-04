@@ -26,8 +26,17 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Python {
             }
         }
 
+        public string[] GeneratedHeader {
+            get {
+                return new string[] {
+                    "",
+                    " This file was generated and any changes will be overwritten."
+                };
+            }
+        }
+
         public override String WriteOpeningCommentLine() {
-            return "\'\'\'" + this.NewLineCharacter;
+            return "# -*- coding: utf-8 -*- " + this.NewLineCharacter + "\'\'\'" + this.NewLineCharacter;
         }
 
         public override String WriteClosingCommentLine() {

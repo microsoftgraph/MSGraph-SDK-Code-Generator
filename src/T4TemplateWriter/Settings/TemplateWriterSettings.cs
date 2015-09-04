@@ -23,6 +23,7 @@ namespace Vipr.T4TemplateWriter.Settings
             this.templateConfiguration = new List<Dictionary<string, string>>();
             TemplatesDirectory = null;
             DefaultFileCasing = "UpperCamel";
+            CustomFlags = new List<string>();
         }
 
 
@@ -45,6 +46,8 @@ namespace Vipr.T4TemplateWriter.Settings
         /// The default casing method to be used for file names when a casing method ins't specified.
         /// </summary>
         public string DefaultFileCasing;
+
+        public IList<string> CustomFlags { get; set; }
 
         public IList<string> Plugins { get; set; }
 

@@ -16,22 +16,28 @@ var collectionPage = prop.Name.ToUpperFirstChar() + "CollectionPage";
 var collectionResponse = prop.Name.ToUpperFirstChar() + "CollectionResponse";
 TemplateWriterSettings settings = ConfigurationService.Settings;
 var jsonContentType     = "application/json";
+var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
 
 #>
-<#=writer.WriteHeader()#>
-
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
+from __future__ import unicode_literals
 from ..collection_base import CollectionRequestBase, CollectionResponseBase, CollectionPageBase
 from ..request_builder_base import RequestBuilderBase
 <#
 if (innerEntity.IsComplex()) {
 #>
-from ..models.<#=innerEntityType.ToUnderscore()#> import <#=innerEntityType#>
+from ..model.<#=innerEntityType.ToUnderscore()#> import <#=innerEntityType#>
 <#
 }
 #>
-import asyncio
 import json
-
+<#
+if (!isPython2) {
+#>
+import asyncio
+<#
+}
+#>
 
 class <#=collectionRequest#>(CollectionRequestBase):
 
@@ -41,7 +47,7 @@ class <#=collectionRequest#>(CollectionRequestBase):
         Args:
             request_url (str): The url to perform the <#=collectionRequest#>
                 on
-            client (:class:`OneDriveClient<onedrivesdk.requests.one_drive_client.OneDriveClient>`):
+            client (:class:`OneDriveClient<onedrivesdk.request.one_drive_client.OneDriveClient>`):
                 The client which will be used for the request
             options (list of :class:`Option<onedrivesdk.options.Option>`):
                 A list of options to pass into the request
@@ -55,11 +61,11 @@ class <#=collectionRequest#>(CollectionRequestBase):
         """Add a <#=innerEntityType#> to the collection
         
         Args:
-            entity (:class:`<#=innerEntityType#><onedrivesdk.models.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`):
+            entity (:class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`):
                 The <#=innerEntityType#> that you would like to add to the collection
         
         Returns: 
-            :class:`<#=innerEntityType#><onedrivesdk.models.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
+            :class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
                 The <#=innerEntityType#> that you added, with additional data from OneDrive
         """
         self.content_type = "<#=jsonContentType#>"
@@ -67,16 +73,19 @@ class <#=collectionRequest#>(CollectionRequestBase):
         entity = <#=innerEntityType#>(json.loads(self.send(entity).content))
         return entity
 
+<#
+        if (!isPython2) {
+#>
     @asyncio.coroutine
     def add_async(self, entity):
         """Add a <#=innerEntityType#> to the collection in async
         
         Args:
-            entity (:class:`<#=innerEntityType#><onedrivesdk.models.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`):
+            entity (:class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`):
                 The <#=innerEntityType#> that you would like to add to the collection
         
         Yields: 
-            :class:`<#=innerEntityType#><onedrivesdk.models.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
+            :class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
                 The <#=innerEntityType#> that you added, with additional data from OneDrive
         """
         future = self._client._loop.run_in_executor(None,
@@ -86,32 +95,38 @@ class <#=collectionRequest#>(CollectionRequestBase):
         return entity
 
 <#
+        }
     }
 #>
     def get(self):
         """Gets the <#=collectionPage#>
 
         Returns: 
-            :class:`<#=collectionPage#><onedrivesdk.requests.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+            :class:`<#=collectionPage#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
                 The <#=collectionPage#>
         """
         self.method = "GET"
         collection_response = <#=collectionResponse#>(json.loads(self.send().content))
         return self._page_from_response(collection_response)
 
+<#
+        if (!isPython2) {
+#>
     @asyncio.coroutine
     def get_async(self):
         """Gets the <#=collectionPage#> in async
 
         Yields: 
-            :class:`<#=collectionPage#><onedrivesdk.requests.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+            :class:`<#=collectionPage#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
                 The <#=collectionPage#>
         """
         future = self._client._loop.run_in_executor(None,
                                                     self.get)
         collection_page = yield from future
         return collection_page
-
+<#
+        }
+#>
 
 class <#=collectionRequestBuilder#>(RequestBuilderBase):
 
@@ -122,7 +137,7 @@ class <#=collectionRequestBuilder#>(RequestBuilderBase):
             key (str): The key to get a <#=innerEntityRequestBuilder#> for
         
         Returns: 
-            :class:`<#=innerEntityRequestBuilder#><onedrivesdk.requests.<#=innerEntityRequestBuilder.ToUnderscore()#>.<#=innerEntityRequestBuilder#>>`:
+            :class:`<#=innerEntityRequestBuilder#><onedrivesdk.request.<#=innerEntityRequestBuilder.ToUnderscore()#>.<#=innerEntityRequestBuilder#>>`:
                 A <#=innerEntityRequestBuilder#> for that key
         """
         return <#=innerEntityRequestBuilder#>(self.append_to_request_url(str(key)), self._client)
@@ -142,7 +157,7 @@ class <#=collectionRequestBuilder#>(RequestBuilderBase):
                 A list of options to pass into the request. Defaults to None.
 
         Returns:
-            :class:`<#=collectionRequest#><onedrivesdk.requests.<#=collectionRequest.Replace("Request","").ToUnderscore()#>.<#=collectionRequest#>>`:
+            :class:`<#=collectionRequest#><onedrivesdk.request.<#=collectionRequest.Replace("Request","").ToUnderscore()#>.<#=collectionRequest#>>`:
                 The <#=collectionRequest#>
         """
         req = <#=collectionRequest#>(self._request_url, self._client, options)
@@ -156,52 +171,62 @@ class <#=collectionRequestBuilder#>(RequestBuilderBase):
         """Add a <#=innerEntityType#> to the collection
         
         Args:
-            entity (:class:`<#=innerEntityType#><onedrivesdk.models.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`):
+            entity (:class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`):
                 The <#=innerEntityType#> that you would like to add to the collection
         
         Returns: 
-            :class:`<#=innerEntityType#><onedrivesdk.models.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
+            :class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
                 The <#=innerEntityType#> that you added, with additional data from OneDrive
         """
         return self.request().add(entity)
 
+<#
+        if (!isPython2) {
+#>
     @asyncio.coroutine
     def add_async(self, entity):
         """Add a <#=innerEntityType#> to the collection in async
         
         Args:
-            entity (:class:`<#=innerEntityType#><onedrivesdk.models.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`):
+            entity (:class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`):
                 The <#=innerEntityType#> that you would like to add to the collection
         
         Yields: 
-            :class:`<#=innerEntityType#><onedrivesdk.models.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
+            :class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
                 The <#=innerEntityType#> that you added, with additional data from OneDrive
         """
         entity = yield from self.request().add_async(entity)
         return entity
 
 <#
+        }
     }
 #>
     def get(self):
         """Gets the <#=collectionPage#>
 
         Returns: 
-            :class:`<#=collectionPage#><onedrivesdk.requests.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+            :class:`<#=collectionPage#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
                 The <#=collectionPage#>
         """
         return self.request().get()
 
+<#
+        if (!isPython2) {
+#>
     @asyncio.coroutine
     def get_async(self):
         """Gets the <#=collectionPage#> in async
 
         Yields: 
-            :class:`<#=collectionPage#><onedrivesdk.requests.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+            :class:`<#=collectionPage#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
                 The <#=collectionPage#>
         """
         collection_page = yield from self.request().get_async()
         return collection_page
+<#
+    }
+#>
 
 
 class <#=collectionResponse#>(CollectionResponseBase):
@@ -211,7 +236,7 @@ class <#=collectionResponse#>(CollectionResponseBase):
         """The collection page stored in the response JSON
         
         Returns:
-            :class:`<#=collectionPage#><onedrivesdk.requests.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+            :class:`<#=collectionPage#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
                 The collection page
         """
         if self._collection_page:
@@ -231,7 +256,7 @@ class <#=collectionPage#>(CollectionPageBase):
             index (int): The index of the item to get from the <#=collectionPage#>
 
         Returns:
-            :class:`<#=innerEntityType#><onedrivesdk.models.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
+            :class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
                 The <#=innerEntityType#> at the index
         """
         return <#=innerEntityType#>(self._prop_list[index])
@@ -240,7 +265,7 @@ class <#=collectionPage#>(CollectionPageBase):
         """Get a generator of <#=innerEntityType#> within the <#=collectionPage#>
         
         Yields:
-            :class:`<#=innerEntityType#><onedrivesdk.models.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
+            :class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
                 The next <#=innerEntityType#> in the collection
         """
         for item in self._prop_list:
@@ -252,7 +277,7 @@ class <#=collectionPage#>(CollectionPageBase):
         Args:
             next_page_link (str): The URL for the next page request
                 to be sent to
-            client (:class:`OneDriveClient<onedrivesdk.models.one_drive_client.OneDriveClient>`:
+            client (:class:`OneDriveClient<onedrivesdk.model.one_drive_client.OneDriveClient>`:
                 The client to be used for the request
             options (list of :class:`Option<onedrivesdk.options.Option>`:
                 A list of options
@@ -260,4 +285,4 @@ class <#=collectionPage#>(CollectionPageBase):
         self._next_page_request = <#=collectionRequest#>(next_page_link, client, options)
 
 
-from ..requests.<#=innerEntityRequestBuilder.ToUnderscore()#> import <#=innerEntityRequestBuilder#>
+from ..request.<#=innerEntityRequestBuilder.ToUnderscore()#> import <#=innerEntityRequestBuilder#>

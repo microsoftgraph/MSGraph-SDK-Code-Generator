@@ -6,8 +6,7 @@ OdcmModel model         = host.CurrentModel;
 CodeWriterPython writer   = (CodeWriterPython) host.CodeWriter;
 var enumT = host.CurrentType.AsOdcmEnum();
 #>
-<#=writer.WriteHeader()#>
-
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
 from enum import Enum
 
 class <#=enumT.Name.ToUpperFirstChar()#>(Enum):

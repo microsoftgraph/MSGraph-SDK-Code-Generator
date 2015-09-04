@@ -1,6 +1,6 @@
 ﻿{
     "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python" ],
-    "TargetLanguage": "ObjC",
+    "TargetLanguage": "Python",
     "Plugins": [ ],
     "PrimaryNamespaceName": "oneDrive",
     "NamespacePrefix": "OD",
@@ -9,6 +9,7 @@
     "NamespaceOverride": "",
     "TemplatesDirectory": "..\\..\\..\\..\\Templates",
     "DefaultFileCasing": "UpperCamel",
+    "CustomFlags": [ "python2" ],
     "LicenseHeader": [ 
         "Copyright (c) 2015 Microsoft Corporation",
         "",
@@ -28,12 +29,12 @@
         " AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER",
         " LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,",
         " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN",
-        " THE SOFTWARE.﻿"
+        " THE SOFTWARE."
     ],
     "TemplateMapping": {
         "Shared": [
             { "Template": "EntityType", "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
-            { "Template": "ComplexType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>" },
+            { "Template": "ComplexType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Ignore": "methodResponse"},
             { "Template": "EnumType", "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
             { "Template": "EntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
             { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },

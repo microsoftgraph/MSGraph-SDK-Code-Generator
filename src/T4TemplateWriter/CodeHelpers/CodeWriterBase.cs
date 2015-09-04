@@ -42,7 +42,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers
 
         abstract public String WriteInlineCommentChar();
 
-        public String WriteHeader()
+        public String WriteHeader(IEnumerable<string> additionalHeader = null)
         {
             return Write(new String[] {
                 WriteOpeningCommentLine(),
@@ -51,6 +51,12 @@ namespace Vipr.T4TemplateWriter.CodeHelpers
                         .Select(line => WriteInlineCommentChar() + line)
                         .ToArray()),
                 this.NewLineCharacter,
+                additionalHeader != null
+                    ? string.Join(this.NewLineCharacter,
+                        additionalHeader
+                            .Select(line => WriteInlineCommentChar() + line)
+                            .ToArray()) + this.NewLineCharacter
+                    : "",
                 WriteClosingCommentLine()
               });
 
