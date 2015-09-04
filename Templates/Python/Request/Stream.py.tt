@@ -14,11 +14,7 @@ TemplateWriterSettings settings = ConfigurationService.Settings;
 var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
 
 #>
-<<<<<<< HEAD
-<#=writer.WriteHeader()#>
-=======
 <#=writer.WriteHeader(writer.GeneratedHeader)#>
->>>>>>> 45e3c0c... Update for flag changes and also custom header fields
 from ..request_base import RequestBase
 from ..request_builder_base import RequestBuilderBase
 from ..model.<#=propClass.ToUnderscore()#> import <#=propClass#>
