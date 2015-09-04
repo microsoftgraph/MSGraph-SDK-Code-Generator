@@ -17,19 +17,26 @@
     {
         var format = @"package {0}.generated;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.JsonObject;
-
-import {0}.*;
-import {0}.extensions.*;
+import com.onedrive.sdk.*;
+import com.onedrive.sdk.extensions.*;
+import com.onedrive.sdk.options.*;
 
 import java.util.*;";
         return string.Format(format,
             model.NamespaceName());
         }
-
-    public string CreateClassDef(string className, string extends = null, string implements = null)
+        
+    public string CreateClassDef(string name, string extends = null, string implements = null)
+    {
+        return this.CreateClassOrInterface(name, true, extends, implements);
+    }
+        
+    public string CreateInterfaceDef(string name, string extends = null)
+    {
+        return this.CreateClassOrInterface(name, false, extends, null);
+    }
+    
+    public string CreateClassOrInterface(string name, bool isClass = true, string extends = null, string implements = null)
     {
         var extendsStr = string.Empty;
         if (!string.IsNullOrEmpty(extends))
@@ -46,14 +53,15 @@ import java.util.*;";
         var format = @"/**
  * The type {0}.
  */
-public class Base{1}{2}{3} {{";
+public {1} Base{2}{3}{4} {{";
         return string.Format(format,
-            className.SplitCamelCase(),
-            className,
+            name.SplitCamelCase(),
+            isClass ? "class" : "interface",
+            name,
             extendsStr,
             implementsStr);
-        }
-
+    }
+        
     public string CreatePropertyDef(IEnumerable<OdcmProperty> properties)
     {
         var sb = new StringBuilder();

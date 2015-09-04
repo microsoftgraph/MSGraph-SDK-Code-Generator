@@ -1,8 +1,12 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-package com.onedrive.sdk.test.extensions;
-
-import com.onedrive.sdk.test.generated.BaseDrive;
+<#
+    OdcmClass current = (OdcmClass)currentType;
+    var currentName = current.Name.ToUpperFirstChar();
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(model)#>
 
 /**
  * I am created by hand
@@ -24,5 +28,6 @@ import com.onedrive.sdk.test.generated.BaseDrive;
  *
  * </code>
  */
-public class Drive extends BaseDrive {
+<#=CreateClassDef(currentName, "Base" + currentName)#>
+
 }

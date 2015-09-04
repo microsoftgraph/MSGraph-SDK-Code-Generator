@@ -1,0 +1,28 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+var clientName = model.GetEntityContainer().ToUpperFirstChar() + "Client";
+var clientNameLower = clientName.ToLowerFirstChar();
+var entity = host.CurrentType as OdcmProperty;
+var innerEntity = entity.Type;
+var innerEntityType = innerEntity.Name.ToUpperFirstChar();
+var entityCollectionRequest = entity.Name.ToUpperFirstChar() + "CollectionRequest";
+var entityCollectionPage = entity.Name.ToUpperFirstChar() + "CollectionPage";
+
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(model)#>
+
+/**
+ * I am created by hand
+ *
+ * I extend the generated class BaseDriveRequest
+ * I have a hand generated interface IDriveRequest which contains my extra functionality as well
+ */
+public class <#=innerEntityType#>Request extends Base<#=innerEntityType#>Request implements I<#=innerEntityType#>Request {
+
+    public <#=innerEntityType#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+        super(requestUrl, client, options);
+    }
+}
