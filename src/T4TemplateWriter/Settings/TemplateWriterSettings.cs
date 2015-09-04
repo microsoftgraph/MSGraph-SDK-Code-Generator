@@ -60,6 +60,8 @@ namespace Vipr.T4TemplateWriter.Settings
 
         public string TemplatesDirectory { get; set; }
 
+        public string[] LicenseHeader { get; set; }
+
         private List<Dictionary<string, string>> templateConfiguration;
 
         /// <summary>

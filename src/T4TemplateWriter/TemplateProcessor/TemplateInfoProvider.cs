@@ -31,7 +31,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                     string templatesDirectory,
                                     FileNameCasing defaultNameCasing = FileNameCasing.UpperCamel, 
                                     SubProcessor defaultSubProcessor = SubProcessor.Other,
-                                    Template defaultTempalte = Template.Other)
+                                    Template defaultTemplate = Template.Other)
         {
             this.mapping = mapping;
             this.templatesDirectory = templatesDirectory;

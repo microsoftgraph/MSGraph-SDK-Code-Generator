@@ -24,6 +24,7 @@ namespace Vipr.T4TemplateWriter
 
         public CustomT4Host(ITemplateInfo templateInfo, String templatesDirectory, OdcmObject currentType, OdcmModel currentModel)
         {
+            this.TemplateHostStats = new TemplateHostStats();
             this.Reset(templateInfo, templatesDirectory, currentType, currentModel);
         }
 
@@ -34,12 +35,16 @@ namespace Vipr.T4TemplateWriter
             this.CurrentType = currentType;
             this.CurrentModel = currentModel;
             this.TemplateName = null;
+            this.TemplateInfo = templateInfo;
         }
         public String TemplateFile { get; set; }
         public String TemplatesDirectory { get; set; }
         public OdcmObject CurrentType { get; set; }
         public OdcmModel CurrentModel { get; set; }
         public string TemplateName { get; set; }
+        internal TemplateHostStats TemplateHostStats { get; set; }
+
+        public ITemplateInfo TemplateInfo { get; set; }
 
         private CodeWriterBase _codeWriter;
         public CodeWriterBase CodeWriter

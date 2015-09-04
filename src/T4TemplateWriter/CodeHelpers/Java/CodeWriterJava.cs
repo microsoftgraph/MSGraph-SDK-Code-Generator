@@ -10,18 +10,18 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
 {
     public class CodeWriterJava : CodeWriterBase
     {
-
         public CodeWriterJava() : base() { }
+
         public CodeWriterJava(OdcmModel model) : base(model) { }
 
         public override String WriteOpeningCommentLine()
         {
-            return "/*******************************************************************************\n";
+            return "// ------------------------------------------------------------------------------" + this.NewLineCharacter;
         }
 
         public override String WriteClosingCommentLine()
         {
-            return "\n******************************************************************************/";
+            return "// ------------------------------------------------------------------------------" + this.NewLineCharacter;
         }
 
         public override string WriteInlineCommentChar()

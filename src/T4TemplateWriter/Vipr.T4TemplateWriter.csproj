@@ -76,6 +76,7 @@
     <Compile Include="TemplateProcessor\Enums\SubProcessor.cs" />
     <Compile Include="TemplateProcessor\Enums\Template.cs" />
     <Compile Include="TemplateProcessor\ITemplateInfoProvider.cs" />
+    <Compile Include="TemplateProcessor\TemplateHostStats.cs" />
     <Compile Include="TemplateProcessor\TemplateInfoProvider.cs" />
     <Compile Include="TemplateProcessor\TemplateProcessor.cs" />
     <Compile Include="TemplateProcessor\ITemplateProcessor.cs" />
