@@ -23,6 +23,7 @@ namespace Vipr.T4TemplateWriter.Settings
             this.templateConfiguration = new List<Dictionary<string, string>>();
             TemplatesDirectory = null;
             DefaultFileCasing = "UpperCamel";
+            CustomFlags = new List<string>();
         }
 
 
@@ -46,6 +47,8 @@ namespace Vipr.T4TemplateWriter.Settings
         /// </summary>
         public string DefaultFileCasing;
 
+        public IList<string> CustomFlags { get; set; }
+
         public IList<string> Plugins { get; set; }
 
         public string PrimaryNamespaceName { get; set; }
@@ -59,6 +62,8 @@ namespace Vipr.T4TemplateWriter.Settings
         public bool AllowShortActions { get; set; }
 
         public string TemplatesDirectory { get; set; }
+
+        public string[] LicenseHeader { get; set; }
 
         private List<Dictionary<string, string>> templateConfiguration;
 

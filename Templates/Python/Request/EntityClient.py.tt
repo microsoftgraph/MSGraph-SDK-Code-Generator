@@ -5,20 +5,23 @@ CustomT4Host host       = (CustomT4Host) Host;
 OdcmModel model         = host.CurrentModel;
 CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 var entityName = writer.GetPrefix().ToUpperFirstChar()+"Client";
-#>
-<#=writer.WriteHeader()#>
+var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
 
+#>
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
+from __future__ import unicode_literals
 <#
 var containerProperties = model.EntityContainer.Properties;
 
 foreach(var prop in containerProperties){
 var builderName = prop.Name.ToUpperFirstChar()+"CollectionRequestBuilder";
 #>
-from ..requests.<#=(prop.Name+"Collection").ToUnderscore()#> import <#=builderName#>
+from ..request.<#=(prop.Name+"Collection").ToUnderscore()#> import <#=builderName#>
 <#
 }
 #>
-import asyncio
+import sys
+
 
 class OneDriveClient(object):
 
@@ -40,7 +43,10 @@ class OneDriveClient(object):
         self.base_url = base_url
         self.auth_provider = auth_provider
         self.http_provider = http_provider
-        self._loop = loop if loop else asyncio.get_event_loop()
+
+        if sys.version_info >= (3, 4, 0):
+            import asyncio
+            self._loop = loop if loop else asyncio.get_event_loop()
 
     @property
     def auth_provider(self):
@@ -93,7 +99,7 @@ foreach(var prop in containerProperties){
         """Get the <#=(prop.Name.ToUpperFirstChar()+"CollectionRequestBuilder").ToUpperFirstChar()#> for constructing requests
         
         Returns:
-            :class:`<#=collectionBuilder#><onedrivesdk.requests.<#=collectionBuilder.Replace("RequestBuilder","").ToUnderscore()#>.<#=collectionBuilder#>>`:
+            :class:`<#=collectionBuilder#><onedrivesdk.request.<#=collectionBuilder.Replace("RequestBuilder","").ToUnderscore()#>.<#=collectionBuilder#>>`:
                 The <#=collectionBuilder#> to return
         """
         return <#=(prop.Name.ToUpperFirstChar()+"CollectionRequestBuilder").ToUpperFirstChar()#>(self.base_url + "<#=prop.Name#>", self)
@@ -107,7 +113,7 @@ foreach(var prop in containerProperties){
         """Get the <#=requestBuilder#> for constructing requests
 
         Returns: 
-            :class:`<#=requestBuilder#><onedrivesdk.requests.<#=requestBuilder.ToUnderscore()#>.<#=requestBuilder#>>`:
+            :class:`<#=requestBuilder#><onedrivesdk.request.<#=requestBuilder.ToUnderscore()#>.<#=requestBuilder#>>`:
                 The <#=requestBuilder#> to return    
         """
         return <#=(prop.Type.GetTypeString()+"RequestBuilder").ToUpperFirstChar()#>(self.base_url + "<#=prop.Name#>", self)
