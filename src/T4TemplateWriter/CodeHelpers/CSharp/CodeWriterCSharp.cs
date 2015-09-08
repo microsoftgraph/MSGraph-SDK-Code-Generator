@@ -11,15 +11,15 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
     {
       public CodeWriterCSharp(OdcmModel model) : base(model) { }
 
-        public override String WriteOpeningCommentLine()
-        {
-            return "/*******************************************************************************\n";
-        }
+      public override String WriteOpeningCommentLine()
+      {
+          return "";
+      }
 
-        public override String WriteClosingCommentLine()
-        {
-            return "\n******************************************************************************/";
-        }
+      public override String WriteClosingCommentLine()
+      {
+          return "";
+      }
 
         public override string WriteInlineCommentChar()
         {

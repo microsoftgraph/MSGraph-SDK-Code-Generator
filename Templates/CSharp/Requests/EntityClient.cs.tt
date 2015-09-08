@@ -17,7 +17,7 @@ namespace Microsoft.OneDrive.Sdk
         /// Instantiates a new <#=clientName#>.
         /// </summary>
         public <#=clientName#>(
-            IAppConfig appConfig,
+            AppConfig appConfig,
             IWebUi webUi,
             CredentialCache credentialCache = null,
             IHttpProvider httpProvider = null,

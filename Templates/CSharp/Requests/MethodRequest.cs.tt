@@ -14,10 +14,16 @@ var requestType = entityName + methodName + "Request";
 
 var returnEntityType = method.ReturnType.Name.ToCheckedCase();
 var returnTypeObject = method.ReturnType.AsOdcmClass();
+bool isAsync = method.LongDescriptionContains("async");
 var isSpecialCollection = method.LongDescriptionContains("specialCollection");
 var isCollection = method.IsCollection || isSpecialCollection;
 
-var returnType = isCollection ? "I" + entityName + methodName + "CollectionPage" : returnEntityType;
+var returnType = isAsync
+    ? "AsyncOperationStatus"
+    : isCollection
+        ? "I" + entityName + methodName + "CollectionPage"
+        : returnEntityType;
+        
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 #>
 
@@ -46,6 +52,13 @@ namespace Microsoft.OneDrive.Sdk
     paramStringBuilder.Append("IList<Option> options,");
 
     requestBodyInitializerBuilder.Append("this.Method = \"" + httpMethod + "\";");
+    
+    if (isAsync)
+    {
+        requestBodyInitializerBuilder.Append(Environment.NewLine);
+        requestBodyInitializerBuilder.Append("            ");
+        requestBodyInitializerBuilder.Append("this.Headers.Add(new HeaderOption(\"Prefer\", \"respond-async\"));");
+    }
 
     if (hasParameters && method.IsAction())
     {
@@ -143,7 +156,7 @@ namespace Microsoft.OneDrive.Sdk
     <#
     }
 
-    var returnString = isCollection ? "async Task<" + returnType + ">" : "Task<" + returnType + ">";
+    var returnString = !isAsync && isCollection ? "async Task<" + returnType + ">" : "Task<" + returnType + ">";
     #>
 
         /// <summary>
@@ -159,7 +172,7 @@ namespace Microsoft.OneDrive.Sdk
         methodParameter = "this.RequestBody";
     }
 
-    if (isCollection)
+    if (!isAsync && isCollection)
     {
     #>
 

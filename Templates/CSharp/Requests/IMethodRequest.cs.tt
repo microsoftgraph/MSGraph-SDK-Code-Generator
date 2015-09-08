@@ -10,10 +10,16 @@ var requestType = entityName + methodName + "Request";
 
 var returnEntityType = method.ReturnType.Name.ToCheckedCase();
 var returnTypeObject = method.ReturnType.AsOdcmClass();
+bool isAsync = method.LongDescriptionContains("async");
 var isSpecialCollection = method.LongDescriptionContains("specialCollection");
 var isCollection = method.IsCollection || isSpecialCollection;
 
-var returnType = isCollection ? "I" + entityName + methodName + "CollectionPage" : returnEntityType;
+var returnType = isAsync
+    ? "AsyncOperationStatus"
+    : isCollection
+        ? "I" + entityName + methodName + "CollectionPage"
+        : returnEntityType;
+        
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 #>
 
