@@ -1,0 +1,60 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    OdcmClass current = (OdcmClass)currentType;
+    var clientName = current.Name.ToUpperFirstChar();
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+/**
+ * The Base<#=clientName#>Client.
+ */
+<#=CreateClassDef("Base" + clientName + "Client", "BaseClient", "IBase" + clientName + "Client")#>
+    /**
+     * Instantiates a new Base<#=clientName#>Client.
+     *
+     * @param url the url
+     * @param authenticator the authenticator
+     * @param httpProvider the httpProvider
+     */
+    public Base<#=clientName#>Client(String url, IAuthenticator authenticator, IHttpProvider httpProvider) {
+        super(url, authenticator, httpProvider);
+    }
+<#
+foreach (var prop in model.EntityContainer.Properties)
+{
+    if(prop.IsCollection())
+    {
+        var requestBuilder = prop.Type.GetTypeString() + "CollectionRequestBuilder";
+#>
+
+    /**
+     * Gets <#=requestBuilder#>.
+     *
+     * @return the <#=prop.Type.GetTypeString()#>.
+     */
+//    public I<#=requestBuilder#> get<#=prop.Type.GetTypeString()#>s() {
+//        return new <#=requestBuilder#>("<#=prop.Name#>", this, <#=prop.Type.GetTypeString()#>.class, <#=prop.Type.GetTypeString()#>CollectionOperations.class);
+//    }
+<#
+    }
+    else
+    {
+        var requestBuilder = prop.Name + "RequestBuilder";
+#>
+
+    /**
+     * Gets <#=requestBuilder#>.
+     *
+     * @return the <#=prop.Type.GetTypeString()#>.
+     */
+//    public I<#=requestBuilder#> get<#=requestBuilder#>s() {
+//        return new <#=requestBuilder#>("<#=prop.Name#>", this);
+//    }
+<#
+    }
+}
+#>
+}

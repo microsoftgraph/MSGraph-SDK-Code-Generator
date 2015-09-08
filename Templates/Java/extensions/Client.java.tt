@@ -1,0 +1,26 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    OdcmClass current = (OdcmClass)currentType;
+    var currentName = current.Name.ToUpperFirstChar();
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+/**
+ * I AM THE CLIENT
+ */
+<#=CreateClassDef(currentName + "Client", "Base" + currentName + "Client", "I" + currentName + "Client")#>
+
+    /**
+     * Instantiates a new OneDriveClient.
+     *
+     * @param url           the url
+     * @param authenticator the authenticator
+     * @param httpProvider  the httpProvider
+     */
+    public OneDriveClient(final String url, final IAuthenticator authenticator, final IHttpProvider httpProvider) {
+        super(url, authenticator, httpProvider);
+    }
+}

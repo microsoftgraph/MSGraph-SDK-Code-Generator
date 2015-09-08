@@ -6,11 +6,11 @@
     var currentName = current.Name.ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(model)#>
+<#=CreatePackageDef(host)#>
 
 /**
  * I AM THE CLIENT
  */
-<#=CreateInterfaceDef("I" + currentName)#>
+<#=CreateInterfaceDef("I" + currentName + "Client", "IBase" + currentName + "Client")#>
 
 }

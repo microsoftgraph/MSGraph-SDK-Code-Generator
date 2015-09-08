@@ -1,0 +1,46 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    OdcmClass current = (OdcmClass)currentType;
+    var clientName = current.Name.ToUpperFirstChar();
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+/**
+ * The interface for <see cref="Base<#=clientName#>">.
+ */
+<#=CreateInterfaceDef("IBase" + clientName + "Client", "IBaseClient")#>
+<#
+foreach (var prop in model.EntityContainer.Properties)
+{
+    if(prop.IsCollection())
+    {
+        var requestBuilder = prop.Type.GetTypeString() + "CollectionRequestBuilder";
+#>
+
+    /**
+     * Gets <#=requestBuilder#>.
+     *
+     * @return the <#=prop.Type.GetTypeString()#>.
+     */
+//    I<#=requestBuilder#> get<#=prop.Type.GetTypeString()#>s();
+<#
+    }
+    else
+    {
+        var requestBuilder = prop.Name + "RequestBuilder";
+#>
+
+    /**
+     * Gets <#=requestBuilder#>.
+     *
+     * @return the <#=prop.Type.GetTypeString()#>.
+     */
+//    I<#=requestBuilder#> get<#=requestBuilder#>s();
+<#
+    }
+}
+#>
+}

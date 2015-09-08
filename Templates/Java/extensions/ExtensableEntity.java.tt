@@ -6,7 +6,7 @@
     var currentName = current.Name.ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(model)#>
+<#=CreatePackageDef(host)#>
 
 /**
  * I am created by hand

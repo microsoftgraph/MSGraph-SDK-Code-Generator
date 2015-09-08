@@ -2,7 +2,7 @@
 <#@ output extension="\\" #>
 <#
     CustomT4Host host       = (CustomT4Host) Host;
-    OdcmModel model         = host.CurrentModel;
+    var model               = host.CurrentModel;
     CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
     var currentType = host.CurrentType;
 
@@ -13,17 +13,19 @@
 #>
 
 <#+
-    public string CreatePackageDef(OdcmModel model)
+    public string CreatePackageDef(CustomT4Host host)
     {
-        var format = @"package {0}.sdk.generated;
+        var format = @"package {0}.sdk.{1};
 
 import com.onedrive.sdk.*;
 import com.onedrive.sdk.extensions.*;
+import com.onedrive.sdk.generated.*;
 import com.onedrive.sdk.options.*;
 
 import java.util.*;";
         return string.Format(format,
-            model.NamespaceName());
+            host.CurrentModel.NamespaceName(),
+            host.TemplateInfo.OutputParentDirectory);
         }
         
     public string CreateClassDef(string name, string extends = null, string implements = null)

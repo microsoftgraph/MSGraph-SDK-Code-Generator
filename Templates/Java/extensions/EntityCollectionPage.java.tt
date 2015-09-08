@@ -12,7 +12,7 @@ var entityCollectionPage = entity.Name.ToUpperFirstChar() + "CollectionPage";
 
 #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(model)#>
+<#=CreatePackageDef(host)#>
 
 /**
  * The type <#=entityCollectionPage#>.

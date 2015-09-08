@@ -6,7 +6,7 @@
     var currentName = current.Name.ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(model)#>
+<#=CreatePackageDef(host)#>
 
 /**
  * I am created by hand
@@ -14,6 +14,6 @@
  * I always extend the interface of the auto generated type I map to
  *
  */
-<#=CreateInterfaceDef("I" + currentName + "RequestBuilder", "IBase" + currentName + "RequestBuilder")#>
+<#=CreateInterfaceDef("I" + currentName + "Request", "IBase" + currentName + "Request")#>
 
 }
