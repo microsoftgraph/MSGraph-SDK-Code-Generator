@@ -97,34 +97,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT'">
-    <PreBuildEvent>
-	cd "$(SolutionDir)\submodules\vipr"
-	"$(MSBuildBinPath)\msbuild.exe" /p:Configuration=Debug;OutDir=$(TargetDir);Platform="Any CPU" /t:Clean;Rebuild "Vipr.sln"
-    </PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT'">
-    <PreBuildEvent>
-        cd "$(SolutionDir)submodules/vipr"
-        xbuild /property:Configuration=Debug /property:OutDir=$(TargetDir) /property:Platform="Any CPU" /target:Rebuild "Vipr.sln"
-    </PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>cd "$(SolutionDir)\submodules\vipr"
-copy /y "$(SolutionDir)\vipr.NuGet.targets.patch" "$(SolutionDir)\submodules\vipr\.nuget\NuGet.targets"
-.nuget\nuget.exe update "$(SolutionPath)"
-"$(MSBuildBinPath)\msbuild.exe" /p:Configuration=Debug;Platform="Any CPU" /t:Clean;Rebuild "Vipr.sln"
-copy "$(SolutionDir)\submodules\vipr\src\Core\Vipr\bin\Debug\*.exe" $(TargetDir)
-copy "$(SolutionDir)\submodules\vipr\src\Core\Vipr\bin\Debug\*.dll" $(TargetDir)
-copy "$(SolutionDir)\submodules\vipr\src\Core\Vipr\bin\Debug\*.pdb" $(TargetDir)
-
-</PreBuildEvent>
-  </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>

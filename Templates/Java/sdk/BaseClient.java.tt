@@ -18,7 +18,7 @@ import java.util.*;
 /**
  * The Base<#=clientName#>.
  */
-public class Base<#=clientName#> extends BaseClient {
+public class Base<#=clientName#> extends BaseClient implemnents IBase<#=clientName#> {
 
     /**
      * Instantiates a new Base<#=clientName#>.

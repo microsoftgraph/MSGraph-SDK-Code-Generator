@@ -15,7 +15,7 @@
 <#+
     public string CreatePackageDef(OdcmModel model)
     {
-        var format = @"package {0}.generated;
+        var format = @"package {0}.sdk.generated;
 
 import com.onedrive.sdk.*;
 import com.onedrive.sdk.extensions.*;
@@ -53,7 +53,7 @@ import java.util.*;";
         var format = @"/**
  * The type {0}.
  */
-public {1} Base{2}{3}{4} {{";
+public {1} {2}{3}{4} {{";
         return string.Format(format,
             name.SplitCamelCase(),
             isClass ? "class" : "interface",

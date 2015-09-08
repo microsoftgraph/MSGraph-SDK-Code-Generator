@@ -3,13 +3,13 @@
     "TargetLanguage": "Java",
     "Plugins": [ ],
     "PrimaryNamespaceName": "oneDrive",
-    "NamespacePrefix": "OD",
+    "NamespacePrefix": "com",
     "InitializeCollections": "false",
     "AllowShortActions": "false",
     "NamespaceOverride": "",
     "TemplatesDirectory": "..\\..\\..\\..\\Templates",
     "DefaultFileCasing": "UpperCamel",
-    "LicenseHeader": [ 
+    "LicenseHeader": [
         "Copyright (c) 2015 Microsoft Corporation",
         "",
         "Permission is hereby granted, free of charge, to any person obtaining a copy",
@@ -21,51 +21,68 @@
         "",
         "The above copyright notice and this permission notice shall be included in",
         " all copies or substantial portions of the Software.",
-
+        "",
         "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR",
         " IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,",
         " FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE",
         " AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER",
         " LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,",
         " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN",
-        " THE SOFTWARE.﻿"
+        " THE SOFTWARE."
     ],
     "TemplateMapping": {
         "Shared": [
         ],
-        "Java": [ 
-            { "Template": "EntityType", "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
-            { "Template": "ComplexType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>" },
-            { "Template": "EnumType", "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
+        "Java": [
+            { "Template": "BaseModel", "SubProcessor": "Other", "Type": "Shared" },
+
+            { "Template": "ExtensableEntity", "SubProcessor": "EntityType",                                                                     "Name": "<Class>" },
+            { "Template": "BaseEntity", "SubProcessor": "EntityType",                                                                           "Name": "Base<Class>" },
+            { "Template": "IEntityRequest", "SubProcessor": "EntityType",                                                                       "Name": "I<Class>Request" },
+            { "Template": "EntityRequest", "SubProcessor": "EntityType",                                                                       "Name": "<Class>Request" },
+            { "Template": "IEntityRequestBuilder", "SubProcessor": "EntityType",                                                                "Name": "I<Class>RequestBuilder" },
+            { "Template": "IBaseEntityRequest", "SubProcessor": "EntityType",                                                                   "Name": "IBase<Class>Request" },
+            { "Template": "BaseEntityRequest", "SubProcessor": "EntityType",                                                                    "Name": "Base<Class>Request" },
+            { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                            "Name": "IBase<Class>RequestBuilder" },
+            { "Template": "BaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                             "Name": "Base<Class>RequestBuilder" },
+
+            { "Template": "IClient", "SubProcessor": "EntityContainer", "Type": "Client",                                                 "Name": "I<Container>Client" },
+            { "Template": "Client", "SubProcessor": "EntityContainer", "Type": "Client",                                                  "Name": "<Container>Client" },
+            { "Template": "IBaseClient", "SubProcessor": "EntityContainer", "Type": "Client",                                             "Name": "IBase<Container>Client" },
+            { "Template": "BaseClient", "SubProcessor": "EntityContainer", "Type": "Client",                                              "Name": "Base<Container>Client" }
+        ],
+        "Python": [ ],
+        "CSharp": [ ],
+        "ObjC": [
+            { "Template": "EntityCollectionPage", "SubProcessor": "CollectionProperty",                                                         "Name": "<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IEntityCollectionPage", "SubProcessor": "CollectionProperty",                                                        "Name": "IBase<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionProperty",                                                      "Name": "<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IEntityCollectionRequest", "SubProcessor": "CollectionProperty",                                                     "Name": "I<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "BaseEntityCollectionPage", "SubProcessor": "CollectionProperty",                                                     "Name": "Base<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseEntityCollectionPage", "SubProcessor": "CollectionProperty",                                                    "Name": "IBase<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "BaseEntityCollectionRequest", "SubProcessor": "CollectionProperty",                                                  "Name": "Base<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseEntityCollectionRequest", "SubProcessor": "CollectionProperty",                                                 "Name": "IBase<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "BaseEntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty",                                           "Name": "Base<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseEntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty",                                          "Name": "IBase<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+
+
+            { "Template": "ComplexType", "SubProcessor": "ComplexType", "Name": "<Class>" },
+            { "Template": "EnumType", "SubProcessor": "EnumType", "Name": "<Class>" },
 
             { "Template": "EntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
-            { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
-            { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
+            { "Template": "EntityRequest", "SubProcessor": "EntityType", "Name": "<Class>Request" },
+            { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Name": "<Class>RequestBuilder" },
 
 
-            { "Template": "SharedCSharp", "SubProcessor": "Other", "Type": "Shared" },
-            { "Template": "BaseEntity", "SubProcessor": "EntityType", "Type": "Model", "Name": "Base<Property>CollectionRequest" },
-            { "Template": "BaseCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "Base<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-            { "Template": "IBaseCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "IBase<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-            { "Template": "IEntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>Request" },
-            { "Template": "IEntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "I<Class>Request", "Matches": "navigable" },
-            { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>Request", "Matches": "navigable" },
-            { "Template": "IEntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>RequestBuilder" },
-            { "Template": "IEntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "I<Class>RequestBuilder", "Matches": "navigable" },
-            { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>RequestBuilder", "Matches": "navigable" },
-            { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "IBase<Class>RequestBuilder" },
-            { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "IBase<Class>RequestBuilder", "Matches": "navigable" },
-            { "Template": "BaseEntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "Base<Class>RequestBuilder" },
-            { "Template": "BaseEntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "Base<Class>RequestBuilder", "Matches": "navigable" },
-            { "Template": "EntityCollectionPage", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-            { "Template": "IEntityCollectionPage", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "IBase<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-            { "Template": "BaseEntityCollectionPage", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "Base<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-            { "Template": "IBaseEntityCollectionPage", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "IBase<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-            { "Template": "BaseEntityCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "Base<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-            { "Template": "IBaseEntityCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "IBase<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-            { "Template": "BaseEntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "Base<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-            { "Template": "IBaseEntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "IBase<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" }
-        ],
+            { "Template": "BaseCollectionRequest", "SubProcessor": "CollectionProperty", "Name": "Base<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseCollectionRequest", "SubProcessor": "CollectionProperty", "Name": "IBase<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IEntityRequest", "SubProcessor": "ComplexType", "Name": "I<Class>Request", "Matches": "navigable" },
+            { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Name": "<Class>Request", "Matches": "navigable" },
+            { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "ComplexType",                                                           "Name": "IBase<Class>RequestBuilder", "Matches": "navigable" },
+            { "Template": "BaseEntityRequestBuilder", "SubProcessor": "ComplexType",                                                            "Name": "Base<Class>RequestBuilder", "Matches": "navigable" },
+            { "Template": "IEntityRequestBuilder", "SubProcessor": "ComplexType", "Name": "I<Class>RequestBuilder", "Matches": "navigable" },
+            { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType", "Name": "<Class>RequestBuilder", "Matches": "navigable" }
+        ]
     }
 
 }

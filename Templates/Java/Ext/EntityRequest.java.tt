@@ -2,14 +2,8 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#
-var clientName = model.GetEntityContainer().ToUpperFirstChar() + "Client";
-var clientNameLower = clientName.ToLowerFirstChar();
-var entity = host.CurrentType as OdcmProperty;
-var innerEntity = entity.Type;
-var innerEntityType = innerEntity.Name.ToUpperFirstChar();
-var entityCollectionRequest = entity.Name.ToUpperFirstChar() + "CollectionRequest";
-var entityCollectionPage = entity.Name.ToUpperFirstChar() + "CollectionPage";
-
+    OdcmClass current = (OdcmClass)currentType;
+    var entityName = current.Name.ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(model)#>
@@ -20,9 +14,9 @@ var entityCollectionPage = entity.Name.ToUpperFirstChar() + "CollectionPage";
  * I extend the generated class BaseDriveRequest
  * I have a hand generated interface IDriveRequest which contains my extra functionality as well
  */
-public class <#=innerEntityType#>Request extends Base<#=innerEntityType#>Request implements I<#=innerEntityType#>Request {
+public class <#=entityName#>Request extends Base<#=entityName#>Request implements I<#=entityName#>Request {
 
-    public <#=innerEntityType#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+    public <#=entityName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
         super(requestUrl, client, options);
     }
 }

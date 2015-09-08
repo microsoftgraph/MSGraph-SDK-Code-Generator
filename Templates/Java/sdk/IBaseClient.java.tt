@@ -1,0 +1,64 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
+var clientName = model.GetEntityContainer().ToUpperFirstChar() + "Client";
+#>
+<#=writer.WriteHeader()#>
+package com.onedrive.sdk.generated;
+
+import com.onedrive.sdk.*;
+import com.onedrive.sdk.extensions.*;
+import com.onedrive.sdk.options.*;
+
+import java.util.*;
+
+/**
+ * The intreface for <see cref="Base<#=clientName#>">.
+ */
+public interface IBase<#=clientName#> {
+
+    /**
+     * Instantiates a new Base<#=clientName#>.
+     *
+     * @param url the url
+     * @param authenticator the authenticator
+     * @param httpProvider the httpProvider
+     */
+    public Base<#=clientName#>(String url, IAuthenticator authenticator, IHttpProvider httpProvider) {
+        super(url, authenticator, httpProvider);
+    }
+<#
+foreach (var prop in model.EntityContainer.Properties)
+{
+    if(prop.IsCollection())
+    {
+        var requestBuilder = prop.Type.GetTypeString() + "CollectionRequestBuilder";
+#>
+
+    /**
+     * Gets <#=requestBuilder#>.
+     *
+     * @return the <#=prop.Type.GetTypeString()#>.
+     */
+    I<#=requestBuilder#> get<#=prop.Type.GetTypeString()#>s();
+<#
+    }
+    else
+    {
+        var requestBuilder = prop.Name + "RequestBuilder";
+#>
+
+    /**
+     * Gets <#=requestBuilder#>.
+     *
+     * @return the <#=prop.Type.GetTypeString()#>.
+     */
+    I<#=requestBuilder#> get<#=requestBuilder#>s();
+<#
+    }
+}
+#>
+}
