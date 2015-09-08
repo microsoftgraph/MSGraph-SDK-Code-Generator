@@ -26,7 +26,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <param name="templatesDirectory">The tempaltes directory, this should be the Platform specific directory</param>
         /// <param name="defaultNameCasing"></param>
         /// <param name="defaultSubProcessor"></param>
-        /// <param name="defaultTempalte"></param>
+        /// <param name="defaultTemplate"></param>
         public TemplateInfoProvider(IList<Dictionary<string,string>> mapping, 
                                     string templatesDirectory,
                                     FileNameCasing defaultNameCasing = FileNameCasing.UpperCamel, 

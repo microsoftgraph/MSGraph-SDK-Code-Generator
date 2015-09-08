@@ -9,7 +9,8 @@
     "NamespaceOverride": "",
     "TemplatesDirectory": "..\\..\\..\\..\\Templates",
     "DefaultFileCasing": "UpperCamel",
-    "LicenseHeader": [
+    "CustomFlags": [ "python2" ],
+    "LicenseHeader": [ 
         "Copyright (c) 2015 Microsoft Corporation",
         "",
         "Permission is hereby granted, free of charge, to any person obtaining a copy",
