@@ -19,7 +19,9 @@ var isSpecialCollection = method.LongDescriptionContains("specialCollection");
 var isCollection = method.IsCollection || isSpecialCollection;
 
 var returnType = isAsync
-    ? "AsyncOperationStatus"
+    ? isCollection
+	    ? "IAsyncMonitor<I" + entityName + methodName + "CollectionPage>"
+	    : "IAsyncMonitor<" + entityName + ">"
     : isCollection
         ? "I" + entityName + methodName + "CollectionPage"
         : returnEntityType;
@@ -156,7 +158,7 @@ namespace Microsoft.OneDrive.Sdk
     <#
     }
 
-    var returnString = !isAsync && isCollection ? "async Task<" + returnType + ">" : "Task<" + returnType + ">";
+    var returnString = !isAsync && isCollection ? "async Task<" + returnType + ">" : isAsync ? "async Task<" + returnType + ">" : "Task<" + returnType + ">";
     #>
 
         /// <summary>
@@ -215,9 +217,19 @@ namespace Microsoft.OneDrive.Sdk
                 return response.Value;
             }
 
-            return null;      
+            return null;
     <#
     }
+	else if (isAsync)
+	{
+	#>
+	
+		    using (var response = await this.SendRequestAsync(<#=methodParameter#>))
+			{
+			    return new AsyncMonitor<Item>(this.OneDriveClient, response.Headers["Location"]);
+			}
+	<#
+	}
     else
     {
     #>

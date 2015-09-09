@@ -18,7 +18,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 
         public override String WriteClosingCommentLine()
         {
-            return "******************************************************************************/" + this.NewLineCharacter;
+            return "*******************************************************************************/" + this.NewLineCharacter;
         }
 
         public override string WriteInlineCommentChar()
