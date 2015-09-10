@@ -15,7 +15,7 @@ var isSpecialCollection = method.LongDescriptionContains("specialCollection");
 var isCollection = method.IsCollection || isSpecialCollection;
 
 var returnType = isAsync
-    ? "IAsyncMonitor<" + entityName + ">"
+    ? "I" + entityName + methodName + "AsyncMonitor"
     : isCollection
         ? "I" + entityName + methodName + "CollectionPage"
         : returnEntityType;

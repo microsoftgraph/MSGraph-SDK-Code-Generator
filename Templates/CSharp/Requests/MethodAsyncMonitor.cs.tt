@@ -2,92 +2,41 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-
 var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
 var clientNameLower = clientName.ToLowerFirstChar();
 
 var method = host.CurrentType.AsOdcmMethod();
 var entityName = method.Class.Name.ToCheckedCase();
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
-var requestType = entityName + methodName + "Request";
+var monitorType = entityName + methodName + "AsyncMonitor";
 
-var returnEntityType = method.ReturnType.Name.ToCheckedCase();
-var returnTypeObject = method.ReturnType.AsOdcmClass();
-bool isAsync = method.LongDescriptionContains("async");
 var isSpecialCollection = method.LongDescriptionContains("specialCollection");
 var isCollection = method.IsCollection || isSpecialCollection;
 
-var returnType = isAsync
-    ? isCollection
-	    ? "IAsyncMonitor<I" + entityName + methodName + "CollectionPage>"
-	    : "IAsyncMonitor<" + entityName + ">"
-    : isCollection
-        ? "I" + entityName + methodName + "CollectionPage"
-        : returnEntityType;
-        
-bool hasParameters = method.Parameters != null && method.Parameters.Any();
+var returnEntityType = method.ReturnType.Name.ToCheckedCase();
+var returnTypeObject = method.ReturnType.AsOdcmClass();
+var returnType = isCollection ? "I" + entityName + methodName + "CollectionPage" : returnEntityType;
+var serializationType = isCollection ? entityName + methodName + "CollectionResponse" : returnEntityType;
+var hasParameters = method.Parameters != null && method.Parameters.Any();
+
 #>
 
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
-    /// The type <#=requestType#>.
+    /// The type <#=monitorType#>.
     /// </summary>
-    public partial class <#=requestType#> : AsyncMonitor, I<#=requestType#>AsyncMonitor
+    public partial class <#=monitorType#> : AsyncMonitor<<#=serializationType#>>, I<#=monitorType#>
     {
-    <#
-    var returnString = !isAsync && isCollection ? "async Task<" + returnType + ">" : isAsync ? "async Task<" + returnType + ">" : "Task<" + returnType + ">";
-    #>
-
-        /// <summary>
-        /// Issues the <#=httpMethod#> request.
-        /// </summary>
-        public <#=returnString#> <#=httpMethod.ToLower().ToCheckedCase()#>Async()
+        public <#=monitorType#>(I<#=clientName#> <#=clientNameLower#>, string monitorUrl)
+            : base(<#=clientNameLower#>, monitorUrl)
         {
-			var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>);
-				if (response != null && response.Value != null && response.Value.CurrentPage != null)
-				{
-					if (response.AdditionalData != null)
-					{
-						response.Value.AdditionalData = response.AdditionalData;
-						
-						object nextPageLink;
-						response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
-
-						var nextPageLinkString = nextPageLink as string;
-
-						if (!string.IsNullOrEmpty(nextPageLinkString))
-						{
-							response.Value.InitializeNextPageRequest(
-								this.OneDriveClient,
-								nextPageLinkString);
-						}
-					}
-				<#
-				if (isSpecialCollection)
-				{
-					foreach (var property in returnTypeObject.Properties)
-					{
-						if (!property.LongDescriptionContains("ignorableCollection"))
-						{
-							var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
-				#>
-
-					response.Value.<#=propertyName#> = response.<#=propertyName#>;
-				<#
-						}
-					}
-				}
-				#>
-
-					return response.Value;
-				}
-
-            return null;
-		
+        }
     <#
     bool includeRequestBody = hasParameters && method.IsAction();
     var methodParameter = "null";
@@ -95,13 +44,72 @@ namespace Microsoft.OneDrive.Sdk
     {
         methodParameter = "this.RequestBody";
     }
+    
+    var asyncString = isCollection ? "async " : " ";
+    
+    #>
 
-	#>
-		    using (var response = await this.SendRequestAsync(<#=methodParameter#>))
-			{
-			    return new AsyncMonitor<Item>(this.OneDriveClient, response.Headers["Location"]);
-			}
+        /// <summary>
+        /// Polls until the async operation is complete and returns the resulting <#=returnType#>.
+        /// </summary>
+        public <#=asyncString#>Task<<#=returnType#>> CompleteOperationAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken)
+        {
+        <#
+        if (isCollection)
+        {
+        #>
+        
+            var response = await this.PollForOperationCompletionAsync(progress, cancellationToken);
+            if (response != null && response.Value != null && response.Value.CurrentPage != null)
+            {
+                if (response.AdditionalData != null)
+                {
+                    response.Value.AdditionalData = response.AdditionalData;
+                        
+                    object nextPageLink;
+                    response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
 
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        response.Value.InitializeNextPageRequest(
+                            this.OneDriveClient,
+                            nextPageLinkString);
+                    }
+                }
+            <#
+            if (isSpecialCollection)
+            {
+                foreach (var property in returnTypeObject.Properties)
+                {
+                    if (!property.LongDescriptionContains("ignorableCollection"))
+                    {
+                        var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
+            #>
+
+                response.Value.<#=propertyName#> = response.<#=propertyName#>;
+            <#
+                    }
+                }
+            }
+            #>
+
+                return response.Value;
+            }
+
+            return null;
+        <#
+        }
+        else
+        {
+        #>
+        
+            return this.PollForOperationCompletionAsync(progress, cancellationToken);
+        <#
+        }
+        #>
+        
         }
     }
 }
