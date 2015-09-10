@@ -225,7 +225,7 @@ namespace Microsoft.OneDrive.Sdk
     
             using (var response = await this.SendRequestAsync(<#=methodParameter#>))
             {
-                return new <#=monitorType#>(this.<#=clientName#>, response.Headers["Location"]);
+                return new <#=monitorType#>(this.<#=clientName#>, response.Headers.Location.ToString());
             }
     <#
     }
