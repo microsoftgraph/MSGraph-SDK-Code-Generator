@@ -84,7 +84,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                           .Replace("<Property>", propertyName.ToUpperFirstChar())
                                           .Replace("<Method>", methodName.ToUpperFirstChar())
                                           .Replace("<Container>", containerName.ToUpperFirstChar());
-                // replace with the proepr naming scheme.
+                // replace with the proper naming scheme.
                 switch (this.Casing)
                 {
                     case FileNameCasing.UpperCamel:
