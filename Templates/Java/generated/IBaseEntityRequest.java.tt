@@ -16,13 +16,13 @@
  * I never return myself, and instead only use and return (I)DriveRequest, etc.
  */
 <#=CreateInterfaceDef("IBase" + entityName + "Request")#>
-    void get(final ICallback<<#=entityName#>> callback);
+    Future<<#=entityName#>> get(final ICallback<<#=entityName#>> callback);
 
-    void update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback);
+    Future<<#=entityName#>> update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback);
 
-    void delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback); //This needs to be Void typed
+    Future<Void> delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback); //This needs to be Void typed
 
-    void create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback);
+    Future<<#=entityName#>> create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback);
 
     IBase<#=entityName#>Request select(final String value);
 

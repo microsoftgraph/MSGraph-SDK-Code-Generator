@@ -18,11 +18,14 @@
         var format = @"package {0}.sdk.{1};
 
 import com.onedrive.sdk.*;
+import com.onedrive.sdk.core.*;
 import com.onedrive.sdk.extensions.*;
+import com.onedrive.sdk.http.*;
 import com.onedrive.sdk.generated.*;
 import com.onedrive.sdk.options.*;
 
-import java.util.*;";
+import java.util.*;
+import java.util.concurrent.*;";
         return string.Format(format,
             host.CurrentModel.NamespaceName(),
             host.TemplateInfo.OutputParentDirectory);
@@ -82,7 +85,7 @@ public {1} {2}{3}{4} {{";
             var propertyType = property.IsCollection ? string.Format("java.util.List<{0}>", property.GetTypeString()) : property.GetTypeString();
             sb.AppendFormat(format,
                 propertyName.SplitCamelCase(),
-                propertyName,
+                property.Name,
                 propertyType,
                 property.SanitizePropertyName());
         }

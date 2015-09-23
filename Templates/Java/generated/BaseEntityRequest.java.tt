@@ -18,10 +18,10 @@
  */
 <#=CreateClassDef("Base" + entityName + "Request", "BaseRequest", "IBase" + entityName + "Request")#>
     public Base<#=entityName#>Request(String requestUrl, IOneDriveClient client, List<Option> options) {
-        super(requestUrl, client, options);
+        super(requestUrl, client, options, <#=entityName#>.class);
     }
 
-    public void get(final ICallback<<#=entityName#>> callback) {
+    public Future<<#=entityName#>> get(final ICallback<<#=entityName#>> callback) {
         // Build Request
         // Send request via Http
         // Get response
@@ -31,9 +31,10 @@
         // else IsFailure
             // deserializeResponse
             // callback.failure
+        return this.send(HttpMethod.GET, callback, null);
     }
 
-    public void update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback) {
+    public Future<<#=entityName#>> update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback) {
         // Build Request
         // Serialize sourceDrive
         // Send request via Http
@@ -44,9 +45,10 @@
         // else IsFailure
             // deserializeResponse
             // callback.failure
+        return this.send(HttpMethod.PATCH, callback, source<#=entityName#>);
     }
 
-    public void delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback) {
+    public Future<Void> delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback) {
         // Build Request
         // Send request via Http
         // Get response
@@ -55,9 +57,10 @@
         // else IsFailure
             // deserializeResponse
             // callback.failure
+        return this.send(HttpMethod.DELETE, callback, null);
     }
 
-    public void create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback) {
+    public Future<<#=entityName#>> create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback) {
         // Build Request
         // Serialize newDrive
         // Send request via Http
@@ -68,6 +71,7 @@
         // else IsFailure
             // deserializeResponse
             // callback.failure
+        return this.send(HttpMethod.PATCH, callback, new<#=entityName#>);
     }
 
     public I<#=entityName#>Request select(final String value) {
