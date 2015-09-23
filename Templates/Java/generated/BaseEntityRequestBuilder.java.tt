@@ -113,10 +113,10 @@ foreach (var method in current.Methods)
     {
         foreach (var param in method.Parameters)
         {
-            var paramTypeString = param.Type.GetTypeString();
-            paramStringBuilder.AppendFormat("final {0} {1}, ", paramTypeString, param.Name.ToLowerFirstChar());
-
-            builderInitializerStringBuilder.AppendFormat(", {0}", param.Name.ToLowerFirstChar());
+			var paramType = param.Type.GetTypeString();
+			var paramName = param.Name.ToLowerFirstChar();
+            paramStringBuilder.AppendFormat("final {0} {1}, ", paramType, paramName);
+            builderInitializerStringBuilder.AppendFormat(", {0}", paramName);
         }
 
         paramStringBuilder.Remove(paramStringBuilder.Length - 2, 2);
