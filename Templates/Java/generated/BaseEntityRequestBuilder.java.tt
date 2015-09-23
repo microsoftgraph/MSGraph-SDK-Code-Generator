@@ -101,8 +101,9 @@ foreach (var prop in current.GetProperties(typeName:"Stream"))
 <#
 foreach (var method in current.Methods)
 {
-    var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToLowerFirstChar();
-    var baseName = method.Class.Name.ToCheckedCase() + methodName;
+    var methodNameBase = method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar();
+    var methodName = methodNameBase.ToLowerFirstChar();
+    var baseName = method.Class.Name.ToCheckedCase().ToUpperFirstChar() + methodNameBase;
 
     var paramStringBuilder = new System.Text.StringBuilder();
     var builderInitializerStringBuilder = new System.Text.StringBuilder();
@@ -124,7 +125,7 @@ foreach (var method in current.Methods)
 #>
 
     /// <summary>
-    /// Gets the request builder for <#=baseName#>.
+    /// Gets the request builder for <#=methodName#>.
     /// </summary>
     /// <returns>The <see cref="I<#=baseName#>RequestBuilder"/>.</returns>
     public I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>) {

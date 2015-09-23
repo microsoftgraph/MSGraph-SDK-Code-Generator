@@ -3,7 +3,7 @@
 <#@ output extension="\\" #>
 <#
     OdcmClass current = (OdcmClass)currentType;
-    var entityName = current.Name.ToUpperFirstChar();
+    var currentName = current.Name.ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
@@ -13,9 +13,99 @@
  *
  * I never return myself, and instead only use and return (I)DriveRequest, etc.
  */
-<#=CreateInterfaceDef("IBase" + entityName + "RequestBuilder")#>
-    I<#=entityName#>Request buildRequest();
+<#=CreateInterfaceDef("IBase" + currentName + "RequestBuilder")#>
 
-//    IItemsCollectionRequestBuilder getItems();
+    public I<#=currentName#>Request buildRequest();
 
+    public I<#=currentName#>Request buildRequest(final List<Option> options);
+<#
+foreach(var child in current.Derived)
+{
+  var childName = child.Name.ToCheckedCase();
+#>
+
+    /// <summary>
+    /// Gets the request builder for <#=childName#>.
+    /// </summary>
+    /// <returns>The <see cref="I<#=childName#>RequestBuilder"/>.</returns>
+    public I<#=childName#>RequestBuilder <#=childName.ToLowerFirstChar()#>();
+<#
+}
+#>
+<#
+foreach(var prop in current.NavigationProperties())
+{
+  var propName = prop.Name.ToCheckedCase();
+  var propRequestBuilder = propName + "RequestBuilder";
+  if (prop.IsCollection())
+  {
+    var collectionRequestBuilder = propName + "CollectionRequestBuilder";
+#>
+
+    /// <summary>
+    /// Gets the request builder for <#=propName#>.
+    /// </summary>
+    /// <returns>The <see cref="I<#=collectionRequestBuilder#>"/>.</returns>
+    public I<#=collectionRequestBuilder#> <#=propName.ToLowerFirstChar()#>();
+<#
+  }
+  else
+  {
+#>
+
+    /// <summary>
+    /// Gets the request builder for <#=propName#>.
+    /// </summary>
+    /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
+    public I<#=propRequestBuilder#> <#=propName#>();
+<#
+    }
+}
+#>
+<#
+foreach (var prop in current.GetProperties(typeName:"Stream"))
+{
+    var propName = prop.Name.ToCheckedCase();
+    var propRequestBuilder = propName + "RequestBuilder";
+#>
+
+    /// <summary>
+    /// Gets the request builder for <#=propName#>.
+    /// </summary>
+    /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
+    public I<#=currentName#><#=propRequestBuilder#> <#=propName.ToLowerFirstChar()#>();
+<#
+}
+#>
+<#
+foreach (var method in current.Methods)
+{
+    var methodNameBase = method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar();
+    var methodName = methodNameBase.ToLowerFirstChar();
+    var baseName = method.Class.Name.ToUpperFirstChar() + methodName;
+
+    var paramStringBuilder = new System.Text.StringBuilder();
+    var hasParameters = method.Parameters != null && method.Parameters.Any();
+
+    if (hasParameters)
+    {
+        foreach (var param in method.Parameters)
+        {
+      			var paramType = param.Type.GetTypeString();
+      			var paramName = param.Name.ToLowerFirstChar();
+            paramStringBuilder.AppendFormat("final {0} {1}, ", paramType, paramName);
+        }
+
+        paramStringBuilder.Remove(paramStringBuilder.Length - 2, 2);
+    }
+#>
+
+    /// <summary>
+    /// Gets the request builder for <#=methodName#>.
+    /// </summary>
+    /// <returns>The <see cref="I<#=baseName#>RequestBuilder"/>.</returns>
+    public I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>);
+<#
+}
+#>
 }
