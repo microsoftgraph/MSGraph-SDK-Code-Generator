@@ -73,7 +73,8 @@ foreach (var prop in current.GetProperties(typeName:"Stream"))
     /// Gets the request builder for <#=propName#>.
     /// </summary>
     /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
-    public I<#=currentName#><#=propRequestBuilder#> <#=propName.ToLowerFirstChar()#>();
+// Entity Properties
+//    public I<#=currentName#><#=propRequestBuilder#> <#=propName.ToLowerFirstChar()#>();
 <#
 }
 #>
@@ -104,7 +105,8 @@ foreach (var method in current.Methods)
     /// Gets the request builder for <#=methodName#>.
     /// </summary>
     /// <returns>The <see cref="I<#=baseName#>RequestBuilder"/>.</returns>
-    public I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>);
+// Entity Methods
+//    public I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>);
 <#
 }
 #>
