@@ -52,6 +52,14 @@
 
             { "Template": "EnumType", "SubProcessor": "EnumType",                                                                               "Name": "<Class>" },
 
+            { "Template": "IEntityCollectionPage", "SubProcessor": "CollectionProperty",                                                        "Name": "I<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IEntityCollectionRequest", "SubProcessor": "CollectionProperty",                                                     "Name": "I<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty",                                              "Name": "I<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseEntityCollectionPage", "SubProcessor": "CollectionProperty",                                                    "Name": "IBase<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseEntityCollectionRequest", "SubProcessor": "CollectionProperty",                                                 "Name": "IBase<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseEntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty",                                          "Name": "IBase<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+
+
             { "Template": "IClient", "SubProcessor": "EntityContainer", "Type": "Client",                                                       "Name": "I<Container>Client" },
             { "Template": "Client", "SubProcessor": "EntityContainer", "Type": "Client",                                                        "Name": "<Container>Client" },
             { "Template": "IBaseClient", "SubProcessor": "EntityContainer", "Type": "Client",                                                   "Name": "IBase<Container>Client" },

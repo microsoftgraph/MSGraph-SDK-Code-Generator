@@ -14,10 +14,5 @@
  *
  * I never return myself, and instead only use and return (I)DriveRequest, etc.
  */
- <#=CreateInterfaceDef("IBase" + currentName + "CollectionRequestBuilder")#>
-  public I<#=propertyType#>Request buildRequest();
-
-  public I<#=propertyType#>Request buildRequest(final List<Option> options);
-
-  public I<#=propertyType#>RequestBuilder getById(final String id);
+ <#=CreateInterfaceDef("I" + currentName + "CollectionRequestBuilder", "IBase" + currentName + "CollectionRequestBuilder")#>
 }

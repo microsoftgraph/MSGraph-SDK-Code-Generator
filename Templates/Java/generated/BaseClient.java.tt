@@ -35,9 +35,9 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return the <#=prop.Type.GetTypeString()#>.
      */
-//    public I<#=requestBuilder#> get<#=prop.Type.GetTypeString()#>s() {
-//        return new <#=requestBuilder#>("<#=prop.Name#>", this, <#=prop.Type.GetTypeString()#>.class, <#=prop.Type.GetTypeString()#>CollectionOperations.class);
-//    }
+    public I<#=requestBuilder#> get<#=prop.Type.GetTypeString()#>s() {
+        return new <#=requestBuilder#>("<#=prop.Name#>", this, <#=prop.Type.GetTypeString()#>.class, <#=prop.Type.GetTypeString()#>CollectionOperations.class);
+    }
 <#
     }
     else
@@ -50,9 +50,9 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return the <#=prop.Type.GetTypeString()#>.
      */
-//    public I<#=requestBuilder#> get<#=requestBuilder#>s() {
-//        return new <#=requestBuilder#>("<#=prop.Name#>", this);
-//    }
+    public I<#=requestBuilder#> get<#=requestBuilder#>s() {
+        return new <#=requestBuilder#>("<#=prop.Name#>", this);
+    }
 <#
     }
 }

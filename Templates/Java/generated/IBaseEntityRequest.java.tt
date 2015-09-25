@@ -20,7 +20,7 @@
 
     Future<<#=entityName#>> update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback);
 
-    Future<Void> delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback); //This needs to be Void typed
+    Future<Void> delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback);
 
     Future<<#=entityName#>> create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback);
 
