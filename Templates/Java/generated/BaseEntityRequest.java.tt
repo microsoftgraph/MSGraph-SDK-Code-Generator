@@ -21,61 +21,50 @@
         super(requestUrl, client, options, <#=entityName#>.class);
     }
 
-    public Future<<#=entityName#>> get(final ICallback<<#=entityName#>> callback) {
-        // Build Request
-        // Send request via Http
-        // Get response
-        // IsSuccess?
-            // deserializeResponse
-            // callback.success(stuff);
-        // else IsFailure
-            // deserializeResponse
-            // callback.failure
-        return this.send(HttpMethod.GET, callback, null);
+    public void get(final ICallback<<#=entityName#>> callback) {
+        this.send(HttpMethod.GET, callback, null);
     }
 
-    public Future<<#=entityName#>> update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback) {
-        // Build Request
-        // Serialize sourceDrive
-        // Send request via Http
-        // Get response
-        // IsSuccess?
-            // deserializeResponse
-            // callback.success(stuff);
-        // else IsFailure
-            // deserializeResponse
-            // callback.failure
-        return this.send(HttpMethod.PATCH, callback, source<#=entityName#>);
+    public <#=entityName#> get() throws OneDriveClientException {
+       return this.send(HttpMethod.GET, null);
     }
 
-    public Future<Void> delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback) {
-        // Build Request
-        // Send request via Http
-        // Get response
-        // IsSuccess?
-            // callback.success(stuff);
-        // else IsFailure
-            // deserializeResponse
-            // callback.failure
-        return this.send(HttpMethod.DELETE, callback, null);
+    public void update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback) {
+        this.send(HttpMethod.PATCH, callback, source<#=entityName#>);
     }
 
-    public Future<<#=entityName#>> create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback) {
-        // Build Request
-        // Serialize newDrive
-        // Send request via Http
-        // Get response
-        // IsSuccess?
-            // deserializeResponse
-            // callback.success(stuff);
-        // else IsFailure
-            // deserializeResponse
-            // callback.failure
-        return this.send(HttpMethod.PATCH, callback, new<#=entityName#>);
+    public <#=entityName#> update(final <#=entityName#> source<#=entityName#>) throws OneDriveClientException {
+        return this.send(HttpMethod.PATCH, source<#=entityName#>);
+    }
+
+    public void delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback) {
+        this.send(HttpMethod.DELETE, callback, null);
+    }
+
+    public void delete(final <#=entityName#> source<#=entityName#>) throws OneDriveClientException {
+        this.send(HttpMethod.DELETE, null);
+    }
+
+    public void create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback) {
+        this.send(HttpMethod.PATCH, callback, new<#=entityName#>);
+    }
+
+    public <#=entityName#> create(final <#=entityName#> new<#=entityName#>) throws OneDriveClientException {
+        return this.send(HttpMethod.PATCH, new<#=entityName#>);
     }
 
     public I<#=entityName#>Request select(final String value) {
         this.mQueryOptions.add(new QueryOption("select", value));
-        return (<#=entityName#>Request)this; // TODO: 'this' always needs to be cast'ed to the extension type
+        return (<#=entityName#>Request)this;
+    }
+
+    public I<#=entityName#>Request top(final int value) {
+        this.mQueryOptions.add(new QueryOption("top", value+""));
+        return (<#=entityName#>Request)this;
+    }
+
+    public I<#=entityName#>Request expand(final String value) {
+        this.mQueryOptions.add(new QueryOption("expand", value));
+        return (<#=entityName#>Request)this;
     }
 }

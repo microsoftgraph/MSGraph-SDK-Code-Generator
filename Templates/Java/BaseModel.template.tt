@@ -24,23 +24,22 @@ import com.onedrive.sdk.http.*;
 import com.onedrive.sdk.generated.*;
 import com.onedrive.sdk.options.*;
 
-import java.util.*;
-import java.util.concurrent.*;";
+import java.util.*;";
         return string.Format(format,
             host.CurrentModel.NamespaceName(),
             host.TemplateInfo.OutputParentDirectory);
         }
-        
+
     public string CreateClassDef(string name, string extends = null, string implements = null)
     {
         return this.CreateClassOrInterface(name, true, extends, implements);
     }
-        
+
     public string CreateInterfaceDef(string name, string extends = null)
     {
         return this.CreateClassOrInterface(name, false, extends, null);
     }
-    
+
     public string CreateClassOrInterface(string name, bool isClass = true, string extends = null, string implements = null)
     {
         var extendsStr = string.Empty;
@@ -66,12 +65,12 @@ public {1} {2}{3}{4} {{";
             extendsStr,
             implementsStr);
     }
-        
+
     public string CreatePropertyDef(IEnumerable<OdcmProperty> properties)
     {
         var sb = new StringBuilder();
 
-        var format = 
+        var format =
 @"    /**
      * The {0}.
      */

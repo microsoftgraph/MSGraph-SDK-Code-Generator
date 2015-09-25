@@ -16,14 +16,26 @@
  * I never return myself, and instead only use and return (I)DriveRequest, etc.
  */
 <#=CreateInterfaceDef("IBase" + entityName + "Request")#>
-    Future<<#=entityName#>> get(final ICallback<<#=entityName#>> callback);
 
-    Future<<#=entityName#>> update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback);
+    void get(final ICallback<<#=entityName#>> callback);
 
-    Future<Void> delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback);
+    <#=entityName#> get() throws OneDriveClientException;
 
-    Future<<#=entityName#>> create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback);
+    void update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback);
+
+    public <#=entityName#> update(final <#=entityName#> source<#=entityName#>) throws OneDriveClientException;
+
+    public void delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback);
+
+    public void delete(final <#=entityName#> source<#=entityName#>)  throws OneDriveClientException;
+
+    public void create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback);
+
+    public <#=entityName#> create(final <#=entityName#> new<#=entityName#>) throws OneDriveClientException;
 
     IBase<#=entityName#>Request select(final String value);
 
+    IBase<#=entityName#>Request top(final int value);
+
+    IBase<#=entityName#>Request expand(final String value);
 }
