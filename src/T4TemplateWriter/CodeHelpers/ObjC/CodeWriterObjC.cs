@@ -141,7 +141,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             return type.GetTypeString();
         }
 
-        public string GetImportsClass(IEnumerable<OdcmProperty> references) 
+        public string GetImportsClass(IEnumerable<OdcmProperty> references, IEnumerable<string> extraImports = null, IEnumerable<string> extraClasses = null) 
         {
             var imports = new StringBuilder();
             var classes = new StringBuilder("@class ");
@@ -160,6 +160,21 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
                 else if (type.IsComplex() && !type.IsSystem() && type.GetTypeString() != "id" && type.GetTypeString() != classType)
                 {
                     classes.AppendFormat("{0}, ", type.GetTypeString());
+                }
+            }
+            if (extraImports != null)
+            {
+                foreach(var extraType in extraImports)
+                {
+                    imports.AppendFormat("#import \"{0}.h\"", extraType);
+                }
+            }
+
+            if (extraClasses != null)
+            {
+                foreach (var extraType in extraClasses)
+                {
+                    classes.AppendFormat("{0}, ", extraType);
                 }
             }
 
