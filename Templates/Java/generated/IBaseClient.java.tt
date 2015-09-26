@@ -17,7 +17,7 @@ foreach (var prop in model.EntityContainer.Properties)
 {
     if(prop.IsCollection())
     {
-        var requestBuilder = prop.Type.GetTypeString() + "CollectionRequestBuilder";
+        var requestBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
 #>
 
     /**

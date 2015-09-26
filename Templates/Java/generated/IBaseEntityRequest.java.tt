@@ -23,15 +23,15 @@
 
     void update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback);
 
-    public <#=entityName#> update(final <#=entityName#> source<#=entityName#>) throws OneDriveClientException;
+    <#=entityName#> update(final <#=entityName#> source<#=entityName#>) throws OneDriveClientException;
 
-    public void delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback);
+    void delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback);
 
-    public void delete(final <#=entityName#> source<#=entityName#>)  throws OneDriveClientException;
+    void delete(final <#=entityName#> source<#=entityName#>)  throws OneDriveClientException;
 
-    public void create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback);
+    void create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback);
 
-    public <#=entityName#> create(final <#=entityName#> new<#=entityName#>) throws OneDriveClientException;
+    <#=entityName#> create(final <#=entityName#> new<#=entityName#>) throws OneDriveClientException;
 
     IBase<#=entityName#>Request select(final String value);
 

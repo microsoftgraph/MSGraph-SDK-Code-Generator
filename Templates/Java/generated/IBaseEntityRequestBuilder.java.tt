@@ -15,9 +15,9 @@
  */
 <#=CreateInterfaceDef("IBase" + currentName + "RequestBuilder")#>
 
-    public I<#=currentName#>Request buildRequest();
+    I<#=currentName#>Request buildRequest();
 
-    public I<#=currentName#>Request buildRequest(final List<Option> options);
+    I<#=currentName#>Request buildRequest(final List<Option> options);
 <#
 foreach(var child in current.Derived)
 {
@@ -28,7 +28,7 @@ foreach(var child in current.Derived)
     /// Gets the request builder for <#=childName#>.
     /// </summary>
     /// <returns>The <see cref="I<#=childName#>RequestBuilder"/>.</returns>
-    public I<#=childName#>RequestBuilder <#=childName.ToLowerFirstChar()#>();
+    I<#=childName#>RequestBuilder <#=childName.ToLowerFirstChar()#>();
 <#
 }
 #>
@@ -46,7 +46,7 @@ foreach(var prop in current.NavigationProperties())
     /// Gets the request builder for <#=propName#>.
     /// </summary>
     /// <returns>The <see cref="I<#=collectionRequestBuilder#>"/>.</returns>
-    public I<#=collectionRequestBuilder#> <#=propName.ToLowerFirstChar()#>();
+    I<#=collectionRequestBuilder#> <#=propName.ToLowerFirstChar()#>();
 <#
   }
   else
@@ -57,7 +57,7 @@ foreach(var prop in current.NavigationProperties())
     /// Gets the request builder for <#=propName#>.
     /// </summary>
     /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
-    public I<#=propRequestBuilder#> <#=propName#>();
+    I<#=propRequestBuilder#> <#=propName#>();
 <#
     }
 }
@@ -74,7 +74,7 @@ foreach (var prop in current.GetProperties(typeName:"Stream"))
     /// </summary>
     /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
 // Entity Properties
-//    public I<#=currentName#><#=propRequestBuilder#> <#=propName.ToLowerFirstChar()#>();
+//    I<#=currentName#><#=propRequestBuilder#> <#=propName.ToLowerFirstChar()#>();
 <#
 }
 #>
@@ -106,7 +106,7 @@ foreach (var method in current.Methods)
     /// </summary>
     /// <returns>The <see cref="I<#=baseName#>RequestBuilder"/>.</returns>
 // Entity Methods
-//    public I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>);
+//    I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>);
 <#
 }
 #>

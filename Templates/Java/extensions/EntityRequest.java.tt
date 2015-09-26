@@ -15,7 +15,6 @@
  * I have a hand generated interface IDriveRequest which contains my extra functionality as well
  */
 public class <#=entityName#>Request extends Base<#=entityName#>Request implements I<#=entityName#>Request {
-
     public <#=entityName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
         super(requestUrl, client, options);
     }
