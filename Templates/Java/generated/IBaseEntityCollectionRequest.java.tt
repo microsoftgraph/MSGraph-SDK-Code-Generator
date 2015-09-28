@@ -17,9 +17,9 @@
 
      I<#=propertyType#>sCollectionPage get() throws OneDriveClientException;
 
-     I<#=currentName#>CollectionRequest expand(final String value);
+     I<#=propertyType#>sCollectionRequest expand(final String value);
 
-     I<#=currentName#>CollectionRequest select(final String value);
+     I<#=propertyType#>sCollectionRequest select(final String value);
 
-     I<#=currentName#>CollectionRequest top(final int value);
+     I<#=propertyType#>sCollectionRequest top(final int value);
 }

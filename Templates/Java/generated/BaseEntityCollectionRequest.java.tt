@@ -27,16 +27,16 @@
 
      public I<#=propertyType#>sCollectionRequest expand(final String value) {
          this.mQueryOptions.add(new QueryOption("expand", value));
-         return (<#=propertyType#>CollectionRequest)this;
+         return (<#=propertyType#>sCollectionRequest)this;
      }
 
      public I<#=propertyType#>sCollectionRequest select(final String value) {
            this.mQueryOptions.add(new QueryOption("select", value));
-           return (<#=propertyType#>CollectionRequest)this;
+           return (<#=propertyType#>sCollectionRequest)this;
      }
 
      public I<#=propertyType#>sCollectionRequest top(final int value) {
          this.mQueryOptions.add(new QueryOption("top", value + ""));
-         return (<#=propertyType#>CollectionRequest)this;
+         return (<#=propertyType#>sCollectionRequest)this;
      }
 }
