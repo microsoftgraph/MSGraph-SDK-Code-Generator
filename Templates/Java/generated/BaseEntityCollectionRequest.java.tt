@@ -17,26 +17,26 @@
          super(requestUrl, client, options, <#=propertyType#>.class);
      }
 
-     public void get(final ICallback<I<#=propertyType#>sCollectionPage> callback) {
+     public void get(final ICallback<I<#=currentName#>CollectionPage> callback) {
          this.send(HttpMethod.GET, callback, null);
      }
 
-     public I<#=propertyType#>sCollectionPage get() throws OneDriveClientException {
+     public I<#=currentName#>CollectionPage get() throws OneDriveClientException {
          return this.send(HttpMethod.GET, null);
      }
 
-     public I<#=propertyType#>sCollectionRequest expand(final String value) {
+     public I<#=currentName#>CollectionRequest expand(final String value) {
          this.mQueryOptions.add(new QueryOption("expand", value));
-         return (<#=propertyType#>sCollectionRequest)this;
+         return (<#=currentName#>CollectionRequest)this;
      }
 
-     public I<#=propertyType#>sCollectionRequest select(final String value) {
+     public I<#=currentName#>CollectionRequest select(final String value) {
            this.mQueryOptions.add(new QueryOption("select", value));
-           return (<#=propertyType#>sCollectionRequest)this;
+           return (<#=currentName#>CollectionRequest)this;
      }
 
-     public I<#=propertyType#>sCollectionRequest top(final int value) {
+     public I<#=currentName#>CollectionRequest top(final int value) {
          this.mQueryOptions.add(new QueryOption("top", value + ""));
-         return (<#=propertyType#>sCollectionRequest)this;
+         return (<#=currentName#>CollectionRequest)this;
      }
 }
