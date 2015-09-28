@@ -32,6 +32,6 @@
   }
 
   public I<#=propertyType#>RequestBuilder byId(final String id) {
-      return new <#=propertyType#>RequestBuilder(getRequestUrlWithAdditionalSegment(id), mClient);
+      return new <#=propertyType#>RequestBuilder(getRequestUrlWithAdditionalSegment(id), mClient, mOptions);
   }
 }
