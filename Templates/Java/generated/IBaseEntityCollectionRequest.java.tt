@@ -15,7 +15,7 @@
  <#=CreateInterfaceDef("IBase" + currentName + "CollectionRequest")#>
      void get(final ICallback<I<#=currentName#>CollectionPage> callback);
 
-     I<#=currentName#>sCollectionPage get() throws OneDriveClientException;
+     I<#=currentName#>CollectionPage get() throws OneDriveClientException;
 
      I<#=currentName#>CollectionRequest expand(final String value);
 
