@@ -42,6 +42,7 @@
             { "Template": "IEntityRequest", "SubProcessor": "EntityType",                                                                       "Name": "I<Class>Request" },
             { "Template": "EntityRequest", "SubProcessor": "EntityType",                                                                        "Name": "<Class>Request" },
             { "Template": "IEntityRequestBuilder", "SubProcessor": "EntityType",                                                                "Name": "I<Class>RequestBuilder" },
+            { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType",                                                                 "Name": "<Class>RequestBuilder" },
             { "Template": "IBaseEntityRequest", "SubProcessor": "EntityType",                                                                   "Name": "IBase<Class>Request" },
             { "Template": "BaseEntityRequest", "SubProcessor": "EntityType",                                                                    "Name": "Base<Class>Request" },
             { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                            "Name": "IBase<Class>RequestBuilder" },
