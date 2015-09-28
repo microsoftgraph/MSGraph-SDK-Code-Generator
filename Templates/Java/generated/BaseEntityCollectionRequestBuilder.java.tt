@@ -16,15 +16,15 @@
  * I never return myself, and instead only use and return (I)DriveRequest, etc.
  */
  <#=CreateClassDef("Base" + currentName + "CollectionRequestBuilder", "BaseRequestBuilder", "IBase" + currentName + "CollectionRequestBuilder")#>
-     public <#=currentName#>Request m<#=currentName#>Request;
+     public <#=currentName#>CollectionRequest m<#=currentName#>Request;
      private String mRequestUrl;
 
-     public Base<#=currentName#>CollectionRequestBuilder(final String requestUrl, final IOneDriveClient client) {
-         super(requestUrl, client);
+     public Base<#=currentName#>CollectionRequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+         super(requestUrl, client, options);
      }
 
   public I<#=currentName#>CollectionRequest buildRequest() {
-      return buildRequest(null);
+      return buildRequest(mOptions);
   }
 
   public I<#=currentName#>CollectionRequest buildRequest(final List<Option> options) {

@@ -36,7 +36,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @return the <#=prop.Type.GetTypeString()#>.
      */
     public I<#=requestBuilder#> get<#=prop.Type.GetTypeString()#>s() {
-        return new <#=requestBuilder#>("<#=prop.Name#>", this, <#=prop.Type.GetTypeString()#>.class);
+        return new <#=requestBuilder#>("<#=prop.Name#>", (I<#=clientName#>Client)this, null);
     }
 <#
     }
@@ -51,7 +51,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @return the <#=prop.Type.GetTypeString()#>.
      */
     public I<#=requestBuilder#> get<#=requestBuilder#>s() {
-        return new <#=requestBuilder#>("<#=prop.Name#>", this);
+        return new <#=requestBuilder#>("<#=prop.Name#>", (I<#=clientName#>Client)this, null);
     }
 <#
     }

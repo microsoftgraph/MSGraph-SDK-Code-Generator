@@ -17,17 +17,21 @@
  * I never return myself, and instead only use and return (I)DriveRequest, etc.
  */
 <#=CreateClassDef("Base" + currentName + "RequestBuilder", "BaseRequestBuilder", "IBase" + currentName + "RequestBuilder")#>
-    public <#=currentName#>Request m<#=currentName#>Request;
-    private String mRequestUrl;
 
-    public Base<#=currentName#>RequestBuilder(final String requestUrl, final IOneDriveClient client) {
-        super(requestUrl, client);
+    public Base<#=currentName#>RequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+        super(requestUrl, client, options);
     }
 
+    /**
+     * Creates the request
+     */
     public I<#=currentName#>Request buildRequest() {
-        return buildRequest(null);
+        return buildRequest(mOptions);
     }
 
+    /**
+     * Creates the request with specific options instead of the existing options
+     */
     public I<#=currentName#>Request buildRequest(final List<Option> options) {
         return new <#=currentName#>Request(mRequestUrl, <#=clientName#>, options);
     }
@@ -42,7 +46,7 @@ foreach(var child in current.Derived)
     /// </summary>
     /// <returns>The <see cref="I<#=childName#>RequestBuilder"/>.</returns>
     public I<#=childName#>RequestBuilder <#=childName.ToLowerFirstChar()#>() {
-        return new <#=childName#>RequestBuilder(getRequestUrlWithAdditionalSegment("<#=child.Name#>"), );
+        return new <#=childName#>RequestBuilder(getRequestUrlWithAdditionalSegment("<#=child.Name#>"), null);
     }
 <#
 }
@@ -62,7 +66,7 @@ foreach(var prop in current.NavigationProperties())
     /// </summary>
     /// <returns>The <see cref="I<#=collectionRequestBuilder#>"/>.</returns>
     public I<#=collectionRequestBuilder#> <#=propName.ToLowerFirstChar()#>() {
-        return new <#=collectionRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>);
+        return new <#=collectionRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
     }
 <#
   }
@@ -75,7 +79,7 @@ foreach(var prop in current.NavigationProperties())
     /// </summary>
     /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
     public I<#=propRequestBuilder#> <#=propName#>() {
-        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>);
+        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
     }
 <#
     }
@@ -94,7 +98,7 @@ foreach (var prop in current.GetProperties(typeName:"Stream"))
     /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
 // Entity Properties
 //    public I<#=currentName#><#=propRequestBuilder#> <#=propName.ToLowerFirstChar()#>() {
-//        return new <#=currentName#><#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>);
+//        return new <#=currentName#><#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
 //    }
 <#
 }
@@ -108,7 +112,7 @@ foreach (var method in current.Methods)
 
     var paramStringBuilder = new System.Text.StringBuilder();
     var builderInitializerStringBuilder = new System.Text.StringBuilder();
-    builderInitializerStringBuilder.AppendFormat("getRequestUrlWithAdditionalSegment(\"{0}\"), {1}", method.Name, clientName);
+    builderInitializerStringBuilder.AppendFormat("getRequestUrlWithAdditionalSegment(\"{0}\"), {1}, null", method.Name, clientName);
     var hasParameters = method.Parameters != null && method.Parameters.Any();
 
     if (hasParameters)
