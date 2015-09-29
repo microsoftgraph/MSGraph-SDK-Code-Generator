@@ -12,15 +12,4 @@
  * I AM THE CLIENT
  */
 <#=CreateClassDef(currentName + "Client", "Base" + currentName + "Client", "I" + currentName + "Client")#>
-
-    /**
-     * Instantiates a new OneDriveClient.
-     *
-     * @param url           the url
-     * @param authenticator the authenticator
-     * @param httpProvider  the httpProvider
-     */
-    public OneDriveClient(final String url, final IAuthenticator authenticator, final IHttpProvider httpProvider) {
-        super(url, authenticator, httpProvider);
-    }
 }
