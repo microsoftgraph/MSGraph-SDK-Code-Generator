@@ -12,16 +12,6 @@
  * The Base<#=clientName#>Client.
  */
 <#=CreateClassDef("Base" + clientName + "Client", "BaseClient", "IBase" + clientName + "Client")#>
-    /**
-     * Instantiates a new Base<#=clientName#>Client.
-     *
-     * @param url the url
-     * @param authenticator the authenticator
-     * @param httpProvider the httpProvider
-     */
-    public Base<#=clientName#>Client(String url, IAuthenticator authenticator, IHttpProvider httpProvider) {
-        super(url, authenticator, httpProvider);
-    }
 <#
 foreach (var prop in model.EntityContainer.Properties)
 {
