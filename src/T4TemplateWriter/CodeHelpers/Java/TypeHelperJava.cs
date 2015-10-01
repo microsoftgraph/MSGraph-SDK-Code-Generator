@@ -26,6 +26,8 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
         {
             switch (@type.Name)
             {
+                case "Int16":
+                    return "Short";
                 case "Int32":
                     return "Integer";
                 case "Int64":
@@ -46,6 +48,8 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
         {
             switch (parameter.Type.Name)
             {
+                case "Int16":
+                    return "Short";
                 case "Int32":
                     return "Integer";
                 case "Int64":
@@ -74,7 +78,8 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
         {
             string t = property.GetTypeString();
             return !(t == "Integer" || t == "java.util.UUID" || t == "java.util.Calendar"
-                  || t == "byte[]" || t == "String" || "long" == t || "Byte[]" == t);
+                  || t == "byte[]" || t == "String" || "long" == t || "Byte[]" == t
+                  || t == "Short");
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)
@@ -88,7 +93,8 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
             {
                 return ReservedPrefix + property.Name;
             }
-            return property.Name;
+
+            return property.Name.Replace("@", string.Empty).Replace(".", "_");
         }
 
         public static string GetToLowerImport(this OdcmProperty property)
