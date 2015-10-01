@@ -82,7 +82,7 @@ namespace Microsoft.OneDrive.Sdk
         /// <summary>
         /// Gets the request builder for <#=propName#>.
         /// </summary>
-        /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
+        /// <returns>The <see cref="I<#=entityName#><#=propRequestBuilder#>"/>.</returns>
         I<#=entityName#><#=propRequestBuilder#> <#=propName#> { get; }
     <#
     }

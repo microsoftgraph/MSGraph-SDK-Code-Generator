@@ -108,7 +108,9 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
             switch (parameter.Type.Name)
             {
                 case "String":
+                case "Double":
                     return parameter.Type.Name.ToLowerFirstChar();
+
                 default:
                     return parameter.Type.Name;
             }
@@ -119,6 +121,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
             switch (type)
             {
                 case "String":
+                case "Double":
                     return type.ToLowerFirstChar();
                 default:
                     return type.ToCheckedCase();
@@ -156,7 +159,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
         public static bool IsComplex(this string t)
         {
             return !(t == "Int32" || t == "Int64" || t == "DateTimeOffset"
-                   || t == "string" || t == "String" || "long" == t);
+                   || t == "string" || "long" == t || t == "double");
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)

@@ -69,7 +69,7 @@ namespace Microsoft.OneDrive.Sdk
         /// </summary>
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
-        I<#=requestType#> Top(string value);
+        I<#=requestType#> Top(int value);
 
     }
 }

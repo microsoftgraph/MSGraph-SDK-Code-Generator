@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Vipr.Core.CodeModel;
 
 namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
@@ -18,7 +14,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 
         public override String WriteClosingCommentLine()
         {
-            return "*******************************************************************************/" + this.NewLineCharacter;
+            return "*******************************************************************************/";
         }
 
         public override string WriteInlineCommentChar()
