@@ -9,12 +9,12 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 
         public override String WriteOpeningCommentLine()
         {
-            return "/*******************************************************************************" + this.NewLineCharacter;
+            return "// ------------------------------------------------------------------------------" + this.NewLineCharacter;
         }
 
         public override String WriteClosingCommentLine()
         {
-            return "*******************************************************************************/";
+            return "// ------------------------------------------------------------------------------";
         }
 
         public override string WriteInlineCommentChar()
