@@ -19,7 +19,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 
         public override string WriteInlineCommentChar()
         {
-            return "// ";
+            return "//  ";
         }
 
         public string jsonContentType = "application/json";
