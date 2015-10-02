@@ -1,0 +1,52 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entity = host.CurrentType.AsOdcmClass();
+IEnumerable<string> extraClasses = null;
+if (entity.Properties.Any(prop => prop.IsCollection))
+{
+   extraClasses = new List<string> {"ODCollection"};
+}
+#>
+<#=writer.GetImportsClass(entity.Properties, extraClasses:extraClasses)#>
+<#=writer.GetInterfaceLine(entity, "ODObject")#>
+
+<#
+foreach(var prop in entity.Properties)
+{
+	if(prop.Type is OdcmEnum && !prop.IsCollection)
+    {
+
+        var propertyString = string.Format("{0} {1}", prop.GetFullType(), writer.GetName(prop.Name));
+#>
+
+@property <#=propertyString#>;
+-(void)set<#=prop.Name#>String:(NSString*)value;
+
+<#
+	}
+	else if(!prop.IsCollection && prop.GetTypeString() != "id" && prop.GetTypeString() != "NSStream")
+	{
+#>
+@property <#=prop.ToPropertyString()#>;
+<#			
+    }
+    else if (prop.IsCollection && prop.LongDescriptionContains("enumerable"))
+    {
+#>
+@property (readonly) <#=writer.GetPrefix()#>Collection *<#=prop.Name.ToLowerFirstChar()#>;
+<#
+    }
+}
+
+foreach (var prop in entity.Properties.Where(prop => prop.IsCollection && prop.LongDescriptionContains("enumerable")))
+{
+#>
+
+- (<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#> *) <#=prop.Name.ToLowerFirstChar()#>:(NSInteger)index;
+<#
+}
+
+#>
+
+@end
