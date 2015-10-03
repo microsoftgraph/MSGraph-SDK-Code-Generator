@@ -17,11 +17,12 @@
     {
         var format = @"package {0}.sdk.{1};
 
-import com.onedrive.sdk.*;
+import com.onedrive.sdk.concurrency.*;
 import com.onedrive.sdk.core.*;
 import com.onedrive.sdk.extensions.*;
 import com.onedrive.sdk.http.*;
 import com.onedrive.sdk.generated.*;
+import com.onedrive.sdk.options.*;
 import com.onedrive.sdk.options.*;
 
 import java.util.*;";
