@@ -17,7 +17,6 @@
  */
  <#=CreateClassDef("Base" + currentName + "CollectionRequestBuilder", "BaseRequestBuilder", "IBase" + currentName + "CollectionRequestBuilder")#>
      public <#=currentName#>CollectionRequest m<#=currentName#>Request;
-     private String mRequestUrl;
 
      public Base<#=currentName#>CollectionRequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
          super(requestUrl, client, options);
