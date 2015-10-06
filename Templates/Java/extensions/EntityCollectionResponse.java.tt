@@ -1,0 +1,33 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+   OdcmProperty current = (OdcmProperty)currentType;
+   var currentName = current.Name.ToUpperFirstChar();
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+/**
+ * I am created by hand
+ *
+ * I extend the generated class BaseDrive, and provide any additional functionality, which should be minimal since
+ * I'm a simple data object
+ *
+ * I don't get an interface because java does not support properties, which would force the following:
+ * <code>
+ * {
+ * ...
+ *     @SerializedName("DriveType")
+ *     public String driveType;
+ *     public String getDriveType() { return driveType; }
+ *     public void setDriveType(final String newDriveType) { driveType = newDriveType; }
+ * }
+ * At first this doesn't seem bad, until you realize that driveType has to be made public so that Gson can write
+ * that value, meaning that users will easily get confused
+ *
+ * </code>
+ */
+<#=CreateClassDef(currentName + "CollectionResponse", "Base" + currentName + "CollectionResponse")#>
+
+}
