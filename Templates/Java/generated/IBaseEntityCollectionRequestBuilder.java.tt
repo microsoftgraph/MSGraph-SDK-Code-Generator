@@ -14,7 +14,7 @@
  *
  * I never return myself, and instead only use and return (I)DriveRequest, etc.
  */
-<#=CreateInterfaceDef("IBase" + currentName + "CollectionRequestBuilder")#>
+<#=CreateInterfaceDef("IBase" + currentName + "CollectionRequestBuilder", "IRequestBuilder")#>
    I<#=currentName#>CollectionRequest buildRequest();
 
    I<#=currentName#>CollectionRequest buildRequest(final List<Option> options);
