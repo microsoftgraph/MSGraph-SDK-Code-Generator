@@ -28,17 +28,17 @@
      }
 
      public I<#=currentName#>CollectionRequest expand(final String value) {
-         addQueryOptionnew QueryOption("expand", value));
+         addQueryOption(new QueryOption("expand", value));
          return (<#=currentName#>CollectionRequest)this;
      }
 
      public I<#=currentName#>CollectionRequest select(final String value) {
-           addQueryOptionnew QueryOption("select", value));
+           addQueryOption(new QueryOption("select", value));
            return (<#=currentName#>CollectionRequest)this;
      }
 
      public I<#=currentName#>CollectionRequest top(final int value) {
-         addQueryOptionnew QueryOption("top", value + ""));
+         addQueryOption(new QueryOption("top", value + ""));
          return (<#=currentName#>CollectionRequest)this;
      }
 }
