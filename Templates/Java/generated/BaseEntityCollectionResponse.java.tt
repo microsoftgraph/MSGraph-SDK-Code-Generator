@@ -19,6 +19,10 @@ import com.google.gson.annotations.*;
 
    @SerializedName("value")
    public List<<#=propertyType#>> value;
+
+   @SerializedName("@odata.nextLink")
+   public String nextLink;
+
 <#=CreateRawJsonObject()#>
 
 }
