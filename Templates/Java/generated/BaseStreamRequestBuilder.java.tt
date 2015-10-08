@@ -21,6 +21,6 @@
    }
 
    public I<#=propertyClass + currentName#>Request buildRequest() {
-      return buildRequest(mOptions);
+      return new <#=propertyClass + currentName#>Request(getRequestUrlWithAdditionalSegment("/<#=currentName.ToLowerFirstChar()#>"), mClient, mOptions);
    }
 }
