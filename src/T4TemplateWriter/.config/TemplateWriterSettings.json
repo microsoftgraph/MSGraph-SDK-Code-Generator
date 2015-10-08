@@ -77,6 +77,10 @@
             { "Template": "IBaseEntityCollectionRequest", "SubProcessor": "CollectionProperty",                                                 "Name": "IBase<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "IBaseEntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty",                                          "Name": "IBase<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
 
+            { "Template": "IBaseStreamRequest", "SubProcessor": "Property",                                                                     "Name": "IBase<Property>Request", "Include": "content" },
+            { "Template": "BaseStreamRequest", "SubProcessor": "Property",                                                                      "Name": "Base<Property>Request", "Include": "content" },
+            { "Template": "IBaseStreamRequestBuilder", "SubProcessor": "Property",                                                              "Name": "IBase<Property>RequestBuilder", "Include": "content" },
+            { "Template": "BaseStreamRequestBuilder", "SubProcessor": "Property",                                                               "Name": "Base<Property>RequestBuilder", "Include": "content" },
 
             { "Template": "IClient", "SubProcessor": "EntityContainer", "Type": "Client",                                                       "Name": "I<Container>Client" },
             { "Template": "Client", "SubProcessor": "EntityContainer", "Type": "Client",                                                        "Name": "<Container>Client" },
