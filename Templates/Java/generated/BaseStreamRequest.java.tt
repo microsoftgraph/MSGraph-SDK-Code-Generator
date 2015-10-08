@@ -4,7 +4,8 @@
 <#
     OdcmProperty current = (OdcmProperty)currentType;
     var currentName = current.Name.ToUpperFirstChar();
-    var propertyType = current.Type.Name.ToUpperFirstChar();
+    var propertyName = current.Name.ToUpperFirstChar();
+    var propertyClass = current.Class.Name.ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
@@ -18,24 +19,24 @@ import java.io.*;
  * I have an interface IBaseStreamRequest that is also auto generated
  * I have the full RU complement of functions
  */
-<#=CreateClassDef("Base" + currentName + "Request", "BaseSteamRequest", "IBase" + currentName + "Request")#>
-    public Base<#=currentName#>Request(String requestUrl, IOneDriveClient client, List<Option> options) {
-        super(requestUrl, client, options, <#=propertyType#>.class);
+<#=CreateClassDef("Base" + propertyClass + currentName + "Request", "BaseStreamRequest<" + propertyClass + ">", "IBase" + propertyClass + currentName + "Request")#>
+    public Base<#=propertyClass + currentName#>Request(String requestUrl, IOneDriveClient client, List<Option> options) {
+        super(requestUrl, client, options, <#=propertyClass#>.class);
     }
 
     public void get(final ICallback<InputStream> callback) {
-        this.send(HttpMethod.GET, callback, null);
+        this.send(callback);
     }
 
     public InputStream get() throws OneDriveClientException {
-       return this.send(HttpMethod.GET, null);
+       return this.send();
     }
 
-    public void put(final OutputStream stream, final ICallback<<#=propertyType#>> callback) {
-        this.send(HttpMethod.PUT, callback, stream);
+    public void put(final OutputStream stream, final ICallback<<#=propertyClass#>> callback) {
+        this.send(stream, callback);
     }
 
-    public <#=propertyType#> put(final OutputStream stream) throws OneDriveClientException {
-        return this.send(HttpMethod.PUT, stream);
+    public <#=propertyClass#> put(final OutputStream stream) throws OneDriveClientException {
+        return this.send(stream);
     }
 }

@@ -89,7 +89,7 @@ foreach(var prop in current.NavigationProperties())
 foreach (var prop in current.GetProperties(typeName:"Stream"))
 {
     var propName = prop.Name.ToCheckedCase();
-    var propRequestBuilder = propName + "RequestBuilder";
+    var propRequestBuilder = currentName + propName + "RequestBuilder";
 #>
 
     /// <summary>

@@ -4,6 +4,8 @@
 <#
     OdcmProperty current = (OdcmProperty)currentType;
     var currentName = current.Name.ToUpperFirstChar();
+    var propertyName = current.Type.Name.ToUpperFirstChar();
+    var propertyClass = current.Class.Name.ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
@@ -13,12 +15,12 @@
  *
  * I never return myself, and instead only use and return (I)DriveRequest, etc.
  */
-<#=CreateClassDef("Base" + currentName + "RequestBuilder", "BaseRequestBuilder", "IBase" + currentName + "RequestBuilder")#>
-   public Base<#=currentName#>RequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+<#=CreateClassDef("Base" + propertyClass + currentName + "RequestBuilder", "BaseRequestBuilder", "IBase" + propertyClass + currentName + "RequestBuilder")#>
+   public Base<#=propertyClass + currentName#>RequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
       super(requestUrl, client, options);
    }
 
-   public I<#=currentName#>CollectionRequest buildRequest() {
+   public I<#=propertyClass + currentName#>Request buildRequest() {
       return buildRequest(mOptions);
    }
 }
