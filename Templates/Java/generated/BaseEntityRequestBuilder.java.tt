@@ -97,9 +97,9 @@ foreach (var prop in current.GetProperties(typeName:"Stream"))
     /// </summary>
     /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
 // Entity Properties
-//    public I<#=currentName#><#=propRequestBuilder#> <#=propName.ToLowerFirstChar()#>() {
-//        return new <#=currentName#><#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
-//    }
+    public I<#=propRequestBuilder#> <#=propName.ToLowerFirstChar()#>() {
+        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
+    }
 <#
 }
 #>
