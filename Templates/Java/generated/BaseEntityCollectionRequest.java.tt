@@ -27,7 +27,7 @@
 
      public I<#=collectionPageType#> get() throws OneDriveClientException {
          final <#=responseType#> response = this.send();
-         return this.send(buildFromResponse(response));
+         return buildFromResponse(response);
      }
 
      public I<#=currentName#>CollectionRequest expand(final String value) {
