@@ -2,7 +2,7 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#
-    OdmcMethod current = (OdmcMethod)currentType;
+    OdcmMethod current = (OdcmMethod)currentType;
     var currentName = current.Name.ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
@@ -16,9 +16,6 @@ import com.google.gson.annotations.*;
  *
  * Drive should always been referenced, and Drive extends BaseDrive
  */
-<#=CreateClassDef("Base" + currentName + "Body")#>
-
-<#=CreateParameterDef(current.Parameters)#>
-<#=CreateRawJsonObject()#>
+<#=CreateClassDef(currentName + "Body", "Base" + currentName + "Body")#>
 
 }
