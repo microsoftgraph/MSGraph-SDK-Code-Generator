@@ -24,7 +24,7 @@ import java.io.*;
 
     InputStream get() throws OneDriveClientException;
 
-    void put(final OutputStream stream, final ICallback<<#=propertyClass#>> callback);
+    void put(final byte[] fileContents, final ICallback<<#=propertyClass#>> callback);
 
-    <#=propertyClass#> put(final OutputStream stream) throws OneDriveClientException;
+    <#=propertyClass#> put(final byte[] fileContents) throws OneDriveClientException;
 }

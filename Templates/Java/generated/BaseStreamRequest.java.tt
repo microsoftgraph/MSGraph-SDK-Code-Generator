@@ -32,11 +32,11 @@ import java.io.*;
        return this.send();
     }
 
-    public void put(final OutputStream stream, final ICallback<<#=propertyClass#>> callback) {
-        this.send(stream, callback);
+    public void put(final byte[] fileContents, final ICallback<<#=propertyClass#>> callback) {
+        this.send(fileContents, callback);
     }
 
-    public <#=propertyClass#> put(final OutputStream stream) throws OneDriveClientException {
-        return this.send(stream);
+    public <#=propertyClass#> put(final byte[] fileContents) throws OneDriveClientException {
+        return this.send(fileContents);
     }
 }
