@@ -92,6 +92,32 @@ public {1} {2}{3}{4} {{";
         return sb.ToString();
     }
 
+    public string CreateParameterDef(IEnumerable<OdcmParameter> parameters)
+    {
+        var sb = new StringBuilder();
+
+        var format =
+@"    /**
+     * The {0}.
+     */
+    @SerializedName(""{1}"")
+    public {2} {3};
+
+";
+        foreach (var property in parameters)
+        {
+            var propertyName = property.Name.ToUpperFirstChar();
+            var propertyType = property.IsCollection ? string.Format("java.util.List<{0}>", property.GetTypeString()) : property.GetTypeString();
+            sb.AppendFormat(format,
+                propertyName.SplitCamelCase(),
+                property.Name,
+                propertyType,
+                property.SanitizePropertyName());
+        }
+        return sb.ToString();
+    }
+
+
     public string CreateRawJsonObject() {
         return
 @"    /**

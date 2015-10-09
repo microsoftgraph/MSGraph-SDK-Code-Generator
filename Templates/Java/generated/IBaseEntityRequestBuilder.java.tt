@@ -106,7 +106,7 @@ foreach (var method in current.Methods)
     /// </summary>
     /// <returns>The <see cref="I<#=baseName#>RequestBuilder"/>.</returns>
 // Entity Methods
-//    I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>);
+    I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>);
 <#
 }
 #>

@@ -37,6 +37,11 @@
         "Java": [
             { "Template": "BaseModel", "SubProcessor": "Other", "Type": "Shared" },
 
+            { "Template": "MethodBody", "SubProcessor": "Method",                                                                               "Name": "<Class><Method>Body" },
+            { "Template": "BaseMethodBody", "SubProcessor": "Method",                                                                           "Name": "Base<Class><Method>Body" },
+            { "Template": "MethodRequest", "SubProcessor": "Method",                                                                            "Name": "<Class><Method>Reques" },
+            { "Template": "BaseMethodRequest", "SubProcessor": "Method",                                                                        "Name": "Base<Class><Method>Reques" },
+
             { "Template": "ExtensableEntity", "SubProcessor": "EntityType",                                                                     "Name": "<Class>" },
             { "Template": "BaseEntity", "SubProcessor": "EntityType",                                                                           "Name": "Base<Class>" },
             { "Template": "IEntityRequest", "SubProcessor": "EntityType",                                                                       "Name": "I<Class>Request" },
@@ -131,5 +136,4 @@
             { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType", "Name": "<Class>RequestBuilder", "Matches": "navigable" }
         ]
     }
-
 }
