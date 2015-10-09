@@ -39,8 +39,10 @@
 
             { "Template": "MethodBody", "SubProcessor": "Method",                                                                               "Name": "<Class><Method>Body" },
             { "Template": "BaseMethodBody", "SubProcessor": "Method",                                                                           "Name": "Base<Class><Method>Body" },
-            { "Template": "MethodRequest", "SubProcessor": "Method",                                                                            "Name": "<Class><Method>Reques" },
-            { "Template": "BaseMethodRequest", "SubProcessor": "Method",                                                                        "Name": "Base<Class><Method>Reques" },
+            { "Template": "MethodRequest", "SubProcessor": "Method",                                                                            "Name": "<Class><Method>Request" },
+            { "Template": "IMethodRequest", "SubProcessor": "Method",                                                                           "Name": "I<Class><Method>Request" },
+            { "Template": "BaseMethodRequest", "SubProcessor": "Method",                                                                        "Name": "Base<Class><Method>Request" },
+            { "Template": "IBaseMethodRequest", "SubProcessor": "Method",                                                                       "Name": "IBase<Class><Method>Request" },
 
             { "Template": "ExtensableEntity", "SubProcessor": "EntityType",                                                                     "Name": "<Class>" },
             { "Template": "BaseEntity", "SubProcessor": "EntityType",                                                                           "Name": "Base<Class>" },
