@@ -111,7 +111,7 @@ public {1} {2}{3}{4} {{";
             sb.AppendFormat(format,
                 propertyName.SplitCamelCase(),
                 property.Name,
-                propertyType,
+                propertyType.ToUpperFirstChar(),
                 property.SanitizePropertyName());
         }
         return sb.ToString();
