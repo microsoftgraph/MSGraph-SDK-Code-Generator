@@ -37,12 +37,28 @@
         "Java": [
             { "Template": "BaseModel", "SubProcessor": "Other", "Type": "Shared" },
 
-            { "Template": "MethodBody", "SubProcessor": "Method",                                                                               "Name": "<Class><Method>Body" },
-            { "Template": "BaseMethodBody", "SubProcessor": "Method",                                                                           "Name": "Base<Class><Method>Body" },
+            { "Template": "MethodBody", "SubProcessor": "MethodWithBody",                                                                       "Name": "<Class><Method>Body" },
+            { "Template": "BaseMethodBody", "SubProcessor": "MethodWithBody",                                                                   "Name": "Base<Class><Method>Body" },
+
             { "Template": "MethodRequest", "SubProcessor": "Method",                                                                            "Name": "<Class><Method>Request" },
             { "Template": "IMethodRequest", "SubProcessor": "Method",                                                                           "Name": "I<Class><Method>Request" },
             { "Template": "BaseMethodRequest", "SubProcessor": "Method",                                                                        "Name": "Base<Class><Method>Request" },
+            { "Template": "BaseMethodBodyRequest", "SubProcessor": "MethodWithBody",                                                            "Name": "Base<Class><Method>Request" },
             { "Template": "IBaseMethodRequest", "SubProcessor": "Method",                                                                       "Name": "IBase<Class><Method>Request" },
+            { "Template": "IBaseMethodBodyRequest", "SubProcessor": "MethodWithBody",                                                           "Name": "IBase<Class><Method>Request" },
+
+            { "Template": "MethodRequestBuilder", "SubProcessor": "Method",                                                                     "Name": "<Class><Method>RequestBuilder" },
+            { "Template": "IMethodRequestBuilder", "SubProcessor": "Method",                                                                    "Name": "I<Class><Method>RequestBuilder" },
+            { "Template": "BaseMethodRequestBuilder", "SubProcessor": "Method",                                                                 "Name": "Base<Class><Method>RequestBuilder" },
+            { "Template": "IBaseMethodRequestBuilder", "SubProcessor": "Method",                                                                "Name": "IBase<Class><Method>RequestBuilder" },
+
+
+            { "Template": "IBaseEntityRequest", "SubProcessor": "EntityType",                                                                   "Name": "IBase<Class>Request" },
+            { "Template": "BaseEntityRequest", "SubProcessor": "EntityType",                                                                    "Name": "Base<Class>Request" },
+            { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                            "Name": "IBase<Class>RequestBuilder" },
+            { "Template": "BaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                             "Name": "Base<Class>RequestBuilder" }
+        ],
+        "Java2": [
 
             { "Template": "ExtensableEntity", "SubProcessor": "EntityType",                                                                     "Name": "<Class>" },
             { "Template": "BaseEntity", "SubProcessor": "EntityType",                                                                           "Name": "Base<Class>" },
@@ -50,10 +66,6 @@
             { "Template": "EntityRequest", "SubProcessor": "EntityType",                                                                        "Name": "<Class>Request" },
             { "Template": "IEntityRequestBuilder", "SubProcessor": "EntityType",                                                                "Name": "I<Class>RequestBuilder" },
             { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType",                                                                 "Name": "<Class>RequestBuilder" },
-            { "Template": "IBaseEntityRequest", "SubProcessor": "EntityType",                                                                   "Name": "IBase<Class>Request" },
-            { "Template": "BaseEntityRequest", "SubProcessor": "EntityType",                                                                    "Name": "Base<Class>Request" },
-            { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                            "Name": "IBase<Class>RequestBuilder" },
-            { "Template": "BaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                             "Name": "Base<Class>RequestBuilder" },
 
             { "Template": "ExtensableEntity", "SubProcessor": "ComplexType",                                                                    "Name": "<Class>" },
             { "Template": "BaseEntity", "SubProcessor": "ComplexType",                                                                          "Name": "Base<Class>" },

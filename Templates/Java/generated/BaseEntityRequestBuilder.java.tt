@@ -108,7 +108,7 @@ foreach (var method in current.Methods)
 {
     var methodNameBase = method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar();
     var methodName = methodNameBase.ToLowerFirstChar();
-    var baseName = method.Class.Name.ToCheckedCase().ToUpperFirstChar() + methodNameBase;
+    var baseName = method.Class.Name.ToCheckedCase().ToUpperFirstChar() + methodNameBase.ToUpperFirstChar();
 
     var paramStringBuilder = new System.Text.StringBuilder();
     var builderInitializerStringBuilder = new System.Text.StringBuilder();

@@ -14,5 +14,5 @@
  *
  * Drive should always been referenced, and Drive extends BaseDrive
  */
-<#=CreateInterfaceDef("I" + methodClass + currentName + "Request", "IBase" + methodClass + currentName + "Request")#>
+<#=CreateInterfaceDef("I" + methodClass + currentName + "RequestBuilder", "IBase" + methodClass + currentName + "RequestBuilder")#>
 }
