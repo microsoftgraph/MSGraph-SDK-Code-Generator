@@ -52,6 +52,8 @@
             { "Template": "BaseMethodRequestBuilder", "SubProcessor": "Method",                                                                 "Name": "Base<Class><Method>RequestBuilder" },
             { "Template": "IBaseMethodRequestBuilder", "SubProcessor": "Method",                                                                "Name": "IBase<Class><Method>RequestBuilder" },
 
+            { "Template": "BaseMethodCollectionResponse", "SubProcessor": "CollectionMethod",                                                   "Name": "<Class><Method>CollectionResponse", "Ignore": "ignorableCollection" },
+            { "Template": "BaseMethodCollectionResponse", "SubProcessor": "Method",                                                             "Name": "<Class><Method>CollectionResponse", "Ignore": "ignorableCollection", "Matches": "specialCollection" },
 
             { "Template": "IBaseEntityRequest", "SubProcessor": "EntityType",                                                                   "Name": "IBase<Class>Request" },
             { "Template": "BaseEntityRequest", "SubProcessor": "EntityType",                                                                    "Name": "Base<Class>Request" },
