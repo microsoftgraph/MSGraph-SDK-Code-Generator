@@ -30,7 +30,7 @@
  */
 <#=CreateClassDef("Base" + methodClass + currentName + "Request",  "BaseRequest")#>
     public Base<#=methodClass + currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
-        super(requestUrl, client, options, null);
+        super(requestUrl, client, options, <#=methodClass + currentName#>CollectionPage.class);
 <# foreach (var param in current.Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
         if (<#=paramName#> != null) {
             mQueryOptions.add(new QueryOption("<#=paramName#>", <#=paramName#>));
@@ -38,11 +38,11 @@
 <# } #>
     }
 
-    public void get(final ICallback<Void> callback) {
+    public void get(final ICallback<<#=methodClass + currentName#>CollectionPage> callback) {
         this.send(HttpMethod.GET, callback, null);
     }
 
-    public void get() throws OneDriveClientException {
+    public <#=methodClass + currentName#>CollectionPage get() throws OneDriveClientException {
         return this.send(HttpMethod.GET, null);
     }
 

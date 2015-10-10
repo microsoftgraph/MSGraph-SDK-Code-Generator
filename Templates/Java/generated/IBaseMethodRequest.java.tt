@@ -18,9 +18,9 @@ import com.google.gson.annotations.*;
  * Drive should always been referenced, and Drive extends BaseDrive
  */
 <#=CreateInterfaceDef("IBase" + methodClass + currentName + "Request")#>
-    void get(final ICallback<<#=methodClass + currentName#>Body> callback);
+    void get(final ICallback<<#=methodClass + currentName#>CollectionPage> callback);
 
-    <#=methodClass + currentName#>Body get() throws OneDriveClientException;
+    <#=methodClass + currentName#>CollectionPage get() throws OneDriveClientException;
 
     I<#=methodClass + currentName#>Request select(final String value) ;
 
