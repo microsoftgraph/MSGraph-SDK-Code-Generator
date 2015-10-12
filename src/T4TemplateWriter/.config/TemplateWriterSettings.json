@@ -37,9 +37,6 @@
         "Java": [
             { "Template": "BaseModel", "SubProcessor": "Other", "Type": "Shared" },
 
-            { "Template": "MethodBody", "SubProcessor": "MethodWithBody",                                                                       "Name": "<Class><Method>Body" },
-            { "Template": "BaseMethodBody", "SubProcessor": "MethodWithBody",                                                                   "Name": "Base<Class><Method>Body" },
-
             { "Template": "MethodRequest", "SubProcessor": "Method",                                                                            "Name": "<Class><Method>Request" },
             { "Template": "IMethodRequest", "SubProcessor": "Method",                                                                           "Name": "I<Class><Method>Request" },
             { "Template": "BaseMethodRequest", "SubProcessor": "Method",                                                                        "Name": "Base<Class><Method>Request" },
@@ -52,15 +49,22 @@
             { "Template": "BaseMethodRequestBuilder", "SubProcessor": "Method",                                                                 "Name": "Base<Class><Method>RequestBuilder" },
             { "Template": "IBaseMethodRequestBuilder", "SubProcessor": "Method",                                                                "Name": "IBase<Class><Method>RequestBuilder" },
 
+            { "Template": "IMethodCollectionPage", "SubProcessor": "CollectionMethod",                                                          "Name": "I<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
+            { "Template": "MethodCollectionPage", "SubProcessor": "CollectionMethod",                                                           "Name": "<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseMethodCollectionPage", "SubProcessor": "CollectionMethod",                                                      "Name": "IBase<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
+            { "Template": "BaseMethodCollectionPage", "SubProcessor": "CollectionMethod",                                                       "Name": "Base<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
+
             { "Template": "BaseMethodCollectionResponse", "SubProcessor": "CollectionMethod",                                                   "Name": "<Class><Method>CollectionResponse", "Ignore": "ignorableCollection" },
-            { "Template": "BaseMethodCollectionResponse", "SubProcessor": "Method",                                                             "Name": "<Class><Method>CollectionResponse", "Ignore": "ignorableCollection", "Matches": "specialCollection" },
+            { "Template": "BaseMethodCollectionResponse", "SubProcessor": "Method",                                                             "Name": "<Class><Method>CollectionResponse", "Ignore": "ignorableCollection", "Matches": "specialCollection" }
+        ],
+        "Java2": [
+            { "Template": "MethodBody", "SubProcessor": "MethodWithBody",                                                                       "Name": "<Class><Method>Body" },
+            { "Template": "BaseMethodBody", "SubProcessor": "MethodWithBody",                                                                   "Name": "Base<Class><Method>Body" },
 
             { "Template": "IBaseEntityRequest", "SubProcessor": "EntityType",                                                                   "Name": "IBase<Class>Request" },
             { "Template": "BaseEntityRequest", "SubProcessor": "EntityType",                                                                    "Name": "Base<Class>Request" },
             { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                            "Name": "IBase<Class>RequestBuilder" },
-            { "Template": "BaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                             "Name": "Base<Class>RequestBuilder" }
-        ],
-        "Java2": [
+            { "Template": "BaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                             "Name": "Base<Class>RequestBuilder" },
 
             { "Template": "ExtensableEntity", "SubProcessor": "EntityType",                                                                     "Name": "<Class>" },
             { "Template": "BaseEntity", "SubProcessor": "EntityType",                                                                           "Name": "Base<Class>" },

@@ -5,10 +5,15 @@
     OdcmMethod current = (OdcmMethod)currentType;
     var methodClass = current.Class.Name.ToUpperFirstChar();
     var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
+    var collectionRequest = currentName + "Request";
+    var responseType = currentName + "CollectionResponse";
+    var collectionPageType = currentName + "CollectionPage";
+    var collectionRequestBuilder = currentName + "RequestBuilder";
 
     var parameterSignatureBuilder = new StringBuilder();
     var parameterValuesBuilder = new StringBuilder();
     var requestValuesBuilder = new StringBuilder();
+    var collectionPageValuesBuilder = new StringBuilder();
 
     foreach (var param in current.Parameters)
     {
@@ -18,6 +23,7 @@
     	parameterSignatureBuilder.AppendFormat(", final {0} {1}", paramType, paramName);
     	parameterValuesBuilder.AppendFormat(", {0}", paramName);
         requestValuesBuilder.AppendFormat(", {0}", fieldName);
+        collectionPageValuesBuilder.AppendFormat(", /* {0} */ null", paramName);
     }
 #>
 <#=writer.WriteHeader()#>
@@ -28,37 +34,57 @@
  *
  * Drive should always been referenced, and Drive extends BaseDrive
  */
-<#=CreateClassDef("Base" + currentName + "Request",  "BaseRequest")#>
-    public Base<#=currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
-        super(requestUrl, client, options, <#=currentName#>CollectionPage.class);
+<#=CreateClassDef("Base" + collectionRequest, "BaseCollectionRequest<" + responseType + ", I"  + collectionPageType + ">", "IBase" + collectionRequest)#>
+    public Base<#=collectionRequest#>(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
+        super(requestUrl, client, options, <#=responseType#>.class, I<#=collectionPageType#>.class);
 <# foreach (var param in current.Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
         if (<#=paramName#> != null) {
-            mQueryOptions.add(new QueryOption("<#=paramName#>", <#=paramName#>));
+            addQueryOption(new QueryOption("<#=paramName#>", <#=paramName#>));
         }
 <# } #>
     }
 
-    public void get(final ICallback<<#=currentName#>CollectionPage> callback) {
-        this.send(HttpMethod.GET, callback, null);
+    public void get(final ICallback<I<#=collectionPageType#>> callback) {
+        final IExecutors executors = mBaseRequest.mClient.getExecutors();
+        executors.performOnBackground(new Runnable() {
+           @Override
+           public void run() {
+                try {
+                    executors.performOnForeground(get(), callback);
+                } catch (final OneDriveClientException e) {
+                    executors.performOnForeground(e, callback);
+                }
+           }
+        });
     }
 
-    public <#=currentName#>CollectionPage get() throws OneDriveClientException {
-        return this.send(HttpMethod.GET, null);
+    public I<#=currentName#>CollectionPage get() throws OneDriveClientException {
+        final <#=responseType#> response = this.send();
+        return buildFromResponse(response);
     }
 
     public I<#=currentName#>Request select(final String value) {
-        this.mQueryOptions.add(new QueryOption("select", value));
-        return (<#=currentName#>Request)this;
+        addQueryOption(new QueryOption("select", value));
+        return (<#=collectionRequest#>)this;
     }
 
     public I<#=currentName#>Request top(final int value) {
-        this.mQueryOptions.add(new QueryOption("top", value+""));
-        return (<#=currentName#>Request)this;
+        addQueryOption(new QueryOption("top", value+""));
+        return (<#=collectionRequest#>)this;
     }
 
     public I<#=currentName#>Request expand(final String value) {
-        this.mQueryOptions.add(new QueryOption("expand", value));
-        return (<#=currentName#>Request)this;
+        addQueryOption(new QueryOption("expand", value));
+        return (<#=collectionRequest#>)this;
     }
 
+    public I<#=collectionPageType#> buildFromResponse(final <#=responseType#> response) {
+        final <#=collectionRequestBuilder#> builder;
+        if (response.nextLink != null) {
+            builder = new <#=collectionRequestBuilder#>(response.nextLink, mBaseRequest.mClient, mBaseRequest.getOptions()<#=collectionPageValuesBuilder.ToString()#>);
+        } else {
+            builder = null;
+        }
+        return new <#=collectionPageType#>(response, builder);
+    }
 }
