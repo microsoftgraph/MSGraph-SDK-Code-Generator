@@ -4,7 +4,7 @@
 <#
     OdcmMethod current = (OdcmMethod)currentType;
     var methodClass = current.Class.Name.ToUpperFirstChar();
-    var currentName = current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
+    var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
 
     var parameterSignatureBuilder = new StringBuilder();
     var parameterValuesBuilder = new StringBuilder();
@@ -28,37 +28,37 @@
  *
  * Drive should always been referenced, and Drive extends BaseDrive
  */
-<#=CreateClassDef("Base" + methodClass + currentName + "Request",  "BaseRequest")#>
-    protected final <#=methodClass + currentName#>Body mBody;
-    public Base<#=methodClass + currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
-        super(requestUrl, client, options, <#=methodClass + currentName#>Body.class);
-        mBody = new <#=methodClass + currentName#>Body();
+<#=CreateClassDef("Base" + currentName + "Request",  "BaseRequest")#>
+    protected final <#=currentName#>Body mBody;
+    public Base<#=currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
+        super(requestUrl, client, options, <#=currentName#>Body.class);
+        mBody = new <#=currentName#>Body();
 <# foreach (var param in current.Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
         mBody.<#=paramName#> = <#=paramName#>;
 <# } #>
     }
 
-    public void create(final ICallback<<#=methodClass + currentName#>Body> callback) {
+    public void create(final ICallback<<#=currentName#>Body> callback) {
         this.send(HttpMethod.GET, callback, mBody);
     }
 
-    public <#=methodClass + currentName#>Body create() throws OneDriveClientException {
+    public <#=currentName#>Body create() throws OneDriveClientException {
         return this.send(HttpMethod.GET, mBody);
     }
 
-    public I<#=methodClass + currentName#>Request select(final String value) {
+    public I<#=currentName#>Request select(final String value) {
         this.mQueryOptions.add(new QueryOption("select", value));
-        return (<#=methodClass + currentName#>Request)this;
+        return (<#=currentName#>Request)this;
     }
 
-    public I<#=methodClass + currentName#>Request top(final int value) {
+    public I<#=currentName#>Request top(final int value) {
         this.mQueryOptions.add(new QueryOption("top", value+""));
-        return (<#=methodClass + currentName#>Request)this;
+        return (<#=currentName#>Request)this;
     }
 
-    public I<#=methodClass + currentName#>Request expand(final String value) {
+    public I<#=currentName#>Request expand(final String value) {
         this.mQueryOptions.add(new QueryOption("expand", value));
-        return (<#=methodClass + currentName#>Request)this;
+        return (<#=currentName#>Request)this;
     }
 
 }

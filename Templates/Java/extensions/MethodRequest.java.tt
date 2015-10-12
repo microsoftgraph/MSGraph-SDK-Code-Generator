@@ -4,7 +4,7 @@
 <#
     OdcmMethod current = (OdcmMethod)currentType;
     var methodClass = current.Class.Name.ToUpperFirstChar();
-    var currentName = current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
+    var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
 
     var parameterSignatureBuilder = new StringBuilder();
     var parameterValuesBuilder = new StringBuilder();
@@ -25,8 +25,8 @@
  *
  * Drive should always been referenced, and Drive extends BaseDrive
  */
-<#=CreateClassDef(methodClass + currentName + "Request", "Base" + methodClass + currentName + "Request", "I" + methodClass + currentName + "Request")#>
-    public <#=methodClass + currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
+<#=CreateClassDef(currentName + "Request", "Base" + currentName + "Request", "I" + currentName + "Request")#>
+    public <#=currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
         super(requestUrl, client, options<#=parameterValuesBuilder.ToString()#>);
     }
 }

@@ -4,7 +4,7 @@
 <#
     OdcmMethod current = (OdcmMethod)currentType;
     var methodClass = current.Class.Name.ToUpperFirstChar();
-    var currentName = current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
+    var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
@@ -17,6 +17,6 @@ import com.google.gson.annotations.*;
  *
  * Drive should always been referenced, and Drive extends BaseDrive
  */
-<#=CreateClassDef(methodClass + currentName + "Body", "Base" + methodClass + currentName + "Body")#>
+<#=CreateClassDef(currentName + "Body", "Base" + currentName + "Body")#>
 
 }

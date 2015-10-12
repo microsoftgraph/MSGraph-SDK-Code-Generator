@@ -4,7 +4,7 @@
 <#
     OdcmMethod current = (OdcmMethod)currentType;
     var methodClass = current.Class.Name.ToUpperFirstChar();
-    var currentName = current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
+    var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
     var clientName = "mClient";
 
     var parameterSignatureBuilder = new StringBuilder();
@@ -29,24 +29,24 @@
  *
  * Drive should always been referenced, and Drive extends BaseDrive
  */
-<#=CreateClassDef("Base" + methodClass + currentName + "RequestBuilder",  "BaseRequestBuilder")#>
+<#=CreateClassDef("Base" + currentName + "RequestBuilder",  "BaseRequestBuilder")#>
 
 <# foreach (var param in current.Parameters) { var paramType = param.Type.GetTypeString(); var fieldName = "m" + param.Name.ToUpperFirstChar();#>
     public <#=paramType#> <#=fieldName#>;
 <# } #>
 
-    public Base<#=methodClass + currentName#>RequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
+    public Base<#=currentName#>RequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
         super(requestUrl, client, options);
 <# foreach (var param in current.Parameters) { var paramName = param.Name.ToLowerFirstChar(); var fieldName = "m" + param.Name.ToUpperFirstChar();#>
         <#=fieldName#> = <#=paramName#>;
 <# } #>
     }
 
-    public I<#=methodClass + currentName#>Request buildRequest() {
+    public I<#=currentName#>Request buildRequest() {
         return buildRequest(null);
     }
 
-    public I<#=methodClass + currentName#>Request buildRequest(final List<Option> options) {
-        return new <#=methodClass + currentName#>Request(mRequestUrl, <#=clientName#>, options<#=requestValuesBuilder.ToString()#>);
+    public I<#=currentName#>Request buildRequest(final List<Option> options) {
+        return new <#=currentName#>Request(mRequestUrl, <#=clientName#>, options<#=requestValuesBuilder.ToString()#>);
     }
 }
