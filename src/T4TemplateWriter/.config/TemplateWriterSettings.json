@@ -49,6 +49,11 @@
             { "Template": "BaseMethodRequestBuilder", "SubProcessor": "Method",                                                                 "Name": "Base<Class><Method>RequestBuilder" },
             { "Template": "IBaseMethodRequestBuilder", "SubProcessor": "Method",                                                                "Name": "IBase<Class><Method>RequestBuilder" },
 
+            { "Template": "IMethodCollectionPage", "SubProcessor": "NonCollectionMethod",                                                       "Name": "I<Class><Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "view.delta" },
+            { "Template": "MethodCollectionPage", "SubProcessor": "NonCollectionMethod",                                                        "Name": "<Class><Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "view.delta"  },
+            { "Template": "IBaseMethodCollectionPage", "SubProcessor": "NonCollectionMethod",                                                   "Name": "IBase<Class><Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "view.delta"  },
+            { "Template": "BaseMethodCollectionPage", "SubProcessor": "NonCollectionMethod",                                                    "Name": "Base<Class><Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "view.delta"  },
+
             { "Template": "IMethodCollectionPage", "SubProcessor": "CollectionMethod",                                                          "Name": "I<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
             { "Template": "MethodCollectionPage", "SubProcessor": "CollectionMethod",                                                           "Name": "<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
             { "Template": "IBaseMethodCollectionPage", "SubProcessor": "CollectionMethod",                                                      "Name": "IBase<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
