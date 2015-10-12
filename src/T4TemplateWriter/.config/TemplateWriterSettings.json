@@ -37,6 +37,9 @@
         "Java": [
             { "Template": "BaseModel", "SubProcessor": "Other", "Type": "Shared" },
 
+            { "Template": "MethodBody", "SubProcessor": "MethodWithBody",                                                                       "Name": "<Class><Method>Body" },
+            { "Template": "BaseMethodBody", "SubProcessor": "MethodWithBody",                                                                   "Name": "Base<Class><Method>Body" },
+
             { "Template": "MethodRequest", "SubProcessor": "Method",                                                                            "Name": "<Class><Method>Request" },
             { "Template": "IMethodRequest", "SubProcessor": "Method",                                                                           "Name": "I<Class><Method>Request" },
             { "Template": "BaseMethodRequest", "SubProcessor": "Method",                                                                        "Name": "Base<Class><Method>Request" },
@@ -60,11 +63,7 @@
             { "Template": "BaseMethodCollectionPage", "SubProcessor": "CollectionMethod",                                                       "Name": "Base<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
 
             { "Template": "BaseMethodCollectionResponse", "SubProcessor": "CollectionMethod",                                                   "Name": "<Class><Method>CollectionResponse", "Ignore": "ignorableCollection" },
-            { "Template": "BaseMethodCollectionResponse", "SubProcessor": "Method",                                                             "Name": "<Class><Method>CollectionResponse", "Ignore": "ignorableCollection", "Matches": "specialCollection" }
-        ],
-        "Java2": [
-            { "Template": "MethodBody", "SubProcessor": "MethodWithBody",                                                                       "Name": "<Class><Method>Body" },
-            { "Template": "BaseMethodBody", "SubProcessor": "MethodWithBody",                                                                   "Name": "Base<Class><Method>Body" },
+            { "Template": "BaseMethodCollectionResponse", "SubProcessor": "Method",                                                             "Name": "<Class><Method>CollectionResponse", "Ignore": "ignorableCollection", "Matches": "specialCollection" },
 
             { "Template": "IBaseEntityRequest", "SubProcessor": "EntityType",                                                                   "Name": "IBase<Class>Request" },
             { "Template": "BaseEntityRequest", "SubProcessor": "EntityType",                                                                    "Name": "Base<Class>Request" },
