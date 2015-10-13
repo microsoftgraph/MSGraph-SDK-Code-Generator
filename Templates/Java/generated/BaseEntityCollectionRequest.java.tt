@@ -21,6 +21,7 @@
         super(requestUrl, client, options, <#=responseType#>.class, I<#=collectionPageType#>.class);
     }
 
+<# if (current.LongDescriptionContains("enumerable")) { #>
     public void get(final ICallback<I<#=collectionPageType#>> callback) {
         final IExecutors executors = mBaseRequest.mClient.getExecutors();
         executors.performOnBackground(new Runnable() {
@@ -40,6 +41,31 @@
         return buildFromResponse(response);
     }
 
+<# } #>
+<# if (current.LongDescriptionContains("writable")) { #>
+    public void create(final String fileName, final byte[] fileContents, final ICallback<<#=currentTypeName#>> callback) {
+        final IExecutors executors = mBaseRequest.mClient.getExecutors();
+        executors.performOnBackground(new Runnable() {
+           @Override
+           public void run() {
+                try {
+                    executors.performOnForeground(create(fileName, fileContents), callback);
+                } catch (final OneDriveClientException e) {
+                    executors.performOnForeground(e, callback);
+                }
+           }
+        });
+    }
+
+    public <#=currentTypeName#> create(final String fileName, final byte[] fileContents) throws OneDriveClientException {
+        final String requestUrl = mBaseRequest.getRequestUrl() + "/" + fileName;
+        return new ItemRequestBuilder(requestUrl, mBaseRequest.mClient, /* Options */ null)
+            .content()
+            .buildRequest()
+            .put(fileContents);
+    }
+
+<# } #>
     public I<#=currentName#>CollectionRequest expand(final String value) {
         addQueryOption(new QueryOption("expand", value));
         return (<#=currentName#>CollectionRequest)this;

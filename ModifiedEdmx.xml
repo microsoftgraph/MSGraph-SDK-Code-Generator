@@ -27,7 +27,9 @@
         <Property Name="id" Type="Edm.String" Nullable="false" />
         <Property Name="name" Type="Edm.String" />
         <Property Name="owner" Type="oneDrive.identitySet" />
-        <NavigationProperty Name="items" Type="Collection(oneDrive.item)" ContainsTarget="true" />
+        <NavigationProperty Name="items" Type="Collection(oneDrive.item)" ContainsTarget="true" >
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable;writable" />
+        </NavigationProperty>
       </EntityType>
       <EntityType Name="item">
         <Key>
@@ -61,9 +63,11 @@
         <NavigationProperty Name="permissions" Type="Collection(oneDrive.permission)" ContainsTarget="true" >
             <Annotation Term="Org.OData.Core.V1.LongDescription" String="enumerable" />
         </NavigationProperty>
-        <NavigationProperty Name="versions" Type="Collection(oneDrive.item)" ContainsTarget="true" />
+        <NavigationProperty Name="versions" Type="Collection(oneDrive.item)" ContainsTarget="true" >
+            <Annotation Term="Org.OData.Core.V1.LongDescription" String="enumerable" />
+        </NavigationProperty>
         <NavigationProperty Name="children" Type="Collection(oneDrive.item)" ContainsTarget="true"> 
-            <Annotation Term="Org.OData.Core.V1.LongDescription" String="writable;enumerable" />
+            <Annotation Term="Org.OData.Core.V1.LongDescription" String="enumerable;writable" />
         </NavigationProperty>
         <NavigationProperty Name="thumbnails" Type="Collection(oneDrive.thumbnailSet)" ContainsTarget="true" >
             <Annotation Term="Org.OData.Core.V1.LongDescription" String="enumerable" />
