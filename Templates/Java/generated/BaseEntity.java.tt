@@ -15,9 +15,8 @@ import com.google.gson.annotations.*;
  *
  * Drive should always been referenced, and Drive extends BaseDrive
  */
-<#=CreateClassDef("Base" + current.Name.ToUpperFirstChar())#>
+<#=CreateClassDef("Base" + current.Name.ToUpperFirstChar(), null, "IJsonBackedObject")#>
 
 <#=CreatePropertyDef(current.Properties)#>
 <#=CreateRawJsonObject()#>
-
 }

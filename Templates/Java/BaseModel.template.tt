@@ -23,7 +23,7 @@ import com.onedrive.sdk.extensions.*;
 import com.onedrive.sdk.http.*;
 import com.onedrive.sdk.generated.*;
 import com.onedrive.sdk.options.*;
-import com.onedrive.sdk.options.*;
+import com.onedrive.sdk.serializer.*;
 
 import java.util.*;";
         return string.Format(format,
@@ -117,13 +117,19 @@ public {1} {2}{3}{4} {{";
         return sb.ToString();
     }
 
-
     public string CreateRawJsonObject() {
         return
 @"    /**
      * The raw representation of this class when deserialized
      */
     @Expose(serialize = false, deserialize = false)
-    public JsonObject rawObject;";
+    public JsonObject rawObject;
+
+    /**
+     * Sets the raw json object
+     */
+    public void setRawObject(final JsonObject json) {
+        rawObject = json;
+    }";
     }
 #>
