@@ -25,9 +25,9 @@
 
     <#=entityName#> update(final <#=entityName#> source<#=entityName#>) throws OneDriveClientException;
 
-    void delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback);
+    void delete(final ICallback<Void> callback);
 
-    void delete(final <#=entityName#> source<#=entityName#>)  throws OneDriveClientException;
+    void delete()  throws OneDriveClientException;
 
     void create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback);
 

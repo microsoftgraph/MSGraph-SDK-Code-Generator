@@ -37,11 +37,11 @@
         return this.send(HttpMethod.PATCH, source<#=entityName#>);
     }
 
-    public void delete(final <#=entityName#> source<#=entityName#>, final ICallback<Void> callback) {
+    public void delete(final ICallback<Void> callback) {
         this.send(HttpMethod.DELETE, callback, null);
     }
 
-    public void delete(final <#=entityName#> source<#=entityName#>) throws OneDriveClientException {
+    public void delete() throws OneDriveClientException {
         this.send(HttpMethod.DELETE, null);
     }
 
