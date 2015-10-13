@@ -60,9 +60,30 @@
     public <#=currentTypeName#> create(final String fileName, final byte[] fileContents) throws OneDriveClientException {
         final String requestUrl = mBaseRequest.getRequestUrl() + "/" + fileName;
         return new ItemRequestBuilder(requestUrl, mBaseRequest.mClient, /* Options */ null)
-            .content()
+            .getContent()
             .buildRequest()
             .put(fileContents);
+    }
+
+    public void create(final <#=currentTypeName#> new<#=currentTypeName#>, final ICallback<<#=currentTypeName#>> callback) {
+        final IExecutors executors = mBaseRequest.mClient.getExecutors();
+        executors.performOnBackground(new Runnable() {
+           @Override
+           public void run() {
+                try {
+                    executors.performOnForeground(create(new<#=currentTypeName#>), callback);
+                } catch (final OneDriveClientException e) {
+                    executors.performOnForeground(e, callback);
+                }
+           }
+        });
+    }
+
+    public <#=currentTypeName#> create(final <#=currentTypeName#> new<#=currentTypeName#>) throws OneDriveClientException {
+        final String requestUrl = mBaseRequest.getRequestUrl().toString();
+        return new ItemRequestBuilder(requestUrl, mBaseRequest.mClient, /* Options */ null)
+            .buildRequest()
+            .create(new<#=currentTypeName#>);
     }
 
 <# } #>

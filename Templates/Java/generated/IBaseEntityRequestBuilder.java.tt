@@ -35,18 +35,25 @@ foreach(var child in current.Derived)
 <#
 foreach(var prop in current.NavigationProperties())
 {
-  var propName = prop.Name.ToCheckedCase();
-  var propRequestBuilder = propName + "RequestBuilder";
-  if (prop.IsCollection())
-  {
-    var collectionRequestBuilder = propName + "CollectionRequestBuilder";
+    var propName = prop.Name.ToUpperFirstChar();
+    var propertyType = prop.Type.GetTypeString();
+    var propRequestBuilder = propName + "RequestBuilder";
+    if (prop.IsCollection())
+    {
+        var requestBuilder = propertyType + "RequestBuilder";
+        var collectionRequestBuilder = propName + "CollectionRequestBuilder";
 #>
 
     /// <summary>
     /// Gets the request builder for <#=propName#>.
     /// </summary>
     /// <returns>The <see cref="I<#=collectionRequestBuilder#>"/>.</returns>
-    I<#=collectionRequestBuilder#> <#=propName.ToLowerFirstChar()#>();
+    I<#=collectionRequestBuilder#> get<#=propName#>();
+
+    /**
+     * Gets the request builder for <#=propName#>.
+     */
+    I<#=requestBuilder#> get<#=propName#>(final String id);
 <#
   }
   else
@@ -57,7 +64,7 @@ foreach(var prop in current.NavigationProperties())
     /// Gets the request builder for <#=propName#>.
     /// </summary>
     /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
-    I<#=propRequestBuilder#> <#=propName#>();
+    I<#=propRequestBuilder#> get<#=propName#>();
 <#
     }
 }
@@ -74,7 +81,7 @@ foreach (var prop in current.GetProperties(typeName:"Stream"))
     /// </summary>
     /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
 // Entity Properties
-    I<#=propRequestBuilder#> <#=propName.ToLowerFirstChar()#>();
+    I<#=propRequestBuilder#> get<#=propName#>();
 <#
 }
 #>
@@ -106,7 +113,7 @@ foreach (var method in current.Methods)
     /// </summary>
     /// <returns>The <see cref="I<#=baseName#>RequestBuilder"/>.</returns>
 // Entity Methods
-    I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>);
+    I<#=baseName#>RequestBuilder get<#=methodNameBase#>(<#=paramStringBuilder.ToString()#>);
 <#
 }
 #>

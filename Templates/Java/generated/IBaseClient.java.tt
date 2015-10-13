@@ -17,15 +17,14 @@ foreach (var prop in model.EntityContainer.Properties)
 {
     if(prop.IsCollection())
     {
-        var requestBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+        var propertyType = prop.Type.GetTypeString();
+        var requestCollectionBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+        var requestBuilder = propertyType + "RequestBuilder";
 #>
 
-    /**
-     * Gets <#=requestBuilder#>.
-     *
-     * @return the <#=prop.Type.GetTypeString()#>.
-     */
-    I<#=requestBuilder#> get<#=prop.Type.GetTypeString()#>s();
+    public I<#=requestCollectionBuilder#> get<#=propertyType#>s();
+
+    I<#=requestBuilder#> get<#=propertyType#>(final String id);
 <#
     }
     else

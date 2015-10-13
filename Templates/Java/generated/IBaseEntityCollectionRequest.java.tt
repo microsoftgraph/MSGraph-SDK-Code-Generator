@@ -25,6 +25,10 @@
 
     <#=currentTypeName#> create(final String fileName, final byte[] fileContents) throws OneDriveClientException;
 
+    void create(final <#=currentTypeName#> new<#=currentTypeName#>, final ICallback<<#=currentTypeName#>> callback);
+
+    <#=currentTypeName#> create(final <#=currentTypeName#> new<#=currentTypeName#>) throws OneDriveClientException;
+
 <# } #>
     I<#=currentName#>CollectionRequest expand(final String value);
 

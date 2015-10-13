@@ -17,16 +17,27 @@ foreach (var prop in model.EntityContainer.Properties)
 {
     if(prop.IsCollection())
     {
-        var requestBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+        var propertyType = prop.Type.GetTypeString();
+        var requestCollectionBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+        var requestBuilder = propertyType + "RequestBuilder";
 #>
 
     /**
      * Gets <#=requestBuilder#>.
      *
-     * @return the <#=prop.Type.GetTypeString()#>.
+     * @return the <#=propertyType#>.
      */
-    public I<#=requestBuilder#> get<#=prop.Type.GetTypeString()#>s() {
-        return new <#=requestBuilder#>(getBaseUrl() + "/<#=prop.Name#>", (I<#=clientName#>Client)this, null);
+    public I<#=requestCollectionBuilder#> get<#=propertyType#>s() {
+        return new <#=requestCollectionBuilder#>(getBaseUrl() + "/<#=prop.Name#>", (I<#=clientName#>Client)this, null);
+    }
+
+    /**
+     * Gets <#=requestBuilder#>.
+     *
+     * @return the <#=propertyType#>.
+     */
+    public I<#=requestBuilder#> get<#=propertyType#>(final String id) {
+        return new <#=requestBuilder#>(getBaseUrl() + "/<#=prop.Name#>/" + id, (I<#=clientName#>Client)this, null);
     }
 <#
     }

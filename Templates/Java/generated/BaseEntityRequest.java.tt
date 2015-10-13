@@ -46,11 +46,11 @@
     }
 
     public void create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback) {
-        this.send(HttpMethod.PATCH, callback, new<#=entityName#>);
+        this.send(HttpMethod.POST, callback, new<#=entityName#>);
     }
 
     public <#=entityName#> create(final <#=entityName#> new<#=entityName#>) throws OneDriveClientException {
-        return this.send(HttpMethod.PATCH, new<#=entityName#>);
+        return this.send(HttpMethod.POST, new<#=entityName#>);
     }
 
     public I<#=entityName#>Request select(final String value) {

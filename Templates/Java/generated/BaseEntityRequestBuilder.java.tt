@@ -38,7 +38,7 @@
 <#
 foreach(var child in current.Derived)
 {
-  var childName = child.Name.ToCheckedCase();
+    var childName = child.Name.ToCheckedCase();
 #>
 
     /// <summary>
@@ -54,31 +54,38 @@ foreach(var child in current.Derived)
 <#
 foreach(var prop in current.NavigationProperties())
 {
-  var propName = prop.Name.ToCheckedCase();
-  var propRequestBuilder = propName + "RequestBuilder";
-  if (prop.IsCollection())
-  {
-    var collectionRequestBuilder = propName + "CollectionRequestBuilder";
+    var propName = prop.Name.ToUpperFirstChar();
+    var propertyType = prop.Type.GetTypeString();
+    var propRequestBuilder = propName + "RequestBuilder";
+    if (prop.IsCollection())
+    {
+        var requestBuilder = propertyType + "RequestBuilder";
+        var collectionRequestBuilder = propName + "CollectionRequestBuilder";
 #>
 
     /// <summary>
     /// Gets the request builder for <#=propName#>.
     /// </summary>
     /// <returns>The <see cref="I<#=collectionRequestBuilder#>"/>.</returns>
-    public I<#=collectionRequestBuilder#> <#=propName.ToLowerFirstChar()#>() {
+    public I<#=collectionRequestBuilder#> get<#=propName#>() {
         return new <#=collectionRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
     }
+
+    /**
+     * Gets the request builder for <#=propName#>.
+     */
+    public I<#=requestBuilder#> get<#=propName#>(final String id) {
+        return new <#=requestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, <#=clientName#>, null);
+    }
 <#
-  }
-  else
-  {
+    } else {
 #>
 
     /// <summary>
     /// Gets the request builder for <#=propName#>.
     /// </summary>
     /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
-    public I<#=propRequestBuilder#> <#=propName#>() {
+    public I<#=propRequestBuilder#> get<#=propName#>() {
         return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
     }
 <#
@@ -97,7 +104,7 @@ foreach (var prop in current.GetProperties(typeName:"Stream"))
     /// </summary>
     /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
 // Entity Properties
-    public I<#=propRequestBuilder#> <#=propName.ToLowerFirstChar()#>() {
+    public I<#=propRequestBuilder#> get<#=propName#>() {
         return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
     }
 <#
@@ -134,7 +141,7 @@ foreach (var method in current.Methods)
     /// </summary>
     /// <returns>The <see cref="I<#=baseName#>RequestBuilder"/>.</returns>
 // Entity Methods
-    public I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>) {
+    public I<#=baseName#>RequestBuilder get<#=methodNameBase#>(<#=paramStringBuilder.ToString()#>) {
         return new <#=baseName#>RequestBuilder(<#=builderInitializerStringBuilder.ToString()#>);
     }
 <#
