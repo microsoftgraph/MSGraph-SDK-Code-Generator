@@ -79,7 +79,7 @@ public {1} {2}{3}{4} {{";
     public {2} {3};
 
 ";
-        foreach (var property in properties)
+        foreach (var property in properties.Where(p => !p.Type.Name.Equals("Stream")))
         {
             var propertyName = property.Name.ToUpperFirstChar();
             var propertyType = property.IsCollection ? string.Format("java.util.List<{0}>", property.GetTypeString()) : property.GetTypeString();
