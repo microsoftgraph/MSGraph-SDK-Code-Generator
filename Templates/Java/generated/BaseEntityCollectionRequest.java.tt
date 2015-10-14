@@ -23,7 +23,7 @@
 
 <# if (current.LongDescriptionContains("enumerable")) { #>
     public void get(final ICallback<I<#=collectionPageType#>> callback) {
-        final IExecutors executors = mBaseRequest.mClient.getExecutors();
+        final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
            public void run() {
@@ -37,14 +37,14 @@
     }
 
     public I<#=collectionPageType#> get() throws ClientException {
-        final <#=responseType#> response = this.send();
+        final <#=responseType#> response = send();
         return buildFromResponse(response);
     }
 
 <# } #>
 <# if (current.LongDescriptionContains("writable")) { #>
     public void create(final String fileName, final byte[] fileContents, final ICallback<<#=currentTypeName#>> callback) {
-        final IExecutors executors = mBaseRequest.mClient.getExecutors();
+        final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
            public void run() {
@@ -58,15 +58,15 @@
     }
 
     public <#=currentTypeName#> create(final String fileName, final byte[] fileContents) throws ClientException {
-        final String requestUrl = mBaseRequest.getRequestUrl() + "/" + fileName;
-        return new ItemRequestBuilder(requestUrl, mBaseRequest.mClient, /* Options */ null)
+        final String requestUrl = getBaseRequest().getRequestUrl() + "/" + fileName;
+        return new ItemRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .getContent()
             .buildRequest()
             .put(fileContents);
     }
 
     public void create(final <#=currentTypeName#> new<#=currentTypeName#>, final ICallback<<#=currentTypeName#>> callback) {
-        final IExecutors executors = mBaseRequest.mClient.getExecutors();
+        final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
            public void run() {
@@ -80,8 +80,8 @@
     }
 
     public <#=currentTypeName#> create(final <#=currentTypeName#> new<#=currentTypeName#>) throws ClientException {
-        final String requestUrl = mBaseRequest.getRequestUrl().toString();
-        return new ItemRequestBuilder(requestUrl, mBaseRequest.mClient, /* Options */ null)
+        final String requestUrl = getBaseRequest().getRequestUrl().toString();
+        return new ItemRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest()
             .create(new<#=currentTypeName#>);
     }
@@ -105,7 +105,7 @@
     public I<#=collectionPageType#> buildFromResponse(final <#=responseType#> response) {
         final <#=collectionRequestBuilder#> builder;
         if (response.nextLink != null) {
-            builder = new <#=collectionRequestBuilder#>(response.nextLink, mBaseRequest.mClient, mBaseRequest.getOptions());
+            builder = new <#=collectionRequestBuilder#>(response.nextLink, getBaseRequest().getClient(), getBaseRequest().getOptions());
         } else {
             builder = null;
         }

@@ -4,7 +4,7 @@
 <#
     OdcmClass current = (OdcmClass)currentType;
     var currentName = current.Name.ToUpperFirstChar();
-    var clientName = "mClient";
+    var clientName = "getClient()";
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>

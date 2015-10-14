@@ -22,49 +22,49 @@
     }
 
     public void get(final ICallback<<#=entityName#>> callback) {
-        this.send(HttpMethod.GET, callback, null);
+        send(HttpMethod.GET, callback, null);
     }
 
     public <#=entityName#> get() throws ClientException {
-       return this.send(HttpMethod.GET, null);
+       return send(HttpMethod.GET, null);
     }
 
     public void update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback) {
-        this.send(HttpMethod.PATCH, callback, source<#=entityName#>);
+        send(HttpMethod.PATCH, callback, source<#=entityName#>);
     }
 
     public <#=entityName#> update(final <#=entityName#> source<#=entityName#>) throws ClientException {
-        return this.send(HttpMethod.PATCH, source<#=entityName#>);
+        return send(HttpMethod.PATCH, source<#=entityName#>);
     }
 
     public void delete(final ICallback<Void> callback) {
-        this.send(HttpMethod.DELETE, callback, null);
+        send(HttpMethod.DELETE, callback, null);
     }
 
     public void delete() throws ClientException {
-        this.send(HttpMethod.DELETE, null);
+        send(HttpMethod.DELETE, null);
     }
 
     public void create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback) {
-        this.send(HttpMethod.POST, callback, new<#=entityName#>);
+        send(HttpMethod.POST, callback, new<#=entityName#>);
     }
 
     public <#=entityName#> create(final <#=entityName#> new<#=entityName#>) throws ClientException {
-        return this.send(HttpMethod.POST, new<#=entityName#>);
+        return send(HttpMethod.POST, new<#=entityName#>);
     }
 
     public I<#=entityName#>Request select(final String value) {
-        this.mQueryOptions.add(new QueryOption("select", value));
+        mQueryOptions.add(new QueryOption("select", value));
         return (<#=entityName#>Request)this;
     }
 
     public I<#=entityName#>Request top(final int value) {
-        this.mQueryOptions.add(new QueryOption("top", value+""));
+        mQueryOptions.add(new QueryOption("top", value+""));
         return (<#=entityName#>Request)this;
     }
 
     public I<#=entityName#>Request expand(final String value) {
-        this.mQueryOptions.add(new QueryOption("expand", value));
+        mQueryOptions.add(new QueryOption("expand", value));
         return (<#=entityName#>Request)this;
     }
 }

@@ -5,7 +5,7 @@
     OdcmMethod current = (OdcmMethod)currentType;
     var methodClass = current.Class.Name.ToUpperFirstChar();
     var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
-    var clientName = "mClient";
+    var clientName = "getClient()";
 
     var parameterSignatureBuilder = new StringBuilder();
     var parameterValuesBuilder = new StringBuilder();

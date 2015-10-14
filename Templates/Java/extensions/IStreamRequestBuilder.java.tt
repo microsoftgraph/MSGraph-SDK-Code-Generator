@@ -6,7 +6,6 @@
     var currentName = current.Name.ToUpperFirstChar();
     var propertyName = current.Type.Name.ToUpperFirstChar();
     var propertyClass = current.Class.Name.ToUpperFirstChar();
-    var clientName = "mClient";
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>

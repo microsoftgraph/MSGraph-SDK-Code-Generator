@@ -45,7 +45,7 @@
     }
 
     public void get(final ICallback<I<#=collectionPageType#>> callback) {
-        final IExecutors executors = mBaseRequest.mClient.getExecutors();
+        final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
            public void run() {
@@ -59,7 +59,7 @@
     }
 
     public I<#=currentName#>CollectionPage get() throws ClientException {
-        final <#=responseType#> response = this.send();
+        final <#=responseType#> response = send();
         return buildFromResponse(response);
     }
 
@@ -81,7 +81,7 @@
     public I<#=collectionPageType#> buildFromResponse(final <#=responseType#> response) {
         final <#=collectionRequestBuilder#> builder;
         if (response.nextLink != null) {
-            builder = new <#=collectionRequestBuilder#>(response.nextLink, mBaseRequest.mClient, mBaseRequest.getOptions()<#=collectionPageValuesBuilder.ToString()#>);
+            builder = new <#=collectionRequestBuilder#>(response.nextLink, getBaseRequest().getClient(), getBaseRequest().getOptions()<#=collectionPageValuesBuilder.ToString()#>);
         } else {
             builder = null;
         }

@@ -22,7 +22,7 @@ foreach (var prop in model.EntityContainer.Properties)
         var requestBuilder = propertyType + "RequestBuilder";
 #>
 
-    public I<#=requestCollectionBuilder#> get<#=propertyType#>s();
+    I<#=requestCollectionBuilder#> get<#=propertyType#>s();
 
     I<#=requestBuilder#> get<#=propertyType#>(final String id);
 <#

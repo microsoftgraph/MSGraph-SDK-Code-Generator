@@ -25,18 +25,18 @@ import java.io.*;
     }
 
     public void get(final ICallback<InputStream> callback) {
-        this.send(callback);
+        send(callback);
     }
 
     public InputStream get() throws ClientException {
-       return this.send();
+       return send();
     }
 
     public void put(final byte[] fileContents, final ICallback<<#=propertyClass#>> callback) {
-        this.send(fileContents, callback);
+        send(fileContents, callback);
     }
 
     public <#=propertyClass#> put(final byte[] fileContents) throws ClientException {
-        return this.send(fileContents);
+        return send(fileContents);
     }
 }

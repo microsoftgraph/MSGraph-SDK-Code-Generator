@@ -39,25 +39,25 @@
     }
 
     public void create(final ICallback<<#=currentName#>Body> callback) {
-        this.send(HttpMethod.GET, callback, mBody);
+        send(HttpMethod.GET, callback, mBody);
     }
 
     public <#=currentName#>Body create() throws ClientException {
-        return this.send(HttpMethod.GET, mBody);
+        return send(HttpMethod.GET, mBody);
     }
 
     public I<#=currentName#>Request select(final String value) {
-        this.mQueryOptions.add(new QueryOption("select", value));
+        mQueryOptions.add(new QueryOption("select", value));
         return (<#=currentName#>Request)this;
     }
 
     public I<#=currentName#>Request top(final int value) {
-        this.mQueryOptions.add(new QueryOption("top", value+""));
+        mQueryOptions.add(new QueryOption("top", value+""));
         return (<#=currentName#>Request)this;
     }
 
     public I<#=currentName#>Request expand(final String value) {
-        this.mQueryOptions.add(new QueryOption("expand", value));
+        mQueryOptions.add(new QueryOption("expand", value));
         return (<#=currentName#>Request)this;
     }
 
