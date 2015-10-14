@@ -25,7 +25,7 @@
         this.send(HttpMethod.GET, callback, null);
     }
 
-    public <#=entityName#> get() throws OneDriveClientException {
+    public <#=entityName#> get() throws ClientException {
        return this.send(HttpMethod.GET, null);
     }
 
@@ -33,7 +33,7 @@
         this.send(HttpMethod.PATCH, callback, source<#=entityName#>);
     }
 
-    public <#=entityName#> update(final <#=entityName#> source<#=entityName#>) throws OneDriveClientException {
+    public <#=entityName#> update(final <#=entityName#> source<#=entityName#>) throws ClientException {
         return this.send(HttpMethod.PATCH, source<#=entityName#>);
     }
 
@@ -41,7 +41,7 @@
         this.send(HttpMethod.DELETE, callback, null);
     }
 
-    public void delete() throws OneDriveClientException {
+    public void delete() throws ClientException {
         this.send(HttpMethod.DELETE, null);
     }
 
@@ -49,7 +49,7 @@
         this.send(HttpMethod.POST, callback, new<#=entityName#>);
     }
 
-    public <#=entityName#> create(final <#=entityName#> new<#=entityName#>) throws OneDriveClientException {
+    public <#=entityName#> create(final <#=entityName#> new<#=entityName#>) throws ClientException {
         return this.send(HttpMethod.POST, new<#=entityName#>);
     }
 

@@ -42,7 +42,7 @@
         this.send(HttpMethod.GET, callback, mBody);
     }
 
-    public <#=currentName#>Body create() throws OneDriveClientException {
+    public <#=currentName#>Body create() throws ClientException {
         return this.send(HttpMethod.GET, mBody);
     }
 

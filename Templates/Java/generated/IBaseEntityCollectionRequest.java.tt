@@ -17,17 +17,17 @@
  <# if (current.LongDescriptionContains("enumerable")) { #>
     void get(final ICallback<I<#=currentName#>CollectionPage> callback);
 
-    I<#=currentName#>CollectionPage get() throws OneDriveClientException;
+    I<#=currentName#>CollectionPage get() throws ClientException;
 
 <# } #>
 <# if (current.LongDescriptionContains("writable")) { #>
     void create(final String fileName, final byte[] fileContents, final ICallback<<#=currentTypeName#>> callback);
 
-    <#=currentTypeName#> create(final String fileName, final byte[] fileContents) throws OneDriveClientException;
+    <#=currentTypeName#> create(final String fileName, final byte[] fileContents) throws ClientException;
 
     void create(final <#=currentTypeName#> new<#=currentTypeName#>, final ICallback<<#=currentTypeName#>> callback);
 
-    <#=currentTypeName#> create(final <#=currentTypeName#> new<#=currentTypeName#>) throws OneDriveClientException;
+    <#=currentTypeName#> create(final <#=currentTypeName#> new<#=currentTypeName#>) throws ClientException;
 
 <# } #>
     I<#=currentName#>CollectionRequest expand(final String value);

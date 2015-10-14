@@ -20,7 +20,7 @@ import com.google.gson.annotations.*;
 <#=CreateInterfaceDef("IBase" + currentName + "Request")#>
     void create(final ICallback<<#=currentName#>Body> callback);
 
-    <#=currentName#>Body create() throws OneDriveClientException;
+    <#=currentName#>Body create() throws ClientException;
 
     I<#=currentName#>Request select(final String value) ;
 

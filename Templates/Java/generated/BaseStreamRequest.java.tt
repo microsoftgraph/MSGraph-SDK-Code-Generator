@@ -28,7 +28,7 @@ import java.io.*;
         this.send(callback);
     }
 
-    public InputStream get() throws OneDriveClientException {
+    public InputStream get() throws ClientException {
        return this.send();
     }
 
@@ -36,7 +36,7 @@ import java.io.*;
         this.send(fileContents, callback);
     }
 
-    public <#=propertyClass#> put(final byte[] fileContents) throws OneDriveClientException {
+    public <#=propertyClass#> put(final byte[] fileContents) throws ClientException {
         return this.send(fileContents);
     }
 }

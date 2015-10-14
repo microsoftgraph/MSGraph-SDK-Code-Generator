@@ -22,9 +22,9 @@ import java.io.*;
 <#=CreateInterfaceDef("IBase" + propertyClass + entityName + "Request", "IHttpStreamRequest")#>
     void get(final ICallback<InputStream> callback);
 
-    InputStream get() throws OneDriveClientException;
+    InputStream get() throws ClientException;
 
     void put(final byte[] fileContents, final ICallback<<#=propertyClass#>> callback);
 
-    <#=propertyClass#> put(final byte[] fileContents) throws OneDriveClientException;
+    <#=propertyClass#> put(final byte[] fileContents) throws ClientException;
 }

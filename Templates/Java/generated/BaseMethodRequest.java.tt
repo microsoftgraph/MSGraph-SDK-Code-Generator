@@ -51,14 +51,14 @@
            public void run() {
                 try {
                     executors.performOnForeground(get(), callback);
-                } catch (final OneDriveClientException e) {
+                } catch (final ClientException e) {
                     executors.performOnForeground(e, callback);
                 }
            }
         });
     }
 
-    public I<#=currentName#>CollectionPage get() throws OneDriveClientException {
+    public I<#=currentName#>CollectionPage get() throws ClientException {
         final <#=responseType#> response = this.send();
         return buildFromResponse(response);
     }

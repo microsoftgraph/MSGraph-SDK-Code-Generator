@@ -19,19 +19,19 @@
 
     void get(final ICallback<<#=entityName#>> callback);
 
-    <#=entityName#> get() throws OneDriveClientException;
+    <#=entityName#> get() throws ClientException;
 
     void update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback);
 
-    <#=entityName#> update(final <#=entityName#> source<#=entityName#>) throws OneDriveClientException;
+    <#=entityName#> update(final <#=entityName#> source<#=entityName#>) throws ClientException;
 
     void delete(final ICallback<Void> callback);
 
-    void delete()  throws OneDriveClientException;
+    void delete()  throws ClientException;
 
     void create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback);
 
-    <#=entityName#> create(final <#=entityName#> new<#=entityName#>) throws OneDriveClientException;
+    <#=entityName#> create(final <#=entityName#> new<#=entityName#>) throws ClientException;
 
     IBase<#=entityName#>Request select(final String value);
 

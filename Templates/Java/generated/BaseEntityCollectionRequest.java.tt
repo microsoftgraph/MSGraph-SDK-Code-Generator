@@ -29,14 +29,14 @@
            public void run() {
                 try {
                     executors.performOnForeground(get(), callback);
-                } catch (final OneDriveClientException e) {
+                } catch (final ClientException e) {
                     executors.performOnForeground(e, callback);
                 }
            }
         });
     }
 
-    public I<#=collectionPageType#> get() throws OneDriveClientException {
+    public I<#=collectionPageType#> get() throws ClientException {
         final <#=responseType#> response = this.send();
         return buildFromResponse(response);
     }
@@ -50,14 +50,14 @@
            public void run() {
                 try {
                     executors.performOnForeground(create(fileName, fileContents), callback);
-                } catch (final OneDriveClientException e) {
+                } catch (final ClientException e) {
                     executors.performOnForeground(e, callback);
                 }
            }
         });
     }
 
-    public <#=currentTypeName#> create(final String fileName, final byte[] fileContents) throws OneDriveClientException {
+    public <#=currentTypeName#> create(final String fileName, final byte[] fileContents) throws ClientException {
         final String requestUrl = mBaseRequest.getRequestUrl() + "/" + fileName;
         return new ItemRequestBuilder(requestUrl, mBaseRequest.mClient, /* Options */ null)
             .getContent()
@@ -72,14 +72,14 @@
            public void run() {
                 try {
                     executors.performOnForeground(create(new<#=currentTypeName#>), callback);
-                } catch (final OneDriveClientException e) {
+                } catch (final ClientException e) {
                     executors.performOnForeground(e, callback);
                 }
            }
         });
     }
 
-    public <#=currentTypeName#> create(final <#=currentTypeName#> new<#=currentTypeName#>) throws OneDriveClientException {
+    public <#=currentTypeName#> create(final <#=currentTypeName#> new<#=currentTypeName#>) throws ClientException {
         final String requestUrl = mBaseRequest.getRequestUrl().toString();
         return new ItemRequestBuilder(requestUrl, mBaseRequest.mClient, /* Options */ null)
             .buildRequest()
