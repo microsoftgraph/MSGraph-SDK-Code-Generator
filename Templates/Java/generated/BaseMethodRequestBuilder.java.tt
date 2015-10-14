@@ -43,10 +43,10 @@
     }
 
     public I<#=currentName#>Request buildRequest() {
-        return buildRequest(null);
+        return buildRequest(getOptions());
     }
 
     public I<#=currentName#>Request buildRequest(final List<Option> options) {
-        return new <#=currentName#>Request(mRequestUrl, <#=clientName#>, options<#=requestValuesBuilder.ToString()#>);
+        return new <#=currentName#>Request(getRequestUrl(), <#=clientName#>, options<#=requestValuesBuilder.ToString()#>);
     }
 }

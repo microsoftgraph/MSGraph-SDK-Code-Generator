@@ -26,14 +26,14 @@
      * Creates the request
      */
     public I<#=currentName#>Request buildRequest() {
-        return buildRequest(mOptions);
+        return buildRequest(getOptions());
     }
 
     /**
      * Creates the request with specific options instead of the existing options
      */
     public I<#=currentName#>Request buildRequest(final List<Option> options) {
-        return new <#=currentName#>Request(mRequestUrl, <#=clientName#>, options);
+        return new <#=currentName#>Request(getRequestUrl(), <#=clientName#>, options);
     }
 <#
 foreach(var child in current.Derived)

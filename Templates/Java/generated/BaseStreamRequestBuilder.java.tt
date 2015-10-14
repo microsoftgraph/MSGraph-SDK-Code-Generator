@@ -21,6 +21,6 @@
    }
 
    public I<#=propertyClass + currentName#>Request buildRequest() {
-      return new <#=propertyClass + currentName#>Request(getRequestUrl(), getClient(), mOptions);
+      return new <#=propertyClass + currentName#>Request(getRequestUrl(), getClient(), getOptions());
    }
 }

@@ -21,14 +21,14 @@
    }
 
    public I<#=currentName#>CollectionRequest buildRequest() {
-      return buildRequest(mOptions);
+      return buildRequest(getOptions());
    }
 
    public I<#=currentName#>CollectionRequest buildRequest(final List<Option> options) {
-      return new <#=currentName#>CollectionRequest(mRequestUrl, <#=clientName#>, options);
+      return new <#=currentName#>CollectionRequest(getRequestUrl(), <#=clientName#>, options);
    }
 
    public I<#=propertyType#>RequestBuilder byId(final String id) {
-      return new <#=propertyType#>RequestBuilder(getRequestUrlWithAdditionalSegment(id), <#=clientName#>, mOptions);
+      return new <#=propertyType#>RequestBuilder(getRequestUrlWithAdditionalSegment(id), <#=clientName#>, getOptions());
    }
 }
