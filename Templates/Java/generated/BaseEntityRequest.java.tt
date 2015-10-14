@@ -54,17 +54,17 @@
     }
 
     public I<#=entityName#>Request select(final String value) {
-        mQueryOptions.add(new QueryOption("select", value));
+        getQueryOptions().add(new QueryOption("select", value));
         return (<#=entityName#>Request)this;
     }
 
     public I<#=entityName#>Request top(final int value) {
-        mQueryOptions.add(new QueryOption("top", value+""));
+        getQueryOptions().add(new QueryOption("top", value+""));
         return (<#=entityName#>Request)this;
     }
 
     public I<#=entityName#>Request expand(final String value) {
-        mQueryOptions.add(new QueryOption("expand", value));
+        getQueryOptions().add(new QueryOption("expand", value));
         return (<#=entityName#>Request)this;
     }
 }

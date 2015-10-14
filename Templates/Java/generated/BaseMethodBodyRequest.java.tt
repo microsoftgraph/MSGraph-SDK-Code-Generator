@@ -47,17 +47,17 @@
     }
 
     public I<#=currentName#>Request select(final String value) {
-        mQueryOptions.add(new QueryOption("select", value));
+        getQueryOptions().add(new QueryOption("select", value));
         return (<#=currentName#>Request)this;
     }
 
     public I<#=currentName#>Request top(final int value) {
-        mQueryOptions.add(new QueryOption("top", value+""));
+        getQueryOptions().add(new QueryOption("top", value+""));
         return (<#=currentName#>Request)this;
     }
 
     public I<#=currentName#>Request expand(final String value) {
-        mQueryOptions.add(new QueryOption("expand", value));
+        getQueryOptions().add(new QueryOption("expand", value));
         return (<#=currentName#>Request)this;
     }
 
