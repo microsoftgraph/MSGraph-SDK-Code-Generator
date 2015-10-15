@@ -32,10 +32,11 @@
 <#=CreateClassDef("Base" + collectionRequest, "BaseCollectionRequest<" + responseType + ", I"  + collectionPageType + ">", "IBase" + collectionRequest)#>
 
     /**
-     * TODO
-     * @param requestUrl //TODO
-     * @param client //TODO
-     * @param objects //TODO
+     * The request for this <#=currentName#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
      */
     public Base<#=collectionRequest#>(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
         super(requestUrl, client, options, <#=responseType#>.class, I<#=collectionPageType#>.class);

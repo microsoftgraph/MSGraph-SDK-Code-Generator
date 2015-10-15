@@ -24,6 +24,4 @@
         super(response, builder);
     }
 
-<#=CreateExtensiblityMessage()#>
-
 }
