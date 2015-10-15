@@ -2,13 +2,13 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#
-   OdcmProperty current = (OdcmProperty)currentType;
-   var currentName = current.Name.ToUpperFirstChar();
-   var currentTypeName = current.Type.Name.ToUpperFirstChar();
-   var responseType = currentName + "CollectionResponse";
-   var collectionPageType = currentName + "CollectionPage";
-   var collectionRequestBuilder = currentName + "CollectionRequestBuilder";
-   var genericType = "<" + currentTypeName + ", I" + collectionRequestBuilder;
+    OdcmProperty current = (OdcmProperty)currentType;
+    var currentName = current.Name.ToUpperFirstChar();
+    var currentTypeName = current.Type.Name.ToUpperFirstChar();
+    var responseType = currentName + "CollectionResponse";
+    var collectionPageType = currentName + "CollectionPage";
+    var collectionRequestBuilder = currentName + "CollectionRequestBuilder";
+    var genericType = "<" + currentTypeName + ", I" + collectionRequestBuilder;
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
