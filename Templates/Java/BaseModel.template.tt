@@ -56,11 +56,11 @@ import java.util.*;";
         }
 
         var format = @"/**
- * The type {0}.
+ * The {1} for the {0}.
  */
 public {1} {2}{3}{4} {{";
         return string.Format(format,
-            name.SplitCamelCase(),
+            isClass ? name.SplitCamelCase() : name.SplitCamelCase().Remove(0, 1),
             isClass ? "class" : "interface",
             name,
             extendsStr,
@@ -82,7 +82,7 @@ public {1} {2}{3}{4} {{";
         foreach (var property in properties.Where(p => !p.Type.Name.Equals("Stream")))
         {
             var propertyName = property.Name.ToUpperFirstChar();
-            var propertyType = property.IsCollection ? string.Format("java.util.List<{0}>", property.GetTypeString()) : property.GetTypeString();
+            var propertyType = property.IsCollection ? string.Format("List<{0}>", property.GetTypeString()) : property.GetTypeString();
             sb.AppendFormat(format,
                 propertyName.SplitCamelCase(),
                 property.Name,
@@ -107,7 +107,7 @@ public {1} {2}{3}{4} {{";
         foreach (var property in parameters)
         {
             var propertyName = property.Name.ToUpperFirstChar();
-            var propertyType = property.IsCollection ? string.Format("java.util.List<{0}>", property.GetTypeString()) : property.GetTypeString();
+            var propertyType = property.IsCollection ? string.Format("List<{0}>", property.GetTypeString()) : property.GetTypeString();
             sb.AppendFormat(format,
                 propertyName.SplitCamelCase(),
                 property.Name,
@@ -127,6 +127,8 @@ public {1} {2}{3}{4} {{";
 
     /**
      * Sets the raw json object
+     *
+     * @param json The json object to set this object to
      */
     public void setRawObject(final JsonObject json) {
         rawObject = json;

@@ -8,9 +8,6 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-/**
- * I AM THE CLIENT
- */
 <#=CreateInterfaceDef("I" + currentName + "Client", "IBase" + currentName + "Client")#>
 
 }

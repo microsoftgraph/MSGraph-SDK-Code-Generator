@@ -23,18 +23,19 @@ foreach (var prop in model.EntityContainer.Properties)
 #>
 
     /**
-     * Gets <#=requestBuilder#>.
+     * Gets the collection of <#=propertyType#> objects.
      *
-     * @return the <#=propertyType#>.
+     * @return The request builder for the collection of <#=propertyType#> objects
      */
     public I<#=requestCollectionBuilder#> get<#=propertyType#>s() {
         return new <#=requestCollectionBuilder#>(getBaseUrl() + "/<#=prop.Name#>", (I<#=clientName#>Client)this, null);
     }
 
     /**
-     * Gets <#=requestBuilder#>.
+     * Gets a single <#=propertyType#>.
      *
-     * @return the <#=propertyType#>.
+     * @param id The id of the <#=propertyType#> to retrieve.
+     * @return The request builder for the <#=propertyType#> object
      */
     public I<#=requestBuilder#> get<#=propertyType#>(final String id) {
         return new <#=requestBuilder#>(getBaseUrl() + "/<#=prop.Name#>/" + id, (I<#=clientName#>Client)this, null);

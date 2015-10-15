@@ -8,8 +8,5 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-/**
- * I AM THE CLIENT
- */
 <#=CreateClassDef(currentName + "Client", "Base" + currentName + "Client", "I" + currentName + "Client")#>
 }
