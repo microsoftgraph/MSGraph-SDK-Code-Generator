@@ -19,7 +19,7 @@
      * @param client The service client
      * @param options The options for this request
      */
-   public <#=propertyClass + currentName#>RequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
-      super(requestUrl, client, options);
-   }
+    public <#=propertyClass + currentName#>RequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+        super(requestUrl, client, options);
+    }
 }
