@@ -3,7 +3,7 @@
 <#@ output extension="\\" #>
 <#
     OdcmProperty current = (OdcmProperty)currentType;
-    var entityName = current.Name.ToUpperFirstChar();
+    var currentName = current.Name.ToUpperFirstChar();
     var propertyName = current.Type.Name.ToUpperFirstChar();
     var propertyClass = current.Class.Name.ToUpperFirstChar();
 #>
@@ -12,7 +12,8 @@
 
 import java.io.*;
 
-<#=CreateInterfaceDef("IBase" + propertyClass + entityName + "Request", "IHttpStreamRequest")#>
+<#=CreateInterfaceDef("IBase" + propertyClass + currentName + "Request", "IHttpStreamRequest")#>
+
     void get(final ICallback<InputStream> callback);
 
     InputStream get() throws ClientException;

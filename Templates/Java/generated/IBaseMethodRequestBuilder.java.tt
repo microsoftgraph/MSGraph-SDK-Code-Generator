@@ -10,6 +10,7 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateInterfaceDef("IBase" + currentName + "RequestBuilder", "IRequestBuilder")#>
+
     I<#=currentName#>Request buildRequest();
 
     I<#=currentName#>Request buildRequest(final List<Option> options);
