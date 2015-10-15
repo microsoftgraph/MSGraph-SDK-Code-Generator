@@ -80,8 +80,6 @@
             { "Template": "ExtensableEntity", "SubProcessor": "ComplexType",                                                                    "Name": "<Class>" },
             { "Template": "BaseEntity", "SubProcessor": "ComplexType",                                                                          "Name": "Base<Class>" },
 
-            { "Template": "EnumType", "SubProcessor": "EnumType",                                                                               "Name": "<Class>" },
-
             { "Template": "EntityCollectionPage", "SubProcessor": "CollectionProperty",                                                         "Name": "<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionProperty",                                                      "Name": "<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty",                                               "Name": "<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
