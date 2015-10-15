@@ -8,9 +8,6 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-/**
- * The Base<#=clientName#>Client.
- */
 <#=CreateClassDef("Base" + clientName + "Client", "BaseClient", "IBase" + clientName + "Client")#>
 <#
 foreach (var prop in model.EntityContainer.Properties)

@@ -8,13 +8,14 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-/**
- * I am created by hand
- *
- * I extend the generated class BaseDriveRequest
- * I have a hand generated interface IDriveRequest which contains my extra functionality as well
- */
 public class <#=entityName#>Request extends Base<#=entityName#>Request implements I<#=entityName#>Request {
+
+    /**
+     * TODO
+     * @param requestUrl //TODO
+     * @param client //TODO
+     * @param objects //TODO
+     */
     public <#=entityName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
         super(requestUrl, client, options);
     }

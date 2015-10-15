@@ -8,13 +8,15 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-/**
- * I am created by hand
- *
- * I always extend the base version of the auto generated type I map to
- */
- public class <#=entityName#>RequestBuilder extends Base<#=entityName#>RequestBuilder implements I<#=entityName#>RequestBuilder {
-     public <#=entityName#>RequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
-         super(requestUrl, client, options);
-     }
+public class <#=entityName#>RequestBuilder extends Base<#=entityName#>RequestBuilder implements I<#=entityName#>RequestBuilder {
+
+    /**
+     * TODO
+     * @param requestUrl //TODO
+     * @param client //TODO
+     * @param objects //TODO
+     */
+    public <#=entityName#>RequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+        super(requestUrl, client, options);
+    }
  }

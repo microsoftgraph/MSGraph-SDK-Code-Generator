@@ -8,11 +8,6 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-/**
- * I am created by hand
- *
- * I always extend the interface of the auto generated type I map to
- *
- */
- <#=CreateInterfaceDef("I" + currentName + "CollectionRequest", "IBase" + currentName + "CollectionRequest")#>
+<#=CreateInterfaceDef("I" + currentName + "CollectionRequest", "IBase" + currentName + "CollectionRequest")#>
+
 }
