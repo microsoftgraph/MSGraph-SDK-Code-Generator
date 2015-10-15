@@ -14,5 +14,5 @@
 
     I<#=propertyClass + currentName#>Request buildRequest();
 
-    I<#=currentName#>Request buildRequest(final List<Option> options);
+    I<#=propertyClass + currentName#>Request buildRequest(final List<Option> options);
 }
