@@ -3,12 +3,12 @@
 <#@ output extension="\\" #>
 <#
     OdcmClass current = (OdcmClass)currentType;
-    var entityName = current.Name.ToUpperFirstChar();
+    var currentName = current.Name.ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-public class <#=entityName#>Request extends Base<#=entityName#>Request implements I<#=entityName#>Request {
+<#=CreateClassDef(currentName + "Request", "Base" + currentName + "Request", "I" + currentName + "Request")#>
 
     /**
      * TODO
@@ -16,7 +16,7 @@ public class <#=entityName#>Request extends Base<#=entityName#>Request implement
      * @param client //TODO
      * @param objects //TODO
      */
-    public <#=entityName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+    public <#=currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
         super(requestUrl, client, options);
     }
 }

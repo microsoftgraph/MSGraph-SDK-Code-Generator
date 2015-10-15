@@ -14,7 +14,17 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateClassDef(currentName + "CollectionPage", "Base" + currentName + "CollectionPage", "I" + currentName + "CollectionPage")#>
-   public <#=currentName#>CollectionPage(final <#=responseType#> response, final <#=collectionRequestBuilder#> builder) {
+
+    /**
+     * A collection page for <#=currentName#>.
+     *
+     * @param response The serialized <#=responseType#> from the OneDrive service
+     * @param builder The request builder for the next collection page
+     */
+    public <#=currentName#>CollectionPage(final <#=responseType#> response, final <#=collectionRequestBuilder#> builder) {
       super(response, builder);
-   }
+    }
+
+<#=CreateExtensiblityMessage()#>
+
 }

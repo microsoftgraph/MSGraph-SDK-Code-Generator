@@ -15,11 +15,15 @@
 <#=CreateClassDef(collectionPageType, "Base" + collectionPageType, "I" + collectionPageType)#>
 
     /**
-     * TODO
-     * @param response //TODO
-     * @param builder //TODO
+     * A collection page for <#=currentName#>.
+     *
+     * @param response The serialized <#=responseType#> from the OneDrive service
+     * @param builder The request builder for the next collection page
      */
     public <#=collectionPageType#>(final <#=responseType#> response, final <#=collectionRequestBuilder#> builder) {
         super(response, builder);
     }
+
+<#=CreateExtensiblityMessage()#>
+
 }

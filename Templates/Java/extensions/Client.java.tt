@@ -9,4 +9,7 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateClassDef(currentName + "Client", "Base" + currentName + "Client", "I" + currentName + "Client")#>
+
+<#=CreateExtensiblityMessage()#>
+
 }
