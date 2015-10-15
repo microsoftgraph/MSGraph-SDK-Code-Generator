@@ -28,6 +28,7 @@
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
+
 <#=CreateClassDef("Base" + collectionRequest, "BaseCollectionRequest<" + responseType + ", I"  + collectionPageType + ">", "IBase" + collectionRequest)#>
 
     /**
