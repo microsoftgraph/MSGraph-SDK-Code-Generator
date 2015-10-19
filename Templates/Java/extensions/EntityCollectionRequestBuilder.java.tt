@@ -11,12 +11,13 @@
 <#=CreateClassDef(currentName + "CollectionRequestBuilder", "Base" + currentName + "CollectionRequestBuilder", "I" + currentName + "CollectionRequestBuilder")#>
 
     /**
-     * TODO
-     * @param requestUrl //TODO
-     * @param client //TODO
-     * @param objects //TODO
+     * The request builder for this collection of <#=currentName#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
      */
-   public <#=currentName#>CollectionRequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
-      super(requestUrl, client, options);
-   }
+    public <#=currentName#>CollectionRequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+        super(requestUrl, client, options);
+    }
 }

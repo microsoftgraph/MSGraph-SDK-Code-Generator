@@ -3,13 +3,13 @@
 <#@ output extension="\\" #>
 <#
     OdcmProperty current = (OdcmProperty)currentType;
-    var entityName = current.Name.ToUpperFirstChar();
+    var currentName = current.Name.ToUpperFirstChar();
     var propertyName = current.Type.Name.ToUpperFirstChar();
     var propertyClass = current.Class.Name.ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef("I" + propertyClass + entityName + "Request", "IBase" + propertyClass + entityName + "Request")#>
+<#=CreateInterfaceDef("I" + propertyClass + currentName + "Request", "IBase" + propertyClass + currentName + "Request")#>
 
 }

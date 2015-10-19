@@ -3,32 +3,32 @@
 <#@ output extension="\\" #>
 <#
     OdcmClass current = (OdcmClass)currentType;
-    var entityName = current.Name.ToUpperFirstChar();
+    var currentName = current.Name.ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef("IBase" + entityName + "Request")#>
+<#=CreateInterfaceDef("IBase" + currentName + "Request")#>
 
-    void get(final ICallback<<#=entityName#>> callback);
+    void get(final ICallback<<#=currentName#>> callback);
 
-    <#=entityName#> get() throws ClientException;
+    <#=currentName#> get() throws ClientException;
 
-    void update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback);
+    void update(final <#=currentName#> source<#=currentName#>, final ICallback<<#=currentName#>> callback);
 
-    <#=entityName#> update(final <#=entityName#> source<#=entityName#>) throws ClientException;
+    <#=currentName#> update(final <#=currentName#> source<#=currentName#>) throws ClientException;
 
     void delete(final ICallback<Void> callback);
 
     void delete()  throws ClientException;
 
-    void create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback);
+    void create(final <#=currentName#> new<#=currentName#>, final ICallback<<#=currentName#>> callback);
 
-    <#=entityName#> create(final <#=entityName#> new<#=entityName#>) throws ClientException;
+    <#=currentName#> create(final <#=currentName#> new<#=currentName#>) throws ClientException;
 
-    IBase<#=entityName#>Request select(final String value);
+    IBase<#=currentName#>Request select(final String value);
 
-    IBase<#=entityName#>Request top(final int value);
+    IBase<#=currentName#>Request top(final int value);
 
-    IBase<#=entityName#>Request expand(final String value);
+    IBase<#=currentName#>Request expand(final String value);
 }

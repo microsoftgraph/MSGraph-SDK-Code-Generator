@@ -25,6 +25,14 @@
 
 <#=CreateClassDef("Base" + currentName + "Request",  "BaseRequest")#>
     protected final <#=currentName#>Body mBody;
+
+    /**
+     * The request for this <#=currentName#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
     public Base<#=currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
         super(requestUrl, client, options, <#=currentName#>Body.class);
         mBody = new <#=currentName#>Body();

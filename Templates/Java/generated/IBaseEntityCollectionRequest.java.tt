@@ -11,6 +11,7 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateInterfaceDef("IBase" + currentName + "CollectionRequest")#>
+
 <# if (current.LongDescriptionContains("enumerable")) { #>
     void get(final ICallback<I<#=currentName#>CollectionPage> callback);
 

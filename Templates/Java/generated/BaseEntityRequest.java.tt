@@ -3,30 +3,38 @@
 <#@ output extension="\\" #>
 <#
     OdcmClass current = (OdcmClass)currentType;
-    var entityName = current.Name.ToUpperFirstChar();
+    var currentName = current.Name.ToUpperFirstChar();
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef("Base" + entityName + "Request", "BaseRequest", "IBase" + entityName + "Request")#>
-    public Base<#=entityName#>Request(String requestUrl, IOneDriveClient client, List<Option> options) {
-        super(requestUrl, client, options, <#=entityName#>.class);
+<#=CreateClassDef("Base" + currentName + "Request", "BaseRequest", "IBase" + currentName + "Request")#>
+
+    /**
+     * The request for the <#=currentName#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public Base<#=currentName#>Request(String requestUrl, IOneDriveClient client, List<Option> options) {
+        super(requestUrl, client, options, <#=currentName#>.class);
     }
 
-    public void get(final ICallback<<#=entityName#>> callback) {
+    public void get(final ICallback<<#=currentName#>> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
-    public <#=entityName#> get() throws ClientException {
+    public <#=currentName#> get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
 
-    public void update(final <#=entityName#> source<#=entityName#>, final ICallback<<#=entityName#>> callback) {
-        send(HttpMethod.PATCH, callback, source<#=entityName#>);
+    public void update(final <#=currentName#> source<#=currentName#>, final ICallback<<#=currentName#>> callback) {
+        send(HttpMethod.PATCH, callback, source<#=currentName#>);
     }
 
-    public <#=entityName#> update(final <#=entityName#> source<#=entityName#>) throws ClientException {
-        return send(HttpMethod.PATCH, source<#=entityName#>);
+    public <#=currentName#> update(final <#=currentName#> source<#=currentName#>) throws ClientException {
+        return send(HttpMethod.PATCH, source<#=currentName#>);
     }
 
     public void delete(final ICallback<Void> callback) {
@@ -37,26 +45,26 @@
         send(HttpMethod.DELETE, null);
     }
 
-    public void create(final <#=entityName#> new<#=entityName#>, final ICallback<<#=entityName#>> callback) {
-        send(HttpMethod.POST, callback, new<#=entityName#>);
+    public void create(final <#=currentName#> new<#=currentName#>, final ICallback<<#=currentName#>> callback) {
+        send(HttpMethod.POST, callback, new<#=currentName#>);
     }
 
-    public <#=entityName#> create(final <#=entityName#> new<#=entityName#>) throws ClientException {
-        return send(HttpMethod.POST, new<#=entityName#>);
+    public <#=currentName#> create(final <#=currentName#> new<#=currentName#>) throws ClientException {
+        return send(HttpMethod.POST, new<#=currentName#>);
     }
 
-    public I<#=entityName#>Request select(final String value) {
+    public I<#=currentName#>Request select(final String value) {
         getQueryOptions().add(new QueryOption("select", value));
-        return (<#=entityName#>Request)this;
+        return (<#=currentName#>Request)this;
     }
 
-    public I<#=entityName#>Request top(final int value) {
+    public I<#=currentName#>Request top(final int value) {
         getQueryOptions().add(new QueryOption("top", value+""));
-        return (<#=entityName#>Request)this;
+        return (<#=currentName#>Request)this;
     }
 
-    public I<#=entityName#>Request expand(final String value) {
+    public I<#=currentName#>Request expand(final String value) {
         getQueryOptions().add(new QueryOption("expand", value));
-        return (<#=entityName#>Request)this;
+        return (<#=currentName#>Request)this;
     }
 }

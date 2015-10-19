@@ -23,10 +23,11 @@
 <#=CreateClassDef(currentName + "Request", "Base" + currentName + "Request", "I" + currentName + "Request")#>
 
     /**
-     * TODO
-     * @param requestUrl //TODO
-     * @param client //TODO
-     * @param objects //TODO
+     * The request for this <#=currentName#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
      */
     public <#=currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
         super(requestUrl, client, options<#=parameterValuesBuilder.ToString()#>);
