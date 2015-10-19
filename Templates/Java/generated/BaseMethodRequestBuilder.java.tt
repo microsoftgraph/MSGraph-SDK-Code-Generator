@@ -27,7 +27,7 @@
 <#=CreateClassDef("Base" + currentName + "RequestBuilder",  "BaseRequestBuilder")#>
 
 <# foreach (var param in current.Parameters) { var paramType = param.Type.GetTypeString(); var fieldName = "m" + param.Name.ToUpperFirstChar();#>
-    public <#=paramType#> <#=fieldName#>;
+    public final <#=paramType#> <#=fieldName#>;
 <# } #>
 
     /**
