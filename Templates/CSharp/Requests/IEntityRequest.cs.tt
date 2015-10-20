@@ -14,7 +14,7 @@ namespace Microsoft.OneDrive.Sdk
     /// <summary>
     /// The interface I<#=entityRequest#>.
     /// </summary>
-    public interface I<#=entityRequest#> : IBaseRequest
+    public partial interface I<#=entityRequest#> : IBaseRequest
     {
         /// <summary>
         /// Creates the specified <#=entityName#> using PUT.

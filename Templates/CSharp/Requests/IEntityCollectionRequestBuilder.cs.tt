@@ -16,7 +16,7 @@ namespace Microsoft.OneDrive.Sdk
     /// <summary>
     /// The interface I<#=collectionRequestBuilder#>.
     /// </summary>
-    public interface I<#=collectionRequestBuilder#>
+    public partial interface I<#=collectionRequestBuilder#>
     {
         /// <summary>
         /// Builds the request.

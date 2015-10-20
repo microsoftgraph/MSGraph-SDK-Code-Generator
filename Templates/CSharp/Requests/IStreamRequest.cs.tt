@@ -19,7 +19,7 @@ namespace Microsoft.OneDrive.Sdk
     /// <summary>
     /// The interface I<#=propRequest#>.
     /// </summary>
-    public interface I<#=propRequest#> : IBaseRequest
+    public partial interface I<#=propRequest#> : IBaseRequest
     {
         /// <summary>
         /// Gets the stream.
