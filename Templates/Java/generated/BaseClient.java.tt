@@ -1,0 +1,59 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    OdcmClass current = (OdcmClass)currentType;
+    var clientName = current.Name.ToUpperFirstChar();
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef("Base" + clientName + "Client", "BaseClient", "IBase" + clientName + "Client")#>
+<#
+foreach (var prop in model.EntityContainer.Properties)
+{
+    if(prop.IsCollection())
+    {
+        var propertyType = prop.Type.GetTypeString();
+        var requestCollectionBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+        var requestBuilder = propertyType + "RequestBuilder";
+#>
+
+    /**
+     * Gets the collection of <#=propertyType#> objects.
+     *
+     * @return The request builder for the collection of <#=propertyType#> objects
+     */
+    public I<#=requestCollectionBuilder#> get<#=propertyType#>s() {
+        return new <#=requestCollectionBuilder#>(getServiceRoot() + "/<#=prop.Name#>", (I<#=clientName#>Client)this, null);
+    }
+
+    /**
+     * Gets a single <#=propertyType#>.
+     *
+     * @param id The id of the <#=propertyType#> to retrieve.
+     * @return The request builder for the <#=propertyType#> object
+     */
+    public I<#=requestBuilder#> get<#=propertyType#>(final String id) {
+        return new <#=requestBuilder#>(getServiceRoot() + "/<#=prop.Name#>/" + id, (I<#=clientName#>Client)this, null);
+    }
+<#
+    }
+    else
+    {
+        var requestBuilder = prop.Name + "RequestBuilder";
+#>
+
+    /**
+     * Gets <#=requestBuilder#>.
+     *
+     * @return the <#=prop.Type.GetTypeString()#>.
+     */
+    public I<#=requestBuilder#> get<#=requestBuilder#>s() {
+        return new <#=requestBuilder#>(getServiceRoot() + "/<#=prop.Name#>", (I<#=clientName#>Client)this, null);
+    }
+<#
+    }
+}
+#>
+}

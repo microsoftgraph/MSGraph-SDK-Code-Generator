@@ -1,0 +1,27 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    OdcmProperty current = (OdcmProperty)currentType;
+    var currentName = current.Name.ToUpperFirstChar();
+    var propertyName = current.Type.Name.ToUpperFirstChar();
+    var propertyClass = current.Class.Name.ToUpperFirstChar();
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+import java.io.*;
+
+<#=CreateClassDef(propertyClass + currentName + "Request", "Base" + propertyClass + currentName + "Request", "I" + propertyClass + currentName + "Request")#>
+
+    /**
+     * The request for this <#=currentName#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public <#=propertyClass + currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+        super(requestUrl, client, options);
+    }
+}

@@ -1,0 +1,53 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    OdcmClass current = (OdcmClass)currentType;
+    var clientName = current.Name.ToUpperFirstChar();
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef("IBase" + clientName + "Client", "IBaseClient")#>
+<#
+foreach (var prop in model.EntityContainer.Properties)
+{
+    if(prop.IsCollection())
+    {
+        var propertyType = prop.Type.GetTypeString();
+        var requestCollectionBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+        var requestBuilder = propertyType + "RequestBuilder";
+#>
+
+    /**
+     * Gets the collection of <#=propertyType#> objects.
+     *
+     * @return The request builder for the collection of <#=propertyType#> objects
+     */
+    I<#=requestCollectionBuilder#> get<#=propertyType#>s();
+
+    /**
+     * Gets a single <#=propertyType#>.
+     *
+     * @param id The id of the <#=propertyType#> to retrieve.
+     * @return The request builder for the <#=propertyType#> object
+     */
+    I<#=requestBuilder#> get<#=propertyType#>(final String id);
+<#
+    }
+    else
+    {
+        var requestBuilder = prop.Name + "RequestBuilder";
+#>
+
+    /**
+     * Gets <#=requestBuilder#>.
+     *
+     * @return the <#=prop.Type.GetTypeString()#>.
+     */
+    I<#=requestBuilder#> get<#=requestBuilder#>s();
+<#
+    }
+}
+#>
+}
