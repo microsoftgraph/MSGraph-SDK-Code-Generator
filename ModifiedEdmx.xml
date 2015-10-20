@@ -222,9 +222,6 @@
         <Property Name="medium" Type="oneDrive.thumbnail" />
         <Property Name="small" Type="oneDrive.thumbnail" />
         <Property Name="source" Type="oneDrive.thumbnail" />
-        <NavigationProperty Name="thumbnails" Type="Collection(oneDrive.thumbnail)" ContainsTarget="true" >
-            <Annotation Term="Org.OData.Core.V1.LongDescription" String="enumerable" />
-        </NavigationProperty>
       </EntityType>
       <ComplexType Name="thumbnail">
         <Property Name="content" Type="Edm.Stream" />
