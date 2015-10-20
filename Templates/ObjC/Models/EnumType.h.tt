@@ -1,0 +1,28 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entity = host.CurrentType.AsOdcmEnum();
+#>
+
+@interface NSObject ()
+
+typedef NS_ENUM(NSInteger, <#=writer.GetPrefix() + entity.Name #>){
+
+<#
+
+for(var i=1; i <= entity.Members.Count; i++)
+{
+
+string value = entity.Members[i -1].Name + (i == entity.Members.Count ? string.Empty : ",");
+
+#>
+	<#= value#>
+<#
+	
+}
+
+#>
+
+};
+
+@end
