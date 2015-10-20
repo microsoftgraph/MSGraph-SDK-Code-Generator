@@ -18,7 +18,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
             get 
             {
                 return new HashSet<string> {
-                    "description", "default"  , "self" , "id"
+                    "description", "default"  , "self"
                 };
             }
         }
@@ -33,9 +33,11 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
                 case "String":
                     return "NSString";
                 case "Int32":
-                    return "NSInteger";
+                    return "int32_t";
                 case "Int64":
-                    return "NSInteger";
+                    return "int64_t";
+                case "Int16":
+                    return "int16_t";
                 case "Guid":
                     return "NSString";
                 case "Double":
@@ -62,7 +64,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
         public static bool IsComplex(this OdcmType type) 
         {
             string t = GetTypeString(type);
-            return !(t == "int" || t == "BOOL" || t == "Byte" || t == "NSInteger" || t == "CGFloat" || t == "NSStream");
+            return !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat" || t == "NSStream");
         }
 
 		public static bool IsComplex(this OdcmProperty property) 
@@ -114,7 +116,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 		public static bool IsSystem(this OdcmType type)
 		{
 			string t = GetTypeString(type);
-			return (t == "int" || t == "BOOL" || t == "Byte" || t == "NSString" || t == "NSDate" || t == "NSStream");
+			return (t.Contains("int") || t == "BOOL" || t == "Byte" || t == "NSString" || t == "NSDate" || t == "NSStream" || t == "CGFloat");
 		}
 
         public static bool IsDate(this OdcmProperty prop)
@@ -151,9 +153,13 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
         public static string GetPrimativeCastMethod(this OdcmType type)
         {
             string objectiveCType = type.GetTypeString();
-            if (objectiveCType.Equals("NSInteger"))
+            if (objectiveCType.Equals("int32_t") || objectiveCType.Equals("int16_t"))
             {
                 return "intValue";
+            }
+            if (objectiveCType.Equals("int64_t"))
+            {
+                return "longLongValue";
             }
             else if(objectiveCType.Equals("BOOL"))
             {

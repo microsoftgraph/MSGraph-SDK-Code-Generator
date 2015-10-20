@@ -1,0 +1,32 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entity = host.CurrentType.AsOdcmClass();
+#>
+<#=writer.GetImportsClass(entity.Properties)#>
+
+<#=writer.GetInterfaceLine(entity, "ODObject")#>
+
+<#
+foreach(var prop in entity.Properties)
+{
+	if(prop.Type is OdcmEnum && !prop.IsCollection)
+    {
+
+		var propertyString = string.Format("{0} {1}", prop.GetFullType(), writer.GetName(prop.Name));
+#>
+@property <#=propertyString#>;
+-(void)set<#=prop.Name#>String:(NSString*)value;
+<#
+	}
+	else if(!prop.IsCollection && prop.GetTypeString() != "NSStream")
+	{
+#>
+@property <#=prop.ToPropertyString()#>;
+<#			
+    }
+}
+
+#>
+
+@end

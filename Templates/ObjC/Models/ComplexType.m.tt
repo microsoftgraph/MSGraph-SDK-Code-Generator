@@ -1,0 +1,122 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var complexType = host.CurrentType.AsOdcmClass();
+
+#>
+
+#import "<#=writer.GetPrefix()#>Models.h"
+
+@interface ODObject()
+
+@property (strong, nonatomic) NSMutableDictionary *dictionary;
+
+@end
+
+@interface <#=writer.GetPrefix() + complexType.Name.ToUpperFirstChar()#>()
+{
+<#
+foreach (var prop in complexType.Properties)
+{
+    if (prop.IsCollection)
+    {
+#>
+    <#=writer.GetPrefix()#>Collection *_<#=prop.Name.ToLowerFirstChar()#>;
+<#
+    }
+    else if (prop.Type.IsDate() || !prop.IsSystem())
+    {
+#>
+    <#=prop.GetTypeString()#> *_<#=prop.Name.ToLowerFirstChar()#>;
+<#
+    }
+
+}
+#>
+}
+@end
+
+@implementation <#=writer.GetPrefix() + complexType.Name.ToUpperFirstChar()#>	
+
+<#
+foreach(var prop in complexType.Properties)
+{
+	if(prop.IsComplex() && !prop.IsCollection() && prop.GetTypeString() != "id")
+    {        
+#>
+- (<#=prop.GetTypeString()#> *)<#=prop.SanitizePropertyName()#>
+{
+<#
+        if (prop.Type.IsDate())
+        {
+#>
+    if(!_<#=prop.Name.ToLowerFirstChar()#>){
+        _<#=prop.Name.ToLowerFirstChar()#> = [self dateFromString:self.dictionary[@"<#=prop.Name#>"]];
+    }
+    return _<#=prop.Name.ToLowerFirstChar()#>;
+<#
+        }
+
+        else if (prop.IsSystem())
+        {
+#>
+    return self.dictionary[@"<#=prop.Name#>"];
+<#
+        }
+        else 
+        {
+#>
+    if (!_<#=prop.Name.ToLowerFirstChar()#>){
+        _<#=prop.Name.ToLowerFirstChar()#> = [[<#=prop.GetTypeString()#> alloc] initWithDictionary:self.dictionary[@"<#=prop.Name#>"]];
+    }
+    return _<#=prop.Name.ToLowerFirstChar()#>;
+<#
+        }
+#>
+}
+
+- (void)set<#=prop.SanitizePropertyName().ToUpperFirstChar()#>:(<#=prop.GetTypeString()#> *)<#=prop.Name#>
+{
+<#
+    if (prop.IsSystem() && !prop.Type.IsDate())
+    {
+#>
+    self.dictionary[@"<#=prop.Name#>"] = <#=prop.Name#>;
+<#
+    }
+    else 
+    {
+#>
+    _<#=prop.Name.ToLowerFirstChar()#> = <#=prop.Name#>;
+    self.dictionary[@"<#=prop.Name#>"] = <#=prop.Name#>; 
+<#
+    }
+#>
+}
+
+<#
+	}
+    else if (!prop.IsComplex() && prop.Type.GetTypeString() != "NSStream")
+    {
+#>
+
+- (<#=prop.GetTypeString()#>)<#=prop.Name#>
+{
+    
+    if (self.dictionary[@"<#=prop.Name#>"]){
+        return [self.dictionary[@"<#=prop.Name#>"] <#=prop.Type.GetPrimativeCastMethod()#>];
+    }
+    //default value if it doesn't exists
+    return [@(0) <#=prop.Type.GetPrimativeCastMethod()#>];
+}
+
+- (void)set<#=prop.GetToUpperFirstCharName()#>:(<#=prop.GetTypeString()#>)<#=prop.Name#>
+{
+    self.dictionary[@"<#=prop.Name#>"] = @(<#=prop.Name#>);
+}
+
+<# 
+    }
+}
+#>
+@end
