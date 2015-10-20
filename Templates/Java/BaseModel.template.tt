@@ -75,7 +75,7 @@ public {1} {2}{3}{4} {{";
         return CreateExtensiblityMessage() + declaration;
     }
 
-    public string CreatePropertyDef(IEnumerable<OdcmProperty> properties)
+    public string CreatePropertyDef(IEnumerable<OdcmProperty> properties, bool isComplexType = false)
     {
         var sb = new StringBuilder();
 
@@ -87,11 +87,39 @@ public {1} {2}{3}{4} {{";
     public {2} {3};
 
 ";
+        var collectionFormat =
+@"    /**
+     * The {0}.
+     */
+    @SerializedName(""{1}"")
+    @Expose(serialize = false)
+    public {2} {3};
+
+";
+
         foreach (var property in properties.Where(p => !p.Type.Name.Equals("Stream")))
         {
             var propertyName = property.Name.ToUpperFirstChar();
-            var propertyType = property.IsCollection ? string.Format("List<{0}>", property.GetTypeString()) : property.GetTypeString();
-            sb.AppendFormat(format,
+            var propertyType = "";
+            var propertyFormat = format;
+            if (property.IsCollection)
+            {
+                propertyFormat = collectionFormat;
+                if (isComplexType)
+                {
+                    propertyType = "List<" + property.GetTypeString() + ">";
+                }
+                else
+                {
+                    propertyType = property.Name.ToUpperFirstChar() + "CollectionPage";
+                }
+            }
+            else
+            {
+                propertyType = property.GetTypeString();
+            }
+
+            sb.AppendFormat(propertyFormat,
                 propertyName.SplitCamelCase(),
                 property.Name,
                 propertyType,
@@ -112,11 +140,21 @@ public {1} {2}{3}{4} {{";
     public {2} {3};
 
 ";
+        var collectionFormat =
+@"    /**
+     * The {0}.
+     */
+    @SerializedName(""{1}"")
+    @Expose(serialize = false)
+    public {2}CollectionPage {3};
+
+        ";
+
         foreach (var property in parameters)
         {
             var propertyName = property.Name.ToUpperFirstChar();
-            var propertyType = property.IsCollection ? string.Format("List<{0}>", property.GetTypeString()) : property.GetTypeString();
-            sb.AppendFormat(format,
+            var propertyType = property.IsCollection ?  property.Name.ToUpperFirstChar() : property.GetTypeString();
+            sb.AppendFormat(property.IsCollection ? collectionFormat : format,
                 propertyName.SplitCamelCase(),
                 property.Name,
                 propertyType.ToUpperFirstChar(),
@@ -125,22 +163,54 @@ public {1} {2}{3}{4} {{";
         return sb.ToString();
     }
 
-    public string CreateRawJsonObject() {
-        return
+    public string CreateRawJsonObject(IEnumerable<OdcmProperty> properties = null, bool isComplexType = false) {
+        StringBuilder sb = new StringBuilder(
 @"    /**
-     * The raw representation of this class when deserialized
+     * The raw representation of this class
      */
     @Expose(serialize = false, deserialize = false)
-    public JsonObject rawObject;
+    private JsonObject mRawObject;
+
+    /**
+     * Gets the raw representation of this class
+     * @returns the raw representation of this class
+     */
+    public JsonObject getRawObject() {
+        return mRawObject;
+    }
 
     /**
      * Sets the raw json object
      *
+     * @param serializer The serializer
      * @param json The json object to set this object to
      */
-    public void setRawObject(final JsonObject json) {
-        rawObject = json;
-    }";
+    public void setRawObject(final ISerializer serializer, final JsonObject json) {
+        mRawObject = json;
+");
+        if (!isComplexType && properties != null)
+        {
+            foreach (var property in properties.Where(p => p.IsCollection())) {
+                sb.AppendFormat(
+@"
+        if (json.has(""{0}"")) {{
+            final {1}CollectionResponse response = new {1}CollectionResponse();
+            if (json.has(""{0}@odata.nextLink"")) {{
+                response.nextLink = json.get(""{0}@odata.nextLink"").getAsString();
+            }}
+
+            final {2}[] array = serializer.deserializeObject(json.get(""{0}"").toString(), {2}[].class);
+            response.value = Arrays.asList(array);
+            {0} = new {1}CollectionPage(response, null);
+        }}
+",
+            property.Name.ToLowerFirstChar(),
+            property.Name.ToUpperFirstChar(),
+            property.GetTypeString());
+            }
+        }
+        sb.Append("    }");
+        return sb.ToString();
     }
 
     public string CreateExtensiblityMessage() {
