@@ -14,7 +14,11 @@
 #>
 <#+
     public string TypeName(OdcmObject c) {
-		if (c is OdcmProperty) {
+        if (c is OdcmMethod) {
+            return "CAPPA";
+        } else if (c is OdcmProperty && c.AsOdcmProperty().IsCollection) {
+            return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+		} else if (c is OdcmProperty) {
 			return ClassTypeName(c) + c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		}
         return c.Name.ToUpperFirstChar();
@@ -64,31 +68,55 @@
         return "I" + BaseTypeRequestBuilder(c);
     }
 
-    public string TypeCollectionPage(OdcmProperty c) {
+    public string TypeCollectionPage(OdcmObject c) {
         return TypeName(c) + "CollectionPage";
     }
 
-    public string ITypeCollectionPage(OdcmProperty c) {
+    public string ITypeCollectionPage(OdcmObject c) {
         return "I" + TypeCollectionPage(c);
     }
 
-    public string TypeCollectionResponse(OdcmProperty c) {
+    public string BaseTypeCollectionPage(OdcmObject c) {
+        return "Base" + TypeCollectionPage(c);
+    }
+
+    public string IBaseTypeCollectionPage(OdcmObject c) {
+        return "I" + BaseTypeCollectionPage(c);
+    }
+
+    public string TypeCollectionResponse(OdcmObject c) {
         return TypeName(c) + "CollectionResponse";
     }
 
-    public string TypeCollectionRequestBuilder(OdcmProperty c) {
-        return TypeName(c) + "CollectionRequestBuilder";
+    public string TypeCollectionRequest(OdcmObject c) {
+        return TypeName(c) + "CollectionRequest";
     }
 
-    public string ITypeCollectionRequestBuilder(OdcmProperty c) {
+    public string ITypeCollectionRequest(OdcmObject c) {
+        return  "I" + TypeCollectionRequest(c);
+    }
+
+    public string BaseTypeCollectionRequest(OdcmObject c) {
+        return "Base" + TypeCollectionRequest(c);
+    }
+
+    public string IBaseTypeCollectionRequest(OdcmObject c) {
+        return  "I" + BaseTypeCollectionRequest(c);
+    }
+
+    public string TypeCollectionRequestBuilder(OdcmObject c) {
+        return TypeCollectionRequest(c) + "Builder";
+    }
+
+    public string ITypeCollectionRequestBuilder(OdcmObject c) {
         return  "I" + TypeCollectionRequestBuilder(c);
     }
 
-    public string BaseTypeCollectionRequestBuilder(OdcmProperty c) {
+    public string BaseTypeCollectionRequestBuilder(OdcmObject c) {
         return "Base" + TypeCollectionRequestBuilder(c);
     }
 
-    public string IBaseTypeCollectionRequestBuilder(OdcmProperty c) {
+    public string IBaseTypeCollectionRequestBuilder(OdcmObject c) {
         return  "I" + BaseTypeCollectionRequestBuilder(c);
     }
 

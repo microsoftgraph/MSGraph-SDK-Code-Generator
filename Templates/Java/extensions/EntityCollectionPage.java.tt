@@ -1,28 +1,19 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmProperty current = (OdcmProperty)currentType;
-    var currentName = current.Name.ToUpperFirstChar();
-    var currentTypeName = current.Type.Name.ToUpperFirstChar();
-    var responseType = currentName + "CollectionResponse";
-    var collectionPageType = currentName + "CollectionPage";
-    var collectionRequestBuilder = currentName + "CollectionRequestBuilder";
-    var genericType = "<" + currentTypeName + ", I" + collectionRequestBuilder;
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef(currentName + "CollectionPage", "Base" + currentName + "CollectionPage", "I" + currentName + "CollectionPage")#>
+<#=CreateClassDef(TypeCollectionPage(c), BaseTypeCollectionPage(c), ITypeCollectionPage(c))#>
 
     /**
-     * A collection page for <#=currentName#>.
+     * A collection page for <#=ClassTypeName(c)#>.
      *
-     * @param response The serialized <#=responseType#> from the OneDrive service
+     * @param response The serialized <#=TypeCollectionResponse(c)#> from the OneDrive service
      * @param builder The request builder for the next collection page
      */
-    public <#=currentName#>CollectionPage(final <#=responseType#> response, final <#=collectionRequestBuilder#> builder) {
-      super(response, builder);
+    public <#=TypeCollectionPage(c)#>(final <#=TypeCollectionResponse(c)#> response, final <#=ITypeCollectionPage(c)#> builder) {
+        super(response, builder);
     }
 
 }

@@ -1,13 +1,10 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmProperty current = (OdcmProperty)currentType;
-    var currentName = current.Name.ToUpperFirstChar();
-#>
+
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef("I" + currentName + "CollectionRequest", "IBase" + currentName + "CollectionRequest")#>
+<#=CreateInterfaceDef(ITypeCollectionRequest(c), IBaseTypeCollectionRequest(c))#>
 
 }

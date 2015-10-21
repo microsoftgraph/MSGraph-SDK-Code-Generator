@@ -20,10 +20,10 @@
     /**
      * A collection page for <#=currentName#>.
      *
-     * @param response The serialized <#=responseType#> from the OneDrive service
+     * @param response The serialized <#=TypeCollectionResponse(c)#> from the OneDrive service
      * @param builder The request builder for the next collection page
      */
-    public Base<#=currentName#>CollectionPage(final <#=responseType#> response, final <#=collectionRequestBuilder#> builder) {
+    public Base<#=currentName#>CollectionPage(final <#=TypeCollectionResponse(c)#> response, final <#=collectionRequestBuilder#> builder) {
        super(response.value, builder);
     }
  }
