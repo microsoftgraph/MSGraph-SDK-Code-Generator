@@ -84,8 +84,8 @@
         return "I" + BaseTypeCollectionPage(c);
     }
 
-    public string TypeCollectionResponse(OdcmObject c) {
-        return TypeName(c) + "CollectionResponse";
+    public string BaseTypeCollectionResponse(OdcmObject c) {
+        return "Base" + TypeName(c) + "CollectionResponse";
     }
 
     public string TypeCollectionRequest(OdcmObject c) {
@@ -121,14 +121,16 @@
     }
 
 	public string ClassTypeName(OdcmObject c) {
-		if (c is OdcmProperty) {
+        if (c is OdcmProperty && c.AsOdcmProperty().Class is OdcmServiceClass) {
+            return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+        } else if (c is OdcmProperty) {
 			return c.AsOdcmProperty().Class.Name.ToUpperFirstChar();
 		}
 		return c.Name.ToUpperFirstChar();
 	}
 
     public string ClientType(OdcmObject c) {
-		if (c is OdcmProperty) {
+        if (c is OdcmProperty) {
 			return c.AsOdcmProperty().Class.Namespace.Name.ToUpperFirstChar() + "Client";
 		}
         return c.AsOdcmClass().Namespace.Name.ToUpperFirstChar() + "Client";
@@ -330,7 +332,7 @@ public {1} {2}{3}{4} {{";
         }}
 ",
             property.Name.ToLowerFirstChar(),
-            TypeCollectionResponse(property),
+            BaseTypeCollectionResponse(property),
             TypeCollectionPage(property),
             property.GetTypeString());
             }

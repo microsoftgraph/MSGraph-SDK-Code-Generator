@@ -2,35 +2,32 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#
-    OdcmProperty current = (OdcmProperty)currentType;
-    var currentName = current.Name.ToUpperFirstChar();
-    var propertyType = current.Type.Name.ToUpperFirstChar();
-    var currentTypeName = current.Type.Name.ToUpperFirstChar();
+    var genericType = "<" + ClassTypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef("IBase" + currentName + "CollectionRequest")#>
+<#=CreateInterfaceDef(IBaseTypeCollectionRequest(c), "IHttpRequest")#>
 
-<# if (current.LongDescriptionContains("enumerable")) { #>
-    void get(final ICallback<I<#=currentName#>CollectionPage> callback);
+<# if (c.LongDescriptionContains("enumerable")) { #>
+    void get(final ICallback<<#=ITypeCollectionPage(c)#>> callback);
 
-    I<#=currentName#>CollectionPage get() throws ClientException;
-
-<# } #>
-<# if (current.LongDescriptionContains("writable")) { #>
-    void create(final String fileName, final byte[] fileContents, final ICallback<<#=currentTypeName#>> callback);
-
-    <#=currentTypeName#> create(final String fileName, final byte[] fileContents) throws ClientException;
-
-    void create(final <#=currentTypeName#> new<#=currentTypeName#>, final ICallback<<#=currentTypeName#>> callback);
-
-    <#=currentTypeName#> create(final <#=currentTypeName#> new<#=currentTypeName#>) throws ClientException;
+    <#=ITypeCollectionPage(c)#> get() throws ClientException;
 
 <# } #>
-    I<#=currentName#>CollectionRequest expand(final String value);
+<# if (c.LongDescriptionContains("writable")) { #>
+    void create(final String fileName, final byte[] fileContents, final ICallback<<#=ClassTypeName(c)#>> callback);
 
-    I<#=currentName#>CollectionRequest select(final String value);
+    <#=ClassTypeName(c)#> create(final String fileName, final byte[] fileContents) throws ClientException;
 
-    I<#=currentName#>CollectionRequest top(final int value);
+    void create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>, final ICallback<<#=ClassTypeName(c)#>> callback);
+
+    <#=ClassTypeName(c)#> create(final <#=ITypeCollectionPage(c)#> new<#=ClassTypeName(c)#>) throws ClientException;
+
+<# } #>
+    <#=ITypeCollectionRequest(c)#> expand(final String value);
+
+    <#=ITypeCollectionRequest(c)#> select(final String value);
+
+    <#=ITypeCollectionRequest(c)#> top(final int value);
 }

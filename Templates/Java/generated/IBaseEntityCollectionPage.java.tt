@@ -2,13 +2,10 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#
-    OdcmProperty current = (OdcmProperty)currentType;
-    var currentName = current.Name.ToUpperFirstChar();
-    var currentTypeName = current.Type.Name.ToUpperFirstChar();
-    var genericType = "<" + currentTypeName + ", I" + currentName + "CollectionRequestBuilder>";
+    var genericType = "<" + ClassTypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef("IBase" + currentName + "CollectionPage", "IBaseCollectionPage" + genericType)#>
+<#=CreateInterfaceDef(IBaseTypeCollectionPage(c), "IBaseCollectionPage" + genericType)#>
 }
