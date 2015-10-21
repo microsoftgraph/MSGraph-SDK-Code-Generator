@@ -1,23 +1,19 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmClass current = (OdcmClass)currentType;
-    var currentName = current.Name.ToUpperFirstChar();
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef(currentName + "Request", "Base" + currentName + "Request", "I" + currentName + "Request")#>
+<#=CreateClassDef(TypeRequest(c), BaseTypeRequest(c), ITypeRequest(c))#>
 
     /**
-     * The request for the <#=currentName#>
+     * The request for the <#=TypeName(c)#>
      *
      * @param requestUrl The request url
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+    public <#=TypeRequest(c)#>(final String requestUrl, final <#=IClientType(c)#> client, final List<Option> options) {
         super(requestUrl, client, options);
     }
 }

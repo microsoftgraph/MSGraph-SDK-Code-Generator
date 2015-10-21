@@ -4,14 +4,96 @@
     CustomT4Host host       = (CustomT4Host) Host;
     var model               = host.CurrentModel;
     CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
-    var currentType = host.CurrentType;
+    var c = host.CurrentType;
 
-    if (currentType == null)
+    if (c == null)
     {
         throw new InvalidOperationException("Unable to get the current type!");
     }
+
 #>
 <#+
+    public string TypeName(OdcmObject c) {
+        return c.Name.ToUpperFirstChar();
+    }
+
+    public string TypeName(OdcmProperty c) {
+        return c.Type.Name.ToUpperFirstChar();
+    }
+
+    public string ITypeName(OdcmObject c) {
+        return "I" + TypeName(c);
+    }
+
+    public string BaseTypeName(OdcmObject c) {
+        return "Base" + TypeName(c);
+    }
+
+    public string IBaseTypeName(OdcmObject c) {
+        return "I" + BaseTypeName(c);
+    }
+
+    public string TypeRequest(OdcmObject c) {
+        return TypeName(c) + "Request";
+    }
+
+    public string BaseTypeRequest(OdcmObject c) {
+        return "Base" + TypeRequest(c);
+    }
+
+    public string ITypeRequest(OdcmObject c) {
+        return "I" + TypeRequest(c);
+    }
+
+    public string IBaseTypeRequest(OdcmObject c) {
+        return "I" + BaseTypeRequest(c);
+    }
+
+    public string TypeRequestBuilder(OdcmObject c) {
+        return TypeRequest(c) + "Builder";
+    }
+
+    public string ITypeRequestBuilder(OdcmObject c) {
+        return "I" + TypeRequestBuilder(c);
+    }
+
+    public string BaseTypeRequestBuilder(OdcmObject c) {
+        return "Base" + TypeRequestBuilder(c);
+    }
+
+    public string IBaseTypeRequestBuilder(OdcmObject c) {
+        return "I" + BaseTypeRequestBuilder(c);
+    }
+
+    public string TypeCollectionPage(OdcmProperty c) {
+        return TypeName(c) + "CollectionPage";
+    }
+
+    public string ITypeCollectionPage(OdcmProperty c) {
+        return "I" + TypeCollectionPage(c);
+    }
+
+    public string TypeCollectionResponse(OdcmProperty c) {
+        return TypeName(c) + "CollectionResponse";
+    }
+
+    public string ClientType(OdcmObject c) {
+        return c.AsOdcmClass().Namespace.Name.ToUpperFirstChar() + "Client";
+    }
+
+	public string IClientType(OdcmObject c) {
+        return "I" + ClientType(c);
+    }
+
+	public string BaseClientType(OdcmObject c) {
+        return "Base" + ClientType(c);
+    }
+
+	public string IBaseClientType(OdcmObject c) {
+        return "I" + BaseClientType(c);
+    }
+
+
     public string CreatePackageDef(CustomT4Host host)
     {
         var format = @"package {0}.sdk.{1};
@@ -111,7 +193,7 @@ public {1} {2}{3}{4} {{";
                 }
                 else
                 {
-                    propertyType = property.Name.ToUpperFirstChar() + "CollectionPage";
+                    propertyType = TypeCollectionPage(property);
                 }
             }
             else
@@ -140,21 +222,11 @@ public {1} {2}{3}{4} {{";
     public {2} {3};
 
 ";
-        var collectionFormat =
-@"    /**
-     * The {0}.
-     */
-    @SerializedName(""{1}"")
-    @Expose(serialize = false)
-    public {2}CollectionPage {3};
-
-        ";
-
         foreach (var property in parameters)
         {
             var propertyName = property.Name.ToUpperFirstChar();
-            var propertyType = property.IsCollection ?  property.Name.ToUpperFirstChar() : property.GetTypeString();
-            sb.AppendFormat(property.IsCollection ? collectionFormat : format,
+            var propertyType = property.IsCollection ? string.Format("List<{0}>", property.GetTypeString()) : property.GetTypeString();
+                sb.AppendFormat(format,
                 propertyName.SplitCamelCase(),
                 property.Name,
                 propertyType.ToUpperFirstChar(),
@@ -194,18 +266,19 @@ public {1} {2}{3}{4} {{";
                 sb.AppendFormat(
 @"
         if (json.has(""{0}"")) {{
-            final {1}CollectionResponse response = new {1}CollectionResponse();
+            final {1} response = new {1}();
             if (json.has(""{0}@odata.nextLink"")) {{
                 response.nextLink = json.get(""{0}@odata.nextLink"").getAsString();
             }}
 
-            final {2}[] array = serializer.deserializeObject(json.get(""{0}"").toString(), {2}[].class);
+            final {3}[] array = serializer.deserializeObject(json.get(""{0}"").toString(), {3}[].class);
             response.value = Arrays.asList(array);
-            {0} = new {1}CollectionPage(response, null);
+            {0} = new {2}(response, null);
         }}
 ",
             property.Name.ToLowerFirstChar(),
-            property.Name.ToUpperFirstChar(),
+            TypeCollectionResponse(property),
+            TypeCollectionPage(property),
             property.GetTypeString());
             }
         }
