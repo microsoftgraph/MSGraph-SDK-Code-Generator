@@ -6,7 +6,7 @@
 
 <#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), "IRequestBuilder")#>
 
-    ITypeRequest(c) buildRequest();
+    <#=ITypeRequest(c)#> buildRequest();
 
-    ITypeRequest(c) buildRequest(final List<Option> options);
+    <#=ITypeRequest(c)#> buildRequest(final List<Option> options);
 }

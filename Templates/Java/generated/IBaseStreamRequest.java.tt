@@ -1,9 +1,6 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    var propertyClass = "ASDASDASA";
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -15,7 +12,7 @@ import java.io.*;
 
     InputStream get() throws ClientException;
 
-    void put(final byte[] fileContents, final ICallback<<#=propertyClass#>> callback);
+    void put(final byte[] fileContents, final ICallback<<#=ClassTypeName(c)#>> callback);
 
-    <#=propertyClass#> put(final byte[] fileContents) throws ClientException;
+    <#=ClassTypeName(c)#> put(final byte[] fileContents) throws ClientException;
 }

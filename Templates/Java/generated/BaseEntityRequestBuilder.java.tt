@@ -28,7 +28,7 @@
      * Creates the request with specific options instead of the existing options
      */
     public <#=ITypeRequest(c)#> buildRequest(final List<Option> options) {
-        return new <#=TypeRequest(c)#>(getRequestUrl(), mClient, options);
+        return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), options);
     }
 <#
 foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
@@ -43,7 +43,7 @@ foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
     /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
 // Entity Properties
     public I<#=propRequestBuilder#> get<#=propName#>() {
-        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), mClient, null);
+        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 <#
 }
@@ -59,7 +59,7 @@ foreach (var method in c.AsOdcmClass().Methods)
 
     var paramStringBuilder = new System.Text.StringBuilder();
     var builderInitializerStringBuilder = new System.Text.StringBuilder();
-    builderInitializerStringBuilder.AppendFormat("getRequestUrlWithAdditionalSegment(\"{0}\"), {1}, null", method.Name, "mClient");
+    builderInitializerStringBuilder.AppendFormat("getRequestUrlWithAdditionalSegment(\"{0}\"), {1}, null", method.Name, "getClient()");
     var hasParameters = method.Parameters != null && method.Parameters.Any();
 
     if (hasParameters)

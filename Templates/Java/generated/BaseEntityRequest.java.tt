@@ -52,16 +52,16 @@
 
     public <#=ITypeRequest(c)#> select(final String value) {
         getQueryOptions().add(new QueryOption("select", value));
-        return (<#=TypeRequest(c)#>Request)this;
+        return (<#=TypeRequest(c)#>)this;
     }
 
     public <#=ITypeRequest(c)#> top(final int value) {
         getQueryOptions().add(new QueryOption("top", value+""));
-        return (<#=TypeRequest(c)#>Request)this;
+        return (<#=TypeRequest(c)#>)this;
     }
 
     public <#=ITypeRequest(c)#> expand(final String value) {
         getQueryOptions().add(new QueryOption("expand", value));
-        return (<#=TypeRequest(c)#>Request)this;
+        return (<#=TypeRequest(c)#>)this;
     }
 }
