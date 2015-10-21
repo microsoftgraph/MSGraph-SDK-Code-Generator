@@ -14,11 +14,10 @@
 #>
 <#+
     public string TypeName(OdcmObject c) {
+		if (c is OdcmProperty) {
+			return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+		}
         return c.Name.ToUpperFirstChar();
-    }
-
-    public string TypeName(OdcmProperty c) {
-        return c.Type.Name.ToUpperFirstChar();
     }
 
     public string ITypeName(OdcmObject c) {
@@ -75,6 +74,22 @@
 
     public string TypeCollectionResponse(OdcmProperty c) {
         return TypeName(c) + "CollectionResponse";
+    }
+
+    public string TypeCollectionRequestBuilder(OdcmProperty c) {
+        return TypeName(c) + "CollectionRequestBuilder";
+    }
+
+    public string ITypeCollectionRequestBuilder(OdcmProperty c) {
+        return  "I" + TypeCollectionRequestBuilder(c);
+    }
+
+    public string BaseTypeCollectionRequestBuilder(OdcmProperty c) {
+        return "Base" + TypeCollectionRequestBuilder(c);
+    }
+
+    public string IBaseTypeCollectionRequestBuilder(OdcmProperty c) {
+        return  "I" + BaseTypeCollectionRequestBuilder(c);
     }
 
     public string ClientType(OdcmObject c) {

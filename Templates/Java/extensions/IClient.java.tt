@@ -1,13 +1,9 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmClass current = (OdcmClass)currentType;
-    var currentName = current.Name.ToUpperFirstChar();
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef("I" + currentName + "Client", "IBase" + currentName + "Client")#>
+<#=CreateInterfaceDef(IClientType(c), IBaseClientType(c))#>
 
 }

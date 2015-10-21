@@ -1,13 +1,9 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmClass current = (OdcmClass)currentType;
-    var currentName = current.Name.ToUpperFirstChar();
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef(currentName + "Client", "Base" + currentName + "Client", "I" + currentName + "Client")#>
+<#=CreateClassDef(ClientType(c), BaseClientType(c), IClientType(c))#>
 
 }
