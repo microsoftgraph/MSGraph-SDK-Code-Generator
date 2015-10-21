@@ -15,7 +15,7 @@
 <#+
     public string TypeName(OdcmObject c) {
 		if (c is OdcmProperty) {
-			return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+			return ClassTypeName(c) + c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		}
         return c.Name.ToUpperFirstChar();
     }
@@ -92,7 +92,17 @@
         return  "I" + BaseTypeCollectionRequestBuilder(c);
     }
 
+	public string ClassTypeName(OdcmObject c) {
+		if (c is OdcmProperty) {
+			return c.AsOdcmProperty().Class.Name.ToUpperFirstChar();
+		}
+		return c.Name.ToUpperFirstChar();
+	}
+
     public string ClientType(OdcmObject c) {
+		if (c is OdcmProperty) {
+			return c.AsOdcmProperty().Class.Namespace.Name.ToUpperFirstChar() + "Client";
+		}
         return c.AsOdcmClass().Namespace.Name.ToUpperFirstChar() + "Client";
     }
 

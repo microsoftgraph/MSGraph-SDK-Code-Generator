@@ -1,102 +1,40 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmClass current = (OdcmClass)currentType;
-    var currentName = current.Name.ToUpperFirstChar();
-    var clientName = "getClient()";
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef("Base" + currentName + "RequestBuilder", "BaseRequestBuilder", "IBase" + currentName + "RequestBuilder")#>
+<#=CreateClassDef(BaseTypeRequestBuilder(c), "BaseRequestBuilder", IBaseTypeRequestBuilder(c))#>
 
     /**
-     * The request builder for the <#=currentName#>
+     * The request builder for the <#=TypeName(c)#>
      *
      * @param requestUrl The request url
      * @param client The service client
      * @param options The options for this request
      */
-    public Base<#=currentName#>RequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IClientType(c)#> client, final List<Option> options) {
         super(requestUrl, client, options);
     }
 
     /**
      * Creates the request
      */
-    public I<#=currentName#>Request buildRequest() {
+    public <#=ITypeRequest(c)#> buildRequest() {
         return buildRequest(getOptions());
     }
 
     /**
      * Creates the request with specific options instead of the existing options
      */
-    public I<#=currentName#>Request buildRequest(final List<Option> options) {
-        return new <#=currentName#>Request(getRequestUrl(), <#=clientName#>, options);
+    public <#=ITypeRequest(c)#> buildRequest(final List<Option> options) {
+        return new <#=TypeRequest(c)#>(getRequestUrl(), mClient, options);
     }
 <#
-foreach(var child in current.Derived)
-{
-    var childName = child.Name.ToCheckedCase();
-#>
-
-    /// <summary>
-    /// Gets the request builder for <#=childName#>.
-    /// </summary>
-    /// <returns>The <see cref="I<#=childName#>RequestBuilder"/>.</returns>
-    public I<#=childName#>RequestBuilder <#=childName.ToLowerFirstChar()#>() {
-        return new <#=childName#>RequestBuilder(getRequestUrlWithAdditionalSegment("<#=child.Name#>"), null);
-    }
-<#
-}
-#>
-<#
-foreach(var prop in current.NavigationProperties())
-{
-    var propName = prop.Name.ToUpperFirstChar();
-    var propertyType = prop.Type.GetTypeString();
-    var propRequestBuilder = propName + "RequestBuilder";
-    if (prop.IsCollection())
-    {
-        var requestBuilder = propertyType + "RequestBuilder";
-        var collectionRequestBuilder = propName + "CollectionRequestBuilder";
-#>
-
-    /// <summary>
-    /// Gets the request builder for <#=propName#>.
-    /// </summary>
-    /// <returns>The <see cref="I<#=collectionRequestBuilder#>"/>.</returns>
-    public I<#=collectionRequestBuilder#> get<#=propName#>() {
-        return new <#=collectionRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
-    }
-
-    /**
-     * Gets the request builder for <#=propName#>.
-     */
-    public I<#=requestBuilder#> get<#=propName#>(final String id) {
-        return new <#=requestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, <#=clientName#>, null);
-    }
-<#
-    } else {
-#>
-
-    /// <summary>
-    /// Gets the request builder for <#=propName#>.
-    /// </summary>
-    /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
-    public I<#=propRequestBuilder#> get<#=propName#>() {
-        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
-    }
-<#
-    }
-}
-#>
-<#
-foreach (var prop in current.GetProperties(typeName:"Stream"))
+foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
 {
     var propName = prop.Name.ToCheckedCase();
-    var propRequestBuilder = currentName + propName + "RequestBuilder";
+    var propRequestBuilder = TypeRequestBuilder(prop);
 #>
 
     /// <summary>
@@ -105,13 +43,15 @@ foreach (var prop in current.GetProperties(typeName:"Stream"))
     /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
 // Entity Properties
     public I<#=propRequestBuilder#> get<#=propName#>() {
-        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
+        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), mClient, null);
     }
 <#
 }
 #>
 <#
-foreach (var method in current.Methods)
+if (c.AsOdcmClass() != null)
+{
+foreach (var method in c.AsOdcmClass().Methods)
 {
     var methodNameBase = method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar();
     var methodName = methodNameBase.ToLowerFirstChar();
@@ -119,7 +59,7 @@ foreach (var method in current.Methods)
 
     var paramStringBuilder = new System.Text.StringBuilder();
     var builderInitializerStringBuilder = new System.Text.StringBuilder();
-    builderInitializerStringBuilder.AppendFormat("getRequestUrlWithAdditionalSegment(\"{0}\"), {1}, null", method.Name, clientName);
+    builderInitializerStringBuilder.AppendFormat("getRequestUrlWithAdditionalSegment(\"{0}\"), {1}, null", method.Name, "mClient");
     var hasParameters = method.Parameters != null && method.Parameters.Any();
 
     if (hasParameters)
@@ -145,6 +85,7 @@ foreach (var method in current.Methods)
         return new <#=baseName#>RequestBuilder(<#=builderInitializerStringBuilder.ToString()#>);
     }
 <#
+}
 }
 #>
 }

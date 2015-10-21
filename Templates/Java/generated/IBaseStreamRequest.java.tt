@@ -2,17 +2,14 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#
-    OdcmProperty current = (OdcmProperty)currentType;
-    var currentName = current.Name.ToUpperFirstChar();
-    var propertyName = current.Type.Name.ToUpperFirstChar();
-    var propertyClass = current.Class.Name.ToUpperFirstChar();
+    var propertyClass = "ASDASDASA";
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
 import java.io.*;
 
-<#=CreateInterfaceDef("IBase" + propertyClass + currentName + "Request", "IHttpStreamRequest")#>
+<#=CreateInterfaceDef(IBaseTypeRequest(c), "IHttpStreamRequest")#>
 
     void get(final ICallback<InputStream> callback);
 
