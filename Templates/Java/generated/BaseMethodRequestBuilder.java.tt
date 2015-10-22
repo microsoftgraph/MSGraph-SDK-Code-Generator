@@ -1,54 +1,34 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmMethod current = (OdcmMethod)currentType;
-    var methodClass = current.Class.Name.ToUpperFirstChar();
-    var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
-    var clientName = "getClient()";
-
-    var parameterSignatureBuilder = new StringBuilder();
-    var parameterValuesBuilder = new StringBuilder();
-    var requestValuesBuilder = new StringBuilder();
-
-    foreach (var param in current.Parameters)
-    {
-        var paramType = param.Type.GetTypeString();
-        var paramName = param.Name.ToLowerFirstChar();
-        var fieldName = "m" + param.Name.ToUpperFirstChar();
-    	parameterSignatureBuilder.AppendFormat(", final {0} {1}", paramType, paramName);
-    	parameterValuesBuilder.AppendFormat(", {0}", paramName);
-        requestValuesBuilder.AppendFormat(", {0}", fieldName);
-    }
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef("Base" + currentName + "RequestBuilder",  "BaseRequestBuilder")#>
+<#=CreateClassDef(BaseTypeRequestBuilder(c),  "BaseRequestBuilder")#>
 
-<# foreach (var param in current.Parameters) { var paramType = param.Type.GetTypeString(); var fieldName = "m" + param.Name.ToUpperFirstChar();#>
-    public final <#=paramType#> <#=fieldName#>;
+<# foreach (var p in c.AsOdcmMethod().Parameters) { #>
+    public final <#=ParamType(p)#> <#=FieldName(p)#>;
 <# } #>
 
     /**
-     * The request builder for this <#=currentName#>
+     * The request builder for this <#=TypeName(c)#>
      *
      * @param requestUrl The request url
      * @param client The service client
      * @param options The options for this request
      */
-    public Base<#=currentName#>RequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
+    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IClientType(c)#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
         super(requestUrl, client, options);
-<# foreach (var param in current.Parameters) { var paramName = param.Name.ToLowerFirstChar(); var fieldName = "m" + param.Name.ToUpperFirstChar();#>
-        <#=fieldName#> = <#=paramName#>;
+<# foreach (var p in c.AsOdcmMethod().Parameters) { #>
+        <#=FieldName(p)#> = <#=ParamName(p)#>;
 <# } #>
     }
 
-    public I<#=currentName#>Request buildRequest() {
+    public <#=ITypeRequest(c)#> buildRequest() {
         return buildRequest(getOptions());
     }
 
-    public I<#=currentName#>Request buildRequest(final List<Option> options) {
-        return new <#=currentName#>Request(getRequestUrl(), <#=clientName#>, options<#=requestValuesBuilder.ToString()#>);
+    public <#=ITypeRequest(c)#> buildRequest(final List<Option> options) {
+        return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), options<#=MethodFieldValues(c)#>);
     }
 }

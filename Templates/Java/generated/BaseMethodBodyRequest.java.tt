@@ -17,8 +17,8 @@
     public <#=BaseTypeRequest(c)#>(final String requestUrl, final <#=IClientType(c)#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
         super(requestUrl, client, options, <#=TypeBody(c)#>.class);
         mBody = new <#=TypeBody(c)#>();
-<# foreach (var param in c.AsOdcmMethod().Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
-        mBody.<#=paramName#> = <#=paramName#>;
+<# foreach (var p in c.AsOdcmMethod().Parameters) { #>
+        mBody.<#=ParamName(p)#> = <#=ParamName(p)#>;
 <# } #>
     }
 

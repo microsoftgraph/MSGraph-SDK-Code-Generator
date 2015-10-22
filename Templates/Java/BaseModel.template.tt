@@ -128,23 +128,41 @@
         return "Base" + TypeBody(c);
     }
 
+    public string FieldName(OdcmParameter c) {
+        return "m" + ParamName(c).ToUpperFirstChar();
+    }
+
+    public string ParamName(OdcmParameter c) {
+        return c.Name.ToLowerFirstChar();
+    }
+
+    public string ParamType(OdcmParameter c) {
+        return c.Type.GetTypeString();
+    }
+
     public string MethodParametersSignature(OdcmObject c) {
         var parameterSignatureBuilder = new StringBuilder();
-        foreach (var param in c.AsOdcmMethod().Parameters)
+        foreach (var p in c.AsOdcmMethod().Parameters)
         {
-            var paramType = param.Type.GetTypeString();
-            var paramName = param.Name.ToLowerFirstChar();
-            parameterSignatureBuilder.AppendFormat(", final {0} {1}", paramType, paramName);
+            parameterSignatureBuilder.AppendFormat(", final {0} {1}", ParamType(p), ParamName(p));
         }
         return parameterSignatureBuilder.ToString();
     }
 
     public string MethodParametersValues(OdcmObject c) {
         var parameterValuesBuilder = new StringBuilder();
-        foreach (var param in c.AsOdcmMethod().Parameters)
+        foreach (var p in c.AsOdcmMethod().Parameters)
         {
-            var paramName = param.Name.ToLowerFirstChar();
-            parameterValuesBuilder.AppendFormat(", {0}", paramName);
+            parameterValuesBuilder.AppendFormat(", {0}", ParamName(p));
+        }
+        return parameterValuesBuilder.ToString();
+    }
+
+    public string MethodFieldValues(OdcmObject c) {
+        var parameterValuesBuilder = new StringBuilder();
+        foreach (var p in c.AsOdcmMethod().Parameters)
+        {
+            parameterValuesBuilder.AppendFormat(", {0}", FieldName(p));
         }
         return parameterValuesBuilder.ToString();
     }
@@ -335,15 +353,14 @@ public {1} {2}{3}{4} {{";
     public {2} {3};
 
 ";
-        foreach (var property in parameters)
+        foreach (var p in parameters)
         {
-            var propertyName = property.Name.ToUpperFirstChar();
-            var propertyType = property.IsCollection ? string.Format("List<{0}>", property.GetTypeString()) : property.GetTypeString();
+            var propertyType = p.IsCollection ? string.Format("List<{0}>", ParamType(p)) : ParamType(p);
                 sb.AppendFormat(format,
-                propertyName.SplitCamelCase(),
-                property.Name,
-                propertyType.ToUpperFirstChar(),
-                property.SanitizePropertyName());
+                ParamName(p).SplitCamelCase(),
+                ParamName(p),
+                ParamType(p),
+                p.SanitizePropertyName());
         }
         return sb.ToString();
     }
