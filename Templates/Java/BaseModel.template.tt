@@ -304,9 +304,7 @@ public {1} {2}{3}{4} {{";
 @"    /**
      * The {0}.
      */
-    @SerializedName(""{1}"")
-    @Expose(serialize = false, deserialize = false)
-    public {2} {3};
+    public transient {2} {3};
 
 ";
 
