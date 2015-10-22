@@ -19,7 +19,7 @@
 
     void create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>, final ICallback<<#=ClassTypeName(c)#>> callback);
 
-    <#=ClassTypeName(c)#> create(final <#=ITypeCollectionPage(c)#> new<#=ClassTypeName(c)#>) throws ClientException;
+    <#=ClassTypeName(c)#> create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>) throws ClientException;
 
 <# } #>
     <#=ITypeCollectionRequest(c)#> expand(final String value);
