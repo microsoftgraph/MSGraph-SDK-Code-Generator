@@ -15,7 +15,7 @@
 <#+
     public string TypeName(OdcmObject c) {
         if (c is OdcmMethod) {
-            return "CAPPA";
+            return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
         } else if (c is OdcmProperty && c.AsOdcmProperty().IsCollection) {
             return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		} else if (c is OdcmProperty) {
@@ -120,6 +120,36 @@
         return  "I" + BaseTypeCollectionRequestBuilder(c);
     }
 
+    public string TypeBody(OdcmObject c) {
+        return TypeName(c) + "Body";
+    }
+
+    public string BaseTypeBody(OdcmObject c) {
+        return "Base" + TypeBody(c);
+    }
+
+    public string MethodParametersSignature(OdcmObject c) {
+        var parameterSignatureBuilder = new StringBuilder();
+        foreach (var param in c.AsOdcmMethod().Parameters)
+        {
+            var paramType = param.Type.GetTypeString();
+            var paramName = param.Name.ToLowerFirstChar();
+            parameterSignatureBuilder.AppendFormat(", final {0} {1}", paramType, paramName);
+        }
+        return parameterSignatureBuilder.ToString();
+    }
+
+    public string MethodParametersValues(OdcmObject c) {
+        var parameterValuesBuilder = new StringBuilder();
+        foreach (var param in c.AsOdcmMethod().Parameters)
+        {
+            var paramName = param.Name.ToLowerFirstChar();
+            parameterValuesBuilder.AppendFormat(", {0}", paramName);
+        }
+        return parameterValuesBuilder.ToString();
+    }
+
+
 	public string ClassTypeName(OdcmObject c) {
         if (c is OdcmProperty && c.AsOdcmProperty().Class is OdcmServiceClass) {
             return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
@@ -132,6 +162,9 @@
     public string ClientType(OdcmObject c) {
         if (c is OdcmProperty) {
 			return c.AsOdcmProperty().Class.Namespace.Name.ToUpperFirstChar() + "Client";
+		}
+        if (c is OdcmMethod) {
+			return c.AsOdcmMethod().Class.Namespace.Name.ToUpperFirstChar() + "Client";
 		}
         return c.AsOdcmClass().Namespace.Name.ToUpperFirstChar() + "Client";
     }
