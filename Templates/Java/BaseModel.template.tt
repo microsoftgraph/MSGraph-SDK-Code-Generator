@@ -242,7 +242,7 @@ public {1} {2}{3}{4} {{";
             if (property.IsCollection)
             {
                 propertyFormat = collectionFormat;
-                if (isComplexType)
+                if (!property.IsNavigation())
                 {
                     propertyType = "List<" + property.GetTypeString() + ">";
                 }
@@ -317,7 +317,7 @@ public {1} {2}{3}{4} {{";
 ");
         if (!isComplexType && properties != null)
         {
-            foreach (var property in properties.Where(p => p.IsCollection())) {
+            foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation())) {
                 sb.AppendFormat(
 @"
         if (json.has(""{0}"")) {{

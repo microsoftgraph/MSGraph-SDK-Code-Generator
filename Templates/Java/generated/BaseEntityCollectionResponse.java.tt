@@ -10,10 +10,10 @@ import com.google.gson.annotations.*;
 <#=CreateClassDef(BaseTypeCollectionResponse(c))#>
 
     /**
-     * The list of <#=ClassTypeName(c)#> within this collection page
+     * The list of <#=TypeName(c)#> within this collection page
      */
     @SerializedName("value")
-    public List<<#=ClassTypeName(c)#>> value;
+    public List<<#=TypeName(c)#>> value;
 
     /**
      * The url to the next page of this collection, or null

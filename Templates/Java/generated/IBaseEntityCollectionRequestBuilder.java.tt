@@ -2,12 +2,12 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#
-    var genericType = "<" + ClassTypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
+    var genericType = "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
 #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef(IBaseTypeCollectionRequest(c), "IRequestBuilder")#>
+<#=CreateInterfaceDef(IBaseTypeCollectionRequestBuilder(c), "IRequestBuilder")#>
 
     <#=ITypeCollectionRequest(c)#> buildRequest();
 

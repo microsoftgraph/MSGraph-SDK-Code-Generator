@@ -31,6 +31,52 @@
         return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), options);
     }
 <#
+if (c.AsOdcmClass() != null)
+{
+    foreach(var child in c.AsOdcmClass().Derived)
+    {
+        var childName = child.Name.ToCheckedCase();
+#>
+
+    /// <summary>
+    /// Gets the request builder for <#=childName#>.
+    /// </summary>
+    /// <returns>The <see cref="I<#=childName#>RequestBuilder"/>.</returns>
+    public <#=ITypeRequestBuilder(child)#> <#=childName.ToLowerFirstChar()#>() {
+        return new <#=TypeRequestBuilder(child)#>(getRequestUrlWithAdditionalSegment("<#=child.Name#>"), null);
+    }
+<#
+    }
+}
+#>
+<#
+if (c.AsOdcmClass() != null)
+{
+    foreach(var prop in c.AsOdcmClass().NavigationProperties())
+    {
+        var propName = prop.Name.ToUpperFirstChar();
+        var propRequestBuilder = TypeRequestBuilder(prop);
+#>
+
+    /// <summary>
+    /// Gets the request builder for <#=TypeName(prop)#>.
+    /// </summary>
+    /// <returns>The <see cref="<#=ITypeCollectionRequestBuilder(c)#>"/>.</returns>
+    public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>() {
+        return new <#=TypeCollectionRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+
+    /**
+     * Gets the request builder for <#=TypeName(prop)#>.
+     */
+    public <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id) {
+        return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
+    }
+<#
+    }
+}
+#>
+<#
 foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
 {
     var propName = prop.Name.ToCheckedCase();
