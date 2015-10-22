@@ -40,25 +40,25 @@
             { "Template": "MethodBody", "SubProcessor": "MethodWithBody",                                                                       "Name": "<Class><Method>Body" },
             { "Template": "BaseMethodBody", "SubProcessor": "MethodWithBody",                                                                   "Name": "Base<Class><Method>Body" },
 
-            { "Template": "MethodRequest", "SubProcessor": "Method",                                                                            "Name": "<Class><Method>Request" },
-            { "Template": "IMethodRequest", "SubProcessor": "Method",                                                                           "Name": "I<Class><Method>Request" },
+            { "Template": "MethodRequest", "SubProcessor": "Method",                                                                            "Name": "<Method>Request" },
+            { "Template": "IEntityRequest", "SubProcessor": "Method",                                                                           "Name": "I<Method>Request" },
             { "Template": "BaseMethodRequest", "SubProcessor": "Method",                                                                        "Name": "Base<Class><Method>Request" },
             { "Template": "BaseMethodBodyRequest", "SubProcessor": "MethodWithBody",                                                            "Name": "Base<Class><Method>Request" },
             { "Template": "IBaseMethodRequest", "SubProcessor": "Method",                                                                       "Name": "IBase<Class><Method>Request" },
             { "Template": "IBaseMethodBodyRequest", "SubProcessor": "MethodWithBody",                                                           "Name": "IBase<Class><Method>Request" },
 
-            { "Template": "MethodRequestBuilder", "SubProcessor": "Method",                                                                     "Name": "<Class><Method>RequestBuilder" },
-            { "Template": "IMethodRequestBuilder", "SubProcessor": "Method",                                                                    "Name": "I<Class><Method>RequestBuilder" },
+            { "Template": "MethodRequestBuilder", "SubProcessor": "Method",                                                                     "Name": "<Method>RequestBuilder" },
+            { "Template": "IEntityRequestBuilder", "SubProcessor": "Method",                                                                    "Name": "I<Method>RequestBuilder" },
             { "Template": "BaseMethodRequestBuilder", "SubProcessor": "Method",                                                                 "Name": "Base<Class><Method>RequestBuilder" },
             { "Template": "IBaseMethodRequestBuilder", "SubProcessor": "Method",                                                                "Name": "IBase<Class><Method>RequestBuilder" },
 
-            { "Template": "IMethodCollectionPage", "SubProcessor": "Method",                                                                    "Name": "I<Class><Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "specialCollection" },
-            { "Template": "MethodCollectionPage", "SubProcessor": "Method",                                                                     "Name": "<Class><Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "specialCollection" },
+            { "Template": "IEntityCollectionPage", "SubProcessor": "Method",                                                                    "Name": "I<Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "specialCollection" },
+            { "Template": "EntityCollectionPage", "SubProcessor": "Method",                                                                     "Name": "<Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "specialCollection" },
             { "Template": "IBaseMethodCollectionPage", "SubProcessor": "Method",                                                                "Name": "IBase<Class><Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "specialCollection" },
             { "Template": "BaseMethodCollectionPage", "SubProcessor": "Method",                                                                 "Name": "Base<Class><Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "specialCollection" },
 
-            { "Template": "IMethodCollectionPage", "SubProcessor": "CollectionMethod",                                                          "Name": "I<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
-            { "Template": "MethodCollectionPage", "SubProcessor": "CollectionMethod",                                                           "Name": "<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
+            { "Template": "IEntityCollectionPage", "SubProcessor": "CollectionMethod",                                                          "Name": "I<Method>CollectionPage", "Ignore": "ignorableCollection" },
+            { "Template": "EntityCollectionPage", "SubProcessor": "CollectionMethod",                                                           "Name": "<Method>CollectionPage", "Ignore": "ignorableCollection" },
             { "Template": "IBaseMethodCollectionPage", "SubProcessor": "CollectionMethod",                                                      "Name": "IBase<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
             { "Template": "BaseMethodCollectionPage", "SubProcessor": "CollectionMethod",                                                       "Name": "Base<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
 
