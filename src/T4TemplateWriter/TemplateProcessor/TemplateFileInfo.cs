@@ -69,7 +69,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return shouldInclude;
         }
 
-        public string BaseFileName(string containerName = "", string className = "", string propertyName = "", string methodName = "")
+        public string BaseFileName(string containerName = "", string className = "", string propertyName = "", string methodName = "", string propertyType = "")
         {
             string coreName;
             if (this.NameFormat != null)
@@ -82,6 +82,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 //Replace all values with UpperCamelCased values from Edmx (default for Edmx is lower camel case).
                 coreName = this.NameFormat.Replace("<Class>", className.ToUpperFirstChar())
                                           .Replace("<Property>", propertyName.ToUpperFirstChar())
+                                          .Replace("<PropertyType>", propertyType.ToUpperFirstChar())
                                           .Replace("<Method>", methodName.ToUpperFirstChar())
                                           .Replace("<Container>", containerName.ToUpperFirstChar());
                 // replace with the proper naming scheme.
