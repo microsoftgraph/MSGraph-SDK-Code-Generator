@@ -193,10 +193,16 @@
     }
 
     public string CollectionPageGeneric(OdcmObject c) {
+        if (c is OdcmMethod) {
+            return "<" + ClassTypeName(c) + ", " + ITypeRequestBuilder(c) + ">";
+        }
         return "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
     }
 
     public string CollectionRequestGeneric(OdcmObject c) {
+        if (c is OdcmMethod) {
+            return "<" + BaseTypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
+        }
         return "<" + BaseTypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
     }
 
