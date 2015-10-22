@@ -305,7 +305,7 @@ public {1} {2}{3}{4} {{";
      * The {0}.
      */
     @SerializedName(""{1}"")
-    @Expose(serialize = false)
+    @Expose(serialize = false, deserialize = false)
     public {2} {3};
 
 ";
@@ -317,7 +317,6 @@ public {1} {2}{3}{4} {{";
             var propertyFormat = format;
             if (property.IsCollection)
             {
-                propertyFormat = collectionFormat;
                 if (!property.IsNavigation())
                 {
                     propertyType = "List<" + property.GetTypeString() + ">";
@@ -325,6 +324,7 @@ public {1} {2}{3}{4} {{";
                 else
                 {
                     propertyType = TypeCollectionPage(property);
+                    propertyFormat = collectionFormat;
                 }
             }
             else
