@@ -1,53 +1,28 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmMethod current = (OdcmMethod)currentType;
-    var methodClass = current.Class.Name.ToUpperFirstChar();
-    var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
-    var collectionRequest = currentName + "Request";
-    var responseType = currentName + "CollectionResponse";
-    var collectionPageType = currentName + "CollectionPage";
-    var collectionRequestBuilder = currentName + "RequestBuilder";
-
-    var parameterSignatureBuilder = new StringBuilder();
-    var parameterValuesBuilder = new StringBuilder();
-    var requestValuesBuilder = new StringBuilder();
-    var collectionPageValuesBuilder = new StringBuilder();
-
-    foreach (var param in current.Parameters)
-    {
-        var paramType = param.Type.GetTypeString();
-        var paramName = param.Name.ToLowerFirstChar();
-        var fieldName = "m" + param.Name.ToUpperFirstChar();
-    	parameterSignatureBuilder.AppendFormat(", final {0} {1}", paramType, paramName);
-    	parameterValuesBuilder.AppendFormat(", {0}", paramName);
-        requestValuesBuilder.AppendFormat(", {0}", fieldName);
-        collectionPageValuesBuilder.AppendFormat(", /* {0} */ null", paramName);
-    }
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef("Base" + collectionRequest, "BaseCollectionRequest<" + responseType + ", I"  + collectionPageType + ">", "IBase" + collectionRequest)#>
+<#=CreateClassDef(BaseTypeRequest(c), "BaseCollectionRequest" + CollectionRequestGeneric(c), IBaseTypeRequest(c))#>
 
     /**
-     * The request for this <#=currentName#>
+     * The request for this <#=TypeName(c)#>
      *
      * @param requestUrl The request url
      * @param client The service client
      * @param options The options for this request
      */
-    public Base<#=collectionRequest#>(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
-        super(requestUrl, client, options, <#=responseType#>.class, I<#=collectionPageType#>.class);
-<# foreach (var param in current.Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
+    public <#=BaseTypeRequest(c)#>(final String requestUrl, final <#=IClientType(c)#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+        super(requestUrl, client, options, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
+<# foreach (var param in c.AsOdcmMethod().Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
         if (<#=paramName#> != null) {
             addQueryOption(new QueryOption("<#=paramName#>", <#=paramName#>));
         }
 <# } #>
     }
 
-    public void get(final ICallback<I<#=collectionPageType#>> callback) {
+    public void get(final ICallback<<#=ITypeCollectionPage(c)#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -61,33 +36,33 @@
         });
     }
 
-    public I<#=currentName#>CollectionPage get() throws ClientException {
-        final <#=responseType#> response = send();
+    public <#=ITypeCollectionPage(c)#> get() throws ClientException {
+        final <#=BaseTypeCollectionResponse(c)#> response = send();
         return buildFromResponse(response);
     }
 
-    public I<#=currentName#>Request select(final String value) {
+    public <#=ITypeRequest(c)#> select(final String value) {
         addQueryOption(new QueryOption("select", value));
-        return (<#=collectionRequest#>)this;
+        return (<#=TypeRequest(c)#>)this;
     }
 
-    public I<#=currentName#>Request top(final int value) {
+    public <#=ITypeRequest(c)#> top(final int value) {
         addQueryOption(new QueryOption("top", value+""));
-        return (<#=collectionRequest#>)this;
+        return (<#=TypeRequest(c)#>)this;
     }
 
-    public I<#=currentName#>Request expand(final String value) {
+    public <#=ITypeRequest(c)#> expand(final String value) {
         addQueryOption(new QueryOption("expand", value));
-        return (<#=collectionRequest#>)this;
+        return (<#=TypeRequest(c)#>)this;
     }
 
-    public I<#=collectionPageType#> buildFromResponse(final <#=responseType#> response) {
-        final <#=collectionRequestBuilder#> builder;
+    public <#=ITypeCollectionPage(c)#> buildFromResponse(final <#=BaseTypeCollectionResponse(c)#> response) {
+        final <#=ITypeRequestBuilder(c)#> builder;
         if (response.nextLink != null) {
-            builder = new <#=collectionRequestBuilder#>(response.nextLink, getBaseRequest().getClient(), getBaseRequest().getOptions()<#=collectionPageValuesBuilder.ToString()#>);
+            builder = new <#=TypeRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), getBaseRequest().getOptions()<#=MethodPageValues(c)#>);
         } else {
             builder = null;
         }
-        return new <#=collectionPageType#>(response, builder);
+        return new <#=TypeCollectionPage(c)#>(response, builder);
     }
 }

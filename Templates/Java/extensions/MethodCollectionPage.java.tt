@@ -4,15 +4,16 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef(BaseTypeCollectionPage(c), "BaseCollectionPage" + CollectionPageGeneric(c), IBaseTypeCollectionPage(c))#>
+<#=CreateClassDef(TypeCollectionPage(c), BaseTypeCollectionPage(c), ITypeCollectionPage(c))#>
 
     /**
-     * A collection page for <#=TypeName(c)#>.
+     * A collection page for <#=ClassTypeName(c)#>.
      *
      * @param response The serialized <#=BaseTypeCollectionResponse(c)#> from the OneDrive service
      * @param builder The request builder for the next collection page
      */
-    public <#=BaseTypeCollectionPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeRequestBuilder(c)#> builder) {
-       super(response.value, builder);
+    public <#=TypeCollectionPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeRequestBuilder(c)#> builder) {
+        super(response, builder);
     }
- }
+
+}

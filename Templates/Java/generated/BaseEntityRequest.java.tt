@@ -3,7 +3,6 @@
 <#@ output extension="\\" #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
-<# var currentName = "aaaaaaaaa"; #>
 
 <#=CreateClassDef(BaseTypeRequest(c), "BaseRequest", IBaseTypeRequest(c))#>
 

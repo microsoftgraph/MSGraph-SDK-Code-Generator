@@ -149,9 +149,20 @@
         return parameterValuesBuilder.ToString();
     }
 
+    public string MethodPageValues(OdcmObject c) {
+        var pageValuesBuilder = new StringBuilder();
+        foreach (var param in c.AsOdcmMethod().Parameters)
+        {
+            var paramName = param.Name.ToLowerFirstChar();
+            pageValuesBuilder.AppendFormat(", /* {0} */ null", paramName);
+        }
+        return pageValuesBuilder.ToString();
+    }
 
 	public string ClassTypeName(OdcmObject c) {
-        if (c is OdcmProperty && c.AsOdcmProperty().Class is OdcmServiceClass) {
+		if (c is OdcmMethod) {
+			return c.AsOdcmMethod().Class.Name.ToUpperFirstChar();
+		} else if (c is OdcmProperty && c.AsOdcmProperty().Class is OdcmServiceClass) {
             return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
         } else if (c is OdcmProperty) {
 			return c.AsOdcmProperty().Class.Name.ToUpperFirstChar();
