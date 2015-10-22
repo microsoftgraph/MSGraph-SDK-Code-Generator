@@ -141,7 +141,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                              property, 
                                              templateInfo.BaseFileName(containerName:this.CurrentModel.EntityContainer.Name,
                                                                        className:property.Class.Name,
-                                                                       propertyName:property.Name));
+                                                                       propertyName:property.Name,
+                                                                       propertyType:property.Type.Name));
             }
         }
 
@@ -153,7 +154,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                              property,
                                              templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
                                                                        className: property.Class.Name,
-                                                                       propertyName: property.Name));
+                                                                       propertyName: property.Name,
+                                                                       propertyType: property.Type.Name));
             }
         }
 
