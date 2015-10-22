@@ -4,7 +4,7 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef(BaseTypeCollectionRequestBuilder(c), "BaseRequestBuilder", IBaseTypeCollectionRequest(c))#>
+<#=CreateClassDef(BaseTypeCollectionRequestBuilder(c), "BaseRequestBuilder", IBaseTypeCollectionRequestBuilder(c))#>
 
     /**
      * The request builder for this collection of <#=ClassTypeName(c)#>

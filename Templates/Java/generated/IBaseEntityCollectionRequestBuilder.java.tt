@@ -13,5 +13,5 @@
 
     <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> options);
 
-    <#=ITypeCollectionRequest(c)#> byId(final String id);
+    <#=ITypeRequestBuilder(c)#> byId(final String id);
 }

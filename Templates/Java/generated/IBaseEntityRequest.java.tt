@@ -4,7 +4,7 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef(IBaseTypeRequest(c), "IRequestBuilder")#>
+<#=CreateInterfaceDef(IBaseTypeRequest(c), "IHttpRequest")#>
 
     void get(final ICallback<<#=TypeName(c)#>> callback);
 
