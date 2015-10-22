@@ -5,8 +5,76 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), "IRequestBuilder")#>
-
+    /**
+     * Creates the request
+     */
     <#=ITypeRequest(c)#> buildRequest();
 
+    /**
+     * Creates the request with specific options instead of the existing options
+     */
     <#=ITypeRequest(c)#> buildRequest(final List<Option> options);
+<#
+if (c.AsOdcmClass() != null)
+{
+    foreach(var child in c.AsOdcmClass().Derived)
+    {
+        var childName = child.Name.ToCheckedCase();
+#>
+
+    /**
+     * Gets the request builder for <#=childName#>.
+     */
+    <#=ITypeRequestBuilder(child)#> <#=childName.ToLowerFirstChar()#>();
+<#
+    }
+#>
+<#
+    foreach(var prop in c.AsOdcmClass().NavigationProperties())
+    {
+        var propName = prop.Name.ToUpperFirstChar();
+        var propRequestBuilder = TypeRequestBuilder(prop);
+#>
+
+    /**
+     * Gets the request builder for <#=TypeName(prop)#>.
+     */
+    <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>();
+
+    /**
+     * Gets the request builder for <#=TypeName(prop)#>.
+     */
+    <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id);
+<#
+    }
+#>
+<#
+	foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
+	{
+		var propName = prop.Name.ToCheckedCase();
+		var propRequestBuilder = TypeRequestBuilder(prop);
+#>
+
+    /**
+     * Gets the request builder for <#=propName#>.
+     */
+    I<#=propRequestBuilder#> get<#=propName#>();
+<#
+	}
+#>
+<#
+    foreach (var method in c.AsOdcmClass().Methods)
+    {
+        var parameterList = MethodParametersSignature(method);
+        if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
+#>
+
+    /**
+     * Gets the request builder for <#=method.Name#>.
+     */
+    <#=ITypeRequestBuilder(method)#> get<#=TypeName(method)#>(<#=parameterList#>);
+<#
+    }
+}
+#>
 }
