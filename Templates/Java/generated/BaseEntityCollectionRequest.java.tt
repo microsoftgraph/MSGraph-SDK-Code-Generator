@@ -42,7 +42,7 @@
 <# if (c.LongDescriptionContains("writable")) { #>
     public void create(final String fileName, final byte[] fileContents, final ICallback<<#=ClassTypeName(c)#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl() + "/" + fileName;
-        return new ItemRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+        new ItemRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .getContent()
             .buildRequest()
             .put(fileContents, callback);
@@ -58,7 +58,7 @@
 
     public void create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>, final ICallback<<#=ClassTypeName(c)#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
-        return new ItemRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+        new ItemRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest()
             .create(new<#=ClassTypeName(c)#>, callback);
     }
