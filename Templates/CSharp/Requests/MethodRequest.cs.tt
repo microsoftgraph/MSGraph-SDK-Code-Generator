@@ -2,35 +2,41 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
-var clientNameLower = clientName.ToLowerFirstChar();
-
 var method = host.CurrentType.AsOdcmMethod();
 var entityName = method.Class.Name.ToCheckedCase();
 var httpMethod = (method.IsAction()) ? "POST" : "GET";
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
-var returnEntityType = method.ReturnType.Name.ToCheckedCase();
-var returnTypeObject = method.ReturnType.AsOdcmClass();
+var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString().ToCheckedCase();
+var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
 bool isAsync = method.LongDescriptionContains("async");
 var isSpecialCollection = method.LongDescriptionContains("specialCollection");
 var isCollection = method.IsCollection || isSpecialCollection;
+var createCollectionPage = isCollection && returnTypeObject != null && returnTypeObject.IsComplex();
 
 var monitorType = entityName + methodName + "AsyncMonitor";
-var returnType = isAsync
-    ? "I" + monitorType
+
+var sendAsyncReturnType = isAsync
+    ? "I" + entityName + methodName + "AsyncMonitor"
     : isCollection
-        ? "I" + entityName + methodName + "CollectionPage"
+        ? createCollectionPage
+            ? "I" + entityName + methodName + "CollectionPage"
+            : "IEnumerable<" + method.ReturnType.Name.ToCheckedCase() + ">"
         : returnEntityType;
+        
+var methodReturnType = sendAsyncReturnType == null
+    ? "Task"
+    : "Task<" + sendAsyncReturnType + ">";
         
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 #>
 
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -47,7 +53,7 @@ namespace Microsoft.OneDrive.Sdk
     paramStringBuilder.Append("string requestUrl,");
     paramStringBuilder.Append(Environment.NewLine);
     paramStringBuilder.Append("            ");
-    paramStringBuilder.Append("I" + clientName + " " + clientNameLower + ",");
+    paramStringBuilder.Append("IBaseClient client,");
     paramStringBuilder.Append(Environment.NewLine);
     paramStringBuilder.Append("            ");
     paramStringBuilder.Append("IList<Option> options,");
@@ -132,7 +138,7 @@ namespace Microsoft.OneDrive.Sdk
         /// Constructs a new <#=requestType#>.
         /// </summary>
         public <#=requestType#>(<#=paramStringBuilder.ToString()#>)
-            : base(requestUrl, <#=clientNameLower#>, options)
+            : base(requestUrl, client, options)
         {
     <#
     if (hasParameters)
@@ -156,8 +162,10 @@ namespace Microsoft.OneDrive.Sdk
         public <#=requestType#>Body RequestBody { get; private set; }
     <#
     }
-
-    var returnString = isAsync || isCollection ? "async Task<" + returnType + ">" : "Task<" + returnType + ">";
+    
+    var returnString = isAsync || createCollectionPage || string.IsNullOrEmpty(sendAsyncReturnType)
+        ? "async " + methodReturnType
+        : methodReturnType;
     #>
 
         /// <summary>
@@ -173,7 +181,7 @@ namespace Microsoft.OneDrive.Sdk
         methodParameter = "this.RequestBody";
     }
 
-    if (!isAsync && isCollection)
+    if (!isAsync && createCollectionPage)
     {
     #>
 
@@ -192,12 +200,12 @@ namespace Microsoft.OneDrive.Sdk
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
                         response.Value.InitializeNextPageRequest(
-                            this.OneDriveClient,
+                            this.Client,
                             nextPageLinkString);
                     }
                 }
             <#
-            if (isSpecialCollection)
+            if (isSpecialCollection && returnTypeObject != null)
             {
                 foreach (var property in returnTypeObject.Properties)
                 {
@@ -225,20 +233,42 @@ namespace Microsoft.OneDrive.Sdk
     
             using (var response = await this.SendRequestAsync(<#=methodParameter#>))
             {
-                return new <#=monitorType#>(this.<#=clientName#>, response.Headers.Location.ToString());
+                return new <#=monitorType#>(this.Client, response.Headers.Location.ToString());
             }
     <#
     }
     else
     {
+
+        if (string.Equals(sendAsyncReturnType, "Stream"))
+        {
     #>
 
-            return this.SendAsync<<#=returnType#>>(<#=methodParameter#>);
+            return this.SendStreamRequestAsync(null);
     <#
+        }
+        else if (!string.IsNullOrEmpty(sendAsyncReturnType))
+        {
+    #>
+
+            return this.SendAsync<<#=sendAsyncReturnType#>>(<#=methodParameter#>);
+    <#
+        }
+        else
+        {
+    #>
+
+            await this.SendAsync(<#=methodParameter#>);
+    <#
+        }
     }
     #>
 
         }
+    <#
+    if (!string.Equals(sendAsyncReturnType, "Stream"))
+    {
+    #>
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -247,7 +277,7 @@ namespace Microsoft.OneDrive.Sdk
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Expand(string value)
         {
-            this.QueryOptions.Add(new QueryOption("expand", value));
+            this.QueryOptions.Add(new QueryOption("$expand", value));
             return this;
         }
 
@@ -258,7 +288,7 @@ namespace Microsoft.OneDrive.Sdk
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Select(string value)
         {
-            this.QueryOptions.Add(new QueryOption("select", value));
+            this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
 
@@ -269,9 +299,12 @@ namespace Microsoft.OneDrive.Sdk
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Top(int value)
         {
-            this.QueryOptions.Add(new QueryOption("top", value.ToString()));
+            this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
+    <#
+    }
+    #>
 
     }
 }

@@ -1,8 +1,6 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="SharedCSharp.template.tt"#>
 <#
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
-var clientNameLower = clientName.ToLowerFirstChar();
 var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
@@ -14,6 +12,7 @@ var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
 
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -26,13 +25,13 @@ namespace Microsoft.OneDrive.Sdk
         /// Constructs a new <#=collectionRequest#>.
         /// </summary>
         /// <param name="requestUrl">The request URL.</param>
-        /// <param name="<#=clientNameLower#>">The <see cref="I<#=clientName#>"/> for handling requests.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         /// <param name="options">Query option name value pairs for the request.</param>
         public <#=collectionRequest#>(
             string requestUrl,
-            I<#=clientName#> <#=clientNameLower#>,
+            IBaseClient client,
             IList<Option> options)
-            : base(requestUrl, <#=clientNameLower#>, options)
+            : base(requestUrl, client, options)
         {
         }
 
@@ -76,7 +75,7 @@ namespace Microsoft.OneDrive.Sdk
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
                         response.Value.InitializeNextPageRequest(
-                            this.<#=clientName#>,
+                            this.Client,
                             nextPageLinkString);
                     }
                 }

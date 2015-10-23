@@ -8,23 +8,33 @@ var httpMethod = (method.IsAction()) ? "POST" : "GET";
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
-var returnEntityType = method.ReturnType.Name.ToCheckedCase();
-var returnTypeObject = method.ReturnType.AsOdcmClass();
+var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString().ToCheckedCase();
+var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
 bool isAsync = method.LongDescriptionContains("async");
 var isSpecialCollection = method.LongDescriptionContains("specialCollection");
 var isCollection = method.IsCollection || isSpecialCollection;
+var createCollectionPage = returnTypeObject != null && returnTypeObject.IsComplex();
 
-var returnType = isAsync
+var sendAsyncReturnType = isAsync
     ? "I" + entityName + methodName + "AsyncMonitor"
     : isCollection
-        ? "I" + entityName + methodName + "CollectionPage"
+        ? createCollectionPage
+            ? "I" + entityName + methodName + "CollectionPage"
+            : "IEnumerable<" + method.ReturnType.Name.ToCheckedCase() + ">"
         : returnEntityType;
+        
+var methodReturnType = sendAsyncReturnType == null
+    ? "Task"
+    : "Task<" + sendAsyncReturnType + ">";
         
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 #>
 
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
     
     /// <summary>
@@ -48,8 +58,12 @@ namespace Microsoft.OneDrive.Sdk
         /// <summary>
         /// Issues the <#=httpMethod#> request.
         /// </summary>
-        Task<<#=returnType#>> <#=httpMethod.ToLower().ToCheckedCase()#>Async();
-
+        <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async();
+    <#
+    if (!string.Equals(sendAsyncReturnType, "Stream"))
+    {
+    #>
+        
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -70,6 +84,9 @@ namespace Microsoft.OneDrive.Sdk
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         I<#=requestType#> Top(int value);
+    <#
+    }
+    #>
 
     }
 }

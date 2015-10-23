@@ -31,7 +31,7 @@ namespace Microsoft.OneDrive.Sdk
                 ? property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase()
                 : property.Name.ToCheckedCase().GetSanitizedPropertyName();
 
-            if (property.IsTypeNullable())
+            if (property.IsTypeNullable() || property.IsCollection)
             {
     #>
 

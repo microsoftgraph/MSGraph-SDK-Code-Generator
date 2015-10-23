@@ -2,9 +2,6 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
-var clientNameLower = clientName.ToLowerFirstChar();
-
 var method = host.CurrentType.AsOdcmMethod();
 var entityName = method.Class.Name.ToCheckedCase();
 var requestType = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase() + "Request";
@@ -13,6 +10,7 @@ var requestBuilderType = requestType + "Builder";
 
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -29,7 +27,7 @@ namespace Microsoft.OneDrive.Sdk
     requestConstructorParamsStringBuilder.Append("this.RequestUrl,");
     requestConstructorParamsStringBuilder.Append(Environment.NewLine);
     requestConstructorParamsStringBuilder.Append("                ");
-    requestConstructorParamsStringBuilder.Append("this." + clientName + ",");
+    requestConstructorParamsStringBuilder.Append("this.Client,");
     requestConstructorParamsStringBuilder.Append(Environment.NewLine);
     requestConstructorParamsStringBuilder.Append("                ");
 
@@ -40,8 +38,8 @@ namespace Microsoft.OneDrive.Sdk
 
         public <#=requestBuilderType#>(
             string requestUrl,
-            IOneDriveClient oneDriveClient)
-            : base(requestUrl, oneDriveClient)
+            IBaseClient client)
+            : base(requestUrl, client)
         {
         }
     <#
@@ -58,7 +56,7 @@ namespace Microsoft.OneDrive.Sdk
         builderConstructorParamsStringBuilder.Append("string requestUrl,");
         builderConstructorParamsStringBuilder.Append(Environment.NewLine);
         builderConstructorParamsStringBuilder.Append("            ");
-        builderConstructorParamsStringBuilder.Append("I" + clientName + " " + clientNameLower + ",");
+        builderConstructorParamsStringBuilder.Append("IBaseClient client,");
 
         foreach (var param in method.Parameters)
         {
@@ -91,7 +89,7 @@ namespace Microsoft.OneDrive.Sdk
     #>
 
         public <#=requestBuilderType#>(<#=builderConstructorParamsStringBuilder.ToString()#>)
-            : base(requestUrl, <#=clientNameLower#>)
+            : base(requestUrl, client)
         {
             <#=initializersStringBuilder.ToString()#>
 

@@ -18,6 +18,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
             return new HashSet<string>{
                 "abstract",
                 "as",
+                "async",
                 "base",
                 "bool",
                 "break",
@@ -85,6 +86,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
                 "string",
                 "struct",
                 "switch",
+                "task",
                 "this",
                 "throw",
                 "true",
@@ -105,24 +107,20 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 
         public static string GetTypeString(this OdcmParameter parameter)
         {
-            switch (parameter.Type.Name)
-            {
-                case "String":
-                case "Double":
-                    return parameter.Type.Name.ToLowerFirstChar();
-
-                default:
-                    return parameter.Type.Name;
-            }
+            return parameter.Type.Name.GetTypeString();
         }
 
         public static string GetTypeString(this string type)
         {
-            switch (type)
+            switch (type.ToLowerInvariant())
             {
-                case "String":
-                case "Double":
+                case "string":
+                case "double":
                     return type.ToLowerFirstChar();
+                case "binary":
+                    return "byte[]";
+                case "boolean":
+                    return "bool";
                 default:
                     return type.ToCheckedCase();
             }
@@ -141,13 +139,19 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
         public static bool IsTypeNullable(this OdcmProperty property)
         {
             var t = property.GetTypeString();
-            return property.Type is OdcmClass || t == "Stream" || t == "string";
+            return property.Type.IsTypeNullable();
         }
 
         public static bool IsTypeNullable(this OdcmType type)
         {
             var t = type.GetTypeString();
-            return type is OdcmClass || t == "Stream" || t == "string";
+            return type is OdcmClass || t == "Stream" || t == "string" || t == "byte[]";
+        }
+
+        public static bool IsByteArray(this OdcmProperty property)
+        {
+            var t = property.GetTypeString();
+            return t == "byte[]";
         }
 
         public static bool IsComplex(this OdcmParameter property)
@@ -156,10 +160,15 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
             return t.IsComplex();
         }
 
+        public static bool IsComplex(this OdcmType type)
+        {
+            string t = type.GetTypeString();
+            return t.IsComplex();
+        }
+
         public static bool IsComplex(this string t)
         {
-            return !(t == "Int32" || t == "Int64" || t == "DateTimeOffset"
-                   || t == "string" || "long" == t || t == "double");
+            return !(t == "Int32" || t == "Int64" || t == "DateTimeOffset" || "long" == t || t == "double");
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)

@@ -2,8 +2,6 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
-var clientNameLower = clientName.ToLowerFirstChar();
 var prop = host.CurrentType.AsOdcmProperty(); 
 var innerEntity = prop.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
@@ -14,6 +12,8 @@ var entityCollectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
 
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
+    
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.
     /// </summary>
@@ -27,6 +27,6 @@ namespace Microsoft.OneDrive.Sdk
         /// <summary>
         /// Initializes the NextPageRequest property.
         /// </summary>
-        void InitializeNextPageRequest(I<#=clientName#> <#=clientNameLower#>, string nextPageLinkString);
+        void InitializeNextPageRequest(IBaseClient client, string nextPageLinkString);
     }
 }

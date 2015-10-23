@@ -2,8 +2,6 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
-var clientNameLower = clientName.ToLowerFirstChar();
 var prop = host.CurrentType.AsOdcmProperty();
 var propName = prop.Name;
 var propClass = prop.Class.Name.ToCheckedCase();
@@ -24,14 +22,14 @@ namespace Microsoft.OneDrive.Sdk
         /// <summary>
         /// Constructs a new <#=propRequest#>.
         /// <param name="requestUrl">The request URL.</param>
-        /// <param name="<#=clientNameLower#>">The <see cref="I<#=clientName#>"/> for handling requests.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         /// <param name="options">Query option name value pairs for the request.</param>
         /// </summary>
         public <#=propRequest#>(
             string requestUrl,
-            I<#=clientName#> <#=clientNameLower#>,
+            IBaseClient client,
             IList<Option> options)
-            : base(requestUrl, <#=clientNameLower#>, options)
+            : base(requestUrl, client, options)
         {
         }
 

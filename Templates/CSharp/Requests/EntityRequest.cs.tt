@@ -2,8 +2,6 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
-var clientNameLower = clientName.ToLowerFirstChar();
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
 var entityRequest = entityName + "Request";
@@ -12,7 +10,9 @@ var entityRequest = entityName + "Request";
 
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -24,13 +24,13 @@ namespace Microsoft.OneDrive.Sdk
         /// Constructs a new <#=entityRequest#>.
         /// </summary>
         /// <param name="requestUrl">The request URL.</param>
-        /// <param name="<#=clientNameLower#>">The <see cref="I<#=clientName#>"/> for handling requests.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         /// <param name="options">Query option name value pairs for the request.</param>
         public <#=entityRequest#>(
             string requestUrl,
-            I<#=clientName#> <#=clientNameLower#>,
+            IBaseClient client,
             IList<Option> options)
-            : base(requestUrl, <#=clientNameLower#>, options)
+            : base(requestUrl, client, options)
         {
         }
 
@@ -91,7 +91,7 @@ namespace Microsoft.OneDrive.Sdk
         /// <returns>The request object to send.</returns>
         public I<#=entityRequest#> Expand(string value)
         {
-            this.QueryOptions.Add(new QueryOption("expand", value));
+            this.QueryOptions.Add(new QueryOption("$expand", value));
             return this;
         }
 
@@ -102,7 +102,7 @@ namespace Microsoft.OneDrive.Sdk
         /// <returns>The request object to send.</returns>
         public I<#=entityRequest#> Select(string value)
         {
-            this.QueryOptions.Add(new QueryOption("select", value));
+            this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
         
@@ -113,7 +113,7 @@ namespace Microsoft.OneDrive.Sdk
         /// <returns>The request object to send.</returns>
         public I<#=entityRequest#> Top(int value)
         {
-            this.QueryOptions.Add(new QueryOption("top", value.ToString()));
+            this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
 
@@ -124,7 +124,7 @@ namespace Microsoft.OneDrive.Sdk
         private void InitializeCollectionProperties(<#=entityName#> <#=entity.Name#>)
         {
         <#
-        var collectionProperties = entity.Properties.Where(property => property.IsCollection() && property.GetTypeString().IsComplex());
+        var collectionProperties = entity.Properties.Where(property => property.IsCollection() && !property.LongDescriptionContains("ignorableCollection"));
 
         if (collectionProperties.Any())
         {
@@ -150,7 +150,7 @@ namespace Microsoft.OneDrive.Sdk
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
                         <#=entity.Name#>.<#=propertyName#>.InitializeNextPageRequest(
-                            this.<#=clientName#>,
+                            this.Client,
                             nextPageLinkString);
                     }
                 }

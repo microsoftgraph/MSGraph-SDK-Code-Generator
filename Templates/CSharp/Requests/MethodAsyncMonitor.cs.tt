@@ -2,9 +2,6 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
-var clientNameLower = clientName.ToLowerFirstChar();
-
 var method = host.CurrentType.AsOdcmMethod();
 var entityName = method.Class.Name.ToCheckedCase();
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
@@ -33,8 +30,8 @@ namespace Microsoft.OneDrive.Sdk
     /// </summary>
     public partial class <#=monitorType#> : AsyncMonitor<<#=serializationType#>>, I<#=monitorType#>
     {
-        public <#=monitorType#>(I<#=clientName#> <#=clientNameLower#>, string monitorUrl)
-            : base(<#=clientNameLower#>, monitorUrl)
+        public <#=monitorType#>(IBaseClient client, string monitorUrl)
+            : base(client, monitorUrl)
         {
         }
     <#

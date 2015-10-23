@@ -67,6 +67,11 @@ namespace Vipr.T4TemplateWriter
             return FilterProperties(properties, typeName, longDescriptionMatches);
         }
 
+        public static IEnumerable<OdcmProperty> GetStreamProperties(this OdcmModel model)
+        {
+            return model.GetProperties(typeName: "Stream", longDescriptionMatches: null);
+        }
+
         public static IEnumerable<OdcmProperty> FilterProperties(IEnumerable<OdcmProperty> properties, string typeName = null, string longDescriptionMatches = null)
         {
             var allProperties = properties;

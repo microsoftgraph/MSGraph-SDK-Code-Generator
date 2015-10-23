@@ -11,6 +11,7 @@ var entityRequestBuilder = prop.Type.Name.ToCheckedCase() + "RequestBuilder";
 #>
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -18,6 +19,7 @@ namespace Microsoft.OneDrive.Sdk
     /// </summary>
     public partial interface I<#=collectionRequestBuilder#>
     {
+    
         /// <summary>
         /// Builds the request.
         /// </summary>
@@ -30,6 +32,11 @@ namespace Microsoft.OneDrive.Sdk
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         I<#=collectionRequest#> Request(IList<Option> options);
+<#
+    var propClass = prop.Type as OdcmClass;
+    if ((propClass != null && propClass.Kind != OdcmClassKind.Complex) || prop.LongDescriptionContains("navigable"))
+    {
+#>
 
         /// <summary>
         /// Gets an <see cref="I<#=entityRequestBuilder#>"/> for the specified <#=propName#>.
@@ -37,5 +44,9 @@ namespace Microsoft.OneDrive.Sdk
         /// <param name="id">The ID for the <#=propName#>.</param>
         /// <returns>The <see cref="I<#=entityRequestBuilder#>"/>.</returns>
         I<#=entityRequestBuilder#> this[string id] { get; }
+<#
+    }
+#>
+
     }
 }
