@@ -141,7 +141,10 @@
     }
 
     public string ReturnType(OdcmObject c) {
-        return c.AsOdcmMethod().ReturnType.Name.ToUpperFirstChar();
+		if (c.AsOdcmMethod().ReturnType != null) {
+	        return c.AsOdcmMethod().ReturnType.Name.ToUpperFirstChar();
+		}
+		return "Void";
     }
 
     public string MethodParametersSignature(OdcmObject c) {
@@ -194,12 +197,27 @@
 
     public string ClientType(OdcmObject c) {
         if (c is OdcmProperty) {
-			return c.AsOdcmProperty().Class.Namespace.Name.ToUpperFirstChar() + "Client";
+            var str = c.AsOdcmProperty().Class.Namespace.Name.ToUpperFirstChar();
+            if (str.IndexOf(".") != -1) {
+                str = str.Remove(0, str.IndexOf("."));
+            }
+            return str + "Client";
 		}
         if (c is OdcmMethod) {
-			return c.AsOdcmMethod().Class.Namespace.Name.ToUpperFirstChar() + "Client";
+            var str = c.AsOdcmMethod().Class.Namespace.Name.ToUpperFirstChar();
+            if (str.IndexOf(".") != -1) {
+                str = str.Remove(0, str.IndexOf("."));
+            }
+			return str + "Client";
 		}
-        return c.AsOdcmClass().Namespace.Name.ToUpperFirstChar() + "Client";
+        if (c is OdcmClass) {
+            var str = c.AsOdcmClass().Namespace.Name.ToUpperFirstChar();
+            if (str.IndexOf(".") != -1) {
+                str = str.Remove(0, str.IndexOf("."));
+            }
+            return str + "Client";
+        }
+        throw new Exception("Unable to find client");
     }
 
 	public string IClientType(OdcmObject c) {
@@ -233,13 +251,13 @@
     {
         var format = @"package {0}.sdk.{1};
 
-import com.onedrive.sdk.concurrency.*;
-import com.onedrive.sdk.core.*;
-import com.onedrive.sdk.extensions.*;
-import com.onedrive.sdk.http.*;
-import com.onedrive.sdk.generated.*;
-import com.onedrive.sdk.options.*;
-import com.onedrive.sdk.serializer.*;
+import {0}.sdk.concurrency.*;
+import {0}.sdk.core.*;
+import {0}.sdk.extensions.*;
+import {0}.sdk.http.*;
+import {0}.sdk.generated.*;
+import {0}.sdk.options.*;
+import {0}.sdk.serializer.*;
 
 import java.util.*;";
         return string.Format(format,
