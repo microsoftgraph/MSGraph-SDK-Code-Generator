@@ -22,11 +22,11 @@
 <# } #>
     }
 
-    public void create(final ICallback<<#=TypeBody(c)#>> callback) {
+    public void create(final ICallback<<#=ReturnType(c)#>> callback) {
         send(HttpMethod.GET, callback, mBody);
     }
 
-    public <#=TypeBody(c)#> create() throws ClientException {
+    public <#=ReturnType(c)#> create() throws ClientException {
         return send(HttpMethod.GET, mBody);
     }
 

@@ -140,6 +140,10 @@
         return c.Type.GetTypeString();
     }
 
+    public string ReturnType(OdcmObject c) {
+        return c.AsOdcmMethod().ReturnType.Name.ToUpperFirstChar();
+    }
+
     public string MethodParametersSignature(OdcmObject c) {
         var parameterSignatureBuilder = new StringBuilder();
         foreach (var p in c.AsOdcmMethod().Parameters)
