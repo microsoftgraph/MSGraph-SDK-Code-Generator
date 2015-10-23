@@ -23,11 +23,11 @@
     }
 
     public void create(final ICallback<<#=ReturnType(c)#>> callback) {
-        send(HttpMethod.GET, callback, mBody);
+        send(HttpMethod.POST, callback, mBody);
     }
 
     public <#=ReturnType(c)#> create() throws ClientException {
-        return send(HttpMethod.GET, mBody);
+        return send(HttpMethod.POST, mBody);
     }
 
     public <#=ITypeRequest(c)#> select(final String value) {
