@@ -1,0 +1,23 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    OdcmProperty current = (OdcmProperty)currentType;
+    var currentName = current.Name.ToUpperFirstChar();
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(currentName + "CollectionRequest", "Base" + currentName + "CollectionRequest", "I" + currentName + "CollectionRequest")#>
+
+    /**
+     * The request for this collection of <#=currentName#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public <#=currentName#>CollectionRequest(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+        super(requestUrl, client, options);
+    }
+}

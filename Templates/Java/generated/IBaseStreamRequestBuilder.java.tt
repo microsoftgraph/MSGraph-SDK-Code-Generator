@@ -1,0 +1,18 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    OdcmProperty current = (OdcmProperty)currentType;
+    var currentName = current.Name.ToUpperFirstChar();
+    var propertyName = current.Type.Name.ToUpperFirstChar();
+    var propertyClass = current.Class.Name.ToUpperFirstChar();
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef("IBase" + propertyClass + currentName + "RequestBuilder", "IRequestBuilder")#>
+
+    I<#=propertyClass + currentName#>Request buildRequest();
+
+    I<#=propertyClass + currentName#>Request buildRequest(final List<Option> options);
+}

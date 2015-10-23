@@ -1,0 +1,150 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    OdcmClass current = (OdcmClass)currentType;
+    var currentName = current.Name.ToUpperFirstChar();
+    var clientName = "getClient()";
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef("Base" + currentName + "RequestBuilder", "BaseRequestBuilder", "IBase" + currentName + "RequestBuilder")#>
+
+    /**
+     * The request builder for the <#=currentName#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public Base<#=currentName#>RequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+        super(requestUrl, client, options);
+    }
+
+    /**
+     * Creates the request
+     */
+    public I<#=currentName#>Request buildRequest() {
+        return buildRequest(getOptions());
+    }
+
+    /**
+     * Creates the request with specific options instead of the existing options
+     */
+    public I<#=currentName#>Request buildRequest(final List<Option> options) {
+        return new <#=currentName#>Request(getRequestUrl(), <#=clientName#>, options);
+    }
+<#
+foreach(var child in current.Derived)
+{
+    var childName = child.Name.ToCheckedCase();
+#>
+
+    /// <summary>
+    /// Gets the request builder for <#=childName#>.
+    /// </summary>
+    /// <returns>The <see cref="I<#=childName#>RequestBuilder"/>.</returns>
+    public I<#=childName#>RequestBuilder <#=childName.ToLowerFirstChar()#>() {
+        return new <#=childName#>RequestBuilder(getRequestUrlWithAdditionalSegment("<#=child.Name#>"), null);
+    }
+<#
+}
+#>
+<#
+foreach(var prop in current.NavigationProperties())
+{
+    var propName = prop.Name.ToUpperFirstChar();
+    var propertyType = prop.Type.GetTypeString();
+    var propRequestBuilder = propName + "RequestBuilder";
+    if (prop.IsCollection())
+    {
+        var requestBuilder = propertyType + "RequestBuilder";
+        var collectionRequestBuilder = propName + "CollectionRequestBuilder";
+#>
+
+    /// <summary>
+    /// Gets the request builder for <#=propName#>.
+    /// </summary>
+    /// <returns>The <see cref="I<#=collectionRequestBuilder#>"/>.</returns>
+    public I<#=collectionRequestBuilder#> get<#=propName#>() {
+        return new <#=collectionRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
+    }
+
+    /**
+     * Gets the request builder for <#=propName#>.
+     */
+    public I<#=requestBuilder#> get<#=propName#>(final String id) {
+        return new <#=requestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, <#=clientName#>, null);
+    }
+<#
+    } else {
+#>
+
+    /// <summary>
+    /// Gets the request builder for <#=propName#>.
+    /// </summary>
+    /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
+    public I<#=propRequestBuilder#> get<#=propName#>() {
+        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
+    }
+<#
+    }
+}
+#>
+<#
+foreach (var prop in current.GetProperties(typeName:"Stream"))
+{
+    var propName = prop.Name.ToCheckedCase();
+    var propRequestBuilder = currentName + propName + "RequestBuilder";
+#>
+
+    /// <summary>
+    /// Gets the request builder for <#=propName#>.
+    /// </summary>
+    /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
+// Entity Properties
+    public I<#=propRequestBuilder#> get<#=propName#>() {
+        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), <#=clientName#>, null);
+    }
+<#
+}
+#>
+<#
+foreach (var method in current.Methods)
+{
+    var methodNameBase = method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar();
+    var methodName = methodNameBase.ToLowerFirstChar();
+    var baseName = method.Class.Name.ToCheckedCase().ToUpperFirstChar() + methodNameBase.ToUpperFirstChar();
+
+    var paramStringBuilder = new System.Text.StringBuilder();
+    var builderInitializerStringBuilder = new System.Text.StringBuilder();
+    builderInitializerStringBuilder.AppendFormat("getRequestUrlWithAdditionalSegment(\"{0}\"), {1}, null", method.Name, clientName);
+    var hasParameters = method.Parameters != null && method.Parameters.Any();
+
+    if (hasParameters)
+    {
+        foreach (var param in method.Parameters)
+        {
+			var paramType = param.Type.GetTypeString();
+			var paramName = param.Name.ToLowerFirstChar();
+            paramStringBuilder.AppendFormat("final {0} {1}, ", paramType, paramName);
+            builderInitializerStringBuilder.AppendFormat(", {0}", paramName);
+        }
+
+        paramStringBuilder.Remove(paramStringBuilder.Length - 2, 2);
+    }
+#>
+
+    /// <summary>
+    /// Gets the request builder for <#=methodName#>.
+    /// </summary>
+    /// <returns>The <see cref="I<#=baseName#>RequestBuilder"/>.</returns>
+// Entity Methods
+    public I<#=baseName#>RequestBuilder get<#=methodNameBase#>(<#=paramStringBuilder.ToString()#>) {
+        return new <#=baseName#>RequestBuilder(<#=builderInitializerStringBuilder.ToString()#>);
+    }
+<#
+}
+#>
+}

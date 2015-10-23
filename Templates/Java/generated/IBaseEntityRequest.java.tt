@@ -1,0 +1,34 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    OdcmClass current = (OdcmClass)currentType;
+    var currentName = current.Name.ToUpperFirstChar();
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef("IBase" + currentName + "Request")#>
+
+    void get(final ICallback<<#=currentName#>> callback);
+
+    <#=currentName#> get() throws ClientException;
+
+    void update(final <#=currentName#> source<#=currentName#>, final ICallback<<#=currentName#>> callback);
+
+    <#=currentName#> update(final <#=currentName#> source<#=currentName#>) throws ClientException;
+
+    void delete(final ICallback<Void> callback);
+
+    void delete()  throws ClientException;
+
+    void create(final <#=currentName#> new<#=currentName#>, final ICallback<<#=currentName#>> callback);
+
+    <#=currentName#> create(final <#=currentName#> new<#=currentName#>) throws ClientException;
+
+    IBase<#=currentName#>Request select(final String value);
+
+    IBase<#=currentName#>Request top(final int value);
+
+    IBase<#=currentName#>Request expand(final String value);
+}

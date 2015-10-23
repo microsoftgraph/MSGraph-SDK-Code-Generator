@@ -1,0 +1,37 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    OdcmProperty current = (OdcmProperty)currentType;
+    var currentName = current.Name.ToUpperFirstChar();
+    var propertyType = current.Type.Name.ToUpperFirstChar();
+    var clientName = "getClient()";
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef("Base" + currentName + "CollectionRequestBuilder", "BaseRequestBuilder", "IBase" + currentName + "CollectionRequestBuilder")#>
+
+    /**
+     * The request builder for this collection of <#=currentName#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public Base<#=currentName#>CollectionRequestBuilder(final String requestUrl, final IOneDriveClient client, final List<Option> options) {
+        super(requestUrl, client, options);
+    }
+
+    public I<#=currentName#>CollectionRequest buildRequest() {
+        return buildRequest(getOptions());
+    }
+
+    public I<#=currentName#>CollectionRequest buildRequest(final List<Option> options) {
+        return new <#=currentName#>CollectionRequest(getRequestUrl(), <#=clientName#>, options);
+    }
+
+    public I<#=propertyType#>RequestBuilder byId(final String id) {
+        return new <#=propertyType#>RequestBuilder(getRequestUrlWithAdditionalSegment(id), <#=clientName#>, getOptions());
+    }
+}
