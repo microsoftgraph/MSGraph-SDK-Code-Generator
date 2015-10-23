@@ -2,8 +2,6 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
-var clientNameLower = clientName.ToLowerFirstChar();
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
 var request = entityName + "Request";
@@ -13,6 +11,7 @@ var requestBuilder = entityName + "RequestBuilder";
 
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -24,11 +23,11 @@ namespace Microsoft.OneDrive.Sdk
         /// Constructs a new <#=requestBuilder#>.
         /// </summary>
         /// <param name="requestUrl">The URL for the built request.</param>
-        /// <param name="<#=clientNameLower#>">The <see cref="I<#=clientName#>"/> for handling requests.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         public <#=requestBuilder#>(
             string requestUrl,
-            I<#=clientName#> <#=clientNameLower#>)
-            : base(requestUrl, <#=clientNameLower#>)
+            IBaseClient client)
+            : base(requestUrl, client)
         {
         }
 
@@ -48,7 +47,7 @@ namespace Microsoft.OneDrive.Sdk
         /// <returns>The built request.</returns>
         public I<#=request#> Request(IList<Option> options)
         {
-            return new <#=request#>(this.RequestUrl, this.<#=clientName#>, options);
+            return new <#=request#>(this.RequestUrl, this.Client, options);
         }
 
     <#foreach(var child in entity.Derived)
@@ -64,7 +63,7 @@ namespace Microsoft.OneDrive.Sdk
         {
             get
             {
-                return new <#=childName#>RequestBuilder(this.AppendSegmentToRequestUrl("<#=child.Name#>"), this.<#=clientName#>);
+                return new <#=childName#>RequestBuilder(this.AppendSegmentToRequestUrl("<#=child.Name#>"), this.Client);
             }
         }  
     <#
@@ -73,7 +72,7 @@ namespace Microsoft.OneDrive.Sdk
     foreach(var prop in entity.NavigationProperties()){
 
         var propName = prop.Name.ToCheckedCase();
-        var propRequestBuilder = propName + "RequestBuilder";
+        var propRequestBuilder = prop.Type.Name.ToCheckedCase() + "RequestBuilder";
 
         if(prop.IsCollection())
         {
@@ -88,7 +87,7 @@ namespace Microsoft.OneDrive.Sdk
         {
             get
             {
-                return new <#=collectionRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.<#=clientName#>);
+                return new <#=collectionRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.Client);
             }
         }
     <#
@@ -105,7 +104,7 @@ namespace Microsoft.OneDrive.Sdk
         {
             get
             {
-                return new <#=propRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.<#=clientName#>);
+                return new <#=propRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.Client);
             }
         }
     <#
@@ -121,12 +120,12 @@ namespace Microsoft.OneDrive.Sdk
         /// <summary>
         /// Gets the request builder for <#=propName#>.
         /// </summary>
-        /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
+        /// <returns>The <see cref="I<#=entityName#><#=propRequestBuilder#>"/>.</returns>
         public I<#=entityName#><#=propRequestBuilder#> <#=propName#>
         {
             get
             {
-                return new <#=entityName#><#=propRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.<#=clientName#>);
+                return new <#=entityName#><#=propRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.Client);
             }
         }
     <#
@@ -145,7 +144,7 @@ namespace Microsoft.OneDrive.Sdk
         builderInitializerStringBuilder.Append("this.AppendSegmentToRequestUrl(\"" + method.Name + "\"),");
         builderInitializerStringBuilder.Append(Environment.NewLine);
         builderInitializerStringBuilder.Append("                ");
-        builderInitializerStringBuilder.Append("this." + clientName + ",");
+        builderInitializerStringBuilder.Append("this.Client,");
 
         var hasParameters = method.Parameters != null && method.Parameters.Any();
 
@@ -153,7 +152,7 @@ namespace Microsoft.OneDrive.Sdk
         {
             foreach (var param in method.Parameters)
             {
-                var paramTypeString = param.Type.GetTypeString();
+                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
 
                 paramStringBuilder.Append(Environment.NewLine);
                 paramStringBuilder.Append("            ");

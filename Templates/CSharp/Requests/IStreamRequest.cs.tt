@@ -19,7 +19,7 @@ namespace Microsoft.OneDrive.Sdk
     /// <summary>
     /// The interface I<#=propRequest#>.
     /// </summary>
-    public interface I<#=propRequest#> : IBaseRequest
+    public partial interface I<#=propRequest#> : IBaseRequest
     {
         /// <summary>
         /// Gets the stream.
@@ -34,19 +34,5 @@ namespace Microsoft.OneDrive.Sdk
         /// <param name="<#=propName#>">The stream to PUT.</param>
         /// <returns>The object returned by the PUT call.</returns>
         Task<T> PutAsync<T>(Stream <#=propName#>) where T : <#=propClass#>;
-
-        /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        I<#=propRequest#> Expand(string value);
-
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        I<#=propRequest#> Select(string value);
     }
 }

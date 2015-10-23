@@ -1,6 +1,5 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="SharedCSharp.template.tt"#>
-<#@ output extension="\\" #>
 <#
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
@@ -34,7 +33,7 @@ namespace Microsoft.OneDrive.Sdk
 
             if (property.IsCollection())
             {
-                if (property.GetTypeString().IsComplex())
+                if (property.Type is OdcmPrimitiveType || property.LongDescriptionContains("ignorableCollection"))
                 {
     #>
 
@@ -42,8 +41,7 @@ namespace Microsoft.OneDrive.Sdk
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
         [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
-        [JsonConverter(typeof(InterfaceConverter<<#=propertyCollectionPage#>>))]
-        public I<#=propertyCollectionPage#> <#=propertyName#> { get; set; }
+        public IEnumerable<<#=propertyType#>> <#=propertyName#> { get; set; }
     <#
                 }
                 else
@@ -54,7 +52,8 @@ namespace Microsoft.OneDrive.Sdk
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
         [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
-        public IEnumerable<<#=propertyType#>> <#=propertyName#> { get; set; }
+        [JsonConverter(typeof(InterfaceConverter<<#=propertyCollectionPage#>>))]
+        public I<#=propertyCollectionPage#> <#=propertyName#> { get; set; }
     <#
                 }
             }
