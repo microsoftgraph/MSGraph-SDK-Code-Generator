@@ -196,28 +196,7 @@
 	}
 
     public string ClientType(OdcmObject c) {
-        if (c is OdcmProperty) {
-            var str = c.AsOdcmProperty().Class.Namespace.Name.ToUpperFirstChar();
-            if (str.IndexOf(".") != -1) {
-                str = str.Remove(0, str.IndexOf("."));
-            }
-            return str + "Client";
-		}
-        if (c is OdcmMethod) {
-            var str = c.AsOdcmMethod().Class.Namespace.Name.ToUpperFirstChar();
-            if (str.IndexOf(".") != -1) {
-                str = str.Remove(0, str.IndexOf("."));
-            }
-			return str + "Client";
-		}
-        if (c is OdcmClass) {
-            var str = c.AsOdcmClass().Namespace.Name.ToUpperFirstChar();
-            if (str.IndexOf(".") != -1) {
-                str = str.Remove(0, str.IndexOf("."));
-            }
-            return str + "Client";
-        }
-        throw new Exception("Unable to find client");
+        return ((CustomT4Host)Host).CurrentModel.EntityContainer.Name.ToUpperFirstChar() + "Client";
     }
 
 	public string IClientType(OdcmObject c) {
