@@ -1,0 +1,67 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    OdcmMethod current = (OdcmMethod)currentType;
+    var methodClass = current.Class.Name.ToUpperFirstChar();
+    var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
+
+    var parameterSignatureBuilder = new StringBuilder();
+    var parameterValuesBuilder = new StringBuilder();
+    var requestValuesBuilder = new StringBuilder();
+
+    foreach (var param in current.Parameters)
+    {
+        var paramType = param.Type.GetTypeString();
+        var paramName = param.Name.ToLowerFirstChar();
+        var fieldName = "m" + param.Name.ToUpperFirstChar();
+    	parameterSignatureBuilder.AppendFormat(", final {0} {1}", paramType, paramName);
+    	parameterValuesBuilder.AppendFormat(", {0}", paramName);
+        requestValuesBuilder.AppendFormat(", {0}", fieldName);
+    }
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef("Base" + currentName + "Request",  "BaseRequest")#>
+    protected final <#=currentName#>Body mBody;
+
+    /**
+     * The request for this <#=currentName#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public Base<#=currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
+        super(requestUrl, client, options, <#=currentName#>Body.class);
+        mBody = new <#=currentName#>Body();
+<# foreach (var param in current.Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
+        mBody.<#=paramName#> = <#=paramName#>;
+<# } #>
+    }
+
+    public void create(final ICallback<<#=currentName#>Body> callback) {
+        send(HttpMethod.GET, callback, mBody);
+    }
+
+    public <#=currentName#>Body create() throws ClientException {
+        return send(HttpMethod.GET, mBody);
+    }
+
+    public I<#=currentName#>Request select(final String value) {
+        getQueryOptions().add(new QueryOption("select", value));
+        return (<#=currentName#>Request)this;
+    }
+
+    public I<#=currentName#>Request top(final int value) {
+        getQueryOptions().add(new QueryOption("top", value+""));
+        return (<#=currentName#>Request)this;
+    }
+
+    public I<#=currentName#>Request expand(final String value) {
+        getQueryOptions().add(new QueryOption("expand", value));
+        return (<#=currentName#>Request)this;
+    }
+
+}
