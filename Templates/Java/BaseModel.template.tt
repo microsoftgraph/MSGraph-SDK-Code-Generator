@@ -416,7 +416,12 @@ public {1} {2}{3}{4} {{";
                 response.nextLink = json.get(""{0}@odata.nextLink"").getAsString();
             }}
 
-            final {3}[] array = serializer.deserializeObject(json.get(""{0}"").toString(), {3}[].class);
+            final JsonObject[] sourceArray = serializer.deserializeObject(json.get(""{0}"").toString(), JsonObject[].class);
+            final {3}[] array = new {3}[sourceArray.length];
+            for (int i = 0; i < sourceArray.length; i++) {{
+                array[i] = serializer.deserializeObject(sourceArray[i].toString(), {3}.class);
+                array[i].setRawObject(serializer, sourceArray[i]);
+            }}
             response.value = Arrays.asList(array);
             {0} = new {2}(response, null);
         }}
