@@ -41,17 +41,11 @@
 <# } #>
 <# if (c.LongDescriptionContains("writable")) { #>
     public void create(final String fileName, final byte[] fileContents, final ICallback<<#=ClassTypeName(c)#>> callback) {
-        final IExecutors executors = getBaseRequest().getClient().getExecutors();
-        executors.performOnBackground(new Runnable() {
-           @Override
-           public void run() {
-                try {
-                    executors.performOnForeground(create(fileName, fileContents), callback);
-                } catch (final ClientException e) {
-                    executors.performOnForeground(e, callback);
-                }
-           }
-        });
+        final String requestUrl = getBaseRequest().getRequestUrl() + "/" + fileName;
+        return new ItemRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+            .getContent()
+            .buildRequest()
+            .put(fileContents, callback);
     }
 
     public <#=ClassTypeName(c)#> create(final String fileName, final byte[] fileContents) throws ClientException {
@@ -63,17 +57,10 @@
     }
 
     public void create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>, final ICallback<<#=ClassTypeName(c)#>> callback) {
-        final IExecutors executors = getBaseRequest().getClient().getExecutors();
-        executors.performOnBackground(new Runnable() {
-           @Override
-           public void run() {
-                try {
-                    executors.performOnForeground(create(new<#=ClassTypeName(c)#>), callback);
-                } catch (final ClientException e) {
-                    executors.performOnForeground(e, callback);
-                }
-           }
-        });
+        final String requestUrl = getBaseRequest().getRequestUrl().toString();
+        return new ItemRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+            .buildRequest()
+            .create(new<#=ClassTypeName(c)#>, callback);
     }
 
     public <#=ClassTypeName(c)#> create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>) throws ClientException {
