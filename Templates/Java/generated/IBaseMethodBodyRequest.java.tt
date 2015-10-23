@@ -9,9 +9,9 @@ import com.google.gson.annotations.*;
 
 <#=CreateInterfaceDef(IBaseTypeRequest(c))#>
 
-    void create(final ICallback<<#=TypeBody(c)#>> callback);
+    void create(final ICallback<<#=ReturnType(c)#>> callback);
 
-    <#=TypeBody(c)#> create() throws ClientException;
+    <#=ReturnType(c)#> create() throws ClientException;
 
     <#=ITypeRequest(c)#> select(final String value) ;
 
