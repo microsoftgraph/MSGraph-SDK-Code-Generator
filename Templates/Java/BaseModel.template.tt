@@ -368,8 +368,12 @@ public {1} {2}{3}{4} {{";
 @"    /**
      * The raw representation of this class
      */
-    @Expose(serialize = false, deserialize = false)
-    private JsonObject mRawObject;
+    private transient JsonObject mRawObject;
+
+    /**
+     * The serializer
+     */
+    private transient ISerializer mSerializer;
 
     /**
      * Gets the raw representation of this class
@@ -380,12 +384,21 @@ public {1} {2}{3}{4} {{";
     }
 
     /**
+     * Gets serializer
+     * @returns the serializer
+     */
+    protected ISerializer getSerializer() {
+        return mSerializer;
+    }
+
+    /**
      * Sets the raw json object
      *
      * @param serializer The serializer
      * @param json The json object to set this object to
      */
     public void setRawObject(final ISerializer serializer, final JsonObject json) {
+        mSerializer = serializer;
         mRawObject = json;
 ");
         if (!isComplexType && properties != null)
