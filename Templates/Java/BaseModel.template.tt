@@ -8,7 +8,7 @@
 
     if (c == null)
     {
-        throw new InvalidOperationException("Unable to get the current type!");
+//        throw new InvalidOperationException("Unable to get the current type!");
     }
 
 #>
@@ -19,7 +19,7 @@
         } else if (c is OdcmProperty && c.AsOdcmProperty().IsCollection) {
             return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		} else if (c is OdcmProperty) {
-			return ClassTypeName(c) + c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+			return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		}
         return c.Name.ToUpperFirstChar();
     }
@@ -238,7 +238,8 @@ import {0}.sdk.generated.*;
 import {0}.sdk.options.*;
 import {0}.sdk.serializer.*;
 
-import java.util.*;";
+import java.util.Arrays;
+import java.util.List;";
         return string.Format(format,
             host.CurrentModel.NamespaceName(),
             host.TemplateInfo.OutputParentDirectory);
@@ -423,7 +424,7 @@ public {1} {2}{3}{4} {{";
             {0} = new {2}(response, null);
         }}
 ",
-            property.Name.ToLowerFirstChar(),
+            property.SanitizePropertyName(),
             BaseTypeCollectionResponse(property),
             TypeCollectionPage(property),
             property.GetTypeString());

@@ -37,6 +37,8 @@
         "Java": [
             { "Template": "BaseModel", "SubProcessor": "Other", "Type": "Shared" },
 
+            { "Template": "Enum", "SubProcessor": "EnumType",                                                                                   "Name": "<Class>" },
+
             { "Template": "MethodBody", "SubProcessor": "MethodWithBody",                                                                       "Name": "<Method>Body" },
             { "Template": "BaseMethodBody", "SubProcessor": "MethodWithBody",                                                                   "Name": "Base<Method>Body" },
 
