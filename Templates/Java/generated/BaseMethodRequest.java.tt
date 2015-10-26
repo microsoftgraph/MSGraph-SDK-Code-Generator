@@ -63,8 +63,8 @@
         } else {
             builder = null;
         }
-        final <#=TypeCollectionPage(c)#> page = <#=TypeCollectionPage(c)#>(response, builder)
-        page.setRawObject()
-        return ;
+        final <#=ITypeCollectionPage(c)#> page = new <#=TypeCollectionPage(c)#>(response, builder);
+        page.setRawObject(response.getSerializer(), response.getRawObject());
+        return page;
     }
 }

@@ -10,5 +10,6 @@ import com.google.gson.annotations.*;
 <#=CreateClassDef(BaseTypeName(c), null, "IJsonBackedObject")#>
 
 <#=CreatePropertyDef(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
-<#=CreateRawJsonObject(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
+<#=CreateRawJsonObject()#>
+<#=UpdatePropertiesWithinSetRawObject(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
 }

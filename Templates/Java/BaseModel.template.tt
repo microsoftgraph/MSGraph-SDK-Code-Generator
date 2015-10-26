@@ -367,8 +367,8 @@ public {1} {2}{3}{4} {{";
         return sb.ToString();
     }
 
-    public string CreateRawJsonObject(IEnumerable<OdcmProperty> properties = null, bool isComplexType = false) {
-        StringBuilder sb = new StringBuilder(
+    public string CreateRawJsonObject() {
+        return
 @"    /**
      * The raw representation of this class
      */
@@ -404,7 +404,12 @@ public {1} {2}{3}{4} {{";
     public void setRawObject(final ISerializer serializer, final JsonObject json) {
         mSerializer = serializer;
         mRawObject = json;
-");
+";
+    }
+
+    public string UpdatePropertiesWithinSetRawObject(IEnumerable<OdcmProperty> properties = null, bool isComplexType = false)
+    {
+        var sb = new StringBuilder();
         if (!isComplexType && properties != null)
         {
             foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation())) {
@@ -431,6 +436,26 @@ public {1} {2}{3}{4} {{";
             TypeCollectionPage(property),
             property.GetTypeString());
             }
+        }
+        sb.Append("    }");
+        return sb.ToString();
+    }
+
+    public string UpdateListPropertiesWithinSetRawObject(IEnumerable<string> listProperties)
+    {
+        var sb = new StringBuilder();
+        foreach (var property in listProperties)
+        {
+            sb.AppendFormat(
+@"
+        if (json.has(""{0}"")) {{
+            final JsonArray array = json.getAsJsonArray(""{0}"");
+            for (int i = 0; i < array.size(); i++) {{
+                {0}.get(i).setRawObject(mSerializer, (JsonObject) array.get(i));
+            }}
+        }}
+",
+            property);
         }
         sb.Append("    }");
         return sb.ToString();

@@ -93,6 +93,8 @@
         } else {
             builder = null;
         }
-        return new <#=TypeCollectionPage(c)#>(response, builder);
+        final <#=TypeCollectionPage(c)#> page = new <#=TypeCollectionPage(c)#>(response, builder);
+        page.setRawObject(response.getSerializer(), response.getRawObject());
+        return page;
     }
 }
