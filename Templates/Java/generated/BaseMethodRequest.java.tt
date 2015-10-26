@@ -63,6 +63,8 @@
         } else {
             builder = null;
         }
-        return new <#=TypeCollectionPage(c)#>(response, builder);
+        final <#=TypeCollectionPage(c)#> page = <#=TypeCollectionPage(c)#>(response, builder)
+        page.setRawObject()
+        return ;
     }
 }

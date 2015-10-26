@@ -15,8 +15,6 @@ import com.google.gson.annotations.*;
     @SerializedName("@odata.nextLink")
     public String nextLink;
 
-    //TODO: I should return more things
-
 <#=CreateRawJsonObject()#>
 
 }

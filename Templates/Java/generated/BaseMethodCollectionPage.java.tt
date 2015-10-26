@@ -15,4 +15,7 @@
     public <#=BaseTypeCollectionPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeRequestBuilder(c)#> builder) {
        super(response.value, builder);
     }
- }
+
+<#=CreateRawJsonObject()#>
+
+}
