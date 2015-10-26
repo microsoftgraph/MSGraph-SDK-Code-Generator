@@ -13,12 +13,13 @@ var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
 
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
     using System.Threading.Tasks;
 
     /// <summary>
     /// The interface I<#=collectionRequest#>.
     /// </summary>
-    public interface I<#=collectionRequest#> : IBaseRequest
+    public partial interface I<#=collectionRequest#> : IBaseRequest
     {
         <#
         if (prop.LongDescriptionContains("writable"))
@@ -60,7 +61,7 @@ namespace Microsoft.OneDrive.Sdk
         /// </summary>
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
-        I<#=collectionRequest#> Top(string value);
+        I<#=collectionRequest#> Top(int value);
 
     }
 }

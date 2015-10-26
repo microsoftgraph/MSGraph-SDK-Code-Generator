@@ -2,9 +2,6 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
-var clientNameLower = clientName.ToLowerFirstChar();
-
 var method = host.CurrentType.AsOdcmMethod();
 var entityName = method.Class.Name.ToCheckedCase();
 var returnType = method.ReturnType.Name.ToCheckedCase();
@@ -59,6 +56,6 @@ namespace Microsoft.OneDrive.Sdk
         /// <summary>
         /// Initializes the NextPageRequest property.
         /// </summary>
-        void InitializeNextPageRequest(I<#=clientName#> <#=clientNameLower#>, string nextPageLinkString);
+        void InitializeNextPageRequest(IBaseClient client, string nextPageLinkString);
     }
 }

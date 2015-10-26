@@ -17,12 +17,12 @@ namespace Microsoft.OneDrive.Sdk
         /// Instantiates a new <#=clientName#>.
         /// </summary>
         public <#=clientName#>(
-            IAppConfig appConfig,
-            IWebUi webUi,
+            AppConfig appConfig,
             CredentialCache credentialCache = null,
             IHttpProvider httpProvider = null,
-            IServiceInfoProvider serviceInfoProvider = null)
-            : base(appConfig, webUi, credentialCache, httpProvider, serviceInfoProvider)
+            IServiceInfoProvider serviceInfoProvider = null,
+            ClientType clientType = ClientType.Consumer)
+            : base(appConfig, credentialCache, httpProvider, serviceInfoProvider, clientType)
         {
         }
     <#

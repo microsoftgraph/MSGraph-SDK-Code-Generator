@@ -9,12 +9,14 @@ var entityRequest = entityName + "Request";
 
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
+    using System.IO;
     using System.Threading.Tasks;
 
     /// <summary>
     /// The interface I<#=entityRequest#>.
     /// </summary>
-    public interface I<#=entityRequest#> : IBaseRequest
+    public partial interface I<#=entityRequest#> : IBaseRequest
     {
         /// <summary>
         /// Creates the specified <#=entityName#> using PUT.
@@ -62,6 +64,6 @@ namespace Microsoft.OneDrive.Sdk
         /// </summary>
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
-        I<#=entityRequest#> Top(string value);
+        I<#=entityRequest#> Top(int value);
     }
 }
