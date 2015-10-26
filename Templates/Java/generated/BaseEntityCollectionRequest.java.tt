@@ -89,7 +89,7 @@
     public <#=ITypeCollectionPage(c)#> buildFromResponse(final <#=BaseTypeCollectionResponse(c)#> response) {
         final <#=ITypeCollectionRequestBuilder(c)#> builder;
         if (response.nextLink != null) {
-            builder = new <#=TypeCollectionRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), getBaseRequest().getOptions());
+            builder = new <#=TypeCollectionRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
         } else {
             builder = null;
         }
