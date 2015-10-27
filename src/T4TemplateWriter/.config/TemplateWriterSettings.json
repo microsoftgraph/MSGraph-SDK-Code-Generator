@@ -2,7 +2,7 @@
     "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python" ],
     "TargetLanguage": "Java",
     "Plugins": [ ],
-    "PrimaryNamespaceName": "oneDrive",
+    "PrimaryNamespaceName": "Microsoft.Graph",
     "NamespacePrefix": "com",
     "InitializeCollections": "false",
     "AllowShortActions": "false",
