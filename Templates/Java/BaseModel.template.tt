@@ -18,6 +18,8 @@
             return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
         } else if (c is OdcmProperty && c.AsOdcmProperty().IsCollection) {
             return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+		} else if (c is OdcmProperty && c.AsOdcmProperty().Type is OdcmPrimitiveType) {
+			return ClassTypeName(c) + c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		} else if (c is OdcmProperty) {
 			return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		}
