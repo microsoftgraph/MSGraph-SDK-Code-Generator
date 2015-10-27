@@ -12,6 +12,7 @@
     }
 
 #>
+<#="// Template Source: '" + host.TemplateFile + "', Name: '" + c.Name + "'"#>
 <#+
     public string TypeName(OdcmObject c) {
         if (c is OdcmMethod) {
