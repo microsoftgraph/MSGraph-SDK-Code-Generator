@@ -4,10 +4,11 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.*;
 
-<#=CreateClassDef(BaseTypeCollectionResponse(c))#>
+<#=CreateClassDef(BaseTypeCollectionResponse(c), null, "IJsonBackedObject")#>
 
     /**
      * The list of <#=TypeName(c)#> within this collection page
@@ -22,5 +23,5 @@ import com.google.gson.annotations.*;
     public String nextLink;
 
 <#=CreateRawJsonObject()#>
-
+<#=UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
 }

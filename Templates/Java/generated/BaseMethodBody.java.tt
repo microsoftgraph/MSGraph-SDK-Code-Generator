@@ -11,5 +11,5 @@ import com.google.gson.annotations.*;
 
 <#=CreateParameterDef(c.AsOdcmMethod().Parameters)#>
 <#=CreateRawJsonObject()#>
-
+    }
 }

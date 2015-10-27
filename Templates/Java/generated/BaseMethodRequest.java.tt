@@ -59,10 +59,12 @@
     public <#=ITypeCollectionPage(c)#> buildFromResponse(final <#=BaseTypeCollectionResponse(c)#> response) {
         final <#=ITypeRequestBuilder(c)#> builder;
         if (response.nextLink != null) {
-            builder = new <#=TypeRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), getBaseRequest().getOptions()<#=MethodPageValues(c)#>);
+            builder = new <#=TypeRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), /* options */ null<#=MethodPageValues(c)#>);
         } else {
             builder = null;
         }
-        return new <#=TypeCollectionPage(c)#>(response, builder);
+        final <#=ITypeCollectionPage(c)#> page = new <#=TypeCollectionPage(c)#>(response, builder);
+        page.setRawObject(response.getSerializer(), response.getRawObject());
+        return page;
     }
 }
