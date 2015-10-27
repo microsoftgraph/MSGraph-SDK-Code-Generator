@@ -25,9 +25,7 @@
         return new <#=TypeCollectionRequest(c)#>(getRequestUrl(), getClient(), options);
     }
 
-<# if (c is OdcmEnum) { #>
     public <#=ITypeRequestBuilder(c)#> byId(final String id) {
         return new <#=TypeRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
     }
-<# } #>
 }

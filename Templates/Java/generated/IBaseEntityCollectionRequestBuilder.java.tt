@@ -12,7 +12,6 @@
     <#=ITypeCollectionRequest(c)#> buildRequest();
 
     <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> options);
-<# if (c is OdcmEnum) { #>
+
     <#=ITypeRequestBuilder(c)#> byId(final String id);
-<# } #>
 }
