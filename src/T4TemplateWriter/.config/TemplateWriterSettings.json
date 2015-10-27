@@ -1,6 +1,6 @@
 ﻿{
     "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python" ],
-    "TargetLanguage": "CSharp",
+    "TargetLanguage": "ObjC",
     "Plugins": [ ],
     "PrimaryNamespaceName": "oneDrive",
     "NamespacePrefix": "OD",

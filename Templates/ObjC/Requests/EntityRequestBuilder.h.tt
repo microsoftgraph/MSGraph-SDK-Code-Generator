@@ -124,7 +124,7 @@ foreach(var complexType in entity.GetProperties(longDescriptionMatches:"navigabl
 foreach(var prop in entity.GetProperties(typeName:"Stream"))
 {
     var propName = prop.Name.ToUpperFirstChar();
-    var propRequestName = writer.GetPrefix() + propName + "Request";
+    var propRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request";
 #>
 - (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>RequestWithOptions:(NSArray *)options;
 

@@ -14,14 +14,13 @@ if (entity.Properties.Any(prop => prop.IsCollection))
 <#
 foreach(var prop in entity.Properties)
 {
-	if(prop.Type is OdcmEnum && !prop.IsCollection)
+	if(prop.IsEnum() && !prop.IsCollection)
     {
 
         var propertyString = string.Format("{0} {1}", prop.GetFullType(), writer.GetName(prop.Name));
 #>
 
 @property <#=propertyString#>;
--(void)set<#=prop.Name#>String:(NSString*)value;
 
 <#
 	}

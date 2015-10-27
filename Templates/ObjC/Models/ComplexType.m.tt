@@ -24,7 +24,7 @@ foreach (var prop in complexType.Properties)
     <#=writer.GetPrefix()#>Collection *_<#=prop.Name.ToLowerFirstChar()#>;
 <#
     }
-    else if (prop.Type.IsDate() || !prop.IsSystem())
+    else if (prop.Type.IsDate() || !(prop.IsSystem() || prop.IsEnum()))
     {
 #>
     <#=prop.GetTypeString()#> *_<#=prop.Name.ToLowerFirstChar()#>;
@@ -41,7 +41,7 @@ foreach (var prop in complexType.Properties)
 <#
 foreach(var prop in complexType.Properties)
 {
-	if(prop.IsComplex() && !prop.IsCollection() && prop.GetTypeString() != "id")
+	if(prop.IsComplex() && !prop.IsEnum() && !prop.IsCollection() && prop.GetTypeString() != "id")
     {        
 #>
 - (<#=prop.GetTypeString()#> *)<#=prop.SanitizePropertyName()#>
@@ -75,20 +75,20 @@ foreach(var prop in complexType.Properties)
 #>
 }
 
-- (void)set<#=prop.SanitizePropertyName().ToUpperFirstChar()#>:(<#=prop.GetTypeString()#> *)<#=prop.Name#>
+- (void)set<#=prop.SanitizePropertyName().ToUpperFirstChar()#>:(<#=prop.GetTypeString()#> *)<#=prop.SanitizePropertyName()#>
 {
 <#
     if (prop.IsSystem() && !prop.Type.IsDate())
     {
 #>
-    self.dictionary[@"<#=prop.Name#>"] = <#=prop.Name#>;
+    self.dictionary[@"<#=prop.Name#>"] = <#=prop.SanitizePropertyName()#>;
 <#
     }
     else 
     {
 #>
-    _<#=prop.Name.ToLowerFirstChar()#> = <#=prop.Name#>;
-    self.dictionary[@"<#=prop.Name#>"] = <#=prop.Name#>; 
+    _<#=prop.Name.ToLowerFirstChar()#> = <#=prop.SanitizePropertyName()#>;
+    self.dictionary[@"<#=prop.Name#>"] = <#=prop.SanitizePropertyName()#>; 
 <#
     }
 #>
@@ -96,7 +96,7 @@ foreach(var prop in complexType.Properties)
 
 <#
 	}
-    else if (!prop.IsComplex() && prop.Type.GetTypeString() != "NSStream")
+    else if (prop.IsEnum() && !prop.IsComplex() && prop.Type.GetTypeString() != "NSStream")
     {
 #>
 
@@ -110,9 +110,9 @@ foreach(var prop in complexType.Properties)
     return [@(0) <#=prop.Type.GetPrimativeCastMethod()#>];
 }
 
-- (void)set<#=prop.GetToUpperFirstCharName()#>:(<#=prop.GetTypeString()#>)<#=prop.Name#>
+- (void)set<#=prop.GetToUpperFirstCharName()#>:(<#=prop.GetTypeString()#>)<#=prop.SanitizePropertyName()#>
 {
-    self.dictionary[@"<#=prop.Name#>"] = @(<#=prop.Name#>);
+    self.dictionary[@"<#=prop.Name#>"] = @(<#=prop.SanitizePropertyName()#>);
 }
 
 <# 

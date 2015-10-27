@@ -6,8 +6,17 @@ var func = host.CurrentType.AsOdcmMethod();
 var entityName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar();
 var requestType = entityName + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Request";
 var returnTypeObject = func.ReturnType.AsOdcmClass();
-var returnType = writer.GetPrefix() + func.ReturnType.Name.ToUpperFirstChar();
-    var superClass = writer.GetPrefix() + ((func.IsCollection || func.LongDescriptionContains("specialCollection")) ?  "CollectionRequest" : "Request");
+string returnType = null;
+if (func.ReturnType != null)
+{
+    returnType = writer.GetPrefix() + func.ReturnType.Name.ToUpperFirstChar();
+}
+else 
+{
+    returnType = "NSDictionary";
+}
+
+var superClass = writer.GetPrefix() + ((func.IsCollection || func.LongDescriptionContains("specialCollection")) ?  "CollectionRequest" : "Request");
 var method = ((func.Verbs & OdcmAllowedVerbs.Get) != OdcmAllowedVerbs.Get) ? "POST" : "GET";
 var isAsync = func.LongDescriptionContains("async");
 var specialCollectionType = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Collection";
@@ -36,7 +45,7 @@ else
 if (func.Parameters.Count > 0)
 {
 #>
-- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url options:(NSArray *)options client:(ODClient *)client;
+- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url options:(NSArray *)options client:(ODBaseClient*)client;
 <#
 }
 string completionHandler;
@@ -61,9 +70,14 @@ else
 
     completionHandler = writer.GetNetworkCompletionBlock(returnType, "response"); 
 }
+if (!returnType.Contains("Stream"))
+{
 
 #>
 
 - (<#=taskType#>)executeWithCompletion:<#=completionHandler#>completionHandler;
+<#
+}
+#>
 
 @end

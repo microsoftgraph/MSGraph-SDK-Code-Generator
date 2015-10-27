@@ -43,7 +43,7 @@ foreach (var prop in entity.Properties)
 <#
 foreach(var prop in entity.Properties)
 {
-	if(prop.IsComplex() && !prop.IsCollection() && prop.GetTypeString() != "id")
+	if(!prop.IsEnum() && prop.IsComplex() && !prop.IsCollection() && prop.GetTypeString() != "id")
     {        
 #>
 - (<#=prop.GetTypeString()#> *)<#=prop.SanitizePropertyName()#>
@@ -76,20 +76,20 @@ foreach(var prop in entity.Properties)
 #>
 }
 
-- (void)set<#=prop.SanitizePropertyName().ToUpperFirstChar()#>:(<#=prop.GetTypeString()#> *)<#=prop.Name#>
+- (void)set<#=prop.SanitizePropertyName().ToUpperFirstChar()#>:(<#=prop.GetTypeString()#> *)<#=prop.SanitizePropertyName()#>
 {
 <#
     if (prop.IsSystem() && !prop.Type.IsDate())
     {
 #>
-    self.dictionary[@"<#=prop.Name#>"] = <#=prop.Name#>;
+    self.dictionary[@"<#=prop.Name#>"] = <#=prop.SanitizePropertyName()#>;
 <#
     }
     else 
     {
 #>
-    _<#=prop.Name.ToLowerFirstChar()#> = <#=prop.Name#>;
-    self.dictionary[@"<#=prop.Name#>"] = <#=prop.Name#>; 
+    _<#=prop.Name.ToLowerFirstChar()#> = <#=prop.SanitizePropertyName()#>;
+    self.dictionary[@"<#=prop.Name#>"] = <#=prop.SanitizePropertyName()#>; 
 <#
     }
 #>
@@ -97,11 +97,11 @@ foreach(var prop in entity.Properties)
 
 <#
 	}
-    else if (!prop.IsComplex() && prop.Type.GetTypeString() != "NSStream")
+    else if (prop.IsEnum() && !prop.IsComplex() && prop.Type.GetTypeString() != "NSStream")
     {
 #>
 
-- (<#=prop.GetTypeString()#>)<#=prop.Name#>
+- (<#=prop.GetTypeString()#>)<#=prop.SanitizePropertyName()#>
 {
     if (self.dictionary[@"<#=prop.Name#>"]){
          return [self.dictionary[@"<#=prop.Name#>"] <#=prop.Type.GetPrimativeCastMethod()#>];

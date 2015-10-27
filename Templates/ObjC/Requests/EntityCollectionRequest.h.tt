@@ -8,9 +8,13 @@ var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
 var propRequestBuilder = propName + "CollectionRequestBuilder";
 var propRequest = propName + "CollectionRequest";
 
-var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
+var innerEntityType = innerEntity.GetTypeString();
 var entityRequestBuilder = innerEntityType + "RequestBuilder";
 var entityRequest = innerEntityType + "Request";
+if (innerEntityType.Equals(propName))
+{
+    propName = propName + "Collection"; 
+}
 #>
 
 @class <#=entityRequest#>, ODURLSessionDataTask;
@@ -24,13 +28,13 @@ typedef void (^<#=propName#>CompletionHandler)(ODCollection *response, <#=propRe
 
 @interface <#=propRequest#> : ODCollectionRequest
 <# 
-    if (prop.LongDescriptionContains("enumerable"))
-    {
+    //if (prop.LongDescriptionContains("enumerable"))
+    //{
 #>
 
 - (ODURLSessionDataTask *)getWithCompletion:(<#=propName#>CompletionHandler)completionHandler;
 <#
-    }
+    //}
     if (prop.LongDescriptionContains("writable"))
     {
 #>

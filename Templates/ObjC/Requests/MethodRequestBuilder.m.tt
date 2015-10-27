@@ -20,10 +20,10 @@ if (func.Parameters.Count > 0)
 <#
     foreach (var param in func.Parameters)
     {
-        var paramTypeString = param.Type.GetTypeString();
+        var paramTypeString = param.Type.GetTypeString() + " ";
         if (param.Type.IsComplex())
         {
-            paramTypeString = paramTypeString + " *";
+            paramTypeString = paramTypeString + "*";
         }
 #>
 @property <#=paramTypeString#><#=param.Name.ToLowerFirstChar()#>;
@@ -42,7 +42,7 @@ if (func.Parameters.Count > 0)
 if (func.Parameters.Count > 0)
 {
 #>
-- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url client:(ODClient *)client 
+- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url client:(ODBaseClient*)client 
 {
     self = [super initWithURL:url client:client];
     if (self){
