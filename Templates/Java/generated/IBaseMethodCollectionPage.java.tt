@@ -7,10 +7,4 @@
 import com.google.gson.JsonObject;
 
 <#=CreateInterfaceDef(IBaseTypeCollectionPage(c), "IBaseCollectionPage" + CollectionPageGeneric(c))#>
-
-    /**
-     * Gets the raw representation of this class
-     * @return the raw representation of this class
-     */
-    JsonObject getRawObject();
 }

@@ -19,7 +19,4 @@ import com.google.gson.annotations.*;
     public <#=BaseTypeCollectionPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeCollectionRequestBuilder(c)#> builder) {
         super(response.value, builder);
     }
-
-<#=CreateRawJsonObject()#>
-    }
 }

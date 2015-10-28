@@ -5,6 +5,7 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), "IRequestBuilder")#>
+
     /**
      * Creates the request
      */
