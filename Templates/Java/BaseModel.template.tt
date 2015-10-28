@@ -233,13 +233,13 @@
     {
         var format = @"package {0}.sdk.{1};
 
-import com.onedrive.sdk.concurrency.*;
-import com.onedrive.sdk.core.*;
-import com.onedrive.sdk.extensions.*;
-import com.onedrive.sdk.http.*;
-import com.onedrive.sdk.generated.*;
-import com.onedrive.sdk.options.*;
-import com.onedrive.sdk.serializer.*;
+import {0}.sdk.concurrency.*;
+import {0}.sdk.core.*;
+import {0}.sdk.extensions.*;
+import {0}.sdk.http.*;
+import {0}.sdk.generated.*;
+import {0}.sdk.options.*;
+import {0}.sdk.serializer.*;
 
 import java.util.*;";
         return string.Format(format,
