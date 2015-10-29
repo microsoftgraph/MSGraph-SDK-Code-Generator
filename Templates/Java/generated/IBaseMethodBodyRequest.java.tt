@@ -8,10 +8,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.*;
 
 <#=CreateInterfaceDef(IBaseTypeRequest(c))#>
+<#
+    var returnType = ReturnType(c);
+    if (c.AsOdcmMethod().LongDescriptionContains("async")) {
+        returnType = "AsyncOperationStatus";
+    }
+#>
 
-    void create(final ICallback<<#=ReturnType(c)#>> callback);
+    void create(final ICallback<<#=returnType#>> callback);
 
-    <#=ReturnType(c)#> create() throws ClientException;
+    <#=returnType#> create() throws ClientException;
 
     <#=ITypeRequest(c)#> select(final String value) ;
 

@@ -20,13 +20,20 @@
 <# foreach (var p in c.AsOdcmMethod().Parameters) { #>
         mBody.<#=ParamName(p)#> = <#=ParamName(p)#>;
 <# } #>
+<#
+    var returnType = ReturnType(c);
+    if (c.AsOdcmMethod().LongDescriptionContains("async")) {
+        returnType = "AsyncOperationStatus";
+#>
+        addHeader("Prefer", "respond-async");
+<#  } #>
     }
 
-    public void create(final ICallback<<#=ReturnType(c)#>> callback) {
+    public void create(final ICallback<<#=returnType#>> callback) {
         send(HttpMethod.POST, callback, mBody);
     }
 
-    public <#=ReturnType(c)#> create() throws ClientException {
+    public <#=returnType#> create() throws ClientException {
         return send(HttpMethod.POST, mBody);
     }
 
