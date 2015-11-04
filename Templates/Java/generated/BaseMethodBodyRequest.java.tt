@@ -19,7 +19,7 @@
 <# if (useAsyncMonitor) { #>
         super(requestUrl, client, options, AsyncMonitorLocation.class);
 <# } else { #>
-        super(requestUrl, client, options, <#=TypeBody(c)#>.class);
+        super(requestUrl, client, options, <#=ReturnType(c)#>.class);
 <# } #>
         mBody = new <#=TypeBody(c)#>();
 <# foreach (var p in c.AsOdcmMethod().Parameters) { #>
