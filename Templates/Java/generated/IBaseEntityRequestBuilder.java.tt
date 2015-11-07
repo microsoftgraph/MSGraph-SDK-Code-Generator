@@ -23,9 +23,6 @@ if (c.AsOdcmClass() != null)
         var childName = child.Name.ToCheckedCase();
 #>
 
-    /**
-     * Gets the request builder for <#=childName#>.
-     */
     <#=ITypeRequestBuilder(child)#> <#=childName.ToLowerFirstChar()#>();
 <#
     }
@@ -36,16 +33,13 @@ if (c.AsOdcmClass() != null)
         var propName = prop.Name.ToUpperFirstChar();
         var propRequestBuilder = TypeRequestBuilder(prop);
 #>
+<# if (prop.LongDescriptionContains("enumerable")) {#>
 
-    /**
-     * Gets the request builder for <#=TypeName(prop)#>.
-     */
     <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>();
+<# } if (prop.LongDescriptionContains("queryable")) { #>
 
-    /**
-     * Gets the request builder for <#=TypeName(prop)#>.
-     */
     <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id);
+<# } #>
 <#
     }
 #>
@@ -56,9 +50,6 @@ if (c.AsOdcmClass() != null)
 		var propRequestBuilder = TypeRequestBuilder(prop);
 #>
 
-    /**
-     * Gets the request builder for <#=propName#>.
-     */
     I<#=propRequestBuilder#> get<#=propName#>();
 <#
 	}
@@ -70,9 +61,6 @@ if (c.AsOdcmClass() != null)
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
 #>
 
-    /**
-     * Gets the request builder for <#=method.Name#>.
-     */
     <#=ITypeRequestBuilder(method)#> get<#=TypeName(method)#>(<#=parameterList#>);
 <#
     }

@@ -61,16 +61,16 @@
         <Property Name="specialFolder" Type="oneDrive.specialFolder" />
         <Property Name="video" Type="oneDrive.video" />
         <NavigationProperty Name="permissions" Type="Collection(oneDrive.permission)" ContainsTarget="true" >
-            <Annotation Term="Org.OData.Core.V1.LongDescription" String="enumerable" />
+            <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable" />
         </NavigationProperty>
         <NavigationProperty Name="versions" Type="Collection(oneDrive.item)" ContainsTarget="true" >
-            <Annotation Term="Org.OData.Core.V1.LongDescription" String="enumerable" />
+            <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable" />
         </NavigationProperty>
         <NavigationProperty Name="children" Type="Collection(oneDrive.item)" ContainsTarget="true"> 
-            <Annotation Term="Org.OData.Core.V1.LongDescription" String="enumerable;writable" />
+            <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable;writable" />
         </NavigationProperty>
         <NavigationProperty Name="thumbnails" Type="Collection(oneDrive.thumbnailSet)" ContainsTarget="true" >
-            <Annotation Term="Org.OData.Core.V1.LongDescription" String="enumerable" />
+            <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable" />
         </NavigationProperty>
       </EntityType>
       <EntityType Name="permission">
