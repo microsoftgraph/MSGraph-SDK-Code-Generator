@@ -1,26 +1,28 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmMethod current = (OdcmMethod)currentType;
-    var methodClass = current.Class.Name.ToUpperFirstChar();
-    var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.*;
 
-<#=CreateInterfaceDef("IBase" + currentName + "Request")#>
+<# var useAsyncMonitor = c.AsOdcmMethod().LongDescriptionContains("async"); #>
+<#=CreateInterfaceDef(IBaseTypeRequest(c))#>
 
-    void create(final ICallback<<#=currentName#>Body> callback);
+<# if (useAsyncMonitor) { #>
+    void create(final ICallback<AsyncMonitor<<#=ReturnType(c)#>>> callback);
 
-    <#=currentName#>Body create() throws ClientException;
+    AsyncMonitor<<#=ReturnType(c)#>> create() throws ClientException;
+<# } else { #>
+    void create(final ICallback<<#=ReturnType(c)#>> callback);
 
-    I<#=currentName#>Request select(final String value) ;
+    <#=ReturnType(c)#> create() throws ClientException;
+<# } #>
 
-    I<#=currentName#>Request top(final int value);
+    <#=ITypeRequest(c)#> select(final String value) ;
 
-    I<#=currentName#>Request expand(final String value);
+    <#=ITypeRequest(c)#> top(final int value);
+
+    <#=ITypeRequest(c)#> expand(final String value);
 }

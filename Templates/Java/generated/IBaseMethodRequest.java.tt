@@ -1,25 +1,20 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmMethod current = (OdcmMethod)currentType;
-    var methodClass = current.Class.Name.ToUpperFirstChar();
-    var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.*;
 
-<#=CreateInterfaceDef("IBase" + currentName + "Request")#>
-    void get(final ICallback<I<#=currentName#>CollectionPage> callback);
+<#=CreateInterfaceDef(IBaseTypeRequest(c))#>
+    void get(final ICallback<<#=ITypeCollectionPage(c)#>> callback);
 
-    I<#=currentName#>CollectionPage get() throws ClientException;
+    <#=ITypeCollectionPage(c)#> get() throws ClientException;
 
-    I<#=currentName#>Request select(final String value) ;
+    <#=ITypeRequest(c)#> select(final String value) ;
 
-    I<#=currentName#>Request top(final int value);
+    <#=ITypeRequest(c)#> top(final int value);
 
-    I<#=currentName#>Request expand(final String value);
+    <#=ITypeRequest(c)#> expand(final String value);
 }

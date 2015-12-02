@@ -1,35 +1,19 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmMethod current = (OdcmMethod)currentType;
-    var methodClass = current.Class.Name.ToUpperFirstChar();
-    var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
-
-    var parameterSignatureBuilder = new StringBuilder();
-    var parameterValuesBuilder = new StringBuilder();
-
-    foreach (var param in current.Parameters)
-    {
-        var paramType = param.Type.GetTypeString();
-        var paramName = param.Name.ToLowerFirstChar();
-    	parameterSignatureBuilder.AppendFormat(", final {0} {1}", paramType, paramName);
-    	parameterValuesBuilder.AppendFormat(", {0}", paramName);
-    }
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef(currentName + "Request", "Base" + currentName + "Request", "I" + currentName + "Request")#>
+<#=CreateClassDef(TypeRequest(c), BaseTypeRequest(c), ITypeRequest(c))#>
 
     /**
-     * The request for this <#=currentName#>
+     * The request for this <#=TypeName(c)#>
      *
      * @param requestUrl The request url
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
-        super(requestUrl, client, options<#=parameterValuesBuilder.ToString()#>);
+    public <#=TypeRequest(c)#>(final String requestUrl, final <#=IClientType(c)#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+        super(requestUrl, client, options<#=MethodParametersValues(c)#>);
     }
 }

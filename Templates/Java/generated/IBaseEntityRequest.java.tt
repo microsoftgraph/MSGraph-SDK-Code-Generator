@@ -1,34 +1,30 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmClass current = (OdcmClass)currentType;
-    var currentName = current.Name.ToUpperFirstChar();
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef("IBase" + currentName + "Request")#>
+<#=CreateInterfaceDef(IBaseTypeRequest(c), "IHttpRequest")#>
 
-    void get(final ICallback<<#=currentName#>> callback);
+    void get(final ICallback<<#=TypeName(c)#>> callback);
 
-    <#=currentName#> get() throws ClientException;
+    <#=TypeName(c)#> get() throws ClientException;
 
-    void update(final <#=currentName#> source<#=currentName#>, final ICallback<<#=currentName#>> callback);
+    void update(final <#=TypeName(c)#> source<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
 
-    <#=currentName#> update(final <#=currentName#> source<#=currentName#>) throws ClientException;
+    <#=TypeName(c)#> update(final <#=TypeName(c)#> source<#=TypeName(c)#>) throws ClientException;
 
     void delete(final ICallback<Void> callback);
 
     void delete()  throws ClientException;
 
-    void create(final <#=currentName#> new<#=currentName#>, final ICallback<<#=currentName#>> callback);
+    void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
 
-    <#=currentName#> create(final <#=currentName#> new<#=currentName#>) throws ClientException;
+    <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
 
-    IBase<#=currentName#>Request select(final String value);
+    IBase<#=TypeName(c)#>Request select(final String value);
 
-    IBase<#=currentName#>Request top(final int value);
+    IBase<#=TypeName(c)#>Request top(final int value);
 
-    IBase<#=currentName#>Request expand(final String value);
+    IBase<#=TypeName(c)#>Request expand(final String value);
 }

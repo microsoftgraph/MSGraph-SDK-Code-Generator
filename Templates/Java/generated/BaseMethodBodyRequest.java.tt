@@ -1,67 +1,81 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmMethod current = (OdcmMethod)currentType;
-    var methodClass = current.Class.Name.ToUpperFirstChar();
-    var currentName = methodClass + current.Name.Substring(current.Name.IndexOf('.') + 1).ToUpperFirstChar();
-
-    var parameterSignatureBuilder = new StringBuilder();
-    var parameterValuesBuilder = new StringBuilder();
-    var requestValuesBuilder = new StringBuilder();
-
-    foreach (var param in current.Parameters)
-    {
-        var paramType = param.Type.GetTypeString();
-        var paramName = param.Name.ToLowerFirstChar();
-        var fieldName = "m" + param.Name.ToUpperFirstChar();
-    	parameterSignatureBuilder.AppendFormat(", final {0} {1}", paramType, paramName);
-    	parameterValuesBuilder.AppendFormat(", {0}", paramName);
-        requestValuesBuilder.AppendFormat(", {0}", fieldName);
-    }
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef("Base" + currentName + "Request",  "BaseRequest")#>
-    protected final <#=currentName#>Body mBody;
+<# var useAsyncMonitor = c.AsOdcmMethod().LongDescriptionContains("async"); #>
+<#=CreateClassDef(BaseTypeRequest(c),  "BaseRequest", IBaseTypeRequest(c))#>
+    protected final <#=TypeBody(c)#> mBody;
 
     /**
-     * The request for this <#=currentName#>
+     * The request for this <#=TypeName(c)#>
      *
      * @param requestUrl The request url
      * @param client The service client
      * @param options The options for this request
      */
-    public Base<#=currentName#>Request(final String requestUrl, final IOneDriveClient client, final List<Option> options<#=parameterSignatureBuilder.ToString()#>) {
-        super(requestUrl, client, options, <#=currentName#>Body.class);
-        mBody = new <#=currentName#>Body();
-<# foreach (var param in current.Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
-        mBody.<#=paramName#> = <#=paramName#>;
+    public <#=BaseTypeRequest(c)#>(final String requestUrl, final <#=IClientType(c)#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+<# if (useAsyncMonitor) { #>
+        super(requestUrl, client, options, AsyncMonitorLocation.class);
+<# } else { #>
+        super(requestUrl, client, options, <#=ReturnType(c)#>.class);
+<# } #>
+        mBody = new <#=TypeBody(c)#>();
+<# foreach (var p in c.AsOdcmMethod().Parameters) { #>
+        mBody.<#=ParamName(p)#> = <#=ParamName(p)#>;
+<# } #>
+<# if (useAsyncMonitor) { #>
+        addHeader("Prefer", "respond-async");
 <# } #>
     }
 
-    public void create(final ICallback<<#=currentName#>Body> callback) {
-        send(HttpMethod.GET, callback, mBody);
+<# if (useAsyncMonitor) { #>
+    public void create(final ICallback<AsyncMonitor<<#=ReturnType(c)#>>> callback) {
+        getClient().getExecutors().performOnBackground(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getClient().getExecutors().performOnForeground(create(), callback);
+                } catch (final ClientException e) {
+                    getClient().getExecutors().performOnForeground(e, callback);
+                }
+            }
+        });
     }
 
-    public <#=currentName#>Body create() throws ClientException {
-        return send(HttpMethod.GET, mBody);
+    public AsyncMonitor<<#=ReturnType(c)#>> create() throws ClientException {
+        final AsyncMonitorLocation monitorLocation = send(HttpMethod.POST, mBody);
+
+        return new AsyncMonitor<>(getClient(), monitorLocation, new ResultGetter<<#=ReturnType(c)#>>() {
+            @Override
+            public <#=ReturnType(c)#> getResultFrom(final String resourceUrl, final IOneDriveClient client) {
+                return new <#=ReturnType(c)#>Request(resourceUrl, client, /* options */ null).get();
+            }
+        });
+    }
+<# } else { #>
+    public void create(final ICallback<<#=ReturnType(c)#>> callback) {
+        send(HttpMethod.POST, callback, mBody);
     }
 
-    public I<#=currentName#>Request select(final String value) {
+    public <#=ReturnType(c)#> create() throws ClientException {
+        return send(HttpMethod.POST, mBody);
+    }
+<# } #>
+
+    public <#=ITypeRequest(c)#> select(final String value) {
         getQueryOptions().add(new QueryOption("select", value));
-        return (<#=currentName#>Request)this;
+        return (<#=TypeRequest(c)#>)this;
     }
 
-    public I<#=currentName#>Request top(final int value) {
+    public <#=ITypeRequest(c)#> top(final int value) {
         getQueryOptions().add(new QueryOption("top", value+""));
-        return (<#=currentName#>Request)this;
+        return (<#=TypeRequest(c)#>)this;
     }
 
-    public I<#=currentName#>Request expand(final String value) {
+    public <#=ITypeRequest(c)#> expand(final String value) {
         getQueryOptions().add(new QueryOption("expand", value));
-        return (<#=currentName#>Request)this;
+        return (<#=TypeRequest(c)#>)this;
     }
-
 }

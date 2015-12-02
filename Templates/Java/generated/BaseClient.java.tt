@@ -1,56 +1,50 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmClass current = (OdcmClass)currentType;
-    var clientName = current.Name.ToUpperFirstChar();
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef("Base" + clientName + "Client", "BaseClient", "IBase" + clientName + "Client")#>
+<#=CreateClassDef(BaseClientType(c), "BaseClient", IBaseClientType(c))#>
 <#
 foreach (var prop in model.EntityContainer.Properties)
 {
-    if(prop.IsCollection())
+    var propertyName = prop.Type.GetTypeString();
+    if (prop.IsCollection())
     {
-        var propertyType = prop.Type.GetTypeString();
-        var requestCollectionBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
-        var requestBuilder = propertyType + "RequestBuilder";
+        var requestCollectionBuilder = TypeCollectionRequestBuilder(prop);
 #>
 
     /**
-     * Gets the collection of <#=propertyType#> objects.
+     * Gets the collection of <#=propertyName#> objects.
      *
-     * @return The request builder for the collection of <#=propertyType#> objects
+     * @return The request builder for the collection of <#=propertyName#> objects
      */
-    public I<#=requestCollectionBuilder#> get<#=propertyType#>s() {
-        return new <#=requestCollectionBuilder#>(getServiceRoot() + "/<#=prop.Name#>", (I<#=clientName#>Client)this, null);
+    public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propertyName#>s() {
+        return new <#=TypeCollectionRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);
     }
 
     /**
-     * Gets a single <#=propertyType#>.
+     * Gets a single <#=propertyName#>.
      *
-     * @param id The id of the <#=propertyType#> to retrieve.
-     * @return The request builder for the <#=propertyType#> object
+     * @param id The id of the <#=propertyName#> to retrieve.
+     * @return The request builder for the <#=propertyName#> object
      */
-    public I<#=requestBuilder#> get<#=propertyType#>(final String id) {
-        return new <#=requestBuilder#>(getServiceRoot() + "/<#=prop.Name#>/" + id, (I<#=clientName#>Client)this, null);
+    public <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>(final String id) {
+        return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>/" + id, (<#=IClientType(c)#>)this, null);
     }
 <#
     }
     else
     {
-        var requestBuilder = prop.Name + "RequestBuilder";
 #>
 
     /**
-     * Gets <#=requestBuilder#>.
+     * Gets <#=TypeRequestBuilder(c)#>.
      *
      * @return the <#=prop.Type.GetTypeString()#>.
      */
-    public I<#=requestBuilder#> get<#=requestBuilder#>s() {
-        return new <#=requestBuilder#>(getServiceRoot() + "/<#=prop.Name#>", (I<#=clientName#>Client)this, null);
+    public <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>s() {
+        return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);
     }
 <#
     }

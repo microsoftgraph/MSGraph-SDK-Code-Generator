@@ -1,53 +1,48 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmClass current = (OdcmClass)currentType;
-    var clientName = current.Name.ToUpperFirstChar();
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef("IBase" + clientName + "Client", "IBaseClient")#>
+<#=CreateInterfaceDef(IBaseClientType(c), "IBaseClient")#>
 <#
 foreach (var prop in model.EntityContainer.Properties)
 {
-    if(prop.IsCollection())
+    var propertyName = prop.Type.GetTypeString();
+    if (prop.IsCollection())
     {
-        var propertyType = prop.Type.GetTypeString();
-        var requestCollectionBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
-        var requestBuilder = propertyType + "RequestBuilder";
+        var requestCollectionBuilder = TypeCollectionRequestBuilder(prop);
 #>
 
     /**
-     * Gets the collection of <#=propertyType#> objects.
+     * Gets the collection of <#=propertyName#> objects.
      *
-     * @return The request builder for the collection of <#=propertyType#> objects
+     * @return The request builder for the collection of <#=propertyName#> objects
      */
-    I<#=requestCollectionBuilder#> get<#=propertyType#>s();
+    <#=ITypeCollectionRequestBuilder(prop)#> get<#=propertyName#>s();
 
     /**
-     * Gets a single <#=propertyType#>.
+     * Gets a single <#=propertyName#>.
      *
-     * @param id The id of the <#=propertyType#> to retrieve.
-     * @return The request builder for the <#=propertyType#> object
+     * @param id The id of the <#=propertyName#> to retrieve.
+     * @return The request builder for the <#=propertyName#> object
      */
-    I<#=requestBuilder#> get<#=propertyType#>(final String id);
+    <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>(final String id);
 <#
     }
     else
     {
-        var requestBuilder = prop.Name + "RequestBuilder";
 #>
 
     /**
-     * Gets <#=requestBuilder#>.
+     * Gets <#=TypeRequestBuilder(c)#>.
      *
      * @return the <#=prop.Type.GetTypeString()#>.
      */
-    I<#=requestBuilder#> get<#=requestBuilder#>s();
+    <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>s();
 <#
     }
 }
 #>
+
 }

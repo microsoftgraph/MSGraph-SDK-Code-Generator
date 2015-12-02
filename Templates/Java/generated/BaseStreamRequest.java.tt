@@ -1,28 +1,22 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#
-    OdcmProperty current = (OdcmProperty)currentType;
-    var currentName = current.Name.ToUpperFirstChar();
-    var propertyName = current.Name.ToUpperFirstChar();
-    var propertyClass = current.Class.Name.ToUpperFirstChar();
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
 import java.io.*;
 
-<#=CreateClassDef("Base" + propertyClass + currentName + "Request", "BaseStreamRequest<" + propertyClass + ">", "IBase" + propertyClass + currentName + "Request")#>
+<#=CreateClassDef(BaseTypeRequest(c), "BaseStreamRequest<" + ClassTypeName(c) + ">", IBaseTypeRequest(c))#>
 
     /**
-     * The request for this <#=currentName#>
+     * The request for this <#=TypeName(c)#>
      *
      * @param requestUrl The request url
      * @param client The service client
      * @param options The options for this request
      */
-    public Base<#=propertyClass + currentName#>Request(String requestUrl, IOneDriveClient client, List<Option> options) {
-        super(requestUrl, client, options, <#=propertyClass#>.class);
+    public <#=BaseTypeRequest(c)#>(String requestUrl, <#=IClientType(c)#> client, List<Option> options) {
+        super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
     }
 
     public void get(final ICallback<InputStream> callback) {
@@ -33,11 +27,11 @@ import java.io.*;
        return send();
     }
 
-    public void put(final byte[] fileContents, final ICallback<<#=propertyClass#>> callback) {
+    public void put(final byte[] fileContents, final ICallback<<#=ClassTypeName(c)#>> callback) {
         send(fileContents, callback);
     }
 
-    public <#=propertyClass#> put(final byte[] fileContents) throws ClientException {
+    public <#=ClassTypeName(c)#> put(final byte[] fileContents) throws ClientException {
         return send(fileContents);
     }
 }
