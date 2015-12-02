@@ -382,7 +382,7 @@ public {1} {2}{3}{4} {{";
 
     /**
      * Gets the raw representation of this class
-     * @returns the raw representation of this class
+     * @return the raw representation of this class
      */
     public JsonObject getRawObject() {
         return mRawObject;
@@ -390,7 +390,7 @@ public {1} {2}{3}{4} {{";
 
     /**
      * Gets serializer
-     * @returns the serializer
+     * @return the serializer
      */
     protected ISerializer getSerializer() {
         return mSerializer;

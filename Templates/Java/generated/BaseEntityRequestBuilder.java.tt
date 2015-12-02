@@ -38,9 +38,6 @@ if (c.AsOdcmClass() != null)
         var childName = child.Name.ToCheckedCase();
 #>
 
-    /**
-     * Gets the request builder for <#=childName#>.
-     */
     public <#=ITypeRequestBuilder(child)#> <#=childName.ToLowerFirstChar()#>() {
         return new <#=TypeRequestBuilder(child)#>(getRequestUrlWithAdditionalSegment("<#=child.Name#>"), getClient(), null);
     }
@@ -54,20 +51,17 @@ if (c.AsOdcmClass() != null)
         var propRequestBuilder = TypeRequestBuilder(prop);
         if (prop.IsCollection()) {
 #>
+<# if (prop.LongDescriptionContains("enumerable")) {#>
 
-    /**
-     * Gets the request builder for <#=TypeName(prop)#>.
-     */
     public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>() {
         return new <#=TypeCollectionRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
+<# } if (prop.LongDescriptionContains("queryable")) { #>
 
-    /**
-     * Gets the request builder for <#=TypeName(prop)#>.
-     */
     public <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id) {
         return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
     }
+<# } #>
 <#
         } else {
 #>
@@ -89,9 +83,6 @@ if (c.AsOdcmClass() != null)
 		var propRequestBuilder = TypeRequestBuilder(prop);
 #>
 
-    /**
-     * Gets the request builder for <#=propName#>.
-     */
     public I<#=propRequestBuilder#> get<#=propName#>() {
         return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
@@ -105,9 +96,6 @@ if (c.AsOdcmClass() != null)
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
 #>
 
-    /**
-     * Gets the request builder for <#=method.Name#>.
-     */
     public <#=ITypeRequestBuilder(method)#> get<#=TypeName(method)#>(<#=parameterList#>) {
         return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=method.Name#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
