@@ -4,7 +4,7 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-import <#=host.CurrentModel.NamespaceName()#>.sdk.authenication.*;
+import <#=host.CurrentModel.NamespaceName()#>.sdk.authentication.*;
 import <#=host.CurrentModel.NamespaceName()#>.sdk.logger.*;
 import android.app.Activity;
 

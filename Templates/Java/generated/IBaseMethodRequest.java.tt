@@ -8,9 +8,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.*;
 
 <#=CreateInterfaceDef(IBaseTypeRequest(c))#>
+
+<# if (c.AsOdcmMethod().ReturnType != null) { #>
     void get(final ICallback<<#=ITypeCollectionPage(c)#>> callback);
 
     <#=ITypeCollectionPage(c)#> get() throws ClientException;
+<# } else { #>
+    void get(final ICallback<Void> callback);
+
+    void get() throws ClientException;
+<# } #>
 
     <#=ITypeRequest(c)#> select(final String value) ;
 

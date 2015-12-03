@@ -756,6 +756,7 @@
                 <Parameter Name="DestinationId" Type="Edm.String" Unicode="false" />
                 <ReturnType Type="microsoft.graph.message" />
             </Action>
+<!--
             <Action Name="createReply" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.message" />
                 <ReturnType Type="microsoft.graph.message" />
@@ -768,6 +769,7 @@
                 <Parameter Name="bindingParameter" Type="microsoft.graph.message" />
                 <ReturnType Type="microsoft.graph.message" />
             </Action>
+-->
             <Action Name="reply" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.message" />
                 <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
@@ -778,31 +780,34 @@
             </Action>
             <Action Name="forward" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.message" />
-                <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
-                <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" />
+                <Parameter Name="comment" Type="Edm.String" Unicode="false" />
+                <Parameter Name="toRecipients" Type="Collection(microsoft.graph.recipient)" />
             </Action>
+<!--
             <Action Name="send" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.message" />
             </Action>
+-->
             <Action Name="accept" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
-                <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
-                <Parameter Name="SendResponse" Type="Edm.Boolean" />
+                <Parameter Name="comment" Type="Edm.String" Unicode="false" />
+                <Parameter Name="sendResponse" Type="Edm.Boolean" />
             </Action>
             <Action Name="decline" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
-                <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
-                <Parameter Name="SendResponse" Type="Edm.Boolean" />
+                <Parameter Name="comment" Type="Edm.String" Unicode="false" />
+                <Parameter Name="sendResponse" Type="Edm.Boolean" />
             </Action>
             <Action Name="tentativelyAccept" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
-                <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
-                <Parameter Name="SendResponse" Type="Edm.Boolean" />
+                <Parameter Name="comment" Type="Edm.String" Unicode="false" />
+                <Parameter Name="sendResponse" Type="Edm.Boolean" />
             </Action>
             <Action Name="snoozeReminder" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
-                <Parameter Name="NewReminderTime" Type="microsoft.graph.dateTimeTimeZone" Nullable="false" />
+                <Parameter Name="newReminderTime" Type="microsoft.graph.dateTimeTimeZone" Nullable="false" />
             </Action>
+<!--
             <Action Name="dismissReminder" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
             </Action>
@@ -821,18 +826,19 @@
             <Action Name="resetUnseenCount" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.group" />
             </Action>
+-->
             <Action Name="reply" IsBound="true" EntitySetPath="bindingParameter/Posts">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.conversationThread" />
-                <Parameter Name="Post" Type="microsoft.graph.post" Nullable="false" />
+                <Parameter Name="post" Type="microsoft.graph.post" Nullable="false" />
             </Action>
             <Action Name="forward" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.post" />
-                <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
-                <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
+                <Parameter Name="comment" Type="Edm.String" Unicode="false" />
+                <Parameter Name="toRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
             </Action>
             <Action Name="reply" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.post" />
-                <Parameter Name="Post" Type="microsoft.graph.post" Nullable="false" />
+                <Parameter Name="post" Type="microsoft.graph.post" Nullable="false" />
             </Action>
             <Function Name="search" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false" />
