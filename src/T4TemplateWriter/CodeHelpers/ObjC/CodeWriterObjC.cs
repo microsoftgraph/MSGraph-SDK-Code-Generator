@@ -285,7 +285,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
                     result.AppendFormat("@\"{0}\",", param.Name);
                 } else {
                     result.AppendFormat("_{0},", param.Name.ToLowerFirstChar());
-                    result.AppendFormat("@\"_{0}\",", param.Name);
+                    result.AppendFormat("@\"{0}\",", param.Name);
                 }
 
             }

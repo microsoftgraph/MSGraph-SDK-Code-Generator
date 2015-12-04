@@ -33,7 +33,7 @@ foreach(var prop in entity.Properties)
     else if (prop.IsCollection && prop.LongDescriptionContains("enumerable"))
     {
 #>
-@property (readonly) <#=writer.GetPrefix()#>Collection *<#=prop.Name.ToLowerFirstChar()#>;
+@property <#=writer.GetPrefix()#>Collection *<#=prop.Name.ToLowerFirstChar()#>;
 <#
     }
 }

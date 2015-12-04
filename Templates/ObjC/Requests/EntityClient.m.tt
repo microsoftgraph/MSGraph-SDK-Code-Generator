@@ -40,7 +40,7 @@ foreach(var prop in containerProps)
 #>
 -(<#=propName#>RequestBuilder*)<#=prop.Name#>
 {
-    return [[<#=propName#>RequestBuilder alloc] initWithURL:[self.baseURL URLByAppendingPathComponent:@"<#=prop.Name#>"] 
+    return [[<#=prop.Name#>RequestBuilder alloc] initWithURL:[self.baseURL URLByAppendingPathComponent:@"<#=prop.Name#>"] 
              <#=prop.Type.GetTypeString().ToSpaces()#><#="RequestBuilder alloc]     ".ToSpaces()#>client:self];
 }
 <#
