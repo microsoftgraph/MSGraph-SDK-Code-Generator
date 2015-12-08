@@ -159,7 +159,9 @@
                 <NavigationProperty Name="threads" Type="Collection(microsoft.graph.conversationThread)" ContainsTarget="true" />
                 <NavigationProperty Name="calendar" Type="microsoft.graph.calendar" Nullable="false" ContainsTarget="true" />
                 <NavigationProperty Name="calendarView" Type="Collection(microsoft.graph.event)" ContainsTarget="true" />
-                <NavigationProperty Name="events" Type="Collection(microsoft.graph.event)" ContainsTarget="true" />
+                <NavigationProperty Name="events" Type="Collection(microsoft.graph.event)" ContainsTarget="true">
+                    <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable" />
+                </NavigationProperty>
                 <NavigationProperty Name="conversations" Type="Collection(microsoft.graph.conversation)" ContainsTarget="true" />
                 <NavigationProperty Name="photo" Type="microsoft.graph.profilePhoto" Nullable="false" ContainsTarget="true" />
                 <NavigationProperty Name="acceptedSenders" Type="Collection(microsoft.graph.directoryObject)" ContainsTarget="true" />
@@ -181,7 +183,9 @@
                 <Property Name="name" Type="Edm.String" Unicode="false" />
                 <Property Name="color" Type="microsoft.graph.calendarColor" />
                 <Property Name="changeKey" Type="Edm.String" Unicode="false" />
-                <NavigationProperty Name="events" Type="Collection(microsoft.graph.event)" ContainsTarget="true" />
+                <NavigationProperty Name="events" Type="Collection(microsoft.graph.event)" ContainsTarget="true">
+                    <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable" />
+                </NavigationProperty>
                 <NavigationProperty Name="calendarView" Type="Collection(microsoft.graph.event)" ContainsTarget="true" />
             </EntityType>
             <EntityType Name="outlookItem" BaseType="microsoft.graph.entity" Abstract="true">
@@ -349,13 +353,19 @@
                 <NavigationProperty Name="memberOf" Type="Collection(microsoft.graph.directoryObject)" />
                 <NavigationProperty Name="createdObjects" Type="Collection(microsoft.graph.directoryObject)" />
                 <NavigationProperty Name="ownedObjects" Type="Collection(microsoft.graph.directoryObject)" />
-                <NavigationProperty Name="messages" Type="Collection(microsoft.graph.message)" ContainsTarget="true" />
+                <NavigationProperty Name="messages" Type="Collection(microsoft.graph.message)" ContainsTarget="true">
+                    <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable" />
+                </NavigationProperty>
                 <NavigationProperty Name="mailFolders" Type="Collection(microsoft.graph.mailFolder)" ContainsTarget="true" />
-                <NavigationProperty Name="calendar" Type="microsoft.graph.calendar" Nullable="false" ContainsTarget="true" />
+                <NavigationProperty Name="calendar" Type="microsoft.graph.calendar" Nullable="false" ContainsTarget="true">
+                    <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable" />
+                </NavigationProperty>
                 <NavigationProperty Name="calendars" Type="Collection(microsoft.graph.calendar)" ContainsTarget="true" />
                 <NavigationProperty Name="calendarGroups" Type="Collection(microsoft.graph.calendarGroup)" ContainsTarget="true" />
                 <NavigationProperty Name="calendarView" Type="Collection(microsoft.graph.event)" ContainsTarget="true" />
-                <NavigationProperty Name="events" Type="Collection(microsoft.graph.event)" ContainsTarget="true" />
+                <NavigationProperty Name="events" Type="Collection(microsoft.graph.event)" ContainsTarget="true">
+                    <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable" />
+                </NavigationProperty>
                 <NavigationProperty Name="contacts" Type="Collection(microsoft.graph.contact)" ContainsTarget="true" />
                 <NavigationProperty Name="contactFolders" Type="Collection(microsoft.graph.contactFolder)" ContainsTarget="true" />
                 <NavigationProperty Name="photo" Type="microsoft.graph.profilePhoto" Nullable="false" ContainsTarget="true" />
@@ -399,7 +409,9 @@
                 <Property Name="childFolderCount" Type="Edm.Int32" />
                 <Property Name="unreadItemCount" Type="Edm.Int32" />
                 <Property Name="totalItemCount" Type="Edm.Int32" />
-                <NavigationProperty Name="messages" Type="Collection(microsoft.graph.message)" ContainsTarget="true" />
+                <NavigationProperty Name="messages" Type="Collection(microsoft.graph.message)" ContainsTarget="true">
+                    <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable" />
+                </NavigationProperty>
                 <NavigationProperty Name="childFolders" Type="Collection(microsoft.graph.mailFolder)" ContainsTarget="true" />
             </EntityType>
             <EntityType Name="calendarGroup" BaseType="microsoft.graph.entity">
