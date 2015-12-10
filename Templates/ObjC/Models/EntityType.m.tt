@@ -69,6 +69,9 @@ foreach(var prop in entity.Properties)
 #>
     if (!_<#=prop.Name.ToLowerFirstChar()#>){
         _<#=prop.Name.ToLowerFirstChar()#> = [[<#=prop.GetTypeString()#> alloc] initWithDictionary:self.dictionary[@"<#=prop.Name#>"]];
+        if (_<#=prop.Name.ToLowerFirstChar()#>){
+            self.dictionary[@"<#=prop.Name.ToLowerFirstChar()#>"] = _<#=prop.Name.ToLowerFirstChar()#>;
+        }
     }
     return _<#=prop.Name.ToLowerFirstChar()#>;
 <#

@@ -19,14 +19,14 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
         {
             return TypeHelperObjC.Prefix;
         }
-        public override string WriteOpeningCommentLine() 
+        public override string WriteOpeningCommentLine()
         {
-            return "/*******************************************************************************" + this.NewLineCharacter;
+            return "";
         }
 
         public override string WriteClosingCommentLine() 
         {
-            return "******************************************************************************/" + this.NewLineCharacter;
+            return this.NewLineCharacter;
         }
 
         public override string WriteInlineCommentChar() 
