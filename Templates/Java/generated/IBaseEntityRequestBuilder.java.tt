@@ -32,6 +32,7 @@ if (c.AsOdcmClass() != null)
     {
         var propName = prop.Name.ToUpperFirstChar();
         var propRequestBuilder = TypeRequestBuilder(prop);
+        if (prop.IsCollection()) {
 #>
 <# if (prop.LongDescriptionContains("enumerable")) {#>
 
@@ -41,6 +42,15 @@ if (c.AsOdcmClass() != null)
     <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id);
 <# } #>
 <#
+        } else {
+#>
+
+    /**
+     * Gets the request builder for <#=TypeName(prop)#>.
+     */
+    <#=ITypeRequestBuilder(prop)#> get<#=propName#>();
+<#
+        }
     }
 #>
 <#

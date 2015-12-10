@@ -252,7 +252,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             var output = this.T4Engine.ProcessTemplate(templateContent, host);
             if (!string.IsNullOrEmpty(host.TemplateName))
             {
-                fileName = host.TemplateName;
+                fileName = host.TemplateName;  
             }
 
             if (host.Errors != null && host.Errors.HasErrors)

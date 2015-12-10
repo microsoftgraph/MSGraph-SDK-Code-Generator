@@ -39,7 +39,7 @@ if (c.AsOdcmClass() != null)
 #>
 
     public <#=ITypeRequestBuilder(child)#> <#=childName.ToLowerFirstChar()#>() {
-        return new <#=TypeRequestBuilder(child)#>(getRequestUrlWithAdditionalSegment("<#=child.Name#>"), null);
+        return new <#=TypeRequestBuilder(child)#>(getRequestUrlWithAdditionalSegment("<#=child.Name#>"), getClient(), null);
     }
 <#
     }
@@ -49,6 +49,7 @@ if (c.AsOdcmClass() != null)
     {
         var propName = prop.Name.ToUpperFirstChar();
         var propRequestBuilder = TypeRequestBuilder(prop);
+        if (prop.IsCollection()) {
 #>
 <# if (prop.LongDescriptionContains("enumerable")) {#>
 
@@ -62,6 +63,17 @@ if (c.AsOdcmClass() != null)
     }
 <# } #>
 <#
+        } else {
+#>
+
+    /**
+     * Gets the request builder for <#=TypeName(prop)#>.
+     */
+    public <#=ITypeRequestBuilder(prop)#> get<#=propName#>() {
+        return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+<#
+        }
     }
 #>
 <#

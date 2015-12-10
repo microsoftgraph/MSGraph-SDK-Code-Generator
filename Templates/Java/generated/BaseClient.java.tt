@@ -43,7 +43,7 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return the <#=prop.Type.GetTypeString()#>.
      */
-    public <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>s() {
+    public <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>() {
         return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);
     }
 <#
