@@ -5,14 +5,23 @@
 var func = host.CurrentType.AsOdcmMethod();
 var entityName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar();
 var requestType = entityName + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Request";
-var returnType = writer.GetPrefix() + func.ReturnType.Name.ToUpperFirstChar();
-var returnTypeObject = func.ReturnType.AsOdcmClass();
-//special method
-if (returnTypeObject != null)
+string returnType = null;
+if (func.ReturnType != null)
 {
-    var valuesProperty = returnTypeObject.Properties.First(prop => prop.IsCollection);
-    returnType = writer.GetPrefix() + valuesProperty.Type.Name.ToUpperFirstChar();
+    returnType = writer.GetPrefix() + func.ReturnType.Name.ToUpperFirstChar();
+    var returnTypeObject = func.ReturnType.AsOdcmClass();
+    //special method
+    if (returnTypeObject != null && returnTypeObject.Properties.Any(prop => prop.IsCollection && prop.Name.Contains("values")))
+    {
+        var valuesProperty = returnTypeObject.Properties.First(prop => prop.IsCollection);
+        returnType = writer.GetPrefix() + valuesProperty.Type.Name.ToUpperFirstChar();
+    }
 }
+else 
+{
+    returnType = "NSDictionary";
+}
+
 
 var superClass = writer.GetPrefix() + ((func.IsCollection) ?  "CollectionRequest" : "Request");
 var method = ((func.Verbs & OdcmAllowedVerbs.Get) != OdcmAllowedVerbs.Get) ? "POST" : "GET";
@@ -52,10 +61,10 @@ if (func.Parameters.Count > 0)
 <#
     foreach (var param in func.Parameters)
     {
-        var paramTypeString = param.Type.GetTypeString();
+        var paramTypeString = param.Type.GetTypeString() + " ";
         if (param.Type.IsComplex())
         {
-            paramTypeString = paramTypeString + " *";
+            paramTypeString = paramTypeString + "*";
         }
 #>
 @property <#=paramTypeString#><#=param.Name.ToLowerFirstChar()#>;
@@ -74,7 +83,7 @@ if (func.Parameters.Count > 0)
 if (func.Parameters.Count > 0)
 {
 #>
-- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url options:(NSArray *)options client:(ODClient *)client 
+- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url options:(NSArray *)options client:(ODBaseClient*)client 
 {
 <#
     foreach (var param in func.Parameters)
@@ -162,7 +171,7 @@ if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
 
     stringBuilder.AppendLine("^(ODCollection *collectionResponse, NSError *error){");
 	string returnCollectionName = "collectionResponse";
-    if (func.LongDescriptionContains("specialColelction"))
+    if (func.LongDescriptionContains("specialCollection"))
     {
 		returnCollectionName = "collection";
 		stringBuilder.AppendLine(baseIndents + "    " + specialCollecitonName + " *" + returnCollectionName +"= nil;");
@@ -200,18 +209,36 @@ else
     taskMethod = "[self taskWithRequest:";
 }
 var indentSpace = ("    " + taskType + "task = " + taskMethod).ToSpaces();
+if (!returnType.Contains("Stream"))
+{
 #>
 
 - (<#=taskType#>)executeWithCompletion:<#=completionHandler#>completionHandler
 {
 
     <#=taskType#>task = <#=taskMethod#>self.mutableRequest
-<#=indentSpace.Substring("odObjectWithDictionary".Length + 1)#>odObjectWithDictionary:^(NSDictionary *responseObject){
+<#=indentSpace.Substring("odObjectWithDictionary".Length + 1)#>odObjectWithDictionary:^(id responseObject){
+<#
+if (returnType == "ODString" || returnType == "ODGuid")
+{
+#>
+<#=indentSpace#>    return [responseObject copy];
+<#
+}
+else
+{
+#>
 <#=indentSpace#>    return [[<#=returnType#> alloc] initWithDictionary:responseObject];
+<#
+}
+#>
 <#=indentSpace#>}
 <#=indentSpace.Substring("completion".Length + 1)#>completion:<#=completionBlock#>];
     [task execute];
     return task;
 }
+<#
+}
+#>
 
 @end

@@ -19,14 +19,14 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
         {
             return TypeHelperObjC.Prefix;
         }
-        public override string WriteOpeningCommentLine() 
+        public override string WriteOpeningCommentLine()
         {
-            return "/*******************************************************************************" + this.NewLineCharacter;
+            return "";
         }
 
         public override string WriteClosingCommentLine() 
         {
-            return "******************************************************************************/" + this.NewLineCharacter;
+            return this.NewLineCharacter;
         }
 
         public override string WriteInlineCommentChar() 
@@ -143,56 +143,60 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
 
         public string GetImportsClass(IEnumerable<OdcmProperty> references, IEnumerable<string> extraImports = null, IEnumerable<string> extraClasses = null) 
         {
-            var imports = new StringBuilder();
-            var classes = new StringBuilder("@class ");
-            var classType = references.First().Class.GetTypeString();
-            foreach (var type in references.Select(prop => prop.Type).Distinct())
+            if (references != null && references.Any())
             {
-                if (type is OdcmEnum)
+                var imports = new StringBuilder();
+                var classes = new StringBuilder("@class ");
+                var classType = references.First().Class.GetTypeString();
+                foreach (var type in references.Select(prop => prop.Type).Distinct())
                 {
-                    imports.AppendFormat("#import \"{0}.h\"", type.GetTypeString()).AppendLine();
+                    if (type is OdcmEnum)
+                    {
+                        imports.AppendFormat("#import \"{0}.h\"", type.GetTypeString()).AppendLine();
+                    }
+                    // CGFloat is in UIKit/UIKit
+                    else if (type.GetTypeString().Equals("CGFloat"))
+                    {
+                        imports.AppendFormat("#import <UIKit/UiKit.h>");
+                    }
+                    else if (type.IsComplex() && !type.IsSystem() && type.GetTypeString() != "id" &&
+                             type.GetTypeString() != classType)
+                    {
+                        classes.AppendFormat("{0}, ", type.GetTypeString());
+                    }
                 }
-                // CGFloat is in UIKit/UIKit
-                if (type.GetTypeString().Equals("CGFloat"))
+                if (extraImports != null)
                 {
-                    imports.AppendFormat("#import <UIKit/UiKit.h>");
+                    foreach (var extraType in extraImports)
+                    {
+                        imports.AppendFormat("#import \"{0}.h\"", extraType);
+                    }
                 }
-                else if (type.IsComplex() && !type.IsSystem() && type.GetTypeString() != "id" && type.GetTypeString() != classType)
-                {
-                    classes.AppendFormat("{0}, ", type.GetTypeString());
-                }
-            }
-            if (extraImports != null)
-            {
-                foreach(var extraType in extraImports)
-                {
-                    imports.AppendFormat("#import \"{0}.h\"", extraType);
-                }
-            }
 
-            if (extraClasses != null)
-            {
-                foreach (var extraType in extraClasses)
+                if (extraClasses != null)
                 {
-                    classes.AppendFormat("{0}, ", extraType);
+                    foreach (var extraType in extraClasses)
+                    {
+                        classes.AppendFormat("{0}, ", extraType);
+                    }
                 }
-            }
 
-            var classString = classes.AppendLine().ToString();
-            int lastOccurance = classString.LastIndexOf(',');
-            if (lastOccurance < 0)
-            {
-                classString = @"";
-            }
-            else
-            {
-                classString = classString.Remove(lastOccurance, 1).Insert(lastOccurance, ";");
-            }
+                var classString = classes.AppendLine().ToString();
+                int lastOccurance = classString.LastIndexOf(',');
+                if (lastOccurance < 0)
+                {
+                    classString = @"";
+                }
+                else
+                {
+                    classString = classString.Remove(lastOccurance, 1).Insert(lastOccurance, ";");
+                }
 
-            var importsString = imports.ToString();
-            return (string.IsNullOrWhiteSpace(classString.Trim()) ? "" : classString) +
-                   (string.IsNullOrWhiteSpace(importsString.Trim()) ? "" : importsString);
-
+                var importsString = imports.ToString();
+                return (string.IsNullOrWhiteSpace(classString.Trim()) ? "" : classString) +
+                       (string.IsNullOrWhiteSpace(importsString.Trim()) ? "" : importsString);
+            }
+            return "";
         }
 
         public string GetClass(OdcmProperty type) 
@@ -273,14 +277,14 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             }
             foreach (var param in parameters) {
 
-                if (param.Type.GetTypeString() == "bool") {
-                    result.AppendFormat("{0} ? @\"true\" : @\"false\",", param.Name.ToLowerFirstChar());
-                    result.AppendFormat("@\"{0}\"", param.Name);
+                if (param.Type.GetTypeString() == "BOOL") {
+                    result.AppendFormat("_{0} ? @\"true\" : @\"false\",", param.Name.ToLowerFirstChar());
+                    result.AppendFormat("@\"{0}\",", param.Name);
                 } else if (param.Type.GetTypeString() == "int") {
-                    result.AppendFormat("[[NSString alloc] initWithFormat:@\"%d\", {0}],", param.Name.ToLowerFirstChar());
-                    result.AppendFormat("@\"{0}\"", param.Name);
+                    result.AppendFormat("[[NSString alloc] initWithFormat:@\"%d\", _{0}],", param.Name.ToLowerFirstChar());
+                    result.AppendFormat("@\"{0}\",", param.Name);
                 } else {
-                    result.AppendFormat("{0},", param.Name.ToLowerFirstChar());
+                    result.AppendFormat("_{0},", param.Name.ToLowerFirstChar());
                     result.AppendFormat("@\"{0}\",", param.Name);
                 }
 

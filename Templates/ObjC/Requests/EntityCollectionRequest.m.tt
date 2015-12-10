@@ -9,7 +9,10 @@ var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
 var propNameRequest = propName + "CollectionRequest";
 var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
 var entityRequest = innerEntityType + "RequestBuilder";
-
+if (innerEntityType.Equals(propName))
+{
+    propName = propName + "Collection"; 
+}
 
 #>
 
@@ -27,8 +30,8 @@ var entityRequest = innerEntityType + "RequestBuilder";
 @implementation <#=propNameRequest#>
 
 <# 
-    if (prop.LongDescriptionContains("enumerable"))
-    {
+    //if (prop.LongDescriptionContains("enumerable"))
+    //{
 #>
 
 - (NSMutableURLRequest *)get
@@ -42,8 +45,21 @@ var entityRequest = innerEntityType + "RequestBuilder";
 {
 
     ODURLSessionDataTask * task = [self collectionTaskWithRequest:[self get]
-                                             odObjectWithDictionary:^(NSDictionary *response){
+                                             odObjectWithDictionary:^(id response){
+<#
+    if (prop.IsSystem())
+    {
+#>
+
+                                            return [response copy];
+<#
+    }
+    else
+    { 
+#>
                                             return [[<#=innerEntityType#> alloc] initWithDictionary:response];
+<#  }
+#>
                                          }
                                                         completion:^(ODCollection *collectionResponse, NSError *error){
                                             if(!error && collectionResponse.nextLink && completionHandler){
@@ -59,7 +75,7 @@ var entityRequest = innerEntityType + "RequestBuilder";
 }
 
 <#
-    }
+    //}
     if (prop.LongDescriptionContains("writable"))
     {
 #>
