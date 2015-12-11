@@ -1,0 +1,50 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entityName = writer.GetPrefix()  + "Client";
+#>
+
+#import "<#=writer.GetPrefix()#>ODataEntities.h"
+
+@implementation <#=entityName#>
+
+
+-(instancetype)initWithURL:(NSString *)url httpProvider:(id<ODHttpProvider>)httpProvider authProvider:(id<ODAuthProvider>)authProvider
+{
+    self = [super init];
+    if (self){
+        _baseURL = [NSURL URLWithString:url];
+        _httpProvider = httpProvider;
+        _authProvider = authProvider;
+    }
+    return self;
+}
+
+<#
+var containerProps = model.EntityContainer.Properties;
+
+foreach(var prop in containerProps)
+{
+	if(prop.IsCollection())
+	{
+
+        var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
+        var propType = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
+#>
+-(<#=propName#>CollectionRequestBuilder *)<#=prop.Name#>
+{
+    return [[<#=propName#>CollectionRequestBuilder alloc] initWithURL:[self.baseURL URLByAppendingPathComponent:@"<#=prop.Name#>"] 
+             <#=prop.Type.GetTypeString().ToSpaces()#><#="CollectionRequestBuilder alloc]     ".ToSpaces()#>client:self];
+}
+
+-(<#=propType#>RequestBuilder*)<#=prop.Name#>:(NSString*)<#=prop.Type.Name#>
+{
+    return [[self <#=prop.Name#>] <#=prop.Type.Name#>:<#=prop.Type.Name#>];
+}
+
+<#
+    }
+}
+#>
+
+@end

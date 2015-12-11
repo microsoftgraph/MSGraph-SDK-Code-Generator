@@ -1,0 +1,46 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+
+<#
+var entity = host.CurrentType.AsOdcmClass();
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "Request";
+var clasess = new List<string>();
+clasess.Add("ODURLSessionDataTask");
+
+foreach(var prop in entity.NavigationProperties())
+{
+	var fetcher = string.Empty;
+	fetcher = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder";
+
+	if(!clasess.Contains(fetcher)) clasess.Add(fetcher);
+
+	if(prop.IsCollection)
+	{
+		var collectionFetcher = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+
+		if(!clasess.Contains(collectionFetcher)) clasess.Add(collectionFetcher);
+	}
+}
+
+foreach(var propertyClass in clasess)
+{
+
+#>
+@class <#=propertyClass#>;
+<#
+
+}
+
+#>
+#import "<#=writer.GetPrefix()#>Models.h"
+#import "ODRequest.h"
+
+@interface <#=entityName#> : ODRequest
+
+- (ODURLSessionDataTask *)getWithCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler;
+
+- (ODURLSessionDataTask *)update:(<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> *)<#=entity.Name#> withCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler;
+
+- (ODURLSessionDataTask *)deleteWithCompletion:<#=writer.GetNetworkCompletionBlock(null, null)#>completionHandler;
+
+@end

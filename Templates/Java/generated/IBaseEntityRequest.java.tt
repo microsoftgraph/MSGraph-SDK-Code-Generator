@@ -1,0 +1,30 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseTypeRequest(c), "IHttpRequest")#>
+
+    void get(final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> get() throws ClientException;
+
+    void update(final <#=TypeName(c)#> source<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> update(final <#=TypeName(c)#> source<#=TypeName(c)#>) throws ClientException;
+
+    void delete(final ICallback<Void> callback);
+
+    void delete()  throws ClientException;
+
+    void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
+
+    IBase<#=TypeName(c)#>Request select(final String value);
+
+    IBase<#=TypeName(c)#>Request top(final int value);
+
+    IBase<#=TypeName(c)#>Request expand(final String value);
+}

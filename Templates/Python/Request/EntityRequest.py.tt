@@ -8,13 +8,19 @@ OdcmClass entity        = host.CurrentType.AsOdcmClass();
 var entityName          = entity.Name.ToUpperFirstChar();
 var entityRequest       = entityName + "Request";
 var jsonContentType     = "application/json";
+var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
 #>
-<#=writer.WriteHeader()#>
-
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
 from ..request_base import RequestBase
-from ..models.<#=entity.Name.ToUnderscore()#> import <#=entityName#>
-import asyncio
+from ..model.<#=entity.Name.ToUnderscore()#> import <#=entityName#>
 import json
+<#
+if (!isPython2) {
+#>
+import asyncio
+<#
+}
+#>
 
 class <#=entityRequest#>(RequestBase):
     """The type <#=entityRequest#>."""
@@ -25,18 +31,21 @@ class <#=entityRequest#>(RequestBase):
         Args:
             request_url (str): The url to perform the <#=entityRequest#>
                 on
-            client (:class:`OneDriveClient<onedrivesdk.requests.one_drive_client.OneDriveClient>`):
+            client (:class:`OneDriveClient<onedrivesdk.request.one_drive_client.OneDriveClient>`):
                 The client which will be used for the request
             options (list of :class:`Option<onedrivesdk.options.Option>`):
                 A list of options to pass into the request
         """
-        super().__init__(request_url, client, options)
+        super(<#=entityRequest#>, self).__init__(request_url, client, options)
 
     def delete(self):
         """Deletes the specified <#=entityName#>."""
         self.method = "DELETE"
         self.send()
 
+<#
+    if (!isPython2) {
+#>
     @asyncio.coroutine
     def delete_async(self):
         """Deletes the specified <#=entityName#>."""
@@ -44,11 +53,14 @@ class <#=entityRequest#>(RequestBase):
                                                     self.delete)
         yield from future
 
+<#
+    }
+#>
     def get(self):
         """Gets the specified <#=entityName#>.
         
         Returns:
-            :class:`<#=entityName#><onedrivesdk.models.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
                 The <#=entityName#>.
         """
         self.method = "GET"
@@ -56,12 +68,15 @@ class <#=entityRequest#>(RequestBase):
         self._initialize_collection_properties(entity)
         return entity
 
+<#
+    if (!isPython2) {
+#>
     @asyncio.coroutine
     def get_async(self):
         """Gets the specified <#=entityName#> in async.
 
         Yields:
-            :class:`<#=entityName#><onedrivesdk.models.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
                 The <#=entityName#>.
         """
         future = self._client._loop.run_in_executor(None,
@@ -69,15 +84,18 @@ class <#=entityRequest#>(RequestBase):
         entity = yield from future
         return entity
 
+<#
+    }
+#>
     def update(self, <#=entity.Name.ToUnderscore()#>):
         """Updates the specified <#=entityName#>.
         
         Args:
-            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><onedrivesdk.models.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
+            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
                 The <#=entityName#> to update.
 
         Returns:
-            :class:`<#=entityName#><onedrivesdk.models.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
                 The updated <#=entityName#>.
         """
         self.content_type = "<#=jsonContentType#>"
@@ -86,16 +104,19 @@ class <#=entityRequest#>(RequestBase):
         self._initialize_collection_properties(entity)
         return entity
 
+<#
+    if (!isPython2) {
+#>
     @asyncio.coroutine
     def update_async(self, <#=entity.Name.ToUnderscore()#>):
         """Updates the specified <#=entityName#> in async
         
         Args:
-            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><onedrivesdk.models.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
+            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
                 The <#=entityName#> to update.
 
         Yields:
-            :class:`<#=entityName#><onedrivesdk.models.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
                 The updated <#=entityName#>.
         """
         future = self._client._loop.run_in_executor(None,
@@ -105,6 +126,7 @@ class <#=entityRequest#>(RequestBase):
         return entity
 
 <#
+    }
         var collectionProperties = entity.Properties.Where(property => property.IsCollection() && property.Type.IsComplex());
 
         if (collectionProperties.Any())

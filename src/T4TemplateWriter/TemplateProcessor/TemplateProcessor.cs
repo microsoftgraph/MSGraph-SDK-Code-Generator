@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
 using System;
@@ -17,10 +17,10 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
- 
+    using Vipr.T4TemplateWriter.CodeHelpers.ObjC;
+
     public class TemplateProcessor : ITemplateProcessor
     {
-
         private static CustomT4Host _host;
 
         protected static CustomT4Host Host(ITemplateInfo templateInfo, string templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel)
@@ -53,12 +53,13 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected void InitializeSubprocessors()
         {
-            this.subProcessors = new Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>>() {             
+            this.subProcessors = new Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>>() {
                 {SubProcessor.EntityType,                   ProcessEntityTypes},
                 {SubProcessor.ComplexType,                  ProcessComplexTypes},
                 {SubProcessor.EnumType,                     ProcessEnumTypes},
                 {SubProcessor.EntityContainer,              ProcessEntityContainerType},
                 {SubProcessor.Property,                     ProcessProperties},
+                {SubProcessor.StreamProperty,               ProcessStreamProperties},
                 {SubProcessor.CollectionProperty,           ProcessCollections},
                 {SubProcessor.Method,                       ProcessMethods},
                 {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
@@ -80,6 +81,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             this.PathWriter = pathWriter;
             this.PathWriter.Model = odcmModel;
             this.TemplatesDirectory = templatesDirectory;
+        }
+
+        public string GetProcessorVerboseOutput()
+        {
+            return _host.TemplateHostStats.ToString();
         }
 
         public IEnumerable<TextFile> Process(ITemplateInfo templateInfo)
@@ -137,7 +143,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                              property, 
                                              templateInfo.BaseFileName(containerName:this.CurrentModel.EntityContainer.Name,
                                                                        className:property.Class.Name,
-                                                                       propertyName:property.Name));
+                                                                       propertyName:property.Name,
+                                                                       propertyType:property.Type.Name));
             }
         }
 
@@ -149,7 +156,21 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                              property,
                                              templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
                                                                        className: property.Class.Name,
-                                                                       propertyName: property.Name));
+                                                                       propertyName: property.Name,
+                                                                       propertyType: property.Type.Name));
+            }
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessStreamProperties(ITemplateInfo templateInfo)
+        {
+            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetStreamProperties))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             property,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: property.Class.Name,
+                                                                       propertyName: property.Name,
+                                                                       propertyType: property.Type.Name));
             }
         }
 
@@ -170,7 +191,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<TextFile> ProcessNonCollectionMethods(ITemplateInfo templateInfo)
         {
-            return this.ProcessMethods(templateInfo, this.NonColledtionMethods);
+            return this.ProcessMethods(templateInfo, this.NonCollectionMethods);
         }
 
         protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo, Func<IEnumerable<OdcmMethod>> methods)
@@ -185,9 +206,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
-        protected virtual IEnumerable<OdcmMethod> NonColledtionMethods()
+        protected virtual IEnumerable<OdcmMethod> NonCollectionMethods()
         {
-            return this.CurrentModel.GetMethods().Where(method => !method.IsCollection);
+            return this.CurrentModel.GetMethods().Where(method => !method.IsCollection && (method.ReturnType == null || method.ReturnType is OdcmPrimitiveType));
         }
         protected virtual IEnumerable<OdcmMethod> MethodsWithBody()
         {
@@ -196,7 +217,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmMethod> CollectionMethods()
         {
-            return this.CurrentModel.GetMethods().Where(method => method.IsCollection);
+            var methods = this.CurrentModel.GetMethods().Where(method => method.IsCollection && method.ReturnType != null && !(method.ReturnType is OdcmPrimitiveType)).ToList();
+            return methods;
         }
 
         protected virtual IEnumerable<OdcmProperty> CollectionProperties()
@@ -204,15 +226,16 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection);
         }
 
-        protected virtual IEnumerable<OdcmObject> FilterOdcmEnumerable(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod) 
+        protected virtual IEnumerable<OdcmObject> FilterOdcmEnumerable(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod)
         {
-            foreach (OdcmObject odcmObject in modelMethod())
+            var filteredEnum = modelMethod().Where(o => templateInfo.ShouldIncludeObject(o));
+
+            if (_host != null && !filteredEnum.Any())
             {
-                if (templateInfo.ShouldIncludeObject(odcmObject))
-                {
-                    yield return odcmObject;
-                }
+                _host.TemplateHostStats.RecordProcessedNothing(templateInfo);
             }
+
+            return filteredEnum;
         }
 
         protected IEnumerable<TextFile> ProcessTemplate(ITemplateInfo templateInfo)
@@ -227,6 +250,10 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             var templateContent = File.ReadAllText(host.TemplateFile);
 
             var output = this.T4Engine.ProcessTemplate(templateContent, host);
+            if (!string.IsNullOrEmpty(host.TemplateName))
+            {
+                fileName = host.TemplateName;
+            }
 
             if (host.Errors != null && host.Errors.HasErrors)
             {
@@ -236,6 +263,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             var path = this.PathWriter.WritePath(templateInfo, fileName);
 
+            host.TemplateHostStats.RecordProcessed(templateInfo, odcmObject != null ? odcmObject.Name : string.Empty, path);
             return new TextFile(path, output);
         }
 

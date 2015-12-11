@@ -1,0 +1,43 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var prop = host.CurrentType.AsOdcmProperty();
+var innerEntity = prop.Type;
+
+var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
+var propRequestBuilder = propName + "CollectionRequestBuilder";
+var propRequest = propName + "CollectionRequest";
+
+var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
+var entityRequestBuilder = innerEntityType + "RequestBuilder";
+var entityRequest = innerEntityType + "Request";
+#>
+
+@class <#=entityRequest#>, ODURLSessionDataTask;
+
+#import "<#=writer.GetPrefix()#>Models.h"
+#import "ODCollectionRequest.h"
+
+typedef void (^<#=innerEntityType#>CompletionHandler)(<#=innerEntityType#> *response, NSError *error);
+
+typedef void (^<#=propName#>CompletionHandler)(ODCollection *response, <#=propRequest#> *nextRequest, NSError *error);
+
+@interface <#=propRequest#> : ODCollectionRequest
+<# 
+    if (prop.LongDescriptionContains("enumerable"))
+    {
+#>
+
+- (ODURLSessionDataTask *)getWithCompletion:(<#=propName#>CompletionHandler)completionHandler;
+<#
+    }
+    if (prop.LongDescriptionContains("writable"))
+    {
+#>
+
+- (ODURLSessionDataTask *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#> withCompletion:(<#=innerEntityType#>CompletionHandler)completionHandler;
+
+<#
+    }
+#>
+@end

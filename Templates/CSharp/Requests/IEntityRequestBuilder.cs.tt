@@ -2,7 +2,6 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
 var entityRequest = entityName + "Request";
@@ -12,6 +11,7 @@ var entityRequestBuilder = entityRequest + "Builder";
 
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -48,7 +48,7 @@ namespace Microsoft.OneDrive.Sdk
     foreach(var prop in entity.NavigationProperties())
     {
         var propName = prop.Name.ToCheckedCase();
-        var propRequestBuilder = propName + "RequestBuilder";
+        var propRequestBuilder = prop.Type.Name.ToCheckedCase() + "RequestBuilder";
 
         if(prop.IsCollection()){
             var collectionRequestBuilder = propName + "CollectionRequestBuilder";
@@ -82,7 +82,7 @@ namespace Microsoft.OneDrive.Sdk
         /// <summary>
         /// Gets the request builder for <#=propName#>.
         /// </summary>
-        /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
+        /// <returns>The <see cref="I<#=entityName#><#=propRequestBuilder#>"/>.</returns>
         I<#=entityName#><#=propRequestBuilder#> <#=propName#> { get; }
     <#
     }
@@ -100,7 +100,7 @@ namespace Microsoft.OneDrive.Sdk
         builderInitializerStringBuilder.Append("this.AppendSegmentToRequestUrl(\"" + method.Name + "\"),");
         builderInitializerStringBuilder.Append(Environment.NewLine);
         builderInitializerStringBuilder.Append("                ");
-        builderInitializerStringBuilder.Append("this." + clientName + ",");
+        builderInitializerStringBuilder.Append("this.Client,");
 
         var hasParameters = method.Parameters != null && method.Parameters.Any();
 
@@ -108,7 +108,7 @@ namespace Microsoft.OneDrive.Sdk
         {
             foreach (var param in method.Parameters)
             {
-                var paramTypeString = param.Type.GetTypeString();
+                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
 
                 paramStringBuilder.Append(Environment.NewLine);
                 paramStringBuilder.Append("            ");

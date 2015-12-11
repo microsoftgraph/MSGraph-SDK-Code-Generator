@@ -1,0 +1,84 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+
+var entity = host.CurrentType.AsOdcmClass();
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
+
+#>
+
+#import "<#=writer.GetPrefix()#>ODataEntities.h"
+#import "ODURLSessionDataTask.h"
+
+@interface ODRequest()
+
+- (NSMutableURLRequest *)requestWithMethod:(NSString *)method
+                                      body:(NSData *)body 
+                                   headers:(NSDictionary *)headers;
+
+- (NSMutableURLRequest *)requestWithURL:(NSURL *)url
+                                 method:(NSString *)method
+                                   body:(NSData *)body 
+                                headers:(NSDictionary *)headers;
+
+- (ODURLSessionDataTask*)taskWithRequest:(NSMutableURLRequest *)request
+                                completion:<#=writer.GetNetworkCompletionBlock("NSDictionary", "dictionary")#>completionHandler;
+
+@end
+
+@implementation <#=entityName#>Request
+
+- (NSMutableURLRequest *)get
+{
+    return [self requestWithMethod:@"GET"
+                              body:nil
+                           headers:nil];
+}
+
+- (ODURLSessionDataTask *)getWithCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler
+{
+    ODURLSessionDataTask *task = [self taskWithRequest:[self get] 
+                                odObjectWithDictionary:^(NSDictionary *response){
+                                            return [[<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> alloc] initWithDictionary:response];
+                                        }
+                                             completion:completionHandler]; 
+    [task execute];
+    return task;
+}
+
+
+- (NSMutableURLRequest *)update:(<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> *)<#=entity.Name#>
+{
+    NSData *body = [NSJSONSerialization dataWithJSONObject:[<#=entity.Name#> dictionaryFromItem] options:0 error:nil];
+    return [self requestWithMethod:@"PATCH"
+                              body:body
+                           headers:nil];
+}
+
+- (ODURLSessionDataTask *)update:(<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> *)<#=entity.Name#> withCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler
+{
+    ODURLSessionDataTask *task = [self taskWithRequest:[self update:<#=entity.Name#>] 
+                                odObjectWithDictionary:^(NSDictionary *response){
+                                            return [[<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> alloc] initWithDictionary:response];
+                                        }
+                                              completion:completionHandler];
+    [task execute];
+    return task;
+}
+
+- (NSMutableURLRequest *)delete
+{
+    return [self requestWithMethod:@"DELETE"
+                              body:nil
+                           headers:nil];
+}
+
+- (ODURLSessionDataTask *)deleteWithCompletion:<#=writer.GetNetworkCompletionBlock(null, null)#>completionHandler
+{
+    ODURLSessionDataTask *task = [self taskWithRequest:[self delete] completion:^(NSDictionary *response, NSError *error){
+                                                                    completionHandler(error);
+                                                                 }];
+    [task execute];
+    return task;
+} 
+@end

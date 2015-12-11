@@ -2,14 +2,21 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
-var clientNameLower = clientName.ToLowerFirstChar();
-
 var method = host.CurrentType.AsOdcmMethod();
-var returnType = method.ReturnType;
-var responseTypeName = returnType.Name.ToCheckedCase();
-var responseNamePrefix = responseTypeName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
-var entityCollectionRequest = responseNamePrefix + "CollectionRequest";
+var entityName = method.Class.Name.ToCheckedCase();
+var returnType = method.ReturnType.Name.ToCheckedCase();
+var returnTypeObject = method.ReturnType.AsOdcmClass();
+var isSpecialCollection = method.LongDescriptionContains("specialCollection");
+
+// Special method
+if (isSpecialCollection)
+{
+    var valuesProperty = returnTypeObject.Properties.First(prop => prop.IsCollection);
+    returnType = valuesProperty.Type.Name.ToUpperFirstChar();
+}
+
+var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
+var entityCollectionRequest = responseNamePrefix + "Request";
 var entityCollectionPage = responseNamePrefix + "CollectionPage";
 
 #>
@@ -19,25 +26,29 @@ namespace Microsoft.OneDrive.Sdk
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.
     /// </summary>
-    public interface I<#=entityCollectionPage#> : ICollectionPage<<#=responseTypeName#>>
+    public interface I<#=entityCollectionPage#> : ICollectionPage<<#=returnType#>>
     {
         /// <summary>
         /// Gets the next page <see cref="I<#=entityCollectionRequest#>"/> instance.
         /// </summary>
         I<#=entityCollectionRequest#> NextPageRequest { get; }
         <#
-        if (method.HasSpecialCollection())
+        if (isSpecialCollection)
         {
-            var specialMethodParams = method.SpecialMethodParameters();
-            foreach (var parameter in specialMethodParams)
+            foreach (var property in returnTypeObject.Properties)
             {
+                if (!property.LongDescriptionContains("ignorableCollection"))
+                {
+                    var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
+                    var propertyType = property.Type.GetTypeString();
         #>
 
         /// <summary>
-        /// Gets the <#=parameter.Name#>.
+        /// Gets the <#=propertyName#>.
         /// </summary>
-        string <#=parameter.Name.ToCheckedCase()#> { get; set; }
+        <#=propertyType#> <#=propertyName#> { get; set; }
         <#
+                }
             }
         }
         #>
@@ -45,6 +56,6 @@ namespace Microsoft.OneDrive.Sdk
         /// <summary>
         /// Initializes the NextPageRequest property.
         /// </summary>
-        void InitializeNextPageRequest(I<#=clientName#> <#=clientNameLower#>, string nextPageLinkString);
+        void InitializeNextPageRequest(IBaseClient client, string nextPageLinkString);
     }
 }

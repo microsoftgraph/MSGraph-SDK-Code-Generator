@@ -13,45 +13,52 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
 
         public CodeWriterObjC() : base() { }
 
-        public CodeWriterObjC(OdcmModel model) : base(model)
+        public CodeWriterObjC(OdcmModel model) : base(model) { }
+
+        public string GetPrefix()
         {
-            TypeHelperObjC.Prefix = GetPrefix();
+            return TypeHelperObjC.Prefix;
+        }
+        public override string WriteOpeningCommentLine() 
+        {
+            return "/*******************************************************************************" + this.NewLineCharacter;
         }
 
-        public string GetPrefix() {
-            if (this.CurrentModel != null) {
-                return ConfigurationService.Settings.NamespacePrefix + this.CurrentModel.EntityContainer.Name;
-            } else {
-                return ConfigurationService.Settings.NamespacePrefix;
-            }
+        public override string WriteClosingCommentLine() 
+        {
+            return "******************************************************************************/" + this.NewLineCharacter;
         }
 
-        public override String WriteOpeningCommentLine() {
-            return "/*******************************************************************************\n";
-        }
-
-        public override String WriteClosingCommentLine() {
-            return "\n******************************************************************************/";
-        }
-
-        public override string WriteInlineCommentChar() {
+        public override string WriteInlineCommentChar() 
+        {
             return "// ";
         }
-        public string GetInterfaceLine(OdcmClass e) {
 
-            string baseEntity = e.Base == null ? "MSOrcBaseEntity"
-                              : GetPrefix() + e.Base.Name.Substring(e.Base.Name.LastIndexOf(".") + 1);
+        public string GetInterfaceLine(OdcmClass entityType, string baseClass = null) 
+        {
+            string baseEntity = null;
+            if (baseClass != null)
+            {
+                baseEntity = baseClass;
+            }
+            else
+            {
+                baseEntity = entityType.Base == null ? "NSObject"
+                                           : GetPrefix() + entityType.Base.Name.Substring(entityType.Base.Name.LastIndexOf(".") + 1);
+            }
+            var interfaceLineBuilder = new StringBuilder();
+            // NSObject lives in Foundation/Foundation.h 
+            var baseImport = (baseEntity.Equals("NSObject")) ? "#import <Foundation/Foundation.h>" : String.Format("#import \"{0}.h\"", baseEntity);
+            interfaceLineBuilder.AppendLine(baseImport);
 
-            var s = new StringBuilder();
-            s.AppendFormat("#import \"{0}.h\"", baseEntity);
+            interfaceLineBuilder.AppendLine().AppendLine().AppendLine(this.GetHeaderDoc(entityType.Name))
+            .AppendFormat("@interface {0}{1} : {2}", this.GetPrefix(), entityType.Name.ToUpperFirstChar(), baseEntity);
 
-            s.AppendLine().AppendLine().AppendLine(GetHeaderDoc(e.Name))
-            .AppendFormat("@interface {0}{1} : {2}", GetPrefix(), e.Name, baseEntity);
-
-            return s.ToString();
+            return interfaceLineBuilder.ToString();
         }
 
-        public string GetHeaderDoc(string name) {
+        public string GetHeaderDoc(string name) 
+        {
 
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(@"/**");
@@ -61,8 +68,8 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             return stringBuilder.ToString();
         }
 
-        public string GetImplementationDoc(string name) {
-
+        public string GetImplementationDoc(string name) 
+        {
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(@"/**");
             stringBuilder.AppendLine().AppendFormat(@"* The implementation file for type {0}.", name);
@@ -71,28 +78,36 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             return stringBuilder.ToString();
         }
 
-        public string GetMethodDoc(string name, List<OdcmProperty> parameters) {
+        public string GetMethodDoc(string name, List<OdcmProperty> parameters) 
+        {
             return "";
         }
 
-        public string GetParams(IEnumerable<OdcmProperty> parameters) {
+        public string GetParams(IEnumerable<OdcmProperty> parameters) 
+        {
             string param = "With";
 
-            foreach (var p in parameters) {
-                if (param == "With") {
+            foreach (var p in parameters) 
+            {
+                if (param == "With") 
+                {
                     param += string.Format("{0}:({2} {3}) {1}", char.ToUpper(p.Name[0]) + p.Name.Substring(1)
                                         , p.Name.ToLowerFirstChar(), p.Type.GetFullType(), (p.Type.IsComplex() ? "*" : ""));
-                } else {
+                } 
+                else 
+                {
                     param += string.Format("{0}:({1} {2}) {1}", p.Name.ToLowerFirstChar(), p.Type.GetFullType(), (p.Type.IsComplex() ? "*" : ""));
                 }
             }
             return param;
         }
 
-        public string GetParamsForRaw(IEnumerable<string> parameters) {
+        public string GetParamsForRaw(IEnumerable<string> parameters) 
+        {
             string param = "With";
 
-            foreach (var p in parameters) {
+            foreach (var p in parameters) 
+            {
                 param += param == "With" ? string.Format("{0}:(NSString *) {1} ", char.ToUpper(p[0]) + p.Substring(1), p.ToLowerFirstChar()) :
                  string.Format("{0}:(NSString *) {0} ", p.ToLowerFirstChar());
             }
@@ -102,20 +117,23 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             return param;
         }
 
-        public string GetParam(OdcmProperty type) {
-            if (type.IsComplex()) {
+        public string GetParam(OdcmProperty type) 
+        {
+            if (type.IsComplex()) 
+            {
                 return type.IsSystem() ? string.Empty : type.GetTypeString() + " *" + type.Name.ToLowerFirstChar();
             }
 
             return type.GetTypeString() + " " + type.Name;
         }
 
-        public string GetParamRaw(string type) {
+        public string GetParamRaw(string type) 
+        {
             return "NSString *" + type.ToLowerFirstChar();
-
         }
 
-        public string GetType(OdcmType type) {
+        public string GetType(OdcmType type) 
+        {
             if (type.IsComplex()) {
                 return type.IsSystem() ? type.GetTypeString() : type.GetTypeString() + " *";
             }
@@ -123,28 +141,67 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             return type.GetTypeString();
         }
 
-        public string GetImportsClass(List<OdcmProperty> references) {
+        public string GetImportsClass(IEnumerable<OdcmProperty> references, IEnumerable<string> extraImports = null, IEnumerable<string> extraClasses = null) 
+        {
             var imports = new StringBuilder();
-            var classes = new StringBuilder();
-            foreach (var r in references) {
-                if (r.Type is OdcmEnum) {
-                    imports.AppendFormat("#import \"{0}.h\"", r.Type.GetTypeString()).AppendLine();
-                } else if (r.Type.IsComplex() && !r.Type.IsSystem()) {
-                    classes.AppendFormat("@class {0};", r.Type.GetTypeString()).AppendLine();
+            var classes = new StringBuilder("@class ");
+            var classType = references.First().Class.GetTypeString();
+            foreach (var type in references.Select(prop => prop.Type).Distinct())
+            {
+                if (type is OdcmEnum)
+                {
+                    imports.AppendFormat("#import \"{0}.h\"", type.GetTypeString()).AppendLine();
+                }
+                // CGFloat is in UIKit/UIKit
+                if (type.GetTypeString().Equals("CGFloat"))
+                {
+                    imports.AppendFormat("#import <UIKit/UiKit.h>");
+                }
+                else if (type.IsComplex() && !type.IsSystem() && type.GetTypeString() != "id" && type.GetTypeString() != classType)
+                {
+                    classes.AppendFormat("{0}, ", type.GetTypeString());
+                }
+            }
+            if (extraImports != null)
+            {
+                foreach(var extraType in extraImports)
+                {
+                    imports.AppendFormat("#import \"{0}.h\"", extraType);
+                }
+            }
+
+            if (extraClasses != null)
+            {
+                foreach (var extraType in extraClasses)
+                {
+                    classes.AppendFormat("{0}, ", extraType);
                 }
             }
 
             var classString = classes.AppendLine().ToString();
+            int lastOccurance = classString.LastIndexOf(',');
+            if (lastOccurance < 0)
+            {
+                classString = @"";
+            }
+            else
+            {
+                classString = classString.Remove(lastOccurance, 1).Insert(lastOccurance, ";");
+            }
+
             var importsString = imports.ToString();
-            return (string.IsNullOrWhiteSpace(importsString.Trim()) ? null : importsString) +
-                (string.IsNullOrWhiteSpace(classString.Trim()) ? null : classString);
+            return (string.IsNullOrWhiteSpace(classString.Trim()) ? "" : classString) +
+                   (string.IsNullOrWhiteSpace(importsString.Trim()) ? "" : importsString);
+
         }
 
-        public string GetClass(OdcmProperty type) {
+        public string GetClass(OdcmProperty type) 
+        {
             return type.IsComplex() ? string.Format("[{0}{1} class]", GetPrefix(), type.GetTypeString()) : "nil";
         }
 
-        public string GetParametersToJsonRaw(IEnumerable<string> parameters) {
+        public string GetParametersToJsonRaw(IEnumerable<string> parameters) 
+        {
             if (!parameters.Any()) { return new StringBuilder().AppendLine().ToString(); }
 
             var result = new StringBuilder();
@@ -240,33 +297,47 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             return string.Format("/n{0} EndOfFile", name);
         }
 
-        public string GetParamsString(List<OdcmParameter> parameters) {
+        public string GetParamsString(IEnumerable<OdcmParameter> parameters)
+        {
+            string param = "";
+            foreach (OdcmParameter p in parameters)
+            {
+                string paramName = (p == parameters.First()) ? p.Name.ToUpperFirstChar() : p.Name.ToLowerFirstChar();
 
-            string param = "With";
-
-            foreach (OdcmParameter p in parameters) {
-                if (param == "With") {
-                    param += string.Format("{0}:({2}{3}){1} ", char.ToUpper(p.Name[0]) + p.Name.Substring(1)
-                                        , p.Name.ToLowerFirstChar(),
-                                        (p.IsCollection ?  "NSArray": p.Type.GetFullType())
-                                        , (p.Type.IsComplex() ? " *" : ""));
-                } else {
-                    param += string.Format("{0}:({1} {2}){0} ", p.Name.ToLowerFirstChar(),
-                    (p.IsCollection ?"NSArray" : p.Type.GetFullType())
-                    , (p.Type.IsComplex() ? "*" : ""));
+                if (p.Type.IsComplex())
+                {
+                    param += string.Format("{0}:({1} *){2}", paramName, p.Type.GetFullType(), p.Name.ToLowerFirstChar());
                 }
+                else
+                {
+                    param += string.Format("{0}:({1}){2}", paramName, p.Type.GetFullType(), p.Name.ToLowerFirstChar());
+                }
+                param += " ";
             }
-            param += parameters.Count() > 0 ? "callback" : "Callback";
+
             return param;
         }
 
-        public string GetParamString(OdcmType p) {
+        public string GetParamString(OdcmType p) 
+        {
             p.GetFullType();
-            //if(p == null) return string.Empty;
-            if (p.IsComplex()) {
+            if (p.IsComplex()) 
+            {
                 return p.IsSystem() ? string.Empty : p.GetTypeString() + " *" + p.Name.ToLowerFirstChar();
             }
             return p.GetTypeString() + " " + p.Name;
+        }
+
+        public string GetNetworkCompletionBlock(string parameterType, string parameterName)
+        {
+            if (!string.IsNullOrEmpty(parameterType) && !string.IsNullOrEmpty(parameterName))
+            {
+                return "(void (^)(" + parameterType + " *" + parameterName + ", NSError *error))";
+            }
+            else
+            {
+                return "(void(^)(NSError *error))";
+            }
         }
 
         public string GetTypeForAction(OdcmMethod action) {

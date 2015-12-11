@@ -67,6 +67,11 @@ namespace Vipr.T4TemplateWriter
             return FilterProperties(properties, typeName, longDescriptionMatches);
         }
 
+        public static IEnumerable<OdcmProperty> GetStreamProperties(this OdcmModel model)
+        {
+            return model.GetProperties(typeName: "Stream", longDescriptionMatches: null);
+        }
+
         public static IEnumerable<OdcmProperty> FilterProperties(IEnumerable<OdcmProperty> properties, string typeName = null, string longDescriptionMatches = null)
         {
             var allProperties = properties;
@@ -210,49 +215,6 @@ namespace Vipr.T4TemplateWriter
             return null;
         }
 
-        public static bool HasSpecialCollection(this OdcmMethod method)
-        {
-            return method.LongDescriptionStartsWith("specialCollection");
-        }
-
-        public static IEnumerable<SpecialMethodParameter> SpecialMethodParameters(this OdcmMethod method)
-        {
-            var paramList = new List<SpecialMethodParameter>();
-            if (method.LongDescription != null)
-            {
-                var matches = Regex.Match(method.LongDescription, @"specialCollection=(([a-zA-Z0-9.]*):([a-zA-Z0-9.]*),*)*");
-                if (matches != null)
-                {
-                    var names = matches.Groups[2].Captures;
-                    var types = matches.Groups[3].Captures;
-                    for (int i = 0; i < names.Count; i++)
-                    {
-                        paramList.Add(new SpecialMethodParameter(names[i].Value, types[i].Value));
-                    }
-                }
-            }
-            return paramList;
-        }
-
     }
 
-
-    public class SpecialMethodParameter : Object
-    {
-        private string typeString;
-        public string Name { get; private set; }
-
-        public string TypeString { get; private set; }
-
-        public string FullName { get; private set; }
-
-        public SpecialMethodParameter(string fullName, string typeString)
-        {
-            var strippedName = fullName.Split('.')[1];
-            this.Name = strippedName;
-            this.FullName = fullName;
-            this.TypeString = typeString;
-        }
-
-    }
 }

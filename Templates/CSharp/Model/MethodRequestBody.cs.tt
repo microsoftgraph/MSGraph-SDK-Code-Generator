@@ -9,6 +9,7 @@ var requestBody = entityName + method.Name.Substring(method.Name.IndexOf('.') + 
 
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -17,11 +18,10 @@ namespace Microsoft.OneDrive.Sdk
     [DataContract]
     public partial class <#=requestBody#>
     {
-
     <#
     foreach (var param in method.Parameters)  
     {
-        var paramTypeString = param.Type.GetTypeString();
+        var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
         var paramName = param.Name.ToCheckedCase().GetSanitizedPropertyName();
     #>
 

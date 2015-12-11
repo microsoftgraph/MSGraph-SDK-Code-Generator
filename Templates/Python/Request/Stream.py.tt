@@ -11,14 +11,22 @@ var propClass           = prop.Class.Name.ToUpperFirstChar();
 var propRequest         = propClass + prop.Name.ToUpperFirstChar() + "Request";
 var propRequestBuilder  = propClass + prop.Name.ToUpperFirstChar() + "RequestBuilder";
 TemplateWriterSettings settings = ConfigurationService.Settings;
-#>
-<#=writer.WriteHeader()#>
+var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
 
-import asyncio
-import json
+#>
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
 from ..request_base import RequestBase
 from ..request_builder_base import RequestBuilderBase
-from ..models.<#=propClass.ToUnderscore()#> import <#=propClass#>
+from ..model.<#=propClass.ToUnderscore()#> import <#=propClass#>
+import json
+<#
+if (!isPython2) {
+#>
+import asyncio
+<#
+}
+#>
+
 
 class <#=propRequest#>(RequestBase):
     def __init__(self, request_url, client, options):
@@ -27,7 +35,7 @@ class <#=propRequest#>(RequestBase):
         Args:
             request_url (str): The url to perform the <#=propRequest#>
                 on
-            client (:class:`OneDriveClient<onedrivesdk.requests.one_drive_client.OneDriveClient>`):
+            client (:class:`OneDriveClient<onedrivesdk.request.one_drive_client.OneDriveClient>`):
                 The client which will be used for the request
             options (list of :class:`Option<onedrivesdk.options.Option>`):
                 A list of options to pass into the request
@@ -45,7 +53,7 @@ class <#=propRequest#>(RequestBase):
                 The path to the local file to upload.
 
         Returns: 
-            :class:`<#=propClass#><onedrivesdk.models.<#=propClass.ToUnderscore()#>.<#=propClass#>>`:
+            :class:`<#=propClass#><onedrivesdk.model.<#=propClass.ToUnderscore()#>.<#=propClass#>>`:
                 The created <#=propClass#>.
         """
         self.method = "PUT"
@@ -53,6 +61,9 @@ class <#=propRequest#>(RequestBase):
         entity = <#=propClass#>(json.loads(entity_response.content))
         return entity
 
+<#
+        if (!isPython2) {
+#>
     @asyncio.coroutine
     def upload_async(self, <#=prop.Name.ToUnderscore()#>_local_path):
         """Uploads the file using PUT in async
@@ -62,7 +73,7 @@ class <#=propRequest#>(RequestBase):
                 The path to the local file to upload.
 
         Yields: 
-            :class:`<#=propClass#><onedrivesdk.models.<#=propClass.ToUnderscore()#>.<#=propClass#>>`:
+            :class:`<#=propClass#><onedrivesdk.model.<#=propClass.ToUnderscore()#>.<#=propClass#>>`:
                 The created <#=propClass#>.
         """
         future = self._client._loop.run_in_executor(None,
@@ -72,6 +83,7 @@ class <#=propRequest#>(RequestBase):
         return entity
 
 <#
+        }
     }
 #>
     def download(self, <#=prop.Name.ToUnderscore()#>_local_path):
@@ -83,6 +95,9 @@ class <#=propRequest#>(RequestBase):
         """
         self.download_item(<#=prop.Name.ToUnderscore()#>_local_path)
 
+<#
+        if (!isPython2) {
+#>
     @asyncio.coroutine
     def download_async(self, <#=prop.Name.ToUnderscore()#>_local_path):
         """
@@ -96,6 +111,9 @@ class <#=propRequest#>(RequestBase):
                                                     self.download,
                                                     <#=prop.Name.ToUnderscore()#>_local_path)
         yield from future
+<#
+        }
+#>
 
 class <#=propRequestBuilder#>(RequestBuilderBase):
 
@@ -105,7 +123,7 @@ class <#=propRequestBuilder#>(RequestBuilderBase):
         Args:
             request_url (str): The request URL to initialize
                 the <#=propRequestBuilder#> at
-            client (:class:`OneDriveClient<onedrivesdk.requests.one_drive_client.OneDriveClient>`):
+            client (:class:`OneDriveClient<onedrivesdk.request.one_drive_client.OneDriveClient>`):
                 The client to use for requests made by the
                 <#=propRequestBuilder#>
         """
@@ -115,7 +133,7 @@ class <#=propRequestBuilder#>(RequestBuilderBase):
         """Builds the <#=propRequest#>
 
         Returns:
-            :class:`<#=propRequest#><onedrivesdk.requests.<#=propRequest.Replace("Request","").ToUnderscore()#>.<#=propRequest#>>`:
+            :class:`<#=propRequest#><onedrivesdk.request.<#=propRequest.Replace("Request","").ToUnderscore()#>.<#=propRequest#>>`:
                 The <#=propRequest#>
         """
         return <#=propRequest#>(self._request_url, self._client, None)

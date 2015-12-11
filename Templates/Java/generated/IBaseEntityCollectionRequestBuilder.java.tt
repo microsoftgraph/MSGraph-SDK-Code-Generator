@@ -1,0 +1,14 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseTypeCollectionRequestBuilder(c), "IRequestBuilder")#>
+
+    <#=ITypeCollectionRequest(c)#> buildRequest();
+
+    <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> options);
+
+    <#=ITypeRequestBuilder(c)#> byId(final String id);
+}

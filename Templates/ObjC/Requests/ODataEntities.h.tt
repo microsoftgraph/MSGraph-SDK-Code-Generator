@@ -1,0 +1,70 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+
+#import "ODCollection.h"
+
+<#
+var entityTypes = model.GetEntityTypes();
+var entitySet = model.EntityContainer.Properties;
+var classes = new HashSet<string>();
+
+
+foreach(var es in entitySet)
+{
+    classes.Add("#import \"" + writer.GetPrefix() + es.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
+    classes.Add("#import \"" + writer.GetPrefix() + es.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
+}
+
+foreach(var et in entityTypes)
+{
+
+    classes.Add("#import \"" + writer.GetPrefix() + et.Name.ToUpperFirstChar() + "RequestBuilder.h\"");
+    classes.Add("#import \"" + writer.GetPrefix() + et.Name.ToUpperFirstChar() + "Request.h\"");
+
+    foreach(var prop in et.NavigationProperties())
+    {
+        classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
+        classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
+    }
+
+    foreach(var prop in et.GetProperties(typeName:"Stream"))
+    {
+        classes.Add("#import \"" + writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request.h\"");
+
+    }
+
+    foreach(var func in et.Methods)
+    {
+        var baseName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar();
+        if (func.LongDescriptionContains("specialCollection"))
+        {
+            classes.Add("#import \"" + baseName + "Collection.h\"");
+        }
+        classes.Add("#import \"" + baseName + "RequestBuilder.h\"");
+        classes.Add("#import \"" + baseName + "Request.h\"");
+    }
+
+    foreach(var complexType in et.GetProperties(longDescriptionMatches:"navigable").Where(prop => prop.Type is OdcmClass))
+    {
+        var baseName = writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar(); 
+        classes.Add("#import \"" + baseName + "RequestBuilder.h\"");
+        classes.Add("#import \"" + baseName + "Request.h\"");
+    }
+}
+
+foreach(var complexType in model.GetComplexTypes())
+{
+    foreach(var streamProperty in complexType.GetProperties(typeName:"Stream"))
+    {
+        classes.Add("#import \"" + writer.GetPrefix() + streamProperty.Class.Name.ToUpperFirstChar() + streamProperty.Name.ToUpperFirstChar() + "Request.h\"");
+    }
+}
+
+foreach(var importClass in classes)
+{
+#>
+<#=importClass#>
+<#
+}
+#>
+#import "<#=writer.GetPrefix()#>Client.h" 

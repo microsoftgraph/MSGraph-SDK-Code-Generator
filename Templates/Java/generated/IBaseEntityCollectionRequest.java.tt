@@ -1,0 +1,26 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseTypeCollectionRequest(c))#>
+
+<# if (c.LongDescriptionContains("enumerable")) { #>
+    void get(final ICallback<<#=ITypeCollectionPage(c)#>> callback);
+
+    <#=ITypeCollectionPage(c)#> get() throws ClientException;
+
+<# } #>
+<# if (c.LongDescriptionContains("writable")) { #>
+    void create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>, final ICallback<<#=ClassTypeName(c)#>> callback);
+
+    <#=ClassTypeName(c)#> create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>) throws ClientException;
+
+<# } #>
+    <#=ITypeCollectionRequest(c)#> expand(final String value);
+
+    <#=ITypeCollectionRequest(c)#> select(final String value);
+
+    <#=ITypeCollectionRequest(c)#> top(final int value);
+}

@@ -26,12 +26,12 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <param name="templatesDirectory">The tempaltes directory, this should be the Platform specific directory</param>
         /// <param name="defaultNameCasing"></param>
         /// <param name="defaultSubProcessor"></param>
-        /// <param name="defaultTempalte"></param>
+        /// <param name="defaultTemplate"></param>
         public TemplateInfoProvider(IList<Dictionary<string,string>> mapping, 
                                     string templatesDirectory,
                                     FileNameCasing defaultNameCasing = FileNameCasing.UpperCamel, 
                                     SubProcessor defaultSubProcessor = SubProcessor.Other,
-                                    Template defaultTempalte = Template.Other)
+                                    Template defaultTemplate = Template.Other)
         {
             this.mapping = mapping;
             this.templatesDirectory = templatesDirectory;
@@ -48,7 +48,10 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 string templateName = null;
                 if (templateInfo.TryGetValue("Template", out templateName) && templates.ContainsKey(templateName))
                 {
-                    yield return this.Create(templates[templateName], templateInfo);
+                    foreach (var templatePath in templates[templateName])
+                    {
+                        yield return this.Create(templatePath, templateInfo);
+                    }
                 }
             }
         }
@@ -57,14 +60,22 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// Reads all of the templates available from the given directory.
         /// </summary>
         /// <returns>A dictionary mapping of template name to path</returns>
-        private Dictionary<string, string> ReadTemplateFiles()
+        private Dictionary<string, IList<string>> ReadTemplateFiles()
         {
-            var templates = new Dictionary<string, string>();
+            var templates = new Dictionary<string, IList<string>>();
             foreach (string path in (Directory.EnumerateFiles(this.templatesDirectory, "*.*.tt", SearchOption.AllDirectories)))
             {
                 // Remove the .tt and then remove the file type extension
                 var templateName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(path));
-                templates[templateName] = path;
+                IList<string> templatePaths = null;
+                if (templates.TryGetValue(templateName, out templatePaths))
+                {
+                    templatePaths.Add(path);
+                }
+                else
+                {
+                    templates[templateName] = new List<string>() { path };
+                }
             }
             return templates;
         }
@@ -100,6 +111,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             IEnumerable<string> includedObjects = this.IncludedObjects(templateDictionary);
             IEnumerable<string> excludedObjects = this.ExcludedObjects(templateDictionary);
+            IEnumerable<string> ignoreDescriptions = this.IgnoreDescriptions(templateDictionary);
             IEnumerable<string> matchingDescriptions = this.MatchingDescriptions(templateDictionary);
 
             //TODO aclev: these are mutally exclusive and should throw here if they are both set
@@ -114,7 +126,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             if (matchingDescriptions.Count() != 0)
             {
-                fileInfo.ObjectDescriptions = matchingDescriptions;
+                fileInfo.MatchingDescriptions = matchingDescriptions;
+            }
+            if (ignoreDescriptions.Count() != 0)
+            {
+                fileInfo.IgnoreDescriptions = ignoreDescriptions;
             }
 
            string nameFormat;
@@ -153,6 +169,16 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         private Template GetTemplate(Dictionary<string, string> template)
         {
             return GetEnum<Template>(template, "Type", this.defaultTemplate);
+        }
+
+        /// <summary>
+        /// Gets the list of strings in the "Ignore" list from the template.
+        /// </summary>
+        /// <param name="template">Teh template dirctionary from the configuration file</param>
+        /// <returns></returns>
+        private IEnumerable<string>IgnoreDescriptions(Dictionary<string, string> template)
+        {
+            return GetConfigList(template, "Ignore");
         }
 
         /// <summary>

@@ -2,8 +2,6 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
-var clientNameLower = clientName.ToLowerFirstChar();
 var prop = host.CurrentType.AsOdcmProperty();
 var propName = prop.Name.ToCheckedCase();
 var collectionRequest = propName + "CollectionRequest";
@@ -13,6 +11,7 @@ var entityRequestBuilder = prop.Type.Name.ToCheckedCase() + "RequestBuilder";
 #>
 namespace Microsoft.OneDrive.Sdk
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -20,15 +19,16 @@ namespace Microsoft.OneDrive.Sdk
     /// </summary>
     public partial class <#=collectionRequestBuilder#> : BaseRequestBuilder, I<#=collectionRequestBuilder#>
     {
+    
         /// <summary>
         /// Constructs a new <#=collectionRequestBuilder#>.
         /// </summary>
         /// <param name="requestUrl">The URL for the built request.</param>
-        /// <param name="<#=clientNameLower#>">The <see cref="I<#=clientName#>"/> for handling requests.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         public <#=collectionRequestBuilder#>(
             string requestUrl,
-            I<#=clientName#> <#=clientNameLower#>)
-            : base(requestUrl, <#=clientNameLower#>)
+            IBaseClient client)
+            : base(requestUrl, client)
         {
         }
 
@@ -48,8 +48,13 @@ namespace Microsoft.OneDrive.Sdk
         /// <returns>The built request.</returns>
         public I<#=collectionRequest#> Request(IList<Option> options)
         {
-            return new <#=collectionRequest#>(this.RequestUrl, this.<#=clientName#>, options);
+            return new <#=collectionRequest#>(this.RequestUrl, this.Client, options);
         }
+<#
+    var propClass = prop.Type as OdcmClass;
+    if ((propClass != null && propClass.Kind != OdcmClassKind.Complex) || prop.LongDescriptionContains("navigable"))
+    {
+#>
 
         /// <summary>
         /// Gets an <see cref="I<#=entityRequestBuilder#>"/> for the specified <#=propName#>.
@@ -60,8 +65,12 @@ namespace Microsoft.OneDrive.Sdk
         {
             get
             {
-                return new <#=entityRequestBuilder#>(this.AppendSegmentToRequestUrl(id), this.<#=clientName#>);
+                return new <#=entityRequestBuilder#>(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+<#
+    }
+#>
+
     }
 }

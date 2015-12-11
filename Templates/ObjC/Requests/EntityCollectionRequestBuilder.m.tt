@@ -1,0 +1,45 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+
+var prop = host.CurrentType.AsOdcmProperty();
+var innerEntity = prop.Type;
+
+var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+var propRequestName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest";
+var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
+var entityRequest = innerEntityType + "Request";
+var entityRequestBuilder = innerEntityType + "RequestBuilder";
+
+
+#>
+
+#import "<#=writer.GetPrefix()#>ODataEntities.h"
+
+@implementation <#=propName#> : ODCollectionRequestBuilder
+
+- (<#=propRequestName#>*) request
+{
+    return [self requestWithOptions:nil];
+}
+
+- (<#=propRequestName#> *)requestWithOptions:(NSArray *)options
+{
+    return [[<#=propRequestName#> alloc] initWithURL:self.requestURL options:options client:self.client];
+}
+<#  
+    if (prop.LongDescriptionContains("queryable"))
+    {      
+#>
+
+- (<#=entityRequestBuilder#> *)<#=innerEntity.Name.ToLowerFirstChar()#>:(NSString *)<#=innerEntity.Name.ToLowerFirstChar()#>
+{
+    return [[<#=entityRequestBuilder#> alloc] initWithURL:[self.requestURL URLByAppendingPathComponent:<#=innerEntity.Name.ToLowerFirstChar()#>] 
+                                                   client:self.client];
+}
+<#
+    } 
+
+#>
+
+@end

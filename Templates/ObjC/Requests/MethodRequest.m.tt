@@ -1,0 +1,217 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+
+<#
+var func = host.CurrentType.AsOdcmMethod();
+var entityName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar();
+var requestType = entityName + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Request";
+var returnType = writer.GetPrefix() + func.ReturnType.Name.ToUpperFirstChar();
+var returnTypeObject = func.ReturnType.AsOdcmClass();
+//special method
+if (returnTypeObject != null)
+{
+    var valuesProperty = returnTypeObject.Properties.First(prop => prop.IsCollection);
+    returnType = writer.GetPrefix() + valuesProperty.Type.Name.ToUpperFirstChar();
+}
+
+var superClass = writer.GetPrefix() + ((func.IsCollection) ?  "CollectionRequest" : "Request");
+var method = ((func.Verbs & OdcmAllowedVerbs.Get) != OdcmAllowedVerbs.Get) ? "POST" : "GET";
+var isAsync = func.LongDescriptionContains("async");
+var specialCollecitonName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Collection";
+
+#>
+
+#import "<#=writer.GetPrefix()#>ODataEntities.h"
+#import "<#=writer.GetPrefix()#>Models.h"
+#import "ODURLSessionDataTask.h"
+<#
+if (func.LongDescriptionContains("specialCollection"))
+{
+#>
+#import "<#=specialCollecitonName#>.h"
+<#
+}
+#>
+
+@interface <#=writer.GetPrefix()#>Request()
+
+@property NSMutableArray *options;
+
+- (NSMutableURLRequest *)requestWithMethod:(NSString *)method
+                                      body:(NSData *)body
+                                   headers:(NSDictionary *)headers;
+
+@end
+
+<#
+if (func.Parameters.Count > 0)
+{
+#>
+@interface <#=requestType#>()
+
+<#
+    foreach (var param in func.Parameters)
+    {
+        var paramTypeString = param.Type.GetTypeString();
+        if (param.Type.IsComplex())
+        {
+            paramTypeString = paramTypeString + " *";
+        }
+#>
+@property <#=paramTypeString#><#=param.Name.ToLowerFirstChar()#>;
+
+<#
+    }
+#>
+@end
+<#
+}
+#>
+
+@implementation <#=requestType#>
+
+<#
+if (func.Parameters.Count > 0)
+{
+#>
+- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url options:(NSArray *)options client:(ODClient *)client 
+{
+<#
+    foreach (var param in func.Parameters)
+    {
+        if (!param.IsNullable)
+        {
+#>
+    NSParameterAssert(<#=param.Name.ToLowerFirstChar()#>);
+<#
+        }
+    }
+#>
+    self = [super initWithURL:url options:options client:client];
+    if (self){
+<#
+    foreach (var param in func.Parameters)
+    {
+#>
+        _<#=param.Name.ToLowerFirstChar()#> = <#=param.Name.ToLowerFirstChar()#>;
+<#
+    }
+#>
+    }
+    return self;
+}
+<#
+}
+#>
+
+- (NSMutableURLRequest *)mutableRequest
+{
+<#
+if (func.Parameters.Count > 0)
+{
+    var paramsDictionary = writer.GetFunctionParameters(func.Parameters);
+#>
+    <#=paramsDictionary#>
+<#
+    // if we are in a function not an action
+    if (method == @"GET")
+    {
+#>
+    [params enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value, BOOL *stop){
+        [self.options addObject:[[ODQueryParameters alloc] initWithKey:key value:value]];
+    }];
+
+    return [self requestWithMethod:@"<#=method#>" body:nil headers:nil];
+<#
+    }
+    else 
+    { 
+#> 
+    NSData *body = [NSJSONSerialization dataWithJSONObject:params options:0 error:nil];
+    return [self requestWithMethod:@"<#=method#>" body:body headers:nil];
+<#
+    }
+}
+else 
+{
+#>
+    return [self requestWithMethod:@"<#=method#>" body:nil headers:nil];
+<#
+}
+#>
+}
+
+<#
+string completionBlock;
+string completionHandler;
+string taskMethod;
+string taskType = "ODURLSessionDataTask *";
+if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
+{
+
+    if (func.LongDescriptionContains("specialCollection"))
+    {
+        completionHandler = "(void (^)(" + specialCollecitonName + " *response, " + requestType + " *nextRequest, NSError *error))";
+    }
+    else 
+    {
+        completionHandler = "(void (^)(ODCollection *response, " + requestType + " *nextRequest, NSError *error))";
+    }
+    var stringBuilder = new StringBuilder();
+    var baseIndents = "    ODURLSessionDataTask *task = [".ToSpaces();
+
+    stringBuilder.AppendLine("^(ODCollection *collectionResponse, NSError *error){");
+	string returnCollectionName = "collectionResponse";
+    if (func.LongDescriptionContains("specialColelction"))
+    {
+		returnCollectionName = "collection";
+		stringBuilder.AppendLine(baseIndents + "    " + specialCollecitonName + " *" + returnCollectionName +"= nil;");
+        stringBuilder.AppendLine(baseIndents + "    if(collectionResponse){");
+        stringBuilder.AppendLine(baseIndents + "        " + returnCollectionName + " = [[" + specialCollecitonName + " alloc] initWithCollection:collectionResponse];");
+        stringBuilder.AppendLine(baseIndents + "    }");
+    }   
+    stringBuilder.AppendLine(baseIndents + "    if(!error && "+ returnCollectionName + ".nextLink && completionHandler){");
+    stringBuilder.AppendLine(baseIndents + "            " + requestType + " *nextRequest = [[" + requestType + " alloc] initWithURL:" + returnCollectionName + ".nextLink");
+    stringBuilder.AppendLine(baseIndents + "                                                                                options:nil");
+    stringBuilder.AppendLine(baseIndents + "                                                                                client:self.client];");
+    stringBuilder.AppendLine(baseIndents + "        completionHandler(" + returnCollectionName + ", nextRequest, nil);");
+    stringBuilder.AppendLine(baseIndents + "    }");
+    stringBuilder.AppendLine(baseIndents + "    else if(completionHandler){");
+    stringBuilder.AppendLine(baseIndents + "        completionHandler(" + returnCollectionName + ", nil, error);");
+    stringBuilder.AppendLine(baseIndents + "    }");
+    stringBuilder.Append(baseIndents + "}");
+
+    completionBlock = stringBuilder.ToString();
+    taskMethod = "[self collectionTaskWithRequest:";
+    
+}
+else if(isAsync)
+{
+    
+    completionHandler = "(void (^)(" + returnType + " *response, ODAsyncOperationStatus *status, NSError *error))";
+    completionBlock = "completionHandler";
+    taskMethod = "[self asyncTaskWithRequest:";
+    taskType = "ODAsyncURLSessionDataTask *";
+}
+else 
+{
+    completionHandler = writer.GetNetworkCompletionBlock(returnType, "response"); 
+    completionBlock = "completionHandler";
+    taskMethod = "[self taskWithRequest:";
+}
+var indentSpace = ("    " + taskType + "task = " + taskMethod).ToSpaces();
+#>
+
+- (<#=taskType#>)executeWithCompletion:<#=completionHandler#>completionHandler
+{
+
+    <#=taskType#>task = <#=taskMethod#>self.mutableRequest
+<#=indentSpace.Substring("odObjectWithDictionary".Length + 1)#>odObjectWithDictionary:^(NSDictionary *responseObject){
+<#=indentSpace#>    return [[<#=returnType#> alloc] initWithDictionary:responseObject];
+<#=indentSpace#>}
+<#=indentSpace.Substring("completion".Length + 1)#>completion:<#=completionBlock#>];
+    [task execute];
+    return task;
+}
+
+@end

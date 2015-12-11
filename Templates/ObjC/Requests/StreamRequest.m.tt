@@ -1,0 +1,76 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<# 
+var prop = host.CurrentType.AsOdcmProperty();
+var className = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar();
+var propName = className + prop.Name.ToUpperFirstChar() + "Request";
+var uploadCompletionHandler = className + "UploadCompletionHandler";
+
+#>
+#import "<#=writer.GetPrefix()#>Models.h"
+#import "<#=writer.GetPrefix()#>ODataEntities.h"
+#import "ODURLSessionDownloadTask.h"
+#import "ODURLSessionUploadTask.h"
+
+@interface ODRequest()
+
+- (NSMutableURLRequest *)requestWithMethod:(NSString *)method
+                                      body:(NSData *)body 
+                                   headers:(NSDictionary *)headers;
+
+@end
+
+@implementation <#=propName#>
+
+- (NSMutableURLRequest *) download
+{
+    return [self requestWithMethod:@"GET"
+                              body:nil
+                           headers:nil];
+}
+
+- (ODURLSessionDownloadTask *) downloadWithCompletion:(ODDownloadCompletionHandler)completionHandler
+{
+    ODURLSessionDownloadTask *task = [[ODURLSessionDownloadTask alloc] initWithRequest:[self download]
+                                                                                client:self.client
+                                                                     completionHandler:completionHandler];
+    [task execute];
+    return task;
+}
+
+- (NSMutableURLRequest *) upload 
+{
+    //when creating an upload task the body will be reset
+    return [self requestWithMethod:@"PUT"
+                              body:nil
+                           headers:nil];
+}
+
+- (ODURLSessionUploadTask *) uploadFromData:(NSData *)data
+                                 completion:(<#=uploadCompletionHandler#>)completionHandler
+{
+    ODURLSessionUploadTask *task = [self uploadTaskWithRequest:[self upload]
+                                                      fromData:data
+                                        odobjectWithDictionary:^(NSDictionary *response){
+                                                return [[<#=className#> alloc] initWithDictionary:response];
+                                        }
+                                             completionHandler:completionHandler];
+    [task execute];
+    return task;
+
+}
+
+- (ODURLSessionUploadTask *) uploadFromFile:(NSURL *)fileURL
+                                 completion:(<#=uploadCompletionHandler#>)completionHandler 
+{
+    ODURLSessionUploadTask *task = [self uploadTaskWithRequest:[self upload]
+                                                      fromFile:fileURL
+                                        odobjectWithDictionary:^(NSDictionary *response){
+                                                return [[<#=className#> alloc] initWithDictionary:response];
+                                        }
+                                             completionHandler:completionHandler];
+    [task execute];
+    return task;
+}
+
+@end

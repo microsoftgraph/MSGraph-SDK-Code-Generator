@@ -43,9 +43,14 @@ namespace Vipr.T4TemplateWriter.Extensions
             return input;
         }
 
-        public static string SplitCamelCase(this String input) 
+        public static string SplitCamelCase(this string input) 
         {
             return Regex.Replace(input, "(?<=[a-z])([A-Z])", " $1", RegexOptions.Compiled);
+        }
+
+        public static string ToSpaces(this string toSpaces)
+        {
+            return Regex.Replace(toSpaces, "[ -~]", " ");
         }
 
         public static string ToSingularize(this string input) 
