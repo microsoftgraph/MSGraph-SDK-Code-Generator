@@ -46,7 +46,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
                 case "DateTimeOffset":
                     return "NSDate";
                 case "Binary":
-                    return "NSData";
+                    return "NSString";
                 case "Boolean":
                     return "BOOL";
                 case "Stream":
@@ -64,7 +64,9 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
         public static bool IsComplex(this OdcmType type) 
         {
             string t = GetTypeString(type);
-            return !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat" || t == "NSStream");
+            return
+                !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat" || t == "NSStream" ||
+                  type is OdcmEnum);
         }
 
 		public static bool IsComplex(this OdcmProperty property) 
@@ -168,6 +170,10 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
             else if (objectiveCType.Equals("CGFloat"))
             {
                 return "floatValue";
+            }
+            else if (type is OdcmEnum)
+            {
+                return "intValue";
             }
 
             return null;

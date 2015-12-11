@@ -158,6 +158,8 @@ namespace Vipr.T4TemplateWriter
 
         public static OdcmEnum AsOdcmEnum(this OdcmObject odcmObject)
         {
+            OdcmEnum foo = odcmObject as OdcmEnum;
+            var bar = foo.Members.LastOrDefault();
             return odcmObject as OdcmEnum;
         }
 

@@ -22,7 +22,7 @@ var requestBuilderType = requestType + "Builder";
 if (func.Parameters.Count > 0)
 {
 #>
-- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url client:(ODClient *)client;
+- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url client:(ODBaseClient*)client;
 
 <#
 }

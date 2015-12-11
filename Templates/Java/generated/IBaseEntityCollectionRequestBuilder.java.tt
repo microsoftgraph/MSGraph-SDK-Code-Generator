@@ -1,6 +1,9 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
+<#
+    var genericType = "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
+#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -9,6 +12,8 @@
     <#=ITypeCollectionRequest(c)#> buildRequest();
 
     <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> options);
+<# if (true) { #>
 
     <#=ITypeRequestBuilder(c)#> byId(final String id);
+<# } #>
 }

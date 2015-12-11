@@ -9,14 +9,7 @@ var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRe
 var entityRequestBuilder = innerEntityType + "RequestBuilder";
 var entityRequest = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest";
 var classStringBuilder = new StringBuilder("@class " + entityRequest);
-if (prop.LongDescriptionContains("queryable"))
-{
-    classStringBuilder.Append(", " + entityRequestBuilder + ";");
-}
-else 
-{
-    classStringBuilder.Append(";");
-}
+classStringBuilder.Append(", " + entityRequestBuilder + ";");
 
 #>
 <#=classStringBuilder.ToString()#>
@@ -29,14 +22,15 @@ else
 - (<#=entityRequest#> *)request;
 
 - (<#=entityRequest#> *)requestWithOptions:(NSArray *)options;
-<#  
-    if (prop.LongDescriptionContains("queryable"))
-    {      
-#>
 
+<#
+if (!(innerEntity is OdcmComplexClass) && prop.LongDescriptionContains("indexable"))
+{
+#>
 - (<#=entityRequestBuilder#> *)<#=innerEntity.Name.ToLowerFirstChar()#>:(NSString *)<#=innerEntity.Name.ToLowerFirstChar()#>;
 
 <#
-    }
+}
 #>
+
 @end
