@@ -1,6 +1,6 @@
 ﻿{
     "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python" ],
-    "TargetLanguage": "ObjC",
+    "TargetLanguage": "CSharp",
     "Plugins": [ ],
     "PrimaryNamespaceName": "Microsoft.Graph",
     "NamespacePrefix": "com",
@@ -181,7 +181,7 @@
             { "Template": "Method", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>" },
             { "Template": "SpecialMethod", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>", "Matches": "specialMethod" },
             { "Template": "Stream", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "<Class>_<Property>_request" },
-            { "Template": "__init__", "SubProcessor": "Other", "Type": "Other", "Name": "__init__" }
+            { "Template": "__init__", "SubProcessor": "Other", "Type": "Other", "Name": "__init__" },
             { "Template": "EntityCollectionPage", "SubProcessor": "CollectionProperty",                                                         "Name": "<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "IEntityCollectionPage", "SubProcessor": "CollectionProperty",                                                        "Name": "IBase<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionProperty",                                                      "Name": "<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
