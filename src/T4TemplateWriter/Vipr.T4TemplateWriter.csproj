@@ -102,8 +102,10 @@
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy  "$(ProjectDir)..\..\submodules\vipr\src\Core\Vipr\bin\Debug" "$(TargetDir)." /y /s /e</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>"$(MSBuildBinPath)\msbuild.exe" "$(ProjectDir)\..\..\submodules\vipr\Vipr.sln"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
