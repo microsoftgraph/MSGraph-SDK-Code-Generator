@@ -85,10 +85,18 @@
     <Compile Include="TemplateProcessor\TemplateFileInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".config\CSharpSettings.json" />
-    <None Include=".config\JavaSettings.json" />
-    <None Include=".config\ObjCSettings.json" />
-    <None Include=".config\PythonSettings.json" />
+    <None Include=".config\CSharpSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include=".config\JavaSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include=".config\ObjCSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include=".config\PythonSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include=".config\TemplateWriterSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

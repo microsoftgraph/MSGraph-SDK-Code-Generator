@@ -85,6 +85,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         public string GetProcessorVerboseOutput()
         {
+            //TODO:Check NullReferenceException due no templates loaded.
             return _host.TemplateHostStats.ToString();
         }
 
