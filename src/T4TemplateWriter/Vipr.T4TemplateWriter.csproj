@@ -45,7 +45,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Vipr.Core, Version=1.0.5827.28952, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Vipr.Core">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\submodules\vipr\src\Core\Vipr.Core\bin\Debug\Vipr.Core.dll</HintPath>
     </Reference>
