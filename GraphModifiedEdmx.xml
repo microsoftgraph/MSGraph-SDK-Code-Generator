@@ -1722,7 +1722,6 @@
                 </Singleton>
                 <Singleton Name="myOrganization" Type="Microsoft.Graph.MyOrganization" />
             </EntityContainer>
-            <!--
             <Annotations Target="Microsoft.Graph.DirectoryObject">
                 <Annotation Term="Org.OData.Capabilities.V1.ExpandRestrictions">
                     <Record>
@@ -2174,7 +2173,6 @@
                 <Annotation Term="Org.OData.Capabilities.V1.TopSupported" Bool="false" />
                 <Annotation Term="Org.OData.Capabilities.V1.SkipSupported" Bool="false" />
             </Annotations>
-            -->
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>
