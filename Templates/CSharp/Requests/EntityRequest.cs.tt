@@ -137,6 +137,9 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
             {
                 var propertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
                 var propertyType = property.GetTypeString();
+                
+                if (propertyType.IsComplex())
+                {
         #>
 
                 if (<#=entity.Name#>ToInitialize.<#=propertyName#> != null && <#=entity.Name#>ToInitialize.<#=propertyName#>.CurrentPage != null)
@@ -155,6 +158,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
                     }
                 }
         <#
+                }
             }
         #>
 

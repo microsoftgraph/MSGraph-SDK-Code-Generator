@@ -133,14 +133,35 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 
         if (hasParameters)
         {
-            foreach (var param in method.Parameters)
+            var requiredParameters = method.Parameters.Where(param => !param.IsNullable);
+            var optionalParameters = method.Parameters.Where(param => param.IsNullable);
+            
+            foreach (var param in requiredParameters)
+            {
+                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
+
+                paramStringBuilder.Append(Environment.NewLine);
+                paramStringBuilder.Append("            ");
+                paramStringBuilder.Append(param.Type.GetTypeString());
+                paramStringBuilder.Append(" ");
+                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
+                paramStringBuilder.Append(",");
+
+                builderInitializerStringBuilder.Append(Environment.NewLine);
+                builderInitializerStringBuilder.Append("                ");
+                builderInitializerStringBuilder.Append(param.Name.ToLowerFirstChar() + ",");
+            }
+            
+            foreach (var param in optionalParameters)
             {
                 var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
 
                 paramStringBuilder.Append(Environment.NewLine);
                 paramStringBuilder.Append("            ");
                 paramStringBuilder.Append(paramTypeString);
-                paramStringBuilder.Append(" " + param.Name.ToLowerFirstChar() + ",");
+                paramStringBuilder.Append(" ");
+                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
+                paramStringBuilder.Append(" = null,");
 
                 builderInitializerStringBuilder.Append(Environment.NewLine);
                 builderInitializerStringBuilder.Append("                ");

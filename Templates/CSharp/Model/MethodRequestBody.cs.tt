@@ -21,7 +21,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     <#
     foreach (var param in method.Parameters)  
     {
-        var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
+        var paramTypeString = param.Type.IsTypeNullable() || !param.IsNullable ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
         var paramName = param.Name.ToCheckedCase().GetSanitizedPropertyName();
     #>
 

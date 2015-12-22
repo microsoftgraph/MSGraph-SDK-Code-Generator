@@ -156,6 +156,11 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
             return t == "byte[]";
         }
 
+        public static bool IsComplex(this OdcmProperty property)
+        {
+            return property.Type.IsComplex();
+        }
+
         public static bool IsComplex(this OdcmParameter property)
         {
             string t = property.GetTypeString();
@@ -171,7 +176,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
         public static bool IsComplex(this string t)
         {
             var typeValue = t.ToLowerInvariant();
-            return !(t == "int32" || t == "int64" || t == "datetimeoffset" || "long" == t || t == "double");
+            return !(t == "int32" || t == "int64" || t == "datetimeoffset" || "long" == t || t == "double" || t == "string");
         }
 
         public static string GetNamespaceName(this OdcmNamespace namespaceObject)

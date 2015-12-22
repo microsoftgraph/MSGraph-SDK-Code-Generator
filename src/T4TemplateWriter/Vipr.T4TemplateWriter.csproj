@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="Vipr.Core, Version=1.0.5694.29260, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\debug\Vipr.Core.dll</HintPath>
+      <HintPath>..\..\submodules\vipr\src\Core\Vipr.Core\bin\Debug\Vipr.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -102,8 +102,8 @@
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PreBuildEvent>"$(MSBuildBinPath)\msbuild.exe" "$(ProjectDir)\..\..\submodules\vipr\Vipr.sln"</PreBuildEvent>
+    <PostBuildEvent>xcopy  "$(ProjectDir)..\..\submodules\vipr\src\Core\Vipr\bin\Debug" "$(TargetDir)." /y /s /e</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

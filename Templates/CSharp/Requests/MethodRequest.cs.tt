@@ -76,8 +76,70 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         requestBodyInitializerBuilder.Append("            ");
         requestBodyInitializerBuilder.Append("this.RequestBody = new " + requestType + "Body();");
     }
+    
+    var requiredParameters = method.Parameters.Where(param => !param.IsNullable);
+    var optionalParameters = method.Parameters.Where(param => param.IsNullable);
 
-    foreach (var param in method.Parameters)
+    foreach (var param in requiredParameters)
+    {
+        var paramTypeString = param.Type.GetTypeString();
+
+        paramStringBuilder.Append(Environment.NewLine);
+        paramStringBuilder.Append("            ");
+        paramStringBuilder.Append(paramTypeString);
+        paramStringBuilder.Append(" ");
+        paramStringBuilder.Append(param.Name.ToLowerFirstChar());
+        paramStringBuilder.Append(",");
+
+        if (method.IsAction())
+        {
+            requestBodyInitializerBuilder.Append(Environment.NewLine);
+            requestBodyInitializerBuilder.Append("            ");
+            requestBodyInitializerBuilder.Append("this.RequestBody.");
+            requestBodyInitializerBuilder.Append(param.Name.ToCheckedCase());
+            requestBodyInitializerBuilder.Append(" = ");
+            requestBodyInitializerBuilder.Append(param.Name.ToLowerFirstChar());
+            requestBodyInitializerBuilder.Append(";");
+        }
+        else
+        {
+            requestBodyInitializerBuilder.Append(Environment.NewLine);
+            requestBodyInitializerBuilder.Append(Environment.NewLine);
+            requestBodyInitializerBuilder.Append("            ");
+            requestBodyInitializerBuilder.Append("if (");
+            requestBodyInitializerBuilder.Append(param.Name.ToLowerFirstChar());
+            requestBodyInitializerBuilder.Append(" != ");
+            
+            if (param.Type.IsTypeNullable())
+            {
+                requestBodyInitializerBuilder.Append("null)");
+            }
+            else
+            {
+                requestBodyInitializerBuilder.Append("default(");
+                requestBodyInitializerBuilder.Append(paramTypeString);
+                requestBodyInitializerBuilder.Append("))");
+            }
+            
+            requestBodyInitializerBuilder.Append(Environment.NewLine);
+            requestBodyInitializerBuilder.Append("            ");
+            requestBodyInitializerBuilder.Append("{");
+            requestBodyInitializerBuilder.Append(Environment.NewLine);
+            requestBodyInitializerBuilder.Append("                ");
+
+            requestBodyInitializerBuilder.Append("this.QueryOptions.Add(new QueryOption(\"");
+            requestBodyInitializerBuilder.Append(param.Name.ToLowerFirstChar());
+            requestBodyInitializerBuilder.Append("\", ");
+            requestBodyInitializerBuilder.Append(param.Name.ToLowerFirstChar());
+            requestBodyInitializerBuilder.Append("));");
+
+            requestBodyInitializerBuilder.Append(Environment.NewLine);
+            requestBodyInitializerBuilder.Append("            ");
+            requestBodyInitializerBuilder.Append("}");
+        }
+    }
+    
+    foreach (var param in optionalParameters)
     {
         var paramTypeString = param.Type.GetTypeString();
 
@@ -87,12 +149,15 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 
         if (param.Type.IsTypeNullable())
         {
-            paramStringBuilder.Append(" " + param.Name.ToLowerFirstChar() + " = null,");
+            paramStringBuilder.Append(" ");
         }
         else
         {
-            paramStringBuilder.Append("? " + param.Name.ToLowerFirstChar() + " = null,");
+            paramStringBuilder.Append("? ");
         }
+        
+        paramStringBuilder.Append(param.Name.ToLowerFirstChar());
+        paramStringBuilder.Append(" = null,");
 
         if (method.IsAction())
         {

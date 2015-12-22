@@ -22,7 +22,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     foreach (var param in method.Parameters)  
     {
         var paramTypeString = param.Type.GetTypeString();
-        if (param.Type.IsTypeNullable())
+        if (param.Type.IsTypeNullable() || !param.IsNullable)
         {
     #>
 
