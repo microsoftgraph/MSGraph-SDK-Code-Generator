@@ -8,7 +8,7 @@ var entityRequest = entityName + "Request";
 
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=entity.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Collections.Generic;
@@ -37,15 +37,15 @@ namespace Microsoft.OneDrive.Sdk
         /// <summary>
         /// Creates the specified <#=entityName#> using PUT.
         /// </summary>
-        /// <param name="<#=entity.Name#>">The <#=entityName#> to create.</param>
+        /// <param name="<#=entity.Name#>ToCreate">The <#=entityName#> to create.</param>
         /// <returns>The created <#=entityName#>.</returns>
-        public async Task<<#=entityName#>> CreateAsync(<#=entityName#> <#=entity.Name#>)
+        public async Task<<#=entityName#>> CreateAsync(<#=entityName#> <#=entity.Name#>ToCreate)
         {
             this.ContentType = "<#=writer.jsonContentType#>";
             this.Method = "PUT";
-            var entity = await this.SendAsync<<#=entityName#>>(<#=entity.Name#>);
-            this.InitializeCollectionProperties(entity);
-            return entity;
+            var newEntity = await this.SendAsync<<#=entityName#>>(<#=entity.Name#>ToCreate);
+            this.InitializeCollectionProperties(newEntity);
+            return newEntity;
         }
 
         /// <summary>
@@ -65,23 +65,23 @@ namespace Microsoft.OneDrive.Sdk
         public async Task<<#=entityName#>> GetAsync()
         {
             this.Method = "GET";
-            var entity = await this.SendAsync<<#=entityName#>>(null);
-            this.InitializeCollectionProperties(entity);
-            return entity;
+            var retrievedEntity = await this.SendAsync<<#=entityName#>>(null);
+            this.InitializeCollectionProperties(retrievedEntity);
+            return retrievedEntity;
         }
 
         /// <summary>
         /// Updates the specified <#=entityName#> using PATCH.
         /// </summary>
-        /// <param name="<#=entity.Name#>">The <#=entityName#> to update.</param>
+        /// <param name="<#=entity.Name#>ToUpdate">The <#=entityName#> to update.</param>
         /// <returns>The updated <#=entityName#>.</returns>
-        public async Task<<#=entityName#>> UpdateAsync(<#=entityName#> <#=entity.Name#>)
+        public async Task<<#=entityName#>> UpdateAsync(<#=entityName#> <#=entity.Name#>ToUpdate)
         {
             this.ContentType = "<#=writer.jsonContentType#>";
             this.Method = "PATCH";
-            var entity = await this.SendAsync<<#=entityName#>>(<#=entity.Name#>);
-            this.InitializeCollectionProperties(entity);
-            return entity;
+            var updatedEntity = await this.SendAsync<<#=entityName#>>(<#=entity.Name#>ToUpdate);
+            this.InitializeCollectionProperties(updatedEntity);
+            return updatedEntity;
         }
 
         /// <summary>
@@ -120,8 +120,8 @@ namespace Microsoft.OneDrive.Sdk
         /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
         /// </summary>
-        /// <param name="<#=entity.Name#>">The <see cref="<#=entityName#>"/> with the collection properties to initialize.</param>
-        private void InitializeCollectionProperties(<#=entityName#> <#=entity.Name#>)
+        /// <param name="<#=entity.Name#>ToInitialize">The <see cref="<#=entityName#>"/> with the collection properties to initialize.</param>
+        private void InitializeCollectionProperties(<#=entityName#> <#=entity.Name#>ToInitialize)
         {
         <#
         var collectionProperties = entity.Properties.Where(property => property.IsCollection() && !property.LongDescriptionContains("ignorableCollection"));
@@ -130,7 +130,7 @@ namespace Microsoft.OneDrive.Sdk
         {
         #>
 
-            if (<#=entity.Name#> != null && <#=entity.Name#>.AdditionalData != null)
+            if (<#=entity.Name#>ToInitialize != null && <#=entity.Name#>ToInitialize.AdditionalData != null)
             {
         <#
             foreach(var property in collectionProperties)
@@ -139,17 +139,17 @@ namespace Microsoft.OneDrive.Sdk
                 var propertyType = property.GetTypeString();
         #>
 
-                if (<#=entity.Name#>.<#=propertyName#> != null && <#=entity.Name#>.<#=propertyName#>.CurrentPage != null)
+                if (<#=entity.Name#>ToInitialize.<#=propertyName#> != null && <#=entity.Name#>ToInitialize.<#=propertyName#>.CurrentPage != null)
                 {
-                    <#=entity.Name#>.<#=propertyName#>.AdditionalData = <#=entity.Name#>.AdditionalData;
+                    <#=entity.Name#>ToInitialize.<#=propertyName#>.AdditionalData = <#=entity.Name#>ToInitialize.AdditionalData;
 
                     object nextPageLink;
-                    <#=entity.Name#>.AdditionalData.TryGetValue("<#=propertyName.ToLowerFirstChar()#>@odata.nextLink", out nextPageLink);
+                    <#=entity.Name#>ToInitialize.AdditionalData.TryGetValue("<#=propertyName.ToLowerFirstChar()#>@odata.nextLink", out nextPageLink);
                     var nextPageLinkString = nextPageLink as string;
 
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
-                        <#=entity.Name#>.<#=propertyName#>.InitializeNextPageRequest(
+                        <#=entity.Name#>ToInitialize.<#=propertyName#>.InitializeNextPageRequest(
                             this.Client,
                             nextPageLinkString);
                     }

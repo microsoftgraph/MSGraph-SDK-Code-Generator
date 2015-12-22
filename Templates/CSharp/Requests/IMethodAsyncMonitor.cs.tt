@@ -15,7 +15,7 @@ var asyncString = isCollection ? "async " : " ";
 
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=method.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Threading;

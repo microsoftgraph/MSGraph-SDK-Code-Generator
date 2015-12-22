@@ -121,6 +121,8 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
                     return "byte[]";
                 case "boolean":
                     return "bool";
+                case "date":
+                    return "DateTimeOffset";
                 default:
                     return type.ToCheckedCase();
             }
@@ -168,7 +170,13 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 
         public static bool IsComplex(this string t)
         {
-            return !(t == "Int32" || t == "Int64" || t == "DateTimeOffset" || "long" == t || t == "double");
+            var typeValue = t.ToLowerInvariant();
+            return !(t == "int32" || t == "int64" || t == "datetimeoffset" || "long" == t || t == "double");
+        }
+
+        public static string GetNamespaceName(this OdcmNamespace namespaceObject)
+        {
+            return Inflector.Inflector.Titleize(namespaceObject.Name);
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)

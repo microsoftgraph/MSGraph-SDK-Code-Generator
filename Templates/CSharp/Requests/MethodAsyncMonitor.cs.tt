@@ -18,7 +18,7 @@ var hasParameters = method.Parameters != null && method.Parameters.Any();
 
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=method.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Collections.Generic;

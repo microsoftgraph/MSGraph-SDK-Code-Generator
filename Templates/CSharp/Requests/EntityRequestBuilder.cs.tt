@@ -9,7 +9,7 @@ var requestBuilder = entityName + "RequestBuilder";
 
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=entity.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Collections.Generic;
@@ -50,24 +50,7 @@ namespace Microsoft.OneDrive.Sdk
             return new <#=request#>(this.RequestUrl, this.Client, options);
         }
 
-    <#foreach(var child in entity.Derived)
-    {
-        var childName = child.Name.ToCheckedCase();
-    #>
-
-        /// <summary>
-        /// Gets the request builder for <#=childName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=childName#>RequestBuilder"/>.</returns>
-        public I<#=childName#>RequestBuilder <#=childName#>
-        {
-            get
-            {
-                return new <#=childName#>RequestBuilder(this.AppendSegmentToRequestUrl("<#=child.Name#>"), this.Client);
-            }
-        }  
     <#
-    }
 
     foreach(var prop in entity.NavigationProperties()){
 

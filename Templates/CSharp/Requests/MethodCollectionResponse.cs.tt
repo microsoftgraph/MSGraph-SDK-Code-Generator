@@ -12,7 +12,7 @@ var collectionResponse = responseNamePrefix + "CollectionResponse";
 var collectionPage = responseNamePrefix + "CollectionPage";
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=method.Namespace.GetNamespaceName()#>
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;

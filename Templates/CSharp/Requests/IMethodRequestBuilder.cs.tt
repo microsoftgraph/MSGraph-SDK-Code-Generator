@@ -8,7 +8,7 @@ var requestType = entityName + method.Name.Substring(method.Name.IndexOf('.') + 
 var requestBuilderType = requestType + "Builder";
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=method.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Collections.Generic;

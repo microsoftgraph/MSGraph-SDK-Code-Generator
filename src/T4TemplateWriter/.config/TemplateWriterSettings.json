@@ -1,6 +1,6 @@
 ﻿{
     "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python" ],
-    "TargetLanguage": "ObjC",
+    "TargetLanguage": "CSharp",
     "Plugins": [ ],
     "PrimaryNamespaceName": "Microsoft.Graph",
     "NamespacePrefix": "com",
@@ -29,10 +29,7 @@
         "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER",
         "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,",
         "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN",
-        "THE SOFTWARE.",
-      	"",
-      	"",
-        "This file was generated and any chanes will be overwritten."
+        "THE SOFTWARE."
     ],
     "TemplateMapping": {
         "Shared": [
@@ -181,7 +178,7 @@
             { "Template": "Method", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>" },
             { "Template": "SpecialMethod", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>", "Matches": "specialMethod" },
             { "Template": "Stream", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "<Class>_<Property>_request" },
-            { "Template": "__init__", "SubProcessor": "Other", "Type": "Other", "Name": "__init__" }
+            { "Template": "__init__", "SubProcessor": "Other", "Type": "Other", "Name": "__init__" },
             { "Template": "EntityCollectionPage", "SubProcessor": "CollectionProperty",                                                         "Name": "<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "IEntityCollectionPage", "SubProcessor": "CollectionProperty",                                                        "Name": "IBase<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionProperty",                                                      "Name": "<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
