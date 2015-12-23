@@ -45,7 +45,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Vipr.Core, Version=1.0.5827.28952, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Vipr.Core">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\submodules\vipr\src\Core\Vipr.Core\bin\Debug\Vipr.Core.dll</HintPath>
     </Reference>
@@ -114,7 +114,7 @@
     <PostBuildEvent>xcopy  "$(ProjectDir)..\..\submodules\vipr\src\Core\Vipr\bin\Debug" "$(TargetDir)." /y /s /e</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>"$(MSBuildBinPath)\msbuild.exe" "$(ProjectDir)\..\..\submodules\vipr\Vipr.sln"</PreBuildEvent>
+    <PreBuildEvent>"$(MSBuildBinPath)\msbuild.exe" /m /t:Build "$(ProjectDir)\..\..\submodules\vipr\Vipr.sln"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
