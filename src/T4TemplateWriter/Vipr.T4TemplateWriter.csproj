@@ -45,9 +45,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Vipr.Core, Version=1.0.5694.29260, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Vipr.Core, Version=1.0.5827.28952, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\debug\Vipr.Core.dll</HintPath>
+      <HintPath>..\..\submodules\vipr\src\Core\Vipr.Core\bin\Debug\Vipr.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +85,18 @@
     <Compile Include="TemplateProcessor\TemplateFileInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".config\CSharpSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include=".config\JavaSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include=".config\ObjCSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include=".config\PythonSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include=".config\TemplateWriterSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -99,8 +111,10 @@
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy  "$(ProjectDir)..\..\submodules\vipr\src\Core\Vipr\bin\Debug" "$(TargetDir)." /y /s /e</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>"$(MSBuildBinPath)\msbuild.exe" "$(ProjectDir)\..\..\submodules\vipr\Vipr.sln"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

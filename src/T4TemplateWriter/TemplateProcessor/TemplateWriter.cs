@@ -72,7 +72,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
             SetTemplatesDirectory(ConfigurationService.Settings.TemplatesDirectory);
             this.TemplateInfoProvider = new TemplateInfoProvider(ConfigurationService.Settings.TemplateConfiguration,
-                                                                 Path.Combine(ConfigurationService.Settings.TemplatesDirectory, ConfigurationService.Settings.TargetLanguage),
+                                                                 Path.Combine(TemplatesDirectory, ConfigurationService.Settings.TargetLanguage),
                                                                 defaultNameCasing: nameCasing);
         }
 

@@ -2,11 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Vipr.T4TemplateWriter.Settings
 {
     public class TemplateWriterSettings
     {
+        public static TemplateWriterSettings mainSettingsObject = null;
+
+        private Dictionary<string, List<Dictionary<string, string>>> templateMapping;
 
         //TODO: Differentiate between Java and Obj-C
         public TemplateWriterSettings()
@@ -19,13 +23,25 @@ namespace Vipr.T4TemplateWriter.Settings
             InitializeCollections = true;
             TargetLanguage = "Java";
             NamespaceOverride = "com.microsoft.services.onenote";
-            TemplateMapping = new Dictionary<string, List<Dictionary<string, string>>>();
+            this.templateMapping = new Dictionary<string, List<Dictionary<string, string>>>();
             this.templateConfiguration = new List<Dictionary<string, string>>();
             TemplatesDirectory = null;
             DefaultFileCasing = "UpperCamel";
             CustomFlags = new List<string>();
         }
 
+        public void CopyPropertiesFromMainSettings()
+        {
+            if (mainSettingsObject == null) return;
+
+            foreach (PropertyInfo property in typeof(TemplateWriterSettings).GetProperties())
+            {
+                if (property.CanWrite)
+                {
+                    property.SetValue(this, property.GetValue(mainSettingsObject, null), null);
+                }
+            }
+        }
 
         /// <summary>
         /// Target languages provided via templates.
@@ -40,7 +56,19 @@ namespace Vipr.T4TemplateWriter.Settings
         /// <summary>
         /// The template configuration mapping for all platforms.
         /// </summary>
-        public Dictionary<string, List<Dictionary<string, string>>> TemplateMapping { get; set; }
+        public Dictionary<string, List<Dictionary<string, string>>> TemplateMapping
+        {
+            get { return this.templateMapping; }
+            set
+            {
+                //Replace input keys
+                foreach (var entry in value)
+                {
+                    this.templateMapping[entry.Key] = entry.Value;
+                }
+
+            }
+        }
 
         /// <summary>
         /// The default casing method to be used for file names when a casing method ins't specified.
