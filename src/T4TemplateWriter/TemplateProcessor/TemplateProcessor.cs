@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +13,10 @@ using Vipr.T4TemplateWriter.Output;
 using Vipr.T4TemplateWriter;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
+
+using Microsoft.CSharp;
+using System.CodeDom.Compiler;
+using System.Reflection;
 
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
@@ -38,6 +41,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         }
 
         private Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>> subProcessors;
+        private Dictionary<String, Func<ITextTemplatingEngineHost, string>> preProcessedTemplates;
 
         protected Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>> SubProcessors
         {
@@ -81,6 +85,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             this.PathWriter = pathWriter;
             this.PathWriter.Model = odcmModel;
             this.TemplatesDirectory = templatesDirectory;
+            this.preProcessedTemplates = new Dictionary<string, Func<ITextTemplatingEngineHost, string>>();
         }
 
         public string GetProcessorVerboseOutput()
@@ -244,13 +249,60 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             yield return this.ProcessTemplate(templateInfo, null, templateInfo.BaseFileName());
         }
 
+        private Func<ITextTemplatingEngineHost,string> PreProcessTemplate(ITemplateInfo templateInfo)
+        { 
+            var templateContent = File.ReadAllText(templateInfo.FullPath);
+            string language;
+            string[] references;
+            var className = "C" + Guid.NewGuid().ToString("N");
+            var generatedCode = this.T4Engine.PreprocessTemplate(templateContent, new CustomT4Host(templateInfo,this.TemplatesDirectory, null, null), className, "RuntimeTemplates", out language, out references);
+
+            CSharpCodeProvider provider = new CSharpCodeProvider();
+            CompilerParameters parameters = new CompilerParameters();
+
+            parameters.GenerateInMemory = true;
+            parameters.GenerateExecutable = false;
+            
+            //Add referenced assemblies by TemplateWriter to the template RAM assembly 
+
+            var assemblies = typeof(TemplateWriter).Assembly.GetReferencedAssemblies().ToList();
+            var assemblyLocations =
+            assemblies.Select(a => Assembly.ReflectionOnlyLoad(a.FullName).Location).ToList();
+
+            assemblyLocations.Add(typeof(TemplateWriter).Assembly.Location);
+
+            parameters.ReferencedAssemblies.AddRange(assemblyLocations.ToArray());
+
+            CompilerResults results = provider.CompileAssemblyFromSource(parameters, generatedCode);
+
+            Assembly assembly = results.CompiledAssembly;
+            Type templateClassType = assembly.GetType("RuntimeTemplates." + className);     
+            
+            //Return processing delegate with captured compiled template related vars
+            var templateClassInstance = Activator.CreateInstance(templateClassType);
+            PropertyInfo hostPI = templateClassType.GetProperty("Host");
+            MethodInfo transformTextMI = templateClassType.GetMethod("TransformText");
+            return delegate(ITextTemplatingEngineHost host)
+            {
+                hostPI.SetValue(templateClassInstance, host, null);
+                return (string) transformTextMI.Invoke(templateClassInstance, null);
+            };
+        }
+
         protected TextFile ProcessTemplate(ITemplateInfo templateInfo, OdcmObject odcmObject, string fileName)
         {
             var host = TemplateProcessor.Host(templateInfo, this.TemplatesDirectory, odcmObject, this.CurrentModel);
 
-            var templateContent = File.ReadAllText(host.TemplateFile);
+            Func<ITextTemplatingEngineHost, string> preProcessedTemplate;
 
-            var output = this.T4Engine.ProcessTemplate(templateContent, host);
+            if( !preProcessedTemplates.TryGetValue(templateInfo.FullPath, out preProcessedTemplate) )
+            {
+                preProcessedTemplate = this.PreProcessTemplate(templateInfo);
+                preProcessedTemplates.Add(templateInfo.FullPath,preProcessedTemplate);
+            }
+            
+            var output = preProcessedTemplate(host);
+
             if (!string.IsNullOrEmpty(host.TemplateName))
             {
                 fileName = host.TemplateName;  
