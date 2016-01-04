@@ -99,7 +99,7 @@ foreach(var prop in complexType.Properties)
 
 <#
 	}
-    else if (prop.IsEnum() && !prop.IsComplex() && prop.Type.GetTypeString() != "NSStream")
+    else if (!prop.IsComplex() && prop.Type.GetTypeString() != "NSStream")
     {
 #>
 
