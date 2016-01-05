@@ -252,43 +252,41 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         private Func<ITextTemplatingEngineHost,string> PreProcessTemplate(ITemplateInfo templateInfo)
         { 
             var templateContent = File.ReadAllText(templateInfo.FullPath);
+
             string language;
             string[] references;
-            var className = "C" + templateInfo.TemplateName.Replace(".","_");
-            var generatedCode = this.T4Engine.PreprocessTemplate(templateContent, new CustomT4Host(templateInfo,this.TemplatesDirectory, null, null), className, "RuntimeTemplates", out language, out references);
+            var className = templateInfo.TemplateName.Replace(".","_");
+            var dummyHost = new CustomT4Host(templateInfo, this.TemplatesDirectory, null, null);
+            var generatedCode = this.T4Engine.PreprocessTemplate(templateContent, dummyHost, className, "RuntimeTemplates", out language, out references);
 
-            CSharpCodeProvider provider = new CSharpCodeProvider();
-            CompilerParameters parameters = new CompilerParameters();
+            var parameters = new CompilerParameters 
+            { 
+                OutputAssembly = templateInfo.TemplateName + ".dll",
+                GenerateInMemory = false,
+                GenerateExecutable = false,
+                IncludeDebugInformation = true,
+            };
 
-            parameters.OutputAssembly = templateInfo.TemplateName + ".dll";
-            parameters.GenerateInMemory = false;
-            parameters.GenerateExecutable = false;
-            parameters.IncludeDebugInformation = true;
-
-            //Add referenced assemblies by TemplateWriter to the template RAM assembly 
-
-            var assemblies = typeof(TemplateWriter).Assembly.GetReferencedAssemblies().ToList();
-            var assemblyLocations =
-            assemblies.Select(a => Assembly.ReflectionOnlyLoad(a.FullName).Location).ToList();
-
-            assemblyLocations.Add(typeof(TemplateWriter).Assembly.Location);
-
+            var assemblyLocations = AppDomain.CurrentDomain
+                                    .GetAssemblies()
+                                    .Where(a => !a.IsDynamic)
+                                    .Select(a => a.Location);
             parameters.ReferencedAssemblies.AddRange(assemblyLocations.ToArray());
 
-            CompilerResults results = provider.CompileAssemblyFromSource(parameters, generatedCode);
+            var provider = new CSharpCodeProvider();
 
-            Assembly assembly = results.CompiledAssembly;
-            Type templateClassType = assembly.GetType("RuntimeTemplates." + className);     
-            
-            //Return processing delegate with captured compiled template related vars
-            var templateClassInstance = Activator.CreateInstance(templateClassType);
-            PropertyInfo hostPI = templateClassType.GetProperty("Host");
-            MethodInfo transformTextMI = templateClassType.GetMethod("TransformText");
-            return delegate(ITextTemplatingEngineHost host)
+            var results = provider.CompileAssemblyFromSource(parameters, generatedCode);
+
+            var assembly = results.CompiledAssembly;
+            var templateClassType = assembly.GetType("RuntimeTemplates." + className);     
+                  
+            dynamic templateClassInstance = Activator.CreateInstance(templateClassType);
+            return (ITextTemplatingEngineHost host) =>
             {
-                hostPI.SetValue(templateClassInstance, host, null);
-                return (string) transformTextMI.Invoke(templateClassInstance, null);
+                templateClassInstance.Host = host;
+                return templateClassInstance.TransformText();
             };
+  
         }
 
         protected TextFile ProcessTemplate(ITemplateInfo templateInfo, OdcmObject odcmObject, string fileName)
@@ -297,7 +295,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             Func<ITextTemplatingEngineHost, string> preProcessedTemplate;
 
-            if( !preProcessedTemplates.TryGetValue(templateInfo.FullPath, out preProcessedTemplate) )
+            if (!preProcessedTemplates.TryGetValue(templateInfo.FullPath, out preProcessedTemplate) )
             {
                 preProcessedTemplate = this.PreProcessTemplate(templateInfo);
                 preProcessedTemplates.Add(templateInfo.FullPath,preProcessedTemplate);
