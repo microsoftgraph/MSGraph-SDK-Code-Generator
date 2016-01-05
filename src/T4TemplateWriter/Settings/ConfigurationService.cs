@@ -11,6 +11,7 @@ namespace Vipr.T4TemplateWriter.Settings
     public static class ConfigurationService
     {
         private static IConfigurationProvider _configurationProvider;
+        private static TemplateWriterSettings templateWriterSettings = null;
 
         public static void Initialize(IConfigurationProvider configurationProvider)
         {
@@ -63,9 +64,14 @@ namespace Vipr.T4TemplateWriter.Settings
         {
             get
             {
-                return _configurationProvider != null
-                    ? LoadSettingsForLanguage()
-                    : new TemplateWriterSettings();
+                if (templateWriterSettings == null)
+                {
+                    templateWriterSettings = _configurationProvider != null
+                        ? LoadSettingsForLanguage()
+                        : new TemplateWriterSettings();
+                }
+
+                return templateWriterSettings;
             }
         }
     }
