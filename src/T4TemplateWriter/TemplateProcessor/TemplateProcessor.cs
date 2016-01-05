@@ -259,7 +259,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             var dummyHost = new CustomT4Host(templateInfo, this.TemplatesDirectory, null, null);
             var generatedCode = this.T4Engine.PreprocessTemplate(templateContent, dummyHost, className, "RuntimeTemplates", out language, out references);
 
-            CompilerParameters parameters = new CompilerParameters 
+            var parameters = new CompilerParameters 
             { 
                 OutputAssembly = templateInfo.TemplateName + ".dll",
                 GenerateInMemory = false,
@@ -273,12 +273,12 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                     .Select(a => a.Location);
             parameters.ReferencedAssemblies.AddRange(assemblyLocations.ToArray());
 
-            CSharpCodeProvider provider = new CSharpCodeProvider();
+            var provider = new CSharpCodeProvider();
 
-            CompilerResults results = provider.CompileAssemblyFromSource(parameters, generatedCode);
+            var results = provider.CompileAssemblyFromSource(parameters, generatedCode);
 
-            Assembly assembly = results.CompiledAssembly;
-            Type templateClassType = assembly.GetType("RuntimeTemplates." + className);     
+            var assembly = results.CompiledAssembly;
+            var templateClassType = assembly.GetType("RuntimeTemplates." + className);     
                   
             dynamic templateClassInstance = Activator.CreateInstance(templateClassType);
             return (ITextTemplatingEngineHost host) =>
