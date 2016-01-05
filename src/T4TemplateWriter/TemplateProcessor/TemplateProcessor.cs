@@ -254,15 +254,17 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             var templateContent = File.ReadAllText(templateInfo.FullPath);
             string language;
             string[] references;
-            var className = "C" + Guid.NewGuid().ToString("N");
+            var className = "C" + templateInfo.TemplateName.Replace(".","_");
             var generatedCode = this.T4Engine.PreprocessTemplate(templateContent, new CustomT4Host(templateInfo,this.TemplatesDirectory, null, null), className, "RuntimeTemplates", out language, out references);
 
             CSharpCodeProvider provider = new CSharpCodeProvider();
             CompilerParameters parameters = new CompilerParameters();
 
-            parameters.GenerateInMemory = true;
+            parameters.OutputAssembly = templateInfo.TemplateName + ".dll";
+            parameters.GenerateInMemory = false;
             parameters.GenerateExecutable = false;
-            
+            parameters.IncludeDebugInformation = true;
+
             //Add referenced assemblies by TemplateWriter to the template RAM assembly 
 
             var assemblies = typeof(TemplateWriter).Assembly.GetReferencedAssemblies().ToList();
