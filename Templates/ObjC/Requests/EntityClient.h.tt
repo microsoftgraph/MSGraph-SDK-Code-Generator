@@ -26,10 +26,22 @@ foreach(var propertyClass in classes)
 #>
 
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "ODBaseClient.h"
+#import "ODHttpProvider.h"
+#import "ODAuthProvider.h"
+#import "ODLoggerProtocol.h"
 
 <#=writer.GetHeaderDoc(entityName)#>
-@interface <#=entityName#> : ODBaseClient 
+@interface <#=entityName#> : NSObject
+
+@property NSURL *baseURL;
+
+@property (strong) id<ODHttpProvider> httpProvider;
+
+@property (strong) id<ODLogger> logger;
+
+@property (strong) id<ODAuthProvider> authProvider;
+
+-(instancetype)initWithURL:(NSString *)url httpProvider:(id<ODHttpProvider>)httpProvider authProvider:(id<ODAuthProvider>)authProvider;
 
 <#
 
@@ -40,21 +52,32 @@ foreach(var prop in containerProps)
         var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
         var propType = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
 
+        if (prop.LongDescriptionContains("enumerable"))
+        {
 #>
 -(<#=propName#>CollectionRequestBuilder *)<#=prop.Name#>;
 
+<#  
+        }
+        if (prop.LongDescriptionContains("queryable"))
+        {
+#>
 -(<#=propType#>RequestBuilder *)<#=prop.Name#>:(NSString*)<#=prop.Name#>Id;
 
 <#
-    }
-    else
-    {
+        }
+
+	}
+	else
+	{
+
 #>
 -(<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=prop.Name#>;
+<#	
 
-<#
-    }
+	}
 }
+
 #>
 
 @end
