@@ -6,17 +6,13 @@ var entity = host.CurrentType.AsOdcmEnum();
 
 #include <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, <#=writer.GetPrefix() + entity.Name#>){
+typedef NS_ENUM(NSInteger, <#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#>){
 
 <#
 var lastMember = entity.Members.LastOrDefault();
 foreach(var member in entity.Members)
 {
-    var value = member.Name + (lastMember == member ? string.Empty : ",");
-    if (member.Name.Contains("None"))
-    {
-        value = entity.Name.ToUpperFirstChar() + value; 
-    }
+    var value = entity.Name.ToUpperFirstChar() + member.Name.ToUpperFirstChar() + (lastMember == member ? string.Empty : ",");
 
 #>
 	<#=value#>

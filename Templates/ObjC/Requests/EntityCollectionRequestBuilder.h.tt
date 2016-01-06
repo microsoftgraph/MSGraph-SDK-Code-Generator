@@ -24,7 +24,7 @@ classStringBuilder.Append(", " + entityRequestBuilder + ";");
 - (<#=entityRequest#> *)requestWithOptions:(NSArray *)options;
 
 <#
-if (!(innerEntity is OdcmComplexClass) && prop.LongDescriptionContains("indexable"))
+if (!(innerEntity is OdcmComplexClass) && prop.LongDescriptionContains("queryable"))
 {
 #>
 - (<#=entityRequestBuilder#> *)<#=innerEntity.Name.ToLowerFirstChar()#>:(NSString *)<#=innerEntity.Name.ToLowerFirstChar()#>;

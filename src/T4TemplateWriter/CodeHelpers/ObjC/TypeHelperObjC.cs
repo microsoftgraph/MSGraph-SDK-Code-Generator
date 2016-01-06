@@ -44,6 +44,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
                 case "Float":
                     return "CGFloat";
                 case "DateTimeOffset":
+                case "Date":
                     return "NSDate";
                 case "Binary":
                     return "NSString";
