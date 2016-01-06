@@ -2,31 +2,19 @@
     "TemplateMapping": {
         "Java": [
 
-            //try to add only templates that generate entity / complex types
-            //enums
-            //odata data type
-            //one at a time
-            //separate function and functions with body and the same goes for actions
-
-            //client stuff
-
             { "Template": "IClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "I<Container>Client" },
             { "Template": "Client", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
             { "Template": "IBaseClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "IBase<Container>Client" },
             { "Template": "BaseClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "Base<Container>Client" },
 
 
-            //entities
-
             { "Template": "BaseModel", "SubProcessor": "Other", "Type": "Shared" },
             { "Template": "Enum", "SubProcessor": "EnumType", "Name": "<Class>" },
 
-            //method related
 
-            /*
             { "Template": "MethodBody", "SubProcessor": "MethodWithBody", "Name": "<Method>Body" },
             { "Template": "BaseMethodBody", "SubProcessor": "MethodWithBody", "Name": "Base<Method>Body" },
-            
+
 
             { "Template": "MethodRequest", "SubProcessor": "Method", "Name": "<Method>Request" },
             { "Template": "IEntityRequest", "SubProcessor": "Method", "Name": "I<Method>Request" },
@@ -44,7 +32,7 @@
             { "Template": "MethodCollectionPage", "SubProcessor": "Method", "Name": "<Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "specialCollection" },
             { "Template": "IBaseMethodCollectionPage", "SubProcessor": "Method", "Name": "IBase<Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "specialCollection" },
             { "Template": "BaseMethodCollectionPage", "SubProcessor": "Method", "Name": "Base<Method>CollectionPage", "Ignore": "ignorableCollection", "Matches": "specialCollection" },
-            */
+
 
             { "Template": "IEntityCollectionPage", "SubProcessor": "CollectionMethod", "Name": "I<Method>CollectionPage", "Ignore": "ignorableCollection" },
             { "Template": "MethodCollectionPage", "SubProcessor": "CollectionMethod", "Name": "<Method>CollectionPage", "Ignore": "ignorableCollection" },
