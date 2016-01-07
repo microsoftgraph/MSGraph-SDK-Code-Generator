@@ -105,6 +105,16 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
             };
         }
 
+        private static readonly ICollection<string> SimpleTypes =
+            new HashSet<string>{
+                "int32",
+                "int64",
+                "datetimeoffset",
+                "long",
+                "double",
+                "string"
+            };
+
         public static string GetTypeString(this OdcmParameter parameter)
         {
             return parameter.Type.Name.GetTypeString();
@@ -175,8 +185,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 
         public static bool IsComplex(this string t)
         {
-            var typeValue = t.ToLowerInvariant();
-            return !(t == "int32" || t == "int64" || t == "datetimeoffset" || "long" == t || t == "double" || t == "string");
+            return !TypeHelperCSharp.SimpleTypes.Contains(t.ToLowerInvariant());
         }
 
         public static string GetNamespaceName(this OdcmNamespace namespaceObject)

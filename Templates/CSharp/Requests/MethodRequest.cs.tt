@@ -111,9 +111,9 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             
             if (!param.IsNullable && !param.Type.IsTypeNullable())
             {
-                requestBodyInitializerBuilder.Append("if (");
-                requestBodyInitializerBuilder.Append(paramLowerChar);
-                requestBodyInitializerBuilder.Append(".HasValue)");
+                requestBodyInitializerBuilder.Append(Environment.NewLine);
+                requestBodyInitializerBuilder.Append("            ");
+                requestBodyInitializerBuilder.AppendFormat("if ({0}.HasValue)", paramLowerChar);
                 requestBodyInitializerBuilder.Append(Environment.NewLine);
                 requestBodyInitializerBuilder.Append("            ");
                 requestBodyInitializerBuilder.Append("{");
