@@ -1,4 +1,4 @@
-﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+﻿ <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="SharedObjC.template.tt"#>
 
 #import "ODCollection.h"
@@ -11,8 +11,11 @@ var classes = new HashSet<string>();
 
 foreach(var es in entitySet)
 {
-    classes.Add("#import \"" + writer.GetPrefix() + es.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
-    classes.Add("#import \"" + writer.GetPrefix() + es.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
+    if (es.IsCollection())
+    {
+        classes.Add("#import \"" + writer.GetPrefix() + es.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
+        classes.Add("#import \"" + writer.GetPrefix() + es.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
+    }
 }
 
 foreach(var et in entityTypes)
@@ -59,7 +62,7 @@ foreach(var et in entityTypes)
         classes.Add("#import \"" + baseName + "Request.h\"");
     }
 
-    foreach(var prop in et.GetProperties().Where(prop => prop.IsCollection && !prop.IsNavigation() && !prop.LongDescriptionContains("ignorableCollection")))
+    foreach(var prop in et.GetProperties().Where(prop => prop.IsCollection && !prop.IsNavigation()  && !prop.LongDescriptionContains("ignorableCollection")))
     {
         classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
         classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
@@ -88,4 +91,4 @@ foreach(var importClass in classes)
 <#
 }
 #>
-#import "<#=writer.GetPrefix()#>GraphServiceClient.h" 
+#import "<#=writer.GetPrefix()#>Client.h" 
