@@ -4,10 +4,28 @@
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
+var classType = entity.IsAbstract ? "abstract partial class" : "partial class";
+
+var typeDeclaration = entityName;
+
+if (entity.Base != null)
+{
+    typeDeclaration = string.Format("{0} : {1}", typeDeclaration, entity.Base.Name.ToCheckedCase());
+}
+
+var attributeStringBuilder = new StringBuilder();
+attributeStringBuilder.Append("[DataContract]");
+
+if (!entity.IsAbstract && entity.Derived != null && entity.Base == null)
+{
+    attributeStringBuilder.Append(Environment.NewLine);
+    attributeStringBuilder.Append("    ");
+    attributeStringBuilder.Append("[JsonConverter(typeof(DerivedTypeConverter))]");
+}
 
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=entity.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Collections.Generic;
@@ -18,8 +36,8 @@ namespace Microsoft.OneDrive.Sdk
     /// <summary>
     /// The type <#=entityName.SplitCamelCase()#>.
     /// </summary>
-    [DataContract]
-    public partial class <#=entityName#>
+    <#=attributeStringBuilder.ToString()#>
+    public <#=classType#> <#=typeDeclaration#>
     {
     <# 
         foreach(var property in entity.Properties)
@@ -69,6 +87,10 @@ namespace Microsoft.OneDrive.Sdk
     <#
             }
         }
+
+    // Only include AdditionalData in the base classes.
+    if (entity.Base == null)
+    {
     #>
 
         /// <summary>
@@ -76,6 +98,9 @@ namespace Microsoft.OneDrive.Sdk
         /// </summary>
         [JsonExtensionData(ReadData = true)]
         public IDictionary<string, object> AdditionalData { get; set; }
+    <#
+    }
+    #>
 
     }
 }

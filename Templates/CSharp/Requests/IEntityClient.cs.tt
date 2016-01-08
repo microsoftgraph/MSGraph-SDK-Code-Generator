@@ -1,10 +1,11 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="SharedCSharp.template.tt"#>
 <#
-var clientName = model.GetEntityContainer().ToCheckedCase() + "Client";
+var entityContainer = model.EntityContainer;
+var clientName = entityContainer.Name.ToCheckedCase() + "Client";
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=entityContainer.Namespace.GetNamespaceName()#>
 {
 
     /// <summary>
@@ -31,12 +32,14 @@ namespace Microsoft.OneDrive.Sdk
         }
         else
         {
+        
+        var propType = prop.Type.Name.ToCheckedCase();
     #>
 
         /// <summary>
         /// Gets the <#=propName#> request builder.
         /// </summary>
-        I<#=propName#>RequestBuilder <#=sanitizedPropName#> { get; }
+        I<#=propType#>RequestBuilder <#=sanitizedPropName#> { get; }
     <#
         }
     }

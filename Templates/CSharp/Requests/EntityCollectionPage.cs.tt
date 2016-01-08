@@ -10,7 +10,7 @@ var entityCollectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
 
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
 {
     using System;
     

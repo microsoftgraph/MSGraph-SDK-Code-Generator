@@ -602,7 +602,9 @@
                 <NavigationProperty Name="createdByUser" Type="microsoft.graph.user" Nullable="false" />
                 <NavigationProperty Name="lastModifiedByUser" Type="microsoft.graph.user" Nullable="false" />
                 <NavigationProperty Name="permissions" Type="Collection(microsoft.graph.permission)" ContainsTarget="true" />
-                <NavigationProperty Name="children" Type="Collection(microsoft.graph.driveItem)" ContainsTarget="true" />
+                <NavigationProperty Name="children" Type="Collection(microsoft.graph.driveItem)" ContainsTarget="true">
+                    <Annotation Term="Org.OData.Core.V1.LongDescription" String="writeable" />
+                </NavigationProperty>
                 <NavigationProperty Name="thumbnails" Type="Collection(microsoft.graph.thumbnailSet)" ContainsTarget="true" />
             </EntityType>
             <ComplexType Name="itemReference">
@@ -710,6 +712,7 @@
                 <Property Name="height" Type="Edm.Int32" />
                 <Property Name="url" Type="Edm.String" Unicode="false" />
                 <Property Name="width" Type="Edm.Int32" />
+                <Annotation Term="Org.OData.Core.V1.LongDescription" String="navigable" />
             </ComplexType>
             <Action Name="checkMemberGroups" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.directoryObject" Nullable="false" />
@@ -768,7 +771,6 @@
                 <Parameter Name="DestinationId" Type="Edm.String" Unicode="false" />
                 <ReturnType Type="microsoft.graph.message" />
             </Action>
-<!--
             <Action Name="createReply" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.message" />
                 <ReturnType Type="microsoft.graph.message" />
@@ -781,7 +783,6 @@
                 <Parameter Name="bindingParameter" Type="microsoft.graph.message" />
                 <ReturnType Type="microsoft.graph.message" />
             </Action>
--->
             <Action Name="reply" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.message" />
                 <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
@@ -795,11 +796,9 @@
                 <Parameter Name="comment" Type="Edm.String" Unicode="false" />
                 <Parameter Name="toRecipients" Type="Collection(microsoft.graph.recipient)" />
             </Action>
-<!--
             <Action Name="send" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.message" />
             </Action>
--->
             <Action Name="accept" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
                 <Parameter Name="comment" Type="Edm.String" Unicode="false" />
@@ -819,7 +818,6 @@
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
                 <Parameter Name="newReminderTime" Type="microsoft.graph.dateTimeTimeZone" Nullable="false" />
             </Action>
-<!--
             <Action Name="dismissReminder" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
             </Action>
@@ -838,7 +836,6 @@
             <Action Name="resetUnseenCount" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.group" />
             </Action>
--->
             <Action Name="reply" IsBound="true" EntitySetPath="bindingParameter/Posts">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.conversationThread" />
                 <Parameter Name="post" Type="microsoft.graph.post" Nullable="false" />
@@ -852,15 +849,15 @@
                 <Parameter Name="bindingParameter" Type="microsoft.graph.post" />
                 <Parameter Name="post" Type="microsoft.graph.post" Nullable="false" />
             </Action>
-            <Function Name="search" IsBound="true">
+            <Function Name="view.search" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false" />
                 <Parameter Name="q" Type="Edm.String" Unicode="false" />
                 <ReturnType Type="Collection(microsoft.graph.driveItem)" Nullable="false" />
             </Function>
-            <Action Name="createLink" IsBound="true">
+            <Action Name="action.createLink" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false" />
                 <Parameter Name="type" Type="Edm.String" Nullable="false" Unicode="false" />
-                <Parameter Name="scope" Type="Edm.String" Nullable="false" Unicode="false" />
+                <Parameter Name="scope" Type="Edm.String" Nullable="true" Unicode="false" />
                 <ReturnType Type="microsoft.graph.permission" Nullable="false" />
             </Action>
             <EntityContainer Name="GraphService">
@@ -876,6 +873,7 @@
                     <NavigationPropertyBinding Path="owners" Target="directoryObjects" />
                     <NavigationPropertyBinding Path="microsoft.graph.driveItem/lastModifiedByUser" Target="users" />
                     <NavigationPropertyBinding Path="microsoft.graph.driveItem/createdByUser" Target="users" />
+                    <Annotation Term="Org.OData.Core.V1.LongDescription" String="writeable" />
                 </EntitySet>
                 <EntitySet Name="directoryRoles" EntityType="microsoft.graph.directoryRole">
                     <NavigationPropertyBinding Path="members" Target="directoryObjects" />
