@@ -105,6 +105,17 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
             };
         }
 
+        private static readonly ICollection<string> SimpleTypes =
+            new HashSet<string> (StringComparer.OrdinalIgnoreCase)
+            {
+                "int32",
+                "int64",
+                "datetimeoffset",
+                "long",
+                "double",
+                "string"
+            };
+
         public static string GetTypeString(this OdcmParameter parameter)
         {
             return parameter.Type.Name.GetTypeString();
@@ -121,6 +132,8 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
                     return "byte[]";
                 case "boolean":
                     return "bool";
+                case "date":
+                    return "DateTimeOffset";
                 default:
                     return type.ToCheckedCase();
             }
@@ -154,6 +167,11 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
             return t == "byte[]";
         }
 
+        public static bool IsComplex(this OdcmProperty property)
+        {
+            return property.Type.IsComplex();
+        }
+
         public static bool IsComplex(this OdcmParameter property)
         {
             string t = property.GetTypeString();
@@ -168,7 +186,12 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 
         public static bool IsComplex(this string t)
         {
-            return !(t == "Int32" || t == "Int64" || t == "DateTimeOffset" || "long" == t || t == "double");
+            return !TypeHelperCSharp.SimpleTypes.Contains(t);
+        }
+
+        public static string GetNamespaceName(this OdcmNamespace namespaceObject)
+        {
+            return Inflector.Inflector.Titleize(namespaceObject.Name);
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)

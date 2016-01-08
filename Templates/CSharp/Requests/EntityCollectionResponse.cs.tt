@@ -7,7 +7,7 @@ var collectionResponse = prop.Name.ToCheckedCase() + "CollectionResponse";
 var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
 
 #>
-namespace Microsoft.OneDrive.Sdk
+namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;

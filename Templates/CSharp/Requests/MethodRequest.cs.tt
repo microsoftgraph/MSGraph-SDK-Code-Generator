@@ -32,7 +32,7 @@ var methodReturnType = sendAsyncReturnType == null
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=method.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Collections.Generic;
@@ -76,8 +76,13 @@ namespace Microsoft.OneDrive.Sdk
         requestBodyInitializerBuilder.Append("            ");
         requestBodyInitializerBuilder.Append("this.RequestBody = new " + requestType + "Body();");
     }
-
-    foreach (var param in method.Parameters)
+    
+    // Sort the method parameters by required then optional to match the ordering in request builder initialization.
+    var methodParameters = new List<OdcmParameter>();
+    methodParameters.AddRange(method.Parameters.Where(param => !param.IsNullable));
+    methodParameters.AddRange(method.Parameters.Where(param => param.IsNullable));
+    
+    foreach (var param in methodParameters)
     {
         var paramTypeString = param.Type.GetTypeString();
 
@@ -87,22 +92,50 @@ namespace Microsoft.OneDrive.Sdk
 
         if (param.Type.IsTypeNullable())
         {
-            paramStringBuilder.Append(" " + param.Name.ToLowerFirstChar() + " = null,");
+            paramStringBuilder.Append(" ");
         }
         else
         {
-            paramStringBuilder.Append("? " + param.Name.ToLowerFirstChar() + " = null,");
+            paramStringBuilder.Append("? ");
         }
+        
+        var paramLowerChar = param.Name.ToLowerFirstChar();
+        
+        paramStringBuilder.Append(paramLowerChar);
+        paramStringBuilder.Append(" = null,");
 
         if (method.IsAction())
-        {
+        {   
             requestBodyInitializerBuilder.Append(Environment.NewLine);
             requestBodyInitializerBuilder.Append("            ");
-            requestBodyInitializerBuilder.Append("this.RequestBody.");
-            requestBodyInitializerBuilder.Append(param.Name.ToCheckedCase());
-            requestBodyInitializerBuilder.Append(" = ");
-            requestBodyInitializerBuilder.Append(param.Name.ToLowerFirstChar());
-            requestBodyInitializerBuilder.Append(";");
+            
+            if (!param.IsNullable && !param.Type.IsTypeNullable())
+            {
+                requestBodyInitializerBuilder.Append(Environment.NewLine);
+                requestBodyInitializerBuilder.Append("            ");
+                requestBodyInitializerBuilder.AppendFormat("if ({0}.HasValue)", paramLowerChar);
+                requestBodyInitializerBuilder.Append(Environment.NewLine);
+                requestBodyInitializerBuilder.Append("            ");
+                requestBodyInitializerBuilder.Append("{");
+                requestBodyInitializerBuilder.Append(Environment.NewLine);
+                requestBodyInitializerBuilder.Append("                ");
+                requestBodyInitializerBuilder.Append("this.RequestBody.");
+                requestBodyInitializerBuilder.Append(param.Name.ToCheckedCase());
+                requestBodyInitializerBuilder.Append(" = ");
+                requestBodyInitializerBuilder.Append(paramLowerChar);
+                requestBodyInitializerBuilder.Append(".Value;");
+                requestBodyInitializerBuilder.Append(Environment.NewLine);
+                requestBodyInitializerBuilder.Append("            ");
+                requestBodyInitializerBuilder.Append("}");
+            }
+            else
+            {
+                requestBodyInitializerBuilder.Append("this.RequestBody.");
+                requestBodyInitializerBuilder.Append(param.Name.ToCheckedCase());
+                requestBodyInitializerBuilder.Append(" = ");
+                requestBodyInitializerBuilder.Append(paramLowerChar);
+                requestBodyInitializerBuilder.Append(";");
+            }
         }
         else
         {

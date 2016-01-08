@@ -11,7 +11,7 @@ var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
 
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Threading.Tasks;
@@ -22,7 +22,7 @@ namespace Microsoft.OneDrive.Sdk
     public partial interface I<#=collectionRequest#> : IBaseRequest
     {
         <#
-        if (prop.LongDescriptionContains("writable"))
+        if (prop.LongDescriptionContains("writeable"))
         {
         #>
 
