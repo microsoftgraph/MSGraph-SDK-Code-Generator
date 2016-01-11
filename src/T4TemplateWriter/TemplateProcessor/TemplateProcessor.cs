@@ -65,6 +65,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {SubProcessor.Property,                     ProcessProperties},
                 {SubProcessor.StreamProperty,               ProcessStreamProperties},
                 {SubProcessor.CollectionProperty,           ProcessCollections},
+                {SubProcessor.NavigationCollectionProperty, ProcessNavigationCollections},
                 {SubProcessor.Method,                       ProcessMethods},
                 {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
                 {SubProcessor.CollectionMethod,             ProcessCollectionMethods},
@@ -112,8 +113,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         {
             foreach (OdcmObject enumType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEnumTypes))
             {
-                yield return ProcessTemplate(templateInfo, 
-                                             enumType, 
+                yield return ProcessTemplate(templateInfo,
+                                             enumType,
                                              templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
                                                                        className: enumType.Name));
             }
@@ -123,8 +124,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         {
             foreach (OdcmObject complexType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetComplexTypes))
             {
-                yield return ProcessTemplate(templateInfo, 
-                                             complexType, 
+                yield return ProcessTemplate(templateInfo,
+                                             complexType,
                                              templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
                                                                        className: complexType.Name));
             }
@@ -134,10 +135,23 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         {
             foreach (OdcmClass entityType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEntityTypes))
             {
-                yield return ProcessTemplate(templateInfo, 
-                                             entityType, 
+                yield return ProcessTemplate(templateInfo,
+                                             entityType,
                                              templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
                                                                        className: entityType.Name));
+            }
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessNavigationCollections(ITemplateInfo templateInfo)
+        {
+            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.NavigationCollectionProperties))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             property,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: property.Class.Name,
+                                                                       propertyName: property.Name,
+                                                                       propertyType: property.Type.Name));
             }
         }
 
@@ -145,18 +159,18 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         {
             foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CollectionProperties))
             {
-                yield return ProcessTemplate(templateInfo, 
-                                             property, 
-                                             templateInfo.BaseFileName(containerName:this.CurrentModel.EntityContainer.Name,
-                                                                       className:property.Class.Name,
-                                                                       propertyName:property.Name,
-                                                                       propertyType:property.Type.Name));
+                yield return ProcessTemplate(templateInfo,
+                                             property,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: property.Class.Name,
+                                                                       propertyName: property.Name,
+                                                                       propertyType: property.Type.Name));
             }
         }
 
         protected virtual IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo)
         {
-            foreach(OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetProperties))
+            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetProperties))
             {
                 yield return ProcessTemplate(templateInfo,
                                              property,
@@ -202,7 +216,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo, Func<IEnumerable<OdcmMethod>> methods)
         {
-            foreach(OdcmMethod method in FilterOdcmEnumerable(templateInfo, methods))
+            foreach (OdcmMethod method in FilterOdcmEnumerable(templateInfo, methods))
             {
                 yield return ProcessTemplate(templateInfo,
                                                    method,
@@ -232,6 +246,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection);
         }
 
+        protected virtual IEnumerable<OdcmProperty> NavigationCollectionProperties()
+        {
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsNavigation());
+        }
+
         protected virtual IEnumerable<OdcmObject> FilterOdcmEnumerable(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod)
         {
             var filteredEnum = modelMethod().Where(o => templateInfo.ShouldIncludeObject(o));
@@ -249,18 +268,18 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             yield return this.ProcessTemplate(templateInfo, null, templateInfo.BaseFileName());
         }
 
-        private Func<ITextTemplatingEngineHost,string> PreProcessTemplate(ITemplateInfo templateInfo)
-        { 
+        private Func<ITextTemplatingEngineHost, string> PreProcessTemplate(ITemplateInfo templateInfo)
+        {
             var templateContent = File.ReadAllText(templateInfo.FullPath);
+            var className = templateInfo.TemplateName.Replace(".", "_");
+            var dummyHost = new CustomT4Host(templateInfo, this.TemplatesDirectory, null, null);
 
             string language;
             string[] references;
-            var className = templateInfo.TemplateName.Replace(".","_");
-            var dummyHost = new CustomT4Host(templateInfo, this.TemplatesDirectory, null, null);
             var generatedCode = this.T4Engine.PreprocessTemplate(templateContent, dummyHost, className, "RuntimeTemplates", out language, out references);
 
-            var parameters = new CompilerParameters 
-            { 
+            var parameters = new CompilerParameters
+            {
                 OutputAssembly = templateInfo.TemplateName + ".dll",
                 GenerateInMemory = false,
                 GenerateExecutable = false,
@@ -274,19 +293,17 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             parameters.ReferencedAssemblies.AddRange(assemblyLocations.ToArray());
 
             var provider = new CSharpCodeProvider();
-
             var results = provider.CompileAssemblyFromSource(parameters, generatedCode);
-
             var assembly = results.CompiledAssembly;
-            var templateClassType = assembly.GetType("RuntimeTemplates." + className);     
-                  
+            var templateClassType = assembly.GetType("RuntimeTemplates." + className);
+
             dynamic templateClassInstance = Activator.CreateInstance(templateClassType);
             return (ITextTemplatingEngineHost host) =>
             {
                 templateClassInstance.Host = host;
                 return templateClassInstance.TransformText();
             };
-  
+
         }
 
         protected TextFile ProcessTemplate(ITemplateInfo templateInfo, OdcmObject odcmObject, string fileName)
@@ -295,17 +312,17 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             Func<ITextTemplatingEngineHost, string> preProcessedTemplate;
 
-            if (!preProcessedTemplates.TryGetValue(templateInfo.FullPath, out preProcessedTemplate) )
+            if (!preProcessedTemplates.TryGetValue(templateInfo.FullPath, out preProcessedTemplate))
             {
                 preProcessedTemplate = this.PreProcessTemplate(templateInfo);
-                preProcessedTemplates.Add(templateInfo.FullPath,preProcessedTemplate);
+                preProcessedTemplates.Add(templateInfo.FullPath, preProcessedTemplate);
             }
-            
+
             var output = preProcessedTemplate(host);
 
             if (!string.IsNullOrEmpty(host.TemplateName))
             {
-                fileName = host.TemplateName;  
+                fileName = host.TemplateName;
             }
 
             if (host.Errors != null && host.Errors.HasErrors)
