@@ -11,7 +11,7 @@ var classes = new HashSet<string>();
 
 foreach(var es in entitySet)
 {
-    if (es.IsCollection())
+    if (es.IsCollection() && !(es.Type is OdcmPrimitiveType) && !es.IsEnum())
     {
         classes.Add("#import \"" + writer.GetPrefix() + es.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
         classes.Add("#import \"" + writer.GetPrefix() + es.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
@@ -26,15 +26,17 @@ foreach(var et in entityTypes)
 
     foreach(var prop in et.NavigationProperties())
     {
-        if (prop.IsCollection())
-        {
-            classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
-            classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
-        }
-        else 
-        {
-             classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder.h\"");
-             classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "Request.h\"");
+        if(!(prop.Type is OdcmPrimitiveType) && !prop.IsEnum()){
+            if (prop.IsCollection())
+            {
+                classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
+                classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
+            }
+            else 
+            {
+                 classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder.h\"");
+                 classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "Request.h\"");
+            }
         }
     }
 
@@ -62,7 +64,7 @@ foreach(var et in entityTypes)
         classes.Add("#import \"" + baseName + "Request.h\"");
     }
 
-    foreach(var prop in et.GetProperties().Where(prop => prop.IsCollection && !prop.IsNavigation() && !prop.LongDescriptionContains("ignorableCollection")))
+    foreach(var prop in et.GetProperties().Where(prop => prop.IsCollection && !(prop.Type is OdcmPrimitiveType) && !prop.IsEnum() && !prop.IsNavigation() && !prop.LongDescriptionContains("ignorableCollection")))
     {
         classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
         classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
@@ -72,7 +74,7 @@ foreach(var et in entityTypes)
 
 foreach(var complexType in model.GetComplexTypes())
 {
-    foreach(var prop in complexType.GetProperties().Where(prop => prop.IsCollection && !prop.LongDescriptionContains("ignorableCollection")))
+    foreach(var prop in complexType.GetProperties().Where(prop => prop.IsCollection && !(prop.Type is OdcmPrimitiveType) && !prop.IsEnum() && !prop.LongDescriptionContains("ignorableCollection")))
     {
         classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
         classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
