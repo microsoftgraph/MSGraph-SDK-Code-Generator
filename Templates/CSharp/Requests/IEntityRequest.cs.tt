@@ -7,7 +7,7 @@ var entityRequest = entityName + "Request";
 
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=entity.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.IO;
@@ -21,14 +21,13 @@ namespace Microsoft.OneDrive.Sdk
         /// <summary>
         /// Creates the specified <#=entityName#> using PUT.
         /// </summary>
-        /// <param name="<#=entity.Name#>">The <#=entityName#> to create.</param>
+        /// <param name="<#=entity.Name#>ToCreate">The <#=entityName#> to create.</param>
         /// <returns>The created <#=entityName#>.</returns>
-        Task<<#=entityName#>> CreateAsync(<#=entityName#> <#=entity.Name#>);
+        Task<<#=entityName#>> CreateAsync(<#=entityName#> <#=entity.Name#>ToCreate);
 
         /// <summary>
         /// Deletes the specified <#=entityName#>.
         /// </summary>
-        /// <param name="<#=entity.Name#>">The <#=entityName#> to delete.</param>
         /// <returns>The task to await.</returns>
         Task DeleteAsync();
 
@@ -41,9 +40,9 @@ namespace Microsoft.OneDrive.Sdk
         /// <summary>
         /// Updates the specified <#=entityName#> using PATCH.
         /// </summary>
-        /// <param name="<#=entity.Name#>">The <#=entityName#> to update.</param>
+        /// <param name="<#=entity.Name#>ToUpdate">The <#=entityName#> to update.</param>
         /// <returns>The updated <#=entityName#>.</returns>
-        Task<<#=entityName#>> UpdateAsync(<#=entityName#> <#=entity.Name#>);
+        Task<<#=entityName#>> UpdateAsync(<#=entityName#> <#=entity.Name#>ToUpdate);
 
         /// <summary>
         /// Adds the specified expand value to the request.

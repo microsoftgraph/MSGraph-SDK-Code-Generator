@@ -7,7 +7,7 @@ var entityName = method.Class.Name.ToCheckedCase();
 var requestBody = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase() + "RequestBody";
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=method.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Runtime.Serialization;
@@ -21,7 +21,7 @@ namespace Microsoft.OneDrive.Sdk
     <#
     foreach (var param in method.Parameters)  
     {
-        var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
+        var paramTypeString = param.Type.IsTypeNullable() || !param.IsNullable ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
         var paramName = param.Name.ToCheckedCase().GetSanitizedPropertyName();
     #>
 

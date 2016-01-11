@@ -10,7 +10,7 @@ var propRequestBuilder = propClass + prop.Name.ToCheckedCase() + "RequestBuilder
 
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
 {
     using System.Collections.Generic;
 

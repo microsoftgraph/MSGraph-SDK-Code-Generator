@@ -6,7 +6,7 @@ var enumT = host.CurrentType.AsOdcmEnum();
 var enumName = enumT.Name.ToCheckedCase();
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=enumT.Namespace.GetNamespaceName()#>
 {
     /// <summary>
     /// The enum <#=enumName#>.

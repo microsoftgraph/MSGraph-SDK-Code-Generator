@@ -4,11 +4,29 @@
 
 OdcmClass complex = host.CurrentType.AsOdcmClass();
 var complexTypeName = complex.Name.ToCheckedCase();
+var typeDeclaration = complexTypeName;
+
+if (complex.Base != null)
+{
+    typeDeclaration = string.Format("{0} : {1}", typeDeclaration, complex.Base.Name.ToCheckedCase());
+}
+
 var isMethodResponse = complex.LongDescriptionContains("methodResponse");
+var classType = complex.IsAbstract ? "abstract partial class" : "partial class";
+
+var attributeStringBuilder = new StringBuilder();
+attributeStringBuilder.Append("[DataContract]");
+
+if (!complex.IsAbstract && complex.Derived != null && complex.Base == null)
+{
+    attributeStringBuilder.Append(Environment.NewLine);
+    attributeStringBuilder.Append("    ");
+    attributeStringBuilder.Append("[JsonConverter(typeof(DerivedTypeConverter))]");
+}
 
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=complex.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Collections.Generic;
@@ -19,8 +37,8 @@ namespace Microsoft.OneDrive.Sdk
     /// <summary>
     /// The type <#=complexTypeName#>.
     /// </summary>
-    [DataContract]
-    public partial class <#=complexTypeName#>
+    <#=attributeStringBuilder.ToString()#>
+    public <#=classType#> <#=typeDeclaration#>
     {
     <# 
         foreach(var property in complex.Properties)
@@ -54,13 +72,20 @@ namespace Microsoft.OneDrive.Sdk
     <#
             }
         }
+
+    // Only include AdditionalData in the base classes.
+    if (complex.Base == null)
+    {
     #>
 
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData(ReadData = false)]
+        [JsonExtensionData(ReadData = true)]
         public IDictionary<string, object> AdditionalData { get; set; }
+    <#
+    }
+    #>
 
     }
 }

@@ -9,7 +9,7 @@ var requestBuilder = entityName + "RequestBuilder";
 
 #>
 
-namespace Microsoft.OneDrive.Sdk
+namespace <#=entity.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Collections.Generic;
@@ -50,24 +50,7 @@ namespace Microsoft.OneDrive.Sdk
             return new <#=request#>(this.RequestUrl, this.Client, options);
         }
 
-    <#foreach(var child in entity.Derived)
-    {
-        var childName = child.Name.ToCheckedCase();
-    #>
-
-        /// <summary>
-        /// Gets the request builder for <#=childName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=childName#>RequestBuilder"/>.</returns>
-        public I<#=childName#>RequestBuilder <#=childName#>
-        {
-            get
-            {
-                return new <#=childName#>RequestBuilder(this.AppendSegmentToRequestUrl("<#=child.Name#>"), this.Client);
-            }
-        }  
     <#
-    }
 
     foreach(var prop in entity.NavigationProperties()){
 
@@ -150,14 +133,35 @@ namespace Microsoft.OneDrive.Sdk
 
         if (hasParameters)
         {
-            foreach (var param in method.Parameters)
+            var requiredParameters = method.Parameters.Where(param => !param.IsNullable);
+            var optionalParameters = method.Parameters.Where(param => param.IsNullable);
+            
+            foreach (var param in requiredParameters)
+            {
+                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
+
+                paramStringBuilder.Append(Environment.NewLine);
+                paramStringBuilder.Append("            ");
+                paramStringBuilder.Append(param.Type.GetTypeString());
+                paramStringBuilder.Append(" ");
+                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
+                paramStringBuilder.Append(",");
+
+                builderInitializerStringBuilder.Append(Environment.NewLine);
+                builderInitializerStringBuilder.Append("                ");
+                builderInitializerStringBuilder.Append(param.Name.ToLowerFirstChar() + ",");
+            }
+            
+            foreach (var param in optionalParameters)
             {
                 var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
 
                 paramStringBuilder.Append(Environment.NewLine);
                 paramStringBuilder.Append("            ");
                 paramStringBuilder.Append(paramTypeString);
-                paramStringBuilder.Append(" " + param.Name.ToLowerFirstChar() + ",");
+                paramStringBuilder.Append(" ");
+                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
+                paramStringBuilder.Append(" = null,");
 
                 builderInitializerStringBuilder.Append(Environment.NewLine);
                 builderInitializerStringBuilder.Append("                ");
