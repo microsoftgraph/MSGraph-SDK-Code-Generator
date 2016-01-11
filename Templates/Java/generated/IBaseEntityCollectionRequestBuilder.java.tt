@@ -12,7 +12,7 @@
     <#=ITypeCollectionRequest(c)#> buildRequest();
 
     <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> options);
-<# if (!true) { #>
+<# if (true) { #>
 
     <#=ITypeRequestBuilder(c)#> byId(final String id);
 <# } #>
