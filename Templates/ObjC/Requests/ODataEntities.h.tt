@@ -1,4 +1,4 @@
-﻿ <#@ template debug="true" hostspecific="true" language="C#" #>
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="SharedObjC.template.tt"#>
 
 #import "ODCollection.h"
@@ -20,13 +20,13 @@ foreach(var es in entitySet)
 
 foreach(var et in entityTypes)
 {
-
     classes.Add("#import \"" + writer.GetPrefix() + et.Name.ToUpperFirstChar() + "RequestBuilder.h\"");
     classes.Add("#import \"" + writer.GetPrefix() + et.Name.ToUpperFirstChar() + "Request.h\"");
 
     foreach(var prop in et.NavigationProperties())
     {
-        if(!(prop.Type is OdcmPrimitiveType) && !prop.IsEnum()){
+        if (!(prop.Type is OdcmPrimitiveType) && !prop.IsEnum())
+        {
             if (prop.IsCollection())
             {
                 classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
@@ -43,7 +43,6 @@ foreach(var et in entityTypes)
     foreach(var prop in et.GetProperties(typeName:"Stream"))
     {
         classes.Add("#import \"" + writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request.h\"");
-
     }
 
     foreach(var func in et.Methods)
@@ -68,7 +67,6 @@ foreach(var et in entityTypes)
     {
         classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
         classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
-
     }
 }
 
