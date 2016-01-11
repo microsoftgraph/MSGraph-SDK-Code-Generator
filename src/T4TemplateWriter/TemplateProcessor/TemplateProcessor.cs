@@ -249,18 +249,20 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             yield return this.ProcessTemplate(templateInfo, null, templateInfo.BaseFileName());
         }
 
-        private Func<ITextTemplatingEngineHost,string> PreProcessTemplate(ITemplateInfo templateInfo)
-        { 
+        private const string RuntimeTemplatesNamespace = "RuntimeTemplates";
+
+        private Func<ITextTemplatingEngineHost, string> PreProcessTemplate(ITemplateInfo templateInfo)
+        {
             var templateContent = File.ReadAllText(templateInfo.FullPath);
 
             string language;
             string[] references;
-            var className = templateInfo.TemplateName.Replace(".","_");
+            var className = templateInfo.TemplateName.Replace(".", "_");
             var dummyHost = new CustomT4Host(templateInfo, this.TemplatesDirectory, null, null);
-            var generatedCode = this.T4Engine.PreprocessTemplate(templateContent, dummyHost, className, "RuntimeTemplates", out language, out references);
+            var generatedCode = this.T4Engine.PreprocessTemplate(templateContent, dummyHost, className, RuntimeTemplatesNamespace, out language, out references);
 
-            var parameters = new CompilerParameters 
-            { 
+            var parameters = new CompilerParameters
+            {
                 OutputAssembly = templateInfo.TemplateName + ".dll",
                 GenerateInMemory = false,
                 GenerateExecutable = false,
@@ -277,16 +279,25 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             var results = provider.CompileAssemblyFromSource(parameters, generatedCode);
 
+            if (results.Errors.Count > 0)
+            {
+                for (int i = 0; i < results.Output.Count; i++)
+                    Console.WriteLine(results.Output[i]);
+                for (int i = 0; i < results.Errors.Count; i++)
+                    Console.WriteLine(i.ToString() + ": " + results.Errors[i].ToString());
+                throw new System.Exception("Template error.");
+            }
+
             var assembly = results.CompiledAssembly;
-            var templateClassType = assembly.GetType("RuntimeTemplates." + className);     
-                  
+            var templateClassType = assembly.GetType(RuntimeTemplatesNamespace + "." + className);
+
             dynamic templateClassInstance = Activator.CreateInstance(templateClassType);
             return (ITextTemplatingEngineHost host) =>
             {
                 templateClassInstance.Host = host;
                 return templateClassInstance.TransformText();
             };
-  
+
         }
 
         protected TextFile ProcessTemplate(ITemplateInfo templateInfo, OdcmObject odcmObject, string fileName)
