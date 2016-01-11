@@ -14,28 +14,7 @@ if (entity.Properties.Any(prop => prop.IsCollection))
 <#
 foreach(var prop in entity.Properties)
 {
-	if(prop.IsEnum() && !prop.IsCollection)
-    {
-
-        var propertyString = string.Format("{0} {1}", prop.GetFullType(), writer.GetName(prop.Name));
-#>
-
-@property <#=propertyString#>;
-
-<#
-	}
-	else if(!prop.IsCollection && prop.GetTypeString() != "id" && prop.GetTypeString() != "NSStream")
-	{
-#>
-@property <#=prop.ToPropertyString()#>;
-<#			
-    }
-    else if (prop.IsCollection && prop.LongDescriptionContains("enumerable"))
-    {
-#>
-@property <#=writer.GetPrefix()#>Collection *<#=prop.Name.ToLowerFirstChar()#>;
-<#
-    }
+	GeneratePropertyDeclarationLine(prop);
 }
 
 foreach (var prop in entity.Properties.Where(prop => prop.IsCollection && prop.LongDescriptionContains("enumerable")))

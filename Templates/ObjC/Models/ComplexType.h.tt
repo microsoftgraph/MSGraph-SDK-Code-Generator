@@ -10,20 +10,7 @@ var entity = host.CurrentType.AsOdcmClass();
 <#
 foreach(var prop in entity.Properties)
 {
-	if(prop.Type is OdcmEnum && !prop.IsCollection)
-    {
-
-		var propertyString = string.Format("{0} {1}", prop.GetFullType(), writer.GetName(prop.Name));
-#>
-@property <#=propertyString#>;
-<#
-	}
-	else if(!prop.IsCollection && prop.GetTypeString() != "NSStream")
-	{
-#>
-@property <#=prop.ToPropertyString()#>;
-<#			
-    }
+	GeneratePropertyDeclarationLine(prop);
 }
 
 #>
