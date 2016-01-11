@@ -20,6 +20,13 @@
             { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "EntityType", "Name": "IBase<Class>RequestBuilder" },
             { "Template": "BaseEntityRequestBuilder", "SubProcessor": "EntityType", "Name": "Base<Class>RequestBuilder" },
 
+            { "Template": "ExtensableEntity", "SubProcessor": "EntityType", "Name": "<Class>" },
+            { "Template": "BaseEntity", "SubProcessor": "EntityType", "Name": "Base<Class>" },
+            { "Template": "IEntityRequest", "SubProcessor": "EntityType", "Name": "I<Class>Request" },
+            { "Template": "EntityRequest", "SubProcessor": "EntityType", "Name": "<Class>Request" },
+            { "Template": "IEntityRequestBuilder", "SubProcessor": "EntityType", "Name": "I<Class>RequestBuilder" },
+            { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Name": "<Class>RequestBuilder" },
+
             { "Template": "IEntityRequest", "SubProcessor": "ComplexType", "Name": "I<Class>Request", "Matches": "navigable" },
             { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Name": "<Class>Request", "Matches": "navigable" },
             { "Template": "IEntityRequestBuilder", "SubProcessor": "ComplexType", "Name": "I<Class>RequestBuilder", "Matches": "navigable" },
@@ -58,6 +65,11 @@
             { "Template": "BaseMethodRequestBuilder", "SubProcessor": "Method", "Name": "Base<Method>RequestBuilder" },
             { "Template": "IBaseMethodRequestBuilder", "SubProcessor": "Method", "Name": "IBase<Method>RequestBuilder" },
 
+            { "Template": "IEntityCollectionPage", "SubProcessor": "Method", "Name": "I<Method>CollectionPage", "Ignore": "ignorableCollection" },
+            { "Template": "MethodCollectionPage", "SubProcessor": "Method", "Name": "<Method>CollectionPage", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseMethodCollectionPage", "SubProcessor": "Method", "Name": "IBase<Method>CollectionPage", "Ignore": "ignorableCollection" },
+            { "Template": "BaseMethodCollectionPage", "SubProcessor": "Method", "Name": "Base<Method>CollectionPage", "Ignore": "ignorableCollection" },
+
             { "Template": "MethodBody", "SubProcessor": "MethodWithBody", "Name": "<Method>Body" },
             { "Template": "BaseMethodBody", "SubProcessor": "MethodWithBody", "Name": "Base<Method>Body" },
 
@@ -74,7 +86,7 @@
             { "Template": "BaseMethodCollectionPage", "SubProcessor": "CollectionMethod", "Name": "Base<Method>CollectionPage", "Ignore": "ignorableCollection" },
 
             { "Template": "BaseMethodCollectionResponse", "SubProcessor": "CollectionMethod", "Name": "Base<Method>CollectionResponse", "Ignore": "ignorableCollection" },
-            { "Template": "BaseMethodCollectionResponse", "SubProcessor": "Method", "Name": "Base<Method>CollectionResponse", "Ignore": "ignorableCollection", "Matches": "specialCollection" }
+            { "Template": "BaseMethodCollectionResponse", "SubProcessor": "Method", "Name": "Base<Method>CollectionResponse", "Ignore": "ignorableCollection" }
 
 
         ]

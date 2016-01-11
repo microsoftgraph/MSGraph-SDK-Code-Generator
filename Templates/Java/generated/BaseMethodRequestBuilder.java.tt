@@ -17,7 +17,7 @@
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IClientType(c)#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final IBaseClient client, final List<Option> options<#=MethodParametersSignature(c)#>) {
         super(requestUrl, client, options);
 <# foreach (var p in c.AsOdcmMethod().Parameters) { #>
         <#=FieldName(p)#> = <#=ParamName(p)#>;

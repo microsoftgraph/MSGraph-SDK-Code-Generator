@@ -15,7 +15,7 @@
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=BaseTypeRequest(c)#>(final String requestUrl, final <#=IClientType(c)#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+    public <#=BaseTypeRequest(c)#>(final String requestUrl, final IBaseClient client, final List<Option> options<#=MethodParametersSignature(c)#>) {
 <# if (useAsyncMonitor) { #>
         super(requestUrl, client, options, AsyncMonitorLocation.class);
 <# } else { #>
