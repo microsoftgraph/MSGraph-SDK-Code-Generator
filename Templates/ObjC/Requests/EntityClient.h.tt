@@ -34,16 +34,6 @@ foreach(var propertyClass in classes)
 <#=writer.GetHeaderDoc(entityName)#>
 @interface <#=entityName#> : ODataBaseClient
 
-@property NSURL *baseURL;
-
-@property (strong) id<ODHttpProvider> httpProvider;
-
-@property (strong) id<ODLogger> logger;
-
-@property (strong) id<ODAuthProvider> authProvider;
-
--(instancetype)initWithURL:(NSString *)url httpProvider:(id<ODHttpProvider>)httpProvider authProvider:(id<ODAuthProvider>)authProvider;
-
 <#
 
 foreach(var prop in containerProps)
