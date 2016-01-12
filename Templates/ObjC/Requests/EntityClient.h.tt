@@ -25,13 +25,14 @@ foreach(var propertyClass in classes)
 
 #>
 
+#import "ODataBaseClient.h"
 #import "<#=writer.GetPrefix()#>Models.h"
 #import "ODHttpProvider.h"
 #import "ODAuthProvider.h"
 #import "ODLoggerProtocol.h"
 
 <#=writer.GetHeaderDoc(entityName)#>
-@interface <#=entityName#> : NSObject
+@interface <#=entityName#> : ODataBaseClient
 
 @property NSURL *baseURL;
 

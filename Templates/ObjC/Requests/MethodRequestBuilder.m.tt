@@ -42,7 +42,7 @@ if (func.Parameters.Count > 0)
 if (func.Parameters.Count > 0)
 {
 #>
-- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url client:(ODClient*)client 
+- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url client:(ODataBaseClient*)client 
 {
     self = [super initWithURL:url client:client];
     if (self){
