@@ -836,23 +836,19 @@
             <Action Name="resetUnseenCount" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.group" />
             </Action>
-            <!--
             <Action Name="reply" IsBound="true" EntitySetPath="bindingParameter/Posts">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.conversationThread" />
                 <Parameter Name="post" Type="microsoft.graph.post" Nullable="false" />
             </Action>
-            -->
             <Action Name="forward" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.post" />
                 <Parameter Name="comment" Type="Edm.String" Unicode="false" />
                 <Parameter Name="toRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
             </Action>
-            <!--
             <Action Name="reply" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.post" />
                 <Parameter Name="post" Type="microsoft.graph.post" Nullable="false" />
             </Action>
-            -->
             <Function Name="view.search" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false" />
                 <Parameter Name="q" Type="Edm.String" Unicode="false" />
