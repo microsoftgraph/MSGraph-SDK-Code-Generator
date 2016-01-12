@@ -4,7 +4,7 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef(IBaseClientType(c), "IBaseClient")#>
+<#=CreateInterfaceDef(IBaseClientType(c), <#=IBaseClientType()#>)#>
 <#
 foreach (var prop in model.EntityContainer.Properties)
 {

@@ -14,7 +14,7 @@
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=BaseTypeCollectionRequest(c)#>(final String requestUrl, IBaseClient client, final List<Option> options) {
+    public <#=BaseTypeCollectionRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final List<Option> options) {
         super(requestUrl, client, options, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
     }
 

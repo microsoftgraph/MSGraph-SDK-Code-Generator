@@ -13,7 +13,7 @@
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=TypeRequestBuilder(c)#>(final String requestUrl, final IBaseClient client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+    public <#=TypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
         super(requestUrl, client, options<#=MethodParametersValues(c)#>);
     }
 }

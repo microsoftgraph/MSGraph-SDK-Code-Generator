@@ -214,6 +214,11 @@
         return "I" + BaseClientType(c);
     }
 
+    public string IBaseClientType() {
+        return "IBaseClient";
+    }
+
+
     public string CollectionPageGeneric(OdcmObject c) {
         if (c is OdcmMethod) {
             return "<" + ClassTypeName(c) + ", " + ITypeRequestBuilder(c) + ">";
