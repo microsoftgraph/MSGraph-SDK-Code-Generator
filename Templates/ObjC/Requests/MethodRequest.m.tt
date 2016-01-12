@@ -17,7 +17,7 @@ if (func.ReturnType != null)
         returnType = writer.GetPrefix() + valuesProperty.Type.Name.ToUpperFirstChar();
     }
 }
-else 
+else
 {
     returnType = "NSDictionary";
 }
@@ -67,7 +67,8 @@ if (func.Parameters.Count > 0)
             paramTypeString = paramTypeString + "*";
         }
 #>
-@property <#=paramTypeString#><#=param.Name.ToLowerFirstChar()#>;
+
+<#=writer.GetPropertyDeclaration(param.Name.ToLowerFirstChar(),paramTypeString)#>
 
 <#
     }
@@ -83,7 +84,7 @@ if (func.Parameters.Count > 0)
 if (func.Parameters.Count > 0)
 {
 #>
-- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url options:(NSArray *)options client:(ODClient*)client 
+- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url options:(NSArray *)options client:(ODClient*)client
 {
 <#
     foreach (var param in func.Parameters)
@@ -133,15 +134,15 @@ if (func.Parameters.Count > 0)
     return [self requestWithMethod:@"<#=method#>" body:nil headers:nil];
 <#
     }
-    else 
-    { 
-#> 
+    else
+    {
+#>
     NSData *body = [NSJSONSerialization dataWithJSONObject:params options:0 error:nil];
     return [self requestWithMethod:@"<#=method#>" body:body headers:nil];
 <#
     }
 }
-else 
+else
 {
 #>
     return [self requestWithMethod:@"<#=method#>" body:nil headers:nil];
@@ -162,7 +163,7 @@ if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
     {
         completionHandler = "(void (^)(" + specialCollecitonName + " *response, " + requestType + " *nextRequest, NSError *error))";
     }
-    else 
+    else
     {
         completionHandler = "(void (^)(ODCollection *response, " + requestType + " *nextRequest, NSError *error))";
     }
@@ -178,7 +179,7 @@ if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
         stringBuilder.AppendLine(baseIndents + "    if(collectionResponse){");
         stringBuilder.AppendLine(baseIndents + "        " + returnCollectionName + " = [[" + specialCollecitonName + " alloc] initWithCollection:collectionResponse];");
         stringBuilder.AppendLine(baseIndents + "    }");
-    }   
+    }
     stringBuilder.AppendLine(baseIndents + "    if(!error && "+ returnCollectionName + ".nextLink && completionHandler){");
     stringBuilder.AppendLine(baseIndents + "            " + requestType + " *nextRequest = [[" + requestType + " alloc] initWithURL:" + returnCollectionName + ".nextLink");
     stringBuilder.AppendLine(baseIndents + "                                                                                options:nil");
@@ -192,19 +193,19 @@ if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
 
     completionBlock = stringBuilder.ToString();
     taskMethod = "[self collectionTaskWithRequest:";
-    
+
 }
 else if(isAsync)
 {
-    
+
     completionHandler = "(void (^)(" + returnType + " *response, ODAsyncOperationStatus *status, NSError *error))";
     completionBlock = "completionHandler";
     taskMethod = "[self asyncTaskWithRequest:";
     taskType = "ODAsyncURLSessionDataTask *";
 }
-else 
+else
 {
-    completionHandler = writer.GetNetworkCompletionBlock(returnType, "response"); 
+    completionHandler = writer.GetNetworkCompletionBlock(returnType, "response");
     completionBlock = "completionHandler";
     taskMethod = "[self taskWithRequest:";
 }

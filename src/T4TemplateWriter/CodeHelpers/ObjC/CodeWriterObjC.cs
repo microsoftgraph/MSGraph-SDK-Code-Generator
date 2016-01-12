@@ -367,6 +367,30 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             GetParamsForRaw(action.Parameters.Select(p => p.Name)), (action.ReturnType == null ? "NSString * resultCode " : GetParamRaw(action.ReturnType.Name)));
         }
 
+        public string GetGetterString(string propertyName)
+        {
+            //fix names that violate semantic rules for methods that
+            //create owned objects
+
+            StringComparison strCmp = StringComparison.CurrentCultureIgnoreCase;
+
+            if (propertyName.StartsWith("alloc", strCmp) || propertyName.StartsWith("new", strCmp)
+            || propertyName.StartsWith("copy", strCmp) || propertyName.StartsWith("mutableCopy", strCmp))
+            {
+                return "get" + propertyName.ToPascalize();
+            }
+
+            return propertyName;
+        }
+
+        public string GetPropertyDeclaration(string propertyName, string type)
+        {
+            var getterName = GetGetterString(propertyName);
+            var setterName = "set" + propertyName.ToPascalize();
+
+            return "@property (nonatomic, getter=" + getterName + ") " + type + " " + propertyName + ";";
+        }
+
         public string GetName(string name) {
             if (name.Trim() == "description") return "$$__$$description";
             if (name.Trim() == "default") return "$$__$$default";
