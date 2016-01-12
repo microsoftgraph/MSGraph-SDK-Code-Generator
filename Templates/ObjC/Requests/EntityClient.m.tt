@@ -8,18 +8,6 @@ var entityName = writer.GetPrefix()  + "Client";
 
 @implementation <#=entityName#>
 
-
--(instancetype)initWithURL:(NSString *)url httpProvider:(id<ODHttpProvider>)httpProvider authProvider:(id<ODAuthProvider>)authProvider
-{
-    self = [super init];
-    if (self){
-        _baseURL = [NSURL URLWithString:url];
-        _httpProvider = httpProvider;
-        _authProvider = authProvider;
-    }
-    return self;
-}
-
 <#
 var containerProps = model.EntityContainer.Properties;
 
