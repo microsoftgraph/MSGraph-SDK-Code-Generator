@@ -4,7 +4,7 @@
 var func = host.CurrentType.AsOdcmMethod();
 var entityName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar();
 var method = (func.IsFunction()) ? "GET" : "POST";
-var methodName = "request"; 
+var methodName = "request";
 var requestType = entityName + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Request";
 var requestBuilderType = requestType + "Builder";
 #>
@@ -26,7 +26,8 @@ if (func.Parameters.Count > 0)
             paramTypeString = paramTypeString + "*";
         }
 #>
-@property <#=paramTypeString#><#=param.Name.ToLowerFirstChar()#>;
+
+<#=writer.GetPropertyDeclaration(param.Name.ToLowerFirstChar(),paramTypeString)#>
 
 <#
     }
@@ -42,7 +43,8 @@ if (func.Parameters.Count > 0)
 if (func.Parameters.Count > 0)
 {
 #>
-- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url client:(ODataBaseClient*)client 
+
+- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url client:(ODataBaseClient*)client
 {
     self = [super initWithURL:url client:client];
     if (self){
@@ -77,22 +79,22 @@ if (func.Parameters.Count > 0)
         if (firstParam == param)
         {
             stringBuilder.AppendLine(param.Name.ToUpperFirstChar() + ":" + "self." + param.Name.ToLowerFirstChar());
-        } 
-        else 
+        }
+        else
         {
             stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - param.Name.ToLowerFirstChar().Length) + param.Name.ToLowerFirstChar() + ":" + "self." + param.Name.ToLowerFirstChar());
         }
     }
-    stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - 3) + "URL:self.requestURL"); 
-    stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - "options".Length) + "options:options"); 
-    stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - "client".Length) + "client:self.client];"); 
+    stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - 3) + "URL:self.requestURL");
+    stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - "options".Length) + "options:options");
+    stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - "client".Length) + "client:self.client];");
 #>
     <#=stringBuilder.ToString()#>
 }
 
-<# 
+<#
     }
-    else 
+    else
     {
 #>
 - (<#=requestType#> *)request
@@ -107,6 +109,6 @@ if (func.Parameters.Count > 0)
 
 <#
     }
-    
+
 #>
 @end
