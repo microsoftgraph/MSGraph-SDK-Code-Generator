@@ -14,7 +14,9 @@ if (entity.Properties.Any(prop => prop.IsCollection))
 <#
 foreach(var prop in entity.Properties)
 {
-	GeneratePropertyDeclarationLine(prop);
+  #>
+  <#=GeneratePropertyDeclarationLine(prop)#>
+  <#
 }
 
 foreach (var prop in entity.Properties.Where(prop => prop.IsCollection && prop.LongDescriptionContains("enumerable")))

@@ -15,20 +15,18 @@ private CodeWriterObjC writer;
 private CustomT4Host host;
 private OdcmModel model;
 
-private void GeneratePropertyDeclarationLine(OdcmProperty prop)
+private string GeneratePropertyDeclarationLine(OdcmProperty prop)
 {
   if(!prop.IsCollection)
   {
-    #>
-    <#=writer.GetPropertyDeclaration(prop.SanitizePropertyName().ToLowerFirstChar(),prop.GetFullType()+(prop.IsComplex() ? "*" : string.Empty))#>
-    <#+
+    return writer.GetPropertyDeclaration(prop.SanitizePropertyName().ToLowerFirstChar(),prop.GetFullType()+(prop.IsComplex() ? "*" : string.Empty));
   }
   else if (prop.IsCollection && prop.LongDescriptionContains("enumerable"))
   {
-    #>
-    <#=writer.GetPropertyDeclaration(prop.SanitizePropertyName().ToLowerFirstChar(),prefix+"Collection *")#>
-    <#+
+    return writer.GetPropertyDeclaration(prop.SanitizePropertyName().ToLowerFirstChar(),prefix+"Collection *");
   }
+
+  return string.Empty;
 }
 
 #>

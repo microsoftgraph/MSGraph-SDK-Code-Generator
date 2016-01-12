@@ -10,7 +10,9 @@ var entity = host.CurrentType.AsOdcmClass();
 <#
 foreach(var prop in entity.Properties)
 {
-	GeneratePropertyDeclarationLine(prop);
+	#>
+	<#=GeneratePropertyDeclarationLine(prop)#>
+	<#
 }
 
 #>

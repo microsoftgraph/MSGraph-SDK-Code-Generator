@@ -15,7 +15,8 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 	    public static string Prefix = ConfigurationService.Settings.NamespacePrefix;
 
         private static ICollection<string> reservedNames;
-        public static ICollection<string> ReservedNames {
+        public static ICollection<string> ReservedNames
+        {
             get 
             {
                 if (reservedNames == null)

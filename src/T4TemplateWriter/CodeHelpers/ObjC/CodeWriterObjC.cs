@@ -367,15 +367,31 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             GetParamsForRaw(action.Parameters.Select(p => p.Name)), (action.ReturnType == null ? "NSString * resultCode " : GetParamRaw(action.ReturnType.Name)));
         }
 
+        private static ICollection<string> semanticOwnedObjectsKeywords;
+        public static ICollection<string> SemanticOwnedObjectsKeywords
+        {
+            get
+            {
+                if (semanticOwnedObjectsKeywords == null)
+                {
+                    semanticOwnedObjectsKeywords = new HashSet<string>
+                    {
+                        "alloc",
+                        "copy",
+                        "new",
+                        "mutableCopy",
+                    };
+                }
+                return semanticOwnedObjectsKeywords;
+            }
+        }
+
         public string GetGetterString(string propertyName)
         {
-            //fix names that violate semantic rules for methods that
+            //Fixes names that violate semantic rules for methods that
             //create owned objects
-
-            StringComparison strCmp = StringComparison.CurrentCultureIgnoreCase;
-
-            if (propertyName.StartsWith("alloc", strCmp) || propertyName.StartsWith("new", strCmp)
-            || propertyName.StartsWith("copy", strCmp) || propertyName.StartsWith("mutableCopy", strCmp))
+            
+            if(SemanticOwnedObjectsKeywords.Any(x => propertyName.StartsWith(x,StringComparison.OrdinalIgnoreCase)))
             {
                 return "get" + propertyName.ToPascalize();
             }
