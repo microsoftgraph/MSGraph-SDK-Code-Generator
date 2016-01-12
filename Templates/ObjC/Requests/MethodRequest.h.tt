@@ -45,7 +45,7 @@ else
 if (func.Parameters.Count > 0)
 {
 #>
-- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url options:(NSArray *)options client:(ODBaseClient*)client;
+- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url options:(NSArray *)options client:(ODClient*)client;
 <#
 }
 string completionHandler;

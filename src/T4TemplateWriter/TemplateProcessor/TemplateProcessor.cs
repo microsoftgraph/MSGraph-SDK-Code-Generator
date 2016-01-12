@@ -248,7 +248,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmProperty> NavigationCollectionProperties()
         {
-            return this.CurrentModel.GetProperties().Where(prop => prop.IsNavigation());
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation());
         }
 
         protected virtual IEnumerable<OdcmObject> FilterOdcmEnumerable(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod)

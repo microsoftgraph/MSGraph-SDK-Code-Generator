@@ -34,13 +34,12 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
                 case "Guid":
                     return "java.util.UUID";
                 case "DateTimeOffset":
+                case "Date":
                     return "java.util.Calendar";
                 case "Binary":
                     return "byte[]";
                 case "Duration":
                     return "org.joda.time.Period";
-                case "Date":
-                    return "java.util.Date";
                 case "TimeOfDay":
                     return "org.joda.time.LocalTime";
                 default:
