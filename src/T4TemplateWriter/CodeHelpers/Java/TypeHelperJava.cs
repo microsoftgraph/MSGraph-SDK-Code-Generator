@@ -38,8 +38,6 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
                     return "java.util.Calendar";
                 case "Binary":
                     return "byte[]";
-                case "Duration":
-                    return "org.joda.time.Period";
                 case "TimeOfDay":
                     return "org.joda.time.LocalTime";
                 default:
