@@ -14,12 +14,76 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 	{
 	    public static string Prefix = ConfigurationService.Settings.NamespacePrefix;
 
-        public static ICollection<string> ReservedNames {
+        private static ICollection<string> reservedNames;
+        public static ICollection<string> ReservedNames
+        {
             get 
             {
-                return new HashSet<string> {
-                    "description", "default"  , "self"
-                };
+                if (reservedNames == null)
+                {
+                    reservedNames=new HashSet<string> 
+                    {
+                        "id",
+                        "YES",
+                        "NO",
+                        "true",
+                        "false",
+                        "NULL",
+                        "nil",
+                        "self",
+                        "description",
+                        "auto",
+                        "else",
+                        "long",
+                        "switch",
+                        "break",
+                        "enum",
+                        "register",
+                        "typedef",
+                        "case",
+                        "extern",
+                        "return",
+                        "union",
+                        "char",
+                        "float",
+                        "short",
+                        "unsigned",
+                        "const",
+                        "for",
+                        "signed",
+                        "void",
+                        "continue",
+                        "goto",
+                        "sizeof",
+                        "volatile",
+                        "default",
+                        "if",
+                        "static",
+                        "while",
+                        "do",
+                        "int",
+                        "struct",
+                        "_Packed",
+                        "double",
+                        "protocol",
+                        "interface",
+                        "implementation",
+                        "NSObject",
+                        "NSInteger",
+                        "NSNumber",
+                        "CGFloat",
+                        "property",
+                        "nonatomic",
+                        "retain",
+                        "weak",
+                        "unsafe_unretained",
+                        "readwrite",
+                        "readonly",
+                        "inline",
+                        "operations"
+                    };
+                }
+                return reservedNames;
             }
         }
 
@@ -44,6 +108,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
                 case "Float":
                     return "CGFloat";
                 case "DateTimeOffset":
+                case "Date":
                     return "NSDate";
                 case "Binary":
                     return "NSString";
@@ -65,7 +130,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
         {
             string t = GetTypeString(type);
             return
-                !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat" || t == "NSStream" ||
+                !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat" ||
                   type is OdcmEnum);
         }
 
@@ -77,11 +142,6 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
         public static string ToSetterTypeString(this OdcmProperty property)
         {
             return string.Format("{0} {1}", property.GetFullType(), (property.IsComplex() ? "*" : string.Empty));
-        }
-
-        public static string ToPropertyString(this OdcmProperty property)
-        {
-            return string.Format("{0} {1}{2}",property.GetFullType(), (property.IsComplex() ? "*" : string.Empty), SanitizePropertyName(property));
         }
 
         public static string SanitizePropertyName(this OdcmProperty property) 

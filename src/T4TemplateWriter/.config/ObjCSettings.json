@@ -1,11 +1,14 @@
-
 {
     "TemplateMapping": {
+        "Shared": [
+            { "Template": "EntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "Client" }
+        ],
+
         "ObjC": [
             { "Template": "Models", "SubProcessor": "Other", "Type": "Model", "Name": "Models" },
             { "Template": "ODataEntities", "SubProcessor": "Other", "Type": "Model", "Name": "ODataEntities" },
-            { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-            { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequest", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
+            { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequestBuilder", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
             { "Template": "MethodCollection", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Collection", "Matches": "specialCollection" }
         ]
     }

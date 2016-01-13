@@ -367,6 +367,46 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             GetParamsForRaw(action.Parameters.Select(p => p.Name)), (action.ReturnType == null ? "NSString * resultCode " : GetParamRaw(action.ReturnType.Name)));
         }
 
+        private static ICollection<string> semanticOwnedObjectsKeywords;
+        public static ICollection<string> SemanticOwnedObjectsKeywords
+        {
+            get
+            {
+                if (semanticOwnedObjectsKeywords == null)
+                {
+                    semanticOwnedObjectsKeywords = new HashSet<string>
+                    {
+                        "alloc",
+                        "copy",
+                        "new",
+                        "mutableCopy",
+                    };
+                }
+                return semanticOwnedObjectsKeywords;
+            }
+        }
+
+        public string GetGetterString(string propertyName)
+        {
+            //Fixes names that violate semantic rules for methods that
+            //create owned objects
+            
+            if(SemanticOwnedObjectsKeywords.Any(x => propertyName.StartsWith(x,StringComparison.OrdinalIgnoreCase)))
+            {
+                return "get" + propertyName.ToPascalize();
+            }
+
+            return propertyName;
+        }
+
+        public string GetPropertyDeclaration(string propertyName, string type)
+        {
+            var getterName = GetGetterString(propertyName);
+            var setterName = "set" + propertyName.ToPascalize();
+
+            return "@property (nonatomic, getter=" + getterName + ") " + type + " " + propertyName + ";";
+        }
+
         public string GetName(string name) {
             if (name.Trim() == "description") return "$$__$$description";
             if (name.Trim() == "default") return "$$__$$default";
