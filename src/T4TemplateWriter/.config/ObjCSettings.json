@@ -1,6 +1,9 @@
-
 {
     "TemplateMapping": {
+        "Shared": [
+            { "Template": "EntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "Client" }
+        ],
+
         "ObjC": [
             { "Template": "Models", "SubProcessor": "Other", "Type": "Model", "Name": "Models" },
             { "Template": "ODataEntities", "SubProcessor": "Other", "Type": "Model", "Name": "ODataEntities" },
