@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+    // Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
 using System;
@@ -38,8 +38,6 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
                     return "java.util.Calendar";
                 case "Binary":
                     return "byte[]";
-                case "TimeOfDay":
-                    return "org.joda.time.LocalTime";
                 default:
                     return @type.Name.ToUpperFirstChar();
             }
