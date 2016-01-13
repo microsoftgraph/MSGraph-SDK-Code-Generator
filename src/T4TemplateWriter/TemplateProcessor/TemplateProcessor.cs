@@ -65,6 +65,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {SubProcessor.Property,                     ProcessProperties},
                 {SubProcessor.StreamProperty,               ProcessStreamProperties},
                 {SubProcessor.CollectionProperty,           ProcessCollections},
+                {SubProcessor.NavigationCollectionProperty, ProcessNavigationCollections},
                 {SubProcessor.Method,                       ProcessMethods},
                 {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
                 {SubProcessor.CollectionMethod,             ProcessCollectionMethods},
@@ -154,6 +155,19 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
+        protected virtual IEnumerable<TextFile> ProcessNavigationCollections(ITemplateInfo templateInfo)
+        {
+            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.NavigationCollectionProperties))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             property,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: property.Class.Name,
+                                                                       propertyName: property.Name,
+                                                                       propertyType: property.Type.Name));
+            }
+        }
+
         protected virtual IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo)
         {
             foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetProperties))
@@ -225,6 +239,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         {
             var methods = this.CurrentModel.GetMethods().Where(method => method.IsCollection && method.ReturnType != null && !(method.ReturnType is OdcmPrimitiveType)).ToList();
             return methods;
+        }
+
+        protected virtual IEnumerable<OdcmProperty> NavigationCollectionProperties()
+        {
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation());
         }
 
         protected virtual IEnumerable<OdcmProperty> CollectionProperties()

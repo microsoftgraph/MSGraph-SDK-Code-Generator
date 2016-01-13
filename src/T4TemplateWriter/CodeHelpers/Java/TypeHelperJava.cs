@@ -27,7 +27,6 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
             switch (@type.Name)
             {
                 case "Int16":
-                    return "Short";
                 case "Int32":
                     return "Integer";
                 case "Int64":
@@ -35,9 +34,9 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
                 case "Guid":
                     return "java.util.UUID";
                 case "DateTimeOffset":
+                case "Date":
                     return "java.util.Calendar";
                 case "Binary":
-                case "Stream":
                     return "byte[]";
                 default:
                     return @type.Name.ToUpperFirstChar();
@@ -46,33 +45,13 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Java
 
         public static string GetTypeString(this OdcmParameter parameter)
         {
-            switch (parameter.Type.Name)
-            {
-                case "Int16":
-                    return "Short";
-                case "Int32":
-                    return "Integer";
-                case "Int64":
-                    return "Long";
-                case "Guid":
-                    return "java.util.UUID";
-                case "DateTimeOffset":
-                    return "java.util.Calendar";
-                case "Binary":
-                case "Stream":
-                    return "byte[]";
-                default:
-                    return parameter.Type.Name;
-            }
+            return GetTypeString(parameter.Type);
         }
-
-
 
         public static string GetTypeString(this OdcmProperty property)
         {
             return GetTypeString(property.Type);
         }
-
 
         public static bool IsComplex(this OdcmParameter property)
         {
