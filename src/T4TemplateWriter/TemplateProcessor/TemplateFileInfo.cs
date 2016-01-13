@@ -7,6 +7,7 @@ using System.Linq;
 using System.IO;
 using Vipr.Core.CodeModel;
 using Vipr.T4TemplateWriter.Extensions;
+using Vipr.T4TemplateWriter.Settings;
 
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
@@ -84,7 +85,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                           .Replace("<Property>", propertyName.ToUpperFirstChar())
                                           .Replace("<PropertyType>", propertyType.ToUpperFirstChar())
                                           .Replace("<Method>", methodName.ToUpperFirstChar())
-                                          .Replace("<Container>", containerName.ToUpperFirstChar());
+                                          .Replace("<Container>", containerName.ToUpperFirstChar())
+                                          .Replace("<NamespacePrefix>", ConfigurationService.Settings.NamespacePrefix.ToUpperFirstChar());
                 // replace with the proper naming scheme.
                 switch (this.Casing)
                 {
