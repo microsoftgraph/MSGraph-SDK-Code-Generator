@@ -301,10 +301,16 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             if (results.Errors.Count > 0)
             {
                 for (int i = 0; i < results.Output.Count; i++)
+                {
                     Console.WriteLine(results.Output[i]);
+                }
+
                 for (int i = 0; i < results.Errors.Count; i++)
+                {
                     Console.WriteLine(i.ToString() + ": " + results.Errors[i].ToString());
-                throw new System.Exception("Template error.");
+                }
+
+                throw new System.InvalidOperationException("Template error.");
             }
 
             var assembly = results.CompiledAssembly;
