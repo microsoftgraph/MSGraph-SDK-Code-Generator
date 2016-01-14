@@ -15,7 +15,7 @@ import java.io.*;
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=BaseTypeRequest(c)#>(String requestUrl, <#=IClientType(c)#> client, List<Option> options) {
+    public <#=BaseTypeRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, List<Option> options) {
         super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
     }
 

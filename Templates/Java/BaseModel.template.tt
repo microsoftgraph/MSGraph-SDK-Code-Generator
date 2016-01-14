@@ -214,6 +214,11 @@
         return "I" + BaseClientType(c);
     }
 
+    public string IBaseClientType() {
+        return "IBaseClient";
+    }
+
+
     public string CollectionPageGeneric(OdcmObject c) {
         if (c is OdcmMethod) {
             return "<" + ClassTypeName(c) + ", " + ITypeRequestBuilder(c) + ">";
@@ -339,7 +344,7 @@ public {1} {2}{3}{4} {{";
                 propertyName.SplitCamelCase(),
                 property.Name,
                 propertyType,
-                property.SanitizePropertyName());
+                property.SanitizePropertyName().ToLowerFirstChar());
         }
         return sb.ToString();
     }
@@ -363,7 +368,7 @@ public {1} {2}{3}{4} {{";
                 ParamName(p).SplitCamelCase(),
                 ParamName(p),
                 ParamType(p),
-                p.SanitizePropertyName());
+                p.SanitizePropertyName().ToLowerFirstChar());
         }
         return sb.ToString();
     }

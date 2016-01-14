@@ -63,6 +63,11 @@ namespace Vipr.T4TemplateWriter.Extensions
             return Inflector.Inflector.Camelize(input);
         }
 
+        public static string ToPascalize(this string input)
+        {
+            return Inflector.Inflector.Pascalize(input);
+        }
+
         public static string ToUnderscore(this string input)
         {
             return Inflector.Inflector.Underscore(input);

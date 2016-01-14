@@ -1,7 +1,32 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#
-CustomT4Host host   = (CustomT4Host)Host; 
-OdcmModel model     = host.CurrentModel;
-var writer          = (CodeWriterObjC)host.CodeWriter;
+host                = (CustomT4Host)Host;
+model               = host.CurrentModel;
+writer              = (CodeWriterObjC)host.CodeWriter;
+prefix              = writer.GetPrefix();
+
 #>
 <#=writer.WriteHeader()#>
+
+<#+
+
+private String prefix;
+private CodeWriterObjC writer;
+private CustomT4Host host;
+private OdcmModel model;
+
+private string GeneratePropertyDeclarationLine(OdcmProperty prop)
+{
+  if(!prop.IsCollection)
+  {
+    return writer.GetPropertyDeclaration(prop.SanitizePropertyName().ToLowerFirstChar(),prop.GetFullType()+(prop.IsComplex() ? "*" : string.Empty));
+  }
+  else if (prop.IsCollection && prop.LongDescriptionContains("enumerable"))
+  {
+    return writer.GetPropertyDeclaration(prop.SanitizePropertyName().ToLowerFirstChar(),prefix+"Collection *");
+  }
+
+  return string.Empty;
+}
+
+#>
