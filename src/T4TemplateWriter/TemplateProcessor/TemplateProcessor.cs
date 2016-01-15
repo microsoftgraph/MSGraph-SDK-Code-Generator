@@ -309,8 +309,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {
                     Console.WriteLine(i.ToString() + ": " + results.Errors[i].ToString());
                 }
-
-                throw new System.InvalidOperationException("Template error.");
+                throw new InvalidOperationException("Template error.");
             }
 
             var assembly = results.CompiledAssembly;
