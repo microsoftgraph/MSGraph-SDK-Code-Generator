@@ -16,7 +16,8 @@ if (entity.Base != null)
 var attributeStringBuilder = new StringBuilder();
 attributeStringBuilder.Append("[DataContract]");
 
-if (!entity.IsAbstract && entity.Derived != null && entity.Base == null)
+// We only want to add the derived type converter to the concrete class at the top of the inheritance hierarchy
+if (!entity.IsAbstract && entity.Derived != null && (entity.Base == null || entity.Base.IsAbstract))
 {
     attributeStringBuilder.Append(Environment.NewLine);
     attributeStringBuilder.Append("    ");
