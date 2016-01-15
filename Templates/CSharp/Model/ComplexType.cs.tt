@@ -17,7 +17,8 @@ var classType = complex.IsAbstract ? "abstract partial class" : "partial class";
 var attributeStringBuilder = new StringBuilder();
 attributeStringBuilder.Append("[DataContract]");
 
-if (!complex.IsAbstract && complex.Derived != null && complex.Base == null)
+// We only want to add the derived type converter to the concrete class at the top of the inheritance hierarchy
+if (!complex.IsAbstract && complex.Derived != null && (complex.Base == null || complex.Base.IsAbstract))
 {
     attributeStringBuilder.Append(Environment.NewLine);
     attributeStringBuilder.Append("    ");
