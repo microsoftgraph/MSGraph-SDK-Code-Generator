@@ -793,30 +793,30 @@
             </Action>
             <Action Name="forward" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.message" />
-                <Parameter Name="comment" Type="Edm.String" Unicode="false" />
-                <Parameter Name="toRecipients" Type="Collection(microsoft.graph.recipient)" />
+                <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+                <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" />
             </Action>
             <Action Name="send" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.message" />
             </Action>
             <Action Name="accept" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
-                <Parameter Name="comment" Type="Edm.String" Unicode="false" />
-                <Parameter Name="sendResponse" Type="Edm.Boolean" />
+                <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+                <Parameter Name="SendResponse" Type="Edm.Boolean" />
             </Action>
             <Action Name="decline" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
-                <Parameter Name="comment" Type="Edm.String" Unicode="false" />
-                <Parameter Name="sendResponse" Type="Edm.Boolean" />
+                <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+                <Parameter Name="SendResponse" Type="Edm.Boolean" />
             </Action>
             <Action Name="tentativelyAccept" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
-                <Parameter Name="comment" Type="Edm.String" Unicode="false" />
-                <Parameter Name="sendResponse" Type="Edm.Boolean" />
+                <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+                <Parameter Name="SendResponse" Type="Edm.Boolean" />
             </Action>
             <Action Name="snoozeReminder" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
-                <Parameter Name="newReminderTime" Type="microsoft.graph.dateTimeTimeZone" Nullable="false" />
+                <Parameter Name="NewReminderTime" Type="microsoft.graph.dateTimeTimeZone" Nullable="false" />
             </Action>
             <Action Name="dismissReminder" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.event" />
@@ -838,16 +838,16 @@
             </Action>
             <Action Name="reply" IsBound="true" EntitySetPath="bindingParameter/Posts">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.conversationThread" />
-                <Parameter Name="post" Type="microsoft.graph.post" Nullable="false" />
+                <Parameter Name="Post" Type="microsoft.graph.post" Nullable="false" />
             </Action>
             <Action Name="forward" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.post" />
-                <Parameter Name="comment" Type="Edm.String" Unicode="false" />
-                <Parameter Name="toRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
+                <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+                <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
             </Action>
             <Action Name="reply" IsBound="true" EntitySetPath="bindingParameter">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.post" />
-                <Parameter Name="post" Type="microsoft.graph.post" Nullable="false" />
+                <Parameter Name="Post" Type="microsoft.graph.post" Nullable="false" />
             </Action>
             <Function Name="view.search" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false" />
@@ -910,6 +910,69 @@
                     <NavigationPropertyBinding Path="microsoft.graph.driveItem/createdByUser" Target="users" />
                 </Singleton>
             </EntityContainer>
+            <Annotations Target="microsoft.graph.directoryObject">
+                <Annotation Term="Org.OData.Capabilities.V1.ExpandRestrictions">
+                    <Record>
+                        <PropertyValue Property="Expandable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="Referenceable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.SelectRestrictions">
+                    <Record>
+                        <PropertyValue Property="Selectable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.CountRestrictions">
+                    <Record>
+                        <PropertyValue Property="Countable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="Filterable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.SkipSupported" Bool="false" />
+            </Annotations>
+            <Annotations Target="microsoft.graph.directoryRole">
+                <Annotation Term="Org.OData.Capabilities.V1.TopSupported" Bool="false" />
+            </Annotations>
+            <Annotations Target="microsoft.graph.directoryRoleTemplate">
+                <Annotation Term="Org.OData.Capabilities.V1.TopSupported" Bool="false" />
+            </Annotations>
+            <Annotations Target="microsoft.graph.subscribedSku">
+                <Annotation Term="Org.OData.Capabilities.V1.ExpandRestrictions">
+                    <Record>
+                        <PropertyValue Property="Expandable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="Referenceable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.SelectRestrictions">
+                    <Record>
+                        <PropertyValue Property="Selectable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.CountRestrictions">
+                    <Record>
+                        <PropertyValue Property="Countable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="Filterable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.TopSupported" Bool="false" />
+                <Annotation Term="Org.OData.Capabilities.V1.SkipSupported" Bool="false" />
+            </Annotations>
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>
