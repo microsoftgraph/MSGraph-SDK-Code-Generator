@@ -106,7 +106,8 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
         }
 
         private static readonly ICollection<string> SimpleTypes =
-            new HashSet<string>{
+            new HashSet<string> (StringComparer.OrdinalIgnoreCase)
+            {
                 "int32",
                 "int64",
                 "datetimeoffset",
@@ -185,7 +186,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 
         public static bool IsComplex(this string t)
         {
-            return !TypeHelperCSharp.SimpleTypes.Contains(t.ToLowerInvariant());
+            return !TypeHelperCSharp.SimpleTypes.Contains(t);
         }
 
         public static string GetNamespaceName(this OdcmNamespace namespaceObject)
