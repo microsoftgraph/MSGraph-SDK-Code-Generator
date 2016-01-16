@@ -9,15 +9,13 @@ using Vipr.T4TemplateWriter.Extensions;
 namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 {
     using System.Linq;
-    using System.Net.NetworkInformation;
     using System.Text.RegularExpressions;
     public static class TypeHelperCSharp
     {
-        public const string DefaultReservedPrefix = "graph";
+        public const string ReservedPrefix = "@";
         public static ICollection<string> GetReservedNames()
         {
-            return new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-            {
+            return new HashSet<string>{
                 "abstract",
                 "as",
                 "async",
@@ -206,15 +204,12 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
             return GetSanitizedPropertyName(property.Name);
         }
 
-        public static string GetSanitizedPropertyName(this string property, string prefix = null)
+        public static string GetSanitizedPropertyName(this string property)
         {
-            if (GetReservedNames().Contains(property))
+            if (GetReservedNames().Contains(property.ToLower()))
             {
-                var reservedPrefix = string.IsNullOrEmpty(prefix) ? DefaultReservedPrefix : prefix;
-
-                return string.Concat(reservedPrefix, property.ToUpperFirstChar());
+                return ReservedPrefix + property;
             }
-
             return property;
         }
 

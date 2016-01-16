@@ -605,9 +605,7 @@
                 <NavigationProperty Name="children" Type="Collection(microsoft.graph.driveItem)" ContainsTarget="true">
                     <Annotation Term="Org.OData.Core.V1.LongDescription" String="writeable" />
                 </NavigationProperty>
-                <NavigationProperty Name="thumbnails" Type="Collection(microsoft.graph.thumbnailSet)" ContainsTarget="true">
-                    <Annotation Term="Org.OData.Core.V1.LongDescription" String="readonly" />
-                </NavigationProperty>
+                <NavigationProperty Name="thumbnails" Type="Collection(microsoft.graph.thumbnailSet)" ContainsTarget="true" />
             </EntityType>
             <ComplexType Name="itemReference">
                 <Property Name="driveId" Type="Edm.String" Unicode="false" />
@@ -897,7 +895,6 @@
                 <EntitySet Name="drives" EntityType="microsoft.graph.drive">
                     <NavigationPropertyBinding Path="microsoft.graph.driveItem/lastModifiedByUser" Target="users" />
                     <NavigationPropertyBinding Path="microsoft.graph.driveItem/createdByUser" Target="users" />
-                    <Annotation Term="Org.OData.Core.V1.LongDescription" String="readonly" />
                 </EntitySet>
                 <Singleton Name="me" Type="microsoft.graph.user">
                     <NavigationPropertyBinding Path="ownedDevices" Target="directoryObjects" />

@@ -22,17 +22,16 @@ namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
     public partial interface I<#=collectionRequest#> : IBaseRequest
     {
         <#
-        if (!prop.LongDescriptionContains("readonly"))
+        if (prop.LongDescriptionContains("writeable"))
         {
-            var sanitizedPropertyName = innerEntity.Name.GetSanitizedPropertyName(prop.Name);
         #>
 
         /// <summary>
         /// Adds the specified <#=innerEntityType#> to the collection via POST.
         /// </summary>
-        /// <param name="<#=sanitizedPropertyName#>">The <#=innerEntityType#> to add.</param>
+        /// <param name="<#=innerEntity.Name#>">The <#=innerEntityType#> to add.</param>
         /// <returns>The created <#=innerEntityType#>.</returns>
-        Task<<#=innerEntityType#>> AddAsync(<#=innerEntityType#> <#=sanitizedPropertyName#>);
+        Task<<#=innerEntityType#>> AddAsync(<#=innerEntityType#> <#=innerEntity.Name#>);
         <#
         }
         #>

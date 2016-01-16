@@ -52,7 +52,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 
             if (property.IsCollection())
             {
-                if (property.IsNavigation())
+                if (property.Type is OdcmPrimitiveType || property.LongDescriptionContains("ignorableCollection"))
                 {
     #>
 
@@ -60,8 +60,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
         [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
-        [JsonConverter(typeof(InterfaceConverter<<#=propertyCollectionPage#>>))]
-        public I<#=propertyCollectionPage#> <#=propertyName#> { get; set; }
+        public IEnumerable<<#=propertyType#>> <#=propertyName#> { get; set; }
     <#
                 }
                 else
@@ -72,7 +71,8 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
         [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
-        public IEnumerable<<#=propertyType#>> <#=propertyName#> { get; set; }
+        [JsonConverter(typeof(InterfaceConverter<<#=propertyCollectionPage#>>))]
+        public I<#=propertyCollectionPage#> <#=propertyName#> { get; set; }
     <#
                 }
             }
