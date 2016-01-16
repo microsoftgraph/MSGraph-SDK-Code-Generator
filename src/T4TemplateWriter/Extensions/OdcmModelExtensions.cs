@@ -119,7 +119,7 @@ namespace Vipr.T4TemplateWriter
             var classType = property.Type as OdcmClass;
             if (classType != null)
             {
-                isNavigationProperty = property.IsLink || property.LongDescriptionContains("navigable");
+                isNavigationProperty = property.IsLink;
             }
             return isNavigationProperty;
         }
