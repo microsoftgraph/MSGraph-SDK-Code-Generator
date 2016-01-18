@@ -75,10 +75,10 @@ if (classes.Count > 0)
 }
 #>
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "ODRequestBuilder.h"
+#import "<#=writer.GetStaticCodePrefix()#>RequestBuilder.h"
 
 
-@interface <#=entityName#> : ODRequestBuilder
+@interface <#=entityName#> : <#=writer.GetStaticCodePrefix()#>RequestBuilder
 
 <#
 		

@@ -23,7 +23,7 @@ private string GeneratePropertyDeclarationLine(OdcmProperty prop)
   }
   else if (prop.IsCollection && prop.LongDescriptionContains("enumerable"))
   {
-    return writer.GetPropertyDeclaration(prop.SanitizePropertyName().ToLowerFirstChar(),prefix+"Collection *");
+    return writer.GetPropertyDeclaration(prop.SanitizePropertyName().ToLowerFirstChar(), writer.GetStaticCodePrefix() +"Collection *");
   }
 
   return string.Empty;

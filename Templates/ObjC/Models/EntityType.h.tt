@@ -5,11 +5,11 @@ var entity = host.CurrentType.AsOdcmClass();
 IEnumerable<string> extraClasses = null;
 if (entity.Properties.Any(prop => prop.IsCollection))
 {
-   extraClasses = new List<string> {"ODCollection"};
+   extraClasses = new List<string> { writer.GetStaticCodePrefix() + "Collection" };
 }
 #>
 <#=writer.GetImportsClass(entity.Properties, extraClasses:extraClasses)#>
-<#=writer.GetInterfaceLine(entity, "ODObject")#>
+<#=writer.GetInterfaceLine(entity, writer.GetStaticCodePrefix() + "Object")#>
 
 <#
 foreach(var prop in entity.Properties)

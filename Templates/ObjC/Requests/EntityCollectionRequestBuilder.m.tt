@@ -16,7 +16,7 @@ var entityRequestBuilder = innerEntityType + "RequestBuilder";
 
 #import "<#=writer.GetPrefix()#>ODataEntities.h"
 
-@implementation <#=propName#> : ODCollectionRequestBuilder
+@implementation <#=propName#> : <#=writer.GetStaticCodePrefix()#>CollectionRequestBuilder
 
 - (<#=propRequestName#>*) request
 {

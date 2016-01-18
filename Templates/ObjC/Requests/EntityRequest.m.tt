@@ -8,9 +8,9 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
 #>
 
 #import "<#=writer.GetPrefix()#>ODataEntities.h"
-#import "ODURLSessionDataTask.h"
+#import "<#=writer.GetStaticCodePrefix()#>URLSessionDataTask.h"
 
-@interface ODRequest()
+@interface <#=writer.GetStaticCodePrefix()#>Request()
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
                                       body:(NSData *)body 
@@ -21,7 +21,7 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
                                    body:(NSData *)body 
                                 headers:(NSDictionary *)headers;
 
-- (ODURLSessionDataTask*)taskWithRequest:(NSMutableURLRequest *)request
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask*)taskWithRequest:(NSMutableURLRequest *)request
                                 completion:<#=writer.GetNetworkCompletionBlock("NSDictionary", "dictionary")#>completionHandler;
 
 @end
@@ -35,9 +35,9 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
                            headers:nil];
 }
 
-- (ODURLSessionDataTask *)getWithCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler
 {
-    ODURLSessionDataTask *task = [self taskWithRequest:[self get] 
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self get] 
                                 odObjectWithDictionary:^(NSDictionary *response){
                                             return [[<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> alloc] initWithDictionary:response];
                                         }
@@ -55,9 +55,9 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
                            headers:nil];
 }
 
-- (ODURLSessionDataTask *)update:(<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> *)<#=entity.Name#> withCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)update:(<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> *)<#=entity.Name#> withCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler
 {
-    ODURLSessionDataTask *task = [self taskWithRequest:[self update:<#=entity.Name#>] 
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self update:<#=entity.Name#>] 
                                 odObjectWithDictionary:^(NSDictionary *response){
                                             return [[<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> alloc] initWithDictionary:response];
                                         }
@@ -73,9 +73,9 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
                            headers:nil];
 }
 
-- (ODURLSessionDataTask *)deleteWithCompletion:<#=writer.GetNetworkCompletionBlock(null, null)#>completionHandler
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)deleteWithCompletion:<#=writer.GetNetworkCompletionBlock(null, null)#>completionHandler
 {
-    ODURLSessionDataTask *task = [self taskWithRequest:[self delete] completion:^(NSDictionary *response, NSError *error){
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self delete] completion:^(NSDictionary *response, NSError *error){
                                                                     completionHandler(error);
                                                                  }];
     [task execute];

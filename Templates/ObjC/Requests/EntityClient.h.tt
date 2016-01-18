@@ -27,9 +27,9 @@ foreach(var propertyClass in classes)
 
 #import "ODataBaseClient.h"
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "ODHttpProvider.h"
-#import "ODAuthProvider.h"
-#import "ODLoggerProtocol.h"
+#import "<#=writer.GetStaticCodePrefix()#>HttpProvider.h"
+#import "<#=writer.GetStaticCodePrefix()#>AuthProvider.h"
+#import "<#=writer.GetStaticCodePrefix()#>LoggerProtocol.h"
 
 <#=writer.GetHeaderDoc(entityName)#>
 @interface <#=entityName#> : ODataBaseClient

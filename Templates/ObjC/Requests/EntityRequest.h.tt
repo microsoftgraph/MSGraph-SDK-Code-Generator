@@ -5,7 +5,7 @@
 var entity = host.CurrentType.AsOdcmClass();
 var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "Request";
 var clasess = new List<string>();
-clasess.Add("ODURLSessionDataTask");
+clasess.Add(writer.GetStaticCodePrefix() + "URLSessionDataTask");
 
 foreach(var prop in entity.NavigationProperties())
 {
@@ -33,14 +33,14 @@ foreach(var propertyClass in clasess)
 
 #>
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "ODRequest.h"
+#import "<#=writer.GetStaticCodePrefix()#>Request.h"
 
-@interface <#=entityName#> : ODRequest
+@interface <#=entityName#> : <#=writer.GetStaticCodePrefix()#>Request
 
-- (ODURLSessionDataTask *)getWithCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler;
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler;
 
-- (ODURLSessionDataTask *)update:(<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> *)<#=entity.Name#> withCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler;
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)update:(<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> *)<#=entity.Name#> withCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler;
 
-- (ODURLSessionDataTask *)deleteWithCompletion:<#=writer.GetNetworkCompletionBlock(null, null)#>completionHandler;
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)deleteWithCompletion:<#=writer.GetNetworkCompletionBlock(null, null)#>completionHandler;
 
 @end

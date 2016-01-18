@@ -7,7 +7,7 @@ var complexType = host.CurrentType.AsOdcmClass();
 
 #import "<#=writer.GetPrefix()#>Models.h"
 
-@interface ODObject()
+@interface <#=writer.GetStaticCodePrefix()#>Object()
 
 @property (strong, nonatomic) NSMutableDictionary *dictionary;
 
@@ -21,7 +21,7 @@ foreach (var prop in complexType.Properties)
     if (prop.IsCollection)
     {
 #>
-    <#=writer.GetPrefix()#>Collection *_<#=prop.Name.ToLowerFirstChar()#>;
+    <#=writer.GetStaticCodePrefix()#>Collection *_<#=prop.Name.ToLowerFirstChar()#>;
 <#
     }
     else if (prop.Type.IsDate() || !(prop.IsSystem() || prop.IsEnum()))

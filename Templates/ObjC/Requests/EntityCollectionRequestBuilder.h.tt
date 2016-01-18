@@ -15,9 +15,9 @@ classStringBuilder.Append(", " + entityRequestBuilder + ";");
 <#=classStringBuilder.ToString()#>
 
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "ODCollectionRequestBuilder.h"
+#import "<#=writer.GetStaticCodePrefix()#>CollectionRequestBuilder.h"
 
-@interface <#=propName#> : ODCollectionRequestBuilder
+@interface <#=propName#> : <#=writer.GetStaticCodePrefix()#>CollectionRequestBuilder
 
 - (<#=entityRequest#> *)request;
 

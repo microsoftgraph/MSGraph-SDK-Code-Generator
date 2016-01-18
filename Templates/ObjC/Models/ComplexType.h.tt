@@ -5,7 +5,7 @@ var entity = host.CurrentType.AsOdcmClass();
 #>
 <#=writer.GetImportsClass(entity.Properties)#>
 
-<#=writer.GetInterfaceLine(entity, "ODObject")#>
+<#=writer.GetInterfaceLine(entity, writer.GetStaticCodePrefix() + "Object")#>
 
 <#
 foreach(var prop in entity.Properties)

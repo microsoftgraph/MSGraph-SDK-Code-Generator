@@ -7,9 +7,9 @@ var collectionProperties = entity.Properties.Where(prop => prop.IsCollection && 
 #>
 
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "<#=writer.GetPrefix()#>Collection.h"
+#import "<#=writer.GetStaticCodePrefix()#>Collection.h"
 
-@interface ODObject()
+@interface <#=writer.GetStaticCodePrefix()#>Object()
 
 @property (strong, nonatomic) NSMutableDictionary *dictionary;
 
@@ -24,7 +24,7 @@ foreach (var prop in entity.Properties)
     if (prop.IsCollection)
     {
 #>
-    <#=writer.GetPrefix()#>Collection *_<#=prop.Name.ToLowerFirstChar()#>;
+    <#=writer.GetStaticCodePrefix()#>Collection *_<#=prop.Name.ToLowerFirstChar()#>;
 <#
     }
     else if ((prop.Type.IsDate() || !prop.IsSystem()) && prop.GetTypeString() != "id")
@@ -122,7 +122,7 @@ foreach(var prop in entity.Properties)
     else if (prop.IsCollection && prop.LongDescriptionContains("enumerable"))
     {
 #>
-- (ODCollection *)<#=prop.Name.ToLowerFirstChar()#>
+- (<#=writer.GetStaticCodePrefix()#>Collection *)<#=prop.Name.ToLowerFirstChar()#>
 {
     if (!_<#=prop.Name.ToLowerFirstChar()#> && self.dictionary[@"<#=prop.Name#>"]){
         NSMutableArray *<#=prop.Type.Name.ToLowerFirstChar()#>sCollection = [NSMutableArray array];
@@ -134,7 +134,7 @@ foreach(var prop in entity.Properties)
         }
         _<#=prop.Name.ToLowerFirstChar()#> = nil;
         if ([<#=prop.Type.Name.ToLowerFirstChar()#>sCollection count] > 0){
-            _<#=prop.Name.ToLowerFirstChar()#> = [[ODCollection alloc] initWithArray:<#=prop.Type.Name.ToLowerFirstChar()#>sCollection nextLink:self.dictionary[@"@nextLink"] additionalData:self.dictionary];
+            _<#=prop.Name.ToLowerFirstChar()#> = [[<#=writer.GetStaticCodePrefix()#>Collection alloc] initWithArray:<#=prop.Type.Name.ToLowerFirstChar()#>sCollection nextLink:self.dictionary[@"@nextLink"] additionalData:self.dictionary];
         }
         
     }
