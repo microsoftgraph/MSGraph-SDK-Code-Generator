@@ -218,6 +218,19 @@
         return "IBaseClient";
     }
 
+    public string BaseClassName(OdcmObject o)
+    {
+        var odcmClass = o.AsOdcmClass();
+        if (odcmClass != null)
+        {
+            var baseClass = odcmClass.Base;
+            if (baseClass != null)
+            {
+                return BaseTypeName(baseClass);
+            }
+        }
+        return null;
+    }
 
     public string CollectionPageGeneric(OdcmObject c) {
         if (c is OdcmMethod) {

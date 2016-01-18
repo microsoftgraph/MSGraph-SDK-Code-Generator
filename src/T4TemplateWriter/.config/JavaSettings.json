@@ -16,10 +16,10 @@
           { "Template": "IBaseMethodRequest", "SubProcessor": "Method",                                                                       "Name": "IBase<Method>Request" },
           { "Template": "IBaseMethodBodyRequest", "SubProcessor": "MethodWithBody",                                                           "Name": "IBase<Method>Request" },
 
-          { "Template": "MethodRequestBuilder", "SubProcessor": "Method",                                                                     "Name": "<Class><Method>RequestBuilder" },
-          { "Template": "IEntityRequestBuilder", "SubProcessor": "Method",                                                                    "Name": "I<Class><Method>RequestBuilder" },
-          { "Template": "BaseMethodRequestBuilder", "SubProcessor": "Method",                                                                 "Name": "Base<Class><Method>RequestBuilder" },
-          { "Template": "IBaseMethodRequestBuilder", "SubProcessor": "Method",                                                                "Name": "IBase<Class><Method>RequestBuilder" },
+          { "Template": "MethodRequestBuilder", "SubProcessor": "Method",                                                                     "Name": "<Method>RequestBuilder" },
+          { "Template": "IEntityRequestBuilder", "SubProcessor": "Method",                                                                    "Name": "I<Method>RequestBuilder" },
+          { "Template": "BaseMethodRequestBuilder", "SubProcessor": "Method",                                                                 "Name": "Base<Method>RequestBuilder" },
+          { "Template": "IBaseMethodRequestBuilder", "SubProcessor": "Method",                                                                "Name": "IBase<Method>RequestBuilder" },
 
           { "Template": "IEntityCollectionPage", "SubProcessor": "Method",                                                                    "Name": "I<Method>CollectionPage", "Ignore": "ignorableCollection"},
           { "Template": "MethodCollectionPage", "SubProcessor": "Method",                                                                     "Name": "<Method>CollectionPage", "Ignore": "ignorableCollection"},
