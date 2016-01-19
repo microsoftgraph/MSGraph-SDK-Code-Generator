@@ -246,6 +246,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation());
         }
 
+        protected virtual IEnumerable<OdcmProperty> NavigationProperties()
+        {
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsNavigation() && !prop.IsCollection);
+        }
+
         protected virtual IEnumerable<OdcmProperty> CollectionProperties()
         {
             return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && !(prop.Type is OdcmPrimitiveType));

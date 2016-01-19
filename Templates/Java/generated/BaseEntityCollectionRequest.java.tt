@@ -18,7 +18,6 @@
         super(requestUrl, client, options, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
     }
 
-<# if (c.LongDescriptionContains("enumerable")) { #>
     public void get(final ICallback<<#=ITypeCollectionPage(c)#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
@@ -38,7 +37,6 @@
         return buildFromResponse(response);
     }
 
-<# } #>
 <# if (c.LongDescriptionContains("writable")) { #>
     public void create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>, final ICallback<<#=ClassTypeName(c)#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
