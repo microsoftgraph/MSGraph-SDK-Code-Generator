@@ -8,9 +8,13 @@ var enumName = enumT.Name.ToCheckedCase();
 
 namespace <#=enumT.Namespace.GetNamespaceName()#>
 {
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
+    
     /// <summary>
     /// The enum <#=enumName#>.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum <#=enumName#>
     {
     <#
