@@ -125,8 +125,7 @@ namespace Vipr.T4TemplateWriter
             var classType = property.Type as OdcmClass;
             if (classType != null)
             {
-                isNavigationProperty = classType.Kind == OdcmClassKind.Entity
-                                     || classType.Kind == OdcmClassKind.MediaEntity;
+                isNavigationProperty = property.IsLink;
             }
             return isNavigationProperty;
         }

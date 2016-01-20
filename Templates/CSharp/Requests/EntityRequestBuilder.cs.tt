@@ -57,7 +57,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         var propName = prop.Name.ToCheckedCase();
         var propRequestBuilder = prop.Type.Name.ToCheckedCase() + "RequestBuilder";
 
-        if(prop.IsCollection())
+        if (prop.IsCollection())
         {
             var collectionRequestBuilder = propName + "CollectionRequestBuilder";
     #>
@@ -148,7 +148,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 
         builderInitializerStringBuilder.Append(Environment.NewLine);
         builderInitializerStringBuilder.Append("                ");
-        builderInitializerStringBuilder.Append("this.AppendSegmentToRequestUrl(\"" + method.Name + "\"),");
+        builderInitializerStringBuilder.AppendFormat("this.AppendSegmentToRequestUrl(\"{0}.{1}\"),", method.Namespace.Name, method.Name);
         builderInitializerStringBuilder.Append(Environment.NewLine);
         builderInitializerStringBuilder.Append("                ");
         builderInitializerStringBuilder.Append("this.Client,");

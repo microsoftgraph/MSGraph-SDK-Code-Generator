@@ -39,7 +39,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         var propName = prop.Name.ToCheckedCase();
         var propRequestBuilder = prop.Type.Name.ToCheckedCase() + "RequestBuilder";
 
-        if(prop.IsCollection())
+        if (prop.IsCollection())
         {
             var collectionRequestBuilder = propName + "CollectionRequestBuilder";
     #>
