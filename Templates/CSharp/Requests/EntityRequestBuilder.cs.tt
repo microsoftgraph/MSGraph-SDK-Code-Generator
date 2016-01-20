@@ -124,7 +124,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 
         builderInitializerStringBuilder.Append(Environment.NewLine);
         builderInitializerStringBuilder.Append("                ");
-        builderInitializerStringBuilder.AppendFormat("this.AppendSegmentToRequestUrl(\"{0}.{1}\"),", method.Namespace.Name, method.Name);
+        builderInitializerStringBuilder.Append("this.AppendSegmentToRequestUrl(\"" + method.Name + "\"),");
         builderInitializerStringBuilder.Append(Environment.NewLine);
         builderInitializerStringBuilder.Append("                ");
         builderInitializerStringBuilder.Append("this.Client,");
