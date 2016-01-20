@@ -124,16 +124,16 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         private void InitializeCollectionProperties(<#=entityName#> <#=entity.Name#>ToInitialize)
         {
         <#
-        var collectionProperties = entity.Properties.Where(property => property.IsCollection() && !property.LongDescriptionContains("ignorableCollection"));
+        var navigationCollectionProperties = entity.Properties.Where(property => property.IsCollection() && property.IsNavigation());
 
-        if (collectionProperties.Any())
+        if (navigationCollectionProperties.Any())
         {
         #>
 
             if (<#=entity.Name#>ToInitialize != null && <#=entity.Name#>ToInitialize.AdditionalData != null)
             {
         <#
-            foreach(var property in collectionProperties)
+            foreach(var property in navigationCollectionProperties)
             {
                 var propertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
                 var propertyType = property.GetTypeString();
