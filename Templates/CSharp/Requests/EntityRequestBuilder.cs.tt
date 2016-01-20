@@ -94,9 +94,15 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         }
     }
 
+    bool contentStreamFound = false;
     foreach(var prop in entity.GetProperties(typeName:"Stream"))
     {
         var propName = prop.Name.ToCheckedCase();
+        if (propName.Equals("Content"))
+        {
+            contentStreamFound = true;
+        }
+        
         var propRequestBuilder = propName + "RequestBuilder";
     #>
 
@@ -109,6 +115,24 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
             get
             {
                 return new <#=entityName#><#=propRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.Client);
+            }
+        }
+    <#
+    }
+    
+    if (entity.Kind == OdcmClassKind.MediaEntity && !contentStreamFound)
+    {
+    #>
+    
+        /// <summary>
+        /// Gets the request builder for Content.
+        /// </summary>
+        /// <returns>The <see cref="I<#=entityName#>ContentRequestBuilder"/>.</returns>
+        public I<#=entityName#>ContentRequestBuilder Content
+        {
+            get
+            {
+                return new <#=entityName#>ContentRequestBuilder(this.AppendSegmentToRequestUrl("$value"), this.Client);
             }
         }
     <#

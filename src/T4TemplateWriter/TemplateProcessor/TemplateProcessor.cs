@@ -62,6 +62,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {SubProcessor.ComplexType,                  ProcessComplexTypes},
                 {SubProcessor.EnumType,                     ProcessEnumTypes},
                 {SubProcessor.EntityContainer,              ProcessEntityContainerType},
+                {SubProcessor.MediaEntityType,              ProcessMediaEntityTypes},
                 {SubProcessor.Property,                     ProcessProperties},
                 {SubProcessor.StreamProperty,               ProcessStreamProperties},
                 {SubProcessor.CollectionProperty,           ProcessCollections},
@@ -152,6 +153,17 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                                                        className: property.Class.Name,
                                                                        propertyName: property.Name,
                                                                        propertyType: property.Type.Name));
+            }
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessMediaEntityTypes(ITemplateInfo templateInfo)
+        {
+            foreach (OdcmClass entityType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetMediaEntityTypes))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             entityType,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: entityType.Name));
             }
         }
 
@@ -309,6 +321,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {
                     Console.WriteLine(i.ToString() + ": " + results.Errors[i].ToString());
                 }
+
                 throw new InvalidOperationException("Template error.");
             }
 

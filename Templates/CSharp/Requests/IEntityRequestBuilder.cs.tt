@@ -63,9 +63,16 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         }
     }
 
+    bool contentStreamFound = false;
     foreach(var prop in entity.GetProperties(typeName:"Stream"))
     {
         var propName = prop.Name.ToCheckedCase();
+        
+        if (propName.Equals("Content"))
+        {
+            contentStreamFound = true;
+        }
+        
         var propRequestBuilder = propName + "RequestBuilder";
     #>
 
@@ -76,6 +83,18 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         I<#=entityName#><#=propRequestBuilder#> <#=propName#> { get; }
     <#
     }
+    
+    if (entity.Kind == OdcmClassKind.MediaEntity && !contentStreamFound)
+    {
+    #>
+    
+        /// <summary>
+        /// Gets the request builder for Content.
+        /// </summary>
+        /// <returns>The <see cref="I<#=entityName#>ContentRequestBuilder"/>.</returns>
+        I<#=entityName#>ContentRequestBuilder Content { get; }
+    <#
+    }
 
     foreach(var method in entity.Methods)
     {
@@ -83,14 +102,6 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         var baseName = method.Class.Name.ToCheckedCase() + methodName;
 
         var paramStringBuilder = new System.Text.StringBuilder();
-        var builderInitializerStringBuilder = new System.Text.StringBuilder();
-
-        builderInitializerStringBuilder.Append(Environment.NewLine);
-        builderInitializerStringBuilder.Append("                ");
-        builderInitializerStringBuilder.Append("this.AppendSegmentToRequestUrl(\"" + method.Name + "\"),");
-        builderInitializerStringBuilder.Append(Environment.NewLine);
-        builderInitializerStringBuilder.Append("                ");
-        builderInitializerStringBuilder.Append("this.Client,");
 
         var hasParameters = method.Parameters != null && method.Parameters.Any();
 
@@ -109,10 +120,6 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
                 paramStringBuilder.Append(" ");
                 paramStringBuilder.Append(param.Name.ToLowerFirstChar());
                 paramStringBuilder.Append(",");
-
-                builderInitializerStringBuilder.Append(Environment.NewLine);
-                builderInitializerStringBuilder.Append("                ");
-                builderInitializerStringBuilder.Append(param.Name.ToLowerFirstChar() + ",");
             }
             
             foreach (var param in optionalParameters)
@@ -125,16 +132,10 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
                 paramStringBuilder.Append(" ");
                 paramStringBuilder.Append(param.Name.ToLowerFirstChar());
                 paramStringBuilder.Append(" = null,");
-
-                builderInitializerStringBuilder.Append(Environment.NewLine);
-                builderInitializerStringBuilder.Append("                ");
-                builderInitializerStringBuilder.Append(param.Name.ToLowerFirstChar() + ",");
             }
 
             paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);
         }
-        
-        builderInitializerStringBuilder.Remove(builderInitializerStringBuilder.Length - 1, 1);
     #>
 
         /// <summary>

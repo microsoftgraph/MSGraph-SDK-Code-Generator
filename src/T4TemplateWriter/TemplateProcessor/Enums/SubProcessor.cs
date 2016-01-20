@@ -6,6 +6,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
       EntityType,
       ComplexType,
       EnumType,
+      MediaEntityType,
       Property,
       StreamProperty,
       EntityContainer,
