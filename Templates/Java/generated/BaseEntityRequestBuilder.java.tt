@@ -51,20 +51,13 @@ if (c.AsOdcmClass() != null)
         var propRequestBuilder = TypeRequestBuilder(prop);
         if (prop.IsCollection()) {
 #>
-<# if (prop.LongDescriptionContains("enumerable")) {#>
-
     public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>() {
         return new <#=TypeCollectionRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
-<# } if (prop.LongDescriptionContains("queryable")) { #>
 
     public <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id) {
         return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
     }
-<# } #>
-<#
-        } else {
-#>
 
     /**
      * Gets the request builder for <#=TypeName(prop)#>.
@@ -72,10 +65,7 @@ if (c.AsOdcmClass() != null)
     public <#=ITypeRequestBuilder(prop)#> get<#=propName#>() {
         return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
-<#
-        }
-    }
-#>
+    
 <#
 	foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
 	{

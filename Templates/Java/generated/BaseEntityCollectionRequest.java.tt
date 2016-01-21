@@ -37,7 +37,6 @@
         return buildFromResponse(response);
     }
 
-<# if (c.LongDescriptionContains("writable")) { #>
     public void create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>, final ICallback<<#=ClassTypeName(c)#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new ItemRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
@@ -52,7 +51,6 @@
             .create(new<#=ClassTypeName(c)#>);
     }
 
-<# } #>
     public <#=ITypeCollectionRequest(c)#> expand(final String value) {
         addQueryOption(new QueryOption("expand", value));
         return (<#=TypeCollectionRequest(c)#>)this;
