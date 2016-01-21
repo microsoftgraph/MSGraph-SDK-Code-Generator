@@ -13,11 +13,11 @@ var containerProps = model.EntityContainer.Properties;
 
 foreach(var prop in containerProps)
 {
+    var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
+    var propType = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
+
 	if(prop.IsCollection())
 	{
-
-        var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
-        var propType = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
 #>
 
 -(<#=propName#>CollectionRequestBuilder *)<#=prop.Name#>
@@ -32,6 +32,14 @@ foreach(var prop in containerProps)
     return [[self <#=prop.Name#>] <#=prop.Type.Name#>:<#=prop.Type.Name#>];
 }
 */
+<#
+    }else{
+#>
+    -(<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=prop.Name#>
+    {
+    return [[<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder alloc] initWithURL:[self.baseURL URLByAppendingPathComponent:@"<#=prop.Name#>"] 
+             <#=prop.Type.GetTypeString().ToSpaces()#><#="RequestBuilder alloc]     ".ToSpaces()#>client:self];
+    }
 <#
     }
 }
