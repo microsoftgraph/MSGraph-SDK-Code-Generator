@@ -36,20 +36,21 @@ namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
         }
 
         <#
-        if (prop.LongDescriptionContains("writeable"))
+        if (!prop.LongDescriptionContains("readonly"))
         {
+            var sanitizedPropertyName = innerEntity.Name.GetSanitizedPropertyName(prop.Name);
         #>
 
         /// <summary>
         /// Adds the specified <#=innerEntityType#> to the collection via POST.
         /// </summary>
-        /// <param name="<#=innerEntity.Name#>">The <#=innerEntityType#> to add.</param>
+        /// <param name="<#=sanitizedPropertyName#>">The <#=innerEntityType#> to add.</param>
         /// <returns>The created <#=innerEntityType#>.</returns>
-        public Task<<#=innerEntityType#>> AddAsync(<#=innerEntityType#> <#=innerEntity.Name#>)
+        public Task<<#=innerEntityType#>> AddAsync(<#=innerEntityType#> <#=sanitizedPropertyName#>)
         {
             this.ContentType = "<#=writer.jsonContentType#>";
             this.Method = "POST";
-            return this.SendAsync<<#=innerEntityType#>>(<#=innerEntity.Name#>);
+            return this.SendAsync<<#=innerEntityType#>>(<#=sanitizedPropertyName#>);
         }
         <#
         }
