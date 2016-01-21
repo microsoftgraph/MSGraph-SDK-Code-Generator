@@ -34,16 +34,25 @@ if (c.AsOdcmClass() != null)
         var propRequestBuilder = TypeRequestBuilder(prop);
         if (prop.IsCollection()) {
 #>
+<# if (!prop.LongDescriptionContains("not-enumerable")) {#>
 
     <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>();
+<# } if (!prop.LongDescriptionContains("not-queryable")) { #>
 
     <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id);
+<# } #>
+<#
+        } else {
+#>
 
     /**
      * Gets the request builder for <#=TypeName(prop)#>.
      */
     <#=ITypeRequestBuilder(prop)#> get<#=propName#>();
-
+<#
+        }
+    }
+#>
 <#
 	foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
 	{
