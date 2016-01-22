@@ -128,13 +128,13 @@ private string GetStaticBaseObject()
 
 private string GeneratePropertyDeclarationLine(OdcmProperty prop)
 {
-    return "@property (nonatomic, setter=" + GetObjCPropertySetter(prop) + ", getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
+    return "@property (nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
 }
 
 private void PropertyGetterImplementation(OdcmProperty prop)
 {
 #>
-- (<#=GetObjCTypeForVarDeclaration(prop)#>) <#=GetObjCPropertyGetter(prop)#>()
+- (<#=GetObjCTypeForVarDeclaration(prop)#>) <#=GetObjCPropertyGetter(prop)#>
 {
 <#+
     if(IsNSJSONSerializable(prop.Type))

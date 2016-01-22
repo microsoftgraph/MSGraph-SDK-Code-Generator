@@ -10,6 +10,9 @@ if (entity.Properties.Any(prop => prop.IsCollection))
 #>
 <#=writer.GetImportsClass(entity.Properties, extraClasses:extraClasses)#>
 
+#import "<#=GetStaticBaseObject()#>.h"
+#import "<#=GetStaticCollectionObject()#>.h"
+
 @interface <#=GetObjCTypeIdentifier(entity)#> : <#=GetStaticBaseObject()#>
 
 <#
@@ -20,7 +23,7 @@ foreach(var prop in entity.Properties)
   <#
 }
 
-foreach (var prop in entity.Properties.Where(prop => prop.IsCollection))
+foreach (var prop in entity.Properties.Where(prop => prop.IsCollection && prop.LongDescriptionContains("not-enumerable")))
 {
 #>
 - (<#=GetObjCTypeForVarDeclaration(prop,true)#>) <#=GetObjCProperty(prop)#>:(NSInteger)index;

@@ -6,6 +6,9 @@ var entity = host.CurrentType.AsOdcmClass();
 
 <#=writer.GetImportsClass(entity.Properties)#>
 
+#import "<#=GetStaticBaseObject()#>.h"
+#import "<#=GetStaticCollectionObject()#>.h"
+
 @interface <#=GetObjCTypeIdentifier(entity)#> : <#=GetStaticBaseObject()#>
 
 <#

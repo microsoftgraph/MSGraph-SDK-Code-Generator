@@ -2,13 +2,11 @@
 <#@ include file="SharedObjC.template.tt"#>
 <#
 var entity = host.CurrentType.AsOdcmClass();
-var collectionProperties = entity.Properties.Where(prop => prop.IsCollection && prop.LongDescriptionContains("enumerable"));
 #>
 
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "<#=writer.GetStaticCodePrefix()#>Collection.h"
 
-@interface <#=GetStaticBaseObject()#>
+@interface <#=GetStaticBaseObject()#>()
 
 @property (strong, nonatomic) NSMutableDictionary *dictionary;
 
@@ -37,7 +35,7 @@ foreach(var prop in entity.Properties)
     PropertySetterImplementation(prop);
 }
 
-foreach(var prop in entity.Properties.Where(prop => prop.IsCollection))
+foreach(var prop in entity.Properties.Where(prop => prop.IsCollection && prop.LongDescriptionContains("not-enumerable")))
 {
 #>
 - (<#=GetObjCTypeForVarDeclaration(prop,true)#>) <#=GetObjCProperty(prop)#>:(NSInteger)index
@@ -46,7 +44,6 @@ foreach(var prop in entity.Properties.Where(prop => prop.IsCollection))
    if (self.<#=GetObjCProperty(prop)#>.value){
        <#=GetObjCProperty(prop)#> = self.<#=GetObjCProperty(prop)#>.value[index];
    }
-
    return <#=GetObjCProperty(prop)#>;
 }
 <#
