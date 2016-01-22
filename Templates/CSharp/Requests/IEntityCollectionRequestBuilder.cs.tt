@@ -33,8 +33,7 @@ namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
         /// <returns>The built request.</returns>
         I<#=collectionRequest#> Request(IList<Option> options);
 <#
-    var propClass = prop.Type as OdcmClass;
-    if ((propClass != null && propClass.Kind != OdcmClassKind.Complex) || prop.LongDescriptionContains("navigable"))
+    if (prop.IsNavigation())
     {
 #>
 

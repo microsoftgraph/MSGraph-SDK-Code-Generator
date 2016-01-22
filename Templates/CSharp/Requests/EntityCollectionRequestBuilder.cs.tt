@@ -51,9 +51,9 @@ namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
             return new <#=collectionRequest#>(this.RequestUrl, this.Client, options);
         }
 <#
-    var propClass = prop.Type as OdcmClass;
-    if ((propClass != null && propClass.Kind != OdcmClassKind.Complex) || prop.LongDescriptionContains("navigable"))
+    if (prop.IsNavigation())
     {
+    
 #>
 
         /// <summary>
