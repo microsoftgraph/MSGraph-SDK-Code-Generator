@@ -1,0 +1,80 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+
+<#
+var containerProps = model.EntityContainer.Properties;
+var entityName = writer.GetPrefix() + "Client"; 
+
+#>
+
+#import "<#=entityName#>.h"
+#import "<#=writer.GetStaticCodePrefix()#>AppConfiguration.h"
+
+/**
+ Called when the Authentication has completed.
+ */
+typedef void (^<#=entityName#>AuthenticationCompletion)(<#=entityName#> *client, NSError *error);
+
+@interface <#=entityName#> (Authentication)
+
+/**
+ Reads the current client from the AccountStore.
+ @param  appConfig The Application Configuration to retrieve the accountStore object from.
+ @return A Client, if one is present.
+ @return nil if there is no currently logged in client.
+ @see ODAccountStore
+ */
++ (<#=entityName#> *)currentClientWithAppConfig:(<#=writer.GetStaticCodePrefix()#>AppConfiguration *)appConfig;
+
+/**
+ Reads all the clients from the AccountStore (@see <#=writer.GetStaticCodePrefix()#>AccountStoreProtocol.h).
+ @param appConfig The Application Configuration to retrieve the accountStore object from.
+ */
++ (NSArray *)clientsFromAppConfig:(<#=writer.GetStaticCodePrefix()#>AppConfiguration *)appConfig;
+
+/**
+ Creates and authenticates an ODClient object.
+ @param appConfig The Application Configuration object to use.
+ @param completion The completion handler to be called when the authentication is complete.
+        The completion handler will receive an ODClient that has been authenticated, or an NSError if one occurred.
+ */
++ (void)authenticatedClientWithAppConfig:(<#=writer.GetStaticCodePrefix()#>AppConfiguration *)appConfig completion:(<#=entityName#>AuthenticationCompletion)completion;
+
+/**
+ Authenticates the client using an authentication provider. 
+ @param  authProvider The Authentication Provider to be used to authenticate the client.
+ @param  httpProvider The http provider to handle all http requests.
+ @param  logger The logger used to log messages.
+ @param  completion The completion handler to be called when authentication is complete.
+         error will be nil unless there was an error.
+ */
+- (void)authenticateWithAuthProvider:(id <<#=writer.GetStaticCodePrefix()#>AuthProvider>)authProvider
+                        httpProvider:(id <<#=writer.GetStaticCodePrefix()#>HttpProvider>)httpProvider
+                              logger:(id <<#=writer.GetStaticCodePrefix()#>Logger>)logger
+                          completion:(void (^)(NSError *error))completion;
+
+/**
+ @param  viewController The parent view controller on which to display the authenticationViewController.
+ @param  authProvider The Authentication Provider to be used to authenticate the client.
+ @param  httpProvider The http provider to handle all http requests.
+ @param  logger The logger used to log messages.
+ @param  completion The completion handler to be called when authentication is complete.
+         error will be nil unless there was an error.
+ @see ODAuthenticationViewController
+ */
+- (void)authenticateWithAuthProvider:(id<<#=writer.GetStaticCodePrefix()#>AuthProvider>)authProvider
+                        httpProvider:(id<<#=writer.GetStaticCodePrefix()#>HttpProvider>)httpProvider
+                              logger:(id <<#=writer.GetStaticCodePrefix()#>Logger>)logger
+                      viewController:(UIViewController *)viewController
+                          completion:(void (^)(NSError *))completion;
+
+/**
+ Authenticates the client using an application configuration.
+ @param  appConfig The Application Configuration object to use.
+ @param  completion The completion handler to be called when authentication is complete.
+         error will be nil unless there was an error.
+ */
+- (void)authenticateWithAppConfig:(<#=writer.GetStaticCodePrefix()#>AppConfiguration *)appConfig
+                      completion:(void (^)(NSError *error))completion;
+
+@end

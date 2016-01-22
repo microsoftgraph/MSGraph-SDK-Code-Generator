@@ -1,0 +1,246 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entityName = writer.GetPrefix()  + "Client";
+#>
+
+#import "<#=entityName#>+DefaultConfiguration.h"
+#import "<#=writer.GetStaticCodePrefix()#>AppConfiguration+DefaultConfiguration.h"
+#import "<#=writer.GetStaticCodePrefix()#>AccountSession.h"
+#import "<#=writer.GetStaticCodePrefix()#>AuthProvider.h"
+
+@implementation <#=entityName#> (DefaultConfiguration)
+
++ (void)clientWithCompletion:(<#=entityName#>AuthenticationCompletion)completion
+{
+    NSParameterAssert(completion);
+    
+    <#=entityName#> *client = [<#=entityName#> loadCurrentClient];
+    if (client){
+        completion(client, nil);
+    }
+    else{
+        [<#=entityName#> authenticatedClientWithCompletion:completion];
+    }
+}
+
++ (void)authenticatedClientWithCompletion:(<#=entityName#>AuthenticationCompletion)completion
+{
+    [<#=entityName#> authenticatedClientWithAppConfig:[<#=writer.GetStaticCodePrefix()#>AppConfiguration defaultConfiguration] completion:completion];
+}
+
++ (void)setCurrentClient:(<#=entityName#> *)client
+{
+    <#=writer.GetStaticCodePrefix()#>AccountSession *currentSession = nil;
+    id <<#=writer.GetStaticCodePrefix()#>Logger> logger = client.logger;
+    id <<#=writer.GetStaticCodePrefix()#>AccountStore> accountStore = [<#=writer.GetStaticCodePrefix()#>AppConfiguration defaultConfiguration].accountStore;
+    if ([client.authProvider respondsToSelector:@selector(accountSession)]){
+        currentSession = [client.authProvider accountSession];
+    }
+    else{
+        [logger logWithLevel:<#=writer.GetStaticCodePrefix()#>LogLevelLogWarn message:@"Auth provider doesn't respond to accountSession"];
+    }
+    if (currentSession && accountStore){
+        [accountStore storeCurrentAccount:currentSession];
+        [logger logWithLevel:<#=writer.GetStaticCodePrefix()#>LogLevelLogInfo message:@"Setting %@ as the current session", currentSession.accountId];
+    }
+    else {
+        [logger logWithLevel:<#=writer.GetStaticCodePrefix()#>LogLevelLogWarn message:@"No account store or account session"];
+    }
+}
+
++ (<#=entityName#> *)loadCurrentClient
+{
+    return [<#=entityName#> currentClientWithAppConfig:[<#=writer.GetStaticCodePrefix()#>AppConfiguration defaultConfiguration]];
+}
+
++ (<#=entityName#> *)loadClientWithAccountId:(NSString *)accountId
+{
+    __block <#=entityName#> *foundClient = nil;
+    [[<#=entityName#> loadClients] enumerateObjectsUsingBlock:^(<#=entityName#> *client, NSUInteger index, BOOL *stop){
+        if ([client.accountId isEqualToString:accountId]){
+            foundClient = client;
+            *stop = YES;
+        }
+    }];
+    return foundClient;
+}
+
++ (NSArray *)loadClients
+{
+    return [<#=entityName#> clientsFromAppConfig:[<#=writer.GetStaticCodePrefix()#>AppConfiguration defaultConfiguration]];
+}
+
++ (void)setMicrosoftAccountAppId:(NSString *)microsoftAccounntAppId
+                          scopes:(NSArray *)microsoftAccounntScopes
+                           flags:(NSDictionary *)microsoftAccounntFlags
+{
+    NSParameterAssert(microsoftAccounntAppId);
+    NSParameterAssert(microsoftAccounntScopes);
+    // default to OneDrive
+    NSString *onedriveApiEndpoint  = [NSString stringWithFormat:@"%@/%@", <#=writer.GetStaticCodePrefix()#>_MICROSOFT_ACCOUNT_ENDPOINT, <#=writer.GetStaticCodePrefix()#>_MICROSOFT_ACCOUNT_API_VERSION];
+    [<#=entityName#> setMicrosoftAccountAppId:microsoftAccounntAppId
+                                scopes:microsoftAccounntScopes
+                                 flags:microsoftAccounntFlags
+                           apiEndpoint:onedriveApiEndpoint];
+}
+
++ (void)setMicrosoftAccountAppId:(NSString *)microsoftAccounntAppId scopes:(NSArray *)microsoftAccounntScopes
+{
+    [<#=entityName#> setMicrosoftAccountAppId:microsoftAccounntAppId scopes:microsoftAccounntScopes flags:nil];
+}
+
++ (void)setMicrosoftAccountAppId:(NSString *)microsoftAccounntAppId
+                          scopes:(NSArray *)microsoftAccounntScopes
+                           flags:(NSDictionary *)microsoftAccounntFlags
+                     apiEndpoint:(NSString *)apiEndpoint
+{
+    <#=writer.GetStaticCodePrefix()#>AppConfiguration *defaultConfig = [<#=writer.GetStaticCodePrefix()#>AppConfiguration defaultConfiguration];
+    defaultConfig.microsoftAccountAppId = microsoftAccounntAppId;
+    defaultConfig.microsoftAccountScopes = microsoftAccounntScopes;
+    defaultConfig.microsoftAccountFlags = microsoftAccounntFlags;
+    defaultConfig.microsoftAccountApiEndpoint = apiEndpoint;
+}
+
++ (void)setActiveDirectoryAppId:(NSString *)activeDirectoryAppId redirectURL:(NSString *)activeDirectoryRedirectURL
+{
+    [<#=entityName#> setActiveDirectoryAppId:activeDirectoryAppId redirectURL:activeDirectoryRedirectURL flags:nil];
+}
+
++ (void)setActiveDirectoryAppId:(NSString *)activeDirectoryAppId
+                    redirectURL:(NSString *)activeDirectoryRedirectURL
+                          flags:(NSDictionary *)flags
+{
+    // Default to MyFiles for OneDrive for Business
+    [<#=entityName#> setActiveDirectoryAppId:activeDirectoryAppId
+                           capability:@"MyFiles"
+                           resourceId:nil
+                          apiEndpoint:nil
+                          redirectURL:activeDirectoryRedirectURL
+                                flags:flags];
+}
+
++ (void)setActiveDirectoryAppId:(NSString *)activeDirectoryAppId
+                     capability:(NSString *)activeDirectoryCapability
+                     resourceId:(NSString *)activeDirectoryResourceId
+                    apiEndpoint:(NSString *)activeDirectoryApiEndpoint
+                    redirectURL:(NSString *)activeDirectoryRedirectURL
+                          flags:(NSDictionary *)activeDirectoryFlags
+{
+    NSParameterAssert(activeDirectoryAppId);
+    NSParameterAssert(activeDirectoryRedirectURL);
+    
+    <#=writer.GetStaticCodePrefix()#>AppConfiguration *defaultConfig = [<#=writer.GetStaticCodePrefix()#>AppConfiguration defaultConfiguration];
+    defaultConfig.activeDirectoryAppId = activeDirectoryAppId;
+    defaultConfig.activeDirectoryCapability = activeDirectoryCapability;
+    defaultConfig.activeDirectoryRedirectURL = activeDirectoryRedirectURL;
+    defaultConfig.activeDirectoryFlags = activeDirectoryFlags;
+    defaultConfig.activeDirectoryResourceId = activeDirectoryResourceId;
+    defaultConfig.activeDirectoryApiEndpointURL = activeDirectoryApiEndpoint;
+}
+
++ (void)setActiveDirectoryAppId:(NSString *)activeDirectoryAppId
+                     resourceId:(NSString *)activeDirectoryResourceId
+                    apiEndpoint:(NSString *)activeDirectoryApiEndpoint
+                    redirectURL:(NSString *)activeDirectoryRedirectURL
+{
+    NSParameterAssert(activeDirectoryResourceId);
+    
+    [<#=entityName#> setActiveDirectoryAppId:activeDirectoryAppId
+                           capability:nil
+                           resourceId:activeDirectoryResourceId
+                          apiEndpoint:activeDirectoryApiEndpoint
+                          redirectURL:activeDirectoryRedirectURL
+                                flags:nil];
+}
+
++ (void)setActiveDirectoryAppId:(NSString *)activeDirectoryAppId
+                     capability:(NSString *)activeDirectoryCapability
+                    redirectURL:(NSString *)activeDirectoryRedirectURL
+{
+    NSParameterAssert(activeDirectoryCapability);
+    
+    [<#=entityName#> setActiveDirectoryAppId:activeDirectoryAppId
+                           capability:activeDirectoryCapability
+                           resourceId:nil
+                          apiEndpoint:nil
+                          redirectURL:activeDirectoryRedirectURL
+                                flags:nil];
+}
+
++ (void)setMicrosoftAccountAppId:(NSString *)microsoftAccounntAppId
+          microsoftAccountScopes:(NSArray *)microsoftAccounntScopes
+           microsoftAccountFlags:(NSDictionary *)microsoftAccounntFlags
+            activeDirectoryAppId:(NSString *)activeDirectoryAppId
+       activeDirectoryCapability:(NSString *)activeDirectoryCapability
+      activeDirectoryRedirectURL:(NSString *)activeDirectoryRedirectURL
+            activeDirectoryFlags:(NSDictionary *)activeDirectoryFlags
+{
+    [<#=entityName#> setMicrosoftAccountAppId:microsoftAccounntAppId scopes:microsoftAccounntScopes flags:microsoftAccounntFlags];
+    [<#=entityName#> setActiveDirectoryAppId:activeDirectoryAppId
+                           capability:activeDirectoryCapability
+                           resourceId:nil
+                          apiEndpoint:nil
+                          redirectURL:activeDirectoryRedirectURL
+                                flags:activeDirectoryFlags];
+}
+
++ (void)setMicrosoftAccountAppId:(NSString *)microsoftAccounntAppId
+          microsoftAccountScopes:(NSArray *)microsoftAccounntScopes
+           microsoftAccountFlags:(NSDictionary *)microsoftAccounntFlags
+            activeDirectoryAppId:(NSString *)activeDirectoryAppId
+       activeDirectoryResourceId:(NSString *)activeDirectoryResourceId
+      activeDirectoryApiEndpoint:(NSString *)activeDirectoryApiEndpoint
+      activeDirectoryRedirectURL:(NSString *)activeDirectoryRedirectURL
+            activeDirectoryFlags:(NSDictionary *)activeDirectoryFlags
+{
+    [<#=entityName#> setMicrosoftAccountAppId:microsoftAccounntAppId scopes:microsoftAccounntScopes flags:microsoftAccounntFlags];
+    [<#=entityName#> setActiveDirectoryAppId:activeDirectoryAppId
+                           capability:nil
+                           resourceId:activeDirectoryResourceId
+                          apiEndpoint:activeDirectoryApiEndpoint
+                          redirectURL:activeDirectoryRedirectURL
+                                flags:activeDirectoryFlags];
+}
+
++ (void)setAuthProvider:(id <<#=writer.GetStaticCodePrefix()#>AuthProvider>)authProvider
+{
+    [<#=writer.GetStaticCodePrefix()#>AppConfiguration defaultConfiguration].authProvider = authProvider;
+}
+
++ (void)setAccountStore:(id <<#=writer.GetStaticCodePrefix()#>AccountStore>)accountStore
+{
+    [<#=writer.GetStaticCodePrefix()#>AppConfiguration defaultConfiguration].accountStore = accountStore;
+}
+
++ (void)setHttpProvider:(id <<#=writer.GetStaticCodePrefix()#>HttpProvider>)httpProvider
+{
+    [<#=writer.GetStaticCodePrefix()#>AppConfiguration defaultConfiguration].httpProvider = httpProvider;
+}
+
++ (void)setParentAuthController:(UIViewController *)parentAuthController
+{
+    [<#=writer.GetStaticCodePrefix()#>AppConfiguration defaultConfiguration].parentAuthController = parentAuthController;
+}
+
++ (void)setLogger:(id <<#=writer.GetStaticCodePrefix()#>Logger>)logger
+{
+    [<#=writer.GetStaticCodePrefix()#>AppConfiguration defaultConfiguration].logger = logger;
+}
+
++ (void)setDefaultLogLevel:(<#=writer.GetStaticCodePrefix()#>LogLevel)level
+{
+    [[<#=writer.GetStaticCodePrefix()#>AppConfiguration defaultConfiguration].logger setLogLevel:level];
+}
+
+- (void)setLogLevel:(<#=writer.GetStaticCodePrefix()#>LogLevel)level
+{
+    [self.logger setLogLevel:level];
+}
+
+- (NSString *)accountId
+{
+    return self.authProvider.accountSession.accountId;
+}
+
+@end

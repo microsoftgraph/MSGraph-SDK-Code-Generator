@@ -3,6 +3,8 @@
     "TemplateMapping": {
         "Shared": [
             { "Template": "EntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "Client" },
+            { "Template": "EntityClientAuthentication", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "Client+Authentication" },
+            { "Template": "EntityClientDefaultConfiguration", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "Client+DefaultConfiguration" },
             { "Template": "EntityType", "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
             { "Template": "ComplexType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Ignore": "methodResponse" },
             { "Template": "EnumType", "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
