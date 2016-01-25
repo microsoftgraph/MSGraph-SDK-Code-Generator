@@ -3,9 +3,13 @@
 <#
 var entity = host.CurrentType.AsOdcmClass();
 #>
+
 <#=writer.GetImportsClass(entity.Properties)#>
 
-<#=writer.GetInterfaceLine(entity, writer.GetStaticCodePrefix() + "Object")#>
+#import "<#=GetStaticBaseObject()#>.h"
+#import "<#=GetStaticCollectionObject()#>.h"
+
+@interface <#=GetObjCTypeIdentifier(entity)#> : <#=GetStaticBaseObject()#>
 
 <#
 foreach(var prop in entity.Properties)

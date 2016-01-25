@@ -2,157 +2,52 @@
 <#@ include file="SharedObjC.template.tt"#>
 <#
 var entity = host.CurrentType.AsOdcmClass();
-var collectionProperties = entity.Properties.Where(prop => prop.IsCollection && prop.LongDescriptionContains("enumerable"));
-
 #>
 
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "<#=writer.GetStaticCodePrefix()#>Collection.h"
 
-@interface <#=writer.GetStaticCodePrefix()#>Object()
+@interface <#=GetStaticBaseObject()#>()
 
 @property (strong, nonatomic) NSMutableDictionary *dictionary;
 
 @end
 
 
-@interface <#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#>()
+@interface <#=GetObjCTypeIdentifier(entity)#>()
 {
 <#
 foreach (var prop in entity.Properties)
 {
-    if (prop.IsCollection)
-    {
 #>
-    <#=writer.GetStaticCodePrefix()#>Collection *_<#=prop.Name.ToLowerFirstChar()#>;
+    <#=GetObjCTypeForVarDeclaration(prop)#> _<#=GetObjCProperty(prop)#>;
 <#
-    }
-    else if ((prop.Type.IsDate() || !prop.IsSystem()) && prop.GetTypeString() != "id")
-    {
-#>
-    <#=prop.GetTypeString()#> *_<#=prop.Name.ToLowerFirstChar()#>;
-<#
-    }
 }
 #>
 }
 @end
 
-@implementation <#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#>	
+@implementation <#=GetObjCTypeIdentifier(entity)#>
 
 <#
 foreach(var prop in entity.Properties)
 {
-	if(!prop.IsEnum() && prop.IsComplex() && !prop.IsCollection() && prop.GetTypeString() != "id")
-    {        
-#>
-- (<#=prop.GetTypeString()#> *)<#=prop.SanitizePropertyName()#>
+    PropertyGetterImplementation(prop);
+    PropertySetterImplementation(prop);
+}
+
+foreach(var prop in entity.Properties.Where(prop => prop.IsCollection && prop.LongDescriptionContains("not-enumerable")))
 {
-<#
-        if (prop.Type.IsDate())
-        {
 #>
-    if(!_<#=prop.Name.ToLowerFirstChar()#>){
-        _<#=prop.Name.ToLowerFirstChar()#> = [self dateFromString:self.dictionary[@"<#=prop.Name#>"]];
-    }
-    return _<#=prop.Name.ToLowerFirstChar()#>;
-<#
-        }
-        else if (prop.IsSystem())
-        {
-#>
-    return self.dictionary[@"<#=prop.Name#>"];
-<#
-        }
-        else 
-        {
-#>
-    if (!_<#=prop.Name.ToLowerFirstChar()#>){
-        _<#=prop.Name.ToLowerFirstChar()#> = [[<#=prop.GetTypeString()#> alloc] initWithDictionary:self.dictionary[@"<#=prop.Name#>"]];
-        if (_<#=prop.Name.ToLowerFirstChar()#>){
-            self.dictionary[@"<#=prop.Name.ToLowerFirstChar()#>"] = _<#=prop.Name.ToLowerFirstChar()#>;
-        }
-    }
-    return _<#=prop.Name.ToLowerFirstChar()#>;
-<#
-        }
-#>
-}
-
-- (void)set<#=prop.SanitizePropertyName().ToUpperFirstChar()#>:(<#=prop.GetTypeString()#> *)<#=prop.SanitizePropertyName()#>
+- (<#=GetObjCTypeForVarDeclaration(prop,true)#>) <#=GetObjCProperty(prop)#>:(NSInteger)index
 {
+   <#=GetObjCTypeForVarDeclaration(prop,true)#> <#=GetObjCProperty(prop)#> = nil;
+   if (self.<#=GetObjCProperty(prop)#>.value){
+       <#=GetObjCProperty(prop)#> = self.<#=GetObjCProperty(prop)#>.value[index];
+   }
+   return <#=GetObjCProperty(prop)#>;
+}
 <#
-    if (prop.IsSystem() && !prop.Type.IsDate())
-    {
-#>
-    self.dictionary[@"<#=prop.Name#>"] = <#=prop.SanitizePropertyName()#>;
-<#
-    }
-    else 
-    {
-#>
-    _<#=prop.Name.ToLowerFirstChar()#> = <#=prop.SanitizePropertyName()#>;
-    self.dictionary[@"<#=prop.Name#>"] = <#=prop.SanitizePropertyName()#>; 
-<#
-    }
-#>
-}
-
-<#
-	}
-    else if (prop.IsEnum() && !prop.IsComplex() && prop.Type.GetTypeString() != "NSStream")
-    {
-#>
-
-- (<#=prop.GetTypeString()#>)<#=prop.SanitizePropertyName()#>
-{
-    if (self.dictionary[@"<#=prop.Name#>"]){
-         return [self.dictionary[@"<#=prop.Name#>"] <#=prop.Type.GetPrimativeCastMethod()#>];
-    }
-    return [@(0) <#=prop.Type.GetPrimativeCastMethod()#>];
-}
-
-- (void)set<#=prop.GetToUpperFirstCharName()#>:(<#=prop.GetTypeString()#>)<#=prop.Name#>
-{
-    self.dictionary[@"<#=prop.Name#>"] = @(<#=prop.Name#>);
-}
-
-<# 
-    }
-    else if (prop.IsCollection && prop.LongDescriptionContains("enumerable"))
-    {
-#>
-- (<#=writer.GetStaticCodePrefix()#>Collection *)<#=prop.Name.ToLowerFirstChar()#>
-{
-    if (!_<#=prop.Name.ToLowerFirstChar()#> && self.dictionary[@"<#=prop.Name#>"]){
-        NSMutableArray *<#=prop.Type.Name.ToLowerFirstChar()#>sCollection = [NSMutableArray array];
-        NSArray *<#=prop.Name.ToLowerFirstChar()#> = self.dictionary[@"<#=prop.Name.ToLowerFirstChar()#>"];
-        if ([<#=prop.Name.ToLowerFirstChar()#> isKindOfClass:[NSArray class]]){
-            for (NSDictionary *<#=prop.Type.Name.ToLowerFirstChar()#> in <#=prop.Name.ToLowerFirstChar()#>){
-                [<#=prop.Type.Name.ToLowerFirstChar()#>sCollection addObject:[[<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#> alloc] initWithDictionary:<#=prop.Type.Name.ToLowerFirstChar()#>]];
-             }
-        }
-        _<#=prop.Name.ToLowerFirstChar()#> = nil;
-        if ([<#=prop.Type.Name.ToLowerFirstChar()#>sCollection count] > 0){
-            _<#=prop.Name.ToLowerFirstChar()#> = [[<#=writer.GetStaticCodePrefix()#>Collection alloc] initWithArray:<#=prop.Type.Name.ToLowerFirstChar()#>sCollection nextLink:self.dictionary[@"@nextLink"] additionalData:self.dictionary];
-        }
-        
-    }
-    return _<#=prop.Name.ToLowerFirstChar()#>;
-}
-
- - (<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#> *) <#=prop.Name.ToLowerFirstChar()#>:(NSInteger)index
-{
-    <#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#> *<#=prop.Type.Name.ToLowerFirstChar()#> = nil;
-    if (self.<#=prop.Name.ToLowerFirstChar()#>.value){
-        <#=prop.Type.Name.ToLowerFirstChar()#> = self.<#=prop.Name.ToLowerFirstChar()#>.value[index];
-    }
-
-    return <#=prop.Type.Name.ToLowerFirstChar()#>;
-}
-
-<#
-    }
 }
 #>
+
 @end
