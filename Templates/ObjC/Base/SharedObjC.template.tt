@@ -85,15 +85,30 @@ private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
 {
     if(prop.IsComplex())
     {
-        return "_" + GetObjCProperty(prop) + " = " + "[[" + GetObjCTypeIdentifier(prop) + " alloc] initWithDictionary: self.dictionary[@\"" + prop.Name + "\"] ];";
+        return String.Format(
+        @"_{0} = [[ {1} alloc] initWithDictionary: self.dictionary[@""{2}""] ];",
+        GetObjCProperty(prop),
+        GetObjCTypeIdentifier(prop),
+        prop.Name
+        );
     }
 
     if(prop.IsEnum())
     {
-        return "_" + GetObjCProperty(prop) + " = " + "self.dictionary[@\"" + prop.Name + "\"];
+        return String.Format(
+        @"_{0} = self.dictionary[@""{1}""];",
+        GetObjCProperty(prop),
+        prop.Name
+        );
     }
 
-    return "_" + GetObjCProperty(prop) + " = " + "[NSNumber " + prop.Type.GetNSNumberValueMethod() + ": self.dictionary[@\"" + prop.Name + "\"]];";
+    return String.Format(
+    @"_{0} = [NSNumber {1}: self.dictionary[@""{2}""]];",
+    GetObjCProperty(prop),
+    prop.Type.GetNSNumberValueMethod(),
+    prop.Name
+    );
+
 }
 
 private string SetDictionaryPropertySerialized(OdcmProperty prop, string val)
