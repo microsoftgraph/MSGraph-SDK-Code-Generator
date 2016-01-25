@@ -19,6 +19,12 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
         {
             return TypeHelperObjC.Prefix;
         }
+
+        public string GetStaticCodePrefix()
+        {
+            return ConfigurationService.Settings.StaticCodePrefix;
+        }
+
         public override string WriteOpeningCommentLine()
         {
             return "";

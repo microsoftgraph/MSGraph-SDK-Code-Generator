@@ -23,7 +23,7 @@ else
 }
 
 
-var superClass = writer.GetPrefix() + ((func.IsCollection) ?  "CollectionRequest" : "Request");
+var superClass = writer.GetStaticCodePrefix() + ((func.IsCollection) ?  "CollectionRequest" : "Request");
 var method = ((func.Verbs & OdcmAllowedVerbs.Get) != OdcmAllowedVerbs.Get) ? "POST" : "GET";
 var isAsync = func.LongDescriptionContains("async");
 var specialCollecitonName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Collection";
@@ -32,7 +32,7 @@ var specialCollecitonName = writer.GetPrefix() + func.Class.Name.ToUpperFirstCha
 
 #import "<#=writer.GetPrefix()#>ODataEntities.h"
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "ODURLSessionDataTask.h"
+#import "<#=writer.GetStaticCodePrefix()#>URLSessionDataTask.h"
 <#
 if (func.LongDescriptionContains("specialCollection"))
 {
@@ -42,7 +42,7 @@ if (func.LongDescriptionContains("specialCollection"))
 }
 #>
 
-@interface <#=writer.GetPrefix()#>Request()
+@interface <#=writer.GetStaticCodePrefix()#>Request()
 
 @property NSMutableArray *options;
 
@@ -129,7 +129,7 @@ if (func.Parameters.Count > 0)
     {
 #>
     [params enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value, BOOL *stop){
-        [self.options addObject:[[ODQueryParameters alloc] initWithKey:key value:value]];
+        [self.options addObject:[[<#=writer.GetStaticCodePrefix()#>QueryParameters alloc] initWithKey:key value:value]];
     }];
 
     return [self requestWithMethod:@"<#=method#>" body:nil headers:nil];
@@ -156,7 +156,7 @@ else
 string completionBlock;
 string completionHandler;
 string taskMethod;
-string taskType = "ODURLSessionDataTask *";
+string taskType = writer.GetStaticCodePrefix() + "URLSessionDataTask *";
 if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
 {
 
@@ -166,12 +166,12 @@ if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
     }
     else
     {
-        completionHandler = "(void (^)(ODCollection *response, " + requestType + " *nextRequest, NSError *error))";
+        completionHandler = "(void (^)(" + writer.GetStaticCodePrefix() +"Collection *response, " + requestType + " *nextRequest, NSError *error))";
     }
     var stringBuilder = new StringBuilder();
-    var baseIndents = "    ODURLSessionDataTask *task = [".ToSpaces();
+    var baseIndents = ("    " + writer.GetStaticCodePrefix() + "URLSessionDataTask *task = [").ToSpaces();
 
-    stringBuilder.AppendLine("^(ODCollection *collectionResponse, NSError *error){");
+    stringBuilder.AppendLine("^(" + writer.GetStaticCodePrefix() + "Collection *collectionResponse, NSError *error){");
 	string returnCollectionName = "collectionResponse";
     if (func.LongDescriptionContains("specialCollection"))
     {
@@ -198,11 +198,10 @@ if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
 }
 else if(isAsync)
 {
-
-    completionHandler = "(void (^)(" + returnType + " *response, ODAsyncOperationStatus *status, NSError *error))";
+    completionHandler = "(void (^)(" + returnType + " *response, " + writer.GetStaticCodePrefix() + "AsyncOperationStatus *status, NSError *error))";
     completionBlock = "completionHandler";
     taskMethod = "[self asyncTaskWithRequest:";
-    taskType = "ODAsyncURLSessionDataTask *";
+    taskType = writer.GetStaticCodePrefix() + "AsyncURLSessionDataTask *";
 }
 else
 {
@@ -221,7 +220,7 @@ if (!returnType.Contains("Stream"))
     <#=taskType#>task = <#=taskMethod#>self.mutableRequest
 <#=indentSpace.Substring("odObjectWithDictionary".Length + 1)#>odObjectWithDictionary:^(id responseObject){
 <#
-if (returnType == "ODString" || returnType == "ODGuid")
+if (returnType == writer.GetPrefix() + "String" || returnType == writer.GetStaticCodePrefix() + "Guid")
 {
 #>
 <#=indentSpace#>    return [responseObject copy];

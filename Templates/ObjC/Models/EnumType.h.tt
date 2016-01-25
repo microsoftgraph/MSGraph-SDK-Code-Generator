@@ -6,21 +6,20 @@ var entity = host.CurrentType.AsOdcmEnum();
 
 #include <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, <#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#>){
+typedef NS_ENUM(NSInteger, <#=GetObjCTypeIdentifier(entity)#>){
 
 <#
 var lastMember = entity.Members.LastOrDefault();
 foreach(var member in entity.Members)
 {
-    var value = entity.Name.ToUpperFirstChar() + member.Name.ToUpperFirstChar() + (lastMember == member ? string.Empty : ",");
+    var value = GetObjCEnumMember(entity,member) + (lastMember == member ? string.Empty : ",");
 
 #>
 	<#=value#>
 <#
-	
+
 }
 
 #>
 
 };
-

@@ -11,7 +11,7 @@ var collectionName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + f
 
 @implementation <#=collectionName#>
 
-- (instancetype)initWithCollection:(ODCollection *)collection
+- (instancetype)initWithCollection:(<#=writer.GetStaticCodePrefix()#>Collection *)collection
 {
     self = [super initWithArray:collection.value 
                        nextLink:[collection.nextLink absoluteString] 
