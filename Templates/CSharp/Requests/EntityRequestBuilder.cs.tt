@@ -57,7 +57,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         var propName = prop.Name.ToCheckedCase();
         var propRequestBuilder = prop.Type.Name.ToCheckedCase() + "RequestBuilder";
 
-        if(prop.IsCollection())
+        if (prop.IsCollection())
         {
             var collectionRequestBuilder = propName + "CollectionRequestBuilder";
     #>
@@ -94,9 +94,15 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         }
     }
 
+    bool contentStreamFound = false;
     foreach(var prop in entity.GetProperties(typeName:"Stream"))
     {
         var propName = prop.Name.ToCheckedCase();
+        if (propName.Equals("Content"))
+        {
+            contentStreamFound = true;
+        }
+        
         var propRequestBuilder = propName + "RequestBuilder";
     #>
 
@@ -113,6 +119,24 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         }
     <#
     }
+    
+    if (entity.Kind == OdcmClassKind.MediaEntity && !contentStreamFound)
+    {
+    #>
+    
+        /// <summary>
+        /// Gets the request builder for Content.
+        /// </summary>
+        /// <returns>The <see cref="I<#=entityName#>ContentRequestBuilder"/>.</returns>
+        public I<#=entityName#>ContentRequestBuilder Content
+        {
+            get
+            {
+                return new <#=entityName#>ContentRequestBuilder(this.AppendSegmentToRequestUrl("$value"), this.Client);
+            }
+        }
+    <#
+    }
 
     foreach(var method in entity.Methods)
     {
@@ -124,7 +148,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 
         builderInitializerStringBuilder.Append(Environment.NewLine);
         builderInitializerStringBuilder.Append("                ");
-        builderInitializerStringBuilder.Append("this.AppendSegmentToRequestUrl(\"" + method.Name + "\"),");
+        builderInitializerStringBuilder.AppendFormat("this.AppendSegmentToRequestUrl(\"{0}.{1}\"),", method.Namespace.Name, method.Name);
         builderInitializerStringBuilder.Append(Environment.NewLine);
         builderInitializerStringBuilder.Append("                ");
         builderInitializerStringBuilder.Append("this.Client,");
