@@ -33,7 +33,9 @@ foreach(var prop in containerProps)
 }
 */
 <#
-    }else{
+    }
+    else
+    {
 #>
     -(<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=prop.Name#>
     {
