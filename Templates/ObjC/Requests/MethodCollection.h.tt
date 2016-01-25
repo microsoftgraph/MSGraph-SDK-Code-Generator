@@ -7,9 +7,9 @@ var paramList = func.ReturnType.AsOdcmClass().Properties.Where(prop=> !prop.IsCo
 var collectionName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Collection";
 #>
 
-#import "ODCollection.h"
+#import "<#=writer.GetStaticCodePrefix()#>Collection.h"
 
-@interface <#=collectionName#> : ODCollection
+@interface <#=collectionName#> : <#=writer.GetStaticCodePrefix()#>Collection
 
 <#
 foreach(var param in paramList)
@@ -21,6 +21,6 @@ foreach(var param in paramList)
 }
 #>
 
-- (instancetype)initWithCollection:(ODCollection *)collection;
+- (instancetype)initWithCollection:(<#=writer.GetStaticCodePrefix()#>Collection *)collection;
 
 @end

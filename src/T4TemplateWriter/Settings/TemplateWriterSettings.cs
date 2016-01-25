@@ -19,6 +19,8 @@ namespace Vipr.T4TemplateWriter.Settings
             AvailableLanguages = new List<string> { "Java", "ObjC" };
             PrimaryNamespaceName = "";
             NamespacePrefix = "MS";
+            StaticCodePrefix = "MS";
+
             Plugins = new List<string>();
             InitializeCollections = true;
             TargetLanguage = "Java";
@@ -84,6 +86,8 @@ namespace Vipr.T4TemplateWriter.Settings
         public string NamespaceOverride { get; set; }
 
         public string NamespacePrefix { get; set; }
+
+        public string StaticCodePrefix { get; set; }
 
         public bool InitializeCollections { get; set; }
 

@@ -16,7 +16,7 @@ else
     returnType = "NSDictionary";
 }
 
-var superClass = writer.GetPrefix() + ((func.IsCollection || func.LongDescriptionContains("specialCollection")) ?  "CollectionRequest" : "Request");
+var superClass = writer.GetStaticCodePrefix() + ((func.IsCollection || func.LongDescriptionContains("specialCollection")) ?  "CollectionRequest" : "Request");
 var method = ((func.Verbs & OdcmAllowedVerbs.Get) != OdcmAllowedVerbs.Get) ? "POST" : "GET";
 var isAsync = func.LongDescriptionContains("async");
 var specialCollectionType = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Collection";
@@ -24,13 +24,13 @@ var specialCollectionType = writer.GetPrefix() + func.Class.Name.ToUpperFirstCha
 if (func.LongDescriptionContains("specialCollection"))
 {
 #>
-@class ODURLSessionDataTask, <#=specialCollectionType#>;
+@class <#=writer.GetStaticCodePrefix()#>URLSessionDataTask, <#=specialCollectionType#>;
 <#
 }
 else 
 {
 #>
-@class ODURLSessionDataTask;
+@class <#=writer.GetStaticCodePrefix()#>URLSessionDataTask;
 <#
 }
 #>
@@ -49,10 +49,10 @@ if (func.Parameters.Count > 0)
 <#
 }
 string completionHandler;
-string taskType = "ODURLSessionDataTask *";
+string taskType = writer.GetStaticCodePrefix() + "URLSessionDataTask *";
 if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
 {
-    string collectionType = "ODCollection";
+    string collectionType = writer.GetStaticCodePrefix() + "Collection";
     if (func.LongDescriptionContains("specialCollection"))
     {
        collectionType = specialCollectionType; 
@@ -62,8 +62,8 @@ if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
 }
 else if(isAsync)
 {
-    completionHandler = "(void (^)(" + returnType + " *response, ODAsyncOperationStatus *status, NSError *error))";
-    taskType = "ODAsyncURLSessionDataTask *";
+    completionHandler = "(void (^)(" + returnType + " *response, " + writer.GetStaticCodePrefix() + "AsyncOperationStatus *status, NSError *error))";
+    taskType = writer.GetStaticCodePrefix() + "AsyncURLSessionDataTask *";
 }
 else
 {

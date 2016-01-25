@@ -9,10 +9,10 @@ var uploadCompletionHandler = className + "UploadCompletionHandler";
 #>
 #import "<#=writer.GetPrefix()#>Models.h"
 #import "<#=writer.GetPrefix()#>ODataEntities.h"
-#import "ODURLSessionDownloadTask.h"
-#import "ODURLSessionUploadTask.h"
+#import "<#=writer.GetStaticCodePrefix()#>URLSessionDownloadTask.h"
+#import "<#=writer.GetStaticCodePrefix()#>URLSessionUploadTask.h"
 
-@interface ODRequest()
+@interface <#=writer.GetStaticCodePrefix()#>Request()
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
                                       body:(NSData *)body 
@@ -29,9 +29,9 @@ var uploadCompletionHandler = className + "UploadCompletionHandler";
                            headers:nil];
 }
 
-- (ODURLSessionDownloadTask *) downloadWithCompletion:(ODDownloadCompletionHandler)completionHandler
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDownloadTask *) downloadWithCompletion:(<#=writer.GetStaticCodePrefix()#>DownloadCompletionHandler)completionHandler
 {
-    ODURLSessionDownloadTask *task = [[ODURLSessionDownloadTask alloc] initWithRequest:[self download]
+    <#=writer.GetStaticCodePrefix()#>URLSessionDownloadTask *task = [[<#=writer.GetStaticCodePrefix()#>URLSessionDownloadTask alloc] initWithRequest:[self download]
                                                                                 client:self.client
                                                                      completionHandler:completionHandler];
     [task execute];
@@ -46,10 +46,10 @@ var uploadCompletionHandler = className + "UploadCompletionHandler";
                            headers:nil];
 }
 
-- (ODURLSessionUploadTask *) uploadFromData:(NSData *)data
+- (<#=writer.GetStaticCodePrefix()#>URLSessionUploadTask *) uploadFromData:(NSData *)data
                                  completion:(<#=uploadCompletionHandler#>)completionHandler
 {
-    ODURLSessionUploadTask *task = [self uploadTaskWithRequest:[self upload]
+    <#=writer.GetStaticCodePrefix()#>URLSessionUploadTask *task = [self uploadTaskWithRequest:[self upload]
                                                       fromData:data
                                         odobjectWithDictionary:^(NSDictionary *response){
                                                 return [[<#=className#> alloc] initWithDictionary:response];
@@ -60,10 +60,10 @@ var uploadCompletionHandler = className + "UploadCompletionHandler";
 
 }
 
-- (ODURLSessionUploadTask *) uploadFromFile:(NSURL *)fileURL
+- (<#=writer.GetStaticCodePrefix()#>URLSessionUploadTask *) uploadFromFile:(NSURL *)fileURL
                                  completion:(<#=uploadCompletionHandler#>)completionHandler 
 {
-    ODURLSessionUploadTask *task = [self uploadTaskWithRequest:[self upload]
+    <#=writer.GetStaticCodePrefix()#>URLSessionUploadTask *task = [self uploadTaskWithRequest:[self upload]
                                                       fromFile:fileURL
                                         odobjectWithDictionary:^(NSDictionary *response){
                                                 return [[<#=className#> alloc] initWithDictionary:response];

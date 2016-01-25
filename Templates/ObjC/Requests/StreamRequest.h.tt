@@ -6,20 +6,20 @@ var className = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar();
 var propName = className + prop.Name.ToUpperFirstChar() + "Request";
 var uploadCompletionHandler = className + "UploadCompletionHandler";
 #>
-@class ODURLSessionDownloadTask, ODURLSessionUploadTask, <#=className#>;
+@class <#=writer.GetStaticCodePrefix()#>URLSessionDownloadTask, <#=writer.GetStaticCodePrefix()#>URLSessionUploadTask, <#=className#>;
 
 typedef void(^<#=uploadCompletionHandler#>)(<#=className#> *response, NSError* error);
 
-#import "ODRequest.h"
+#import "<#=writer.GetStaticCodePrefix()#>Request.h"
 
-@interface <#=propName#> : ODRequest
+@interface <#=propName#> : <#=writer.GetStaticCodePrefix()#>Request
 
-- (ODURLSessionDownloadTask *) downloadWithCompletion:(ODDownloadCompletionHandler)completionHandler;
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDownloadTask *) downloadWithCompletion:(<#=writer.GetStaticCodePrefix()#>DownloadCompletionHandler)completionHandler;
 
-- (ODURLSessionUploadTask *) uploadFromData:(NSData *)data
+- (<#=writer.GetStaticCodePrefix()#>URLSessionUploadTask *) uploadFromData:(NSData *)data
                                  completion:(<#=uploadCompletionHandler#>)completionHandler;
                                            
-- (ODURLSessionUploadTask *) uploadFromFile:(NSURL *)fileUrl 
+- (<#=writer.GetStaticCodePrefix()#>URLSessionUploadTask *) uploadFromFile:(NSURL *)fileUrl 
                                  completion:(<#=uploadCompletionHandler#>)completionHandler;
 
 @end

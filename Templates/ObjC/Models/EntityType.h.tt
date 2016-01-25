@@ -5,11 +5,15 @@ var entity = host.CurrentType.AsOdcmClass();
 IEnumerable<string> extraClasses = null;
 if (entity.Properties.Any(prop => prop.IsCollection))
 {
-   extraClasses = new List<string> {"ODCollection"};
+   extraClasses = new List<string> { GetStaticCollectionObject() };
 }
 #>
 <#=writer.GetImportsClass(entity.Properties, extraClasses:extraClasses)#>
-<#=writer.GetInterfaceLine(entity, "ODObject")#>
+
+#import "<#=GetStaticBaseObject()#>.h"
+#import "<#=GetStaticCollectionObject()#>.h"
+
+@interface <#=GetObjCTypeIdentifier(entity)#> : <#=GetStaticBaseObject()#>
 
 <#
 foreach(var prop in entity.Properties)
@@ -19,11 +23,10 @@ foreach(var prop in entity.Properties)
   <#
 }
 
-foreach (var prop in entity.Properties.Where(prop => prop.IsCollection && prop.LongDescriptionContains("enumerable")))
+foreach (var prop in entity.Properties.Where(prop => prop.IsCollection && prop.LongDescriptionContains("not-enumerable")))
 {
 #>
-
-- (<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#> *) <#=prop.Name.ToLowerFirstChar()#>:(NSInteger)index;
+- (<#=GetObjCTypeForVarDeclaration(prop,true)#>) <#=GetObjCProperty(prop)#>:(NSInteger)index;
 <#
 }
 
