@@ -85,13 +85,12 @@ private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
 {
     if(prop.IsComplex())
     {
-        //return "_" + GetObjCProperty(prop) + " = " + "[" + GetObjCTypeIdentifier(prop) + " " + writer.GetStaticCodePrefix().ToLower() + "_fromString: self.dictionary[@\"" + prop.Name + "\"] ];";
         return "_" + GetObjCProperty(prop) + " = " + "[[" + GetObjCTypeIdentifier(prop) + " alloc] initWithDictionary: self.dictionary[@\"" + prop.Name + "\"] ];";
     }
 
     if(prop.IsEnum())
     {
-        return "_" + GetObjCProperty(prop) + " = " + "self.dictionary[@\"" + prop.Name + "\"];//TODO: Merge enum hydratation.";
+        return "_" + GetObjCProperty(prop) + " = " + "self.dictionary[@\"" + prop.Name + "\"];
     }
 
     return "_" + GetObjCProperty(prop) + " = " + "[NSNumber " + prop.Type.GetNSNumberValueMethod() + ": self.dictionary[@\"" + prop.Name + "\"]];";
