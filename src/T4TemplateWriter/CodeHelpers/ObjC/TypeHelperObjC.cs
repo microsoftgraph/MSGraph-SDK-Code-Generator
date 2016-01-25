@@ -212,7 +212,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 		{
 			return property.Type is OdcmEnum;
 		}
-        public static string GetPrimativeCastMethod(this OdcmType type)
+        public static string GetNSNumberValueMethod(this OdcmType type)
         {
             string objectiveCType = type.GetTypeString();
             if (objectiveCType.Equals("int32_t") || objectiveCType.Equals("int16_t"))
