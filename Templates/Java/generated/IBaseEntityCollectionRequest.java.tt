@@ -6,18 +6,14 @@
 
 <#=CreateInterfaceDef(IBaseTypeCollectionRequest(c))#>
 
-<# if (!c.LongDescriptionContains("not-enumerable")) { #>
     void get(final ICallback<<#=ITypeCollectionPage(c)#>> callback);
 
     <#=ITypeCollectionPage(c)#> get() throws ClientException;
 
-<# } #>
-<# if (!c.LongDescriptionContains("not-writable")) { #>
     void create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>, final ICallback<<#=ClassTypeName(c)#>> callback);
 
     <#=ClassTypeName(c)#> create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>) throws ClientException;
 
-<# } #>
     <#=ITypeCollectionRequest(c)#> expand(final String value);
 
     <#=ITypeCollectionRequest(c)#> select(final String value);

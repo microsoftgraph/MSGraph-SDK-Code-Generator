@@ -18,7 +18,6 @@
         super(requestUrl, client, options, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
     }
 
-<# if (!c.LongDescriptionContains("not-enumerable")) { #>
     public void get(final ICallback<<#=ITypeCollectionPage(c)#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
@@ -38,8 +37,6 @@
         return buildFromResponse(response);
     }
 
-<# } #>
-<# if (!c.LongDescriptionContains("not-writable")) { #>
     public void create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>, final ICallback<<#=ClassTypeName(c)#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new ItemRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
@@ -54,7 +51,6 @@
             .create(new<#=ClassTypeName(c)#>);
     }
 
-<# } #>
     public <#=ITypeCollectionRequest(c)#> expand(final String value) {
         addQueryOption(new QueryOption("expand", value));
         return (<#=TypeCollectionRequest(c)#>)this;
