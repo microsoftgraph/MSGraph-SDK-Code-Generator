@@ -67,6 +67,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {SubProcessor.StreamProperty,               ProcessStreamProperties},
                 {SubProcessor.CollectionProperty,           ProcessCollections},
                 {SubProcessor.NavigationCollectionProperty, ProcessNavigationCollections},
+                {SubProcessor.ReferenceCollectionProperty,  ProcessReferenceCollections},
                 {SubProcessor.Method,                       ProcessMethods},
                 {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
                 {SubProcessor.CollectionMethod,             ProcessCollectionMethods},
@@ -180,6 +181,19 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
+        protected virtual IEnumerable<TextFile> ProcessReferenceCollections(ITemplateInfo templateInfo)
+        {
+            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.ReferenceCollectionProperties))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             property,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: property.Class.Name,
+                                                                       propertyName: property.Name,
+                                                                       propertyType: property.Type.Name));
+            }
+        }
+
         protected virtual IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo)
         {
             foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetProperties))
@@ -256,6 +270,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         protected virtual IEnumerable<OdcmProperty> NavigationCollectionProperties()
         {
             return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation());
+        }
+
+        protected virtual IEnumerable<OdcmProperty> ReferenceCollectionProperties()
+        {
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation() && !prop.ContainsTarget);
         }
 
         protected virtual IEnumerable<OdcmProperty> CollectionProperties()

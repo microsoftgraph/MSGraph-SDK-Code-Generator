@@ -1,0 +1,103 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#+
+
+public string GetInterfaceDefinition(OdcmProperty odcmProperty)
+{
+    var collectionRequestBuilder = this.GetPropertyCollectionRequestBuilderName(odcmProperty);
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("    /// The interface I{0}.", collectionRequestBuilder);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("    /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("    public partial interface I{0}", collectionRequestBuilder);
+    
+    return stringBuilder.ToString();
+}
+
+public string GetPropertyName(OdcmProperty odcmProperty)
+{
+    return odcmProperty.Name.ToCheckedCase();
+}
+
+public string GetPropertyCollectionRequestName(OdcmProperty odcmProperty)
+{
+    return this.GetCollectionRequestString(this.GetPropertyName(odcmProperty));
+}
+
+public string GetPropertyCollectionRequestBuilderName(OdcmProperty odcmProperty)
+{
+    return this.GetCollectionRequestBuilderString(this.GetPropertyName(odcmProperty));
+}
+
+public string GetPropertyTypeRequestBuilderName(OdcmProperty odcmProperty)
+{
+    return this.GetRequestBuilderString(odcmProperty.Type.Name.ToCheckedCase());
+}
+
+public string GetRequestMethod(OdcmProperty odcmProperty)
+{
+    var stringBuilder = new StringBuilder();
+    stringBuilder.Append(
+      @"/// <summary>
+        /// Builds the request.
+        /// </summary>
+        /// <returns>The built request.</returns>");
+    
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        I{0} Request();", this.GetPropertyCollectionRequestName(odcmProperty));
+    return stringBuilder.ToString();
+}
+
+public string GetRequestMethodWithOptions(OdcmProperty odcmProperty)
+{
+    var stringBuilder = new StringBuilder();
+    stringBuilder.Append(
+      @"/// <summary>
+        /// Builds the request.
+        /// </summary>
+        /// <param name=""options"">The query and header options for the request.</param>
+        /// <returns>The built request.</returns>");
+        
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        I{0} Request(IList<Option> options);", this.GetPropertyCollectionRequestName(odcmProperty));
+    return stringBuilder.ToString();
+}
+
+public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
+{
+    if (odcmProperty.IsNavigation())
+    {
+        var stringBuilder = new StringBuilder();
+        var propName = this.GetPropertyName(odcmProperty);
+        var entityRequestBuilder = this.GetPropertyTypeRequestBuilderName(odcmProperty);
+        
+        stringBuilder.Append("/// <summary>");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the specified {1}.", entityRequestBuilder, propName);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        /// </summary>");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        /// <param name=\"id\">The ID for the {0}.</param>", propName);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityRequestBuilder);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        I{0} this[string id] {{ get; }}", entityRequestBuilder);
+        stringBuilder.Append(Environment.NewLine);
+        
+        return stringBuilder.ToString();
+    }
+    
+    return string.Empty;
+}
+
+public string GetUsings()
+{
+    return @"using System;
+    using System.Collections.Generic;";
+}
+
+#>

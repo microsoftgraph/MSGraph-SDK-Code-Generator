@@ -1,51 +1,21 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="SharedCSharp.template.tt"#>
+<#@ include file="IEntityCollectionRequestBuilder.Base.template.tt"#>
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
-var propName = prop.Name.ToCheckedCase();
-var collectionRequest = propName + "CollectionRequest";
-var collectionRequestBuilder = collectionRequest + "Builder";
-var entityRequestBuilder = prop.Type.Name.ToCheckedCase() + "RequestBuilder";
 
 #>
-namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
+namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
-    using System;
-    using System.Collections.Generic;
+    <#=this.GetUsings()#>
 
-    /// <summary>
-    /// The interface I<#=collectionRequestBuilder#>.
-    /// </summary>
-    public partial interface I<#=collectionRequestBuilder#>
+    <#=this.GetInterfaceDefinition(prop)#>
     {
     
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
-        /// <returns>The built request.</returns>
-        I<#=collectionRequest#> Request();
+        <#=this.GetRequestMethod(prop)#>
 
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
-        /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        I<#=collectionRequest#> Request(IList<Option> options);
-<#
-    if (prop.IsNavigation())
-    {
-#>
+        <#=this.GetRequestMethodWithOptions(prop)#>
 
-        /// <summary>
-        /// Gets an <see cref="I<#=entityRequestBuilder#>"/> for the specified <#=propName#>.
-        /// </summary>
-        /// <param name="id">The ID for the <#=propName#>.</param>
-        /// <returns>The <see cref="I<#=entityRequestBuilder#>"/>.</returns>
-        I<#=entityRequestBuilder#> this[string id] { get; }
-<#
-    }
-#>
-
+        <#=this.GetCollectionIndexRequestBuilder(prop)#>
     }
 }
