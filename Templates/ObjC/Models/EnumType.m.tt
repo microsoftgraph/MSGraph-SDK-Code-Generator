@@ -1,0 +1,46 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entity = host.CurrentType.AsOdcmEnum();
+#>
+
+#include <<#=GetObjCTypeIdentifier(entity)#>.h>
+
+@implementation NSString (<#=GetObjCTypeIdentifier(entity)#>)
+
++ (instancetype) stringWith<#=GetObjCTypeIdentifier(entity)#>:(<#=GetObjCTypeIdentifier(entity)#>)val {
+
+    switch(val)
+    {
+    <#
+    foreach(var member in entity.Members)
+    {
+    #>
+        case <#=GetObjCEnumMember(entity,member)#>:
+            return @"<#=member.Name#>";
+    <#
+    }
+    #>
+    }
+
+    return nil;
+}
+
+- (<#=GetObjCTypeIdentifier(entity)#>) to<#=GetObjCTypeIdentifier(entity)#>{
+
+    <#
+    foreach(var member in entity.Members)
+    {
+    #>  if([self isEqualToString:@"<#=member.Name#>"])
+        {
+            return <#=GetObjCEnumMember(entity,member)#>;
+        }
+        else <#
+    }
+    #>
+    {
+        return <#=GetObjCTypeIdentifier(entity)#>endOfStruct;
+    }
+}
+
+@end
