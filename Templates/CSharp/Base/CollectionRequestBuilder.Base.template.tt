@@ -1,0 +1,118 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#+
+
+public string GetCollectionClassDefinition(OdcmProperty odcmProperty)
+{
+    var collectionRequestBuilder = this.GetPropertyCollectionRequestBuilderName(odcmProperty);
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("    /// The type {0}.", collectionRequestBuilder);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("    /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("    public partial class {0} : BaseRequestBuilder, I{0}", collectionRequestBuilder);
+    
+    return stringBuilder.ToString();
+}
+
+public string GetCollectionConstructor(OdcmProperty odcmProperty)
+{
+    var collectionRequestBuilder = this.GetPropertyCollectionRequestBuilderName(odcmProperty);
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Constructs a new {0}.", collectionRequestBuilder);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(
+@"        /// </summary>
+        /// <param name=""requestUrl"">The URL for the built request.</param>
+        /// <param name=""client"">The <see cref=""IBaseClient""/> for handling requests.</param>");
+        
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        public {0}(", collectionRequestBuilder);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(
+@"            string requestUrl,
+            IBaseClient client)
+            : base(requestUrl, client)
+        {
+        }");
+    
+    return stringBuilder.ToString();
+}
+
+public string GetCollectionRequestMethod(OdcmProperty odcmProperty)
+{
+    var stringBuilder = new StringBuilder();
+    stringBuilder.Append(this.GetRequestMethodHeader());
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        public I{0} Request()", this.GetPropertyCollectionRequestName(odcmProperty));
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(
+@"        {
+            return this.Request(null);
+        }");
+    
+    return stringBuilder.ToString();
+}
+
+public string GetCollectionRequestMethodWithOptions(OdcmProperty odcmProperty)
+{
+    var stringBuilder = new StringBuilder();
+    var collectionRequestName = this.GetPropertyCollectionRequestName(odcmProperty);
+    
+    stringBuilder.Append(this.GetRequestMethodWithOptionsHeader());     
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        public I{0} Request(IList<Option> options)", collectionRequestName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        {");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            return new {0}(this.RequestUrl, this.Client, options);", collectionRequestName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        }");
+    return stringBuilder.ToString();
+}
+
+public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
+{
+    if (odcmProperty.IsNavigation())
+    {
+        var stringBuilder = new StringBuilder();
+        var propTypeName = this.GetPropertyTypeName(odcmProperty);
+        var entityRequestBuilder = this.GetPropertyTypeRequestBuilderName(odcmProperty);
+        
+        stringBuilder.Append("/// <summary>");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the specified {1}.", entityRequestBuilder, propTypeName);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        /// </summary>");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        /// <param name=\"id\">The ID for the {0}.</param>", propTypeName);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityRequestBuilder);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        public I{0} this[string id]", entityRequestBuilder);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append(
+@"        {
+            get
+            {
+");
+        
+        stringBuilder.AppendFormat("                return new {0}(this.AppendSegmentToRequestUrl(id), this.Client);", entityRequestBuilder);
+        stringBuilder.Append(@"
+            }
+        }
+");
+        
+        return stringBuilder.ToString();
+    }
+    
+    return string.Empty;
+}
+
+#>
