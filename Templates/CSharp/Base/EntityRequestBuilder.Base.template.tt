@@ -44,6 +44,11 @@ public string GetEntityReferenceRequestMethodWithOptions(OdcmClass odcmClass)
 
 public string GetRequestBuilderProperty(string propertyName, string requestBuilderTypeName)
 {
+    return this.GetRequestBuilderProperty(propertyName, propertyName.ToLowerFirstChar(), requestBuilderTypeName);
+}
+
+public string GetRequestBuilderProperty(string propertyName, string urlValue, string requestBuilderTypeName)
+{
     var stringBuilder = new StringBuilder();
     
     stringBuilder.Append("/// <summary>");
@@ -61,7 +66,7 @@ public string GetRequestBuilderProperty(string propertyName, string requestBuild
             get
             {
 ");
-    stringBuilder.AppendFormat("                return new {0}(this.AppendSegmentToRequestUrl(\"{1}\"), this.Client);", requestBuilderTypeName, propertyName.ToLowerFirstChar());
+    stringBuilder.AppendFormat("                return new {0}(this.AppendSegmentToRequestUrl(\"{1}\"), this.Client);", requestBuilderTypeName, urlValue);
     stringBuilder.Append(
 @"
             }
@@ -110,5 +115,45 @@ public string GetNavigationProperties(OdcmClass entity)
     
     return stringBuilder.ToString();
 }
+
+public string GetStreamProperties(OdcmClass entity)
+{
+    var stringBuilder = new StringBuilder();
+    bool contentStreamFound = false;
+    foreach(var prop in entity.GetProperties(typeName:"Stream"))
+    {
+        if (stringBuilder.Length > 0)
+        {
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append("        ");
+        }
+        
+        var propName = this.GetPropertyName(prop);
+        if (propName.Equals("Content"))
+        {
+            contentStreamFound = true;
+        }
+        
+        var propRequestBuilder = this.GetRequestBuilderString(propName);
+        
+        stringBuilder.Append(this.GetRequestBuilderProperty(propName, string.Concat(this.GetEntityNameString(entity), propRequestBuilder)));
+    }
+    
+    if (entity.Kind == OdcmClassKind.MediaEntity && !contentStreamFound)
+    {
+        if (stringBuilder.Length > 0)
+        {
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append("        ");
+        }
+        
+        stringBuilder.Append(this.GetRequestBuilderProperty("Content", "$value", string.Concat(this.GetEntityNameString(entity), "ContentRequestBuilder")));
+    }
+    
+    return stringBuilder.ToString();
+}
+
 
 #>

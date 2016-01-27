@@ -30,47 +30,11 @@ namespace <#=this.GetNamespaceName(entity)#>
     <#
     }
 
-    bool contentStreamFound = false;
-    foreach(var prop in entity.GetProperties(typeName:"Stream"))
+    if (entity.Kind == OdcmClassKind.MediaEntity || entity.GetProperties(typeName:"Stream").Any())
     {
-        var propName = prop.Name.ToCheckedCase();
-        if (propName.Equals("Content"))
-        {
-            contentStreamFound = true;
-        }
-        
-        var propRequestBuilder = propName + "RequestBuilder";
     #>
 
-        /// <summary>
-        /// Gets the request builder for <#=propName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=entityName#><#=propRequestBuilder#>"/>.</returns>
-        public I<#=entityName#><#=propRequestBuilder#> <#=propName#>
-        {
-            get
-            {
-                return new <#=entityName#><#=propRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.Client);
-            }
-        }
-    <#
-    }
-    
-    if (entity.Kind == OdcmClassKind.MediaEntity && !contentStreamFound)
-    {
-    #>
-    
-        /// <summary>
-        /// Gets the request builder for Content.
-        /// </summary>
-        /// <returns>The <see cref="I<#=entityName#>ContentRequestBuilder"/>.</returns>
-        public I<#=entityName#>ContentRequestBuilder Content
-        {
-            get
-            {
-                return new <#=entityName#>ContentRequestBuilder(this.AppendSegmentToRequestUrl("$value"), this.Client);
-            }
-        }
+        <#=this.GetStreamProperties(entity)#>
     <#
     }
 
