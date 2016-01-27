@@ -1,12 +1,12 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="IRequest.Base.template.tt"#>
+<#@ include file="Request.Base.template.tt"#>
 <#+
 
 // -------------------------------------------------------------
 // Common methods for entity requests
 // -------------------------------------------------------------
 
-public string GetDeleteAsyncMethod(string deleteTargetString)
+public string GetDeleteAsyncMethod(string deleteTargetString, string deleteTargetType)
 {
     var stringBuilder = new StringBuilder();
 
@@ -18,7 +18,14 @@ public string GetDeleteAsyncMethod(string deleteTargetString)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// <returns>The task to await.</returns>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        Task DeleteAsync();");
+    stringBuilder.Append("        public async Task DeleteAsync()");
+    stringBuilder.Append(@"
+        {
+            this.Method = ""DELETE"";");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            await this.SendAsync<{0}>(null);", deleteTargetType);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        }");
     
     return stringBuilder.ToString();
 }
@@ -26,15 +33,22 @@ public string GetDeleteAsyncMethod(string deleteTargetString)
 // -------------------------------------------------------------
 // Methods for standard entity requests
 // -------------------------------------------------------------
-public string GetEntityRequestInterfaceDefinition(OdcmClass odcmClass)
+public string GetEntityRequestClassDefinition(OdcmClass odcmClass)
 {
-    return this.GetInterfaceDefinition(this.GetEntityRequestName(odcmClass));
+    return this.GetClassDefinition(this.GetEntityRequestName(odcmClass));
+}
+
+public string GetEntityRequestConstructor(OdcmClass odcmClass)
+{
+    return this.GetConstructor(this.GetEntityRequestName(odcmClass));
 }
 
 public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
 {
     var stringBuilder = new StringBuilder();
     
+    var templateWriterHost   = (CustomT4Host)Host;
+    var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
     var entityName = this.GetEntityNameString(odcmClass);
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
     
@@ -48,14 +62,28 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", entityName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        Task<{0}> CreateAsync({0} {1}ToCreate);", entityName, lowerCaseEntityName);
+    stringBuilder.AppendFormat("        public async Task<{0}> CreateAsync({0} {1}ToCreate)", entityName, lowerCaseEntityName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        {");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("            this.Method = \"PUT\";");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            var newEntity = await this.SendAsync<{0}>({1}ToCreate);", entityName, lowerCaseEntityName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(
+@"            this.InitializeCollectionProperties(newEntity);
+            return newEntity;
+        }");
     
     return stringBuilder.ToString();
 }
 
 public string GetEntityDeleteAsyncMethod(OdcmClass odcmClass)
 {
-    return this.GetDeleteAsyncMethod(this.GetEntityNameString(odcmClass));
+    var entityName = this.GetEntityNameString(odcmClass);
+    return this.GetDeleteAsyncMethod(entityName, entityName);
 }
 
 public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
@@ -72,7 +100,16 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <returns>The {0}.</returns>", entityName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        Task<{0}> GetAsync();", entityName);
+    stringBuilder.AppendFormat("        public async Task<{0}> GetAsync()", entityName);
+    stringBuilder.Append(@"
+        {
+            this.Method = ""GET"";");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            var retrievedEntity = await this.SendAsync<{0}>(null);", entityName);
+    stringBuilder.Append(@"
+            this.InitializeCollectionProperties(retrievedEntity);
+            return retrievedEntity;
+        }");
     
     return stringBuilder.ToString();
 }
@@ -84,6 +121,9 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
     var entityName = this.GetEntityNameString(odcmClass);
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
     
+    var templateWriterHost   = (CustomT4Host)Host;
+    var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
+    
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// Updates the specified {0} using PATCH.", entityName);
@@ -94,7 +134,20 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <returns>The updated {0}.</returns>", entityName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        Task<{0}> UpdateAsync({0} {1}ToUpdate);", entityName, lowerCaseEntityName);
+    stringBuilder.AppendFormat("        public async Task<{0}> UpdateAsync({0} {1}ToUpdate)", entityName, lowerCaseEntityName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        {");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("            this.Method = \"PATCH\";");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            var updatedEntity = await this.SendAsync<{0}>({1}ToUpdate);", entityName, lowerCaseEntityName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(
+@"            this.InitializeCollectionProperties(updatedEntity);
+            return updatedEntity;
+        }");
     
     return stringBuilder.ToString();
 }
@@ -112,7 +165,12 @@ public string GetEntityExpandMethod(OdcmClass odcmClass)
         /// <param name=""value"">The expand value.</param>
         /// <returns>The request object to send.</returns>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        I{0} Expand(string value);", entityRequest);
+    stringBuilder.AppendFormat("        public I{0} Expand(string value)", entityRequest);
+        stringBuilder.Append(@"
+        {
+            this.QueryOptions.Add(new QueryOption(""$expand"", value));
+            return this;
+        }");
     
     return stringBuilder.ToString();
 }
@@ -130,7 +188,12 @@ public string GetEntitySelectMethod(OdcmClass odcmClass)
         /// <param name=""value"">The select value.</param>
         /// <returns>The request object to send.</returns>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        I{0} Select(string value);", entityRequest);
+    stringBuilder.AppendFormat("        public I{0} Select(string value)", entityRequest);
+    stringBuilder.Append(@"
+        {
+            this.QueryOptions.Add(new QueryOption(""$select"", value));
+            return this;
+        }");
     
     return stringBuilder.ToString();
 }
@@ -148,7 +211,12 @@ public string GetEntityTopMethod(OdcmClass odcmClass)
         /// <param name=""value"">The top value.</param>
         /// <returns>The request object to send.</returns>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        I{0} Top(int value);", entityRequest);
+    stringBuilder.AppendFormat("        public I{0} Top(int value)", entityRequest);
+        stringBuilder.Append(@"
+        {
+            this.QueryOptions.Add(new QueryOption(""$top"", value.ToString()));
+            return this;
+        }");
     
     return stringBuilder.ToString();
 }
@@ -156,14 +224,20 @@ public string GetEntityTopMethod(OdcmClass odcmClass)
 // -------------------------------------------------------------
 // Methods for entity reference requests
 // -------------------------------------------------------------
-public string GetEntityReferenceRequestInterfaceDefinition(OdcmClass odcmClass)
+public string GetEntityReferenceRequestClassDefinition(OdcmClass odcmClass)
 {
-    return this.GetInterfaceDefinition(this.GetEntityReferenceRequestBuilderName(odcmClass));
+    return this.GetClassDefinition(this.GetEntityReferenceRequestName(odcmClass));
+}
+
+public string GetEntityReferenceRequestConstructor(OdcmClass odcmClass)
+{
+    return this.GetConstructor(this.GetEntityReferenceRequestName(odcmClass));
 }
 
 public string GetEntityReferenceDeleteAsyncMethod(OdcmClass odcmClass)
 {
-    return this.GetDeleteAsyncMethod(string.Concat(this.GetEntityNameString(odcmClass)), " reference");
+    var entityName = this.GetEntityNameString(odcmClass);
+    return this.GetDeleteAsyncMethod(string.Concat(entityName, " reference"), entityName);
 }
 
 #>

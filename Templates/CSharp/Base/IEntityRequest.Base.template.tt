@@ -158,7 +158,12 @@ public string GetEntityTopMethod(OdcmClass odcmClass)
 // -------------------------------------------------------------
 public string GetEntityReferenceRequestInterfaceDefinition(OdcmClass odcmClass)
 {
-    return this.GetInterfaceDefinition(this.GetEntityReferenceRequestBuilderName(odcmClass));
+    return this.GetInterfaceDefinition(this.GetEntityReferenceRequestName(odcmClass));
+}
+
+public string GetEntityWithReferencesRequestInterfaceDefinition(OdcmClass odcmClass)
+{
+    return this.GetInterfaceDefinition(this.GetEntityWithReferencesRequestName(odcmClass));
 }
 
 public string GetEntityReferenceDeleteAsyncMethod(OdcmClass odcmClass)
