@@ -17,10 +17,10 @@ namespace <#=this.GetNamespaceName(entity)#>
     {
         <#=this.GetEntityGetAsyncMethod(entity)#>
 
-        <#=this.GetEntityExpandMethod(entity)#>
+        <#=this.GetEntityWithReferencesExpandMethod(entity)#>
 
-        <#=this.GetEntitySelectMethod(entity)#>
+        <#=this.GetEntityWithReferencesSelectMethod(entity)#>
 
-        <#=this.GetEntityTopMethod(entity)#>
+        <#=this.GetEntityWithReferencesTopMethod(entity)#>
     }
 }

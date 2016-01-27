@@ -1,42 +1,24 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="SharedCSharp.template.tt"#>
-<#@ output extension="\\" #>
+<#@ include file="ICollectionRequest.Base.template.tt"#>
 <#
-
 var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
-var collectionRequest = prop.Name.ToCheckedCase() + "CollectionRequest";
+var collectionRequest = this.GetPropertyCollectionRequestName(prop);
+var collectionResponse = prop.Name.ToCheckedCase() + "CollectionResponse";
 var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
 
 #>
 
-namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
+namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    /// <summary>
-    /// The interface I<#=collectionRequest#>.
-    /// </summary>
-    public partial interface I<#=collectionRequest#> : IBaseRequest
+    <#=this.GetCollectionInterfaceDefinition(prop)#>
     {
-        <#
-        if (!prop.LongDescriptionContains("readonly"))
-        {
-            var sanitizedPropertyName = innerEntity.Name.GetSanitizedPropertyName(prop.Name);
-        #>
-
-        /// <summary>
-        /// Adds the specified <#=innerEntityType#> to the collection via POST.
-        /// </summary>
-        /// <param name="<#=sanitizedPropertyName#>">The <#=innerEntityType#> to add.</param>
-        /// <returns>The created <#=innerEntityType#>.</returns>
-        Task<<#=innerEntityType#>> AddAsync(<#=innerEntityType#> <#=sanitizedPropertyName#>);
-        <#
-        }
-        #>
-
+        <#=GetPostAsyncMethod(prop)#>
         /// <summary>
         /// Gets the collection page.
         /// </summary>
@@ -63,6 +45,5 @@ namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> Top(int value);
-
     }
 }
