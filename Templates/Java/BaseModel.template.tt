@@ -40,11 +40,15 @@
     }
 
     public string TypeRequest(OdcmObject c) {
-        return ClassTypeName(c) + TypeName(c) + "Request";
+        return TypeName(c) + "Request";
     }
 
     public string BaseTypeRequest(OdcmObject c) {
         return "Base" + TypeRequest(c);
+    }
+
+    public string BaseTypeRequest2(OdcmObject c) {
+        return "Base" + c.Name + TypeRequest(c);
     }
 
     public string ITypeRequest(OdcmObject c) {
@@ -53,6 +57,10 @@
 
     public string IBaseTypeRequest(OdcmObject c) {
         return "I" + BaseTypeRequest(c);
+    }
+
+    public string IBaseTypeRequest2(OdcmObject c) {
+        return "I" + BaseTypeRequest2(c);
     }
 
     public string TypeRequestBuilder(OdcmObject c) {

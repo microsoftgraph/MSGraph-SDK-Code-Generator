@@ -38,18 +38,18 @@
         return buildFromResponse(response);
     }
 
-    public void create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>, final ICallback<<#=ClassTypeName(c)#>> callback) {
+    public void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new ItemRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest()
-            .create(new<#=ClassTypeName(c)#>, callback);
+            .create(new<#=TypeName(c)#>, callback);
     }
 
-    public <#=ClassTypeName(c)#> create(final <#=ClassTypeName(c)#> new<#=ClassTypeName(c)#>) throws ClientException {
+    public <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new ItemRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest()
-            .create(new<#=ClassTypeName(c)#>);
+            .create(new<#=TypeName(c)#>);
     }
 
     public <#=ITypeCollectionRequest(c)#> expand(final String value) {

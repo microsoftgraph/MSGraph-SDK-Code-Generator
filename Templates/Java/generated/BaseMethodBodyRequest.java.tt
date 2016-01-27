@@ -1,11 +1,12 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeRequest2(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
 <# var useAsyncMonitor = c.AsOdcmMethod().LongDescriptionContains("async"); #>
-<#=CreateClassDef(BaseTypeRequest(c),  "BaseRequest", IBaseTypeRequest(c))#>
+<#=CreateClassDef(BaseTypeRequest2(c),  "BaseRequest", IBaseTypeRequest(c))#>
     protected final <#=TypeBody(c)#> mBody;
 
     /**
@@ -15,7 +16,7 @@
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=BaseTypeRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+    public <#=BaseTypeRequest2(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
 <# if (useAsyncMonitor) { #>
         super(requestUrl, client, options, AsyncMonitorLocation.class);
 <# } else { #>
