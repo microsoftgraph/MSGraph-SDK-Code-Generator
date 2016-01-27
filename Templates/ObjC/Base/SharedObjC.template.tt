@@ -81,67 +81,72 @@ private bool IsNSJSONSerializable(OdcmType type)
     return ts=="NSString" || ts=="NSNumber" || ts=="NSArray" || ts=="NSDictionary" || ts=="NSNull";
 }
 
+
 private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
 {
-    if(GetObjCTypeIdentifier(prop)=="NSDate")
+    if(GetObjCTypeIdentifier(prop,true)=="NSDate")
     {
-        return String.Format(
-        @"_{0} = [NSDate ms_dateFromString: self.dictionary[@""{1}""]];",
-        GetObjCProperty(prop),
-        prop.Name
-        );
+        return String.Format(@"[NSDate ms_dateFromString: self.dictionary[@""{0}""]]",prop.Name);
     }
 
     if(prop.IsEnum())
     {
         return String.Format(
-        @"_{0} = [self.dictionary[@""{1}""] to{2}];",
-        GetObjCProperty(prop),
+        @"[self.dictionary[@""{0}""] to{1}]",
         prop.Name,
-        GetObjCTypeIdentifier(prop)
+        GetObjCTypeIdentifier(prop,true)
         );
-    }
-
-    if(prop.IsCollection)
-    {
-        return String.Format(@"
-        NSMutableArray *{0}Collection = [NSMutableArray array];
-        NSArray *{0}s = self.dictionary[@""{1}""];
-
-        if ([{0}s isKindOfClass:[NSArray class]]){{
-            for (NSDictionary *{0} in {0}s){{
-                [{0}Collection addObject:[[{2} alloc] initWithDictionary:{0}]];
-             }}
-        }}
-
-        if ([{0}Collection count] > 0){{
-            _{0} = [[{3} alloc] initWithArray:{0}Collection nextLink:self.dictionary[@""@nextLink""] additionalData:self.dictionary];
-        }}
-        ",
-        GetObjCProperty(prop),
-        prop.Name,
-        GetObjCTypeIdentifier(prop,true),
-        GetStaticCollectionObject());
     }
 
     //Complex catch-all
     if(prop.IsComplex())
     {
         return String.Format(
-        @"_{0} = [[{1} alloc] initWithDictionary: self.dictionary[@""{2}""] ];",
-        GetObjCProperty(prop),
-        GetObjCTypeIdentifier(prop),
+        @"[[{0} alloc] initWithDictionary: self.dictionary[@""{1}""] ]",
+        GetObjCTypeIdentifier(prop,true),
         prop.Name
         );
     }
 
-
     return String.Format(
-    @"_{0} = [self.dictionary[@""{2}""] {1}];",
-    GetObjCProperty(prop),
+    @"[self.dictionary[@""{1}""] {0}]",
     prop.Type.GetNSNumberValueMethod(),
     prop.Name
     );
+}
+
+private string GetHydratedPropertyFromDictionaryAsObjectPointer(OdcmProperty prop)
+{
+    if(prop.IsComplex()) return GetHydratedPropertyFromDictionary(prop);
+    return "@(" + GetHydratedPropertyFromDictionary(prop) + ")";
+}
+
+
+private string GetHydratedIVarFromDictionary(OdcmProperty prop)
+{
+    if(prop.IsCollection)
+    {
+        return String.Format(@"
+    NSMutableArray *{0}Collection = [NSMutableArray array];
+    NSArray *{0}s = self.dictionary[@""{1}""];
+
+    if ([{0}s isKindOfClass:[NSArray class]]){{
+        for (NSDictionary *{0} in {0}s){{
+            [{0}Collection addObject:{2}];
+         }}
+    }}
+
+    if ([{0}Collection count] > 0){{
+        _{0} = [[{3} alloc] initWithArray:{0}Collection nextLink:self.dictionary[@""@nextLink""] additionalData:self.dictionary];
+    }}
+        ",
+        GetObjCProperty(prop),
+        prop.Name,
+        GetHydratedPropertyFromDictionaryAsObjectPointer(prop),
+        GetStaticCollectionObject());
+    }
+
+    return String.Format(@"_{0} = {1};",GetObjCProperty(prop),GetHydratedPropertyFromDictionary(prop));
 
 }
 
@@ -152,25 +157,7 @@ private string SetDictionaryPropertySerialized(OdcmProperty prop, string val)
         return  "self.dictionary[@\"" + prop.Name + "\"] = " + val + ";";
     }
 
-    if(prop.IsEnum())
-    {
-        return String.Format(@"self.dictionary[@""{0}""] = [NSString stringWith{1}:{2}];",
-        prop.Name,
-        GetObjCTypeIdentifier(prop),
-        val);
-    }
-
-    var initializerForNSNumber = writer.GetNSNumberInitializer(prop.Type);
-
-    if(initializerForNSNumber != string.Empty)
-    {
-        return String.Format(@"self.dictionary[@""{0}""] = [NSNumber {1}:{2}];",
-        prop.Name,
-        initializerForNSNumber,
-        val);
-    }
-
-    return  "self.dictionary[@\"" + prop.Name + "\"] = " + val + ";";
+    return  "self.dictionary[@\"" + prop.Name + "\"] = @(" + val + ");";
 }
 
 /*
@@ -212,14 +199,14 @@ private void PropertyGetterImplementation(OdcmProperty prop)
         {
 #>
     if(!_<#=GetObjCProperty(prop)#>){
-        <#=GetHydratedPropertyFromDictionary(prop)#>
+        <#=GetHydratedIVarFromDictionary(prop)#>
     }
 <#+
         }
         else
         {
 #>
-    <#=GetHydratedPropertyFromDictionary(prop)#>
+    <#=GetHydratedIVarFromDictionary(prop)#>
 <#+
         }
 #>

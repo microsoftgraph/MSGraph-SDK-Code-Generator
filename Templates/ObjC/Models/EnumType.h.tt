@@ -12,7 +12,7 @@ typedef NS_ENUM(NSInteger, <#=GetObjCTypeIdentifier(entity)#>){
 foreach(var member in entity.Members)
 {
 #>
-	<#=GetObjCEnumMember(entity,member)#>,
+	<#=GetObjCEnumMember(entity,member)#> = <#=member.Value#>,
 <#
 }
 #>
