@@ -12,7 +12,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
       EntityContainer,
       CollectionProperty,
       NavigationCollectionProperty,
-      ReferenceCollectionProperty,
+      CollectionReferenceProperty,
       Method,
       NonCollectionMethod,
       CollectionMethod,

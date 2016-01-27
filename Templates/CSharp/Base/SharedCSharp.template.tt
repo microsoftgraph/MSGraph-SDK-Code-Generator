@@ -16,14 +16,14 @@ public string GetNamespaceName(OdcmClass odcmClass)
     return odcmClass.Namespace.GetNamespaceName();
 }
 
-public string GetCollectionRequestString(string prefix)
+public string GetEntityNameString(OdcmClass entityClass)
 {
-    return string.Concat(prefix, "CollectionRequest");
+    return entityClass.Name.ToCheckedCase();
 }
 
-public string GetCollectionRequestBuilderString(string prefix)
+public string GetReferenceString(string prefix)
 {
-    return string.Concat(prefix, "CollectionRequestBuilder");
+    return string.Concat(prefix, "Reference");
 }
 
 public string GetRequestString(string prefix)
@@ -36,14 +36,53 @@ public string GetRequestBuilderString(string prefix)
     return string.Concat(prefix, "RequestBuilder");
 }
 
+public string GetCollectionRequestBuilderString(string prefix)
+{
+    return this.GetRequestBuilderString(string.Concat(prefix, "Collection"));
+}
+
+public string GetCollectionRequestString(string prefix)
+{
+    return this.GetRequestString(string.Concat(prefix, "Collection"));
+}
+
+public string GetEntityRequestName(OdcmClass odcmClass)
+{
+    return this.GetRequestString(this.GetEntityNameString(odcmClass));
+}
+
+public string GetEntityRequestBuilderName(OdcmClass odcmClass)
+{
+    return this.GetRequestBuilderString(this.GetEntityNameString(odcmClass));
+}
+
+public string GetEntityReferenceRequestName(OdcmClass odcmClass)
+{
+    return this.GetRequestString(this.GetReferenceString(this.GetEntityNameString(odcmClass)));
+}
+public string GetEntityReferenceRequestBuilderName(OdcmClass odcmClass)
+{
+    return this.GetRequestBuilderString(this.GetReferenceString(this.GetEntityNameString(odcmClass)));
+}
+
 public string GetPropertyName(OdcmProperty odcmProperty)
 {
     return odcmProperty.Name.ToCheckedCase();
 }
 
+public string GetPropertyReferenceName(OdcmProperty odcmProperty)
+{
+    return this.GetReferenceString(this.GetPropertyName(odcmProperty));
+}
+
 public string GetPropertyTypeName(OdcmProperty odcmProperty)
 {
     return odcmProperty.Type.Name.ToCheckedCase();
+}
+
+public string GetPropertyReferenceTypeName(OdcmProperty odcmProperty)
+{
+    return this.GetReferenceString(this.GetPropertyTypeName(odcmProperty));
 }
 
 public string GetPropertyCollectionRequestName(OdcmProperty odcmProperty)
@@ -56,14 +95,19 @@ public string GetPropertyCollectionRequestBuilderName(OdcmProperty odcmProperty)
     return this.GetCollectionRequestBuilderString(this.GetPropertyName(odcmProperty));
 }
 
-public string GetPropertyReferenceCollectionRequestName(OdcmProperty odcmProperty)
+public string GetPropertyCollectionReferenceRequestBuilderName(OdcmProperty odcmProperty)
 {
-    return this.GetCollectionRequestString(string.Concat(this.GetPropertyName(odcmProperty), "Reference"));
+    return this.GetCollectionRequestBuilderString(this.GetPropertyReferenceName(odcmProperty));
 }
 
-public string GetPropertyTypeReferenceRequestBuilderName(OdcmProperty odcmProperty)
+public string GetPropertyCollectionReferenceRequestName(OdcmProperty odcmProperty)
 {
-    return this.GetRequestBuilderString(string.Concat(this.GetPropertyTypeName(odcmProperty), "Reference"));
+    return this.GetCollectionRequestString(this.GetPropertyReferenceName(odcmProperty));
+}
+
+public string GetPropertyReferenceTypeRequestBuilderName(OdcmProperty odcmProperty)
+{
+    return this.GetRequestBuilderString(this.GetPropertyReferenceTypeName(odcmProperty));
 }
 
 public string GetPropertyTypeRequestBuilderName(OdcmProperty odcmProperty)

@@ -67,7 +67,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {SubProcessor.StreamProperty,               ProcessStreamProperties},
                 {SubProcessor.CollectionProperty,           ProcessCollections},
                 {SubProcessor.NavigationCollectionProperty, ProcessNavigationCollections},
-                {SubProcessor.ReferenceCollectionProperty,  ProcessReferenceCollections},
+                {SubProcessor.CollectionReferenceProperty,  ProcessCollectionReferences},
                 {SubProcessor.Method,                       ProcessMethods},
                 {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
                 {SubProcessor.CollectionMethod,             ProcessCollectionMethods},
@@ -181,9 +181,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
-        protected virtual IEnumerable<TextFile> ProcessReferenceCollections(ITemplateInfo templateInfo)
+        protected virtual IEnumerable<TextFile> ProcessCollectionReferences(ITemplateInfo templateInfo)
         {
-            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.ReferenceCollectionProperties))
+            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CollectionReferenceProperties))
             {
                 yield return ProcessTemplate(templateInfo,
                                              property,
@@ -272,9 +272,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation());
         }
 
-        protected virtual IEnumerable<OdcmProperty> ReferenceCollectionProperties()
+        protected virtual IEnumerable<OdcmProperty> CollectionReferenceProperties()
         {
-            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation() && !prop.ContainsTarget);
+            return this.CurrentModel.GetProperties().Where(prop => prop.Class.AsOdcmClass().Kind != OdcmClassKind.Service && prop.IsCollection && prop.IsNavigation() && !prop.ContainsTarget);
         }
 
         protected virtual IEnumerable<OdcmProperty> CollectionProperties()

@@ -1,97 +1,33 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="SharedCSharp.template.tt"#>
+<#@ include file="EntityRequestBuilder.Base.template.tt"#>
 <#
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
-var entityName = entity.Name.ToCheckedCase();
-var request = entityName + "Request";
-var requestBuilder = entityName + "RequestBuilder";
+var entityName = this.GetEntityNameString(entity);
+var request = this.GetEntityRequestName(entity);
+var requestBuilder = this.GetEntityRequestBuilderName(entity);
 
 #>
 
-namespace <#=entity.Namespace.GetNamespaceName()#>
+namespace <#=this.GetNamespaceName(entity)#>
 {
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// The type  <#=entity.Name.ToCheckedCase()#>RequestBuilder.
-    /// </summary>
-    public partial class <#=requestBuilder#> : BaseRequestBuilder, I<#=requestBuilder#>
+    <#=this.GetEntityRequestBuilderClassDefinition(entity)#>
     {
-        /// <summary>
-        /// Constructs a new <#=requestBuilder#>.
-        /// </summary>
-        /// <param name="requestUrl">The URL for the built request.</param>
-        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        public <#=requestBuilder#>(
-            string requestUrl,
-            IBaseClient client)
-            : base(requestUrl, client)
-        {
-        }
+        <#=this.GetEntityRequestBuilderConstructor(entity)#>
 
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
-        /// <returns>The built request.</returns>
-        public I<#=request#> Request()
-        {
-            return this.Request(null);
-        }
+        <#=this.GetEntityRequestMethod(entity)#>
 
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
-        /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public I<#=request#> Request(IList<Option> options)
-        {
-            return new <#=request#>(this.RequestUrl, this.Client, options);
-        }
-
+        <#=this.GetEntityRequestMethodWithOptions(entity)#>      
     <#
-
-    foreach(var prop in entity.NavigationProperties()){
-
-        var propName = prop.Name.ToCheckedCase();
-        var propRequestBuilder = prop.Type.Name.ToCheckedCase() + "RequestBuilder";
-
-        if (prop.IsCollection())
-        {
-            var collectionRequestBuilder = propName + "CollectionRequestBuilder";
+    if (entity.NavigationProperties().Any())
+    {
     #>
-
-        /// <summary>
-        /// Gets the request builder for <#=propName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=collectionRequestBuilder#>"/>.</returns>
-        public I<#=collectionRequestBuilder#> <#=propName#>
-        {
-            get
-            {
-                return new <#=collectionRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.Client);
-            }
-        }
+    
+        <#=this.GetNavigationProperties(entity)#>
     <#
-        }
-        else
-        {
-    #>
-
-        /// <summary>
-        /// Gets the request builder for <#=propName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
-        public I<#=propRequestBuilder#> <#=propName#>
-        {
-            get
-            {
-                return new <#=propRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.Client);
-            }
-        }
-    <#
-        }
     }
 
     bool contentStreamFound = false;

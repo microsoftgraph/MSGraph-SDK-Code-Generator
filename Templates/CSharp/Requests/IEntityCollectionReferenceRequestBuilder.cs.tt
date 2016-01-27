@@ -1,5 +1,4 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="SharedCSharp.template.tt"#>
 <#@ include file="ICollectionRequestBuilder.Base.template.tt"#>
 <#
 
@@ -8,10 +7,10 @@ var prop = host.CurrentType.AsOdcmProperty();
 #>
 namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
-    <#=this.GetInterfaceDefinition(prop)#>
+    <#=this.GetReferenceInterfaceDefinition(prop)#>
     {  
-        <#=this.GetReferenceCollectionRequestMethod(prop)#>
+        <#=this.GetCollectionReferenceRequestMethod(prop)#>
 
-        <#=this.GetReferenceCollectionRequestMethodWithOptions(prop)#>
+        <#=this.GetCollectionReferenceRequestMethodWithOptions(prop)#>
     }
 }

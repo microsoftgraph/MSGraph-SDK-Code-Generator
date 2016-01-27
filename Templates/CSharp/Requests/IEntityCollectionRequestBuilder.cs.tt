@@ -1,5 +1,4 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="SharedCSharp.template.tt"#>
 <#@ include file="ICollectionRequestBuilder.Base.template.tt"#>
 <#
 
@@ -18,7 +17,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 
         <#=this.GetCollectionRequestMethodWithOptions(prop)#>
 
-        <#=this.GetCollectionReferenceRequestBuilder(prop)#>
         <#=this.GetCollectionIndexRequestBuilder(prop)#>
+        <#=this.GetCollectionReferenceRequestBuilder(prop)#>
     }
 }

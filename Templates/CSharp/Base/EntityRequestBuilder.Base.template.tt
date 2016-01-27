@@ -1,0 +1,114 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="RequestBuilder.Base.template.tt"#>
+<#+
+
+public string GetEntityRequestBuilderClassDefinition(OdcmClass odcmClass)
+{
+    return this.GetClassDefinition(this.GetEntityRequestBuilderName(odcmClass));
+}
+
+public string GetEntityReferenceRequestBuilderClassDefinition(OdcmClass odcmClass)
+{
+    return this.GetClassDefinition(this.GetEntityReferenceRequestBuilderName(odcmClass));
+}
+
+public string GetEntityRequestBuilderConstructor(OdcmClass odcmClass)
+{
+    return this.GetConstructor(this.GetEntityRequestBuilderName(odcmClass));
+}
+
+public string GetEntityReferenceRequestBuilderConstructor(OdcmClass odcmClass)
+{
+    return this.GetConstructor(this.GetEntityReferenceRequestBuilderName(odcmClass));
+}
+
+public string GetEntityRequestMethod(OdcmClass odcmClass)
+{
+    return this.GetRequestMethod(this.GetEntityRequestName(odcmClass));
+}
+
+public string GetEntityReferenceRequestMethod(OdcmClass odcmClass)
+{
+    return this.GetRequestMethod(this.GetEntityReferenceRequestName(odcmClass));
+}
+
+public string GetEntityRequestMethodWithOptions(OdcmClass odcmClass)
+{
+    return this.GetRequestMethodWithOptions(this.GetEntityRequestName(odcmClass));
+}
+
+public string GetEntityReferenceRequestMethodWithOptions(OdcmClass odcmClass)
+{
+    return this.GetRequestMethodWithOptions(this.GetEntityReferenceRequestName(odcmClass));
+}
+
+public string GetRequestBuilderProperty(string propertyName, string requestBuilderTypeName)
+{
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Gets the request builder for {0}.", propertyName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        public I{0} {1}", requestBuilderTypeName, propertyName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(
+@"        {
+            get
+            {
+");
+    stringBuilder.AppendFormat("                return new {0}(this.AppendSegmentToRequestUrl(\"{1}\"), this.Client);", requestBuilderTypeName, propertyName.ToLowerFirstChar());
+    stringBuilder.Append(
+@"
+            }
+        }");
+
+    return stringBuilder.ToString();
+}
+
+public string GetCollectionPropertyRequestBuilderProperty(OdcmProperty odcmProperty)
+{
+    var propertyName = this.GetPropertyName(odcmProperty);
+    var collectionRequestBuilder = this.GetCollectionRequestBuilderString(propertyName);
+
+    return this.GetRequestBuilderProperty(propertyName, collectionRequestBuilder);
+}
+
+public string GetNonCollectionRequestBuilderProperty(OdcmProperty odcmProperty)
+{
+    var propertyName = this.GetPropertyName(odcmProperty);
+    var propertyRequestBuilder = this.GetRequestBuilderString(this.GetPropertyTypeName(odcmProperty));
+
+    return this.GetRequestBuilderProperty(propertyName, propertyRequestBuilder);
+}
+
+public string GetNavigationProperties(OdcmClass entity)
+{
+    var stringBuilder = new StringBuilder();
+    foreach(var prop in entity.NavigationProperties())
+    {
+        if (stringBuilder.Length > 1)
+        {
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append("        ");
+        }
+        
+        if (prop.IsCollection())
+        {
+            stringBuilder.Append(this.GetCollectionPropertyRequestBuilderProperty(prop));
+        }
+        else
+        {
+            stringBuilder.Append(this.GetNonCollectionRequestBuilderProperty(prop));
+        }
+    }
+    
+    return stringBuilder.ToString();
+}
+
+#>
