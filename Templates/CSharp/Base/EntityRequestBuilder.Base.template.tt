@@ -142,7 +142,9 @@ public string GetRequestBuilderProperty(string propertyName, string urlValue, st
 public string GetCollectionPropertyRequestBuilderProperty(OdcmProperty odcmProperty)
 {
     var propertyName = this.GetPropertyName(odcmProperty);
-    var collectionRequestBuilder = this.GetCollectionRequestBuilderString(propertyName);
+    var collectionRequestBuilder = odcmProperty.IsReference()
+        ? this.GetCollectionWithReferencesRequestBuilderString(propertyName)
+        : this.GetCollectionRequestBuilderString(propertyName);
 
     return this.GetRequestBuilderProperty(propertyName, collectionRequestBuilder);
 }
@@ -150,7 +152,9 @@ public string GetCollectionPropertyRequestBuilderProperty(OdcmProperty odcmPrope
 public string GetNonCollectionRequestBuilderProperty(OdcmProperty odcmProperty)
 {
     var propertyName = this.GetPropertyName(odcmProperty);
-    var propertyRequestBuilder = this.GetRequestBuilderString(this.GetPropertyTypeName(odcmProperty));
+    var propertyRequestBuilder = odcmProperty.IsReference()
+        ? this.GetWithReferencesRequestBuilderString(this.GetPropertyTypeName(odcmProperty))
+        : this.GetRequestBuilderString(this.GetPropertyTypeName(odcmProperty));
 
     return this.GetRequestBuilderProperty(propertyName, propertyRequestBuilder);
 }

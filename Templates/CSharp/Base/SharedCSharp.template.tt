@@ -74,7 +74,7 @@ public string GetWithReferencesRequestBuilderString(string prefix)
 
 
 // -------------------------------------------------------------
-// Methods for generic collection naming
+// Methods for appending collection-related postfixes
 // -------------------------------------------------------------
 public string GetCollectionRequestString(string prefix)
 {
@@ -84,6 +84,11 @@ public string GetCollectionRequestString(string prefix)
 public string GetCollectionRequestBuilderString(string prefix)
 {
     return this.GetRequestBuilderString(string.Concat(prefix, "Collection"));
+}
+
+public string GetCollectionWithReferencesRequestBuilderString(string prefix)
+{
+    return this.GetWithReferencesRequestBuilderString(string.Concat(prefix, "Collection"));
 }
 
 
