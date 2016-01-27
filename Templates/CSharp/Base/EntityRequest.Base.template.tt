@@ -47,7 +47,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
 {
     var stringBuilder = new StringBuilder();
     
-    var templateWriterHost   = (CustomT4Host)Host;
+    var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
     var entityName = this.GetEntityNameString(odcmClass);
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
@@ -121,7 +121,7 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
     var entityName = this.GetEntityNameString(odcmClass);
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
     
-    var templateWriterHost   = (CustomT4Host)Host;
+    var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
     
     stringBuilder.Append("/// <summary>");
