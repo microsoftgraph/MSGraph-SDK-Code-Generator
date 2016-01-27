@@ -85,7 +85,7 @@ public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityReferenceRequestBuilder);
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        I{0} {0} {{ get; }}", entityReferenceRequestBuilder);
+        stringBuilder.AppendFormat("        I{0} References {{ get; }}", entityReferenceRequestBuilder);
         stringBuilder.Append(Environment.NewLine);
         
         return stringBuilder.ToString();

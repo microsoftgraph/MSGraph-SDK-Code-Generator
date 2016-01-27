@@ -68,6 +68,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {SubProcessor.CollectionProperty,           ProcessCollections},
                 {SubProcessor.NavigationCollectionProperty, ProcessNavigationCollections},
                 {SubProcessor.CollectionReferenceProperty,  ProcessCollectionReferences},
+                {SubProcessor.EntityReferenceProperty,      ProcessEntityReferenceProperties},
                 {SubProcessor.Method,                       ProcessMethods},
                 {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
                 {SubProcessor.CollectionMethod,             ProcessCollectionMethods},
@@ -197,6 +198,19 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         protected virtual IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo)
         {
             foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetProperties))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             property,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: property.Class.Name,
+                                                                       propertyName: property.Name,
+                                                                       propertyType: property.Type.Name));
+            }
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessEntityReferenceProperties(ITemplateInfo templateInfo)
+        {
+            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEntityReferenceProperties))
             {
                 yield return ProcessTemplate(templateInfo,
                                              property,

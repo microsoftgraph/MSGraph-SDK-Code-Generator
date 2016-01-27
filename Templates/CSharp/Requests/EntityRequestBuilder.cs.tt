@@ -3,9 +3,6 @@
 <#
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
-var entityName = this.GetEntityNameString(entity);
-var request = this.GetEntityRequestName(entity);
-var requestBuilder = this.GetEntityRequestBuilderName(entity);
 
 #>
 

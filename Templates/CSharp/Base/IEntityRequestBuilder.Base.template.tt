@@ -41,7 +41,20 @@ public string GetEntityReferenceRequestMethodWithOptions(OdcmClass odcmClass)
 
 public string GetEntityReferenceRequestBuilderProperty(OdcmClass odcmClass)
 {
-    return this.GetRequestBuilderProperty("Reference", this.GetEntityReferenceRequestBuilderName(odcmClass));
+    var stringBuilder = new StringBuilder();
+    var requestBuilderTypeName = this.GetEntityReferenceRequestBuilderName(odcmClass);
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Gets the request builder for the reference of the {0}.", this.GetEntityNameString(odcmClass).ToLowerFirstChar());
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        I{0} Reference {{ get; }}", requestBuilderTypeName);
+
+    return stringBuilder.ToString();
 }
 
 

@@ -2,10 +2,8 @@
 <#@ include file="EntityRequestBuilder.Base.template.tt"#>
 <#
 
-OdcmClass entity = host.CurrentType.AsOdcmClass();
-var entityName = this.GetEntityNameString(entity);
-var request = this.GetEntityRequestName(entity);
-var requestBuilder = this.GetEntityRequestBuilderName(entity);
+var prop = host.CurrentType.AsOdcmProperty();
+var entity = prop.Class.AsOdcmClass();
 
 #>
 
@@ -16,6 +14,7 @@ namespace <#=this.GetNamespaceName(entity)#>
 
     <#=this.GetEntityWithReferencesRequestBuilderClassDefinition(entity)#>
     {
+    
         <#=this.GetEntityWithReferencesRequestBuilderConstructor(entity)#>
 
         <#=this.GetEntityWithReferencesRequestMethod(entity)#>
