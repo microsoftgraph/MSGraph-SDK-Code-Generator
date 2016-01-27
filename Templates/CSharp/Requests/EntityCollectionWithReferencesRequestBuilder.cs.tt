@@ -12,7 +12,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 
     <#=this.GetCollectionWithReferencesClassDefinition(prop)#>
     {
-    
+
         <#=this.GetCollectionWithReferencesRequestBuilderConstructor(prop)#>
 
         <#=this.GetCollectionWithReferencesRequestMethod(prop)#>

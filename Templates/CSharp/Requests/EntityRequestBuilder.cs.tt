@@ -13,7 +13,7 @@ namespace <#=this.GetNamespaceName(entity)#>
 
     <#=this.GetEntityRequestBuilderClassDefinition(entity)#>
     {
-    
+
         <#=this.GetEntityRequestBuilderConstructor(entity)#>
 
         <#=this.GetEntityRequestMethod(entity)#>

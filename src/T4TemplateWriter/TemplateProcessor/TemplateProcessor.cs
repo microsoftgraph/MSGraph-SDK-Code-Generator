@@ -210,14 +210,12 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<TextFile> ProcessEntityReferenceProperties(ITemplateInfo templateInfo)
         {
-            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEntityReferenceProperties))
+            foreach (OdcmClass entityType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEntityReferenceTypes))
             {
                 yield return ProcessTemplate(templateInfo,
-                                             property,
+                                             entityType,
                                              templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: property.Class.Name,
-                                                                       propertyName: property.Name,
-                                                                       propertyType: property.Type.Name));
+                                                                       className: entityType.Name));
             }
         }
 
@@ -288,7 +286,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmProperty> CollectionReferenceProperties()
         {
-            return this.CurrentModel.GetProperties().Where(prop => prop.Class.AsOdcmClass().Kind != OdcmClassKind.Service && prop.IsCollection && prop.IsNavigation() && !prop.ContainsTarget);
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsReference() && prop.IsCollection);
         }
 
         protected virtual IEnumerable<OdcmProperty> CollectionProperties()

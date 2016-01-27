@@ -7,8 +7,11 @@ var prop = host.CurrentType.AsOdcmProperty();
 #>
 namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
+    using System;
+    using System.Collections.Generic;
+
     <#=this.GetCollectionReferenceInterfaceDefinition(prop)#>
-    {  
+    {
         <#=this.GetCollectionReferenceRequestMethod(prop)#>
 
         <#=this.GetCollectionReferenceRequestMethodWithOptions(prop)#>

@@ -1,9 +1,8 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="EntityRequestBuilder.Base.template.tt"#>
+<#@ include file="IEntityRequestBuilder.Base.template.tt"#>
 <#
 
-var prop = host.CurrentType.AsOdcmProperty();
-var entity = prop.Class.AsOdcmClass();
+var entity = host.CurrentType.AsOdcmClass();
 
 #>
 
@@ -12,41 +11,10 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System;
     using System.Collections.Generic;
 
-    <#=this.GetEntityWithReferencesRequestBuilderClassDefinition(entity)#>
+    <#=this.GetEntityReferenceRequestBuilderInterfaceDefinition(entity)#>
     {
-    
-        <#=this.GetEntityWithReferencesRequestBuilderConstructor(entity)#>
+        <#=this.GetEntityReferenceRequestMethod(entity)#>
 
-        <#=this.GetEntityWithReferencesRequestMethod(entity)#>
-
-        <#=this.GetEntityWithReferencesRequestMethodWithOptions(entity)#>
-        
-        <#=this.GetEntityReferenceRequestBuilderProperty(entity)#>
-    <#
-    if (entity.NavigationProperties().Any())
-    {
-    #>
-    
-        <#=this.GetNavigationProperties(entity)#>
-    <#
-    }
-
-    if (entity.Kind == OdcmClassKind.MediaEntity || entity.GetProperties(typeName:"Stream").Any())
-    {
-    #>
-
-        <#=this.GetStreamProperties(entity)#>
-    <#
-    }
-
-    if(entity.Methods.Any())
-    {
-    #>
-    
-        <#=this.GetMethodProperties(entity)#>
-    <#
-    }
-    #>
-
+        <#=this.GetEntityReferenceRequestMethodWithOptions(entity)#>
     }
 }

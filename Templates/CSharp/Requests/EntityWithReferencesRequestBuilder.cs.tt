@@ -2,8 +2,7 @@
 <#@ include file="EntityRequestBuilder.Base.template.tt"#>
 <#
 
-var prop = host.CurrentType.AsOdcmProperty();
-var entity = prop.Class.AsOdcmClass();
+var entity = host.CurrentType.AsOdcmClass();
 
 #>
 
@@ -14,7 +13,7 @@ namespace <#=this.GetNamespaceName(entity)#>
 
     <#=this.GetEntityWithReferencesRequestBuilderClassDefinition(entity)#>
     {
-    
+
         <#=this.GetEntityWithReferencesRequestBuilderConstructor(entity)#>
 
         <#=this.GetEntityWithReferencesRequestMethod(entity)#>

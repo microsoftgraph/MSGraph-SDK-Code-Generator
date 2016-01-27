@@ -78,9 +78,26 @@ namespace Vipr.T4TemplateWriter
             return model.GetProperties(typeName: "Stream", longDescriptionMatches: null);
         }
 
-        public static IEnumerable<OdcmProperty> GetEntityReferenceProperties(this OdcmModel model)
+        public static IEnumerable<OdcmClass> GetEntityReferenceTypes(this OdcmModel model)
         {
-            return model.GetProperties().Where(prop => prop.IsLink && !prop.ContainsTarget && !prop.IsCollection);
+            // We don't want to do Where() on entity types since that will iterate every entity type to see if it's a reference.
+            // Instead, take the properties that we know are references and not collections and grab the appropriate entity type
+            // for each, returning those.
+            var entityTypes = model.GetEntityTypes();
+            var referencePropertyTypes = model.GetProperties().Where(prop => prop.IsReference() && !prop.IsCollection).Select(prop => prop.Type).Distinct();
+
+            var referenceEntityTypes = new List<OdcmClass>();
+            foreach (var referencePropertyType in referencePropertyTypes)
+            {
+                var entityType = entityTypes.FirstOrDefault(entity => entity.Name == referencePropertyType.Name);
+
+                if (entityType != null)
+                {
+                    referenceEntityTypes.Add(entityType);
+                }
+            }
+
+            return referenceEntityTypes;
         }
 
         public static IEnumerable<OdcmProperty> FilterProperties(IEnumerable<OdcmProperty> properties, string typeName = null, string longDescriptionMatches = null)
@@ -125,14 +142,14 @@ namespace Vipr.T4TemplateWriter
 
         public static bool IsNavigation(this OdcmProperty property)
         {
+            return property.IsLink;
+        }
 
-            bool isNavigationProperty = false;
-            var classType = property.Type as OdcmClass;
-            if (classType != null)
-            {
-                isNavigationProperty = property.IsLink;
-            }
-            return isNavigationProperty;
+        public static bool IsReference(this OdcmProperty property)
+        {
+            var propertyClass = property.Class.AsOdcmClass();
+
+            return propertyClass.Kind != OdcmClassKind.Service && property.IsLink && !property.ContainsTarget;
         }
 
         public static bool HasActions(this OdcmClass odcmClass)

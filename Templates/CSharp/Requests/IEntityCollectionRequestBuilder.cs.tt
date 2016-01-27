@@ -12,7 +12,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 
     <#=this.GetCollectionInterfaceDefinition(prop)#>
     {
-    
         <#=this.GetCollectionRequestMethod(prop)#>
 
         <#=this.GetCollectionRequestMethodWithOptions(prop)#>
