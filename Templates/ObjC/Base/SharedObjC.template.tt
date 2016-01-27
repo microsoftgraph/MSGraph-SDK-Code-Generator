@@ -82,37 +82,40 @@ private bool IsNSJSONSerializable(OdcmType type)
 }
 
 
-private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
+private string GetHydratedPropertyFromNSJSONSerializableExpression(string expr,OdcmProperty prop)
 {
     if(GetObjCTypeIdentifier(prop,true)=="NSDate")
     {
-        return String.Format(@"[NSDate ms_dateFromString: self.dictionary[@""{0}""]]",prop.Name);
+        return String.Format(@"[NSDate ms_dateFromString: {0}]",expr);
     }
 
     if(prop.IsEnum())
     {
         return String.Format(
-        @"[self.dictionary[@""{0}""] to{1}]",
-        prop.Name,
-        GetObjCTypeIdentifier(prop,true)
-        );
+        @"[{0} to{1}]",
+        expr,
+        GetObjCTypeIdentifier(prop,true));
     }
 
     //Complex catch-all
     if(prop.IsComplex())
     {
         return String.Format(
-        @"[[{0} alloc] initWithDictionary: self.dictionary[@""{1}""] ]",
+        @"[[{0} alloc] initWithDictionary: {1} ]",
         GetObjCTypeIdentifier(prop,true),
-        prop.Name
-        );
+        expr);
     }
 
     return String.Format(
-    @"[self.dictionary[@""{1}""] {0}]",
-    prop.Type.GetNSNumberValueMethod(),
-    prop.Name
-    );
+    @"[{0} {1}]",
+    expr,
+    prop.Type.GetNSNumberValueMethod());
+}
+
+private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
+{
+    return GetHydratedPropertyFromNSJSONSerializableExpression(
+    String.Format(@"self.dictionary[@""{0}""]",prop.Name),prop);
 }
 
 private string GetHydratedPropertyFromDictionaryAsObjectPointer(OdcmProperty prop)
@@ -131,7 +134,7 @@ private string GetHydratedIVarFromDictionary(OdcmProperty prop)
     NSArray *{0}s = self.dictionary[@""{1}""];
 
     if ([{0}s isKindOfClass:[NSArray class]]){{
-        for (NSDictionary *{0} in {0}s){{
+        for (id {0} in {0}s){{
             [{0}Collection addObject:{2}];
          }}
     }}
@@ -142,7 +145,7 @@ private string GetHydratedIVarFromDictionary(OdcmProperty prop)
         ",
         GetObjCProperty(prop),
         prop.Name,
-        GetHydratedPropertyFromDictionaryAsObjectPointer(prop),
+        GetHydratedPropertyFromNSJSONSerializableExpression(GetObjCProperty(prop),prop),
         GetStaticCollectionObject());
     }
 
@@ -152,7 +155,7 @@ private string GetHydratedIVarFromDictionary(OdcmProperty prop)
 
 private string SetDictionaryPropertySerialized(OdcmProperty prop, string val)
 {
-    if(prop.IsComplex())
+    if(prop.IsComplex() || prop.IsCollection)
     {
         return  "self.dictionary[@\"" + prop.Name + "\"] = " + val + ";";
     }
