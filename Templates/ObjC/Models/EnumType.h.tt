@@ -16,7 +16,7 @@ foreach(var member in entity.Members)
 <#
 }
 #>
-    <#=GetObjCTypeIdentifier(entity)#>endOfStruct
+    <#=GetObjCTypeIdentifier(entity)#>endOfEnum
 };
 
 @interface NSString (<#=GetObjCTypeIdentifier(entity)#>)

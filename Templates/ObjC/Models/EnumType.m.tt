@@ -16,11 +16,14 @@ var entity = host.CurrentType.AsOdcmEnum();
     foreach(var member in entity.Members)
     {
     #>
-        case <#=GetObjCEnumMember(entity,member)#>:
+    case <#=GetObjCEnumMember(entity,member)#>:
             return @"<#=member.Name#>";
     <#
     }
     #>
+    case <#=GetObjCTypeIdentifier(entity)#>endOfEnum:
+        default:
+            return nil;
     }
 
     return nil;
@@ -31,15 +34,15 @@ var entity = host.CurrentType.AsOdcmEnum();
     <#
     foreach(var member in entity.Members)
     {
-    #>  if([self isEqualToString:@"<#=member.Name#>"])
-        {
+    #>if([self isEqualToString:@"<#=member.Name#>"])
+      {
             return <#=GetObjCEnumMember(entity,member)#>;
-        }
-        else <#
+      }
+      else <#
     }
     #>
     {
-        return <#=GetObjCTypeIdentifier(entity)#>endOfStruct;
+        return <#=GetObjCTypeIdentifier(entity)#>endOfEnum;
     }
 }
 

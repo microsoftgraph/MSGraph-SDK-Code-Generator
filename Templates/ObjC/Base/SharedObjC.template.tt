@@ -118,12 +118,17 @@ private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
     String.Format(@"self.dictionary[@""{0}""]",prop.Name),prop);
 }
 
-private string GetHydratedPropertyFromDictionaryAsObjectPointer(OdcmProperty prop)
+private string GetHydratedPropertyFromNSJSONSerializableExpressionAsObjectPointer(string expr,OdcmProperty prop)
 {
-    if(prop.IsComplex()) return GetHydratedPropertyFromDictionary(prop);
-    return "@(" + GetHydratedPropertyFromDictionary(prop) + ")";
+    if(prop.IsComplex()) return GetHydratedPropertyFromNSJSONSerializableExpression(expr,prop);
+    return "@(" + GetHydratedPropertyFromNSJSONSerializableExpression(expr,prop) + ")";
 }
 
+private string GetHydratedPropertyFromDictionaryAsObjectPointer(OdcmProperty prop)
+{
+    return GetHydratedPropertyFromNSJSONSerializableExpressionAsObjectPointer(
+    String.Format(@"self.dictionary[@""{0}""]",prop.Name),prop);
+}
 
 private string GetHydratedIVarFromDictionary(OdcmProperty prop)
 {
@@ -145,7 +150,7 @@ private string GetHydratedIVarFromDictionary(OdcmProperty prop)
         ",
         GetObjCProperty(prop),
         prop.Name,
-        GetHydratedPropertyFromNSJSONSerializableExpression(GetObjCProperty(prop),prop),
+        GetHydratedPropertyFromNSJSONSerializableExpressionAsObjectPointer(GetObjCProperty(prop),prop),
         GetStaticCollectionObject());
     }
 
