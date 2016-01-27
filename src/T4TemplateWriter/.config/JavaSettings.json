@@ -64,11 +64,11 @@
             { "Template": "BaseEntityRequestBuilder", "SubProcessor": "ComplexType", "Name": "Base<Class>RequestBuilder", "Matches": "navigable" },
 
             { "Template": "BaseEntityCollectionPage", "SubProcessor": "NavigationCollectionProperty", "Name": "Base<PropertyType>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-            { "Template": "BaseEntityCollectionRequest", "SubProcessor": "NavigationCollectionProperty", "Name": "Base<PropertyType>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "BaseEntityCollectionRequest", "SubProcessor": "NavigationCollectionProperty", "Name": "Base<Class><PropertyType>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "BaseEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Name": "Base<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "BaseEntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Name": "Base<PropertyType>CollectionResponse", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "IBaseEntityCollectionPage", "SubProcessor": "NavigationCollectionProperty", "Name": "IBase<PropertyType>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-            { "Template": "IBaseEntityCollectionRequest", "SubProcessor": "NavigationCollectionProperty", "Name": "IBase<PropertyType>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+            { "Template": "IBaseEntityCollectionRequest", "SubProcessor": "NavigationCollectionProperty", "Name": "IBase<Class><PropertyType>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
             { "Template": "IBaseEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Name": "IBase<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
 
             { "Template": "IEntityRequest", "SubProcessor": "Property", "Name": "I<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },

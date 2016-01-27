@@ -34,13 +34,10 @@ if (c.AsOdcmClass() != null)
         var propRequestBuilder = TypeRequestBuilder(prop);
         if (prop.IsCollection()) {
 #>
-<# if (!prop.LongDescriptionContains("not-enumerable")) {#>
 
     <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>();
-<# } if (!prop.LongDescriptionContains("not-queryable")) { #>
 
     <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id);
-<# } #>
 <#
         } else {
 #>

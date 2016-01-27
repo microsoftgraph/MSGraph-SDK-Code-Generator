@@ -28,7 +28,7 @@
     }
 
     public string ITypeName(OdcmObject c) {
-        return "I" + TypeName(c);
+        return "I" +  TypeName(c);
     }
 
     public string BaseTypeName(OdcmObject c) {
@@ -40,7 +40,7 @@
     }
 
     public string TypeRequest(OdcmObject c) {
-        return TypeName(c) + "Request";
+        return ClassTypeName(c) + TypeName(c) + "Request";
     }
 
     public string BaseTypeRequest(OdcmObject c) {
@@ -88,11 +88,11 @@
     }
 
     public string BaseTypeCollectionResponse(OdcmObject c) {
-        return "Base" + TypeName(c) + "CollectionResponse";
+        return "Base" + ClassTypeName(c) + TypeName(c) + "CollectionResponse";
     }
 
     public string TypeCollectionRequest(OdcmObject c) {
-        return TypeName(c) + "CollectionRequest";
+        return ClassTypeName(c) + TypeName(c) + "CollectionRequest";
     }
 
     public string ITypeCollectionRequest(OdcmObject c) {
@@ -108,7 +108,7 @@
     }
 
     public string TypeCollectionRequestBuilder(OdcmObject c) {
-        return TypeCollectionRequest(c) + "Builder";
+        return ClassTypeName(c) + TypeName(c) + "CollectionRequest" + "Builder";
     }
 
     public string ITypeCollectionRequestBuilder(OdcmObject c) {
