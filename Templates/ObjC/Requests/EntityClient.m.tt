@@ -37,9 +37,9 @@ foreach(var prop in containerProps)
     else
     {
 #>
-    -(<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=prop.Name#>
+    -(<#=propType#>RequestBuilder *) <#=prop.Name#>
     {
-    return [[<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder alloc] initWithURL:[self.baseURL URLByAppendingPathComponent:@"<#=prop.Name#>"] 
+    return [[<#=propType#>RequestBuilder alloc] initWithURL:[self.baseURL URLByAppendingPathComponent:@"<#=prop.Name#>"] 
              <#=prop.Type.GetTypeString().ToSpaces()#><#="RequestBuilder alloc]     ".ToSpaces()#>client:self];
     }
 <#

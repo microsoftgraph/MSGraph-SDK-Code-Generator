@@ -38,11 +38,11 @@ foreach(var propertyClass in classes)
 
 foreach(var prop in containerProps)
 {
-	if(prop.IsCollection())
-	{
-        var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
-        var propType = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
+	var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
+    var propType = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
 
+    if(prop.IsCollection())
+	{
         if (!prop.LongDescriptionContains("non-enumerable"))
         {
 #>
@@ -63,7 +63,7 @@ foreach(var prop in containerProps)
 	{
 
 #>
--(<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=prop.Name#>;
+-(<#=propType#>RequestBuilder *) <#=prop.Name#>;
 <#	
 
 	}

@@ -70,7 +70,7 @@ if (innerEntityType.Equals(propName))
 }
 
 <#
-    if (!prop.LongDescriptionContains("non-writable"))
+    if (!prop.LongDescriptionContains("readonly"))
     {
 #>
 - (NSMutableURLRequest *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#>

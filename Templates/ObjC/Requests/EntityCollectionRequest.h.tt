@@ -30,7 +30,7 @@ typedef void (^<#=propName#>CompletionHandler)(<#=writer.GetStaticCodePrefix()#>
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName#>CompletionHandler)completionHandler;
 <#
-    if (!prop.LongDescriptionContains("non-writable"))
+    if (!prop.LongDescriptionContains("readonly"))
     {
 #>
 
