@@ -68,7 +68,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {SubProcessor.CollectionProperty,           ProcessCollections},
                 {SubProcessor.NavigationCollectionProperty, ProcessNavigationCollections},
                 {SubProcessor.CollectionReferenceProperty,  ProcessCollectionReferences},
-                {SubProcessor.EntityReferenceProperty,      ProcessEntityReferenceProperties},
+                {SubProcessor.EntityReferenceType,      ProcessEntityReferenceProperties},
                 {SubProcessor.Method,                       ProcessMethods},
                 {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
                 {SubProcessor.CollectionMethod,             ProcessCollectionMethods},

@@ -124,7 +124,7 @@ public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityReferenceRequestBuilder);
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        I{0} References", entityReferenceRequestBuilder);
+        stringBuilder.AppendFormat("        public I{0} References", entityReferenceRequestBuilder);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append(
 @"        {
@@ -161,7 +161,18 @@ public string GetCollectionWithReferencesIndexRequestBuilder(OdcmProperty odcmPr
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityRequestBuilder);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        I{0} this[string id] {{ get; }}", entityRequestBuilder);
+    stringBuilder.AppendFormat("        public I{0} this[string id]", entityRequestBuilder);
+    stringBuilder.Append(@"
+        {
+            get
+            {
+");
+
+        stringBuilder.AppendFormat("                return new {0}(this.AppendSegmentToRequestUrl(id), this.Client);", entityRequestBuilder);
+        stringBuilder.Append(@"
+            }
+        }
+");
     
     return stringBuilder.ToString();
 }

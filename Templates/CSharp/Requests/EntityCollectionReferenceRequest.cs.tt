@@ -1,0 +1,123 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+var prop = host.CurrentType.AsOdcmProperty();
+var innerEntity = prop.Type;
+var innerEntityType = innerEntity.Name.ToCheckedCase();
+var collectionRequest = prop.Name.ToCheckedCase() + "CollectionRequest";
+var collectionResponse = prop.Name.ToCheckedCase() + "CollectionResponse";
+var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
+
+#>
+
+namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// The type <#=collectionRequest#>.
+    /// </summary>
+    public partial class <#=collectionRequest#> : BaseRequest, I<#=collectionRequest#>
+    {
+        /// <summary>
+        /// Constructs a new <#=collectionRequest#>.
+        /// </summary>
+        /// <param name="requestUrl">The request URL.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="options">Query option name value pairs for the request.</param>
+        public <#=collectionRequest#>(
+            string requestUrl,
+            IBaseClient client,
+            IList<Option> options)
+            : base(requestUrl, client, options)
+        {
+        }
+
+        <#
+        if (!prop.LongDescriptionContains("readonly"))
+        {
+            var sanitizedPropertyName = innerEntity.Name.GetSanitizedPropertyName(prop.Name);
+        #>
+
+        /// <summary>
+        /// Adds the specified <#=innerEntityType#> to the collection via POST.
+        /// </summary>
+        /// <param name="<#=sanitizedPropertyName#>">The <#=innerEntityType#> to add.</param>
+        /// <returns>The created <#=innerEntityType#>.</returns>
+        public Task<<#=innerEntityType#>> AddAsync(<#=innerEntityType#> <#=sanitizedPropertyName#>)
+        {
+            this.ContentType = "<#=writer.jsonContentType#>";
+            this.Method = "POST";
+            return this.SendAsync<<#=innerEntityType#>>(<#=sanitizedPropertyName#>);
+        }
+        <#
+        }
+        #>
+
+        /// <summary>
+        /// Gets the collection page.
+        /// </summary>
+        /// <returns>The collection page.</returns>
+        public async Task<I<#=collectionPage#>> GetAsync()
+        {
+            this.Method = "GET";
+            var response = await this.SendAsync<<#=collectionResponse#>>(null);
+            if (response != null && response.Value != null && response.Value.CurrentPage != null)
+            {
+                if (response.AdditionalData != null)
+                {
+                    object nextPageLink;
+                    response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
+
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        response.Value.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                return response.Value;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        public I<#=collectionRequest#> Expand(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$expand", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        public I<#=collectionRequest#> Select(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$select", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified top value to the request.
+        /// </summary>
+        /// <param name="value">The top value.</param>
+        /// <returns>The request object to send.</returns>
+        public I<#=collectionRequest#> Top(int value)
+        {
+            this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
+            return this;
+        }
+    }
+}

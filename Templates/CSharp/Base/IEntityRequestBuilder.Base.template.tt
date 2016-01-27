@@ -63,7 +63,7 @@ public string GetEntityReferenceRequestBuilderProperty(OdcmClass odcmClass)
 // -------------------------------------------------------------
 public string GetEntityWithReferencesRequestBuilderInterfaceDefinition(OdcmClass odcmClass)
 {
-    return this.GetInterfaceDefinition(this.GetEntityReferenceRequestBuilderName(odcmClass));
+    return this.GetInterfaceDefinition(this.GetEntityWithReferencesRequestBuilderName(odcmClass));
 }
 
 public string GetEntityWithReferencesRequestMethod(OdcmClass odcmClass)
@@ -120,7 +120,7 @@ public string GetNonCollectionRequestBuilderProperty(OdcmProperty odcmProperty)
 // -------------------------------------------------------------
 // Methods to create an OData method property definition within an entity class
 // -------------------------------------------------------------
-public string GetMethodRequestBuilderProperty(
+public string GetMethodRequestBuilderMethod(
     string methodName,
     string requestBuilderBaseString,
     string methodParamaterString)
@@ -259,7 +259,7 @@ public string GetMethodProperties(OdcmClass entity)
         }
         
         methodPropertiesStringBuilder.Append(
-            this.GetMethodRequestBuilderProperty(
+            this.GetMethodRequestBuilderMethod(
                 methodName,
                 baseName,
                 paramStringBuilder.ToString()));

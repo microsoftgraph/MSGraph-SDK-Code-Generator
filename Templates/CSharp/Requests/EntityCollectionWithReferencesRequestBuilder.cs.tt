@@ -18,6 +18,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         <#=this.GetCollectionWithReferencesRequestMethod(prop)#>
 
         <#=this.GetCollectionWithReferencesRequestMethodWithOptions(prop)#>
+        
+        <#=this.GetCollectionWithReferencesIndexRequestBuilder(prop)#>
         <#=this.GetCollectionReferenceRequestBuilder(prop)#>
     }
 }

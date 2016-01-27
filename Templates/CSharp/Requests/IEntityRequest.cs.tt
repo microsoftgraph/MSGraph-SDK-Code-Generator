@@ -1,5 +1,5 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="SharedCSharp.template.tt"#>
+<#@ include file="IEntityRequest.Base.template.tt"#>
 <#
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
@@ -7,62 +7,26 @@ var entityRequest = entityName + "Request";
 
 #>
 
-namespace <#=entity.Namespace.GetNamespaceName()#>
+namespace <#=this.GetNamespaceName(entity)#>
 {
     using System;
     using System.IO;
     using System.Threading.Tasks;
 
-    /// <summary>
-    /// The interface I<#=entityRequest#>.
-    /// </summary>
-    public partial interface I<#=entityRequest#> : IBaseRequest
+    <#=this.GetEntityRequestInterfaceDefinition(entity)#>
     {
-        /// <summary>
-        /// Creates the specified <#=entityName#> using PUT.
-        /// </summary>
-        /// <param name="<#=entity.Name#>ToCreate">The <#=entityName#> to create.</param>
-        /// <returns>The created <#=entityName#>.</returns>
-        Task<<#=entityName#>> CreateAsync(<#=entityName#> <#=entity.Name#>ToCreate);
+        <#=this.GetEntityCreateAsyncMethod(entity)#>
 
-        /// <summary>
-        /// Deletes the specified <#=entityName#>.
-        /// </summary>
-        /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        <#=this.GetEntityDeleteAsyncMethod(entity)#>
 
-        /// <summary>
-        /// Gets the <#=entityName#>.
-        /// </summary>
-        /// <returns>The <#=entityName#>.</returns>
-        Task<<#=entityName#>> GetAsync();
+        <#=this.GetEntityGetAsyncMethod(entity)#>
 
-        /// <summary>
-        /// Updates the specified <#=entityName#> using PATCH.
-        /// </summary>
-        /// <param name="<#=entity.Name#>ToUpdate">The <#=entityName#> to update.</param>
-        /// <returns>The updated <#=entityName#>.</returns>
-        Task<<#=entityName#>> UpdateAsync(<#=entityName#> <#=entity.Name#>ToUpdate);
+        <#=this.GetEntityUpdateAsyncMethod(entity)#>
 
-        /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        I<#=entityRequest#> Expand(string value);
+        <#=this.GetEntityExpandMethod(entity)#>
 
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        I<#=entityRequest#> Select(string value);
+        <#=this.GetEntitySelectMethod(entity)#>
 
-        /// <summary>
-        /// Adds the specified top value to the request.
-        /// </summary>
-        /// <param name="value">The top value.</param>
-        /// <returns>The request object to send.</returns>
-        I<#=entityRequest#> Top(int value);
+        <#=this.GetEntityTopMethod(entity)#>
     }
 }

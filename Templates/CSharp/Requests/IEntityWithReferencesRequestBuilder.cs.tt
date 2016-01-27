@@ -1,5 +1,5 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="EntityRequestBuilder.Base.template.tt"#>
+<#@ include file="IEntityRequestBuilder.Base.template.tt"#>
 <#
 
 var entity = host.CurrentType.AsOdcmClass();
@@ -11,11 +11,8 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System;
     using System.Collections.Generic;
 
-    <#=this.GetEntityWithReferencesRequestBuilderClassDefinition(entity)#>
+    <#=this.GetEntityWithReferencesRequestBuilderInterfaceDefinition(entity)#>
     {
-
-        <#=this.GetEntityWithReferencesRequestBuilderConstructor(entity)#>
-
         <#=this.GetEntityWithReferencesRequestMethod(entity)#>
 
         <#=this.GetEntityWithReferencesRequestMethodWithOptions(entity)#>

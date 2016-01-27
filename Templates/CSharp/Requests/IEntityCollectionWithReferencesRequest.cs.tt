@@ -1,0 +1,68 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#@ output extension="\\" #>
+<#
+
+var prop = host.CurrentType.AsOdcmProperty();
+var innerEntity = prop.Type;
+var innerEntityType = innerEntity.Name.ToCheckedCase();
+var collectionRequest = prop.Name.ToCheckedCase() + "CollectionRequest";
+var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
+
+#>
+
+namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
+{
+    using System;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// The interface I<#=collectionRequest#>.
+    /// </summary>
+    public partial interface I<#=collectionRequest#> : IBaseRequest
+    {
+        <#
+        if (!prop.LongDescriptionContains("readonly"))
+        {
+            var sanitizedPropertyName = innerEntity.Name.GetSanitizedPropertyName(prop.Name);
+        #>
+
+        /// <summary>
+        /// Adds the specified <#=innerEntityType#> to the collection via POST.
+        /// </summary>
+        /// <param name="<#=sanitizedPropertyName#>">The <#=innerEntityType#> to add.</param>
+        /// <returns>The created <#=innerEntityType#>.</returns>
+        Task<<#=innerEntityType#>> AddAsync(<#=innerEntityType#> <#=sanitizedPropertyName#>);
+        <#
+        }
+        #>
+
+        /// <summary>
+        /// Gets the collection page.
+        /// </summary>
+        /// <returns>The collection page.</returns>
+        Task<I<#=collectionPage#>> GetAsync();
+
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=collectionRequest#> Expand(string value);
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=collectionRequest#> Select(string value);
+
+        /// <summary>
+        /// Adds the specified top value to the request.
+        /// </summary>
+        /// <param name="value">The top value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=collectionRequest#> Top(int value);
+
+    }
+}

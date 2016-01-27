@@ -1,0 +1,20 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="IEntityRequest.Base.template.tt"#>
+<#
+OdcmClass entity = host.CurrentType.AsOdcmClass();
+var entityName = entity.Name.ToCheckedCase();
+var entityRequest = entityName + "Request";
+
+#>
+
+namespace <#=this.GetNamespaceName(entity)#>
+{
+    using System;
+    using System.IO;
+    using System.Threading.Tasks;
+
+    <#=this.GetEntityReferenceRequestInterfaceDefinition(entity)#>
+    {
+        <#=this.GetEntityReferenceDeleteAsyncMethod(entity)#>
+    }
+}
