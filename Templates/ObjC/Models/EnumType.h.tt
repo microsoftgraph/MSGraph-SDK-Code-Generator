@@ -9,7 +9,7 @@ var entity = host.CurrentType.AsOdcmEnum();
 typedef NS_ENUM(NSInteger, <#=GetObjCTypeIdentifier(entity)#>){
 
 <#
-foreach(var member in entity.Members)
+foreach(var member in entity.Members.OrderBy(x => x.Value))
 {
 #>
 	<#=GetObjCEnumMember(entity,member)#> = <#=member.Value#>,
