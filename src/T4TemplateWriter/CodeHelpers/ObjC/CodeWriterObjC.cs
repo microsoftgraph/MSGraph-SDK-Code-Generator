@@ -373,6 +373,32 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             GetParamsForRaw(action.Parameters.Select(p => p.Name)), (action.ReturnType == null ? "NSString * resultCode " : GetParamRaw(action.ReturnType.Name)));
         }
 
+        private static Dictionary<string, string> initializersForNSNumber;
+
+        public string GetNSNumberInitializer(OdcmType type)
+        {
+            if (initializersForNSNumber == null)
+            {
+                initializersForNSNumber = new Dictionary<string, string>
+                {
+                    {"int32_t","numberWithInt"},
+                    {"int64_t","numberWithLongLong"},
+                    {"int16_t","numberWithInt"},
+                    {"CGFloat","numberWithDouble"},
+                    {"BOOL","numberWithBool"}
+                };
+            }
+
+            var typeString = type.GetTypeString();
+
+            if (initializersForNSNumber.ContainsKey(typeString))
+            {
+                return initializersForNSNumber[typeString];
+            }
+
+            return string.Empty;
+        }
+
         private static ICollection<string> semanticOwnedObjectsKeywords;
         public static ICollection<string> SemanticOwnedObjectsKeywords
         {

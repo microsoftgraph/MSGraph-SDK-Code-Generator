@@ -4,6 +4,8 @@
 var complexType = host.CurrentType.AsOdcmClass();
 #>
 
+#import "NSDate+MSSerialization.h"
+
 #import "<#=writer.GetPrefix()#>Models.h"
 
 @interface <#=writer.GetStaticCodePrefix()#>Object()
@@ -17,12 +19,9 @@ var complexType = host.CurrentType.AsOdcmClass();
 <#
 foreach (var prop in complexType.Properties)
 {
-    if (prop.IsCollection || prop.IsComplex())
-    {
 #>
     <#=GetObjCTypeForVarDeclaration(prop)#> _<#=GetObjCProperty(prop)#>;
 <#
-    }
 }
 #>
 }

@@ -4,6 +4,8 @@
 var entity = host.CurrentType.AsOdcmClass();
 #>
 
+#import "NSDate+MSSerialization.h"
+
 #import "<#=writer.GetPrefix()#>Models.h"
 
 @interface <#=GetStaticBaseObject()#>()
@@ -11,7 +13,6 @@ var entity = host.CurrentType.AsOdcmClass();
 @property (strong, nonatomic) NSMutableDictionary *dictionary;
 
 @end
-
 
 @interface <#=GetObjCTypeIdentifier(entity)#>()
 {
