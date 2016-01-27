@@ -1,0 +1,254 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="IRequestBuilder.Base.template.tt"#>
+<#+
+
+// -------------------------------------------------------------
+// Methods for standard entity classes
+// -------------------------------------------------------------
+public string GetEntityRequestBuilderInterfaceDefinition(OdcmClass odcmClass)
+{
+    return this.GetInterfaceDefinition(this.GetEntityRequestBuilderName(odcmClass));
+}
+
+public string GetEntityRequestMethod(OdcmClass odcmClass)
+{
+    return this.GetRequestMethod(this.GetEntityRequestName(odcmClass));
+}
+
+public string GetEntityRequestMethodWithOptions(OdcmClass odcmClass)
+{
+    return this.GetRequestMethodWithOptions(this.GetEntityRequestName(odcmClass));
+}
+
+
+// -------------------------------------------------------------
+// Methods for the reference of an entity
+// -------------------------------------------------------------
+public string GetEntityReferenceRequestBuilderInterfaceDefinition(OdcmClass odcmClass)
+{
+    return this.GetInterfaceDefinition(this.GetEntityReferenceRequestBuilderName(odcmClass));
+}
+
+public string GetEntityReferenceRequestMethod(OdcmClass odcmClass)
+{
+    return this.GetRequestMethod(this.GetEntityReferenceRequestName(odcmClass));
+}
+
+public string GetEntityReferenceRequestMethodWithOptions(OdcmClass odcmClass)
+{
+    return this.GetRequestMethodWithOptions(this.GetEntityReferenceRequestName(odcmClass));
+}
+
+public string GetEntityReferenceRequestBuilderProperty(OdcmClass odcmClass)
+{
+    return this.GetRequestBuilderProperty("Reference", this.GetEntityReferenceRequestBuilderName(odcmClass));
+}
+
+
+// -------------------------------------------------------------
+// Methods for entity classes that support $ref addressing
+// -------------------------------------------------------------
+public string GetEntityWithReferencesRequestBuilderInterfaceDefinition(OdcmClass odcmClass)
+{
+    return this.GetInterfaceDefinition(this.GetEntityReferenceRequestBuilderName(odcmClass));
+}
+
+public string GetEntityWithReferencesRequestMethod(OdcmClass odcmClass)
+{
+    return this.GetRequestMethod(this.GetEntityWithReferencesRequestName(odcmClass));
+}
+
+public string GetEntityWithReferencesRequestMethodWithOptions(OdcmClass odcmClass)
+{
+    return this.GetRequestMethodWithOptions(this.GetEntityWithReferencesRequestName(odcmClass));
+}
+
+
+// -------------------------------------------------------------
+// Methods to create a standard property definition within an entity class
+// -------------------------------------------------------------
+public string GetRequestBuilderProperty(string propertyName, string requestBuilderTypeName)
+{
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Gets the request builder for {0}.", propertyName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        I{0} {1} {{ get; }}", requestBuilderTypeName, propertyName);
+    return stringBuilder.ToString();
+}
+
+public string GetCollectionPropertyRequestBuilderProperty(OdcmProperty odcmProperty)
+{
+    var propertyName = this.GetPropertyName(odcmProperty);
+    var collectionRequestBuilder = this.GetCollectionRequestBuilderString(propertyName);
+
+    return this.GetRequestBuilderProperty(propertyName, collectionRequestBuilder);
+}
+
+public string GetNonCollectionRequestBuilderProperty(OdcmProperty odcmProperty)
+{
+    var propertyName = this.GetPropertyName(odcmProperty);
+    var propertyRequestBuilder = this.GetRequestBuilderString(this.GetPropertyTypeName(odcmProperty));
+
+    return this.GetRequestBuilderProperty(propertyName, propertyRequestBuilder);
+}
+
+
+// -------------------------------------------------------------
+// Methods to create an OData method property definition within an entity class
+// -------------------------------------------------------------
+public string GetMethodRequestBuilderProperty(
+    string methodName,
+    string requestBuilderBaseString,
+    string methodParamaterString)
+{
+    var requestBuilderTypeName = this.GetRequestBuilderString(requestBuilderBaseString);
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Gets the request builder for {0}.", requestBuilderBaseString);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        I{0} {1}({2});", requestBuilderTypeName, methodName, methodParamaterString);
+    return stringBuilder.ToString();
+}
+
+// Creates the set of property definitions for navigation properties on the entity
+public string GetNavigationProperties(OdcmClass entity)
+{
+    var stringBuilder = new StringBuilder();
+    foreach(var prop in entity.NavigationProperties())
+    {
+        if (stringBuilder.Length > 1)
+        {
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append("        ");
+        }
+        
+        if (prop.IsCollection())
+        {
+            stringBuilder.Append(this.GetCollectionPropertyRequestBuilderProperty(prop));
+        }
+        else
+        {
+            stringBuilder.Append(this.GetNonCollectionRequestBuilderProperty(prop));
+        }
+    }
+    
+    return stringBuilder.ToString();
+}
+
+// Creates the set of property definitions for stream properties on the entity
+public string GetStreamProperties(OdcmClass entity)
+{
+    var stringBuilder = new StringBuilder();
+    bool contentStreamFound = false;
+    foreach(var prop in entity.GetProperties(typeName:"Stream"))
+    {
+        if (stringBuilder.Length > 0)
+        {
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append("        ");
+        }
+        
+        var propName = this.GetPropertyName(prop);
+        if (propName.Equals("Content"))
+        {
+            contentStreamFound = true;
+        }
+        
+        var propRequestBuilder = this.GetRequestBuilderString(propName);
+        
+        stringBuilder.Append(this.GetRequestBuilderProperty(propName, string.Concat(this.GetEntityNameString(entity), propRequestBuilder)));
+    }
+    
+    if (entity.Kind == OdcmClassKind.MediaEntity && !contentStreamFound)
+    {
+        if (stringBuilder.Length > 0)
+        {
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append("        ");
+        }
+        
+        stringBuilder.Append(this.GetRequestBuilderProperty("Content", string.Concat(this.GetEntityNameString(entity), "ContentRequestBuilder")));
+    }
+    
+    return stringBuilder.ToString();
+}
+
+// Creates the set of property definitions for OData method properties on the entity
+public string GetMethodProperties(OdcmClass entity)
+{
+    var methodPropertiesStringBuilder = new StringBuilder();
+    foreach(var method in entity.Methods)
+    {
+        var methodName = this.GetMethodName(method);
+        var baseName = string.Concat(this.GetEntityNameString(method.Class), methodName);
+
+        var paramStringBuilder = new System.Text.StringBuilder();
+
+        var hasParameters = method.Parameters != null && method.Parameters.Any();
+
+        if (hasParameters)
+        {
+            var requiredParameters = method.Parameters.Where(param => !param.IsNullable);
+            var optionalParameters = method.Parameters.Where(param => param.IsNullable);
+            
+            foreach (var param in requiredParameters)
+            {
+                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
+
+                paramStringBuilder.Append(Environment.NewLine);
+                paramStringBuilder.Append("            ");
+                paramStringBuilder.Append(param.Type.GetTypeString());
+                paramStringBuilder.Append(" ");
+                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
+                paramStringBuilder.Append(",");
+            }
+            
+            foreach (var param in optionalParameters)
+            {
+                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
+
+                paramStringBuilder.Append(Environment.NewLine);
+                paramStringBuilder.Append("            ");
+                paramStringBuilder.Append(paramTypeString);
+                paramStringBuilder.Append(" ");
+                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
+                paramStringBuilder.Append(" = null,");
+            }
+
+            paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);
+        }
+        
+        if (methodPropertiesStringBuilder.Length > 0)
+        {
+            methodPropertiesStringBuilder.Append(Environment.NewLine);
+            methodPropertiesStringBuilder.Append(Environment.NewLine);
+            methodPropertiesStringBuilder.Append("        ");
+        }
+        
+        methodPropertiesStringBuilder.Append(
+            this.GetMethodRequestBuilderProperty(
+                methodName,
+                baseName,
+                paramStringBuilder.ToString()));
+    }
+    
+    return methodPropertiesStringBuilder.ToString();
+}
+
+#>

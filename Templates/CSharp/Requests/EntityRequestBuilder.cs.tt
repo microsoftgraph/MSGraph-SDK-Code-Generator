@@ -21,7 +21,7 @@ namespace <#=this.GetNamespaceName(entity)#>
 
         <#=this.GetEntityRequestMethod(entity)#>
 
-        <#=this.GetEntityRequestMethodWithOptions(entity)#>      
+        <#=this.GetEntityRequestMethodWithOptions(entity)#>
     <#
     if (entity.NavigationProperties().Any())
     {

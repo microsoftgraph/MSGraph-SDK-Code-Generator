@@ -1,11 +1,11 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="IEntityRequestBuilder.Base.template.tt"#>
+<#@ include file="EntityRequestBuilder.Base.template.tt"#>
 <#
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
-var entityName = entity.Name.ToCheckedCase();
-var entityRequest = entityName + "Request";
-var entityRequestBuilder = entityRequest + "Builder";
+var entityName = this.GetEntityNameString(entity);
+var request = this.GetEntityRequestName(entity);
+var requestBuilder = this.GetEntityRequestBuilderName(entity);
 
 #>
 
@@ -14,11 +14,15 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System;
     using System.Collections.Generic;
 
-    <#=this.GetEntityRequestBuilderInterfaceDefinition(entity)#>
+    <#=this.GetEntityWithReferencesRequestBuilderClassDefinition(entity)#>
     {
-        <#=this.GetEntityRequestMethod(entity)#>
+        <#=this.GetEntityWithReferencesRequestBuilderConstructor(entity)#>
 
-        <#=this.GetEntityRequestMethodWithOptions(entity)#>
+        <#=this.GetEntityWithReferencesRequestMethod(entity)#>
+
+        <#=this.GetEntityWithReferencesRequestMethodWithOptions(entity)#>
+        
+        <#=this.GetEntityReferenceRequestBuilderProperty(entity)#>
     <#
     if (entity.NavigationProperties().Any())
     {
