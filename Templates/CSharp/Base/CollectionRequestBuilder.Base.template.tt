@@ -2,19 +2,12 @@
 <#@ include file="RequestBuilder.Base.template.tt"#>
 <#+
 
+// -------------------------------------------------------------
+// Methods for standard entity collection classes
+// -------------------------------------------------------------
 public string GetCollectionClassDefinition(OdcmProperty odcmProperty)
 {
     return this.GetClassDefinition(this.GetPropertyCollectionRequestBuilderName(odcmProperty));
-}
-
-public string GetCollectionReferenceClassDefinition(OdcmProperty odcmProperty)
-{
-    return this.GetClassDefinition(this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty));
-}
-
-public string GetCollectionWithReferencesClassDefinition(OdcmProperty odcmProperty)
-{
-    return this.GetClassDefinition(this.GetPropertyCollectionWithReferencesRequestBuilderName(odcmProperty));
 }
 
 public string GetCollectionRequestBuilderConstructor(OdcmProperty odcmProperty)
@@ -22,29 +15,9 @@ public string GetCollectionRequestBuilderConstructor(OdcmProperty odcmProperty)
     return this.GetConstructor(this.GetPropertyCollectionRequestBuilderName(odcmProperty));
 }
 
-public string GetCollectionReferenceRequestBuilderConstructor(OdcmProperty odcmProperty)
-{
-    return this.GetConstructor(this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty));
-}
-
-public string GetCollectionWithReferencesRequestBuilderConstructor(OdcmProperty odcmProperty)
-{
-    return this.GetConstructor(this.GetPropertyCollectionWithReferencesRequestBuilderName(odcmProperty));
-}
-
 public string GetCollectionRequestMethod(OdcmProperty odcmProperty)
 {
     return this.GetRequestMethod(this.GetPropertyCollectionRequestName(odcmProperty));
-}
-
-public string GetCollectionReferenceRequestMethod(OdcmProperty odcmProperty)
-{
-    return this.GetRequestMethod(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
-}
-
-public string GetCollectionWithReferencesRequestMethod(OdcmProperty odcmProperty)
-{
-    return this.GetRequestMethod(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
 }
 
 public string GetCollectionRequestMethodWithOptions(OdcmProperty odcmProperty)
@@ -52,16 +25,7 @@ public string GetCollectionRequestMethodWithOptions(OdcmProperty odcmProperty)
     return this.GetRequestMethodWithOptions(this.GetPropertyCollectionRequestName(odcmProperty));
 }
 
-public string GetCollectionReferenceRequestMethodWithOptions(OdcmProperty odcmProperty)
-{
-    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
-}
-
-public string GetCollectionWithReferencesRequestMethodWithOptions(OdcmProperty odcmProperty)
-{
-    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
-}
-
+// Creates the indexer property definition for the collection
 public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
 {
     var stringBuilder = new StringBuilder();
@@ -94,6 +58,55 @@ public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
     return stringBuilder.ToString();
 }
 
+
+// -------------------------------------------------------------
+// Methods for the reference of an entity collection
+// -------------------------------------------------------------
+public string GetCollectionReferenceClassDefinition(OdcmProperty odcmProperty)
+{
+    return this.GetClassDefinition(this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty));
+}
+
+public string GetCollectionReferenceRequestBuilderConstructor(OdcmProperty odcmProperty)
+{
+    return this.GetConstructor(this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty));
+}
+
+public string GetCollectionReferenceRequestMethod(OdcmProperty odcmProperty)
+{
+    return this.GetRequestMethod(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
+}
+
+public string GetCollectionReferenceRequestMethodWithOptions(OdcmProperty odcmProperty)
+{
+    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
+}
+
+
+// -------------------------------------------------------------
+// Methods for entity collection classes that support $ref addressing
+// -------------------------------------------------------------
+public string GetCollectionWithReferencesClassDefinition(OdcmProperty odcmProperty)
+{
+    return this.GetClassDefinition(this.GetPropertyCollectionWithReferencesRequestBuilderName(odcmProperty));
+}
+
+public string GetCollectionWithReferencesRequestBuilderConstructor(OdcmProperty odcmProperty)
+{
+    return this.GetConstructor(this.GetPropertyCollectionWithReferencesRequestBuilderName(odcmProperty));
+}
+
+public string GetCollectionWithReferencesRequestMethod(OdcmProperty odcmProperty)
+{
+    return this.GetRequestMethod(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
+}
+
+public string GetCollectionWithReferencesRequestMethodWithOptions(OdcmProperty odcmProperty)
+{
+    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
+}
+
+// Creates the request builder property definition for the $ref navigation on the collection
 public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
 {
     var propertyClass = odcmProperty.Class.AsOdcmClass();
@@ -119,7 +132,7 @@ public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
             {
 ");
 
-        stringBuilder.AppendFormat("                return new {0}(this.AppendSegmentToRequestUrl(id), this.Client);", entityReferenceRequestBuilder);
+        stringBuilder.AppendFormat("                return new {0}(this.AppendSegmentToRequestUrl(\"$ref\"), this.Client);", entityReferenceRequestBuilder);
         stringBuilder.Append(@"
             }
         }
@@ -129,6 +142,28 @@ public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
     }
     
     return string.Empty;
+}
+
+// Creates the indexer property definition for a collection that supports $ref
+public string GetCollectionWithReferencesIndexRequestBuilder(OdcmProperty odcmProperty)
+{
+    var stringBuilder = new StringBuilder();
+    var propTypeName = this.GetPropertyTypeName(odcmProperty);
+    var entityRequestBuilder = this.GetPropertyTypeWithReferencesRequestBuilderName(odcmProperty);
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the specified {1}.", entityRequestBuilder, propTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <param name=\"id\">The ID for the {0}.</param>", propTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityRequestBuilder);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        I{0} this[string id] {{ get; }}", entityRequestBuilder);
+    
+    return stringBuilder.ToString();
 }
 
 #>
