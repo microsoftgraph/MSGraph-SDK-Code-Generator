@@ -1,0 +1,19 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="ICollectionRequestBuilder.Base.template.tt"#>
+<#
+
+var prop = host.CurrentType.AsOdcmProperty();
+
+#>
+namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+{
+    <#=this.GetCollectionWithReferencesInterfaceDefinition(prop)#>
+    {  
+        <#=this.GetCollectionWithReferencesRequestMethod(prop)#>
+
+        <#=this.GetCollectionWithReferencesRequestMethodWithOptions(prop)#>
+        
+        <#=this.GetCollectionWithReferencesIndexRequestBuilder(prop)#>
+        <#=this.GetCollectionReferenceRequestBuilder(prop)#>
+    }
+}

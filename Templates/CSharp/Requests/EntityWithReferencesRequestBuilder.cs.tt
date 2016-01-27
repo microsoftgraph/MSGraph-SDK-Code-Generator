@@ -14,14 +14,15 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System;
     using System.Collections.Generic;
 
-    <#=this.GetEntityRequestBuilderClassDefinition(entity)#>
+    <#=this.GetEntityWithReferencesRequestBuilderClassDefinition(entity)#>
     {
-    
-        <#=this.GetEntityRequestBuilderConstructor(entity)#>
+        <#=this.GetEntityWithReferencesRequestBuilderConstructor(entity)#>
 
-        <#=this.GetEntityRequestMethod(entity)#>
+        <#=this.GetEntityWithReferencesRequestMethod(entity)#>
 
-        <#=this.GetEntityRequestMethodWithOptions(entity)#>      
+        <#=this.GetEntityWithReferencesRequestMethodWithOptions(entity)#>
+        
+        <#=this.GetEntityReferenceRequestBuilderProperty(entity)#>
     <#
     if (entity.NavigationProperties().Any())
     {

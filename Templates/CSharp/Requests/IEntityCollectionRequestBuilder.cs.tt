@@ -10,7 +10,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System;
     using System.Collections.Generic;
 
-    <#=this.GetInterfaceDefinition(prop)#>
+    <#=this.GetCollectionInterfaceDefinition(prop)#>
     {
     
         <#=this.GetCollectionRequestMethod(prop)#>
@@ -18,6 +18,5 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         <#=this.GetCollectionRequestMethodWithOptions(prop)#>
 
         <#=this.GetCollectionIndexRequestBuilder(prop)#>
-        <#=this.GetCollectionReferenceRequestBuilder(prop)#>
     }
 }

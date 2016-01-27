@@ -11,6 +11,9 @@ var writer          = (CodeWriterCSharp)host.CodeWriter;
 
 <#+
 
+// -------------------------------------------------------------
+// Methods to retrieve name strings from various Odcm types
+// -------------------------------------------------------------
 public string GetNamespaceName(OdcmClass odcmClass)
 {
     return odcmClass.Namespace.GetNamespaceName();
@@ -21,11 +24,20 @@ public string GetEntityNameString(OdcmClass entityClass)
     return entityClass.Name.ToCheckedCase();
 }
 
-public string GetReferenceString(string prefix)
+public string GetMethodName(OdcmMethod odcmMethod)
 {
-    return string.Concat(prefix, "Reference");
+    return odcmMethod.Name.ToCheckedCase();
 }
 
+public string GetPropertyName(OdcmProperty odcmProperty)
+{
+    return odcmProperty.Name.ToCheckedCase();
+}
+
+
+// -------------------------------------------------------------
+// Methods for appending standard postfixes onto names, like "Request" or "RequestBuilder"
+// -------------------------------------------------------------
 public string GetRequestString(string prefix)
 {
     return string.Concat(prefix, "Request");
@@ -36,43 +48,94 @@ public string GetRequestBuilderString(string prefix)
     return string.Concat(prefix, "RequestBuilder");
 }
 
-public string GetCollectionRequestBuilderString(string prefix)
+
+// -------------------------------------------------------------
+// Methods for appending reference-related strings to names
+// -------------------------------------------------------------
+public string GetReferenceString(string prefix)
 {
-    return this.GetRequestBuilderString(string.Concat(prefix, "Collection"));
+    return string.Concat(prefix, "Reference");
 }
 
+public string GetWithReferencesString(string prefix)
+{
+    return string.Concat(prefix, "WithReferences");
+}
+
+public string GetWithReferencesRequestString(string prefix)
+{
+    return this.GetRequestString(this.GetWithReferencesString(prefix));
+}
+
+public string GetWithReferencesRequestBuilderString(string prefix)
+{
+    return this.GetRequestBuilderString(this.GetWithReferencesString(prefix));
+}
+
+
+// -------------------------------------------------------------
+// Methods for generic collection naming
+// -------------------------------------------------------------
 public string GetCollectionRequestString(string prefix)
 {
     return this.GetRequestString(string.Concat(prefix, "Collection"));
 }
 
+public string GetCollectionRequestBuilderString(string prefix)
+{
+    return this.GetRequestBuilderString(string.Concat(prefix, "Collection"));
+}
+
+
+// -------------------------------------------------------------
+// Methods for entity request naming
+// -------------------------------------------------------------
 public string GetEntityRequestName(OdcmClass odcmClass)
 {
     return this.GetRequestString(this.GetEntityNameString(odcmClass));
-}
-
-public string GetEntityRequestBuilderName(OdcmClass odcmClass)
-{
-    return this.GetRequestBuilderString(this.GetEntityNameString(odcmClass));
 }
 
 public string GetEntityReferenceRequestName(OdcmClass odcmClass)
 {
     return this.GetRequestString(this.GetReferenceString(this.GetEntityNameString(odcmClass)));
 }
+
+public string GetEntityWithReferencesRequestName(OdcmClass odcmClass)
+{
+    return this.GetRequestString(this.GetWithReferencesString(this.GetEntityNameString(odcmClass)));
+}
+
+
+// -------------------------------------------------------------
+// Methods for entity request builder naming
+// -------------------------------------------------------------
+public string GetEntityRequestBuilderName(OdcmClass odcmClass)
+{
+    return this.GetRequestBuilderString(this.GetEntityNameString(odcmClass));
+}
+
 public string GetEntityReferenceRequestBuilderName(OdcmClass odcmClass)
 {
     return this.GetRequestBuilderString(this.GetReferenceString(this.GetEntityNameString(odcmClass)));
 }
 
-public string GetPropertyName(OdcmProperty odcmProperty)
+public string GetEntityWithReferencesRequestBuilderName(OdcmClass odcmClass)
 {
-    return odcmProperty.Name.ToCheckedCase();
+    return this.GetRequestBuilderString(this.GetWithReferencesString(this.GetEntityNameString(odcmClass)));
 }
 
+
+// -------------------------------------------------------------
+// Methods for property naming
+// -------------------------------------------------------------
 public string GetPropertyReferenceName(OdcmProperty odcmProperty)
 {
     return this.GetReferenceString(this.GetPropertyName(odcmProperty));
+}
+
+public string GetPropertyWithReferencesName(OdcmProperty odcmProperty)
+{
+    return this.GetWithReferencesString(this.GetPropertyName(odcmProperty));
 }
 
 public string GetPropertyTypeName(OdcmProperty odcmProperty)
@@ -85,6 +148,15 @@ public string GetPropertyReferenceTypeName(OdcmProperty odcmProperty)
     return this.GetReferenceString(this.GetPropertyTypeName(odcmProperty));
 }
 
+public string GetPropertyWithReferencesTypeName(OdcmProperty odcmProperty)
+{
+    return this.GetWithReferencesString(this.GetPropertyTypeName(odcmProperty));
+}
+
+
+// -------------------------------------------------------------
+// Methods for standard property collection naming
+// -------------------------------------------------------------
 public string GetPropertyCollectionRequestName(OdcmProperty odcmProperty)
 {
     return this.GetCollectionRequestString(this.GetPropertyName(odcmProperty));
@@ -93,16 +165,6 @@ public string GetPropertyCollectionRequestName(OdcmProperty odcmProperty)
 public string GetPropertyCollectionRequestBuilderName(OdcmProperty odcmProperty)
 {
     return this.GetCollectionRequestBuilderString(this.GetPropertyName(odcmProperty));
-}
-
-public string GetPropertyCollectionReferenceRequestBuilderName(OdcmProperty odcmProperty)
-{
-    return this.GetCollectionRequestBuilderString(this.GetPropertyReferenceName(odcmProperty));
-}
-
-public string GetPropertyCollectionReferenceRequestName(OdcmProperty odcmProperty)
-{
-    return this.GetCollectionRequestString(this.GetPropertyReferenceName(odcmProperty));
 }
 
 public string GetPropertyReferenceTypeRequestBuilderName(OdcmProperty odcmProperty)
@@ -115,6 +177,43 @@ public string GetPropertyTypeRequestBuilderName(OdcmProperty odcmProperty)
     return this.GetRequestBuilderString(this.GetPropertyTypeName(odcmProperty));
 }
 
+
+// -------------------------------------------------------------
+// Methods for property collection reference naming
+// -------------------------------------------------------------
+public string GetPropertyCollectionReferenceRequestBuilderName(OdcmProperty odcmProperty)
+{
+    return this.GetCollectionRequestBuilderString(this.GetPropertyReferenceName(odcmProperty));
+}
+
+public string GetPropertyCollectionReferenceRequestName(OdcmProperty odcmProperty)
+{
+    return this.GetCollectionRequestString(this.GetPropertyReferenceName(odcmProperty));
+}
+
+
+// -------------------------------------------------------------
+// Methods for property collection naming where the collection supports $ref addressing
+// -------------------------------------------------------------
+public string GetPropertyCollectionWithReferencesRequestBuilderName(OdcmProperty odcmProperty)
+{
+    return this.GetCollectionRequestBuilderString(this.GetPropertyWithReferencesName(odcmProperty));
+}
+
+public string GetPropertyCollectionWithReferencesRequestName(OdcmProperty odcmProperty)
+{
+    return this.GetCollectionRequestString(this.GetPropertyWithReferencesName(odcmProperty));
+}
+
+public string GetPropertyTypeWithReferencesRequestBuilderName(OdcmProperty odcmProperty)
+{
+    return this.GetWithReferencesRequestBuilderString(this.GetPropertyTypeName(odcmProperty));
+}
+
+
+// -------------------------------------------------------------
+// Methods for request builder method headers
+// -------------------------------------------------------------
 public string GetRequestMethodHeader()
 {
     return

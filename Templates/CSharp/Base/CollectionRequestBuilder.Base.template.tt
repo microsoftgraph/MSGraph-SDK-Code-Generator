@@ -12,6 +12,11 @@ public string GetCollectionReferenceClassDefinition(OdcmProperty odcmProperty)
     return this.GetClassDefinition(this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty));
 }
 
+public string GetCollectionWithReferencesClassDefinition(OdcmProperty odcmProperty)
+{
+    return this.GetClassDefinition(this.GetPropertyCollectionWithReferencesRequestBuilderName(odcmProperty));
+}
+
 public string GetCollectionRequestBuilderConstructor(OdcmProperty odcmProperty)
 {
     return this.GetConstructor(this.GetPropertyCollectionRequestBuilderName(odcmProperty));
@@ -20,6 +25,11 @@ public string GetCollectionRequestBuilderConstructor(OdcmProperty odcmProperty)
 public string GetCollectionReferenceRequestBuilderConstructor(OdcmProperty odcmProperty)
 {
     return this.GetConstructor(this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty));
+}
+
+public string GetCollectionWithReferencesRequestBuilderConstructor(OdcmProperty odcmProperty)
+{
+    return this.GetConstructor(this.GetPropertyCollectionWithReferencesRequestBuilderName(odcmProperty));
 }
 
 public string GetCollectionRequestMethod(OdcmProperty odcmProperty)
@@ -32,6 +42,11 @@ public string GetCollectionReferenceRequestMethod(OdcmProperty odcmProperty)
     return this.GetRequestMethod(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
 }
 
+public string GetCollectionWithReferencesRequestMethod(OdcmProperty odcmProperty)
+{
+    return this.GetRequestMethod(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
+}
+
 public string GetCollectionRequestMethodWithOptions(OdcmProperty odcmProperty)
 {
     return this.GetRequestMethodWithOptions(this.GetPropertyCollectionRequestName(odcmProperty));
@@ -40,6 +55,11 @@ public string GetCollectionRequestMethodWithOptions(OdcmProperty odcmProperty)
 public string GetCollectionReferenceRequestMethodWithOptions(OdcmProperty odcmProperty)
 {
     return this.GetRequestMethodWithOptions(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
+}
+
+public string GetCollectionWithReferencesRequestMethodWithOptions(OdcmProperty odcmProperty)
+{
+    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
 }
 
 public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
