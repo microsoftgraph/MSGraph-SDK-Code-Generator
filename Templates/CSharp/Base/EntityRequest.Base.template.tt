@@ -229,9 +229,19 @@ public string GetEntityReferenceRequestClassDefinition(OdcmClass odcmClass)
     return this.GetClassDefinition(this.GetEntityReferenceRequestName(odcmClass));
 }
 
+public string GetEntityWithReferencesRequestClassDefinition(OdcmClass odcmClass)
+{
+    return this.GetClassDefinition(this.GetEntityWithReferencesRequestName(odcmClass));
+}
+
 public string GetEntityReferenceRequestConstructor(OdcmClass odcmClass)
 {
     return this.GetConstructor(this.GetEntityReferenceRequestName(odcmClass));
+}
+
+public string GetEntityWithReferencesRequestConstructor(OdcmClass odcmClass)
+{
+    return this.GetConstructor(this.GetEntityWithReferencesRequestName(odcmClass));
 }
 
 public string GetEntityReferenceDeleteAsyncMethod(OdcmClass odcmClass)

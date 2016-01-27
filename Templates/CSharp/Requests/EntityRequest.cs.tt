@@ -7,7 +7,7 @@ var entityName = this.GetEntityNameString(entity);
 
 #>
 
-namespace <#=entity.Namespace.GetNamespaceName()#>
+namespace <#=this.GetNamespaceName(entity)#>
 {
     using System;
     using System.Collections.Generic;

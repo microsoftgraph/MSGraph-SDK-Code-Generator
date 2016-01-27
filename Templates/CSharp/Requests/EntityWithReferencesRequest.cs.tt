@@ -1,121 +1,30 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="SharedCSharp.template.tt"#>
+<#@ include file="EntityRequest.Base.template.tt"#>
 <#
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
-var entityName = entity.Name.ToCheckedCase();
-var entityRequest = entityName + "Request";
+var entityName = this.GetEntityNameString(entity);
 
 #>
 
-namespace <#=entity.Namespace.GetNamespaceName()#>
+namespace <#=this.GetNamespaceName(entity)#>
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
 
-    /// <summary>
-    /// The type <#=entityRequest#>.
-    /// </summary>
-    public partial class <#=entityRequest#> : BaseRequest, I<#=entityRequest#>
+    <#=this.GetEntityWithReferencesRequestClassDefinition(entity)#>
     {
-        /// <summary>
-        /// Constructs a new <#=entityRequest#>.
-        /// </summary>
-        /// <param name="requestUrl">The request URL.</param>
-        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        /// <param name="options">Query option name value pairs for the request.</param>
-        public <#=entityRequest#>(
-            string requestUrl,
-            IBaseClient client,
-            IList<Option> options)
-            : base(requestUrl, client, options)
-        {
-        }
+        <#=this.GetEntityWithReferencesRequestConstructor(entity)#>
 
-        /// <summary>
-        /// Creates the specified <#=entityName#> using PUT.
-        /// </summary>
-        /// <param name="<#=entity.Name#>ToCreate">The <#=entityName#> to create.</param>
-        /// <returns>The created <#=entityName#>.</returns>
-        public async Task<<#=entityName#>> CreateAsync(<#=entityName#> <#=entity.Name#>ToCreate)
-        {
-            this.ContentType = "<#=writer.jsonContentType#>";
-            this.Method = "PUT";
-            var newEntity = await this.SendAsync<<#=entityName#>>(<#=entity.Name#>ToCreate);
-            this.InitializeCollectionProperties(newEntity);
-            return newEntity;
-        }
+        <#=this.GetEntityGetAsyncMethod(entity)#>
 
-        /// <summary>
-        /// Deletes the specified <#=entityName#>.
-        /// </summary>
-        /// <returns>The task to await.</returns>
-        public async Task DeleteAsync()
-        {
-            this.Method = "DELETE";
-            await this.SendAsync<<#=entityName#>>(null);
-        }
+        <#=this.GetEntityExpandMethod(entity)#>
 
-        /// <summary>
-        /// Gets the <#=entityName#>.
-        /// </summary>
-        /// <returns>The <#=entityName#>.</returns>
-        public async Task<<#=entityName#>> GetAsync()
-        {
-            this.Method = "GET";
-            var retrievedEntity = await this.SendAsync<<#=entityName#>>(null);
-            this.InitializeCollectionProperties(retrievedEntity);
-            return retrievedEntity;
-        }
-
-        /// <summary>
-        /// Updates the specified <#=entityName#> using PATCH.
-        /// </summary>
-        /// <param name="<#=entity.Name#>ToUpdate">The <#=entityName#> to update.</param>
-        /// <returns>The updated <#=entityName#>.</returns>
-        public async Task<<#=entityName#>> UpdateAsync(<#=entityName#> <#=entity.Name#>ToUpdate)
-        {
-            this.ContentType = "<#=writer.jsonContentType#>";
-            this.Method = "PATCH";
-            var updatedEntity = await this.SendAsync<<#=entityName#>>(<#=entity.Name#>ToUpdate);
-            this.InitializeCollectionProperties(updatedEntity);
-            return updatedEntity;
-        }
-
-        /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        public I<#=entityRequest#> Expand(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        public I<#=entityRequest#> Select(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$select", value));
-            return this;
-        }
+        <#=this.GetEntitySelectMethod(entity)#>
         
-        /// <summary>
-        /// Adds the specified top value to the request.
-        /// </summary>
-        /// <param name="value">The top value.</param>
-        /// <returns>The request object to send.</returns>
-        public I<#=entityRequest#> Top(int value)
-        {
-            this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
-            return this;
-        }
+        <#=this.GetEntityTopMethod(entity)#>
 
         /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
