@@ -27,15 +27,10 @@ typedef void (^<#=innerEntityType#>CompletionHandler)(<#=innerEntityType#> *resp
 typedef void (^<#=propName#>CompletionHandler)(<#=writer.GetStaticCodePrefix()#>Collection *response, <#=propRequest#> *nextRequest, NSError *error);
 
 @interface <#=propRequest#> : <#=writer.GetStaticCodePrefix()#>CollectionRequest
-<# 
-    //if (prop.LongDescriptionContains("enumerable"))
-    //{
-#>
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName#>CompletionHandler)completionHandler;
 <#
-    //}
-    if (prop.LongDescriptionContains("writable"))
+    if (!prop.LongDescriptionContains("readonly"))
     {
 #>
 
