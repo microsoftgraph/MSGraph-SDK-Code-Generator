@@ -22,27 +22,12 @@ namespace <#=this.GetNamespaceName(entity)#>
         
         <#=this.GetEntityReferenceRequestBuilderProperty(entity)#>
     <#
-    if (entity.NavigationProperties().Any())
-    {
-    #>
-    
-        <#=this.GetNavigationProperties(entity)#>
-    <#
-    }
 
     if (entity.Kind == OdcmClassKind.MediaEntity || entity.GetProperties(typeName:"Stream").Any())
     {
     #>
 
         <#=this.GetStreamProperties(entity)#>
-    <#
-    }
-
-    if(entity.Methods.Any())
-    {
-    #>
-    
-        <#=this.GetMethodProperties(entity)#>
     <#
     }
     #>
