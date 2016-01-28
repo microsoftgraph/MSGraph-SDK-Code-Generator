@@ -81,7 +81,6 @@ private bool IsNSJSONSerializable(OdcmType type)
     return ts=="NSString" || ts=="NSNumber" || ts=="NSArray" || ts=="NSDictionary" || ts=="NSNull";
 }
 
-
 private string GetHydratedPropertyFromNSJSONSerializableExpression(string expr,OdcmProperty prop)
 {
     if(GetObjCTypeIdentifier(prop,true)=="NSDate")
@@ -92,11 +91,10 @@ private string GetHydratedPropertyFromNSJSONSerializableExpression(string expr,O
     if(prop.IsEnum())
     {
         return String.Format(
-        @"[{0} to{1}]",
+        @"[NSString {0} to{1}]",
         expr,
         GetObjCTypeIdentifier(prop,true));
     }
-
     //Complex catch-all
     if(prop.IsComplex())
     {
@@ -117,18 +115,30 @@ private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
     return GetHydratedPropertyFromNSJSONSerializableExpression(String.Format(@"self.dictionary[@""{0}""]",prop.Name),prop);
 }
 
-private string GetHydratedPropertyFromNSJSONSerializableExpressionAsObjectPointer(string expr,OdcmProperty prop)
+private string SetNSJSONPermitedExpressionSerialized(OdcmType type,string val)
 {
-    if(prop.IsComplex())
+    if(type is OdcmEnum)
     {
-        return GetHydratedPropertyFromNSJSONSerializableExpression(expr,prop);
+        return String.Format("[NSString stringWith{0}:{1}]",GetObjCTypeIdentifier(type),val);
     }
-    return "@(" + GetHydratedPropertyFromNSJSONSerializableExpression(expr,prop) + ")";
+
+    return "@(" + val + ")";
 }
 
-private string GetHydratedPropertyFromDictionaryAsObjectPointer(OdcmProperty prop)
+private string SetNSJSONPermitedExpressionSerialized(OdcmProperty prop,string val)
 {
-    return GetHydratedPropertyFromNSJSONSerializableExpressionAsObjectPointer(String.Format(@"self.dictionary[@""{0}""]",prop.Name),prop);
+    //Falls back to complex entities that must support ms_toString
+    if(prop.IsComplex() || prop.IsCollection)
+    {
+        return val;
+    }
+
+    return SetNSJSONPermitedExpressionSerialized(prop.Type,val);
+}
+
+private string SetDictionaryPropertySerialized(OdcmProperty prop, string val)
+{
+    return String.Format(@"self.dictionary[@""{0}""] = {1};",prop.Name,SetNSJSONPermitedExpressionSerialized(prop,val));
 }
 
 private string GetHydratedIVarFromDictionary(OdcmProperty prop)
@@ -151,22 +161,12 @@ private string GetHydratedIVarFromDictionary(OdcmProperty prop)
         ",
         GetObjCProperty(prop),
         prop.Name,
-        GetHydratedPropertyFromNSJSONSerializableExpressionAsObjectPointer(GetObjCProperty(prop),prop),
+        GetObjCProperty(prop),
         GetStaticCollectionObject());
     }
 
     return String.Format(@"_{0} = {1};",GetObjCProperty(prop),GetHydratedPropertyFromDictionary(prop));
 
-}
-
-private string SetDictionaryPropertySerialized(OdcmProperty prop, string val)
-{
-    if(prop.IsComplex() || prop.IsCollection)
-    {
-        return  "self.dictionary[@\"" + prop.Name + "\"] = " + val + ";";
-    }
-
-    return  "self.dictionary[@\"" + prop.Name + "\"] = @(" + val + ");";
 }
 
 /*
