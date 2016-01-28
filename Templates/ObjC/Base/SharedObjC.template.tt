@@ -15,6 +15,11 @@ private OdcmModel model;
 
 private string GetObjCTypeIdentifier(OdcmObject o, bool getUnderlyingType=false)
 {
+    if(o==null)
+    {
+        return GetStaticBaseObject();
+    }
+
     if(o is OdcmProperty)
     {
         OdcmProperty prop=(OdcmProperty)o;
