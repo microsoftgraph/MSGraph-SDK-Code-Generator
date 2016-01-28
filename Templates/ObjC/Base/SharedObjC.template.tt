@@ -91,7 +91,7 @@ private string GetHydratedPropertyFromNSJSONSerializableExpression(string expr,O
     if(prop.IsEnum())
     {
         return String.Format(
-        @"[NSString to{1}:{0}]",
+        @"[{0} to{1}]",
         expr,
         GetObjCTypeIdentifier(prop,true));
     }
