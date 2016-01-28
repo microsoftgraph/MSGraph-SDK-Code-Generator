@@ -28,7 +28,7 @@ var entityRequestBuilder = innerEntityType + "RequestBuilder";
     return [[<#=propRequestName#> alloc] initWithURL:self.requestURL options:options client:self.client];
 }
 <#
-if (!(innerEntity is OdcmComplexClass) && prop.LongDescriptionContains("queryable"))
+if (!(innerEntity is OdcmComplexClass) && !prop.LongDescriptionContains("non-queryable"))
 {
 #>
 - (<#=entityRequestBuilder#> *)<#=innerEntity.Name.ToLowerFirstChar()#>:(NSString *)<#=innerEntity.Name.ToLowerFirstChar()#>
