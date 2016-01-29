@@ -67,6 +67,30 @@ public string GetCollectionWithReferencesRequestMethodWithOptions(OdcmProperty o
     return this.GetRequestMethodWithOptions(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
 }
 
+
+// -------------------------------------------------------------
+// Indexer properties
+// -------------------------------------------------------------
+// Creates an indexer for the specified property name and requestBuilderTypeName
+public string GetIndexRequestBuilder(string propertyName, string requestBuilderTypeName)
+{
+    var stringBuilder = new StringBuilder();
+
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the specified {1}.", requestBuilderTypeName, propertyName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <param name=\"id\">The ID for the {0}.</param>", propertyName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        I{0} this[string id] {{ get; }}", requestBuilderTypeName);
+    
+    return stringBuilder.ToString();
+}
+
 // Creates the request builder property definition for the $ref navigation on the collection
 public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
 {
@@ -74,7 +98,7 @@ public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
     if (propertyClass.Kind != OdcmClassKind.Service && odcmProperty.IsNavigation() && !odcmProperty.ContainsTarget)
     {
         var stringBuilder = new StringBuilder();
-        var entityReferenceRequestBuilder = this.GetPropertyReferenceTypeRequestBuilderName(odcmProperty);
+        var entityReferenceRequestBuilder = this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty);
         
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <summary>");
@@ -101,31 +125,6 @@ public string GetCollectionWithReferencesIndexRequestBuilder(OdcmProperty odcmPr
     var entityRequestBuilder = this.GetPropertyTypeWithReferencesRequestBuilderName(odcmProperty);
     
     return this.GetIndexRequestBuilder(propTypeName, entityRequestBuilder);
-}
-
-
-// -------------------------------------------------------------
-// Generic collection request builder methods
-// -------------------------------------------------------------
-
-// Creates an indexer for the specified property name and requestBuilderTypeName
-public string GetIndexRequestBuilder(string propertyName, string requestBuilderTypeName)
-{
-    var stringBuilder = new StringBuilder();
-
-    stringBuilder.Append("/// <summary>");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the specified {1}.", requestBuilderTypeName, propertyName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        /// </summary>");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <param name=\"id\">The ID for the {0}.</param>", propertyName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        I{0} this[string id] {{ get; }}", requestBuilderTypeName);
-    
-    return stringBuilder.ToString();
 }
 
 #>

@@ -70,6 +70,7 @@ namespace <#=namespaceValue#>
         /// <returns>The object returned by the PUT call.</returns>
         public Task<T> PutAsync<T>(Stream <#=propName#>) where T : <#=propClass#>
         {
+            this.ContentType = "application/octet-stream";
             this.Method = "PUT";
             return this.SendAsync<T>(<#=propName#>);
         }

@@ -43,6 +43,10 @@ public string GetCollectionWithReferencesRequestConstructor(OdcmProperty odcmPro
     return this.GetConstructor(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
 }
 
+
+// -------------------------------------------------------------
+// Build CRUD methods
+// -------------------------------------------------------------
 public string GetPostAsyncMethod(OdcmProperty odcmProperty)
 {
     if (!odcmProperty.LongDescriptionContains("readonly"))

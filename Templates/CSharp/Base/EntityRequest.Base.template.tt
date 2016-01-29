@@ -3,6 +3,29 @@
 <#+
 
 // -------------------------------------------------------------
+// Methods for initializing requests and classes for entities that support $ref addressing
+// -------------------------------------------------------------
+public string GetEntityReferenceRequestClassDefinition(OdcmClass odcmClass)
+{
+    return this.GetClassDefinition(this.GetEntityReferenceRequestName(odcmClass));
+}
+
+public string GetEntityWithReferencesRequestClassDefinition(OdcmClass odcmClass)
+{
+    return this.GetClassDefinition(this.GetEntityWithReferencesRequestName(odcmClass));
+}
+
+public string GetEntityReferenceRequestConstructor(OdcmClass odcmClass)
+{
+    return this.GetConstructor(this.GetEntityReferenceRequestName(odcmClass));
+}
+
+public string GetEntityWithReferencesRequestConstructor(OdcmClass odcmClass)
+{
+    return this.GetConstructor(this.GetEntityWithReferencesRequestName(odcmClass));
+}
+
+// -------------------------------------------------------------
 // Common methods for entity requests
 // -------------------------------------------------------------
 
@@ -43,6 +66,10 @@ public string GetEntityRequestConstructor(OdcmClass odcmClass)
     return this.GetConstructor(this.GetEntityRequestName(odcmClass));
 }
 
+
+// -------------------------------------------------------------
+// Build CRUD methods
+// -------------------------------------------------------------
 public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
 {
     var stringBuilder = new StringBuilder();
@@ -152,6 +179,16 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
     return stringBuilder.ToString();
 }
 
+public string GetEntityReferenceDeleteAsyncMethod(OdcmClass odcmClass)
+{
+    var entityName = this.GetEntityNameString(odcmClass);
+    return this.GetDeleteAsyncMethod(string.Concat(entityName, " reference"), entityName);
+}
+
+
+// -------------------------------------------------------------
+// Build select, expand, and top methods
+// -------------------------------------------------------------
 public string GetSelectMethod(string requestType)
 {
     var stringBuilder = new StringBuilder();
@@ -215,14 +252,10 @@ public string GetExpandMethod(string requestType)
     return stringBuilder.ToString();
 }
 
+// Standard entity
 public string GetEntityExpandMethod(OdcmClass odcmClass)
 {
     return this.GetExpandMethod(this.GetRequestString(this.GetEntityNameString(odcmClass)));
-}
-
-public string GetEntityWithReferencesExpandMethod(OdcmClass odcmClass)
-{
-    return this.GetExpandMethod(this.GetEntityWithReferencesRequestName(odcmClass));
 }
 
 public string GetEntitySelectMethod(OdcmClass odcmClass)
@@ -230,48 +263,25 @@ public string GetEntitySelectMethod(OdcmClass odcmClass)
     return this.GetSelectMethod(this.GetRequestString(this.GetEntityNameString(odcmClass)));
 }
 
-public string GetEntityWithReferencesSelectMethod(OdcmClass odcmClass)
-{
-    return this.GetSelectMethod(this.GetEntityWithReferencesRequestName(odcmClass));
-}
-
 public string GetEntityTopMethod(OdcmClass odcmClass)
 {
     return this.GetTopMethod(this.GetRequestString(this.GetEntityNameString(odcmClass)));
 }
 
+// Entity with references
+public string GetEntityWithReferencesExpandMethod(OdcmClass odcmClass)
+{
+    return this.GetExpandMethod(this.GetEntityWithReferencesRequestName(odcmClass));
+}
+
+public string GetEntityWithReferencesSelectMethod(OdcmClass odcmClass)
+{
+    return this.GetSelectMethod(this.GetEntityWithReferencesRequestName(odcmClass));
+}
+
 public string GetEntityWithReferencesTopMethod(OdcmClass odcmClass)
 {
     return this.GetTopMethod(this.GetEntityWithReferencesRequestName(odcmClass));
-}
-
-// -------------------------------------------------------------
-// Methods for entity reference requests
-// -------------------------------------------------------------
-public string GetEntityReferenceRequestClassDefinition(OdcmClass odcmClass)
-{
-    return this.GetClassDefinition(this.GetEntityReferenceRequestName(odcmClass));
-}
-
-public string GetEntityWithReferencesRequestClassDefinition(OdcmClass odcmClass)
-{
-    return this.GetClassDefinition(this.GetEntityWithReferencesRequestName(odcmClass));
-}
-
-public string GetEntityReferenceRequestConstructor(OdcmClass odcmClass)
-{
-    return this.GetConstructor(this.GetEntityReferenceRequestName(odcmClass));
-}
-
-public string GetEntityWithReferencesRequestConstructor(OdcmClass odcmClass)
-{
-    return this.GetConstructor(this.GetEntityWithReferencesRequestName(odcmClass));
-}
-
-public string GetEntityReferenceDeleteAsyncMethod(OdcmClass odcmClass)
-{
-    var entityName = this.GetEntityNameString(odcmClass);
-    return this.GetDeleteAsyncMethod(string.Concat(entityName, " reference"), entityName);
 }
 
 #>

@@ -25,39 +25,6 @@ public string GetCollectionRequestMethodWithOptions(OdcmProperty odcmProperty)
     return this.GetRequestMethodWithOptions(this.GetPropertyCollectionRequestName(odcmProperty));
 }
 
-// Creates the indexer property definition for the collection
-public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
-{
-    var stringBuilder = new StringBuilder();
-    var propTypeName = this.GetPropertyTypeName(odcmProperty);
-    var entityRequestBuilder = this.GetPropertyTypeRequestBuilderName(odcmProperty);
-        
-    stringBuilder.Append("/// <summary>");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the specified {1}.", entityRequestBuilder, propTypeName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        /// </summary>");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <param name=\"id\">The ID for the {0}.</param>", propTypeName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityRequestBuilder);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public I{0} this[string id]", entityRequestBuilder);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(
-@"        {
-            get
-            {
-");
-        
-    stringBuilder.AppendFormat("                return new {0}(this.AppendSegmentToRequestUrl(id), this.Client);", entityRequestBuilder);
-    stringBuilder.Append(@"
-            }
-        }");
-        
-    return stringBuilder.ToString();
-}
-
 
 // -------------------------------------------------------------
 // Methods for the reference of an entity collection
@@ -113,7 +80,7 @@ public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
     if (propertyClass.Kind != OdcmClassKind.Service && odcmProperty.IsNavigation() && !odcmProperty.ContainsTarget)
     {
         var stringBuilder = new StringBuilder();
-        var entityReferenceRequestBuilder = this.GetPropertyReferenceTypeRequestBuilderName(odcmProperty);
+        var entityReferenceRequestBuilder = this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty);
         
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <summary>");
@@ -142,6 +109,43 @@ public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
     }
     
     return string.Empty;
+}
+
+
+// -------------------------------------------------------------
+// Indexer properties
+// -------------------------------------------------------------
+// Creates the indexer property definition for a standard navigation collection
+public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
+{
+    var stringBuilder = new StringBuilder();
+    var propTypeName = this.GetPropertyTypeName(odcmProperty);
+    var entityRequestBuilder = this.GetPropertyTypeRequestBuilderName(odcmProperty);
+        
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the specified {1}.", entityRequestBuilder, propTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <param name=\"id\">The ID for the {0}.</param>", propTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityRequestBuilder);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        public I{0} this[string id]", entityRequestBuilder);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(
+@"        {
+            get
+            {
+");
+        
+    stringBuilder.AppendFormat("                return new {0}(this.AppendSegmentToRequestUrl(id), this.Client);", entityRequestBuilder);
+    stringBuilder.Append(@"
+            }
+        }");
+        
+    return stringBuilder.ToString();
 }
 
 // Creates the indexer property definition for a collection that supports $ref

@@ -28,6 +28,10 @@ public string GetCollectionWithReferencesInterfaceDefinition(OdcmProperty odcmPr
     return this.GetInterfaceDefinition(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
 }
 
+
+// -------------------------------------------------------------
+// Build CRUD methods
+// -------------------------------------------------------------
 public string GetPostAsyncMethod(OdcmProperty odcmProperty)
 {
     if (!odcmProperty.LongDescriptionContains("readonly"))
