@@ -1,9 +1,9 @@
 ﻿{
     "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python" ],
-    "TargetLanguage": "Java",
+    "TargetLanguage": "ObjC",
     "Plugins": [ ],
-    "PrimaryNamespaceName": "com.microsoft",
-    "NamespacePrefix": "com",
+    "PrimaryNamespaceName": "com",
+    "NamespacePrefix": "MSGraph",
     "InitializeCollections": "false",
     "AllowShortActions": "false",
     "NamespaceOverride": "",
@@ -33,6 +33,15 @@
     ],
     "TemplateMapping": {
         "Shared": [
+            { "Template": "EntityType", "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
+            { "Template": "ComplexType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Ignore": "methodResponse"},
+            { "Template": "EnumType", "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
+            { "Template": "EntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
+            { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
+            { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
+            { "Template": "StreamRequest", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "<Class><Property>Request" },
+            { "Template": "MethodRequest", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Request" },
+            { "Template": "MethodRequestBuilder", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
         ]
     }
 }
