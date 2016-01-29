@@ -122,6 +122,12 @@ private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
 
 private string SetNSJSONPermitedExpressionSerialized(OdcmType type,string val)
 {
+    //Fallback to complex entities that must support ms_toString
+    if(type.IsComplex())
+    {
+        return val;
+    }
+
     if(type is OdcmEnum)
     {
         return String.Format("[NSString stringWith{0}:{1}]",GetObjCTypeIdentifier(type),val);
@@ -132,8 +138,8 @@ private string SetNSJSONPermitedExpressionSerialized(OdcmType type,string val)
 
 private string SetNSJSONPermitedExpressionSerialized(OdcmProperty prop,string val)
 {
-    //Falls back to complex entities that must support ms_toString
-    if(prop.IsComplex() || prop.IsCollection)
+    //Fallback to complex entities that must support ms_toString
+    if(prop.IsCollection)
     {
         return val;
     }
@@ -172,6 +178,30 @@ private string GetHydratedIVarFromDictionary(OdcmProperty prop)
 
     return String.Format(@"_{0} = {1};",GetObjCProperty(prop),GetHydratedPropertyFromDictionary(prop));
 
+}
+
+public string GetFunctionParameters(List<OdcmParameter> parameters)
+{
+    var result = new StringBuilder();
+
+    if (parameters.Any()) {
+        result.Append("NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:");
+    } else {
+        result.Append("NSDictionary *params = nil;");
+    }
+
+    foreach (var param in parameters) {
+        result.AppendFormat("[MSObject getNSJsonSerializationCompatibleValue:{0}],",
+        SetNSJSONPermitedExpressionSerialized(param.Type,"_"+param.Name.ToLowerFirstChar()));
+
+        result.AppendFormat("@\"{0}\",", param.Name);
+    }
+
+    if (parameters.Any()) {
+        result.AppendLine("nil];").AppendLine();
+    }
+
+    return result.ToString();
 }
 
 /*

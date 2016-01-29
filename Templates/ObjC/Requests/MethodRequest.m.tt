@@ -85,7 +85,7 @@ if (func.Parameters.Count > 0)
 {
 #>
 
-- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url options:(NSArray *)options client:(ODataBaseClient*)client 
+- (instancetype)initWith<#=writer.GetParamsString(func.Parameters)#>URL:(NSURL *)url options:(NSArray *)options client:(ODataBaseClient*)client
 {
 <#
     foreach (var param in func.Parameters)
@@ -120,7 +120,7 @@ if (func.Parameters.Count > 0)
 <#
 if (func.Parameters.Count > 0)
 {
-    var paramsDictionary = writer.GetFunctionParameters(func.Parameters);
+    var paramsDictionary = GetFunctionParameters(func.Parameters);
 #>
     <#=paramsDictionary#>
 <#
