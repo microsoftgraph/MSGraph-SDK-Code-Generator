@@ -16,7 +16,7 @@
 <#+
     public string TypeName(OdcmObject c) {
         if (c is OdcmMethod) {
-            return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
+            return ((OdcmMethod)c).Class.Name.ToUpperFirstChar() + c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
         } else if (c is OdcmProperty && c.AsOdcmProperty().IsCollection) {
             return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		} else if (c is OdcmProperty && c.AsOdcmProperty().Type is OdcmPrimitiveType) {
@@ -25,6 +25,10 @@
 			return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		}
         return c.Name.ToUpperFirstChar();
+    }
+
+    public string MethodName(OdcmObject c) {
+        return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
     }
 
     public string ITypeName(OdcmObject c) {
@@ -48,7 +52,7 @@
     }
 
     public string BaseTypeRequest2(OdcmObject c) {
-        return "Base" + c.Name + TypeRequest(c);
+        return "Base" + TypeRequest(c);
     }
 
     public string ITypeRequest(OdcmObject c) {
@@ -57,6 +61,48 @@
 
     public string IBaseTypeRequest(OdcmObject c) {
         return "I" + BaseTypeRequest(c);
+    }
+
+    public string IBaseTypeMethodRequest(OdcmObject c) {
+        
+        var method = c.AsOdcmMethod();
+        if (method != null) {
+            return "IBase" + TypeRequest(c);
+        }
+        return "I" + BaseTypeRequest(c);
+    }
+
+    public string IBaseTypeMethodRequestBuilder(OdcmObject c) {
+
+        return IBaseTypeMethodRequest(c) + "Builder";
+    }
+
+    public string ITypeMethodRequest(OdcmObject c) {
+        
+        var method = c.AsOdcmMethod();
+        if (method != null) {
+            return "I" + TypeRequest(c);
+        }
+        return "I" + TypeRequest(c);
+    }
+
+    public string TypeMethodRequest(OdcmObject c) {
+        
+        var method = c.AsOdcmMethod();
+        if (method != null) {
+            return TypeRequest(c);
+        }
+        return TypeRequest(c);
+    }
+
+    public string TypeMethodRequestBuilder(OdcmObject c) {
+
+        return TypeMethodRequest(c) + "Builder";
+    }
+
+    public string ITypeMethodRequestBuilder(OdcmObject c) {
+
+        return ITypeMethodRequest(c) + "Builder";
     }
 
     public string IBaseTypeRequest2(OdcmObject c) {
@@ -96,11 +142,11 @@
     }
 
     public string BaseTypeCollectionResponse(OdcmObject c) {
-        return "Base" + ClassTypeName(c) + TypeName(c) + "CollectionResponse";
+        return "Base" +  TypeName(c) + "CollectionResponse";
     }
 
     public string TypeCollectionRequest(OdcmObject c) {
-        return ClassTypeName(c) + TypeName(c) + "CollectionRequest";
+        return TypeName(c) + "CollectionRequest";
     }
 
     public string ITypeCollectionRequest(OdcmObject c) {
@@ -116,7 +162,7 @@
     }
 
     public string TypeCollectionRequestBuilder(OdcmObject c) {
-        return ClassTypeName(c) + TypeName(c) + "CollectionRequest" + "Builder";
+        return TypeName(c) + "CollectionRequest" + "Builder";
     }
 
     public string ITypeCollectionRequestBuilder(OdcmObject c) {
@@ -242,7 +288,7 @@
 
     public string CollectionPageGeneric(OdcmObject c) {
         if (c is OdcmMethod) {
-            return "<" + ClassTypeName(c) + ", " + ITypeRequestBuilder(c) + ">";
+            return "<" + ClassTypeName(c) + ", " + ITypeMethodRequestBuilder(c) + ">";
         }
         return "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
     }

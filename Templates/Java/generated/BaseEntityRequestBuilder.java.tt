@@ -97,7 +97,7 @@ if (c.AsOdcmClass() != null)
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
 #>
 
-    public <#=ITypeRequestBuilder(method)#> get<#=TypeName(method)#>(<#=parameterList#>) {
+    public <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
         return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=method.Name#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
 <#

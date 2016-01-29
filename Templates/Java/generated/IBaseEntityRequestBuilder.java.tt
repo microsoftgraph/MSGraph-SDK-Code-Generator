@@ -69,7 +69,7 @@ if (c.AsOdcmClass() != null)
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
 #>
 
-    <#=ITypeRequestBuilder(method)#> get<#=TypeName(method)#>(<#=parameterList#>);
+    <#=ITypeMethodRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
 <#
     }
 }

@@ -1,13 +1,13 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = IBaseTypeRequestBuilder(c);#>
+<#host.TemplateName = IBaseTypeMethodRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), "IRequestBuilder")#>
+<#=CreateInterfaceDef(IBaseTypeMethodRequestBuilder(c), "IRequestBuilder")#>
 
-    <#=ITypeRequest(c)#> buildRequest();
+    <#=ITypeMethodRequest(c)#> buildRequest();
 
-    <#=ITypeRequest(c)#> buildRequest(final List<Option> options);
+    <#=ITypeMethodRequest(c)#> buildRequest(final List<Option> options);
 }
