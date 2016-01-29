@@ -2,11 +2,7 @@
 <#@ include file="ICollectionRequest.Base.template.tt"#>
 <#
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Type;
-var innerEntityType = innerEntity.Name.ToCheckedCase();
-var collectionRequest = this.GetPropertyCollectionRequestName(prop);
-var collectionResponse = prop.Name.ToCheckedCase() + "CollectionResponse";
-var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
+var collectionRequest = this.GetPropertyCollectionReferenceRequestName(prop);
 
 #>
 
@@ -16,21 +12,9 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    <#=this.GetCollectionInterfaceDefinition(prop)#>
+    <#=this.GetCollectionReferenceInterfaceDefinition(prop)#>
     {
         <#=GetPostAsyncMethod(prop)#>
-        /// <summary>
-        /// Gets the collection page.
-        /// </summary>
-        /// <returns>The collection page.</returns>
-        Task<I<#=collectionPage#>> GetAsync();
-
-        /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        I<#=collectionRequest#> Expand(string value);
 
         /// <summary>
         /// Adds the specified select value to the request.

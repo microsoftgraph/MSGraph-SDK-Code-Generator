@@ -1,0 +1,205 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="IRequest.Base.template.tt"#>
+<#+
+
+// -------------------------------------------------------------
+// Methods for entity reference requests
+// -------------------------------------------------------------
+public string GetEntityReferenceRequestInterfaceDefinition(OdcmClass odcmClass)
+{
+    return this.GetInterfaceDefinition(this.GetEntityReferenceRequestName(odcmClass));
+}
+
+public string GetEntityWithReferencesRequestInterfaceDefinition(OdcmClass odcmClass)
+{
+    return this.GetInterfaceDefinition(this.GetEntityWithReferencesRequestName(odcmClass));
+}
+
+public string GetEntityReferenceDeleteAsyncMethod(OdcmClass odcmClass)
+{
+    return this.GetDeleteAsyncMethod(string.Concat(this.GetEntityNameString(odcmClass), " reference"));
+}
+
+
+// -------------------------------------------------------------
+// Methods for standard entity requests
+// -------------------------------------------------------------
+public string GetEntityRequestInterfaceDefinition(OdcmClass odcmClass)
+{
+    return this.GetInterfaceDefinition(this.GetEntityRequestName(odcmClass));
+}
+
+
+// -------------------------------------------------------------
+// Build CRUD methods
+// -------------------------------------------------------------
+public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
+{
+    var stringBuilder = new StringBuilder();
+    
+    var entityName = this.GetEntityNameString(odcmClass);
+    var lowerCaseEntityName = entityName.ToLowerFirstChar();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Creates the specified {0} using PUT.", entityName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <param name=\"{0}ToCreate\">The {1} to create.</param>", lowerCaseEntityName, entityName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", entityName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        Task<{0}> CreateAsync({0} {1}ToCreate);", entityName, lowerCaseEntityName);
+    
+    return stringBuilder.ToString();
+}
+
+public string GetDeleteAsyncMethod(string deleteTargetString)
+{
+    var stringBuilder = new StringBuilder();
+
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Deletes the specified {0}.", deleteTargetString);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// <returns>The task to await.</returns>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        Task DeleteAsync();");
+    
+    return stringBuilder.ToString();
+}
+
+public string GetEntityDeleteAsyncMethod(OdcmClass odcmClass)
+{
+    return this.GetDeleteAsyncMethod(this.GetEntityNameString(odcmClass));
+}
+
+public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
+{
+    var stringBuilder = new StringBuilder();
+    
+    var entityName = this.GetEntityNameString(odcmClass);
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Gets the specified {0}.", entityName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The {0}.</returns>", entityName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        Task<{0}> GetAsync();", entityName);
+    
+    return stringBuilder.ToString();
+}
+
+
+// -------------------------------------------------------------
+// Build select, expand, and top methods
+// -------------------------------------------------------------
+public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
+{
+    var stringBuilder = new StringBuilder();
+    
+    var entityName = this.GetEntityNameString(odcmClass);
+    var lowerCaseEntityName = entityName.ToLowerFirstChar();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Updates the specified {0} using PATCH.", entityName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <param name=\"{0}ToUpdate\">The {1} to update.</param>", lowerCaseEntityName, entityName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The updated {0}.</returns>", entityName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        Task<{0}> UpdateAsync({0} {1}ToUpdate);", entityName, lowerCaseEntityName);
+    
+    return stringBuilder.ToString();
+}
+
+public string GetExpandMethod(string entityRequest)
+{
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append(
+      @"/// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name=""value"">The expand value.</param>
+        /// <returns>The request object to send.</returns>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        I{0} Expand(string value);", entityRequest);
+    
+    return stringBuilder.ToString();
+}
+
+public string GetSelectMethod(string entityRequest)
+{
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append(
+      @"/// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name=""value"">The select value.</param>
+        /// <returns>The request object to send.</returns>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        I{0} Select(string value);", entityRequest);
+    
+    return stringBuilder.ToString();
+}
+
+public string GetTopMethod(string entityRequest)
+{
+    var stringBuilder = new StringBuilder();
+
+    stringBuilder.Append(
+      @"/// <summary>
+        /// Adds the specified top value to the request.
+        /// </summary>
+        /// <param name=""value"">The top value.</param>
+        /// <returns>The request object to send.</returns>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        I{0} Top(int value);", entityRequest);
+    
+    return stringBuilder.ToString();
+}
+
+// Standard entity
+public string GetEntityExpandMethod(OdcmClass odcmClass)
+{
+    return this.GetExpandMethod(this.GetRequestString(this.GetEntityNameString(odcmClass)));
+}
+
+public string GetEntitySelectMethod(OdcmClass odcmClass)
+{
+    return this.GetSelectMethod(this.GetRequestString(this.GetEntityNameString(odcmClass)));
+}
+
+public string GetEntityTopMethod(OdcmClass odcmClass)
+{
+    return this.GetTopMethod(this.GetRequestString(this.GetEntityNameString(odcmClass)));
+}
+
+// Entity with references
+public string GetEntityWithReferencesExpandMethod(OdcmClass odcmClass)
+{
+    return this.GetExpandMethod(this.GetEntityWithReferencesRequestName(odcmClass));
+}
+
+public string GetEntityWithReferencesSelectMethod(OdcmClass odcmClass)
+{
+    return this.GetSelectMethod(this.GetEntityWithReferencesRequestName(odcmClass));
+}
+
+public string GetEntityWithReferencesTopMethod(OdcmClass odcmClass)
+{
+    return this.GetTopMethod(this.GetEntityWithReferencesRequestName(odcmClass));
+}
+
+#>

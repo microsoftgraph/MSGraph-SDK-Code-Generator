@@ -14,23 +14,17 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System.IO;
     using System.Threading.Tasks;
 
-    <#=this.GetEntityRequestClassDefinition(entity)#>
+    <#=this.GetEntityWithReferencesRequestClassDefinition(entity)#>
     {
-        <#=this.GetEntityRequestConstructor(entity)#>
-
-        <#=this.GetEntityCreateAsyncMethod(entity)#>
-
-        <#=this.GetEntityDeleteAsyncMethod(entity)#>
+        <#=this.GetEntityWithReferencesRequestConstructor(entity)#>
 
         <#=this.GetEntityGetAsyncMethod(entity)#>
 
-        <#=this.GetEntityUpdateAsyncMethod(entity)#>
+        <#=this.GetEntityWithReferencesExpandMethod(entity)#>
 
-        <#=this.GetEntityExpandMethod(entity)#>
-
-        <#=this.GetEntitySelectMethod(entity)#>
+        <#=this.GetEntityWithReferencesSelectMethod(entity)#>
         
-        <#=this.GetEntityTopMethod(entity)#>
+        <#=this.GetEntityWithReferencesTopMethod(entity)#>
 
         /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.

@@ -13,20 +13,14 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System.IO;
     using System.Threading.Tasks;
 
-    <#=this.GetEntityRequestInterfaceDefinition(entity)#>
+    <#=this.GetEntityWithReferencesRequestInterfaceDefinition(entity)#>
     {
-        <#=this.GetEntityCreateAsyncMethod(entity)#>
-
-        <#=this.GetEntityDeleteAsyncMethod(entity)#>
-
         <#=this.GetEntityGetAsyncMethod(entity)#>
 
-        <#=this.GetEntityUpdateAsyncMethod(entity)#>
+        <#=this.GetEntityWithReferencesExpandMethod(entity)#>
 
-        <#=this.GetEntityExpandMethod(entity)#>
+        <#=this.GetEntityWithReferencesSelectMethod(entity)#>
 
-        <#=this.GetEntitySelectMethod(entity)#>
-
-        <#=this.GetEntityTopMethod(entity)#>
+        <#=this.GetEntityWithReferencesTopMethod(entity)#>
     }
 }

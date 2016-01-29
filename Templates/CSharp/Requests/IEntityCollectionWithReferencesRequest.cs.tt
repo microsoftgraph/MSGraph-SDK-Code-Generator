@@ -2,10 +2,7 @@
 <#@ include file="ICollectionRequest.Base.template.tt"#>
 <#
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Type;
-var innerEntityType = innerEntity.Name.ToCheckedCase();
-var collectionRequest = this.GetPropertyCollectionRequestName(prop);
-var collectionResponse = prop.Name.ToCheckedCase() + "CollectionResponse";
+var collectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
 var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
 
 #>
@@ -16,9 +13,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    <#=this.GetCollectionInterfaceDefinition(prop)#>
+    <#=this.GetCollectionWithReferencesInterfaceDefinition(prop)#>
     {
-        <#=GetPostAsyncMethod(prop)#>
         /// <summary>
         /// Gets the collection page.
         /// </summary>

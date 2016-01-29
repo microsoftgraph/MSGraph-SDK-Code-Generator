@@ -1,211 +1,46 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="SharedCSharp.template.tt"#>
+<#@ include file="EntityRequestBuilder.Base.template.tt"#>
 <#
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
-var entityName = entity.Name.ToCheckedCase();
-var request = entityName + "Request";
-var requestBuilder = entityName + "RequestBuilder";
 
 #>
 
-namespace <#=entity.Namespace.GetNamespaceName()#>
+namespace <#=this.GetNamespaceName(entity)#>
 {
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// The type  <#=entity.Name.ToCheckedCase()#>RequestBuilder.
-    /// </summary>
-    public partial class <#=requestBuilder#> : BaseRequestBuilder, I<#=requestBuilder#>
+    <#=this.GetEntityRequestBuilderClassDefinition(entity)#>
     {
-        /// <summary>
-        /// Constructs a new <#=requestBuilder#>.
-        /// </summary>
-        /// <param name="requestUrl">The URL for the built request.</param>
-        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        public <#=requestBuilder#>(
-            string requestUrl,
-            IBaseClient client)
-            : base(requestUrl, client)
-        {
-        }
 
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
-        /// <returns>The built request.</returns>
-        public I<#=request#> Request()
-        {
-            return this.Request(null);
-        }
+        <#=this.GetEntityRequestBuilderConstructor(entity)#>
 
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
-        /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public I<#=request#> Request(IList<Option> options)
-        {
-            return new <#=request#>(this.RequestUrl, this.Client, options);
-        }
+        <#=this.GetEntityRequestMethod(entity)#>
 
+        <#=this.GetEntityRequestMethodWithOptions(entity)#>
     <#
-
-    foreach(var prop in entity.NavigationProperties()){
-
-        var propName = prop.Name.ToCheckedCase();
-        var propRequestBuilder = prop.Type.Name.ToCheckedCase() + "RequestBuilder";
-
-        if (prop.IsCollection())
-        {
-            var collectionRequestBuilder = propName + "CollectionRequestBuilder";
-    #>
-
-        /// <summary>
-        /// Gets the request builder for <#=propName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=collectionRequestBuilder#>"/>.</returns>
-        public I<#=collectionRequestBuilder#> <#=propName#>
-        {
-            get
-            {
-                return new <#=collectionRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.Client);
-            }
-        }
-    <#
-        }
-        else
-        {
-    #>
-
-        /// <summary>
-        /// Gets the request builder for <#=propName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
-        public I<#=propRequestBuilder#> <#=propName#>
-        {
-            get
-            {
-                return new <#=propRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.Client);
-            }
-        }
-    <#
-        }
-    }
-
-    bool contentStreamFound = false;
-    foreach(var prop in entity.GetProperties(typeName:"Stream"))
-    {
-        var propName = prop.Name.ToCheckedCase();
-        if (propName.Equals("Content"))
-        {
-            contentStreamFound = true;
-        }
-        
-        var propRequestBuilder = propName + "RequestBuilder";
-    #>
-
-        /// <summary>
-        /// Gets the request builder for <#=propName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=entityName#><#=propRequestBuilder#>"/>.</returns>
-        public I<#=entityName#><#=propRequestBuilder#> <#=propName#>
-        {
-            get
-            {
-                return new <#=entityName#><#=propRequestBuilder#>(this.AppendSegmentToRequestUrl("<#=prop.Name#>"), this.Client);
-            }
-        }
-    <#
-    }
-    
-    if (entity.Kind == OdcmClassKind.MediaEntity && !contentStreamFound)
+    if (entity.NavigationProperties().Any())
     {
     #>
     
-        /// <summary>
-        /// Gets the request builder for Content.
-        /// </summary>
-        /// <returns>The <see cref="I<#=entityName#>ContentRequestBuilder"/>.</returns>
-        public I<#=entityName#>ContentRequestBuilder Content
-        {
-            get
-            {
-                return new <#=entityName#>ContentRequestBuilder(this.AppendSegmentToRequestUrl("$value"), this.Client);
-            }
-        }
+        <#=this.GetNavigationProperties(entity)#>
     <#
     }
 
-    foreach(var method in entity.Methods)
+    if (entity.Kind == OdcmClassKind.MediaEntity || entity.GetProperties(typeName:"Stream").Any())
     {
-        var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
-        var baseName = method.Class.Name.ToCheckedCase() + methodName;
-
-        var paramStringBuilder = new System.Text.StringBuilder();
-        var builderInitializerStringBuilder = new System.Text.StringBuilder();
-
-        builderInitializerStringBuilder.Append(Environment.NewLine);
-        builderInitializerStringBuilder.Append("                ");
-        builderInitializerStringBuilder.AppendFormat("this.AppendSegmentToRequestUrl(\"{0}.{1}\"),", method.Namespace.Name, method.Name);
-        builderInitializerStringBuilder.Append(Environment.NewLine);
-        builderInitializerStringBuilder.Append("                ");
-        builderInitializerStringBuilder.Append("this.Client,");
-
-        var hasParameters = method.Parameters != null && method.Parameters.Any();
-
-        if (hasParameters)
-        {
-            var requiredParameters = method.Parameters.Where(param => !param.IsNullable);
-            var optionalParameters = method.Parameters.Where(param => param.IsNullable);
-            
-            foreach (var param in requiredParameters)
-            {
-                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
-
-                paramStringBuilder.Append(Environment.NewLine);
-                paramStringBuilder.Append("            ");
-                paramStringBuilder.Append(param.Type.GetTypeString());
-                paramStringBuilder.Append(" ");
-                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
-                paramStringBuilder.Append(",");
-
-                builderInitializerStringBuilder.Append(Environment.NewLine);
-                builderInitializerStringBuilder.Append("                ");
-                builderInitializerStringBuilder.Append(param.Name.ToLowerFirstChar() + ",");
-            }
-            
-            foreach (var param in optionalParameters)
-            {
-                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
-
-                paramStringBuilder.Append(Environment.NewLine);
-                paramStringBuilder.Append("            ");
-                paramStringBuilder.Append(paramTypeString);
-                paramStringBuilder.Append(" ");
-                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
-                paramStringBuilder.Append(" = null,");
-
-                builderInitializerStringBuilder.Append(Environment.NewLine);
-                builderInitializerStringBuilder.Append("                ");
-                builderInitializerStringBuilder.Append(param.Name.ToLowerFirstChar() + ",");
-            }
-
-            paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);
-        }
-        
-        builderInitializerStringBuilder.Remove(builderInitializerStringBuilder.Length - 1, 1);
     #>
 
-        /// <summary>
-        /// Gets the request builder for <#=baseName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=baseName#>RequestBuilder"/>.</returns>
-        public I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>)
-        {
-            return new <#=baseName#>RequestBuilder(<#=builderInitializerStringBuilder.ToString()#>);
-        }
+        <#=this.GetStreamProperties(entity)#>
+    <#
+    }
+
+    if(entity.Methods.Any())
+    {
+    #>
+    
+        <#=this.GetMethodProperties(entity)#>
     <#
     }
     #>

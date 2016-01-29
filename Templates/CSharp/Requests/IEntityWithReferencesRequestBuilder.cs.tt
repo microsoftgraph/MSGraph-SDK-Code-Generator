@@ -1,0 +1,33 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="IEntityRequestBuilder.Base.template.tt"#>
+<#
+
+var entity = host.CurrentType.AsOdcmClass();
+
+#>
+
+namespace <#=this.GetNamespaceName(entity)#>
+{
+    using System;
+    using System.Collections.Generic;
+
+    <#=this.GetEntityWithReferencesRequestBuilderInterfaceDefinition(entity)#>
+    {
+        <#=this.GetEntityWithReferencesRequestMethod(entity)#>
+
+        <#=this.GetEntityWithReferencesRequestMethodWithOptions(entity)#>
+        
+        <#=this.GetEntityReferenceRequestBuilderProperty(entity)#>
+    <#
+
+    if (entity.Kind == OdcmClassKind.MediaEntity || entity.GetProperties(typeName:"Stream").Any())
+    {
+    #>
+
+        <#=this.GetStreamProperties(entity)#>
+    <#
+    }
+    #>
+
+    }
+}

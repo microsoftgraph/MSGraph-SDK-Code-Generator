@@ -1,5 +1,5 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="SharedCSharp.template.tt"#>
+<#@ include file="IEntityRequestBuilder.Base.template.tt"#>
 <#
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
@@ -9,140 +9,38 @@ var entityRequestBuilder = entityRequest + "Builder";
 
 #>
 
-namespace <#=entity.Namespace.GetNamespaceName()#>
+namespace <#=this.GetNamespaceName(entity)#>
 {
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// The interface I<#=entityRequestBuilder#>.
-    /// </summary>
-    public partial interface I<#=entityRequestBuilder#>
+    <#=this.GetEntityRequestBuilderInterfaceDefinition(entity)#>
     {
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
-        /// <returns>The built request.</returns>
-        I<#=entityRequest#> Request();
+        <#=this.GetEntityRequestMethod(entity)#>
 
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
-        /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        I<#=entityRequest#> Request(IList<Option> options);
-
+        <#=this.GetEntityRequestMethodWithOptions(entity)#>
     <#
-
-    foreach(var prop in entity.NavigationProperties())
-    {
-        var propName = prop.Name.ToCheckedCase();
-        var propRequestBuilder = prop.Type.Name.ToCheckedCase() + "RequestBuilder";
-
-        if (prop.IsCollection())
-        {
-            var collectionRequestBuilder = propName + "CollectionRequestBuilder";
-    #>
-
-        /// <summary>
-        /// Gets the request builder for <#=propName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=collectionRequestBuilder#>"/>.</returns>
-        I<#=collectionRequestBuilder#> <#=propName#> { get; }
-    <#
-        }
-        else{
-    #>
-
-        /// <summary>
-        /// Gets the request builder for <#=propName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=propRequestBuilder#>"/>.</returns>
-        I<#=propRequestBuilder#> <#=propName#> { get; }
-    <#
-        }
-    }
-
-    bool contentStreamFound = false;
-    foreach(var prop in entity.GetProperties(typeName:"Stream"))
-    {
-        var propName = prop.Name.ToCheckedCase();
-        
-        if (propName.Equals("Content"))
-        {
-            contentStreamFound = true;
-        }
-        
-        var propRequestBuilder = propName + "RequestBuilder";
-    #>
-
-        /// <summary>
-        /// Gets the request builder for <#=propName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=entityName#><#=propRequestBuilder#>"/>.</returns>
-        I<#=entityName#><#=propRequestBuilder#> <#=propName#> { get; }
-    <#
-    }
-    
-    if (entity.Kind == OdcmClassKind.MediaEntity && !contentStreamFound)
+    if (entity.NavigationProperties().Any())
     {
     #>
     
-        /// <summary>
-        /// Gets the request builder for Content.
-        /// </summary>
-        /// <returns>The <see cref="I<#=entityName#>ContentRequestBuilder"/>.</returns>
-        I<#=entityName#>ContentRequestBuilder Content { get; }
+        <#=this.GetNavigationProperties(entity)#>
     <#
     }
 
-    foreach(var method in entity.Methods)
+    if (entity.Kind == OdcmClassKind.MediaEntity || entity.GetProperties(typeName:"Stream").Any())
     {
-        var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
-        var baseName = method.Class.Name.ToCheckedCase() + methodName;
-
-        var paramStringBuilder = new System.Text.StringBuilder();
-
-        var hasParameters = method.Parameters != null && method.Parameters.Any();
-
-        if (hasParameters)
-        {
-            var requiredParameters = method.Parameters.Where(param => !param.IsNullable);
-            var optionalParameters = method.Parameters.Where(param => param.IsNullable);
-            
-            foreach (var param in requiredParameters)
-            {
-                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
-
-                paramStringBuilder.Append(Environment.NewLine);
-                paramStringBuilder.Append("            ");
-                paramStringBuilder.Append(param.Type.GetTypeString());
-                paramStringBuilder.Append(" ");
-                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
-                paramStringBuilder.Append(",");
-            }
-            
-            foreach (var param in optionalParameters)
-            {
-                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
-
-                paramStringBuilder.Append(Environment.NewLine);
-                paramStringBuilder.Append("            ");
-                paramStringBuilder.Append(paramTypeString);
-                paramStringBuilder.Append(" ");
-                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
-                paramStringBuilder.Append(" = null,");
-            }
-
-            paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);
-        }
     #>
 
-        /// <summary>
-        /// Gets the request builder for <#=baseName#>.
-        /// </summary>
-        /// <returns>The <see cref="I<#=baseName#>RequestBuilder"/>.</returns>
-        I<#=baseName#>RequestBuilder <#=methodName#>(<#=paramStringBuilder.ToString()#>);
+        <#=this.GetStreamProperties(entity)#>
+    <#
+    }
+
+    if(entity.Methods.Any())
+    {
+    #>
+    
+        <#=this.GetMethodProperties(entity)#>
     <#
     }
     #>
