@@ -10,7 +10,7 @@
             { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
             { "Template": "StreamRequest", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "<Class><Property>Request" },
             { "Template": "MethodRequest", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Request" },
-            { "Template": "MethodRequestBuilder", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
+            { "Template": "MethodRequestBuilder", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>RequestBuilder" },
 
             { "Template": "EntityType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Matches": "navigable" },
             { "Template": "IEntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "I<Container>Client" },
