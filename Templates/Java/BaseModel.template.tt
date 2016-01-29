@@ -112,7 +112,7 @@
     }
 
     public string TypeCollectionRequestBuilder(OdcmObject c) {
-        return TypeCollectionRequest + "Builder";
+        return TypeCollectionRequest(c) + "Builder";
     }
 
     public string ITypeCollectionRequestBuilder(OdcmObject c) {
