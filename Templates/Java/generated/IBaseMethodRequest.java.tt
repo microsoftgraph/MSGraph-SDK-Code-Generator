@@ -1,14 +1,14 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = IBaseTypeMethodRequest(c);#>
+<#host.TemplateName = IBaseTypeRequest(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.*;
 
-<#=CreateInterfaceDef(IBaseTypeMethodRequest(c))#>
+<#=CreateInterfaceDef(IBaseTypeRequest(c))#>
 
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
     void get(final ICallback<<#=ClassTypeName(c)#>> callback);
@@ -20,11 +20,11 @@ import com.google.gson.annotations.*;
     void get() throws ClientException;
 
     /*
-    <#=ITypeMethodRequest(c)#> select(final String value) ;
+    <#=ITypeRequest(c)#> select(final String value) ;
 
-    <#=ITypeMethodRequest(c)#> top(final int value);
+    <#=ITypeRequest(c)#> top(final int value);
 
-    <#=ITypeMethodRequest(c)#> expand(final String value);
+    <#=ITypeRequest(c)#> expand(final String value);
 
     */
 <# } #>

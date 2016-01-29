@@ -32,7 +32,7 @@
     }
 
     public string ITypeName(OdcmObject c) {
-        return "I" +  TypeName(c);
+        return "I" + TypeName(c);
     }
 
     public string BaseTypeName(OdcmObject c) {
@@ -51,62 +51,12 @@
         return "Base" + TypeRequest(c);
     }
 
-    public string BaseTypeRequest2(OdcmObject c) {
-        return "Base" + TypeRequest(c);
-    }
-
     public string ITypeRequest(OdcmObject c) {
         return "I" + TypeRequest(c);
     }
 
     public string IBaseTypeRequest(OdcmObject c) {
         return "I" + BaseTypeRequest(c);
-    }
-
-    public string IBaseTypeMethodRequest(OdcmObject c) {
-        
-        var method = c.AsOdcmMethod();
-        if (method != null) {
-            return "IBase" + TypeRequest(c);
-        }
-        return "I" + BaseTypeRequest(c);
-    }
-
-    public string IBaseTypeMethodRequestBuilder(OdcmObject c) {
-
-        return IBaseTypeMethodRequest(c) + "Builder";
-    }
-
-    public string ITypeMethodRequest(OdcmObject c) {
-        
-        var method = c.AsOdcmMethod();
-        if (method != null) {
-            return "I" + TypeRequest(c);
-        }
-        return "I" + TypeRequest(c);
-    }
-
-    public string TypeMethodRequest(OdcmObject c) {
-        
-        var method = c.AsOdcmMethod();
-        if (method != null) {
-            return TypeRequest(c);
-        }
-        return TypeRequest(c);
-    }
-
-    public string TypeMethodRequestBuilder(OdcmObject c) {
-
-        return TypeMethodRequest(c) + "Builder";
-    }
-
-    public string ITypeMethodRequestBuilder(OdcmObject c) {
-
-        return ITypeMethodRequest(c) + "Builder";
-    }
-
-    public string IBaseTypeRequest2(OdcmObject c) {
-        return "I" + BaseTypeRequest2(c);
     }
 
     public string TypeRequestBuilder(OdcmObject c) {
@@ -142,7 +92,7 @@
     }
 
     public string BaseTypeCollectionResponse(OdcmObject c) {
-        return "Base" +  TypeName(c) + "CollectionResponse";
+        return "Base" + TypeName(c) + "CollectionResponse";
     }
 
     public string TypeCollectionRequest(OdcmObject c) {
@@ -288,7 +238,7 @@
 
     public string CollectionPageGeneric(OdcmObject c) {
         if (c is OdcmMethod) {
-            return "<" + ClassTypeName(c) + ", " + ITypeMethodRequestBuilder(c) + ">";
+            return "<" + ClassTypeName(c) + ", " + ITypeRequestBuilder(c) + ">";
         }
         return "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
     }

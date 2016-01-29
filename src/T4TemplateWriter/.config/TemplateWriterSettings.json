@@ -1,9 +1,9 @@
 ﻿{
     "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python" ],
-    "TargetLanguage": "ObjC",
+    "TargetLanguage": "Java",
     "Plugins": [ ],
-    "PrimaryNamespaceName": "com",
-    "NamespacePrefix": "MSGraph",
+    "PrimaryNamespaceName": "com.microsoft",
+    "NamespacePrefix": "com",
     "InitializeCollections": "false",
     "AllowShortActions": "false",
     "NamespaceOverride": "",

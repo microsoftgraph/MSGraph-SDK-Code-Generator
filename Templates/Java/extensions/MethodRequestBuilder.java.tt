@@ -1,11 +1,11 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeMethodRequestBuilder(c);#>
+<#host.TemplateName = TypeRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef(TypeMethodRequestBuilder(c), BaseTypeRequestBuilder(c), ITypeMethodRequestBuilder(c))#>
+<#=CreateClassDef(TypeRequestBuilder(c), BaseTypeRequestBuilder(c), ITypeRequestBuilder(c))#>
 
     /**
      * The request builder for this <#=TypeName(c)#>
@@ -14,7 +14,7 @@
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=TypeMethodRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+    public <#=TypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
         super(requestUrl, client, options<#=MethodParametersValues(c)#>);
     }
 }
