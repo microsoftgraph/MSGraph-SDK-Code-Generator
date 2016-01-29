@@ -5,7 +5,7 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef(BaseTypeRequest(c), (c.AsOdcmMethod().ReturnType == null) ? "BaseCollectionRequest" + CollectionRequestGeneric(c) : "BaseRequest", IBaseTypeRequest(c))#>
+<#=CreateClassDef(BaseTypeRequest(c), "BaseRequest", IBaseTypeRequest(c))#>
 
     /**
      * The request for this <#=TypeName(c)#>
@@ -15,60 +15,25 @@
      * @param options The options for this request
      */
     public <#=BaseTypeRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
-<# if (c.AsOdcmMethod().ReturnType != null) { #>
-        super(requestUrl, client, options, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
-<# } else { #>
-    super(requestUrl, client, options, null);
-<# } #>
+        super(requestUrl, client, options, null);
+
 <# foreach (var param in c.AsOdcmMethod().Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
         if (<#=paramName#> != null) {
-            addQueryOption(new QueryOption("<#=paramName#>", <#=paramName#>));
+            //TODO:FIXME   
+            //addQueryOption(new QueryOption("<#=paramName#>", <#=paramName#>));
         }
 <# } #>
     }
 
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
- 
-    public void get(final ICallback<<#=TypeName(c)#>> callback) {
+    public void get(final ICallback<<#=ClassTypeName(c)#>> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
-    public <#=TypeName(c)#> get() throws ClientException {
+    public <#=ClassTypeName(c)#> get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
 
-    /*
-    public void get(final ICallback<<#=ClassTypeName(c)#>> callback) {
-        final IExecutors executors = getBaseRequest().getClient().getExecutors();
-        executors.performOnBackground(new Runnable() {
-           @Override
-           public void run() {
-                try {
-                    executors.performOnForeground(get(), callback);
-                } catch (final ClientException e) {
-                    executors.performOnForeground(e, callback);
-                }
-           }
-        });
-    }
-
-    public <#=ITypeCollectionPage(c)#> get() throws ClientException {
-        final <#=BaseTypeCollectionResponse(c)#> response = send();
-        return buildFromResponse(response);
-    }
-
-    public <#=ITypeCollectionPage(c)#> buildFromResponse(final <#=BaseTypeCollectionResponse(c)#> response) {
-        final <#=ITypeRequestBuilder(c)#> builder;
-        if (response.nextLink != null) {
-            builder = new <#=TypeRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), /* options */ null<#=MethodPageValues(c)#>);
-        } else {
-            builder = null;
-        }
-        final <#=ITypeCollectionPage(c)#> page = new <#=TypeCollectionPage(c)#>(response, builder);
-        page.setRawObject(response.getSerializer(), response.getRawObject());
-        return page;
-    }
-    */
 <# } else { #>
     public void get(final ICallback<Void> callback) {
         final IExecutors executors = getClient().getExecutors();
@@ -89,22 +54,5 @@
         this.send(HttpMethod.GET, null);
     }
 
-    
-<# var addOption = (c.AsOdcmMethod().ReturnType == null) ? "addQueryOption" : "mQueryOptions.add"; #>
-    public <#=ITypeRequest(c)#> select(final String value) {
-        <#=addOption#>(new QueryOption("select", value));
-        return (<#=TypeRequest(c)#>)this;
-    }
-
-    public <#=ITypeRequest(c)#> top(final int value) {
-        <#=addOption#>(new QueryOption("top", value+""));
-        return (<#=TypeRequest(c)#>)this;
-    }
-
-    public <#=ITypeRequest(c)#> expand(final String value) {
-        <#=addOption#>(new QueryOption("expand", value));
-        return (<#=TypeRequest(c)#>)this;
-    }
-}
-
 <# } #>
+}

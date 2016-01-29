@@ -14,17 +14,18 @@ import com.google.gson.annotations.*;
     void get(final ICallback<<#=ClassTypeName(c)#>> callback);
 
     <#=ClassTypeName(c)#> get() throws ClientException;
-
 <# } else { #>
     void get(final ICallback<Void> callback);
 
     void get() throws ClientException;
 
+    /*
     <#=ITypeMethodRequest(c)#> select(final String value) ;
 
     <#=ITypeMethodRequest(c)#> top(final int value);
 
     <#=ITypeMethodRequest(c)#> expand(final String value);
+
+    */
 <# } #>
-    
 }
