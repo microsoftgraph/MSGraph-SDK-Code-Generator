@@ -17,10 +17,10 @@ if (innerEntityType.Equals(propName))
 #>
 
 #import "<#=writer.GetPrefix()#>ODataEntities.h"
-#import "ODCollection.h"
-#import "ODURLSessionDataTask.h"
+#import "<#=writer.GetStaticCodePrefix()#>Collection.h"
+#import "<#=writer.GetStaticCodePrefix()#>URLSessionDataTask.h"
 
-@interface ODCollectionRequest()
+@interface <#=writer.GetStaticCodePrefix()#>CollectionRequest()
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method 
                                       body:(NSData *)body 
@@ -29,11 +29,6 @@ if (innerEntityType.Equals(propName))
 
 @implementation <#=propNameRequest#>
 
-<# 
-    //if (prop.LongDescriptionContains("enumerable"))
-    //{
-#>
-
 - (NSMutableURLRequest *)get
 {
     return [self requestWithMethod:@"GET"
@@ -41,10 +36,10 @@ if (innerEntityType.Equals(propName))
                            headers:nil];
 }
 
-- (ODURLSessionDataTask *)getWithCompletion:(<#=propName#>CompletionHandler)completionHandler
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName#>CompletionHandler)completionHandler
 {
 
-    ODURLSessionDataTask * task = [self collectionTaskWithRequest:[self get]
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask * task = [self collectionTaskWithRequest:[self get]
                                              odObjectWithDictionary:^(id response){
 <#
     if (prop.IsSystem())
@@ -61,7 +56,7 @@ if (innerEntityType.Equals(propName))
 <#  }
 #>
                                          }
-                                                        completion:^(ODCollection *collectionResponse, NSError *error){
+                                                        completion:^(<#=writer.GetStaticCodePrefix()#>Collection *collectionResponse, NSError *error){
                                             if(!error && collectionResponse.nextLink && completionHandler){
                                                 <#=propNameRequest#> *nextRequest = [[<#=propNameRequest#> alloc] initWithURL:collectionResponse.nextLink options:nil client:self.client];
                                                 completionHandler(collectionResponse, nextRequest, nil); 
@@ -75,8 +70,7 @@ if (innerEntityType.Equals(propName))
 }
 
 <#
-    //}
-    if (prop.LongDescriptionContains("writable"))
+    if (!prop.LongDescriptionContains("readonly"))
     {
 #>
 - (NSMutableURLRequest *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#>
@@ -90,9 +84,9 @@ if (innerEntityType.Equals(propName))
 
 }
 
-- (ODURLSessionDataTask *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#> withCompletion:(<#=innerEntityType#>CompletionHandler)completionHandler
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#> withCompletion:(<#=innerEntityType#>CompletionHandler)completionHandler
 {
-    ODURLSessionDataTask *task = [self taskWithRequest:[self add<#=innerEntity.Name.ToUpperFirstChar()#>:<#=innerEntity.Name.ToLowerFirstChar()#>] 
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self add<#=innerEntity.Name.ToUpperFirstChar()#>:<#=innerEntity.Name.ToLowerFirstChar()#>] 
 							     odObjectWithDictionary:^(NSDictionary *response){
                                             return [[<#=innerEntityType#> alloc] initWithDictionary:response];
                                         }

@@ -17,29 +17,24 @@ if (innerEntityType.Equals(propName))
 }
 #>
 
-@class <#=entityRequest#>, ODURLSessionDataTask;
+@class <#=entityRequest#>, <#=writer.GetStaticCodePrefix()#>URLSessionDataTask;
 
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "ODCollectionRequest.h"
+#import "<#=writer.GetStaticCodePrefix()#>CollectionRequest.h"
 
 typedef void (^<#=innerEntityType#>CompletionHandler)(<#=innerEntityType#> *response, NSError *error);
 
-typedef void (^<#=propName#>CompletionHandler)(ODCollection *response, <#=propRequest#> *nextRequest, NSError *error);
+typedef void (^<#=propName#>CompletionHandler)(<#=writer.GetStaticCodePrefix()#>Collection *response, <#=propRequest#> *nextRequest, NSError *error);
 
-@interface <#=propRequest#> : ODCollectionRequest
-<# 
-    //if (prop.LongDescriptionContains("enumerable"))
-    //{
-#>
+@interface <#=propRequest#> : <#=writer.GetStaticCodePrefix()#>CollectionRequest
 
-- (ODURLSessionDataTask *)getWithCompletion:(<#=propName#>CompletionHandler)completionHandler;
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName#>CompletionHandler)completionHandler;
 <#
-    //}
-    if (prop.LongDescriptionContains("writable"))
+    if (!prop.LongDescriptionContains("readonly"))
     {
 #>
 
-- (ODURLSessionDataTask *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#> withCompletion:(<#=innerEntityType#>CompletionHandler)completionHandler;
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#> withCompletion:(<#=innerEntityType#>CompletionHandler)completionHandler;
 
 <#
     }

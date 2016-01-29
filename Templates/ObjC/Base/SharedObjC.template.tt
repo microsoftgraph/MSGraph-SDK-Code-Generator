@@ -4,10 +4,8 @@ host                = (CustomT4Host)Host;
 model               = host.CurrentModel;
 writer              = (CodeWriterObjC)host.CodeWriter;
 prefix              = writer.GetPrefix();
-
 #>
 <#=writer.WriteHeader()#>
-
 <#+
 
 private String prefix;
@@ -15,18 +13,241 @@ private CodeWriterObjC writer;
 private CustomT4Host host;
 private OdcmModel model;
 
-private string GeneratePropertyDeclarationLine(OdcmProperty prop)
+private string GetObjCTypeIdentifier(OdcmObject o, bool getUnderlyingType=false)
 {
-  if(!prop.IsCollection)
-  {
-    return writer.GetPropertyDeclaration(prop.SanitizePropertyName().ToLowerFirstChar(),prop.GetFullType()+(prop.IsComplex() ? "*" : string.Empty));
-  }
-  else if (prop.IsCollection && prop.LongDescriptionContains("enumerable"))
-  {
-    return writer.GetPropertyDeclaration(prop.SanitizePropertyName().ToLowerFirstChar(),prefix+"Collection *");
-  }
+    if(o is OdcmProperty)
+    {
+        OdcmProperty prop=(OdcmProperty)o;
+        if(prop.IsCollection && !getUnderlyingType)
+        {
+            return GetStaticCollectionObject();
+        }
 
-  return string.Empty;
+        return GetObjCTypeIdentifier(prop.Type,getUnderlyingType);
+    }
+    else if(o is OdcmType)
+    {
+        return ((OdcmType)o).GetTypeString();
+    }
+
+    return string.Empty;
 }
 
+private string GetObjCTypeForVarDeclaration(OdcmObject o, bool getUnderlyingType=false)
+{
+    if(o is OdcmProperty)
+    {
+        OdcmProperty prop=(OdcmProperty)o;
+        if(prop.IsCollection || prop.IsComplex())
+        {
+            return GetObjCTypeIdentifier(prop,getUnderlyingType) + "*";
+        }
+    }
+    else if(o is OdcmType)
+    {
+        OdcmType type=(OdcmType)o;
+        if(type.IsComplex())
+        {
+            return GetObjCTypeIdentifier(type,getUnderlyingType) + "*";
+        }
+    }
+
+    return GetObjCTypeIdentifier(o,getUnderlyingType);
+}
+
+private string GetObjCEnumMember(OdcmEnum en, OdcmEnumMember em)
+{
+    return GetObjCTypeIdentifier(en) + em.Name.ToUpperFirstChar();
+}
+
+private string GetObjCProperty(OdcmProperty prop)
+{
+    return prop.SanitizePropertyName().ToLowerFirstChar();
+}
+
+private string GetObjCPropertyGetter(OdcmProperty prop)
+{
+    return writer.GetGetterString(GetObjCProperty(prop));
+}
+
+private string GetObjCPropertySetter(OdcmProperty prop)
+{
+    return "set" + GetObjCProperty(prop).ToUpperFirstChar();
+}
+
+private bool IsNSJSONSerializable(OdcmType type)
+{
+    string ts=GetObjCTypeIdentifier(type);
+    return ts=="NSString" || ts=="NSNumber" || ts=="NSArray" || ts=="NSDictionary" || ts=="NSNull";
+}
+
+
+private string GetHydratedPropertyFromNSJSONSerializableExpression(string expr,OdcmProperty prop)
+{
+    if(GetObjCTypeIdentifier(prop,true)=="NSDate")
+    {
+        return String.Format(@"[NSDate ms_dateFromString: {0}]",expr);
+    }
+
+    if(prop.IsEnum())
+    {
+        return String.Format(
+        @"[{0} to{1}]",
+        expr,
+        GetObjCTypeIdentifier(prop,true));
+    }
+
+    //Complex catch-all
+    if(prop.IsComplex())
+    {
+        return String.Format(
+        @"[[{0} alloc] initWithDictionary: {1} ]",
+        GetObjCTypeIdentifier(prop,true),
+        expr);
+    }
+
+    return String.Format(
+    @"[{0} {1}]",
+    expr,
+    prop.Type.GetNSNumberValueMethod());
+}
+
+private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
+{
+    return GetHydratedPropertyFromNSJSONSerializableExpression(String.Format(@"self.dictionary[@""{0}""]",prop.Name),prop);
+}
+
+private string GetHydratedPropertyFromNSJSONSerializableExpressionAsObjectPointer(string expr,OdcmProperty prop)
+{
+    if(prop.IsComplex())
+    {
+        return GetHydratedPropertyFromNSJSONSerializableExpression(expr,prop);
+    }
+    return "@(" + GetHydratedPropertyFromNSJSONSerializableExpression(expr,prop) + ")";
+}
+
+private string GetHydratedPropertyFromDictionaryAsObjectPointer(OdcmProperty prop)
+{
+    return GetHydratedPropertyFromNSJSONSerializableExpressionAsObjectPointer(String.Format(@"self.dictionary[@""{0}""]",prop.Name),prop);
+}
+
+private string GetHydratedIVarFromDictionary(OdcmProperty prop)
+{
+    if(prop.IsCollection)
+    {
+        return String.Format(@"
+    NSMutableArray *{0}Collection = [NSMutableArray array];
+    NSArray *{0}s = self.dictionary[@""{1}""];
+
+    if ([{0}s isKindOfClass:[NSArray class]]){{
+        for (id {0} in {0}s){{
+            [{0}Collection addObject:{2}];
+         }}
+    }}
+
+    if ([{0}Collection count] > 0){{
+        _{0} = [[{3} alloc] initWithArray:{0}Collection nextLink:self.dictionary[@""@nextLink""] additionalData:self.dictionary];
+    }}
+        ",
+        GetObjCProperty(prop),
+        prop.Name,
+        GetHydratedPropertyFromNSJSONSerializableExpressionAsObjectPointer(GetObjCProperty(prop),prop),
+        GetStaticCollectionObject());
+    }
+
+    return String.Format(@"_{0} = {1};",GetObjCProperty(prop),GetHydratedPropertyFromDictionary(prop));
+
+}
+
+private string SetDictionaryPropertySerialized(OdcmProperty prop, string val)
+{
+    if(prop.IsComplex() || prop.IsCollection)
+    {
+        return  "self.dictionary[@\"" + prop.Name + "\"] = " + val + ";";
+    }
+
+    return  "self.dictionary[@\"" + prop.Name + "\"] = @(" + val + ");";
+}
+
+/*
+ * Methods to get strings from non-generated SDK objects
+ */
+
+private string GetStaticCollectionObject()
+{
+    return writer.GetStaticCodePrefix() +"Collection";
+}
+
+private string GetStaticBaseObject()
+{
+    return writer.GetStaticCodePrefix() + "Object";
+}
+
+private string GeneratePropertyDeclarationLine(OdcmProperty prop)
+{
+    return "@property (nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
+}
+
+private void PropertyGetterImplementation(OdcmProperty prop)
+{
+#>
+- (<#=GetObjCTypeForVarDeclaration(prop)#>) <#=GetObjCPropertyGetter(prop)#>
+{
+<#+
+    if(IsNSJSONSerializable(prop.Type))
+    {
+#>
+    return self.dictionary[@"<#=prop.Name#>"];
+<#+
+    }
+    else
+    {
+#>
+<#+
+        if(prop.IsComplex())
+        {
+#>
+    if(!_<#=GetObjCProperty(prop)#>){
+        <#=GetHydratedIVarFromDictionary(prop)#>
+    }
+<#+
+        }
+        else
+        {
+#>
+    <#=GetHydratedIVarFromDictionary(prop)#>
+<#+
+        }
+#>
+    return _<#=GetObjCProperty(prop)#>;
+<#+
+    }
+#>
+}
+<#+
+}
+
+private void PropertySetterImplementation(OdcmProperty prop)
+{
+#>
+- (void) <#=GetObjCPropertySetter(prop)#>: (<#=GetObjCTypeForVarDeclaration(prop)#>) val
+{
+<#+
+    if(IsNSJSONSerializable(prop.Type))
+    {
+#>
+    self.dictionary[@"<#=prop.Name#>"] = val;
+<#+
+    }
+    else
+    {
+#>
+    _<#=GetObjCProperty(prop)#> = val;
+    <#=SetDictionaryPropertySerialized(prop,"val")#>
+<#+
+    }
+#>
+}
+<#+
+}
 #>

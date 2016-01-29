@@ -12,11 +12,11 @@ var requestBuilderType = requestType + "Builder";
 
 #import "<#=writer.GetPrefix()#>ODataEntities.h"
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "ODRequestBuilder.h"
+#import "<#=writer.GetStaticCodePrefix()#>RequestBuilder.h"
 
 @class <#=requestType#>;
 
-@interface <#=requestBuilderType#> : ODRequestBuilder
+@interface <#=requestBuilderType#> : <#=writer.GetStaticCodePrefix()#>RequestBuilder
 
 <#
 if (func.Parameters.Count > 0)
