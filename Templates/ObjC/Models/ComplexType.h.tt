@@ -2,14 +2,15 @@
 <#@ include file="SharedObjC.template.tt"#>
 <#
 var entity = host.CurrentType.AsOdcmClass();
+var baseEntity = entity.Base;
 #>
 
 <#=writer.GetImportsClass(entity.Properties)#>
 
-#import "<#=GetStaticBaseObject()#>.h"
+#import "<#=GetObjCTypeIdentifier(baseEntity)#>.h"
 #import "<#=GetStaticCollectionObject()#>.h"
 
-@interface <#=GetObjCTypeIdentifier(entity)#> : <#=GetStaticBaseObject()#>
+@interface <#=GetObjCTypeIdentifier(entity)#> : <#=GetObjCTypeIdentifier(baseEntity)#>
 
 <#
 foreach(var prop in entity.Properties)
