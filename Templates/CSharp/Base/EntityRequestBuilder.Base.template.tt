@@ -287,7 +287,7 @@ public string GetMethodProperties(OdcmClass entity)
             
             foreach (var param in requiredParameters)
             {
-                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
+                var paramTypeString = param.Type.GetTypeString();
 
                 paramStringBuilder.Append(Environment.NewLine);
                 paramStringBuilder.Append("            ");
