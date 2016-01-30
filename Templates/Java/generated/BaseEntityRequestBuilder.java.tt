@@ -1,6 +1,7 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -51,17 +52,13 @@ if (c.AsOdcmClass() != null)
         var propRequestBuilder = TypeRequestBuilder(prop);
         if (prop.IsCollection()) {
 #>
-<# if (prop.LongDescriptionContains("enumerable")) {#>
-
     public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>() {
         return new <#=TypeCollectionRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
-<# } if (prop.LongDescriptionContains("queryable")) { #>
 
     public <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id) {
         return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
     }
-<# } #>
 <#
         } else {
 #>
@@ -96,7 +93,7 @@ if (c.AsOdcmClass() != null)
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
 #>
 
-    public <#=ITypeRequestBuilder(method)#> get<#=TypeName(method)#>(<#=parameterList#>) {
+    public <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
         return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=method.Name#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
 <#

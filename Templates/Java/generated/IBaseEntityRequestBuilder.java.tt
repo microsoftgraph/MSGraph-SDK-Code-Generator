@@ -1,6 +1,7 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -34,13 +35,10 @@ if (c.AsOdcmClass() != null)
         var propRequestBuilder = TypeRequestBuilder(prop);
         if (prop.IsCollection()) {
 #>
-<# if (prop.LongDescriptionContains("enumerable")) {#>
 
     <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>();
-<# } if (prop.LongDescriptionContains("queryable")) { #>
 
     <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id);
-<# } #>
 <#
         } else {
 #>
@@ -71,7 +69,7 @@ if (c.AsOdcmClass() != null)
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
 #>
 
-    <#=ITypeRequestBuilder(method)#> get<#=TypeName(method)#>(<#=parameterList#>);
+    <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
 <#
     }
 }
