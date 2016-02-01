@@ -184,20 +184,25 @@ public string GetFunctionParameters(List<OdcmParameter> parameters)
 {
     var result = new StringBuilder();
 
-    if (parameters.Any()) {
+    if (parameters.Any())
+    {
         result.Append("NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:");
-    } else {
+    }
+    else 
+    {
         result.Append("NSDictionary *params = nil;");
     }
 
-    foreach (var param in parameters) {
+    foreach (var param in parameters) 
+    {
         result.AppendFormat("[MSObject getNSJsonSerializationCompatibleValue:{0}],",
         SetNSJSONPermitedExpressionSerialized(param.Type,"_"+param.Name.ToLowerFirstChar()));
 
         result.AppendFormat("@\"{0}\",", param.Name);
     }
 
-    if (parameters.Any()) {
+    if (parameters.Any())
+    {
         result.AppendLine("nil];").AppendLine();
     }
 
