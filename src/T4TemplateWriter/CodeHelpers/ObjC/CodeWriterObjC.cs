@@ -272,37 +272,6 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             return result;
         }
 
-        public string GetFunctionParameters(List<OdcmParameter> parameters) {
-            var result = new StringBuilder();
-            //&&NSDictionary* params = [[NSDictionary alloc] initWithObjectsAndKeys :path,@"path",nil ];
-
-            if (parameters.Any()) {
-                result.Append("NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:");
-            } else {
-                result.Append("NSDictionary *params = nil;");
-            }
-            foreach (var param in parameters) {
-
-                if (param.Type.GetTypeString() == "BOOL") {
-                    result.AppendFormat("_{0} ? @\"true\" : @\"false\",", param.Name.ToLowerFirstChar());
-                    result.AppendFormat("@\"{0}\",", param.Name);
-                } else if (param.Type.GetTypeString() == "int") {
-                    result.AppendFormat("[[NSString alloc] initWithFormat:@\"%d\", _{0}],", param.Name.ToLowerFirstChar());
-                    result.AppendFormat("@\"{0}\",", param.Name);
-                } else {
-                    result.AppendFormat("_{0},", param.Name.ToLowerFirstChar());
-                    result.AppendFormat("@\"{0}\",", param.Name);
-                }
-
-            }
-
-            if (parameters.Any()) {
-                result.AppendLine("nil];").AppendLine();
-            }
-
-            return result.ToString();
-        }
-
         public string CreateEndOfFile(string name) {
             return string.Format("/n{0} EndOfFile", name);
         }
