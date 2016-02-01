@@ -25,13 +25,12 @@ foreach(var prop in containerProps)
     return [[<#=propName#>CollectionRequestBuilder alloc] initWithURL:[self.baseURL URLByAppendingPathComponent:@"<#=prop.Name#>"] 
              <#=prop.Type.GetTypeString().ToSpaces()#><#="CollectionRequestBuilder alloc]     ".ToSpaces()#>client:self];
 }
-/*
-//TODO: Review this code. Using unexisting method issue https://github.com/OneDrive/vipr-t4templatewriter/issues/47
+
 -(<#=propType#>RequestBuilder*)<#=prop.Name#>:(NSString*)<#=prop.Type.Name#>
 {
     return [[self <#=prop.Name#>] <#=prop.Type.Name#>:<#=prop.Type.Name#>];
 }
-*/
+
 <#
     }
     else

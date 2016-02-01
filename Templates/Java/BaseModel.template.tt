@@ -16,7 +16,7 @@
 <#+
     public string TypeName(OdcmObject c) {
         if (c is OdcmMethod) {
-            return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
+            return ((OdcmMethod)c).Class.Name.ToUpperFirstChar() + c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
         } else if (c is OdcmProperty && c.AsOdcmProperty().IsCollection) {
             return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		} else if (c is OdcmProperty && c.AsOdcmProperty().Type is OdcmPrimitiveType) {
@@ -25,6 +25,10 @@
 			return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		}
         return c.Name.ToUpperFirstChar();
+    }
+
+    public string MethodName(OdcmObject c) {
+        return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
     }
 
     public string ITypeName(OdcmObject c) {
