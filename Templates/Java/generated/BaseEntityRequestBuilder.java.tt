@@ -94,7 +94,7 @@ if (c.AsOdcmClass() != null)
 #>
 
     public <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
-        return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=method.Name#>"), getClient(), null<#=MethodParametersValues(method)#>);
+        return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
 <#
     }

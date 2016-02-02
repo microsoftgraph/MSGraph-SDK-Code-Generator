@@ -31,6 +31,14 @@
         return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
     }
 
+    public string MethodFullName(OdcmObject c) {
+        if (c is OdcmMethod){
+            return String.Format("{0}.{1}", ((OdcmMethod)c).Class.Namespace.Name, 
+                                            c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar()); 
+        }
+        return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
+    }
+
     public string ITypeName(OdcmObject c) {
         return "I" + TypeName(c);
     }
