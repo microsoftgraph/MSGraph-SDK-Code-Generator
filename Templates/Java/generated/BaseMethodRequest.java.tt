@@ -25,6 +25,40 @@
 <# } #>
     }
 
+<# if (c.AsOdcmMethod().IsAction()) { #>
+
+<# if (c.AsOdcmMethod().ReturnType != null) { #>
+    public void get(final ICallback<<#=ClassTypeName(c)#>> callback) {
+        send(HttpMethod.POST, callback, null);
+    }
+
+    public <#=ClassTypeName(c)#> get() throws ClientException {
+       return send(HttpMethod.POST, null);
+    }
+
+<# } else { #>
+    public void get(final ICallback<Void> callback) {
+        final IExecutors executors = getClient().getExecutors();
+        executors.performOnBackground(new Runnable() {
+           @Override
+           public void run() {
+                try {
+                    get();
+                    executors.performOnForeground((Void)null, callback);
+                } catch (final ClientException e) {
+                    executors.performOnForeground(e, callback);
+                }
+           }
+        });
+    }
+
+    public void get() throws ClientException {
+        this.send(HttpMethod.POST, null);
+    }
+
+<# } #>
+<# } else { #>
+
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
     public void get(final ICallback<<#=ClassTypeName(c)#>> callback) {
         send(HttpMethod.GET, callback, null);
@@ -53,6 +87,8 @@
     public void get() throws ClientException {
         this.send(HttpMethod.GET, null);
     }
+
+<# } #>
 
 <# } #>
 }
