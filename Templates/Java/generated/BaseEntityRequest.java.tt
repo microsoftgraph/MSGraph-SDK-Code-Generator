@@ -55,13 +55,15 @@
         return (<#=TypeRequest(c)#>)this;
     }
 
-    public <#=ITypeRequest(c)#> top(final int value) {
-        getQueryOptions().add(new QueryOption("top", value+""));
-        return (<#=TypeRequest(c)#>)this;
-    }
-
     public <#=ITypeRequest(c)#> expand(final String value) {
         getQueryOptions().add(new QueryOption("expand", value));
         return (<#=TypeRequest(c)#>)this;
     }
+
+    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    public <#=ITypeRequest(c)#> top(final int value) {
+        getQueryOptions().add(new QueryOption("top", value+""));
+        return (<#=TypeRequest(c)#>)this;
+    }
+    <#}#> 
 }

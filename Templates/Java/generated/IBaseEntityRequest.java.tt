@@ -25,7 +25,8 @@
 
     <#=IBaseTypeRequest(c)#> select(final String value);
 
-    <#=IBaseTypeRequest(c)#> top(final int value);
-
     <#=IBaseTypeRequest(c)#> expand(final String value);
+    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    <#=IBaseTypeRequest(c)#> top(final int value);
+    <#}#> 
 }
