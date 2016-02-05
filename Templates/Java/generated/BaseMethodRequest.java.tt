@@ -19,8 +19,7 @@
 
 <# foreach (var param in c.AsOdcmMethod().Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
         if (<#=paramName#> != null) {
-            //TODO:FIXME   
-            //addQueryOption(new QueryOption("<#=paramName#>", <#=paramName#>));
+            addQueryOption(new QueryOption("<#=paramName#>", <#=paramName#>));
         }
 <# } #>
     }
@@ -28,22 +27,39 @@
 <# if (c.AsOdcmMethod().IsAction()) { #>
 
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
-    public void get(final ICallback<<#=ClassTypeName(c)#>> callback) {
+    public void post(final ICallback<<#=ClassTypeName(c)#>> callback) {
         send(HttpMethod.POST, callback, null);
     }
 
-    public <#=ClassTypeName(c)#> get() throws ClientException {
+    public <#=ClassTypeName(c)#> post() throws ClientException {
        return send(HttpMethod.POST, null);
     }
 
+    public <#=ITypeRequest(c)#> select(final String value) {
+        getQueryOptions().add(new QueryOption("select", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+    public <#=ITypeRequest(c)#> expand(final String value) {
+        getQueryOptions().add(new QueryOption("expand", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    public <#=ITypeRequest(c)#> top(final int value) {
+        getQueryOptions().add(new QueryOption("top", value+""));
+        return (<#=TypeRequest(c)#>)this;
+    }
+    <#}#> 
+
 <# } else { #>
-    public void get(final ICallback<Void> callback) {
+    public void post(final ICallback<Void> callback) {
         final IExecutors executors = getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
            public void run() {
                 try {
-                    get();
+                    post();
                     executors.performOnForeground((Void)null, callback);
                 } catch (final ClientException e) {
                     executors.performOnForeground(e, callback);
@@ -52,7 +68,7 @@
         });
     }
 
-    public void get() throws ClientException {
+    public void post() throws ClientException {
         this.send(HttpMethod.POST, null);
     }
 
@@ -67,6 +83,23 @@
     public <#=ClassTypeName(c)#> get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
+
+    public <#=ITypeRequest(c)#> select(final String value) {
+        getQueryOptions().add(new QueryOption("select", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+    public <#=ITypeRequest(c)#> expand(final String value) {
+        getQueryOptions().add(new QueryOption("expand", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    public <#=ITypeRequest(c)#> top(final int value) {
+        getQueryOptions().add(new QueryOption("top", value+""));
+        return (<#=TypeRequest(c)#>)this;
+    }
+    <#}#> 
 
 <# } else { #>
     public void get(final ICallback<Void> callback) {
