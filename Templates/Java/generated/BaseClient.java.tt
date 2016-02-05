@@ -8,7 +8,7 @@
 <#
 foreach (var prop in model.EntityContainer.Properties)
 {
-    var propertyName = prop.Type.GetTypeString();
+    var propertyName = prop.Name.ToUpperFirstChar();
     if (prop.IsCollection())
     {
         var requestCollectionBuilder = TypeCollectionRequestBuilder(prop);
@@ -19,7 +19,7 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return The request builder for the collection of <#=propertyName#> objects
      */
-    public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propertyName#>s() {
+    public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propertyName#>() {
         return new <#=TypeCollectionRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);
     }
 

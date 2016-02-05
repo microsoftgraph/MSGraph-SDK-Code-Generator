@@ -1,6 +1,7 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeRequest(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -22,9 +23,10 @@
 
     <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
 
-    IBase<#=TypeName(c)#>Request select(final String value);
+    <#=IBaseTypeRequest(c)#> select(final String value);
 
-    IBase<#=TypeName(c)#>Request top(final int value);
-
-    IBase<#=TypeName(c)#>Request expand(final String value);
+    <#=IBaseTypeRequest(c)#> expand(final String value);
+    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    <#=IBaseTypeRequest(c)#> top(final int value);
+    <#}#> 
 }

@@ -12,11 +12,11 @@
     }
 
 #>
-<#="// Template Source: '" + host.TemplateFile + "', Name: '" + c.Name + "'"#>
+<#="// Template Source: '" + host.TemplateFile + "', Name: '" + c.Name + "' , TypeName: '" + TypeName(c) + "'"#>
 <#+
     public string TypeName(OdcmObject c) {
         if (c is OdcmMethod) {
-            return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
+            return ((OdcmMethod)c).Class.Name.ToUpperFirstChar() + c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
         } else if (c is OdcmProperty && c.AsOdcmProperty().IsCollection) {
             return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		} else if (c is OdcmProperty && c.AsOdcmProperty().Type is OdcmPrimitiveType) {
@@ -25,6 +25,18 @@
 			return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
 		}
         return c.Name.ToUpperFirstChar();
+    }
+
+    public string MethodName(OdcmObject c) {
+        return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
+    }
+
+    public string MethodFullName(OdcmObject c) {
+        if (c is OdcmMethod){
+            return String.Format("{0}.{1}", ((OdcmMethod)c).Class.Namespace.Name, 
+                                            c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar()); 
+        }
+        return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
     }
 
     public string ITypeName(OdcmObject c) {
