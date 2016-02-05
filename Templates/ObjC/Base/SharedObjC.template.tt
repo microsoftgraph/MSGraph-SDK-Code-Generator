@@ -15,6 +15,11 @@ private OdcmModel model;
 
 private string GetObjCTypeIdentifier(OdcmObject o, bool getUnderlyingType=false)
 {
+    if(o==null)
+    {
+        return GetStaticBaseObject();
+    }
+
     if(o is OdcmProperty)
     {
         OdcmProperty prop=(OdcmProperty)o;
@@ -23,7 +28,7 @@ private string GetObjCTypeIdentifier(OdcmObject o, bool getUnderlyingType=false)
             return GetStaticCollectionObject();
         }
 
-        return GetObjCTypeIdentifier(prop.Type);
+        return GetObjCTypeIdentifier(prop.Type,getUnderlyingType);
     }
     else if(o is OdcmType)
     {
@@ -81,49 +86,127 @@ private bool IsNSJSONSerializable(OdcmType type)
     return ts=="NSString" || ts=="NSNumber" || ts=="NSArray" || ts=="NSDictionary" || ts=="NSNull";
 }
 
-private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
+private string GetHydratedPropertyFromNSJSONSerializableExpression(string expr,OdcmProperty prop)
 {
-    if(prop.IsComplex())
+    if(GetObjCTypeIdentifier(prop,true)=="NSDate")
     {
-        return String.Format(
-        @"_{0} = [[ {1} alloc] initWithDictionary: self.dictionary[@""{2}""] ];",
-        GetObjCProperty(prop),
-        GetObjCTypeIdentifier(prop),
-        prop.Name
-        );
+        return String.Format(@"[NSDate ms_dateFromString: {0}]",expr);
     }
 
     if(prop.IsEnum())
     {
         return String.Format(
-        @"_{0} = self.dictionary[@""{1}""];",
-        GetObjCProperty(prop),
-        prop.Name
-        );
+        @"[{0} to{1}]",
+        expr,
+        GetObjCTypeIdentifier(prop,true));
+    }
+    //Complex catch-all
+    if(prop.IsComplex())
+    {
+        return String.Format(
+        @"[[{0} alloc] initWithDictionary: {1} ]",
+        GetObjCTypeIdentifier(prop,true),
+        expr);
     }
 
     return String.Format(
-    @"_{0} = [NSNumber {1}: self.dictionary[@""{2}""]];",
-    GetObjCProperty(prop),
-    prop.Type.GetNSNumberValueMethod(),
-    prop.Name
-    );
+    @"[{0} {1}]",
+    expr,
+    prop.Type.GetNSNumberValueMethod());
+}
 
+private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
+{
+    return GetHydratedPropertyFromNSJSONSerializableExpression(String.Format(@"self.dictionary[@""{0}""]",prop.Name),prop);
+}
+
+private string SetNSJSONPermitedExpressionSerialized(OdcmType type,string val)
+{
+    //Fallback to complex entities that must support ms_toString
+    if(type.IsComplex())
+    {
+        return val;
+    }
+
+    if(type is OdcmEnum)
+    {
+        return String.Format("[NSString stringWith{0}:{1}]",GetObjCTypeIdentifier(type),val);
+    }
+
+    return "@(" + val + ")";
+}
+
+private string SetNSJSONPermitedExpressionSerialized(OdcmProperty prop,string val)
+{
+    //Fallback to complex entities that must support ms_toString
+    if(prop.IsCollection)
+    {
+        return val;
+    }
+
+    return SetNSJSONPermitedExpressionSerialized(prop.Type,val);
 }
 
 private string SetDictionaryPropertySerialized(OdcmProperty prop, string val)
 {
-    if(prop.IsComplex())
+    return String.Format(@"self.dictionary[@""{0}""] = {1};",prop.Name,SetNSJSONPermitedExpressionSerialized(prop,val));
+}
+
+private string GetHydratedIVarFromDictionary(OdcmProperty prop)
+{
+    if(prop.IsCollection)
     {
-        return  "self.dictionary[@\"" + prop.Name + "\"] = " + val + ";";
+        return String.Format(@"
+    NSMutableArray *{0}Collection = [NSMutableArray array];
+    NSArray *{0}s = self.dictionary[@""{1}""];
+
+    if ([{0}s isKindOfClass:[NSArray class]]){{
+        for (id {0} in {0}s){{
+            [{0}Collection addObject:{2}];
+         }}
+    }}
+
+    if ([{0}Collection count] > 0){{
+        _{0} = [[{3} alloc] initWithArray:{0}Collection nextLink:self.dictionary[@""@nextLink""] additionalData:self.dictionary];
+    }}
+        ",
+        GetObjCProperty(prop),
+        prop.Name,
+        GetObjCProperty(prop),
+        GetStaticCollectionObject());
     }
 
-    if(prop.IsEnum())
+    return String.Format(@"_{0} = {1};",GetObjCProperty(prop),GetHydratedPropertyFromDictionary(prop));
+
+}
+
+public string GetFunctionParameters(List<OdcmParameter> parameters)
+{
+    var result = new StringBuilder();
+
+    if (parameters.Any())
     {
-        return  "self.dictionary[@\"" + prop.Name + "\"] = " + val + ";//TODO: Merge enum serialization.";
+        result.Append("NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:");
+    }
+    else 
+    {
+        result.Append("NSDictionary *params = nil;");
     }
 
-    return  "self.dictionary[@\"" + prop.Name + "\"] = @" + val + ";";
+    foreach (var param in parameters) 
+    {
+        result.AppendFormat("[MSObject getNSJsonSerializationCompatibleValue:{0}],",
+        SetNSJSONPermitedExpressionSerialized(param.Type,"_"+param.Name.ToLowerFirstChar()));
+
+        result.AppendFormat("@\"{0}\",", param.Name);
+    }
+
+    if (parameters.Any())
+    {
+        result.AppendLine("nil];").AppendLine();
+    }
+
+    return result.ToString();
 }
 
 /*
@@ -165,14 +248,14 @@ private void PropertyGetterImplementation(OdcmProperty prop)
         {
 #>
     if(!_<#=GetObjCProperty(prop)#>){
-        <#=GetHydratedPropertyFromDictionary(prop)#>
+        <#=GetHydratedIVarFromDictionary(prop)#>
     }
 <#+
         }
         else
         {
 #>
-    <#=GetHydratedPropertyFromDictionary(prop)#>
+    <#=GetHydratedIVarFromDictionary(prop)#>
 <#+
         }
 #>

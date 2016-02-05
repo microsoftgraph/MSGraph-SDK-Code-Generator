@@ -1,6 +1,7 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeCollectionRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -24,10 +25,8 @@
     public <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> options) {
         return new <#=TypeCollectionRequest(c)#>(getRequestUrl(), getClient(), options);
     }
-<# if (true) { #>
 
     public <#=ITypeRequestBuilder(c)#> byId(final String id) {
         return new <#=TypeRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
     }
-<# } #>
 }

@@ -32,7 +32,7 @@ foreach(var prop in entity.NavigationProperties())
 
 <#
         if (prop.LongDescriptionContains("queryable"))
-        { 
+        {
 #>
 - (<#=innerPropTypeRequestName#> *)<#=propInstanceName#>:(NSString *)<#=innerPropInstanceName#>
 {
@@ -94,13 +94,13 @@ foreach(var func in entity.Methods)
     var requestBuilderName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + methodName.ToUpperFirstChar() + "RequestBuilder";
     if (func.Parameters.Count > 0)
     {
-        methodName += "With"; 
+        methodName += "With";
 #>
 - (<#=requestBuilderName#> *)<#=methodName#><#=writer.GetParamsString(func.Parameters)#>
 {
 <#
 
-    var actionURLString = "NSURL *actionURL = [self.requestURL URLByAppendingPathComponent:@\"" + func.Name + "\"];";
+    var actionURLString = "NSURL *actionURL = [self.requestURL URLByAppendingPathComponent:@\"" + func.Namespace.Name + "." + func.Name + "\"];";
     var stringBuilder = new StringBuilder("return [[" + requestBuilderName + " alloc] "  + "initWith");
     var firstParam = func.Parameters.First();
     var spacesString = stringBuilder.ToString() + firstParam.Name.ToUpperFirstChar();
@@ -111,14 +111,14 @@ foreach(var func in entity.Methods)
         if (firstParam == param)
         {
             stringBuilder.AppendLine(param.Name.ToUpperFirstChar() + ":" + param.Name.ToLowerFirstChar());
-        } 
-        else 
+        }
+        else
         {
             stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - param.Name.ToLowerFirstChar().Length) + param.Name.ToLowerFirstChar() + ":" + param.Name.ToLowerFirstChar());
         }
     }
-    stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - 3) + "URL:actionURL"); 
-    stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - "client".Length) + "client:self.client];"); 
+    stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - 3) + "URL:actionURL");
+    stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - "client".Length) + "client:self.client];");
 #>
     <#=actionURLString#>
     <#=stringBuilder.ToString()#>
@@ -127,7 +127,7 @@ foreach(var func in entity.Methods)
 
 <#
     }
-    else 
+    else
     {
 #>
 - (<#=requestBuilderName#> *)<#=methodName#>

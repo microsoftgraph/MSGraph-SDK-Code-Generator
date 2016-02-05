@@ -29,11 +29,6 @@ if (innerEntityType.Equals(propName))
 
 @implementation <#=propNameRequest#>
 
-<# 
-    //if (prop.LongDescriptionContains("enumerable"))
-    //{
-#>
-
 - (NSMutableURLRequest *)get
 {
     return [self requestWithMethod:@"GET"
@@ -75,8 +70,7 @@ if (innerEntityType.Equals(propName))
 }
 
 <#
-    //}
-    if (prop.LongDescriptionContains("writable"))
+    if (!prop.LongDescriptionContains("readonly"))
     {
 #>
 - (NSMutableURLRequest *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#>

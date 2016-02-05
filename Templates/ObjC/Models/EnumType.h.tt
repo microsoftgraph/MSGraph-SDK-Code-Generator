@@ -9,17 +9,19 @@ var entity = host.CurrentType.AsOdcmEnum();
 typedef NS_ENUM(NSInteger, <#=GetObjCTypeIdentifier(entity)#>){
 
 <#
-var lastMember = entity.Members.LastOrDefault();
-foreach(var member in entity.Members)
+foreach(var member in entity.Members.OrderBy(x => x.Value))
 {
-    var value = GetObjCEnumMember(entity,member) + (lastMember == member ? string.Empty : ",");
-
 #>
-	<#=value#>
+	<#=GetObjCEnumMember(entity,member)#> = <#=member.Value#>,
 <#
-
 }
-
 #>
-
+    <#=GetObjCTypeIdentifier(entity)#>endOfEnum
 };
+
+@interface NSString (<#=GetObjCTypeIdentifier(entity)#>)
+
++ (instancetype) stringWith<#=GetObjCTypeIdentifier(entity)#>:(<#=GetObjCTypeIdentifier(entity)#>)val;
+- (<#=GetObjCTypeIdentifier(entity)#>) to<#=GetObjCTypeIdentifier(entity)#>;
+
+@end
