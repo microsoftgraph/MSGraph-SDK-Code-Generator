@@ -120,7 +120,6 @@ namespace Vipr.T4TemplateWriter
 
         public static bool IsNavigation(this OdcmProperty property)
         {
-
             bool isNavigationProperty = false;
             var classType = property.Type as OdcmClass;
             if (classType != null)

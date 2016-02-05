@@ -132,7 +132,7 @@ foreach(var func in entity.Methods)
 #>
 - (<#=requestBuilderName#> *)<#=methodName#>
 {
-    return [[<#=requestBuilderName#> alloc] initWithURL:[self.requestURL URLByAppendingPathComponent:@"<#=func.Name#>"] client:self.client];
+    return [[<#=requestBuilderName#> alloc] initWithURL:[self.requestURL URLByAppendingPathComponent:@"<#=func.Namespace.Name + "." +func.Name#>"] client:self.client];
 }
 
 <#
