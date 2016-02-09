@@ -109,7 +109,7 @@ public string GetPostAsyncMethodForReferenceRequest(OdcmProperty odcmProperty)
     stringBuilder.Append(Environment.NewLine);
     this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
     stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        /// <returns>The task to await.</returns>", propertyType);
+    stringBuilder.AppendFormat("        /// <returns>The task to await.</returns>", propertyType);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        public Task AddAsync({0} {1})", propertyType, sanitizedPropertyName);
     stringBuilder.Append(Environment.NewLine);
