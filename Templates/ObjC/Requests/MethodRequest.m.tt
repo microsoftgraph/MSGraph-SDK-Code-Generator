@@ -42,6 +42,19 @@ if (func.LongDescriptionContains("specialCollection"))
 }
 #>
 
+
+<#
+// if we are in a function not an action
+if (method == @"GET")
+{
+#>
+#import "<#=writer.GetStaticCodePrefix()#>FunctionParameters.h"
+<#
+}
+#>
+
+
+
 @interface <#=writer.GetStaticCodePrefix()#>Request()
 
 @property NSMutableArray *options;
@@ -128,8 +141,8 @@ if (func.Parameters.Count > 0)
     if (method == @"GET")
     {
 #>
-    [params enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value, BOOL *stop){
-        [self.options addObject:[[<#=writer.GetStaticCodePrefix()#>QueryParameters alloc] initWithKey:key value:value]];
+    [params enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *val, BOOL *stop){
+        [self.options addObject:[[<#=writer.GetStaticCodePrefix()#>FunctionParameters alloc] initWithKey:key value:val]];
     }];
 
     return [self requestWithMethod:@"<#=method#>" body:nil headers:nil];

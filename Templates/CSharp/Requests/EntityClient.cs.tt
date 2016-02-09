@@ -21,9 +21,8 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
             AppConfig appConfig,
             CredentialCache credentialCache = null,
             IHttpProvider httpProvider = null,
-            IServiceInfoProvider serviceInfoProvider = null,
-            ClientType clientType = ClientType.Consumer)
-            : base(appConfig, credentialCache, httpProvider, serviceInfoProvider, clientType)
+            IServiceInfoProvider serviceInfoProvider = null)
+            : base(appConfig, credentialCache, httpProvider, serviceInfoProvider)
         {
         }
     <#

@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
 using System;
@@ -133,6 +133,20 @@ namespace Vipr.T4TemplateWriter
         public static IEnumerable<OdcmMethod> GetMethods(this OdcmModel model)
         {
             return model.GetEntityTypes().SelectMany(entityType => entityType.Methods);
+        }
+
+        public static OdcmProperty GetServiceNavigationPropertyForPropertyType(this OdcmProperty odcmProperty)
+        {
+            var properties = odcmProperty
+                .Class
+                .Namespace
+                .Classes
+                .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                .SelectMany(service => (service as OdcmServiceClass).Properties)
+                .Where(property => property.Type.FullName.Equals(odcmProperty.Type.FullName))
+                .FirstOrDefault();
+
+            return properties;
         }
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
