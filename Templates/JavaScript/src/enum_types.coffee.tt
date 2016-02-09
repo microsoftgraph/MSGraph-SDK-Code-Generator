@@ -1,0 +1,27 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+    CustomT4Host host       = (CustomT4Host) Host;
+    var model               = host.CurrentModel;
+    CodeWriterJavaScript writer   = (CodeWriterJavaScript) host.CodeWriter;
+    var c = host.CurrentType;
+#>
+<#=writer.WriteHeader()#>
+
+/**
+ * The Enum <#=c.Name.ToUpperFirstChar().SplitCamelCase()#>.
+*/
+public enum <#= c.Name.ToUpperFirstChar()#>
+{
+<#
+    foreach(var value in c.AsOdcmEnum().Members)
+    {
+#>
+    /**
+    * <#= value.Name.SplitCamelCase()#>
+    */
+    <#= value.SanitizePropertyName() #> = <#=value.Value#>,
+<#
+    }
+#>
+}
