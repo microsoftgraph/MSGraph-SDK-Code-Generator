@@ -187,7 +187,7 @@ public string GetEntityReferenceDeleteAsyncMethod(OdcmClass odcmClass)
 
 
 // -------------------------------------------------------------
-// Build select, expand, and top methods
+// Build select and expand methods
 // -------------------------------------------------------------
 public string GetSelectMethod(string requestType)
 {
@@ -204,27 +204,6 @@ public string GetSelectMethod(string requestType)
     stringBuilder.Append(@"
         {
             this.QueryOptions.Add(new QueryOption(""$select"", value));
-            return this;
-        }");
-    
-    return stringBuilder.ToString();
-}
-
-public string GetTopMethod(string requestType)
-{
-    var stringBuilder = new StringBuilder();
-    
-    stringBuilder.Append(
-      @"/// <summary>
-        /// Adds the specified top value to the request.
-        /// </summary>
-        /// <param name=""value"">The top value.</param>
-        /// <returns>The request object to send.</returns>");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public I{0} Top(int value)", requestType);
-        stringBuilder.Append(@"
-        {
-            this.QueryOptions.Add(new QueryOption(""$top"", value.ToString()));
             return this;
         }");
     
@@ -263,11 +242,6 @@ public string GetEntitySelectMethod(OdcmClass odcmClass)
     return this.GetSelectMethod(this.GetRequestString(this.GetEntityNameString(odcmClass)));
 }
 
-public string GetEntityTopMethod(OdcmClass odcmClass)
-{
-    return this.GetTopMethod(this.GetRequestString(this.GetEntityNameString(odcmClass)));
-}
-
 // Entity with references
 public string GetEntityWithReferencesExpandMethod(OdcmClass odcmClass)
 {
@@ -277,11 +251,6 @@ public string GetEntityWithReferencesExpandMethod(OdcmClass odcmClass)
 public string GetEntityWithReferencesSelectMethod(OdcmClass odcmClass)
 {
     return this.GetSelectMethod(this.GetEntityWithReferencesRequestName(odcmClass));
-}
-
-public string GetEntityWithReferencesTopMethod(OdcmClass odcmClass)
-{
-    return this.GetTopMethod(this.GetEntityWithReferencesRequestName(odcmClass));
 }
 
 #>

@@ -20,7 +20,5 @@ namespace <#=this.GetNamespaceName(entity)#>
         <#=this.GetEntityWithReferencesExpandMethod(entity)#>
 
         <#=this.GetEntityWithReferencesSelectMethod(entity)#>
-
-        <#=this.GetEntityWithReferencesTopMethod(entity)#>
     }
 }

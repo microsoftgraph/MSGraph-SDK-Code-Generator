@@ -23,8 +23,6 @@ namespace <#=this.GetNamespaceName(entity)#>
         <#=this.GetEntityWithReferencesExpandMethod(entity)#>
 
         <#=this.GetEntityWithReferencesSelectMethod(entity)#>
-        
-        <#=this.GetEntityWithReferencesTopMethod(entity)#>
 
         /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.

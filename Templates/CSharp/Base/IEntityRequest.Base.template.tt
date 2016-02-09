@@ -98,7 +98,7 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
 
 
 // -------------------------------------------------------------
-// Build select, expand, and top methods
+// Build select and expand methods
 // -------------------------------------------------------------
 public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
 {
@@ -154,22 +154,6 @@ public string GetSelectMethod(string entityRequest)
     return stringBuilder.ToString();
 }
 
-public string GetTopMethod(string entityRequest)
-{
-    var stringBuilder = new StringBuilder();
-
-    stringBuilder.Append(
-      @"/// <summary>
-        /// Adds the specified top value to the request.
-        /// </summary>
-        /// <param name=""value"">The top value.</param>
-        /// <returns>The request object to send.</returns>");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        I{0} Top(int value);", entityRequest);
-    
-    return stringBuilder.ToString();
-}
-
 // Standard entity
 public string GetEntityExpandMethod(OdcmClass odcmClass)
 {
@@ -181,11 +165,6 @@ public string GetEntitySelectMethod(OdcmClass odcmClass)
     return this.GetSelectMethod(this.GetRequestString(this.GetEntityNameString(odcmClass)));
 }
 
-public string GetEntityTopMethod(OdcmClass odcmClass)
-{
-    return this.GetTopMethod(this.GetRequestString(this.GetEntityNameString(odcmClass)));
-}
-
 // Entity with references
 public string GetEntityWithReferencesExpandMethod(OdcmClass odcmClass)
 {
@@ -195,11 +174,6 @@ public string GetEntityWithReferencesExpandMethod(OdcmClass odcmClass)
 public string GetEntityWithReferencesSelectMethod(OdcmClass odcmClass)
 {
     return this.GetSelectMethod(this.GetEntityWithReferencesRequestName(odcmClass));
-}
-
-public string GetEntityWithReferencesTopMethod(OdcmClass odcmClass)
-{
-    return this.GetTopMethod(this.GetEntityWithReferencesRequestName(odcmClass));
 }
 
 #>
