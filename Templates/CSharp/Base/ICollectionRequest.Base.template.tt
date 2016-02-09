@@ -57,8 +57,6 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty)
         stringBuilder.Append(Environment.NewLine);
         this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        /// <param name=\"{0}\">The {1} to add.</param>", sanitizedPropertyName, propertyType);
-        stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("        Task<{0}> AddAsync({0} {1});", propertyType, sanitizedPropertyName);
