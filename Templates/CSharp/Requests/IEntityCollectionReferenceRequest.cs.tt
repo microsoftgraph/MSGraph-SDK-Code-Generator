@@ -14,7 +14,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 
     <#=this.GetCollectionReferenceInterfaceDefinition(prop)#>
     {
-        <#=GetPostAsyncMethod(prop)#>
+        <#=GetPostAsyncMethodForReferenceRequest(prop)#>
 
         /// <summary>
         /// Adds the specified select value to the request.

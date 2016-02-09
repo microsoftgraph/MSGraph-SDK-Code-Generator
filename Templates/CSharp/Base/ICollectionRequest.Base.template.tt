@@ -32,6 +32,17 @@ public string GetCollectionWithReferencesInterfaceDefinition(OdcmProperty odcmPr
 // -------------------------------------------------------------
 // Build CRUD methods
 // -------------------------------------------------------------
+public void AppendMethodHeaderToPostAsyncMethod(string propertyType, string sanitizedPropertyName, StringBuilder stringBuilder)
+{
+    stringBuilder.Append("        /// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Adds the specified {0} to the collection via POST.", propertyType);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <param name=\"{0}\">The {1} to add.</param>", sanitizedPropertyName, propertyType);
+}
+
 public string GetPostAsyncMethod(OdcmProperty odcmProperty)
 {
     if (!odcmProperty.LongDescriptionContains("readonly"))
@@ -44,13 +55,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty)
 
         var stringBuilder = new StringBuilder();
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append("        /// <summary>");
-        stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        /// Adds the specified {0} to the collection via POST.", propertyType);
-        stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append("        /// </summary>");
-        stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        /// <param name=\"{0}\">The {1} to add.</param>", sanitizedPropertyName, propertyType);
+        this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
         stringBuilder.Append(Environment.NewLine);
@@ -60,6 +65,23 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty)
     }
     
     return string.Empty;
+}
+
+public string GetPostAsyncMethodForReferenceRequest(OdcmProperty odcmProperty)
+{
+    var sanitizedPropertyName = odcmProperty.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
+    var propertyType = this.GetPropertyTypeName(odcmProperty);
+    
+    var templateWriterHost = (CustomT4Host)Host;
+    var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
+
+    var stringBuilder = new StringBuilder();
+    stringBuilder.Append(Environment.NewLine);
+    this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        Task AddAsync({0} {1});", propertyType, sanitizedPropertyName);
+    
+    return stringBuilder.ToString();
 }
 
 #>
