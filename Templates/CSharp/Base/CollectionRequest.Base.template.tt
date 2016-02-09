@@ -57,8 +57,6 @@ public void AppendMethodHeaderToPostAsyncMethod(string propertyType, string sani
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <param name=\"{0}\">The {1} to add.</param>", sanitizedPropertyName, propertyType);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
 }
 
 public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody = null)
@@ -74,6 +72,8 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
         var stringBuilder = new StringBuilder();
         stringBuilder.Append(Environment.NewLine);
         this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("        public Task<{0}> AddAsync({0} {1})", propertyType, sanitizedPropertyName);
         stringBuilder.Append(Environment.NewLine);
@@ -109,7 +109,7 @@ public string GetPostAsyncMethodForReferenceRequest(OdcmProperty odcmProperty)
     stringBuilder.Append(Environment.NewLine);
     this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public Task<{0}> AddAsync({0} {1})", propertyType, sanitizedPropertyName);
+    stringBuilder.AppendFormat("        public Task AddAsync({0} {1})", propertyType, sanitizedPropertyName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
     stringBuilder.Append(Environment.NewLine);
@@ -127,9 +127,9 @@ public string GetPostAsyncMethodForReferenceRequest(OdcmProperty odcmProperty)
     stringBuilder.Append("            }");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var requestBodyString = string.Format(\"{{0}}/{0}/{{1}}\", this.Client.BaseUrl, {1}.Id);", serviceNavigationProperty.Name, sanitizedPropertyName);
+    stringBuilder.AppendFormat("            var requestBody = new ReferenceRequestBody {{ ODataId = string.Format(\"{{0}}/{0}/{{1}}\", this.Client.BaseUrl, {1}.Id) }};", serviceNavigationProperty.Name, sanitizedPropertyName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            return this.SendAsync<{0}>(requestBodyString);", propertyType);
+    stringBuilder.AppendFormat("            return this.SendAsync(requestBody);");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        }");
     stringBuilder.Append(Environment.NewLine);
