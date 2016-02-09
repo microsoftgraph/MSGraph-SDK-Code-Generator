@@ -91,7 +91,9 @@
     <None Include=".config\CSharpSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include=".config\JavaScriptSettings.json" />
+    <None Include=".config\JavaScriptSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include=".config\JavaSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
