@@ -154,7 +154,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     #>
 
         /// <summary>
-        /// Gets the falue of <#=param.Name.ToCheckedCase()#>.
+        /// Gets the value of <#=param.Name.ToCheckedCase()#>.
         /// </summary>
         public <#=paramTypeString#>? <#=param.Name.ToCheckedCase()#> { get; set; }
     <#
