@@ -102,7 +102,7 @@ public string GetPostAsyncMethodForReferenceRequest(OdcmProperty odcmProperty)
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
     
-    var serviceNavigationProperty = odcmProperty.GetServiceNavigationPropertyForPropertyType();
+    var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType();
 
     var stringBuilder = new StringBuilder();
     

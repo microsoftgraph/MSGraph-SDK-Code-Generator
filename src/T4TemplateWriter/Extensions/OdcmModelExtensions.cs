@@ -135,18 +135,20 @@ namespace Vipr.T4TemplateWriter
             return model.GetEntityTypes().SelectMany(entityType => entityType.Methods);
         }
 
-        public static OdcmProperty GetServiceNavigationPropertyForPropertyType(this OdcmProperty odcmProperty)
+        public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty)
         {
-            var properties = odcmProperty
+            // Try to find the first collection navigation property for the specified type directly on the service
+            // class object. Use First() instead of FirstOrDefault() so template generation would fail if not found
+            // instead of silently continuing. If an entity is used in a reference property a navigation collection
+            // on the client for that type is required. 
+            return odcmProperty
                 .Class
                 .Namespace
                 .Classes
                 .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
-                .SelectMany(service => (service as OdcmServiceClass).Properties)
-                .Where(property => property.Type.FullName.Equals(odcmProperty.Type.FullName))
-                .FirstOrDefault();
-
-            return properties;
+                .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
+                .Where(property => property.IsCollection && property.Type.FullName.Equals(odcmProperty.Type.FullName))
+                .First();
         }
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
