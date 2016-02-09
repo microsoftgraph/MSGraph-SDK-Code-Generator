@@ -135,6 +135,20 @@ namespace Vipr.T4TemplateWriter
             return model.GetEntityTypes().SelectMany(entityType => entityType.Methods);
         }
 
+        public static OdcmProperty GetServiceNavigationPropertyForPropertyType(this OdcmProperty odcmProperty)
+        {
+            var properties = odcmProperty
+                .Class
+                .Namespace
+                .Classes
+                .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                .SelectMany(service => (service as OdcmServiceClass).Properties)
+                .Where(property => property.Type.FullName.Equals(odcmProperty.Type.FullName))
+                .FirstOrDefault();
+
+            return properties;
+        }
+
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
         {
             return odcmClass.Properties.Where(prop => prop.IsNavigation());
