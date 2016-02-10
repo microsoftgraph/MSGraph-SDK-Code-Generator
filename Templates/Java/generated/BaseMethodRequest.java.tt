@@ -19,13 +19,16 @@
 
 <# foreach (var param in c.AsOdcmMethod().Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
         if (<#=paramName#> != null) {
-            addQueryOption(new QueryOption("<#=paramName#>", <#=paramName#>));
+        <# if (c.AsOdcmMethod().IsAction()) { #>
+    addQueryOption(new QueryOption("<#=paramName#>", <#=paramName#>));
+        <# } else { #>
+    addFunctionOption(new FunctionOption("<#=paramName#>", <#=paramName#>));
+        <# } #>        
         }
 <# } #>
     }
 
 <# if (c.AsOdcmMethod().IsAction()) { #>
-
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
     public void post(final ICallback<<#=ClassTypeName(c)#>> callback) {
         send(HttpMethod.POST, callback, null);
@@ -120,8 +123,6 @@
     public void get() throws ClientException {
         this.send(HttpMethod.GET, null);
     }
-
 <# } #>
-
 <# } #>
 }
