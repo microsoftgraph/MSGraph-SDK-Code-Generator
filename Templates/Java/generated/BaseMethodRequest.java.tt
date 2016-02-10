@@ -72,7 +72,7 @@
     }
 
     public void post() throws ClientException {
-        this.send(HttpMethod.GET, null);
+        this.send(HttpMethod.POST, null);
     }
 
 <# } #>
