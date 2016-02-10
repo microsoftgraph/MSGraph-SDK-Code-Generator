@@ -15,7 +15,28 @@
           { "Template": "EntityCollectionRequest", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequest" },
           { "Template": "IEntityCollectionRequest", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Property>CollectionRequest" },
           { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Property>CollectionRequestBuilder" },
-          { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Property>CollectionRequestBuilder" },
+          
+          { "Template": "EntityReferenceRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>ReferenceRequest" },
+          { "Template": "IEntityReferenceRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>ReferenceRequest" },
+          { "Template": "EntityWithReferencesRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferencesRequest" },
+          { "Template": "IEntityWithReferencesRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>WithReferencesRequest" },
+          
+          { "Template": "EntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>ReferenceRequestBuilder" },
+          { "Template": "IEntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>ReferenceRequestBuilder" },
+          { "Template": "EntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferencesRequestBuilder" },
+          { "Template": "IEntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>WithReferencesRequestBuilder" },
+          
+          { "Template": "EntityCollectionReferenceRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Property>CollectionReferenceRequest" },
+          { "Template": "IEntityCollectionReferenceRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Property>CollectionReferenceRequest" },
+          { "Template": "EntityCollectionWithReferencesRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Property>CollectionWithReferencesRequest" },
+          { "Template": "IEntityCollectionWithReferencesRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Property>CollectionWithReferencesRequest" },
+          
+          { "Template": "EntityCollectionReferenceRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Property>CollectionReferenceRequestBuilder" },
+          { "Template": "IEntityCollectionReferenceRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Property>CollectionReferenceRequestBuilder" },
+          { "Template": "EntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Property>CollectionWithReferencesRequestBuilder" },
+          { "Template": "IEntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Property>CollectionWithReferencesRequestBuilder" },
+          
+          { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Property>CollectionRequestBuilder" },  
           { "Template": "EntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Property>CollectionResponse" },
           { "Template": "StreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "<Class>ContentRequest" },
           { "Template": "IStreamRequest", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "I<Class><Property>Request" },

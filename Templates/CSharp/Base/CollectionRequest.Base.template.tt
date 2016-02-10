@@ -1,0 +1,142 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="Request.Base.template.tt"#>
+<#+
+
+// -------------------------------------------------------------
+// Methods for standard entity collection classes
+// -------------------------------------------------------------
+public string GetCollectionClassDefinition(OdcmProperty odcmProperty)
+{
+    return this.GetClassDefinition(this.GetPropertyCollectionRequestName(odcmProperty));
+}
+
+public string GetCollectionRequestConstructor(OdcmProperty odcmProperty)
+{
+    return this.GetConstructor(this.GetPropertyCollectionRequestName(odcmProperty));
+}
+
+
+// -------------------------------------------------------------
+// Methods for the reference of an entity collection
+// -------------------------------------------------------------
+public string GetCollectionReferenceClassDefinition(OdcmProperty odcmProperty)
+{
+    return this.GetClassDefinition(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
+}
+
+public string GetCollectionReferenceRequestConstructor(OdcmProperty odcmProperty)
+{
+    return this.GetConstructor(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
+}
+
+
+// -------------------------------------------------------------
+// Methods for entity collection classes that support $ref addressing
+// -------------------------------------------------------------
+public string GetCollectionWithReferencesClassDefinition(OdcmProperty odcmProperty)
+{
+    return this.GetClassDefinition(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
+}
+
+public string GetCollectionWithReferencesRequestConstructor(OdcmProperty odcmProperty)
+{
+    return this.GetConstructor(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
+}
+
+
+// -------------------------------------------------------------
+// Build CRUD methods
+// -------------------------------------------------------------
+
+public void AppendMethodHeaderToPostAsyncMethod(string propertyType, string sanitizedPropertyName, StringBuilder stringBuilder)
+{
+    stringBuilder.Append("        /// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Adds the specified {0} to the collection via POST.", propertyType);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <param name=\"{0}\">The {1} to add.</param>", sanitizedPropertyName, propertyType);
+}
+
+public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody = null)
+{
+    if (!odcmProperty.LongDescriptionContains("readonly"))
+    {
+        var sanitizedPropertyName = odcmProperty.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
+        var propertyType = this.GetPropertyTypeName(odcmProperty);
+        
+        var templateWriterHost = (CustomT4Host)Host;
+        var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
+
+        var stringBuilder = new StringBuilder();
+        stringBuilder.Append(Environment.NewLine);
+        this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        public Task<{0}> AddAsync({0} {1})", propertyType, sanitizedPropertyName);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        {");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("            this.Method = \"POST\";");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            return this.SendAsync<{0}>({1});", propertyType, sanitizedPropertyName);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        }");
+        stringBuilder.Append(Environment.NewLine);
+        
+        return stringBuilder.ToString();
+    }
+    
+    return string.Empty;
+}
+
+public string GetPostAsyncMethodForReferenceRequest(OdcmProperty odcmProperty)
+{
+    var sanitizedPropertyName = odcmProperty.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
+    var propertyType = this.GetPropertyTypeName(odcmProperty);
+        
+    var templateWriterHost = (CustomT4Host)Host;
+    var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
+    
+    var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType();
+
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append(Environment.NewLine);
+    this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The task to await.</returns>", propertyType);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        public Task AddAsync({0} {1})", propertyType, sanitizedPropertyName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        {");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("            this.Method = \"POST\";");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            if (string.IsNullOrEmpty({0}.Id))", sanitizedPropertyName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("            {");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("                throw new ServiceException(new Error { Code = \"invalidRequest\", Message = \"ID is required to add a reference.\" });");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("            }");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            var requestBody = new ReferenceRequestBody {{ ODataId = string.Format(\"{{0}}/{0}/{{1}}\", this.Client.BaseUrl, {1}.Id) }};", serviceNavigationProperty.Name, sanitizedPropertyName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            return this.SendAsync(requestBody);");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        }");
+    stringBuilder.Append(Environment.NewLine);
+        
+    return stringBuilder.ToString();
+}
+
+#>

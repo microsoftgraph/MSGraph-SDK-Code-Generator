@@ -1,0 +1,20 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#+
+
+public string GetInterfaceDefinition(string interfaceName)
+{
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("    /// The interface I{0}.", interfaceName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("    /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("    public partial interface I{0} : IBaseRequest", interfaceName);
+    
+    return stringBuilder.ToString();
+}
+
+#>

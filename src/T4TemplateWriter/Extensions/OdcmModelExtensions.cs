@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
 using System;
@@ -78,6 +78,28 @@ namespace Vipr.T4TemplateWriter
             return model.GetProperties(typeName: "Stream", longDescriptionMatches: null);
         }
 
+        public static IEnumerable<OdcmClass> GetEntityReferenceTypes(this OdcmModel model)
+        {
+            // We don't want to do Where() on entity types since that will iterate every entity type to see if it's a reference.
+            // Instead, take the properties that we know are references and not collections and grab the appropriate entity type
+            // for each, returning those.
+            var entityTypes = model.GetEntityTypes();
+            var referencePropertyTypes = model.GetProperties().Where(prop => prop.IsReference() && !prop.IsCollection).Select(prop => prop.Type).Distinct();
+
+            var referenceEntityTypes = new List<OdcmClass>();
+            foreach (var referencePropertyType in referencePropertyTypes)
+            {
+                var entityType = entityTypes.FirstOrDefault(entity => entity.Name == referencePropertyType.Name);
+
+                if (entityType != null)
+                {
+                    referenceEntityTypes.Add(entityType);
+                }
+            }
+
+            return referenceEntityTypes;
+        }
+
         public static IEnumerable<OdcmProperty> FilterProperties(IEnumerable<OdcmProperty> properties, string typeName = null, string longDescriptionMatches = null)
         {
             var allProperties = properties;
@@ -113,6 +135,22 @@ namespace Vipr.T4TemplateWriter
             return model.GetEntityTypes().SelectMany(entityType => entityType.Methods);
         }
 
+        public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty)
+        {
+            // Try to find the first collection navigation property for the specified type directly on the service
+            // class object. Use First() instead of FirstOrDefault() so template generation would fail if not found
+            // instead of silently continuing. If an entity is used in a reference property a navigation collection
+            // on the client for that type is required. 
+            return odcmProperty
+                .Class
+                .Namespace
+                .Classes
+                .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
+                .Where(property => property.IsCollection && property.Type.FullName.Equals(odcmProperty.Type.FullName))
+                .First();
+        }
+
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
         {
             return odcmClass.Properties.Where(prop => prop.IsNavigation());
@@ -120,13 +158,14 @@ namespace Vipr.T4TemplateWriter
 
         public static bool IsNavigation(this OdcmProperty property)
         {
-            bool isNavigationProperty = false;
-            var classType = property.Type as OdcmClass;
-            if (classType != null)
-            {
-                isNavigationProperty = property.IsLink;
-            }
-            return isNavigationProperty;
+            return property.IsLink;
+        }
+
+        public static bool IsReference(this OdcmProperty property)
+        {
+            var propertyClass = property.Class.AsOdcmClass();
+
+            return propertyClass.Kind != OdcmClassKind.Service && property.IsLink && !property.ContainsTarget;
         }
 
         public static bool HasActions(this OdcmClass odcmClass)

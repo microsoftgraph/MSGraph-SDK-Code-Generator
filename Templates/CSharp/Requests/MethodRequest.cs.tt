@@ -4,7 +4,8 @@
 
 var method = host.CurrentType.AsOdcmMethod();
 var entityName = method.Class.Name.ToCheckedCase();
-var httpMethod = (method.IsAction()) ? "POST" : "GET";
+var isAction = method.IsAction();
+var httpMethod = isAction ? "POST" : "GET";
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
@@ -30,6 +31,7 @@ var methodReturnType = sendAsyncReturnType == null
     : "Task<" + sendAsyncReturnType + ">";
         
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
+bool includeRequestBody = hasParameters && isAction;
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
@@ -56,7 +58,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     paramStringBuilder.Append("IBaseClient client,");
     paramStringBuilder.Append(Environment.NewLine);
     paramStringBuilder.Append("            ");
-    paramStringBuilder.Append("IList<Option> options,");
+    paramStringBuilder.Append("IList<Option> options");
+    
+    if (includeRequestBody)
+    {
+        paramStringBuilder.Append(",");
+    }
 
     requestBodyInitializerBuilder.Append("this.Method = \"" + httpMethod + "\";");
     
@@ -67,7 +74,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         requestBodyInitializerBuilder.Append("this.Headers.Add(new HeaderOption(\"Prefer\", \"respond-async\"));");
     }
 
-    if (hasParameters && method.IsAction())
+    if (includeRequestBody)
     {
         requestBodyInitializerBuilder.Append(Environment.NewLine);
         requestBodyInitializerBuilder.Append("            ");
@@ -82,30 +89,30 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     methodParameters.AddRange(method.Parameters.Where(param => !param.IsNullable));
     methodParameters.AddRange(method.Parameters.Where(param => param.IsNullable));
     
-    foreach (var param in methodParameters)
+    if (includeRequestBody)
     {
-        var paramTypeString = param.Type.GetTypeString();
-
-        paramStringBuilder.Append(Environment.NewLine);
-        paramStringBuilder.Append("            ");
-        paramStringBuilder.Append(paramTypeString);
-
-        if (param.Type.IsTypeNullable())
+        foreach (var param in methodParameters)
         {
-            paramStringBuilder.Append(" ");
-        }
-        else
-        {
-            paramStringBuilder.Append("? ");
-        }
-        
-        var paramLowerChar = param.Name.ToLowerFirstChar();
-        
-        paramStringBuilder.Append(paramLowerChar);
-        paramStringBuilder.Append(" = null,");
+            var paramTypeString = param.Type.GetTypeString();
 
-        if (method.IsAction())
-        {   
+            paramStringBuilder.Append(Environment.NewLine);
+            paramStringBuilder.Append("            ");
+            paramStringBuilder.Append(paramTypeString);
+
+            if (param.Type.IsTypeNullable())
+            {
+                paramStringBuilder.Append(" ");
+            }
+            else
+            {
+                paramStringBuilder.Append("? ");
+            }
+            
+            var paramLowerChar = param.Name.ToLowerFirstChar();
+            
+            paramStringBuilder.Append(paramLowerChar);
+            paramStringBuilder.Append(" = null,");
+     
             requestBodyInitializerBuilder.Append(Environment.NewLine);
             requestBodyInitializerBuilder.Append("            ");
             
@@ -137,33 +144,9 @@ namespace <#=method.Namespace.GetNamespaceName()#>
                 requestBodyInitializerBuilder.Append(";");
             }
         }
-        else
-        {
-            requestBodyInitializerBuilder.Append(Environment.NewLine);
-            requestBodyInitializerBuilder.Append(Environment.NewLine);
-            requestBodyInitializerBuilder.Append("            ");
-            requestBodyInitializerBuilder.Append("if (");
-            requestBodyInitializerBuilder.Append(param.Name.ToLowerFirstChar());
-            requestBodyInitializerBuilder.Append(" != null)");
-            requestBodyInitializerBuilder.Append(Environment.NewLine);
-            requestBodyInitializerBuilder.Append("            ");
-            requestBodyInitializerBuilder.Append("{");
-            requestBodyInitializerBuilder.Append(Environment.NewLine);
-            requestBodyInitializerBuilder.Append("                ");
-
-            requestBodyInitializerBuilder.Append("this.QueryOptions.Add(new QueryOption(\"");
-            requestBodyInitializerBuilder.Append(param.Name.ToLowerFirstChar());
-            requestBodyInitializerBuilder.Append("\", ");
-            requestBodyInitializerBuilder.Append(param.Name.ToLowerFirstChar());
-            requestBodyInitializerBuilder.Append("));");
-
-            requestBodyInitializerBuilder.Append(Environment.NewLine);
-            requestBodyInitializerBuilder.Append("            ");
-            requestBodyInitializerBuilder.Append("}");
-        }
+        
+        paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);
     }
-
-    paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);
 
     #>
 
@@ -207,7 +190,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         public <#=returnString#> <#=httpMethod.ToLower().ToCheckedCase()#>Async()
         {
     <#
-    bool includeRequestBody = hasParameters && method.IsAction();
     var methodParameter = "null";
     if (includeRequestBody)
     {

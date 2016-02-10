@@ -10,12 +10,10 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System;
     using System.Collections.Generic;
 
-    <#=this.GetCollectionInterfaceDefinition(prop)#>
+    <#=this.GetCollectionReferenceInterfaceDefinition(prop)#>
     {
-        <#=this.GetCollectionRequestMethod(prop)#>
+        <#=this.GetCollectionReferenceRequestMethod(prop)#>
 
-        <#=this.GetCollectionRequestMethodWithOptions(prop)#>
-
-        <#=this.GetCollectionIndexRequestBuilder(prop)#>
+        <#=this.GetCollectionReferenceRequestMethodWithOptions(prop)#>
     }
 }

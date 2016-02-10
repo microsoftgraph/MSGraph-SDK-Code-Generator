@@ -4,7 +4,7 @@
 var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
-var collectionRequest = prop.Name.ToCheckedCase() + "CollectionRequest";
+var collectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
 var collectionResponse = prop.Name.ToCheckedCase() + "CollectionResponse";
 var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
 
@@ -16,10 +16,10 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    <#=this.GetCollectionClassDefinition(prop)#>
+    <#=this.GetCollectionWithReferencesClassDefinition(prop)#>
     {
-        <#=GetCollectionRequestConstructor(prop)#>
-        <#=GetPostAsyncMethod(prop)#>
+        <#=GetCollectionWithReferencesRequestConstructor(prop)#>
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
