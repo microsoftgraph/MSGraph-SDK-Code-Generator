@@ -130,7 +130,7 @@ import android.app.Activity;
             if (silentAccountInfo == null
                 && mClient.getAuthenticator().login(null) == null) {
                 throw new ClientAuthenticatorException("Unable to authenticate silently or interactively",
-                                                       OneDriveErrorCodes.AuthenticationFailure);
+                                                       GraphErrorCodes.AuthenticationFailure);
             }
 
             return mClient;
