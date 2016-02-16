@@ -18,13 +18,11 @@
         super(requestUrl, client, options, null);
 
 <# foreach (var param in c.AsOdcmMethod().Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
-        if (<#=paramName#> != null) {
         <# if (c.AsOdcmMethod().IsAction()) { #>
     addQueryOption(new QueryOption("<#=paramName#>", <#=paramName#>));
         <# } else { #>
     addFunctionOption(new FunctionOption("<#=paramName#>", <#=paramName#>));
         <# } #>        
-        }
 <# } #>
     }
 

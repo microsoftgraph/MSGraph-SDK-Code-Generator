@@ -264,15 +264,6 @@
         return "<" + BaseTypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
     }
 
-    public string BaseClassForMethod(OdcmObject c){
-
-        if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) {
-            return "BaseCollectionRequest" + CollectionRequestGeneric(c);
-        } else {
-            return "BaseRequest";
-        }
-    }
-
     public string CreatePackageDef(CustomT4Host host)
     {
         var format = @"package {0}.sdk.{1};

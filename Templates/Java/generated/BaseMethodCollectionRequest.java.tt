@@ -23,23 +23,24 @@
     public <#=BaseTypeCollectionRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
         super(requestUrl, client, options, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
+
 <# } else { #>
-    super(requestUrl, client, options, null);
+        super(requestUrl, client, options, null);
 <# } #>
+
 <# if (c.AsOdcmMethod().IsAction()) { #>
         mBody = new <#=TypeBody(c)#>();
+
 <# foreach (var p in c.AsOdcmMethod().Parameters) { #>
         mBody.<#=ParamName(p)#> = <#=ParamName(p)#>;
 <# } #>
+
 <# }else{ #>
 
-<# foreach (var param in c.AsOdcmMethod().Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
-        if (<#=paramName#> != null) {
-            addFunctionOption(new FunctionOption("<#=paramName#>", <#=paramName#>));
-        }
+<#  foreach (var param in c.AsOdcmMethod().Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
+        addFunctionOption(new FunctionOption("<#=paramName#>", <#=paramName#>));
 <# } #>
 <# } #>
-
     }
 
 <# if (c.AsOdcmMethod().IsAction()) { #>
@@ -59,11 +60,11 @@
     }
 
     public <#=ITypeCollectionPage(c)#> post() throws ClientException {
-    <# if (c.AsOdcmMethod().IsAction()) { #>
+<# if (c.AsOdcmMethod().IsAction()) { #>
         final <#=BaseTypeCollectionResponse(c)#> response = post(mBody);
-    <# } else { #>
+<# } else { #>
         final <#=BaseTypeCollectionResponse(c)#> response = post();
-    <# } #>
+<# } #>
         return buildFromResponse(response);
     }
 
