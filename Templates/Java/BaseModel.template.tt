@@ -164,28 +164,34 @@
 
     public string MethodParametersSignature(OdcmObject c) {
         var parameterSignatureBuilder = new StringBuilder();
-        foreach (var p in c.AsOdcmMethod().Parameters)
-        {
-            parameterSignatureBuilder.AppendFormat(", final {0} {1}", ParamType(p), ParamName(p));
-        }
+		if (c.AsOdcmMethod() != null) {
+			foreach (var p in c.AsOdcmMethod().Parameters)
+			{
+				parameterSignatureBuilder.AppendFormat(", final {0} {1}", ParamType(p), ParamName(p));
+			}
+		}
         return parameterSignatureBuilder.ToString();
     }
 
     public string MethodParametersValues(OdcmObject c) {
         var parameterValuesBuilder = new StringBuilder();
-        foreach (var p in c.AsOdcmMethod().Parameters)
-        {
-            parameterValuesBuilder.AppendFormat(", {0}", ParamName(p));
+        if (c.AsOdcmMethod() != null) {
+            foreach (var p in c.AsOdcmMethod().Parameters)
+            {
+                parameterValuesBuilder.AppendFormat(", {0}", ParamName(p));
+            }
         }
         return parameterValuesBuilder.ToString();
     }
 
     public string MethodFieldValues(OdcmObject c) {
         var parameterValuesBuilder = new StringBuilder();
-        foreach (var p in c.AsOdcmMethod().Parameters)
-        {
-            parameterValuesBuilder.AppendFormat(", {0}", FieldName(p));
-        }
+		if (c.AsOdcmMethod() != null) {
+			foreach (var p in c.AsOdcmMethod().Parameters)
+			{
+				parameterValuesBuilder.AppendFormat(", {0}", FieldName(p));
+			}
+		}
         return parameterValuesBuilder.ToString();
     }
 
@@ -258,6 +264,14 @@
         return "<" + BaseTypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
     }
 
+    public string BaseClassForMethod(OdcmObject c){
+
+        if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) {
+            return "BaseCollectionRequest" + CollectionRequestGeneric(c);
+        } else {
+            return "BaseRequest";
+        }
+    }
 
     public string CreatePackageDef(CustomT4Host host)
     {
