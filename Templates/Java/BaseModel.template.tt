@@ -182,11 +182,9 @@
 
     public string MethodFieldValues(OdcmObject c) {
         var parameterValuesBuilder = new StringBuilder();
-        if (c.AsOdcmMethod() != null) {
-            foreach (var p in c.AsOdcmMethod().Parameters)
-            {
-                parameterValuesBuilder.AppendFormat(", {0}", FieldName(p));
-            }
+        foreach (var p in c.AsOdcmMethod().Parameters)
+        {
+            parameterValuesBuilder.AppendFormat(", {0}", FieldName(p));
         }
         return parameterValuesBuilder.ToString();
     }
