@@ -14,7 +14,7 @@
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=BaseTypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+    public <#=BaseTypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
         super(requestUrl, client, options);
     }
 
@@ -23,7 +23,7 @@
     }
 
     public <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> options) {
-        return new <#=TypeCollectionRequest(c)#>(getRequestUrl(), getClient(), options<#=MethodFieldValues(c)#>);
+        return new <#=TypeCollectionRequest(c)#>(getRequestUrl(), getClient(), options);
     }
 
     public <#=ITypeRequestBuilder(c)#> byId(final String id) {

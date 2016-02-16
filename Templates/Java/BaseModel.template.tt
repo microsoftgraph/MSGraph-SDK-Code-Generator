@@ -164,22 +164,18 @@
 
     public string MethodParametersSignature(OdcmObject c) {
         var parameterSignatureBuilder = new StringBuilder();
-        if (c.AsOdcmMethod() != null) {
         foreach (var p in c.AsOdcmMethod().Parameters)
-            {
-                parameterSignatureBuilder.AppendFormat(", final {0} {1}", ParamType(p), ParamName(p));
-            }
+        {
+            parameterSignatureBuilder.AppendFormat(", final {0} {1}", ParamType(p), ParamName(p));
         }
         return parameterSignatureBuilder.ToString();
     }
 
     public string MethodParametersValues(OdcmObject c) {
         var parameterValuesBuilder = new StringBuilder();
-        if (c.AsOdcmMethod() != null) {
-            foreach (var p in c.AsOdcmMethod().Parameters)
-            {
-                parameterValuesBuilder.AppendFormat(", {0}", ParamName(p));
-            }
+        foreach (var p in c.AsOdcmMethod().Parameters)
+        {
+            parameterValuesBuilder.AppendFormat(", {0}", ParamName(p));
         }
         return parameterValuesBuilder.ToString();
     }
