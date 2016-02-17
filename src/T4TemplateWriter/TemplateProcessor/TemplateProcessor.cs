@@ -288,7 +288,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmMethod> CollectionMethods()
         {
-            var methods = this.CurrentModel.GetMethods().Where(method => method.IsCollection && method.ReturnType != null && !(method.ReturnType is OdcmPrimitiveType)).ToList();
+            var methods = this.CurrentModel.GetMethods().Where(method => method.IsCollection && method.ReturnType != null).ToList();
             return methods;
         }
 

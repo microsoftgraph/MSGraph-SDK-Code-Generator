@@ -1,0 +1,29 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeCollectionRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.*;
+
+<#=CreateInterfaceDef(IBaseTypeCollectionRequest(c))#>
+
+<# if (c.AsOdcmMethod().IsAction()) { #>
+
+    void post(final ICallback<<#=ITypeCollectionPage(c)#>> callback);
+
+    <#=ITypeCollectionPage(c)#> post() throws ClientException;
+<# } else { #>
+    void get(final ICallback<<#=ITypeCollectionPage(c)#>> callback);
+
+    <#=ITypeCollectionPage(c)#> get() throws ClientException;
+
+<# } #>
+    <#=ITypeCollectionRequest(c)#> select(final String value);
+
+    <#=ITypeCollectionRequest(c)#> expand(final String value);
+
+    <#=ITypeCollectionRequest(c)#> top(final int value);
+}

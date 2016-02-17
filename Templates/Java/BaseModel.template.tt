@@ -19,11 +19,11 @@
             return ((OdcmMethod)c).Class.Name.ToUpperFirstChar() + c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
         } else if (c is OdcmProperty && c.AsOdcmProperty().IsCollection) {
             return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
-		} else if (c is OdcmProperty && c.AsOdcmProperty().Type is OdcmPrimitiveType) {
-			return ClassTypeName(c) + c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
-		} else if (c is OdcmProperty) {
-			return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
-		}
+        } else if (c is OdcmProperty && c.AsOdcmProperty().Type is OdcmPrimitiveType) {
+            return ClassTypeName(c) + c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+        } else if (c is OdcmProperty) {
+            return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+        }
         return c.Name.ToUpperFirstChar();
     }
 
@@ -156,10 +156,10 @@
     }
 
     public string ReturnType(OdcmObject c) {
-		if (c.AsOdcmMethod().ReturnType != null) {
-	        return c.AsOdcmMethod().ReturnType.Name.ToUpperFirstChar();
-		}
-		return "Void";
+        if (c.AsOdcmMethod().ReturnType != null) {
+            return c.AsOdcmMethod().ReturnType.Name.ToUpperFirstChar();
+        }
+        return "Void";
     }
 
     public string MethodParametersSignature(OdcmObject c) {
@@ -199,30 +199,30 @@
         return pageValuesBuilder.ToString();
     }
 
-	public string ClassTypeName(OdcmObject c) {
-		if (c is OdcmMethod) {
-			return c.AsOdcmMethod().Class.Name.ToUpperFirstChar();
-		} else if (c is OdcmProperty && c.AsOdcmProperty().Class is OdcmServiceClass) {
+    public string ClassTypeName(OdcmObject c) {
+        if (c is OdcmMethod) {
+            return c.AsOdcmMethod().Class.Name.ToUpperFirstChar();
+        } else if (c is OdcmProperty && c.AsOdcmProperty().Class is OdcmServiceClass) {
             return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
         } else if (c is OdcmProperty) {
-			return c.AsOdcmProperty().Class.Name.ToUpperFirstChar();
-		}
-		return c.Name.ToUpperFirstChar();
-	}
+            return c.AsOdcmProperty().Class.Name.ToUpperFirstChar();
+        }
+        return c.Name.ToUpperFirstChar();
+    }
 
     public string ClientType(OdcmObject c) {
         return ((CustomT4Host)Host).CurrentModel.EntityContainer.Name.ToUpperFirstChar() + "Client";
     }
 
-	public string IClientType(OdcmObject c) {
+    public string IClientType(OdcmObject c) {
         return "I" + ClientType(c);
     }
 
-	public string BaseClientType(OdcmObject c) {
+    public string BaseClientType(OdcmObject c) {
         return "Base" + ClientType(c);
     }
 
-	public string IBaseClientType(OdcmObject c) {
+    public string IBaseClientType(OdcmObject c) {
         return "I" + BaseClientType(c);
     }
 
@@ -257,7 +257,6 @@
         }
         return "<" + BaseTypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
     }
-
 
     public string CreatePackageDef(CustomT4Host host)
     {
