@@ -1,0 +1,20 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = TypeCollectionRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(TypeCollectionRequest(c), BaseTypeCollectionRequest(c), ITypeCollectionRequest(c))#>
+
+    /**
+     * The request for this collection of <#=ClassTypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public <#=TypeCollectionRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+        super(requestUrl, client, options<#=MethodParametersValues(c)#>);
+    }
+}
