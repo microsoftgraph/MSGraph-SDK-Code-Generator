@@ -32,7 +32,7 @@ foreach(var et in entityTypes)
                 classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
                 classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
             }
-            else 
+            else
             {
                  classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder.h\"");
                  classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "Request.h\"");
@@ -41,6 +41,11 @@ foreach(var et in entityTypes)
     }
 
     foreach(var prop in et.GetProperties(typeName:"Stream"))
+    {
+        classes.Add("#import \"" + writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request.h\"");
+    }
+
+    foreach(var prop in et.Properties.Where( prop => prop.Type is OdcmMediaClass))
     {
         classes.Add("#import \"" + writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request.h\"");
     }
@@ -58,7 +63,7 @@ foreach(var et in entityTypes)
 
     foreach(var complexType in et.GetProperties(longDescriptionMatches:"navigable").Where(prop => prop.Type is OdcmClass))
     {
-        var baseName = writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar(); 
+        var baseName = writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar();
         classes.Add("#import \"" + baseName + "RequestBuilder.h\"");
         classes.Add("#import \"" + baseName + "Request.h\"");
     }
@@ -91,4 +96,4 @@ foreach(var importClass in classes)
 <#
 }
 #>
-#import "<#=writer.GetPrefix()#>Client.h" 
+#import "<#=writer.GetPrefix()#>Client.h"

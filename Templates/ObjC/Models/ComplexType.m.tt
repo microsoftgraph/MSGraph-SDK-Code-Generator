@@ -17,7 +17,7 @@ var complexType = host.CurrentType.AsOdcmClass();
 @interface <#=GetObjCTypeIdentifier(complexType)#>()
 {
 <#
-foreach (var prop in complexType.Properties)
+foreach (var prop in complexType.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream"))
 {
 #>
     <#=GetObjCTypeForVarDeclaration(prop)#> _<#=GetObjCProperty(prop)#>;
@@ -30,7 +30,7 @@ foreach (var prop in complexType.Properties)
 @implementation <#=GetObjCTypeIdentifier(complexType)#>
 
 <#
-foreach(var prop in complexType.Properties)
+foreach(var prop in complexType.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream"))
 {
     PropertyGetterImplementation(prop);
     PropertySetterImplementation(prop);

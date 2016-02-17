@@ -230,6 +230,19 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                                                        propertyName: property.Name,
                                                                        propertyType: property.Type.Name));
             }
+
+            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetMediaEntityProperties))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             property,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: property.Class.Name,
+                                                                       propertyName: property.Name,
+                                                                       propertyType: property.Type.Name));
+            }
+
+            
+
         }
 
         protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo)
