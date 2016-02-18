@@ -9,6 +9,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
       MediaEntityType,
       Property,
       StreamProperty,
+      MediaEntity,
       EntityContainer,
       CollectionProperty,
       NavigationCollectionProperty,
