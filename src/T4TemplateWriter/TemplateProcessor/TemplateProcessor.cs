@@ -65,6 +65,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {SubProcessor.MediaEntityType,              ProcessMediaEntityTypes},
                 {SubProcessor.Property,                     ProcessProperties},
                 {SubProcessor.StreamProperty,               ProcessStreamProperties},
+                {SubProcessor.MediaEntity,                  ProcessMediaEntities},
                 {SubProcessor.CollectionProperty,           ProcessCollections},
                 {SubProcessor.NavigationCollectionProperty, ProcessNavigationCollections},
                 {SubProcessor.CollectionReferenceProperty,  ProcessCollectionReferences},
@@ -222,6 +223,19 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         protected virtual IEnumerable<TextFile> ProcessStreamProperties(ITemplateInfo templateInfo)
         {
             foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetStreamProperties))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             property,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: property.Class.Name,
+                                                                       propertyName: property.Name,
+                                                                       propertyType: property.Type.Name));
+            }
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessMediaEntities(ITemplateInfo templateInfo)
+        {
+            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetMediaEntityProperties))
             {
                 yield return ProcessTemplate(templateInfo,
                                              property,

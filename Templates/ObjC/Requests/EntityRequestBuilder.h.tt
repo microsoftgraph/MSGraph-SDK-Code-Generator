@@ -32,9 +32,18 @@ foreach(var prop in entity.GetProperties(typeName:"Stream"))
     }
 }
 
+foreach(var prop in entity.Properties.Where( prop => prop.Type is OdcmMediaClass))
+{
+    var streamRequest = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request";
+    if (!classes.Contains(streamRequest))
+    {
+        classes.Add(streamRequest);
+    }
+}
+
 foreach(var func in entity.Methods)
 {
-    var requestType = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + 
+    var requestType = writer.GetPrefix() + entity.Name.ToUpperFirstChar() +
                    func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "RequestBuilder";
     if (!classes.Contains(requestType))
     {
@@ -57,12 +66,12 @@ var lastClass = classes[classes.Count -1];
 StringBuilder stringBuilder = new StringBuilder();
 foreach(var propertyClass in classes)
 {
-    stringBuilder.Append(propertyClass); 
+    stringBuilder.Append(propertyClass);
     if (propertyClass != lastClass)
     {
         stringBuilder.Append(", ");
     }
-    else 
+    else
     {
         stringBuilder.Append(";");
     }
@@ -81,7 +90,7 @@ if (classes.Count > 0)
 @interface <#=entityName#> : <#=writer.GetStaticCodePrefix()#>RequestBuilder
 
 <#
-		
+
 foreach(var prop in entity.NavigationProperties())
 {
 	if(prop.IsCollection)
@@ -98,7 +107,7 @@ foreach(var prop in entity.NavigationProperties())
 
 <#
         if (prop.LongDescriptionContains("queryable"))
-        { 
+        {
 #>
 - (<#=innerPropTypeRequestName#> *)<#=propInstanceName#>:(NSString *)<#=innerPropInstanceName#>;
 
@@ -122,6 +131,17 @@ foreach(var complexType in entity.GetProperties(longDescriptionMatches:"navigabl
 
 <#
 foreach(var prop in entity.GetProperties(typeName:"Stream"))
+{
+    var propName = prop.Name.ToUpperFirstChar();
+    var propRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request";
+#>
+- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>RequestWithOptions:(NSArray *)options;
+
+- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>Request;
+
+<#
+}
+foreach(var prop in entity.Properties.Where( prop => prop.Type is OdcmMediaClass))
 {
     var propName = prop.Name.ToUpperFirstChar();
     var propRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request";

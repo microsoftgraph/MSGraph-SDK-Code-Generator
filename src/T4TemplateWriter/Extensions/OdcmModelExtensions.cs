@@ -78,6 +78,11 @@ namespace Vipr.T4TemplateWriter
             return model.GetProperties(typeName: "Stream", longDescriptionMatches: null);
         }
 
+        public static IEnumerable<OdcmProperty> GetMediaEntityProperties(this OdcmModel model)
+        {
+            return model.GetProperties().Where( prop => prop.Type is OdcmMediaClass);
+        }
+
         public static IEnumerable<OdcmClass> GetEntityReferenceTypes(this OdcmModel model)
         {
             // We don't want to do Where() on entity types since that will iterate every entity type to see if it's a reference.
