@@ -8,6 +8,10 @@ var entityTypes = model.GetEntityTypes();
 var entitySet = model.EntityContainer.Properties;
 var classes = new HashSet<string>();
 
+foreach(var et in model.GetMediaEntityTypes())
+{
+    classes.Add("#import \"" + writer.GetPrefix() + et.Name.ToUpperFirstChar() + "StreamRequest.h\"");
+}
 
 foreach(var es in entitySet)
 {
@@ -41,11 +45,6 @@ foreach(var et in entityTypes)
     }
 
     foreach(var prop in et.GetProperties(typeName:"Stream"))
-    {
-        classes.Add("#import \"" + writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request.h\"");
-    }
-
-    foreach(var prop in et.Properties.Where( prop => prop.Type is OdcmMediaClass))
     {
         classes.Add("#import \"" + writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request.h\"");
     }

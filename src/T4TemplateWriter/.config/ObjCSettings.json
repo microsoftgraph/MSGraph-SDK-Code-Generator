@@ -9,10 +9,9 @@
             { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
             { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
             { "Template": "StreamRequest", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "<Class><Property>Request" },
-            { "Template": "StreamRequest", "SubProcessor": "MediaEntity", "Type": "Request", "Name": "<Class><Property>Request" },
+            { "Template": "StreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "<Class>StreamRequest" },
             { "Template": "MethodRequest", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Request" },
             { "Template": "MethodRequestBuilder", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
-
         ],
 
         "ObjC": [
