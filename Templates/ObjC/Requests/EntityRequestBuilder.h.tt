@@ -34,7 +34,7 @@ foreach(var prop in entity.GetProperties(typeName:"Stream"))
 
 foreach(var prop in entity.Properties.Where( prop => prop.Type is OdcmMediaClass))
 {
-    var streamRequest = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request";
+    var streamRequest = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "StreamRequest";
     if (!classes.Contains(streamRequest))
     {
         classes.Add(streamRequest);
@@ -143,12 +143,11 @@ foreach(var prop in entity.GetProperties(typeName:"Stream"))
 }
 foreach(var prop in entity.Properties.Where( prop => prop.Type is OdcmMediaClass))
 {
-    var propName = prop.Name.ToUpperFirstChar();
-    var propRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request";
-#>
-- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>RequestWithOptions:(NSArray *)options;
+	var propName = prop.Name.ToUpperFirstChar();
+	var propRequestName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "StreamRequest";#>
+- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>ValueWithOptions:(NSArray *)options;
 
-- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>Request;
+- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>Value;
 
 <#
 }

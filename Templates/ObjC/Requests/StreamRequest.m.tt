@@ -1,9 +1,23 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="SharedObjC.template.tt"#>
-<# 
-var prop = host.CurrentType.AsOdcmProperty();
-var className = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar();
-var propName = className + prop.Name.ToUpperFirstChar() + "Request";
+<#
+
+var className="";
+var propName="";
+
+if(host.CurrentType is OdcmProperty)
+{
+    var prop = host.CurrentType.AsOdcmProperty();
+    className = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar();
+    propName = className + prop.Name.ToUpperFirstChar() + ((prop.Type is OdcmMediaClass)?"Stream":"") + "Request";
+}
+else
+{
+    var clss = host.CurrentType.AsOdcmClass();
+    className = writer.GetPrefix() + clss.Name.ToUpperFirstChar();
+    propName = className  + "StreamRequest";
+}
+
 var uploadCompletionHandler = className + "UploadCompletionHandler";
 
 #>
@@ -15,7 +29,7 @@ var uploadCompletionHandler = className + "UploadCompletionHandler";
 @interface <#=writer.GetStaticCodePrefix()#>Request()
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
-                                      body:(NSData *)body 
+                                      body:(NSData *)body
                                    headers:(NSDictionary *)headers;
 
 @end
@@ -38,7 +52,7 @@ var uploadCompletionHandler = className + "UploadCompletionHandler";
     return task;
 }
 
-- (NSMutableURLRequest *) upload 
+- (NSMutableURLRequest *) upload
 {
     //when creating an upload task the body will be reset
     return [self requestWithMethod:@"PUT"
@@ -61,7 +75,7 @@ var uploadCompletionHandler = className + "UploadCompletionHandler";
 }
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionUploadTask *) uploadFromFile:(NSURL *)fileURL
-                                 completion:(<#=uploadCompletionHandler#>)completionHandler 
+                                 completion:(<#=uploadCompletionHandler#>)completionHandler
 {
     <#=writer.GetStaticCodePrefix()#>URLSessionUploadTask *task = [self uploadTaskWithRequest:[self upload]
                                                       fromFile:fileURL
