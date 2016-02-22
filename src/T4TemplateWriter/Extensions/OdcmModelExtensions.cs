@@ -17,7 +17,6 @@ namespace Vipr.T4TemplateWriter
             return odcmProperty.IsCollection;
         }
 
-
         private static OdcmNamespace GetOdcmNamespace(OdcmModel model)
         {
             OdcmNamespace namespaceFound;
@@ -45,13 +44,13 @@ namespace Vipr.T4TemplateWriter
         public static IEnumerable<OdcmClass> GetComplexTypes(this OdcmModel model)
         {
             var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x.Kind == OdcmClassKind.Complex);
+            return @namespace.Classes.Where(x => x is OdcmComplexClass);
         }
 
         public static IEnumerable<OdcmClass> GetEntityTypes(this OdcmModel model)
         {
             var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x.Kind == OdcmClassKind.Entity || x.Kind == OdcmClassKind.MediaEntity);
+            return @namespace.Classes.Where(x => x is OdcmEntityClass || x is OdcmMediaClass);
         }
 
         public static IEnumerable<OdcmClass> GetMediaEntityTypes(this OdcmModel model)
@@ -76,11 +75,6 @@ namespace Vipr.T4TemplateWriter
         public static IEnumerable<OdcmProperty> GetStreamProperties(this OdcmModel model)
         {
             return model.GetProperties(typeName: "Stream", longDescriptionMatches: null);
-        }
-
-        public static IEnumerable<OdcmProperty> GetMediaEntityProperties(this OdcmModel model)
-        {
-            return model.GetProperties().Where( prop => prop.Type is OdcmMediaClass);
         }
 
         public static IEnumerable<OdcmClass> GetEntityReferenceTypes(this OdcmModel model)

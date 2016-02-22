@@ -91,17 +91,17 @@ foreach(var prop in entity.GetProperties(typeName:"Stream"))
 foreach(var prop in entity.Properties.Where( prop => prop.Type is OdcmMediaClass))
 {
     var propName = prop.Name.ToUpperFirstChar();
-    var propRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + propName + "Request";
+    var propRequestName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "StreamRequest";
 #>
-- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>RequestWithOptions:(NSArray *)options
+- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>ValueWithOptions:(NSArray *)options
 {
     NSURL *<#=propName.ToLowerFirstChar()#>URL = [self.requestURL URLByAppendingPathComponent:@"<#=prop.Name.ToLowerFirstChar()#>/$value"];
     return [[<#=propRequestName#> alloc] initWithURL:<#=prop.Name.ToLowerFirstChar()#>URL options:options client:self.client];
 }
 
-- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>Request
+- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>Value
 {
-    return [self <#=propName.ToLowerFirstChar()#>RequestWithOptions:nil];
+    return [self <#=propName.ToLowerFirstChar()#>ValueWithOptions:nil];
 }
 
 <#

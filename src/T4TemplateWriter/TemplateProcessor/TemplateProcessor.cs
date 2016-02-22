@@ -65,11 +65,10 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {SubProcessor.MediaEntityType,              ProcessMediaEntityTypes},
                 {SubProcessor.Property,                     ProcessProperties},
                 {SubProcessor.StreamProperty,               ProcessStreamProperties},
-                {SubProcessor.MediaEntity,                  ProcessMediaEntities},
                 {SubProcessor.CollectionProperty,           ProcessCollections},
                 {SubProcessor.NavigationCollectionProperty, ProcessNavigationCollections},
                 {SubProcessor.CollectionReferenceProperty,  ProcessCollectionReferences},
-                {SubProcessor.EntityReferenceType,      ProcessEntityReferenceProperties},
+                {SubProcessor.EntityReferenceType,          ProcessEntityReferenceProperties},
                 {SubProcessor.Method,                       ProcessMethods},
                 {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
                 {SubProcessor.CollectionMethod,             ProcessCollectionMethods},
@@ -232,19 +231,6 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                              entityType,
                                              templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
                                                                        className: entityType.Name));
-            }
-        }
-
-        protected virtual IEnumerable<TextFile> ProcessMediaEntities(ITemplateInfo templateInfo)
-        {
-            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetMediaEntityProperties))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             property,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: property.Class.Name,
-                                                                       propertyName: property.Name,
-                                                                       propertyType: property.Type.Name));
             }
         }
 
