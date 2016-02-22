@@ -1,21 +1,21 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = IBaseTypeRequestBuilder(c);#>
+<#host.TemplateName = IBaseTypeStreamRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), "IRequestBuilder")#>
+<#=CreateInterfaceDef(IBaseTypeStreamRequestBuilder(c), "IRequestBuilder")#>
 
     /**
      * Creates the request
      */
-    <#=ITypeRequest(c)#> buildRequest();
+    <#=ITypeStreamRequest(c)#> buildRequest();
 
     /**
      * Creates the request with specific options instead of the existing options
      */
-    <#=ITypeRequest(c)#> buildRequest(final List<Option> options);
+    <#=ITypeStreamRequest(c)#> buildRequest(final List<Option> options);
 <#
 if (c.AsOdcmClass() != null)
 {

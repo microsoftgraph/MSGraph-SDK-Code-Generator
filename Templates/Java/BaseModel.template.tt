@@ -55,6 +55,38 @@
         return TypeName(c) + "Request";
     }
 
+    public string TypeStreamRequest(OdcmObject c) {
+        return TypeName(c) + "StreamRequest";
+    }
+
+    public string ITypeStreamRequest(OdcmObject c) {
+        return "I" + TypeStreamRequest(c);
+    }
+
+    public string BaseTypeStreamRequest(OdcmObject c) {
+        return "Base" + TypeStreamRequest(c);
+    }
+
+    public string IBaseTypeStreamRequest(OdcmObject c) {
+        return "I" + BaseTypeStreamRequest(c);
+    }
+
+    public string TypeStreamRequestBuilder(OdcmObject c) {
+        return TypeStreamRequest(c) + "Builder";
+    }
+
+    public string ITypeStreamRequestBuilder(OdcmObject c) {
+        return "I" + TypeStreamRequestBuilder(c);
+    }
+
+	public string BaseTypeStreamRequestBuilder(OdcmObject c) {
+		return "Base" + TypeStreamRequestBuilder(c);
+	}
+
+	public string IBaseTypeStreamRequestBuilder(OdcmObject c) {
+		return "I" + BaseTypeStreamRequestBuilder(c);
+	}
+
     public string BaseTypeRequest(OdcmObject c) {
         return "Base" + TypeRequest(c);
     }

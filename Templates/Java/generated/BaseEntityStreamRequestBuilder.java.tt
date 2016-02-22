@@ -1,11 +1,11 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = BaseTypeRequestBuilder(c);#>
+<#host.TemplateName = BaseTypeStreamRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef(BaseTypeRequestBuilder(c), "BaseRequestBuilder", IBaseTypeRequestBuilder(c))#>
+<#=CreateClassDef(BaseTypeStreamRequestBuilder(c), "BaseRequestBuilder", IBaseTypeStreamRequestBuilder(c))#>
 
     /**
      * The request builder for the <#=TypeName(c)#>
@@ -14,22 +14,22 @@
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
+    public <#=BaseTypeStreamRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
         super(requestUrl, client, options);
     }
 
     /**
      * Creates the request
      */
-    public <#=ITypeRequest(c)#> buildRequest() {
+    public <#=ITypeStreamRequest(c)#> buildRequest() {
         return buildRequest(getOptions());
     }
 
     /**
      * Creates the request with specific options instead of the existing options
      */
-    public <#=ITypeRequest(c)#> buildRequest(final List<Option> options) {
-        return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), options);
+    public <#=ITypeStreamRequest(c)#> buildRequest(final List<Option> options) {
+        return new <#=TypeStreamRequest(c)#>(getRequestUrl(), getClient(), options);
     }
 <#
 if (c.AsOdcmClass() != null)

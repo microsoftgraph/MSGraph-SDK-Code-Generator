@@ -1,13 +1,12 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = IBaseTypeStreamRequest(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
 import java.io.*;
 
-<#=CreateInterfaceDef(IBaseTypeStreamRequest(c), "IHttpStreamRequest")#>
+<#=CreateInterfaceDef(IBaseTypeRequest(c), "IHttpStreamRequest")#>
 
     void get(final ICallback<InputStream> callback);
 

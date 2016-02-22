@@ -159,16 +159,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
-        protected virtual IEnumerable<TextFile> ProcessMediaEntityTypes(ITemplateInfo templateInfo)
-        {
-            foreach (OdcmClass entityType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetMediaEntityTypes))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             entityType,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: entityType.Name));
-            }
-        }
+       
 
         protected virtual IEnumerable<TextFile> ProcessNavigationCollections(ITemplateInfo templateInfo)
         {
@@ -230,6 +221,17 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                                                        className: property.Class.Name,
                                                                        propertyName: property.Name,
                                                                        propertyType: property.Type.Name));
+            }
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessMediaEntityTypes(ITemplateInfo templateInfo)
+        {
+            foreach (OdcmClass entityType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetMediaEntityTypes))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             entityType,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: entityType.Name));
             }
         }
 

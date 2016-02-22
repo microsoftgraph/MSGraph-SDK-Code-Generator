@@ -57,7 +57,7 @@ namespace Vipr.T4TemplateWriter
         public static IEnumerable<OdcmClass> GetMediaEntityTypes(this OdcmModel model)
         {
             var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x.Kind == OdcmClassKind.MediaEntity);
+            return @namespace.Classes.Where(x => x is OdcmMediaClass);
         }
 
         public static IEnumerable<OdcmProperty> GetProperties(this OdcmModel model)
