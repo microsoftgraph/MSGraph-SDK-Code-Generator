@@ -79,13 +79,13 @@
         return "I" + TypeStreamRequestBuilder(c);
     }
 
-	public string BaseTypeStreamRequestBuilder(OdcmObject c) {
-		return "Base" + TypeStreamRequestBuilder(c);
-	}
+    public string BaseTypeStreamRequestBuilder(OdcmObject c) {
+        return "Base" + TypeStreamRequestBuilder(c);
+    }
 
-	public string IBaseTypeStreamRequestBuilder(OdcmObject c) {
-		return "I" + BaseTypeStreamRequestBuilder(c);
-	}
+    public string IBaseTypeStreamRequestBuilder(OdcmObject c) {
+        return "I" + BaseTypeStreamRequestBuilder(c);
+    }
 
     public string BaseTypeRequest(OdcmObject c) {
         return "Base" + TypeRequest(c);
