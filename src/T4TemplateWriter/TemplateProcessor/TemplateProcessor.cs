@@ -158,7 +158,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
-       
+
 
         protected virtual IEnumerable<TextFile> ProcessNavigationCollections(ITemplateInfo templateInfo)
         {
@@ -270,6 +270,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         {
             return this.CurrentModel.GetMethods().Where(method => !method.IsCollection && (method.ReturnType == null || method.ReturnType is OdcmPrimitiveType));
         }
+
         protected virtual IEnumerable<OdcmMethod> MethodsWithBody()
         {
             return this.CurrentModel.GetMethods().Where(method => method.Parameters != null && method.Parameters.Any() && method.IsAction());
