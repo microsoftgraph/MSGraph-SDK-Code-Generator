@@ -21,6 +21,14 @@ foreach(var prop in entity.NavigationProperties())
 
 		if(!classes.Contains(collectionFetcher)) classes.Add(collectionFetcher);
 	}
+    else
+    {
+        var requestType = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "RequestBuilder";
+        if (!classes.Contains(requestType))
+        {
+            classes.Add(requestType);
+        }
+    }
 }
 
 foreach(var prop in entity.GetProperties(typeName:"Stream"))
@@ -115,6 +123,13 @@ foreach(var prop in entity.NavigationProperties())
         }
 
 	}
+    else
+    {
+#>
+- (<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=prop.Name#>;
+
+<# 
+    }
 }
 foreach(var complexType in entity.GetProperties(longDescriptionMatches:"navigable").Where(prop => prop.Type is OdcmClass))
 {

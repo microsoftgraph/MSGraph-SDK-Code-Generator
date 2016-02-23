@@ -43,6 +43,17 @@ foreach(var prop in entity.NavigationProperties())
         }
 
 	}
+    else
+    {
+#>
+-(<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder *)<#=prop.Name#>
+{
+    return [[<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder alloc] initWithURL:[self.requestURL URLByAppendingPathComponent:@"<#=prop.Name#>"] client:self.client];
+
+}
+
+<#
+    }
 }
 foreach (var complexType in entity.GetProperties(longDescriptionMatches:"navigable").Where(prop => prop.Type is OdcmClass))
 {
