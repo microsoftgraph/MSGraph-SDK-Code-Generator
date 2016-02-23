@@ -13,8 +13,8 @@ var entityRequestName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "R
 <#
 foreach(var prop in entity.NavigationProperties())
 {
-	if(prop.IsCollection)
-	{
+    if(prop.IsCollection)
+    {
         var propInstanceName = prop.Name.ToLowerFirstChar();
         var propTypeName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
         var collectionRequestName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
@@ -42,7 +42,7 @@ foreach(var prop in entity.NavigationProperties())
 <#
         }
 
-	}
+    }
     else
     {
 #>

@@ -10,17 +10,17 @@ classes.Add(entityRequestName);
 
 foreach(var prop in entity.NavigationProperties())
 {
-	var fetcher = string.Empty;
-	fetcher = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder";
+    var fetcher = string.Empty;
+    fetcher = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder";
 
-	if(!classes.Contains(fetcher)) classes.Add(fetcher);
+    if(!classes.Contains(fetcher)) classes.Add(fetcher);
 
-	if(prop.IsCollection)
-	{
-		var collectionFetcher = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+    if(prop.IsCollection)
+    {
+        var collectionFetcher = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
 
-		if(!classes.Contains(collectionFetcher)) classes.Add(collectionFetcher);
-	}
+        if(!classes.Contains(collectionFetcher)) classes.Add(collectionFetcher);
+    }
     else
     {
         var requestType = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "RequestBuilder";
@@ -101,8 +101,8 @@ if (classes.Count > 0)
 
 foreach(var prop in entity.NavigationProperties())
 {
-	if(prop.IsCollection)
-	{
+    if(prop.IsCollection)
+    {
         var propInstanceName = prop.Name.ToLowerFirstChar();
         var propTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
         var collectionRequestName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
@@ -122,7 +122,7 @@ foreach(var prop in entity.NavigationProperties())
 <#
         }
 
-	}
+    }
     else
     {
 #>
@@ -158,8 +158,8 @@ foreach(var prop in entity.GetProperties(typeName:"Stream"))
 }
 foreach(var prop in entity.Properties.Where( prop => prop.Type is OdcmMediaClass))
 {
-	var propName = prop.Name.ToUpperFirstChar();
-	var propRequestName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "StreamRequest";#>
+    var propName = prop.Name.ToUpperFirstChar();
+    var propRequestName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "StreamRequest";#>
 - (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>ValueWithOptions:(NSArray *)options;
 
 - (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>Value;
