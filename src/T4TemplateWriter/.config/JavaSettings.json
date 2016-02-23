@@ -85,8 +85,8 @@
           { "Template": "EntityRequest", "SubProcessor": "Property",                                                                          "Name": "<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
           { "Template": "IEntityRequestBuilder", "SubProcessor": "Property",                                                                  "Name": "I<Class><PropertyType>RequestBuilder", "Include": "mainLogo;thumbnailPhoto;content" },
           { "Template": "EntityRequestBuilder", "SubProcessor": "Property",                                                                   "Name": "<Class><PropertyType>RequestBuilder", "Include": "mainLogo;thumbnailPhoto;content" },
-          { "Template": "IBaseStreamPropertyRequest", "SubProcessor": "Property",                                                                     "Name": "IBase<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
-          { "Template": "BaseStreamPropertyRequest", "SubProcessor": "Property",                                                                      "Name": "Base<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
+          { "Template": "IBaseStreamPropertyRequest", "SubProcessor": "Property",                                                             "Name": "IBase<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
+          { "Template": "BaseStreamPropertyRequest", "SubProcessor": "Property",                                                              "Name": "Base<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
 
           { "Template": "IEntityStreamRequest", "SubProcessor": "MediaEntityType",                                                            "Name": "I<Class>StreamRequest" },
           { "Template": "EntityStreamRequest", "SubProcessor": "MediaEntityType",                                                             "Name": "<Class>StreamRequest" },          

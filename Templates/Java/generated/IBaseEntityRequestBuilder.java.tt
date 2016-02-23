@@ -68,7 +68,7 @@ if (c.AsOdcmClass() != null)
         var propName = prop.Name.ToCheckedCase();
 #>
 
-    <#=ITypeStreamRequestBuilder(prop)#> get<#=propName#>Value();
+    <#=ITypeStreamRequestBuilder(prop)#> get<#=propName#>Content();
 <#
     }
 #>
