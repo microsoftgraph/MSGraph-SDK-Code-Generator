@@ -1,0 +1,90 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+    CustomT4Host host       = (CustomT4Host) Host;
+    var model               = host.CurrentModel;
+    CodeWriterJavaScript writer   = (CodeWriterJavaScript) host.CodeWriter;
+    var entityTypes = model.GetEntityTypes();
+#>
+<#=writer.WriteHeader()#>
+
+EntityType = require './entity_type'
+
+module.exports =
+<#
+  foreach(var entityType in entityTypes)
+  {
+#>
+  '<#= entityType.FullName #>': new EntityType
+    name: '<#= entityType.FullName #>'
+<#
+    if (entityType.IsAbstract)
+    {
+#>
+    abstract: true
+<#
+    }
+    if(entityType.Properties.Count > 0)
+    {
+#>
+    properties:
+<#
+      foreach(var prop in entityType.Properties)
+      {
+        if(!prop.IsLink)
+        {
+          var propType = prop.IsCollection ? "Collection(" + prop.Type.FullName + ")" : prop.Type.FullName;
+#>
+      <#= prop.Name #>:
+        type: '<#= propType #>'
+<#
+          if(prop.IsNullable)
+          {
+#>
+        nullable: true
+<#
+          }
+        }
+      }
+    }
+    var navProperties = entityType.NavigationProperties();
+    if(navProperties.Any())
+    {
+#>
+    navigationProperties:
+<#
+      foreach(var navProp in navProperties)
+      {
+        var navPropType = navProp.IsCollection ? "Collection(" + navProp.Type.FullName + ")" : navProp.Type.FullName;
+#>
+      <#= navProp.Name #>:
+        type: '<#= navPropType #>'
+<#
+        if(navProp.IsNullable)
+        {
+#>
+        nullable: true
+<#
+        }
+        if(navProp.ContainsTarget)
+        {
+#>
+        containsTarget: true
+<#
+        }
+      }
+    }
+    if(entityType.Base != null)
+    {
+#>
+    baseType: '<#= entityType.Base.FullName #>'
+<#
+    }
+    if(entityType.IsOpen)
+    {
+#>
+    openType: true
+<#
+    }
+  }
+#>
