@@ -2,7 +2,7 @@
 {
     "TemplateMapping": {
       "JavaScript": [
-          { "Template": "enum_types", "SubProcessor": "EnumType", "Name": "<Class>" }
+          { "Template": "enum_types", "SubProcessor": "Other", "Name": "enum_types" }
       ]
     }
 }

@@ -4,24 +4,26 @@
     CustomT4Host host       = (CustomT4Host) Host;
     var model               = host.CurrentModel;
     CodeWriterJavaScript writer   = (CodeWriterJavaScript) host.CodeWriter;
-    var c = host.CurrentType;
+    var enumTypes = model.GetEnumTypes();
 #>
 <#=writer.WriteHeader()#>
 
-/**
- * The Enum <#=c.Name.ToUpperFirstChar().SplitCamelCase()#>.
-*/
-public enum <#= c.Name.ToUpperFirstChar()#>
-{
+EnumType = require './enum_type'
+
+module.exports =
 <#
-    foreach(var value in c.AsOdcmEnum().Members)
-    {
+  foreach(var enumType in enumTypes)
+  {
 #>
-    /**
-    * <#= value.Name.SplitCamelCase()#>
-    */
-    <#= value.SanitizePropertyName() #> = <#=value.Value#>,
+  'microsoft.graph.<#= enumType.Name #>': new EnumType
+    name: 'microsoft.graph.<#= enumType.Name #>'
+    options:
 <#
-    }
+      foreach(var member in enumType.Members)
+      {
 #>
-}
+      <#= member.Name #>: <#= member.Value #>
+<#
+      }
+  }
+#>
