@@ -1,10 +1,11 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ output extension="\\" #>
 <#
-    CustomT4Host host       = (CustomT4Host) Host;
-    var model               = host.CurrentModel;
-    CodeWriterJavaScript writer   = (CodeWriterJavaScript) host.CodeWriter;
-    var entityTypes = model.GetEntityTypes();
+    CustomT4Host host           = (CustomT4Host) Host;
+    CodeWriterJavaScript writer = (CodeWriterJavaScript) host.CodeWriter;
+
+    var model                   = host.CurrentModel;
+    var entityTypes             = model.GetEntityTypes();
 #>
 <#=writer.WriteHeader()#>
 
@@ -14,6 +15,8 @@ module.exports =
 <#
   foreach(var entityType in entityTypes)
   {
+    var properties    = writer.EntityProperties(entityType);
+    var navProperties = writer.EntityNavigationProperties(entityType);
 #>
   '<#= entityType.FullName #>': new EntityType
     name: '<#= entityType.FullName #>'
@@ -24,12 +27,25 @@ module.exports =
     abstract: true
 <#
     }
-    if(entityType.Properties.Count > 0)
+    if(entityType.Base != null)
+    {
+#>
+    baseType: '<#= entityType.Base.FullName #>'
+<#
+    }
+    if(entityType.IsOpen)
+    {
+#>
+    openType: true
+<#
+    }
+
+    if(properties.Any())
     {
 #>
     properties:
 <#
-      foreach(var prop in entityType.Properties)
+      foreach(var prop in writer.EntityProperties(entityType))
       {
         if(!prop.IsLink)
         {
@@ -47,7 +63,7 @@ module.exports =
         }
       }
     }
-    var navProperties = entityType.NavigationProperties();
+
     if(navProperties.Any())
     {
 #>
@@ -73,18 +89,6 @@ module.exports =
 <#
         }
       }
-    }
-    if(entityType.Base != null)
-    {
-#>
-    baseType: '<#= entityType.Base.FullName #>'
-<#
-    }
-    if(entityType.IsOpen)
-    {
-#>
-    openType: true
-<#
     }
   }
 #>
