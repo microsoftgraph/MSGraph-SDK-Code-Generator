@@ -49,10 +49,9 @@ module.exports =
       {
         if(!prop.IsLink)
         {
-          var propType = prop.IsCollection ? "Collection(" + prop.Type.FullName + ")" : prop.Type.FullName;
 #>
       <#= prop.Name #>:
-        type: '<#= propType #>'
+        type: '<#= writer.FullTypeName(prop) #>'
 <#
           if(prop.IsNullable)
           {

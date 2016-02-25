@@ -51,6 +51,11 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.JavaScript
         {
             return EntityAllProperties(obj).Where(prop => prop.IsLink).ToList();
         }
+
+        public String FullTypeName(OdcmProperty prop)
+        {
+            return (prop.IsCollection) ? "Collection(" + prop.Type.FullName + ")" : prop.Type.FullName;
+        }
     }
 
 }

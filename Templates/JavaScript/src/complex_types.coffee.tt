@@ -1,0 +1,30 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+    CustomT4Host host           = (CustomT4Host) Host;
+    CodeWriterJavaScript writer = (CodeWriterJavaScript) host.CodeWriter;
+
+    var model                   = host.CurrentModel;
+    var complexTypes            = model.GetComplexTypes();
+#>
+<#=writer.WriteHeader()#>
+ComplexType = require './complex_type'
+
+module.exports = complex_types =
+<#
+  foreach(var complexType in complexTypes)
+  {
+#>
+  '<#= complexType.FullName #>': new ComplexType
+    name: '<#= complexType.FullName #>'
+    properties:
+<#
+    foreach(var prop in complexType.Properties)
+    {
+#>
+      <#= prop.Name #>:
+        type: <#= writer.FullTypeName(prop) #>
+<#
+    }
+  }
+#>
