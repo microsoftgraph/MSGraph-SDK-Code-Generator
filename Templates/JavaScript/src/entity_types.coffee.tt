@@ -6,12 +6,24 @@
 
     var model                   = host.CurrentModel;
     var entityTypes             = model.GetEntityTypes();
+    var entityContainer         = model.EntityContainer;
 #>
 <#=writer.WriteHeader()#>
-
 EntityType = require './entity_type'
 
 module.exports =
+  'microsoft.graph': new EntityType
+    name: 'microsoft.graph'
+    navigationProperties:
+<#
+  foreach(var prop in entityContainer.Properties)
+  {
+#>
+      <#= prop.Name #>:
+        type: '<#= writer.FullTypeName(prop) #>'
+<#
+  }
+#>
 <#
   foreach(var entityType in entityTypes)
   {
