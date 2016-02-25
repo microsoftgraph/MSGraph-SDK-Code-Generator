@@ -14,20 +14,33 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
     using System;
     using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     <#=this.GetCollectionClassDefinition(prop)#>
     {
         <#=GetCollectionRequestConstructor(prop)#>
-        <#=GetPostAsyncMethod(prop)#>
+        <#=GetPostAsyncMethod(prop)#>  
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public async Task<I<#=collectionPage#>> GetAsync()
+        public Task<I<#=collectionPage#>> GetAsync()
+        {
+            return this.GetAsync(HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+        }
+        
+        /// <summary>
+        /// Gets the collection page.
+        /// </summary>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The collection page.</returns>
+        public async Task<I<#=collectionPage#>> GetAsync(HttpCompletionOption completionOption, CancellationToken cancellationToken)
         {
             this.Method = "GET";
-            var response = await this.SendAsync<<#=collectionResponse#>>(null);
+            var response = await this.SendAsync<<#=collectionResponse#>>(null, completionOption, cancellationToken);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
                 if (response.AdditionalData != null)

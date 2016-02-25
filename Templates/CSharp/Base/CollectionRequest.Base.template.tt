@@ -70,6 +70,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
         var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
         var stringBuilder = new StringBuilder();
+        
         stringBuilder.Append(Environment.NewLine);
         this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
         stringBuilder.Append(Environment.NewLine);
@@ -79,11 +80,30 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        {");
         stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            return this.AddAsync({0}, HttpCompletionOption.ResponseContentRead, CancellationToken.None);", sanitizedPropertyName);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        }");
+        
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append(Environment.NewLine);
+        
+        this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        /// <param name=\"completionOption\">The <see cref=\"HttpCompletionOption\"/> to pass to the <see cref=\"IHttpProvider\"/> on send.</param>");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        public Task<{0}> AddAsync({0} {1}, HttpCompletionOption completionOption, CancellationToken cancellationToken)", propertyType, sanitizedPropertyName);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        {");
+        stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("            this.Method = \"POST\";");
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("            return this.SendAsync<{0}>({1});", propertyType, sanitizedPropertyName);
+        stringBuilder.AppendFormat("            return this.SendAsync<{0}>({1}, completionOption, cancellationToken);", propertyType, sanitizedPropertyName);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        }");
         stringBuilder.Append(Environment.NewLine);
@@ -115,6 +135,25 @@ public string GetPostAsyncMethodForReferenceRequest(OdcmProperty odcmProperty)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
     stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            return this.AddAsync({0}, HttpCompletionOption.ResponseContentRead, CancellationToken.None);", sanitizedPropertyName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        }");
+    
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(Environment.NewLine);
+    
+    this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// <param name=\"completionOption\">The <see cref=\"HttpCompletionOption\"/> to pass to the <see cref=\"IHttpProvider\"/> on send.</param>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The task to await.</returns>", propertyType);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        public Task AddAsync({0} {1}, HttpCompletionOption completionOption, CancellationToken cancellationToken)", propertyType, sanitizedPropertyName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        {");
+    stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            this.Method = \"POST\";");
@@ -131,7 +170,7 @@ public string GetPostAsyncMethodForReferenceRequest(OdcmProperty odcmProperty)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            var requestBody = new ReferenceRequestBody {{ ODataId = string.Format(\"{{0}}/{0}/{{1}}\", this.Client.BaseUrl, {1}.Id) }};", serviceNavigationProperty.Name, sanitizedPropertyName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            return this.SendAsync(requestBody);");
+    stringBuilder.AppendFormat("            return this.SendAsync(requestBody, completionOption, cancellationToken);");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        }");
     stringBuilder.Append(Environment.NewLine);
