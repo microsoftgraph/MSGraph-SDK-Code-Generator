@@ -17,7 +17,6 @@ namespace Vipr.T4TemplateWriter
             return odcmProperty.IsCollection;
         }
 
-
         private static OdcmNamespace GetOdcmNamespace(OdcmModel model)
         {
             OdcmNamespace namespaceFound;

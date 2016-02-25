@@ -68,7 +68,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {SubProcessor.CollectionProperty,           ProcessCollections},
                 {SubProcessor.NavigationCollectionProperty, ProcessNavigationCollections},
                 {SubProcessor.CollectionReferenceProperty,  ProcessCollectionReferences},
-                {SubProcessor.EntityReferenceType,      ProcessEntityReferenceProperties},
+                {SubProcessor.CollectionNotReferenceProperty,ProcessCollectionNotReferences},
+                {SubProcessor.EntityReferenceType,          ProcessEntityReferenceProperties},
                 {SubProcessor.Method,                       ProcessMethods},
                 {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
                 {SubProcessor.CollectionMethod,             ProcessCollectionMethods},
@@ -195,6 +196,19 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
+        protected virtual IEnumerable<TextFile> ProcessCollectionNotReferences(ITemplateInfo templateInfo)
+        {
+            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CollectionNotReferenceProperties))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             property,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: property.Class.Name,
+                                                                       propertyName: property.Name,
+                                                                       propertyType: property.Type.Name));
+            }
+        }
+
         protected virtual IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo)
         {
             foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetProperties))
@@ -287,6 +301,11 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         protected virtual IEnumerable<OdcmProperty> CollectionReferenceProperties()
         {
             return this.CurrentModel.GetProperties().Where(prop => prop.IsReference() && prop.IsCollection);
+        }
+
+        protected virtual IEnumerable<OdcmProperty> CollectionNotReferenceProperties()
+        {
+            return this.CurrentModel.GetProperties().Where(prop => !prop.IsReference() && prop.IsCollection);
         }
 
         protected virtual IEnumerable<OdcmProperty> CollectionProperties()

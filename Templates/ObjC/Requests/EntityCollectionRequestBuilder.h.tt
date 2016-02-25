@@ -5,9 +5,11 @@ var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
 
-var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+var collectionNamer = prop.IsReference() ? "CollectionWithReference" : "Collection";
+
+var propName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
 var entityRequestBuilder = innerEntityType + "RequestBuilder";
-var entityRequest = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest";
+var entityRequest = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer + "Request";
 var classStringBuilder = new StringBuilder("@class " + entityRequest);
 classStringBuilder.Append(", " + entityRequestBuilder + ";");
 

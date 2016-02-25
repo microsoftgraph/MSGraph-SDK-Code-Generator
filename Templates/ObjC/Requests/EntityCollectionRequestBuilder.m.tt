@@ -5,18 +5,19 @@
 var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 
-var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
-var propRequestName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest";
+var collectionNamer = prop.IsReference() ? "CollectionWithReference" : "Collection";
+
+var propName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() +prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
+var propRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer +"Request";
 var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
 var entityRequest = innerEntityType + "Request";
 var entityRequestBuilder = innerEntityType + "RequestBuilder";
-
 
 #>
 
 #import "<#=writer.GetPrefix()#>ODataEntities.h"
 
-@implementation <#=propName#> : <#=writer.GetStaticCodePrefix()#>CollectionRequestBuilder
+@implementation <#=propName#> : <#=writer.GetStaticCodePrefix()+collectionNamer#>RequestBuilder
 
 - (<#=propRequestName#>*) request
 {
@@ -33,7 +34,7 @@ if (!(innerEntity is OdcmComplexClass))
 #>
 - (<#=entityRequestBuilder#> *)<#=innerEntity.Name.ToLowerFirstChar()#>:(NSString *)<#=innerEntity.Name.ToLowerFirstChar()#>
 {
-    return [[<#=entityRequestBuilder#> alloc] initWithURL:[self.requestURL URLByAppendingPathComponent:<#=innerEntity.Name.ToLowerFirstChar()#>] 
+    return [[<#=entityRequestBuilder#> alloc] initWithURL:[self.requestURL URLByAppendingPathComponent:<#=innerEntity.Name.ToLowerFirstChar()#>]
                                                    client:self.client];
 }
 <#

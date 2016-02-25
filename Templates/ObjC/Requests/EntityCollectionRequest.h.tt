@@ -4,16 +4,18 @@
 var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 
-var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
-var propRequestBuilder = propName + "CollectionRequestBuilder";
-var propRequest = propName + "CollectionRequest";
+var collectionNamer = prop.IsReference() ? "CollectionWithReference" : "Collection";
+
+var propName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
+var propRequestBuilder = propName + collectionNamer +"Builder";
+var propRequest = propName + collectionNamer + "Request";
 
 var innerEntityType = innerEntity.GetTypeString();
 var entityRequestBuilder = innerEntityType + "RequestBuilder";
 var entityRequest = innerEntityType + "Request";
 if (innerEntityType.Equals(propName))
 {
-    propName = propName + "Collection"; 
+    propName = propName + collectionNamer;
 }
 #>
 
@@ -24,7 +26,7 @@ if (innerEntityType.Equals(propName))
 
 typedef void (^<#=innerEntityType#>CompletionHandler)(<#=innerEntityType#> *response, NSError *error);
 
-typedef void (^<#=propName#>CompletionHandler)(<#=writer.GetStaticCodePrefix()#>Collection *response, <#=propRequest#> *nextRequest, NSError *error);
+typedef void (^<#=propName#>CompletionHandler)(<#=writer.GetStaticCodePrefix() + collectionNamer#> *response, <#=propRequest#> *nextRequest, NSError *error);
 
 @interface <#=propRequest#> : <#=writer.GetStaticCodePrefix()#>CollectionRequest
 

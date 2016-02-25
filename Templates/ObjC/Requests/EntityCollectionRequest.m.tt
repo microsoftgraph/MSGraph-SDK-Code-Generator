@@ -5,27 +5,29 @@
 var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 
-var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
-var propNameRequest = propName + "CollectionRequest";
+var collectionNamer = prop.IsReference() ? "CollectionWithReference" : "Collection";
+
+var propName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
+var propNameRequest = propName + collectionNamer + "Request";
 var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
 var entityRequest = innerEntityType + "RequestBuilder";
 if (innerEntityType.Equals(propName))
 {
-    propName = propName + "Collection"; 
+    propName = propName + collectionNamer;
 }
 
 #>
 
 #import "<#=writer.GetPrefix()#>ODataEntities.h"
-#import "<#=writer.GetStaticCodePrefix()#>Collection.h"
+#import "<#=writer.GetStaticCodePrefix() + collectionNamer#>.h"
 #import "<#=writer.GetStaticCodePrefix()#>URLSessionDataTask.h"
 
-@interface <#=writer.GetStaticCodePrefix()#>CollectionRequest()
+@interface <#=writer.GetStaticCodePrefix() + collectionNamer#>Request()
 
-- (NSMutableURLRequest *)requestWithMethod:(NSString *)method 
-                                      body:(NSData *)body 
+- (NSMutableURLRequest *)requestWithMethod:(NSString *)method
+                                      body:(NSData *)body
                                    headers:(NSDictionary *)headers;
-@end 
+@end
 
 @implementation <#=propNameRequest#>
 
@@ -50,20 +52,20 @@ if (innerEntityType.Equals(propName))
 <#
     }
     else
-    { 
+    {
 #>
                                             return [[<#=innerEntityType#> alloc] initWithDictionary:response];
 <#  }
 #>
                                          }
-                                                        completion:^(<#=writer.GetStaticCodePrefix()#>Collection *collectionResponse, NSError *error){
+                                                        completion:^(<#=writer.GetStaticCodePrefix() + collectionNamer#> *collectionResponse, NSError *error){
                                             if(!error && collectionResponse.nextLink && completionHandler){
                                                 <#=propNameRequest#> *nextRequest = [[<#=propNameRequest#> alloc] initWithURL:collectionResponse.nextLink options:nil client:self.client];
-                                                completionHandler(collectionResponse, nextRequest, nil); 
+                                                completionHandler(collectionResponse, nextRequest, nil);
                                             }
                                             else if(completionHandler){
                                                 completionHandler(collectionResponse, nil, error);
-                                            } 
+                                            }
                                         }];
     [task execute];
     return task;
@@ -86,7 +88,7 @@ if (innerEntityType.Equals(propName))
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#> withCompletion:(<#=innerEntityType#>CompletionHandler)completionHandler
 {
-    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self add<#=innerEntity.Name.ToUpperFirstChar()#>:<#=innerEntity.Name.ToLowerFirstChar()#>] 
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self add<#=innerEntity.Name.ToUpperFirstChar()#>:<#=innerEntity.Name.ToLowerFirstChar()#>]
 							     odObjectWithDictionary:^(NSDictionary *response){
                                             return [[<#=innerEntityType#> alloc] initWithDictionary:response];
                                         }
