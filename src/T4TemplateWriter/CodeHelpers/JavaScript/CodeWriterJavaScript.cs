@@ -16,17 +16,22 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.JavaScript
 
         public override String WriteOpeningCommentLine()
         {
-            return "// ------------------------------------------------------------------------------" + this.NewLineCharacter;
+            return "# ------------------------------------------------------------------------------" + this.NewLineCharacter;
         }
 
         public override String WriteClosingCommentLine()
         {
-            return "// ------------------------------------------------------------------------------" + this.NewLineCharacter;
+            return "# ------------------------------------------------------------------------------" + this.NewLineCharacter;
         }
 
         public override string WriteInlineCommentChar()
         {
-            return "// ";
+            return "# ";
+        }
+
+        public virtual String NewLineCharacter
+        {
+            get { return "\n"; }
         }
 
         public IEnumerable<OdcmProperty> EntityAllProperties(OdcmClass obj)
