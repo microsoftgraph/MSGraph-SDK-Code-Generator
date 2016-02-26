@@ -29,7 +29,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.JavaScript
             return "# ";
         }
 
-        public virtual String NewLineCharacter
+        public override String NewLineCharacter
         {
             get { return "\n"; }
         }
