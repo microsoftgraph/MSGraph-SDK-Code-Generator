@@ -17,7 +17,8 @@ foreach(var prop in entity.NavigationProperties())
     {
         var propInstanceName = prop.Name.ToLowerFirstChar();
         var propTypeName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
-        var collectionRequestName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+        var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
+        var collectionRequestName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + collectionNamer +"RequestBuilder";
         var innerPropTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
         var innerPropInstanceName = prop.Type.Name.ToLowerFirstChar();
         var innerPropTypeRequestName = innerPropTypeName + "RequestBuilder";

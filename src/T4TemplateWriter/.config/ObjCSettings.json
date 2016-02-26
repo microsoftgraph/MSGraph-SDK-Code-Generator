@@ -6,8 +6,6 @@
             { "Template": "EntityType", "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
             { "Template": "ComplexType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Ignore": "methodResponse" },
             { "Template": "EnumType", "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
-            { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
-            { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
             { "Template": "StreamRequest", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "<Class><Property>Request" },
             { "Template": "StreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "<Class>StreamRequest" },
             { "Template": "MethodRequest", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Request" },
@@ -18,11 +16,17 @@
             { "Template": "Models", "SubProcessor": "Other", "Type": "Model", "Name": "Models" },
             { "Template": "ODataEntities", "SubProcessor": "Other", "Type": "Model", "Name": "ODataEntities" },
            
+
+            { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
+            { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
+            { "Template": "EntityWithReferenceRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>WithReferenceRequest" },
+            { "Template": "EntityWithReferenceRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>WithReferenceRequestBuilder" },
+     
+
             { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionNotReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionRequest", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
-            { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "CollectionNotReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionRequestBuilder", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
-            
-            { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferenceRequest", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
-            { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferenceRequestBuilder", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
+            { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "CollectionNotReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionRequestBuilder", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },  
+            { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesRequest", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
+            { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesRequestBuilder", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
             
             { "Template": "MethodCollection", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Collection", "Matches": "specialCollection" }
         ]

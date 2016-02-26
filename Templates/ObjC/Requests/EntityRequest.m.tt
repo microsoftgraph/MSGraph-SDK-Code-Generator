@@ -13,12 +13,12 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
 @interface <#=writer.GetStaticCodePrefix()#>Request()
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
-                                      body:(NSData *)body 
+                                      body:(NSData *)body
                                    headers:(NSDictionary *)headers;
 
 - (NSMutableURLRequest *)requestWithURL:(NSURL *)url
                                  method:(NSString *)method
-                                   body:(NSData *)body 
+                                   body:(NSData *)body
                                 headers:(NSDictionary *)headers;
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask*)taskWithRequest:(NSMutableURLRequest *)request
@@ -37,11 +37,11 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler
 {
-    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self get] 
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self get]
                                 odObjectWithDictionary:^(NSDictionary *response){
                                             return [[<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> alloc] initWithDictionary:response];
                                         }
-                                             completion:completionHandler]; 
+                                             completion:completionHandler];
     [task execute];
     return task;
 }
@@ -57,7 +57,7 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)update:(<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> *)<#=entity.Name#> withCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler
 {
-    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self update:<#=entity.Name#>] 
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self update:<#=entity.Name#>]
                                 odObjectWithDictionary:^(NSDictionary *response){
                                             return [[<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> alloc] initWithDictionary:response];
                                         }
@@ -80,5 +80,5 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
                                                                  }];
     [task execute];
     return task;
-} 
+}
 @end

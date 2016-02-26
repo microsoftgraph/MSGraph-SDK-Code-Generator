@@ -17,7 +17,8 @@ foreach(var prop in entity.NavigationProperties())
 
     if(prop.IsCollection)
     {
-        var collectionFetcher = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+        var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
+        var collectionFetcher = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
 
         if(!classes.Contains(collectionFetcher)) classes.Add(collectionFetcher);
     }
@@ -105,7 +106,8 @@ foreach(var prop in entity.NavigationProperties())
     {
         var propInstanceName = prop.Name.ToLowerFirstChar();
         var propTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
-        var collectionRequestName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+        var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
+        var collectionRequestName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
         var innerPropTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
         var innerPropInstanceName = prop.Type.Name.ToLowerFirstChar();
         var innerPropTypeRequestName = innerPropTypeName + "RequestBuilder";
@@ -128,7 +130,7 @@ foreach(var prop in entity.NavigationProperties())
 #>
 - (<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=prop.Name#>;
 
-<# 
+<#
     }
 }
 foreach(var complexType in entity.GetProperties(longDescriptionMatches:"navigable").Where(prop => prop.Type is OdcmClass))
@@ -176,6 +178,8 @@ foreach(var func in entity.Methods)
     }
 #>
 - (<#=requestBuilderName#> *)<#=methodName#>;
+
+
 
 <#
 

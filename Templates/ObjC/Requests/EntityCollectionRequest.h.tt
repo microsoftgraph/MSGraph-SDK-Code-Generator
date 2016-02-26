@@ -4,7 +4,7 @@
 var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 
-var collectionNamer = prop.IsReference() ? "CollectionWithReference" : "Collection";
+var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
 
 var propName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
 var propRequestBuilder = propName + collectionNamer +"Builder";
@@ -32,7 +32,7 @@ typedef void (^<#=propName#>CompletionHandler)(<#=writer.GetStaticCodePrefix() +
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName#>CompletionHandler)completionHandler;
 <#
-    if (!prop.LongDescriptionContains("readonly"))
+    if (!prop.LongDescriptionContains("readonly") && !prop.IsReference())
     {
 #>
 

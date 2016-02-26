@@ -5,7 +5,7 @@ var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
 
-var collectionNamer = prop.IsReference() ? "CollectionWithReference" : "Collection";
+var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
 
 var propName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
 var entityRequestBuilder = innerEntityType + "RequestBuilder";
@@ -31,6 +31,15 @@ if (!(innerEntity is OdcmComplexClass))
 #>
 - (<#=entityRequestBuilder#> *)<#=innerEntity.Name.ToLowerFirstChar()#>:(NSString *)<#=innerEntity.Name.ToLowerFirstChar()#>;
 
+<#
+}
+#>
+
+<#
+if(prop.IsReference())
+{
+#>
+- (<#=writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "CollectionReferenceRequestBuilder"#> *) references;
 <#
 }
 #>
