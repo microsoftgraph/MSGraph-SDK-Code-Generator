@@ -61,7 +61,7 @@ module.exports =
       {
 #>
       <#= method.Name #>:
-        requestMethod: '<#= method.Verbs #>'
+        requestMethod: '<#= method.Verbs.toUpper() #>'
 <#
         if(method.ReturnType != null)
         {
