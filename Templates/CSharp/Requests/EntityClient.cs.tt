@@ -13,16 +13,29 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
     /// </summary>
     public partial class <#=clientName#> : BaseClient, I<#=clientName#>
     {
+        /// <summary>
+        /// Instantiates a new <#=clientName#>.
+        /// </summary>
+        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
+        /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
+        public <#=clientName#>(
+            IAuthenticationProvider authenticationProvider,
+            IHttpProvider httpProvider = null)
+            : this("https://graph.microsoft.com/v1.0", authenticationProvider, httpProvider)
+        {
+        }
 
         /// <summary>
         /// Instantiates a new <#=clientName#>.
         /// </summary>
+        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0."</param>
+        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
+        /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
         public <#=clientName#>(
-            AppConfig appConfig,
-            CredentialCache credentialCache = null,
-            IHttpProvider httpProvider = null,
-            IServiceInfoProvider serviceInfoProvider = null)
-            : base(appConfig, credentialCache, httpProvider, serviceInfoProvider)
+            string baseUrl,
+            IAuthenticationProvider authenticationProvider,
+            IHttpProvider httpProvider = null)
+            : base(baseUrl, authenticationProvider, httpProvider)
         {
         }
     <#
