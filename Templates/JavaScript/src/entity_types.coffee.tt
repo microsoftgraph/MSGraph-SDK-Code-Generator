@@ -29,6 +29,7 @@ module.exports =
   {
     var properties    = writer.EntityProperties(entityType);
     var navProperties = writer.EntityNavigationProperties(entityType);
+    var methods       = entityType.Methods;
 #>
   '<#= entityType.FullName #>': new EntityType
     name: '<#= entityType.FullName #>'
@@ -51,7 +52,40 @@ module.exports =
     openType: true
 <#
     }
-
+    if(methods.Any())
+    {
+#>
+    methods:
+<#
+      foreach(var method in methods)
+      {
+#>
+      <#= method.Name #>:
+        requestMethod: '<#= method.Verbs #>'
+<#
+        if(method.ReturnType != null)
+        {
+          var returnTypeName = method.IsCollection ? "Collection(" + method.ReturnType.FullName + ")" : method.ReturnType.FullName;
+#>
+        returnType:    '<#= returnTypeName #>'
+<#
+        }
+        if(method.Parameters.Any())
+        {
+#>
+        parameters:
+<#
+          foreach(var parameter in method.Parameters)
+          {
+            var parameterTypeName = parameter.IsCollection ? "Collection(" + parameter.Type.FullName + ")" : parameter.Type.FullName;
+#>
+          <#= parameter.Name #>:
+            type: '<#= parameterTypeName #>'
+<#
+          }
+        }
+      }
+    }
     if(properties.Any())
     {
 #>
