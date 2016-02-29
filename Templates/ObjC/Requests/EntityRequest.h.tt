@@ -3,7 +3,7 @@
 
 <#
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "Request";
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":"") + "Request";
 var clasess = new List<string>();
 clasess.Add(writer.GetStaticCodePrefix() + "URLSessionDataTask");
 
@@ -39,8 +39,9 @@ foreach(var propertyClass in clasess)
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler;
 
+<# if (!withReference) {#>
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)update:(<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> *)<#=entity.Name#> withCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler;
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)deleteWithCompletion:<#=writer.GetNetworkCompletionBlock(null, null)#>completionHandler;
-
+<# } #>
 @end

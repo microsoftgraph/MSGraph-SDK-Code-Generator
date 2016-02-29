@@ -2,7 +2,7 @@
 <#@ include file="SharedObjC.template.tt"#>
 <#
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":"");
 var entityRequestName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "Request";
 #>
 
@@ -11,6 +11,9 @@ var entityRequestName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "R
 @implementation <#=entityName#>RequestBuilder
 
 <#
+if(!withReference)
+{
+
 foreach(var prop in entity.NavigationProperties())
 {
     if(prop.IsCollection)
@@ -67,19 +70,7 @@ foreach (var complexType in entity.GetProperties(longDescriptionMatches:"navigab
 
 <#
 }
-#>
 
-- (<#=entityRequestName#> *)request
-{
-    return [self requestWithOptions:nil];
-}
-
-- (<#=entityRequestName#> *) requestWithOptions:(NSArray *)options
-{
-    return [[<#=entityRequestName#> alloc] initWithURL:self.requestURL options:options client:self.client];
-}
-
-<#
 foreach(var prop in entity.GetProperties(typeName:"Stream"))
 {
     var propName = prop.Name.ToUpperFirstChar();
@@ -172,6 +163,30 @@ foreach(var func in entity.Methods)
     }
 
 }
-
+}
 #>
+
+- (<#=entityRequestName#> *)request
+{
+    return [self requestWithOptions:nil];
+}
+
+- (<#=entityRequestName#> *) requestWithOptions:(NSArray *)options
+{
+    return [[<#=entityRequestName#> alloc] initWithURL:self.requestURL options:options client:self.client];
+}
+
+<#
+if(withReference)
+{
+    var refTypeString=writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "ReferenceRequestBuilder";
+#>
+- (<#=refTypeString#> *) reference
+{
+    return [[<#=refTypeString#> alloc] initWithURL:[self.requestURL URLByAppendingPathComponent:@"$ref"] client:self.client];
+}
+<#
+}
+#>
+
 @end

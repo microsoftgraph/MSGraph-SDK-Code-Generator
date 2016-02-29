@@ -3,10 +3,13 @@
 
 <#
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "RequestBuilder";
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":"") + "RequestBuilder";
 var entityRequestName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "Request";
 var classes = new List<string>();
 classes.Add(entityRequestName);
+
+if(!withReference)
+{
 
 foreach(var prop in entity.NavigationProperties())
 {
@@ -85,11 +88,13 @@ foreach(var propertyClass in classes)
         stringBuilder.Append(";");
     }
 }
+
 if (classes.Count > 0)
 {
 #>
 @class <#=stringBuilder.ToString()#>
 <#
+}
 }
 #>
 #import "<#=writer.GetPrefix()#>Models.h"
@@ -99,6 +104,8 @@ if (classes.Count > 0)
 @interface <#=entityName#> : <#=writer.GetStaticCodePrefix()#>RequestBuilder
 
 <#
+if(!withReference)
+{
 
 foreach(var prop in entity.NavigationProperties())
 {
@@ -141,12 +148,6 @@ foreach(var complexType in entity.GetProperties(longDescriptionMatches:"navigabl
 <#
 }
 
-#>
-- (<#=entityRequestName#> *)request;
-
-- (<#=entityRequestName#> *) requestWithOptions:(NSArray *)options;
-
-<#
 foreach(var prop in entity.GetProperties(typeName:"Stream"))
 {
     var propName = prop.Name.ToUpperFirstChar();
@@ -184,5 +185,20 @@ foreach(var func in entity.Methods)
 <#
 
 }
+}
 #>
+
+- (<#=entityRequestName#> *) request;
+
+- (<#=entityRequestName#> *) requestWithOptions:(NSArray *)options;
+
+<#
+if(withReference)
+{
+#>
+- (<#= writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "ReferenceRequestBuilder" #> *) reference;
+<#
+}
+#>
+
 @end

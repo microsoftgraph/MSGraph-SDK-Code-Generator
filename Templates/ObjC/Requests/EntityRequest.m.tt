@@ -3,7 +3,7 @@
 <#
 
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":"");
 
 #>
 
@@ -46,6 +46,7 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
     return task;
 }
 
+<# if (!withReference) {#>
 
 - (NSMutableURLRequest *)update:(<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> *)<#=entity.Name#>
 {
@@ -81,4 +82,7 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar();
     [task execute];
     return task;
 }
+
+<# } #>
+
 @end
