@@ -34,27 +34,14 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.JavaScript
             get { return "\n"; }
         }
 
-        public IEnumerable<OdcmProperty> EntityAllProperties(OdcmClass obj)
-        {
-            if (obj.Base != null)
-            {
-                return EntityAllProperties(obj.Base).Concat(obj.Properties);
-            }
-            else
-            {
-                return obj.Properties;
-            }
-
-        }
-
         public IEnumerable<OdcmProperty> EntityProperties(OdcmClass obj)
         {
-            return EntityAllProperties(obj).Where(prop => !prop.IsLink).ToList();
+            return obj.Properties.Where(prop => !prop.IsLink).ToList();
         }
 
         public IEnumerable<OdcmProperty> EntityNavigationProperties(OdcmClass obj)
         {
-            return EntityAllProperties(obj).Where(prop => prop.IsLink).ToList();
+            return obj.Properties.Where(prop => prop.IsLink).ToList();
         }
 
         public String FullTypeName(OdcmProperty prop)

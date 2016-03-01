@@ -10,10 +10,11 @@
 #>
 <#=writer.WriteHeader()#>
 EntityType = require './entity_type'
+_          = require 'lodash'
 
-module.exports =
-  'microsoft.graph': new EntityType
-    name: 'microsoft.graph'
+module.exports = {}
+entityTypesData =
+  'microsoft.graph':
     navigationProperties:
 <#
   foreach(var prop in entityContainer.Properties)
@@ -31,8 +32,7 @@ module.exports =
     var navProperties = writer.EntityNavigationProperties(entityType);
     var methods       = entityType.Methods;
 #>
-  '<#= entityType.FullName #>': new EntityType
-    name: '<#= entityType.FullName #>'
+  '<#= entityType.FullName #>':
 <#
     if (entityType.IsAbstract)
     {
@@ -61,7 +61,7 @@ module.exports =
       {
 #>
       <#= method.Name #>:
-        requestMethod: '<#= method.Verbs.toUpper() #>'
+        requestMethod: '<#= method.Verbs.ToString().ToUpper() #>'
 <#
         if(method.ReturnType != null)
         {
@@ -137,3 +137,20 @@ module.exports =
     }
   }
 #>
+
+getAllFor = (key, entityName) ->
+  entityData = entityTypesData[entityName]
+  if entityData.baseType
+    _.merge(entityData[key], getAllFor(key, entityData.baseType))
+  else
+    entityData[key]
+
+completeEntityData = (name) ->
+  entityData           = entityTypesData[name]
+  properties           = getAllFor('properties', name)
+  navigationProperties = getAllFor('navigationProperties', name)
+  methods              = getAllFor('methods', name)
+  _.merge entityData, {properties, navigationProperties, methods, name}
+
+_(entityTypesData).keys().forEach (entityName) ->
+  module.exports[entityName] = new EntityType completeEntityData(entityName)
