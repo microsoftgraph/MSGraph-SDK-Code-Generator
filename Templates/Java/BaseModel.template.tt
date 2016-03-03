@@ -56,6 +56,9 @@
     }
 
     public string TypeStreamRequest(OdcmObject c) {
+        if (TypeName(c).EndsWith("stream", StringComparison.InvariantCultureIgnoreCase)){
+            return TypeName(c) + "Request";
+        }
         return TypeName(c) + "StreamRequest";
     }
 
