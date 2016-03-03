@@ -2,7 +2,7 @@
 <#@ include file="SharedObjC.template.tt"#>
 <#
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":"");
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":(entityReference?"Reference":""));
 var entityRequestName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "Request";
 #>
 
@@ -11,7 +11,7 @@ var entityRequestName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "R
 @implementation <#=entityName#>RequestBuilder
 
 <#
-if(!withReference)
+if(!withReference && !entityReference)
 {
 
 foreach(var prop in entity.NavigationProperties())
@@ -21,7 +21,7 @@ foreach(var prop in entity.NavigationProperties())
         var propInstanceName = prop.Name.ToLowerFirstChar();
         var propTypeName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
         var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
-        var collectionRequestName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + collectionNamer +"RequestBuilder";
+        var collectionRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer +"RequestBuilder";
         var innerPropTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
         var innerPropInstanceName = prop.Type.Name.ToLowerFirstChar();
         var innerPropTypeRequestName = innerPropTypeName + "RequestBuilder";

@@ -3,7 +3,7 @@
 <#
 
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":"");
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":(entityReference?"Reference":""));
 
 #>
 
@@ -28,6 +28,8 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withRefe
 
 @implementation <#=entityName#>Request
 
+<# if (!entityReference) {#>
+
 - (NSMutableURLRequest *)get
 {
     return [self requestWithMethod:@"GET"
@@ -46,7 +48,9 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withRefe
     return task;
 }
 
-<# if (!withReference) {#>
+<# } #>
+
+<# if (!withReference  && !entityReference) {#>
 
 - (NSMutableURLRequest *)update:(<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> *)<#=entity.Name#>
 {
@@ -66,6 +70,10 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withRefe
     [task execute];
     return task;
 }
+
+<# } #>
+
+<# if (!withReference) {#>
 
 - (NSMutableURLRequest *)delete
 {

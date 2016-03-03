@@ -1,15 +1,18 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="SharedObjC.template.tt"#>
 <#
+
 var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
+var isServiceES = prop.Class.Kind == OdcmClassKind.Service;
 
-var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
+var collectionNamer = prop.IsReference() ? ((collectionReference)?"CollectionReference":"CollectionWithReferences") : "Collection";
+var baseName = isServiceES ? prop.Name.ToUpperFirstChar() : prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
 
-var propName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
+var propName = writer.GetPrefix() + baseName + collectionNamer + "RequestBuilder";
 var entityRequestBuilder = innerEntityType + "RequestBuilder";
-var entityRequest = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer + "Request";
+var entityRequest = writer.GetPrefix() + baseName + collectionNamer + "Request";
 var classStringBuilder = new StringBuilder("@class " + entityRequest);
 classStringBuilder.Append(", " + entityRequestBuilder + ";");
 
@@ -19,6 +22,17 @@ classStringBuilder.Append(", " + entityRequestBuilder + ";");
 #import "<#=writer.GetPrefix()#>Models.h"
 #import "<#=writer.GetStaticCodePrefix()#>CollectionRequestBuilder.h"
 
+<#
+if(prop.IsReference())
+{
+#>
+#import "<#=writer.GetPrefix() + baseName #>CollectionReferenceRequestBuilder.h"
+<#
+}
+#>
+
+
+
 @interface <#=propName#> : <#=writer.GetStaticCodePrefix()#>CollectionRequestBuilder
 
 - (<#=entityRequest#> *)request;
@@ -26,7 +40,7 @@ classStringBuilder.Append(", " + entityRequestBuilder + ";");
 - (<#=entityRequest#> *)requestWithOptions:(NSArray *)options;
 
 <#
-if (!(innerEntity is OdcmComplexClass))
+if (!(innerEntity is OdcmComplexClass) && !collectionReference)
 {
 #>
 - (<#=entityRequestBuilder#> *)<#=innerEntity.Name.ToLowerFirstChar()#>:(NSString *)<#=innerEntity.Name.ToLowerFirstChar()#>;
@@ -39,7 +53,7 @@ if (!(innerEntity is OdcmComplexClass))
 if(prop.IsReference())
 {
 #>
-- (<#=writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "CollectionReferenceRequestBuilder"#> *) references;
+- (<#=writer.GetPrefix() + baseName + "CollectionReferenceRequestBuilder"#> *) references;
 <#
 }
 #>

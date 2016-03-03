@@ -3,12 +3,12 @@
 
 <#
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":"") + "RequestBuilder";
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":(entityReference?"Reference":"")) + "RequestBuilder";
 var entityRequestName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "Request";
 var classes = new List<string>();
 classes.Add(entityRequestName);
 
-if(!withReference)
+if(!withReference && !entityReference)
 {
 
 foreach(var prop in entity.NavigationProperties())
@@ -21,7 +21,7 @@ foreach(var prop in entity.NavigationProperties())
     if(prop.IsCollection)
     {
         var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
-        var collectionFetcher = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
+        var collectionFetcher = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
 
         if(!classes.Contains(collectionFetcher)) classes.Add(collectionFetcher);
     }
@@ -97,14 +97,25 @@ if (classes.Count > 0)
 }
 }
 #>
+
 #import "<#=writer.GetPrefix()#>Models.h"
 #import "<#=writer.GetStaticCodePrefix()#>RequestBuilder.h"
+
+<#
+if(withReference)
+{
+#>
+#import "<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#>ReferenceRequestBuilder.h"
+<#
+}
+#>
+
 
 
 @interface <#=entityName#> : <#=writer.GetStaticCodePrefix()#>RequestBuilder
 
 <#
-if(!withReference)
+if(!withReference && !entityReference)
 {
 
 foreach(var prop in entity.NavigationProperties())
@@ -114,7 +125,7 @@ foreach(var prop in entity.NavigationProperties())
         var propInstanceName = prop.Name.ToLowerFirstChar();
         var propTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
         var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
-        var collectionRequestName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
+        var collectionRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
         var innerPropTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
         var innerPropInstanceName = prop.Type.Name.ToLowerFirstChar();
         var innerPropTypeRequestName = innerPropTypeName + "RequestBuilder";

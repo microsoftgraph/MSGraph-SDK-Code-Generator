@@ -4,10 +4,12 @@
 
 var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
+var isServiceES = prop.Class.Kind == OdcmClassKind.Service;
 
-var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
+var collectionNamer = prop.IsReference() ? ((collectionReference)?"CollectionReference":"CollectionWithReferences") : "Collection";
+var baseName = isServiceES ? prop.Name.ToUpperFirstChar() : prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
 
-var propName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
+var propName = writer.GetPrefix() + baseName;
 var propNameRequest = propName + collectionNamer + "Request";
 var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
 var entityRequest = innerEntityType + "RequestBuilder";
@@ -19,10 +21,10 @@ if (innerEntityType.Equals(propName))
 #>
 
 #import "<#=writer.GetPrefix()#>ODataEntities.h"
-#import "<#=writer.GetStaticCodePrefix() + collectionNamer#>.h"
+#import "<#=writer.GetStaticCodePrefix()#>Collection.h"
 #import "<#=writer.GetStaticCodePrefix()#>URLSessionDataTask.h"
 
-@interface <#=writer.GetStaticCodePrefix() + collectionNamer#>Request()
+@interface <#=writer.GetStaticCodePrefix()#>CollectionRequest()
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
                                       body:(NSData *)body
@@ -38,7 +40,7 @@ if (innerEntityType.Equals(propName))
                            headers:nil];
 }
 
-- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName#>CompletionHandler)completionHandler
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName+ collectionNamer#>CompletionHandler)completionHandler
 {
 
     <#=writer.GetStaticCodePrefix()#>URLSessionDataTask * task = [self collectionTaskWithRequest:[self get]
@@ -58,7 +60,7 @@ if (innerEntityType.Equals(propName))
 <#  }
 #>
                                          }
-                                                        completion:^(<#=writer.GetStaticCodePrefix() + collectionNamer#> *collectionResponse, NSError *error){
+                                                        completion:^(<#=writer.GetStaticCodePrefix()#>Collection *collectionResponse, NSError *error){
                                             if(!error && collectionResponse.nextLink && completionHandler){
                                                 <#=propNameRequest#> *nextRequest = [[<#=propNameRequest#> alloc] initWithURL:collectionResponse.nextLink options:nil client:self.client];
                                                 completionHandler(collectionResponse, nextRequest, nil);
@@ -72,7 +74,7 @@ if (innerEntityType.Equals(propName))
 }
 
 <#
-    if (!prop.LongDescriptionContains("readonly") && !prop.IsReference())
+    if (!prop.LongDescriptionContains("readonly") && (!prop.IsReference() || collectionReference))
     {
 #>
 - (NSMutableURLRequest *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#>

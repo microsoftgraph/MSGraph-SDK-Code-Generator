@@ -13,6 +13,8 @@ private CodeWriterObjC writer;
 private CustomT4Host host;
 private OdcmModel model;
 private bool withReference = false;
+private bool entityReference = false;
+private bool collectionReference = false;
 
 private string GetObjCTypeIdentifier(OdcmObject o, bool getUnderlyingType=false)
 {

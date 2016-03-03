@@ -1,12 +1,15 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="SharedObjC.template.tt"#>
 <#
+
 var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
+var isServiceES = prop.Class.Kind == OdcmClassKind.Service;
 
-var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
+var collectionNamer = prop.IsReference() ? ((collectionReference)?"CollectionReference":"CollectionWithReferences") : "Collection";
+var baseName = isServiceES ? prop.Name.ToUpperFirstChar() : prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
 
-var propName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
+var propName = writer.GetPrefix() + baseName;
 var propRequestBuilder = propName + collectionNamer +"Builder";
 var propRequest = propName + collectionNamer + "Request";
 
@@ -23,16 +26,21 @@ if (innerEntityType.Equals(propName))
 
 #import "<#=writer.GetPrefix()#>Models.h"
 #import "<#=writer.GetStaticCodePrefix()#>CollectionRequest.h"
+<#
+if(prop.IsReference()) {
+#>
+#import "<#=writer.GetStaticCodePrefix()#>CollectionReference.h"
+<# } #>
 
 typedef void (^<#=innerEntityType#>CompletionHandler)(<#=innerEntityType#> *response, NSError *error);
 
-typedef void (^<#=propName#>CompletionHandler)(<#=writer.GetStaticCodePrefix() + collectionNamer#> *response, <#=propRequest#> *nextRequest, NSError *error);
+typedef void (^<#=propName + collectionNamer#>CompletionHandler)(<#=writer.GetStaticCodePrefix() + "Collection"#> *response, <#=propRequest#> *nextRequest, NSError *error);
 
 @interface <#=propRequest#> : <#=writer.GetStaticCodePrefix()#>CollectionRequest
 
-- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName#>CompletionHandler)completionHandler;
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName + collectionNamer#>CompletionHandler)completionHandler;
 <#
-    if (!prop.LongDescriptionContains("readonly") && !prop.IsReference())
+    if (!prop.LongDescriptionContains("readonly") && (!prop.IsReference() || collectionReference))
     {
 #>
 

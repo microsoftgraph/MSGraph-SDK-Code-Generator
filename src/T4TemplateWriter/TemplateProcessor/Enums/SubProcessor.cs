@@ -15,6 +15,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
       NavigationCollectionProperty,
       CollectionReferenceProperty,
       CollectionNotReferenceProperty,
+      ServiceEntitySets,
       EntityReferenceType,
       Method,
       NonCollectionMethod,
