@@ -1,0 +1,39 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeWithReferencesRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(BaseTypeWithReferencesRequest(c), "BaseRequest", IBaseTypeWithReferencesRequest(c))#>
+
+    /**
+     * The request for the <#=TypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public <#=BaseTypeWithReferencesRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, List<Option> options) {
+        super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
+    }
+
+    public void get(final ICallback<<#=TypeName(c)#>> callback) {
+        send(HttpMethod.GET, callback, null);
+    }
+
+    public <#=TypeName(c)#> get() throws ClientException {
+       return send(HttpMethod.GET, null);
+    }
+
+    public <#=ITypeWithReferencesRequest(c)#> select(final String value) {
+        getQueryOptions().add(new QueryOption("select", value));
+        return (<#=ITypeWithReferencesRequest(c)#>)this;
+    }
+
+    public <#=ITypeWithReferencesRequest(c)#> expand(final String value) {
+        getQueryOptions().add(new QueryOption("expand", value));
+        return (<#=TypeWithReferencesRequest(c)#>)this;
+    }
+
+}

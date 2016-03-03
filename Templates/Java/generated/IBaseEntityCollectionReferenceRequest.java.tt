@@ -1,0 +1,15 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeCollectionReferenceRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseTypeCollectionReferenceRequest(c))#>
+	
+	//TODO: Add the Add method
+
+    <#=ITypeCollectionReferenceRequest(c)#> select(final String value);
+
+    <#=ITypeCollectionReferenceRequest(c)#> top(final int value);
+}

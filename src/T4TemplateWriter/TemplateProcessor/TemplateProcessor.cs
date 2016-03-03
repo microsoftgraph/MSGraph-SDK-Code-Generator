@@ -175,7 +175,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<TextFile> ProcessCollectionReferences(ITemplateInfo templateInfo)
         {
-            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CollectionReferenceProperties))
+            var properties = FilterOdcmEnumerable(templateInfo, this.CollectionReferenceProperties);
+            foreach (OdcmProperty property in properties)
             {
                 yield return ProcessTemplate(templateInfo,
                                              property,
@@ -201,7 +202,8 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<TextFile> ProcessEntityReferenceProperties(ITemplateInfo templateInfo)
         {
-            foreach (OdcmClass entityType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEntityReferenceTypes))
+            var entities = FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEntityReferenceTypes);
+            foreach (OdcmClass entityType in entities)
             {
                 yield return ProcessTemplate(templateInfo,
                                              entityType,
@@ -284,7 +286,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmProperty> NavigationCollectionProperties()
         {
-            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation());
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation() && !prop.IsReference());
         }
 
         protected virtual IEnumerable<OdcmProperty> CollectionReferenceProperties()

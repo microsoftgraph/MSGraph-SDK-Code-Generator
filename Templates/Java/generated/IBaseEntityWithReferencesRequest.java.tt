@@ -1,0 +1,18 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeWithReferencesRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseTypeWithReferencesRequest(c), "IHttpRequest")#>
+
+    void get(final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> get() throws ClientException;
+
+    <#=IBaseTypeWithReferencesRequest(c)#> select(final String value);
+
+    <#=IBaseTypeWithReferencesRequest(c)#> expand(final String value);
+
+}

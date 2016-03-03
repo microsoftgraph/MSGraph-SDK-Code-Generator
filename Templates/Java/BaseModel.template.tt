@@ -51,10 +51,6 @@
         return "I" + BaseTypeName(c);
     }
 
-    public string TypeRequest(OdcmObject c) {
-        return TypeName(c) + "Request";
-    }
-
     public string TypeStreamRequest(OdcmObject c) {
         return TypeName(c) + "StreamRequest";
     }
@@ -87,6 +83,14 @@
         return "I" + BaseTypeStreamRequestBuilder(c);
     }
 
+    public string TypeRequest(OdcmObject c) {
+        if(c is OdcmProperty && c.AsOdcmProperty().IsReference()){
+            return TypeWithReferencesRequest(c);
+        }else{
+            return TypeName(c) + "Request";
+        }
+    }
+
     public string BaseTypeRequest(OdcmObject c) {
         return "Base" + TypeRequest(c);
     }
@@ -115,12 +119,84 @@
         return "I" + BaseTypeRequestBuilder(c);
     }
 
+    public string TypeWithReferencesRequest(OdcmObject c) {
+        return TypeName(c) + "WithReferencesRequest";
+    }
+
+    public string BaseTypeWithReferencesRequest(OdcmObject c) {
+        return "Base" + TypeWithReferencesRequest(c);
+    }
+
+    public string ITypeWithReferencesRequest(OdcmObject c) {
+        return "I" + TypeWithReferencesRequest(c);
+    }
+
+    public string IBaseTypeWithReferencesRequest(OdcmObject c) {
+        return "I" + BaseTypeWithReferencesRequest(c);
+    }
+
+    public string TypeWithReferencesRequestBuilder(OdcmObject c) {
+        return TypeWithReferencesRequest(c) + "Builder";
+    }
+
+    public string ITypeWithReferencesRequestBuilder(OdcmObject c) {
+        return "I" + TypeWithReferencesRequestBuilder(c);
+    }
+
+    public string BaseTypeWithReferencesRequestBuilder(OdcmObject c) {
+        return "Base" + TypeWithReferencesRequestBuilder(c);
+    }
+
+    public string IBaseTypeWithReferencesRequestBuilder(OdcmObject c) {
+        return "I" + BaseTypeWithReferencesRequestBuilder(c);
+    }
+
+    public string TypeReferenceRequest(OdcmObject c) {
+        return TypeName(c) + "ReferenceRequest";
+    }
+
+    public string BaseTypeReferenceRequest(OdcmObject c) {
+        return "Base" + TypeReferenceRequest(c);
+    }
+
+    public string ITypeReferenceRequest(OdcmObject c) {
+        return "I" + TypeReferenceRequest(c);
+    }
+
+    public string IBaseTypeReferenceRequest(OdcmObject c) {
+        return "I" + BaseTypeReferenceRequest(c);
+    }
+
+    public string TypeReferenceRequestBuilder(OdcmObject c) {
+        return TypeReferenceRequest(c) + "Builder";
+    }
+
+    public string ITypeReferenceRequestBuilder(OdcmObject c) {
+        return "I" + TypeReferenceRequestBuilder(c);
+    }
+
+    public string BaseTypeReferenceRequestBuilder(OdcmObject c) {
+        return "Base" + TypeReferenceRequestBuilder(c);
+    }
+
+    public string IBaseTypeReferenceRequestBuilder(OdcmObject c) {
+        return "I" + BaseTypeReferenceRequestBuilder(c);
+    }
+
     public string TypeCollectionPage(OdcmObject c) {
         return TypeName(c) + "CollectionPage";
     }
 
     public string ITypeCollectionPage(OdcmObject c) {
         return "I" + TypeCollectionPage(c);
+    }
+
+    public string TypeCollectionWithReferencesPage(OdcmObject c) {
+        return TypeName(c) + "CollectionWithReferencesPage";
+    }
+
+    public string ITypeCollectionWithReferencesPage(OdcmObject c) {
+        return "I" + TypeCollectionWithReferencesPage(c);
     }
 
     public string BaseTypeCollectionPage(OdcmObject c) {
@@ -131,12 +207,24 @@
         return "I" + BaseTypeCollectionPage(c);
     }
 
+    public string BaseTypeCollectionWithReferencesPage(OdcmObject c) {
+        return "Base" + TypeCollectionWithReferencesPage(c);
+    }
+
+    public string IBaseTypeCollectionWithReferencesPage(OdcmObject c) {
+        return "I" + BaseTypeCollectionWithReferencesPage(c);
+    }
+
     public string BaseTypeCollectionResponse(OdcmObject c) {
         return "Base" + TypeName(c) + "CollectionResponse";
     }
 
     public string TypeCollectionRequest(OdcmObject c) {
-        return TypeName(c) + "CollectionRequest";
+        if(c is OdcmProperty && c.AsOdcmProperty().IsReference()){
+            return TypeCollectionWithReferencesRequest(c);
+        }else{
+            return TypeName(c) + "CollectionRequest";
+        }
     }
 
     public string ITypeCollectionRequest(OdcmObject c) {
@@ -156,7 +244,7 @@
     }
 
     public string ITypeCollectionRequestBuilder(OdcmObject c) {
-        return  "I" + TypeCollectionRequestBuilder(c);
+        return "I" + TypeCollectionRequestBuilder(c);
     }
 
     public string BaseTypeCollectionRequestBuilder(OdcmObject c) {
@@ -165,6 +253,70 @@
 
     public string IBaseTypeCollectionRequestBuilder(OdcmObject c) {
         return  "I" + BaseTypeCollectionRequestBuilder(c);
+    }
+
+    public string TypeCollectionWithReferencesRequest(OdcmObject c) {
+        return TypeName(c) + "CollectionWithReferencesRequest";
+    }
+
+    public string ITypeCollectionWithReferencesRequest(OdcmObject c) {
+        return  "I" + TypeCollectionWithReferencesRequest(c);
+    }
+
+    public string BaseTypeCollectionWithReferencesRequest(OdcmObject c) {
+        return "Base" + TypeCollectionWithReferencesRequest(c);
+    }
+
+    public string IBaseTypeCollectionWithReferencesRequest(OdcmObject c) {
+        return  "I" + BaseTypeCollectionWithReferencesRequest(c);
+    }
+
+    public string TypeCollectionWithReferencesRequestBuilder(OdcmObject c) {
+        return TypeCollectionWithReferencesRequest(c) + "Builder";
+    }
+
+    public string ITypeCollectionWithReferencesRequestBuilder(OdcmObject c) {
+        return  "I" + TypeCollectionWithReferencesRequestBuilder(c);
+    }
+
+    public string BaseTypeCollectionWithReferencesRequestBuilder(OdcmObject c) {
+        return "Base" + TypeCollectionWithReferencesRequestBuilder(c);
+    }
+
+    public string IBaseTypeCollectionWithReferencesRequestBuilder(OdcmObject c) {
+        return  "I" + BaseTypeCollectionWithReferencesRequestBuilder(c);
+    }
+
+public string TypeCollectionReferenceRequest(OdcmObject c) {
+        return TypeName(c) + "CollectionReferenceRequest";
+    }
+
+    public string ITypeCollectionReferenceRequest(OdcmObject c) {
+        return  "I" + TypeCollectionReferenceRequest(c);
+    }
+
+    public string BaseTypeCollectionReferenceRequest(OdcmObject c) {
+        return "Base" + TypeCollectionReferenceRequest(c);
+    }
+
+    public string IBaseTypeCollectionReferenceRequest(OdcmObject c) {
+        return  "I" + BaseTypeCollectionReferenceRequest(c);
+    }
+
+    public string TypeCollectionReferenceRequestBuilder(OdcmObject c) {
+        return TypeCollectionReferenceRequest(c) + "Builder";
+    }
+
+    public string ITypeCollectionReferenceRequestBuilder(OdcmObject c) {
+        return  "I" + TypeCollectionReferenceRequestBuilder(c);
+    }
+
+    public string BaseTypeCollectionReferenceRequestBuilder(OdcmObject c) {
+        return "Base" + TypeCollectionReferenceRequestBuilder(c);
+    }
+
+    public string IBaseTypeCollectionReferenceRequestBuilder(OdcmObject c) {
+        return  "I" + BaseTypeCollectionReferenceRequestBuilder(c);
     }
 
     public string TypeBody(OdcmObject c) {
@@ -281,6 +433,13 @@
             return "<" + ClassTypeName(c) + ", " + ITypeRequestBuilder(c) + ">";
         }
         return "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
+    }
+
+    public string CollectionPageWithReferencesGeneric(OdcmObject c) {
+        if (c is OdcmMethod) {
+            return "<" + ClassTypeName(c) + ", " + ITypeWithReferencesRequestBuilder(c) + ">";
+        }
+        return "<" + TypeName(c) + ", " + ITypeCollectionWithReferencesRequestBuilder(c) + ">";
     }
 
     public string CollectionRequestGeneric(OdcmObject c) {
