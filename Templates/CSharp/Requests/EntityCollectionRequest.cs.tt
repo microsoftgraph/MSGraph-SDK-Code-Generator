@@ -40,7 +40,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         public async Task<I<#=collectionPage#>> GetAsync(HttpCompletionOption completionOption, CancellationToken cancellationToken)
         {
             this.Method = "GET";
-            var response = await this.SendAsync<<#=collectionResponse#>>(null, completionOption, cancellationToken);
+            var response = await this.SendAsync<<#=collectionResponse#>>(null, completionOption, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
                 if (response.AdditionalData != null)

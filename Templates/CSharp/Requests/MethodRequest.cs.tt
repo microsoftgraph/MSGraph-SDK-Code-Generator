@@ -217,7 +217,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     {
     #>
 
-            var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>, completionOption, cancellationToken);
+            var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>, completionOption, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
                 if (response.AdditionalData != null)
@@ -263,7 +263,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     {
     #>
     
-            using (var response = await this.SendRequestAsync(<#=methodParameter#>))
+            using (var response = await this.SendRequestAsync(<#=methodParameter#>).ConfigureAwait(false))
             {
                 return new <#=monitorType#>(this.Client, response.Headers.Location.ToString());
             }
@@ -290,7 +290,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         {
     #>
 
-            await this.SendAsync(<#=methodParameter#>, completionOption, cancellationToken);
+            await this.SendAsync(<#=methodParameter#>, completionOption, cancellationToken).ConfigureAwait(false);
     <#
         }
     }
