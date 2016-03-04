@@ -125,12 +125,14 @@
           { "Template": "BaseEntityCollectionReferenceRequest", "SubProcessor": "CollectionReferenceProperty",                           "Name": "Base<PropertyType>CollectionReferenceRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
 
 
-          { "Template": "IEntityRequest", "SubProcessor": "Property",                                                                         "Name": "I<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
-          { "Template": "EntityRequest", "SubProcessor": "Property",                                                                          "Name": "<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
-          { "Template": "IEntityRequestBuilder", "SubProcessor": "Property",                                                                  "Name": "I<Class><PropertyType>RequestBuilder", "Include": "mainLogo;thumbnailPhoto;content" },
-          { "Template": "EntityRequestBuilder", "SubProcessor": "Property",                                                                   "Name": "<Class><PropertyType>RequestBuilder", "Include": "mainLogo;thumbnailPhoto;content" },
-          { "Template": "IBaseStreamPropertyRequest", "SubProcessor": "Property",                                                             "Name": "IBase<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
-          { "Template": "BaseStreamPropertyRequest", "SubProcessor": "Property",                                                              "Name": "Base<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
+          { "Template": "IEntityRequest", "SubProcessor": "StreamProperty",                                                                   "Name": "I<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
+          { "Template": "EntityRequest", "SubProcessor": "StreamProperty",                                                                    "Name": "<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
+          { "Template": "IEntityRequestBuilder", "SubProcessor": "StreamProperty",                                                            "Name": "I<Class><PropertyType>RequestBuilder", "Include": "mainLogo;thumbnailPhoto;content" },
+          { "Template": "EntityRequestBuilder", "SubProcessor": "StreamProperty",                                                             "Name": "<Class><PropertyType>RequestBuilder", "Include": "mainLogo;thumbnailPhoto;content" },
+          { "Template": "IBaseStreamRequest", "SubProcessor": "StreamProperty",                                                               "Name": "IBase<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
+          { "Template": "BaseStreamRequest", "SubProcessor": "StreamProperty",                                                                "Name": "Base<Class><PropertyType>Request", "Include": "mainLogo;thumbnailPhoto;content" },
+          { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "StreamProperty",                                                        "Name": "IBase<Class><PropertyType>RequestBuilder", "Include": "mainLogo;thumbnailPhoto;content" },
+          { "Template": "BaseEntityRequestBuilder", "SubProcessor": "StreamProperty",                                                         "Name": "Base<Class><PropertyType>RequestBuilder", "Include": "mainLogo;thumbnailPhoto;content" },
 
           { "Template": "IEntityStreamRequest", "SubProcessor": "MediaEntityType",                                                            "Name": "I<Class>StreamRequest" },
           { "Template": "EntityStreamRequest", "SubProcessor": "MediaEntityType",                                                             "Name": "<Class>StreamRequest" },          
@@ -140,9 +142,6 @@
           { "Template": "BaseEntityStreamRequestBuilder", "SubProcessor": "MediaEntityType",                                                  "Name": "Base<Class>StreamRequestBuilder" },
           { "Template": "IEntityStreamRequestBuilder", "SubProcessor": "MediaEntityType",                                                     "Name": "I<Class>StreamRequestBuilder" },
           { "Template": "EntityStreamRequestBuilder", "SubProcessor": "MediaEntityType",                                                      "Name": "<Class>StreamRequestBuilder" },
-
-          { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "Property",                                                              "Name": "IBase<Class><PropertyType>RequestBuilder", "Include": "mainLogo;thumbnailPhoto;content" },
-          { "Template": "BaseEntityRequestBuilder", "SubProcessor": "Property",                                                               "Name": "Base<Class><PropertyType>RequestBuilder", "Include": "mainLogo;thumbnailPhoto;content" },
 
           { "Template": "IClient", "SubProcessor": "EntityContainer", "Type": "Client",                                                       "Name": "I<Container>Client" },
           { "Template": "Client", "SubProcessor": "EntityContainer", "Type": "Client",                                                        "Name": "<Container>Client" },

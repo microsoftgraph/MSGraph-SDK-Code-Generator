@@ -87,13 +87,12 @@ if (c.AsOdcmClass() != null)
 	}
 #>
 <#
-    foreach (var prop in c.AsOdcmClass().Properties.Where(x => x.Type is OdcmMediaClass))
+    if (c is OdcmMediaClass)
     {
-        var propName = prop.Name.ToCheckedCase();
 #>
 
-    public <#=ITypeStreamRequestBuilder(prop)#> get<#=propName#>Content() {
-        return new <#=TypeStreamRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>/$value"), getClient(), null);
+    public <#=ITypeStreamRequestBuilder(c)#> getContent() {
+        return new <#=TypeStreamRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment("$value"), getClient(), null);
     }
 <#
     }
@@ -109,8 +108,7 @@ if (c.AsOdcmClass() != null)
     public <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
         return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
-
-<#}else{#> 
+<#}else{#>
 
     public <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
         return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);

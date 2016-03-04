@@ -17,7 +17,7 @@ var entity = host.CurrentType.AsOdcmClass();
 @interface <#=GetObjCTypeIdentifier(entity)#>()
 {
 <#
-foreach (var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream"))
+foreach (var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream" && !prop.IsNavigation()))
 {
 #>
     <#=GetObjCTypeForVarDeclaration(prop)#> _<#=GetObjCProperty(prop)#>;
@@ -30,7 +30,7 @@ foreach (var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)
 @implementation <#=GetObjCTypeIdentifier(entity)#>
 
 <#
-foreach(var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream"))
+foreach(var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream" && !prop.IsNavigation()))
 {
     PropertyGetterImplementation(prop);
     PropertySetterImplementation(prop);

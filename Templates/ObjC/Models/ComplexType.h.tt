@@ -13,7 +13,7 @@ var baseEntity = entity.Base;
 @interface <#=GetObjCTypeIdentifier(entity)#> : <#=GetObjCTypeIdentifier(baseEntity)#>
 
 <#
-foreach(var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream"))
+foreach(var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream" && !prop.IsNavigation()))
 {
 	#>
 	<#=GeneratePropertyDeclarationLine(prop)#>
