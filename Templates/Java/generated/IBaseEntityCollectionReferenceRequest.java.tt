@@ -6,8 +6,10 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateInterfaceDef(IBaseTypeCollectionReferenceRequest(c))#>
-	
-	//TODO: Add the Add method
+    
+    void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
 
     <#=ITypeCollectionReferenceRequest(c)#> select(final String value);
 

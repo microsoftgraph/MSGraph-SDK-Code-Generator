@@ -19,7 +19,19 @@
         super(requestUrl, client, options, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
     }
 
-    //TODO: Add the add method
+    public void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
+        final String requestUrl = getBaseRequest().getRequestUrl().toString();
+        new <#=TypeRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+            .buildRequest()
+            .create(new<#=TypeName(c)#>, callback);
+    }
+
+    public <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
+        final String requestUrl = getBaseRequest().getRequestUrl().toString();
+        return new <#=TypeRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+            .buildRequest()
+            .create(new<#=TypeName(c)#>);
+    }
 
     public <#=ITypeCollectionReferenceRequest(c)#> select(final String value) {
         addQueryOption(new QueryOption("select", value));
@@ -31,17 +43,4 @@
         return (<#=TypeCollectionReferenceRequest(c)#>)this;
     }
 
-    /*
-    public <#=ITypeCollectionPage(c)#> buildFromResponse(final <#=BaseTypeCollectionResponse(c)#> response) {
-        final <#=ITypeCollectionRequestBuilder(c)#> builder;
-        if (response.nextLink != null) {
-            builder = new <#=TypeCollectionRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), /* options *//* null);
-        } else {
-            builder = null;
-        }
-        final <#=TypeCollectionPage(c)#> page = new <#=TypeCollectionPage(c)#>(response, builder);
-        page.setRawObject(response.getSerializer(), response.getRawObject());
-        return page;
-    }
-    */
 }
