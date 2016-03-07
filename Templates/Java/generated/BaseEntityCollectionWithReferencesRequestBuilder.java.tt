@@ -30,7 +30,7 @@
         return new <#=TypeWithReferencesRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
     }
 
-    public <#=ITypeCollectionReferenceRequestBuilder(c)#> References(){
+    public <#=ITypeCollectionReferenceRequestBuilder(c)#> references(){
         return new <#=TypeCollectionReferenceRequestBuilder(c)#>(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
 }

@@ -16,5 +16,5 @@
 
     <#=ITypeWithReferencesRequestBuilder(c)#> byId(final String id);
 
-	<#=ITypeCollectionReferenceRequestBuilder(c)#> References();
+	<#=ITypeCollectionReferenceRequestBuilder(c)#> references();
 }
