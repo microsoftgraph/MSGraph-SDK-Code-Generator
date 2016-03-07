@@ -3,8 +3,9 @@
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
-var collectionResponse = prop.Name.ToCheckedCase() + "CollectionResponse";
-var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
+var propName = prop.Name.ToCheckedCase();
+var collectionResponse = propName + "CollectionResponse";
+var collectionPage = prop.IsReference() ? string.Concat(propName, "CollectionWithReferencesPage") : string.Concat(propName, "CollectionPage");
 
 #>
 namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
