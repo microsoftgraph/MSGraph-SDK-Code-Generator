@@ -79,9 +79,27 @@ if (innerEntityType.Equals(propName))
 #>
 - (NSMutableURLRequest *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#>
 {
+<#
+    if(collectionReference)
+    {
+#>
+
+    NSData *body = [NSJSONSerialization dataWithJSONObject: [NSDictionary dictionaryWithObjectsAndKeys:
+    [NSString stringWithFormat:@"%@/<#=prop.GetServiceCollectionNavigationPropertyForPropertyType().Name#>/%@",[[self client] baseURL],<#=innerEntity.Name.ToLowerFirstChar()#>.entityId]
+    ,@"@odata.id",nil]
+                                               options:0
+                                                 error:nil];
+<#
+    }
+    else
+    {
+#>
     NSData *body = [NSJSONSerialization dataWithJSONObject:[<#=innerEntity.Name.ToLowerFirstChar()#> dictionaryFromItem]
                                                    options:0
                                                      error:nil];
+<#
+    }
+#>
     return [self requestWithMethod:@"POST"
                               body:body
                            headers:nil];
