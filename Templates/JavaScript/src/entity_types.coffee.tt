@@ -141,16 +141,25 @@ entityTypesData =
 getAllFor = (key, entityName) ->
   entityData = entityTypesData[entityName]
   if entityData.baseType
-    _.merge(entityData[key], getAllFor(key, entityData.baseType))
+    _.merge {}, entityData[key], getAllFor(key, entityData.baseType)
   else
     entityData[key]
+
+inheritanceChainFor = (entityName)->
+  baseTypeChain = []
+  baseType = entityTypesData[entityName].baseType
+  while baseType
+    baseTypeChain.push baseType
+    baseType = entityTypesData[baseType].baseType
+  baseTypeChain
 
 completeEntityData = (name) ->
   entityData           = entityTypesData[name]
   properties           = getAllFor('properties', name)
   navigationProperties = getAllFor('navigationProperties', name)
   methods              = getAllFor('methods', name)
-  _.merge entityData, {properties, navigationProperties, methods, name}
+  inheritanceChain     = inheritanceChainFor(name)
+  _.merge {}, entityData, {properties, navigationProperties, inheritanceChain, methods, name}
 
 _(entityTypesData).keys().forEach (entityName) ->
   module.exports[entityName] = new EntityType completeEntityData(entityName)
