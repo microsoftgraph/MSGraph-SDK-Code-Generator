@@ -158,16 +158,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
-        protected virtual IEnumerable<TextFile> ProcessMediaEntityTypes(ITemplateInfo templateInfo)
-        {
-            foreach (OdcmClass entityType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetMediaEntityTypes))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             entityType,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: entityType.Name));
-            }
-        }
+
 
         protected virtual IEnumerable<TextFile> ProcessNavigationCollections(ITemplateInfo templateInfo)
         {
@@ -232,6 +223,17 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
+        protected virtual IEnumerable<TextFile> ProcessMediaEntityTypes(ITemplateInfo templateInfo)
+        {
+            foreach (OdcmClass entityType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetMediaEntityTypes))
+            {
+                yield return ProcessTemplate(templateInfo,
+                                             entityType,
+                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
+                                                                       className: entityType.Name));
+            }
+        }
+
         protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo)
         {
             return this.ProcessMethods(templateInfo, this.CurrentModel.GetMethods);
@@ -268,6 +270,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         {
             return this.CurrentModel.GetMethods().Where(method => !method.IsCollection && (method.ReturnType == null || method.ReturnType is OdcmPrimitiveType));
         }
+
         protected virtual IEnumerable<OdcmMethod> MethodsWithBody()
         {
             return this.CurrentModel.GetMethods().Where(method => method.Parameters != null && method.Parameters.Any() && method.IsAction());

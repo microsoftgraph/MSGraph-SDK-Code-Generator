@@ -1,13 +1,13 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = BaseTypeRequest(c);#>
+<#host.TemplateName = BaseTypeStreamRequest(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
 import java.io.*;
 
-<#=CreateClassDef(BaseTypeRequest(c), "BaseStreamRequest<" + ClassTypeName(c) + ">", IBaseTypeRequest(c))#>
+<#=CreateClassDef(BaseTypeStreamRequest(c), "BaseStreamRequest<" + ClassTypeName(c) + ">", IBaseTypeStreamRequest(c))#>
 
     /**
      * The request for this <#=TypeName(c)#>
@@ -16,7 +16,7 @@ import java.io.*;
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=BaseTypeRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, List<Option> options) {
+    public <#=BaseTypeStreamRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, List<Option> options) {
         super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
     }
 

@@ -1,21 +1,21 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = IBaseTypeRequestBuilder(c);#>
+<#host.TemplateName = IBaseTypeStreamRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), "IRequestBuilder")#>
+<#=CreateInterfaceDef(IBaseTypeStreamRequestBuilder(c), "IRequestBuilder")#>
 
     /**
      * Creates the request
      */
-    <#=ITypeRequest(c)#> buildRequest();
+    <#=ITypeStreamRequest(c)#> buildRequest();
 
     /**
      * Creates the request with specific options instead of the existing options
      */
-    <#=ITypeRequest(c)#> buildRequest(final List<Option> options);
+    <#=ITypeStreamRequest(c)#> buildRequest(final List<Option> options);
 <#
 if (c.AsOdcmClass() != null)
 {
@@ -62,15 +62,19 @@ if (c.AsOdcmClass() != null)
 <#
 	}
 #>
+
 <#
-    if (c is OdcmMediaClass)
+    foreach (var prop in c.AsOdcmClass().Properties.Where(x => x.Type is OdcmMediaClass))
     {
+        var propName = prop.Name.ToCheckedCase();
 #>
 
-    <#=ITypeStreamRequestBuilder(c)#> getContent();
+    <#=ITypeStreamRequestBuilder(prop)#> get<#=propName#>Value();
 <#
     }
 #>
+
+
 <#
     foreach (var method in c.AsOdcmClass().Methods)
     {
@@ -80,7 +84,7 @@ if (c.AsOdcmClass() != null)
     <#if (method.IsCollection){#>
 
     <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
-    <#}else{#>
+    <#}else{#> 
     <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
 <#
 
