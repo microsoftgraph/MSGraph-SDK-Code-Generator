@@ -3,7 +3,8 @@
 <#
 var prop = host.CurrentType.AsOdcmProperty();
 var collectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
-var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
+var propName = prop.Name.ToCheckedCase();
+var collectionPage = string.Concat(propName, "CollectionWithReferencesPage");
 
 #>
 
