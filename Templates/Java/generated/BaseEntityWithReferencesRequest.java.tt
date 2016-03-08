@@ -23,7 +23,7 @@
     }
 
     public <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
-        return send(HttpMethod.POST, new<#=TypeName(c)#>);
+        return null;
     }
 
     public void get(final ICallback<<#=TypeName(c)#>> callback) {

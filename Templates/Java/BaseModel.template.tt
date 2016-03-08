@@ -425,7 +425,7 @@ public string TypeCollectionReferenceRequest(OdcmObject c) {
             var baseClass = odcmClass.Base;
             if (baseClass != null)
             {
-                return BaseTypeName(baseClass);
+                return TypeName(baseClass);
             }
         }
         return null;
