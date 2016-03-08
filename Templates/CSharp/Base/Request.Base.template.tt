@@ -37,7 +37,7 @@ public string GetConstructor(string instanceTypeName)
     stringBuilder.Append(
 @"            string requestUrl,
             IBaseClient client,
-            IEnumerable<Option> options)
+            IList<Option> options)
             : base(requestUrl, client, options)
         {
         }");
