@@ -4,7 +4,7 @@
 
 var prop = host.CurrentType.AsOdcmProperty();
 var propName = prop.Name.ToCheckedCase();
-var collectionResponse = propName + "CollectionResponse";
+var collectionResponse = string.Concat(propName, "CollectionResponse");
 var collectionPage = prop.IsReference() ? string.Concat(propName, "CollectionWithReferencesPage") : string.Concat(propName, "CollectionPage");
 
 #>
