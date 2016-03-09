@@ -7,9 +7,9 @@
 
 <#=CreateInterfaceDef(IBaseTypeWithReferencesRequest(c), "IHttpRequest")#>
 
-    void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+    void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final IJsonBackedObject payload, final ICallback<<#=TypeName(c)#>> callback);
 
-    <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
+    <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final IJsonBackedObject payload) throws ClientException;
 
     void get(final ICallback<<#=TypeName(c)#>> callback);
 

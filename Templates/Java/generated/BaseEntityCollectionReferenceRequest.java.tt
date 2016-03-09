@@ -20,18 +20,23 @@
     }
 
     public void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
+<#       
+        String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType().Name;
+#>        
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
-        new <#=TypeRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+        final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + newDirectoryObject.id);
+        new DirectoryObjectWithReferencesRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest()
-            .create(new<#=TypeName(c)#>, callback);
+            .create(newDirectoryObject, body, callback);
     }
 
     public <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
-<#       
-        String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType().Name;
-#>
-        ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + newDirectoryObject.id);
-        return post(body); 
+    
+        final String requestUrl = getBaseRequest().getRequestUrl().toString();
+        final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + newDirectoryObject.id);
+        return new DirectoryObjectWithReferencesRequestBuilder(requestUrl,getBaseRequest().getClient(), /* Options */ null)
+                .buildRequest()
+                .create(newDirectoryObject, body); 
     }
 
     public <#=ITypeCollectionReferenceRequest(c)#> select(final String value) {
