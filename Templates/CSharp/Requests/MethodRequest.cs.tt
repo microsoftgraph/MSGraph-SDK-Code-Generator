@@ -39,6 +39,8 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -182,12 +184,27 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     var returnString = isAsync || createCollectionPage || string.IsNullOrEmpty(sendAsyncReturnType)
         ? "async " + methodReturnType
         : methodReturnType;
+        
+    var methodReturnTag = sendAsyncReturnType == null
+        ? "The task to await."
+        : string.Concat("The", sendAsyncReturnType);
     #>
 
         /// <summary>
         /// Issues the <#=httpMethod#> request.
         /// </summary>
-        public <#=returnString#> <#=httpMethod.ToLower().ToCheckedCase()#>Async()
+        public <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async()
+        {
+            return this.<#=httpMethod.ToLower().ToCheckedCase()#>Async(HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+        }
+        
+        /// <summary>
+        /// Issues the <#=httpMethod#> request.
+        /// </summary>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns><#=methodReturnTag#></returns>
+        public <#=returnString#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(HttpCompletionOption completionOption, CancellationToken cancellationToken)
         {
     <#
     var methodParameter = "null";
@@ -200,7 +217,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     {
     #>
 
-            var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>);
+            var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>, completionOption, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
                 if (response.AdditionalData != null)
@@ -246,7 +263,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     {
     #>
     
-            using (var response = await this.SendRequestAsync(<#=methodParameter#>))
+            using (var response = await this.SendRequestAsync(<#=methodParameter#>).ConfigureAwait(false))
             {
                 return new <#=monitorType#>(this.Client, response.Headers.Location.ToString());
             }
@@ -259,21 +276,21 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         {
     #>
 
-            return this.SendStreamRequestAsync(null);
+            return this.SendStreamRequestAsync(null, completionOption, cancellationToken);
     <#
         }
         else if (!string.IsNullOrEmpty(sendAsyncReturnType))
         {
     #>
 
-            return this.SendAsync<<#=sendAsyncReturnType#>>(<#=methodParameter#>);
+            return this.SendAsync<<#=sendAsyncReturnType#>>(<#=methodParameter#>, completionOption, cancellationToken);
     <#
         }
         else
         {
     #>
 
-            await this.SendAsync(<#=methodParameter#>);
+            await this.SendAsync(<#=methodParameter#>, completionOption, cancellationToken).ConfigureAwait(false);
     <#
         }
     }

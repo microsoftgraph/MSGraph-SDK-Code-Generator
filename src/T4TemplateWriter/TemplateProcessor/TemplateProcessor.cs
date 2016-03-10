@@ -278,13 +278,13 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmMethod> CollectionMethods()
         {
-            var methods = this.CurrentModel.GetMethods().Where(method => method.IsCollection && method.ReturnType != null).ToList();
+            var methods = this.CurrentModel.GetMethods().Where(method => method.IsCollection && method.ReturnType != null && !(method.ReturnType is OdcmPrimitiveType)).ToList();
             return methods;
         }
 
         protected virtual IEnumerable<OdcmProperty> NavigationCollectionProperties()
         {
-            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation());
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation() && !prop.IsReference());
         }
 
         protected virtual IEnumerable<OdcmProperty> CollectionReferenceProperties()
@@ -294,7 +294,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmProperty> CollectionProperties()
         {
-            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && !(prop.Type is OdcmPrimitiveType));
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && !(prop.Type is OdcmPrimitiveType) && !prop.IsReference());
         }
 
         protected virtual IEnumerable<OdcmObject> FilterOdcmEnumerable(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod)

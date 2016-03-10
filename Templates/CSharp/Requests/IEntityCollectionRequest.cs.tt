@@ -14,6 +14,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
     using System;
     using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     <#=this.GetCollectionInterfaceDefinition(prop)#>
@@ -24,6 +26,14 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// </summary>
         /// <returns>The collection page.</returns>
         Task<I<#=collectionPage#>> GetAsync();
+        
+        /// <summary>
+        /// Gets the collection page.
+        /// </summary>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The collection page.</returns>
+        Task<I<#=collectionPage#>> GetAsync(HttpCompletionOption completionOption, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

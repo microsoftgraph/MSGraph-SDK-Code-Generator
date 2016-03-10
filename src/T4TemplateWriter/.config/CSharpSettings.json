@@ -36,8 +36,12 @@
           { "Template": "EntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Property>CollectionWithReferencesRequestBuilder" },
           { "Template": "IEntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Property>CollectionWithReferencesRequestBuilder" },
           
+          { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Property>CollectionWithReferencesPage" },
+          { "Template": "IEntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Property>CollectionWithReferencesPage" },
+
           { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Property>CollectionRequestBuilder" },  
           { "Template": "EntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Property>CollectionResponse" },
+          { "Template": "EntityCollectionResponse", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Property>CollectionResponse" },
           { "Template": "StreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "<Class>ContentRequest" },
           { "Template": "IStreamRequest", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "I<Class><Property>Request" },
           { "Template": "IStreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "I<Class>ContentRequest" },
