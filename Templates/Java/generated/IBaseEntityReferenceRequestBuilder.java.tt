@@ -17,6 +17,6 @@
      */
     <#=ITypeReferenceRequest(c)#> buildRequest(final List<Option> options);
 
-    <#=ITypeReferenceRequestBuilder(c)#> Reference();
+    <#=ITypeReferenceRequestBuilder(c)#> reference();
 
 }
