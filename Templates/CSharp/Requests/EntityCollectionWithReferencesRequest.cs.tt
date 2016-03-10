@@ -5,8 +5,9 @@ var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
 var collectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
-var collectionResponse = prop.Name.ToCheckedCase() + "CollectionResponse";
-var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
+var propName = prop.Name.ToCheckedCase();
+var collectionResponse = string.Concat(propName, "CollectionResponse");
+var collectionPage = string.Concat(propName, "CollectionWithReferencesPage");
 
 #>
 
@@ -14,6 +15,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
     using System;
     using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     <#=this.GetCollectionWithReferencesClassDefinition(prop)#>
@@ -24,10 +27,21 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public async Task<I<#=collectionPage#>> GetAsync()
+        public Task<I<#=collectionPage#>> GetAsync()
+        {
+            return this.GetAsync(HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+        }
+        
+        /// <summary>
+        /// Gets the collection page.
+        /// </summary>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The collection page.</returns>
+        public async Task<I<#=collectionPage#>> GetAsync(HttpCompletionOption completionOption, CancellationToken cancellationToken)
         {
             this.Method = "GET";
-            var response = await this.SendAsync<<#=collectionResponse#>>(null);
+            var response = await this.SendAsync<<#=collectionResponse#>>(null, completionOption, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
                 if (response.AdditionalData != null)
