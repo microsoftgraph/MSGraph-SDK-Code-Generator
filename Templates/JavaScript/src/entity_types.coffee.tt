@@ -40,6 +40,12 @@ entityTypesData =
     abstract: true
 <#
     }
+    if (entityType.Kind == OdcmClassKind.MediaEntity)
+    {
+#>
+    hasStream: true
+<#
+    }
     if(entityType.Base != null)
     {
 #>
@@ -51,40 +57,6 @@ entityTypesData =
 #>
     openType: true
 <#
-    }
-    if(methods.Any())
-    {
-#>
-    methods:
-<#
-      foreach(var method in methods)
-      {
-#>
-      <#= method.Name #>:
-        requestMethod: '<#= method.Verbs.ToString().ToUpper() #>'
-<#
-        if(method.ReturnType != null)
-        {
-          var returnTypeName = method.IsCollection ? "Collection(" + method.ReturnType.FullName + ")" : method.ReturnType.FullName;
-#>
-        returnType:    '<#= returnTypeName #>'
-<#
-        }
-        if(method.Parameters.Any())
-        {
-#>
-        parameters:
-<#
-          foreach(var parameter in method.Parameters)
-          {
-            var parameterTypeName = parameter.IsCollection ? "Collection(" + parameter.Type.FullName + ")" : parameter.Type.FullName;
-#>
-          <#= parameter.Name #>:
-            type: '<#= parameterTypeName #>'
-<#
-          }
-        }
-      }
     }
     if(properties.Any())
     {
@@ -132,6 +104,40 @@ entityTypesData =
 #>
         containsTarget: true
 <#
+        }
+      }
+    }
+    if(methods.Any())
+    {
+#>
+    methods:
+<#
+      foreach(var method in methods)
+      {
+#>
+      <#= method.Name #>:
+        requestMethod: '<#= method.Verbs.ToString().ToUpper() #>'
+<#
+        if(method.ReturnType != null)
+        {
+          var returnTypeName = method.IsCollection ? "Collection(" + method.ReturnType.FullName + ")" : method.ReturnType.FullName;
+#>
+        returnType:    '<#= returnTypeName #>'
+<#
+        }
+        if(method.Parameters.Any())
+        {
+#>
+        parameters:
+<#
+          foreach(var parameter in method.Parameters)
+          {
+            var parameterTypeName = parameter.IsCollection ? "Collection(" + parameter.Type.FullName + ")" : parameter.Type.FullName;
+#>
+          <#= parameter.Name #>:
+            type: '<#= parameterTypeName #>'
+<#
+          }
         }
       }
     }
