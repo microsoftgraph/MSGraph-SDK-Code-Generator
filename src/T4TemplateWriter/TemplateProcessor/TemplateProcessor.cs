@@ -280,13 +280,13 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmMethod> CollectionMethods()
         {
-            var methods = this.CurrentModel.GetMethods().Where(method => method.IsCollection && method.ReturnType != null && !(method.ReturnType is OdcmPrimitiveType)).ToList();
+            var methods = this.CurrentModel.GetMethods().Where(method => method.IsCollection && method.ReturnType != null).ToList();
             return methods;
         }
 
         protected virtual IEnumerable<OdcmProperty> NavigationCollectionProperties()
         {
-            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation() && !prop.IsReference());
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation());
         }
 
         protected virtual IEnumerable<OdcmProperty> CollectionReferenceProperties()
