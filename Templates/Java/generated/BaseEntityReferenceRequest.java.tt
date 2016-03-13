@@ -18,12 +18,12 @@
         super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
     }
 
-    public void get(final ICallback<<#=TypeName(c)#>> callback) {
-        send(HttpMethod.GET, callback, null);
+    public void delete(final ICallback<<#=TypeName(c)#>> callback) {
+        send(HttpMethod.POST, callback, null);
     }
 
-    public <#=TypeName(c)#> get() throws ClientException {
-       return send(HttpMethod.GET, null);
+    public <#=TypeName(c)#> delete() throws ClientException {
+       return send(HttpMethod.POST, null);
     }
 
     public <#=ITypeReferenceRequest(c)#> select(final String value) {

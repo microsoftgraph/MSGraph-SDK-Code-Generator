@@ -7,9 +7,9 @@
 
 <#=CreateInterfaceDef(IBaseTypeReferenceRequest(c), "IHttpRequest")#>
 
-    void get(final ICallback<<#=TypeName(c)#>> callback);
+    void delete(final ICallback<<#=TypeName(c)#>> callback);
 
-    <#=TypeName(c)#> get() throws ClientException;
+    <#=TypeName(c)#> delete() throws ClientException;
 
     <#=IBaseTypeReferenceRequest(c)#> select(final String value);
 
