@@ -1,6 +1,6 @@
 ﻿{
     "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python" ],
-    "TargetLanguage": "ObjC",
+    "TargetLanguage": "CSharp",
     "Plugins": [ ],
     "PrimaryNamespaceName": "com",
     "NamespacePrefix": "MSGraph",
