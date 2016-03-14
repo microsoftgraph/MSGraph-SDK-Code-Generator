@@ -32,7 +32,7 @@
         return new <#=TypeWithReferencesRequest(c)#>(getRequestUrl(), getClient(), options);
     }
 
-    public <#=ITypeReferenceRequestBuilder(c)#> Reference(){
+    public <#=ITypeReferenceRequestBuilder(c)#> reference(){
         return new <#=TypeReferenceRequestBuilder(c)#>(getRequestUrl(), getClient(), getOptions());
     }
 
