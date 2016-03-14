@@ -31,9 +31,4 @@
     public <#=ITypeReferenceRequest(c)#> buildRequest(final List<Option> options) {
         return new <#=TypeReferenceRequest(c)#>(getRequestUrl(), getClient(), options);
     }
-
-    public <#=ITypeReferenceRequestBuilder(c)#> reference(){
-        return new <#=TypeReferenceRequestBuilder(c)#>(getRequestUrl() + "/$ref", getClient(), getOptions());
-    }
-
 }

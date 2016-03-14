@@ -33,7 +33,7 @@
     }
 
     public <#=ITypeReferenceRequestBuilder(c)#> reference(){
-        return new <#=TypeReferenceRequestBuilder(c)#>(getRequestUrl(), getClient(), getOptions());
+        return new <#=TypeReferenceRequestBuilder(c)#>(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
 
 }

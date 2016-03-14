@@ -19,11 +19,11 @@
     }
 
     public void delete(final ICallback<<#=TypeName(c)#>> callback) {
-        send(HttpMethod.POST, callback, null);
+        send(HttpMethod.DELETE, callback, null);
     }
 
     public <#=TypeName(c)#> delete() throws ClientException {
-       return send(HttpMethod.POST, null);
+       return send(HttpMethod.DELETE, null);
     }
 
     public <#=ITypeReferenceRequest(c)#> select(final String value) {
