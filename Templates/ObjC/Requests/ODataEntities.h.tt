@@ -17,8 +17,8 @@ foreach(var es in entitySet)
 {
     if (es.IsCollection() && !(es.Type is OdcmPrimitiveType) && !es.IsEnum())
     {
-        classes.Add("#import \"" + writer.GetPrefix() + es.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
-        classes.Add("#import \"" + writer.GetPrefix() + es.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
+        classes.Add("#import \"" + writer.GetPrefix() + es.Class.Name.ToUpperFirstChar() + es.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
+        classes.Add("#import \"" + writer.GetPrefix() + es.Class.Name.ToUpperFirstChar() + es.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
     }
 }
 
