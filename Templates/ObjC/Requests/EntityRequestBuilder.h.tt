@@ -59,16 +59,16 @@ foreach(var func in entity.Methods)
     }
 }
 
-foreach(var complexType in entity.GetProperties(longDescriptionMatches:"navigable").Where(prop => prop.Type is OdcmClass))
+foreach(var complexType in entity.Properties.Where(prop => prop.LongDescriptionContains("navigable") ||
+                                                           prop.Type.LongDescriptionContains("navigable"))
+                                            .Where(prop => prop.Type is OdcmClass))
 {
     var requestType = writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar() + "RequestBuilder";
     if (!classes.Contains(requestType))
     {
         classes.Add(requestType);
     }
-
 }
-
 
 var lastClass = classes[classes.Count -1];
 StringBuilder stringBuilder = new StringBuilder();
@@ -131,7 +131,9 @@ foreach(var prop in entity.NavigationProperties())
 <# 
     }
 }
-foreach(var complexType in entity.GetProperties(longDescriptionMatches:"navigable").Where(prop => prop.Type is OdcmClass))
+foreach(var complexType in entity.Properties.Where(prop => prop.LongDescriptionContains("navigable") ||
+                                                           prop.Type.LongDescriptionContains("navigable"))
+                                            .Where(prop => prop.Type is OdcmClass))
 {
 #>
 - (<#=writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=complexType.Name#>;
