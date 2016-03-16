@@ -5,8 +5,8 @@ var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
 var collectionRequest = this.GetPropertyCollectionRequestName(prop);
-var collectionResponse = prop.Name.ToCheckedCase() + "CollectionResponse";
-var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
+var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionResponse");
+var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
 
 #>
 

@@ -6,8 +6,8 @@ var innerEntity = prop.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
 var collectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
 var propName = prop.Name.ToCheckedCase();
-var collectionResponse = string.Concat(propName, "CollectionResponse");
-var collectionPage = string.Concat(propName, "CollectionWithReferencesPage");
+var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), propName , "CollectionWithReferencesResponse");
+var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), propName , "CollectionWithReferencesPage");
 
 #>
 

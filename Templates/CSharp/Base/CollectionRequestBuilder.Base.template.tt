@@ -119,7 +119,7 @@ public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
 public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
 {
     var stringBuilder = new StringBuilder();
-    var propTypeName = this.GetPropertyTypeName(odcmProperty);
+    var propTypeName = string.Concat(this.GetEntityNameString(odcmProperty.Class), this.GetPropertyTypeName(odcmProperty));
     var entityRequestBuilder = this.GetPropertyTypeRequestBuilderName(odcmProperty);
         
     stringBuilder.Append("/// <summary>");
@@ -152,7 +152,7 @@ public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
 public string GetCollectionWithReferencesIndexRequestBuilder(OdcmProperty odcmProperty)
 {
     var stringBuilder = new StringBuilder();
-    var propTypeName = this.GetPropertyTypeName(odcmProperty);
+    var propTypeName = string.Concat(this.GetEntityNameString(odcmProperty.Class), this.GetPropertyTypeName(odcmProperty)); 
     var entityRequestBuilder = this.GetPropertyTypeWithReferencesRequestBuilderName(odcmProperty);
     
     stringBuilder.Append("/// <summary>");
