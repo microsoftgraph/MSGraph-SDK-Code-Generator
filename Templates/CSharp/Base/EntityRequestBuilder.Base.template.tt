@@ -153,10 +153,10 @@ public string GetCollectionPropertyRequestBuilderProperty(string entityName, Odc
 public string GetNonCollectionRequestBuilderProperty(OdcmProperty odcmProperty)
 {
     var propertyName = this.GetPropertyName(odcmProperty).GetSanitizedPropertyName();
-    var propertyTypeName = this.GetPropertyTypeName(odcmProperty);
+    var propertyPrefix = this.GetPropertyTypeName(odcmProperty);
     var propertyRequestBuilder = odcmProperty.IsReference()
-        ? this.GetWithReferencesRequestBuilderString(propertyTypeName)
-        : this.GetRequestBuilderString(propertyTypeName);
+        ? this.GetWithReferencesRequestBuilderString(propertyPrefix)
+        : this.GetRequestBuilderString(propertyPrefix);
 
     return this.GetRequestBuilderProperty(propertyName, propertyRequestBuilder);
 }

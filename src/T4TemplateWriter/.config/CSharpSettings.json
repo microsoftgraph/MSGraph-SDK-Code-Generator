@@ -50,6 +50,13 @@
           { "Template": "EntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionResponse" },
           { "Template": "EntityCollectionWithReferencesResponse", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesResponse" },
 
+          { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesPage" },
+          { "Template": "IEntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesPage" },
+
+          { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Class><Property>CollectionRequestBuilder" },  
+          { "Template": "EntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionResponse" },
+          { "Template": "EntityCollectionWithReferencesResponse", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesResponse" },
+          
           { "Template": "StreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "<Class>ContentRequest" },
           { "Template": "IStreamRequest", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "I<Class><Property>Request" },
           { "Template": "IStreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "I<Class>ContentRequest" },
@@ -57,10 +64,8 @@
           { "Template": "StreamRequestBuilder", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "<Class>ContentRequestBuilder" },
           { "Template": "IStreamRequestBuilder", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "I<Class><Property>RequestBuilder" },
           { "Template": "IStreamRequestBuilder", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "I<Class>ContentRequestBuilder" },
-          { "Template": "IMethodAsyncMonitor", "SubProcessor": "Method", "Type": "Request", "Name": "I<Class><Method>AsyncMonitor", "Matches": "async" },
           { "Template": "IMethodRequest", "SubProcessor": "Method", "Type": "Request", "Name": "I<Class><Method>Request" },
           { "Template": "IMethodRequestBuilder", "SubProcessor": "Method", "Type": "Request", "Name": "I<Class><Method>RequestBuilder" },
-          { "Template": "MethodAsyncMonitor", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>AsyncMonitor", "Matches": "async" },
           { "Template": "MethodRequestBody", "SubProcessor": "MethodWithBody", "Type": "Model", "Name": "<Class><Method>RequestBody" },
           { "Template": "MethodCollectionResponse", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionResponse", "Ignore": "ignorableCollection" },
           { "Template": "MethodCollectionResponse", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>CollectionResponse", "Matches": "specialCollection", "Ignore": "ignorableCollection" },

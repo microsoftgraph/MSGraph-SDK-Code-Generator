@@ -46,7 +46,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
             var propertyType = property.IsTypeNullable() || property.IsCollection()
                     ? property.GetTypeString()
                     : property.GetTypeString() + "?";
-                    
+
             var propertyName = property.Name.ToCheckedCase();
             var propertyCollectionPage = property.IsReference() ? string.Concat(entityName, propertyName, "CollectionWithReferencesPage") : string.Concat(entityName, propertyName, "CollectionPage");
 

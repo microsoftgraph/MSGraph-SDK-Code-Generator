@@ -15,8 +15,6 @@ var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOd
 var isCollection = method.IsCollection;
 var createCollectionPage = isCollection && returnTypeObject != null && returnTypeObject.IsComplex();
 
-var monitorType = entityName + methodName + "AsyncMonitor";
-
 var sendAsyncReturnType = isCollection
     ? createCollectionPage
         ? "I" + entityName + methodName + "CollectionPage"
@@ -73,7 +71,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     var methodParameters = new List<OdcmParameter>();
     methodParameters.AddRange(method.Parameters.Where(param => !param.IsNullable));
     methodParameters.AddRange(method.Parameters.Where(param => param.IsNullable));
-    
+
     if (includeRequestBody)
     {
         paramStringBuilder.Append(",");
@@ -163,7 +161,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         public <#=requestType#>Body RequestBody { get; private set; }
     <#
     }
-        
+
     var methodReturnTag = sendAsyncReturnType == null
         ? "The task to await."
         : string.Concat("The", sendAsyncReturnType);
@@ -256,7 +254,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     {
     #>
 
-            return this.SendAsync(<#=methodParameter#>, cancellationToken);
+            return this.SendAsync(<#=methodParameter#>, cancellationToken); 
     <#
     }
     #>
