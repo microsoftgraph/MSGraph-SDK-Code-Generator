@@ -17,8 +17,8 @@ foreach(var es in entitySet)
 {
     if (es.IsCollection() && !(es.Type is OdcmPrimitiveType) && !es.IsEnum())
     {
-        classes.Add("#import \"" + writer.GetPrefix() + es.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
-        classes.Add("#import \"" + writer.GetPrefix() + es.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
+        classes.Add("#import \"" + writer.GetPrefix() + es.Class.Name.ToUpperFirstChar() + es.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
+        classes.Add("#import \"" + writer.GetPrefix() + es.Class.Name.ToUpperFirstChar() + es.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
     }
 }
 
@@ -33,13 +33,31 @@ foreach(var et in entityTypes)
         {
             if (prop.IsCollection())
             {
-                classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
-                classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
+                var baseName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
+                if(!prop.IsReference())
+                {
+                    classes.Add("#import \"" + baseName + "CollectionRequestBuilder.h\"");
+                    classes.Add("#import \"" + baseName + "CollectionRequest.h\"");
+                }
+                else
+                {
+                    classes.Add("#import \"" + baseName + "CollectionWithReferencesRequestBuilder.h\"");
+                    classes.Add("#import \"" + baseName + "CollectionWithReferencesRequest.h\"");
+                    classes.Add("#import \"" + baseName + "CollectionReferenceRequestBuilder.h\"");
+                    classes.Add("#import \"" + baseName + "CollectionReferenceRequest.h\"");
+                }
             }
             else
             {
                  classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder.h\"");
                  classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "Request.h\"");
+                 if(prop.IsReference())
+                 {
+                     classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "WithReferenceRequestBuilder.h\"");
+                     classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "WithReferenceRequest.h\"");
+                     classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "ReferenceRequestBuilder.h\"");
+                     classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "ReferenceRequest.h\"");
+                 }
             }
         }
     }
@@ -69,20 +87,25 @@ foreach(var et in entityTypes)
         classes.Add("#import \"" + baseName + "Request.h\"");
     }
 
-    foreach(var prop in et.GetProperties().Where(prop => prop.IsCollection && !(prop.Type is OdcmPrimitiveType) && !prop.IsEnum() && !prop.IsNavigation() && !prop.LongDescriptionContains("ignorableCollection")))
-    {
-        classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
-        classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
-    }
 }
 
 foreach(var complexType in model.GetComplexTypes())
 {
     foreach(var prop in complexType.GetProperties().Where(prop => prop.IsCollection && !(prop.Type is OdcmPrimitiveType) && !prop.IsEnum() && !prop.LongDescriptionContains("ignorableCollection")))
     {
-        classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
-        classes.Add("#import \"" + writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
-
+        var baseName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
+        if(!prop.IsReference())
+        {
+            classes.Add("#import \"" + baseName + "CollectionRequestBuilder.h\"");
+            classes.Add("#import \"" + baseName + "CollectionRequest.h\"");
+        }
+        else
+        {
+            classes.Add("#import \"" + baseName + "CollectionWithReferencesRequestBuilder.h\"");
+            classes.Add("#import \"" + baseName + "CollectionWithReferencesRequest.h\"");
+            classes.Add("#import \"" + baseName + "CollectionReferenceRequestBuilder.h\"");
+            classes.Add("#import \"" + baseName + "CollectionReferenceRequest.h\"");
+        }
     }
     foreach(var streamProperty in complexType.GetProperties(typeName:"Stream"))
     {
