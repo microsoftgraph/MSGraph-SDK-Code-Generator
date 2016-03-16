@@ -96,22 +96,24 @@ public string GetRequestBuilderProperty(string propertyName, string requestBuild
     return stringBuilder.ToString();
 }
 
-public string GetCollectionPropertyRequestBuilderProperty(OdcmProperty odcmProperty)
+public string GetCollectionPropertyRequestBuilderProperty(string entityName, OdcmProperty odcmProperty)
 {
-    var propertyName = this.GetPropertyName(odcmProperty);
+    var propertyName = this.GetPropertyName(odcmProperty).GetSanitizedPropertyName();
+    var propertyPrefix = string.Concat(entityName, this.GetPropertyName(odcmProperty));
     var collectionRequestBuilder = odcmProperty.IsReference()
-        ? this.GetCollectionWithReferencesRequestBuilderString(propertyName)
-        : this.GetCollectionRequestBuilderString(propertyName);
+        ? this.GetCollectionWithReferencesRequestBuilderString(propertyPrefix)
+        : this.GetCollectionRequestBuilderString(propertyPrefix);
 
     return this.GetRequestBuilderProperty(propertyName, collectionRequestBuilder);
 }
 
 public string GetNonCollectionRequestBuilderProperty(OdcmProperty odcmProperty)
 {
-    var propertyName = this.GetPropertyName(odcmProperty);
+    var propertyName = this.GetPropertyName(odcmProperty).GetSanitizedPropertyName();
+    var propertyPrefix = this.GetPropertyTypeName(odcmProperty);
     var propertyRequestBuilder = odcmProperty.IsReference()
-        ? this.GetWithReferencesRequestBuilderString(this.GetPropertyTypeName(odcmProperty))
-        : this.GetRequestBuilderString(this.GetPropertyTypeName(odcmProperty));
+        ? this.GetWithReferencesRequestBuilderString(propertyPrefix)
+        : this.GetRequestBuilderString(propertyPrefix);
 
     return this.GetRequestBuilderProperty(propertyName, propertyRequestBuilder);
 }
@@ -155,7 +157,7 @@ public string GetNavigationProperties(OdcmClass entity)
         
         if (prop.IsCollection())
         {
-            stringBuilder.Append(this.GetCollectionPropertyRequestBuilderProperty(prop));
+            stringBuilder.Append(this.GetCollectionPropertyRequestBuilderProperty(this.GetEntityNameString(entity), prop));
         }
         else
         {

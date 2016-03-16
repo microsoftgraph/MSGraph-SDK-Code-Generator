@@ -11,24 +11,27 @@ var requestType = entityName + methodName + "Request";
 
 var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString().ToCheckedCase();
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
-bool isAsync = method.LongDescriptionContains("async");
-var isSpecialCollection = method.LongDescriptionContains("specialCollection");
-var isCollection = method.IsCollection || isSpecialCollection;
+
+var isCollection = method.IsCollection;
 var createCollectionPage = isCollection && returnTypeObject != null && returnTypeObject.IsComplex();
 
-var monitorType = entityName + methodName + "AsyncMonitor";
+var sendAsyncReturnType = isCollection
+    ? createCollectionPage
+        ? "I" + entityName + methodName + "CollectionPage"
+        : "IEnumerable<" + method.ReturnType.Name.ToCheckedCase() + ">"
+    : returnEntityType;
 
-var sendAsyncReturnType = isAsync
-    ? "I" + entityName + methodName + "AsyncMonitor"
-    : isCollection
-        ? createCollectionPage
-            ? "I" + entityName + methodName + "CollectionPage"
-            : "IEnumerable<" + method.ReturnType.Name.ToCheckedCase() + ">"
-        : returnEntityType;
-        
 var methodReturnType = sendAsyncReturnType == null
     ? "Task"
     : "Task<" + sendAsyncReturnType + ">";
+    
+var methodOverloadReturnType = methodReturnType;
+    
+if (isCollection && createCollectionPage)
+{  
+    methodReturnType = string.Concat("async ", methodReturnType);
+}
+
         
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool includeRequestBody = hasParameters && isAction;
@@ -68,13 +71,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     }
 
     requestBodyInitializerBuilder.Append("this.Method = \"" + httpMethod + "\";");
-    
-    if (isAsync)
-    {
-        requestBodyInitializerBuilder.Append(Environment.NewLine);
-        requestBodyInitializerBuilder.Append("            ");
-        requestBodyInitializerBuilder.Append("this.Headers.Add(new HeaderOption(\"Prefer\", \"respond-async\"));");
-    }
 
     if (includeRequestBody)
     {
@@ -181,10 +177,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     <#
     }
     
-    var returnString = isAsync || createCollectionPage || string.IsNullOrEmpty(sendAsyncReturnType)
-        ? "async " + methodReturnType
-        : methodReturnType;
-        
     var methodReturnTag = sendAsyncReturnType == null
         ? "The task to await."
         : string.Concat("The", sendAsyncReturnType);
@@ -193,7 +185,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Issues the <#=httpMethod#> request.
         /// </summary>
-        public <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async()
+        public <#=methodOverloadReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async()
         {
             return this.<#=httpMethod.ToLower().ToCheckedCase()#>Async(HttpCompletionOption.ResponseContentRead, CancellationToken.None);
         }
@@ -204,7 +196,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns><#=methodReturnTag#></returns>
-        public <#=returnString#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(HttpCompletionOption completionOption, CancellationToken cancellationToken)
+        public <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(HttpCompletionOption completionOption, CancellationToken cancellationToken)
         {
     <#
     var methodParameter = "null";
@@ -213,7 +205,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         methodParameter = "this.RequestBody";
     }
 
-    if (!isAsync && createCollectionPage)
+    if (createCollectionPage)
     {
     #>
 
@@ -236,37 +228,11 @@ namespace <#=method.Namespace.GetNamespaceName()#>
                             nextPageLinkString);
                     }
                 }
-            <#
-            if (isSpecialCollection && returnTypeObject != null)
-            {
-                foreach (var property in returnTypeObject.Properties)
-                {
-                    if (!property.LongDescriptionContains("ignorableCollection"))
-                    {
-                        var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
-            #>
-
-                response.Value.<#=propertyName#> = response.<#=propertyName#>;
-            <#
-                    }
-                }
-            }
-            #>
 
                 return response.Value;
             }
 
             return null;
-    <#
-    }
-    else if (isAsync)
-    {
-    #>
-    
-            using (var response = await this.SendRequestAsync(<#=methodParameter#>).ConfigureAwait(false))
-            {
-                return new <#=monitorType#>(this.Client, response.Headers.Location.ToString());
-            }
     <#
     }
     else
@@ -290,7 +256,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         {
     #>
 
-            await this.SendAsync(<#=methodParameter#>, completionOption, cancellationToken).ConfigureAwait(false);
+            return this.SendAsync(<#=methodParameter#>, completionOption, cancellationToken);
     <#
         }
     }
