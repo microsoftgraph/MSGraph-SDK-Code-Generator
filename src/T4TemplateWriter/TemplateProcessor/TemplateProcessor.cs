@@ -68,7 +68,6 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 {SubProcessor.CollectionProperty,           ProcessCollections},
                 {SubProcessor.NavigationCollectionProperty, ProcessNavigationCollections},
                 {SubProcessor.CollectionReferenceProperty,  ProcessCollectionReferences},
-                {SubProcessor.ServiceEntitySets,            ProcessServiceEntitySets},
                 {SubProcessor.EntityReferenceType,          ProcessEntityReferenceProperties},
                 {SubProcessor.Method,                       ProcessMethods},
                 {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
@@ -186,19 +185,6 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
-        protected virtual IEnumerable<TextFile> ProcessServiceEntitySets(ITemplateInfo templateInfo)
-        {
-            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.EntitySetProperties))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             property,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: property.Class.Name,
-                                                                       propertyName: property.Name,
-                                                                       propertyType: property.Type.Name));
-            }
-        }
-
         protected virtual IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo)
         {
             foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetProperties))
@@ -303,11 +289,6 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         protected virtual IEnumerable<OdcmProperty> CollectionReferenceProperties()
         {
             return this.CurrentModel.GetProperties().Where(prop => prop.IsReference() && prop.IsCollection && prop.IsNavigation() && prop.Class.Kind!=OdcmClassKind.Service);
-        }
-
-        protected virtual IEnumerable<OdcmProperty> EntitySetProperties()
-        {
-            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.Class.Kind == OdcmClassKind.Service);
         }
 
         protected virtual IEnumerable<OdcmProperty> CollectionProperties()
