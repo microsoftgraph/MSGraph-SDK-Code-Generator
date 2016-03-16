@@ -2,12 +2,16 @@
     "StaticCodePrefix": "MS",
     "TemplateMapping": {
         "Shared": [
-            { "Template": "EntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "Client" },
+          {
+            "_Comment" : "HACK: It seems the entire 'Shared' section is copy pasted from TemplateWriterSettings.json",
+            "_Comment2" : "with the sole purpose of preventing the Client from being named 'MSGraphGraphServiceClient'.",
+            "Template": "EntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "Client"
+          },
+
             { "Template": "EntityType", "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
             { "Template": "ComplexType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Ignore": "methodResponse" },
             { "Template": "EnumType", "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
             { "Template": "StreamRequest", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "<Class><Property>Request" },
-            { "Template": "StreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "<Class>StreamRequest" },
             { "Template": "MethodRequest", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Request" },
             { "Template": "MethodRequestBuilder", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
         ],
@@ -34,6 +38,7 @@
             { "Template": "EntityCollectionReferenceRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionReferenceRequestBuilder", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },     
 
             { "Template": "MethodCollection", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Collection", "Matches": "specialCollection" }
+
         ]
     }
 }
