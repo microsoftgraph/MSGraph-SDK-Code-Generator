@@ -16,8 +16,7 @@ var writer          = (CodeWriterCSharp)host.CodeWriter;
 // -------------------------------------------------------------
 public string GetNamespaceName(OdcmClass odcmClass)
 {
-    var namespaceName = odcmClass.Namespace.GetNamespaceName();
-    return namespaceName;
+    return odcmClass.Namespace.GetNamespaceName();
 }
 
 public string GetEntityNameString(OdcmClass entityClass)
