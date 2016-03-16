@@ -1,0 +1,22 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeWithReferencesRequestBuilder(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseTypeWithReferencesRequestBuilder(c), "IRequestBuilder")#>
+
+    /**
+     * Creates the request
+     */
+    <#=ITypeWithReferencesRequest(c)#> buildRequest();
+
+    /**
+     * Creates the request with specific options instead of the existing options
+     */
+    <#=ITypeWithReferencesRequest(c)#> buildRequest(final List<Option> options);
+
+    <#=ITypeReferenceRequestBuilder(c)#> reference();
+
+}

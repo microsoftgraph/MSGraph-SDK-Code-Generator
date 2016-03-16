@@ -52,15 +52,15 @@ if (c.AsOdcmClass() != null)
     }
 #>
 <#
-	foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
-	{
-		var propName = prop.Name.ToCheckedCase();
-		var propRequestBuilder = TypeRequestBuilder(prop);
+    foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
+    {
+        var propName = prop.Name.ToCheckedCase();
+        var propRequestBuilder = TypeRequestBuilder(prop);
 #>
 
     I<#=propRequestBuilder#> get<#=propName#>();
 <#
-	}
+    }
 #>
 <#
     if (c is OdcmMediaClass)

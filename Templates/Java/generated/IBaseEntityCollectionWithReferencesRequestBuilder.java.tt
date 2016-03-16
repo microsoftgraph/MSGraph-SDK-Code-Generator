@@ -1,0 +1,20 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeCollectionWithReferencesRequestBuilder(c);#>
+<#
+    var genericType = "<" + TypeName(c) + ", " + ITypeCollectionWithReferencesRequestBuilder(c) + ">";
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseTypeCollectionWithReferencesRequestBuilder(c), "IRequestBuilder")#>
+
+    <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest();
+
+    <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest(final List<Option> options);
+
+    <#=ITypeWithReferencesRequestBuilder(c)#> byId(final String id);
+
+    <#=ITypeCollectionReferenceRequestBuilder(c)#> references();
+}
