@@ -58,8 +58,6 @@ public void AppendDeleteAsyncHeader(string deleteTargetString, StringBuilder str
     if (includeSendParams)
     {
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append("        /// <param name=\"completionOption\">The <see cref=\"HttpCompletionOption\"/> to pass to the <see cref=\"IHttpProvider\"/> on send.</param>");
-        stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
     }
     
@@ -76,19 +74,19 @@ public string GetDeleteAsyncMethod(string deleteTargetString, string deleteTarge
     stringBuilder.Append("        public Task DeleteAsync()");
     stringBuilder.Append(@"
         {
-            return this.DeleteAsync(HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+            return this.DeleteAsync(CancellationToken.None);
         }");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
     
     this.AppendDeleteAsyncHeader(deleteTargetString, stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        public async Task DeleteAsync(HttpCompletionOption completionOption, CancellationToken cancellationToken)");
+    stringBuilder.Append("        public async Task DeleteAsync(CancellationToken cancellationToken)");
     stringBuilder.Append(@"
         {
             this.Method = ""DELETE"";");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            await this.SendAsync<{0}>(null, completionOption, cancellationToken).ConfigureAwait(false);", deleteTargetType);
+    stringBuilder.AppendFormat("            await this.SendAsync<{0}>(null, cancellationToken).ConfigureAwait(false);", deleteTargetType);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        }");
     
@@ -120,8 +118,6 @@ public void AppendCreateAsyncHeader(string entityName, string lowerCaseEntityNam
     if (includeSendParams)
     {
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append("        /// <param name=\"completionOption\">The <see cref=\"HttpCompletionOption\"/> to pass to the <see cref=\"IHttpProvider\"/> on send.</param>");
-        stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
     }
     
@@ -144,7 +140,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            return this.CreateAsync({0}ToCreate, HttpCompletionOption.ResponseContentRead, CancellationToken.None);", lowerCaseEntityName);
+    stringBuilder.AppendFormat("            return this.CreateAsync({0}ToCreate, CancellationToken.None);", lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        }");
     
@@ -153,7 +149,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
     
     this.AppendCreateAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public async Task<{0}> CreateAsync({0} {1}ToCreate, HttpCompletionOption completionOption, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
+    stringBuilder.AppendFormat("        public async Task<{0}> CreateAsync({0} {1}ToCreate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
     stringBuilder.Append(Environment.NewLine);
@@ -161,7 +157,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            this.Method = \"PUT\";");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var newEntity = await this.SendAsync<{0}>({1}ToCreate, completionOption, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
+    stringBuilder.AppendFormat("            var newEntity = await this.SendAsync<{0}>({1}ToCreate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(
 @"            this.InitializeCollectionProperties(newEntity);
@@ -188,8 +184,6 @@ public void AppendGetAsyncHeader(string entityName, StringBuilder stringBuilder,
     if (includeSendParams)
     {
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append("        /// <param name=\"completionOption\">The <see cref=\"HttpCompletionOption\"/> to pass to the <see cref=\"IHttpProvider\"/> on send.</param>");
-        stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
     }
     
@@ -208,19 +202,19 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
     stringBuilder.AppendFormat("        public Task<{0}> GetAsync()", entityName);
     stringBuilder.Append(@"
         {
-            return this.GetAsync(HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+            return this.GetAsync(CancellationToken.None);
         }");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
     
     this.AppendGetAsyncHeader(entityName, stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public async Task<{0}> GetAsync(HttpCompletionOption completionOption, CancellationToken cancellationToken)", entityName);
+    stringBuilder.AppendFormat("        public async Task<{0}> GetAsync(CancellationToken cancellationToken)", entityName);
     stringBuilder.Append(@"
         {
             this.Method = ""GET"";");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var retrievedEntity = await this.SendAsync<{0}>(null, completionOption, cancellationToken).ConfigureAwait(false);", entityName);
+    stringBuilder.AppendFormat("            var retrievedEntity = await this.SendAsync<{0}>(null, cancellationToken).ConfigureAwait(false);", entityName);
     stringBuilder.Append(@"
             this.InitializeCollectionProperties(retrievedEntity);
             return retrievedEntity;
@@ -247,8 +241,6 @@ public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityNam
     if (includeSendParams)
     {
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append("        /// <param name=\"completionOption\">The <see cref=\"HttpCompletionOption\"/> to pass to the <see cref=\"IHttpProvider\"/> on send.</param>");
-        stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
     }
     
@@ -272,7 +264,7 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            return this.UpdateAsync({0}ToUpdate, HttpCompletionOption.ResponseContentRead, CancellationToken.None);", lowerCaseEntityName);
+    stringBuilder.AppendFormat("            return this.UpdateAsync({0}ToUpdate, CancellationToken.None);", lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        }");
     stringBuilder.Append(Environment.NewLine);
@@ -280,7 +272,7 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
     
     this.AppendUpdateAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public async Task<{0}> UpdateAsync({0} {1}ToUpdate, HttpCompletionOption completionOption, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
+    stringBuilder.AppendFormat("        public async Task<{0}> UpdateAsync({0} {1}ToUpdate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
     stringBuilder.Append(Environment.NewLine);
@@ -288,7 +280,7 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            this.Method = \"PATCH\";");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var updatedEntity = await this.SendAsync<{0}>({1}ToUpdate, completionOption, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
+    stringBuilder.AppendFormat("            var updatedEntity = await this.SendAsync<{0}>({1}ToUpdate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(
 @"            this.InitializeCollectionProperties(updatedEntity);

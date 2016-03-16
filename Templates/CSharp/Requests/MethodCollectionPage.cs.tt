@@ -13,7 +13,7 @@ var entityCollectionPage = responseNamePrefix + "CollectionPage";
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
-{
+{   
     /// <summary>
     /// The type <#=entityCollectionPage#>.
     /// </summary>

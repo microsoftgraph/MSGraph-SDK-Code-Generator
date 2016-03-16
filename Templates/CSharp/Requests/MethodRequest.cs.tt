@@ -20,21 +20,21 @@ var sendAsyncReturnType = isCollection
         ? "I" + entityName + methodName + "CollectionPage"
         : "IEnumerable<" + method.ReturnType.Name.ToCheckedCase() + ">"
     : returnEntityType;
-
+        
 var methodReturnType = sendAsyncReturnType == null
     ? "Task"
     : "Task<" + sendAsyncReturnType + ">";
-    
-var methodOverloadReturnType = methodReturnType;
+
+string methodOverloadReturnType = methodReturnType;
     
 if (isCollection && createCollectionPage)
-{  
+{
     methodReturnType = string.Concat("async ", methodReturnType);
 }
-
         
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool includeRequestBody = hasParameters && isAction;
+bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
@@ -64,31 +64,25 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     paramStringBuilder.Append(Environment.NewLine);
     paramStringBuilder.Append("            ");
     paramStringBuilder.Append("IList<Option> options");
+
+    requestBodyInitializerBuilder.Append("this.Method = \"" + httpMethod + "\";");
     
+    // Sort the method parameters by required then optional to match the ordering in request builder initialization.
+    var methodParameters = new List<OdcmParameter>();
+    methodParameters.AddRange(method.Parameters.Where(param => !param.IsNullable));
+    methodParameters.AddRange(method.Parameters.Where(param => param.IsNullable));
+
     if (includeRequestBody)
     {
         paramStringBuilder.Append(",");
-    }
-
-    requestBodyInitializerBuilder.Append("this.Method = \"" + httpMethod + "\";");
-
-    if (includeRequestBody)
-    {
+        
         requestBodyInitializerBuilder.Append(Environment.NewLine);
         requestBodyInitializerBuilder.Append("            ");
         requestBodyInitializerBuilder.Append("this.ContentType = \"application/json\";");
         requestBodyInitializerBuilder.Append(Environment.NewLine);
         requestBodyInitializerBuilder.Append("            ");
         requestBodyInitializerBuilder.Append("this.RequestBody = new " + requestType + "Body();");
-    }
-    
-    // Sort the method parameters by required then optional to match the ordering in request builder initialization.
-    var methodParameters = new List<OdcmParameter>();
-    methodParameters.AddRange(method.Parameters.Where(param => !param.IsNullable));
-    methodParameters.AddRange(method.Parameters.Where(param => param.IsNullable));
-    
-    if (includeRequestBody)
-    {
+        
         foreach (var param in methodParameters)
         {
             var paramTypeString = param.Type.GetTypeString();
@@ -154,16 +148,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         public <#=requestType#>(<#=paramStringBuilder.ToString()#>)
             : base(requestUrl, client, options)
         {
-    <#
-    if (hasParameters)
-    {
-    #>
-
             <#=requestBodyInitializerBuilder.ToString()#>
-    <#
-    }
-    #>
-
         }
     <#
     if (hasParameters && method.IsAction())
@@ -176,10 +161,32 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         public <#=requestType#>Body RequestBody { get; private set; }
     <#
     }
-    
+
     var methodReturnTag = sendAsyncReturnType == null
         ? "The task to await."
         : string.Concat("The", sendAsyncReturnType);
+        
+    var methodParameter = "null";
+    if (includeRequestBody)
+    {
+        methodParameter = "this.RequestBody";
+    }
+    
+    string sendParameterHeadersForOverload, sendOverloadParameters;
+    
+    if (returnsStream)
+    {
+        sendParameterHeadersForOverload = @"/// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>";
+        
+        sendOverloadParameters = "CancellationToken cancellationToken, HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead";
+    }
+    else
+    {
+        sendParameterHeadersForOverload = "/// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>";
+        sendOverloadParameters = "CancellationToken cancellationToken";
+    }
+        
     #>
 
         /// <summary>
@@ -187,29 +194,23 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// </summary>
         public <#=methodOverloadReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async()
         {
-            return this.<#=httpMethod.ToLower().ToCheckedCase()#>Async(HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+            return this.<#=httpMethod.ToLower().ToCheckedCase()#>Async(CancellationToken.None);
         }
         
         /// <summary>
         /// Issues the <#=httpMethod#> request.
         /// </summary>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <#=sendParameterHeadersForOverload#>
         /// <returns><#=methodReturnTag#></returns>
-        public <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(HttpCompletionOption completionOption, CancellationToken cancellationToken)
+        public <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(<#=sendOverloadParameters#>)
         {
     <#
-    var methodParameter = "null";
-    if (includeRequestBody)
-    {
-        methodParameter = "this.RequestBody";
-    }
 
     if (createCollectionPage)
     {
     #>
 
-            var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>, completionOption, cancellationToken).ConfigureAwait(false);
+            var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
                 if (response.AdditionalData != null)
@@ -235,36 +236,32 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             return null;
     <#
     }
+    else if (returnsStream)
+    {
+    #>
+
+            return this.SendStreamRequestAsync(null, httpCompletionOption, cancellationToken);
+    <#
+    }
+    else if (!string.IsNullOrEmpty(sendAsyncReturnType))
+    {
+    #>
+
+            return this.SendAsync<<#=sendAsyncReturnType#>>(<#=methodParameter#>, cancellationToken);
+    <#
+    }
     else
     {
-
-        if (string.Equals(sendAsyncReturnType, "Stream"))
-        {
     #>
 
-            return this.SendStreamRequestAsync(null, completionOption, cancellationToken);
+            return this.SendAsync(<#=methodParameter#>, cancellationToken); 
     <#
-        }
-        else if (!string.IsNullOrEmpty(sendAsyncReturnType))
-        {
-    #>
-
-            return this.SendAsync<<#=sendAsyncReturnType#>>(<#=methodParameter#>, completionOption, cancellationToken);
-    <#
-        }
-        else
-        {
-    #>
-
-            return this.SendAsync(<#=methodParameter#>, completionOption, cancellationToken);
-    <#
-        }
     }
     #>
 
         }
     <#
-    if (!string.Equals(sendAsyncReturnType, "Stream"))
+    if (!returnsStream)
     {
     #>
 

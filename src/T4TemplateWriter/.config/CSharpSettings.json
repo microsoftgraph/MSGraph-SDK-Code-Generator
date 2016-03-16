@@ -27,6 +27,9 @@
           { "Template": "EntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferencesRequestBuilder" },
           { "Template": "IEntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>WithReferencesRequestBuilder" },
           
+          { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesPage" },
+          { "Template": "IEntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesPage" },
+          
           { "Template": "EntityCollectionReferenceRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionReferenceRequest" },
           { "Template": "IEntityCollectionReferenceRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionReferenceRequest" },
           { "Template": "EntityCollectionWithReferencesRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesRequest" },
@@ -37,6 +40,16 @@
           { "Template": "EntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesRequestBuilder" },
           { "Template": "IEntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesRequestBuilder" },
           
+          { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Class><Property>CollectionRequestBuilder" },  
+          { "Template": "EntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionResponse" },
+          
+          { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesPage" },
+          { "Template": "IEntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesPage" },
+
+          { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Class><Property>CollectionRequestBuilder" },  
+          { "Template": "EntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionResponse" },
+          { "Template": "EntityCollectionWithReferencesResponse", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesResponse" },
+
           { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesPage" },
           { "Template": "IEntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesPage" },
 

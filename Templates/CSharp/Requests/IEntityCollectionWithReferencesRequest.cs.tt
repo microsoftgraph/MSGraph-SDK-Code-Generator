@@ -26,10 +26,9 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <summary>
         /// Gets the collection page.
         /// </summary>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<I<#=collectionPage#>> GetAsync(HttpCompletionOption completionOption, CancellationToken cancellationToken);
+        Task<I<#=collectionPage#>> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
