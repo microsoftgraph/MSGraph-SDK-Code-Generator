@@ -2,6 +2,33 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#+
 
+public string GetEntityInterfaceDefinition(OdcmClass entity)
+{
+    string typeDeclaration = null;
+    var className = this.GetEntityRequestBuilderName(entity);
+    
+    if (entity.Base == null)
+    {
+        typeDeclaration = string.Format("I{0} : IBaseRequestBuilder", className);
+    }
+    else
+    {
+        typeDeclaration = string.Format("I{0} : I{1}RequestBuilder", className, entity.Base.Name.ToCheckedCase());
+    }
+    
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("    /// The interface I{0}.", className);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("    /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("    public partial interface {0}", typeDeclaration);
+    
+    return stringBuilder.ToString();
+}
+
 public string GetInterfaceDefinition(string interfaceName)
 {
     var stringBuilder = new StringBuilder();
@@ -17,21 +44,39 @@ public string GetInterfaceDefinition(string interfaceName)
     return stringBuilder.ToString();
 }
 
-public string GetRequestMethod(string requestTypeName)
+public string GetRequestMethod(string requestTypeName, bool includeNewKeyword = false)
 {
     var stringBuilder = new StringBuilder();
     stringBuilder.Append(this.GetRequestMethodHeader());
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        I{0} Request();", requestTypeName);
+    
+    if (includeNewKeyword)
+    {
+        stringBuilder.AppendFormat("        new I{0} Request();", requestTypeName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        I{0} Request();", requestTypeName);
+    }
+    
     return stringBuilder.ToString();
 }
 
-public string GetRequestMethodWithOptions(string requestTypeName)
+public string GetRequestMethodWithOptions(string requestTypeName, bool includeNewKeyword = false)
 {
     var stringBuilder = new StringBuilder();
     stringBuilder.Append(this.GetRequestMethodWithOptionsHeader());     
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        I{0} Request(IList<Option> options);", requestTypeName);
+    
+    if (includeNewKeyword)
+    {
+        stringBuilder.AppendFormat("        new I{0} Request(IList<Option> options);", requestTypeName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        I{0} Request(IList<Option> options);", requestTypeName);
+    }
+    
     return stringBuilder.ToString();
 }
 
