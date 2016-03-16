@@ -78,7 +78,9 @@ foreach(var et in entityTypes)
         classes.Add("#import \"" + baseName + "Request.h\"");
     }
 
-    foreach(var complexType in et.GetProperties(longDescriptionMatches:"navigable").Where(prop => prop.Type is OdcmClass))
+    foreach(var complexType in et.Properties.Where(prop => prop.LongDescriptionContains("navigable") ||
+                                                           prop.Type.LongDescriptionContains("navigable"))
+                                            .Where(prop => prop.Type is OdcmClass))
     {
         var baseName = writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar();
         classes.Add("#import \"" + baseName + "RequestBuilder.h\"");

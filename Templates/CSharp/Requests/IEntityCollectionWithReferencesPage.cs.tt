@@ -6,7 +6,7 @@ var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
 var entityCollectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
-var entityCollectionPage = prop.Name.ToCheckedCase() + "CollectionWithReferencesPage";
+var entityCollectionPage = string.Concat(this.GetEntityNameString(prop.Class), prop.Name.ToCheckedCase(), "CollectionWithReferencesPage");
 
 #>
 

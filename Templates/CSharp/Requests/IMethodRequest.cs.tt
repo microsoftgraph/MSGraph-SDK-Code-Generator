@@ -15,13 +15,11 @@ var isSpecialCollection = method.LongDescriptionContains("specialCollection");
 var isCollection = method.IsCollection || isSpecialCollection;
 var createCollectionPage = returnTypeObject != null && returnTypeObject.IsComplex();
 
-var sendAsyncReturnType = isAsync
-    ? "I" + entityName + methodName + "AsyncMonitor"
-    : isCollection
-        ? createCollectionPage
-            ? "I" + entityName + methodName + "CollectionPage"
-            : "IEnumerable<" + method.ReturnType.Name.ToCheckedCase() + ">"
-        : returnEntityType;
+var sendAsyncReturnType = isCollection
+    ? createCollectionPage
+        ? "I" + entityName + methodName + "CollectionPage"
+        : "IEnumerable<" + method.ReturnType.Name.ToCheckedCase() + ">"
+    : returnEntityType;
         
 var methodReturnType = sendAsyncReturnType == null
     ? "Task"
@@ -32,6 +30,7 @@ var methodReturnTag = sendAsyncReturnType == null
     : string.Concat("The", sendAsyncReturnType);
         
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
+bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
@@ -59,6 +58,22 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         <#=requestType#>Body RequestBody { get; }
     <#
     }
+    
+    string sendParameterHeadersForOverload, sendOverloadParameters;
+    
+    if (returnsStream)
+    {
+        sendParameterHeadersForOverload = @"/// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>";
+        
+        sendOverloadParameters = "CancellationToken cancellationToken, HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead";
+    }
+    else
+    {
+        sendParameterHeadersForOverload = "/// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>";
+        sendOverloadParameters = "CancellationToken cancellationToken";
+    }
+    
     #>
     
         /// <summary>
@@ -69,12 +84,11 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Issues the <#=httpMethod#> request.
         /// </summary>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <#=sendParameterHeadersForOverload#>
         /// <returns><#=methodReturnTag#></returns>
-        <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(HttpCompletionOption completionOption, CancellationToken cancellationToken);
+        <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(<#=sendOverloadParameters#>);
     <#
-    if (!string.Equals(sendAsyncReturnType, "Stream"))
+    if (!returnsStream)
     {
     #>
         

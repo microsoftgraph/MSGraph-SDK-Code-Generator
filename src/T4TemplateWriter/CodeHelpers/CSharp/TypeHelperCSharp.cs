@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Vipr.Core.CodeModel;
-using Vipr.T4TemplateWriter.Extensions;
-
-namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
+﻿namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 {
-    using System.Linq;
-    using System.Net.NetworkInformation;
-    using System.Text.RegularExpressions;
+    using System;
+    using System.Collections.Generic;
+
+    using Vipr.Core.CodeModel;
+    using Vipr.T4TemplateWriter.Extensions;
+
     public static class TypeHelperCSharp
     {
         public const string DefaultReservedPrefix = "graph";
