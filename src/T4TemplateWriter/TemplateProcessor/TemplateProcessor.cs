@@ -158,8 +158,6 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             }
         }
 
-
-
         protected virtual IEnumerable<TextFile> ProcessNavigationCollections(ITemplateInfo templateInfo)
         {
             foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.NavigationCollectionProperties))
@@ -172,6 +170,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                                                                        propertyType: property.Type.Name));
             }
         }
+
 
         protected virtual IEnumerable<TextFile> ProcessCollectionReferences(ITemplateInfo templateInfo)
         {
@@ -288,10 +287,10 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         {
             return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation());
         }
-
+       
         protected virtual IEnumerable<OdcmProperty> CollectionReferenceProperties()
         {
-            return this.CurrentModel.GetProperties().Where(prop => prop.IsReference() && prop.IsCollection);
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsReference() && prop.IsCollection && prop.IsNavigation() && prop.Class.Kind!=OdcmClassKind.Service);
         }
 
         protected virtual IEnumerable<OdcmProperty> CollectionProperties()

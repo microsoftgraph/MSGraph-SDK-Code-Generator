@@ -12,6 +12,9 @@ private String prefix;
 private CodeWriterObjC writer;
 private CustomT4Host host;
 private OdcmModel model;
+private bool withReference = false;
+private bool entityReference = false;
+private bool collectionReference = false;
 
 private string GetObjCTypeIdentifier(OdcmObject o, bool getUnderlyingType=false)
 {
@@ -188,12 +191,12 @@ public string GetFunctionParameters(List<OdcmParameter> parameters)
     {
         result.Append("NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:");
     }
-    else 
+    else
     {
         result.Append("NSDictionary *params = nil;");
     }
 
-    foreach (var param in parameters) 
+    foreach (var param in parameters)
     {
         result.AppendFormat("[MSObject getNSJsonSerializationCompatibleValue:{0}],",
         SetNSJSONPermitedExpressionSerialized(param.Type,"_"+param.Name.ToLowerFirstChar()));
