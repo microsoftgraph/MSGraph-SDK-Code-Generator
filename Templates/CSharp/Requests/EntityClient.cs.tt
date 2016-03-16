@@ -42,8 +42,8 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
 
     foreach(var prop in model.EntityContainer.Properties)
     {
-        var propName = prop.Name.ToCheckedCase();
-        var sanitizedPropName = propName.GetSanitizedPropertyName();
+        var sanitizedPropName = prop.Name.ToCheckedCase().GetSanitizedPropertyName();
+        var propName = string.Concat(entityContainer.Name.ToCheckedCase(), prop.Name.ToCheckedCase());
 
         if (prop.IsCollection())
         {

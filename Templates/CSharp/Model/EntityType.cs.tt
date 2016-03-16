@@ -47,8 +47,8 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
                     ? property.GetTypeString()
                     : property.GetTypeString() + "?";
                     
-            var propertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
-            var propertyCollectionPage = property.IsReference() ? string.Concat(propertyName, "CollectionWithReferencesPage") : string.Concat(propertyName, "CollectionPage");
+            var propertyName = property.Name.ToCheckedCase();
+            var propertyCollectionPage = property.IsReference() ? string.Concat(entityName, propertyName, "CollectionWithReferencesPage") : string.Concat(entityName, propertyName, "CollectionPage");
 
             if (property.IsCollection())
             {
@@ -61,7 +61,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// </summary>
         [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
         [JsonConverter(typeof(InterfaceConverter<<#=propertyCollectionPage#>>))]
-        public I<#=propertyCollectionPage#> <#=propertyName#> { get; set; }
+        public I<#=propertyCollectionPage#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
     <#
                 }
                 else
@@ -72,7 +72,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
         [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
-        public IEnumerable<<#=propertyType#>> <#=propertyName#> { get; set; }
+        public IEnumerable<<#=propertyType#>> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
     <#
                 }
             }
@@ -84,7 +84,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
         [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
-        public <#=propertyType#> <#=propertyName#> { get; set; }
+        public <#=propertyType#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
     <#
             }
         }
