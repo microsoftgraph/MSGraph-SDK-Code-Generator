@@ -3,7 +3,7 @@
 
 <#
 var containerProps = model.EntityContainer.Properties;
-var entityName = writer.GetPrefix() + "Client"; 
+var entityName = writer.GetPrefix() + "Client";
 
 var classes = new List<string>();
 
@@ -28,7 +28,7 @@ foreach(var propertyClass in classes)
 #import "ODataBaseClient.h"
 #import "<#=writer.GetPrefix()#>Models.h"
 #import "<#=writer.GetStaticCodePrefix()#>HttpProvider.h"
-#import "<#=writer.GetStaticCodePrefix()#>AuthenticationProvider.h"
+#import "<#=writer.GetStaticCodePrefix()#>AuthProvider.h"
 #import "<#=writer.GetStaticCodePrefix()#>LoggerProtocol.h"
 
 <#=writer.GetHeaderDoc(entityName)#>
@@ -48,7 +48,7 @@ foreach(var prop in containerProps)
 #>
 -(<#=propName#>CollectionRequestBuilder *)<#=prop.Name#>;
 
-<#  
+<#
         }
         if (!prop.LongDescriptionContains("non-queryable"))
         {
@@ -64,7 +64,7 @@ foreach(var prop in containerProps)
 
 #>
 -(<#=propType#>RequestBuilder *) <#=prop.Name#>;
-<#	
+<#
 
 	}
 }

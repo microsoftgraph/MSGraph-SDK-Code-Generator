@@ -5,6 +5,17 @@
 var entity = host.CurrentType.AsOdcmClass();
 var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":(entityReference?"Reference":"")) + "RequestBuilder";
 var entityRequestName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "Request";
+
+var baseEntityRequestName = "";
+if(!withReference && !entityReference && entity.Base!=null)
+{
+    baseEntityRequestName =  writer.GetPrefix() + entity.Base.Name.ToUpperFirstChar() + (withReference?"WithReference":(entityReference?"Reference":"")) + "RequestBuilder";
+}
+else
+{
+    baseEntityRequestName = writer.GetStaticCodePrefix() + "RequestBuilder";
+}
+
 var classes = new List<string>();
 classes.Add(entityRequestName);
 
@@ -99,7 +110,7 @@ if (classes.Count > 0)
 #>
 
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "<#=writer.GetStaticCodePrefix()#>RequestBuilder.h"
+#import "<#=baseEntityRequestName#>.h"
 
 <#
 if(withReference)
@@ -112,7 +123,7 @@ if(withReference)
 
 
 
-@interface <#=entityName#> : <#=writer.GetStaticCodePrefix()#>RequestBuilder
+@interface <#=entityName#> : <#=baseEntityRequestName#>
 
 <#
 if(!withReference && !entityReference)
