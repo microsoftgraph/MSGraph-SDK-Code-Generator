@@ -7,7 +7,7 @@
 // -------------------------------------------------------------
 public string GetEntityRequestBuilderClassDefinition(OdcmClass odcmClass)
 {
-    return this.GetClassDefinition(this.GetEntityRequestBuilderName(odcmClass));
+    return this.GetEntityClassDefinition(odcmClass);
 }
 
 public string GetEntityRequestBuilderConstructor(OdcmClass odcmClass)
@@ -17,12 +17,12 @@ public string GetEntityRequestBuilderConstructor(OdcmClass odcmClass)
 
 public string GetEntityRequestMethod(OdcmClass odcmClass)
 {
-    return this.GetRequestMethod(this.GetEntityRequestName(odcmClass));
+    return this.GetRequestMethod(this.GetEntityRequestName(odcmClass), odcmClass.Base != null);
 }
 
 public string GetEntityRequestMethodWithOptions(OdcmClass odcmClass)
 {
-    return this.GetRequestMethodWithOptions(this.GetEntityRequestName(odcmClass));
+    return this.GetRequestMethodWithOptions(this.GetEntityRequestName(odcmClass), odcmClass.Base != null);
 }
 
 
