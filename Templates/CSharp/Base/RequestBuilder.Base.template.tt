@@ -76,7 +76,7 @@ public string GetRequestMethod(string requestTypeName, bool includeNewKeyword = 
     stringBuilder.Append(this.GetRequestMethodHeader());
     stringBuilder.Append(Environment.NewLine);
     
-        if (includeNewKeyword)
+    if (includeNewKeyword)
     {
         stringBuilder.AppendFormat("        public new I{0} Request()", requestTypeName);
     }
