@@ -10,15 +10,11 @@ var requestType = entityName + methodName + "Request";
 
 var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString().ToCheckedCase();
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
-bool isAsync = method.LongDescriptionContains("async");
-var isSpecialCollection = method.LongDescriptionContains("specialCollection");
-var isCollection = method.IsCollection || isSpecialCollection;
-var createCollectionPage = returnTypeObject != null && returnTypeObject.IsComplex();
+
+var isCollection = method.IsCollection;
 
 var sendAsyncReturnType = isCollection
-    ? createCollectionPage
-        ? "I" + entityName + methodName + "CollectionPage"
-        : "IEnumerable<" + method.ReturnType.Name.ToCheckedCase() + ">"
+    ? "I" + entityName + methodName + "CollectionPage"
     : returnEntityType;
         
 var methodReturnType = sendAsyncReturnType == null

@@ -13,12 +13,9 @@ var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
 
 var isCollection = method.IsCollection;
-var createCollectionPage = isCollection && returnTypeObject != null && returnTypeObject.IsComplex();
 
 var sendAsyncReturnType = isCollection
-    ? createCollectionPage
-        ? "I" + entityName + methodName + "CollectionPage"
-        : "IEnumerable<" + method.ReturnType.Name.ToCheckedCase() + ">"
+    ? "I" + entityName + methodName + "CollectionPage"
     : returnEntityType;
         
 var methodReturnType = sendAsyncReturnType == null
@@ -27,7 +24,7 @@ var methodReturnType = sendAsyncReturnType == null
 
 string methodOverloadReturnType = methodReturnType;
     
-if (isCollection && createCollectionPage)
+if (isCollection)
 {
     methodReturnType = string.Concat("async ", methodReturnType);
 }
@@ -86,29 +83,27 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         foreach (var param in methodParameters)
         {
             var paramTypeString = param.Type.GetTypeString();
+            
+            if (param.IsCollection)
+            {
+                paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
+            }
+            else if (!param.Type.IsTypeNullable())
+            {
+                paramTypeString = string.Format("{0}?", paramTypeString);
+            }
 
             paramStringBuilder.Append(Environment.NewLine);
             paramStringBuilder.Append("            ");
-            paramStringBuilder.Append(paramTypeString);
 
-            if (param.Type.IsTypeNullable())
-            {
-                paramStringBuilder.Append(" ");
-            }
-            else
-            {
-                paramStringBuilder.Append("? ");
-            }
-            
             var paramLowerChar = param.Name.ToLowerFirstChar();
             
-            paramStringBuilder.Append(paramLowerChar);
-            paramStringBuilder.Append(" = null,");
+            paramStringBuilder.AppendFormat("{0} {1} = null,", paramTypeString, paramLowerChar);
      
             requestBodyInitializerBuilder.Append(Environment.NewLine);
             requestBodyInitializerBuilder.Append("            ");
             
-            if (!param.IsNullable && !param.Type.IsTypeNullable())
+            if (!param.IsNullable && !param.Type.IsTypeNullable() && !param.IsCollection)
             {
                 requestBodyInitializerBuilder.Append(Environment.NewLine);
                 requestBodyInitializerBuilder.Append("            ");
@@ -206,7 +201,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         {
     <#
 
-    if (createCollectionPage)
+    if (isCollection)
     {
     #>
 
