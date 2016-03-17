@@ -285,12 +285,12 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmProperty> NavigationCollectionProperties()
         {
-            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation());
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && prop.IsNavigation() && !prop.IsReference());
         }
        
         protected virtual IEnumerable<OdcmProperty> CollectionReferenceProperties()
         {
-            return this.CurrentModel.GetProperties().Where(prop => prop.IsReference() && prop.IsCollection && prop.IsNavigation() && prop.Class.Kind!=OdcmClassKind.Service);
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsReference() && prop.IsCollection);
         }
 
         protected virtual IEnumerable<OdcmProperty> CollectionProperties()
