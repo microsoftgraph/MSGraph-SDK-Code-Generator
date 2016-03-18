@@ -16,7 +16,7 @@ foreach(var member in entity.Members.OrderBy(x => x.Value))
 <#
 }
 #>
-    <#=GetObjCTypeIdentifier(entity)#>endOfEnum
+    <#=GetObjCTypeIdentifier(entity)#>EndOfEnum
 };
 
 @interface NSString (<#=GetObjCTypeIdentifier(entity)#>)
