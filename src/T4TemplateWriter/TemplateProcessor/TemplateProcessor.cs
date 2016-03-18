@@ -8,20 +8,15 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.VisualStudio.TextTemplating;
-using Vipr.T4TemplateWriter.Extensions;
 using Vipr.T4TemplateWriter.Output;
-using Vipr.T4TemplateWriter;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 
 using Microsoft.CSharp;
 using System.CodeDom.Compiler;
-using System.Reflection;
 
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
-    using Vipr.T4TemplateWriter.CodeHelpers.ObjC;
-
     public class TemplateProcessor : ITemplateProcessor
     {
         private static CustomT4Host _host;
@@ -108,131 +103,57 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<TextFile> ProcessEntityContainerType(ITemplateInfo templateInfo)
         {
-            var container = this.CurrentModel.EntityContainer;
-            yield return ProcessTemplate(templateInfo, container, templateInfo.BaseFileName(containerName: container.Name));
+            yield return ProcessTemplate(templateInfo, this.CurrentModel.EntityContainer);
         }
 
         protected virtual IEnumerable<TextFile> ProcessEnumTypes(ITemplateInfo templateInfo)
         {
-            foreach (OdcmObject enumType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEnumTypes))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             enumType,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: enumType.Name));
-            }
+            return ProcessTypes(templateInfo, this.CurrentModel.GetEnumTypes);
         }
 
         protected virtual IEnumerable<TextFile> ProcessComplexTypes(ITemplateInfo templateInfo)
         {
-            foreach (OdcmObject complexType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetComplexTypes))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             complexType,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: complexType.Name));
-            }
+            return ProcessTypes(templateInfo, this.CurrentModel.GetComplexTypes);
         }
 
         protected virtual IEnumerable<TextFile> ProcessEntityTypes(ITemplateInfo templateInfo)
         {
-            foreach (OdcmClass entityType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEntityTypes))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             entityType,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: entityType.Name));
-            }
+            return ProcessTypes(templateInfo, this.CurrentModel.GetEntityTypes);
         }
 
         protected virtual IEnumerable<TextFile> ProcessCollections(ITemplateInfo templateInfo)
         {
-            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CollectionProperties))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             property,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: property.Class.Name,
-                                                                       propertyName: property.Name,
-                                                                       propertyType: property.Type.Name));
-            }
-        }
-
-        protected virtual IEnumerable<TextFile> ProcessNavigationCollections(ITemplateInfo templateInfo)
-        {
-            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.NavigationCollectionProperties))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             property,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: property.Class.Name,
-                                                                       propertyName: property.Name,
-                                                                       propertyType: property.Type.Name));
-            }
-        }
-
-
-        protected virtual IEnumerable<TextFile> ProcessCollectionReferences(ITemplateInfo templateInfo)
-        {
-            var properties = FilterOdcmEnumerable(templateInfo, this.CollectionReferenceProperties);
-            foreach (OdcmProperty property in properties)
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             property,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: property.Class.Name,
-                                                                       propertyName: property.Name,
-                                                                       propertyType: property.Type.Name));
-            }
-        }
-
-        protected virtual IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo)
-        {
-            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetProperties))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             property,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: property.Class.Name,
-                                                                       propertyName: property.Name,
-                                                                       propertyType: property.Type.Name));
-            }
-        }
-
-        protected virtual IEnumerable<TextFile> ProcessEntityReferenceProperties(ITemplateInfo templateInfo)
-        {
-            var entities = FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetEntityReferenceTypes);
-            foreach (OdcmClass entityType in entities)
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             entityType,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: entityType.Name));
-            }
-        }
-
-        protected virtual IEnumerable<TextFile> ProcessStreamProperties(ITemplateInfo templateInfo)
-        {
-            foreach (OdcmProperty property in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetStreamProperties))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             property,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: property.Class.Name,
-                                                                       propertyName: property.Name,
-                                                                       propertyType: property.Type.Name));
-            }
+            return ProcessProperties(templateInfo, this.CollectionProperties);
         }
 
         protected virtual IEnumerable<TextFile> ProcessMediaEntityTypes(ITemplateInfo templateInfo)
         {
-            foreach (OdcmClass entityType in FilterOdcmEnumerable(templateInfo, this.CurrentModel.GetMediaEntityTypes))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                             entityType,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: entityType.Name));
-            }
+            return ProcessTypes(templateInfo, this.CurrentModel.GetMediaEntityTypes);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessNavigationCollections(ITemplateInfo templateInfo)
+        {
+            return ProcessProperties(templateInfo, this.NavigationCollectionProperties);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessCollectionReferences(ITemplateInfo templateInfo)
+        {
+            return ProcessProperties(templateInfo, this.CollectionReferenceProperties);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo)
+        {
+            return ProcessProperties(templateInfo, this.CurrentModel.GetProperties);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessEntityReferenceProperties(ITemplateInfo templateInfo)
+        {
+            return ProcessTypes(templateInfo, this.CurrentModel.GetEntityReferenceTypes);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessStreamProperties(ITemplateInfo templateInfo)
+        {
+            return ProcessProperties(templateInfo, this.CurrentModel.GetStreamProperties);
         }
 
         protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo)
@@ -255,16 +176,29 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             return this.ProcessMethods(templateInfo, this.NonCollectionMethods);
         }
 
+        private IEnumerable<TextFile> ProcessTypes(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod)
+        {
+            return FilterOdcmEnumerable(templateInfo, modelMethod)
+                    .Select(odcmType => ProcessTemplate(templateInfo, odcmType, className: odcmType.Name));
+        }
+
+        private IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod)
+        {
+            return FilterOdcmEnumerable(templateInfo, modelMethod)
+                    .Select(property => property as OdcmProperty)
+                    .Select(odcmProperty => ProcessTemplate(templateInfo, odcmProperty,
+                                                                    className: odcmProperty.Class.Name,
+                                                                    propertyName: odcmProperty.Name,
+                                                                    propertyType: odcmProperty.Type.Name));
+        }
+
         protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo, Func<IEnumerable<OdcmMethod>> methods)
         {
-            foreach (OdcmMethod method in FilterOdcmEnumerable(templateInfo, methods))
-            {
-                yield return ProcessTemplate(templateInfo,
-                                                   method,
-                                             templateInfo.BaseFileName(containerName: this.CurrentModel.EntityContainer.Name,
-                                                                       className: method.Class.Name,
-                                                                       methodName: method.Name));
-            }
+            return FilterOdcmEnumerable(templateInfo, methods)
+                    .Select(method => method as OdcmMethod)
+                    .Select(odcmMethod => ProcessTemplate(templateInfo, odcmMethod,
+                                                                    className: odcmMethod.Class.Name,
+                                                                    methodName: odcmMethod.Name));
         }
 
         protected virtual IEnumerable<OdcmMethod> NonCollectionMethods()
@@ -370,6 +304,16 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 return templateClassInstance.TransformText();
             };
 
+        }
+        private TextFile ProcessTemplate(ITemplateInfo templateInfo, OdcmObject odcmObject,
+                string className = "", string propertyName = "", string methodName = "", string propertyType = "")
+        {
+            return ProcessTemplate(templateInfo, odcmObject,
+                                        templateInfo.BaseFileName(this.CurrentModel.EntityContainer.Name,
+                                                                  className,
+                                                                  propertyName,
+                                                                  methodName,
+                                                                  propertyType));
         }
 
         protected TextFile ProcessTemplate(ITemplateInfo templateInfo, OdcmObject odcmObject, string fileName)
