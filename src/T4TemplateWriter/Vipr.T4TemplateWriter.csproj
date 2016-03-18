@@ -55,10 +55,13 @@
     <Compile Include="CodeHelpers\CSharp\CodeWriterCSharp.cs" />
     <Compile Include="CodeHelpers\CSharp\TypeHelperCSharp.cs" />
     <Compile Include="CodeHelpers\Java\CodeWriterJava.cs" />
+    <Compile Include="CodeHelpers\JavaScript\CodeWriterJavaScript.cs" />
+    <Compile Include="CodeHelpers\JavaScript\TypeHelperJavaScript.cs" />
     <Compile Include="CodeHelpers\ObjC\CodeWriterObjC.cs" />
     <Compile Include="CodeHelpers\Python\CodeWriterPython.cs" />
     <Compile Include="CodeHelpers\Python\TypeHelperPython.cs" />
     <Compile Include="PathWriters\CSharpPathWriter.cs" />
+    <Compile Include="PathWriters\JavaScriptPathWriter.cs" />
     <Compile Include="PathWriters\PythonPathWriter.cs" />
     <Compile Include="TemplateProcessor\CustomT4Host.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -86,6 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".config\CSharpSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include=".config\JavaScriptSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include=".config\JavaSettings.json">
