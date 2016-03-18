@@ -41,11 +41,9 @@ if (!(innerEntity is OdcmComplexClass) && !collectionReference)
 }
 <#
 }
-#>
 
 
-<#
-if(prop.IsReference())
+if(prop.IsReference() && !collectionReference)
 {
     var refTypeString=writer.GetPrefix() + baseName + "CollectionReferenceRequestBuilder";
 #>
