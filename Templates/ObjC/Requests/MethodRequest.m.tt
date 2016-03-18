@@ -79,6 +79,10 @@ if (func.Parameters.Count > 0)
         {
             paramTypeString = paramTypeString + "*";
         }
+        if(param.IsCollection)
+        {
+            paramTypeString = "NSArray *";
+        }
 #>
 
 <#=writer.GetPropertyDeclaration(param.Name.ToLowerFirstChar(),paramTypeString)#>

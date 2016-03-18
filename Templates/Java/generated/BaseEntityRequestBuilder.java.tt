@@ -87,6 +87,17 @@ if (c.AsOdcmClass() != null)
 	}
 #>
 <#
+    if (c is OdcmMediaClass)
+    {
+#>
+
+    public <#=ITypeStreamRequestBuilder(c)#> getContent() {
+        return new <#=TypeStreamRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment("$value"), getClient(), null);
+    }
+<#
+    }
+#>
+<#
     foreach (var method in c.AsOdcmClass().Methods)
     {
         var parameterList = MethodParametersSignature(method);
@@ -97,8 +108,7 @@ if (c.AsOdcmClass() != null)
     public <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
         return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
-
-<#}else{#> 
+<#}else{#>
 
     public <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
         return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);

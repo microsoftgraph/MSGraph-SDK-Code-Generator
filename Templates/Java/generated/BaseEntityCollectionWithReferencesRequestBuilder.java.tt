@@ -1,0 +1,36 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeCollectionWithReferencesRequestBuilder(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(BaseTypeCollectionWithReferencesRequestBuilder(c), "BaseRequestBuilder", IBaseTypeCollectionWithReferencesRequestBuilder(c))#>
+
+    /**
+     * The request builder for this collection of <#=ClassTypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public <#=BaseTypeCollectionWithReferencesRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
+        super(requestUrl, client, options);
+    }
+
+    public <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest() {
+        return buildRequest(getOptions());
+    }
+
+    public <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest(final List<Option> options) {
+        return new <#=TypeCollectionWithReferencesRequest(c)#>(getRequestUrl(), getClient(), options);
+    }
+
+    public <#=ITypeWithReferencesRequestBuilder(c)#> byId(final String id) {
+        return new <#=TypeWithReferencesRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
+    }
+
+    public <#=ITypeCollectionReferenceRequestBuilder(c)#> references(){
+        return new <#=TypeCollectionReferenceRequestBuilder(c)#>(getRequestUrl() + "/$ref", getClient(), getOptions());
+    }
+}

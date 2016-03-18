@@ -31,6 +31,8 @@ namespace <#=namespaceValue#>
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -58,8 +60,19 @@ namespace <#=namespaceValue#>
         /// <returns>The stream.</returns>
         public Task<Stream> GetAsync()
         {
+            return this.GetAsync(CancellationToken.None);
+        }
+        
+        /// <summary>
+        /// Gets the stream.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The stream.</returns>
+        public Task<Stream> GetAsync(CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        {
             this.Method = "GET";
-            return this.SendStreamRequestAsync(null);
+            return this.SendStreamRequestAsync(null, cancellationToken, completionOption);
         }
 
         /// <summary>
@@ -70,9 +83,22 @@ namespace <#=namespaceValue#>
         /// <returns>The object returned by the PUT call.</returns>
         public Task<T> PutAsync<T>(Stream <#=propName#>) where T : <#=propClass#>
         {
+            return this.PutAsync<T>(<#=propName#>, CancellationToken.None);
+        }
+        
+        /// <summary>
+        /// PUTs the specified stream.
+        /// </summary>
+        /// <typeparam name="T">The type returned by the PUT call.</typeparam>
+        /// <param name="<#=propName#>">The stream to PUT.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The object returned by the PUT call.</returns>
+        public Task<T> PutAsync<T>(Stream <#=propName#>, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : <#=propClass#>
+        {
             this.ContentType = "application/octet-stream";
             this.Method = "PUT";
-            return this.SendAsync<T>(<#=propName#>);
+            return this.SendAsync<T>(<#=propName#>, cancellationToken, completionOption);
         }
     }
 }

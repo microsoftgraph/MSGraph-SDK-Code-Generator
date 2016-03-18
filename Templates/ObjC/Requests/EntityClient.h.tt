@@ -3,7 +3,7 @@
 
 <#
 var containerProps = model.EntityContainer.Properties;
-var entityName = writer.GetPrefix() + "Client"; 
+var entityName = writer.GetPrefix() + "Client";
 
 var classes = new List<string>();
 
@@ -48,7 +48,7 @@ foreach(var prop in containerProps)
 #>
 -(<#=propName#>CollectionRequestBuilder *)<#=prop.Name#>;
 
-<#  
+<#
         }
         if (!prop.LongDescriptionContains("non-queryable"))
         {
@@ -64,7 +64,7 @@ foreach(var prop in containerProps)
 
 #>
 -(<#=propType#>RequestBuilder *) <#=prop.Name#>;
-<#	
+<#
 
 	}
 }

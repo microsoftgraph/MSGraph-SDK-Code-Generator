@@ -3,10 +3,25 @@
 
 <#
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "RequestBuilder";
-var entityRequestName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "Request";
+var refString = (withReference ? "WithReference" : (entityReference ? "Reference" : ""));
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + refString;
+var entityRequestName = entityName + "Request";
+
+var baseEntityRequestName = "";
+if(!withReference && !entityReference && entity.Base!=null)
+{
+    baseEntityRequestName =  writer.GetPrefix() + entity.Base.Name.ToUpperFirstChar() + (withReference?"WithReference":(entityReference?"Reference":"")) + "RequestBuilder";
+}
+else
+{
+    baseEntityRequestName = writer.GetStaticCodePrefix() + "RequestBuilder";
+}
+
 var classes = new List<string>();
 classes.Add(entityRequestName);
+
+if(!withReference && !entityReference)
+{
 
 foreach(var prop in entity.NavigationProperties())
 {
@@ -17,7 +32,8 @@ foreach(var prop in entity.NavigationProperties())
 
     if(prop.IsCollection)
     {
-        var collectionFetcher = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+        var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
+        var collectionFetcher = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
 
         if(!classes.Contains(collectionFetcher)) classes.Add(collectionFetcher);
     }
@@ -59,79 +75,94 @@ foreach(var func in entity.Methods)
     }
 }
 
-foreach(var complexType in entity.GetProperties(longDescriptionMatches:"navigable").Where(prop => prop.Type is OdcmClass))
+foreach(var complexType in entity.Properties.Where(prop => prop.LongDescriptionContains("navigable") ||
+                                                           prop.Type.LongDescriptionContains("navigable"))
+                                            .Where(prop => prop.Type is OdcmClass))
 {
     var requestType = writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar() + "RequestBuilder";
     if (!classes.Contains(requestType))
     {
         classes.Add(requestType);
     }
+}
 
 }
 
-
-var lastClass = classes[classes.Count -1];
-StringBuilder stringBuilder = new StringBuilder();
-foreach(var propertyClass in classes)
-{
-    stringBuilder.Append(propertyClass);
-    if (propertyClass != lastClass)
-    {
-        stringBuilder.Append(", ");
-    }
-    else
-    {
-        stringBuilder.Append(";");
-    }
-}
 if (classes.Count > 0)
 {
+	var lastClass = classes[classes.Count -1];
+	StringBuilder stringBuilder = new StringBuilder();
+	foreach(var propertyClass in classes)
+	{
+		stringBuilder.Append(propertyClass);
+		if (propertyClass != lastClass)
+		{
+			stringBuilder.Append(", ");
+		}
+		else
+		{
+			stringBuilder.Append(";");
+		}
+	}
 #>
 @class <#=stringBuilder.ToString()#>
 <#
 }
 #>
+
+
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "<#=writer.GetStaticCodePrefix()#>RequestBuilder.h"
-
-
-@interface <#=entityName#> : <#=writer.GetStaticCodePrefix()#>RequestBuilder
+#import "<#=baseEntityRequestName#>.h"
 
 <#
+if(withReference)
+{
+#>
+#import "<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#>ReferenceRequestBuilder.h"
+<#
+}
+#>
+
+@interface <#=entityName#>RequestBuilder : <#=baseEntityRequestName#>
+
+<#
+if(!withReference && !entityReference)
+{
 
 foreach(var prop in entity.NavigationProperties())
 {
+	var propInstanceName = prop.Name.ToLowerFirstChar();
+	var innerPropTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
+	var innerPropTypeRequestName = innerPropTypeName + "RequestBuilder";
+	
     if(prop.IsCollection)
     {
-        var propInstanceName = prop.Name.ToLowerFirstChar();
-        var propTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
-        var collectionRequestName = writer.GetPrefix() + prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
-        var innerPropTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
-        var innerPropInstanceName = prop.Type.Name.ToLowerFirstChar();
-        var innerPropTypeRequestName = innerPropTypeName + "RequestBuilder";
-
+		var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
+		var collectionRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
+		var innerPropInstanceName = prop.Type.Name.ToLowerFirstChar();
 #>
 - (<#=collectionRequestName#> *)<#=propInstanceName#>;
 
 <#
-        if (prop.LongDescriptionContains("queryable"))
+        if (!(prop.Type is OdcmComplexClass) || prop.LongDescriptionContains("queryable"))
         {
 #>
 - (<#=innerPropTypeRequestName#> *)<#=propInstanceName#>:(NSString *)<#=innerPropInstanceName#>;
 
 <#
         }
-
     }
     else
     {
 #>
-- (<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=prop.Name#>;
+- (<#=innerPropTypeRequestName#> *) <#=propInstanceName#>;
 
-<# 
+<#
     }
 }
-foreach(var complexType in entity.GetProperties(longDescriptionMatches:"navigable").Where(prop => prop.Type is OdcmClass))
+foreach(var complexType in entity.Properties.Where(prop => prop.LongDescriptionContains("navigable") ||
+                                                           prop.Type.LongDescriptionContains("navigable"))
+                                            .Where(prop => prop.Type is OdcmClass))
 {
 #>
 - (<#=writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=complexType.Name#>;
@@ -139,12 +170,6 @@ foreach(var complexType in entity.GetProperties(longDescriptionMatches:"navigabl
 <#
 }
 
-#>
-- (<#=entityRequestName#> *)request;
-
-- (<#=entityRequestName#> *) requestWithOptions:(NSArray *)options;
-
-<#
 foreach(var prop in entity.GetProperties(typeName:"Stream"))
 {
     var propName = prop.Name.ToUpperFirstChar();
@@ -159,7 +184,8 @@ foreach(var prop in entity.GetProperties(typeName:"Stream"))
 foreach(var prop in entity.Properties.Where( prop => prop.Type is OdcmMediaClass))
 {
     var propName = prop.Name.ToUpperFirstChar();
-    var propRequestName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "StreamRequest";#>
+    var propRequestName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "StreamRequest";
+#>
 - (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>ValueWithOptions:(NSArray *)options;
 
 - (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>Value;
@@ -177,8 +203,25 @@ foreach(var func in entity.Methods)
 #>
 - (<#=requestBuilderName#> *)<#=methodName#>;
 
+
+
 <#
 
 }
+}
 #>
+
+- (<#=entityRequestName#> *) request;
+
+- (<#=entityRequestName#> *) requestWithOptions:(NSArray *)options;
+
+<#
+if(withReference)
+{
+#>
+- (<#= writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "ReferenceRequestBuilder" #> *) reference;
+<#
+}
+#>
+
 @end

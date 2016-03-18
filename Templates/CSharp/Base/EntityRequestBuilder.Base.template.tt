@@ -7,7 +7,7 @@
 // -------------------------------------------------------------
 public string GetEntityRequestBuilderClassDefinition(OdcmClass odcmClass)
 {
-    return this.GetClassDefinition(this.GetEntityRequestBuilderName(odcmClass));
+    return this.GetEntityClassDefinition(odcmClass);
 }
 
 public string GetEntityRequestBuilderConstructor(OdcmClass odcmClass)
@@ -17,12 +17,12 @@ public string GetEntityRequestBuilderConstructor(OdcmClass odcmClass)
 
 public string GetEntityRequestMethod(OdcmClass odcmClass)
 {
-    return this.GetRequestMethod(this.GetEntityRequestName(odcmClass));
+    return this.GetRequestMethod(this.GetEntityRequestName(odcmClass), odcmClass.Base != null);
 }
 
 public string GetEntityRequestMethodWithOptions(OdcmClass odcmClass)
 {
-    return this.GetRequestMethodWithOptions(this.GetEntityRequestName(odcmClass));
+    return this.GetRequestMethodWithOptions(this.GetEntityRequestName(odcmClass), odcmClass.Base != null);
 }
 
 
@@ -139,22 +139,24 @@ public string GetRequestBuilderProperty(string propertyName, string urlValue, st
     return stringBuilder.ToString();
 }
 
-public string GetCollectionPropertyRequestBuilderProperty(OdcmProperty odcmProperty)
+public string GetCollectionPropertyRequestBuilderProperty(string entityName, OdcmProperty odcmProperty)
 {
-    var propertyName = this.GetPropertyName(odcmProperty);
+    var propertyName = this.GetPropertyName(odcmProperty).GetSanitizedPropertyName();
+    var propertyPrefix = string.Concat(entityName, this.GetPropertyName(odcmProperty));
     var collectionRequestBuilder = odcmProperty.IsReference()
-        ? this.GetCollectionWithReferencesRequestBuilderString(propertyName)
-        : this.GetCollectionRequestBuilderString(propertyName);
+        ? this.GetCollectionWithReferencesRequestBuilderString(propertyPrefix)
+        : this.GetCollectionRequestBuilderString(propertyPrefix);
 
     return this.GetRequestBuilderProperty(propertyName, collectionRequestBuilder);
 }
 
 public string GetNonCollectionRequestBuilderProperty(OdcmProperty odcmProperty)
 {
-    var propertyName = this.GetPropertyName(odcmProperty);
+    var propertyName = this.GetPropertyName(odcmProperty).GetSanitizedPropertyName();
+    var propertyPrefix = this.GetPropertyTypeName(odcmProperty);
     var propertyRequestBuilder = odcmProperty.IsReference()
-        ? this.GetWithReferencesRequestBuilderString(this.GetPropertyTypeName(odcmProperty))
-        : this.GetRequestBuilderString(this.GetPropertyTypeName(odcmProperty));
+        ? this.GetWithReferencesRequestBuilderString(propertyPrefix)
+        : this.GetRequestBuilderString(propertyPrefix);
 
     return this.GetRequestBuilderProperty(propertyName, propertyRequestBuilder);
 }
@@ -208,7 +210,7 @@ public string GetNavigationProperties(OdcmClass entity)
         
         if (prop.IsCollection())
         {
-            stringBuilder.Append(this.GetCollectionPropertyRequestBuilderProperty(prop));
+            stringBuilder.Append(this.GetCollectionPropertyRequestBuilderProperty(this.GetEntityNameString(entity), prop));
         }
         else
         {
@@ -287,34 +289,44 @@ public string GetMethodProperties(OdcmClass entity)
             
             foreach (var param in requiredParameters)
             {
+                var paramVariableName = param.Name.ToLowerFirstChar();
                 var paramTypeString = param.Type.GetTypeString();
+                
+                if (param.IsCollection)
+                {
+                    paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
+                }
 
                 paramStringBuilder.Append(Environment.NewLine);
                 paramStringBuilder.Append("            ");
-                paramStringBuilder.Append(param.Type.GetTypeString());
-                paramStringBuilder.Append(" ");
-                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
-                paramStringBuilder.Append(",");
+                paramStringBuilder.AppendFormat("{0} {1},", paramTypeString, paramVariableName);
 
                 builderInitializerStringBuilder.Append(Environment.NewLine);
                 builderInitializerStringBuilder.Append("                ");
-                builderInitializerStringBuilder.Append(param.Name.ToLowerFirstChar() + ",");
+                builderInitializerStringBuilder.AppendFormat("{0},", paramVariableName);
             }
             
             foreach (var param in optionalParameters)
             {
-                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
+                var paramVariableName = param.Name.ToLowerFirstChar();
+                var paramTypeString = param.Type.GetTypeString();
+                
+                if (param.IsCollection)
+                {
+                    paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
+                }
+                else if(!param.Type.IsTypeNullable())
+                {
+                    paramTypeString = string.Format("{0}?", paramTypeString);
+                }
 
                 paramStringBuilder.Append(Environment.NewLine);
                 paramStringBuilder.Append("            ");
-                paramStringBuilder.Append(paramTypeString);
-                paramStringBuilder.Append(" ");
-                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
-                paramStringBuilder.Append(" = null,");
+                paramStringBuilder.AppendFormat("{0} {1} = null,", paramTypeString, paramVariableName);
 
                 builderInitializerStringBuilder.Append(Environment.NewLine);
                 builderInitializerStringBuilder.Append("                ");
-                builderInitializerStringBuilder.Append(param.Name.ToLowerFirstChar() + ",");
+                builderInitializerStringBuilder.AppendFormat("{0},", paramVariableName);
             }
 
             paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);

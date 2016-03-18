@@ -10,24 +10,23 @@ var requestType = entityName + methodName + "Request";
 
 var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString().ToCheckedCase();
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
-bool isAsync = method.LongDescriptionContains("async");
-var isSpecialCollection = method.LongDescriptionContains("specialCollection");
-var isCollection = method.IsCollection || isSpecialCollection;
-var createCollectionPage = returnTypeObject != null && returnTypeObject.IsComplex();
 
-var sendAsyncReturnType = isAsync
-    ? "I" + entityName + methodName + "AsyncMonitor"
-    : isCollection
-        ? createCollectionPage
-            ? "I" + entityName + methodName + "CollectionPage"
-            : "IEnumerable<" + method.ReturnType.Name.ToCheckedCase() + ">"
-        : returnEntityType;
+var isCollection = method.IsCollection;
+
+var sendAsyncReturnType = isCollection
+    ? "I" + entityName + methodName + "CollectionPage"
+    : returnEntityType;
         
 var methodReturnType = sendAsyncReturnType == null
     ? "Task"
     : "Task<" + sendAsyncReturnType + ">";
+    
+var methodReturnTag = sendAsyncReturnType == null
+    ? "The task to await."
+    : string.Concat("The", sendAsyncReturnType);
         
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
+bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
@@ -35,6 +34,8 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
     
     /// <summary>
@@ -53,14 +54,37 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         <#=requestType#>Body RequestBody { get; }
     <#
     }
+    
+    string sendParameterHeadersForOverload, sendOverloadParameters;
+    
+    if (returnsStream)
+    {
+        sendParameterHeadersForOverload = @"/// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>";
+        
+        sendOverloadParameters = "CancellationToken cancellationToken, HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead";
+    }
+    else
+    {
+        sendParameterHeadersForOverload = "/// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>";
+        sendOverloadParameters = "CancellationToken cancellationToken";
+    }
+    
     #>
-
+    
         /// <summary>
         /// Issues the <#=httpMethod#> request.
         /// </summary>
         <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async();
+
+        /// <summary>
+        /// Issues the <#=httpMethod#> request.
+        /// </summary>
+        /// <#=sendParameterHeadersForOverload#>
+        /// <returns><#=methodReturnTag#></returns>
+        <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(<#=sendOverloadParameters#>);
     <#
-    if (!string.Equals(sendAsyncReturnType, "Stream"))
+    if (!returnsStream)
     {
     #>
         

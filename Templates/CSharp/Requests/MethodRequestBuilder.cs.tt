@@ -139,8 +139,15 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     foreach (var param in method.Parameters)  
     {
         var paramTypeString = param.Type.GetTypeString();
-        if (param.Type.IsTypeNullable() || !param.IsNullable)
+        
+        if (param.IsCollection)
         {
+            paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
+        }
+        else if (!param.Type.IsTypeNullable() && param.IsNullable)
+        {
+            paramTypeString = string.Format("{0}?", paramTypeString);
+        }
     #>
 
         /// <summary>
@@ -148,17 +155,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// </summary>
         public <#=paramTypeString#> <#=param.Name.ToCheckedCase()#> { get; set; }
     <#
-        }
-        else
-        {
-    #>
-
-        /// <summary>
-        /// Gets the value of <#=param.Name.ToCheckedCase()#>.
-        /// </summary>
-        public <#=paramTypeString#>? <#=param.Name.ToCheckedCase()#> { get; set; }
-    <#
-        }
     }
     #>
 
@@ -212,7 +208,11 @@ private void AddParameterToRequestBuilderConstructorStringBuilder(
      
     if (optional)
     {
-        if (param.Type.IsTypeNullable())
+        if (param.IsCollection)
+        {
+            requestBuilderConstructorParametersStringBuilder.AppendFormat("IEnumerable<{0}> {1} = null,", paramTypeString, paramLowerFirstChar);
+        }
+        else if (param.Type.IsTypeNullable())
         {
              requestBuilderConstructorParametersStringBuilder.AppendFormat("{0} {1} = null,", paramTypeString, paramLowerFirstChar);
         }
@@ -223,6 +223,11 @@ private void AddParameterToRequestBuilderConstructorStringBuilder(
     }
     else
     {
+        if (param.IsCollection)
+        {
+            paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
+        }
+        
         requestBuilderConstructorParametersStringBuilder.AppendFormat("{0} {1},", paramTypeString, paramLowerFirstChar);
     }
 }

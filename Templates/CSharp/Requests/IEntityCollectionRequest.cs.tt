@@ -5,8 +5,8 @@ var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
 var collectionRequest = this.GetPropertyCollectionRequestName(prop);
-var collectionResponse = prop.Name.ToCheckedCase() + "CollectionResponse";
-var collectionPage = prop.Name.ToCheckedCase() + "CollectionPage";
+var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionResponse");
+var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
 
 #>
 
@@ -14,6 +14,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
     using System;
     using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     <#=this.GetCollectionInterfaceDefinition(prop)#>
@@ -24,6 +26,13 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// </summary>
         /// <returns>The collection page.</returns>
         Task<I<#=collectionPage#>> GetAsync();
+        
+        /// <summary>
+        /// Gets the collection page.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The collection page.</returns>
+        Task<I<#=collectionPage#>> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

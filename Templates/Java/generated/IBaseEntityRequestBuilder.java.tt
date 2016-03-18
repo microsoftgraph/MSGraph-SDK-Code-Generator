@@ -52,15 +52,24 @@ if (c.AsOdcmClass() != null)
     }
 #>
 <#
-	foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
-	{
-		var propName = prop.Name.ToCheckedCase();
-		var propRequestBuilder = TypeRequestBuilder(prop);
+    foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
+    {
+        var propName = prop.Name.ToCheckedCase();
+        var propRequestBuilder = TypeRequestBuilder(prop);
 #>
 
     I<#=propRequestBuilder#> get<#=propName#>();
 <#
-	}
+    }
+#>
+<#
+    if (c is OdcmMediaClass)
+    {
+#>
+
+    <#=ITypeStreamRequestBuilder(c)#> getContent();
+<#
+    }
 #>
 <#
     foreach (var method in c.AsOdcmClass().Methods)
@@ -71,7 +80,7 @@ if (c.AsOdcmClass() != null)
     <#if (method.IsCollection){#>
 
     <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
-    <#}else{#> 
+    <#}else{#>
     <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
 <#
 
