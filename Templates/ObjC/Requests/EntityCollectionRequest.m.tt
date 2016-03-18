@@ -34,8 +34,8 @@ if (innerEntityType.Equals(propName))
 @implementation <#=propNameRequest#>
 
 <#
-if(!prop.IsReference())
-{
+	if(!collectionReference)
+	{
 #>
 - (NSMutableURLRequest *)get
 {
