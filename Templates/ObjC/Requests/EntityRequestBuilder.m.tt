@@ -2,8 +2,9 @@
 <#@ include file="SharedObjC.template.tt"#>
 <#
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":(entityReference?"Reference":""));
-var entityRequestName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "Request";
+var refString = (withReference ? "WithReference" : (entityReference ? "Reference" : ""));
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + refString;
+var entityRequestName = entityName + "Request";
 #>
 
 #import "<#=writer.GetPrefix()#>ODataEntities.h"
@@ -35,7 +36,7 @@ foreach(var prop in entity.NavigationProperties())
 }
 
 <#
-        if (prop.LongDescriptionContains("queryable"))
+        if (!(prop.Type is OdcmComplexClass) || prop.LongDescriptionContains("queryable"))
         {
 #>
 - (<#=innerPropTypeRequestName#> *)<#=propInstanceName#>:(NSString *)<#=innerPropInstanceName#>

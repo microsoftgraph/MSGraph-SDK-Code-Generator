@@ -21,7 +21,7 @@ var entity = host.CurrentType.AsOdcmEnum();
     <#
     }
     #>
-    case <#=GetObjCTypeIdentifier(entity)#>endOfEnum:
+    case <#=GetObjCTypeIdentifier(entity)#>EndOfEnum:
         default:
             return nil;
     }
@@ -42,7 +42,7 @@ var entity = host.CurrentType.AsOdcmEnum();
     }
     #>
     {
-        return <#=GetObjCTypeIdentifier(entity)#>endOfEnum;
+        return <#=GetObjCTypeIdentifier(entity)#>EndOfEnum;
     }
 }
 

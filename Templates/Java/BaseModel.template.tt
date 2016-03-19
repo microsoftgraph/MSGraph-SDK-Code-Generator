@@ -339,6 +339,9 @@ public string TypeCollectionReferenceRequest(OdcmObject c) {
     }
 
     public string ParamType(OdcmParameter c) {
+        if (c.IsCollection){
+            return String.Format("List<{0}>", c.Type.GetTypeString());
+        }
         return c.Type.GetTypeString();
     }
 

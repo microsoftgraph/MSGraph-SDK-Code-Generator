@@ -3,8 +3,20 @@
 
 <#
 var entity = host.CurrentType.AsOdcmClass();
-var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withReference?"WithReference":(entityReference?"Reference":"")) + "RequestBuilder";
-var entityRequestName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "Request";
+var refString = (withReference ? "WithReference" : (entityReference ? "Reference" : ""));
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + refString;
+var entityRequestName = entityName + "Request";
+
+var baseEntityRequestName = "";
+if(!withReference && !entityReference && entity.Base!=null)
+{
+    baseEntityRequestName =  writer.GetPrefix() + entity.Base.Name.ToUpperFirstChar() + (withReference?"WithReference":(entityReference?"Reference":"")) + "RequestBuilder";
+}
+else
+{
+    baseEntityRequestName = writer.GetStaticCodePrefix() + "RequestBuilder";
+}
+
 var classes = new List<string>();
 classes.Add(entityRequestName);
 
@@ -74,32 +86,33 @@ foreach(var complexType in entity.Properties.Where(prop => prop.LongDescriptionC
     }
 }
 
-var lastClass = classes[classes.Count -1];
-StringBuilder stringBuilder = new StringBuilder();
-foreach(var propertyClass in classes)
-{
-    stringBuilder.Append(propertyClass);
-    if (propertyClass != lastClass)
-    {
-        stringBuilder.Append(", ");
-    }
-    else
-    {
-        stringBuilder.Append(";");
-    }
 }
 
 if (classes.Count > 0)
 {
+	var lastClass = classes[classes.Count -1];
+	StringBuilder stringBuilder = new StringBuilder();
+	foreach(var propertyClass in classes)
+	{
+		stringBuilder.Append(propertyClass);
+		if (propertyClass != lastClass)
+		{
+			stringBuilder.Append(", ");
+		}
+		else
+		{
+			stringBuilder.Append(";");
+		}
+	}
 #>
 @class <#=stringBuilder.ToString()#>
 <#
 }
-}
 #>
 
+
 #import "<#=writer.GetPrefix()#>Models.h"
-#import "<#=writer.GetStaticCodePrefix()#>RequestBuilder.h"
+#import "<#=baseEntityRequestName#>.h"
 
 <#
 if(withReference)
@@ -110,9 +123,7 @@ if(withReference)
 }
 #>
 
-
-
-@interface <#=entityName#> : <#=writer.GetStaticCodePrefix()#>RequestBuilder
+@interface <#=entityName#>RequestBuilder : <#=baseEntityRequestName#>
 
 <#
 if(!withReference && !entityReference)
@@ -120,33 +131,31 @@ if(!withReference && !entityReference)
 
 foreach(var prop in entity.NavigationProperties())
 {
+	var propInstanceName = prop.Name.ToLowerFirstChar();
+	var innerPropTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
+	var innerPropTypeRequestName = innerPropTypeName + "RequestBuilder";
+	
     if(prop.IsCollection)
     {
-        var propInstanceName = prop.Name.ToLowerFirstChar();
-        var propTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
-        var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
-        var collectionRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
-        var innerPropTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
-        var innerPropInstanceName = prop.Type.Name.ToLowerFirstChar();
-        var innerPropTypeRequestName = innerPropTypeName + "RequestBuilder";
-
+		var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
+		var collectionRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
+		var innerPropInstanceName = prop.Type.Name.ToLowerFirstChar();
 #>
 - (<#=collectionRequestName#> *)<#=propInstanceName#>;
 
 <#
-        if (prop.LongDescriptionContains("queryable"))
+        if (!(prop.Type is OdcmComplexClass) || prop.LongDescriptionContains("queryable"))
         {
 #>
 - (<#=innerPropTypeRequestName#> *)<#=propInstanceName#>:(NSString *)<#=innerPropInstanceName#>;
 
 <#
         }
-
     }
     else
     {
 #>
-- (<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=prop.Name#>;
+- (<#=innerPropTypeRequestName#> *) <#=propInstanceName#>;
 
 <#
     }
@@ -175,7 +184,8 @@ foreach(var prop in entity.GetProperties(typeName:"Stream"))
 foreach(var prop in entity.Properties.Where( prop => prop.Type is OdcmMediaClass))
 {
     var propName = prop.Name.ToUpperFirstChar();
-    var propRequestName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "StreamRequest";#>
+    var propRequestName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "StreamRequest";
+#>
 - (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>ValueWithOptions:(NSArray *)options;
 
 - (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>Value;

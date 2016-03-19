@@ -7,17 +7,17 @@
 // -------------------------------------------------------------
 public string GetEntityRequestBuilderInterfaceDefinition(OdcmClass odcmClass)
 {
-    return this.GetInterfaceDefinition(this.GetEntityRequestBuilderName(odcmClass));
+    return this.GetEntityInterfaceDefinition(odcmClass);
 }
 
 public string GetEntityRequestMethod(OdcmClass odcmClass)
 {
-    return this.GetRequestMethod(this.GetEntityRequestName(odcmClass));
+    return this.GetRequestMethod(this.GetEntityRequestName(odcmClass), odcmClass.Base != null);
 }
 
 public string GetEntityRequestMethodWithOptions(OdcmClass odcmClass)
 {
-    return this.GetRequestMethodWithOptions(this.GetEntityRequestName(odcmClass));
+    return this.GetRequestMethodWithOptions(this.GetEntityRequestName(odcmClass), odcmClass.Base != null);
 }
 
 
@@ -228,26 +228,36 @@ public string GetMethodProperties(OdcmClass entity)
             
             foreach (var param in requiredParameters)
             {
-                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
+                var paramVariableName = param.Name.ToLowerFirstChar();
+                var paramTypeString = param.Type.GetTypeString();
+                
+                if (param.IsCollection)
+                {
+                    paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
+                }
 
                 paramStringBuilder.Append(Environment.NewLine);
                 paramStringBuilder.Append("            ");
-                paramStringBuilder.Append(param.Type.GetTypeString());
-                paramStringBuilder.Append(" ");
-                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
-                paramStringBuilder.Append(",");
+                paramStringBuilder.AppendFormat("{0} {1},", paramTypeString, paramVariableName);
             }
             
             foreach (var param in optionalParameters)
             {
-                var paramTypeString = param.Type.IsTypeNullable() ? param.Type.GetTypeString() : param.Type.GetTypeString() + "?";
+                var paramVariableName = param.Name.ToLowerFirstChar();
+                var paramTypeString = param.Type.GetTypeString();
+                
+                if (param.IsCollection)
+                {
+                    paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
+                }
+                else if(!param.Type.IsTypeNullable())
+                {
+                    paramTypeString = string.Format("{0}?", paramTypeString);
+                }
 
                 paramStringBuilder.Append(Environment.NewLine);
                 paramStringBuilder.Append("            ");
-                paramStringBuilder.Append(paramTypeString);
-                paramStringBuilder.Append(" ");
-                paramStringBuilder.Append(param.Name.ToLowerFirstChar());
-                paramStringBuilder.Append(" = null,");
+                paramStringBuilder.AppendFormat("{0} {1} = null,", paramTypeString, paramVariableName);
             }
 
             paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);

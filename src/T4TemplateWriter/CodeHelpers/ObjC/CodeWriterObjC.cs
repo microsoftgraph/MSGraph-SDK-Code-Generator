@@ -283,13 +283,21 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
             {
                 string paramName = (p == parameters.First()) ? p.Name.ToUpperFirstChar() : p.Name.ToLowerFirstChar();
 
-                if (p.Type.IsComplex())
+                if (p.IsCollection)
                 {
-                    param += string.Format("{0}:({1} *){2}", paramName, p.Type.GetFullType(), p.Name.ToLowerFirstChar());
+                    param += string.Format("{0}:(NSArray *){1}", paramName, p.Name.ToLowerFirstChar());
+
                 }
                 else
                 {
-                    param += string.Format("{0}:({1}){2}", paramName, p.Type.GetFullType(), p.Name.ToLowerFirstChar());
+                    if (p.Type.IsComplex())
+                    {
+                        param += string.Format("{0}:({1} *){2}", paramName, p.Type.GetFullType(), p.Name.ToLowerFirstChar());
+                    }
+                    else
+                    {
+                        param += string.Format("{0}:({1}){2}", paramName, p.Type.GetFullType(), p.Name.ToLowerFirstChar());
+                    }                
                 }
                 param += " ";
             }

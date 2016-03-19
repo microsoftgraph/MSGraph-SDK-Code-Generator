@@ -38,15 +38,21 @@ typedef void (^<#=propName + collectionNamer#>CompletionHandler)(<#=writer.GetSt
 
 @interface <#=propRequest#> : <#=writer.GetStaticCodePrefix()#>CollectionRequest
 
+<#
+if(!collectionReference)
+{
+#>
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName + collectionNamer#>CompletionHandler)completionHandler;
 <#
-    if (!prop.LongDescriptionContains("readonly") && (!prop.IsReference() || collectionReference))
-    {
+}
+
+if (!prop.LongDescriptionContains("readonly") && (!prop.IsReference() || collectionReference))
+{
 #>
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#> withCompletion:(<#=innerEntityType#>CompletionHandler)completionHandler;
 
 <#
-    }
+}
 #>
 @end
