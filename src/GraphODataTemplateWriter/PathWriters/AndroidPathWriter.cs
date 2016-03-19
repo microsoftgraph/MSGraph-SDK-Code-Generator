@@ -9,7 +9,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
 
-    public class JavaPathWriter : PathWriterBase
+    public class AndroidPathWriter : PathWriterBase
     {
 
         public override string WritePath(ITemplateInfo template, String baseFileName)

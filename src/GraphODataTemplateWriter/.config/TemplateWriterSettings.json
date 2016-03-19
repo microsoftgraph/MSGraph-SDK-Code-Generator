@@ -1,5 +1,5 @@
 ﻿{
-    "AvailableLanguages": [ "Java", "ObjC", "CSharp", "Python", "JavaScript" ],
+    "AvailableLanguages": [ "Android", "ObjC", "CSharp", "Python", "JavaScript" ],
     "TargetLanguage": "ObjC",
     "Plugins": [ ],
     "PrimaryNamespaceName": "com",

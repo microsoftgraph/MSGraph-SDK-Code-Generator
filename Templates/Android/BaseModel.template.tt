@@ -2,9 +2,9 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ output extension="\\" #>
 <#
-    CustomT4Host host       = (CustomT4Host) Host;
-    var model               = host.CurrentModel;
-    CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
+    CustomT4Host host          = (CustomT4Host) Host;
+    var model                  = host.CurrentModel;
+    CodeWriterAndroid writer   = (CodeWriterAndroid) host.CodeWriter;
     var c = host.CurrentType;
 
     if (c == null)

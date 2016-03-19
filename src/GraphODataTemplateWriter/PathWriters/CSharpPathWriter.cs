@@ -2,7 +2,7 @@
 
 namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
 {
-    class CSharpPathWriter : JavaPathWriter 
+    class CSharpPathWriter : AndroidPathWriter 
     {
         
     }

@@ -54,7 +54,7 @@
     <Compile Include="CodeHelpers\CodeWriterBase.cs" />
     <Compile Include="CodeHelpers\CSharp\CodeWriterCSharp.cs" />
     <Compile Include="CodeHelpers\CSharp\TypeHelperCSharp.cs" />
-    <Compile Include="CodeHelpers\Java\CodeWriterJava.cs" />
+    <Compile Include="CodeHelpers\Android\CodeWriterAndroid.cs" />
     <Compile Include="CodeHelpers\JavaScript\CodeWriterJavaScript.cs" />
     <Compile Include="CodeHelpers\JavaScript\TypeHelperJavaScript.cs" />
     <Compile Include="CodeHelpers\ObjC\CodeWriterObjC.cs" />
@@ -65,12 +65,12 @@
     <Compile Include="PathWriters\PythonPathWriter.cs" />
     <Compile Include="TemplateProcessor\CustomT4Host.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="CodeHelpers\Java\TypeHelperJava.cs" />
+    <Compile Include="CodeHelpers\Android\TypeHelperAndroid.cs" />
     <Compile Include="CodeHelpers\ObjC\TypeHelperObjC.cs" />
     <Compile Include="Extensions\OdcmModelExtensions.cs" />
     <Compile Include="PathWriters\PathWriterBase.cs" />
     <Compile Include="PathWriters\IPathWriter.cs" />
-    <Compile Include="PathWriters\JavaPathWriter.cs" />
+    <Compile Include="PathWriters\AndroidPathWriter.cs" />
     <Compile Include="PathWriters\ObjCPathWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ConfigurationService.cs" />
@@ -94,7 +94,7 @@
     <None Include=".config\JavaScriptSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include=".config\JavaSettings.json">
+    <None Include=".config\AndroidSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include=".config\ObjCSettings.json">

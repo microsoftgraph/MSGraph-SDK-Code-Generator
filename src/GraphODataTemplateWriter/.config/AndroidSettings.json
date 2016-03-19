@@ -1,6 +1,6 @@
 {
     "TemplateMapping": {
-      "Java": [
+      "Android": [
           { "Template": "BaseModel", "SubProcessor": "Other", "Type": "Shared" },
 
           { "Template": "Enum", "SubProcessor": "EnumType",                                                                                   "Name": "<Class>" },
