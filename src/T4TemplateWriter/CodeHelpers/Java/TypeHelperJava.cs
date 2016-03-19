@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter.CodeHelpers.Java
+namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 {
     using System.Collections.Generic;
+    using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
-    using Vipr.T4TemplateWriter.Extensions;
 
     public static class TypeHelperJava
     {

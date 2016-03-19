@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter.CodeHelpers.Python
+namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
 {
     using System;
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
-    using Vipr.T4TemplateWriter.Settings;
 
     public class CodeWriterPython : CodeWriterBase
     {

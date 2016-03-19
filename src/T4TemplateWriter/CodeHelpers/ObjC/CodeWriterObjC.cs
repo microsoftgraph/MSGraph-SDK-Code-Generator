@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
+namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using Microsoft.Graph.ODataTemplateWriter.Extensions;
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
-    using Vipr.T4TemplateWriter.Extensions;
-    using Vipr.T4TemplateWriter.Settings;
 
     public class CodeWriterObjC : CodeWriterBase
     {
@@ -56,7 +56,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
             else
             {
                 baseEntity = entityType.Base == null ? "NSObject"
-                                           : GetPrefix() + entityType.Base.Name.Substring(entityType.Base.Name.LastIndexOf(".") + 1);
+                                           : this.GetPrefix() + entityType.Base.Name.Substring(entityType.Base.Name.LastIndexOf(".") + 1);
             }
             var interfaceLineBuilder = new StringBuilder();
             // NSObject lives in Foundation/Foundation.h 
@@ -213,7 +213,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 
         public string GetClass(OdcmProperty type) 
         {
-            return type.IsComplex() ? string.Format("[{0}{1} class]", GetPrefix(), type.GetTypeString()) : "nil";
+            return type.IsComplex() ? string.Format("[{0}{1} class]", this.GetPrefix(), type.GetTypeString()) : "nil";
         }
 
         public string GetParametersToJsonRaw(IEnumerable<string> parameters) 
@@ -345,15 +345,15 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 
         public string GetMethodHeader(OdcmMethod action) {
             var returnString = action.ReturnType == null ? "int returnValue"
-            : GetTypeForAction(action) + action.ReturnType.Name.ToLowerFirstChar();
+            : this.GetTypeForAction(action) + action.ReturnType.Name.ToLowerFirstChar();
             return string.Format("- (void){0}{1}:(void (^)({2}, MSOrcError *error))callback",
-            action.Name.ToLowerFirstChar(), GetParamsString(action.Parameters), returnString);
+            action.Name.ToLowerFirstChar(), this.GetParamsString(action.Parameters), returnString);
         }
 
         public string GetMethodHeaderRaw(OdcmMethod action) {
             return string.Format("- (void){0}Raw{1}:(void(^)(NSString *returnValue, MSOrcError *error))callback",
             action.Name.ToLowerFirstChar(),
-            GetParamsForRaw(action.Parameters.Select(p => p.Name)), (action.ReturnType == null ? "NSString * resultCode " : GetParamRaw(action.ReturnType.Name)));
+            this.GetParamsForRaw(action.Parameters.Select(p => p.Name)), (action.ReturnType == null ? "NSString * resultCode " : this.GetParamRaw(action.ReturnType.Name)));
         }
 
         private static ICollection<string> semanticOwnedObjectsKeywords;
@@ -390,7 +390,7 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 
         public string GetPropertyDeclaration(string propertyName, string type)
         {
-            var getterName = GetGetterString(propertyName);
+            var getterName = this.GetGetterString(propertyName);
             var setterName = "set" + propertyName.ToPascalize();
 
             return "@property (nonatomic, getter=" + getterName + ") " + type + " " + propertyName + ";";

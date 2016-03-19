@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter
+namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
-    using Vipr.T4TemplateWriter.Settings;
 
     public static class OdcmModelExtensions
     {

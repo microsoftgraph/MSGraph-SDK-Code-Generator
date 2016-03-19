@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
+namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
 {
     using System.Collections.Generic;
+    using Microsoft.Graph.ODataTemplateWriter.Extensions;
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
-    using Vipr.T4TemplateWriter.Extensions;
-    using Vipr.T4TemplateWriter.Settings;
 
     public static class TypeHelperObjC
 	{

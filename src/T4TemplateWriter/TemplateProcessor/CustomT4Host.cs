@@ -1,6 +1,6 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter
+namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 {
     using System;
     using System.CodeDom.Compiler;
@@ -9,11 +9,10 @@ namespace Vipr.T4TemplateWriter
     using System.IO;
     using System.Reflection;
     using System.Text;
+    using Microsoft.Graph.ODataTemplateWriter.CodeHelpers;
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Microsoft.VisualStudio.TextTemplating;
     using Vipr.Core.CodeModel;
-    using Vipr.T4TemplateWriter.CodeHelpers;
-    using Vipr.T4TemplateWriter.Settings;
-    using Vipr.T4TemplateWriter.TemplateProcessor;
 
     public class CustomT4Host : ITextTemplatingEngineHost
     {
@@ -48,13 +47,13 @@ namespace Vipr.T4TemplateWriter
         {
             get
             {
-                if (_codeWriter == null)
+                if (this._codeWriter == null)
                 {
                     String writerClassName = String.Format("Vipr.T4TemplateWriter.CodeHelpers.{0}.CodeWriter{0}",
                         ConfigurationService.Settings.TargetLanguage);
-                    _codeWriter = (CodeWriterBase)Activator.CreateInstance(Type.GetType(writerClassName), new object[] { this.CurrentModel });
+                    this._codeWriter = (CodeWriterBase)Activator.CreateInstance(Type.GetType(writerClassName), new object[] { this.CurrentModel });
                 }
-                return _codeWriter;
+                return this._codeWriter;
             }
         }
         public String Language
@@ -73,8 +72,8 @@ namespace Vipr.T4TemplateWriter
         private Encoding _fileEncoding = Encoding.UTF8;
         public Encoding FileEncoding
         {
-            get { return _fileEncoding; }
-            set { _fileEncoding = value; }
+            get { return this._fileEncoding; }
+            set { this._fileEncoding = value; }
         }
 
         public CompilerErrorCollection Errors { get; private set; }
@@ -109,15 +108,15 @@ namespace Vipr.T4TemplateWriter
         public void AddAssemblyReference(Assembly assembly)
         {
             var location = assembly.Location;
-            if (!_standardAssemblyReferences.Contains(location))
+            if (!this._standardAssemblyReferences.Contains(location))
             {
-                _standardAssemblyReferences.Add(assembly.Location);
+                this._standardAssemblyReferences.Add(assembly.Location);
             }
         }
 
-        public IList<String> StandardAssemblyReferences { get { return _standardAssemblyReferences; } }
+        public IList<String> StandardAssemblyReferences { get { return this._standardAssemblyReferences; } }
 
-        public IList<String> StandardImports { get { return _standardImports; } }
+        public IList<String> StandardImports { get { return this._standardImports; } }
 
         public bool LoadIncludeText(string requestFileName, out string content, out string location)
         {
@@ -131,7 +130,7 @@ namespace Vipr.T4TemplateWriter
                 return true;
             }
 
-            var candidates = Directory.GetFiles(TemplatesDirectory, "*" + requestFileName + "*", SearchOption.AllDirectories);
+            var candidates = Directory.GetFiles(this.TemplatesDirectory, "*" + requestFileName + "*", SearchOption.AllDirectories);
 
             if (candidates.Length >= 1)
             {
@@ -207,7 +206,7 @@ namespace Vipr.T4TemplateWriter
                 return fileName;
             }
 
-            string candidate = Path.Combine(Path.GetDirectoryName(TemplateFile), fileName);
+            string candidate = Path.Combine(Path.GetDirectoryName(this.TemplateFile), fileName);
             if (File.Exists(candidate))
             {
                 return candidate;
@@ -245,7 +244,7 @@ namespace Vipr.T4TemplateWriter
 
         public void LogErrors(CompilerErrorCollection errors)
         {
-            Errors = errors;
+            this.Errors = errors;
         }
 
         public AppDomain ProvideTemplatingAppDomain(string content)

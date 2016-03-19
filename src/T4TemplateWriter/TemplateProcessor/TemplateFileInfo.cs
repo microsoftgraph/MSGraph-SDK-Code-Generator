@@ -1,14 +1,15 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter.TemplateProcessor
+namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Microsoft.Graph.ODataTemplateWriter.Extensions;
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
+    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor.Enums;
     using Vipr.Core.CodeModel;
-    using Vipr.T4TemplateWriter.Extensions;
-    using Vipr.T4TemplateWriter.Settings;
 
     public class TemplateFileInfo : ITemplateInfo
     {
@@ -116,7 +117,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((TemplateFileInfo)obj);
+            return this.Equals((TemplateFileInfo)obj);
         }
 
         public override int GetHashCode()

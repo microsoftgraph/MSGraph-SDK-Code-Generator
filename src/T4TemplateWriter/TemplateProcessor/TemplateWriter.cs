@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter.TemplateProcessor
+namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Microsoft.Graph.ODataTemplateWriter.PathWriters;
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
+    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor.Enums;
     using Vipr.Core;
     using Vipr.Core.CodeModel;
-    using Vipr.T4TemplateWriter.Output;
-    using Vipr.T4TemplateWriter.Settings;
 
     public class TemplateWriter : IConfigurable, IOdcmWriter
     {
@@ -33,7 +34,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
                 throw new DirectoryNotFoundException(string.Format("Could not find : {0}", this.TemplatesDirectory));
             }
 
-            Console.WriteLine("Using templates from {0}", TemplatesDirectory);
+            Console.WriteLine("Using templates from {0}", this.TemplatesDirectory);
         }
 
         IEnumerable<TextFile> ProcessTemplates()
@@ -69,9 +70,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             {
                 nameCasing = FileNameCasing.UpperCamel;
             }
-            SetTemplatesDirectory(ConfigurationService.Settings.TemplatesDirectory);
+            this.SetTemplatesDirectory(ConfigurationService.Settings.TemplatesDirectory);
             this.TemplateInfoProvider = new TemplateInfoProvider(ConfigurationService.Settings.TemplateConfiguration,
-                                                                 Path.Combine(TemplatesDirectory, ConfigurationService.Settings.TargetLanguage),
+                                                                 Path.Combine(this.TemplatesDirectory, ConfigurationService.Settings.TargetLanguage),
                                                                 defaultNameCasing: nameCasing);
         }
 

@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter.TemplateProcessor
+namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor.Enums;
 
     /// <summary>
     /// Configures and creates the ITemplateInfo from the json config file.
@@ -43,7 +44,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         public IEnumerable<ITemplateInfo> Templates()
         {
             var templates = this.ReadTemplateFiles();
-            foreach (var templateInfo in mapping)
+            foreach (var templateInfo in this.mapping)
             {
                 string templateName = null;
                 if (templateInfo.TryGetValue("Template", out templateName) && templates.ContainsKey(templateName))
@@ -148,7 +149,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <returns></returns>
         private FileNameCasing GetFileNameCasing(Dictionary<string,string> template)
         {
-            return GetEnum<FileNameCasing>(template, "Case",  this.defaultCasing);
+            return this.GetEnum<FileNameCasing>(template, "Case",  this.defaultCasing);
         }
 
         /// <summary>
@@ -158,7 +159,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <returns></returns>
         private SubProcessor GetSubProcessor(Dictionary<string, string> template)
         {
-            return GetEnum<SubProcessor>(template, "SubProcessor", this.defaultSubProcessor);
+            return this.GetEnum<SubProcessor>(template, "SubProcessor", this.defaultSubProcessor);
         }
         
         /// <summary>
@@ -168,7 +169,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <returns></returns>
         private Template GetTemplate(Dictionary<string, string> template)
         {
-            return GetEnum<Template>(template, "Type", this.defaultTemplate);
+            return this.GetEnum<Template>(template, "Type", this.defaultTemplate);
         }
 
         /// <summary>
@@ -178,7 +179,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <returns></returns>
         private IEnumerable<string>IgnoreDescriptions(Dictionary<string, string> template)
         {
-            return GetConfigList(template, "Ignore");
+            return this.GetConfigList(template, "Ignore");
         }
 
         /// <summary>
@@ -188,7 +189,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <returns></returns>
         private IEnumerable<string>MatchingDescriptions(Dictionary<string, string> template)
         {
-            return GetConfigList(template, "Matches");
+            return this.GetConfigList(template, "Matches");
         }
 
         /// <summary>
@@ -198,7 +199,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <returns></returns>
         private IEnumerable<string> IncludedObjects(Dictionary<string, string> template)
         {
-            return GetConfigList(template, "Include");
+            return this.GetConfigList(template, "Include");
         }
 
         /// <summary>
@@ -208,7 +209,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         /// <returns></returns>
         private IEnumerable<string> ExcludedObjects(Dictionary<string, string> template)
         {
-            return GetConfigList(template, "Exclude");
+            return this.GetConfigList(template, "Exclude");
         }
 
         /// <summary>
@@ -241,7 +242,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         private TEnum GetEnum<TEnum>(Dictionary<string, string> template, string key, TEnum defaultValue) where TEnum : struct
         {
             TEnum type;
-            if (!TryGetValue<TEnum>(template, key, out type))
+            if (!this.TryGetValue<TEnum>(template, key, out type))
             {
                 type = defaultValue;
             }

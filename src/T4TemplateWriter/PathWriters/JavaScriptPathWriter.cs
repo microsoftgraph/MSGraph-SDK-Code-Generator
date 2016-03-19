@@ -1,28 +1,29 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter.Output
+namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
 {
     using System;
     using System.IO;
     using System.Linq;
-    using Vipr.T4TemplateWriter.Settings;
-    using Vipr.T4TemplateWriter.TemplateProcessor;
+    using Microsoft.Graph.ODataTemplateWriter.Extensions;
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
+    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
 
     public class JavaScriptPathWriter : PathWriterBase
     {
 
         public override string WritePath(ITemplateInfo template, String baseFileName)
         {
-            var theNamespace = CreateNamespace(template.OutputParentDirectory.ToLower());
-            var namespacePath = CreatePathFromNamespace(theNamespace);
-            var fileName = TransformFileName(template, baseFileName);
+            var theNamespace = this.CreateNamespace(template.OutputParentDirectory.ToLower());
+            var namespacePath = this.CreatePathFromNamespace(theNamespace);
+            var fileName = this.TransformFileName(template, baseFileName);
             String filePath = Path.Combine(namespacePath, fileName);
             return filePath;
         }
 
         private string CreateNamespace(string folderName)
         {
-            var @namespace = Model.GetNamespace();
+            var @namespace = this.Model.GetNamespace();
             var prefix = ConfigurationService.Settings.NamespacePrefix;
 
             if (String.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))

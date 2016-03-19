@@ -1,6 +1,6 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter.Settings
+namespace Microsoft.Graph.ODataTemplateWriter.Settings
 {
     using System.Collections.Generic;
     using System.Reflection;
@@ -15,20 +15,20 @@ namespace Vipr.T4TemplateWriter.Settings
         public TemplateWriterSettings()
         {
             // defaults
-            AvailableLanguages = new List<string> { "Java", "ObjC" };
-            PrimaryNamespaceName = "";
-            NamespacePrefix = "MS";
-            StaticCodePrefix = "MS";
+            this.AvailableLanguages = new List<string> { "Java", "ObjC" };
+            this.PrimaryNamespaceName = "";
+            this.NamespacePrefix = "MS";
+            this.StaticCodePrefix = "MS";
 
-            Plugins = new List<string>();
-            InitializeCollections = true;
-            TargetLanguage = "Java";
-            NamespaceOverride = "com.microsoft.services.onenote";
+            this.Plugins = new List<string>();
+            this.InitializeCollections = true;
+            this.TargetLanguage = "Java";
+            this.NamespaceOverride = "com.microsoft.services.onenote";
             this.templateMapping = new Dictionary<string, List<Dictionary<string, string>>>();
             this.templateConfiguration = new List<Dictionary<string, string>>();
-            TemplatesDirectory = null;
-            DefaultFileCasing = "UpperCamel";
-            CustomFlags = new List<string>();
+            this.TemplatesDirectory = null;
+            this.DefaultFileCasing = "UpperCamel";
+            this.CustomFlags = new List<string>();
         }
 
         public void CopyPropertiesFromMainSettings()
@@ -105,19 +105,19 @@ namespace Vipr.T4TemplateWriter.Settings
         {
             get
             {
-                if (templateConfiguration.Count == 0)
+                if (this.templateConfiguration.Count == 0)
                 {
                     List<Dictionary<string, string>> sharedConfig;
                     this.TemplateMapping.TryGetValue("Shared", out sharedConfig);
                     List<Dictionary<string, string>> languageConfig;
-                    if (templateConfiguration != null && this.TemplateMapping.TryGetValue(this.TargetLanguage, out languageConfig))
+                    if (this.templateConfiguration != null && this.TemplateMapping.TryGetValue(this.TargetLanguage, out languageConfig))
                     {
                         //TODO aclev this is niave for now..
-                        templateConfiguration.InsertRange(0, sharedConfig);
-                        templateConfiguration.InsertRange(0, languageConfig);
+                        this.templateConfiguration.InsertRange(0, sharedConfig);
+                        this.templateConfiguration.InsertRange(0, languageConfig);
                     }
                 }
-                return templateConfiguration;
+                return this.templateConfiguration;
             }
         }
     }

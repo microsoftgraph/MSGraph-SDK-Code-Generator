@@ -7,8 +7,8 @@
     <ProjectGuid>{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Vipr.T4TemplateWriter</RootNamespace>
-    <AssemblyName>Vipr.T4TemplateWriter</AssemblyName>
+    <RootNamespace>Microsoft.Graph.ODataTemplateWriter</RootNamespace>
+    <AssemblyName>GraphODataTemplateWriter</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>

@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter.CodeHelpers
+namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
-    using Vipr.T4TemplateWriter.Settings;
 
     abstract public class CodeWriterBase
     {
@@ -49,19 +49,19 @@ namespace Vipr.T4TemplateWriter.CodeHelpers
         public String WriteHeader(IEnumerable<string> additionalHeader = null)
         {
             return Write(new String[] {
-                WriteOpeningCommentLine(),
+                this.WriteOpeningCommentLine(),
                 string.Join(this.NewLineCharacter,
                     ConfigurationService.Settings.LicenseHeader
-                        .Select(line => WriteInlineCommentChar() + line)
+                        .Select(line => this.WriteInlineCommentChar() + line)
                         .ToArray()),
                 this.NewLineCharacter,
                 additionalHeader != null
                     ? string.Join(this.NewLineCharacter,
                         additionalHeader
-                            .Select(line => WriteInlineCommentChar() + line)
+                            .Select(line => this.WriteInlineCommentChar() + line)
                             .ToArray()) + this.NewLineCharacter
                     : "",
-                WriteClosingCommentLine()
+                this.WriteClosingCommentLine()
               });
 
         }

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter.TemplateProcessor
+namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 {
     using System;
     using System.Collections.Generic;
@@ -34,7 +34,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         public override string ToString()
         {
             return "Template Host Stats" + Environment.NewLine + Environment.NewLine
-                + ProcessedTemplates.ToArray()
+                + this.ProcessedTemplates.ToArray()
                     .Aggregate(string.Empty,
                               (s, kvp) => String.Format("{0} generated {1} files. {2}{3}", kvp.Key, kvp.Value.Count(), Environment.NewLine, s)
                     );

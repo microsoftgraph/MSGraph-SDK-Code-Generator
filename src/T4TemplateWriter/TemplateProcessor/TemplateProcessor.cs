@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-namespace Vipr.T4TemplateWriter.TemplateProcessor
+namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 {
     using System;
     using System.CodeDom.Compiler;
@@ -9,10 +9,12 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
     using System.Linq;
     using System.Text;
     using Microsoft.CSharp;
+    using Microsoft.Graph.ODataTemplateWriter.Extensions;
+    using Microsoft.Graph.ODataTemplateWriter.PathWriters;
+    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor.Enums;
     using Microsoft.VisualStudio.TextTemplating;
     using Vipr.Core;
     using Vipr.Core.CodeModel;
-    using Vipr.T4TemplateWriter.Output;
 
     public class TemplateProcessor : ITemplateProcessor
     {
@@ -41,7 +43,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
             {
                 if (this.subProcessors == null)
                 {
-                    InitializeSubprocessors();
+                    this.InitializeSubprocessors();
                 }
                 return this.subProcessors;
             }
@@ -50,22 +52,22 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         protected void InitializeSubprocessors()
         {
             this.subProcessors = new Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>>() {
-                {SubProcessor.EntityType,                   ProcessEntityTypes},
-                {SubProcessor.ComplexType,                  ProcessComplexTypes},
-                {SubProcessor.EnumType,                     ProcessEnumTypes},
-                {SubProcessor.EntityContainer,              ProcessEntityContainerType},
-                {SubProcessor.MediaEntityType,              ProcessMediaEntityTypes},
-                {SubProcessor.Property,                     ProcessProperties},
-                {SubProcessor.StreamProperty,               ProcessStreamProperties},
-                {SubProcessor.CollectionProperty,           ProcessCollections},
-                {SubProcessor.NavigationCollectionProperty, ProcessNavigationCollections},
-                {SubProcessor.CollectionReferenceProperty,  ProcessCollectionReferences},
-                {SubProcessor.EntityReferenceType,          ProcessEntityReferenceProperties},
-                {SubProcessor.Method,                       ProcessMethods},
-                {SubProcessor.NonCollectionMethod,          ProcessNonCollectionMethods},
-                {SubProcessor.CollectionMethod,             ProcessCollectionMethods},
-                {SubProcessor.MethodWithBody,               ProcessMethodsWithBody},
-                {SubProcessor.Other,                        ProcessTemplate},
+                {SubProcessor.EntityType,                   this.ProcessEntityTypes},
+                {SubProcessor.ComplexType,                  this.ProcessComplexTypes},
+                {SubProcessor.EnumType,                     this.ProcessEnumTypes},
+                {SubProcessor.EntityContainer,              this.ProcessEntityContainerType},
+                {SubProcessor.MediaEntityType,              this.ProcessMediaEntityTypes},
+                {SubProcessor.Property,                     this.ProcessProperties},
+                {SubProcessor.StreamProperty,               this.ProcessStreamProperties},
+                {SubProcessor.CollectionProperty,           this.ProcessCollections},
+                {SubProcessor.NavigationCollectionProperty, this.ProcessNavigationCollections},
+                {SubProcessor.CollectionReferenceProperty,  this.ProcessCollectionReferences},
+                {SubProcessor.EntityReferenceType,          this.ProcessEntityReferenceProperties},
+                {SubProcessor.Method,                       this.ProcessMethods},
+                {SubProcessor.NonCollectionMethod,          this.ProcessNonCollectionMethods},
+                {SubProcessor.CollectionMethod,             this.ProcessCollectionMethods},
+                {SubProcessor.MethodWithBody,               this.ProcessMethodsWithBody},
+                {SubProcessor.Other,                        this.ProcessTemplate},
             };
         }
 
@@ -92,65 +94,65 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         public IEnumerable<TextFile> Process(ITemplateInfo templateInfo)
         {
-            Func<ITemplateInfo, IEnumerable<TextFile>> subProcessor = ProcessTemplate;
-            SubProcessors.TryGetValue(templateInfo.SubprocessorType, out subProcessor);
+            Func<ITemplateInfo, IEnumerable<TextFile>> subProcessor = this.ProcessTemplate;
+            this.SubProcessors.TryGetValue(templateInfo.SubprocessorType, out subProcessor);
             return subProcessor(templateInfo);
         }
 
 
         protected virtual IEnumerable<TextFile> ProcessEntityContainerType(ITemplateInfo templateInfo)
         {
-            yield return ProcessTemplate(templateInfo, this.CurrentModel.EntityContainer);
+            yield return this.ProcessTemplate(templateInfo, this.CurrentModel.EntityContainer);
         }
 
         protected virtual IEnumerable<TextFile> ProcessEnumTypes(ITemplateInfo templateInfo)
         {
-            return ProcessTypes(templateInfo, this.CurrentModel.GetEnumTypes);
+            return this.ProcessTypes(templateInfo, this.CurrentModel.GetEnumTypes);
         }
 
         protected virtual IEnumerable<TextFile> ProcessComplexTypes(ITemplateInfo templateInfo)
         {
-            return ProcessTypes(templateInfo, this.CurrentModel.GetComplexTypes);
+            return this.ProcessTypes(templateInfo, this.CurrentModel.GetComplexTypes);
         }
 
         protected virtual IEnumerable<TextFile> ProcessEntityTypes(ITemplateInfo templateInfo)
         {
-            return ProcessTypes(templateInfo, this.CurrentModel.GetEntityTypes);
+            return this.ProcessTypes(templateInfo, this.CurrentModel.GetEntityTypes);
         }
 
         protected virtual IEnumerable<TextFile> ProcessCollections(ITemplateInfo templateInfo)
         {
-            return ProcessProperties(templateInfo, this.CollectionProperties);
+            return this.ProcessProperties(templateInfo, this.CollectionProperties);
         }
 
         protected virtual IEnumerable<TextFile> ProcessMediaEntityTypes(ITemplateInfo templateInfo)
         {
-            return ProcessTypes(templateInfo, this.CurrentModel.GetMediaEntityTypes);
+            return this.ProcessTypes(templateInfo, this.CurrentModel.GetMediaEntityTypes);
         }
 
         protected virtual IEnumerable<TextFile> ProcessNavigationCollections(ITemplateInfo templateInfo)
         {
-            return ProcessProperties(templateInfo, this.NavigationCollectionProperties);
+            return this.ProcessProperties(templateInfo, this.NavigationCollectionProperties);
         }
 
         protected virtual IEnumerable<TextFile> ProcessCollectionReferences(ITemplateInfo templateInfo)
         {
-            return ProcessProperties(templateInfo, this.CollectionReferenceProperties);
+            return this.ProcessProperties(templateInfo, this.CollectionReferenceProperties);
         }
 
         protected virtual IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo)
         {
-            return ProcessProperties(templateInfo, this.CurrentModel.GetProperties);
+            return this.ProcessProperties(templateInfo, this.CurrentModel.GetProperties);
         }
 
         protected virtual IEnumerable<TextFile> ProcessEntityReferenceProperties(ITemplateInfo templateInfo)
         {
-            return ProcessTypes(templateInfo, this.CurrentModel.GetEntityReferenceTypes);
+            return this.ProcessTypes(templateInfo, this.CurrentModel.GetEntityReferenceTypes);
         }
 
         protected virtual IEnumerable<TextFile> ProcessStreamProperties(ITemplateInfo templateInfo)
         {
-            return ProcessProperties(templateInfo, this.CurrentModel.GetStreamProperties);
+            return this.ProcessProperties(templateInfo, this.CurrentModel.GetStreamProperties);
         }
 
         protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo)
@@ -175,15 +177,15 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         private IEnumerable<TextFile> ProcessTypes(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod)
         {
-            return FilterOdcmEnumerable(templateInfo, modelMethod)
-                    .Select(odcmType => ProcessTemplate(templateInfo, odcmType, className: odcmType.Name));
+            return this.FilterOdcmEnumerable(templateInfo, modelMethod)
+                    .Select(odcmType => this.ProcessTemplate(templateInfo, odcmType, className: odcmType.Name));
         }
 
         private IEnumerable<TextFile> ProcessProperties(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod)
         {
-            return FilterOdcmEnumerable(templateInfo, modelMethod)
+            return this.FilterOdcmEnumerable(templateInfo, modelMethod)
                     .Select(property => property as OdcmProperty)
-                    .Select(odcmProperty => ProcessTemplate(templateInfo, odcmProperty,
+                    .Select(odcmProperty => this.ProcessTemplate(templateInfo, odcmProperty,
                                                                     className: odcmProperty.Class.Name,
                                                                     propertyName: odcmProperty.Name,
                                                                     propertyType: odcmProperty.Type.Name));
@@ -191,9 +193,9 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo, Func<IEnumerable<OdcmMethod>> methods)
         {
-            return FilterOdcmEnumerable(templateInfo, methods)
+            return this.FilterOdcmEnumerable(templateInfo, methods)
                     .Select(method => method as OdcmMethod)
-                    .Select(odcmMethod => ProcessTemplate(templateInfo, odcmMethod,
+                    .Select(odcmMethod => this.ProcessTemplate(templateInfo, odcmMethod,
                                                                     className: odcmMethod.Class.Name,
                                                                     methodName: odcmMethod.Name));
         }
@@ -305,7 +307,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         private TextFile ProcessTemplate(ITemplateInfo templateInfo, OdcmObject odcmObject,
                 string className = "", string propertyName = "", string methodName = "", string propertyType = "")
         {
-            return ProcessTemplate(templateInfo, odcmObject,
+            return this.ProcessTemplate(templateInfo, odcmObject,
                                         templateInfo.BaseFileName(this.CurrentModel.EntityContainer.Name,
                                                                   className,
                                                                   propertyName,
@@ -319,10 +321,10 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
 
             Func<ITextTemplatingEngineHost, string> preProcessedTemplate;
 
-            if (!preProcessedTemplates.TryGetValue(templateInfo.FullPath, out preProcessedTemplate))
+            if (!this.preProcessedTemplates.TryGetValue(templateInfo.FullPath, out preProcessedTemplate))
             {
                 preProcessedTemplate = this.PreProcessTemplate(templateInfo);
-                preProcessedTemplates.Add(templateInfo.FullPath, preProcessedTemplate);
+                this.preProcessedTemplates.Add(templateInfo.FullPath, preProcessedTemplate);
             }
 
             var output = preProcessedTemplate(host);
