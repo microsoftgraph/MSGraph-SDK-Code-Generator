@@ -9,24 +9,25 @@ var enumName = enumT.Name.ToCheckedCase();
 namespace <#=enumT.Namespace.GetNamespaceName()#>
 {
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
     
     /// <summary>
     /// The enum <#=enumName#>.
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(EnumConverter))]
     public enum <#=enumName#>
     {
     <#
         foreach(var value in enumT.Members)
         {
     #>
+    
         /// <summary>
         /// <#=value.Name.SplitCamelCase()#>
         /// </summary>
-        <#=value.Name.GetSanitizedPropertyName()#>,
+        <#=value.Name.ToCheckedCase().GetSanitizedPropertyName()#>,
     <#
         }
     #>
-}
+    
+    }
 }
