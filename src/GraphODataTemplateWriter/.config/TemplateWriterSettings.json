@@ -1,6 +1,6 @@
 ﻿{
     "AvailableLanguages": [ "Android", "ObjC", "CSharp", "Python", "JavaScript" ],
-    "TargetLanguage": "ObjC",
+    "TargetLanguage": "Android",
     "Plugins": [ ],
     "PrimaryNamespaceName": "com",
     "NamespacePrefix": "MSGraph",
