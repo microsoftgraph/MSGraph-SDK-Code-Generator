@@ -1,15 +1,15 @@
 [vipr-source-repo]: https://github.com/microsoft/vipr
 
-# VIPR T4 Template Writer
+# Microsoft Graph OData TemplateWriter
 
-[![Build status](https://ci.appveyor.com/api/projects/status/8o1e5efpqp957kd3?svg=true)](https://ci.appveyor.com/project/joshgav/vipr-t4templatewriter-jqj22)
-
-Source code writers for [VIPR][vipr-source-repo] utilizing T4 templates. The T4TemplateWriter receives an OdcmModel from VIPR and uses it to fill in a T4 template.
+Source code writers for [VIPR][vipr-source-repo] utilizing T4 templates. The GraphODataTemplateWriter receives an OdcmModel from VIPR and uses it to fill in a T4 template located within this repository.
 
 Currently the following target languages are supported by this writer:
 - Android
-- Java for JVM
-- Objective-C for iOS
+- CSharp
+- JavaScript
+- Objective-C
+- Python
 
 # Contents
 - [Prerequisites](#Prerequisites)
@@ -25,13 +25,11 @@ Currently the following target languages are supported by this writer:
 
 # Getting started
 
-This project uses git submodules to integrate upstream dependencies, specifically [Vipr][vipr-source-repo]. This repo will point to [msopentech/vipr/int-msot](https://github.com/msopentech/vipr/tree/int-msot) by default; if you need an alternate branch to include special fixes you'll need to check that out manually within the submodule.
+This project uses git submodules to integrate upstream dependencies, specifically [Vipr][vipr-source-repo]. If you need an alternate branch to include special fixes you'll need to check that out manually within the submodule.
 
 For the solution to open properly, ensure submodules are updated before opening it in Visual Studio. When initially cloning this repo, use `git clone --recursive` to update submodules at the same time. Later, run `git submodule update` to manually update submodules. If you don't use the `--recursive` switch when cloning, run `git submodule init` first to initialize the submodule.
 
-Once setup is complete, you can work with the vipr-t4templatewriter solution as usual. If you encounter problems, make sure NuGet packages and project references are all up-to-date.
-
-> Note: We will consider integrating Vipr via public NuGet packages when these become available.
+Once setup is complete, you can work with the GraphODataTemplateWriter solution as usual. If you encounter problems, make sure NuGet packages and project references are all up-to-date.
 
 For more information on submodules read [this chapter](http://git-scm.com/book/en/v2/Git-Tools-Submodules) from the Git book and search the Web.
 
@@ -40,14 +38,14 @@ For more information on submodules read [this chapter](http://git-scm.com/book/e
 1. Build the solution in Visual Studio.
 2. Go to the `src\T4TemplateWriter\bin\debug` folder to find all compiled components.
 3. In that folder, modify `.config\TemplateWriterSettings.json` to specify your template mapping see [Template Writer Settings](##Template-Writer-Settings) for more details.
-4. Open a command prompt as administrator in the same folder and run `Vipr.exe <path-or-url-to-metdata> --writer="Vipr.T4TemplateWriter"`.
+4. Open a command prompt as administrator in the same folder and run `Vipr.exe <path-or-url-to-metadata> --writer="Graph.ODataTemplateWriter"`.
 
 By default, output source code will be put in a folder named "output" next to the Vipr executable.
 
 ## Template Writer Settings
 ### Available Languages
 
-There are 4 languages to choose from at the moment.  Java, ObjC, CSharp, and Python.  Specify which language you want to generate in the `TargetLanguage` setting.
+There are four languages to choose from at the moment.  Java, ObjC, CSharp, and Python.  Specify which language you want to generate in the `TargetLanguage` setting.
 
 ### Templates
 You must specify a template directory under the `TemplatesDirectory` Settings.  The directory can be a full path or relative to the running directory.  The directory must contain a sub directory for each platform you want to generate code for. See the Templates directory for an example.
@@ -62,11 +60,13 @@ You must specify the mapping of T4 Templates to specific SubProcessors for each 
 
 and optionally :
 
-- `Include`, a semicolon delimited list of objects to include in the subprcoessor.
-- `Exclude`, a semicolon delimited list of objects to exclude from the subprcoessor.
-- `Ignore`, a semicolon delimited list of objects to ignore from the subprcoessor.
-- `Matches`, a semicolon delimited list of objects to include in the subprcoessor.
+- `Include`, a semicolon delimited list of objects to include in the subprocessor.
+- `Exclude`, a semicolon delimited list of objects to exclude from the subprocessor.
+- `Ignore`, a semicolon delimited list of objects to ignore from the subprocessor.
+- `Matches`, a semicolon delimited list of objects to include in the subprocessor.
 - `FileCasing`, `UpperCamel`, `LowerCamel` or `Snake` for the file casing for the specific file being created.
+
+**Note: Many of these optional parameters were used before Vipr had full support for annotations; now that annotations have been added to Vipr usage of these parameters should be limited to legacy scenarios**
 
 Example :
 
@@ -76,17 +76,22 @@ Example :
 
 The SubProcessors determine what type of OData object will be passed into the template generating the code file.
 
-- `EntityType` All Entity Types
-- `ComplexType` All Complex Types
-- `EnumType` All Enum Types
-- `Property` All Properties
-- `EntityContainer` The EntityContainer
+- `CollectionMethod` All Methods that are of type Collections
 - `CollectionProperty` Properties that are of type collection
+- `CollectionReferenceProperty` All Navigation Properties that are of type Collection which are used in Non-Containment Collections
+- `ComplexType` All Complex types
+- `EntityContainer`  The EntityContainer
+- `EntityReferenceType` All Entity types which are used in Non-Containment Collections
+- `EntityType` All Entity types
+- `EnumType` All Enumerable types
+- `MediaEntityType` All Media Entity types
 - `Method` All Actions and Functions
-- `NonCollectionMethod` All methods that do not return a collection
-- `CollectionMethod` All methods that return collections
-- `MethodWithBody` All methods that will contain a body in the http request
+- `MethodWithBody` All Methods and Functions that send a body within the http request
+- `NavigationCollectionProperty` All Navigation Properties that are of type Collection
+- `NonCollectionMethod` All Methods and Functions that do not return a collection
 - `Other` The entire model.
+- `Property` All Properties types
+- `StreamProperty` All Properties types that return a Streams
 
 #### Types
 
@@ -102,7 +107,7 @@ The type of template.
 #### Template Name
 
 To set the name of the template using the `Name` format string. You can insert `<Class>`, `<Property>`, `<Method>`, and `<Container>` the values will be replaced by the names of the corresponding object.  If you insert an item that doesn't exist it will be replaced with an empty string.  
-Note: You can also set the template name from inside the template by : `host.SetTemplateName("foo");` 
+Note: You can also set the template name from inside the template by : `host.SetTemplateName("foo");`
 
 #### Includes/Excludes
 
@@ -113,25 +118,14 @@ When you can't use the name of an object to include or exclude you can use the l
 
 Note: You can also check in a template by `odcjObject.LongDescriptionContains("foo");`
 
-
-
-# Using generated code
-
-The default generated code depends on an underlying HTTP client and other services. These are available for [Android and JVM][android-sdk-folder] ([odata-engine-core][], [odata-engine-android-impl][], [odata-engine-jvm-impl][]) and [iOS][ios-sdk-folder] ([office365_odata_base][])
-
-[android-sdk-folder]: https://github.com/OfficeDev/Office-365-SDK-for-Android/tree/master/sdk
-[ios-sdk-folder]: https://github.com/officedev/office-365-sdk-for-ios/tree/master/sdk-objectivec
-[odata-engine-core]: https://github.com/OfficeDev/Office-365-SDK-for-Android/tree/master/sdk/odata-engine-core
-[odata-engine-android-impl]: https://github.com/OfficeDev/Office-365-SDK-for-Android/tree/master/sdk/odata-engine-android-impl
-[odata-engine-jvm-impl]: https://github.com/OfficeDev/Office-365-SDK-for-Android/tree/master/sdk/odata-engine-jvm-impl
-[office365_odata_base]: https://github.com/OfficeDev/Office-365-SDK-for-iOS/tree/master/sdk-objectivec/office365_odata_base
+**Note: Includes/Excludes and Ignore/Matches were used before Vipr had full support for annotations; now that annotations have been added to Vipr usage of these parameters should be limited to legacy scenarios**
 
 ## Contributing
 
-Before we can accept your pull request, you'll need to electronically complete Microsoft Open Tech's [Contributor License Agreement](https://cla.msopentech.com/). If you've done this for other Microsoft Open Tech projects, then you're already covered.
+Before we can accept your pull request, you'll need to electronically complete Microsoft's [Contributor License Agreement](https://cla.microsoft.com/). If you've done this for other Microsoft projects, then you're already covered.
 
 [Why a CLA?](https://www.gnu.org/licenses/why-assign.html) (from the FSF)
 
 ## License
 
-Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. Licensed under the [MIT license](LICENSE).
+Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the [MIT license](LICENSE).
