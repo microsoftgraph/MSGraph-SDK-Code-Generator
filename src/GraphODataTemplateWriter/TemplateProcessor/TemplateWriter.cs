@@ -20,7 +20,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         private OdcmModel CurrentModel { get; set; }
         private ITemplateInfoProvider TemplateInfoProvider { get; set; }
 
-        private const String PathWriterClassNameFormatString = "Vipr.T4TemplateWriter.Output.{0}PathWriter";
+        private string pathWriterClassNameFormatString;
+        private string PathWriterClassNameFormatString
+        {
+            get {
+                return this.pathWriterClassNameFormatString ??
+                       (this.pathWriterClassNameFormatString =
+                           typeof(CSharpPathWriter).FullName.Replace("CSharp", "{0}"));
+            }
+        }
 
         private void SetTemplatesDirectory(string templatesDirectory, bool relative = true)
         {
@@ -43,8 +51,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             var templates = this.TemplateInfoProvider.Templates().Where(templateInfo => templateInfo.TemplateType != Template.Shared);
 
             // Initialize processor.
-            string pathWriterClassName = String.Format(PathWriterClassNameFormatString, ConfigurationService.Settings.TargetLanguage);
+            var pathWriterClassName = String.Format(this.PathWriterClassNameFormatString, ConfigurationService.Settings.TargetLanguage);
             var type = Type.GetType(pathWriterClassName);
+            if (type == null)
+            {
+                throw new InvalidOperationException("Unable to find path writer " + pathWriterClassName);
+            }
             IPathWriter pathWriterInstance = (IPathWriter)Activator.CreateInstance(type);
             this.Processor = new TemplateProcessor(pathWriterInstance, this.CurrentModel, this.TemplatesDirectory);
 

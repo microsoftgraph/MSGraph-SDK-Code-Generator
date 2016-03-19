@@ -7,9 +7,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
     using System.Collections.Generic;
     using System.Dynamic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
     using Microsoft.Graph.ODataTemplateWriter.CodeHelpers;
+    using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Microsoft.VisualStudio.TextTemplating;
     using Vipr.Core.CodeModel;
@@ -49,9 +51,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             {
                 if (this._codeWriter == null)
                 {
-                    String writerClassName = String.Format("Vipr.T4TemplateWriter.CodeHelpers.{0}.CodeWriter{0}",
-                        ConfigurationService.Settings.TargetLanguage);
-                    this._codeWriter = (CodeWriterBase)Activator.CreateInstance(Type.GetType(writerClassName), new object[] { this.CurrentModel });
+                    var codeWriterFormatString = typeof(CodeWriterCSharp).FullName.Replace("CSharp", "{0}");
+                    var writerClassName = string.Format(codeWriterFormatString, ConfigurationService.Settings.TargetLanguage);
+                    var type = Type.GetType(writerClassName);
+                    if (type == null)
+                    {
+                        throw new InvalidOperationException("Unable to find code writer of type: " + writerClassName);
+                    }
+                    this._codeWriter = (CodeWriterBase)Activator.CreateInstance(type, this.CurrentModel);
                 }
                 return this._codeWriter;
             }
@@ -78,7 +85,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
         public CompilerErrorCollection Errors { get; private set; }
 
-        private readonly List<String> _standardAssemblyReferences = new List<string>() {
+        private readonly List<string> _standardAssemblyReferences = new List<string> {
               Assembly.GetExecutingAssembly().Location,
               typeof(List<>).Assembly.Location,
               typeof(Uri).Assembly.Location,
@@ -90,19 +97,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
               typeof(CustomT4Host).Assembly.Location
         };
 
-        private readonly List<String> _standardImports = new List<String>() {
-               "System",
-               "System.Linq",
-               "System.Text",
-               "System.Collections.Generic",
-               "System.Dynamic",
-               "Microsoft.CSharp.RuntimeBinder",
-               "Vipr.Core.CodeModel",
-               "Vipr.T4TemplateWriter",
-               "Vipr.T4TemplateWriter.Extensions",
-               "Vipr.T4TemplateWriter.Settings",
-               "Vipr.T4TemplateWriter.CodeHelpers." + ConfigurationService.Settings.TargetLanguage
-        };
+        private List<string> _standardImports;
 
 
         public void AddAssemblyReference(Assembly assembly)
@@ -114,9 +109,53 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             }
         }
 
-        public IList<String> StandardAssemblyReferences { get { return this._standardAssemblyReferences; } }
+        public IList<string> StandardAssemblyReferences { get { return this._standardAssemblyReferences; } }
 
-        public IList<String> StandardImports { get { return this._standardImports; } }
+        public IList<string> StandardImports
+        {
+            get
+            {
+                if (this._standardImports == null)
+                {
+                    var standardImports = new List<string>
+                    {
+                        "System",
+                        "System.Linq",
+                        "System.Text",
+                        "System.Collections.Generic",
+                        "System.Dynamic",
+                        "Microsoft.CSharp.RuntimeBinder",
+                        "Vipr.Core.CodeModel"
+                    };
+
+                    var localNamespaces = this.GetType()
+                        .Assembly
+                        .GetTypes()
+                        .Select(t => t.Namespace)
+                        .Where(name => name != null)
+                        .Distinct()
+                        .ToList();
+
+                    var codeHelperNameHint = "CodeHelpers";
+                    var defaultNamespaces = localNamespaces
+                        .Where(name => !name.Contains(codeHelperNameHint))
+                        .Distinct()
+                        .ToList();
+
+                    var languageSpecifcCodeHelpersNamespace = localNamespaces
+                        .First(
+                            name =>
+                                name.Contains(codeHelperNameHint) &&
+                                name.Contains(ConfigurationService.Settings.TargetLanguage));
+
+                    this._standardImports = standardImports
+                        .Union(defaultNamespaces)
+                        .Union(new [] { languageSpecifcCodeHelpersNamespace })
+                        .ToList();
+                }
+                return this._standardImports;
+            }
+        }
 
         public bool LoadIncludeText(string requestFileName, out string content, out string location)
         {
@@ -153,7 +192,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
             return false;
         }
-
 
         public Object GetHostOption(String optionName)
         {
