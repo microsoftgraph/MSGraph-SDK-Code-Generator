@@ -8,7 +8,7 @@
 
     public static class TypeHelperCSharp
     {
-        public const string DefaultReservedPrefix = "@";
+        public const string DefaultReservedPrefix = "_";
         public static ICollection<string> GetReservedNames()
         {
             return new HashSet<string>(StringComparer.Ordinal)
