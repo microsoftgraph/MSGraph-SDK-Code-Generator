@@ -1,21 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Vipr.Core.CodeModel;
-using Vipr.T4TemplateWriter.Extensions;
-
-namespace Vipr.T4TemplateWriter.CodeHelpers
+﻿namespace Vipr.T4TemplateWriter.CodeHelpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using Vipr.Core.CodeModel;
+    using Vipr.T4TemplateWriter.Extensions;
     using Vipr.T4TemplateWriter.Settings;
 
     abstract public class CodeWriterBase
     {
-        public OdcmModel CurrentModel { get; set; }
+        public OdcmModel CurrentModel
+        {
+            get;
+            set;
+        }
 
-        public CodeWriterBase() : this(null) { }
+        public CodeWriterBase() : this(null)
+        {
+        }
 
         public CodeWriterBase(OdcmModel model)
         {

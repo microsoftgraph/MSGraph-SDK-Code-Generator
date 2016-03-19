@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Vipr.T4TemplateWriter.TemplateProcessor
+﻿namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
+    using System;
+
     public enum FileNameCasing
     {
         UpperCamel, /* FooBarBaz */

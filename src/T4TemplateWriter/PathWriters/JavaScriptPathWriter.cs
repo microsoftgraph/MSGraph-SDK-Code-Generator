@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
-using System;
-using System.IO;
-using System.Linq;
-using Vipr.T4TemplateWriter.Settings;
-using Vipr.T4TemplateWriter.TemplateProcessor;
-
 namespace Vipr.T4TemplateWriter.Output
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using Vipr.T4TemplateWriter.Settings;
+    using Vipr.T4TemplateWriter.TemplateProcessor;
+
     public class JavaScriptPathWriter : PathWriterBase
     {
 

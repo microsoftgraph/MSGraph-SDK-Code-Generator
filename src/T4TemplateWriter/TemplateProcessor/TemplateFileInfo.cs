@@ -1,16 +1,15 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using Vipr.Core.CodeModel;
-using Vipr.T4TemplateWriter.Extensions;
-using Vipr.T4TemplateWriter.Settings;
-
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.IO;
+    using Vipr.Core.CodeModel;
+    using Vipr.T4TemplateWriter.Extensions;
+    using Vipr.T4TemplateWriter.Settings;
 
     public class TemplateFileInfo : ITemplateInfo
     {

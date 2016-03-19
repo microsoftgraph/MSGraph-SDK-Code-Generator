@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-
 namespace Vipr.T4TemplateWriter.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+
     public static class StringExtensions
     {
         public static bool Contains(this string source, string compare, StringComparison comparison)

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Vipr.Core.CodeModel;
-
-namespace Vipr.T4TemplateWriter.CodeHelpers.JavaScript
+﻿namespace Vipr.T4TemplateWriter.CodeHelpers.JavaScript
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using Vipr.Core.CodeModel;
+
     public class CodeWriterJavaScript : CodeWriterBase
     {
         public CodeWriterJavaScript() : base() { }

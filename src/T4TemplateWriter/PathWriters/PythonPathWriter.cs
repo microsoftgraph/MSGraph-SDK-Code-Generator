@@ -1,18 +1,22 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
-using System;
-using System.IO;
-using System.Linq;
-using Vipr.T4TemplateWriter.Settings;
-using Vipr.T4TemplateWriter.TemplateProcessor;
-using Vipr.T4TemplateWriter;
-using Vipr.Core.CodeModel;
+namespace Vipr.T4TemplateWriter.Output
+{
 
-namespace Vipr.T4TemplateWriter.Output {
-    public class PythonPathWriter : PathWriterBase {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using Vipr.T4TemplateWriter.Settings;
+    using Vipr.T4TemplateWriter.TemplateProcessor;
+    using Vipr.T4TemplateWriter;
+    using Vipr.Core.CodeModel;
+    
+    public class PythonPathWriter : PathWriterBase
+    {
 
-        public override String WritePath(ITemplateInfo template, String entityTypeName) {
+        public override String WritePath(ITemplateInfo template, String entityTypeName)
+        {
             var theNamespace = CreateNamespace(template.TemplateType.ToString().ToLower());
             var namespacePath = CreatePathFromNamespace(theNamespace);
 
@@ -22,7 +26,8 @@ namespace Vipr.T4TemplateWriter.Output {
             return filePath;
         }
 
-        private string CreateNamespace(string folderName) {
+        private string CreateNamespace(string folderName)
+        {
             var @namespace = Model.GetNamespace();
             var prefix = ConfigurationService.Settings.NamespacePrefix;
 
@@ -34,7 +39,8 @@ namespace Vipr.T4TemplateWriter.Output {
                                                 : string.Format("{0}.{1}.{2}", prefix, @namespace, folderName);
         }
 
-        private string CreatePathFromNamespace(string @namespace) {
+        private string CreatePathFromNamespace(string @namespace)
+        {
             var splittedPaths = @namespace.Split('.');
 
             var destinationPath = splittedPaths.Aggregate(string.Empty, (current, path) =>

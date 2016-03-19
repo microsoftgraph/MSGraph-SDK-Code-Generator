@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Linq;
-using Vipr.T4TemplateWriter.Settings;
-using Vipr.Core.CodeModel;
-
 namespace Vipr.T4TemplateWriter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Linq;
+    using Vipr.T4TemplateWriter.Settings;
+    using Vipr.Core.CodeModel;
+    
     public static class OdcmModelExtensions
     {
         public static bool IsCollection(this OdcmProperty odcmProperty)

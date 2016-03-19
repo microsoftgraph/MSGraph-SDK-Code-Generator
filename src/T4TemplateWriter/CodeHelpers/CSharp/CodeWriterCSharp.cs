@@ -1,8 +1,8 @@
-﻿using System;
-using Vipr.Core.CodeModel;
-
-namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
+﻿namespace Vipr.T4TemplateWriter.CodeHelpers.CSharp
 {
+    using System;
+    using Vipr.Core.CodeModel;
+
     public class CodeWriterCSharp : CodeWriterBase
     {
         public CodeWriterCSharp(OdcmModel model) : base(model) { }

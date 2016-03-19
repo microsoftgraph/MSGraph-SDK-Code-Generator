@@ -1,26 +1,31 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
-using System;
-using System.Collections.Generic;
-using Vipr.T4TemplateWriter.Extensions;
-using Vipr.T4TemplateWriter.CodeHelpers;
-using Vipr.Core.CodeModel;
-
 namespace Vipr.T4TemplateWriter.CodeHelpers.Python
 {
-    public static class TypeHelperPython  {
+    using System;
+    using System.Collections.Generic;
+    using Vipr.T4TemplateWriter.Extensions;
+    using Vipr.T4TemplateWriter.CodeHelpers;
+    using Vipr.Core.CodeModel;
+    
+    public static class TypeHelperPython
+    {
         public const string ReservedPrefix = "$$__$$";
-        public static ICollection<string> ReservedNames {
-            get {
+        public static ICollection<string> ReservedNames
+        {
+            get
+            {
                 return new HashSet<string> {
                     //"abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while"
                 };
             }
         }
 
-        public static string GetTypeString(this OdcmType @type) {
-            switch (@type.Name) {
+        public static string GetTypeString(this OdcmType @type)
+        {
+            switch (@type.Name)
+            {
                 case "String":
                     return "str";
                 case "Int8":
@@ -44,9 +49,11 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Python
             }
         }
 
-        public static string GetTypeString(this OdcmParameter parameter) {
+        public static string GetTypeString(this OdcmParameter parameter)
+        {
             string t = "<class '";
-            switch (@parameter.Type.Name) {
+            switch (@parameter.Type.Name)
+            {
                 case "String":
                     return "str";
                 case "Int8":
@@ -72,7 +79,8 @@ namespace Vipr.T4TemplateWriter.CodeHelpers.Python
 
 
 
-        public static string GetTypeString(this OdcmProperty property) {
+        public static string GetTypeString(this OdcmProperty property)
+        {
             return GetTypeString(property.Type);
         }
 

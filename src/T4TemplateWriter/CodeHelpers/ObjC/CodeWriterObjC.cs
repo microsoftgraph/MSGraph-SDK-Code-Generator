@@ -1,19 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
+{
+    
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
-using Vipr.Core.CodeModel;
-using Vipr.T4TemplateWriter.Settings;
-using Vipr.T4TemplateWriter.Extensions;
+    using Vipr.Core.CodeModel;
+    using Vipr.T4TemplateWriter.Settings;
+    using Vipr.T4TemplateWriter.Extensions;
 
-namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC {
-    public class CodeWriterObjC : CodeWriterBase {
+    public class CodeWriterObjC : CodeWriterBase
+    {
 
-        public CodeWriterObjC() : base() { }
+        public CodeWriterObjC() : base()
+        {
+        }
 
-        public CodeWriterObjC(OdcmModel model) : base(model) { }
+        public CodeWriterObjC(OdcmModel model) : base(model)
+        {
+        }
 
         public string GetPrefix()
         {

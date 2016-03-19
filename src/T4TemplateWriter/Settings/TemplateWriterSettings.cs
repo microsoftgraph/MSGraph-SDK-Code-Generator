@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
-using System.Collections.Generic;
-using System.Reflection;
-
 namespace Vipr.T4TemplateWriter.Settings
 {
+    using System.Collections.Generic;
+    using System.Reflection;
+
     public class TemplateWriterSettings
     {
         public static TemplateWriterSettings mainSettingsObject = null;

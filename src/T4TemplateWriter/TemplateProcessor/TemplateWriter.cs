@@ -1,22 +1,22 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Vipr.T4TemplateWriter.Output;
-using Vipr.T4TemplateWriter.Settings;
-using Vipr.T4TemplateWriter.TemplateProcessor;
-using Vipr.Core;
-using Vipr.Core.CodeModel;
-
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
+    using System;
+    using System.IO;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using Vipr.T4TemplateWriter.Output;
+    using Vipr.T4TemplateWriter.Settings;
+    using Vipr.T4TemplateWriter.TemplateProcessor;
+    using Vipr.Core;
+    using Vipr.Core.CodeModel;
+
     public class TemplateWriter : IConfigurable, IOdcmWriter
     {
-        private String TemplatesDirectory {get; set;}
+        private String TemplatesDirectory { get; set;}
         private ITemplateProcessor Processor { get; set; }
         private OdcmModel CurrentModel { get; set; }
         private ITemplateInfoProvider TemplateInfoProvider { get; set; }

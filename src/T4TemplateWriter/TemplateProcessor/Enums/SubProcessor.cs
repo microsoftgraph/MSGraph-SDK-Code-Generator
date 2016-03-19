@@ -1,7 +1,8 @@
-﻿using System;
-namespace Vipr.T4TemplateWriter.TemplateProcessor
+﻿namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
-  public enum SubProcessor
+    using System;
+    
+    public enum SubProcessor
     {
       EntityType,
       ComplexType,

@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    
     internal class TemplateHostStats
     {
         private Dictionary<string, List<string>> ProcessedTemplates = new Dictionary<string, List<string>>();

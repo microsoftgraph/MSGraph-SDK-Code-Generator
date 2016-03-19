@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
-using System;
-using System.IO;
-using Vipr.T4TemplateWriter.Settings;
-using Vipr.T4TemplateWriter.TemplateProcessor;
-using Vipr.Core.CodeModel;
-
 namespace Vipr.T4TemplateWriter.Output
 {
+    using System;
+    using System.IO;
+    using Vipr.T4TemplateWriter.Settings;
+    using Vipr.T4TemplateWriter.TemplateProcessor;
+    using Vipr.Core.CodeModel;
+
     public class PathWriterBase : IPathWriter
     {
         public OdcmModel Model { get; set; }

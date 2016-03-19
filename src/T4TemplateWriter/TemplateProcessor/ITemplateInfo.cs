@@ -1,9 +1,7 @@
-﻿using System;
-using Vipr.Core.CodeModel;
-
-namespace Vipr.T4TemplateWriter.TemplateProcessor
+﻿namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
-
+    using System;
+    using Vipr.Core.CodeModel;
 
     public interface ITemplateInfo
     {

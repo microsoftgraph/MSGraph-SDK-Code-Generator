@@ -1,23 +1,23 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
-using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.IO;
-using System.Reflection;
-using System.Text;
-using Microsoft.CSharp.RuntimeBinder;
-using Microsoft.VisualStudio.TextTemplating;
-
-using Vipr.T4TemplateWriter.TemplateProcessor;
-using Vipr.T4TemplateWriter.Settings;
-using Vipr.Core.CodeModel;
-using Vipr.T4TemplateWriter.CodeHelpers;
-
 namespace Vipr.T4TemplateWriter
 {
+    using System;
+    using System.CodeDom.Compiler;
+    using System.Collections.Generic;
+    using System.Dynamic;
+    using System.IO;
+    using System.Reflection;
+    using System.Text;
+    using Microsoft.CSharp.RuntimeBinder;
+    using Microsoft.VisualStudio.TextTemplating;
+
+    using Vipr.T4TemplateWriter.TemplateProcessor;
+    using Vipr.T4TemplateWriter.Settings;
+    using Vipr.Core.CodeModel;
+    using Vipr.T4TemplateWriter.CodeHelpers;
+
     public class CustomT4Host : ITextTemplatingEngineHost
     {
         // see https://msdn.microsoft.com/en-us/library/bb126579(v=vs.110).aspx

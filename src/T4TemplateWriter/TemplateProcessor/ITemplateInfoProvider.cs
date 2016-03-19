@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Vipr.T4TemplateWriter.TemplateProcessor
+﻿namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
-  
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public interface ITemplateInfoProvider
     {
         /// <summary>

@@ -1,22 +1,22 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-
-using Microsoft.VisualStudio.TextTemplating;
-using Vipr.T4TemplateWriter.Output;
-using Vipr.Core;
-using Vipr.Core.CodeModel;
-
-using Microsoft.CSharp;
-using System.CodeDom.Compiler;
-
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+
+    using Microsoft.VisualStudio.TextTemplating;
+    using Vipr.T4TemplateWriter.Output;
+    using Vipr.Core;
+    using Vipr.Core.CodeModel;
+
+    using Microsoft.CSharp;
+    using System.CodeDom.Compiler;
+
     public class TemplateProcessor : ITemplateProcessor
     {
         private static CustomT4Host _host;
