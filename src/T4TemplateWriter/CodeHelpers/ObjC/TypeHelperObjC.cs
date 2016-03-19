@@ -1,15 +1,13 @@
-// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
-// Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the source repository root for license information. 
 
 namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 {
-    using System;
     using System.Collections.Generic;
     using Vipr.Core.CodeModel;
     using Vipr.T4TemplateWriter.Extensions;
     using Vipr.T4TemplateWriter.Settings;
-    using Vipr.T4TemplateWriter.CodeHelpers;
-    
+
     public static class TypeHelperObjC
 	{
 	    public static string Prefix = ConfigurationService.Settings.NamespacePrefix;

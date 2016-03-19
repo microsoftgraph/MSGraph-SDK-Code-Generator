@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-
     using Vipr.Core.CodeModel;
     using Vipr.T4TemplateWriter.Extensions;
 

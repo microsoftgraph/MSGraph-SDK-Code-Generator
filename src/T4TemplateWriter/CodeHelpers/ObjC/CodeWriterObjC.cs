@@ -1,15 +1,12 @@
 ﻿namespace Vipr.T4TemplateWriter.CodeHelpers.ObjC
 {
-    
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using System.Threading.Tasks;
-
     using Vipr.Core.CodeModel;
-    using Vipr.T4TemplateWriter.Settings;
     using Vipr.T4TemplateWriter.Extensions;
+    using Vipr.T4TemplateWriter.Settings;
 
     public class CodeWriterObjC : CodeWriterBase
     {

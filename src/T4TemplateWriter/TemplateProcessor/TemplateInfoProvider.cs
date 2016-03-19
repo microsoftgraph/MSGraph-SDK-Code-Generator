@@ -1,11 +1,9 @@
 ﻿namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
     using System;
-    using System.IO;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Configures and creates the ITemplateInfo from the json config file.
@@ -13,11 +11,11 @@
     class TemplateInfoProvider : ITemplateInfoProvider
     {
 
-        private IList<Dictionary<string, string>> mapping;
-        private string templatesDirectory;
-        private FileNameCasing defaultCasing;
-        private SubProcessor defaultSubProcessor;
-        private Template defaultTemplate;
+        private readonly IList<Dictionary<string, string>> mapping;
+        private readonly string templatesDirectory;
+        private readonly FileNameCasing defaultCasing;
+        private readonly SubProcessor defaultSubProcessor;
+        private readonly Template defaultTemplate;
 
         /// <summary>
         /// Creates a TemplateInfoProvider

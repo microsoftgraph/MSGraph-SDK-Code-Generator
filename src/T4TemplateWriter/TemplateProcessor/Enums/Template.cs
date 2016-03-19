@@ -1,7 +1,5 @@
 ﻿namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
-    using System;
-    
     public enum Template
     {
         Model,

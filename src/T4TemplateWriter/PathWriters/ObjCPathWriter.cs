@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
-// Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the source repository root for license information. 
 
 namespace Vipr.T4TemplateWriter.Output
 {
@@ -7,7 +7,6 @@ namespace Vipr.T4TemplateWriter.Output
     using System.IO;
     using Vipr.T4TemplateWriter.Settings;
     using Vipr.T4TemplateWriter.TemplateProcessor;
-    using Vipr.Core.CodeModel;
 
     class ObjCPathWriter : PathWriterBase
     {

@@ -1,14 +1,9 @@
 namespace Vipr.T4TemplateWriter.CodeHelpers.Python
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Vipr.Core.CodeModel;
     using Vipr.T4TemplateWriter.Settings;
-    
+
     public class CodeWriterPython : CodeWriterBase
     {
 

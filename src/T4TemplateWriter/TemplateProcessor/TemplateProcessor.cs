@@ -4,18 +4,16 @@
 namespace Vipr.T4TemplateWriter.TemplateProcessor
 {
     using System;
+    using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text;
-
+    using Microsoft.CSharp;
     using Microsoft.VisualStudio.TextTemplating;
-    using Vipr.T4TemplateWriter.Output;
     using Vipr.Core;
     using Vipr.Core.CodeModel;
-
-    using Microsoft.CSharp;
-    using System.CodeDom.Compiler;
+    using Vipr.T4TemplateWriter.Output;
 
     public class TemplateProcessor : ITemplateProcessor
     {
@@ -36,7 +34,7 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
         }
 
         private Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>> subProcessors;
-        private Dictionary<String, Func<ITextTemplatingEngineHost, string>> preProcessedTemplates;
+        private readonly Dictionary<String, Func<ITextTemplatingEngineHost, string>> preProcessedTemplates;
 
         protected Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>> SubProcessors
         {

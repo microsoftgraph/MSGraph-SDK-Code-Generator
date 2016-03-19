@@ -4,11 +4,10 @@ namespace Vipr.T4TemplateWriter.TemplateProcessor
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    
+
     internal class TemplateHostStats
     {
-        private Dictionary<string, List<string>> ProcessedTemplates = new Dictionary<string, List<string>>();
+        private readonly Dictionary<string, List<string>> ProcessedTemplates = new Dictionary<string, List<string>>();
 
         public void RecordProcessed(ITemplateInfo template, string type, string file)
         {

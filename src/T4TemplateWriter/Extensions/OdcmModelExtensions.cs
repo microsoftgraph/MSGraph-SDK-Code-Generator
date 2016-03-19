@@ -5,11 +5,10 @@ namespace Vipr.T4TemplateWriter
 {
     using System;
     using System.Collections.Generic;
-    using System.Text.RegularExpressions;
     using System.Linq;
-    using Vipr.T4TemplateWriter.Settings;
     using Vipr.Core.CodeModel;
-    
+    using Vipr.T4TemplateWriter.Settings;
+
     public static class OdcmModelExtensions
     {
         public static bool IsCollection(this OdcmProperty odcmProperty)

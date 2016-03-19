@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
-// Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the source repository root for license information. 
 
 namespace Vipr.T4TemplateWriter
 {
@@ -10,13 +10,11 @@ namespace Vipr.T4TemplateWriter
     using System.IO;
     using System.Reflection;
     using System.Text;
-    using Microsoft.CSharp.RuntimeBinder;
     using Microsoft.VisualStudio.TextTemplating;
-
-    using Vipr.T4TemplateWriter.TemplateProcessor;
-    using Vipr.T4TemplateWriter.Settings;
     using Vipr.Core.CodeModel;
     using Vipr.T4TemplateWriter.CodeHelpers;
+    using Vipr.T4TemplateWriter.Settings;
+    using Vipr.T4TemplateWriter.TemplateProcessor;
 
     public class CustomT4Host : ITextTemplatingEngineHost
     {
@@ -82,7 +80,7 @@ namespace Vipr.T4TemplateWriter
 
         public CompilerErrorCollection Errors { get; private set; }
 
-        private List<String> _standardAssemblyReferences = new List<string>() {
+        private readonly List<String> _standardAssemblyReferences = new List<string>() {
               Assembly.GetExecutingAssembly().Location,
               typeof(List<>).Assembly.Location,
               typeof(Uri).Assembly.Location,
@@ -94,7 +92,7 @@ namespace Vipr.T4TemplateWriter
               typeof(CustomT4Host).Assembly.Location
         };
 
-        private List<String> _standardImports = new List<String>() {
+        private readonly List<String> _standardImports = new List<String>() {
                "System",
                "System.Linq",
                "System.Text",

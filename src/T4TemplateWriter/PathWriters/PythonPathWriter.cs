@@ -1,17 +1,14 @@
-// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
-// Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the source repository root for license information. 
 
 namespace Vipr.T4TemplateWriter.Output
 {
-
     using System;
     using System.IO;
     using System.Linq;
     using Vipr.T4TemplateWriter.Settings;
     using Vipr.T4TemplateWriter.TemplateProcessor;
-    using Vipr.T4TemplateWriter;
-    using Vipr.Core.CodeModel;
-    
+
     public class PythonPathWriter : PathWriterBase
     {
 

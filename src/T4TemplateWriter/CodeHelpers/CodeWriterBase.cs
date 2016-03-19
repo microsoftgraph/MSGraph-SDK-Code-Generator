@@ -4,10 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using System.Threading.Tasks;
-
     using Vipr.Core.CodeModel;
-    using Vipr.T4TemplateWriter.Extensions;
     using Vipr.T4TemplateWriter.Settings;
 
     abstract public class CodeWriterBase

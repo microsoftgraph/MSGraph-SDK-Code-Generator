@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
-// Licensed under the MIT License. See LICENSE in the source repository root for license information.﻿
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the source repository root for license information. 
 
 namespace Vipr.T4TemplateWriter.Settings
 {
@@ -10,7 +10,7 @@ namespace Vipr.T4TemplateWriter.Settings
     {
         public static TemplateWriterSettings mainSettingsObject = null;
 
-        private Dictionary<string, List<Dictionary<string, string>>> templateMapping;
+        private readonly Dictionary<string, List<Dictionary<string, string>>> templateMapping;
 
         //TODO: Differentiate between Java and Obj-C
         public TemplateWriterSettings()
@@ -97,7 +97,7 @@ namespace Vipr.T4TemplateWriter.Settings
 
         public string[] LicenseHeader { get; set; }
 
-        private List<Dictionary<string, string>> templateConfiguration;
+        private readonly List<Dictionary<string, string>> templateConfiguration;
 
         /// <summary>
         /// The dictionary created by combining the "Shared" and current language mapping.
