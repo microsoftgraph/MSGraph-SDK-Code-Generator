@@ -1,0 +1,20 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeStreamRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+import java.io.*;
+
+<#=CreateInterfaceDef(IBaseTypeStreamRequest(c), "IHttpStreamRequest")#>
+
+    void get(final ICallback<InputStream> callback);
+
+    InputStream get() throws ClientException;
+
+    void put(final byte[] fileContents, final ICallback<<#=ClassTypeName(c)#>> callback);
+
+    <#=ClassTypeName(c)#> put(final byte[] fileContents) throws ClientException;
+}

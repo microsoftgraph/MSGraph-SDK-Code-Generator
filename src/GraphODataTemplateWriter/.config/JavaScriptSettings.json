@@ -1,0 +1,9 @@
+{
+    "TemplateMapping": {
+      "JavaScript": [
+          { "Template": "complex_types", "SubProcessor": "Other", "Name": "complex_types" },
+          { "Template": "entity_types", "SubProcessor": "Other", "Name": "entity_types" },
+          { "Template": "enum_types", "SubProcessor": "Other", "Name": "enum_types" }
+      ]
+    }
+}

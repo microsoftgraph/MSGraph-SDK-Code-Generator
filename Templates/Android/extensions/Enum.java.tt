@@ -1,0 +1,24 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+/**
+ * The Enum <#=c.Name.ToUpperFirstChar().SplitCamelCase()#>.
+*/
+public enum <#= c.Name.ToUpperFirstChar()#>
+{
+<#
+    foreach(var value in c.AsOdcmEnum().Members)
+    {
+#>
+    /**
+    * <#= value.Name.SplitCamelCase()#>
+    */
+    <#= value.SanitizePropertyName() #>,
+<#
+    }
+#>
+}

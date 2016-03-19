@@ -1,0 +1,33 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseTypeRequest(c), "IHttpRequest")#>
+
+    void get(final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> get() throws ClientException;
+
+    void update(final <#=TypeName(c)#> source<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> update(final <#=TypeName(c)#> source<#=TypeName(c)#>) throws ClientException;
+
+    void delete(final ICallback<Void> callback);
+
+    void delete()  throws ClientException;
+
+    void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
+
+    <#=IBaseTypeRequest(c)#> select(final String value);
+
+    <#=IBaseTypeRequest(c)#> expand(final String value);
+    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    <#=IBaseTypeRequest(c)#> top(final int value);
+    <#}#> 
+}

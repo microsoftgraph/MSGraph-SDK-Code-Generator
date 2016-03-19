@@ -1,0 +1,20 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeCollectionWithReferencesRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseTypeCollectionWithReferencesRequest(c))#>
+
+    void get(final ICallback<<#=ITypeCollectionWithReferencesPage(c)#>> callback);
+
+    <#=ITypeCollectionWithReferencesPage(c)#> get() throws ClientException;
+
+    <#=ITypeCollectionWithReferencesRequest(c)#> expand(final String value);
+
+    <#=ITypeCollectionWithReferencesRequest(c)#> select(final String value);
+
+    <#=ITypeCollectionWithReferencesRequest(c)#> top(final int value);
+}
