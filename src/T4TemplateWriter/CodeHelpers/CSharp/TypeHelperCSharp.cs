@@ -8,10 +8,10 @@
 
     public static class TypeHelperCSharp
     {
-        public const string DefaultReservedPrefix = "graph";
+        public const string DefaultReservedPrefix = "@";
         public static ICollection<string> GetReservedNames()
         {
-            return new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            return new HashSet<string>(StringComparer.Ordinal)
             {
                 "abstract",
                 "as",
@@ -81,9 +81,10 @@
                 "stackalloc",
                 "static",
                 "string",
+                "String",
                 "struct",
                 "switch",
-                "task",
+                "Task",
                 "this",
                 "throw",
                 "true",
