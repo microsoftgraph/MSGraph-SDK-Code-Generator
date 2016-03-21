@@ -1,0 +1,7 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+
+<#
+entityReference=true;
+#>
+
+<#@ include file="EntityRequest.h.tt"#>

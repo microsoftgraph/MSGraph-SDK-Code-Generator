@@ -1,0 +1,64 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var prop = host.CurrentType.AsOdcmProperty();
+
+string propName = null;
+string propClass = null;
+string propRequest = null;
+string propRequestBuilder = null;
+string namespaceValue = null;
+
+// If the current type isn't a property it's a content $value stream for a media entity
+if (prop == null)
+{
+    var entity = host.CurrentType.AsOdcmClass();
+    propName = "content";
+    propClass = entity.Name.ToCheckedCase();
+    propRequest = propClass + "ContentRequest";
+    propRequestBuilder = propClass + "ContentRequestBuilder";
+    namespaceValue = entity.Namespace.GetNamespaceName();
+}
+else
+{
+    propName = prop.Name;
+    propClass = prop.Class.Name.ToCheckedCase();
+    propRequest = propClass + prop.Name.ToCheckedCase() + "Request";
+    propRequestBuilder = propClass + prop.Name.ToCheckedCase() + "RequestBuilder";
+    namespaceValue = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
+}
+
+#>
+
+namespace <#=namespaceValue#>
+{
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// The type <#=propRequestBuilder#>.
+    /// </summary>
+    public partial class <#=propRequestBuilder#> : BaseRequestBuilder, I<#=propRequestBuilder#>
+    {
+        /// <summary>
+        /// Constructs a new <#=propRequestBuilder#>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the built request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        public <#=propRequestBuilder#>(
+            string requestUrl,
+            IBaseClient client)
+            : base(requestUrl, client)
+        {
+        }
+
+        /// <summary>
+        /// Builds the request.
+        /// </summary>
+        /// <returns>The built request.</returns>
+        public I<#=propRequest#> Request()
+        {
+            return new <#=propRequest#>(this.RequestUrl, this.Client, null);
+        }
+    }
+}

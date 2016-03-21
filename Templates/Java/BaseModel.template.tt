@@ -1,0 +1,700 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+    CustomT4Host host       = (CustomT4Host) Host;
+    var model               = host.CurrentModel;
+    CodeWriterJava writer   = (CodeWriterJava) host.CodeWriter;
+    var c = host.CurrentType;
+
+    if (c == null)
+    {
+//        throw new InvalidOperationException("Unable to get the current type!");
+    }
+
+#>
+<#="// Template Source: '" + host.TemplateFile + "', Name: '" + c.Name + "' , TypeName: '" + TypeName(c) + "'"#>
+<#+
+    public string TypeName(OdcmObject c) {
+        if (c is OdcmMethod) {
+            return ((OdcmMethod)c).Class.Name.ToUpperFirstChar() + c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
+        } else if (c is OdcmProperty && c.AsOdcmProperty().IsCollection) {
+            return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+        } else if (c is OdcmProperty && c.AsOdcmProperty().Type is OdcmPrimitiveType) {
+            return ClassTypeName(c) + c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+        } else if (c is OdcmProperty) {
+            return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+        }
+        return c.Name.ToUpperFirstChar();
+    }
+
+    public string MethodName(OdcmObject c) {
+        return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
+    }
+
+    public string MethodFullName(OdcmObject c) {
+        if (c is OdcmMethod){
+            return String.Format("{0}.{1}", ((OdcmMethod)c).Class.Namespace.Name, 
+                                            c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar()); 
+        }
+        return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
+    }
+
+    public string ITypeName(OdcmObject c) {
+        return "I" + TypeName(c);
+    }
+
+    public string BaseTypeName(OdcmObject c) {
+        return "Base" + TypeName(c);
+    }
+
+    public string IBaseTypeName(OdcmObject c) {
+        return "I" + BaseTypeName(c);
+    }
+
+    public string TypeStreamRequest(OdcmObject c) {
+        if (TypeName(c).EndsWith("stream", StringComparison.InvariantCultureIgnoreCase)){
+            return TypeName(c) + "Request";
+        }
+        return TypeName(c) + "StreamRequest";
+    }
+
+    public string ITypeStreamRequest(OdcmObject c) {
+        return "I" + TypeStreamRequest(c);
+    }
+
+    public string BaseTypeStreamRequest(OdcmObject c) {
+        return "Base" + TypeStreamRequest(c);
+    }
+
+    public string IBaseTypeStreamRequest(OdcmObject c) {
+        return "I" + BaseTypeStreamRequest(c);
+    }
+
+    public string TypeStreamRequestBuilder(OdcmObject c) {
+        return TypeStreamRequest(c) + "Builder";
+    }
+
+    public string ITypeStreamRequestBuilder(OdcmObject c) {
+        return "I" + TypeStreamRequestBuilder(c);
+    }
+
+    public string BaseTypeStreamRequestBuilder(OdcmObject c) {
+        return "Base" + TypeStreamRequestBuilder(c);
+    }
+
+    public string IBaseTypeStreamRequestBuilder(OdcmObject c) {
+        return "I" + BaseTypeStreamRequestBuilder(c);
+    }
+
+    public string TypeRequest(OdcmObject c) {
+        if(c is OdcmProperty && c.AsOdcmProperty().IsReference()){
+            return TypeWithReferencesRequest(c);
+        }else{
+            return TypeName(c) + "Request";
+        }
+    }
+
+    public string BaseTypeRequest(OdcmObject c) {
+        return "Base" + TypeRequest(c);
+    }
+
+    public string ITypeRequest(OdcmObject c) {
+        return "I" + TypeRequest(c);
+    }
+
+    public string IBaseTypeRequest(OdcmObject c) {
+        return "I" + BaseTypeRequest(c);
+    }
+
+    public string TypeRequestBuilder(OdcmObject c) {
+        return TypeRequest(c) + "Builder";
+    }
+
+    public string ITypeRequestBuilder(OdcmObject c) {
+        return "I" + TypeRequestBuilder(c);
+    }
+
+    public string BaseTypeRequestBuilder(OdcmObject c) {
+        return "Base" + TypeRequestBuilder(c);
+    }
+
+    public string IBaseTypeRequestBuilder(OdcmObject c) {
+        return "I" + BaseTypeRequestBuilder(c);
+    }
+
+    public string TypeWithReferencesRequest(OdcmObject c) {
+        return TypeName(c) + "WithReferencesRequest";
+    }
+
+    public string BaseTypeWithReferencesRequest(OdcmObject c) {
+        return "Base" + TypeWithReferencesRequest(c);
+    }
+
+    public string ITypeWithReferencesRequest(OdcmObject c) {
+        return "I" + TypeWithReferencesRequest(c);
+    }
+
+    public string IBaseTypeWithReferencesRequest(OdcmObject c) {
+        return "I" + BaseTypeWithReferencesRequest(c);
+    }
+
+    public string TypeWithReferencesRequestBuilder(OdcmObject c) {
+        return TypeWithReferencesRequest(c) + "Builder";
+    }
+
+    public string ITypeWithReferencesRequestBuilder(OdcmObject c) {
+        return "I" + TypeWithReferencesRequestBuilder(c);
+    }
+
+    public string BaseTypeWithReferencesRequestBuilder(OdcmObject c) {
+        return "Base" + TypeWithReferencesRequestBuilder(c);
+    }
+
+    public string IBaseTypeWithReferencesRequestBuilder(OdcmObject c) {
+        return "I" + BaseTypeWithReferencesRequestBuilder(c);
+    }
+
+    public string TypeReferenceRequest(OdcmObject c) {
+        return TypeName(c) + "ReferenceRequest";
+    }
+
+    public string BaseTypeReferenceRequest(OdcmObject c) {
+        return "Base" + TypeReferenceRequest(c);
+    }
+
+    public string ITypeReferenceRequest(OdcmObject c) {
+        return "I" + TypeReferenceRequest(c);
+    }
+
+    public string IBaseTypeReferenceRequest(OdcmObject c) {
+        return "I" + BaseTypeReferenceRequest(c);
+    }
+
+    public string TypeReferenceRequestBuilder(OdcmObject c) {
+        return TypeReferenceRequest(c) + "Builder";
+    }
+
+    public string ITypeReferenceRequestBuilder(OdcmObject c) {
+        return "I" + TypeReferenceRequestBuilder(c);
+    }
+
+    public string BaseTypeReferenceRequestBuilder(OdcmObject c) {
+        return "Base" + TypeReferenceRequestBuilder(c);
+    }
+
+    public string IBaseTypeReferenceRequestBuilder(OdcmObject c) {
+        return "I" + BaseTypeReferenceRequestBuilder(c);
+    }
+
+    public string TypeCollectionPage(OdcmObject c) {
+        return TypeName(c) + "CollectionPage";
+    }
+
+    public string ITypeCollectionPage(OdcmObject c) {
+        return "I" + TypeCollectionPage(c);
+    }
+
+    public string TypeCollectionWithReferencesPage(OdcmObject c) {
+        return TypeName(c) + "CollectionWithReferencesPage";
+    }
+
+    public string ITypeCollectionWithReferencesPage(OdcmObject c) {
+        return "I" + TypeCollectionWithReferencesPage(c);
+    }
+
+    public string BaseTypeCollectionPage(OdcmObject c) {
+        return "Base" + TypeCollectionPage(c);
+    }
+
+    public string IBaseTypeCollectionPage(OdcmObject c) {
+        return "I" + BaseTypeCollectionPage(c);
+    }
+
+    public string BaseTypeCollectionWithReferencesPage(OdcmObject c) {
+        return "Base" + TypeCollectionWithReferencesPage(c);
+    }
+
+    public string IBaseTypeCollectionWithReferencesPage(OdcmObject c) {
+        return "I" + BaseTypeCollectionWithReferencesPage(c);
+    }
+
+    public string BaseTypeCollectionResponse(OdcmObject c) {
+        return "Base" + TypeName(c) + "CollectionResponse";
+    }
+
+    public string TypeCollectionRequest(OdcmObject c) {
+        if(c is OdcmProperty && c.AsOdcmProperty().IsReference()){
+            return TypeCollectionWithReferencesRequest(c);
+        }else{
+            return TypeName(c) + "CollectionRequest";
+        }
+    }
+
+    public string ITypeCollectionRequest(OdcmObject c) {
+        return  "I" + TypeCollectionRequest(c);
+    }
+
+    public string BaseTypeCollectionRequest(OdcmObject c) {
+        return "Base" + TypeCollectionRequest(c);
+    }
+
+    public string IBaseTypeCollectionRequest(OdcmObject c) {
+        return  "I" + BaseTypeCollectionRequest(c);
+    }
+
+    public string TypeCollectionRequestBuilder(OdcmObject c) {
+        return TypeCollectionRequest(c) + "Builder";
+    }
+
+    public string ITypeCollectionRequestBuilder(OdcmObject c) {
+        return "I" + TypeCollectionRequestBuilder(c);
+    }
+
+    public string BaseTypeCollectionRequestBuilder(OdcmObject c) {
+        return "Base" + TypeCollectionRequestBuilder(c);
+    }
+
+    public string IBaseTypeCollectionRequestBuilder(OdcmObject c) {
+        return  "I" + BaseTypeCollectionRequestBuilder(c);
+    }
+
+    public string TypeCollectionWithReferencesRequest(OdcmObject c) {
+        return TypeName(c) + "CollectionWithReferencesRequest";
+    }
+
+    public string ITypeCollectionWithReferencesRequest(OdcmObject c) {
+        return  "I" + TypeCollectionWithReferencesRequest(c);
+    }
+
+    public string BaseTypeCollectionWithReferencesRequest(OdcmObject c) {
+        return "Base" + TypeCollectionWithReferencesRequest(c);
+    }
+
+    public string IBaseTypeCollectionWithReferencesRequest(OdcmObject c) {
+        return  "I" + BaseTypeCollectionWithReferencesRequest(c);
+    }
+
+    public string TypeCollectionWithReferencesRequestBuilder(OdcmObject c) {
+        return TypeCollectionWithReferencesRequest(c) + "Builder";
+    }
+
+    public string ITypeCollectionWithReferencesRequestBuilder(OdcmObject c) {
+        return  "I" + TypeCollectionWithReferencesRequestBuilder(c);
+    }
+
+    public string BaseTypeCollectionWithReferencesRequestBuilder(OdcmObject c) {
+        return "Base" + TypeCollectionWithReferencesRequestBuilder(c);
+    }
+
+    public string IBaseTypeCollectionWithReferencesRequestBuilder(OdcmObject c) {
+        return  "I" + BaseTypeCollectionWithReferencesRequestBuilder(c);
+    }
+
+public string TypeCollectionReferenceRequest(OdcmObject c) {
+        return TypeName(c) + "CollectionReferenceRequest";
+    }
+
+    public string ITypeCollectionReferenceRequest(OdcmObject c) {
+        return  "I" + TypeCollectionReferenceRequest(c);
+    }
+
+    public string BaseTypeCollectionReferenceRequest(OdcmObject c) {
+        return "Base" + TypeCollectionReferenceRequest(c);
+    }
+
+    public string IBaseTypeCollectionReferenceRequest(OdcmObject c) {
+        return  "I" + BaseTypeCollectionReferenceRequest(c);
+    }
+
+    public string TypeCollectionReferenceRequestBuilder(OdcmObject c) {
+        return TypeCollectionReferenceRequest(c) + "Builder";
+    }
+
+    public string ITypeCollectionReferenceRequestBuilder(OdcmObject c) {
+        return  "I" + TypeCollectionReferenceRequestBuilder(c);
+    }
+
+    public string BaseTypeCollectionReferenceRequestBuilder(OdcmObject c) {
+        return "Base" + TypeCollectionReferenceRequestBuilder(c);
+    }
+
+    public string IBaseTypeCollectionReferenceRequestBuilder(OdcmObject c) {
+        return  "I" + BaseTypeCollectionReferenceRequestBuilder(c);
+    }
+
+    public string TypeBody(OdcmObject c) {
+        return TypeName(c) + "Body";
+    }
+
+    public string BaseTypeBody(OdcmObject c) {
+        return "Base" + TypeBody(c);
+    }
+
+    public string FieldName(OdcmParameter c) {
+        return "m" + ParamName(c).ToUpperFirstChar();
+    }
+
+    public string ParamName(OdcmParameter c) {
+        return c.Name.ToLowerFirstChar();
+    }
+
+    public string ParamType(OdcmParameter c) {
+        if (c.IsCollection){
+            return String.Format("List<{0}>", c.Type.GetTypeString());
+        }
+        return c.Type.GetTypeString();
+    }
+
+    public string ReturnType(OdcmObject c) {
+        if (c.AsOdcmMethod().ReturnType != null) {
+            return c.AsOdcmMethod().ReturnType.Name.ToUpperFirstChar();
+        }
+        return "Void";
+    }
+
+    public string MethodParametersSignature(OdcmObject c) {
+        var parameterSignatureBuilder = new StringBuilder();
+        foreach (var p in c.AsOdcmMethod().Parameters)
+        {
+            parameterSignatureBuilder.AppendFormat(", final {0} {1}", ParamType(p), ParamName(p));
+        }
+        return parameterSignatureBuilder.ToString();
+    }
+
+    public string MethodParametersValues(OdcmObject c) {
+        var parameterValuesBuilder = new StringBuilder();
+        foreach (var p in c.AsOdcmMethod().Parameters)
+        {
+            parameterValuesBuilder.AppendFormat(", {0}", ParamName(p));
+        }
+        return parameterValuesBuilder.ToString();
+    }
+
+    public string MethodFieldValues(OdcmObject c) {
+        var parameterValuesBuilder = new StringBuilder();
+        foreach (var p in c.AsOdcmMethod().Parameters)
+        {
+            parameterValuesBuilder.AppendFormat(", {0}", FieldName(p));
+        }
+        return parameterValuesBuilder.ToString();
+    }
+
+    public string MethodPageValues(OdcmObject c) {
+        var pageValuesBuilder = new StringBuilder();
+        foreach (var param in c.AsOdcmMethod().Parameters)
+        {
+            var paramName = param.Name.ToLowerFirstChar();
+            pageValuesBuilder.AppendFormat(", /* {0} */ null", paramName);
+        }
+        return pageValuesBuilder.ToString();
+    }
+
+    public string ClassTypeName(OdcmObject c) {
+        if (c is OdcmMethod) {
+            return c.AsOdcmMethod().Class.Name.ToUpperFirstChar();
+        } else if (c is OdcmProperty && c.AsOdcmProperty().Class is OdcmServiceClass) {
+            return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+        } else if (c is OdcmProperty) {
+            return c.AsOdcmProperty().Class.Name.ToUpperFirstChar();
+        }
+        return c.Name.ToUpperFirstChar();
+    }
+
+    public string ClientType(OdcmObject c) {
+        return ((CustomT4Host)Host).CurrentModel.EntityContainer.Name.ToUpperFirstChar() + "Client";
+    }
+
+    public string IClientType(OdcmObject c) {
+        return "I" + ClientType(c);
+    }
+
+    public string BaseClientType(OdcmObject c) {
+        return "Base" + ClientType(c);
+    }
+
+    public string IBaseClientType(OdcmObject c) {
+        return "I" + BaseClientType(c);
+    }
+
+    public string IBaseClientType() {
+        return "IBaseClient";
+    }
+
+    public string BaseClassName(OdcmObject o)
+    {
+        var odcmClass = o.AsOdcmClass();
+        if (odcmClass != null)
+        {
+            var baseClass = odcmClass.Base;
+            if (baseClass != null)
+            {
+                return TypeName(baseClass);
+            }
+        }
+        return null;
+    }
+
+    public string CollectionPageGeneric(OdcmObject c) {
+        if (c is OdcmMethod) {
+            return "<" + ClassTypeName(c) + ", " + ITypeRequestBuilder(c) + ">";
+        }
+        return "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
+    }
+
+    public string CollectionPageWithReferencesGeneric(OdcmObject c) {
+        if (c is OdcmMethod) {
+            return "<" + ClassTypeName(c) + ", " + ITypeWithReferencesRequestBuilder(c) + ">";
+        }
+        return "<" + TypeName(c) + ", " + ITypeCollectionWithReferencesRequestBuilder(c) + ">";
+    }
+
+    public string CollectionRequestGeneric(OdcmObject c) {
+        if (c is OdcmMethod) {
+            return "<" + BaseTypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
+        }
+        return "<" + BaseTypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
+    }
+
+    public string CreatePackageDef(CustomT4Host host)
+    {
+        var format = @"package {0}.sdk.{1};
+
+import {0}.sdk.concurrency.*;
+import {0}.sdk.core.*;
+import {0}.sdk.extensions.*;
+import {0}.sdk.http.*;
+import {0}.sdk.generated.*;
+import {0}.sdk.options.*;
+import {0}.sdk.serializer.*;
+
+import java.util.Arrays;
+import java.util.List;";
+        return string.Format(format,
+            host.CurrentModel.NamespaceName(),
+            host.TemplateInfo.OutputParentDirectory);
+        }
+
+    public string CreateClassDef(string name, string extends = null, string implements = null)
+    {
+        return this.CreateClassOrInterface(name, true, extends, implements);
+    }
+
+    public string CreateInterfaceDef(string name, string extends = null)
+    {
+        return this.CreateClassOrInterface(name, false, extends, null);
+    }
+
+    public string CreateClassOrInterface(string name, bool isClass = true, string extends = null, string implements = null)
+    {
+        var extendsStr = string.Empty;
+        if (!string.IsNullOrEmpty(extends))
+        {
+            extendsStr = string.Format(" extends {0}", extends);
+        }
+
+        var implementsStr = string.Empty;
+        if (!string.IsNullOrEmpty(implements))
+        {
+            implementsStr = string.Format(" implements {0}", implements);
+        }
+
+        var format = @"
+
+/**
+ * The {1} for the {0}.
+ */
+public {1} {2}{3}{4} {{";
+        string declaration = string.Format(format,
+            isClass ? name.SplitCamelCase() : name.SplitCamelCase().Remove(0, 1),
+            isClass ? "class" : "interface",
+            name,
+            extendsStr,
+            implementsStr);
+
+        if (name.StartsWith("Base") || name.StartsWith("IBase"))
+        {
+            return CreatAutogeneratedWarning() + declaration;
+        }
+
+        return CreateExtensiblityMessage() + declaration;
+    }
+
+    public string CreatePropertyDef(IEnumerable<OdcmProperty> properties, bool isComplexType = false)
+    {
+        var sb = new StringBuilder();
+
+        var format =
+@"    /**
+     * The {0}.
+     */
+    @SerializedName(""{1}"")
+    public {2} {3};
+
+";
+        var collectionFormat =
+@"    /**
+     * The {0}.
+     */
+    public transient {2} {3};
+
+";
+
+        foreach (var property in properties.Where(p => !p.Type.Name.Equals("Stream")))
+        {
+            var propertyName = property.Name.ToUpperFirstChar();
+            var propertyType = "";
+            var propertyFormat = format;
+            if (property.IsCollection)
+            {
+                if (!property.IsNavigation())
+                {
+                    propertyType = "List<" + property.GetTypeString() + ">";
+                }
+                else
+                {
+                    propertyType = TypeCollectionPage(property);
+                    propertyFormat = collectionFormat;
+                }
+            }
+            else
+            {
+                propertyType = property.GetTypeString();
+            }
+
+            sb.AppendFormat(propertyFormat,
+                propertyName.SplitCamelCase(),
+                property.Name,
+                propertyType,
+                property.SanitizePropertyName().ToLowerFirstChar());
+        }
+        return sb.ToString();
+    }
+
+    public string CreateParameterDef(IEnumerable<OdcmParameter> parameters)
+    {
+        var sb = new StringBuilder();
+
+        var format =
+@"    /**
+     * The {0}.
+     */
+    @SerializedName(""{1}"")
+    public {2} {3};
+
+";
+        foreach (var p in parameters)
+        {
+            var propertyType = p.IsCollection ? string.Format("List<{0}>", ParamType(p)) : ParamType(p);
+                sb.AppendFormat(format,
+                ParamName(p).SplitCamelCase(),
+                ParamName(p),
+                ParamType(p),
+                p.SanitizePropertyName().ToLowerFirstChar());
+        }
+        return sb.ToString();
+    }
+
+    public string CreateRawJsonObject() {
+        return
+@"    /**
+     * The raw representation of this class
+     */
+    private transient JsonObject mRawObject;
+
+    /**
+     * The serializer
+     */
+    private transient ISerializer mSerializer;
+
+    /**
+     * Gets the raw representation of this class
+     * @return the raw representation of this class
+     */
+    public JsonObject getRawObject() {
+        return mRawObject;
+    }
+
+    /**
+     * Gets serializer
+     * @return the serializer
+     */
+    protected ISerializer getSerializer() {
+        return mSerializer;
+    }
+
+    /**
+     * Sets the raw json object
+     *
+     * @param serializer The serializer
+     * @param json The json object to set this object to
+     */
+    public void setRawObject(final ISerializer serializer, final JsonObject json) {
+        mSerializer = serializer;
+        mRawObject = json;
+";
+    }
+
+    public string UpdatePropertiesWithinSetRawObject(IEnumerable<OdcmProperty> properties = null, bool isComplexType = false)
+    {
+        var sb = new StringBuilder();
+        if (!isComplexType && properties != null)
+        {
+            foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation())) {
+                sb.AppendFormat(
+@"
+        if (json.has(""{0}"")) {{
+            final {1} response = new {1}();
+            if (json.has(""{0}@odata.nextLink"")) {{
+                response.nextLink = json.get(""{0}@odata.nextLink"").getAsString();
+            }}
+
+            final JsonObject[] sourceArray = serializer.deserializeObject(json.get(""{0}"").toString(), JsonObject[].class);
+            final {3}[] array = new {3}[sourceArray.length];
+            for (int i = 0; i < sourceArray.length; i++) {{
+                array[i] = serializer.deserializeObject(sourceArray[i].toString(), {3}.class);
+                array[i].setRawObject(serializer, sourceArray[i]);
+            }}
+            response.value = Arrays.asList(array);
+            {0} = new {2}(response, null);
+        }}
+",
+            property.SanitizePropertyName(),
+            BaseTypeCollectionResponse(property),
+            TypeCollectionPage(property),
+            property.GetTypeString());
+            }
+        }
+        sb.Append("    }");
+        return sb.ToString();
+    }
+
+    public string UpdateListPropertiesWithinSetRawObject(IEnumerable<string> listProperties)
+    {
+        var sb = new StringBuilder();
+        foreach (var property in listProperties)
+        {
+            sb.AppendFormat(
+@"
+        if (json.has(""{0}"")) {{
+            final JsonArray array = json.getAsJsonArray(""{0}"");
+            for (int i = 0; i < array.size(); i++) {{
+                {0}.get(i).setRawObject(mSerializer, (JsonObject) array.get(i));
+            }}
+        }}
+",
+            property);
+        }
+        sb.Append("    }");
+        return sb.ToString();
+    }
+
+    public string CreateExtensiblityMessage() {
+        return
+@"// This file is available for extending, afterwards please submit a pull request.";
+    }
+
+    public string CreatAutogeneratedWarning() {
+        return
+@"// **NOTE** This file was generated by a tool and any changes will be overwritten.";
+    }
+#>

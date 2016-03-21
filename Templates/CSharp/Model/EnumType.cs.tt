@@ -1,0 +1,32 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+
+<#
+var enumT = host.CurrentType.AsOdcmEnum();
+var enumName = enumT.Name.ToCheckedCase();
+#>
+
+namespace <#=enumT.Namespace.GetNamespaceName()#>
+{
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
+    
+    /// <summary>
+    /// The enum <#=enumName#>.
+    /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum <#=enumName#>
+    {
+    <#
+        foreach(var value in enumT.Members)
+        {
+    #>
+        /// <summary>
+        /// <#=value.Name.SplitCamelCase()#>
+        /// </summary>
+        <#=value.Name.GetSanitizedPropertyName()#>,
+    <#
+        }
+    #>
+}
+}

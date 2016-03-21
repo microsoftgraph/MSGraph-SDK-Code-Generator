@@ -1,0 +1,10 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = ITypeCollectionWithReferencesPage(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(ITypeCollectionWithReferencesPage(c), IBaseTypeCollectionWithReferencesPage(c))#>
+
+}

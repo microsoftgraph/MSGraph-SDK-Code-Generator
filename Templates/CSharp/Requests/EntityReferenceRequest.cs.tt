@@ -1,0 +1,23 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="EntityRequest.Base.template.tt"#>
+<#
+
+OdcmClass entity = host.CurrentType.AsOdcmClass();
+var entityName = this.GetEntityNameString(entity);
+
+#>
+
+namespace <#=this.GetNamespaceName(entity)#>
+{
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    <#=this.GetEntityReferenceRequestClassDefinition(entity)#>
+    {
+        <#=this.GetEntityReferenceRequestConstructor(entity)#>
+        
+        <#=this.GetEntityReferenceDeleteAsyncMethod(entity)#>
+    }
+}

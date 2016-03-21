@@ -1,0 +1,54 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entity = host.CurrentType.AsOdcmClass();
+#>
+
+#import "NSDate+MSSerialization.h"
+
+#import "<#=writer.GetPrefix()#>Models.h"
+
+@interface <#=GetStaticBaseObject()#>()
+
+@property (strong, nonatomic) NSMutableDictionary *dictionary;
+
+@end
+
+@interface <#=GetObjCTypeIdentifier(entity)#>()
+{
+<#
+foreach (var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream" ))
+{
+#>
+    <#=GetObjCTypeForVarDeclaration(prop)#> _<#=GetObjCProperty(prop)#>;
+<#
+}
+#>
+}
+@end
+
+@implementation <#=GetObjCTypeIdentifier(entity)#>
+
+<#
+foreach(var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream"))
+{
+    PropertyGetterImplementation(prop);
+    PropertySetterImplementation(prop);
+}
+
+foreach(var prop in entity.Properties.Where(prop => prop.IsCollection && !prop.LongDescriptionContains("not-enumerable")))
+{
+#>
+- (<#=GetObjCTypeForVarDeclaration(prop,true)#>) <#=GetObjCProperty(prop)#>:(NSInteger)index
+{
+   <#=GetObjCTypeForVarDeclaration(prop,true)#> <#=GetObjCProperty(prop)#> = nil;
+   if (self.<#=GetObjCProperty(prop)#>.value){
+       <#=GetObjCProperty(prop)#> = self.<#=GetObjCProperty(prop)#>.value[index];
+   }
+   return <#=GetObjCProperty(prop)#>;
+}
+<#
+}
+#>
+
+@end

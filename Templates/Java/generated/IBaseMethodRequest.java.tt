@@ -1,0 +1,55 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.*;
+
+<#=CreateInterfaceDef(IBaseTypeRequest(c))#>
+
+<# if (c.AsOdcmMethod().IsAction()) { #>
+
+<# if (c.AsOdcmMethod().ReturnType != null) { #>
+    void post(final ICallback<<#=ClassTypeName(c)#>> callback);
+
+    <#=ClassTypeName(c)#> post() throws ClientException;
+
+    <#=ITypeRequest(c)#> select(final String value);
+
+    <#=ITypeRequest(c)#> expand(final String value);
+
+	<# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    <#=ITypeRequest(c)#> top(final int value);
+    <#}#>
+<# } else { #>
+    void post(final ICallback<Void> callback);
+
+    void post() throws ClientException;
+
+<# } #>
+
+<# } else { #>
+
+<# if (c.AsOdcmMethod().ReturnType != null) { #>
+    void get(final ICallback<<#=ClassTypeName(c)#>> callback);
+
+    <#=ClassTypeName(c)#> get() throws ClientException;
+
+    <#=ITypeRequest(c)#> select(final String value);
+
+    <#=ITypeRequest(c)#> expand(final String value);
+
+    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    <#=ITypeRequest(c)#> top(final int value);
+    <#}#>
+<# } else { #>
+    void get(final ICallback<Void> callback);
+
+    void get() throws ClientException;
+
+<# } #>
+<# } #>
+}

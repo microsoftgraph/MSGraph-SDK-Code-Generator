@@ -1,0 +1,20 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="IEntityRequestBuilder.Base.template.tt"#>
+<#
+
+var entity = host.CurrentType.AsOdcmClass();
+
+#>
+
+namespace <#=this.GetNamespaceName(entity)#>
+{
+    using System;
+    using System.Collections.Generic;
+
+    <#=this.GetEntityReferenceRequestBuilderInterfaceDefinition(entity)#>
+    {
+        <#=this.GetEntityReferenceRequestMethod(entity)#>
+
+        <#=this.GetEntityReferenceRequestMethodWithOptions(entity)#>
+    }
+}

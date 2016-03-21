@@ -1,0 +1,39 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+
+var className="";
+var propName="";
+
+if(host.CurrentType is OdcmProperty)
+{
+    var prop = host.CurrentType.AsOdcmProperty();
+    className = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar();
+    propName = className + prop.Name.ToUpperFirstChar() + "Request";
+}
+else
+{
+    var clss = host.CurrentType.AsOdcmClass();
+    className = writer.GetPrefix() + clss.Name.ToUpperFirstChar();
+    propName = className  + "StreamRequest";
+}
+
+var uploadCompletionHandler = className + "UploadCompletionHandler";
+#>
+@class <#=writer.GetStaticCodePrefix()#>URLSessionDownloadTask, <#=writer.GetStaticCodePrefix()#>URLSessionUploadTask, <#=className#>;
+
+typedef void(^<#=uploadCompletionHandler#>)(<#=className#> *response, NSError* error);
+
+#import "<#=writer.GetStaticCodePrefix()#>Request.h"
+
+@interface <#=propName#> : <#=writer.GetStaticCodePrefix()#>Request
+
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDownloadTask *) downloadWithCompletion:(<#=writer.GetStaticCodePrefix()#>DownloadCompletionHandler)completionHandler;
+
+- (<#=writer.GetStaticCodePrefix()#>URLSessionUploadTask *) uploadFromData:(NSData *)data
+                                 completion:(<#=uploadCompletionHandler#>)completionHandler;
+
+- (<#=writer.GetStaticCodePrefix()#>URLSessionUploadTask *) uploadFromFile:(NSURL *)fileUrl
+                                 completion:(<#=uploadCompletionHandler#>)completionHandler;
+
+@end

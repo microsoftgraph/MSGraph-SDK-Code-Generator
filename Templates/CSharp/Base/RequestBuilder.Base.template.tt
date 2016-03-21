@@ -1,0 +1,122 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#+
+
+public string GetClassDefinition(string className)
+{
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("    /// The type {0}.", className);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("    /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("    public partial class {0} : BaseRequestBuilder, I{0}", className);
+    
+    return stringBuilder.ToString();
+}
+
+public string GetEntityClassDefinition(OdcmClass entity)
+{
+    string typeDeclaration = null;
+    var className = this.GetEntityRequestBuilderName(entity);
+    
+    if (entity.Base != null)
+    {
+        typeDeclaration = string.Format("{0} : {1}RequestBuilder, I{0}", className, entity.Base.Name.ToCheckedCase());
+    }
+    else
+    {
+        typeDeclaration = string.Format("{0} : BaseRequestBuilder, I{0}", className);
+    }
+    
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("    /// The type {0}.", className);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("    /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("    public partial class {0}", typeDeclaration);
+    
+    return stringBuilder.ToString();
+}
+
+public string GetConstructor(string instanceTypeName)
+{
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Constructs a new {0}.", instanceTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(
+@"        /// </summary>
+        /// <param name=""requestUrl"">The URL for the built request.</param>
+        /// <param name=""client"">The <see cref=""IBaseClient""/> for handling requests.</param>");
+        
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        public {0}(", instanceTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(
+@"            string requestUrl,
+            IBaseClient client)
+            : base(requestUrl, client)
+        {
+        }");
+    
+    return stringBuilder.ToString();
+}
+
+public string GetRequestMethod(string requestTypeName, bool includeNewKeyword = false)
+{
+    var stringBuilder = new StringBuilder();
+    stringBuilder.Append(this.GetRequestMethodHeader());
+    stringBuilder.Append(Environment.NewLine);
+    
+    if (includeNewKeyword)
+    {
+        stringBuilder.AppendFormat("        public new I{0} Request()", requestTypeName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        public I{0} Request()", requestTypeName);
+    }
+    
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(
+@"        {
+            return this.Request(null);
+        }");
+    
+    return stringBuilder.ToString();
+}
+
+public string GetRequestMethodWithOptions(string requestTypeName, bool includeNewKeyword = false)
+{
+    var stringBuilder = new StringBuilder();
+
+    stringBuilder.Append(this.GetRequestMethodWithOptionsHeader());     
+    stringBuilder.Append(Environment.NewLine);
+    
+    if (includeNewKeyword)
+    {
+        stringBuilder.AppendFormat("        public new I{0} Request(IList<Option> options)", requestTypeName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        public I{0} Request(IList<Option> options)", requestTypeName);
+    }
+    
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        {");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            return new {0}(this.RequestUrl, this.Client, options);", requestTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        }");
+    return stringBuilder.ToString();
+}
+
+#>

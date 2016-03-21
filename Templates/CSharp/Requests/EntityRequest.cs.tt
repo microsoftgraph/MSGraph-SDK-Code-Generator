@@ -1,0 +1,88 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="EntityRequest.Base.template.tt"#>
+<#
+
+OdcmClass entity = host.CurrentType.AsOdcmClass();
+var entityName = this.GetEntityNameString(entity);
+
+#>
+
+namespace <#=this.GetNamespaceName(entity)#>
+{
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    <#=this.GetEntityRequestClassDefinition(entity)#>
+    {
+        <#=this.GetEntityRequestConstructor(entity)#>
+
+        <#=this.GetEntityCreateAsyncMethod(entity)#>
+
+        <#=this.GetEntityDeleteAsyncMethod(entity)#>
+
+        <#=this.GetEntityGetAsyncMethod(entity)#>
+
+        <#=this.GetEntityUpdateAsyncMethod(entity)#>
+
+        <#=this.GetEntityExpandMethod(entity)#>
+
+        <#=this.GetEntitySelectMethod(entity)#>
+
+        /// <summary>
+        /// Initializes any collection properties after deserialization, like next requests for paging.
+        /// </summary>
+        /// <param name="<#=entity.Name#>ToInitialize">The <see cref="<#=entityName#>"/> with the collection properties to initialize.</param>
+        private void InitializeCollectionProperties(<#=entityName#> <#=entity.Name#>ToInitialize)
+        {
+        <#
+        var navigationCollectionProperties = entity.Properties.Where(property => property.IsCollection() && property.IsNavigation());
+
+        if (navigationCollectionProperties.Any())
+        {
+        #>
+
+            if (<#=entity.Name#>ToInitialize != null && <#=entity.Name#>ToInitialize.AdditionalData != null)
+            {
+        <#
+            foreach(var property in navigationCollectionProperties)
+            {
+                var propertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
+                var propertyType = property.GetTypeString();
+                
+                if (propertyType.IsComplex())
+                {
+        #>
+
+                if (<#=entity.Name#>ToInitialize.<#=propertyName#> != null && <#=entity.Name#>ToInitialize.<#=propertyName#>.CurrentPage != null)
+                {
+                    <#=entity.Name#>ToInitialize.<#=propertyName#>.AdditionalData = <#=entity.Name#>ToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    <#=entity.Name#>ToInitialize.AdditionalData.TryGetValue("<#=propertyName.ToLowerFirstChar()#>@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        <#=entity.Name#>ToInitialize.<#=propertyName#>.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+        <#
+                }
+            }
+        #>
+
+            }
+
+        <#
+        }
+        #>
+
+        }
+    }
+}

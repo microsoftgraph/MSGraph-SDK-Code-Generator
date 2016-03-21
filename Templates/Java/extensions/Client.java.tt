@@ -1,0 +1,139 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+import <#=host.CurrentModel.NamespaceName()#>.sdk.authentication.*;
+import <#=host.CurrentModel.NamespaceName()#>.sdk.logger.*;
+import android.app.Activity;
+
+<#=CreateClassDef(ClientType(c), BaseClientType(c), IClientType(c))#>
+
+    /**
+     * Restricted constructor
+     */
+    protected <#=ClientType(c)#>() {
+    }
+
+    /**
+     * The builder for this <#=ClientType(c)#>
+     */
+    public static class Builder  {
+
+        /**
+         * The client under construction
+         */
+        private final <#=ClientType(c)#> mClient = new <#=ClientType(c)#>();
+
+        /**
+         * Sets the serializer
+         * @param serializer The serializer
+         * @return the instance of this builder
+         */
+        public Builder serializer(final ISerializer serializer) {
+            mClient.setSerializer(serializer);
+            return this;
+        }
+
+        /**
+         * Sets the httpProvider
+         * @param httpProvider The httpProvider
+         * @return the instance of this builder
+         */
+        public Builder httpProvider(final IHttpProvider httpProvider) {
+            mClient.setHttpProvider(httpProvider);
+            return this;
+        }
+
+        /**
+         * Sets the authenticator
+         * @param authenticator The authenticator
+         * @return the instance of this builder
+         */
+        public Builder authenticator(final IAuthenticator authenticator) {
+            mClient.setAuthenticator(authenticator);
+            return this;
+        }
+
+        /**
+         * Sets the executors
+         * @param executors The executors
+         * @return the instance of this builder
+         */
+        public Builder executors(final IExecutors executors) {
+            mClient.setExecutors(executors);
+            return this;
+        }
+
+        /**
+         * Sets the logger
+         * @param logger The logger
+         * @return the instance of this builder
+         */
+        private Builder logger(final ILogger logger) {
+            mClient.setLogger(logger);
+            return this;
+        }
+
+        /**
+         * Set this builder based on the client configuration
+         * @param clientConfig The client configuration
+         * @return the instance of this builder
+         */
+        public Builder fromConfig(final IClientConfig clientConfig) {
+            return this.authenticator(clientConfig.getAuthenticator())
+                       .executors(clientConfig.getExecutors())
+                       .httpProvider(clientConfig.getHttpProvider())
+                       .logger(clientConfig.getLogger())
+                       .serializer(clientConfig.getSerializer());
+        }
+
+        /**
+         * Login a user and then returns the <#=ClientType(c)#> asynchronously
+         * @param activity The activity the UI should be from
+         * @param callback The callback when the client has been built
+         */
+        public void loginAndBuildClient(final Activity activity, final ICallback<<#=IClientType(c)#>> callback) {
+            mClient.validate();
+
+            mClient.getExecutors().performOnBackground(new Runnable() {
+                @Override
+                public void run() {
+                    final IExecutors executors = mClient.getExecutors();
+                    try {
+                        executors.performOnForeground(loginAndBuildClient(activity), callback);
+                    } catch (final ClientException e) {
+                        executors.performOnForeground(e, callback);
+                    }
+                }
+            });
+        }
+
+        /**
+         * Login a user and then returns the <#=ClientType(c)#>
+         * @param activity The activity the UI should be from
+         * @throws ClientException if there was an exception creating the client
+         */
+        public <#=IClientType(c)#> loginAndBuildClient(final Activity activity) throws ClientException {
+            mClient.validate();
+
+            mClient.getAuthenticator()
+                .init(mClient.getExecutors(), mClient.getHttpProvider(), activity, mClient.getLogger());
+
+            IAccountInfo silentAccountInfo = null;
+            try {
+                silentAccountInfo = mClient.getAuthenticator().loginSilent();
+            } catch (final Exception ignored) {
+            }
+
+            if (silentAccountInfo == null
+                && mClient.getAuthenticator().login(null) == null) {
+                throw new ClientAuthenticatorException("Unable to authenticate silently or interactively",
+                                                       GraphErrorCodes.AuthenticationFailure);
+            }
+
+            return mClient;
+        }
+    }
+}

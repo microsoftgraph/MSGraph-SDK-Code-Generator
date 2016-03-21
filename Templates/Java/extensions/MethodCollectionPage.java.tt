@@ -1,0 +1,20 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = TypeCollectionPage(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(TypeCollectionPage(c), BaseTypeCollectionPage(c), ITypeCollectionPage(c))#>
+
+    /**
+     * A collection page for <#=ClassTypeName(c)#>.
+     *
+     * @param response The serialized <#=BaseTypeCollectionResponse(c)#> from the OneDrive service
+     * @param builder The request builder for the next collection page
+     */
+    public <#=TypeCollectionPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeRequestBuilder(c)#> builder) {
+        super(response, builder);
+    }
+
+}

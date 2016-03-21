@@ -1,0 +1,61 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var method = host.CurrentType.AsOdcmMethod();
+var returnType = method.ReturnType.Name.ToCheckedCase();
+var returnTypeObject = method.ReturnType.AsOdcmClass();
+var isSpecialCollection = method.LongDescriptionContains("specialCollection");
+
+var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
+var collectionResponse = responseNamePrefix + "CollectionResponse";
+var collectionPage = responseNamePrefix + "CollectionPage";
+#>
+
+namespace <#=method.Namespace.GetNamespaceName()#>
+{
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+    using Newtonsoft.Json;
+
+    /// <summary>
+    /// The type <#=collectionResponse#>.
+    /// </summary>
+    [DataContract]
+    public class <#=collectionResponse#>
+    {
+        /// <summary>
+        /// Gets or sets the <see cref="I<#=collectionPage#>"/> value.
+        /// </summary>
+        [JsonConverter(typeof(InterfaceConverter<<#=collectionPage#>>))]
+        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+        public I<#=collectionPage#> Value { get; set; }
+        <#
+        if (isSpecialCollection)
+        {
+            foreach (var property in returnTypeObject.Properties)
+            {
+                if (!property.LongDescriptionContains("ignorableCollection"))
+                {
+                    var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
+                    var propertyType = property.Type.GetTypeString();
+        #>
+
+        /// <summary>
+        /// Gets or sets the <#=propertyName#>.
+        /// </summary>
+        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        public <#=propertyType#> <#=propertyName#> { get; set; }
+        <#
+                }
+            }
+        }
+        #>
+
+        /// <summary>
+        /// Gets or sets additional data.
+        /// </summary>
+        [JsonExtensionData(ReadData = true)]
+        public IDictionary<string, object> AdditionalData { get; set; }
+    }
+}

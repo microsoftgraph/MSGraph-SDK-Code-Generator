@@ -1,0 +1,379 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
+OdcmClass entity        = host.CurrentType.AsOdcmClass();
+var entityName          = entity.Name.ToUpperFirstChar();
+var entityRequest       = entityName + "Request";
+var entityBuilder       = entityName + "RequestBuilder";
+var jsonContentType     = "application/json";
+var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
+
+#>
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
+from __future__ import unicode_literals
+from .<#=entityRequest.ToUnderscore()#> import <#=entityRequest#>
+from ..request_builder_base import RequestBuilderBase
+<#
+    foreach (var method in entity.Methods)
+    {
+        var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1);
+        var baseName = method.Class.Name.ToUpperFirstChar() + methodName.ToUpperFirstChar();
+#>
+from ..request.<#=baseName.ToUnderscore()#> import <#=baseName#>RequestBuilder
+<#
+    }
+    foreach(var prop in entity.GetProperties(typeName:"Stream"))
+    {
+        var propName = prop.Class.Name.ToUpperFirstChar()+prop.Name.ToUpperFirstChar();
+        var propRequestBuilder = propName+"RequestBuilder";
+#>
+from ..request.<#=propName.ToUnderscore()#>_request import <#=propRequestBuilder#>
+<#
+    }
+    List<String> builders = new List<String>();
+    foreach(var prop in entity.GetProperties().Where(t => t.Type.LongDescriptionContains("navigable")))
+    {
+        var propName = prop.Type.GetTypeString().ToUpperFirstChar();
+        var propRequestBuilder = propName+"RequestBuilder";
+        if (!builders.Contains(propRequestBuilder)) builders.Add(propRequestBuilder);
+    }
+    foreach(var propRequestBuilder in builders) {
+#>
+from ..request.<#=propRequestBuilder.ToUnderscore()#> import <#=propRequestBuilder#>
+<#
+    }
+
+    if (!isPython2) {
+#>
+import asyncio
+<#
+    }
+#>
+
+
+class <#=entityBuilder#>(RequestBuilderBase):
+
+    def __init__(self, request_url, client):
+        """Initialize the <#=entityBuilder#>
+
+        Args:
+            request_url (str): The url to perform the <#=entityRequest#>
+                on
+            client (:class:`OneDriveClient<onedrivesdk.request.one_drive_client.OneDriveClient>`):
+                The client which will be used for the request
+        """
+        super(<#=entityBuilder#>, self).__init__(request_url, client)
+
+    def request(self, expand=None, select=None, options=None):
+        """Builds the <#=entityRequest#>
+
+        Args:
+            expand (str): Default None, comma-seperated list of relationships
+                to expand in the response.
+            select (str): Default None, comma-seperated list of properties to
+                include in the response.
+            options (list of :class:`Option<onedrivesdk.options.Option>`):
+                A list of options to pass into the request. Defaults to None.
+
+        Returns:
+            :class:`<#=entityRequest#><onedrivesdk.request.<#=entityRequest.ToUnderscore()#>.<#=entityRequest#>>`:
+                The <#=entityRequest#>
+        """
+        req = <#=entityRequest#>(self._request_url, self._client, options)
+        req._set_query_options(expand=expand, select=select)
+        return req
+
+    def delete(self):
+        """Deletes the specified <#=entityName#>."""
+        self.request().delete()
+
+<#
+        if (!isPython2) {
+#>
+    @asyncio.coroutine
+    def delete_async(self):
+        """Deletes the specified <#=entityName#>."""
+        yield from self.request().delete_async()
+<#
+        }
+#>
+    def get(self):
+        """Gets the specified <#=entityName#>.
+        
+        Returns:
+            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+                The <#=entityName#>.
+        """
+        return self.request().get()
+
+<#
+        if (!isPython2) {
+#>
+    @asyncio.coroutine
+    def get_async(self):
+        """Gets the specified <#=entityName#> in async.
+
+        Returns:
+            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+                The <#=entityName#>.
+        """
+        entity = yield from self.request().get_async()
+        return entity
+<#
+        }
+#>
+    def update(self, <#=entity.Name.ToUnderscore()#>):
+        """Updates the specified <#=entityName#>.
+        
+        Args:
+            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
+                The <#=entityName#> to update.
+
+        Returns:
+            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+                The updated <#=entityName#>
+        """
+        return self.request().update(<#=entity.Name.ToUnderscore()#>)
+
+<#
+        if (!isPython2) {
+#>
+    @asyncio.coroutine
+    def update_async(self, <#=entity.Name.ToUnderscore()#>):
+        """Updates the specified <#=entityName#> in async
+        
+        Args:
+            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
+                The <#=entityName#> to update.
+
+        Returns:
+            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+                The updated <#=entityName#>.
+        """
+        entity = yield from self.request().update_async(<#=entity.Name.ToUnderscore()#>)
+        return entity
+<#
+        }
+    //prevent navigable streams from being uploaded to
+    if (entity.GetProperties(typeName:"Stream").Where(t => !t.LongDescriptionContains("navigable")).Any() && !entity.LongDescriptionContains("navigable"))
+    {
+#>
+
+    def upload(self, local_path):
+        """Uploads the file using PUT
+        
+        Args:
+            local_path (str): The path to the local file to upload.
+
+        Returns: 
+            The created entity.
+        """
+        return self.content.request().put(local_path)
+
+<#
+        if (!isPython2) {
+#>
+    @asyncio.coroutine
+    def upload_async(self, local_path):
+        """Uploads the file using PUT in async
+        
+        Args:
+            local_path (str): The path to the local file to upload.
+
+        Returns: The created entity.
+        """
+        entity = yield from self.content.request().upload_async(local_path)
+        return entity
+<#
+        }
+    }
+
+    if (entity.GetProperties(typeName:"Stream").Any())
+    {
+#>
+
+    def download(self, local_path):
+        """Downloads the specified entity.
+
+        Args:
+            local_path (str): The path where the entity should be
+                downloaded to
+        """
+        return self.content.request().download(local_path)
+
+<#
+        if (!isPython2) {
+#>
+    @asyncio.coroutine
+    def download_async(self, local_path):
+        """Downloads the specified entity in async.
+
+        Args:
+            local_path (str): The path where the entity should be
+                downloaded to
+        """
+        entity = yield from self.content.request().download_async(local_path)
+        return entity
+<#
+        }
+    }
+
+    foreach(var child in entity.Derived)
+    {
+        var childName = child.Name.ToUnderscore();
+        var childNameBuilder = child.Name.ToUpperFirstChar() + "RequestBuilder";
+#>
+    @property
+    def <#=childName#>(self):
+        """The <#=childName#> for the <#=entityBuilder#>
+
+        Returns:
+            :class:`<#=childNameBuilder#><onedrivesdk.request.<#=childNameBuilder.Replace("Builder", "").ToUnderscore()#>.<#=childNameBuilder#>>`:
+                A request builder created from the <#=entityBuilder#>
+        """
+        return <#=childNameBuilder#>(self.append_to_request_url("<#=child.Name#>"), self._client)
+
+<#
+    }
+
+    foreach(var prop in entity.NavigationProperties()){
+
+        var propName = prop.Name.ToUnderscore();
+        var propRequestBuilder = prop.Name.ToUpperFirstChar() + "RequestBuilder";
+    
+        if(prop.IsCollection())
+        {
+            var collectionRequestBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+#>
+
+    @property
+    def <#=propName#>(self):
+        """The <#=propName#> for the <#=entityBuilder#>
+
+        Returns: 
+            :class:`<#=collectionRequestBuilder#><onedrivesdk.request.<#=prop.Name.ToUnderscore()+"_collection"#>.<#=collectionRequestBuilder#>>`:
+                A request builder created from the <#=entityBuilder#>
+        """
+        return <#=collectionRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+<#
+        }
+        else
+        {
+#>
+
+    @property
+    def <#=propName#>(self):
+        """The <#=propName#> for the <#=entityBuilder#>
+
+        Returns: 
+            :class:`<#=propRequestBuilder#><onedrivesdk.request.<#=propRequestBuilder.Replace("Builder","").ToUnderscore()#>.<#=propRequestBuilder#>>`:
+                A request builder created from the <#=entityBuilder#>
+        """
+        return <#=propRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+
+<#
+        }
+    }
+    foreach(var prop in entity.GetProperties(typeName:"Stream"))
+    {
+        var propName = prop.Name.ToUnderscore();
+        var propRequestBuilder = prop.Class.Name.ToUpperFirstChar()+prop.Name.ToUpperFirstChar()+"RequestBuilder";
+#>
+
+    @property
+    def <#=propName#>(self):
+        """The <#=propName#> for the <#=entityBuilder#>
+
+        Returns: 
+            :class:`<#=propRequestBuilder#><onedrivesdk.request.<#=propRequestBuilder.Replace("RequestBuilder","").ToUnderscore()#>.<#=propRequestBuilder#>>`:
+                A request builder created from the <#=entityBuilder#>
+        """
+        return <#=propRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+<#
+    }
+
+    foreach(var prop in entity.GetProperties().Where(t => t.Type.LongDescriptionContains("navigable")))
+    {
+        var propName = prop.Name.ToUnderscore();
+        var propRequestBuilder = prop.Type.GetTypeString()+"RequestBuilder";
+#>
+
+    @property
+    def <#=propName#>(self):
+        """The <#=propName#> for the <#=entityBuilder#>
+
+        Returns: 
+            :class:`<#=propRequestBuilder#><onedrivesdk.request.<#=propRequestBuilder.Replace("Builder","").ToUnderscore()#>.<#=propRequestBuilder#>>`:
+                A request builder created from the <#=entityBuilder#>
+        """
+        return <#=propRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+<#
+    }
+
+    foreach(var method in entity.Methods) {
+        var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1);
+        var baseName = method.Class.Name.ToUpperFirstChar() + methodName.ToUpperFirstChar();
+
+        var paramStringBuilder = new System.Text.StringBuilder();
+        var builderInitializerBuilder = new System.Text.StringBuilder();
+
+        paramStringBuilder.Append("self");
+
+        builderInitializerBuilder.Append("self.append_to_request_url(\""+method.Name+"\"), ");
+        builderInitializerBuilder.Append("self._client");
+
+        if (method.Parameters != null && method.Parameters.Any()){
+            foreach (var param in method.Parameters.Where(p => !p.IsNullable)){
+                paramStringBuilder.Append(", " + param.Name.ToUnderscore());
+                builderInitializerBuilder.Append(", " + param.Name.ToUnderscore());
+            }
+            foreach (var param in method.Parameters.Where(p => p.IsNullable)){
+                paramStringBuilder.Append(", " + param.Name.ToUnderscore()+"=None");
+                builderInitializerBuilder.Append(", " + param.Name.ToUnderscore() + "=" + param.Name.ToUnderscore());
+            }
+        }
+#>
+    def <#=methodName.ToUnderscore()#>(<#=paramStringBuilder.ToString()#>):
+        """Executes the <#=methodName#> method
+
+<#
+        if (method.Parameters != null && method.Parameters.Any()){
+#>
+        Args:
+<#
+            foreach (var param in method.Parameters){
+                if (param.Type.IsComplex()) {
+#>
+            <#=param.Name.ToUnderscore()#> (:class:`<#=param.Type.GetTypeString()#><onedrivesdk.model.<#=param.Type.GetTypeString().ToUnderscore()#>.<#=param.Type.GetTypeString()#>>`):
+                <#=param.IsNullable ? "Defaults to None, " : "" #>The <#=param.Name.ToUnderscore()#> to use in the method request
+<#
+                } else {
+#>
+            <#=param.Name.ToUnderscore()#> (<#=param.Type.GetTypeString()#>):
+                The <#=param.Name.ToUnderscore()#> to use in the method request          
+<#
+                }
+            }
+        }
+#>
+
+        Returns:
+            :class:`<#=baseName#>RequestBuilder<onedrivesdk.request.<#=baseName.ToUnderscore()#>.<#=baseName#>RequestBuilder>`:
+                A <#=baseName#>RequestBuilder for the method
+        """
+        return <#=baseName#>RequestBuilder(<#=builderInitializerBuilder.ToString()#>)
+
+<#
+    }
+foreach (var prop in entity.NavigationProperties())
+{
+    var propCollection = prop.Name.ToUpperFirstChar() + "Collection";
+    var propCollectionRequestBuilder = (propCollection + "RequestBuilder");
+#>
+from ..request.<#=propCollection.ToUnderscore()#> import <#=propCollectionRequestBuilder#>
+<#
+}
+#>

@@ -1,0 +1,133 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+
+var prop = host.CurrentType.AsOdcmProperty();
+var innerEntity = prop.Type;
+var isServiceES = prop.Class.Kind == OdcmClassKind.Service;
+
+var collectionNamer = prop.IsReference() ? ((collectionReference)?"CollectionReference":"CollectionWithReferences") : "Collection";
+var baseName = isServiceES ? prop.Name.ToUpperFirstChar() : prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
+
+var propName = writer.GetPrefix() + baseName;
+var propNameRequest = propName + collectionNamer + "Request";
+var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
+var entityRequest = innerEntityType + "RequestBuilder";
+if (innerEntityType.Equals(propName))
+{
+    propName = propName + collectionNamer;
+}
+
+#>
+
+#import "<#=writer.GetPrefix()#>ODataEntities.h"
+#import "<#=writer.GetStaticCodePrefix()#>Collection.h"
+#import "<#=writer.GetStaticCodePrefix()#>URLSessionDataTask.h"
+
+@interface <#=writer.GetStaticCodePrefix()#>CollectionRequest()
+
+- (NSMutableURLRequest *)requestWithMethod:(NSString *)method
+                                      body:(NSData *)body
+                                   headers:(NSDictionary *)headers;
+@end
+
+@implementation <#=propNameRequest#>
+
+<#
+if(!prop.IsReference())
+{
+#>
+- (NSMutableURLRequest *)get
+{
+    return [self requestWithMethod:@"GET"
+                              body:nil
+                           headers:nil];
+}
+
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName+ collectionNamer#>CompletionHandler)completionHandler
+{
+
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask * task = [self collectionTaskWithRequest:[self get]
+                                             odObjectWithDictionary:^(id response){
+<#
+    if (prop.IsSystem())
+    {
+#>
+
+                                            return [response copy];
+<#
+    }
+    else
+    {
+#>
+                                            return [[<#=innerEntityType#> alloc] initWithDictionary:response];
+<#  }
+#>
+                                         }
+                                                        completion:^(<#=writer.GetStaticCodePrefix()#>Collection *collectionResponse, NSError *error){
+                                            if(!error && collectionResponse.nextLink && completionHandler){
+                                                <#=propNameRequest#> *nextRequest = [[<#=propNameRequest#> alloc] initWithURL:collectionResponse.nextLink options:nil client:self.client];
+                                                completionHandler(collectionResponse, nextRequest, nil);
+                                            }
+                                            else if(completionHandler){
+                                                completionHandler(collectionResponse, nil, error);
+                                            }
+                                        }];
+    [task execute];
+    return task;
+}
+
+<#
+    }
+
+    if (!prop.LongDescriptionContains("readonly") && (!prop.IsReference() || collectionReference))
+    {
+#>
+
+
+- (NSMutableURLRequest *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#>
+{
+<#
+    if(collectionReference)
+    {
+#>
+
+    NSData *body = [NSJSONSerialization dataWithJSONObject: [NSDictionary dictionaryWithObjectsAndKeys:
+    [NSString stringWithFormat:@"%@/<#=prop.GetServiceCollectionNavigationPropertyForPropertyType().Name#>/%@",[[self client] baseURL],<#=innerEntity.Name.ToLowerFirstChar()#>.entityId]
+    ,@"@odata.id",nil]
+                                               options:0
+                                                 error:nil];
+<#
+    }
+    else
+    {
+#>
+    NSData *body = [NSJSONSerialization dataWithJSONObject:[<#=innerEntity.Name.ToLowerFirstChar()#> dictionaryFromItem]
+                                                   options:0
+                                                     error:nil];
+<#
+    }
+#>
+    return [self requestWithMethod:@"POST"
+                              body:body
+                           headers:nil];
+
+}
+
+- (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#> withCompletion:(<#=innerEntityType#>CompletionHandler)completionHandler
+{
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self add<#=innerEntity.Name.ToUpperFirstChar()#>:<#=innerEntity.Name.ToLowerFirstChar()#>]
+							     odObjectWithDictionary:^(NSDictionary *response){
+                                            return [[<#=innerEntityType#> alloc] initWithDictionary:response];
+                                        }
+                                              completion:completionHandler];
+    [task execute];
+    return task;
+}
+
+<#
+    }
+#>
+
+
+@end

@@ -1,0 +1,195 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entity = host.CurrentType.AsOdcmClass();
+var refString = (withReference ? "WithReference" : (entityReference ? "Reference" : ""));
+var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + refString;
+var entityRequestName = entityName + "Request";
+#>
+
+#import "<#=writer.GetPrefix()#>ODataEntities.h"
+
+@implementation <#=entityName#>RequestBuilder
+
+<#
+if(!withReference && !entityReference)
+{
+
+foreach(var prop in entity.NavigationProperties())
+{
+    if(prop.IsCollection)
+    {
+        var propInstanceName = prop.Name.ToLowerFirstChar();
+        var propTypeName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
+        var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
+        var collectionRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer +"RequestBuilder";
+        var innerPropTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
+        var innerPropInstanceName = prop.Type.Name.ToLowerFirstChar();
+        var innerPropTypeRequestName = innerPropTypeName + "RequestBuilder";
+
+#>
+- (<#=collectionRequestName#> *)<#=propInstanceName#>
+{
+    return [[<#=collectionRequestName#> alloc] initWithURL:[self.requestURL URLByAppendingPathComponent:@"<#=propInstanceName#>"]  <#//quick hack here to get the correct number of spaces for objc formatting #>
+
+             <#=collectionRequestName.ToSpaces()#><#=" alloc] initW".ToSpaces()#>client:self.client];
+}
+
+<#
+        if (!(prop.Type is OdcmComplexClass) || prop.LongDescriptionContains("queryable"))
+        {
+#>
+- (<#=innerPropTypeRequestName#> *)<#=propInstanceName#>:(NSString *)<#=innerPropInstanceName#>
+{
+    return [[self <#=propInstanceName#>] <#=innerPropInstanceName#>:<#=innerPropInstanceName#>];
+}
+
+<#
+        }
+
+    }
+    else
+    {
+#>
+-(<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder *)<#=prop.Name#>
+{
+    return [[<#=writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar()#>RequestBuilder alloc] initWithURL:[self.requestURL URLByAppendingPathComponent:@"<#=prop.Name#>"] client:self.client];
+
+}
+
+<#
+    }
+}
+foreach (var complexType in entity.Properties.Where(prop => prop.LongDescriptionContains("navigable") ||
+                                                            prop.Type.LongDescriptionContains("navigable"))
+                                             .Where(prop => prop.Type is OdcmClass))
+{
+#>
+-(<#=writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar()#>RequestBuilder *)<#=complexType.Name#>
+{
+    return [[<#=writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar()#>RequestBuilder alloc] initWithURL:[self.requestURL URLByAppendingPathComponent:@"<#=complexType.Name#>"] client:self.client];
+
+}
+
+<#
+}
+
+foreach(var prop in entity.GetProperties(typeName:"Stream"))
+{
+    var propName = prop.Name.ToUpperFirstChar();
+    var propRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + propName + "Request";
+#>
+- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>RequestWithOptions:(NSArray *)options
+{
+    NSURL *<#=propName.ToLowerFirstChar()#>URL = [self.requestURL URLByAppendingPathComponent:@"<#=prop.Name.ToLowerFirstChar()#>"];
+    return [[<#=propRequestName#> alloc] initWithURL:<#=prop.Name.ToLowerFirstChar()#>URL options:options client:self.client];
+}
+
+- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>Request
+{
+    return [self <#=propName.ToLowerFirstChar()#>RequestWithOptions:nil];
+}
+
+<#
+
+}
+
+foreach(var prop in entity.Properties.Where( prop => prop.Type is OdcmMediaClass))
+{
+    var propName = prop.Name.ToUpperFirstChar();
+    var propRequestName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "StreamRequest";
+#>
+- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>ValueWithOptions:(NSArray *)options
+{
+    NSURL *<#=propName.ToLowerFirstChar()#>URL = [self.requestURL URLByAppendingPathComponent:@"<#=prop.Name.ToLowerFirstChar()#>/$value"];
+    return [[<#=propRequestName#> alloc] initWithURL:<#=prop.Name.ToLowerFirstChar()#>URL options:options client:self.client];
+}
+
+- (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>Value
+{
+    return [self <#=propName.ToLowerFirstChar()#>ValueWithOptions:nil];
+}
+
+<#
+
+}
+
+foreach(var func in entity.Methods)
+{
+    var methodName = func.Name.Substring(func.Name.IndexOf('.') + 1).ToLowerFirstChar();
+    var requestBuilderName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + methodName.ToUpperFirstChar() + "RequestBuilder";
+    if (func.Parameters.Count > 0)
+    {
+        methodName += "With";
+#>
+- (<#=requestBuilderName#> *)<#=methodName#><#=writer.GetParamsString(func.Parameters)#>
+{
+<#
+
+    var actionURLString = "NSURL *actionURL = [self.requestURL URLByAppendingPathComponent:@\"" + func.Namespace.Name + "." + func.Name + "\"];";
+    var stringBuilder = new StringBuilder("return [[" + requestBuilderName + " alloc] "  + "initWith");
+    var firstParam = func.Parameters.First();
+    var spacesString = stringBuilder.ToString() + firstParam.Name.ToUpperFirstChar();
+    // adding the indent...
+    spacesString = spacesString.ToSpaces() + "    ";
+    foreach (var param in func.Parameters)
+    {
+        if (firstParam == param)
+        {
+            stringBuilder.AppendLine(param.Name.ToUpperFirstChar() + ":" + param.Name.ToLowerFirstChar());
+        }
+        else
+        {
+            stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - param.Name.ToLowerFirstChar().Length) + param.Name.ToLowerFirstChar() + ":" + param.Name.ToLowerFirstChar());
+        }
+    }
+    stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - 3) + "URL:actionURL");
+    stringBuilder.AppendLine(spacesString.Substring(0, spacesString.Length - "client".Length) + "client:self.client];");
+#>
+    <#=actionURLString#>
+    <#=stringBuilder.ToString()#>
+
+}
+
+<#
+    }
+    else
+    {
+#>
+- (<#=requestBuilderName#> *)<#=methodName#>
+{
+    return [[<#=requestBuilderName#> alloc] initWithURL:[self.requestURL URLByAppendingPathComponent:@"<#=func.Namespace.Name + "." +func.Name#>"] client:self.client];
+}
+
+<#
+
+    }
+
+}
+}
+#>
+
+- (<#=entityRequestName#> *)request
+{
+    return [self requestWithOptions:nil];
+}
+
+- (<#=entityRequestName#> *) requestWithOptions:(NSArray *)options
+{
+    return [[<#=entityRequestName#> alloc] initWithURL:self.requestURL options:options client:self.client];
+}
+
+<#
+if(withReference)
+{
+    var refTypeString=writer.GetPrefix() + entity.Name.ToUpperFirstChar() + "ReferenceRequestBuilder";
+#>
+- (<#=refTypeString#> *) reference
+{
+    return [[<#=refTypeString#> alloc] initWithURL:[self.requestURL URLByAppendingPathComponent:@"$ref"] client:self.client];
+}
+<#
+}
+#>
+
+@end

@@ -1,0 +1,27 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entity = host.CurrentType.AsOdcmEnum();
+#>
+
+#include <Foundation/Foundation.h>
+
+typedef NS_ENUM(NSInteger, <#=GetObjCTypeIdentifier(entity)#>){
+
+<#
+foreach(var member in entity.Members.OrderBy(x => x.Value))
+{
+#>
+	<#=GetObjCEnumMember(entity,member)#> = <#=member.Value#>,
+<#
+}
+#>
+    <#=GetObjCTypeIdentifier(entity)#>endOfEnum
+};
+
+@interface NSString (<#=GetObjCTypeIdentifier(entity)#>)
+
++ (instancetype) stringWith<#=GetObjCTypeIdentifier(entity)#>:(<#=GetObjCTypeIdentifier(entity)#>)val;
+- (<#=GetObjCTypeIdentifier(entity)#>) to<#=GetObjCTypeIdentifier(entity)#>;
+
+@end
