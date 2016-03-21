@@ -128,8 +128,8 @@
   </Target>-->
   <Target Name="AfterBuild">
     <ItemGroup>
-      <VIPR_OUTPUT Include="$(SolutionDir)submodules\vipr\src\Core\Vipr\bin\$(Configuration)\*" />
+      <VIPR_OUTPUT Include="$(SolutionDir)submodules\vipr\src\Core\Vipr\bin\$(Configuration)\**\*" />
     </ItemGroup>
-    <Copy SourceFiles="@(VIPR_OUTPUT)" DestinationFolder="$(TargetDir)" />
+    <Copy SourceFiles="@(VIPR_OUTPUT)" DestinationFolder="$(TargetDir)%(RecursiveDir)" />
   </Target>
 </Project>
