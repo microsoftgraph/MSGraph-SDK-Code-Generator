@@ -1,7 +1,0 @@
-﻿<#@ template debug="true" hostspecific="true" language="C#" #>
-
-<#
-withReference=true;
-#>
-
-<#@ include file="EntityRequestBuilder.m.tt"#>

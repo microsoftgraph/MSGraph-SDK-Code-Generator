@@ -1,4 +1,0 @@
-[submodule "submodules/vipr"]
-	path = submodules/vipr
-	url = https://github.com/microsoft/vipr
-	branch = master

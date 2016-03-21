@@ -1,7 +1,0 @@
-<#@ template debug="true" hostspecific="true" language="C#" #>
-
-<#
-collectionReference=true;
-#>
-
-<#@ include file="EntityCollectionRequest.h.tt"#>
