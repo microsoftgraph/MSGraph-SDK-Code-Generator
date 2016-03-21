@@ -1,3 +1,4 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="SharedObjC.template.tt"#>
 <#
@@ -39,21 +40,20 @@ typedef void (^<#=propName + collectionNamer#>CompletionHandler)(<#=writer.GetSt
 @interface <#=propRequest#> : <#=writer.GetStaticCodePrefix()#>CollectionRequest
 
 <#
-if(!prop.IsReference())
+if(!collectionReference)
 {
 #>
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName + collectionNamer#>CompletionHandler)completionHandler;
 <#
 }
-#>
-<#
-    if (!prop.LongDescriptionContains("readonly") && (!prop.IsReference() || collectionReference))
-    {
+
+if (!prop.LongDescriptionContains("readonly") && (!prop.IsReference() || collectionReference))
+{
 #>
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#> withCompletion:(<#=innerEntityType#>CompletionHandler)completionHandler;
 
 <#
-    }
+}
 #>
 @end

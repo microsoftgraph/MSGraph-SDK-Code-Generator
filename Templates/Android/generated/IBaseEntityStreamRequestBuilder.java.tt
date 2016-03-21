@@ -1,0 +1,97 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeStreamRequestBuilder(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseTypeStreamRequestBuilder(c), "IRequestBuilder")#>
+
+    /**
+     * Creates the request
+     */
+    <#=ITypeStreamRequest(c)#> buildRequest();
+
+    /**
+     * Creates the request with specific options instead of the existing options
+     */
+    <#=ITypeStreamRequest(c)#> buildRequest(final List<Option> options);
+<#
+if (c.AsOdcmClass() != null)
+{
+    foreach(var child in c.AsOdcmClass().Derived)
+    {
+        var childName = child.Name.ToCheckedCase();
+#>
+
+    <#=ITypeRequestBuilder(child)#> <#=childName.ToLowerFirstChar()#>();
+<#
+    }
+#>
+<#
+    foreach(var prop in c.AsOdcmClass().NavigationProperties())
+    {
+        var propName = prop.Name.ToUpperFirstChar();
+        var propRequestBuilder = TypeRequestBuilder(prop);
+        if (prop.IsCollection()) {
+#>
+
+    <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>();
+
+    <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id);
+<#
+        } else {
+#>
+
+    /**
+     * Gets the request builder for <#=TypeName(prop)#>.
+     */
+    <#=ITypeRequestBuilder(prop)#> get<#=propName#>();
+<#
+        }
+    }
+#>
+<#
+	foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
+	{
+		var propName = prop.Name.ToCheckedCase();
+		var propRequestBuilder = TypeRequestBuilder(prop);
+#>
+
+    I<#=propRequestBuilder#> get<#=propName#>();
+<#
+	}
+#>
+
+<#
+    foreach (var prop in c.AsOdcmClass().Properties.Where(x => x.Type is OdcmMediaClass))
+    {
+        var propName = prop.Name.ToCheckedCase();
+#>
+
+    <#=ITypeStreamRequestBuilder(prop)#> get<#=propName#>Value();
+<#
+    }
+#>
+
+
+<#
+    foreach (var method in c.AsOdcmClass().Methods)
+    {
+        var parameterList = MethodParametersSignature(method);
+        if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
+#>
+    <#if (method.IsCollection){#>
+
+    <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
+    <#}else{#> 
+    <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
+<#
+
+    }
+    }
+}
+#>
+
+}

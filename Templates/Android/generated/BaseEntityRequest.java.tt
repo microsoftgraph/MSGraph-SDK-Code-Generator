@@ -1,0 +1,70 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(BaseTypeRequest(c), "BaseRequest", IBaseTypeRequest(c))#>
+
+    /**
+     * The request for the <#=TypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public <#=BaseTypeRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, List<Option> options) {
+        super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
+    }
+
+    public void get(final ICallback<<#=TypeName(c)#>> callback) {
+        send(HttpMethod.GET, callback, null);
+    }
+
+    public <#=TypeName(c)#> get() throws ClientException {
+       return send(HttpMethod.GET, null);
+    }
+
+    public void update(final <#=TypeName(c)#> source<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
+        send(HttpMethod.PATCH, callback, source<#=TypeName(c)#>);
+    }
+
+    public <#=TypeName(c)#> update(final <#=TypeName(c)#> source<#=TypeName(c)#>) throws ClientException {
+        return send(HttpMethod.PATCH, source<#=TypeName(c)#>);
+    }
+
+    public void delete(final ICallback<Void> callback) {
+        send(HttpMethod.DELETE, callback, null);
+    }
+
+    public void delete() throws ClientException {
+        send(HttpMethod.DELETE, null);
+    }
+
+    public void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
+        send(HttpMethod.POST, callback, new<#=TypeName(c)#>);
+    }
+
+    public <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
+        return send(HttpMethod.POST, new<#=TypeName(c)#>);
+    }
+
+    public <#=ITypeRequest(c)#> select(final String value) {
+        getQueryOptions().add(new QueryOption("select", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+    public <#=ITypeRequest(c)#> expand(final String value) {
+        getQueryOptions().add(new QueryOption("expand", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    public <#=ITypeRequest(c)#> top(final int value) {
+        getQueryOptions().add(new QueryOption("top", value+""));
+        return (<#=TypeRequest(c)#>)this;
+    }
+    <#}#> 
+}

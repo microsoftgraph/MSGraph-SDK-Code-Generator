@@ -1,0 +1,78 @@
+{
+    "TemplateMapping": {
+      "CSharp": [
+          { "Template": "EntityType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Matches": "navigable" },
+          { "Template": "IEntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "I<Container>Client" },
+          { "Template": "IEntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>Request" },
+          { "Template": "IEntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "I<Class>Request", "Matches": "navigable" },
+          { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>Request", "Matches": "navigable" },
+          { "Template": "IEntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>RequestBuilder" },
+          { "Template": "IEntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "I<Class>RequestBuilder", "Matches": "navigable" },
+          { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>RequestBuilder", "Matches": "navigable" },
+          
+          { "Template": "EntityCollectionPage", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionPage" },
+          { "Template": "IEntityCollectionPage", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Class><Property>CollectionPage" },
+          { "Template": "EntityCollectionRequest", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionRequest" },
+          { "Template": "IEntityCollectionRequest", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Class><Property>CollectionRequest" },
+          { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionRequestBuilder" },
+          
+          { "Template": "EntityReferenceRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>ReferenceRequest" },
+          { "Template": "IEntityReferenceRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>ReferenceRequest" },
+          { "Template": "EntityWithReferencesRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferencesRequest" },
+          { "Template": "IEntityWithReferencesRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>WithReferencesRequest" },
+          
+          { "Template": "EntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>ReferenceRequestBuilder" },
+          { "Template": "IEntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>ReferenceRequestBuilder" },
+          { "Template": "EntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferencesRequestBuilder" },
+          { "Template": "IEntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>WithReferencesRequestBuilder" },
+          
+          { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesPage" },
+          { "Template": "IEntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesPage" },
+          
+          { "Template": "EntityCollectionReferenceRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionReferenceRequest" },
+          { "Template": "IEntityCollectionReferenceRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionReferenceRequest" },
+          { "Template": "EntityCollectionWithReferencesRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesRequest" },
+          { "Template": "IEntityCollectionWithReferencesRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesRequest" },
+          
+          { "Template": "EntityCollectionReferenceRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionReferenceRequestBuilder" },
+          { "Template": "IEntityCollectionReferenceRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionReferenceRequestBuilder" },
+          { "Template": "EntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesRequestBuilder" },
+          { "Template": "IEntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesRequestBuilder" },
+          
+          { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Class><Property>CollectionRequestBuilder" },  
+          { "Template": "EntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionResponse" },
+          
+          { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesPage" },
+          { "Template": "IEntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesPage" },
+
+          { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Class><Property>CollectionRequestBuilder" },  
+          { "Template": "EntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionResponse" },
+          { "Template": "EntityCollectionWithReferencesResponse", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesResponse" },
+
+          { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesPage" },
+          { "Template": "IEntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesPage" },
+
+          { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Class><Property>CollectionRequestBuilder" },  
+          { "Template": "EntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionResponse" },
+          { "Template": "EntityCollectionWithReferencesResponse", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesResponse" },
+          
+          { "Template": "StreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "<Class>ContentRequest" },
+          { "Template": "IStreamRequest", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "I<Class><Property>Request" },
+          { "Template": "IStreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "I<Class>ContentRequest" },
+          { "Template": "StreamRequestBuilder", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "<Class><Property>RequestBuilder" },
+          { "Template": "StreamRequestBuilder", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "<Class>ContentRequestBuilder" },
+          { "Template": "IStreamRequestBuilder", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "I<Class><Property>RequestBuilder" },
+          { "Template": "IStreamRequestBuilder", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "I<Class>ContentRequestBuilder" },
+          { "Template": "IMethodRequest", "SubProcessor": "Method", "Type": "Request", "Name": "I<Class><Method>Request" },
+          { "Template": "IMethodRequestBuilder", "SubProcessor": "Method", "Type": "Request", "Name": "I<Class><Method>RequestBuilder" },
+          { "Template": "MethodRequestBody", "SubProcessor": "MethodWithBody", "Type": "Model", "Name": "<Class><Method>RequestBody" },
+          { "Template": "MethodCollectionResponse", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionResponse", "Ignore": "ignorableCollection" },
+          { "Template": "MethodCollectionResponse", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>CollectionResponse", "Matches": "specialCollection", "Ignore": "ignorableCollection" },
+          { "Template": "MethodCollectionPage", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
+          { "Template": "MethodCollectionPage", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>CollectionPage", "Matches": "specialCollection", "Ignore": "ignorableCollection" },
+          { "Template": "IMethodCollectionPage", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionPage", "Ignore": "ignorableCollection" },
+          { "Template": "IMethodCollectionPage", "SubProcessor": "Method", "Type": "Request", "Name": "I<Class><Method>CollectionPage", "Matches": "specialCollection", "Ignore": "ignorableCollection" },
+          { "Template": "SharedCSharp", "SubProcessor": "Other", "Type": "Shared" }
+      ]
+    }
+}

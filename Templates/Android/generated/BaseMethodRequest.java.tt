@@ -1,0 +1,127 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(BaseTypeRequest(c), "BaseRequest", IBaseTypeRequest(c))#>
+
+    /**
+     * The request for this <#=TypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public <#=BaseTypeRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+        super(requestUrl, client, options, <#=ReturnType(c)#>.class);
+
+<# foreach (var param in c.AsOdcmMethod().Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
+        <# if (c.AsOdcmMethod().IsAction()) { #>
+    addQueryOption(new QueryOption("<#=paramName#>", <#=paramName#>));
+        <# } else { #>
+    addFunctionOption(new FunctionOption("<#=paramName#>", <#=paramName#>));
+        <# } #>        
+<# } #>
+    }
+
+<# if (c.AsOdcmMethod().IsAction()) { #>
+<# if (c.AsOdcmMethod().ReturnType != null) { #>
+    public void post(final ICallback<<#=ClassTypeName(c)#>> callback) {
+        send(HttpMethod.POST, callback, null);
+    }
+
+    public <#=ClassTypeName(c)#> post() throws ClientException {
+       return send(HttpMethod.POST, null);
+    }
+
+    public <#=ITypeRequest(c)#> select(final String value) {
+        getQueryOptions().add(new QueryOption("select", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+    public <#=ITypeRequest(c)#> expand(final String value) {
+        getQueryOptions().add(new QueryOption("expand", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    public <#=ITypeRequest(c)#> top(final int value) {
+        getQueryOptions().add(new QueryOption("top", value+""));
+        return (<#=TypeRequest(c)#>)this;
+    }
+    <#}#> 
+
+<# } else { #>
+    public void post(final ICallback<Void> callback) {
+        final IExecutors executors = getClient().getExecutors();
+        executors.performOnBackground(new Runnable() {
+           @Override
+           public void run() {
+                try {
+                    post();
+                    executors.performOnForeground((Void)null, callback);
+                } catch (final ClientException e) {
+                    executors.performOnForeground(e, callback);
+                }
+           }
+        });
+    }
+
+    public void post() throws ClientException {
+        this.send(HttpMethod.POST, null);
+    }
+
+<# } #>
+<# } else { #>
+
+<# if (c.AsOdcmMethod().ReturnType != null) { #>
+    public void get(final ICallback<<#=ClassTypeName(c)#>> callback) {
+        send(HttpMethod.GET, callback, null);
+    }
+
+    public <#=ClassTypeName(c)#> get() throws ClientException {
+       return send(HttpMethod.GET, null);
+    }
+
+    public <#=ITypeRequest(c)#> select(final String value) {
+        getQueryOptions().add(new QueryOption("select", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+    public <#=ITypeRequest(c)#> expand(final String value) {
+        getQueryOptions().add(new QueryOption("expand", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    public <#=ITypeRequest(c)#> top(final int value) {
+        getQueryOptions().add(new QueryOption("top", value+""));
+        return (<#=TypeRequest(c)#>)this;
+    }
+    <#}#> 
+
+<# } else { #>
+    public void get(final ICallback<Void> callback) {
+        final IExecutors executors = getClient().getExecutors();
+        executors.performOnBackground(new Runnable() {
+           @Override
+           public void run() {
+                try {
+                    get();
+                    executors.performOnForeground((Void)null, callback);
+                } catch (final ClientException e) {
+                    executors.performOnForeground(e, callback);
+                }
+           }
+        });
+    }
+
+    public void get() throws ClientException {
+        this.send(HttpMethod.GET, null);
+    }
+<# } #>
+<# } #>
+}

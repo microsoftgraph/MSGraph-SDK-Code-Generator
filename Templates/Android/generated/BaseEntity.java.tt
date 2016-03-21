@@ -1,0 +1,16 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.*;
+
+<#=CreateClassDef(BaseTypeName(c), BaseClassName(c), "IJsonBackedObject")#>
+
+<#=CreatePropertyDef(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
+<#=CreateRawJsonObject()#>
+<#=UpdatePropertiesWithinSetRawObject(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
+}
