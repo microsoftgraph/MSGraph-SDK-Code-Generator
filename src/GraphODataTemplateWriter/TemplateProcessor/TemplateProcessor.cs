@@ -273,6 +273,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                                     .Where(a => !a.IsDynamic)
                                     .Select(a => a.Location);
             parameters.ReferencedAssemblies.AddRange(assemblyLocations.ToArray());
+            
+            parameters.TreatWarningsAsErrors = false;
 
             var provider = new CSharpCodeProvider();
 
@@ -280,17 +282,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
             if (results.Errors.Count > 0)
             {
-                for (int i = 0; i < results.Output.Count; i++)
-                {
-                    Console.WriteLine(results.Output[i]);
-                }
-
+                var realError = false;
                 for (int i = 0; i < results.Errors.Count; i++)
                 {
-                    Console.WriteLine(i.ToString() + ": " + results.Errors[i].ToString());
+                    if (! results.Errors[i].IsWarning) realError = true;
+                    Console.WriteLine( (results.Errors[i].IsWarning?"Warning":"Error") + "(" + i.ToString() + "): " + results.Errors[i].ToString());
                 }
 
-                throw new InvalidOperationException("Template error.");
+                if (realError)
+                {
+                    throw new InvalidOperationException("Template error.");
+                }
             }
 
             var assembly = results.CompiledAssembly;
