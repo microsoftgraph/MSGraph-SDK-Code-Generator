@@ -104,11 +104,11 @@ public string GetRequestMethodWithOptions(string requestTypeName, bool includeNe
     
     if (includeNewKeyword)
     {
-        stringBuilder.AppendFormat("        public new I{0} Request(IList<Option> options)", requestTypeName);
+        stringBuilder.AppendFormat("        public new I{0} Request(IEnumerable<Option> options)", requestTypeName);
     }
     else
     {
-        stringBuilder.AppendFormat("        public I{0} Request(IList<Option> options)", requestTypeName);
+        stringBuilder.AppendFormat("        public I{0} Request(IEnumerable<Option> options)", requestTypeName);
     }
     
     stringBuilder.Append(Environment.NewLine);
