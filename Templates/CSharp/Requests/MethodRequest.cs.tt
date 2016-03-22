@@ -61,7 +61,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     paramStringBuilder.Append("IBaseClient client,");
     paramStringBuilder.Append(Environment.NewLine);
     paramStringBuilder.Append("            ");
-    paramStringBuilder.Append("IList<Option> options");
+    paramStringBuilder.Append("IEnumerable<Option> options");
 
     requestBodyInitializerBuilder.Append("this.Method = \"" + httpMethod + "\";");
     

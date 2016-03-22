@@ -164,7 +164,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// </summary>
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
-        public I<#=requestType#> Request(IList<Option> options = null)
+        public I<#=requestType#> Request(IEnumerable<Option> options = null)
         {
     <#
         if (!isAction && hasParameters)
