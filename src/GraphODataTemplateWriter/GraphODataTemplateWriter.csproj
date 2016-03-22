@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\debug\</OutputPath>
+    <OutputPath>$(SolutionDir)bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="Vipr.Core">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\submodules\vipr\src\Core\Vipr.Core\bin\Debug\Vipr.Core.dll</HintPath>
+      <HintPath>..\..\submodules\vipr\src\Core\Vipr.Core\bin\$(Configuration)\Vipr.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -116,17 +116,20 @@
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
   </Target>
-  <PropertyGroup>
-    <PostBuildEvent>xcopy  "$(ProjectDir)..\..\submodules\vipr\src\Core\Vipr\bin\Debug" "$(TargetDir)." /y /s /e</PostBuildEvent>
+  <PropertyGroup Condition=" '$(OS)' != 'Unix' ">
+    <PreBuildEvent>"$(MSBuildBinPath)\msbuild.exe" /m /t:Build /p:Configuration=$(Configuration) "$(ProjectDir)..\..\submodules\vipr\Vipr.sln"</PreBuildEvent>
   </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>"$(MSBuildBinPath)\msbuild.exe" /m /t:Build "$(ProjectDir)\..\..\submodules\vipr\Vipr.sln"</PreBuildEvent>
+  <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
+    <PreBuildEvent>xbuild /t:build /p:Configuration=$(Configuration) "$(ProjectDir)..\..\submodules\vipr\Vipr.sln"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>
+  </Target>-->
   <Target Name="AfterBuild">
+    <ItemGroup>
+      <VIPR_OUTPUT Include="$(SolutionDir)submodules\vipr\src\Core\Vipr\bin\$(Configuration)\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(VIPR_OUTPUT)" DestinationFolder="$(TargetDir)%(RecursiveDir)" />
   </Target>
-  -->
 </Project>
