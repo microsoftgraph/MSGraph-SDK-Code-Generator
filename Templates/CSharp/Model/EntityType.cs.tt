@@ -5,7 +5,6 @@
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
-var classType = entity.IsAbstract ? "abstract partial class" : "partial class";
 
 var typeDeclaration = entityName;
 
@@ -39,9 +38,20 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     /// The type <#=entityName.SplitCamelCase()#>.
     /// </summary>
     <#=attributeStringBuilder.ToString()#>
-    public <#=classType#> <#=typeDeclaration#>
+    public partial class <#=typeDeclaration#>
     {
-    <# 
+    <#
+        if (entity.IsAbstract)
+        {
+    #>
+        
+        protected internal <#=entityName#>()
+        {
+            // Don't allow initialization of abstract entity types
+        }
+    <#
+        }
+        
         foreach(var property in entity.Properties)
         {
             var propertyType = property.IsTypeNullable() || property.IsCollection()
