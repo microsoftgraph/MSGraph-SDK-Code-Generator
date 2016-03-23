@@ -12,7 +12,7 @@ var entityName          = method.Class.Name.ToUpperFirstChar();
 var httpMethod          = method.IsAction() ? "POST" : "GET";
 var requestType         = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Request";
 var requestBuilderType  = requestType + "Builder";
-var returnType          = method.ReturnType.Name.ToUpperFirstChar();
+var returnType          = method.ReturnType != null ? method.ReturnType.Name.ToUpperFirstChar() : "None";
 var returnTypeCollection= "ItemsCollectionResponse";
 if (method.LongDescriptionContains("specialCollection"))
 {
