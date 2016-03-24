@@ -73,7 +73,7 @@ class <#=entity.Name.ToUpperFirstChar()#>(GraphObjectBase):
         if "<#=property.Name#>" in self._prop_dict:
             if isinstance(self._prop_dict["<#=property.Name#>"], GraphObjectBase):
                 return self._prop_dict["<#=property.Name#>"]
-            else :
+            else:
                 self._prop_dict["<#=property.Name#>"] = <#=property.Type.GetTypeString()#>(self._prop_dict["<#=property.Name#>"])
                 return self._prop_dict["<#=property.Name#>"]
 
