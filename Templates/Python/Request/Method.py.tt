@@ -120,15 +120,15 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         if (method.LongDescriptionContains("async")){
 #>
-            :class:`AsyncOperationMonitor<onedrivesdk.async_operation_monitor.AsyncOperationMonitor>`:
+            :class:`AsyncOperationMonitor<microsoft.graph.async_operation_monitor.AsyncOperationMonitor>`:
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><microsoft.graph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><microsoft.graph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -161,15 +161,15 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         if (method.LongDescriptionContains("async")){
 #>
-            :class:`AsyncOperationMonitor<onedrivesdk.async_operation_monitor.AsyncOperationMonitor>`:
+            :class:`AsyncOperationMonitor<microsoft.graph.async_operation_monitor.AsyncOperationMonitor>`:
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><microsoft.graph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><microsoft.graph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -191,15 +191,15 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         if (method.LongDescriptionContains("async")){
 #>
-            :class:`AsyncOperationMonitor<onedrivesdk.async_operation_monitor.AsyncOperationMonitor>`:
+            :class:`AsyncOperationMonitor<microsoft.graph.async_operation_monitor.AsyncOperationMonitor>`:
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><microsoft.graph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><microsoft.graph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -230,15 +230,15 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         if (method.LongDescriptionContains("async")){
 #>
-            :class:`AsyncOperationMonitor<onedrivesdk.async_operation_monitor.AsyncOperationMonitor>`:
+            :class:`AsyncOperationMonitor<microsoft.graph.async_operation_monitor.AsyncOperationMonitor>`:
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><microsoft.graph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><microsoft.graph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -330,11 +330,11 @@ class <#=requestBuilderType#>(RequestBuilderBase):
         }
     }
 #>
-            options (list of :class:`Option<onedrivesdk.options.Option>`):
+            options (list of :class:`Option<microsoft.graph.options.Option>`):
                 Default to None, list of options to include in the request
 
         Returns: 
-            :class:`<#=requestType#><onedrivesdk.request.<#=requestType.Replace("Request","").ToUnderscore()#>.<#=requestType#>>`:
+            :class:`<#=requestType#><microsoft.graph.request.<#=requestType.Replace("Request","").ToUnderscore()#>.<#=requestType#>>`:
                 The request
         """
         req = <#=requestType#>(<#=requestConstructorBuilder#>)
@@ -354,11 +354,11 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
         if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><microsoft.graph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><microsoft.graph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -377,11 +377,11 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
         if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><microsoft.graph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><microsoft.graph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>

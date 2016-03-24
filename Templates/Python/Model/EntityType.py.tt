@@ -30,10 +30,10 @@ from datetime import datetime
 <#
     }
 #>
-from ..one_drive_object_base import OneDriveObjectBase
+from ..graph_object_base import GraphObjectBase
 
 
-class <#=entity.Name.ToUpperFirstChar()#>(OneDriveObjectBase):
+class <#=entity.Name.ToUpperFirstChar()#>(GraphObjectBase):
 
     def __init__(self, prop_dict={}):
         self._prop_dict = prop_dict
@@ -50,7 +50,7 @@ class <#=entity.Name.ToUpperFirstChar()#>(OneDriveObjectBase):
         """Gets and sets the <#=property.Name#>
         
         Returns: 
-            :class:`<#=propertyNameCap#>CollectionPage<onedrivesdk.request.<#=(propertyNameCap+"Collection").ToUnderscore()#>.<#=propertyNameCap#>CollectionPage>`:
+            :class:`<#=propertyNameCap#>CollectionPage<microsoft.graph.request.<#=(propertyNameCap+"Collection").ToUnderscore()#>.<#=propertyNameCap#>CollectionPage>`:
                 The <#=property.Name#>
         """
         if "<#=property.Name#>" in self._prop_dict:
@@ -67,11 +67,11 @@ class <#=entity.Name.ToUpperFirstChar()#>(OneDriveObjectBase):
         Gets and sets the <#=property.Name#>
         
         Returns: 
-            :class:`<#=property.Type.GetTypeString()#><onedrivesdk.model.<#=property.Type.GetTypeString().ToUnderscore()#>.<#=property.Type.GetTypeString()#>>`:
+            :class:`<#=property.Type.GetTypeString()#><microsoft.graph.model.<#=property.Type.GetTypeString().ToUnderscore()#>.<#=property.Type.GetTypeString()#>>`:
                 The <#=property.Name#>
         """
         if "<#=property.Name#>" in self._prop_dict:
-            if isinstance(self._prop_dict["<#=property.Name#>"], OneDriveObjectBase):
+            if isinstance(self._prop_dict["<#=property.Name#>"], GraphObjectBase):
                 return self._prop_dict["<#=property.Name#>"]
             else :
                 self._prop_dict["<#=property.Name#>"] = <#=property.Type.GetTypeString()#>(self._prop_dict["<#=property.Name#>"])

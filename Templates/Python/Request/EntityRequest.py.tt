@@ -32,9 +32,9 @@ class <#=entityRequest#>(RequestBase):
         Args:
             request_url (str): The url to perform the <#=entityRequest#>
                 on
-            client (:class:`OneDriveClient<onedrivesdk.request.one_drive_client.OneDriveClient>`):
+            client (:class:`GraphClient<microsoft.graph.request.graph_client.GraphClient>`):
                 The client which will be used for the request
-            options (list of :class:`Option<onedrivesdk.options.Option>`):
+            options (list of :class:`Option<microsoft.graph.options.Option>`):
                 A list of options to pass into the request
         """
         super(<#=entityRequest#>, self).__init__(request_url, client, options)
@@ -61,7 +61,7 @@ class <#=entityRequest#>(RequestBase):
         """Gets the specified <#=entityName#>.
         
         Returns:
-            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+            :class:`<#=entityName#><microsoft.graph.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
                 The <#=entityName#>.
         """
         self.method = "GET"
@@ -77,7 +77,7 @@ class <#=entityRequest#>(RequestBase):
         """Gets the specified <#=entityName#> in async.
 
         Yields:
-            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+            :class:`<#=entityName#><microsoft.graph.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
                 The <#=entityName#>.
         """
         future = self._client._loop.run_in_executor(None,
@@ -92,11 +92,11 @@ class <#=entityRequest#>(RequestBase):
         """Updates the specified <#=entityName#>.
         
         Args:
-            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
+            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><microsoft.graph.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
                 The <#=entityName#> to update.
 
         Returns:
-            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+            :class:`<#=entityName#><microsoft.graph.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
                 The updated <#=entityName#>.
         """
         self.content_type = "<#=jsonContentType#>"
@@ -113,11 +113,11 @@ class <#=entityRequest#>(RequestBase):
         """Updates the specified <#=entityName#> in async
         
         Args:
-            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
+            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><microsoft.graph.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
                 The <#=entityName#> to update.
 
         Yields:
-            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+            :class:`<#=entityName#><microsoft.graph.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
                 The updated <#=entityName#>.
         """
         future = self._client._loop.run_in_executor(None,

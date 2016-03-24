@@ -44,6 +44,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
                 case "Binary":
                 case "Stream":
                     return "bytes";
+                case "Date":
+                    return "datetime";
                 default:
                     return @type.Name.ToUpperFirstChar();
             }
@@ -51,7 +53,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
 
         public static string GetTypeString(this OdcmParameter parameter)
         {
-            string t = "<class '";
             switch (@parameter.Type.Name)
             {
                 case "String":
