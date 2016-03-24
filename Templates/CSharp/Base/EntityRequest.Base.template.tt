@@ -11,9 +11,9 @@ public string GetEntityReferenceRequestClassDefinition(OdcmClass odcmClass)
     return this.GetClassDefinition(this.GetEntityReferenceRequestName(odcmClass));
 }
 
-public string GetEntityWithReferencesRequestClassDefinition(OdcmClass odcmClass)
+public string GetEntityWithReferenceRequestClassDefinition(OdcmClass odcmClass)
 {
-    return this.GetClassDefinition(this.GetEntityWithReferencesRequestName(odcmClass));
+    return this.GetClassDefinition(this.GetEntityWithReferenceRequestName(odcmClass));
 }
 
 public string GetEntityReferenceRequestConstructor(OdcmClass odcmClass)
@@ -21,9 +21,9 @@ public string GetEntityReferenceRequestConstructor(OdcmClass odcmClass)
     return this.GetConstructor(this.GetEntityReferenceRequestName(odcmClass));
 }
 
-public string GetEntityWithReferencesRequestConstructor(OdcmClass odcmClass)
+public string GetEntityWithReferenceRequestConstructor(OdcmClass odcmClass)
 {
-    return this.GetConstructor(this.GetEntityWithReferencesRequestName(odcmClass));
+    return this.GetConstructor(this.GetEntityWithReferenceRequestName(odcmClass));
 }
 
 // -------------------------------------------------------------
@@ -355,14 +355,14 @@ public string GetEntitySelectMethod(OdcmClass odcmClass)
 }
 
 // Entity with references
-public string GetEntityWithReferencesExpandMethod(OdcmClass odcmClass)
+public string GetEntityWithReferenceExpandMethod(OdcmClass odcmClass)
 {
-    return this.GetExpandMethod(this.GetEntityWithReferencesRequestName(odcmClass));
+    return this.GetExpandMethod(this.GetEntityWithReferenceRequestName(odcmClass));
 }
 
-public string GetEntityWithReferencesSelectMethod(OdcmClass odcmClass)
+public string GetEntityWithReferenceSelectMethod(OdcmClass odcmClass)
 {
-    return this.GetSelectMethod(this.GetEntityWithReferencesRequestName(odcmClass));
+    return this.GetSelectMethod(this.GetEntityWithReferenceRequestName(odcmClass));
 }
 
 #>

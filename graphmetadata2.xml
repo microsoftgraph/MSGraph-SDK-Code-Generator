@@ -154,19 +154,19 @@
                 <Property Name="unseenCount" Type="Edm.Int32" />
                 <NavigationProperty Name="members" Type="Collection(microsoft.graph.directoryObject)" />
                 <NavigationProperty Name="memberOf" Type="Collection(microsoft.graph.directoryObject)" />
-                <NavigationProperty Name="createdOnBehalfOf" Type="microsoft.graph.directoryObject" Nullable="false" />
+                <NavigationProperty Name="createdOnBehalfOf" Type="microsoft.graph.directoryObject" />
                 <NavigationProperty Name="owners" Type="Collection(microsoft.graph.directoryObject)" />
                 <NavigationProperty Name="threads" Type="Collection(microsoft.graph.conversationThread)" ContainsTarget="true" />
-                <NavigationProperty Name="calendar" Type="microsoft.graph.calendar" Nullable="false" ContainsTarget="true" />
+                <NavigationProperty Name="calendar" Type="microsoft.graph.calendar" ContainsTarget="true" />
                 <NavigationProperty Name="calendarView" Type="Collection(microsoft.graph.event)" ContainsTarget="true" />
                 <NavigationProperty Name="events" Type="Collection(microsoft.graph.event)" ContainsTarget="true">
                     <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable" />
                 </NavigationProperty>
                 <NavigationProperty Name="conversations" Type="Collection(microsoft.graph.conversation)" ContainsTarget="true" />
-                <NavigationProperty Name="photo" Type="microsoft.graph.profilePhoto" Nullable="false" ContainsTarget="true" />
+                <NavigationProperty Name="photo" Type="microsoft.graph.profilePhoto" ContainsTarget="true" />
                 <NavigationProperty Name="acceptedSenders" Type="Collection(microsoft.graph.directoryObject)" ContainsTarget="true" />
                 <NavigationProperty Name="rejectedSenders" Type="Collection(microsoft.graph.directoryObject)" ContainsTarget="true" />
-                <NavigationProperty Name="drive" Type="microsoft.graph.drive" Nullable="false" ContainsTarget="true" />
+                <NavigationProperty Name="drive" Type="microsoft.graph.drive" ContainsTarget="true" />
             </EntityType>
             <EntityType Name="conversationThread" BaseType="microsoft.graph.entity">
                 <Property Name="toRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
@@ -222,7 +222,7 @@
                 <Property Name="attendees" Type="Collection(microsoft.graph.attendee)" />
                 <Property Name="organizer" Type="microsoft.graph.recipient" />
                 <Property Name="webLink" Type="Edm.String" Unicode="false" />
-                <NavigationProperty Name="calendar" Type="microsoft.graph.calendar" Nullable="false" ContainsTarget="true" />
+                <NavigationProperty Name="calendar" Type="microsoft.graph.calendar" ContainsTarget="true" />
                 <NavigationProperty Name="instances" Type="Collection(microsoft.graph.event)" ContainsTarget="true" />
                 <NavigationProperty Name="attachments" Type="Collection(microsoft.graph.attachment)" ContainsTarget="true" />
             </EntityType>
@@ -244,7 +244,7 @@
                 <Property Name="quota" Type="microsoft.graph.quota" />
                 <NavigationProperty Name="items" Type="Collection(microsoft.graph.driveItem)" ContainsTarget="true" />
                 <NavigationProperty Name="special" Type="Collection(microsoft.graph.driveItem)" ContainsTarget="true" />
-                <NavigationProperty Name="root" Type="microsoft.graph.driveItem" Nullable="false" ContainsTarget="true" />
+                <NavigationProperty Name="root" Type="microsoft.graph.driveItem" ContainsTarget="true" />
             </EntityType>
             <EntityType Name="subscribedSku" BaseType="microsoft.graph.entity">
                 <Property Name="capabilityStatus" Type="Edm.String" Unicode="false" />
@@ -348,7 +348,7 @@
                 <Property Name="skills" Type="Collection(Edm.String)" Unicode="false" />
                 <NavigationProperty Name="ownedDevices" Type="Collection(microsoft.graph.directoryObject)" />
                 <NavigationProperty Name="registeredDevices" Type="Collection(microsoft.graph.directoryObject)" />
-                <NavigationProperty Name="manager" Type="microsoft.graph.directoryObject" Nullable="false" />
+                <NavigationProperty Name="manager" Type="microsoft.graph.directoryObject" />
                 <NavigationProperty Name="directReports" Type="Collection(microsoft.graph.directoryObject)" />
                 <NavigationProperty Name="memberOf" Type="Collection(microsoft.graph.directoryObject)" />
                 <NavigationProperty Name="createdObjects" Type="Collection(microsoft.graph.directoryObject)" />
@@ -357,7 +357,7 @@
                     <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable" />
                 </NavigationProperty>
                 <NavigationProperty Name="mailFolders" Type="Collection(microsoft.graph.mailFolder)" ContainsTarget="true" />
-                <NavigationProperty Name="calendar" Type="microsoft.graph.calendar" Nullable="false" ContainsTarget="true">
+                <NavigationProperty Name="calendar" Type="microsoft.graph.calendar" ContainsTarget="true">
                     <Annotation Term="Org.OData.Core.V1.LongDescription" String="queryable;enumerable" />
                 </NavigationProperty>
                 <NavigationProperty Name="calendars" Type="Collection(microsoft.graph.calendar)" ContainsTarget="true" />
@@ -368,8 +368,8 @@
                 </NavigationProperty>
                 <NavigationProperty Name="contacts" Type="Collection(microsoft.graph.contact)" ContainsTarget="true" />
                 <NavigationProperty Name="contactFolders" Type="Collection(microsoft.graph.contactFolder)" ContainsTarget="true" />
-                <NavigationProperty Name="photo" Type="microsoft.graph.profilePhoto" Nullable="false" ContainsTarget="true" />
-                <NavigationProperty Name="drive" Type="microsoft.graph.drive" Nullable="false" ContainsTarget="true" />
+                <NavigationProperty Name="photo" Type="microsoft.graph.profilePhoto" ContainsTarget="true" />
+                <NavigationProperty Name="drive" Type="microsoft.graph.drive" ContainsTarget="true" />
             </EntityType>
             <ComplexType Name="assignedLicense">
                 <Property Name="disabledPlans" Type="Collection(Edm.Guid)" Nullable="false" />
@@ -446,6 +446,7 @@
                 <Property Name="assistantName" Type="Edm.String" Unicode="false" />
                 <Property Name="manager" Type="Edm.String" Unicode="false" />
                 <Property Name="homePhones" Type="Collection(Edm.String)" Unicode="false" />
+                <Property Name="mobilePhone" Type="Edm.String" Unicode="false" />
                 <Property Name="businessPhones" Type="Collection(Edm.String)" Unicode="false" />
                 <Property Name="homeAddress" Type="microsoft.graph.physicalAddress" />
                 <Property Name="businessAddress" Type="microsoft.graph.physicalAddress" />
@@ -453,7 +454,7 @@
                 <Property Name="spouseName" Type="Edm.String" Unicode="false" />
                 <Property Name="personalNotes" Type="Edm.String" Unicode="false" />
                 <Property Name="children" Type="Collection(Edm.String)" Unicode="false" />
-                <NavigationProperty Name="photo" Type="microsoft.graph.profilePhoto" Nullable="false" ContainsTarget="true" />
+                <NavigationProperty Name="photo" Type="microsoft.graph.profilePhoto" ContainsTarget="true" />
             </EntityType>
             <EntityType Name="contactFolder" BaseType="microsoft.graph.entity">
                 <Property Name="parentFolderId" Type="Edm.String" Unicode="false" />
@@ -510,7 +511,7 @@
                 <Property Name="contentBytes" Type="Edm.Binary" />
             </EntityType>
             <EntityType Name="itemAttachment" BaseType="microsoft.graph.attachment">
-                <NavigationProperty Name="item" Type="microsoft.graph.outlookItem" Nullable="false" ContainsTarget="true" />
+                <NavigationProperty Name="item" Type="microsoft.graph.outlookItem" ContainsTarget="true" />
             </EntityType>
             <ComplexType Name="responseStatus">
                 <Property Name="response" Type="microsoft.graph.responseType" />
@@ -542,7 +543,7 @@
             </ComplexType>
             <EntityType Name="eventMessage" BaseType="microsoft.graph.message">
                 <Property Name="meetingMessageType" Type="microsoft.graph.meetingMessageType" />
-                <NavigationProperty Name="event" Type="microsoft.graph.event" Nullable="false" ContainsTarget="true" />
+                <NavigationProperty Name="event" Type="microsoft.graph.event" ContainsTarget="true" />
             </EntityType>
             <EntityType Name="referenceAttachment" BaseType="microsoft.graph.attachment" />
             <EntityType Name="post" BaseType="microsoft.graph.outlookItem">
@@ -554,7 +555,7 @@
                 <Property Name="conversationThreadId" Type="Edm.String" Unicode="false" />
                 <Property Name="newParticipants" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
                 <Property Name="conversationId" Type="Edm.String" Unicode="false" />
-                <NavigationProperty Name="inReplyTo" Type="microsoft.graph.post" Nullable="false" ContainsTarget="true" />
+                <NavigationProperty Name="inReplyTo" Type="microsoft.graph.post" ContainsTarget="true" />
                 <NavigationProperty Name="attachments" Type="Collection(microsoft.graph.attachment)" ContainsTarget="true" />
             </EntityType>
             <ComplexType Name="identitySet" OpenType="true">
@@ -595,12 +596,14 @@
                 <Property Name="image" Type="microsoft.graph.image" />
                 <Property Name="location" Type="microsoft.graph.geoCoordinates" />
                 <Property Name="photo" Type="microsoft.graph.photo" />
+                <Property Name="remoteItem" Type="microsoft.graph.remoteItem" />
                 <Property Name="searchResult" Type="microsoft.graph.searchResult" />
                 <Property Name="shared" Type="microsoft.graph.shared" />
                 <Property Name="specialFolder" Type="microsoft.graph.specialFolder" />
                 <Property Name="video" Type="microsoft.graph.video" />
-                <NavigationProperty Name="createdByUser" Type="microsoft.graph.user" Nullable="false" />
-                <NavigationProperty Name="lastModifiedByUser" Type="microsoft.graph.user" Nullable="false" />
+                <Property Name="package" Type="microsoft.graph.package" />
+                <NavigationProperty Name="createdByUser" Type="microsoft.graph.user" />
+                <NavigationProperty Name="lastModifiedByUser" Type="microsoft.graph.user" />
                 <NavigationProperty Name="permissions" Type="Collection(microsoft.graph.permission)" ContainsTarget="true" />
                 <NavigationProperty Name="children" Type="Collection(microsoft.graph.driveItem)" ContainsTarget="true">
                     <Annotation Term="Org.OData.Core.V1.LongDescription" String="writeable" />
@@ -669,6 +672,13 @@
                 <Property Name="takenDateTime" Type="Edm.DateTimeOffset" />
                 <Property Name="iso" Type="Edm.Int32" />
             </ComplexType>
+            <ComplexType Name="remoteItem">
+                <Property Name="fileSystemInfo" Type="microsoft.graph.fileSystemInfo" />
+                <Property Name="folder" Type="microsoft.graph.folder" />
+                <Property Name="id" Type="Edm.String" Unicode="false" />
+                <Property Name="parentReference" Type="microsoft.graph.itemReference" />
+                <Property Name="size" Type="Edm.Int64" />
+            </ComplexType>
             <ComplexType Name="searchResult">
                 <Property Name="onClickTelemetryUrl" Type="Edm.String" Unicode="false" />
             </ComplexType>
@@ -684,6 +694,9 @@
                 <Property Name="duration" Type="Edm.Int64" />
                 <Property Name="height" Type="Edm.Int32" />
                 <Property Name="width" Type="Edm.Int32" />
+            </ComplexType>
+            <ComplexType Name="package">
+                <Property Name="type" Type="Edm.String" Unicode="false" />
             </ComplexType>
             <EntityType Name="permission" BaseType="microsoft.graph.entity">
                 <Property Name="grantedTo" Type="microsoft.graph.identitySet" />
@@ -716,28 +729,28 @@
                 <Property Name="width" Type="Edm.Int32" />
                 <Annotation Term="Org.OData.Core.V1.LongDescription" String="navigable" />
             </ComplexType>
-            <Action Name="checkMemberGroups" IsBound="true" EntitySetPath="bindingParameter">
+            <Action Name="checkMemberGroups" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.directoryObject" Nullable="false" />
                 <Parameter Name="groupIds" Type="Collection(Edm.String)" Nullable="false" Unicode="false" />
                 <ReturnType Type="Collection(Edm.String)" Nullable="false" Unicode="false" />
             </Action>
-            <Action Name="getMemberGroups" IsBound="true" EntitySetPath="bindingParameter">
+            <Action Name="getMemberGroups" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.directoryObject" Nullable="false" />
                 <Parameter Name="securityEnabledOnly" Type="Edm.Boolean" />
                 <ReturnType Type="Collection(Edm.String)" Nullable="false" Unicode="false" />
             </Action>
-            <Action Name="getMemberObjects" IsBound="true" EntitySetPath="bindingParameter">
+            <Action Name="getMemberObjects" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.directoryObject" Nullable="false" />
                 <Parameter Name="securityEnabledOnly" Type="Edm.Boolean" />
                 <ReturnType Type="Collection(Edm.String)" Nullable="false" Unicode="false" />
             </Action>
-            <Action Name="assignLicense" IsBound="true" EntitySetPath="bindingParameter">
+            <Action Name="assignLicense" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.user" Nullable="false" />
                 <Parameter Name="addLicenses" Type="Collection(microsoft.graph.assignedLicense)" Nullable="false" />
                 <Parameter Name="removeLicenses" Type="Collection(Edm.Guid)" Nullable="false" />
                 <ReturnType Type="microsoft.graph.user" />
             </Action>
-            <Action Name="changePassword" IsBound="true" EntitySetPath="bindingParameter">
+            <Action Name="changePassword" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.user" Nullable="false" />
                 <Parameter Name="currentPassword" Type="Edm.String" Unicode="false" />
                 <Parameter Name="newPassword" Type="Edm.String" Unicode="false" />
@@ -859,9 +872,11 @@
             <Action Name="createLink" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false" />
                 <Parameter Name="type" Type="Edm.String" Nullable="false" Unicode="false" />
-                <Parameter Name="scope" Type="Edm.String" Nullable="true" Unicode="false" />
+                <Parameter Name="scope" Type="Edm.String" Nullable="false" Unicode="false" />
                 <ReturnType Type="microsoft.graph.permission" Nullable="false" />
             </Action>
+            <Term Name="sourceUrl" Type="Edm.String" AppliesTo="microsoft.graph.item" />
+            <Term Name="downloadUrl" Type="Edm.String" AppliesTo="microsoft.graph.item" />
             <EntityContainer Name="GraphService">
                 <EntitySet Name="directoryObjects" EntityType="microsoft.graph.directoryObject" />
                 <EntitySet Name="devices" EntityType="microsoft.graph.device">

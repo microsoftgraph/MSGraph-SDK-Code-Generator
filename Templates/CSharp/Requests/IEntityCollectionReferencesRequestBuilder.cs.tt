@@ -1,6 +1,6 @@
 <# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
 <#@ template debug="true" hostspecific="true" language="C#" #>
-<#@ include file="CollectionRequestBuilder.Base.template.tt"#>
+<#@ include file="ICollectionRequestBuilder.Base.template.tt"#>
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
@@ -11,13 +11,10 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System;
     using System.Collections.Generic;
 
-    <#=this.GetCollectionReferenceClassDefinition(prop)#>
+    <#=this.GetCollectionReferencesInterfaceDefinition(prop)#>
     {
-    
-        <#=this.GetCollectionReferenceRequestBuilderConstructor(prop)#>
+        <#=this.GetCollectionReferencesRequestMethod(prop)#>
 
-        <#=this.GetCollectionReferenceRequestMethod(prop)#>
-
-        <#=this.GetCollectionReferenceRequestMethodWithOptions(prop)#>
+        <#=this.GetCollectionReferencesRequestMethodWithOptions(prop)#>
     }
 }

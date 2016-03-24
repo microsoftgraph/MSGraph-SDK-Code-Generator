@@ -20,14 +20,14 @@ public string GetCollectionRequestConstructor(OdcmProperty odcmProperty)
 // -------------------------------------------------------------
 // Methods for the reference of an entity collection
 // -------------------------------------------------------------
-public string GetCollectionReferenceClassDefinition(OdcmProperty odcmProperty)
+public string GetCollectionReferencesClassDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetClassDefinition(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
+    return this.GetClassDefinition(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
 }
 
-public string GetCollectionReferenceRequestConstructor(OdcmProperty odcmProperty)
+public string GetCollectionReferencesRequestConstructor(OdcmProperty odcmProperty)
 {
-    return this.GetConstructor(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
+    return this.GetConstructor(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
 }
 
 
@@ -117,7 +117,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
     return string.Empty;
 }
 
-public string GetPostAsyncMethodForReferenceRequest(OdcmProperty odcmProperty)
+public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
 {
     var sanitizedPropertyName = odcmProperty.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
     var propertyType = this.GetPropertyTypeName(odcmProperty);

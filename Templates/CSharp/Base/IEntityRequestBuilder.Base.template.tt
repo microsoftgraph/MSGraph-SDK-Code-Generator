@@ -62,19 +62,19 @@ public string GetEntityReferenceRequestBuilderProperty(OdcmClass odcmClass)
 // -------------------------------------------------------------
 // Methods for entity classes that support $ref addressing
 // -------------------------------------------------------------
-public string GetEntityWithReferencesRequestBuilderInterfaceDefinition(OdcmClass odcmClass)
+public string GetEntityWithReferenceRequestBuilderInterfaceDefinition(OdcmClass odcmClass)
 {
-    return this.GetInterfaceDefinition(this.GetEntityWithReferencesRequestBuilderName(odcmClass));
+    return this.GetInterfaceDefinition(this.GetEntityWithReferenceRequestBuilderName(odcmClass));
 }
 
-public string GetEntityWithReferencesRequestMethod(OdcmClass odcmClass)
+public string GetEntityWithReferenceRequestMethod(OdcmClass odcmClass)
 {
-    return this.GetRequestMethod(this.GetEntityWithReferencesRequestName(odcmClass));
+    return this.GetRequestMethod(this.GetEntityWithReferenceRequestName(odcmClass));
 }
 
-public string GetEntityWithReferencesRequestMethodWithOptions(OdcmClass odcmClass)
+public string GetEntityWithReferenceRequestMethodWithOptions(OdcmClass odcmClass)
 {
-    return this.GetRequestMethodWithOptions(this.GetEntityWithReferencesRequestName(odcmClass));
+    return this.GetRequestMethodWithOptions(this.GetEntityWithReferenceRequestName(odcmClass));
 }
 
 
@@ -113,7 +113,7 @@ public string GetNonCollectionRequestBuilderProperty(OdcmProperty odcmProperty)
     var propertyName = this.GetPropertyName(odcmProperty).GetSanitizedPropertyName();
     var propertyPrefix = this.GetPropertyTypeName(odcmProperty);
     var propertyRequestBuilder = odcmProperty.IsReference()
-        ? this.GetWithReferencesRequestBuilderString(propertyPrefix)
+        ? this.GetWithReferenceRequestBuilderString(propertyPrefix)
         : this.GetRequestBuilderString(propertyPrefix);
 
     return this.GetRequestBuilderProperty(propertyName, propertyRequestBuilder);
