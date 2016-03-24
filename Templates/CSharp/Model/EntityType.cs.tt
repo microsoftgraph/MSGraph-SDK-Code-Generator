@@ -44,7 +44,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         if (entity.IsAbstract)
         {
     #>
-        
+
         protected internal <#=entityName#>()
         {
             // Don't allow initialization of abstract entity types
@@ -71,7 +71,6 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
         [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
-        [JsonConverter(typeof(InterfaceConverter<<#=propertyCollectionPage#>>))]
         public I<#=propertyCollectionPage#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
     <#
                 }
