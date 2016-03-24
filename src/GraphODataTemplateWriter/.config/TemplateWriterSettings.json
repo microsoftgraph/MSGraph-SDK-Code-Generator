@@ -2,7 +2,7 @@
     "AvailableLanguages": [ "Android", "ObjC", "CSharp", "Python", "JavaScript" ],
     "TargetLanguage": "Python",
     "Plugins": [ ],
-    "PrimaryNamespaceName": "com",
+  "PrimaryNamespaceName": "MSGraph",
     "NamespacePrefix": "microsoft.graph",
     "InitializeCollections": "false",
     "AllowShortActions": "false",

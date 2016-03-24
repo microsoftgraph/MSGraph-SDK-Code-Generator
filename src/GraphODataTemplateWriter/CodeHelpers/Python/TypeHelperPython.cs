@@ -53,29 +53,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
 
         public static string GetTypeString(this OdcmParameter parameter)
         {
-            switch (@parameter.Type.Name)
-            {
-                case "String":
-                    return "str";
-                case "Int8":
-                case "Int16":
-                case "Int32":
-                case "Int64":
-                    return "int";
-                case "Double":
-                    return "float";
-                case "Guid":
-                    return "UUID";
-                case "DateTimeOffset":
-                    return "datetime";
-                case "Boolean":
-                    return "bool";
-                case "Binary":
-                case "Stream":
-                    return "bytes";
-                default:
-                    return @parameter.Type.Name.ToUpperFirstChar();
-            }
+            return GetTypeString(parameter.Type);
         }
 
 
