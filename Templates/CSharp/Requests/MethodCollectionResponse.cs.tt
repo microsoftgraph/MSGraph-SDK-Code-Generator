@@ -28,7 +28,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets the <see cref="I<#=collectionPage#>"/> value.
         /// </summary>
-        [JsonConverter(typeof(InterfaceConverter<<#=collectionPage#>>))]
         [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
         public I<#=collectionPage#> Value { get; set; }
         <#
