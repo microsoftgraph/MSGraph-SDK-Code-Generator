@@ -5,8 +5,8 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-import <#=host.CurrentModel.NamespaceName()#>.sdk.authentication.*;
-import <#=host.CurrentModel.NamespaceName()#>.sdk.logger.*;
+import <#=host.CurrentModel.NamespaceName()#>.authentication.*;
+import <#=host.CurrentModel.NamespaceName()#>.logger.*;
 import android.app.Activity;
 
 <#=CreateClassDef(ClientType(c), BaseClientType(c), IClientType(c))#>
@@ -48,12 +48,12 @@ import android.app.Activity;
         }
 
         /**
-         * Sets the authenticator
-         * @param authenticator The authenticator
+         * Sets the authentication provider
+         * @param authenticationProvider The authentication provider
          * @return the instance of this builder
          */
-        public Builder authenticator(final IAuthenticator authenticator) {
-            mClient.setAuthenticator(authenticator);
+        public Builder authenticationProvider(final IAuthenticationProvider authenticationProvider) {
+            mClient.setAuthenticationProvider(authenticationProvider);
             return this;
         }
 
@@ -83,7 +83,7 @@ import android.app.Activity;
          * @return the instance of this builder
          */
         public Builder fromConfig(final IClientConfig clientConfig) {
-            return this.authenticator(clientConfig.getAuthenticator())
+            return this.authenticationProvider(clientConfig.getAuthenticationProvider())
                        .executors(clientConfig.getExecutors())
                        .httpProvider(clientConfig.getHttpProvider())
                        .logger(clientConfig.getLogger())
@@ -91,49 +91,11 @@ import android.app.Activity;
         }
 
         /**
-         * Login a user and then returns the <#=ClientType(c)#> asynchronously
-         * @param activity The activity the UI should be from
-         * @param callback The callback when the client has been built
-         */
-        public void loginAndBuildClient(final Activity activity, final ICallback<<#=IClientType(c)#>> callback) {
-            mClient.validate();
-
-            mClient.getExecutors().performOnBackground(new Runnable() {
-                @Override
-                public void run() {
-                    final IExecutors executors = mClient.getExecutors();
-                    try {
-                        executors.performOnForeground(loginAndBuildClient(activity), callback);
-                    } catch (final ClientException e) {
-                        executors.performOnForeground(e, callback);
-                    }
-                }
-            });
-        }
-
-        /**
-         * Login a user and then returns the <#=ClientType(c)#>
-         * @param activity The activity the UI should be from
+         * Builds and returns the <#=ClientType(c)#> asynchronously
          * @throws ClientException if there was an exception creating the client
          */
-        public <#=IClientType(c)#> loginAndBuildClient(final Activity activity) throws ClientException {
+        public void buildClient() throws ClientException  {
             mClient.validate();
-
-            mClient.getAuthenticator()
-                .init(mClient.getExecutors(), mClient.getHttpProvider(), activity, mClient.getLogger());
-
-            IAccountInfo silentAccountInfo = null;
-            try {
-                silentAccountInfo = mClient.getAuthenticator().loginSilent();
-            } catch (final Exception ignored) {
-            }
-
-            if (silentAccountInfo == null
-                && mClient.getAuthenticator().login(null) == null) {
-                throw new ClientAuthenticatorException("Unable to authenticate silently or interactively",
-                                                       GraphErrorCodes.AuthenticationFailure);
-            }
-
             return mClient;
         }
     }
