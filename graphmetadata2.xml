@@ -886,7 +886,7 @@
             <Action Name="createLink" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false" />
                 <Parameter Name="type" Type="Edm.String" Nullable="false" Unicode="false" />
-                <Parameter Name="scope" Type="Edm.String" Nullable="false" Unicode="false" />
+                <Parameter Name="scope" Type="Edm.String" Unicode="false" />
                 <ReturnType Type="microsoft.graph.permission" Nullable="false" />
             </Action>
             <Function Name="delta" IsBound="true">
