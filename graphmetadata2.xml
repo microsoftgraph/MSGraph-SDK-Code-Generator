@@ -894,10 +894,6 @@
                 <Parameter Name="token" Type="Edm.String" Unicode="false" />
                 <ReturnType Type="Collection(microsoft.graph.driveItem)" Nullable="false" />
             </Function>
-            <Function Name="delta" IsBound="true">
-                <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false" />
-                <ReturnType Type="Collection(microsoft.graph.driveItem)" Nullable="false" />
-            </Function>
             <Function Name="recent" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.drive" Nullable="false" />
                 <ReturnType Type="Collection(microsoft.graph.driveItem)" Nullable="false" />
