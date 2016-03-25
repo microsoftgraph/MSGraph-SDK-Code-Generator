@@ -21,18 +21,42 @@ import java.io.*;
         super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
     }
 
+    /**
+     * Gets the contents of this stream
+     *
+     * @param callback The callback to be called after success or failure.
+     */
     public void get(final ICallback<InputStream> callback) {
         send(callback);
     }
 
+    /**
+     * Gets the contents of this stream
+     *
+     * @return The stream that the caller needs to close.
+     * @throws ClientException An exception occurs if there was an error while the request was sent.
+     */
     public InputStream get() throws ClientException {
        return send();
     }
 
+    /**
+     * Uploads to the stream
+     *
+     * @param fileContents The contents of the stream to upload.
+     * @param callback The callback to be called after success or failure.
+     */
     public void put(final byte[] fileContents, final ICallback<<#=ClassTypeName(c)#>> callback) {
         send(fileContents, callback);
     }
 
+    /**
+     * Uploads to the stream
+     *
+     * @param fileContents The contents of the stream to upload.
+     * @return The result of the upload.
+     * @throws ClientException An exception occurs if there was an error while the request was sent.
+     */
     public <#=ClassTypeName(c)#> put(final byte[] fileContents) throws ClientException {
         return send(fileContents);
     }

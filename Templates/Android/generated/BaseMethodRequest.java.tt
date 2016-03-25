@@ -19,42 +19,75 @@
         super(requestUrl, client, options, <#=ReturnType(c)#>.class);
 
 <# foreach (var param in c.AsOdcmMethod().Parameters) { var paramName = param.Name.ToLowerFirstChar();#>
-        <# if (c.AsOdcmMethod().IsAction()) { #>
-    addQueryOption(new QueryOption("<#=paramName#>", <#=paramName#>));
-        <# } else { #>
-    addFunctionOption(new FunctionOption("<#=paramName#>", <#=paramName#>));
-        <# } #>        
+<#      if (c.AsOdcmMethod().IsAction()) { #>
+        addQueryOption(new QueryOption("<#=paramName#>", <#=paramName#>));
+<#      } else { #>
+        addFunctionOption(new FunctionOption("<#=paramName#>", <#=paramName#>));
+<#      } #>
 <# } #>
     }
 
 <# if (c.AsOdcmMethod().IsAction()) { #>
-<# if (c.AsOdcmMethod().ReturnType != null) { #>
+<#      if (c.AsOdcmMethod().ReturnType != null) { #>
+    /**
+     * Creates the <#=ClassTypeName(c)#>
+     *
+     * @param callback The callback to be called after success or failure.
+     */
     public void post(final ICallback<<#=ClassTypeName(c)#>> callback) {
         send(HttpMethod.POST, callback, null);
     }
 
+    /**
+     * Creates the <#=ClassTypeName(c)#>
+     *
+     * @return The <#=ClassTypeName(c)#>
+     * @throws ClientException An exception occurs if there was an error while the request was sent.
+     */
     public <#=ClassTypeName(c)#> post() throws ClientException {
        return send(HttpMethod.POST, null);
     }
 
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value The select clause
+     * @return The updated request
+     */
     public <#=ITypeRequest(c)#> select(final String value) {
         getQueryOptions().add(new QueryOption("select", value));
         return (<#=TypeRequest(c)#>)this;
     }
 
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value The expand clause
+     * @return The updated request
+     */
     public <#=ITypeRequest(c)#> expand(final String value) {
         getQueryOptions().add(new QueryOption("expand", value));
         return (<#=TypeRequest(c)#>)this;
     }
+<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #>
 
-    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    /**
+     * Sets the top value for the request
+     *
+     * @param value The max number of items to return
+     * @return The updated request
+     */
     public <#=ITypeRequest(c)#> top(final int value) {
         getQueryOptions().add(new QueryOption("top", value+""));
         return (<#=TypeRequest(c)#>)this;
     }
-    <#}#> 
-
-<# } else { #>
+<#          } #>
+<#      } else { #>
+    /**
+     * Creates the <#=ClassTypeName(c)#>
+     *
+     * @param callback The callback to be called after success or failure.
+     */
     public void post(final ICallback<Void> callback) {
         final IExecutors executors = getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
@@ -70,40 +103,72 @@
         });
     }
 
+    /**
+     * Creates the <#=ClassTypeName(c)#>
+     *
+     * @return The <#=ClassTypeName(c)#>
+     * @throws ClientException An exception occurs if there was an error while the request was sent.
+     */
     public void post() throws ClientException {
         this.send(HttpMethod.POST, null);
     }
-
-<# } #>
-<# } else { #>
-
-<# if (c.AsOdcmMethod().ReturnType != null) { #>
+<#      } #>
+<#  } else { #>
+<#      if (c.AsOdcmMethod().ReturnType != null) { #>
+    /**
+     * Gets the <#=ClassTypeName(c)#>
+     *
+     * @param callback The callback to be called after success or failure.
+     */
     public void get(final ICallback<<#=ClassTypeName(c)#>> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
+    /**
+     * Gets the <#=ClassTypeName(c)#>
+     *
+     * @return The <#=ClassTypeName(c)#>
+     * @throws ClientException An exception occurs if there was an error while the request was sent.
+     */
     public <#=ClassTypeName(c)#> get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
 
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value The select clause
+     * @return The updated request
+     */
     public <#=ITypeRequest(c)#> select(final String value) {
         getQueryOptions().add(new QueryOption("select", value));
         return (<#=TypeRequest(c)#>)this;
     }
 
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value The expand clause
+     * @return The updated request
+     */
     public <#=ITypeRequest(c)#> expand(final String value) {
         getQueryOptions().add(new QueryOption("expand", value));
         return (<#=TypeRequest(c)#>)this;
     }
+<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #>
 
-    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+    /**
+     * Sets the top value for the request
+     *
+     * @param value The max number of items to return
+     * @return The updated request
+     */
     public <#=ITypeRequest(c)#> top(final int value) {
         getQueryOptions().add(new QueryOption("top", value+""));
         return (<#=TypeRequest(c)#>)this;
     }
-    <#}#> 
-
-<# } else { #>
+<#          } #>
+<#      } else { #>
     public void get(final ICallback<Void> callback) {
         final IExecutors executors = getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
@@ -122,6 +187,6 @@
     public void get() throws ClientException {
         this.send(HttpMethod.GET, null);
     }
-<# } #>
+<#      } #>
 <# } #>
 }

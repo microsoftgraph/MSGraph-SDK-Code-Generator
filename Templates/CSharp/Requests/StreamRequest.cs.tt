@@ -50,7 +50,7 @@ namespace <#=namespaceValue#>
         public <#=propRequest#>(
             string requestUrl,
             IBaseClient client,
-            IList<Option> options)
+            IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
         }

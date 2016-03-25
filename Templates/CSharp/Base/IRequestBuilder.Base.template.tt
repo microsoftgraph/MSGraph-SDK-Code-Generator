@@ -71,11 +71,11 @@ public string GetRequestMethodWithOptions(string requestTypeName, bool includeNe
     
     if (includeNewKeyword)
     {
-        stringBuilder.AppendFormat("        new I{0} Request(IList<Option> options);", requestTypeName);
+        stringBuilder.AppendFormat("        new I{0} Request(IEnumerable<Option> options);", requestTypeName);
     }
     else
     {
-        stringBuilder.AppendFormat("        I{0} Request(IList<Option> options);", requestTypeName);
+        stringBuilder.AppendFormat("        I{0} Request(IEnumerable<Option> options);", requestTypeName);
     }
     
     return stringBuilder.ToString();
