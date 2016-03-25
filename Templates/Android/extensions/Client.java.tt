@@ -91,10 +91,10 @@ import android.app.Activity;
         }
 
         /**
-         * Builds and returns the <#=ClientType(c)#> asynchronously
+         * Builds and returns the <#=ClientType(c)#>
          * @throws ClientException if there was an exception creating the client
          */
-        public void buildClient() throws ClientException  {
+        public <#=IClientType(c)#> buildClient() throws ClientException  {
             mClient.validate();
             return mClient;
         }
