@@ -107,7 +107,29 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> Filter(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$filter", value.ToString()));
+            this.QueryOptions.Add(new QueryOption("$filter", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified skip value to the request.
+        /// </summary>
+        /// <param name="value">The skip value.</param>
+        /// <returns>The request object to send.</returns>
+        public I<#=collectionRequest#> Skip(int value)
+        {
+            this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified orderby value to the request.
+        /// </summary>
+        /// <param name="value">The orderby value.</param>
+        /// <returns>The request object to send.</returns>
+        public I<#=collectionRequest#> OrderBy(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$orderby", value));
             return this;
         }
     }
