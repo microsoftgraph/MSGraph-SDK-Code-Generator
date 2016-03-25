@@ -26,10 +26,21 @@
 <# } #>
     }
 
+    /**
+     * Creates the <#=ITypeRequest(c)#>
+     *
+     * @return The <#=ITypeRequest(c)#> instance
+     */
     public <#=ITypeRequest(c)#> buildRequest() {
         return buildRequest(getOptions());
     }
 
+    /**
+     * Creates the <#=ITypeRequest(c)#> with specific options instead of the existing options
+     *
+     * @param options the options for the request
+     * @return The <#=ITypeRequest(c)#> instance
+     */
     public <#=ITypeRequest(c)#> buildRequest(final List<Option> options) {
         return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), options<#=MethodFieldValues(c)#>);
     }
