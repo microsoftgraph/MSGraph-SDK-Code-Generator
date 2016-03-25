@@ -26,14 +26,5 @@ namespace <#=this.GetNamespaceName(entity)#>
         <#=this.GetEntityWithReferenceExpandMethod(entity)#>
 
         <#=this.GetEntityWithReferenceSelectMethod(entity)#>
-
-        /// <summary>
-        /// Initializes any collection properties after deserialization, like next requests for paging.
-        /// </summary>
-        /// <param name="<#=entity.Name#>ToInitialize">The <see cref="<#=entityName#>"/> with the collection properties to initialize.</param>
-        private void InitializeCollectionProperties(<#=entityName#> <#=entity.Name#>ToInitialize)
-        {
-
-        }
     }
 }
