@@ -16,6 +16,7 @@ from __future__ import unicode_literals
     foreach(var property in entity.Properties){
         var propertyName = property.Name.ToUnderscore();
         if (property.Type.IsComplex() 
+			&& !property.IsCollection()
             && !list.Contains(property.Type.GetTypeString())
             && !property.Type.GetTypeString().Equals(entity.Name.ToUpperFirstChar())) {
             list.Add(property.Type.GetTypeString());
