@@ -75,7 +75,11 @@ namespace <#=namespaceValue#>
             this.Method = "GET";
             return this.SendStreamRequestAsync(null, cancellationToken, completionOption);
         }
-
+    <#
+        if (prop != null)
+        {
+    #>
+    
         /// <summary>
         /// PUTs the specified stream.
         /// </summary>
@@ -101,5 +105,38 @@ namespace <#=namespaceValue#>
             this.Method = "PUT";
             return this.SendAsync<T>(<#=propName#>, cancellationToken, completionOption);
         }
+    <#
+        }
+        else
+        {
+    #>
+    
+        /// <summary>
+        /// PUTs the specified stream.
+        /// </summary>
+        /// <param name="<#=propName#>">The stream to PUT.</param>
+        /// <returns>The updated stream.</returns>
+        public Task<Stream> PutAsync(Stream <#=propName#>)
+        {
+            return this.PutAsync(<#=propName#>, CancellationToken.None);
+        }
+        
+        /// <summary>
+        /// PUTs the specified stream.
+        /// </summary>
+        /// <param name="<#=propName#>">The stream to PUT.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The updated stream.</returns>
+        public Task<Stream> PutAsync(Stream <#=propName#>, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        {
+            this.ContentType = "application/octet-stream";
+            this.Method = "PUT";
+            return this.SendStreamRequestAsync(<#=propName#>, cancellationToken, completionOption);
+        }
+    <#
+        }
+    #>
+
     }
 }
