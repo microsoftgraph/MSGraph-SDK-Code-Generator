@@ -109,7 +109,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> Filter(string value)
         {
-            this.QueryOptions.Add(new QueryOption("filter", value));
+            this.QueryOptions.Add(new QueryOption("$filter", value));
             return this;
         }
 
