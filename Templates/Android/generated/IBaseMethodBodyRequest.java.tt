@@ -15,9 +15,27 @@ import com.google.gson.annotations.*;
 
     <#=ReturnType(c)#> create() throws ClientException;
 
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value The select clause
+     * @return The updated request
+     */
     <#=ITypeRequest(c)#> select(final String value) ;
 
+    /**
+     * Sets the top value for the request
+     *
+     * @param value The max number of items to return
+     * @return The updated request
+     */
     <#=ITypeRequest(c)#> top(final int value);
 
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value The expand clause
+     * @return The updated request
+     */
     <#=ITypeRequest(c)#> expand(final String value);
 }

@@ -5,15 +5,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
     using System.Collections.Generic;
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
+    using System;
 
     public static class TypeHelperAndroid
     {
-        public const string ReservedPrefix = "$$__$$";
-        public static ICollection<string> ReservedNames
+        public const string ReservedPrefix = "msgraph_";
+        public static HashSet<string> ReservedNames
         {
             get
             {
-                return new HashSet<string> {
+                return new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
                     "abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while"
                 };
             }
@@ -65,7 +66,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
 
         public static string SanitizePropertyName(this OdcmObject property)
         {
-            if (ReservedNames.Contains(property.Name.ToLower()))
+            if (ReservedNames.Contains(property.Name))
             {
                 return ReservedPrefix + property.Name;
             }

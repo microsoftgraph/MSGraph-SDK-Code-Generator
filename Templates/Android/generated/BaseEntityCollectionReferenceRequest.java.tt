@@ -21,9 +21,9 @@
     }
 
     public void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
-<#       
+<#
         String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType().Name;
-#>        
+#>
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + newDirectoryObject.id);
         new <#=TypeWithReferencesRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
@@ -36,14 +36,37 @@
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + newDirectoryObject.id);
         return new <#=TypeWithReferencesRequestBuilder(c)#>(requestUrl,getBaseRequest().getClient(), /* Options */ null)
                 .buildRequest()
-                .create(new<#=TypeName(c)#>, body); 
+                .create(new<#=TypeName(c)#>, body);
     }
 
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value The expand clause
+     * @return The updated request
+     */
+    public <#=ITypeCollectionReferenceRequest(c)#> expand(final String value) {
+        addQueryOption(new QueryOption("expand", value));
+        return (<#=TypeCollectionReferenceRequest(c)#>)this;
+    }
+
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value The select clause
+     * @return The updated request
+     */
     public <#=ITypeCollectionReferenceRequest(c)#> select(final String value) {
         addQueryOption(new QueryOption("select", value));
         return (<#=TypeCollectionReferenceRequest(c)#>)this;
     }
 
+    /**
+     * Sets the top value for the request
+     *
+     * @param value The max number of items to return
+     * @return The updated request
+     */
     public <#=ITypeCollectionReferenceRequest(c)#> top(final int value) {
         addQueryOption(new QueryOption("top", value + ""));
         return (<#=TypeCollectionReferenceRequest(c)#>)this;
