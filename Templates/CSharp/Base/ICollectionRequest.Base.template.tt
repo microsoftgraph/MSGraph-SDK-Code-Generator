@@ -15,9 +15,9 @@ public string GetCollectionInterfaceDefinition(OdcmProperty odcmProperty)
 // -------------------------------------------------------------
 // Methods for the reference of an entity collection
 // -------------------------------------------------------------
-public string GetCollectionReferenceInterfaceDefinition(OdcmProperty odcmProperty)
+public string GetCollectionReferencesInterfaceDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetInterfaceDefinition(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
+    return this.GetInterfaceDefinition(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
 }
 
 
@@ -80,7 +80,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty)
     return string.Empty;
 }
 
-public string GetPostAsyncMethodForReferenceRequest(OdcmProperty odcmProperty)
+public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
 {
     var sanitizedPropertyName = odcmProperty.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
     var propertyType = this.GetPropertyTypeName(odcmProperty);

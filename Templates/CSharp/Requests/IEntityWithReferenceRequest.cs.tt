@@ -16,12 +16,12 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System.Threading;
     using System.Threading.Tasks;
 
-    <#=this.GetEntityWithReferencesRequestInterfaceDefinition(entity)#>
+    <#=this.GetEntityWithReferenceRequestInterfaceDefinition(entity)#>
     {
         <#=this.GetEntityGetAsyncMethod(entity)#>
 
-        <#=this.GetEntityWithReferencesExpandMethod(entity)#>
+        <#=this.GetEntityWithReferenceExpandMethod(entity)#>
 
-        <#=this.GetEntityWithReferencesSelectMethod(entity)#>
+        <#=this.GetEntityWithReferenceSelectMethod(entity)#>
     }
 }

@@ -30,24 +30,24 @@ public string GetCollectionRequestMethodWithOptions(OdcmProperty odcmProperty)
 // -------------------------------------------------------------
 // Methods for the reference of an entity collection
 // -------------------------------------------------------------
-public string GetCollectionReferenceClassDefinition(OdcmProperty odcmProperty)
+public string GetCollectionReferencesClassDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetClassDefinition(this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty));
+    return this.GetClassDefinition(this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty));
 }
 
-public string GetCollectionReferenceRequestBuilderConstructor(OdcmProperty odcmProperty)
+public string GetCollectionReferencesRequestBuilderConstructor(OdcmProperty odcmProperty)
 {
-    return this.GetConstructor(this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty));
+    return this.GetConstructor(this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty));
 }
 
-public string GetCollectionReferenceRequestMethod(OdcmProperty odcmProperty)
+public string GetCollectionReferencesRequestMethod(OdcmProperty odcmProperty)
 {
-    return this.GetRequestMethod(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
+    return this.GetRequestMethod(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
 }
 
-public string GetCollectionReferenceRequestMethodWithOptions(OdcmProperty odcmProperty)
+public string GetCollectionReferencesRequestMethodWithOptions(OdcmProperty odcmProperty)
 {
-    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
+    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
 }
 
 
@@ -75,24 +75,24 @@ public string GetCollectionWithReferencesRequestMethodWithOptions(OdcmProperty o
 }
 
 // Creates the request builder property definition for the $ref navigation on the collection
-public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
+public string GetCollectionReferencesRequestBuilder(OdcmProperty odcmProperty)
 {
     var propertyClass = odcmProperty.Class.AsOdcmClass();
     if (propertyClass.Kind != OdcmClassKind.Service && odcmProperty.IsNavigation() && !odcmProperty.ContainsTarget)
     {
         var stringBuilder = new StringBuilder();
-        var entityReferenceRequestBuilder = this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty);
+        var entityReferencesRequestBuilder = this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty);
         
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <summary>");
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the references in the collection.", entityReferenceRequestBuilder);
+        stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the references in the collection.", entityReferencesRequestBuilder);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// </summary>");
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityReferenceRequestBuilder);
+        stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityReferencesRequestBuilder);
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        public I{0} References", entityReferenceRequestBuilder);
+        stringBuilder.AppendFormat("        public I{0} References", entityReferencesRequestBuilder);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append(
 @"        {
@@ -100,7 +100,7 @@ public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
             {
 ");
 
-        stringBuilder.AppendFormat("                return new {0}(this.AppendSegmentToRequestUrl(\"$ref\"), this.Client);", entityReferenceRequestBuilder);
+        stringBuilder.AppendFormat("                return new {0}(this.AppendSegmentToRequestUrl(\"$ref\"), this.Client);", entityReferencesRequestBuilder);
         stringBuilder.Append(@"
             }
         }
@@ -155,7 +155,7 @@ public string GetCollectionWithReferencesIndexRequestBuilder(OdcmProperty odcmPr
     var stringBuilder = new StringBuilder();
 
     var propTypeName = string.Concat(this.GetEntityNameString(odcmProperty.Class), this.GetPropertyTypeName(odcmProperty));
-    var entityRequestBuilder = this.GetPropertyTypeWithReferencesRequestBuilderName(odcmProperty);
+    var entityRequestBuilder = this.GetPropertyTypeWithReferenceRequestBuilderName(odcmProperty);
     
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);

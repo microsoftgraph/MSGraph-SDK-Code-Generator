@@ -11,9 +11,9 @@ public string GetEntityReferenceRequestClassDefinition(OdcmClass odcmClass)
     return this.GetClassDefinition(this.GetEntityReferenceRequestName(odcmClass));
 }
 
-public string GetEntityWithReferencesRequestClassDefinition(OdcmClass odcmClass)
+public string GetEntityWithReferenceRequestClassDefinition(OdcmClass odcmClass)
 {
-    return this.GetClassDefinition(this.GetEntityWithReferencesRequestName(odcmClass));
+    return this.GetClassDefinition(this.GetEntityWithReferenceRequestName(odcmClass));
 }
 
 public string GetEntityReferenceRequestConstructor(OdcmClass odcmClass)
@@ -21,9 +21,9 @@ public string GetEntityReferenceRequestConstructor(OdcmClass odcmClass)
     return this.GetConstructor(this.GetEntityReferenceRequestName(odcmClass));
 }
 
-public string GetEntityWithReferencesRequestConstructor(OdcmClass odcmClass)
+public string GetEntityWithReferenceRequestConstructor(OdcmClass odcmClass)
 {
-    return this.GetConstructor(this.GetEntityWithReferencesRequestName(odcmClass));
+    return this.GetConstructor(this.GetEntityWithReferenceRequestName(odcmClass));
 }
 
 // -------------------------------------------------------------
@@ -192,7 +192,7 @@ public void AppendGetAsyncHeader(string entityName, StringBuilder stringBuilder,
     stringBuilder.AppendFormat("        /// <returns>The {0}.</returns>", entityName);
 }
 
-public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
+public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool initializeCollectionProperties = true)
 {
     var stringBuilder = new StringBuilder();
     
@@ -216,8 +216,14 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
             this.Method = ""GET"";");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            var retrievedEntity = await this.SendAsync<{0}>(null, cancellationToken).ConfigureAwait(false);", entityName);
+    
+    if (initializeCollectionProperties)
+    {
+        stringBuilder.Append(@"
+            this.InitializeCollectionProperties(retrievedEntity);");
+    }
+    
     stringBuilder.Append(@"
-            this.InitializeCollectionProperties(retrievedEntity);
             return retrievedEntity;
         }");
     
@@ -355,14 +361,14 @@ public string GetEntitySelectMethod(OdcmClass odcmClass)
 }
 
 // Entity with references
-public string GetEntityWithReferencesExpandMethod(OdcmClass odcmClass)
+public string GetEntityWithReferenceExpandMethod(OdcmClass odcmClass)
 {
-    return this.GetExpandMethod(this.GetEntityWithReferencesRequestName(odcmClass));
+    return this.GetExpandMethod(this.GetEntityWithReferenceRequestName(odcmClass));
 }
 
-public string GetEntityWithReferencesSelectMethod(OdcmClass odcmClass)
+public string GetEntityWithReferenceSelectMethod(OdcmClass odcmClass)
 {
-    return this.GetSelectMethod(this.GetEntityWithReferencesRequestName(odcmClass));
+    return this.GetSelectMethod(this.GetEntityWithReferenceRequestName(odcmClass));
 }
 
 #>

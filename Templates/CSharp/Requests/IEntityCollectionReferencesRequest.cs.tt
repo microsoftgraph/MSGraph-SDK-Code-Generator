@@ -3,7 +3,7 @@
 <#@ include file="ICollectionRequest.Base.template.tt"#>
 <#
 var prop = host.CurrentType.AsOdcmProperty();
-var collectionRequest = this.GetPropertyCollectionReferenceRequestName(prop);
+var collectionRequest = this.GetPropertyCollectionReferencesRequestName(prop);
 
 #>
 
@@ -15,9 +15,9 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System.Threading;
     using System.Threading.Tasks;
 
-    <#=this.GetCollectionReferenceInterfaceDefinition(prop)#>
+    <#=this.GetCollectionReferencesInterfaceDefinition(prop)#>
     {
-        <#=GetPostAsyncMethodForReferenceRequest(prop)#>
+        <#=GetPostAsyncMethodForReferencesRequest(prop)#>
 
         /// <summary>
         /// Adds the specified select value to the request.
