@@ -55,6 +55,11 @@ namespace <#=namespaceValue#>
         /// <returns>The stream.</returns>
         Task<Stream> GetAsync(CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
 
+<#
+        if (prop != null)
+        {
+    #>
+    
         /// <summary>
         /// PUTs the specified stream.
         /// </summary>
@@ -72,5 +77,30 @@ namespace <#=namespaceValue#>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <returns>The object returned by the PUT call.</returns>
         Task<T> PutAsync<T>(Stream <#=propName#>, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : <#=propClass#>;
+    <#
+        }
+        else
+        {
+    #>
+    
+        /// <summary>
+        /// PUTs the specified stream.
+        /// </summary>
+        /// <param name="<#=propName#>">The stream to PUT.</param>
+        /// <returns>The updated stream.</returns>
+        Task<Stream> PutAsync(Stream <#=propName#>);
+        
+        /// <summary>
+        /// PUTs the specified stream.
+        /// </summary>
+        /// <param name="<#=propName#>">The stream to PUT.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The updated stream.</returns>
+        Task<Stream> PutAsync(Stream <#=propName#>, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
+    <#
+        }
+    #>
+
     }
 }
