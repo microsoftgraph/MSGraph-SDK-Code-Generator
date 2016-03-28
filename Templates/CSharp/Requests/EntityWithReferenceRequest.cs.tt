@@ -21,7 +21,7 @@ namespace <#=this.GetNamespaceName(entity)#>
     {
         <#=this.GetEntityWithReferenceRequestConstructor(entity)#>
 
-        <#=this.GetEntityGetAsyncMethod(entity)#>
+        <#=this.GetEntityGetAsyncMethod(entity, false)#>
 
         <#=this.GetEntityWithReferenceExpandMethod(entity)#>
 
