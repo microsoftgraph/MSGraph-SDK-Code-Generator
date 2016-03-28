@@ -44,8 +44,8 @@ foreach(var et in entityTypes)
                 {
                     classes.Add("#import \"" + baseName + "CollectionWithReferencesRequestBuilder.h\"");
                     classes.Add("#import \"" + baseName + "CollectionWithReferencesRequest.h\"");
-                    classes.Add("#import \"" + baseName + "CollectionReferenceRequestBuilder.h\"");
-                    classes.Add("#import \"" + baseName + "CollectionReferenceRequest.h\"");
+                    classes.Add("#import \"" + baseName + "CollectionReferencesRequestBuilder.h\"");
+                    classes.Add("#import \"" + baseName + "CollectionReferencesRequest.h\"");
                 }
             }
             else
