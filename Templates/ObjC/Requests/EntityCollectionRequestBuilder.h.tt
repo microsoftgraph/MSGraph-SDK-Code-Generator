@@ -8,7 +8,7 @@ var innerEntity = prop.Type;
 var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
 var isServiceES = prop.Class.Kind == OdcmClassKind.Service;
 
-var collectionNamer = prop.IsReference() ? ((collectionReference)?"CollectionReference":"CollectionWithReferences") : "Collection";
+var collectionNamer = prop.IsReference() ? ((collectionReference)?"CollectionReferences":"CollectionWithReferences") : "Collection";
 var baseName = isServiceES ? prop.Name.ToUpperFirstChar() : prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
 
 var propName = writer.GetPrefix() + baseName + collectionNamer + "RequestBuilder";
@@ -27,7 +27,7 @@ classStringBuilder.Append(", " + entityRequestBuilder + ";");
 if(prop.IsReference())
 {
 #>
-#import "<#=writer.GetPrefix() + baseName #>CollectionReferenceRequestBuilder.h"
+#import "<#=writer.GetPrefix() + baseName #>CollectionReferencesRequestBuilder.h"
 <#
 }
 #>
@@ -53,7 +53,7 @@ if (!(innerEntity is OdcmComplexClass) && !collectionReference)
 if(prop.IsReference() && !collectionReference)
 {
 #>
-- (<#=writer.GetPrefix() + baseName + "CollectionReferenceRequestBuilder"#> *) references;
+- (<#=writer.GetPrefix() + baseName + "CollectionReferencesRequestBuilder"#> *) references;
 <#
 }
 #>
