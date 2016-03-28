@@ -3,7 +3,7 @@
     "TargetLanguage": "CSharp",
     "Plugins": [ ],
     "PrimaryNamespaceName": "com",
-    "NamespacePrefix": "MSGraph",
+    "NamespacePrefix": "com",
     "InitializeCollections": "false",
     "AllowShortActions": "false",
     "NamespaceOverride": "",
