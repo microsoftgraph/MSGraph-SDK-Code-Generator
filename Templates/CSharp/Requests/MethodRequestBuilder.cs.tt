@@ -25,6 +25,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     <#
 
     var requestConstructorParamsStringBuilder = new StringBuilder();
+    var actionRequiredParametersExceptionStringBuilder = new StringBuilder();
     var requestUrlInitializerStringBuilder = new StringBuilder();
 
     if (!isAction && !hasParameters)
@@ -75,6 +76,8 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         var requiredParameters = method.Parameters.Where(param => !param.IsNullable);
         var optionalParameters = method.Parameters.Where(param => param.IsNullable);
 
+        bool first = true;
+        
         foreach (var param in requiredParameters)
         {
             this.AddParameterToRequestBuilderConstructorStringBuilder(builderConstructorParamsStringBuilder, param, false);
@@ -83,10 +86,14 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             if (isAction)
             {
                 this.AddParameterToRequestConstructorStringBuilder(requestConstructorParamsStringBuilder, param);
+                
+                this.AppendRequiredParameterException(actionRequiredParametersExceptionStringBuilder, param);
             }
             else
             {
-                this.AddParameterToRequestUrlInitializerStringBuilder(requestUrlInitializerStringBuilder, param, false);
+                this.AddParameterToRequestUrlInitializerStringBuilder(requestUrlInitializerStringBuilder, param, false, first);
+                
+                first = false;
             }
         }
 
@@ -101,7 +108,9 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             }
             else
             {
-                this.AddParameterToRequestUrlInitializerStringBuilder(requestUrlInitializerStringBuilder, param, true);
+                this.AddParameterToRequestUrlInitializerStringBuilder(requestUrlInitializerStringBuilder, param, true, first);
+                
+                first = false;
             }
         }
 
@@ -112,19 +121,11 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             // We'll only have the trailing comma in the request constructor string builder for actions. Functions add the request parameters to the URL.
             requestConstructorParamsStringBuilder.Remove(requestConstructorParamsStringBuilder.Length - 1, 1);
         }
-        else
+        else if (hasParameters)
         {
             requestUrlInitializerStringBuilder.Append(Environment.NewLine);
             requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("            if (functionParametersStringBuilder.Length > 0)");
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("            {");
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("                functionParametersStringBuilder.Remove(functionParametersStringBuilder.Length - 1, 1);");
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("                functionRequestUrl = string.Format(\"{0}({1})\", this.RequestUrl, functionParametersStringBuilder.ToString());");
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("            }");
+            requestUrlInitializerStringBuilder.Append("            functionRequestUrl = string.Format(\"{0}({1})\", this.RequestUrl, functionParametersStringBuilder.ToString());");
         }
     #>
 
@@ -180,8 +181,15 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         }
         else
         {
+            if (actionRequiredParametersExceptionStringBuilder.Length > 0)
+            {
     #>
     
+            <#=actionRequiredParametersExceptionStringBuilder#>
+    <#
+            }
+    #>
+            
             return new <#=requestType#>(<#=requestConstructorParamsStringBuilder.ToString()#>);
     <#
         }
@@ -262,8 +270,9 @@ private void AddParameterToRequestConstructorStringBuilder(
 private void AddParameterToRequestUrlInitializerStringBuilder(
     StringBuilder requestUrlInitializerStringBuilder,
     OdcmParameter param,
-    bool optional)
-{
+    bool optional,
+    bool first)
+{  
     var paramCheckedCase = param.Name.ToCheckedCase();
     var paramLowerFirstChar = param.Name.ToLowerFirstChar();
     
@@ -277,12 +286,26 @@ private void AddParameterToRequestUrlInitializerStringBuilder(
         requestUrlInitializerStringBuilder.Append(Environment.NewLine);
         requestUrlInitializerStringBuilder.Append("            {");
         requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-        requestUrlInitializerStringBuilder.AppendFormat(
-            "                functionParametersStringBuilder.AppendFormat(\"{0}='{{0}}',\", this.{1}.Value);",
-            paramLowerFirstChar,
-            paramCheckedCase);
+        
+        if (first)
+        {
+            requestUrlInitializerStringBuilder.AppendFormat(
+                "                functionParametersStringBuilder.AppendFormat(\"{0}='{{0}}'\", this.{1}.Value);",
+                paramLowerFirstChar,
+                paramCheckedCase);
+        }
+        else
+        {
+            requestUrlInitializerStringBuilder.AppendFormat(
+                "                functionParametersStringBuilder.AppendFormat(\",{0}='{{0}}'\", this.{1}.Value);",
+                paramLowerFirstChar,
+                paramCheckedCase);
+        }
+        
         requestUrlInitializerStringBuilder.Append(Environment.NewLine);
         requestUrlInitializerStringBuilder.Append("            }");
+        
+        this.AppendNullParameter(requestUrlInitializerStringBuilder, paramLowerFirstChar, first);
     }
     else
     {
@@ -290,13 +313,109 @@ private void AddParameterToRequestUrlInitializerStringBuilder(
         requestUrlInitializerStringBuilder.Append(Environment.NewLine);
         requestUrlInitializerStringBuilder.Append("            {");
         requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-        requestUrlInitializerStringBuilder.AppendFormat(
-            "                functionParametersStringBuilder.AppendFormat(\"{0}='{{0}}',\", this.{1});",
-            paramLowerFirstChar,
-            paramCheckedCase);
+        
+        if (first)
+        {
+            requestUrlInitializerStringBuilder.AppendFormat(
+                "                functionParametersStringBuilder.AppendFormat(\"{0}='{{0}}'\", this.{1});",
+                paramLowerFirstChar,
+                paramCheckedCase);
+        }
+        else
+        {
+            requestUrlInitializerStringBuilder.AppendFormat(
+                "                functionParametersStringBuilder.AppendFormat(\",{0}='{{0}}'\", this.{1});",
+                paramLowerFirstChar,
+                paramCheckedCase);
+        }
+        
         requestUrlInitializerStringBuilder.Append(Environment.NewLine);
         requestUrlInitializerStringBuilder.Append("            }");
+        
+        if (optional)
+        {
+            this.AppendNullParameter(requestUrlInitializerStringBuilder, paramLowerFirstChar, first);
+        }
+        else
+        {
+            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+            requestUrlInitializerStringBuilder.Append("            ");
+            requestUrlInitializerStringBuilder.Append("else");
+            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+            requestUrlInitializerStringBuilder.Append("            {");
+            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+            requestUrlInitializerStringBuilder.Append("                throw new ServiceException(");
+            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+            requestUrlInitializerStringBuilder.Append("                    new Error");
+            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+            requestUrlInitializerStringBuilder.Append("                    {");
+            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+            requestUrlInitializerStringBuilder.Append("                        Code = \"invalidRequest\",");
+            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+            requestUrlInitializerStringBuilder.AppendFormat("                        Message = \"{0} is a required parameter for this method request.\",", paramLowerFirstChar);
+            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+            requestUrlInitializerStringBuilder.Append("                    });");
+            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+            requestUrlInitializerStringBuilder.Append("            }");
+        }
     }
+}
+
+private void AppendNullParameter(StringBuilder requestUrlInitializerStringBuilder, string paramLowerFirstChar, bool first)
+{
+    requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+    requestUrlInitializerStringBuilder.Append("            ");
+    requestUrlInitializerStringBuilder.AppendFormat("else");
+    requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+    requestUrlInitializerStringBuilder.Append("            {");
+    requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+    
+    if (first)
+    {
+        requestUrlInitializerStringBuilder.AppendFormat(
+            "                functionParametersStringBuilder.Append(\"{0}=null\");",
+            paramLowerFirstChar);
+    }
+    else
+    {
+        requestUrlInitializerStringBuilder.AppendFormat(
+            "                functionParametersStringBuilder.Append(\",{0}=null\");",
+            paramLowerFirstChar);
+    }
+    
+    requestUrlInitializerStringBuilder.Append(Environment.NewLine);
+    requestUrlInitializerStringBuilder.Append("            }");
+}
+
+private void AppendRequiredParameterException(StringBuilder actionRequiredParametersExceptionStringBuilder, OdcmParameter param)
+{
+    var paramCheckedCase = param.Name.ToCheckedCase();
+    var paramLowerFirstChar = param.Name.ToLowerFirstChar();
+    
+    if (actionRequiredParametersExceptionStringBuilder.Length > 0)
+    {
+        actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
+        actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
+        actionRequiredParametersExceptionStringBuilder.Append("            ");
+    }
+    
+    actionRequiredParametersExceptionStringBuilder.AppendFormat("if (this.{0} == null)", paramCheckedCase);
+    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
+    actionRequiredParametersExceptionStringBuilder.Append("            {");
+    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
+    actionRequiredParametersExceptionStringBuilder.Append("                throw new ServiceException(");
+    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
+    actionRequiredParametersExceptionStringBuilder.Append("                    new Error");
+    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
+    actionRequiredParametersExceptionStringBuilder.Append("                    {");
+    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
+    actionRequiredParametersExceptionStringBuilder.Append("                        Code = \"invalidRequest\",");
+    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
+    actionRequiredParametersExceptionStringBuilder.AppendFormat("                        Message = \"{0} is a required parameter for this method request.\",", paramLowerFirstChar);
+    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
+    actionRequiredParametersExceptionStringBuilder.Append("                    });");
+    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
+    actionRequiredParametersExceptionStringBuilder.Append("            }");
 }
 
 #>
