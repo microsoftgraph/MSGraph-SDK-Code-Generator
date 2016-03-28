@@ -24,10 +24,29 @@
 
     <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
 
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value The select clause
+     * @return The updated request
+     */
     <#=IBaseTypeRequest(c)#> select(final String value);
 
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value The expand clause
+     * @return The updated request
+     */
     <#=IBaseTypeRequest(c)#> expand(final String value);
-    <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #> 
+<# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #>
+
+    /**
+     * Sets the top value for the request
+     *
+     * @param value The max number of items to return
+     * @return The updated request
+     */
     <#=IBaseTypeRequest(c)#> top(final int value);
-    <#}#> 
+<# } #>
 }

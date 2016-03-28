@@ -32,16 +32,34 @@
         return send(HttpMethod.POST, mBody);
     }
 
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value The select clause
+     * @return The updated request
+     */
     public <#=ITypeRequest(c)#> select(final String value) {
         getQueryOptions().add(new QueryOption("select", value));
         return (<#=TypeRequest(c)#>)this;
     }
 
+    /**
+     * Sets the top value for the request
+     *
+     * @param value The max number of items to return
+     * @return The updated request
+     */
     public <#=ITypeRequest(c)#> top(final int value) {
         getQueryOptions().add(new QueryOption("top", value+""));
         return (<#=TypeRequest(c)#>)this;
     }
 
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value The expand clause
+     * @return The updated request
+     */
     public <#=ITypeRequest(c)#> expand(final String value) {
         getQueryOptions().add(new QueryOption("expand", value));
         return (<#=TypeRequest(c)#>)this;

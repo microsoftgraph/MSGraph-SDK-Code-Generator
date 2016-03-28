@@ -34,8 +34,8 @@
 
     public string MethodFullName(OdcmObject c) {
         if (c is OdcmMethod){
-            return String.Format("{0}.{1}", ((OdcmMethod)c).Class.Namespace.Name, 
-                                            c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar()); 
+            return String.Format("{0}.{1}", ((OdcmMethod)c).Class.Namespace.Name,
+                                            c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar());
         }
         return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
     }
@@ -529,14 +529,14 @@ public {1} {2}{3}{4} {{";
      * The {0}.
      */
     @SerializedName(""{1}"")
-    public {2} {3};
+    public {4}{2} {3};
 
 ";
         var collectionFormat =
 @"    /**
      * The {0}.
      */
-    public transient {2} {3};
+    public transient {4}{2} {3};
 
 ";
 
@@ -545,6 +545,7 @@ public {1} {2}{3}{4} {{";
             var propertyName = property.Name.ToUpperFirstChar();
             var propertyType = "";
             var propertyFormat = format;
+            var shouldFullyQualify = TypeHelperAndroid.ReservedNames.Contains(propertyName);
             if (property.IsCollection)
             {
                 if (!property.IsNavigation())
@@ -566,7 +567,8 @@ public {1} {2}{3}{4} {{";
                 propertyName.SplitCamelCase(),
                 property.Name,
                 propertyType,
-                property.SanitizePropertyName().ToLowerFirstChar());
+                property.SanitizePropertyName().ToLowerFirstChar(),
+                shouldFullyQualify ? "com.microsoft.graph.extensions." : "");
         }
         return sb.ToString();
     }
