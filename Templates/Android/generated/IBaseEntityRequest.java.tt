@@ -15,15 +15,14 @@
     else if (c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
     { #>
 <#=getMethods(c)#>
-<#       if (c.AsOdcmClass().Base.Base == null) { #>
 <#=deleteMethods(c)#>
-<#      } #>
 <#=patchMethods(c)#>
 <#=postMethods(c)#>
 <#  }
     else if (!c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
     { #>
 <#=getMethods(c)#>
+<#=deleteMethods(c)#>
 <#=patchMethods(c)#>
 <#=postMethods(c)#>
 <#  }
