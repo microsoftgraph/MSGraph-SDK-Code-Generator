@@ -24,9 +24,8 @@
             
             { "Template": "StreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "<Class>StreamRequest" },
             
-             { "Template": "CollectionType", "SubProcessor": "CollectionProperty", "Type": "Model", "Name": "<PropertyType>Collection" },
-            
-
+            { "Template": "CollectionType", "SubProcessor": "CollectionProperty", "Type": "Model", "Name": "<PropertyType>Collection" },
+            { "Template": "CollectionType", "SubProcessor": "CollectionMethod", "Type": "Model", "Name": "<PropertyType>Collection" },
 
             { "Template": "EntityWithReferenceRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferenceRequest" },
             { "Template": "EntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferenceRequestBuilder" },

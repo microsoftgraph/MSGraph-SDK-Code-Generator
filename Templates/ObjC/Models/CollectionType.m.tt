@@ -3,23 +3,39 @@
 <#@ include file="SharedObjC.template.tt"#>
 <#
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Type;
+var method = host.CurrentType.AsOdcmMethod();
+OdcmType innerEntity = null;
+if (prop != null)
+{
+    innerEntity = prop.Type;
+}
+else if (method != null)
+{
+    innerEntity = method.ReturnType;
+}
 #>
 
-#import "<#=GetObjCTypeIdentifier(innerEntity)#>Collection.h"
+#import "<#=innerEntity.GetCollectionTypeString()#>.h"
+<#
+if (!innerEntity.IsSystem() && innerEntity.IsComplex())
+{
+#>
 #import "<#=GetObjCTypeIdentifier(innerEntity)#>.h"
+<#
+}
+#>
 
-@implementation <#=GetObjCTypeIdentifier(innerEntity)#>Collection
+@implementation <#=innerEntity.GetCollectionTypeString()#>
 
-+ (<#=GetObjCTypeIdentifier(innerEntity)#>Collection *) fromMSCollection:(<#=GetStaticCollectionObject()#> *)collection {
-    <#=GetObjCTypeIdentifier(innerEntity)#>Collection *col = [[<#=GetObjCTypeIdentifier(innerEntity)#>Collection alloc] init];
++ (<#=innerEntity.GetCollectionTypeString()#> *) fromMSCollection:(<#=GetStaticCollectionObject()#> *)collection {
+    <#=innerEntity.GetCollectionTypeString()#> *col = [[<#=innerEntity.GetCollectionTypeString()#> alloc] init];
     col.value = collection.value;
     col.nextLink = collection.nextLink;
     col.additionalData = collection.additionalData;
     return col;
 }
 
-- (<#=GetObjCTypeForVarDeclaration(innerEntity)#>) objectAtIndexInCurrentPage:(NSUInteger)index {
+- (<#=GetObjCTypeForVarDeclaration(innerEntity)#>) objectAtIndex:(NSUInteger)index {
 <#
     if(IsNSJSONSerializable(innerEntity))
     {
@@ -29,15 +45,24 @@ var innerEntity = prop.Type;
     }
     else
     {
+        if (prop != null)
+        {
     #>
     return <#=GetHydratedPropertyFromNSJSONSerializableExpression("[super.value objectAtIndex:index]",prop)#>;
     <#
+        }
+        else
+        {
+    #>
+    return <#=GetHydratedPropertyFromNSJSONSerializableExpression("[super.value objectAtIndex:index]",method)#>;
+    <#
+        }
     }
 #>
 
 }
 
-- (NSUInteger) countInCurrentPage {
+- (NSUInteger) count {
     return [super.value count];
 }
 
