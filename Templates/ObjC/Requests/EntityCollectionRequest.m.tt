@@ -33,6 +33,10 @@ if (innerEntityType.Equals(propName))
 
 @implementation <#=propNameRequest#>
 
+<#
+	if(!collectionReference)
+	{
+#>
 - (MSURLSessionDataTask *)<#=GetObjCTypeIdentifier(prop)#>TaskWithRequest:(NSMutableURLRequest *)request
                              odObjectWithDictionary:(MSObject* (^)(NSDictionary *response))castBlock
                                          completion:(void (^)(<#=GetObjCTypeForVarDeclaration(prop)#> response, NSError *error))completionHandler
@@ -43,10 +47,6 @@ if (innerEntityType.Equals(propName))
     }];
 }
 
-<#
-	if(!collectionReference)
-	{
-#>
 - (NSMutableURLRequest *)get
 {
     return [self requestWithMethod:@"GET"

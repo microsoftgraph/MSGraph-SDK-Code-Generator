@@ -3,7 +3,16 @@
 <#@ include file="SharedObjC.template.tt"#>
 <#
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Type;
+var method = host.CurrentType.AsOdcmMethod();
+OdcmType innerEntity = null;
+if (prop != null)
+{
+    innerEntity = prop.Type;
+}
+else if (method != null)
+{
+    innerEntity = method.ReturnType;
+}
 #>
 
 #import "<#=GetStaticCollectionObject()#>.h"
@@ -25,10 +34,10 @@ if(!innerEntity.IsSystem())
 }
 #>
 
-@interface <#=GetObjCTypeIdentifier(innerEntity)#>Collection : <#=GetStaticCollectionObject()#>
+@interface <#=innerEntity.GetCollectionTypeString()#> : <#=GetStaticCollectionObject()#>
 
-+ (<#=GetObjCTypeIdentifier(innerEntity)#>Collection *) fromMSCollection:(<#=GetStaticCollectionObject()#> *)collection;
-- (<#=GetObjCTypeForVarDeclaration(innerEntity)#>) objectAtIndexInCurrentPage:(NSUInteger)index;
-@property(readonly) NSUInteger countInCurrentPage;
++ (<#=innerEntity.GetCollectionTypeString()#> *) fromMSCollection:(<#=GetStaticCollectionObject()#> *)collection;
+- (<#=GetObjCTypeForVarDeclaration(innerEntity)#>) objectAtIndex:(NSUInteger)index;
+@property(readonly) NSUInteger count;
 
 @end
