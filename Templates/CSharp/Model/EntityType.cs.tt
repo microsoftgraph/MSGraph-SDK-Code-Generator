@@ -1,0 +1,124 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+OdcmClass entity = host.CurrentType.AsOdcmClass();
+var entityName = entity.Name.ToCheckedCase();
+
+var typeDeclaration = entityName;
+
+if (entity.Base != null)
+{
+    typeDeclaration = string.Format("{0} : {1}", typeDeclaration, entity.Base.Name.ToCheckedCase());
+}
+
+var attributeStringBuilder = new StringBuilder();
+attributeStringBuilder.Append("[DataContract]");
+
+// We only want to add the derived type converter to the classes at the top of the inheritance hierarchy
+if (entity.Derived != null && entity.Base == null)
+{
+    attributeStringBuilder.Append(Environment.NewLine);
+    attributeStringBuilder.Append("    ");
+    attributeStringBuilder.Append("[JsonConverter(typeof(DerivedTypeConverter))]");
+}
+
+#>
+
+namespace <#=entity.Namespace.GetNamespaceName()#>
+{
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Runtime.Serialization;
+    using Newtonsoft.Json;
+
+    /// <summary>
+    /// The type <#=entityName.SplitCamelCase()#>.
+    /// </summary>
+    <#=attributeStringBuilder.ToString()#>
+    public partial class <#=typeDeclaration#>
+    {
+    <#
+        if (entity.IsAbstract)
+        {
+    #>
+
+        protected internal <#=entityName#>()
+        {
+            // Don't allow initialization of abstract entity types
+        }
+    <#
+        }
+        
+        foreach(var property in entity.Properties)
+        {
+            var propertyType = property.IsTypeNullable() || property.IsCollection()
+                    ? property.GetTypeString()
+                    : property.GetTypeString() + "?";
+
+            var propertyName = property.Name.ToCheckedCase();
+            var propertyCollectionPage = property.IsReference() ? string.Concat(entityName, propertyName, "CollectionWithReferencesPage") : string.Concat(entityName, propertyName, "CollectionPage");
+
+            if (property.IsCollection())
+            {
+                if (property.IsNavigation())
+                {
+    #>
+
+        /// <summary>
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+        /// </summary>
+        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        public I<#=propertyCollectionPage#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
+    <#
+                }
+                else
+                {
+    #>
+
+        /// <summary>
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+        /// </summary>
+        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        public IEnumerable<<#=propertyType#>> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
+    <#
+                }
+            }
+            else
+            {
+    #>
+
+        /// <summary>
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+        /// </summary>
+        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        public <#=propertyType#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
+    <#
+            }
+        }
+        
+    // Only include @odata.type and AdditionalData in the base classes.
+    if (entity.Base == null)
+    {
+    #>
+
+        /// <summary>
+        /// Gets or sets @odata.type.
+        /// </summary>
+        [DataMember(Name = "@odata.type", EmitDefaultValue = false, IsRequired = false)]
+        public string ODataType { get; set; }
+        
+        /// <summary>
+        /// Gets or sets additional data.
+        /// </summary>
+        [JsonExtensionData(ReadData = true, WriteData = true)]
+        public IDictionary<string, object> AdditionalData { get; set; }
+    <#
+    }
+    #>
+
+    }
+}
+

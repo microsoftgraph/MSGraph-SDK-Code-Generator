@@ -1,0 +1,109 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="IRequest.Base.template.tt"#>
+<#+
+
+// -------------------------------------------------------------
+// Methods for standard entity collection classes
+// -------------------------------------------------------------
+public string GetCollectionInterfaceDefinition(OdcmProperty odcmProperty)
+{
+    return this.GetInterfaceDefinition(this.GetPropertyCollectionRequestName(odcmProperty));
+}
+
+
+// -------------------------------------------------------------
+// Methods for the reference of an entity collection
+// -------------------------------------------------------------
+public string GetCollectionReferencesInterfaceDefinition(OdcmProperty odcmProperty)
+{
+    return this.GetInterfaceDefinition(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
+}
+
+
+// -------------------------------------------------------------
+// Methods for entity collection classes that support $ref addressing
+// -------------------------------------------------------------
+public string GetCollectionWithReferencesInterfaceDefinition(OdcmProperty odcmProperty)
+{
+    return this.GetInterfaceDefinition(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
+}
+
+
+// -------------------------------------------------------------
+// Build CRUD methods
+// -------------------------------------------------------------
+public void AppendMethodHeaderToPostAsyncMethod(string propertyType, string sanitizedPropertyName, StringBuilder stringBuilder)
+{
+    stringBuilder.Append("        /// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Adds the specified {0} to the collection via POST.", propertyType);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <param name=\"{0}\">The {1} to add.</param>", sanitizedPropertyName, propertyType);
+}
+
+public string GetPostAsyncMethod(OdcmProperty odcmProperty)
+{
+    if (!odcmProperty.LongDescriptionContains("readonly"))
+    {
+        var sanitizedPropertyName = odcmProperty.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
+        var propertyType = this.GetPropertyTypeName(odcmProperty);
+        
+        var templateWriterHost = (CustomT4Host)Host;
+        var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
+
+        var stringBuilder = new StringBuilder();
+        
+        stringBuilder.Append(Environment.NewLine);
+        this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        Task<{0}> AddAsync({0} {1});", propertyType, sanitizedPropertyName);
+        
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append(Environment.NewLine);
+        
+        this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("        Task<{0}> AddAsync({0} {1}, CancellationToken cancellationToken);", propertyType, sanitizedPropertyName);
+        
+        return stringBuilder.ToString();
+    }
+    
+    return string.Empty;
+}
+
+public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
+{
+    var sanitizedPropertyName = odcmProperty.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
+    var propertyType = this.GetPropertyTypeName(odcmProperty);
+    
+    var templateWriterHost = (CustomT4Host)Host;
+    var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
+
+    var stringBuilder = new StringBuilder();
+    
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        Task AddAsync({0} {1});", propertyType, sanitizedPropertyName);
+    
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(Environment.NewLine);
+    
+    this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        Task AddAsync({0} {1}, CancellationToken cancellationToken);", propertyType, sanitizedPropertyName);
+    
+    return stringBuilder.ToString();
+}
+
+#>

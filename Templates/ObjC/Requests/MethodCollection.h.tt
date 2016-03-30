@@ -1,0 +1,27 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+
+<#
+var func = host.CurrentType.AsOdcmMethod();
+var paramList = func.ReturnType.AsOdcmClass().Properties.Where(prop=> !prop.IsCollection);
+var collectionName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Collection";
+#>
+
+#import "<#=writer.GetStaticCodePrefix()#>Collection.h"
+
+@interface <#=collectionName#> : <#=writer.GetStaticCodePrefix()#>Collection
+
+<#
+foreach(var param in paramList)
+{
+    var paramName = param.Name.Substring(param.Name.IndexOf(".") + 1).ToLowerFirstChar();
+#>
+@property <#=param.Type.GetTypeString()#> *<#=paramName#>;
+<#
+}
+#>
+
+- (instancetype)initWithCollection:(<#=writer.GetStaticCodePrefix()#>Collection *)collection;
+
+@end

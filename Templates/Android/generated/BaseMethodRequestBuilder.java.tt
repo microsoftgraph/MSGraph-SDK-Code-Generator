@@ -1,0 +1,47 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeRequestBuilder(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(BaseTypeRequestBuilder(c),  "BaseRequestBuilder")#>
+
+<# foreach (var p in c.AsOdcmMethod().Parameters) { #>
+    public final <#=ParamType(p)#> <#=FieldName(p)#>;
+<# } #>
+
+    /**
+     * The request builder for this <#=TypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+        super(requestUrl, client, options);
+<# foreach (var p in c.AsOdcmMethod().Parameters) { #>
+        <#=FieldName(p)#> = <#=ParamName(p)#>;
+<# } #>
+    }
+
+    /**
+     * Creates the <#=ITypeRequest(c)#>
+     *
+     * @return The <#=ITypeRequest(c)#> instance
+     */
+    public <#=ITypeRequest(c)#> buildRequest() {
+        return buildRequest(getOptions());
+    }
+
+    /**
+     * Creates the <#=ITypeRequest(c)#> with specific options instead of the existing options
+     *
+     * @param options the options for the request
+     * @return The <#=ITypeRequest(c)#> instance
+     */
+    public <#=ITypeRequest(c)#> buildRequest(final List<Option> options) {
+        return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), options<#=MethodFieldValues(c)#>);
+    }
+}

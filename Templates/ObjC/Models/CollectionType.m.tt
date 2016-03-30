@@ -1,0 +1,44 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var prop = host.CurrentType.AsOdcmProperty();
+var innerEntity = prop.Type;
+#>
+
+#import "<#=GetObjCTypeIdentifier(innerEntity)#>Collection.h"
+#import "<#=GetObjCTypeIdentifier(innerEntity)#>.h"
+
+@implementation <#=GetObjCTypeIdentifier(innerEntity)#>Collection
+
++ (<#=GetObjCTypeIdentifier(innerEntity)#>Collection *) fromMSCollection:(<#=GetStaticCollectionObject()#> *)collection {
+    <#=GetObjCTypeIdentifier(innerEntity)#>Collection *col = [[<#=GetObjCTypeIdentifier(innerEntity)#>Collection alloc] init];
+    col.value = collection.value;
+    col.nextLink = collection.nextLink;
+    col.additionalData = collection.additionalData;
+    return col;
+}
+
+- (<#=GetObjCTypeForVarDeclaration(innerEntity)#>) objectAtIndexInCurrentPage:(NSUInteger)index {
+<#
+    if(IsNSJSONSerializable(innerEntity))
+    {
+#>
+    return [super.value objectAtIndex:index];
+<#
+    }
+    else
+    {
+    #>
+    return <#=GetHydratedPropertyFromNSJSONSerializableExpression("[super.value objectAtIndex:index]",prop)#>;
+    <#
+    }
+#>
+
+}
+
+- (NSUInteger) countInCurrentPage {
+    return [super.value count];
+}
+
+@end

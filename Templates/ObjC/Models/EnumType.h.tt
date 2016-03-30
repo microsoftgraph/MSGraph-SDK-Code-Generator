@@ -1,0 +1,28 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entity = host.CurrentType.AsOdcmEnum();
+#>
+
+#include <Foundation/Foundation.h>
+
+typedef NS_ENUM(NSInteger, <#=GetObjCTypeIdentifier(entity)#>){
+
+<#
+foreach(var member in entity.Members.OrderBy(x => x.Value))
+{
+#>
+	<#=GetObjCEnumMember(entity,member)#> = <#=member.Value#>,
+<#
+}
+#>
+    <#=GetObjCTypeIdentifier(entity)#>EndOfEnum
+};
+
+@interface NSString (<#=GetObjCTypeIdentifier(entity)#>)
+
++ (instancetype) stringWith<#=GetObjCTypeIdentifier(entity)#>:(<#=GetObjCTypeIdentifier(entity)#>)val;
+- (<#=GetObjCTypeIdentifier(entity)#>) to<#=GetObjCTypeIdentifier(entity)#>;
+
+@end

@@ -1,0 +1,50 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="IEntityRequestBuilder.Base.template.tt"#>
+<#
+
+OdcmClass entity = host.CurrentType.AsOdcmClass();
+var entityName = entity.Name.ToCheckedCase();
+var entityRequest = entityName + "Request";
+var entityRequestBuilder = entityRequest + "Builder";
+
+#>
+
+namespace <#=this.GetNamespaceName(entity)#>
+{
+    using System;
+    using System.Collections.Generic;
+
+    <#=this.GetEntityRequestBuilderInterfaceDefinition(entity)#>
+    {
+        <#=this.GetEntityRequestMethod(entity)#>
+
+        <#=this.GetEntityRequestMethodWithOptions(entity)#>
+    <#
+    if (entity.NavigationProperties().Any())
+    {
+    #>
+    
+        <#=this.GetNavigationProperties(entity)#>
+    <#
+    }
+
+    if (entity.Kind == OdcmClassKind.MediaEntity || entity.GetProperties(typeName:"Stream").Any())
+    {
+    #>
+
+        <#=this.GetStreamProperties(entity)#>
+    <#
+    }
+
+    if(entity.Methods.Any())
+    {
+    #>
+    
+        <#=this.GetMethodProperties(entity)#>
+    <#
+    }
+    #>
+
+    }
+}

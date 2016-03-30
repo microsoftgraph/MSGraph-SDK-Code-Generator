@@ -1,0 +1,93 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+OdcmClass complex = host.CurrentType.AsOdcmClass();
+var complexTypeName = complex.Name.ToCheckedCase();
+var typeDeclaration = complexTypeName;
+
+if (complex.Base != null)
+{
+    typeDeclaration = string.Format("{0} : {1}", typeDeclaration, complex.Base.Name.ToCheckedCase());
+}
+
+var isMethodResponse = complex.LongDescriptionContains("methodResponse");
+var classType = complex.IsAbstract ? "abstract partial class" : "partial class";
+
+var attributeStringBuilder = new StringBuilder();
+attributeStringBuilder.Append("[DataContract]");
+
+// We only want to add the derived type converter to the concrete class at the top of the inheritance hierarchy
+if (!complex.IsAbstract && complex.Derived != null && (complex.Base == null || complex.Base.IsAbstract))
+{
+    attributeStringBuilder.Append(Environment.NewLine);
+    attributeStringBuilder.Append("    ");
+    attributeStringBuilder.Append("[JsonConverter(typeof(DerivedTypeConverter))]");
+}
+
+#>
+
+namespace <#=complex.Namespace.GetNamespaceName()#>
+{
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Runtime.Serialization;
+    using Newtonsoft.Json;
+
+    /// <summary>
+    /// The type <#=complexTypeName#>.
+    /// </summary>
+    <#=attributeStringBuilder.ToString()#>
+    public <#=classType#> <#=typeDeclaration#>
+    {
+    <# 
+        foreach(var property in complex.Properties)
+        {
+
+            var propertyType = property.IsCollection ? string.Format("IEnumerable<{0}>", property.GetTypeString()) : property.GetTypeString();
+            var propertyName = isMethodResponse
+                ? property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase()
+                : property.Name.ToCheckedCase().GetSanitizedPropertyName();
+
+            if (property.IsTypeNullable() || property.IsCollection)
+            {
+    #>
+
+        /// <summary>
+        /// Gets or sets <#=property.Name#>.
+        /// </summary>
+        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        public <#=propertyType#> <#=propertyName#> { get; set; }
+    <#
+        }
+        else
+        {
+    #>
+
+        /// <summary>
+        /// Gets or sets <#=property.Name#>.
+        /// </summary>
+        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        public <#=propertyType#>? <#=propertyName#> { get; set; }
+    <#
+            }
+        }
+
+    // Only include AdditionalData in the base classes.
+    if (complex.Base == null)
+    {
+    #>
+
+        /// <summary>
+        /// Gets or sets additional data.
+        /// </summary>
+        [JsonExtensionData(ReadData = true)]
+        public IDictionary<string, object> AdditionalData { get; set; }
+    <#
+    }
+    #>
+
+    }
+}

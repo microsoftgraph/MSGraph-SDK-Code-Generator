@@ -1,0 +1,50 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entity = host.CurrentType.AsOdcmEnum();
+#>
+
+#include <<#=GetObjCTypeIdentifier(entity)#>.h>
+
+@implementation NSString (<#=GetObjCTypeIdentifier(entity)#>)
+
++ (instancetype) stringWith<#=GetObjCTypeIdentifier(entity)#>:(<#=GetObjCTypeIdentifier(entity)#>)val {
+
+    switch(val)
+    {
+    <#
+    foreach(var member in entity.Members)
+    {
+    #>
+    case <#=GetObjCEnumMember(entity,member)#>:
+            return @"<#=member.Name#>";
+    <#
+    }
+    #>
+    case <#=GetObjCTypeIdentifier(entity)#>EndOfEnum:
+        default:
+            return nil;
+    }
+
+    return nil;
+}
+
+- (<#=GetObjCTypeIdentifier(entity)#>) to<#=GetObjCTypeIdentifier(entity)#>{
+
+    <#
+    foreach(var member in entity.Members)
+    {
+    #>if([self isEqualToString:@"<#=member.Name#>"])
+      {
+            return <#=GetObjCEnumMember(entity,member)#>;
+      }
+      else <#
+    }
+    #>
+    {
+        return <#=GetObjCTypeIdentifier(entity)#>EndOfEnum;
+    }
+}
+
+@end

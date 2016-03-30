@@ -1,0 +1,52 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var method = host.CurrentType.AsOdcmMethod();
+var entityName = method.Class.Name.ToCheckedCase();
+var requestType = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase() + "Request";
+var requestBuilderType = requestType + "Builder";
+#>
+
+namespace <#=method.Namespace.GetNamespaceName()#>
+{
+    using System;
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// The interface I<#=requestBuilderType#>.
+    /// </summary>
+    public partial interface I<#=requestBuilderType#>
+    {
+    <#
+    foreach (var param in method.Parameters)  
+    {
+        var paramTypeString = param.Type.GetTypeString();
+        
+        if (param.IsCollection)
+        {
+            paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
+        }
+        else if (!param.Type.IsTypeNullable() && param.IsNullable)
+        {
+            paramTypeString = string.Format("{0}?", paramTypeString);
+        } 
+    #>
+
+        /// <summary>
+        /// Gets the <#=param.Name.ToCheckedCase()#>.
+        /// </summary>
+        <#=paramTypeString#> <#=param.Name.ToCheckedCase()#> { get; }
+    <#
+    }
+    #>
+
+        /// <summary>
+        /// Builds the request.
+        /// </summary>
+        /// <param name="options">The query and header options for the request.</param>
+        /// <returns>The built request.</returns>
+        I<#=requestType#> Request(IEnumerable<Option> options = null);
+    }
+}

@@ -1,0 +1,37 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var prop = host.CurrentType.AsOdcmProperty();
+var entityName = prop.Class.Name.ToCheckedCase();
+var propName = prop.Name.ToCheckedCase();
+var collectionResponse = string.Concat(entityName, propName, "CollectionWithReferencesResponse");
+var collectionPage = string.Concat(entityName, propName, "CollectionWithReferencesPage");
+
+#>
+namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
+{
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+    using Newtonsoft.Json;
+
+    /// <summary>
+    /// The type <#=collectionResponse#>.
+    /// </summary>
+    [DataContract]
+    public class <#=collectionResponse#>
+    {
+        /// <summary>
+        /// Gets or sets the <see cref="I<#=collectionPage#>"/> value.
+        /// </summary>
+        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+        public I<#=collectionPage#> Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets additional data.
+        /// </summary>
+        [JsonExtensionData(ReadData = true)]
+        public IDictionary<string, object> AdditionalData { get; set; }
+    }
+}

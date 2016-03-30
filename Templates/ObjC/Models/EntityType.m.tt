@@ -1,0 +1,84 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entity = host.CurrentType.AsOdcmClass();
+#>
+
+#import "NSDate+MSSerialization.h"
+
+#import "<#=writer.GetPrefix()#>Models.h"
+
+@interface <#=GetStaticBaseObject()#>()
+
+@property (strong, nonatomic) NSMutableDictionary *dictionary;
+
+@end
+
+@interface <#=GetObjCTypeIdentifier(entity)#>()
+{
+<#
+foreach (var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream" ))
+{
+#>
+    <#=GetObjCTypeForVarDeclaration(prop)#> _<#=GetObjCProperty(prop)#>;
+<#
+}
+#>
+}
+@end
+
+@implementation <#=GetObjCTypeIdentifier(entity)#>
+
+<#
+// Concrete subclasses need to have self.oDataType set to the odata type name
+if (!entity.IsAbstract)
+{
+#>
+- (id) init
+{
+    if (self = [super init]) {
+        self.oDataType = @"#<#=entity.FullName#>";
+    }
+    return self;
+}
+<#
+}
+
+// Specially add property for @odata.type to entity base class
+if (entity.Base == null)
+{
+#>
+- (NSString*) oDataType
+{
+    return self.dictionary[@"@odata.type"];
+}
+- (void) setODataType: (NSString*) val
+{
+    self.dictionary[@"@odata.type"] = val;
+}
+<#
+}
+
+foreach(var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream"))
+{
+    PropertyGetterImplementation(prop);
+    PropertySetterImplementation(prop);
+}
+
+foreach(var prop in entity.Properties.Where(prop => prop.IsCollection && !prop.LongDescriptionContains("not-enumerable")))
+{
+#>
+- (<#=GetObjCTypeForVarDeclaration(prop,true)#>) <#=GetObjCProperty(prop)#>:(NSInteger)index
+{
+   <#=GetObjCTypeForVarDeclaration(prop,true)#> <#=GetObjCProperty(prop)#> = nil;
+   if (self.<#=GetObjCProperty(prop)#>.value){
+       <#=GetObjCProperty(prop)#> = self.<#=GetObjCProperty(prop)#>.value[index];
+   }
+   return <#=GetObjCProperty(prop)#>;
+}
+<#
+}
+#>
+
+@end

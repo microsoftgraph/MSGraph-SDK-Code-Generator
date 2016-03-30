@@ -1,0 +1,35 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var method = host.CurrentType.AsOdcmMethod();
+var entityName = method.Class.Name.ToCheckedCase();
+var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
+var monitorType = entityName + methodName + "AsyncMonitor";
+
+var isCollection = method.IsCollection || method.LongDescriptionContains("specialCollection");
+var returnEntityType = method.ReturnType.Name.ToCheckedCase();
+var returnType = isCollection ? "I" + entityName + methodName + "CollectionPage" : returnEntityType;
+bool isAsync = method.LongDescriptionContains("async");
+var asyncString = isCollection ? "async " : " ";
+
+#>
+
+namespace <#=method.Namespace.GetNamespaceName()#>
+{
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    
+    /// <summary>
+    /// The interface I<#=monitorType#>.
+    /// </summary>
+    public partial interface I<#=monitorType#>
+    {
+        /// <summary>
+        /// Polls until the async operation is complete and returns the resulting <#=returnType#>.
+        /// </summary>
+        <#=asyncString#>Task<<#=returnType#>> CompleteOperationAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken);
+    }
+}

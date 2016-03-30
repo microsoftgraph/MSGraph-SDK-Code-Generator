@@ -1,0 +1,77 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(BaseClientType(c), "BaseClient", IBaseClientType(c))#>
+
+    /**
+     * The default endpoint for the Microsoft Graph Service
+     */
+    public static final String DEFAULT_GRAPH_ENDPOINT = "https://graph.microsoft.com/v1.0";
+
+    /**
+     * The current endpoint
+     */
+    private String mEndpoint;
+
+    @Override
+    public String getServiceRoot() {
+        if (mEndpoint == null) {
+            mEndpoint = DEFAULT_GRAPH_ENDPOINT;
+        }
+        return mEndpoint;
+    }
+
+    @Override
+    public void setServiceRoot(String value) {
+        mEndpoint = value;
+    }
+<#
+foreach (var prop in model.EntityContainer.Properties)
+{
+    var propertyName = prop.Name.ToUpperFirstChar();
+    if (prop.IsCollection())
+    {
+        var requestCollectionBuilder = TypeCollectionRequestBuilder(prop);
+#>
+
+    /**
+     * Gets the collection of <#=propertyName#> objects.
+     *
+     * @return The request builder for the collection of <#=propertyName#> objects
+     */
+    public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propertyName#>() {
+        return new <#=TypeCollectionRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);
+    }
+
+    /**
+     * Gets a single <#=propertyName#>.
+     *
+     * @param id The id of the <#=propertyName#> to retrieve.
+     * @return The request builder for the <#=propertyName#> object
+     */
+    public <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>(final String id) {
+        return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>/" + id, (<#=IClientType(c)#>)this, null);
+    }
+<#
+    }
+    else
+    {
+#>
+
+    /**
+     * Gets <#=TypeRequestBuilder(c)#>.
+     *
+     * @return the <#=prop.Type.GetTypeString()#>.
+     */
+    public <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>() {
+        return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);
+    }
+<#
+    }
+}
+#>
+}

@@ -1,0 +1,142 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var prop = host.CurrentType.AsOdcmProperty();
+
+string propName = null;
+string propClass = null;
+string propRequest = null;
+string namespaceValue = null;
+
+// If the current type isn't a property it's a content $value stream for a media entity
+if (prop == null)
+{
+    var entity = host.CurrentType.AsOdcmClass();
+    propName = "content";
+    propClass = entity.Name.ToCheckedCase();
+    propRequest = propClass + "ContentRequest";
+    namespaceValue = entity.Namespace.GetNamespaceName();
+}
+else
+{
+    propName = prop.Name;
+    propClass = prop.Class.Name.ToCheckedCase();
+    propRequest = propClass + prop.Name.ToCheckedCase() + "Request";
+    namespaceValue = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
+}
+#>
+
+namespace <#=namespaceValue#>
+{
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// The type <#=propRequest#>.
+    /// </summary>
+    public partial class <#=propRequest#> : BaseRequest, I<#=propRequest#>
+    {
+        /// <summary>
+        /// Constructs a new <#=propRequest#>.
+        /// <param name="requestUrl">The request URL.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="options">Query option name value pairs for the request.</param>
+        /// </summary>
+        public <#=propRequest#>(
+            string requestUrl,
+            IBaseClient client,
+            IEnumerable<Option> options)
+            : base(requestUrl, client, options)
+        {
+        }
+
+        /// <summary>
+        /// Gets the stream.
+        /// </summary>
+        /// <returns>The stream.</returns>
+        public Task<Stream> GetAsync()
+        {
+            return this.GetAsync(CancellationToken.None);
+        }
+        
+        /// <summary>
+        /// Gets the stream.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The stream.</returns>
+        public Task<Stream> GetAsync(CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        {
+            this.Method = "GET";
+            return this.SendStreamRequestAsync(null, cancellationToken, completionOption);
+        }
+    <#
+        if (prop != null)
+        {
+    #>
+    
+        /// <summary>
+        /// PUTs the specified stream.
+        /// </summary>
+        /// <typeparam name="T">The type returned by the PUT call.</typeparam>
+        /// <param name="<#=propName#>">The stream to PUT.</param>
+        /// <returns>The object returned by the PUT call.</returns>
+        public Task<T> PutAsync<T>(Stream <#=propName#>) where T : <#=propClass#>
+        {
+            return this.PutAsync<T>(<#=propName#>, CancellationToken.None);
+        }
+        
+        /// <summary>
+        /// PUTs the specified stream.
+        /// </summary>
+        /// <typeparam name="T">The type returned by the PUT call.</typeparam>
+        /// <param name="<#=propName#>">The stream to PUT.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The object returned by the PUT call.</returns>
+        public Task<T> PutAsync<T>(Stream <#=propName#>, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : <#=propClass#>
+        {
+            this.ContentType = "application/octet-stream";
+            this.Method = "PUT";
+            return this.SendAsync<T>(<#=propName#>, cancellationToken, completionOption);
+        }
+    <#
+        }
+        else
+        {
+    #>
+    
+        /// <summary>
+        /// PUTs the specified stream.
+        /// </summary>
+        /// <param name="<#=propName#>">The stream to PUT.</param>
+        /// <returns>The updated stream.</returns>
+        public Task<Stream> PutAsync(Stream <#=propName#>)
+        {
+            return this.PutAsync(<#=propName#>, CancellationToken.None);
+        }
+        
+        /// <summary>
+        /// PUTs the specified stream.
+        /// </summary>
+        /// <param name="<#=propName#>">The stream to PUT.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The updated stream.</returns>
+        public Task<Stream> PutAsync(Stream <#=propName#>, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        {
+            this.ContentType = "application/octet-stream";
+            this.Method = "PUT";
+            return this.SendStreamRequestAsync(<#=propName#>, cancellationToken, completionOption);
+        }
+    <#
+        }
+    #>
+
+    }
+}

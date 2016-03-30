@@ -1,0 +1,50 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var method = host.CurrentType.AsOdcmMethod();
+var entityName = method.Class.Name.ToCheckedCase();
+var requestBody = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase() + "RequestBody";
+#>
+
+namespace <#=method.Namespace.GetNamespaceName()#>
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+
+    /// <summary>
+    /// The type <#=requestBody#>.
+    /// </summary>
+    [DataContract]
+    public partial class <#=requestBody#>
+    {
+    <#
+    foreach (var param in method.Parameters)  
+    {
+        var paramTypeString = param.Type.GetTypeString();
+        
+        if (param.IsCollection)
+        {
+            paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
+        }
+        else if (param.IsNullable && !param.Type.IsTypeNullable())
+        {
+            paramTypeString = string.Format("{0}?", paramTypeString);
+        }
+        
+        var paramName = param.Name.ToCheckedCase().GetSanitizedPropertyName();
+    #>
+
+        /// <summary>
+        /// Gets or sets <#=paramName#>.
+        /// </summary>
+        [DataMember(Name = "<#=param.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        public <#=paramTypeString#> <#=paramName#> { get; set; }
+    <#
+    }
+    #>
+
+    }
+}

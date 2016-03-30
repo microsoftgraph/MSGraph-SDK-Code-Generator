@@ -1,0 +1,109 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel CurrentModel  = host.CurrentModel;
+CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
+#>
+<#=writer.WriteHeader()#>
+<#
+//Enum
+var enumTypes = CurrentModel.GetEnumTypes();
+foreach(var enumType in enumTypes) {
+#>
+from .model.<#=enumType.GetTypeString().ToUnderscore()#> import <#=enumType.GetTypeString().ToUpperFirstChar()#>
+<#
+}
+
+//Complex
+var complexTypes = CurrentModel.GetComplexTypes()
+                    .Where(complexType => 
+                        !complexType.LongDescriptionContains("methodResponse"));
+
+foreach (var complex in complexTypes){
+#>
+from .model.<#=complex.GetTypeString().ToUnderscore()#> import <#=complex.GetTypeString().ToUpperFirstChar()#>
+<#
+}
+
+//Entities
+var types = CurrentModel.GetEntityTypes();
+
+foreach(var entity in types) {
+#>
+from .model.<#=entity.GetTypeString().ToUnderscore()#> import <#=entity.GetTypeString().ToUpperFirstChar()#>
+<#
+}
+
+types = types.Union(complexTypes.Where(complexType => complexType.LongDescriptionContains("navigable")));
+
+//requests and Request Builders
+foreach(var entity in types) {
+var name = entity.GetTypeString()+"Request";
+#>
+from .request.<#=name.ToUnderscore()#> import <#=name.ToUpperFirstChar()#>
+from .request.<#=(name+"Builder").ToUnderscore()#> import <#=(name+"Builder").ToUpperFirstChar()#>
+<#
+}
+
+//Collections
+var collections = CurrentModel.GetProperties()
+                    .Where(prop => prop.IsCollection && prop.Type != null && prop.Type.Name != "String" && !prop.LongDescriptionContains("ignorableCollection"));
+
+
+foreach(OdcmProperty prop in collections){
+    var collectionRequest = prop.Name.ToUpperFirstChar() + "CollectionRequest";
+    var collectionRequestBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+    var collectionPage = prop.Name.ToUpperFirstChar() + "CollectionPage";
+    var collectionResponse = prop.Name.ToUpperFirstChar() + "CollectionResponse";
+#>
+from .request.<#=(prop.Name+"Collection").ToUnderscore()#> import <#=collectionRequest#>, <#=collectionRequestBuilder#>, <#=collectionPage#>, <#=collectionResponse#>
+<#
+}
+
+//Methods
+var methods = CurrentModel.GetEntityTypes().SelectMany(et => et.Methods);
+foreach(OdcmMethod method in methods){
+    var name = method.Class.Name.ToUpperFirstChar() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar();
+#>
+from .request.<#=name.ToUnderscore()#> import <#=name+"Request"#>
+<#
+}
+
+//Special method collections
+foreach(OdcmMethod method in methods){
+    if (method.LongDescriptionContains("specialCollection")){
+    var name = method.Class.Name.ToUpperFirstChar() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar()+"Collection";
+#>
+from .request.<#=name.ToUnderscore()#> import <#=name#>Page, <#=name#>Response
+<#
+    }
+}
+
+//Streams
+var properties = CurrentModel.GetProperties(typeName:"Stream");
+
+foreach(var p in properties){
+    var prop = p as OdcmProperty;
+    var name = prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
+#>
+from .request.<#=name.ToUnderscore()#>_request import <#=name#>Request, <#=name#>RequestBuilder
+<#
+}
+
+//Client
+var container = CurrentModel.EntityContainer;
+if (container != null){
+#>
+from .request.one_drive_client import OneDriveClient
+<#
+}
+#>
+from .auth_provider import AuthProvider
+from .http_provider import HttpProvider
+from .extensions.onedrivesdk_helper import *
+from .extensions import *
+import sys
+if sys.version_info >= (3, 4, 0):
+    from .version_bridge import *

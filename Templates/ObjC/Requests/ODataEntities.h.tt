@@ -1,0 +1,124 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+
+#import "<#=writer.GetStaticCodePrefix()#>Collection.h"
+
+<#
+var entityTypes = model.GetEntityTypes();
+var entitySet = model.EntityContainer.Properties;
+var classes = new HashSet<string>();
+
+foreach(var et in model.GetMediaEntityTypes())
+{
+    classes.Add("#import \"" + writer.GetPrefix() + et.Name.ToUpperFirstChar() + "StreamRequest.h\"");
+}
+
+foreach(var es in entitySet)
+{
+    if (es.IsCollection() && !(es.Type is OdcmPrimitiveType) && !es.IsEnum())
+    {
+        classes.Add("#import \"" + writer.GetPrefix() + es.Class.Name.ToUpperFirstChar() + es.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
+        classes.Add("#import \"" + writer.GetPrefix() + es.Class.Name.ToUpperFirstChar() + es.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
+    }
+}
+
+foreach(var et in entityTypes)
+{
+    classes.Add("#import \"" + writer.GetPrefix() + et.Name.ToUpperFirstChar() + "RequestBuilder.h\"");
+    classes.Add("#import \"" + writer.GetPrefix() + et.Name.ToUpperFirstChar() + "Request.h\"");
+
+    foreach(var prop in et.NavigationProperties())
+    {
+        if (!(prop.Type is OdcmPrimitiveType) && !prop.IsEnum())
+        {
+            if (prop.IsCollection())
+            {
+                var baseName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
+                if(!prop.IsReference())
+                {
+                    classes.Add("#import \"" + baseName + "CollectionRequestBuilder.h\"");
+                    classes.Add("#import \"" + baseName + "CollectionRequest.h\"");
+                }
+                else
+                {
+                    classes.Add("#import \"" + baseName + "CollectionWithReferencesRequestBuilder.h\"");
+                    classes.Add("#import \"" + baseName + "CollectionWithReferencesRequest.h\"");
+                    classes.Add("#import \"" + baseName + "CollectionReferencesRequestBuilder.h\"");
+                    classes.Add("#import \"" + baseName + "CollectionReferencesRequest.h\"");
+                }
+            }
+            else
+            {
+                 classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder.h\"");
+                 classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "Request.h\"");
+                 if(prop.IsReference())
+                 {
+                     classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "WithReferenceRequestBuilder.h\"");
+                     classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "WithReferenceRequest.h\"");
+                     classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "ReferenceRequestBuilder.h\"");
+                     classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "ReferenceRequest.h\"");
+                 }
+            }
+        }
+    }
+
+    foreach(var prop in et.GetProperties(typeName:"Stream"))
+    {
+        classes.Add("#import \"" + writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + "Request.h\"");
+    }
+
+    foreach(var func in et.Methods)
+    {
+        var baseName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar();
+        if (func.LongDescriptionContains("specialCollection"))
+        {
+            classes.Add("#import \"" + baseName + "Collection.h\"");
+        }
+        classes.Add("#import \"" + baseName + "RequestBuilder.h\"");
+        classes.Add("#import \"" + baseName + "Request.h\"");
+    }
+
+    foreach(var complexType in et.Properties.Where(prop => prop.LongDescriptionContains("navigable") ||
+                                                           prop.Type.LongDescriptionContains("navigable"))
+                                            .Where(prop => prop.Type is OdcmClass))
+    {
+        var baseName = writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar();
+        classes.Add("#import \"" + baseName + "RequestBuilder.h\"");
+        classes.Add("#import \"" + baseName + "Request.h\"");
+    }
+
+}
+
+foreach(var complexType in model.GetComplexTypes())
+{
+    foreach(var prop in complexType.GetProperties().Where(prop => prop.IsCollection && !(prop.Type is OdcmPrimitiveType) && !prop.IsEnum() && !prop.LongDescriptionContains("ignorableCollection")))
+    {
+        var baseName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
+        if(!prop.IsReference())
+        {
+            classes.Add("#import \"" + baseName + "CollectionRequestBuilder.h\"");
+            classes.Add("#import \"" + baseName + "CollectionRequest.h\"");
+        }
+        else
+        {
+            classes.Add("#import \"" + baseName + "CollectionWithReferencesRequestBuilder.h\"");
+            classes.Add("#import \"" + baseName + "CollectionWithReferencesRequest.h\"");
+            classes.Add("#import \"" + baseName + "CollectionReferenceRequestBuilder.h\"");
+            classes.Add("#import \"" + baseName + "CollectionReferenceRequest.h\"");
+        }
+    }
+    foreach(var streamProperty in complexType.GetProperties(typeName:"Stream"))
+    {
+        classes.Add("#import \"" + writer.GetPrefix() + streamProperty.Class.Name.ToUpperFirstChar() + streamProperty.Name.ToUpperFirstChar() + "Request.h\"");
+    }
+}
+
+foreach(var importClass in classes)
+{
+#>
+<#=importClass#>
+<#
+}
+#>
+#import "<#=writer.GetPrefix()#>Client.h"

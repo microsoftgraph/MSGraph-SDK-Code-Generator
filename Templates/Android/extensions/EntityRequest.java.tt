@@ -1,0 +1,38 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = TypeRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(TypeRequest(c), BaseTypeRequest(c), ITypeRequest(c))#>
+<# if (c.AsOdcmClass() != null && c.AsOdcmClass().Derived.Any()) { #>
+
+    /**
+     * The request for the <#=TypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     * @param responseClass The class of the reponse
+     */
+    public <#=TypeRequest(c)#>(final String requestUrl,
+            final <#=IBaseClientType()#> client,
+            final List<Option> options,
+            final Class responseClass) {
+        super(requestUrl, client, options, responseClass);
+    }
+<# } #>
+
+    /**
+     * The request for the <#=TypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public <#=TypeRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
+        super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
+    }
+}

@@ -1,0 +1,40 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedObjC.template.tt"#>
+<#
+var entity = host.CurrentType.AsOdcmClass();
+var baseEntity = entity.Base;
+
+#>
+<#=writer.GetImportsClass(entity.Properties,entity.Properties.Where(prop => prop.IsCollection).Select(prop => GetObjCTypeIdentifier(prop)).Distinct())#>
+
+#import "<#=GetObjCTypeIdentifier(baseEntity)#>.h"
+#import "<#=GetStaticCollectionObject()#>.h"
+
+@interface <#=GetObjCTypeIdentifier(entity)#> : <#=GetObjCTypeIdentifier(baseEntity)#>
+
+<#
+if (baseEntity == null)
+{
+#>
+  @property (nonatomic, setter=setODataType:, getter=oDataType) NSString *oDataType;
+<#
+}
+
+foreach(var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream" ))
+{
+  #>
+  <#=GeneratePropertyDeclarationLine(prop)#>
+  <#
+}
+
+foreach (var prop in entity.Properties.Where(prop => prop.IsCollection && !prop.LongDescriptionContains("not-enumerable")))
+{
+#>
+- (<#=GetObjCTypeForVarDeclaration(prop,true)#>) <#=GetObjCProperty(prop)#>:(NSInteger)index;
+<#
+}
+
+#>
+
+@end
