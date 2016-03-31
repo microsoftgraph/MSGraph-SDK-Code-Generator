@@ -12,10 +12,15 @@ TemplateWriterSettings settings = ConfigurationService.Settings;
 <#=writer.WriteHeader(writer.GeneratedHeader)#>
 from __future__ import unicode_literals
 <# 
+	if (entity.Name.Equals("drive"))
+    {
+		Console.Write(1);
+    }
     List<String> list = new List<String>();
     foreach(var property in entity.Properties){
         var propertyName = property.Name.ToUnderscore();
         if (property.Type.IsComplex() 
+			&& !property.ContainsTarget
 			&& !property.IsCollection()
             && !list.Contains(property.Type.GetTypeString())
             && !property.Type.GetTypeString().Equals(entity.Name.ToUpperFirstChar())) {
@@ -86,7 +91,7 @@ class <#=entity.Name.ToUpperFirstChar()#>(GraphObjectBase):
 
 <#
             }
-        } else {
+        } else if (!property.ContainsTarget) {
 #>
     @property
     def <#=propertyName#>(self):
