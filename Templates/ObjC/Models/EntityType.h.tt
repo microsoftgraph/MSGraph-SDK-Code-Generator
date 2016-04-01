@@ -5,8 +5,13 @@
 var entity = host.CurrentType.AsOdcmClass();
 var baseEntity = entity.Base;
 
+IEnumerable<string> extraClasses = null;
+if (entity.Properties.Any(prop => prop.IsCollection))
+{
+   extraClasses = new List<string> { GetStaticCollectionObject() };
+}
 #>
-<#=writer.GetImportsClass(entity.Properties,entity.Properties.Where(prop => prop.IsCollection).Select(prop => GetObjCTypeIdentifier(prop)).Distinct())#>
+<#=writer.GetImportsClass(entity.Properties, extraClasses:extraClasses)#>
 
 #import "<#=GetObjCTypeIdentifier(baseEntity)#>.h"
 #import "<#=GetStaticCollectionObject()#>.h"

@@ -29,34 +29,10 @@ private string GetObjCTypeIdentifier(OdcmObject o, bool getUnderlyingType=false)
         OdcmProperty prop=(OdcmProperty)o;
         if(prop.IsCollection && !getUnderlyingType)
         {
-            if(IsNSJSONSerializable(prop.Type))
-            {
-                return GetStaticCollectionObject();
-            }
-            else
-            {
-                return prop.Type.GetCollectionTypeString();
-            }
+            return GetStaticCollectionObject();
         }
 
         return GetObjCTypeIdentifier(prop.Type,getUnderlyingType);
-    }
-    else if(o is OdcmMethod)
-    {
-        OdcmMethod method = (OdcmMethod)o;
-        if (method.IsCollection && !getUnderlyingType)
-        {
-            if (IsNSJSONSerializable(method.ReturnType))
-            {
-                return GetStaticCollectionObject();
-            }
-            else
-            {
-                return method.ReturnType.GetCollectionTypeString();
-            }
-        }
-
-        return GetObjCTypeIdentifier(method.ReturnType, getUnderlyingType);
     }
     else if(o is OdcmType)
     {
@@ -143,35 +119,6 @@ private string GetHydratedPropertyFromNSJSONSerializableExpression(string expr,O
     prop.Type.GetNSNumberValueMethod());
 }
 
-private string GetHydratedPropertyFromNSJSONSerializableExpression(string expr,OdcmMethod method)
-{
-    if(GetObjCTypeIdentifier(method,true)=="NSDate")
-    {
-        return String.Format(@"[NSDate ms_dateFromString: {0}]",expr);
-    }
-
-    if(method.IsEnum())
-    {
-        return String.Format(
-        @"[{0} to{1}]",
-        expr,
-        GetObjCTypeIdentifier(method,true));
-    }
-    //Complex catch-all
-    if(method.IsComplex())
-    {
-        return String.Format(
-        @"[[{0} alloc] initWithDictionary: {1} ]",
-        GetObjCTypeIdentifier(method,true),
-        expr);
-    }
-
-    return String.Format(
-    @"[{0} {1}]",
-    expr,
-    method.ReturnType.GetNSNumberValueMethod());
-}
-
 private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
 {
     return GetHydratedPropertyFromNSJSONSerializableExpression(String.Format(@"self.dictionary[@""{0}""]",prop.Name),prop);
@@ -230,7 +177,7 @@ private string GetHydratedIVarFromDictionary(OdcmProperty prop)
         GetObjCProperty(prop),
         prop.Name,
         GetObjCProperty(prop),
-        GetObjCTypeIdentifier(prop));
+        GetStaticCollectionObject());
     }
 
     return String.Format(@"_{0} = {1};",GetObjCProperty(prop),GetHydratedPropertyFromDictionary(prop));

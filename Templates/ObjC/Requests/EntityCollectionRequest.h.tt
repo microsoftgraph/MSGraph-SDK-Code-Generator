@@ -23,16 +23,19 @@ if (innerEntityType.Equals(propName))
 }
 #>
 
-#import "<#=GetObjCTypeIdentifier(prop)#>.h"
-
 @class <#=entityRequest#>, <#=writer.GetStaticCodePrefix()#>URLSessionDataTask;
 
 #import "<#=writer.GetPrefix()#>Models.h"
 #import "<#=writer.GetStaticCodePrefix()#>CollectionRequest.h"
+<#
+if(prop.IsReference()) {
+#>
+#import "<#=writer.GetStaticCodePrefix()#>CollectionReferences.h"
+<# } #>
 
 typedef void (^<#=innerEntityType#>CompletionHandler)(<#=innerEntityType#> *response, NSError *error);
 
-typedef void (^<#=propName + collectionNamer#>CompletionHandler)(<#=GetObjCTypeForVarDeclaration(prop)#> response, <#=propRequest#> *nextRequest, NSError *error);
+typedef void (^<#=propName + collectionNamer#>CompletionHandler)(<#=writer.GetStaticCodePrefix() + "Collection"#> *response, <#=propRequest#> *nextRequest, NSError *error);
 
 @interface <#=propRequest#> : <#=writer.GetStaticCodePrefix()#>CollectionRequest
 

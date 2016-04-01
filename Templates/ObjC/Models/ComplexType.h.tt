@@ -4,9 +4,9 @@
 <#
 var entity = host.CurrentType.AsOdcmClass();
 var baseEntity = entity.Base;
-
 #>
-<#=writer.GetImportsClass(entity.Properties,entity.Properties.Where(prop => prop.IsCollection).Select(prop => GetObjCTypeIdentifier(prop)).Distinct())#>
+
+<#=writer.GetImportsClass(entity.Properties)#>
 
 #import "<#=GetObjCTypeIdentifier(baseEntity)#>.h"
 #import "<#=GetStaticCollectionObject()#>.h"
