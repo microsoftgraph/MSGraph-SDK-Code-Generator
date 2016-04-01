@@ -28,12 +28,14 @@ foreach(var member in entity.Members.OrderBy(x => x.Value))
 foreach (var member in entity.Members.OrderBy(x => x.Value))
 {
 #>
-+(<#=typeName#>*) <#=member.Name.ToUpperFirst()#>;
++(<#=typeName#>*) <#=member.Name.ToLowerFirstChar()#>;
 <#
 }
 #>
 
-+(<#=typeName#>*) <#=typeName.ToLowerFirst()#>WithEnumValue:(<#=valueTypeName#>)val;
++(<#=typeName#>*) UnknownEnumValue;
+
++(<#=typeName#>*) <#=entity.Name.ToLowerFirstChar()#>WithEnumValue:(<#=valueTypeName#>)val;
 
 @property (nonatomic, readonly) <#=typeName#>Value enumValue;
 

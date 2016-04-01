@@ -22,26 +22,55 @@ var valueTypeName = typeName + "Value";
 foreach (var member in entity.Members.OrderBy(x => x.Value))
 {
 #>
-+(<#=typeName#>*) <#=member.Name.ToUpperFirst()#> {
-    static <#=typeName#> *_<#=member.Name.ToLowerFirst()#>
++ (<#=typeName#>*) <#=member.Name.ToLowerFirstChar()#> {
+    static <#=typeName#> *_<#=member.Name.ToLowerFirstChar()#>
     static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-	    _<#=member.Name.ToLowerFirst()#> = [[<#=typeName#> alloc] init];
-		_<#=member.Name.ToLowerFirst()#>._enumValue = <#=GetObjCEnumMember(entity, member)#>;
-	});
-	return _<#=member.Name.ToLowerFirst()#>;
+    dispatch_once(&onceToken, ^{
+        _<#=member.Name.ToLowerFirstChar()#> = [[<#=typeName#> alloc] init];
+        _<#=member.Name.ToLowerFirstChar()#>._enumValue = <#=GetObjCEnumMember(entity, member)#>;
+    });
+    return _<#=member.Name.ToLowerFirstChar()#>;
 }
 <#
 }
 #>
+
++ (<#=typeName#>*) UnknownEnumValue {
+    static <#=typeName#> *_unknownValue
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _unknownValue = [[<#=typeName#> alloc] init];
+        _unknownValue._enumValue = <#=typeName#>EndOfEnum;
+    });
+    return _unknownValue;
+}
+
 <#
 ///////////////////////////////////////////////////////////////
 // Generate conversion from enum to boxed type and vice versa
 // e.g. [DayOfWeek dayOfWeekWithEnumValue:DayOfWeekMonday]
 ///////////////////////////////////////////////////////////////
 #>
-+(<#=GetObjCTypeIdentifier(entity)#>*) <#=GetObjCTypeIdentifier(entity).ToLowerFirst()#>WithEnumValue:(<#=valueType#>)val {
-    
+
++ (<#=typeName#>*) <#=entity.Name.ToLowerFirstChar()#>WithEnumValue:(<#=valueTypeName#>)val {
+
+    switch(val)
+    {
+<#
+    foreach(var member in entity.Members)
+    {
+#>
+        case <#=GetObjCEnumMember(entity,member)#>:
+            return [<#=typeName#> <#=member.Name#>];
+<#
+    }
+#>
+        case <#=typeName#>EndOfEnum:
+        default:
+            return [<#=typeName#> UnknownEnumValue];
+    }
+
+    return nil;
 }
 
 - (<#=valueTypeName#>) enumValue {
@@ -52,7 +81,7 @@ foreach (var member in entity.Members.OrderBy(x => x.Value))
 
 @implementation NSString (<#=typeName#>)
 
-+ (instancetype) stringWith<#=typeName#>:(<#=typeName#>)val {
++ (instancetype) stringWith<#=typeName#>:(<#=typeName#>*)val {
 
     switch(val.enumValue)
     {
@@ -80,12 +109,12 @@ foreach (var member in entity.Members.OrderBy(x => x.Value))
     {
     #>if([self isEqualToString:@"<#=member.Name#>"])
     {
-          return [<#=typeName#> <#=GetObjCEnumMember(entity,member)#>];
+          return [<#=typeName#> <#=member.Name#>];
     }
     else <#
     }
     #>{
-        return <#=GetObjCTypeIdentifier(entity)#>EndOfEnum;
+        return [<#=typeName#> UnknownEnumValue];
     }
 }
 
