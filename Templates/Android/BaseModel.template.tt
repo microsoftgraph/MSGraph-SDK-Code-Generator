@@ -35,7 +35,7 @@
     public string MethodFullName(OdcmObject c) {
         if (c is OdcmMethod){
             return String.Format("{0}.{1}", ((OdcmMethod)c).Class.Namespace.Name,
-                                            c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar());
+                                            c.Name.Substring(c.Name.IndexOf(".") + 1));
         }
         return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
     }
@@ -439,7 +439,7 @@
 
     public string CollectionPageGeneric(OdcmObject c) {
         if (c is OdcmMethod) {
-            return "<" + ClassTypeName(c) + ", " + ITypeRequestBuilder(c) + ">";
+            return "<" + ClassTypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
         }
         return "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
     }

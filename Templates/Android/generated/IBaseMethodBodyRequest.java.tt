@@ -2,14 +2,31 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = IBaseTypeRequest(c);#>
+<#
+    var baseClass = "BaseRequest";
+    var typeRequest = TypeRequest(c);
+    var iTypeRequest = ITypeRequest(c);
+    var baseTypeRequest = BaseTypeRequest(c);
+    var iBaseTypeRequest = IBaseTypeRequest(c);
+    var returnType = ReturnType(c);
+
+    if (c.AsOdcmMethod().IsCollection)
+    {
+        baseClass = "BaseCollectionRequest";
+        typeRequest = TypeCollectionRequest(c);
+        iTypeRequest = ITypeCollectionRequest(c);
+        baseTypeRequest = BaseTypeCollectionRequest(c);
+        iBaseTypeRequest = IBaseTypeCollectionRequest(c);
+    }
+#>
+<#host.TemplateName = iBaseTypeRequest;#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.*;
 
-<#=CreateInterfaceDef(IBaseTypeRequest(c))#>
+<#=CreateInterfaceDef(iBaseTypeRequest)#>
 
     void post(final ICallback<<#=ReturnType(c)#>> callback);
 
@@ -21,7 +38,7 @@ import com.google.gson.annotations.*;
      * @param value The select clause
      * @return The updated request
      */
-    <#=ITypeRequest(c)#> select(final String value) ;
+    <#=iTypeRequest#> select(final String value) ;
 
     /**
      * Sets the top value for the request
@@ -29,7 +46,7 @@ import com.google.gson.annotations.*;
      * @param value The max number of items to return
      * @return The updated request
      */
-    <#=ITypeRequest(c)#> top(final int value);
+    <#=iTypeRequest#> top(final int value);
 
     /**
      * Sets the expand clause for the request
@@ -37,5 +54,5 @@ import com.google.gson.annotations.*;
      * @param value The expand clause
      * @return The updated request
      */
-    <#=ITypeRequest(c)#> expand(final String value);
+    <#=iTypeRequest#> expand(final String value);
 }

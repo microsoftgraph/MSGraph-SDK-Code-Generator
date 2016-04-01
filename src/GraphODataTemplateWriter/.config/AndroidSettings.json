@@ -1,5 +1,6 @@
 {
     "TemplateMapping": {
+      "Shared" :  [ ],
       "Android": [
           { "Template": "BaseModel", "SubProcessor": "Other", "Type": "Shared" },
 
@@ -8,22 +9,18 @@
           { "Template": "MethodBody", "SubProcessor": "MethodWithBody",                                                                       "Name": "<Method>Body" },
           { "Template": "BaseMethodBody", "SubProcessor": "MethodWithBody",                                                                   "Name": "Base<Method>Body" },
 
-          { "Template": "MethodRequest", "SubProcessor": "Method",                                                                            "Name": "<Method>Request" },
-          { "Template": "IEntityRequest", "SubProcessor": "Method",                                                                           "Name": "I<Method>Request" },
-          { "Template": "BaseMethodRequest", "SubProcessor": "Method",                                                                        "Name": "Base<Method>Request" },
+          { "Template": "MethodRequest", "SubProcessor": "NonCollectionMethod",                                                               "Name": "<Method>Request" },
+          { "Template": "IEntityRequest", "SubProcessor": "NonCollectionMethod",                                                              "Name": "I<Method>Request" },
+          { "Template": "BaseMethodRequest", "SubProcessor": "NonCollectionMethod",                                                           "Name": "Base<Method>Request" },
+          { "Template": "IBaseMethodRequest", "SubProcessor": "NonCollectionMethod",                                                          "Name": "IBase<Method>Request" },
+
+          { "Template": "MethodRequestBuilder", "SubProcessor": "NonCollectionMethod",                                                        "Name": "<Method>RequestBuilder" },
+          { "Template": "IEntityRequestBuilder", "SubProcessor": "NonCollectionMethod",                                                       "Name": "I<Method>RequestBuilder" },
+          { "Template": "BaseMethodRequestBuilder", "SubProcessor": "NonCollectionMethod",                                                    "Name": "Base<Method>RequestBuilder" },
+          { "Template": "IBaseMethodRequestBuilder", "SubProcessor": "NonCollectionMethod",                                                   "Name": "IBase<Method>RequestBuilder" },
+
           { "Template": "BaseMethodBodyRequest", "SubProcessor": "MethodWithBody",                                                            "Name": "Base<Method>Request" },
-          { "Template": "IBaseMethodRequest", "SubProcessor": "Method",                                                                       "Name": "IBase<Method>Request" },
           { "Template": "IBaseMethodBodyRequest", "SubProcessor": "MethodWithBody",                                                           "Name": "IBase<Method>Request" },
-
-          { "Template": "MethodRequestBuilder", "SubProcessor": "Method",                                                                     "Name": "<Method>RequestBuilder" },
-          { "Template": "IEntityRequestBuilder", "SubProcessor": "Method",                                                                    "Name": "I<Method>RequestBuilder" },
-          { "Template": "BaseMethodRequestBuilder", "SubProcessor": "Method",                                                                 "Name": "Base<Method>RequestBuilder" },
-          { "Template": "IBaseMethodRequestBuilder", "SubProcessor": "Method",                                                                "Name": "IBase<Method>RequestBuilder" },
-
-          { "Template": "IEntityCollectionPage", "SubProcessor": "Method",                                                                    "Name": "I<Method>CollectionPage", "Ignore": "ignorableCollection"},
-          { "Template": "MethodCollectionPage", "SubProcessor": "Method",                                                                     "Name": "<Method>CollectionPage", "Ignore": "ignorableCollection"},
-          { "Template": "IBaseMethodCollectionPage", "SubProcessor": "Method",                                                                "Name": "IBase<Method>CollectionPage", "Ignore": "ignorableCollection"},
-          { "Template": "BaseMethodCollectionPage", "SubProcessor": "Method",                                                                 "Name": "Base<Method>CollectionPage", "Ignore": "ignorableCollection"},
 
           { "Template": "IEntityCollectionPage", "SubProcessor": "CollectionMethod",                                                          "Name": "I<Method>CollectionPage", "Ignore": "ignorableCollection" },
           { "Template": "MethodCollectionPage", "SubProcessor": "CollectionMethod",                                                           "Name": "<Method>CollectionPage", "Ignore": "ignorableCollection" },
@@ -37,9 +34,7 @@
           { "Template": "IBaseMethodCollectionRequestBuilder", "SubProcessor": "CollectionMethod",                                            "Name": "IBase<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "IMethodCollectionRequestBuilder", "SubProcessor": "CollectionMethod",                                                "Name": "I<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "MethodCollectionRequestBuilder", "SubProcessor": "CollectionMethod",                                                 "Name": "<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-
           { "Template": "BaseMethodCollectionResponse", "SubProcessor": "CollectionMethod",                                                   "Name": "Base<Method>CollectionResponse", "Ignore": "ignorableCollection" },
-          { "Template": "BaseMethodCollectionResponse", "SubProcessor": "Method",                                                             "Name": "Base<Method>CollectionResponse", "Ignore": "ignorableCollection" },
 
           { "Template": "IBaseEntityRequest", "SubProcessor": "EntityType",                                                                   "Name": "IBase<Class>Request" },
           { "Template": "BaseEntityRequest", "SubProcessor": "EntityType",                                                                    "Name": "Base<Class>Request" },

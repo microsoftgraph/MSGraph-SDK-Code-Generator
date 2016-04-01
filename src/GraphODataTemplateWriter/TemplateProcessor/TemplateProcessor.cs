@@ -96,6 +96,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         {
             Func<ITemplateInfo, IEnumerable<TextFile>> subProcessor = this.ProcessTemplate;
             this.SubProcessors.TryGetValue(templateInfo.SubprocessorType, out subProcessor);
+            Console.WriteLine("Current Subprocessor Type: {0}", templateInfo.SubprocessorType);
             return subProcessor(templateInfo);
         }
 
@@ -203,7 +204,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmMethod> NonCollectionMethods()
         {
-            return this.CurrentModel.GetMethods().Where(method => !method.IsCollection && (method.ReturnType == null || method.ReturnType is OdcmPrimitiveType));
+            return this.CurrentModel.GetMethods().Where(method => !method.IsCollection);
         }
 
         protected virtual IEnumerable<OdcmMethod> MethodsWithBody()
