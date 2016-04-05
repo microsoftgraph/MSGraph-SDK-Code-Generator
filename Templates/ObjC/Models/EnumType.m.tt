@@ -12,6 +12,8 @@ var valueTypeName = typeName + "Value";
 @interface <#=typeName#> () {
     <#=valueTypeName#> _enumValue;
 }
+@property (nonatomic, readwrite) <#=valueTypeName#> enumValue;
+@end
 
 @implementation <#=typeName#>
 
@@ -23,11 +25,11 @@ foreach (var member in entity.Members.OrderBy(x => x.Value))
 {
 #>
 + (<#=typeName#>*) <#=member.Name.ToLowerFirstChar()#> {
-    static <#=typeName#> *_<#=member.Name.ToLowerFirstChar()#>
+    static <#=typeName#> *_<#=member.Name.ToLowerFirstChar()#>;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _<#=member.Name.ToLowerFirstChar()#> = [[<#=typeName#> alloc] init];
-        _<#=member.Name.ToLowerFirstChar()#>._enumValue = <#=GetObjCEnumMember(entity, member)#>;
+        _<#=member.Name.ToLowerFirstChar()#>.enumValue = <#=GetObjCEnumMember(entity, member)#>;
     });
     return _<#=member.Name.ToLowerFirstChar()#>;
 }
@@ -36,11 +38,11 @@ foreach (var member in entity.Members.OrderBy(x => x.Value))
 #>
 
 + (<#=typeName#>*) UnknownEnumValue {
-    static <#=typeName#> *_unknownValue
+    static <#=typeName#> *_unknownValue;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _unknownValue = [[<#=typeName#> alloc] init];
-        _unknownValue._enumValue = <#=typeName#>EndOfEnum;
+        _unknownValue.enumValue = <#=typeName#>EndOfEnum;
     });
     return _unknownValue;
 }
@@ -73,17 +75,9 @@ foreach (var member in entity.Members.OrderBy(x => x.Value))
     return nil;
 }
 
-- (<#=valueTypeName#>) enumValue {
-    return _enumValue;
-}
+- (NSString*) ms_toString {
 
-@end
-
-@implementation NSString (<#=typeName#>)
-
-+ (instancetype) stringWith<#=typeName#>:(<#=typeName#>*)val {
-
-    switch(val.enumValue)
+    switch(self.enumValue)
     {
 <#
     foreach(var member in entity.Members)
@@ -101,6 +95,14 @@ foreach (var member in entity.Members.OrderBy(x => x.Value))
 
     return nil;
 }
+
+- (<#=valueTypeName#>) enumValue {
+    return _enumValue;
+}
+
+@end
+
+@implementation NSString (<#=typeName#>)
 
 - (<#=typeName#>*) to<#=typeName#>{
 

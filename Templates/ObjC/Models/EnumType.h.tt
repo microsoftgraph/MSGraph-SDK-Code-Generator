@@ -36,6 +36,7 @@ foreach (var member in entity.Members.OrderBy(x => x.Value))
 +(<#=typeName#>*) UnknownEnumValue;
 
 +(<#=typeName#>*) <#=entity.Name.ToLowerFirstChar()#>WithEnumValue:(<#=valueTypeName#>)val;
+-(NSString*) ms_toString;
 
 @property (nonatomic, readonly) <#=typeName#>Value enumValue;
 
@@ -44,7 +45,6 @@ foreach (var member in entity.Members.OrderBy(x => x.Value))
 
 @interface NSString (<#=typeName#>)
 
-+ (instancetype) stringWith<#=typeName#>:(<#=typeName#>*)val;
 - (<#=typeName#>*) to<#=typeName#>;
 
 @end

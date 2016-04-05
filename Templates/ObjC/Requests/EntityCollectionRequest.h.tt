@@ -27,11 +27,6 @@ if (innerEntityType.Equals(propName))
 
 #import "<#=writer.GetPrefix()#>Models.h"
 #import "<#=writer.GetStaticCodePrefix()#>CollectionRequest.h"
-<#
-if(prop.IsReference()) {
-#>
-#import "<#=writer.GetStaticCodePrefix()#>CollectionReferences.h"
-<# } #>
 
 typedef void (^<#=innerEntityType#>CompletionHandler)(<#=innerEntityType#> *response, NSError *error);
 
