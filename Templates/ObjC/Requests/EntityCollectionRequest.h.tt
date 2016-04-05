@@ -30,7 +30,7 @@ if (innerEntityType.Equals(propName))
 
 typedef void (^<#=innerEntityType#>CompletionHandler)(<#=innerEntityType#> *response, NSError *error);
 
-typedef void (^<#=propName + collectionNamer#>CompletionHandler)(<#=writer.GetStaticCodePrefix() + "Collection"#> *response, <#=propRequest#> *nextRequest, NSError *error);
+typedef void (^<#=propName + collectionNamer#>CompletionHandler)(<#=writer.GetStaticCodePrefix()#>Collection *response, <#=propRequest#> *nextRequest, NSError *error);
 
 @interface <#=propRequest#> : <#=writer.GetStaticCodePrefix()#>CollectionRequest
 

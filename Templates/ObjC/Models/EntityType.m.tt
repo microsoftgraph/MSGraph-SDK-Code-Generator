@@ -66,14 +66,14 @@ foreach(var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!
     PropertySetterImplementation(prop);
 }
 
-foreach(var prop in entity.Properties.Where(prop => prop.IsCollection && !prop.LongDescriptionContains("not-enumerable")))
+foreach(var prop in entity.Properties.Where(prop => prop.IsCollection && prop.LongDescriptionContains("enumerable")))
 {
 #>
 - (<#=GetObjCTypeForVarDeclaration(prop,true)#>) <#=GetObjCProperty(prop)#>:(NSInteger)index
 {
    <#=GetObjCTypeForVarDeclaration(prop,true)#> <#=GetObjCProperty(prop)#> = nil;
-   if (self.<#=GetObjCProperty(prop)#>.value){
-       <#=GetObjCProperty(prop)#> = self.<#=GetObjCProperty(prop)#>.value[index];
+   if (self.<#=GetObjCProperty(prop)#>) {
+       <#=GetObjCProperty(prop)#> = self.<#=GetObjCProperty(prop)#>[index];
    }
    return <#=GetObjCProperty(prop)#>;
 }

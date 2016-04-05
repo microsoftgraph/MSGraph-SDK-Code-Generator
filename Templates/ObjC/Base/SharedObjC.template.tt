@@ -29,7 +29,7 @@ private string GetObjCTypeIdentifier(OdcmObject o, bool getUnderlyingType=false)
         OdcmProperty prop=(OdcmProperty)o;
         if(prop.IsCollection && !getUnderlyingType)
         {
-            return GetStaticCollectionObject();
+            return @"NSArray";
         }
 
         return GetObjCTypeIdentifier(prop.Type,getUnderlyingType);
@@ -113,7 +113,7 @@ private string GetJsonToObjCExpressionConversion(string expr,OdcmProperty prop)
     if(prop.Type is OdcmEntityClass || prop.Type is OdcmMediaClass || prop.Type is OdcmComplexClass)
     {
         return String.Format(
-        @"[[{0} alloc] initWithDictionary: {1} ]",
+        @"[[{0} alloc] initWithDictionary: {1}]",
         GetObjCTypeIdentifier(prop,true),
         expr);
     }
@@ -169,23 +169,21 @@ private string GetHydratedIVarFromDictionary(OdcmProperty prop)
     if(prop.IsCollection)
     {
         return String.Format(@"
-    NSMutableArray *{0}Collection = [NSMutableArray array];
-    NSArray *{0}s = self.dictionary[@""{1}""];
+    NSMutableArray *{0}Result = [NSMutableArray array];
+    NSArray *{0} = self.dictionary[@""{1}""];
 
-    if ([{0}s isKindOfClass:[NSArray class]]){{
-        for (id {0} in {0}s){{
-            [{0}Collection addObject:{2}];
-         }}
+    if ([{0} isKindOfClass:[NSArray class]]){{
+        for (id {2} in {0}){{
+            [{0}Result addObject:{3}];
+        }}
     }}
 
-    if ([{0}Collection count] > 0){{
-        _{0} = [[{3} alloc] initWithArray:{0}Collection nextLink:self.dictionary[@""@nextLink""] additionalData:self.dictionary];
-    }}
+    _{0} = {0}Result;
         ",
         GetObjCProperty(prop),
         prop.Name,
-        GetJsonToObjCExpressionConversion(GetObjCProperty(prop), prop),
-        GetStaticCollectionObject());
+        prop.Type.Name.ToLowerFirstChar(),
+        GetJsonToObjCExpressionConversion(prop.Type.Name.ToLowerFirstChar(), prop));
     }
 
     return String.Format(@"_{0} = {1};",GetObjCProperty(prop),GetHydratedPropertyFromDictionary(prop));
