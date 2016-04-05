@@ -127,13 +127,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         {
             string t = GetTypeString(type);
             return
-                !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat" ||
-                  type is OdcmEnum);
+                !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat");
         }
 
-		public static bool IsComplex(this OdcmProperty property) 
+        public static bool IsComplex(this OdcmProperty property) 
         {
             return property.Type.IsComplex();
+        }
+
+        public static bool IsPrimitive(this OdcmType type)
+        {
+            return !type.IsComplex();
         }
 
         public static string ToSetterTypeString(this OdcmProperty property)

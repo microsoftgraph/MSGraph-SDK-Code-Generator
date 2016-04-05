@@ -84,14 +84,19 @@ private string GetObjCPropertySetter(OdcmProperty prop)
     return "set" + GetObjCProperty(prop).ToUpperFirstChar();
 }
 
-private bool IsNSJSONSerializable(OdcmType type)
+private bool IsObjCTypeSameAsJsonType(OdcmType type)
 {
+    // TODO: To be more correct, we should add a GetJsonType() method
+    //       and return (GetObjCType(type) == GetJsonType(type)). Practically speaking though,
+    //       only Edm.String has the same friendly ObjC type and JSON serializer type.
     string ts=GetObjCTypeIdentifier(type);
-    return ts=="NSString" || ts=="NSNumber" || ts=="NSArray" || ts=="NSDictionary" || ts=="NSNull";
+    return ts=="NSString";
 }
 
-private string GetHydratedPropertyFromNSJSONSerializableExpression(string expr,OdcmProperty prop)
+private string GetJsonToObjCExpressionConversion(string expr,OdcmProperty prop)
 {
+    // This generates a wrapper around a provided JSON-typed expression (i.e. types obtained from NSJSONSerialization)
+    //   that converts it to a user-friendly ObjC type i.e. generated Entity/enum class etc.
     if(GetObjCTypeIdentifier(prop,true)=="NSDate")
     {
         return String.Format(@"[NSDate ms_dateFromString: {0}]",expr);
@@ -104,8 +109,8 @@ private string GetHydratedPropertyFromNSJSONSerializableExpression(string expr,O
         expr,
         GetObjCTypeIdentifier(prop,true));
     }
-    //Complex catch-all
-    if(prop.IsComplex())
+
+    if(prop.Type is OdcmEntityClass || prop.Type is OdcmMediaClass || prop.Type is OdcmComplexClass)
     {
         return String.Format(
         @"[[{0} alloc] initWithDictionary: {1} ]",
@@ -121,39 +126,42 @@ private string GetHydratedPropertyFromNSJSONSerializableExpression(string expr,O
 
 private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
 {
-    return GetHydratedPropertyFromNSJSONSerializableExpression(String.Format(@"self.dictionary[@""{0}""]",prop.Name),prop);
+    return GetJsonToObjCExpressionConversion(String.Format(@"self.dictionary[@""{0}""]",prop.Name),prop);
 }
 
-private string SetNSJSONPermitedExpressionSerialized(OdcmType type,string val)
+private string GetObjCToJsonConvertibleExpressionConversion(OdcmType type, bool isCollection, string val)
 {
-    //Fallback to complex entities that must support ms_toString
-    if(type.IsComplex())
+    // This generates a wrapper around a provided friendly-ObjC-typed expression that converts it
+    //   to an expression that can be passed into [MSObject getNSJsonSerializationCompatibleValue].
+    //
+    // The categories of Obj-C property types are as follows:
+    //   Entity/Complex generated classes
+    //   Collections (NSArrays)
+    //   Enum generated classes
+    //   System object-types (NSString, NSDate)
+    //   System primitives (int types, BOOL)
+    // 
+    // All of these implement the methods (some via extensions) dictionary/arrayWithItem or ms_toString
+    //   except for system primitives, which we need to box here using @().
+    if (type.IsPrimitive() && !isCollection)
     {
-        return val;
+        return "@(" + val + ")";
     }
 
-    if(type is OdcmEnum)
-    {
-        return String.Format("[NSString stringWith{0}:{1}]",GetObjCTypeIdentifier(type),val);
-    }
-
-    return "@(" + val + ")";
+    return val;
 }
 
-private string SetNSJSONPermitedExpressionSerialized(OdcmProperty prop,string val)
+private string GetObjCToJsonConvertibleExpressionConversion(OdcmProperty prop,string val)
 {
-    //Fallback to complex entities that must support ms_toString
-    if(prop.IsCollection)
-    {
-        return val;
-    }
-
-    return SetNSJSONPermitedExpressionSerialized(prop.Type,val);
+    return GetObjCToJsonConvertibleExpressionConversion(prop.Type, prop.IsCollection, val);
 }
 
-private string SetDictionaryPropertySerialized(OdcmProperty prop, string val)
+private string SetDictionaryPropertyInJsonConvertibleForm(OdcmProperty prop, string val)
 {
-    return String.Format(@"self.dictionary[@""{0}""] = {1};",prop.Name,SetNSJSONPermitedExpressionSerialized(prop,val));
+    // Dictionary entries can either be directly NSJSON-typed, or convertible to
+    //   a NSJSON type via [MSObject getNSJsonSerializationCompatibleValue].
+    // 
+    return String.Format(@"self.dictionary[@""{0}""] = {1};",prop.Name,GetObjCToJsonConvertibleExpressionConversion(prop,val));
 }
 
 private string GetHydratedIVarFromDictionary(OdcmProperty prop)
@@ -176,7 +184,7 @@ private string GetHydratedIVarFromDictionary(OdcmProperty prop)
         ",
         GetObjCProperty(prop),
         prop.Name,
-        GetObjCProperty(prop),
+        GetJsonToObjCExpressionConversion(GetObjCProperty(prop), prop),
         GetStaticCollectionObject());
     }
 
@@ -201,7 +209,7 @@ public string GetFunctionParameterDictionary(List<OdcmParameter> parameters)
     {
         result.AppendFormat("[{0}Object getNSJsonSerializationCompatibleValue:{1}],",
         writer.GetStaticCodePrefix(),
-        SetNSJSONPermitedExpressionSerialized(param.Type,"_"+param.Name.ToLowerFirstChar()));
+        GetObjCToJsonConvertibleExpressionConversion(param.Type, param.IsCollection, "_"+param.Name.ToLowerFirstChar()));
 
         result.AppendFormat("@\"{0}\",", param.Name);
     }
@@ -239,7 +247,7 @@ private void PropertyGetterImplementation(OdcmProperty prop)
 - (<#=GetObjCTypeForVarDeclaration(prop)#>) <#=GetObjCPropertyGetter(prop)#>
 {
 <#+
-    if(IsNSJSONSerializable(prop.Type))
+    if(IsObjCTypeSameAsJsonType(prop.Type))
     {
 #>
     return self.dictionary[@"<#=prop.Name#>"];
@@ -278,7 +286,7 @@ private void PropertySetterImplementation(OdcmProperty prop)
 - (void) <#=GetObjCPropertySetter(prop)#>: (<#=GetObjCTypeForVarDeclaration(prop)#>) val
 {
 <#+
-    if(IsNSJSONSerializable(prop.Type))
+    if(IsObjCTypeSameAsJsonType(prop.Type))
     {
 #>
     self.dictionary[@"<#=prop.Name#>"] = val;
@@ -288,7 +296,7 @@ private void PropertySetterImplementation(OdcmProperty prop)
     {
 #>
     _<#=GetObjCProperty(prop)#> = val;
-    <#=SetDictionaryPropertySerialized(prop,"val")#>
+    <#=SetDictionaryPropertyInJsonConvertibleForm(prop,"val")#>
 <#+
     }
 #>

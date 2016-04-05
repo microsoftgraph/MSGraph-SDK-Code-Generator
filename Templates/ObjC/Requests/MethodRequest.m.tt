@@ -145,7 +145,7 @@ if (func.Parameters.Count > 0)
         {
 #>
     [self.options addObject:[[<#=writer.GetStaticCodePrefix()#>FunctionParameters alloc] initWithKey:@"<#=param.Name#>"
-                                                                value:[<#=writer.GetStaticCodePrefix()#>Object getNSJsonSerializationCompatibleValue:<#=SetNSJSONPermitedExpressionSerialized(param.Type,"_"+param.Name.ToLowerFirstChar())#>]]];
+                                                                value:[<#=writer.GetStaticCodePrefix()#>Object getNSJsonSerializationCompatibleValue:<#=GetObjCToJsonConvertibleExpressionConversion(param.Type, param.IsCollection, "_"+param.Name.ToLowerFirstChar())#>]]];
 <#
         }
 #>
