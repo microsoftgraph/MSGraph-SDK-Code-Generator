@@ -60,6 +60,13 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 
             var propertyName = property.Name.ToCheckedCase();
             var propertyCollectionPage = property.IsReference() ? string.Concat(entityName, propertyName, "CollectionWithReferencesPage") : string.Concat(entityName, propertyName, "CollectionPage");
+            
+            var attributeDefinition = string.Format("[DataMember(Name = \"{0}\", EmitDefaultValue = false, IsRequired = false)]", property.Name);
+            
+            if (string.Equals(property.Type.FullName, "Edm.Date", StringComparison.OrdinalIgnoreCase))
+            {
+                attributeDefinition = string.Concat("[EdmDateConverter]", Environment.NewLine, "        ", attributeDefinition);
+            }
 
             if (property.IsCollection())
             {
@@ -70,7 +77,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
-        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        <#=attributeDefinition#>
         public I<#=propertyCollectionPage#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
     <#
                 }
@@ -81,7 +88,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
-        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        <#=attributeDefinition#>
         public IEnumerable<<#=propertyType#>> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
     <#
                 }
@@ -93,7 +100,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
-        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        <#=attributeDefinition#>
         public <#=propertyType#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
     <#
             }
