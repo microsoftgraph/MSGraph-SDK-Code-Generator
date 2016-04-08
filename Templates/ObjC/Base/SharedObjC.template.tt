@@ -97,9 +97,12 @@ private string GetJsonToObjCExpressionConversion(string expr,OdcmProperty prop)
 {
     // This generates a wrapper around a provided JSON-typed expression (i.e. types obtained from NSJSONSerialization)
     //   that converts it to a user-friendly ObjC type i.e. generated Entity/enum class etc.
-    if(GetObjCTypeIdentifier(prop,true)=="NSDate")
+    if(GetObjCTypeIdentifier(prop,true)=="NSDate" ||
+       GetObjCTypeIdentifier(prop,true)=="MSDate")
     {
-        return String.Format(@"[NSDate ms_dateFromString: {0}]",expr);
+        return String.Format(@"[{0} ms_dateFromString: {1}]",
+            GetObjCTypeIdentifier(prop,true),
+            expr);
     }
 
     if(prop.IsEnum())

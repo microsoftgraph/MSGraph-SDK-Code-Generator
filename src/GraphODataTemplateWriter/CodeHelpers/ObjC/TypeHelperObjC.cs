@@ -105,8 +105,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                 case "Float":
                     return "CGFloat";
                 case "DateTimeOffset":
-                case "Date":
                     return "NSDate";
+                case "Date":
+                    return "MSDate";
                 case "Binary":
                     return "NSString";
                 case "Boolean":
