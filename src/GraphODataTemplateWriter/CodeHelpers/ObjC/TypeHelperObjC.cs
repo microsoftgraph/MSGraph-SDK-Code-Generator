@@ -118,11 +118,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             }
         }
 
-        public static string GetCollectionTypeString(this OdcmType type)
-        {
-            return Prefix + type.Name.ToUpperFirstChar() + "Collection";
-        }
-
         public static string GetTypeString(this OdcmProperty property) 
         {
             return property.Type.GetTypeString();
@@ -132,18 +127,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         {
             string t = GetTypeString(type);
             return
-                !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat" ||
-                  type is OdcmEnum);
+                !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat");
         }
 
-		public static bool IsComplex(this OdcmProperty property) 
+        public static bool IsComplex(this OdcmProperty property) 
         {
             return property.Type.IsComplex();
         }
 
-        public static bool IsComplex(this OdcmMethod method)
+        public static bool IsPrimitive(this OdcmType type)
         {
-            return method.ReturnType.IsComplex();
+            return !type.IsComplex();
         }
 
         public static string ToSetterTypeString(this OdcmProperty property)
@@ -219,12 +213,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
 		{
 			return property.Type is OdcmEnum;
 		}
-
-        public static bool IsEnum(this OdcmMethod method)
-        {
-            return method.ReturnType is OdcmEnum;
-        }
-
         public static string GetNSNumberValueMethod(this OdcmType type)
         {
             string objectiveCType = type.GetTypeString();

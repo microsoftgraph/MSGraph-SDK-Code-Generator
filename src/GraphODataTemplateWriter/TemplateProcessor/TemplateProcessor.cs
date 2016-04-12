@@ -198,8 +198,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                     .Select(method => method as OdcmMethod)
                     .Select(odcmMethod => this.ProcessTemplate(templateInfo, odcmMethod,
                                                                     className: odcmMethod.Class.Name,
-                                                                    methodName: odcmMethod.Name,
-                                                                    propertyType: odcmMethod.ReturnType!=null?odcmMethod.ReturnType.Name:""));
+                                                                    methodName: odcmMethod.Name));
         }
 
         protected virtual IEnumerable<OdcmMethod> NonCollectionMethods()
