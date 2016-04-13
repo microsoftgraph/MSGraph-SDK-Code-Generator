@@ -26,7 +26,7 @@ var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("py
 #>
 <#=writer.WriteHeader(writer.GeneratedHeader)#>
 <#
-if (!method.LongDescriptionContains("specialCollection"))
+if (!method.LongDescriptionContains("specialCollection") && !returnType.Equals("String"))
 {
 #>
 from ..model.<#=returnType.ToUnderscore()#> import <#=returnType#>
@@ -48,6 +48,11 @@ import json
 if (!isPython2) {
 #>
 import asyncio
+<#
+}
+if (method.IsCollection) {
+#>
+from ..request.<#=returnTypeCollection.Replace("Response", "").ToUnderscore()#> import <#=returnTypeCollection#>
 <#
 }
 #>
@@ -392,9 +397,4 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 
 <#
         }
-if (method.IsCollection) {
-#>
-from ..request.<#=returnTypeCollection.Replace("Response", "").ToUnderscore()#> import <#=returnTypeCollection#>
-<#
-}
 #>
