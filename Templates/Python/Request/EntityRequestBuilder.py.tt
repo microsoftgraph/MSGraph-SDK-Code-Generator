@@ -49,11 +49,22 @@ from ..request.<#=propRequestBuilder.ToUnderscore()#> import <#=propRequestBuild
 
     if (!isPython2) {
 #>
-import asyncio
 <#
     }
-#>
 
+foreach (var prop in entity.NavigationProperties())
+{
+    if (prop.IsCollection())
+    {
+        var propCollection = prop.Name.ToUpperFirstChar() + "Collection";
+        var propCollectionRequestBuilder = (propCollection + "RequestBuilder");
+#>
+from ..request.<#=propCollection.ToUnderscore()#> import <#=propCollectionRequestBuilder#>
+<#
+    }
+}
+#>
+import asyncio
 
 class <#=entityBuilder#>(RequestBuilderBase):
 
@@ -369,12 +380,5 @@ class <#=entityBuilder#>(RequestBuilderBase):
 
 <#
     }
-foreach (var prop in entity.NavigationProperties())
-{
-    var propCollection = prop.Name.ToUpperFirstChar() + "Collection";
-    var propCollectionRequestBuilder = (propCollection + "RequestBuilder");
 #>
-from ..request.<#=propCollection.ToUnderscore()#> import <#=propCollectionRequestBuilder#>
-<#
-}
-#>
+
