@@ -1,0 +1,6 @@
+<#+
+public static bool IsBuiltIn(string typeName)
+{
+        return new HashSet<string> { "str", "int", "UUID", "datetime", "bool", "bytes", "None"}.Contains(typeName);
+}
+#>
