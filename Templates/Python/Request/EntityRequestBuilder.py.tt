@@ -54,7 +54,7 @@ from ..request.<#=propRequestBuilder.ToUnderscore()#> import <#=propRequestBuild
 
 foreach (var prop in entity.NavigationProperties())
 {
-    if (prop.IsCollection())
+    if (prop.IsCollection() && !prop.Type.Name.Equals("directoryObject"))
     {
         var propCollection = prop.Name.ToUpperFirstChar() + "Collection";
         var propCollectionRequestBuilder = (propCollection + "RequestBuilder");
@@ -65,6 +65,15 @@ from ..request.<#=propCollection.ToUnderscore()#> import <#=propCollectionReques
 }
 #>
 import asyncio
+<#
+if (!entityBuilder.Equals("DirectoryObjectRequestBuilder"))
+{
+#>
+from ..request.directory_object_request_builder import DirectoryObjectRequestBuilder
+<#
+}
+#>
+
 
 class <#=entityBuilder#>(RequestBuilderBase):
 
