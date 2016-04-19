@@ -189,7 +189,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                     .Select(odcmProperty => this.ProcessTemplate(templateInfo, odcmProperty,
                                                                     className: odcmProperty.Class.Name,
                                                                     propertyName: odcmProperty.Name,
-                                                                    propertyType: odcmProperty.Type.Name));
+                                                                    propertyType: odcmProperty.Projection.Type.Name));
         }
 
         protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo, Func<IEnumerable<OdcmMethod>> methods)
@@ -229,7 +229,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmProperty> CollectionProperties()
         {
-            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && !(prop.Type is OdcmPrimitiveType) && !prop.IsReference());
+            return this.CurrentModel.GetProperties().Where(prop => prop.IsCollection && !(prop.Projection.Type is OdcmPrimitiveType) && !prop.IsReference());
         }
 
         protected virtual IEnumerable<OdcmObject> FilterOdcmEnumerable(ITemplateInfo templateInfo, Func<IEnumerable<OdcmObject>> modelMethod)
