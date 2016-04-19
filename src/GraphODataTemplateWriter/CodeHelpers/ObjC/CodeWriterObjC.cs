@@ -122,7 +122,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                 var imports = new StringBuilder();
                 var classes = new StringBuilder("@class ");
                 var classType = references.First().Class.GetTypeString();
-                foreach (var type in references.Select(prop => prop.Type).Distinct())
+                foreach (var type in references.Select(prop => prop.Projection.Type).Distinct())
                 {
                     if (type is OdcmEnum)
                     {
