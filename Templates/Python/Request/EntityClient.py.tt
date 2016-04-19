@@ -15,16 +15,18 @@ from __future__ import unicode_literals
 var containerProperties = model.EntityContainer.Properties;
 
 foreach(var prop in containerProperties){
-var builderName = prop.Name.ToUpperFirstChar()+"CollectionRequestBuilder";
+    if(!prop.Name.Equals("me") && !prop.Name.Equals("drive")) {
+        var builderName = prop.Name.ToUpperFirstChar()+"CollectionRequestBuilder";
 #>
 from ..request.<#=(prop.Name+"Collection").ToUnderscore()#> import <#=builderName#>
 <#
+    }
 }
 #>
 import sys
 
 
-class GraphClient(object):
+class GraphServiceClient(object):
 
     def __init__(self, base_url, auth_provider, http_provider, loop=None):
         """Initialize the :class:`GraphClient` to be
