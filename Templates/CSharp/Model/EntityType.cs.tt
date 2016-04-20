@@ -62,11 +62,6 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
             var propertyCollectionPage = property.IsReference() ? string.Concat(entityName, propertyName, "CollectionWithReferencesPage") : string.Concat(entityName, propertyName, "CollectionPage");
             
             var attributeDefinition = string.Format("[DataMember(Name = \"{0}\", EmitDefaultValue = false, IsRequired = false)]", property.Name);
-            
-            if (string.Equals(property.Type.FullName, "Edm.Date", StringComparison.OrdinalIgnoreCase))
-            {
-                attributeDefinition = string.Concat("[EdmDateConverter]", Environment.NewLine, "        ", attributeDefinition);
-            }
 
             if (property.IsCollection())
             {

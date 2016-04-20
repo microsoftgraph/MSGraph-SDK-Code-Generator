@@ -132,7 +132,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 case "boolean":
                     return "bool";
                 case "date":
-                    return "DateTimeOffset";
+                    return "Date";
                 default:
                     return type.ToCheckedCase();
             }
@@ -157,7 +157,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         public static bool IsTypeNullable(this OdcmType type)
         {
             var t = type.GetTypeString();
-            return type is OdcmClass || t == "Stream" || t == "string" || t == "byte[]";
+            return type is OdcmClass || t == "Date" || t == "Stream" || t == "string" || t == "byte[]";
         }
 
         public static bool IsByteArray(this OdcmProperty property)
