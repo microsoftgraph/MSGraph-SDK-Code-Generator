@@ -14,7 +14,9 @@ var entityCollectionPage = responseNamePrefix + "CollectionPage";
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
-{   
+{
+    using Microsoft.Graph.Core;
+
     /// <summary>
     /// The type <#=entityCollectionPage#>.
     /// </summary>

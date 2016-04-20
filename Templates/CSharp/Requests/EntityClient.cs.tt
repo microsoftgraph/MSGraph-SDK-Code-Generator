@@ -8,6 +8,7 @@ var clientName = entityContainer.Name.ToCheckedCase() + "Client";
 
 namespace <#=entityContainer.Namespace.GetNamespaceName()#>
 {
+    using Microsoft.Graph.Core;
 
     /// <summary>
     /// The type <#=clientName#>.
