@@ -24,6 +24,7 @@ var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("py
 from __future__ import unicode_literals
 from ..collection_base import CollectionRequestBase, CollectionResponseBase, CollectionPageBase
 from ..request_builder_base import RequestBuilderBase
+from .<#=innerEntityRequestBuilder.ToUnderscore()#> import <#=innerEntityRequestBuilder#>
 <#
 if (innerEntity.IsComplex()) {
 #>
