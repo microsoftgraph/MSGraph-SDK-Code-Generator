@@ -34,7 +34,7 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
         else
         {
         
-        var propType = prop.Type.Name.ToCheckedCase();
+        var propType = prop.Projection.Type.Name.ToCheckedCase();
     #>
 
         /// <summary>

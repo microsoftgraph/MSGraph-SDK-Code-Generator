@@ -176,7 +176,7 @@ public string GetPropertyWithReferencesName(OdcmProperty odcmProperty)
 
 public string GetPropertyTypeName(OdcmProperty odcmProperty)
 {
-    return odcmProperty.Type.Name.ToCheckedCase();
+    return odcmProperty.Projection.Type.Name.ToCheckedCase();
 }
 
 public string GetPropertyReferenceTypeName(OdcmProperty odcmProperty)
