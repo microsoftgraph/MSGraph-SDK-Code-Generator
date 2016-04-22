@@ -38,7 +38,7 @@ foreach (var prop in model.EntityContainer.Properties)
     /**
      * Gets <#=TypeRequestBuilder(c)#>.
      *
-     * @return the <#=prop.Type.GetTypeString()#>.
+     * @return the <#=prop.Projection.Type.GetTypeString()#>.
      */
     <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>();
 <#
