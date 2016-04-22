@@ -14,7 +14,7 @@ if(!withReference && !entityReference)
 foreach(var prop in entity.NavigationProperties())
 {
 	var fetcher = string.Empty;
-	fetcher = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder";
+	fetcher = writer.GetPrefix() + prop.Projection.Type.Name.ToUpperFirstChar() + "RequestBuilder";
 
 	if(!clasess.Contains(fetcher)) clasess.Add(fetcher);
 

@@ -48,7 +48,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty)
 {
     if (!odcmProperty.LongDescriptionContains("readonly"))
     {
-        var sanitizedPropertyName = odcmProperty.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
+        var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
         var propertyType = this.GetPropertyTypeName(odcmProperty);
         
         var templateWriterHost = (CustomT4Host)Host;
@@ -82,7 +82,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty)
 
 public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
 {
-    var sanitizedPropertyName = odcmProperty.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
+    var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
     var propertyType = this.GetPropertyTypeName(odcmProperty);
     
     var templateWriterHost = (CustomT4Host)Host;

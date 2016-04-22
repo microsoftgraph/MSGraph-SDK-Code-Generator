@@ -3,7 +3,7 @@
 <#@ include file="CollectionRequest.Base.template.tt"#>
 <#
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Type;
+var innerEntity = prop.Projection.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
 var collectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
 

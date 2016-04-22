@@ -4,7 +4,7 @@
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Type;
+var innerEntity = prop.Projection.Type;
 var innerEntityType = writer.GetPrefix() + innerEntity.Name.ToUpperFirstChar();
 var isServiceES = prop.Class.Kind == OdcmClassKind.Service;
 

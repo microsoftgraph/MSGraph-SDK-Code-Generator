@@ -10,7 +10,7 @@ if(host.CurrentType is OdcmProperty)
 {
     var prop = host.CurrentType.AsOdcmProperty();
     className = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar();
-    propName = className + prop.Name.ToUpperFirstChar() + ((prop.Type is OdcmMediaClass)?"Stream":"") + "Request";
+    propName = className + prop.Name.ToUpperFirstChar() + ((prop.Projection.Type is OdcmMediaClass)?"Stream":"") + "Request";
 }
 else
 {
