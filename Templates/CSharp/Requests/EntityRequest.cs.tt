@@ -6,6 +6,13 @@
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = this.GetEntityNameString(entity);
 
+var prop = host.CurrentType.AsOdcmProperty();
+var projection = (prop != null) ? prop.Projection : null;
+var canCreate = projection != null ? projection.SupportsInsert() : true;
+var canDelete = projection != null ? projection.SupportsDelete() : true;
+var canUpdate = projection != null ? projection.SupportsUpdate() : true;
+var canExpand = projection != null ? projection.SupportsExpand() : true;
+
 #>
 
 namespace <#=this.GetNamespaceName(entity)#>
@@ -20,16 +27,38 @@ namespace <#=this.GetNamespaceName(entity)#>
     <#=this.GetEntityRequestClassDefinition(entity)#>
     {
         <#=this.GetEntityRequestConstructor(entity)#>
+<#
+    if (canCreate)
+    {
+        Write("\n        ");
+        Write(this.GetEntityCreateAsyncMethod(entity));
+        Write("\n");
+    }
 
-        <#=this.GetEntityCreateAsyncMethod(entity)#>
-
-        <#=this.GetEntityDeleteAsyncMethod(entity)#>
+    if (canDelete)
+    {
+        Write("\n        ");
+        Write(this.GetEntityDeleteAsyncMethod(entity));
+        Write("\n");
+    }
+#>
 
         <#=this.GetEntityGetAsyncMethod(entity)#>
+<#
+    if (canUpdate)
+    {
+        Write("\n        ");
+        Write(this.GetEntityUpdateAsyncMethod(entity));
+        Write("\n");
+    }
 
-        <#=this.GetEntityUpdateAsyncMethod(entity)#>
-
-        <#=this.GetEntityExpandMethod(entity)#>
+    if (canExpand)
+    {
+        Write("\n        ");
+        Write(this.GetEntityExpandMethod(entity));
+        Write("\n");
+    }
+#>
 
         <#=this.GetEntitySelectMethod(entity)#>
 

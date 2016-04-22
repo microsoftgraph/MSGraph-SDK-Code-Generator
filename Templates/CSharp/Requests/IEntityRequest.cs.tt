@@ -6,6 +6,13 @@ OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
 var entityRequest = entityName + "Request";
 
+var prop = host.CurrentType.AsOdcmProperty();
+var projection = (prop != null) ? prop.Projection : null;
+var canCreate = projection == null || projection.SupportsInsert();
+var canDelete = projection == null || projection.SupportsDelete();
+var canUpdate = projection == null || projection.SupportsUpdate();
+var canExpand = projection == null || projection.SupportsExpand();
+
 #>
 
 namespace <#=this.GetNamespaceName(entity)#>
@@ -18,15 +25,23 @@ namespace <#=this.GetNamespaceName(entity)#>
 
     <#=this.GetEntityRequestInterfaceDefinition(entity)#>
     {
+    <# if (canCreate) { #>
         <#=this.GetEntityCreateAsyncMethod(entity)#>
+    <# } #>
 
+    <# if (canDelete) { #>
         <#=this.GetEntityDeleteAsyncMethod(entity)#>
+    <# } #>
 
         <#=this.GetEntityGetAsyncMethod(entity)#>
 
+    <# if (canUpdate) { #>
         <#=this.GetEntityUpdateAsyncMethod(entity)#>
+    <# } #>
 
+    <# if (canExpand) { #>
         <#=this.GetEntityExpandMethod(entity)#>
+    <# } #>
 
         <#=this.GetEntitySelectMethod(entity)#>
     }
