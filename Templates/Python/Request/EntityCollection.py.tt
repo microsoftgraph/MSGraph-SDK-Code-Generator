@@ -7,14 +7,21 @@ OdcmModel model         = host.CurrentModel;
 CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 var clientName          = model.GetEntityContainer().ToUpperFirstChar() + "Client";
 var clientNameLower     = clientName.ToLowerFirstChar();
-var prop                = host.CurrentType as OdcmProperty;
-var innerEntity = prop.Type;
+OdcmEntityType innerEntity  = null;
+string name             = null;
+try { //PropertyCollection
+    OdcmProperty prop   = host.CurrentType as OdcmProperty;
+    innerEntity         = prop.Type;
+    name                = prop.Name;
+} catch { //EntityType
+    innerEntity = host.CurrentType.AsOdcmClass();
+}
 var innerEntityType = innerEntity.IsComplex() ? innerEntity.GetTypeString().ToUpperFirstChar() : innerEntity.GetTypeString();
 var innerEntityRequestBuilder = innerEntityType + "RequestBuilder";
-var collectionRequest = prop.Name.ToUpperFirstChar() + "CollectionRequest";
-var collectionRequestBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
-var collectionPage = prop.Name.ToUpperFirstChar() + "CollectionPage";
-var collectionResponse = prop.Name.ToUpperFirstChar() + "CollectionResponse";
+var collectionRequest = name.ToUpperFirstChar() + "CollectionRequest";
+var collectionRequestBuilder = name.ToUpperFirstChar() + "CollectionRequestBuilder";
+var collectionPage = name.ToUpperFirstChar() + "CollectionPage";
+var collectionResponse = name.ToUpperFirstChar() + "CollectionResponse";
 TemplateWriterSettings settings = ConfigurationService.Settings;
 var jsonContentType     = "application/json";
 var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
