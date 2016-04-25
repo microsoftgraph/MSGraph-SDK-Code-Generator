@@ -32,8 +32,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
                 case "Guid":
                     return "java.util.UUID";
                 case "DateTimeOffset":
-                case "Date":
                     return "java.util.Calendar";
+                case "Date":
+                    return "com.microsoft.graph.model.DateOnly";
                 case "Binary":
                     return "byte[]";
                 default:
@@ -56,7 +57,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
             string t = property.GetTypeString();
             return !(t == "Integer" || t == "java.util.UUID" || t == "java.util.Calendar"
                   || t == "byte[]" || t == "String" || "long" == t || "Byte[]" == t
-                  || t == "Short");
+                  || t == "Short" || t == "com.microsoft.graph.model.DateOnly");
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)
