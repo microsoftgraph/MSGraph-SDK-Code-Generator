@@ -7,14 +7,17 @@ OdcmModel model         = host.CurrentModel;
 CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 var clientName          = model.GetEntityContainer().ToUpperFirstChar() + "Client";
 var clientNameLower     = clientName.ToLowerFirstChar();
-OdcmEntityType innerEntity  = null;
+var writable = false;
+OdcmType innerEntity  = null;
 string name             = null;
 try { //PropertyCollection
     OdcmProperty prop   = host.CurrentType as OdcmProperty;
     innerEntity         = prop.Type;
     name                = prop.Name;
+    writable = prop.LongDescriptionContains("writable");
 } catch { //EntityType
     innerEntity = host.CurrentType.AsOdcmClass();
+    name                = innerEntity.Name;
 }
 var innerEntityType = innerEntity.IsComplex() ? innerEntity.GetTypeString().ToUpperFirstChar() : innerEntity.GetTypeString();
 var innerEntityRequestBuilder = innerEntityType + "RequestBuilder";
@@ -64,7 +67,7 @@ class <#=collectionRequest#>(CollectionRequestBase):
         super(<#=collectionRequest#>, self).__init__(request_url, client, options)
 
 <#
-    if (prop.LongDescriptionContains("writable")){
+    if (writable){
 #>
     def add(self, entity):
         """Add a <#=innerEntityType#> to the collection
@@ -174,7 +177,7 @@ class <#=collectionRequestBuilder#>(RequestBuilderBase):
         return req
 
 <#
-    if (prop.LongDescriptionContains("writable")){
+    if (writable){
 #>
     def add(self, entity):
         """Add a <#=innerEntityType#> to the collection
@@ -270,7 +273,7 @@ class <#=collectionPage#>(CollectionPageBase):
         """
         return <#=innerEntityType#>(self._prop_list[index])
 
-    def <#=prop.Name.ToUnderscore()#>(self):
+    def <#=name.ToUnderscore()#>(self):
         """Get a generator of <#=innerEntityType#> within the <#=collectionPage#>
         
         Yields:
