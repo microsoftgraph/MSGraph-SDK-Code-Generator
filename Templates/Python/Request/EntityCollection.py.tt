@@ -295,3 +295,5 @@ class <#=collectionPage#>(CollectionPageBase):
                 A list of options
         """
         self._next_page_request = <#=collectionRequest#>(next_page_link, client, options)
+
+from ..request.<#=innerEntityRequestBuilder.ToUnderscore()#> import <#=innerEntityRequestBuilder#>
