@@ -92,9 +92,9 @@ class <#=entityBuilder#>(RequestBuilderBase):
         """Builds the <#=entityRequest#>
 
         Args:
-            expand (str): Default None, comma-seperated list of relationships
+            expand (str): Default None, comma-separated list of relationships
                 to expand in the response.
-            select (str): Default None, comma-seperated list of properties to
+            select (str): Default None, comma-separated list of properties to
                 include in the response.
             options (list of :class:`Option<microsoft.graph.options.Option>`):
                 A list of options to pass into the request. Defaults to None.

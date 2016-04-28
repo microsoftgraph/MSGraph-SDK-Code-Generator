@@ -322,15 +322,15 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
     if (method.IsCollection){
 #>
-            expand (str): Default None, comma-seperated list of relationships
+            expand (str): Default None, comma-separated list of relationships
                 to expand in the response.
-            select (str): Default None, comma-seperated list of properties to
+            select (str): Default None, comma-separated list of properties to
                 include in the response.
             top (int): Default None, the number of items to return in a result.
 <#
         if (!method.LongDescriptionContains("excludeOrderBy")){
 #>
-            order_by (str): Default None, comma-seperated list of properties
+            order_by (str): Default None, comma-separated list of properties
                 that are used to sort the order of items in the response.
 <#
         }

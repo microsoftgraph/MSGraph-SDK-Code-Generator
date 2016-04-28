@@ -148,12 +148,12 @@ class <#=collectionRequestBuilder#>(RequestBuilderBase):
         """Builds the <#=collectionRequest#>
         
         Args:
-            expand (str): Default None, comma-seperated list of relationships
+            expand (str): Default None, comma-separated list of relationships
                 to expand in the response.
-            select (str): Default None, comma-seperated list of properties to
+            select (str): Default None, comma-separated list of properties to
                 include in the response.
             top (int): Default None, the number of items to return in a result.
-            order_by (str): Default None, comma-seperated list of properties
+            order_by (str): Default None, comma-separated list of properties
                 that are used to sort the order of items in the response.
             options (list of :class:`Option<microsoft.graph.options.Option>`):
                 A list of options to pass into the request. Defaults to None.
