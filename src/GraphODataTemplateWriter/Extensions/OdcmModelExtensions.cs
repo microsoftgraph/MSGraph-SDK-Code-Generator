@@ -81,7 +81,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             // Instead, take the properties that we know are references and not collections and grab the appropriate entity type
             // for each, returning those.
             var entityTypes = model.GetEntityTypes();
-            var referencePropertyTypes = model.GetProperties().Where(prop => prop.IsReference() && !prop.IsCollection).Select(prop => prop.Type).Distinct();
+            var referencePropertyTypes = model.GetProperties().Where(prop => prop.IsReference() && !prop.IsCollection).Select(prop => prop.Projection.Type).Distinct();
 
             var referenceEntityTypes = new List<OdcmClass>();
             foreach (var referencePropertyType in referencePropertyTypes)
@@ -102,7 +102,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             var allProperties = properties;
             if (typeName != null)
             {
-                allProperties = allProperties.Where(prop => prop.Type.Name.Equals(typeName));
+                allProperties = allProperties.Where(prop => prop.Projection.Type.Name.Equals(typeName));
             }
             if (longDescriptionMatches != null)
             {
@@ -144,7 +144,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 .Classes
                 .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
                 .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
-                .Where(property => property.IsCollection && property.Type.FullName.Equals(odcmProperty.Type.FullName))
+                .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
                 .First();
         }
 
@@ -215,9 +215,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         public static OdcmClass BaseClass(this OdcmObject odcmObject)
         {
-            if (odcmObject.AsOdcmProperty() != null && odcmObject.AsOdcmProperty().Type.AsOdcmClass() != null)
+            if (odcmObject.AsOdcmProperty() != null && odcmObject.AsOdcmProperty().Projection.Type.AsOdcmClass() != null)
             {
-                var baseClass = odcmObject.AsOdcmProperty().Type.AsOdcmClass().Base;
+                var baseClass = odcmObject.AsOdcmProperty().Projection.Type.AsOdcmClass().Base;
                 if (baseClass != null && !baseClass.IsAbstract)
                 {
                     return baseClass;
@@ -239,9 +239,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             {
                 return odcmObject.AsOdcmClass().Derived.Any();
             }
-            else if (odcmObject.AsOdcmProperty() != null && odcmObject.AsOdcmProperty().Type.AsOdcmClass() != null)
+            else if (odcmObject.AsOdcmProperty() != null && odcmObject.AsOdcmProperty().Projection.Type.AsOdcmClass() != null)
             {
-                return odcmObject.AsOdcmProperty().Type.AsOdcmClass().Derived.Any();
+                return odcmObject.AsOdcmProperty().Projection.Type.AsOdcmClass().Derived.Any();
             }
             else if (odcmObject.AsOdcmMethod() != null && odcmObject.AsOdcmMethod().ReturnType.AsOdcmClass() != null)
             {

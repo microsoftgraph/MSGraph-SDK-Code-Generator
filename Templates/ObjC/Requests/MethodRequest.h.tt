@@ -17,22 +17,26 @@ else
     returnType = "NSDictionary";
 }
 
-var superClass = writer.GetStaticCodePrefix() + (func.IsCollection ? "CollectionRequest" : "Request");
+var superClass = writer.GetStaticCodePrefix() + ((func.IsCollection || func.LongDescriptionContains("specialCollection")) ?  "CollectionRequest" : "Request");
 var method = ((func.Verbs & OdcmAllowedVerbs.Get) != OdcmAllowedVerbs.Get) ? "POST" : "GET";
 var isAsync = func.LongDescriptionContains("async");
+var specialCollectionType = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Collection";
     
-#>
-@class <#=writer.GetStaticCodePrefix()#>URLSessionDataTask;
-
-#import "<#=superClass#>.h"
-<#
-if (func.ReturnType != null && func.IsCollection)
+if (func.LongDescriptionContains("specialCollection"))
 {
 #>
-#import "<#=func.ReturnType.GetCollectionTypeString()#>.h"
+@class <#=writer.GetStaticCodePrefix()#>URLSessionDataTask, <#=specialCollectionType#>;
+<#
+}
+else 
+{
+#>
+@class <#=writer.GetStaticCodePrefix()#>URLSessionDataTask;
 <#
 }
 #>
+
+#import "<#=superClass#>.h"
 
 @interface <#=requestType#> : <#=superClass#>
 
@@ -47,10 +51,15 @@ if (func.Parameters.Count > 0)
 }
 string completionHandler;
 string taskType = writer.GetStaticCodePrefix() + "URLSessionDataTask *";
-if (func.IsCollection)
+if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
 {
-    string collectionType = func.ReturnType.GetCollectionTypeString();
+    string collectionType = writer.GetStaticCodePrefix() + "Collection";
+    if (func.LongDescriptionContains("specialCollection"))
+    {
+       collectionType = specialCollectionType; 
+    }
     completionHandler = "(void (^)(" + collectionType + " *response, " + requestType + " *nextRequest, NSError *error))";
+
 }
 else if(isAsync)
 {
@@ -59,6 +68,7 @@ else if(isAsync)
 }
 else
 {
+
     completionHandler = writer.GetNetworkCompletionBlock(returnType, "response"); 
 }
 if (!returnType.Contains("Stream"))

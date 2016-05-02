@@ -109,6 +109,10 @@ The type of template.
 To set the name of the template using the `Name` format string. You can insert `<Class>`, `<Property>`, `<Method>`, and `<Container>` the values will be replaced by the names of the corresponding object.  If you insert an item that doesn't exist it will be replaced with an empty string.  
 Note: You can also set the template name from inside the template by : `host.SetTemplateName("foo");`
 
+#### Template Editing
+
+The solution contains a non-building project to host the actual T4 templates and make browsing/editing them easier.  New template files will be automatically discovered by this project.
+
 #### Includes/Excludes
 
 There may be specific times when you want to exclude or only process certain objects from the SubProcessor. To Do this you can either set a semicolon delimited list of objects you wanted to include : `Include : foo;bar`. This will only process objects whose names are foo or bar.  The opposite of this is the exclude setting where the SubProcessor will include all objects except for those whose names are in the exclude list, exclude and include can not be used together.

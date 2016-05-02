@@ -5,11 +5,11 @@
 var entity = host.CurrentType.AsOdcmClass();
 var baseEntity = entity.Base;
 
+IEnumerable<string> extraClasses = null;
 #>
-<#=writer.GetImportsClass(entity.Properties,entity.Properties.Where(prop => prop.IsCollection).Select(prop => GetObjCTypeIdentifier(prop)).Distinct())#>
+<#=writer.GetImportsClass(entity.Properties, extraClasses:extraClasses)#>
 
 #import "<#=GetObjCTypeIdentifier(baseEntity)#>.h"
-#import "<#=GetStaticCollectionObject()#>.h"
 
 @interface <#=GetObjCTypeIdentifier(entity)#> : <#=GetObjCTypeIdentifier(baseEntity)#>
 
@@ -28,7 +28,7 @@ foreach(var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!
   <#
 }
 
-foreach (var prop in entity.Properties.Where(prop => prop.IsCollection && !prop.LongDescriptionContains("not-enumerable")))
+foreach (var prop in entity.Properties.Where(prop => prop.IsCollection && prop.LongDescriptionContains("enumerable")))
 {
 #>
 - (<#=GetObjCTypeForVarDeclaration(prop,true)#>) <#=GetObjCProperty(prop)#>:(NSInteger)index;

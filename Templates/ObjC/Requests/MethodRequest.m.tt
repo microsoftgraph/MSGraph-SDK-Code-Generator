@@ -15,7 +15,7 @@ if (func.ReturnType != null)
     if (returnTypeObject != null && returnTypeObject.Properties.Any(prop => prop.IsCollection && prop.Name.Contains("values")))
     {
         var valuesProperty = returnTypeObject.Properties.First(prop => prop.IsCollection);
-        returnType = writer.GetPrefix() + valuesProperty.Type.Name.ToUpperFirstChar();
+        returnType = writer.GetPrefix() + valuesProperty.Projection.Type.Name.ToUpperFirstChar();
     }
 }
 else
@@ -27,12 +27,21 @@ else
 var superClass = writer.GetStaticCodePrefix() + ((func.IsCollection) ?  "CollectionRequest" : "Request");
 var method = ((func.Verbs & OdcmAllowedVerbs.Get) != OdcmAllowedVerbs.Get) ? "POST" : "GET";
 var isAsync = func.LongDescriptionContains("async");
+var specialCollecitonName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar() + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Collection";
 
 #>
 
 #import "<#=writer.GetPrefix()#>ODataEntities.h"
 #import "<#=writer.GetPrefix()#>Models.h"
 #import "<#=writer.GetStaticCodePrefix()#>URLSessionDataTask.h"
+<#
+if (func.LongDescriptionContains("specialCollection"))
+{
+#>
+#import "<#=specialCollecitonName#>.h"
+<#
+}
+#>
 
 
 <#
@@ -122,22 +131,6 @@ if (func.Parameters.Count > 0)
 }
 <#
 }
-
-if (func.IsCollection)
-{
-#>
-
-- (MSURLSessionDataTask *)<#=func.ReturnType.GetCollectionTypeString()#>TaskWithRequest:(NSMutableURLRequest *)request
-                             odObjectWithDictionary:(MSObject* (^)(NSDictionary *response))castBlock
-                                         completion:(void (^)(<#=func.ReturnType.GetCollectionTypeString()#> *response, NSError *error))completionHandler
-{
-    return [self collectionTaskWithRequest: request odObjectWithDictionary:castBlock
-    completion:^(MSCollection* collectionResponse, NSError *error){
-        completionHandler([<#=func.ReturnType.GetCollectionTypeString()#> fromMSCollection:collectionResponse],error);
-    }];
-}
-<#
-}
 #>
 
 - (NSMutableURLRequest *)mutableRequest
@@ -152,7 +145,7 @@ if (func.Parameters.Count > 0)
         {
 #>
     [self.options addObject:[[<#=writer.GetStaticCodePrefix()#>FunctionParameters alloc] initWithKey:@"<#=param.Name#>"
-                                                                value:[<#=writer.GetStaticCodePrefix()#>Object getNSJsonSerializationCompatibleValue:<#=SetNSJSONPermitedExpressionSerialized(param.Type,"_"+param.Name.ToLowerFirstChar())#>]]];
+                                                                value:[<#=writer.GetStaticCodePrefix()#>Object getNSJsonSerializationCompatibleValue:<#=GetObjCToJsonConvertibleExpressionConversion(param.Type, param.IsCollection, "_"+param.Name.ToLowerFirstChar())#>]]];
 <#
         }
 #>
@@ -183,16 +176,30 @@ string completionBlock;
 string completionHandler;
 string taskMethod;
 string taskType = writer.GetStaticCodePrefix() + "URLSessionDataTask *";
-if (func.IsCollection)
+if (func.IsCollection || func.LongDescriptionContains("specialCollection"))
 {
-    completionHandler = "(void (^)(" + func.ReturnType.GetCollectionTypeString() + " *response, " + requestType + " *nextRequest, NSError *error))";
-    
+
+    if (func.LongDescriptionContains("specialCollection"))
+    {
+        completionHandler = "(void (^)(" + specialCollecitonName + " *response, " + requestType + " *nextRequest, NSError *error))";
+    }
+    else
+    {
+        completionHandler = "(void (^)(" + writer.GetStaticCodePrefix() +"Collection *response, " + requestType + " *nextRequest, NSError *error))";
+    }
     var stringBuilder = new StringBuilder();
     var baseIndents = ("    " + writer.GetStaticCodePrefix() + "URLSessionDataTask *task = [").ToSpaces();
 
-    stringBuilder.AppendLine("^(" + func.ReturnType.GetCollectionTypeString() + " *collectionResponse, NSError *error){");
+    stringBuilder.AppendLine("^(" + writer.GetStaticCodePrefix() + "Collection *collectionResponse, NSError *error){");
 	string returnCollectionName = "collectionResponse";
-    
+    if (func.LongDescriptionContains("specialCollection"))
+    {
+		returnCollectionName = "collection";
+		stringBuilder.AppendLine(baseIndents + "    " + specialCollecitonName + " *" + returnCollectionName +"= nil;");
+        stringBuilder.AppendLine(baseIndents + "    if(collectionResponse){");
+        stringBuilder.AppendLine(baseIndents + "        " + returnCollectionName + " = [[" + specialCollecitonName + " alloc] initWithCollection:collectionResponse];");
+        stringBuilder.AppendLine(baseIndents + "    }");
+    }
     stringBuilder.AppendLine(baseIndents + "    if(!error && "+ returnCollectionName + ".nextLink && completionHandler){");
     stringBuilder.AppendLine(baseIndents + "            " + requestType + " *nextRequest = [[" + requestType + " alloc] initWithURL:" + returnCollectionName + ".nextLink");
     stringBuilder.AppendLine(baseIndents + "                                                                                options:nil");
@@ -205,7 +212,8 @@ if (func.IsCollection)
     stringBuilder.Append(baseIndents + "}");
 
     completionBlock = stringBuilder.ToString();
-    taskMethod = "[self " + func.ReturnType.GetCollectionTypeString() + "TaskWithRequest:";
+    taskMethod = "[self collectionTaskWithRequest:";
+
 }
 else if(isAsync)
 {
@@ -231,7 +239,7 @@ if (!returnType.Contains("Stream"))
     <#=taskType#>task = <#=taskMethod#>self.mutableRequest
 <#=indentSpace.Substring("odObjectWithDictionary".Length + 1)#>odObjectWithDictionary:^(id responseObject){
 <#
-if (func.IsCollection || IsNSJSONSerializable(func.ReturnType))
+if (returnType == writer.GetPrefix() + "String" || returnType == writer.GetStaticCodePrefix() + "Guid")
 {
 #>
 <#=indentSpace#>    return [responseObject copy];
