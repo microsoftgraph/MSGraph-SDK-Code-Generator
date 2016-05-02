@@ -14,8 +14,7 @@ var entityCollectionPage = string.Concat(this.GetEntityNameString(prop.Class), p
 namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
 {
     using System;
-    
-    using Microsoft.Graph.Core;
+
     using Newtonsoft.Json;
     
     /// <summary>

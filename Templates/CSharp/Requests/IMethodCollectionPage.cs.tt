@@ -18,8 +18,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 {
     using Newtonsoft.Json;
     
-    using Microsoft.Graph.Core;
-    
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.
     /// </summary>

@@ -22,8 +22,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System.Threading;
     using System.Threading.Tasks;
     
-    using Microsoft.Graph.Core;
-    
     /// <summary>
     /// The interface I<#=monitorType#>.
     /// </summary>

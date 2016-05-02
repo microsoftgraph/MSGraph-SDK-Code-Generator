@@ -10,8 +10,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
     using System;
     using System.Collections.Generic;
-    
-    using Microsoft.Graph.Core;
 
     <#=this.GetCollectionWithReferencesClassDefinition(prop)#>
     {

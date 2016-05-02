@@ -15,8 +15,6 @@ namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
 {
     using System;
     
-    using Microsoft.Graph.Core;
-    
     /// <summary>
     /// The type <#=entityCollectionPage#>.
     /// </summary>

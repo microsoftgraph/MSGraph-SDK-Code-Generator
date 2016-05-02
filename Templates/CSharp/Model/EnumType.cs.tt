@@ -9,8 +9,6 @@ var enumName = enumT.Name.ToCheckedCase();
 
 namespace <#=enumT.Namespace.GetNamespaceName()#>
 {
-    using Microsoft.Graph.Core;
-    
     using Newtonsoft.Json;
     
     /// <summary>

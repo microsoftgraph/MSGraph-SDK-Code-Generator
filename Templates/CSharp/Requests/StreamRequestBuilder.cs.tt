@@ -35,8 +35,6 @@ else
 namespace <#=namespaceValue#>
 {
     using System.Collections.Generic;
-    
-    using Microsoft.Graph.Core;
 
     /// <summary>
     /// The type <#=propRequestBuilder#>.
