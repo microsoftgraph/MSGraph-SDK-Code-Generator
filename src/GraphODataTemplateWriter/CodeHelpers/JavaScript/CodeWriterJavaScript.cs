@@ -45,7 +45,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.JavaScript
 
         public String FullTypeName(OdcmProperty prop)
         {
-            return (prop.IsCollection) ? "Collection(" + prop.Type.FullName + ")" : prop.Type.FullName;
+            var fullName = prop.Projection.Type.FullName;
+            return (prop.IsCollection) ? "Collection(" + fullName + ")" : fullName;
         }
     }
 

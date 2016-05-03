@@ -4,7 +4,7 @@
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Type;
+var innerEntity = prop.Projection.Type;
 var isServiceES = prop.Class.Kind == OdcmClassKind.Service;
 
 var collectionNamer = prop.IsReference() ? ((collectionReference)?"CollectionReferences":"CollectionWithReferences") : "Collection";
@@ -23,8 +23,6 @@ if (innerEntityType.Equals(propName))
 }
 #>
 
-#import "<#=GetObjCTypeIdentifier(prop)#>.h"
-
 @class <#=entityRequest#>, <#=writer.GetStaticCodePrefix()#>URLSessionDataTask;
 
 #import "<#=writer.GetPrefix()#>Models.h"
@@ -32,7 +30,7 @@ if (innerEntityType.Equals(propName))
 
 typedef void (^<#=innerEntityType#>CompletionHandler)(<#=innerEntityType#> *response, NSError *error);
 
-typedef void (^<#=propName + collectionNamer#>CompletionHandler)(<#=GetObjCTypeForVarDeclaration(prop)#> response, <#=propRequest#> *nextRequest, NSError *error);
+typedef void (^<#=propName + collectionNamer#>CompletionHandler)(<#=writer.GetStaticCodePrefix()#>Collection *response, <#=propRequest#> *nextRequest, NSError *error);
 
 @interface <#=propRequest#> : <#=writer.GetStaticCodePrefix()#>CollectionRequest
 

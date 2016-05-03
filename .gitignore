@@ -8,6 +8,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.vs/
 
 # Build results
 **/[Dd]ebug/

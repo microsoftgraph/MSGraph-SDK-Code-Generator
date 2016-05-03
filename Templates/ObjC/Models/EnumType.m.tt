@@ -3,26 +3,92 @@
 <#@ include file="SharedObjC.template.tt"#>
 <#
 var entity = host.CurrentType.AsOdcmEnum();
+var typeName = GetObjCTypeIdentifier(entity);
+var valueTypeName = typeName + "Value";
 #>
 
-#include <<#=GetObjCTypeIdentifier(entity)#>.h>
+#include <<#=typeName#>.h>
 
-@implementation NSString (<#=GetObjCTypeIdentifier(entity)#>)
+@interface <#=typeName#> () {
+    <#=valueTypeName#> _enumValue;
+}
+@property (nonatomic, readwrite) <#=valueTypeName#> enumValue;
+@end
 
-+ (instancetype) stringWith<#=GetObjCTypeIdentifier(entity)#>:(<#=GetObjCTypeIdentifier(entity)#>)val {
+@implementation <#=typeName#>
+
+<#
+/////////////////////////////////////////////////////////////////
+// Generate the static methods that look like [DayOfWeek Monday]
+/////////////////////////////////////////////////////////////////
+foreach (var member in entity.Members.OrderBy(x => x.Value))
+{
+#>
++ (<#=typeName#>*) <#=member.Name.ToLowerFirstChar()#> {
+    static <#=typeName#> *_<#=member.Name.ToLowerFirstChar()#>;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _<#=member.Name.ToLowerFirstChar()#> = [[<#=typeName#> alloc] init];
+        _<#=member.Name.ToLowerFirstChar()#>.enumValue = <#=GetObjCEnumMember(entity, member)#>;
+    });
+    return _<#=member.Name.ToLowerFirstChar()#>;
+}
+<#
+}
+#>
+
++ (<#=typeName#>*) UnknownEnumValue {
+    static <#=typeName#> *_unknownValue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _unknownValue = [[<#=typeName#> alloc] init];
+        _unknownValue.enumValue = <#=typeName#>EndOfEnum;
+    });
+    return _unknownValue;
+}
+
+<#
+///////////////////////////////////////////////////////////////
+// Generate conversion from enum to boxed type and vice versa
+// e.g. [DayOfWeek dayOfWeekWithEnumValue:DayOfWeekMonday]
+///////////////////////////////////////////////////////////////
+#>
+
++ (<#=typeName#>*) <#=entity.Name.ToLowerFirstChar()#>WithEnumValue:(<#=valueTypeName#>)val {
 
     switch(val)
     {
-    <#
+<#
     foreach(var member in entity.Members)
     {
-    #>
-    case <#=GetObjCEnumMember(entity,member)#>:
-            return @"<#=member.Name#>";
-    <#
+#>
+        case <#=GetObjCEnumMember(entity,member)#>:
+            return [<#=typeName#> <#=member.Name#>];
+<#
     }
-    #>
-    case <#=GetObjCTypeIdentifier(entity)#>EndOfEnum:
+#>
+        case <#=typeName#>EndOfEnum:
+        default:
+            return [<#=typeName#> UnknownEnumValue];
+    }
+
+    return nil;
+}
+
+- (NSString*) ms_toString {
+
+    switch(self.enumValue)
+    {
+<#
+    foreach(var member in entity.Members)
+    {
+#>
+        case <#=GetObjCEnumMember(entity,member)#>:
+            return @"<#=member.Name#>";
+<#
+    }
+#>
+        case <#=typeName#>EndOfEnum:
         default:
             return nil;
     }
@@ -30,20 +96,27 @@ var entity = host.CurrentType.AsOdcmEnum();
     return nil;
 }
 
-- (<#=GetObjCTypeIdentifier(entity)#>) to<#=GetObjCTypeIdentifier(entity)#>{
+- (<#=valueTypeName#>) enumValue {
+    return _enumValue;
+}
+
+@end
+
+@implementation NSString (<#=typeName#>)
+
+- (<#=typeName#>*) to<#=typeName#>{
 
     <#
     foreach(var member in entity.Members)
     {
     #>if([self isEqualToString:@"<#=member.Name#>"])
-      {
-            return <#=GetObjCEnumMember(entity,member)#>;
-      }
-      else <#
-    }
-    #>
     {
-        return <#=GetObjCTypeIdentifier(entity)#>EndOfEnum;
+          return [<#=typeName#> <#=member.Name#>];
+    }
+    else <#
+    }
+    #>{
+        return [<#=typeName#> UnknownEnumValue];
     }
 }
 

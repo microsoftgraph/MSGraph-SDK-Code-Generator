@@ -4,7 +4,7 @@
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Type;
+var innerEntity = prop.Projection.Type;
 var isServiceES = prop.Class.Kind == OdcmClassKind.Service;
 
 var collectionNamer = prop.IsReference() ? ((collectionReference)?"CollectionReferences":"CollectionWithReferences") : "Collection";
@@ -22,6 +22,7 @@ if (innerEntityType.Equals(propName))
 #>
 
 #import "<#=writer.GetPrefix()#>ODataEntities.h"
+#import "<#=writer.GetStaticCodePrefix()#>Collection.h"
 #import "<#=writer.GetStaticCodePrefix()#>URLSessionDataTask.h"
 
 @interface <#=writer.GetStaticCodePrefix()#>CollectionRequest()
@@ -37,16 +38,6 @@ if (innerEntityType.Equals(propName))
 	if(!collectionReference)
 	{
 #>
-- (MSURLSessionDataTask *)<#=GetObjCTypeIdentifier(prop)#>TaskWithRequest:(NSMutableURLRequest *)request
-                             odObjectWithDictionary:(MSObject* (^)(NSDictionary *response))castBlock
-                                         completion:(void (^)(<#=GetObjCTypeForVarDeclaration(prop)#> response, NSError *error))completionHandler
-{
-    return [self collectionTaskWithRequest: request odObjectWithDictionary:castBlock
-    completion:^(MSCollection* collectionResponse, NSError *error){
-        completionHandler([<#=GetObjCTypeIdentifier(prop)#> fromMSCollection:collectionResponse],error);
-    }];
-}
-
 - (NSMutableURLRequest *)get
 {
     return [self requestWithMethod:@"GET"
@@ -57,11 +48,24 @@ if (innerEntityType.Equals(propName))
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName+ collectionNamer#>CompletionHandler)completionHandler
 {
 
-    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask * task = [self <#=GetObjCTypeIdentifier(prop)#>TaskWithRequest:[self get]
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask * task = [self collectionTaskWithRequest:[self get]
                                              odObjectWithDictionary:^(id response){
+<#
+    if (prop.IsSystem())
+    {
+#>
+
                                             return [response copy];
+<#
+    }
+    else
+    {
+#>
+                                            return [[<#=innerEntityType#> alloc] initWithDictionary:response];
+<#  }
+#>
                                          }
-                                                        completion:^(<#=GetObjCTypeForVarDeclaration(prop)#> collectionResponse, NSError *error){
+                                                        completion:^(<#=writer.GetStaticCodePrefix()#>Collection *collectionResponse, NSError *error){
                                             if(!error && collectionResponse.nextLink && completionHandler){
                                                 <#=propNameRequest#> *nextRequest = [[<#=propNameRequest#> alloc] initWithURL:collectionResponse.nextLink options:nil client:self.client];
                                                 completionHandler(collectionResponse, nextRequest, nil);

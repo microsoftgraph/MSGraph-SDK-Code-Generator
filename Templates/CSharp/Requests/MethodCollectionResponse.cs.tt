@@ -38,7 +38,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
                 if (!property.LongDescriptionContains("ignorableCollection"))
                 {
                     var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
-                    var propertyType = property.Type.GetTypeString();
+                    var propertyType = property.Projection.Type.GetTypeString();
         #>
 
         /// <summary>

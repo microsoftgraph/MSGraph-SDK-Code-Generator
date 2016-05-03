@@ -12,7 +12,7 @@ foreach(var prop in containerProps)
 {
     var propName = writer.GetPrefix() + prop.Name.ToUpperFirstChar();
     classes.Add(propName + "CollectionRequestBuilder;");
-    classes.Add(writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder;");
+    classes.Add(writer.GetPrefix() + prop.Projection.Type.Name.ToUpperFirstChar() + "RequestBuilder;");
 }
 
 foreach(var propertyClass in classes)
