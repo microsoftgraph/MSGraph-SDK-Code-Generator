@@ -34,7 +34,8 @@ var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("py
 from __future__ import unicode_literals
 from ..collection_base import CollectionRequestBase, CollectionResponseBase, CollectionPageBase
 from ..request_builder_base import RequestBuilderBase
-from .<#=innerEntityRequestBuilder.ToUnderscore()#> import <#=innerEntityRequestBuilder#>
+from ..request import <#=innerEntityRequestBuilder.ToUnderscore()#> # import <#=innerEntityRequestBuilder#>
+#from .<#=innerEntityRequestBuilder.ToUnderscore()#> import <#=innerEntityRequestBuilder#>
 <#
 if (innerEntity.IsComplex()) {
 #>
@@ -152,7 +153,7 @@ class <#=collectionRequestBuilder#>(RequestBuilderBase):
             :class:`<#=innerEntityRequestBuilder#><microsoft.graph.request.<#=innerEntityRequestBuilder.ToUnderscore()#>.<#=innerEntityRequestBuilder#>>`:
                 A <#=innerEntityRequestBuilder#> for that key
         """
-        return <#=innerEntityRequestBuilder#>(self.append_to_request_url(str(key)), self._client)
+        return <#=innerEntityRequestBuilder.ToUnderscore()#>.<#=innerEntityRequestBuilder#>(self.append_to_request_url(str(key)), self._client)
 
     def request(self, expand=None, select=None, top=None, order_by=None, options=None):
         """Builds the <#=collectionRequest#>
@@ -295,5 +296,3 @@ class <#=collectionPage#>(CollectionPageBase):
                 A list of options
         """
         self._next_page_request = <#=collectionRequest#>(next_page_link, client, options)
-
-from ..request.<#=innerEntityRequestBuilder.ToUnderscore()#> import <#=innerEntityRequestBuilder#>

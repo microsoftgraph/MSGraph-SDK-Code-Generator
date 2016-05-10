@@ -14,7 +14,7 @@ var httpMethod          = method.IsAction() ? "POST" : "GET";
 var requestType         = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Request";
 var requestBuilderType  = requestType + "Builder";
 var returnType          = method.ReturnType != null ? method.ReturnType.GetTypeString() : "None";
-var returnTypeCollection= "ItemsCollectionResponse";
+var returnTypeCollection= "DriveItemCollectionResponse";
 if (method.LongDescriptionContains("specialCollection"))
 {
     returnTypeCollection=requestType.Replace("Request", "CollectionResponse");
@@ -30,7 +30,7 @@ var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("py
 if (!method.LongDescriptionContains("specialCollection") && !IsBuiltIn(returnType))
 {
 #>
-from ..model.<#=returnType.ToUnderscore()#> import <#=returnType#>
+#from ..model.<#=returnType.ToUnderscore()#> import <#=returnType#>
 <#
 }
 #>
@@ -53,7 +53,7 @@ import asyncio
 }
 if (method.IsCollection) {
 #>
-from ..request.<#=returnTypeCollection.Replace("Response", "").ToUnderscore()#> import <#=returnTypeCollection#>
+from ..request import <#=returnTypeCollection.Replace("Response", "").ToUnderscore()#> 
 <#
 }
 #>
@@ -150,7 +150,7 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         } else {
 #>
-        <#=method.IsCollection ? "collection_response" : "entity"#> = <#=method.IsCollection ? returnTypeCollection : returnType#>(json.loads(self.send(self.body_options).content))
+        <#=method.IsCollection ? "collection_response" : "entity"#> = <#=method.IsCollection ?  returnTypeCollection.Replace("Response", "").ToUnderscore() + "." + returnTypeCollection : returnType#>(json.loads(self.send(self.body_options).content))
 <#
         }
 #>
@@ -219,7 +219,7 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         } else {
 #>
-        <#=method.IsCollection ? "collection_response" : "entity"#> = <#=method.IsCollection ? returnTypeCollection : returnType#>(json.loads(self.send().content))
+        <#=method.IsCollection ? "collection_response" : "entity"#> = <#=method.IsCollection ? returnTypeCollection.Replace("Response", "").ToUnderscore() + "." + returnTypeCollection : returnType#>(json.loads(self.send().content))
 <#
         }
 #>
