@@ -43,7 +43,7 @@ from ..request.<#=propName.ToUnderscore()#>_request import <#=propRequestBuilder
     }
     foreach(var propRequestBuilder in builders) {
 #>
-from ..request.<#=propRequestBuilder.ToUnderscore()#> import <#=propRequestBuilder#>
+#from ..request.<#=propRequestBuilder.ToUnderscore()#> import <#=propRequestBuilder#>
 <#
     }
 
@@ -59,7 +59,7 @@ foreach (var prop in entity.NavigationProperties())
         var propCollection = prop.Name.ToUpperFirstChar() + "Collection";
         var propCollectionRequestBuilder = (propCollection + "RequestBuilder");
 #>
-from ..request.<#=propCollection.ToUnderscore()#> import <#=propCollectionRequestBuilder#>
+from ..request import <#=propCollection.ToUnderscore()#>
 <#
     }
 }
@@ -278,7 +278,7 @@ class <#=entityBuilder#>(RequestBuilderBase):
             :class:`<#=collectionRequestBuilder#><microsoft.graph.request.<#=prop.Name.ToUnderscore()+"_collection"#>.<#=collectionRequestBuilder#>>`:
                 A request builder created from the <#=entityBuilder#>
         """
-        return <#=collectionRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+        return <#=prop.Name.ToUnderscore()+"_collection"#>.<#=collectionRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
 <#
         }
         else
