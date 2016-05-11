@@ -11,11 +11,11 @@ var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.To
 
 var projection = host.CurrentType.Projection;
 var canExpand = projection.SupportsExpand();
-var canSelect = projection.BooleanValueOf("Selectable");
-var canFilter = projection.BooleanValueOf("Filterable");
-var canUseTop = projection.BooleanValueOf("TopSupported");
-var canSkip = projection.BooleanValueOf("SkipSupported");
-var canSort = projection.BooleanValueOf("Sortable");
+var canSelect = projection.BooleanValueOf("Selectable") != false;
+var canFilter = projection.BooleanValueOf("Filterable") != false;
+var canUseTop = projection.BooleanValueOf("TopSupported") != false;
+var canSkip = projection.BooleanValueOf("SkipSupported") != false;
+var canSort = projection.BooleanValueOf("Sortable") != false;
 
 #>
 
@@ -52,7 +52,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         I<#=collectionRequest#> Expand(string value);
 
 <# } #>
-<# if (!canSelect.HasValue || canSelect.Value) { #>
+<# if (canSelect) { #>
         /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
@@ -61,7 +61,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         I<#=collectionRequest#> Select(string value);
 
 <# } #>
-<# if (!canUseTop.HasValue || canUseTop.Value) { #>
+<# if (canUseTop) { #>
         /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
@@ -70,7 +70,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         I<#=collectionRequest#> Top(int value);
 
 <# } #>
-<# if (!canFilter.HasValue || canFilter.Value) { #>
+<# if (canFilter) { #>
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
@@ -79,7 +79,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         I<#=collectionRequest#> Filter(string value);
 
 <# } #>
-<# if (!canSkip.HasValue || canSkip.Value) { #>
+<# if (canSkip) { #>
         /// <summary>
         /// Adds the specified skip value to the request.
         /// </summary>
@@ -88,7 +88,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         I<#=collectionRequest#> Skip(int value);
 
 <# } #>
-<# if (!canSort.HasValue || canSort.Value) { #>
+<# if (canSort) { #>
         /// <summary>
         /// Adds the specified orderby value to the request.
         /// </summary>
