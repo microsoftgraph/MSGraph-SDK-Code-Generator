@@ -151,6 +151,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             this.QueryOptions.Add(new QueryOption("$orderby", value));
             return this;
         }
-    }
 <# } #>
+    }
 }

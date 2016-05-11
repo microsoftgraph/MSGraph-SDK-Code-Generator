@@ -95,6 +95,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <param name="value">The orderby value.</param>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> OrderBy(string value);
-    }
 <# } #>
+    }
 }
