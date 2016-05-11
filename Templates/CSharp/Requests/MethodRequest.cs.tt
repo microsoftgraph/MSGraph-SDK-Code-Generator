@@ -33,6 +33,15 @@ if (isCollection)
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool includeRequestBody = hasParameters && isAction;
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
+
+var projection = host.CurrentType.Projection;
+var canExpand = projection.SupportsExpand();
+var canSelect = projection.BooleanValueOf("Selectable") != false;
+var canFilter = projection.BooleanValueOf("Filterable") != false;
+var canUseTop = projection.BooleanValueOf("TopSupported") != false;
+var canSkip = projection.BooleanValueOf("SkipSupported") != false;
+var canSort = projection.BooleanValueOf("Sortable") != false;
+
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
@@ -49,7 +58,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     /// </summary>
     public partial class <#=requestType#> : BaseRequest, I<#=requestType#>
     {
-    <#
+<#
     var paramStringBuilder = new System.Text.StringBuilder();
     var requestBodyInitializerBuilder = new System.Text.StringBuilder();
 
@@ -135,8 +144,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         
         paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);
     }
-
-    #>
+#>
 
         /// <summary>
         /// Constructs a new <#=requestType#>.
@@ -146,16 +154,16 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         {
             <#=requestBodyInitializerBuilder.ToString()#>
         }
-    <#
+<#
     if (hasParameters && method.IsAction())
     {
-    #>
+#>
 
         /// <summary>
         /// Gets the request body.
         /// </summary>
         public <#=requestType#>Body RequestBody { get; private set; }
-    <#
+<#
     }
 
     var methodReturnTag = sendAsyncReturnType == null
@@ -172,18 +180,17 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     
     if (returnsStream)
     {
-        sendParameterHeadersForOverload = @"/// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        sendParameterHeadersForOverload = @"<param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
         /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>";
         
         sendOverloadParameters = "CancellationToken cancellationToken, HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead";
     }
     else
     {
-        sendParameterHeadersForOverload = "/// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>";
+        sendParameterHeadersForOverload = "<param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>";
         sendOverloadParameters = "CancellationToken cancellationToken";
     }
-        
-    #>
+#>
 
         /// <summary>
         /// Issues the <#=httpMethod#> request.
@@ -200,12 +207,10 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <returns><#=methodReturnTag#></returns>
         public <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(<#=sendOverloadParameters#>)
         {
-    <#
-
+<#
     if (isCollection)
     {
-    #>
-
+#>
             var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -230,37 +235,35 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             }
 
             return null;
-    <#
+<#
     }
     else if (returnsStream)
     {
-    #>
-
+#>
             return this.SendStreamRequestAsync(null, httpCompletionOption, cancellationToken);
-    <#
+<#
     }
     else if (!string.IsNullOrEmpty(sendAsyncReturnType))
     {
-    #>
-
+#>
             return this.SendAsync<<#=sendAsyncReturnType#>>(<#=methodParameter#>, cancellationToken);
-    <#
+<#
     }
     else
     {
-    #>
-
+#>
             return this.SendAsync(<#=methodParameter#>, cancellationToken); 
-    <#
+<#
     }
-    #>
-
+#>
         }
-    <#
+
+<#
     if (!returnsStream)
     {
-    #>
-
+        if (canExpand)
+        {
+#>
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -271,6 +274,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             this.QueryOptions.Add(new QueryOption("$expand", value));
             return this;
         }
+<#
+        }
+
+        if (canSelect)
+        {
+#>
 
         /// <summary>
         /// Adds the specified select value to the request.
@@ -282,10 +291,14 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
-    <#
+<#
+        }
+
         if (isCollection)
         {
-    #>
+            if (canUseTop)
+            {
+#>
 
         /// <summary>
         /// Adds the specified top value to the request.
@@ -297,7 +310,13 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-		
+<#
+            }
+
+            if (canFilter)
+            {
+#>
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
@@ -308,6 +327,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             this.QueryOptions.Add(new QueryOption("$filter", value));
             return this;
         }
+<#
+            }
+
+            if (canSkip)
+            {
+#>
 
         /// <summary>
         /// Adds the specified skip value to the request.
@@ -319,6 +344,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
             return this;
         }
+<#
+            }
+
+            if (canSort)
+            {
+#>
 
         /// <summary>
         /// Adds the specified orderby value to the request.
@@ -330,10 +361,10 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             this.QueryOptions.Add(new QueryOption("$orderby", value));
             return this;
         }
-    <#
+<#
+            }
         }
     }
-    #>
-
+#>
     }
 }

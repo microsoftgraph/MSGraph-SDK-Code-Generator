@@ -6,12 +6,12 @@
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = this.GetEntityNameString(entity);
 
-var prop = host.CurrentType.AsOdcmProperty();
-var projection = (prop != null) ? prop.Projection : null;
-var canCreate = projection != null ? projection.SupportsInsert() : true;
-var canDelete = projection != null ? projection.SupportsDelete() : true;
-var canUpdate = projection != null ? projection.SupportsUpdate() : true;
-var canExpand = projection != null ? projection.SupportsExpand() : true;
+var projection = host.CurrentType.Projection;
+var canCreate = projection.SupportsInsert();
+var canDelete = projection.SupportsDelete();
+var canUpdate = projection.SupportsUpdate();
+var canExpand = projection.SupportsExpand();
+var canSelect = projection.BooleanValueOf("Selectable") != false;
 
 #>
 
@@ -27,57 +27,63 @@ namespace <#=this.GetNamespaceName(entity)#>
     <#=this.GetEntityRequestClassDefinition(entity)#>
     {
         <#=this.GetEntityRequestConstructor(entity)#>
+
 <#
     if (canCreate)
     {
-        Write("\n        ");
+        Write("        ");
         Write(this.GetEntityCreateAsyncMethod(entity));
-        Write("\n");
+        Write("\n\n");
     }
 
     if (canDelete)
     {
-        Write("\n        ");
+        Write("        ");
         Write(this.GetEntityDeleteAsyncMethod(entity));
-        Write("\n");
+        Write("\n\n");
     }
-#>
 
-        <#=this.GetEntityGetAsyncMethod(entity)#>
-<#
+    Write("        ");
+    Write(this.GetEntityGetAsyncMethod(entity));
+    Write("\n\n");
+
     if (canUpdate)
     {
-        Write("\n        ");
+        Write("        ");
         Write(this.GetEntityUpdateAsyncMethod(entity));
-        Write("\n");
+        Write("\n\n");
     }
 
     if (canExpand)
     {
-        Write("\n        ");
+        Write("        ");
         Write(this.GetEntityExpandMethod(entity));
-        Write("\n");
+        Write("\n\n");
+    }
+
+    if (canSelect)
+    {
+        Write("        ");
+        Write(this.GetEntitySelectMethod(entity));
+        Write("\n\n");
     }
 #>
-
-        <#=this.GetEntitySelectMethod(entity)#>
-
         /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
         /// </summary>
         /// <param name="<#=entity.Name#>ToInitialize">The <see cref="<#=entityName#>"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(<#=entityName#> <#=entity.Name#>ToInitialize)
         {
-        <#
+<#
         var navigationCollectionProperties = entity.Properties.Where(property => property.IsCollection() && property.IsNavigation());
 
         if (navigationCollectionProperties.Any())
         {
-        #>
+#>
 
             if (<#=entity.Name#>ToInitialize != null && <#=entity.Name#>ToInitialize.AdditionalData != null)
             {
-        <#
+<#
             foreach(var property in navigationCollectionProperties)
             {
                 var propertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
@@ -85,7 +91,7 @@ namespace <#=this.GetNamespaceName(entity)#>
                 
                 if (propertyType.IsComplex())
                 {
-        #>
+#>
 
                 if (<#=entity.Name#>ToInitialize.<#=propertyName#> != null && <#=entity.Name#>ToInitialize.<#=propertyName#>.CurrentPage != null)
                 {
@@ -102,16 +108,16 @@ namespace <#=this.GetNamespaceName(entity)#>
                             nextPageLinkString);
                     }
                 }
-        <#
+<#
                 }
             }
-        #>
+#>
 
             }
 
-        <#
+<#
         }
-        #>
+#>
 
         }
     }
