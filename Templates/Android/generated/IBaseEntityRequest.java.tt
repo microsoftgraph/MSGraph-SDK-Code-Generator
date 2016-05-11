@@ -3,6 +3,12 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#host.TemplateName = IBaseTypeRequest(c);#>
+<#
+var projection = c.Projection;
+var canExpand = projection.SupportsExpand();
+var canSelect = projection.BooleanValueOf("Selectable") != false;
+var canUseTop = projection.BooleanValueOf("TopSupported") != false;
+#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -38,6 +44,7 @@
 
     }
 #>
+<# if (canSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -46,6 +53,8 @@
      */
     <#=IBaseTypeRequest(c)#> select(final String value);
 
+<# } #>
+<# if (canExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -53,7 +62,9 @@
      * @return The updated request
      */
     <#=IBaseTypeRequest(c)#> expand(final String value);
-<# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #>
+
+<# } #>
+<# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && canUseTop) { #>
 
     /**
      * Sets the top value for the request

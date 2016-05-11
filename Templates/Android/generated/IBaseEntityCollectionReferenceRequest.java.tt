@@ -3,6 +3,11 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#host.TemplateName = IBaseTypeCollectionReferenceRequest(c);#>
+<#
+var projection = c.Projection;
+var canSelect = projection.BooleanValueOf("Selectable") != false;
+var canUseTop = projection.BooleanValueOf("TopSupported") != false;
+#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -12,7 +17,12 @@
 
     <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
 
+<# if (canSelect) { #>
     <#=ITypeCollectionReferenceRequest(c)#> select(final String value);
 
+<# } #>
+<# if (canUseTop) { #>
     <#=ITypeCollectionReferenceRequest(c)#> top(final int value);
+
+<# } #>
 }

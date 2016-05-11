@@ -3,6 +3,11 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#host.TemplateName = BaseTypeReferenceRequest(c);#>
+<#
+var projection = c.Projection;
+var canExpand = projection.SupportsExpand();
+var canSelect = projection.BooleanValueOf("Selectable") != false;
+#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -27,6 +32,7 @@
        return send(HttpMethod.DELETE, null);
     }
 
+<# if (canSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -38,6 +44,8 @@
         return (<#=TypeReferenceRequest(c)#>)this;
     }
 
+<# } #>
+<# if (canExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -48,4 +56,6 @@
         getQueryOptions().add(new QueryOption("expand", value));
         return (<#=TypeReferenceRequest(c)#>)this;
     }
+
+<# } #>
 }

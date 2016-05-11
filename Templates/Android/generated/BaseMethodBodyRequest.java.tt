@@ -20,6 +20,12 @@
     }
 #>
 <#host.TemplateName = baseTypeRequest;#>
+<#
+var projection = c.Projection;
+var canExpand = projection.SupportsExpand();
+var canSelect = projection.BooleanValueOf("Selectable") != false;
+var canUseTop = projection.BooleanValueOf("TopSupported") != false;
+#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -49,6 +55,7 @@
         return send(HttpMethod.POST, mBody);
     }
 
+<# if (canSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -60,6 +67,8 @@
         return (<#=typeRequest#>)this;
     }
 
+<# } #>
+<# if (canUseTop) { #>
     /**
      * Sets the top value for the request
      *
@@ -71,6 +80,8 @@
         return (<#=typeRequest#>)this;
     }
 
+<# } #>
+<# if (canExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -81,4 +92,6 @@
         getQueryOptions().add(new QueryOption("expand", value));
         return (<#=typeRequest#>)this;
     }
+
+<# } #>
 }

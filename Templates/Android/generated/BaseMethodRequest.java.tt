@@ -3,6 +3,12 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#host.TemplateName = BaseTypeRequest(c);#>
+<#
+var projection = c.Projection;
+var canExpand = projection.SupportsExpand();
+var canSelect = projection.BooleanValueOf("Selectable") != false;
+var canUseTop = projection.BooleanValueOf("TopSupported") != false;
+#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -48,6 +54,7 @@
        return send(HttpMethod.POST, null);
     }
 
+<# if (canSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -59,6 +66,8 @@
         return (<#=TypeRequest(c)#>)this;
     }
 
+<# } #>
+<# if (canExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -69,7 +78,9 @@
         getQueryOptions().add(new QueryOption("expand", value));
         return (<#=TypeRequest(c)#>)this;
     }
-<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #>
+
+<# } #>
+<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && canUseTop) { #>
 
     /**
      * Sets the top value for the request
@@ -134,6 +145,7 @@
        return send(HttpMethod.GET, null);
     }
 
+<# if (canSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -145,6 +157,8 @@
         return (<#=TypeRequest(c)#>)this;
     }
 
+<# } #>
+<# if (canExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -155,7 +169,9 @@
         getQueryOptions().add(new QueryOption("expand", value));
         return (<#=TypeRequest(c)#>)this;
     }
-<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #>
+
+<# } #>
+<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && canUseTop) { #>
 
     /**
      * Sets the top value for the request
