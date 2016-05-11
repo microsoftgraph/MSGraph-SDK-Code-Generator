@@ -15,7 +15,7 @@ if (func.ReturnType != null)
     if (returnTypeObject != null && returnTypeObject.Properties.Any(prop => prop.IsCollection && prop.Name.Contains("values")))
     {
         var valuesProperty = returnTypeObject.Properties.First(prop => prop.IsCollection);
-        returnType = writer.GetPrefix() + valuesProperty.Type.Name.ToUpperFirstChar();
+        returnType = writer.GetPrefix() + valuesProperty.Projection.Type.Name.ToUpperFirstChar();
     }
 }
 else
