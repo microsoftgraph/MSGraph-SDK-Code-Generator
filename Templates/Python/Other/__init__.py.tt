@@ -50,7 +50,7 @@ from .request.<#=(name+"Builder").ToUnderscore()#> import <#=(name+"Builder").To
 
 //Collections
 var collections = CurrentModel.GetProperties()
-                    .Where(prop => prop.IsCollection && prop.Type != null && prop.Type.Name != "String" && !prop.LongDescriptionContains("ignorableCollection") && !prop.Type.Name.Equals("directoryObject") && !prop.Type.Name.Equals("Guid"));
+                    .Where(prop => prop.IsCollection && prop.Type != null && prop.Type.Name != "String" && !prop.LongDescriptionContains("ignorableCollection") && !prop.Type.Name.Equals("directoryObject") && !prop.Type.Name.Equals("Guid") && prop.IsNavigation());
 
 
 foreach(OdcmProperty prop in collections){
