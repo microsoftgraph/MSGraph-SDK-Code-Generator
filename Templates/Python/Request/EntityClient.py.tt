@@ -23,6 +23,8 @@ from ..request.<#=(prop.Name+"Collection").ToUnderscore()#> import <#=builderNam
     }
 }
 #>
+from ..request.user_request_builder import UserRequestBuilder
+from ..request.drive_request_builder import DriveRequestBuilder
 import sys
 
 

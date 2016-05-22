@@ -34,16 +34,15 @@ from ..request.<#=baseName.ToUnderscore()#> import <#=baseName#>RequestBuilder
 from ..request.<#=propName.ToUnderscore()#>_request import <#=propRequestBuilder#>
 <#
     }
-    List<String> builders = new List<String>();
-    foreach(var prop in entity.GetProperties().Where(t => t.Type.LongDescriptionContains("navigable")))
+    List<String> navigationPropModules = new List<String>();
+    foreach(var prop in entity.NavigationProperties())
     {
-        var propName = prop.Type.GetTypeString().ToUpperFirstChar();
-        var propRequestBuilder = propName+"RequestBuilder";
-        if (!builders.Contains(propRequestBuilder)) builders.Add(propRequestBuilder);
+        var propModule = prop.Type.Name.ToUnderscore();
+        if (!navigationPropModules.Contains(propModule)) navigationPropModules.Add(propModule);
     }
-    foreach(var propRequestBuilder in builders) {
+    foreach(var propModule in navigationPropModules) {
 #>
-#from ..request.<#=propRequestBuilder.ToUnderscore()#> import <#=propRequestBuilder#>
+from ..request import <#=propModule#>
 <#
     }
 
@@ -54,25 +53,30 @@ from ..request.<#=propName.ToUnderscore()#>_request import <#=propRequestBuilder
 
 foreach (var prop in entity.NavigationProperties())
 {
-    if (prop.IsCollection() && !prop.Type.Name.Equals("directoryObject"))
+    //if (prop.IsCollection() && !prop.Type.Name.Equals("directoryObject"))
+    if (!prop.Type.Name.Equals("directoryObject"))
     {
-        var propCollection = prop.Name.ToUpperFirstChar() + "Collection";
-        var propCollectionRequestBuilder = (propCollection + "RequestBuilder");
+        //var propModule = prop.Name.ToUnderscore();
+        var propModule = prop.Type.Name.ToUnderscore();
+        if (prop.IsCollection())
+        {
+            propModule += "_collection";
+        }
+        else
+        {
+            propModule += "_request";
+            var propRequestBuilderModule = propModule + "_builder";
 #>
-from ..request import <#=propCollection.ToUnderscore()#>
+from ..request import <#=propRequestBuilderModule#>
+<#
+        }
+#>
+from ..request import <#=propModule#>
 <#
     }
 }
 #>
 import asyncio
-<#
-if (!entityBuilder.Equals("DirectoryObjectRequestBuilder"))
-{
-#>
-#from ..request.directory_object_request_builder import DirectoryObjectRequestBuilder
-<#
-}
-#>
 
 
 class <#=entityBuilder#>(RequestBuilderBase):
@@ -263,11 +267,13 @@ class <#=entityBuilder#>(RequestBuilderBase):
     foreach(var prop in entity.NavigationProperties()){
 
         var propName = prop.Name.ToUnderscore();
-        var propRequestBuilder = prop.Name.ToUpperFirstChar() + "RequestBuilder";
+        //var propRequestBuilder = prop.Name.ToUpperFirstChar() + "RequestBuilder";
+        //var isReturnTypeDirectoryObject = prop.Type.Name.Equals("directoryObject");
     
         if(prop.IsCollection())
         {
-            var collectionRequestBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+            var propCollectionRequestBuilder =  prop.Type.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+            var propCollectionRequestBuilderModule = prop.Type.Name.ToUnderscore() + "_collection";
 #>
 
     @property
@@ -275,14 +281,16 @@ class <#=entityBuilder#>(RequestBuilderBase):
         """The <#=propName#> for the <#=entityBuilder#>
 
         Returns: 
-            :class:`<#=collectionRequestBuilder#><microsoft.graph.request.<#=prop.Name.ToUnderscore()+"_collection"#>.<#=collectionRequestBuilder#>>`:
+            :class:`<#=propCollectionRequestBuilder#><microsoft.graph.request.<#=prop.Name.ToUnderscore()+"_collection"#>.<#=propCollectionRequestBuilder#>>`:
                 A request builder created from the <#=entityBuilder#>
         """
-        return <#=prop.Name.ToUnderscore()+"_collection"#>.<#=collectionRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+        return <#=propCollectionRequestBuilderModule#>.<#=propCollectionRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
 <#
         }
         else
         {
+            var propRequestBuilder = prop.Type.Name.ToUpperFirstChar();
+            var propRequestBuilderModule = prop.Type.Name.ToUnderscore() + "_request";
 #>
 
     @property
@@ -293,7 +301,7 @@ class <#=entityBuilder#>(RequestBuilderBase):
             :class:`<#=propRequestBuilder#><microsoft.graph.request.<#=propRequestBuilder.Replace("Builder","").ToUnderscore()#>.<#=propRequestBuilder#>>`:
                 A request builder created from the <#=entityBuilder#>
         """
-        return <#=propRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+        return <#=propRequestBuilderModule#>.<#=propRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
 
 <#
         }
