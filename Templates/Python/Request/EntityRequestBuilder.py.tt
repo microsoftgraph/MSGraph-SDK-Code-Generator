@@ -34,49 +34,40 @@ from ..request.<#=baseName.ToUnderscore()#> import <#=baseName#>RequestBuilder
 from ..request.<#=propName.ToUnderscore()#>_request import <#=propRequestBuilder#>
 <#
     }
-    List<String> navigationPropModules = new List<String>();
-    foreach(var prop in entity.NavigationProperties())
-    {
-        var propModule = prop.Type.Name.ToUnderscore();
-        if (!navigationPropModules.Contains(propModule)) navigationPropModules.Add(propModule);
-    }
-    foreach(var propModule in navigationPropModules) {
-#>
-from ..request import <#=propModule#>
-<#
-    }
 
     if (!isPython2) {
 #>
-<#
-    }
+import asyncio
 
-foreach (var prop in entity.NavigationProperties())
-{
-    //if (prop.IsCollection() && !prop.Type.Name.Equals("directoryObject"))
-    if (!prop.Type.Name.Equals("directoryObject"))
-    {
-        //var propModule = prop.Name.ToUnderscore();
-        var propModule = prop.Type.Name.ToUnderscore();
-        if (prop.IsCollection())
+<#
+}
+
+List<String> navigationPropModules = new List<String>();
+foreach(var prop in entity.NavigationProperties()){
+
+        var propName = prop.Name.ToUnderscore();
+        //var propRequestBuilder = prop.Name.ToUpperFirstChar() + "RequestBuilder";
+        //var isReturnTypeDirectoryObject = prop.Type.Name.Equals("directoryObject");
+        var propModule = "asdfasdf";
+    
+        if(prop.IsCollection())
         {
-            propModule += "_collection";
+            propModule = prop.Type.Name.ToUnderscore() + "_collection";
         }
         else
         {
-            propModule += "_request";
-            var propRequestBuilderModule = propModule + "_builder";
-#>
-from ..request import <#=propRequestBuilderModule#>
-<#
+            propModule = prop.Type.Name.ToUnderscore() + "_request_builder";
         }
+        if(!navigationPropModules.Contains(propModule)) navigationPropModules.Add(propModule);
+    }
+
+foreach(var propModule in navigationPropModules)
+{
 #>
 from ..request import <#=propModule#>
 <#
-    }
 }
 #>
-import asyncio
 
 
 class <#=entityBuilder#>(RequestBuilderBase):
@@ -289,8 +280,8 @@ class <#=entityBuilder#>(RequestBuilderBase):
         }
         else
         {
-            var propRequestBuilder = prop.Type.Name.ToUpperFirstChar();
-            var propRequestBuilderModule = prop.Type.Name.ToUnderscore() + "_request";
+            var propRequestBuilder = prop.Type.Name.ToUpperFirstChar() + "RequestBuilder";
+            var propRequestBuilderModule = prop.Type.Name.ToUnderscore() + "_request_builder";
 #>
 
     @property
