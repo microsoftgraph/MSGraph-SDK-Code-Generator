@@ -101,7 +101,6 @@ from .request.graph_service_client import GraphServiceClient
 <#
 }
 #>
-from .auth_provider import AuthProvider
 from .http_provider import HttpProvider
 from .extensions.graph_client_helper import *
 from .extensions import *
