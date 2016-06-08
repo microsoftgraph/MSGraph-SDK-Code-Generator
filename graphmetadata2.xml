@@ -733,16 +733,13 @@
                 <Property Name="width" Type="Edm.Int32" />
                 <Annotation Term="Org.OData.Core.V1.LongDescription" String="navigable" />
             </ComplexType>
-            <ComplexType Name="driveRecipient">
-                <Property Name="email" Type="Edm.String" Unicode="false" />
-                <Property Name="alias" Type="Edm.String" Unicode="false" />
-                <Property Name="objectId" Type="Edm.String" Unicode="false" />
-            </ComplexType>
-            <ComplexType Name="uploadSession">
-                <Property Name="uploadUrl" Type="Edm.String" Unicode="false" />
+            <EntityType Name="subscription" BaseType="microsoft.graph.entity">
+                <Property Name="resource" Type="Edm.String" Nullable="false" Unicode="false" />
+                <Property Name="changeType" Type="Edm.String" Nullable="false" Unicode="false" />
+                <Property Name="clientState" Type="Edm.String" Unicode="false" />
+                <Property Name="notificationUrl" Type="Edm.String" Nullable="false" Unicode="false" />
                 <Property Name="expirationDateTime" Type="Edm.DateTimeOffset" />
-                <Property Name="nextExpectedRanges" Type="Collection(Edm.String)" Unicode="false" />
-            </ComplexType>
+            </EntityType>
             <Action Name="checkMemberGroups" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.directoryObject" Nullable="false" />
                 <Parameter Name="groupIds" Type="Collection(Edm.String)" Nullable="false" Unicode="false" />
@@ -947,6 +944,7 @@
                     <NavigationPropertyBinding Path="microsoft.graph.driveItem/createdByUser" Target="users" />
                     <Annotation Term="Org.OData.Core.V1.LongDescription" String="readonly" />
                 </EntitySet>
+                <EntitySet Name="subscriptions" EntityType="microsoft.graph.subscription" />
                 <Singleton Name="me" Type="microsoft.graph.user">
                     <NavigationPropertyBinding Path="ownedDevices" Target="directoryObjects" />
                     <NavigationPropertyBinding Path="registeredDevices" Target="directoryObjects" />
@@ -1023,6 +1021,40 @@
                 </Annotation>
                 <Annotation Term="Org.OData.Capabilities.V1.TopSupported" Bool="false" />
                 <Annotation Term="Org.OData.Capabilities.V1.SkipSupported" Bool="false" />
+            </Annotations>
+            <Annotations Target="microsoft.graph.subscription">
+                <Annotation Term="Org.OData.Capabilities.V1.ExpandRestrictions">
+                    <Record>
+                        <PropertyValue Property="Expandable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="Referenceable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.SelectRestrictions">
+                    <Record>
+                        <PropertyValue Property="Selectable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.CountRestrictions">
+                    <Record>
+                        <PropertyValue Property="Countable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="Filterable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="Sortable" Bool="false" />
+                    </Record>
+                </Annotation>
+                <Annotation Term="Org.OData.Capabilities.V1.SkipSupported" Bool="false" />
+                <Annotation Term="Org.OData.Capabilities.V1.TopSupported" Bool="false" />
             </Annotations>
         </Schema>
     </edmx:DataServices>
