@@ -9,6 +9,32 @@
 #>
 // Template Source: <#= TemplateName(host.TemplateFile) #>
 <#+
+
+    /// Is this request type a post?
+    public bool IsPostRequestType(OdcmMethod method) {
+        return method.IsAction()
+            && null != method.Parameters
+            && method.Parameters.Any();
+    }
+
+    /// Choose an intermediate class type based on GETs/POSTs
+    public string RequestBuilderSuperClass(OdcmObject currentType) {
+        var isPostAction =
+            IsPostRequestType(
+                currentType.AsOdcmMethod()
+            );
+
+        string superClass;
+
+        if (isPostAction) {
+            superClass = "BasePostMethodRequestBuilder";
+        } else {
+            superClass = "BaseGetMethodRequestBuilder";
+        }
+
+        return superClass;
+    }
+
     /// <summary>
     /// Get the name of the current template being processed
     /// </summary>
@@ -484,6 +510,10 @@ import java.util.List;";
             host.TemplateInfo.OutputParentDirectory);
         }
 
+    /// Creates a class declaration
+    /// name = the name of the class
+    /// extends = the class it extends
+    /// implements = the interface it extends
     public string CreateClassDef(string name, string extends = null, string implements = null)
     {
         return this.CreateClassOrInterface(name, true, extends, implements);
