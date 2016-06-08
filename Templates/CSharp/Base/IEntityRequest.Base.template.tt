@@ -229,6 +229,7 @@ public string GetExpandMethod(string entityRequest)
         /// <returns>The request object to send.</returns>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        I{0} Expand(string value);", entityRequest);
+    stringBuilder.Append("TODO ExpandExpression");
     
     return stringBuilder.ToString();
 }
@@ -245,28 +246,29 @@ public string GetSelectMethod(string entityRequest)
         /// <returns>The request object to send.</returns>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        I{0} Select(string value);", entityRequest);
+    stringBuilder.Append("TODO SelectExpression");
     
     return stringBuilder.ToString();
 }
 
 // Standard entity
-public string GetEntityExpandMethod(OdcmClass odcmClass)
+public string GetEntityExpandMethods(OdcmClass odcmClass)
 {
     return this.GetExpandMethod(this.GetRequestString(this.GetEntityNameString(odcmClass)));
 }
 
-public string GetEntitySelectMethod(OdcmClass odcmClass)
+public string GetEntitySelectMethods(OdcmClass odcmClass)
 {
     return this.GetSelectMethod(this.GetRequestString(this.GetEntityNameString(odcmClass)));
 }
 
 // Entity with references
-public string GetEntityWithReferenceExpandMethod(OdcmClass odcmClass)
+public string GetEntityWithReferenceExpandMethods(OdcmClass odcmClass)
 {
     return this.GetExpandMethod(this.GetEntityWithReferenceRequestName(odcmClass));
 }
 
-public string GetEntityWithReferenceSelectMethod(OdcmClass odcmClass)
+public string GetEntityWithReferenceSelectMethods(OdcmClass odcmClass)
 {
     return this.GetSelectMethod(this.GetEntityWithReferenceRequestName(odcmClass));
 }

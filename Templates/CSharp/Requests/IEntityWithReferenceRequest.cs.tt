@@ -15,13 +15,14 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Linq.Expressions;
 
     <#=this.GetEntityWithReferenceRequestInterfaceDefinition(entity)#>
     {
         <#=this.GetEntityGetAsyncMethod(entity)#>
 
-        <#=this.GetEntityWithReferenceExpandMethod(entity)#>
+        <#=this.GetEntityWithReferenceExpandMethods(entity)#>
 
-        <#=this.GetEntityWithReferenceSelectMethod(entity)#>
+        <#=this.GetEntityWithReferenceSelectMethods(entity)#>
     }
 }

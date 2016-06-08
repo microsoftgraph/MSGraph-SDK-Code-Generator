@@ -16,6 +16,7 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Linq.Expressions;
 
     <#=this.GetEntityRequestClassDefinition(entity)#>
     {
@@ -29,9 +30,9 @@ namespace <#=this.GetNamespaceName(entity)#>
 
         <#=this.GetEntityUpdateAsyncMethod(entity)#>
 
-        <#=this.GetEntityExpandMethod(entity)#>
+        <#=this.GetEntityExpandMethods(entity)#>
 
-        <#=this.GetEntitySelectMethod(entity)#>
+        <#=this.GetEntitySelectMethods(entity)#>
 
         /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.

@@ -16,6 +16,7 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Linq.Expressions;
 
     <#=this.GetEntityWithReferenceRequestClassDefinition(entity)#>
     {
@@ -23,8 +24,8 @@ namespace <#=this.GetNamespaceName(entity)#>
 
         <#=this.GetEntityGetAsyncMethod(entity, false)#>
 
-        <#=this.GetEntityWithReferenceExpandMethod(entity)#>
+        <#=this.GetEntityWithReferenceExpandMethods(entity)#>
 
-        <#=this.GetEntityWithReferenceSelectMethod(entity)#>
+        <#=this.GetEntityWithReferenceSelectMethods(entity)#>
     }
 }
