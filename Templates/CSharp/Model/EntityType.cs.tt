@@ -60,6 +60,8 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 
             var propertyName = property.Name.ToCheckedCase();
             var propertyCollectionPage = property.IsReference() ? string.Concat(entityName, propertyName, "CollectionWithReferencesPage") : string.Concat(entityName, propertyName, "CollectionPage");
+            
+            var attributeDefinition = string.Format("[DataMember(Name = \"{0}\", EmitDefaultValue = false, IsRequired = false)]", property.Name);
 
             if (property.IsCollection())
             {
@@ -70,7 +72,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
-        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        <#=attributeDefinition#>
         public I<#=propertyCollectionPage#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
     <#
                 }
@@ -81,7 +83,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
-        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        <#=attributeDefinition#>
         public IEnumerable<<#=propertyType#>> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
     <#
                 }
@@ -93,21 +95,27 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
-        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        <#=attributeDefinition#>
         public <#=propertyType#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
     <#
             }
         }
-
-    // Only include AdditionalData in the base classes.
+        
+    // Only include @odata.type and AdditionalData in the base classes.
     if (entity.Base == null)
     {
     #>
 
         /// <summary>
+        /// Gets or sets @odata.type.
+        /// </summary>
+        [DataMember(Name = "@odata.type", EmitDefaultValue = false, IsRequired = false)]
+        public string ODataType { get; set; }
+        
+        /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData(ReadData = true)]
+        [JsonExtensionData(ReadData = true, WriteData = true)]
         public IDictionary<string, object> AdditionalData { get; set; }
     <#
     }

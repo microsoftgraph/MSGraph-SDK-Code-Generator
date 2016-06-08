@@ -89,7 +89,8 @@ entityTypesData =
 <#
       foreach(var navProp in navProperties)
       {
-        var navPropType = navProp.IsCollection ? "Collection(" + navProp.Type.FullName + ")" : navProp.Type.FullName;
+        var fullName = navProp.Projection.Type.FullName;
+        var navPropType = navProp.IsCollection ? "Collection(" + fullName + ")" : fullName;
 #>
       <#= navProp.Name #>:
         type: '<#= navPropType #>'

@@ -1,5 +1,6 @@
 {
     "TemplateMapping": {
+      "Shared" :  [ ],
       "Android": [
           { "Template": "BaseModel", "SubProcessor": "Other", "Type": "Shared" },
 
@@ -8,22 +9,18 @@
           { "Template": "MethodBody", "SubProcessor": "MethodWithBody",                                                                       "Name": "<Method>Body" },
           { "Template": "BaseMethodBody", "SubProcessor": "MethodWithBody",                                                                   "Name": "Base<Method>Body" },
 
-          { "Template": "MethodRequest", "SubProcessor": "Method",                                                                            "Name": "<Method>Request" },
-          { "Template": "IEntityRequest", "SubProcessor": "Method",                                                                           "Name": "I<Method>Request" },
-          { "Template": "BaseMethodRequest", "SubProcessor": "Method",                                                                        "Name": "Base<Method>Request" },
+          { "Template": "MethodRequest", "SubProcessor": "NonCollectionMethod",                                                               "Name": "<Method>Request" },
+          { "Template": "IEntityRequest", "SubProcessor": "NonCollectionMethod",                                                              "Name": "I<Method>Request" },
+          { "Template": "BaseMethodRequest", "SubProcessor": "NonCollectionMethod",                                                           "Name": "Base<Method>Request" },
+          { "Template": "IBaseMethodRequest", "SubProcessor": "NonCollectionMethod",                                                          "Name": "IBase<Method>Request" },
+
+          { "Template": "MethodRequestBuilder", "SubProcessor": "NonCollectionMethod",                                                        "Name": "<Method>RequestBuilder" },
+          { "Template": "IEntityRequestBuilder", "SubProcessor": "NonCollectionMethod",                                                       "Name": "I<Method>RequestBuilder" },
+          { "Template": "BaseMethodRequestBuilder", "SubProcessor": "NonCollectionMethod",                                                    "Name": "Base<Method>RequestBuilder" },
+          { "Template": "IBaseMethodRequestBuilder", "SubProcessor": "NonCollectionMethod",                                                   "Name": "IBase<Method>RequestBuilder" },
+
           { "Template": "BaseMethodBodyRequest", "SubProcessor": "MethodWithBody",                                                            "Name": "Base<Method>Request" },
-          { "Template": "IBaseMethodRequest", "SubProcessor": "Method",                                                                       "Name": "IBase<Method>Request" },
           { "Template": "IBaseMethodBodyRequest", "SubProcessor": "MethodWithBody",                                                           "Name": "IBase<Method>Request" },
-
-          { "Template": "MethodRequestBuilder", "SubProcessor": "Method",                                                                     "Name": "<Method>RequestBuilder" },
-          { "Template": "IEntityRequestBuilder", "SubProcessor": "Method",                                                                    "Name": "I<Method>RequestBuilder" },
-          { "Template": "BaseMethodRequestBuilder", "SubProcessor": "Method",                                                                 "Name": "Base<Method>RequestBuilder" },
-          { "Template": "IBaseMethodRequestBuilder", "SubProcessor": "Method",                                                                "Name": "IBase<Method>RequestBuilder" },
-
-          { "Template": "IEntityCollectionPage", "SubProcessor": "Method",                                                                    "Name": "I<Method>CollectionPage", "Ignore": "ignorableCollection"},
-          { "Template": "MethodCollectionPage", "SubProcessor": "Method",                                                                     "Name": "<Method>CollectionPage", "Ignore": "ignorableCollection"},
-          { "Template": "IBaseMethodCollectionPage", "SubProcessor": "Method",                                                                "Name": "IBase<Method>CollectionPage", "Ignore": "ignorableCollection"},
-          { "Template": "BaseMethodCollectionPage", "SubProcessor": "Method",                                                                 "Name": "Base<Method>CollectionPage", "Ignore": "ignorableCollection"},
 
           { "Template": "IEntityCollectionPage", "SubProcessor": "CollectionMethod",                                                          "Name": "I<Method>CollectionPage", "Ignore": "ignorableCollection" },
           { "Template": "MethodCollectionPage", "SubProcessor": "CollectionMethod",                                                           "Name": "<Method>CollectionPage", "Ignore": "ignorableCollection" },
@@ -37,9 +34,7 @@
           { "Template": "IBaseMethodCollectionRequestBuilder", "SubProcessor": "CollectionMethod",                                            "Name": "IBase<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "IMethodCollectionRequestBuilder", "SubProcessor": "CollectionMethod",                                                "Name": "I<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "MethodCollectionRequestBuilder", "SubProcessor": "CollectionMethod",                                                 "Name": "<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-
           { "Template": "BaseMethodCollectionResponse", "SubProcessor": "CollectionMethod",                                                   "Name": "Base<Method>CollectionResponse", "Ignore": "ignorableCollection" },
-          { "Template": "BaseMethodCollectionResponse", "SubProcessor": "Method",                                                             "Name": "Base<Method>CollectionResponse", "Ignore": "ignorableCollection" },
 
           { "Template": "IBaseEntityRequest", "SubProcessor": "EntityType",                                                                   "Name": "IBase<Class>Request" },
           { "Template": "BaseEntityRequest", "SubProcessor": "EntityType",                                                                    "Name": "Base<Class>Request" },
@@ -52,8 +47,8 @@
           { "Template": "EntityRequest", "SubProcessor": "EntityType",                                                                        "Name": "<Class>Request" },
           { "Template": "IEntityRequestBuilder", "SubProcessor": "EntityType",                                                                "Name": "I<Class>RequestBuilder" },
           { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType",                                                                 "Name": "<Class>RequestBuilder" },
-          { "Template": "IEntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType",                                         "Name": "I<Class>WithReferencesRequestBuilder" },
-          { "Template": "EntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType",                                          "Name": "<Class>WithReferencesRequestBuilder" },
+          { "Template": "IEntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                         "Name": "I<Class>WithReferencesRequestBuilder" },
+          { "Template": "EntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                          "Name": "<Class>WithReferencesRequestBuilder" },
 
           { "Template": "ExtensableEntity", "SubProcessor": "ComplexType",                                                                    "Name": "<Class>" },
           { "Template": "BaseEntity", "SubProcessor": "ComplexType",                                                                          "Name": "Base<Class>" },
@@ -81,13 +76,13 @@
           { "Template": "EntityRequest", "SubProcessor": "ComplexType",                                                                       "Name": "<Class>Request", "Matches": "navigable" },
           { "Template": "IEntityReferenceRequest", "SubProcessor": "EntityReferenceType",                                                     "Name": "I<Class>ReferenceRequest" },
           { "Template": "EntityReferenceRequest", "SubProcessor": "EntityReferenceType",                                                      "Name": "<Class>ReferenceRequest" },
-          { "Template": "IEntityWithReferencesRequest", "SubProcessor": "EntityReferenceType",                                                "Name": "I<Class>WithReferencesRequest" },
-          { "Template": "EntityWithReferencesRequest", "SubProcessor": "EntityReferenceType",                                                 "Name": "<Class>WithReferencesRequest" },
+          { "Template": "IEntityWithReferenceRequest", "SubProcessor": "EntityReferenceType",                                                "Name": "I<Class>WithReferencesRequest" },
+          { "Template": "EntityWithReferenceRequest", "SubProcessor": "EntityReferenceType",                                                 "Name": "<Class>WithReferencesRequest" },
           
           { "Template": "IEntityRequestBuilder", "SubProcessor": "ComplexType",                                                               "Name": "I<Class>RequestBuilder", "Matches": "navigable" },
           { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType",                                                                "Name": "<Class>RequestBuilder", "Matches": "navigable" },
-          { "Template": "IEntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType",                                         "Name": "I<Class>WithReferencesRequestBuilder"},
-          { "Template": "EntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType",                                          "Name": "<Class>WithReferencesRequestBuilder"},
+          { "Template": "IEntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                         "Name": "I<Class>WithReferencesRequestBuilder"},
+          { "Template": "EntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                          "Name": "<Class>WithReferencesRequestBuilder"},
           { "Template": "IEntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                              "Name": "I<Class>ReferenceRequestBuilder"},
           { "Template": "EntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                               "Name": "<Class>ReferenceRequestBuilder"},
           { "Template": "IBaseEntityRequest", "SubProcessor": "ComplexType",                                                                  "Name": "IBase<Class>Request", "Matches": "navigable" },
@@ -96,10 +91,10 @@
           { "Template": "BaseEntityRequestBuilder", "SubProcessor": "ComplexType",                                                            "Name": "Base<Class>RequestBuilder", "Matches": "navigable" },
           { "Template": "IBaseEntityReferenceRequest", "SubProcessor": "EntityReferenceType",                                                 "Name": "IBase<Class>ReferenceRequest" },
           { "Template": "BaseEntityReferenceRequest", "SubProcessor": "EntityReferenceType",                                                  "Name": "Base<Class>ReferenceRequest" },      
-          { "Template": "IBaseEntityWithReferencesRequest", "SubProcessor": "EntityReferenceType",                                            "Name": "IBase<Class>WithReferencesRequest" },
-          { "Template": "BaseEntityWithReferencesRequest", "SubProcessor": "EntityReferenceType",                                             "Name": "Base<Class>WithReferencesRequest" },      
-          { "Template": "IBaseEntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType",                                     "Name": "IBase<Class>WithReferencesRequestBuilder"},
-          { "Template": "BaseEntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType",                                      "Name": "Base<Class>WithReferencesRequestBuilder"},
+          { "Template": "IBaseEntityWithReferenceRequest", "SubProcessor": "EntityReferenceType",                                            "Name": "IBase<Class>WithReferencesRequest" },
+          { "Template": "BaseEntityWithReferenceRequest", "SubProcessor": "EntityReferenceType",                                             "Name": "Base<Class>WithReferencesRequest" },      
+          { "Template": "IBaseEntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                     "Name": "IBase<Class>WithReferencesRequestBuilder"},
+          { "Template": "BaseEntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                      "Name": "Base<Class>WithReferencesRequestBuilder"},
           { "Template": "IBaseEntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                          "Name": "IBase<Class>ReferenceRequestBuilder"},
           { "Template": "BaseEntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                           "Name": "Base<Class>ReferenceRequestBuilder"},
           

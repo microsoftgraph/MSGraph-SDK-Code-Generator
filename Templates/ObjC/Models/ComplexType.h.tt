@@ -9,7 +9,6 @@ var baseEntity = entity.Base;
 <#=writer.GetImportsClass(entity.Properties)#>
 
 #import "<#=GetObjCTypeIdentifier(baseEntity)#>.h"
-#import "<#=GetStaticCollectionObject()#>.h"
 
 @interface <#=GetObjCTypeIdentifier(entity)#> : <#=GetObjCTypeIdentifier(baseEntity)#>
 

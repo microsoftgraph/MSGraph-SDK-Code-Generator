@@ -19,11 +19,11 @@
         if (c is OdcmMethod) {
             return ((OdcmMethod)c).Class.Name.ToUpperFirstChar() + c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
         } else if (c is OdcmProperty && c.AsOdcmProperty().IsCollection) {
-            return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
-        } else if (c is OdcmProperty && c.AsOdcmProperty().Type is OdcmPrimitiveType) {
-            return ClassTypeName(c) + c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+            return c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
+        } else if (c is OdcmProperty && c.AsOdcmProperty().Projection.Type is OdcmPrimitiveType) {
+            return ClassTypeName(c) + c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
         } else if (c is OdcmProperty) {
-            return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+            return c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
         }
         return c.Name.ToUpperFirstChar();
     }
@@ -35,7 +35,7 @@
     public string MethodFullName(OdcmObject c) {
         if (c is OdcmMethod){
             return String.Format("{0}.{1}", ((OdcmMethod)c).Class.Namespace.Name,
-                                            c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar());
+                                            c.Name.Substring(c.Name.IndexOf(".") + 1));
         }
         return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
     }
@@ -124,7 +124,7 @@
     }
 
     public string TypeWithReferencesRequest(OdcmObject c) {
-        return TypeName(c) + "WithReferencesRequest";
+        return TypeName(c) + "WithReferenceRequest";
     }
 
     public string BaseTypeWithReferencesRequest(OdcmObject c) {
@@ -291,7 +291,7 @@
         return  "I" + BaseTypeCollectionWithReferencesRequestBuilder(c);
     }
 
-public string TypeCollectionReferenceRequest(OdcmObject c) {
+    public string TypeCollectionReferenceRequest(OdcmObject c) {
         return TypeName(c) + "CollectionReferenceRequest";
     }
 
@@ -394,7 +394,7 @@ public string TypeCollectionReferenceRequest(OdcmObject c) {
         if (c is OdcmMethod) {
             return c.AsOdcmMethod().Class.Name.ToUpperFirstChar();
         } else if (c is OdcmProperty && c.AsOdcmProperty().Class is OdcmServiceClass) {
-            return c.AsOdcmProperty().Type.Name.ToUpperFirstChar();
+            return c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
         } else if (c is OdcmProperty) {
             return c.AsOdcmProperty().Class.Name.ToUpperFirstChar();
         }
@@ -421,23 +421,25 @@ public string TypeCollectionReferenceRequest(OdcmObject c) {
         return "IBaseClient";
     }
 
-    public string BaseClassName(OdcmObject o)
-    {
+    public string BaseClassName(OdcmObject o){
+        var baseClass = BaseClass(o);
+        if (baseClass != null) {
+            return TypeName(baseClass);
+        }
+        return String.Empty;
+    }
+
+    public OdcmClass BaseClass(OdcmObject o){
         var odcmClass = o.AsOdcmClass();
-        if (odcmClass != null)
-        {
-            var baseClass = odcmClass.Base;
-            if (baseClass != null)
-            {
-                return TypeName(baseClass);
-            }
+        if (odcmClass != null) {
+            return odcmClass.Base;
         }
         return null;
     }
 
     public string CollectionPageGeneric(OdcmObject c) {
         if (c is OdcmMethod) {
-            return "<" + ClassTypeName(c) + ", " + ITypeRequestBuilder(c) + ">";
+            return "<" + ClassTypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
         }
         return "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
     }
@@ -520,6 +522,48 @@ public {1} {2}{3}{4} {{";
         return CreateExtensiblityMessage() + declaration;
     }
 
+    public string GenericRequest(OdcmObject c){
+        var extends = "{0}<{1}>";
+        var @class = c.AsOdcmClass();
+        if (@class != null && @class.Base != null){
+            var b = @class.Base;
+            return String.Format(extends, ITypeRequest(b), TypeName(c));
+        }
+        return String.Empty;
+    }
+
+    public string GenericTypeConstraint(OdcmObject c){
+        return "<T extends " + TypeName(c) + ">";
+    }
+
+    public string GenericTypeNameConstraint(String constraint, String extends){
+        return String.Format("<{0} extends {1}>", constraint, extends);
+    }
+
+    public string GenericBaseType(String extends, String constraint){
+        return String.Format("{0}<{1}>", extends, constraint);
+    }
+
+    public string GenericTypeCollectionPageConstraint(OdcmObject c){
+        var @class = c.AsOdcmClass();
+        if (@class != null && @class.Derived.Any()){
+            return "<T extends " + ITypeCollectionPage(c) + ">";
+        }
+        return String.Empty;
+    }
+
+     public string GenericClassConstraint(String s){
+        return String.Format("<T extends {0}>", s);
+    }
+
+    public string GenericType(){
+        return "<T>";
+    }
+
+    public string GenericTypeWithType(String s){
+        return String.Format("<{0}>", s);
+    }
+
     public string CreatePropertyDef(IEnumerable<OdcmProperty> properties, bool isComplexType = false)
     {
         var sb = new StringBuilder();
@@ -540,7 +584,7 @@ public {1} {2}{3}{4} {{";
 
 ";
 
-        foreach (var property in properties.Where(p => !p.Type.Name.Equals("Stream")))
+        foreach (var property in properties.Where(p => !p.Projection.Type.Name.Equals("Stream")))
         {
             var propertyName = property.Name.ToUpperFirstChar();
             var propertyType = "";

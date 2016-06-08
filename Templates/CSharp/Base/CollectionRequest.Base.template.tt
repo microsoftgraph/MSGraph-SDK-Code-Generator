@@ -70,7 +70,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
 {
     if (!odcmProperty.LongDescriptionContains("readonly"))
     {
-        var sanitizedPropertyName = odcmProperty.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
+        var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
         var propertyType = this.GetPropertyTypeName(odcmProperty);
         
         var templateWriterHost = (CustomT4Host)Host;
@@ -105,6 +105,15 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
         stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("            this.Method = \"POST\";");
+        
+        var entity = odcmProperty.Projection.Type.AsOdcmClass();
+
+        if (entity != null && entity.IsAbstract)
+        {
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.AppendFormat("            {0}.ODataType = string.Concat(\"#\", StringHelper.ConvertTypeToLowerCamelCase({0}.GetType().FullName));", sanitizedPropertyName);
+        }
+        
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("            return this.SendAsync<{0}>({1}, cancellationToken);", propertyType, sanitizedPropertyName);
         stringBuilder.Append(Environment.NewLine);
@@ -119,7 +128,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
 
 public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
 {
-    var sanitizedPropertyName = odcmProperty.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
+    var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
     var propertyType = this.GetPropertyTypeName(odcmProperty);
         
     var templateWriterHost = (CustomT4Host)Host;

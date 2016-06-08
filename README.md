@@ -1,6 +1,6 @@
 [vipr-source-repo]: https://github.com/microsoft/vipr
 
-# Microsoft Graph OData TemplateWriter
+# Microsoft Graph SDK Code Generator
 
 Source code writers for [VIPR][vipr-source-repo] utilizing T4 templates. The GraphODataTemplateWriter receives an OdcmModel from VIPR and uses it to fill in a T4 template located within this repository.
 
@@ -38,7 +38,7 @@ For more information on submodules read [this chapter](http://git-scm.com/book/e
 1. Build the solution in Visual Studio.
 2. Go to the `src\T4TemplateWriter\bin\debug` folder to find all compiled components.
 3. In that folder, modify `.config\TemplateWriterSettings.json` to specify your template mapping see [Template Writer Settings](##Template-Writer-Settings) for more details.
-4. Open a command prompt as administrator in the same folder and run `Vipr.exe <path-or-url-to-metadata> --writer="Graph.ODataTemplateWriter"`.
+4. Open a command prompt as administrator in the same folder and run `Vipr.exe <path-or-url-to-metadata> --writer="Graph.ODataTemplateWriter"`
 
 By default, output source code will be put in a folder named "output" next to the Vipr executable.
 
@@ -108,6 +108,10 @@ The type of template.
 
 To set the name of the template using the `Name` format string. You can insert `<Class>`, `<Property>`, `<Method>`, and `<Container>` the values will be replaced by the names of the corresponding object.  If you insert an item that doesn't exist it will be replaced with an empty string.  
 Note: You can also set the template name from inside the template by : `host.SetTemplateName("foo");`
+
+#### Template Editing
+
+The solution contains a non-building project to host the actual T4 templates and make browsing/editing them easier.  New template files will be automatically discovered by this project.
 
 #### Includes/Excludes
 

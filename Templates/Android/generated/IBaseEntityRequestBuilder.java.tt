@@ -6,8 +6,11 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
+<# if (c.BaseClass() != null) { #>
+<#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), ITypeRequestBuilder(c.BaseClass()))#>
+<# } else { #>
 <#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), "IRequestBuilder")#>
-
+<# } #>
     /**
      * Creates the request
      */
@@ -78,14 +81,13 @@ if (c.AsOdcmClass() != null)
         var parameterList = MethodParametersSignature(method);
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
 #>
-    <#if (method.IsCollection){#>
+<# if (method.IsCollection) { #>
 
     <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
-    <#}else{#>
+<#  } else { #>
     <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
 <#
-
-    }
+        }
     }
 }
 #>

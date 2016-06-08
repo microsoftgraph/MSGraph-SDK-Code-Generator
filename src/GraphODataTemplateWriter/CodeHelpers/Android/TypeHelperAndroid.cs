@@ -32,8 +32,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
                 case "Guid":
                     return "java.util.UUID";
                 case "DateTimeOffset":
-                case "Date":
                     return "java.util.Calendar";
+                case "Date":
+                    return "com.microsoft.graph.model.DateOnly";
                 case "Binary":
                     return "byte[]";
                 default:
@@ -48,7 +49,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
 
         public static string GetTypeString(this OdcmProperty property)
         {
-            return GetTypeString(property.Type);
+            return GetTypeString(property.Projection.Type);
         }
 
         public static bool IsComplex(this OdcmParameter property)
@@ -56,7 +57,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
             string t = property.GetTypeString();
             return !(t == "Integer" || t == "java.util.UUID" || t == "java.util.Calendar"
                   || t == "byte[]" || t == "String" || "long" == t || "Byte[]" == t
-                  || t == "Short");
+                  || t == "Short" || t == "com.microsoft.graph.model.DateOnly");
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)
@@ -76,8 +77,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
 
         public static string GetToLowerImport(this OdcmProperty property)
         {
-            var index = property.Type.Name.LastIndexOf('.');
-            return property.Type.Name.Substring(0, index).ToLower() + property.Type.Name.Substring(index);
+            var type = property.Projection.Type;
+            var index = type.Name.LastIndexOf('.');
+            return type.Name.Substring(0, index).ToLower() + type.Name.Substring(index);
         }
 
     }

@@ -16,7 +16,7 @@ foreach(var et in model.GetMediaEntityTypes())
 
 foreach(var es in entitySet)
 {
-    if (es.IsCollection() && !(es.Type is OdcmPrimitiveType) && !es.IsEnum())
+    if (es.IsCollection() && !(es.Projection.Type is OdcmPrimitiveType) && !es.IsEnum())
     {
         classes.Add("#import \"" + writer.GetPrefix() + es.Class.Name.ToUpperFirstChar() + es.Name.ToUpperFirstChar() + "CollectionRequestBuilder.h\"");
         classes.Add("#import \"" + writer.GetPrefix() + es.Class.Name.ToUpperFirstChar() + es.Name.ToUpperFirstChar() + "CollectionRequest.h\"");
@@ -30,7 +30,7 @@ foreach(var et in entityTypes)
 
     foreach(var prop in et.NavigationProperties())
     {
-        if (!(prop.Type is OdcmPrimitiveType) && !prop.IsEnum())
+        if (!(prop.Projection.Type is OdcmPrimitiveType) && !prop.IsEnum())
         {
             if (prop.IsCollection())
             {
@@ -50,14 +50,15 @@ foreach(var et in entityTypes)
             }
             else
             {
-                 classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder.h\"");
-                 classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "Request.h\"");
+                 var typeName = writer.GetPrefix() + prop.Projection.Type.Name.ToUpperFirstChar();
+                 classes.Add("#import \"" + typeName + "RequestBuilder.h\"");
+                 classes.Add("#import \"" + typeName + "Request.h\"");
                  if(prop.IsReference())
                  {
-                     classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "WithReferenceRequestBuilder.h\"");
-                     classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "WithReferenceRequest.h\"");
-                     classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "ReferenceRequestBuilder.h\"");
-                     classes.Add("#import \"" + writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "ReferenceRequest.h\"");
+                     classes.Add("#import \"" + typeName + "WithReferenceRequestBuilder.h\"");
+                     classes.Add("#import \"" + typeName + "WithReferenceRequest.h\"");
+                     classes.Add("#import \"" + typeName + "ReferenceRequestBuilder.h\"");
+                     classes.Add("#import \"" + typeName + "ReferenceRequest.h\"");
                  }
             }
         }
@@ -80,10 +81,10 @@ foreach(var et in entityTypes)
     }
 
     foreach(var complexType in et.Properties.Where(prop => prop.LongDescriptionContains("navigable") ||
-                                                           prop.Type.LongDescriptionContains("navigable"))
-                                            .Where(prop => prop.Type is OdcmClass))
+                                                           prop.Projection.Type.LongDescriptionContains("navigable"))
+                                            .Where(prop => prop.Projection.Type is OdcmClass))
     {
-        var baseName = writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar();
+        var baseName = writer.GetPrefix() + complexType.Projection.Type.Name.ToUpperFirstChar();
         classes.Add("#import \"" + baseName + "RequestBuilder.h\"");
         classes.Add("#import \"" + baseName + "Request.h\"");
     }
@@ -92,7 +93,7 @@ foreach(var et in entityTypes)
 
 foreach(var complexType in model.GetComplexTypes())
 {
-    foreach(var prop in complexType.GetProperties().Where(prop => prop.IsCollection && !(prop.Type is OdcmPrimitiveType) && !prop.IsEnum() && !prop.LongDescriptionContains("ignorableCollection")))
+    foreach(var prop in complexType.GetProperties().Where(prop => prop.IsCollection && !(prop.Projection.Type is OdcmPrimitiveType) && !prop.IsEnum() && !prop.LongDescriptionContains("ignorableCollection")))
     {
         var baseName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
         if(!prop.IsReference())

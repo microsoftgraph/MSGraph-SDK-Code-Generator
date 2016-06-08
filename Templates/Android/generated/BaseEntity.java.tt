@@ -10,6 +10,19 @@ import com.google.gson.annotations.*;
 
 <#=CreateClassDef(BaseTypeName(c), BaseClassName(c), "IJsonBackedObject")#>
 
+<#
+	if(((OdcmClass)c).Base == null){
+#>
+	@SerializedName("@odata.type")
+	public String oDataType;
+<#
+	}
+#>
+
+	public <#=BaseTypeName(c)#>(){
+		oDataType = "<#=((OdcmClass)c).FullName#>";
+	}
+	
 <#=CreatePropertyDef(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
 <#=CreateRawJsonObject()#>
 <#=UpdatePropertiesWithinSetRawObject(((OdcmClass)c).Properties, c is OdcmComplexClass)#>

@@ -39,18 +39,18 @@
         return buildFromResponse(response);
     }
 
-    public void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
+    public void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new <#=TypeRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest()
-            .create(new<#=TypeName(c)#>, callback);
+            .post(new<#=TypeName(c)#>, callback);
     }
 
-    public <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
+    public <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new <#=TypeRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest()
-            .create(new<#=TypeName(c)#>);
+            .post(new<#=TypeName(c)#>);
     }
 
     /**

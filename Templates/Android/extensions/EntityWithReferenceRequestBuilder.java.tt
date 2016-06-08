@@ -2,20 +2,20 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeStreamRequest(c);#>
+<#host.TemplateName = TypeWithReferencesRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef(TypeStreamRequest(c), BaseTypeStreamRequest(c), ITypeStreamRequest(c))#>
+<#=CreateClassDef(TypeWithReferencesRequestBuilder(c), BaseTypeWithReferencesRequestBuilder(c), ITypeWithReferencesRequestBuilder(c))#>
 
     /**
-     * The request for the <#=TypeName(c)#>
+     * The request builder for the <#=TypeName(c)#>
      *
      * @param requestUrl The request url
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=TypeStreamRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
-        super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
+    public <#=TypeWithReferencesRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
+        super(requestUrl, client, options);
     }
-}
+ }

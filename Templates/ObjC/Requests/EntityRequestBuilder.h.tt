@@ -27,7 +27,7 @@ if(!withReference && !entityReference)
 foreach(var prop in entity.NavigationProperties())
 {
     var fetcher = string.Empty;
-    fetcher = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "RequestBuilder";
+    fetcher = writer.GetPrefix() + prop.Projection.Type.Name.ToUpperFirstChar() + "RequestBuilder";
 
     if(!classes.Contains(fetcher)) classes.Add(fetcher);
 
@@ -57,9 +57,9 @@ foreach(var prop in entity.GetProperties(typeName:"Stream"))
     }
 }
 
-foreach(var prop in entity.Properties.Where( prop => prop.Type is OdcmMediaClass))
+foreach(var prop in entity.Properties.Where(prop => prop.Projection.Type is OdcmMediaClass))
 {
-    var streamRequest = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "StreamRequest";
+    var streamRequest = writer.GetPrefix() + prop.Projection.Type.Name.ToUpperFirstChar() + "StreamRequest";
     if (!classes.Contains(streamRequest))
     {
         classes.Add(streamRequest);
@@ -77,10 +77,10 @@ foreach(var func in entity.Methods)
 }
 
 foreach(var complexType in entity.Properties.Where(prop => prop.LongDescriptionContains("navigable") ||
-                                                           prop.Type.LongDescriptionContains("navigable"))
-                                            .Where(prop => prop.Type is OdcmClass))
+                                                           prop.Projection.Type.LongDescriptionContains("navigable"))
+                                            .Where(prop => prop.Projection.Type is OdcmClass))
 {
-    var requestType = writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar() + "RequestBuilder";
+    var requestType = writer.GetPrefix() + complexType.Projection.Type.Name.ToUpperFirstChar() + "RequestBuilder";
     if (!classes.Contains(requestType))
     {
         classes.Add(requestType);
@@ -133,19 +133,19 @@ if(!withReference && !entityReference)
 foreach(var prop in entity.NavigationProperties())
 {
 	var propInstanceName = prop.Name.ToLowerFirstChar();
-	var innerPropTypeName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar();
+	var innerPropTypeName = writer.GetPrefix() + prop.Projection.Type.Name.ToUpperFirstChar();
 	var innerPropTypeRequestName = innerPropTypeName + "RequestBuilder";
 	
     if(prop.IsCollection)
     {
 		var collectionNamer = prop.IsReference() ? "CollectionWithReferences" : "Collection";
 		var collectionRequestName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar() + collectionNamer + "RequestBuilder";
-		var innerPropInstanceName = prop.Type.Name.ToLowerFirstChar();
+		var innerPropInstanceName = prop.Projection.Type.Name.ToLowerFirstChar();
 #>
 - (<#=collectionRequestName#> *)<#=propInstanceName#>;
 
 <#
-        if (!(prop.Type is OdcmComplexClass) || prop.LongDescriptionContains("queryable"))
+        if (!(prop.Projection.Type is OdcmComplexClass) || prop.LongDescriptionContains("queryable"))
         {
 #>
 - (<#=innerPropTypeRequestName#> *)<#=propInstanceName#>:(NSString *)<#=innerPropInstanceName#>;
@@ -162,11 +162,11 @@ foreach(var prop in entity.NavigationProperties())
     }
 }
 foreach(var complexType in entity.Properties.Where(prop => prop.LongDescriptionContains("navigable") ||
-                                                           prop.Type.LongDescriptionContains("navigable"))
-                                            .Where(prop => prop.Type is OdcmClass))
+                                                           prop.Projection.Type.LongDescriptionContains("navigable"))
+                                            .Where(prop => prop.Projection.Type is OdcmClass))
 {
 #>
-- (<#=writer.GetPrefix() + complexType.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=complexType.Name#>;
+- (<#=writer.GetPrefix() + complexType.Projection.Type.Name.ToUpperFirstChar()#>RequestBuilder *) <#=complexType.Name#>;
 
 <#
 }
@@ -182,10 +182,10 @@ foreach(var prop in entity.GetProperties(typeName:"Stream"))
 
 <#
 }
-foreach(var prop in entity.Properties.Where( prop => prop.Type is OdcmMediaClass))
+foreach(var prop in entity.Properties.Where( prop => prop.Projection.Type is OdcmMediaClass))
 {
     var propName = prop.Name.ToUpperFirstChar();
-    var propRequestName = writer.GetPrefix() + prop.Type.Name.ToUpperFirstChar() + "StreamRequest";
+    var propRequestName = writer.GetPrefix() + prop.Projection.Type.Name.ToUpperFirstChar() + "StreamRequest";
 #>
 - (<#=propRequestName#> *) <#=propName.ToLowerFirstChar()#>ValueWithOptions:(NSArray *)options;
 

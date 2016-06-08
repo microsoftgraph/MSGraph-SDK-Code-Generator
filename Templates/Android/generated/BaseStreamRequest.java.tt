@@ -16,9 +16,14 @@ import java.io.*;
      * @param requestUrl The request url
      * @param client The service client
      * @param options The options for this request
+     * @param responseClass The class of the reponse
      */
-    public <#=BaseTypeStreamRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, List<Option> options) {
-        super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
+    public <#=BaseTypeStreamRequest(c)#>(
+                         final String requestUrl,
+                         final <#=IBaseClientType()#> client,
+                         final List<Option> options,
+                         final Class responseClass) {
+        super(requestUrl, client, options, responseClass);
     }
 
     /**
