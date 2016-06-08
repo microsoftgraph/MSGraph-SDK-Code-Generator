@@ -6,7 +6,11 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
+<# if (c.BaseClass() != null) { #>
+<#=CreateClassDef(BaseTypeRequestBuilder(c), TypeRequestBuilder(c.BaseClass()), IBaseTypeRequestBuilder(c))#>
+<# } else { #>
 <#=CreateClassDef(BaseTypeRequestBuilder(c), "BaseRequestBuilder", IBaseTypeRequestBuilder(c))#>
+<# } #>
 
     /**
      * The request builder for the <#=TypeName(c)#>
@@ -32,6 +36,7 @@
     public <#=ITypeRequest(c)#> buildRequest(final List<Option> options) {
         return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), options);
     }
+
 <#
 if (c.AsOdcmClass() != null)
 {
@@ -104,19 +109,19 @@ if (c.AsOdcmClass() != null)
         var parameterList = MethodParametersSignature(method);
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
 #>
-<#if (method.IsCollection){#>
+<#      if (method.IsCollection) { #>
 
     public <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
         return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
-<#}else{#>
+<#      } else { #>
 
     public <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
         return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
 <#
+        }
     }
-}
 }
 #>
 }

@@ -2,12 +2,28 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = BaseTypeRequest(c);#>
+<#
+    var baseClass = "BaseRequest";
+    var typeRequest = TypeRequest(c);
+    var iTypeRequest = ITypeRequest(c);
+    var baseTypeRequest = BaseTypeRequest(c);
+    var iBaseTypeRequest = IBaseTypeRequest(c);
+    var returnType = ReturnType(c);
+
+    if (c.AsOdcmMethod().IsCollection)
+    {
+        baseClass = "BaseCollectionRequest";
+        typeRequest = TypeCollectionRequest(c);
+        iTypeRequest = ITypeCollectionRequest(c);
+        baseTypeRequest = BaseTypeCollectionRequest(c);
+        iBaseTypeRequest = IBaseTypeCollectionRequest(c);
+    }
+#>
+<#host.TemplateName = baseTypeRequest;#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<# var useAsyncMonitor = c.AsOdcmMethod().LongDescriptionContains("async"); #>
-<#=CreateClassDef(BaseTypeRequest(c),  "BaseRequest", IBaseTypeRequest(c))#>
+<#=CreateClassDef(baseTypeRequest, baseClass, iBaseTypeRequest)#>
     protected final <#=TypeBody(c)#> mBody;
 
     /**
@@ -17,67 +33,52 @@
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=BaseTypeRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
-<# if (useAsyncMonitor) { #>
-        super(requestUrl, client, options, AsyncMonitorLocation.class);
-<# } else { #>
-        super(requestUrl, client, options, <#=ReturnType(c)#>.class);
-<# } #>
+    public <#=baseTypeRequest#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+        super(requestUrl, client, options, <#=returnType#>.class);
         mBody = new <#=TypeBody(c)#>();
 <# foreach (var p in c.AsOdcmMethod().Parameters) { #>
         mBody.<#=ParamName(p)#> = <#=ParamName(p)#>;
 <# } #>
-<# if (useAsyncMonitor) { #>
-        addHeader("Prefer", "respond-async");
-<# } #>
     }
 
-<# if (useAsyncMonitor) { #>
-    public void create(final ICallback<AsyncMonitor<<#=ReturnType(c)#>>> callback) {
-        getClient().getExecutors().performOnBackground(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    getClient().getExecutors().performOnForeground(create(), callback);
-                } catch (final ClientException e) {
-                    getClient().getExecutors().performOnForeground(e, callback);
-                }
-            }
-        });
-    }
-
-    public AsyncMonitor<<#=ReturnType(c)#>> create() throws ClientException {
-        final AsyncMonitorLocation monitorLocation = send(HttpMethod.POST, mBody);
-
-        return new AsyncMonitor<>(getClient(), monitorLocation, new ResultGetter<<#=ReturnType(c)#>>() {
-            @Override
-            public <#=ReturnType(c)#> getResultFrom(final String resourceUrl, final IOneDriveClient client) {
-                return new <#=ReturnType(c)#>Request(resourceUrl, client, /* options */ null).get();
-            }
-        });
-    }
-<# } else { #>
-    public void create(final ICallback<<#=ReturnType(c)#>> callback) {
+    public void post(final ICallback<<#=returnType#>> callback) {
         send(HttpMethod.POST, callback, mBody);
     }
 
-    public <#=ReturnType(c)#> create() throws ClientException {
+    public <#=returnType#> post() throws ClientException {
         return send(HttpMethod.POST, mBody);
     }
-<# } #>
 
-    public <#=ITypeRequest(c)#> select(final String value) {
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value The select clause
+     * @return The updated request
+     */
+    public <#=iTypeRequest#> select(final String value) {
         getQueryOptions().add(new QueryOption("select", value));
-        return (<#=TypeRequest(c)#>)this;
+        return (<#=typeRequest#>)this;
     }
 
-    public <#=ITypeRequest(c)#> top(final int value) {
+    /**
+     * Sets the top value for the request
+     *
+     * @param value The max number of items to return
+     * @return The updated request
+     */
+    public <#=iTypeRequest#> top(final int value) {
         getQueryOptions().add(new QueryOption("top", value+""));
-        return (<#=TypeRequest(c)#>)this;
+        return (<#=typeRequest#>)this;
     }
 
-    public <#=ITypeRequest(c)#> expand(final String value) {
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value The expand clause
+     * @return The updated request
+     */
+    public <#=iTypeRequest#> expand(final String value) {
         getQueryOptions().add(new QueryOption("expand", value));
-        return (<#=TypeRequest(c)#>)this;
+        return (<#=typeRequest#>)this;
     }
 }

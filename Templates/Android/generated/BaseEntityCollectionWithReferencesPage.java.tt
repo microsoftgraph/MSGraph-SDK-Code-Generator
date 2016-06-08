@@ -14,7 +14,7 @@ import com.google.gson.annotations.*;
     /**
      * A collection page for <#=TypeName(c)#>.
      *
-     * @param response The serialized <#=BaseTypeCollectionResponse(c)#> from the OneDrive service
+     * @param response The serialized <#=BaseTypeCollectionResponse(c)#> from the service
      * @param builder The request builder for the next collection page
      */
     public <#=BaseTypeCollectionWithReferencesPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeCollectionWithReferencesRequestBuilder(c)#> builder) {

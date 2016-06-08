@@ -11,10 +11,10 @@
     /**
      * A collection page for <#=ClassTypeName(c)#>.
      *
-     * @param response The serialized <#=BaseTypeCollectionResponse(c)#> from the OneDrive service
+     * @param response The serialized <#=BaseTypeCollectionResponse(c)#> from the service
      * @param builder The request builder for the next collection page
      */
-    public <#=TypeCollectionPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeRequestBuilder(c)#> builder) {
+    public <#=TypeCollectionPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeCollectionRequestBuilder(c)#> builder) {
         super(response, builder);
     }
 

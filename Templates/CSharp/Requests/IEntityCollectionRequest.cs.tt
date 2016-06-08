@@ -3,7 +3,7 @@
 <#@ include file="ICollectionRequest.Base.template.tt"#>
 <#
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Type;
+var innerEntity = prop.Projection.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
 var collectionRequest = this.GetPropertyCollectionRequestName(prop);
 var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionResponse");
@@ -62,5 +62,19 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <param name="value">The filter value.</param>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> Filter(string value);
+
+        /// <summary>
+        /// Adds the specified skip value to the request.
+        /// </summary>
+        /// <param name="value">The skip value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=collectionRequest#> Skip(int value);
+
+        /// <summary>
+        /// Adds the specified orderby value to the request.
+        /// </summary>
+        /// <param name="value">The orderby value.</param>
+        /// <returns>The request object to send.</returns>
+        I<#=collectionRequest#> OrderBy(string value);
     }
 }

@@ -7,6 +7,23 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateClassDef(TypeRequest(c), BaseTypeRequest(c), ITypeRequest(c))#>
+<# if (c.AsOdcmClass() != null && c.AsOdcmClass().Derived.Any()) { #>
+
+    /**
+     * The request for the <#=TypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     * @param responseClass The class of the reponse
+     */
+    public <#=TypeRequest(c)#>(final String requestUrl,
+            final <#=IBaseClientType()#> client,
+            final List<Option> options,
+            final Class responseClass) {
+        super(requestUrl, client, options, responseClass);
+    }
+<# } #>
 
     /**
      * The request for the <#=TypeName(c)#>
@@ -16,6 +33,6 @@
      * @param options The options for this request
      */
     public <#=TypeRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
-        super(requestUrl, client, options);
+        super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
     }
 }

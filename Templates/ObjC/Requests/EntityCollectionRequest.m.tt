@@ -4,10 +4,10 @@
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Type;
+var innerEntity = prop.Projection.Type;
 var isServiceES = prop.Class.Kind == OdcmClassKind.Service;
 
-var collectionNamer = prop.IsReference() ? ((collectionReference)?"CollectionReference":"CollectionWithReferences") : "Collection";
+var collectionNamer = prop.IsReference() ? ((collectionReference)?"CollectionReferences":"CollectionWithReferences") : "Collection";
 var baseName = isServiceES ? prop.Name.ToUpperFirstChar() : prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
 
 var propName = writer.GetPrefix() + baseName;

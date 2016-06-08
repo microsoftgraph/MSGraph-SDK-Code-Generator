@@ -7,5 +7,4 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateInterfaceDef(ITypeRequest(c), IBaseTypeRequest(c))#>
-
 }

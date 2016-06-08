@@ -105,8 +105,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                 case "Float":
                     return "CGFloat";
                 case "DateTimeOffset":
-                case "Date":
                     return "NSDate";
+                case "Date":
+                    return "MSDate";
                 case "Binary":
                     return "NSString";
                 case "Boolean":
@@ -120,20 +121,24 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
 
         public static string GetTypeString(this OdcmProperty property) 
         {
-            return property.Type.GetTypeString();
+            return property.Projection.Type.GetTypeString();
         }
 
         public static bool IsComplex(this OdcmType type) 
         {
             string t = GetTypeString(type);
             return
-                !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat" ||
-                  type is OdcmEnum);
+                !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat");
         }
 
-		public static bool IsComplex(this OdcmProperty property) 
+        public static bool IsComplex(this OdcmProperty property) 
         {
-            return property.Type.IsComplex();
+            return property.Projection.Type.IsComplex();
+        }
+
+        public static bool IsPrimitive(this OdcmType type)
+        {
+            return !type.IsComplex();
         }
 
         public static string ToSetterTypeString(this OdcmProperty property)
@@ -158,7 +163,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             }
             else
             {
-                return property.Type.GetTypeString();
+                return property.Projection.Type.GetTypeString();
             }
 		}
 
@@ -169,7 +174,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
 
 		public static bool IsSystem(this OdcmProperty property)
 		{
-            return property.Type.IsSystem();
+            return property.Projection.Type.IsSystem();
 		}
 
 		public static bool IsSystem(this OdcmType type)
@@ -180,7 +185,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
 
         public static bool IsDate(this OdcmProperty prop)
         {
-            return prop.Type.IsDate();
+            return prop.Projection.Type.IsDate();
         }
 
         public static bool IsDate(this OdcmType type)
@@ -196,8 +201,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
 
 		public static string GetToLowerImport(this OdcmProperty property)
 		{
-			var index = property.Type.Name.LastIndexOf('.');
-			return property.Type.Name.Substring(0, index).ToLower() + property.Type.Name.Substring(index);
+            var type = property.Projection.Type;
+            var index = type.Name.LastIndexOf('.');
+			return type.Name.Substring(0, index).ToLower() + type.Name.Substring(index);
 		}
 
         public static string GetToUpperFirstCharName(this OdcmProperty property)
@@ -207,7 +213,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
 
 		public static bool IsEnum(this OdcmProperty property)
 		{
-			return property.Type is OdcmEnum;
+			return property.Projection.Type is OdcmEnum;
 		}
         public static string GetNSNumberValueMethod(this OdcmType type)
         {

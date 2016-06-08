@@ -34,19 +34,19 @@ public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
 // -------------------------------------------------------------
 // Methods for the reference of an entity collection
 // -------------------------------------------------------------
-public string GetCollectionReferenceInterfaceDefinition(OdcmProperty odcmProperty)
+public string GetCollectionReferencesInterfaceDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetInterfaceDefinition(this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty));
+    return this.GetInterfaceDefinition(this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty));
 }
 
-public string GetCollectionReferenceRequestMethod(OdcmProperty odcmProperty)
+public string GetCollectionReferencesRequestMethod(OdcmProperty odcmProperty)
 {
-    return this.GetRequestMethod(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
+    return this.GetRequestMethod(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
 }
 
-public string GetCollectionReferenceRequestMethodWithOptions(OdcmProperty odcmProperty)
+public string GetCollectionReferencesRequestMethodWithOptions(OdcmProperty odcmProperty)
 {
-    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionReferenceRequestName(odcmProperty));
+    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
 }
 
 
@@ -93,24 +93,24 @@ public string GetIndexRequestBuilder(string propertyName, string requestBuilderT
 }
 
 // Creates the request builder property definition for the $ref navigation on the collection
-public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
+public string GetCollectionReferencesRequestBuilder(OdcmProperty odcmProperty)
 {
     var propertyClass = odcmProperty.Class.AsOdcmClass();
     if (propertyClass.Kind != OdcmClassKind.Service && odcmProperty.IsNavigation() && !odcmProperty.ContainsTarget)
     {
         var stringBuilder = new StringBuilder();
-        var entityReferenceRequestBuilder = this.GetPropertyCollectionReferenceRequestBuilderName(odcmProperty);
+        var collectionReferencesRequestBuilder = this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty);
         
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <summary>");
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the references in the collection.", entityReferenceRequestBuilder);
+        stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the references in the collection.", collectionReferencesRequestBuilder);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// </summary>");
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityReferenceRequestBuilder);
+        stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", collectionReferencesRequestBuilder);
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        I{0} References {{ get; }}", entityReferenceRequestBuilder);
+        stringBuilder.AppendFormat("        I{0} References {{ get; }}", collectionReferencesRequestBuilder);
         stringBuilder.Append(Environment.NewLine);
         
         return stringBuilder.ToString();
@@ -123,7 +123,7 @@ public string GetCollectionReferenceRequestBuilder(OdcmProperty odcmProperty)
 public string GetCollectionWithReferencesIndexRequestBuilder(OdcmProperty odcmProperty)
 {
     var propTypeName = this.GetPropertyTypeName(odcmProperty);
-    var entityRequestBuilder = this.GetPropertyTypeWithReferencesRequestBuilderName(odcmProperty);
+    var entityRequestBuilder = this.GetPropertyTypeWithReferenceRequestBuilderName(odcmProperty);
     
     return this.GetIndexRequestBuilder(propTypeName, entityRequestBuilder);
 }

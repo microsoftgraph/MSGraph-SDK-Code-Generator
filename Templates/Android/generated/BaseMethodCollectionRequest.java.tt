@@ -88,9 +88,9 @@
 <# } #>
 
     public <#=ITypeCollectionPage(c)#> buildFromResponse(final <#=BaseTypeCollectionResponse(c)#> response) {
-        final <#=ITypeRequestBuilder(c)#> builder;
+        final <#=ITypeCollectionRequestBuilder(c)#> builder;
         if (response.nextLink != null) {
-            builder = new <#=TypeRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), /* options */ null<#=MethodPageValues(c)#>);
+            builder = new <#=TypeCollectionRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), /* options */ null<#=MethodPageValues(c)#>);
         } else {
             builder = null;
         }
@@ -99,16 +99,34 @@
         return page;
     }
 
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value The select clause
+     * @return The updated request
+     */
     public <#=ITypeCollectionRequest(c)#> select(final String value) {
         addQueryOption(new QueryOption("select", value));
         return (<#=ITypeCollectionRequest(c)#>)this;
     }
 
+    /**
+     * Sets the top value for the request
+     *
+     * @param value The max number of items to return
+     * @return The updated request
+     */
     public <#=ITypeCollectionRequest(c)#> top(final int value) {
         addQueryOption(new QueryOption("top", value+""));
         return (<#=ITypeCollectionRequest(c)#>)this;
     }
 
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value The expand clause
+     * @return The updated request
+     */
     public <#=ITypeCollectionRequest(c)#> expand(final String value) {
         addQueryOption(new QueryOption("expand", value));
         return (<#=ITypeCollectionRequest(c)#>)this;

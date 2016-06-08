@@ -39,30 +39,48 @@
         return buildFromResponse(response);
     }
 
-    public void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
+    public void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new <#=TypeRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest()
-            .create(new<#=TypeName(c)#>, callback);
+            .post(new<#=TypeName(c)#>, callback);
     }
 
-    public <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
+    public <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new <#=TypeRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest()
-            .create(new<#=TypeName(c)#>);
+            .post(new<#=TypeName(c)#>);
     }
 
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value The expand clause
+     * @return The updated request
+     */
     public <#=ITypeCollectionRequest(c)#> expand(final String value) {
         addQueryOption(new QueryOption("expand", value));
         return (<#=TypeCollectionRequest(c)#>)this;
     }
 
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value The select clause
+     * @return The updated request
+     */
     public <#=ITypeCollectionRequest(c)#> select(final String value) {
         addQueryOption(new QueryOption("select", value));
         return (<#=TypeCollectionRequest(c)#>)this;
     }
 
+    /**
+     * Sets the top value for the request
+     *
+     * @param value The max number of items to return
+     * @return The updated request
+     */
     public <#=ITypeCollectionRequest(c)#> top(final int value) {
         addQueryOption(new QueryOption("top", value + ""));
         return (<#=TypeCollectionRequest(c)#>)this;

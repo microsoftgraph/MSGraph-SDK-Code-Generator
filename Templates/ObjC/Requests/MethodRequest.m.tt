@@ -15,7 +15,7 @@ if (func.ReturnType != null)
     if (returnTypeObject != null && returnTypeObject.Properties.Any(prop => prop.IsCollection && prop.Name.Contains("values")))
     {
         var valuesProperty = returnTypeObject.Properties.First(prop => prop.IsCollection);
-        returnType = writer.GetPrefix() + valuesProperty.Type.Name.ToUpperFirstChar();
+        returnType = writer.GetPrefix() + valuesProperty.Projection.Type.Name.ToUpperFirstChar();
     }
 }
 else
@@ -138,17 +138,17 @@ if (func.Parameters.Count > 0)
 <#
 if (func.Parameters.Count > 0)
 {
-    var paramsDictionary = GetFunctionParameters(func.Parameters);
-#>
-    <#=paramsDictionary#>
-<#
     // if we are in a function not an action
     if (method == @"GET")
     {
+        foreach (var param in func.Parameters)
+        {
 #>
-    [params enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *val, BOOL *stop){
-        [self.options addObject:[[<#=writer.GetStaticCodePrefix()#>FunctionParameters alloc] initWithKey:key value:val]];
-    }];
+    [self.options addObject:[[<#=writer.GetStaticCodePrefix()#>FunctionParameters alloc] initWithKey:@"<#=param.Name#>"
+                                                                value:[<#=writer.GetStaticCodePrefix()#>Object getNSJsonSerializationCompatibleValue:<#=GetObjCToJsonConvertibleExpressionConversion(param.Type, param.IsCollection, "_"+param.Name.ToLowerFirstChar())#>]]];
+<#
+        }
+#>
 
     return [self requestWithMethod:@"<#=method#>" body:nil headers:nil];
 <#
@@ -156,6 +156,7 @@ if (func.Parameters.Count > 0)
     else
     {
 #>
+    <#=GetFunctionParameterDictionary(func.Parameters)#>
     NSData *body = [NSJSONSerialization dataWithJSONObject:params options:0 error:nil];
     return [self requestWithMethod:@"<#=method#>" body:body headers:nil];
 <#

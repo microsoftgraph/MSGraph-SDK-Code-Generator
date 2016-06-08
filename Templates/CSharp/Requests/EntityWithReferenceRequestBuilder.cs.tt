@@ -12,26 +12,16 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System;
     using System.Collections.Generic;
 
-    <#=this.GetEntityWithReferencesRequestBuilderClassDefinition(entity)#>
+    <#=this.GetEntityWithReferenceRequestBuilderClassDefinition(entity)#>
     {
 
-        <#=this.GetEntityWithReferencesRequestBuilderConstructor(entity)#>
+        <#=this.GetEntityWithReferenceRequestBuilderConstructor(entity)#>
 
-        <#=this.GetEntityWithReferencesRequestMethod(entity)#>
+        <#=this.GetEntityWithReferenceRequestMethod(entity)#>
 
-        <#=this.GetEntityWithReferencesRequestMethodWithOptions(entity)#>
+        <#=this.GetEntityWithReferenceRequestMethodWithOptions(entity)#>
         
         <#=this.GetEntityReferenceRequestBuilderProperty(entity)#>
-    <#
-
-    if (entity.Kind == OdcmClassKind.MediaEntity || entity.GetProperties(typeName:"Stream").Any())
-    {
-    #>
-
-        <#=this.GetStreamProperties(entity)#>
-    <#
-    }
-    #>
 
     }
 }

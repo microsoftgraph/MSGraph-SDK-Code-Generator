@@ -20,30 +20,53 @@
         super(requestUrl, client, options, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
     }
 
-    public void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
-<#       
+    public void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
+<#
         String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType().Name;
-#>        
+#>
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + newDirectoryObject.id);
         new <#=TypeWithReferencesRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest()
-            .create(new<#=TypeName(c)#>, body, callback);
+            .post(new<#=TypeName(c)#>, body, callback);
     }
 
-    public <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
+    public <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + newDirectoryObject.id);
         return new <#=TypeWithReferencesRequestBuilder(c)#>(requestUrl,getBaseRequest().getClient(), /* Options */ null)
                 .buildRequest()
-                .create(new<#=TypeName(c)#>, body); 
+                .post(new<#=TypeName(c)#>, body);
     }
 
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value The expand clause
+     * @return The updated request
+     */
+    public <#=ITypeCollectionReferenceRequest(c)#> expand(final String value) {
+        addQueryOption(new QueryOption("expand", value));
+        return (<#=TypeCollectionReferenceRequest(c)#>)this;
+    }
+
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value The select clause
+     * @return The updated request
+     */
     public <#=ITypeCollectionReferenceRequest(c)#> select(final String value) {
         addQueryOption(new QueryOption("select", value));
         return (<#=TypeCollectionReferenceRequest(c)#>)this;
     }
 
+    /**
+     * Sets the top value for the request
+     *
+     * @param value The max number of items to return
+     * @return The updated request
+     */
     public <#=ITypeCollectionReferenceRequest(c)#> top(final int value) {
         addQueryOption(new QueryOption("top", value + ""));
         return (<#=TypeCollectionReferenceRequest(c)#>)this;

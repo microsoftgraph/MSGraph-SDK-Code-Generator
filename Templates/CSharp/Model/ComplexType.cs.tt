@@ -50,6 +50,8 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
             var propertyName = isMethodResponse
                 ? property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase()
                 : property.Name.ToCheckedCase().GetSanitizedPropertyName();
+                
+            var attributeDefinition = string.Format("[DataMember(Name = \"{0}\", EmitDefaultValue = false, IsRequired = false)]", property.Name);
 
             if (property.IsTypeNullable() || property.IsCollection)
             {
@@ -58,7 +60,7 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets <#=property.Name#>.
         /// </summary>
-        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        <#=attributeDefinition#>
         public <#=propertyType#> <#=propertyName#> { get; set; }
     <#
         }
@@ -69,7 +71,7 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets <#=property.Name#>.
         /// </summary>
-        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+        <#=attributeDefinition#>
         public <#=propertyType#>? <#=propertyName#> { get; set; }
     <#
             }

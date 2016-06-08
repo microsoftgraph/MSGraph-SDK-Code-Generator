@@ -21,4 +21,8 @@ public enum <#= c.Name.ToUpperFirstChar()#>
 <#
     }
 #>
+    /**
+    * <#= String.Format("For {0} values that were not expected from the service", c.Name.ToUpperFirstChar())#>
+    */
+    unexpectedValue
 }

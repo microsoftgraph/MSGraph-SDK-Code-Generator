@@ -132,7 +132,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 case "boolean":
                     return "bool";
                 case "date":
-                    return "DateTimeOffset";
+                    return "Date";
                 default:
                     return type.ToCheckedCase();
             }
@@ -145,19 +145,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static string GetTypeString(this OdcmProperty property)
         {
-            return GetTypeString(property.Type);
+            return GetTypeString(property.Projection.Type);
         }
 
         public static bool IsTypeNullable(this OdcmProperty property)
         {
-            var t = property.GetTypeString();
-            return property.Type.IsTypeNullable();
+            return property.Projection.Type.IsTypeNullable();
         }
 
         public static bool IsTypeNullable(this OdcmType type)
         {
             var t = type.GetTypeString();
-            return type is OdcmClass || t == "Stream" || t == "string" || t == "byte[]";
+            return type is OdcmClass || t == "Date" || t == "Stream" || t == "string" || t == "byte[]";
         }
 
         public static bool IsByteArray(this OdcmProperty property)
@@ -168,7 +167,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static bool IsComplex(this OdcmProperty property)
         {
-            return property.Type.IsComplex();
+            return property.Projection.Type.IsComplex();
         }
 
         public static bool IsComplex(this OdcmParameter property)
@@ -217,8 +216,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static string GetToLowerImport(this OdcmProperty property)
         {
-            var index = property.Type.Name.LastIndexOf('.');
-            return property.Type.Name.Substring(0, index).ToLower() + property.Type.Name.Substring(index);
+            var type = property.Projection.Type;
+            var index = type.Name.LastIndexOf('.');
+            return type.Name.Substring(0, index).ToLower() + type.Name.Substring(index);
         }
     }
 }

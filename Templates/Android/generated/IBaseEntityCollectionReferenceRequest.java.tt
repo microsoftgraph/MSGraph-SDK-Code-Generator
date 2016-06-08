@@ -7,10 +7,10 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateInterfaceDef(IBaseTypeCollectionReferenceRequest(c))#>
-    
-    void create(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
 
-    <#=TypeName(c)#> create(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
+    void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
 
     <#=ITypeCollectionReferenceRequest(c)#> select(final String value);
 

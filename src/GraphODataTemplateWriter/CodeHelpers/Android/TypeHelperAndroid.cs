@@ -5,15 +5,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
     using System.Collections.Generic;
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
+    using System;
 
     public static class TypeHelperAndroid
     {
-        public const string ReservedPrefix = "$$__$$";
-        public static ICollection<string> ReservedNames
+        public const string ReservedPrefix = "msgraph_";
+        public static HashSet<string> ReservedNames
         {
             get
             {
-                return new HashSet<string> {
+                return new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
                     "abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while"
                 };
             }
@@ -31,8 +32,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
                 case "Guid":
                     return "java.util.UUID";
                 case "DateTimeOffset":
-                case "Date":
                     return "java.util.Calendar";
+                case "Date":
+                    return "com.microsoft.graph.model.DateOnly";
                 case "Binary":
                     return "byte[]";
                 default:
@@ -47,7 +49,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
 
         public static string GetTypeString(this OdcmProperty property)
         {
-            return GetTypeString(property.Type);
+            return GetTypeString(property.Projection.Type);
         }
 
         public static bool IsComplex(this OdcmParameter property)
@@ -55,7 +57,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
             string t = property.GetTypeString();
             return !(t == "Integer" || t == "java.util.UUID" || t == "java.util.Calendar"
                   || t == "byte[]" || t == "String" || "long" == t || "Byte[]" == t
-                  || t == "Short");
+                  || t == "Short" || t == "com.microsoft.graph.model.DateOnly");
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)
@@ -65,7 +67,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
 
         public static string SanitizePropertyName(this OdcmObject property)
         {
-            if (ReservedNames.Contains(property.Name.ToLower()))
+            if (ReservedNames.Contains(property.Name))
             {
                 return ReservedPrefix + property.Name;
             }
@@ -75,8 +77,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
 
         public static string GetToLowerImport(this OdcmProperty property)
         {
-            var index = property.Type.Name.LastIndexOf('.');
-            return property.Type.Name.Substring(0, index).ToLower() + property.Type.Name.Substring(index);
+            var type = property.Projection.Type;
+            var index = type.Name.LastIndexOf('.');
+            return type.Name.Substring(0, index).ToLower() + type.Name.Substring(index);
         }
 
     }

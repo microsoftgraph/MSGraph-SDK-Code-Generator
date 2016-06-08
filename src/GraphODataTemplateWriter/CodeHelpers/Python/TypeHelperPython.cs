@@ -60,7 +60,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
 
         public static string GetTypeString(this OdcmProperty property)
         {
-            return GetTypeString(property.Type);
+            return GetTypeString(property.Projection.Type);
         }
 
 
@@ -74,7 +74,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
 
         public static bool IsComplex(this OdcmProperty property)
         {
-            return property.Type.IsComplex();
+            return property.Projection.Type.IsComplex();
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)
@@ -98,8 +98,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
 
         public static string GetToLowerImport(this OdcmProperty property)
         {
-            var index = property.Type.Name.LastIndexOf('.');
-            return property.Type.Name.Substring(0, index).ToLower() + property.Type.Name.Substring(index);
+            var type = property.Projection.Type;
+            var index = type.Name.LastIndexOf('.');
+            return type.Name.Substring(0, index).ToLower() + type.Name.Substring(index);
         }
 
     }

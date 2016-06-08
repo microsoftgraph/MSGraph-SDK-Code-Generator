@@ -94,26 +94,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         {
             return "";
         }
-
-        public string GetParams(IEnumerable<OdcmProperty> parameters) 
-        {
-            string param = "With";
-
-            foreach (var p in parameters) 
-            {
-                if (param == "With") 
-                {
-                    param += string.Format("{0}:({2} {3}) {1}", char.ToUpper(p.Name[0]) + p.Name.Substring(1)
-                                        , p.Name.ToLowerFirstChar(), p.Type.GetFullType(), (p.Type.IsComplex() ? "*" : ""));
-                } 
-                else 
-                {
-                    param += string.Format("{0}:({1} {2}) {1}", p.Name.ToLowerFirstChar(), p.Type.GetFullType(), (p.Type.IsComplex() ? "*" : ""));
-                }
-            }
-            return param;
-        }
-
+        
         public string GetParamsForRaw(IEnumerable<string> parameters) 
         {
             string param = "With";
@@ -129,28 +110,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             return param;
         }
 
-        public string GetParam(OdcmProperty type) 
-        {
-            if (type.IsComplex()) 
-            {
-                return type.IsSystem() ? string.Empty : type.GetTypeString() + " *" + type.Name.ToLowerFirstChar();
-            }
-
-            return type.GetTypeString() + " " + type.Name;
-        }
-
         public string GetParamRaw(string type) 
         {
             return "NSString *" + type.ToLowerFirstChar();
-        }
-
-        public string GetType(OdcmType type) 
-        {
-            if (type.IsComplex()) {
-                return type.IsSystem() ? type.GetTypeString() : type.GetTypeString() + " *";
-            }
-
-            return type.GetTypeString();
         }
 
         public string GetImportsClass(IEnumerable<OdcmProperty> references, IEnumerable<string> extraImports = null, IEnumerable<string> extraClasses = null) 
@@ -160,7 +122,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                 var imports = new StringBuilder();
                 var classes = new StringBuilder("@class ");
                 var classType = references.First().Class.GetTypeString();
-                foreach (var type in references.Select(prop => prop.Type).Distinct())
+                foreach (var type in references.Select(prop => prop.Projection.Type).Distinct())
                 {
                     if (type is OdcmEnum)
                     {
@@ -169,7 +131,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                     // CGFloat is in UIKit/UIKit
                     else if (type.GetTypeString().Equals("CGFloat"))
                     {
-                        imports.AppendFormat("#import <UIKit/UiKit.h>");
+                        imports.AppendFormat("#import <UIKit/UiKit.h>").AppendLine();
                     }
                     else if (type.IsComplex() && !type.IsSystem() && type.GetTypeString() != "id" &&
                              type.GetTypeString() != classType)
@@ -181,7 +143,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                 {
                     foreach (var extraType in extraImports)
                     {
-                        imports.AppendFormat("#import \"{0}.h\"", extraType);
+                        imports.AppendFormat("#import \"{0}.h\"", extraType).AppendLine();
                     }
                 }
 
@@ -209,11 +171,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                        (string.IsNullOrWhiteSpace(importsString.Trim()) ? "" : importsString);
             }
             return "";
-        }
-
-        public string GetClass(OdcmProperty type) 
-        {
-            return type.IsComplex() ? string.Format("[{0}{1} class]", this.GetPrefix(), type.GetTypeString()) : "nil";
         }
 
         public string GetParametersToJsonRaw(IEnumerable<string> parameters) 
@@ -309,16 +266,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             }
 
             return param;
-        }
-
-        public string GetParamString(OdcmType p) 
-        {
-            p.GetFullType();
-            if (p.IsComplex()) 
-            {
-                return p.IsSystem() ? string.Empty : p.GetTypeString() + " *" + p.Name.ToLowerFirstChar();
-            }
-            return p.GetTypeString() + " " + p.Name;
         }
 
         public string GetNetworkCompletionBlock(string parameterType, string parameterName)

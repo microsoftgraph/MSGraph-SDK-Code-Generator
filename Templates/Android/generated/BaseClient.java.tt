@@ -6,6 +6,29 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateClassDef(BaseClientType(c), "BaseClient", IBaseClientType(c))#>
+
+    /**
+     * The default endpoint for the Microsoft Graph Service
+     */
+    public static final String DEFAULT_GRAPH_ENDPOINT = "https://graph.microsoft.com/v1.0";
+
+    /**
+     * The current endpoint
+     */
+    private String mEndpoint;
+
+    @Override
+    public String getServiceRoot() {
+        if (mEndpoint == null) {
+            mEndpoint = DEFAULT_GRAPH_ENDPOINT;
+        }
+        return mEndpoint;
+    }
+
+    @Override
+    public void setServiceRoot(String value) {
+        mEndpoint = value;
+    }
 <#
 foreach (var prop in model.EntityContainer.Properties)
 {
@@ -42,7 +65,7 @@ foreach (var prop in model.EntityContainer.Properties)
     /**
      * Gets <#=TypeRequestBuilder(c)#>.
      *
-     * @return the <#=prop.Type.GetTypeString()#>.
+     * @return the <#=prop.Projection.Type.GetTypeString()#>.
      */
     public <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>() {
         return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);

@@ -16,6 +16,6 @@
      * @param options The options for this request
      */
     public <#=TypeStreamRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
-        super(requestUrl, client, options);
+        super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
     }
 }

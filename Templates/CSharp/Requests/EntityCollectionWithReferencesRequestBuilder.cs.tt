@@ -21,6 +21,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         <#=this.GetCollectionWithReferencesRequestMethodWithOptions(prop)#>
         
         <#=this.GetCollectionWithReferencesIndexRequestBuilder(prop)#>
-        <#=this.GetCollectionReferenceRequestBuilder(prop)#>
+        <#=this.GetCollectionReferencesRequestBuilder(prop)#>
     }
 }

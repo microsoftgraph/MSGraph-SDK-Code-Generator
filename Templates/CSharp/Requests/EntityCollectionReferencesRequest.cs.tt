@@ -1,0 +1,23 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="CollectionRequest.Base.template.tt"#>
+<#
+var prop = host.CurrentType.AsOdcmProperty();
+var collectionRequest = this.GetPropertyCollectionReferencesRequestName(prop);
+
+#>
+
+namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    <#=this.GetCollectionReferencesClassDefinition(prop)#>
+    {
+        <#=GetCollectionReferencesRequestConstructor(prop)#>
+        <#=GetPostAsyncMethodForReferencesRequest(prop)#>
+    }
+}

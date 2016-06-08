@@ -18,24 +18,24 @@
           
           { "Template": "EntityReferenceRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>ReferenceRequest" },
           { "Template": "IEntityReferenceRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>ReferenceRequest" },
-          { "Template": "EntityWithReferencesRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferencesRequest" },
-          { "Template": "IEntityWithReferencesRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>WithReferencesRequest" },
+          { "Template": "EntityWithReferenceRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferenceRequest" },
+          { "Template": "IEntityWithReferenceRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>WithReferenceRequest" },
           
           { "Template": "EntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>ReferenceRequestBuilder" },
           { "Template": "IEntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>ReferenceRequestBuilder" },
-          { "Template": "EntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferencesRequestBuilder" },
-          { "Template": "IEntityWithReferencesRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>WithReferencesRequestBuilder" },
+          { "Template": "EntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferenceRequestBuilder" },
+          { "Template": "IEntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "I<Class>WithReferenceRequestBuilder" },
           
           { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesPage" },
           { "Template": "IEntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesPage" },
           
-          { "Template": "EntityCollectionReferenceRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionReferenceRequest" },
-          { "Template": "IEntityCollectionReferenceRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionReferenceRequest" },
+          { "Template": "EntityCollectionReferencesRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionReferencesRequest" },
+          { "Template": "IEntityCollectionReferencesRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionReferencesRequest" },
           { "Template": "EntityCollectionWithReferencesRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesRequest" },
           { "Template": "IEntityCollectionWithReferencesRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesRequest" },
           
-          { "Template": "EntityCollectionReferenceRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionReferenceRequestBuilder" },
-          { "Template": "IEntityCollectionReferenceRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionReferenceRequestBuilder" },
+          { "Template": "EntityCollectionReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionReferencesRequestBuilder" },
+          { "Template": "IEntityCollectionReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionReferencesRequestBuilder" },
           { "Template": "EntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesRequestBuilder" },
           { "Template": "IEntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesRequestBuilder" },
           

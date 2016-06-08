@@ -7,7 +7,7 @@
     "InitializeCollections": "false",
     "AllowShortActions": "false",
     "NamespaceOverride": "",
-    "TemplatesDirectory": "..\\..\\..\\..\\Templates",
+    "TemplatesDirectory": "../../../../Templates",
     "DefaultFileCasing": "UpperCamel",
     "CustomFlags": [ "python3" ],
     "LicenseHeader": [
