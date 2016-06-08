@@ -334,14 +334,18 @@
         return "Base" + TypeBody(c);
     }
 
+    /// Creates an 'm' prepended name for a field
+    /// based on its name as defined by the service $metadata
     public string FieldName(OdcmParameter c) {
         return "m" + ParamName(c).ToUpperFirstChar();
     }
 
+    /// Returns the name of the service <parameter> with the first char lowercase
     public string ParamName(OdcmParameter c) {
         return c.Name.ToLowerFirstChar();
     }
 
+    /// The Type of this param, as a string
     public string ParamType(OdcmParameter c) {
         if (c.IsCollection){
             return String.Format("List<{0}>", c.Type.GetTypeString());
