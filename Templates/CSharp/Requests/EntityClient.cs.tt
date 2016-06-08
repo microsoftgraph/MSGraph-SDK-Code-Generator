@@ -65,7 +65,7 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
         }
         else
         {
-            var requestBuilder = prop.Type.Name.ToCheckedCase() + "RequestBuilder";
+            var requestBuilder = prop.Projection.Type.Name.ToCheckedCase() + "RequestBuilder";
     #>
 
         /// <summary>

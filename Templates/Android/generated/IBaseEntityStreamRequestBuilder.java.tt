@@ -65,7 +65,7 @@ if (c.AsOdcmClass() != null)
 #>
 
 <#
-    foreach (var prop in c.AsOdcmClass().Properties.Where(x => x.Type is OdcmMediaClass))
+    foreach (var prop in c.AsOdcmClass().Properties.Where(x => x.Projection.Type is OdcmMediaClass))
     {
         var propName = prop.Name.ToCheckedCase();
 #>
