@@ -6,15 +6,18 @@
     var model                  = host.CurrentModel;
     CodeWriterAndroid writer   = (CodeWriterAndroid) host.CodeWriter;
     var c = host.CurrentType;
-
-    if (c == null)
-    {
-//        throw new InvalidOperationException("Unable to get the current type!");
+#>
+// Template Source: <#= TemplateName(host.TemplateFile) #>
+<#+
+    /// <summary>
+    /// Get the name of the current template being processed
+    /// </summary>
+    /// <param name="templateFile">The full path of the current template</param>
+    /// <returns>The template name, relative to the Templates directory.</returns>
+    public string TemplateName(string templateFile) {
+        return templateFile.Substring(templateFile.LastIndexOf("Templates"));
     }
 
-#>
-<# //="// Template Source: '" + host.TemplateFile + "', Name: '" + c.Name + "' , TypeName: '" + TypeName(c) + "'"#>
-<#+
     public string TypeName(OdcmObject c) {
         if (c is OdcmMethod) {
             return ((OdcmMethod)c).Class.Name.ToUpperFirstChar() + c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
