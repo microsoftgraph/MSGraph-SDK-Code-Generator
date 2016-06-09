@@ -6,11 +6,7 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef(BaseTypeRequestBuilder(c),  "BaseRequestBuilder")#>
-
-<# foreach (var p in c.AsOdcmMethod().Parameters) { #>
-    public final <#=ParamType(p)#> <#=FieldName(p)#>;
-<# } #>
+<#=CreateClassDef(BaseTypeRequestBuilder(c),  RequestBuilderSuperClass(c))#>
 
     /**
      * The request builder for this <#=TypeName(c)#>
@@ -21,8 +17,13 @@
      */
     public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
         super(requestUrl, client, options);
+<# bool isPost = IsPostRequestType(c.AsOdcmMethod()); #>
 <# foreach (var p in c.AsOdcmMethod().Parameters) { #>
-        <#=FieldName(p)#> = <#=ParamName(p)#>;
+  <# if (isPost) { #>
+      mBodyParams.put("<#=ParamName(p)#>", <#=ParamName(p)#>);
+  <# } else { #>
+      mFunctionOptions.add(new FunctionOption("<#=ParamName(p)#>", <#=ParamName(p)#>));
+  <# } #>
 <# } #>
     }
 
@@ -42,6 +43,24 @@
      * @return The <#=ITypeRequest(c)#> instance
      */
     public <#=ITypeRequest(c)#> buildRequest(final List<Option> options) {
-        return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), options<#=MethodFieldValues(c)#>);
+        <#=TypeRequest(c)#> request = new <#=TypeRequest(c)#>(
+            getRequestUrl(), 
+            getClient(), 
+            options
+        );
+
+<# foreach (var p in c.AsOdcmMethod().Parameters) { #>
+  <# if (isPost) { #>
+      if (hasParameter("<#=ParamName(p)#>")) {
+            request.mBody.<#=ParamName(p)#> = getParameter("<#=ParamName(p)#>");
+        }
+  <# } else { #>
+      for (FunctionOption option : mFunctionOptions) {
+            request.addFunctionOption(option);
+        }
+  <# } #>
+<# } #>
+
+      return request;
     }
 }
