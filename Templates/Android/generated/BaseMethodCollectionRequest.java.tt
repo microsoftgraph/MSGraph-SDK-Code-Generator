@@ -27,7 +27,7 @@ var canUseTop = projection.BooleanValueOf("TopSupported") != false;
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=BaseTypeCollectionRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+    public <#=BaseTypeCollectionRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
         super(requestUrl, client, options, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
 <# } else { #>
@@ -35,13 +35,6 @@ var canUseTop = projection.BooleanValueOf("TopSupported") != false;
 <# } #>
 <# if (c.AsOdcmMethod().IsAction()) { #>
         mBody = new <#=TypeBody(c)#>();
-<# foreach (var p in c.AsOdcmMethod().Parameters) { #>
-        mBody.<#=ParamName(p)#> = <#=ParamName(p)#>;
-<# } #>
-<# }else{ #>
-<#  foreach (var param in c.AsOdcmMethod().Parameters) { var paramName = ParamName(param);#>
-        addFunctionOption(new FunctionOption("<#=paramName#>", <#=paramName#>));
-<# } #>
 <# } #>
     }
 
