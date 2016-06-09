@@ -15,7 +15,7 @@
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c.AsOdcmMethod())#>) {
         super(requestUrl, client, options);
 <# bool isPost = IsPostRequestType(c.AsOdcmMethod()); #>
 <# foreach (var p in c.AsOdcmMethod().Parameters) { #>

@@ -21,7 +21,7 @@ var canUseTop = projection.BooleanValueOf("TopSupported") != false;
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=BaseTypeRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+    public <#=BaseTypeRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c.AsOdcmMethod())#>) {
         super(requestUrl, client, options, <#=ReturnType(c)#>.class);
 
 <# foreach (var param in c.AsOdcmMethod().Parameters) { var paramName = param.Name.ToLowerFirstChar();#>

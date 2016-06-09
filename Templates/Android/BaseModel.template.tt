@@ -385,19 +385,19 @@
         }
         return "Void";
     }
-
-    public string MethodParametersSignature(OdcmObject c) {
+    
+    public string MethodParametersSignature(OdcmMethod method) {
         var parameterSignatureBuilder = new StringBuilder();
-        foreach (var p in c.AsOdcmMethod().Parameters)
+        foreach (var p in method.Parameters)
         {
             parameterSignatureBuilder.AppendFormat(", final {0} {1}", ParamType(p), ParamName(p));
         }
         return parameterSignatureBuilder.ToString();
     }
 
-    public string MethodParametersValues(OdcmObject c) {
+    public string MethodParametersValues(OdcmMethod method) {
         var parameterValuesBuilder = new StringBuilder();
-        foreach (var p in c.AsOdcmMethod().Parameters)
+        foreach (var p in method.Parameters)
         {
             parameterValuesBuilder.AppendFormat(", {0}", ParamName(p));
         }
