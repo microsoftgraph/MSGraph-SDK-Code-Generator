@@ -6,7 +6,6 @@
 var method = host.CurrentType.AsOdcmMethod();
 var returnType = method.ReturnType.Name.ToCheckedCase();
 var returnTypeObject = method.ReturnType.AsOdcmClass();
-var isSpecialCollection = method.LongDescriptionContains("specialCollection");
 
 var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var collectionResponse = responseNamePrefix + "CollectionResponse";
@@ -18,6 +17,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System.Collections.Generic;
     using System.Runtime.Serialization;
 
+    using Microsoft.Graph;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -32,14 +32,14 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
         public I<#=collectionPage#> Value { get; set; }
         <#
-        if (isSpecialCollection)
+        var additionalResponseProperties = method.GetAdditionalPropertiesForMethodCollectionResponse(model);
+        
+        if (additionalResponseProperties != null)
         {
-            foreach (var property in returnTypeObject.Properties)
+            foreach (var property in additionalResponseProperties)
             {
-                if (!property.LongDescriptionContains("ignorableCollection"))
-                {
-                    var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
-                    var propertyType = property.Projection.Type.GetTypeString();
+                var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
+                var propertyType = property.Projection.Type.GetTypeString();
         #>
 
         /// <summary>
@@ -48,7 +48,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
         public <#=propertyType#> <#=propertyName#> { get; set; }
         <#
-                }
             }
         }
         #>

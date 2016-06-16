@@ -14,10 +14,24 @@ var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
 
 var isCollection = method.IsCollection;
+var isAsync = method.IsAsync();
 
-var sendAsyncReturnType = isCollection
-    ? "I" + entityName + methodName + "CollectionPage"
-    : returnEntityType;
+var monitorType = string.Format("{0}{1}AsyncMonitor", entityName, methodName);
+
+string sendAsyncReturnType = null;
+
+if (isAsync)
+{
+    sendAsyncReturnType = string.Format("I{0}{1}AsyncMonitor", entityName, methodName);
+}
+else if (isCollection)
+{
+    sendAsyncReturnType = string.Format("I{0}{1}CollectionPage", entityName, methodName);
+}
+else
+{
+    sendAsyncReturnType = returnEntityType;
+}
         
 var methodReturnType = sendAsyncReturnType == null
     ? "Task"
@@ -25,7 +39,7 @@ var methodReturnType = sendAsyncReturnType == null
 
 string methodOverloadReturnType = methodReturnType;
     
-if (isCollection)
+if (isAsync || isCollection)
 {
     methodReturnType = string.Concat("async ", methodReturnType);
 }
@@ -43,6 +57,8 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    
+    using Microsoft.Graph;
 
     /// <summary>
     /// The type <#=requestType#>.
@@ -64,6 +80,13 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     paramStringBuilder.Append("IEnumerable<Option> options");
 
     requestBodyInitializerBuilder.Append("this.Method = \"" + httpMethod + "\";");
+    
+    if (isAsync)
+    {
+        requestBodyInitializerBuilder.Append(Environment.NewLine);
+        requestBodyInitializerBuilder.Append("            ");
+        requestBodyInitializerBuilder.Append("this.Headers.Add(new HeaderOption(\"Prefer\", \"respond-async\"));");
+    }
     
     // Sort the method parameters by required then optional to match the ordering in request builder initialization.
     var methodParameters = new List<OdcmParameter>();
@@ -202,7 +225,17 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         {
     <#
 
-    if (isCollection)
+    if (isAsync)
+    {
+        
+    #>
+            using (var response = await this.SendRequestAsync(<#=methodParameter#>, cancellationToken).ConfigureAwait(false))
+            {
+                return new <#=monitorType#>(this.Client, response.Headers.Location.ToString());
+            }
+    <#
+    }
+    else if (isCollection)
     {
     #>
 
@@ -225,6 +258,21 @@ namespace <#=method.Namespace.GetNamespaceName()#>
                             nextPageLinkString);
                     }
                 }
+    <#
+        var additionalResponseProperties = method.GetAdditionalPropertiesForMethodCollectionResponse(model);
+        
+        if (additionalResponseProperties != null)
+        {
+            foreach (var property in additionalResponseProperties)
+            {
+                var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
+    #>
+
+               response.Value.<#=propertyName#> = response.<#=propertyName#>;
+    <#
+            }
+        }
+    #>
 
                 return response.Value;
             }

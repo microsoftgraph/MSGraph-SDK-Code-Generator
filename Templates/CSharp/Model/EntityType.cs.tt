@@ -33,6 +33,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     using System.IO;
     using System.Runtime.Serialization;
 
+    using Microsoft.Graph;
     using Newtonsoft.Json;
 
     /// <summary>

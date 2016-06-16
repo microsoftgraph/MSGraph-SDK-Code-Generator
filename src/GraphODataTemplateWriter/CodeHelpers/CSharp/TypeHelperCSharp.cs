@@ -6,7 +6,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
     using System.Collections.Generic;
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
-
+    using Settings;
     public static class TypeHelperCSharp
     {
         public const string DefaultReservedPrefix = "_";
@@ -189,7 +189,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static string GetNamespaceName(this OdcmNamespace namespaceObject)
         {
-            return Inflector.Inflector.Titleize(namespaceObject.Name);
+            if (!string.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
+            {
+                return ConfigurationService.Settings.NamespaceOverride;
+            }
+
+            return Inflector.Inflector.Pascalize(namespaceObject.Name);
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)

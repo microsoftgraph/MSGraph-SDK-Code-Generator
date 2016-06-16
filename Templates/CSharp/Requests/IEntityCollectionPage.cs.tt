@@ -15,6 +15,7 @@ namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
 {
     using System;
 
+    using Microsoft.Graph;
     using Newtonsoft.Json;
     
     /// <summary>

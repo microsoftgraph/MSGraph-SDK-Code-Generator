@@ -11,7 +11,7 @@ var monitorType = entityName + methodName + "AsyncMonitor";
 var isCollection = method.IsCollection || method.LongDescriptionContains("specialCollection");
 var returnEntityType = method.ReturnType.Name.ToCheckedCase();
 var returnType = isCollection ? "I" + entityName + methodName + "CollectionPage" : returnEntityType;
-bool isAsync = method.LongDescriptionContains("async");
+bool isAsync = method.IsAsync();
 var asyncString = isCollection ? "async " : " ";
 
 #>
@@ -21,6 +21,8 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    
+    using Microsoft.Graph;
     
     /// <summary>
     /// The interface I<#=monitorType#>.

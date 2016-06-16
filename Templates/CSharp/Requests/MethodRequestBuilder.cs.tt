@@ -16,6 +16,8 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System;
     using System.Collections.Generic;
     using System.Text;
+    
+    using Microsoft.Graph;
 
     /// <summary>
     /// The type <#=requestBuilderType#>.

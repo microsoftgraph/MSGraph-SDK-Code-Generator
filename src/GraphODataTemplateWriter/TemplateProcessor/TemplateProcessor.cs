@@ -54,6 +54,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             this.subProcessors = new Dictionary<SubProcessor, Func<ITemplateInfo, IEnumerable<TextFile>>>() {
                 {SubProcessor.EntityType,                   this.ProcessEntityTypes},
                 {SubProcessor.ComplexType,                  this.ProcessComplexTypes},
+                {SubProcessor.NavigableComplexType,         this.ProcessNavigableComplexTypes},
                 {SubProcessor.EnumType,                     this.ProcessEnumTypes},
                 {SubProcessor.EntityContainer,              this.ProcessEntityContainerType},
                 {SubProcessor.MediaEntityType,              this.ProcessMediaEntityTypes},
@@ -63,6 +64,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                 {SubProcessor.NavigationCollectionProperty, this.ProcessNavigationCollections},
                 {SubProcessor.CollectionReferenceProperty,  this.ProcessCollectionReferences},
                 {SubProcessor.EntityReferenceType,          this.ProcessEntityReferenceProperties},
+                {SubProcessor.AsyncMethod,                  this.ProcessAsyncMethods},
                 {SubProcessor.Method,                       this.ProcessMethods},
                 {SubProcessor.NonCollectionMethod,          this.ProcessNonCollectionMethods},
                 {SubProcessor.CollectionMethod,             this.ProcessCollectionMethods},
@@ -116,6 +118,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             return this.ProcessTypes(templateInfo, this.CurrentModel.GetComplexTypes);
         }
 
+        protected virtual IEnumerable<TextFile> ProcessNavigableComplexTypes(ITemplateInfo templateInfo)
+        {
+            return this.ProcessTypes(templateInfo, this.CurrentModel.GetNavigableComplexTypes);
+        }
+
         protected virtual IEnumerable<TextFile> ProcessEntityTypes(ITemplateInfo templateInfo)
         {
             return this.ProcessTypes(templateInfo, this.CurrentModel.GetEntityTypes);
@@ -154,6 +161,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         protected virtual IEnumerable<TextFile> ProcessStreamProperties(ITemplateInfo templateInfo)
         {
             return this.ProcessProperties(templateInfo, this.CurrentModel.GetStreamProperties);
+        }
+
+        protected virtual IEnumerable<TextFile> ProcessAsyncMethods(ITemplateInfo templateInfo)
+        {
+            return this.ProcessMethods(templateInfo, this.CurrentModel.GetAsyncMethods);
         }
 
         protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo)
