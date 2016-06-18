@@ -47,21 +47,21 @@ var canUseTop = projection.BooleanValueOf("TopSupported") != false;
 
 <# if (canExpand) { #>    
     public <#=ITypeCollectionRequest(c)#> expand(final String value) {
-        addQueryOption(new QueryOption("expand", value));
+        addQueryOption(new QueryOption("$expand", value));
         return (<#=TypeCollectionRequest(c)#>)this;
     }
 
 <# } #>
 <# if (canSelect) { #>
     public <#=ITypeCollectionRequest(c)#> select(final String value) {
-        addQueryOption(new QueryOption("select", value));
+        addQueryOption(new QueryOption("$select", value));
         return (<#=TypeCollectionRequest(c)#>)this;
     }
 
 <# } #>
 <# if (canUseTop) { #>
     public <#=ITypeCollectionRequest(c)#> top(final int value) {
-        addQueryOption(new QueryOption("top", value + ""));
+        addQueryOption(new QueryOption("$top", value + ""));
         return (<#=TypeCollectionRequest(c)#>)this;
     }
 

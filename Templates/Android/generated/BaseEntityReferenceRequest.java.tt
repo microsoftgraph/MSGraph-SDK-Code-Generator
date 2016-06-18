@@ -40,7 +40,7 @@ var canSelect = projection.BooleanValueOf("Selectable") != false;
      * @return The updated request
      */
     public <#=ITypeReferenceRequest(c)#> select(final String value) {
-        getQueryOptions().add(new QueryOption("select", value));
+        getQueryOptions().add(new QueryOption("$select", value));
         return (<#=TypeReferenceRequest(c)#>)this;
     }
 
@@ -53,7 +53,7 @@ var canSelect = projection.BooleanValueOf("Selectable") != false;
      * @return The updated request
      */
     public <#=ITypeReferenceRequest(c)#> expand(final String value) {
-        getQueryOptions().add(new QueryOption("expand", value));
+        getQueryOptions().add(new QueryOption("$expand", value));
         return (<#=TypeReferenceRequest(c)#>)this;
     }
 

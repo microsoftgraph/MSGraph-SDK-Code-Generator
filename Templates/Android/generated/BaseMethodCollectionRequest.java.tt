@@ -106,7 +106,7 @@ var canUseTop = projection.BooleanValueOf("TopSupported") != false;
      * @return The updated request
      */
     public <#=ITypeCollectionRequest(c)#> select(final String value) {
-        addQueryOption(new QueryOption("select", value));
+        addQueryOption(new QueryOption("$select", value));
         return (<#=ITypeCollectionRequest(c)#>)this;
     }
 
@@ -119,7 +119,7 @@ var canUseTop = projection.BooleanValueOf("TopSupported") != false;
      * @return The updated request
      */
     public <#=ITypeCollectionRequest(c)#> top(final int value) {
-        addQueryOption(new QueryOption("top", value+""));
+        addQueryOption(new QueryOption("$top", value+""));
         return (<#=ITypeCollectionRequest(c)#>)this;
     }
 
@@ -132,7 +132,7 @@ var canUseTop = projection.BooleanValueOf("TopSupported") != false;
      * @return The updated request
      */
     public <#=ITypeCollectionRequest(c)#> expand(final String value) {
-        addQueryOption(new QueryOption("expand", value));
+        addQueryOption(new QueryOption("$expand", value));
         return (<#=ITypeCollectionRequest(c)#>)this;
     }
 
