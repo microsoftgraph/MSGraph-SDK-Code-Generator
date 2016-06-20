@@ -164,7 +164,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     else if (returnsStream)
     {
 #>
-            return this.SendStreamRequestAsync(null, httpCompletionOption, cancellationToken);
+            return this.SendStreamRequestAsync(null, cancellationToken, httpCompletionOption);
 <#
     }
     else if (!string.IsNullOrEmpty(sendAsyncReturnType))

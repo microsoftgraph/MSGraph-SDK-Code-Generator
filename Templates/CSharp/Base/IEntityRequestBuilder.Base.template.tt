@@ -236,7 +236,7 @@ public string GetMethodProperties(OdcmClass entity)
             
             foreach (var param in requiredParameters)
             {
-                var paramVariableName = param.Name.ToLowerFirstChar();
+                var paramVariableName = param.Name.GetSanitizedParameterName();
                 var paramTypeString = param.Type.GetTypeString();
                 
                 if (param.IsCollection)
@@ -251,7 +251,7 @@ public string GetMethodProperties(OdcmClass entity)
             
             foreach (var param in optionalParameters)
             {
-                var paramVariableName = param.Name.ToLowerFirstChar();
+                var paramVariableName = param.Name.GetSanitizedParameterName();
                 var paramTypeString = param.Type.GetTypeString();
                 
                 if (param.IsCollection)

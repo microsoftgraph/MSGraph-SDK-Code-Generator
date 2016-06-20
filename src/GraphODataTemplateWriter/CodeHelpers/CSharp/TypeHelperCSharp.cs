@@ -9,7 +9,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
     public static class TypeHelperCSharp
     {
-        public const string DefaultReservedPrefix = "_";
+        public const string DefaultReservedPrefix = "@";
         public static ICollection<string> GetReservedNames()
         {
             return new HashSet<string>(StringComparer.Ordinal)
@@ -212,6 +212,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             }
 
             return property;
+        }
+
+        public static string GetSanitizedParameterName(this string parameter, string prefix = null)
+        {
+            if (GetReservedNames().Contains(parameter))
+            {
+                var reservedPrefix = string.IsNullOrEmpty(prefix) ? DefaultReservedPrefix : prefix;
+
+                return string.Concat(reservedPrefix, parameter.ToLowerFirstChar());
+            }
+
+            return parameter;
         }
 
         public static string GetToLowerImport(this OdcmProperty property)
