@@ -104,6 +104,3 @@ from .request.graph_service_client import GraphServiceClient
 from .http_provider import HttpProvider
 from .extensions.graph_client_helper import *
 from .extensions import *
-import sys
-if sys.version_info >= (3, 4, 0):
-    from .version_bridge import *
