@@ -22,7 +22,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
 
             this.Plugins = new List<string>();
             this.InitializeCollections = true;
-            this.TargetLanguage = "Java";
+            this.TargetLanguage = "Python";
             this.NamespaceOverride = "com.microsoft.services.onenote";
             this.templateMapping = new Dictionary<string, List<Dictionary<string, string>>>();
             this.templateConfiguration = new List<Dictionary<string, string>>();

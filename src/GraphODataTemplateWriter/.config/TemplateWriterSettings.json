@@ -3,7 +3,7 @@
     "TargetLanguage": "Python",
     "Plugins": [ ],
   "PrimaryNamespaceName": "MSGraph",
-    "NamespacePrefix": "microsoft.graph",
+    "NamespacePrefix": "msgraph",
     "InitializeCollections": "false",
     "AllowShortActions": "false",
     "NamespaceOverride": "",

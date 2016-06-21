@@ -36,10 +36,10 @@ class GraphServiceClient(object):
         
         Args:
             base_url (str): The Graph base url to use for API interactions
-            auth_provider(:class:`AuthProviderBase<microsoft.graph.auth_provider_base.AuthProviderBase>`):
+            auth_provider(:class:`AuthProviderBase<msgraph.auth_provider_base.AuthProviderBase>`):
                 The authentication provider used by the client to auth
                 with Graph services
-            http_provider(:class:`HttpProviderBase<microsoft.graph.http_provider_base.HttpProviderBase>`):
+            http_provider(:class:`HttpProviderBase<msgraph.http_provider_base.HttpProviderBase>`):
                 The HTTP provider used by the client to send all 
                 requests to Graph
             loop (BaseEventLoop): Default to None, the AsyncIO loop 
@@ -58,7 +58,7 @@ class GraphServiceClient(object):
         """Gets and sets the client auth provider
         
         Returns:
-            :class:`AuthProviderBase<microsoft.graph.auth_provider_base.AuthProviderBase>`: 
+            :class:`AuthProviderBase<msgraph.auth_provider_base.AuthProviderBase>`: 
             The authentication provider
         """
         return self._auth_provider
@@ -72,7 +72,7 @@ class GraphServiceClient(object):
         """Gets and sets the client HTTP provider
 
         Returns: 
-            :class:`HttpProviderBase<microsoft.graph.http_provider_base.HttpProviderBase>`: 
+            :class:`HttpProviderBase<msgraph.http_provider_base.HttpProviderBase>`: 
                 The HTTP provider
         """
         return self._http_provider
@@ -104,7 +104,7 @@ foreach(var prop in containerProperties){
         """Get the <#=(prop.Name.ToUpperFirstChar()+"CollectionRequestBuilder").ToUpperFirstChar()#> for constructing requests
         
         Returns:
-            :class:`<#=collectionBuilder#><microsoft.graph.request.<#=collectionBuilder.Replace("RequestBuilder","").ToUnderscore()#>.<#=collectionBuilder#>>`:
+            :class:`<#=collectionBuilder#><msgraph.request.<#=collectionBuilder.Replace("RequestBuilder","").ToUnderscore()#>.<#=collectionBuilder#>>`:
                 The <#=collectionBuilder#> to return
         """
         return <#=(prop.Name.ToUpperFirstChar()+"CollectionRequestBuilder").ToUpperFirstChar()#>(self.base_url + "<#=prop.Name#>", self)
@@ -118,7 +118,7 @@ foreach(var prop in containerProperties){
         """Get the <#=requestBuilder#> for constructing requests
 
         Returns: 
-            :class:`<#=requestBuilder#><microsoft.graph.request.<#=requestBuilder.ToUnderscore()#>.<#=requestBuilder#>>`:
+            :class:`<#=requestBuilder#><msgraph.request.<#=requestBuilder.ToUnderscore()#>.<#=requestBuilder#>>`:
                 The <#=requestBuilder#> to return    
         """
         return <#=(prop.Type.GetTypeString()+"RequestBuilder").ToUpperFirstChar()#>(self.base_url + "<#=prop.Name#>", self)

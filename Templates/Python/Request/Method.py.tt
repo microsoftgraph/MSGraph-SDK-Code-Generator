@@ -126,15 +126,15 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         if (method.LongDescriptionContains("async")){
 #>
-            :class:`AsyncOperationMonitor<microsoft.graph.async_operation_monitor.AsyncOperationMonitor>`:
+            :class:`AsyncOperationMonitor<msgraph.async_operation_monitor.AsyncOperationMonitor>`:
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><microsoft.graph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><msgraph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><microsoft.graph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><msgraph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -167,15 +167,15 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         if (method.LongDescriptionContains("async")){
 #>
-            :class:`AsyncOperationMonitor<microsoft.graph.async_operation_monitor.AsyncOperationMonitor>`:
+            :class:`AsyncOperationMonitor<msgraph.async_operation_monitor.AsyncOperationMonitor>`:
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><microsoft.graph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><msgraph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><microsoft.graph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><msgraph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -197,15 +197,15 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         if (method.LongDescriptionContains("async")){
 #>
-            :class:`AsyncOperationMonitor<microsoft.graph.async_operation_monitor.AsyncOperationMonitor>`:
+            :class:`AsyncOperationMonitor<msgraph.async_operation_monitor.AsyncOperationMonitor>`:
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><microsoft.graph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><msgraph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><microsoft.graph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><msgraph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -236,15 +236,15 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         if (method.LongDescriptionContains("async")){
 #>
-            :class:`AsyncOperationMonitor<microsoft.graph.async_operation_monitor.AsyncOperationMonitor>`:
+            :class:`AsyncOperationMonitor<msgraph.async_operation_monitor.AsyncOperationMonitor>`:
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><microsoft.graph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><msgraph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><microsoft.graph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><msgraph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -336,11 +336,11 @@ class <#=requestBuilderType#>(RequestBuilderBase):
         }
     }
 #>
-            options (list of :class:`Option<microsoft.graph.options.Option>`):
+            options (list of :class:`Option<msgraph.options.Option>`):
                 Default to None, list of options to include in the request
 
         Returns: 
-            :class:`<#=requestType#><microsoft.graph.request.<#=requestType.Replace("Request","").ToUnderscore()#>.<#=requestType#>>`:
+            :class:`<#=requestType#><msgraph.request.<#=requestType.Replace("Request","").ToUnderscore()#>.<#=requestType#>>`:
                 The request
         """
         req = <#=requestType#>(<#=requestConstructorBuilder#>)
@@ -360,11 +360,11 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
         if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><microsoft.graph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><msgraph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><microsoft.graph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><msgraph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -383,11 +383,11 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
         if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><microsoft.graph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><msgraph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><microsoft.graph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><msgraph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
