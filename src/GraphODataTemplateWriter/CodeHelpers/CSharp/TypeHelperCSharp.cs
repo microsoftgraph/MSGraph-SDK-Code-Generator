@@ -133,6 +133,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                     return "bool";
                 case "date":
                     return "Date";
+                case "json":
+                    return "Newtonsoft.Json.Linq.JObject";
                 default:
                     return type.ToCheckedCase();
             }
