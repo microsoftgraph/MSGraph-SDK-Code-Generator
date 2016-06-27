@@ -3,6 +3,8 @@
 <#@ output extension="\\" #>
 <#
 CustomT4Host host       = (CustomT4Host) Host;
+var projection = host.CurrentType.Projection;
+var canExpand           = projection.CanExpand();
 OdcmModel model         = host.CurrentModel;
 CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 OdcmClass entity        = host.CurrentType.AsOdcmClass();
@@ -83,7 +85,7 @@ class <#=entityBuilder#>(RequestBuilderBase):
         """
         super(<#=entityBuilder#>, self).__init__(request_url, client)
 
-    def request(self, expand=None, select=None, options=None):
+    def request(self, <#= canExpand ? "expand=None, " : ""#>select=None, options=None):
         """Builds the <#=entityRequest#>
 
         Args:
@@ -99,7 +101,7 @@ class <#=entityBuilder#>(RequestBuilderBase):
                 The <#=entityRequest#>
         """
         req = <#=entityRequest#>(self._request_url, self._client, options)
-        req._set_query_options(expand=expand, select=select)
+        req._set_query_options(<#= canExpand ? "expand=expand, " : ""#>select=select)
         return req
 
     def delete(self):
