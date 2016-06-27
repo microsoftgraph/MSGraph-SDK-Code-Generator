@@ -33,6 +33,15 @@ if (isCollection)
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool includeRequestBody = hasParameters && isAction;
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
+
+var projection = host.CurrentType.Projection;
+var canExpand = projection.SupportsExpand();
+var canSelect = projection.BooleanValueOf("Selectable") != false;
+var canFilter = projection.BooleanValueOf("Filterable") != false;
+var canUseTop = projection.BooleanValueOf("TopSupported") != false;
+var canSkip = projection.BooleanValueOf("SkipSupported") != false;
+var canSort = projection.BooleanValueOf("Sortable") != false;
+
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
@@ -49,141 +58,38 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     /// </summary>
     public partial class <#=requestType#> : BaseRequest, I<#=requestType#>
     {
-    <#
-    var paramStringBuilder = new System.Text.StringBuilder();
-    var requestBodyInitializerBuilder = new System.Text.StringBuilder();
-
-    paramStringBuilder.Append(Environment.NewLine);
-    paramStringBuilder.Append("            ");
-    paramStringBuilder.Append("string requestUrl,");
-    paramStringBuilder.Append(Environment.NewLine);
-    paramStringBuilder.Append("            ");
-    paramStringBuilder.Append("IBaseClient client,");
-    paramStringBuilder.Append(Environment.NewLine);
-    paramStringBuilder.Append("            ");
-    paramStringBuilder.Append("IEnumerable<Option> options");
-
-    requestBodyInitializerBuilder.Append("this.Method = \"" + httpMethod + "\";");
-    
-    // Sort the method parameters by required then optional to match the ordering in request builder initialization.
-    var methodParameters = new List<OdcmParameter>();
-    methodParameters.AddRange(method.Parameters.Where(param => !param.IsNullable));
-    methodParameters.AddRange(method.Parameters.Where(param => param.IsNullable));
-
-    if (includeRequestBody)
-    {
-        paramStringBuilder.Append(",");
-        
-        requestBodyInitializerBuilder.Append(Environment.NewLine);
-        requestBodyInitializerBuilder.Append("            ");
-        requestBodyInitializerBuilder.Append("this.ContentType = \"application/json\";");
-        requestBodyInitializerBuilder.Append(Environment.NewLine);
-        requestBodyInitializerBuilder.Append("            ");
-        requestBodyInitializerBuilder.Append("this.RequestBody = new " + requestType + "Body();");
-        
-        foreach (var param in methodParameters)
-        {
-            var paramTypeString = param.Type.GetTypeString();
-            
-            if (param.IsCollection)
-            {
-                paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
-            }
-            else if (!param.Type.IsTypeNullable())
-            {
-                paramTypeString = string.Format("{0}?", paramTypeString);
-            }
-
-            paramStringBuilder.Append(Environment.NewLine);
-            paramStringBuilder.Append("            ");
-
-            var paramLowerChar = param.Name.ToLowerFirstChar();
-            
-            paramStringBuilder.AppendFormat("{0} {1} = null,", paramTypeString, paramLowerChar);
-     
-            requestBodyInitializerBuilder.Append(Environment.NewLine);
-            requestBodyInitializerBuilder.Append("            ");
-            
-            if (!param.IsNullable && !param.Type.IsTypeNullable() && !param.IsCollection)
-            {
-                requestBodyInitializerBuilder.Append(Environment.NewLine);
-                requestBodyInitializerBuilder.Append("            ");
-                requestBodyInitializerBuilder.AppendFormat("if ({0}.HasValue)", paramLowerChar);
-                requestBodyInitializerBuilder.Append(Environment.NewLine);
-                requestBodyInitializerBuilder.Append("            ");
-                requestBodyInitializerBuilder.Append("{");
-                requestBodyInitializerBuilder.Append(Environment.NewLine);
-                requestBodyInitializerBuilder.Append("                ");
-                requestBodyInitializerBuilder.Append("this.RequestBody.");
-                requestBodyInitializerBuilder.Append(param.Name.ToCheckedCase());
-                requestBodyInitializerBuilder.Append(" = ");
-                requestBodyInitializerBuilder.Append(paramLowerChar);
-                requestBodyInitializerBuilder.Append(".Value;");
-                requestBodyInitializerBuilder.Append(Environment.NewLine);
-                requestBodyInitializerBuilder.Append("            ");
-                requestBodyInitializerBuilder.Append("}");
-            }
-            else
-            {
-                requestBodyInitializerBuilder.Append("this.RequestBody.");
-                requestBodyInitializerBuilder.Append(param.Name.ToCheckedCase());
-                requestBodyInitializerBuilder.Append(" = ");
-                requestBodyInitializerBuilder.Append(paramLowerChar);
-                requestBodyInitializerBuilder.Append(";");
-            }
-        }
-        
-        paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);
-    }
-
-    #>
-
         /// <summary>
         /// Constructs a new <#=requestType#>.
         /// </summary>
-        public <#=requestType#>(<#=paramStringBuilder.ToString()#>)
+        public <#=requestType#>(
+            string requestUrl,
+            IBaseClient client,
+            IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
-            <#=requestBodyInitializerBuilder.ToString()#>
-        }
-    <#
-    if (hasParameters && method.IsAction())
+            this.Method = "<#=httpMethod#>";
+<#
+    if (includeRequestBody)
     {
-    #>
+#>
+            this.ContentType = "application/json";
+            this.RequestBody = new <#=requestType#>Body();
+<#
+    }
+#>
+        }
+<#
+    if (includeRequestBody)
+    {
+#>
 
         /// <summary>
         /// Gets the request body.
         /// </summary>
         public <#=requestType#>Body RequestBody { get; private set; }
-    <#
+<#
     }
-
-    var methodReturnTag = sendAsyncReturnType == null
-        ? "The task to await."
-        : string.Concat("The", sendAsyncReturnType);
-        
-    var methodParameter = "null";
-    if (includeRequestBody)
-    {
-        methodParameter = "this.RequestBody";
-    }
-    
-    string sendParameterHeadersForOverload, sendOverloadParameters;
-    
-    if (returnsStream)
-    {
-        sendParameterHeadersForOverload = @"/// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
-        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>";
-        
-        sendOverloadParameters = "CancellationToken cancellationToken, HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead";
-    }
-    else
-    {
-        sendParameterHeadersForOverload = "/// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>";
-        sendOverloadParameters = "CancellationToken cancellationToken";
-    }
-        
-    #>
+#>
 
         /// <summary>
         /// Issues the <#=httpMethod#> request.
@@ -196,16 +102,39 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Issues the <#=httpMethod#> request.
         /// </summary>
-        /// <#=sendParameterHeadersForOverload#>
-        /// <returns><#=methodReturnTag#></returns>
-        public <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(<#=sendOverloadParameters#>)
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+<#
+    if (returnsStream)
+    {
+#>
+        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+<#
+    }
+#>
+        /// <returns>The task to await for async call.</returns>
+        public <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(
+<#
+    if (returnsStream)
+    {
+#>
+            CancellationToken cancellationToken,
+            HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)
+<#
+    }
+    else
+    {
+#>
+            CancellationToken cancellationToken)
+<#
+    }
+#>
         {
-    <#
+<#
+    var methodParameter = includeRequestBody ? "this.RequestBody" : "null";
 
     if (isCollection)
     {
-    #>
-
+#>
             var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -230,37 +159,35 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             }
 
             return null;
-    <#
+<#
     }
     else if (returnsStream)
     {
-    #>
-
-            return this.SendStreamRequestAsync(null, httpCompletionOption, cancellationToken);
-    <#
+#>
+            return this.SendStreamRequestAsync(null, cancellationToken, httpCompletionOption);
+<#
     }
     else if (!string.IsNullOrEmpty(sendAsyncReturnType))
     {
-    #>
-
+#>
             return this.SendAsync<<#=sendAsyncReturnType#>>(<#=methodParameter#>, cancellationToken);
-    <#
+<#
     }
     else
     {
-    #>
-
+#>
             return this.SendAsync(<#=methodParameter#>, cancellationToken); 
-    <#
+<#
     }
-    #>
-
+#>
         }
-    <#
+
+<#
     if (!returnsStream)
     {
-    #>
-
+        if (canExpand)
+        {
+#>
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -271,6 +198,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             this.QueryOptions.Add(new QueryOption("$expand", value));
             return this;
         }
+<#
+        }
+
+        if (canSelect)
+        {
+#>
 
         /// <summary>
         /// Adds the specified select value to the request.
@@ -282,10 +215,14 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
-    <#
+<#
+        }
+
         if (isCollection)
         {
-    #>
+            if (canUseTop)
+            {
+#>
 
         /// <summary>
         /// Adds the specified top value to the request.
@@ -297,7 +234,13 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-		
+<#
+            }
+
+            if (canFilter)
+            {
+#>
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
@@ -308,6 +251,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             this.QueryOptions.Add(new QueryOption("$filter", value));
             return this;
         }
+<#
+            }
+
+            if (canSkip)
+            {
+#>
 
         /// <summary>
         /// Adds the specified skip value to the request.
@@ -319,6 +268,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
             return this;
         }
+<#
+            }
+
+            if (canSort)
+            {
+#>
 
         /// <summary>
         /// Adds the specified orderby value to the request.
@@ -330,10 +285,10 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             this.QueryOptions.Add(new QueryOption("$orderby", value));
             return this;
         }
-    <#
+<#
+            }
         }
     }
-    #>
-
+#>
     }
 }

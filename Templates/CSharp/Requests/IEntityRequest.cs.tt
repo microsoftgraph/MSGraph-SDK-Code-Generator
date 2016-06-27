@@ -6,6 +6,13 @@ OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
 var entityRequest = entityName + "Request";
 
+var projection = host.CurrentType.Projection;
+var canCreate = projection.SupportsInsert();
+var canDelete = projection.SupportsDelete();
+var canUpdate = projection.SupportsUpdate();
+var canExpand = projection.SupportsExpand();
+var canSelect = projection.BooleanValueOf("Selectable") != false;
+
 #>
 
 namespace <#=this.GetNamespaceName(entity)#>
@@ -18,16 +25,45 @@ namespace <#=this.GetNamespaceName(entity)#>
 
     <#=this.GetEntityRequestInterfaceDefinition(entity)#>
     {
-        <#=this.GetEntityCreateAsyncMethod(entity)#>
+<#
+    if (canCreate)
+    {
+        Write("        ");
+        Write(this.GetEntityCreateAsyncMethod(entity));
+        Write("\n\n");
+    }
 
-        <#=this.GetEntityDeleteAsyncMethod(entity)#>
+    if (canDelete)
+    {
+        Write("        ");
+        Write(this.GetEntityDeleteAsyncMethod(entity));
+        Write("\n\n");
+    }
 
-        <#=this.GetEntityGetAsyncMethod(entity)#>
+    Write("        ");
+    Write(this.GetEntityGetAsyncMethod(entity));
+    Write("\n\n");
 
-        <#=this.GetEntityUpdateAsyncMethod(entity)#>
+    if (canUpdate)
+    {
+        Write("        ");
+        Write(this.GetEntityUpdateAsyncMethod(entity));
+        Write("\n\n");
+    }
 
-        <#=this.GetEntityExpandMethod(entity)#>
+    if (canExpand)
+    {
+        Write("        ");
+        Write(this.GetEntityExpandMethod(entity));
+        Write("\n\n");
+    }
 
-        <#=this.GetEntitySelectMethod(entity)#>
+    if (canSelect)
+    {
+        Write("        ");
+        Write(this.GetEntitySelectMethod(entity));
+        Write("\n\n");
+    }
+#>
     }
 }

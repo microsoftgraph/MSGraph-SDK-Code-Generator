@@ -28,6 +28,15 @@ var methodReturnTag = sendAsyncReturnType == null
         
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
+
+var projection = host.CurrentType.Projection;
+var canExpand = projection.SupportsExpand();
+var canSelect = projection.BooleanValueOf("Selectable") != false;
+var canFilter = projection.BooleanValueOf("Filterable") != false;
+var canUseTop = projection.BooleanValueOf("TopSupported") != false;
+var canSkip = projection.BooleanValueOf("SkipSupported") != false;
+var canSort = projection.BooleanValueOf("Sortable") != false;
+
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
@@ -44,25 +53,25 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     /// </summary>
     public partial interface I<#=requestType#> : IBaseRequest
     {
-    <#
+<#
     if (hasParameters && method.IsAction())
     {
-    #>
+#>
 
         /// <summary>
         /// Gets the request body.
         /// </summary>
         <#=requestType#>Body RequestBody { get; }
-    <#
+<#
     }
-    
+
     string sendParameterHeadersForOverload, sendOverloadParameters;
-    
+
     if (returnsStream)
     {
         sendParameterHeadersForOverload = @"/// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
         /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>";
-        
+
         sendOverloadParameters = "CancellationToken cancellationToken, HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead";
     }
     else
@@ -70,9 +79,9 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         sendParameterHeadersForOverload = "/// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>";
         sendOverloadParameters = "CancellationToken cancellationToken";
     }
-    
-    #>
-    
+
+#>
+
         /// <summary>
         /// Issues the <#=httpMethod#> request.
         /// </summary>
@@ -84,17 +93,25 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <#=sendParameterHeadersForOverload#>
         /// <returns><#=methodReturnTag#></returns>
         <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(<#=sendOverloadParameters#>);
-    <#
+<#
     if (!returnsStream)
     {
-    #>
-        
+        if (canExpand)
+        {
+#>
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
         /// <param name="value">The expand value.</param>
         /// <returns>The request object to send.</returns>
         I<#=requestType#> Expand(string value);
+<#
+        }
+
+        if (canSelect)
+        {
+#>
 
         /// <summary>
         /// Adds the specified select value to the request.
@@ -102,10 +119,15 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         I<#=requestType#> Select(string value);
-    <#
+<#
+        }
+
         if (isCollection)
         {
-    #>
+
+            if (canUseTop)
+            {
+#>
 
         /// <summary>
         /// Adds the specified top value to the request.
@@ -113,13 +135,25 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         I<#=requestType#> Top(int value);
-        
+<#
+            }
+
+            if (canFilter)
+            {
+#>
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
         /// <param name="value">The filter value.</param>
         /// <returns>The request object to send.</returns>
         I<#=requestType#> Filter(string value);
+<#
+            }
+
+            if (canSkip)
+            {
+#>
 
         /// <summary>
         /// Adds the specified skip value to the request.
@@ -127,6 +161,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <param name="value">The skip value.</param>
         /// <returns>The request object to send.</returns>
         I<#=requestType#> Skip(int value);
+<#
+            }
+
+            if (canSort)
+            {
+#>
 
         /// <summary>
         /// Adds the specified orderby value to the request.
@@ -134,10 +174,10 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <param name="value">The orderby value.</param>
         /// <returns>The request object to send.</returns>
         I<#=requestType#> OrderBy(string value);
-    <#
+<#
+            }
         }
     }
-    #>
-
+#>
     }
 }

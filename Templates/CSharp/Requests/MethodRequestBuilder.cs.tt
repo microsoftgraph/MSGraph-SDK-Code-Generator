@@ -5,417 +5,119 @@
 
 var method = host.CurrentType.AsOdcmMethod();
 var entityName = method.Class.Name.ToCheckedCase();
-var isAction = method.IsAction();
-var hasParameters = method.Parameters != null && method.Parameters.Any();
-var requestType = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase() + "Request";
+var methodName = method.Name.ToCheckedCase();
+var requestType = entityName + methodName + "Request";
 var requestBuilderType = requestType + "Builder";
+
+var isPost = method.IsAction() && method.Parameters != null && method.Parameters.Any();
+var methodType = isPost ? "Post" : "Get";
+
+var overloads = new List<OdcmMethod>();
+overloads.Add(method);
+overloads.AddRange(method.Overloads);
+
+var methods = overloads
+    .Select(m =>
+        {
+            var parameters = m.Parameters
+                .Select(p =>
+                    {
+                        var type = p.Type.GetTypeString();
+                        var name = p.Name.ToLowerFirstChar();
+                        var parameterName = p.Name.GetSanitizedParameterName();
+                        var propertyName = p.Name.ToCheckedCase();
+
+                        if (p.IsCollection)
+                        {
+                            type = string.Format("IEnumerable<{0}>", type);
+                        }
+                        else if (!p.Type.IsTypeNullable() && p.IsNullable)
+                        {
+                            type += "?";
+                        }
+
+                        return new { Type = type, Name = name, ParameterName = parameterName, PropertyName = propertyName, IsNullable = p.IsNullable };
+                    })
+                .OrderBy(p => p.IsNullable ? 1 : 0);
+
+            var paramStrings = parameters.Select(p => string.Format(",\n            {0} {1}", p.Type, p.ParameterName));
+            var paramComments = parameters.Select(p => string.Format("\n        /// <param name=\"{0}\">A {0} parameter for the OData method call.</param>", p.ParameterName));
+
+            return new
+            {
+                Parameters = parameters,
+                ParametersAsArguments = string.Join("", paramStrings),
+                ParameterComments = string.Join("", paramComments),
+            };
+        });
+
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.IO;
 
     /// <summary>
-    /// The type <#=requestBuilderType#>.
+    /// The type DriveItemDeltaRequestBuilder.
     /// </summary>
-    public partial class <#=requestBuilderType#> : BaseRequestBuilder, I<#=requestBuilderType#>
+    public partial class <#=requestBuilderType#> : Base<#=methodType#>MethodRequestBuilder<I<#=requestType#>>, I<#=requestBuilderType#>
     {
-    <#
-
-    var requestConstructorParamsStringBuilder = new StringBuilder();
-    var actionRequiredParametersExceptionStringBuilder = new StringBuilder();
-    var requestUrlInitializerStringBuilder = new StringBuilder();
-
-    if (!isAction && !hasParameters)
-    {
-        requestConstructorParamsStringBuilder.Append(@"
-                this.RequestUrl,
-                this.Client,
-                options");
-    #>
-
+<#
+foreach (var m in methods)
+{
+#>
+        /// <summary>
+        /// Constructs a new <see cref="<#=requestBuilderType#>"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param><#=m.ParameterComments#>
         public <#=requestBuilderType#>(
             string requestUrl,
-            IBaseClient client)
+            IBaseClient client<#=m.ParametersAsArguments#>)
             : base(requestUrl, client)
         {
-        }
-    <#
-    }
-    else
+<#
+    foreach (var p in m.Parameters)
     {
-        if (isAction)
-        {
-            requestConstructorParamsStringBuilder.Append(@"
-                this.RequestUrl,
-                this.Client,
-                options,");
-        }
-        else
-        {
-            requestConstructorParamsStringBuilder.Append(@"
-                functionRequestUrl,
-                this.Client,
-                options");
-        }
-
-        var initializersStringBuilder = new StringBuilder();
-        var builderConstructorParamsStringBuilder = new StringBuilder();
-        
-        builderConstructorParamsStringBuilder.Append(Environment.NewLine);
-        builderConstructorParamsStringBuilder.Append("            ");
-        builderConstructorParamsStringBuilder.Append("string requestUrl,");
-        builderConstructorParamsStringBuilder.Append(Environment.NewLine);
-        builderConstructorParamsStringBuilder.Append("            ");
-        builderConstructorParamsStringBuilder.Append("IBaseClient client,");
-
-        requestUrlInitializerStringBuilder.Append("var functionParametersStringBuilder = new StringBuilder();");
-        
-        var requiredParameters = method.Parameters.Where(param => !param.IsNullable);
-        var optionalParameters = method.Parameters.Where(param => param.IsNullable);
-
-        bool first = true;
-        
-        foreach (var param in requiredParameters)
-        {
-            this.AddParameterToRequestBuilderConstructorStringBuilder(builderConstructorParamsStringBuilder, param, false);
-            this.AddParameterToRequestBuilderInitializerStringBuilder(initializersStringBuilder, param);
-            
-            if (isAction)
-            {
-                this.AddParameterToRequestConstructorStringBuilder(requestConstructorParamsStringBuilder, param);
-                
-                this.AppendRequiredParameterException(actionRequiredParametersExceptionStringBuilder, param);
-            }
-            else
-            {
-                this.AddParameterToRequestUrlInitializerStringBuilder(requestUrlInitializerStringBuilder, param, false, first);
-                
-                first = false;
-            }
-        }
-
-        foreach (var param in optionalParameters)
-        {
-            this.AddParameterToRequestBuilderConstructorStringBuilder(builderConstructorParamsStringBuilder, param, true);
-            this.AddParameterToRequestBuilderInitializerStringBuilder(initializersStringBuilder, param);
-            
-            if (isAction)
-            {
-                this.AddParameterToRequestConstructorStringBuilder(requestConstructorParamsStringBuilder, param);
-            }
-            else
-            {
-                this.AddParameterToRequestUrlInitializerStringBuilder(requestUrlInitializerStringBuilder, param, true, first);
-                
-                first = false;
-            }
-        }
-
-        builderConstructorParamsStringBuilder.Remove(builderConstructorParamsStringBuilder.Length - 1, 1);
-        
-        if (isAction)
-        {
-            // We'll only have the trailing comma in the request constructor string builder for actions. Functions add the request parameters to the URL.
-            requestConstructorParamsStringBuilder.Remove(requestConstructorParamsStringBuilder.Length - 1, 1);
-        }
-        else if (hasParameters)
-        {
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("            functionRequestUrl = string.Format(\"{0}({1})\", this.RequestUrl, functionParametersStringBuilder.ToString());");
-        }
-    #>
-
-        public <#=requestBuilderType#>(<#=builderConstructorParamsStringBuilder.ToString()#>)
-            : base(requestUrl, client)
-        {
-            <#=initializersStringBuilder.ToString()#>
-
-        }
-    <#
-    }
-
-    foreach (var param in method.Parameters)  
-    {
-        var paramTypeString = param.Type.GetTypeString();
-        
-        if (param.IsCollection)
-        {
-            paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
-        }
-        else if (!param.Type.IsTypeNullable() && param.IsNullable)
-        {
-            paramTypeString = string.Format("{0}?", paramTypeString);
-        }
-    #>
-
-        /// <summary>
-        /// Gets the value of <#=param.Name.ToCheckedCase()#>.
-        /// </summary>
-        public <#=paramTypeString#> <#=param.Name.ToCheckedCase()#> { get; set; }
-    <#
-    }
-    #>
-
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
-        /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public I<#=requestType#> Request(IEnumerable<Option> options = null)
-        {
-    <#
-        if (!isAction && hasParameters)
-        {
-    #>
-    
-            var functionRequestUrl = this.RequestUrl;
-            
-            <#=requestUrlInitializerStringBuilder.ToString()#>
-            
-            return new <#=requestType#>(<#=requestConstructorParamsStringBuilder.ToString()#>);
-    <#
-        }
-        else
-        {
-            if (actionRequiredParametersExceptionStringBuilder.Length > 0)
-            {
-    #>
-    
-            <#=actionRequiredParametersExceptionStringBuilder#>
-    <#
-            }
-    #>
-            
-            return new <#=requestType#>(<#=requestConstructorParamsStringBuilder.ToString()#>);
-    <#
-        }
-    #>
-    
-        }
-
-    }
-}
-
-<#+
-
-// Adds the specified parameter to the string builder for the constructor of the request builder class
-private void AddParameterToRequestBuilderConstructorStringBuilder(
-    StringBuilder requestBuilderConstructorParametersStringBuilder,
-    OdcmParameter param,
-    bool optional)
-{
-    var paramTypeString = param.Type.GetTypeString();
-    var paramCheckedCase = param.Name.ToCheckedCase();
-    var paramLowerFirstChar = param.Name.ToLowerFirstChar();
-
-    requestBuilderConstructorParametersStringBuilder.Append(Environment.NewLine);
-    requestBuilderConstructorParametersStringBuilder.Append("            ");
-     
-    if (optional)
-    {
-        if (param.IsCollection)
-        {
-            requestBuilderConstructorParametersStringBuilder.AppendFormat("IEnumerable<{0}> {1} = null,", paramTypeString, paramLowerFirstChar);
-        }
-        else if (param.Type.IsTypeNullable())
-        {
-             requestBuilderConstructorParametersStringBuilder.AppendFormat("{0} {1} = null,", paramTypeString, paramLowerFirstChar);
-        }
-        else
-        {
-             requestBuilderConstructorParametersStringBuilder.AppendFormat("{0}? {1} = null,", paramTypeString, paramLowerFirstChar);
-        }
-    }
-    else
-    {
-        if (param.IsCollection)
-        {
-            paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
-        }
-        
-        requestBuilderConstructorParametersStringBuilder.AppendFormat("{0} {1},", paramTypeString, paramLowerFirstChar);
-    }
-}
-
-// Adds the specified parameter to the string builder for the initializations in the request builder constructor body
-private void AddParameterToRequestBuilderInitializerStringBuilder(
-    StringBuilder requestBuilderInitializerStringBuilder,
-    OdcmParameter param)
-{
-    var paramCheckedCase = param.Name.ToCheckedCase();
-    var paramLowerFirstChar = param.Name.ToLowerFirstChar();
-
-    requestBuilderInitializerStringBuilder.Append(Environment.NewLine);
-    requestBuilderInitializerStringBuilder.Append("            ");
-    requestBuilderInitializerStringBuilder.AppendFormat("this.{0} = {1};", paramCheckedCase, paramLowerFirstChar);
-}
-
-// Adds the specified parameter to the string builder for calling the request constructor in the Request() method
-private void AddParameterToRequestConstructorStringBuilder(
-    StringBuilder requestConstructorParametersStringBuilder,
-    OdcmParameter param)
-{
-    var paramCheckedCase = param.Name.ToCheckedCase();
-    
-    requestConstructorParametersStringBuilder.Append(Environment.NewLine);
-    requestConstructorParametersStringBuilder.Append("                ");
-    requestConstructorParametersStringBuilder.AppendFormat("this.{0},", paramCheckedCase);
-}
-
-// Adds the specified parameter to the string builder the request URL builder in the Request() method
-private void AddParameterToRequestUrlInitializerStringBuilder(
-    StringBuilder requestUrlInitializerStringBuilder,
-    OdcmParameter param,
-    bool optional,
-    bool first)
-{  
-    var paramCheckedCase = param.Name.ToCheckedCase();
-    var paramLowerFirstChar = param.Name.ToLowerFirstChar();
-    
-    requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-    requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-    requestUrlInitializerStringBuilder.Append("            ");
-    
-    if (optional && !param.Type.IsTypeNullable())
-    {
-        requestUrlInitializerStringBuilder.AppendFormat("if (this.{0}.HasValue)", paramCheckedCase);
-        requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-        requestUrlInitializerStringBuilder.Append("            {");
-        requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-        
-        if (first)
-        {
-            requestUrlInitializerStringBuilder.AppendFormat(
-                "                functionParametersStringBuilder.AppendFormat(\"{0}='{{0}}'\", this.{1}.Value);",
-                paramLowerFirstChar,
-                paramCheckedCase);
-        }
-        else
-        {
-            requestUrlInitializerStringBuilder.AppendFormat(
-                "                functionParametersStringBuilder.AppendFormat(\",{0}='{{0}}'\", this.{1}.Value);",
-                paramLowerFirstChar,
-                paramCheckedCase);
-        }
-        
-        requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-        requestUrlInitializerStringBuilder.Append("            }");
-        
-        this.AppendNullParameter(requestUrlInitializerStringBuilder, paramLowerFirstChar, first);
-    }
-    else
-    {
-        requestUrlInitializerStringBuilder.AppendFormat("if (this.{0} != null)", paramCheckedCase);
-        requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-        requestUrlInitializerStringBuilder.Append("            {");
-        requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-        
-        if (first)
-        {
-            requestUrlInitializerStringBuilder.AppendFormat(
-                "                functionParametersStringBuilder.AppendFormat(\"{0}='{{0}}'\", this.{1});",
-                paramLowerFirstChar,
-                paramCheckedCase);
-        }
-        else
-        {
-            requestUrlInitializerStringBuilder.AppendFormat(
-                "                functionParametersStringBuilder.AppendFormat(\",{0}='{{0}}'\", this.{1});",
-                paramLowerFirstChar,
-                paramCheckedCase);
-        }
-        
-        requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-        requestUrlInitializerStringBuilder.Append("            }");
-        
-        if (optional)
-        {
-            this.AppendNullParameter(requestUrlInitializerStringBuilder, paramLowerFirstChar, first);
-        }
-        else
-        {
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("            ");
-            requestUrlInitializerStringBuilder.Append("else");
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("            {");
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("                throw new ServiceException(");
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("                    new Error");
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("                    {");
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("                        Code = \"invalidRequest\",");
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.AppendFormat("                        Message = \"{0} is a required parameter for this method request.\",", paramLowerFirstChar);
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("                    });");
-            requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-            requestUrlInitializerStringBuilder.Append("            }");
-        }
-    }
-}
-
-private void AppendNullParameter(StringBuilder requestUrlInitializerStringBuilder, string paramLowerFirstChar, bool first)
-{
-    requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-    requestUrlInitializerStringBuilder.Append("            ");
-    requestUrlInitializerStringBuilder.AppendFormat("else");
-    requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-    requestUrlInitializerStringBuilder.Append("            {");
-    requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-    
-    if (first)
-    {
-        requestUrlInitializerStringBuilder.AppendFormat(
-            "                functionParametersStringBuilder.Append(\"{0}=null\");",
-            paramLowerFirstChar);
-    }
-    else
-    {
-        requestUrlInitializerStringBuilder.AppendFormat(
-            "                functionParametersStringBuilder.Append(\",{0}=null\");",
-            paramLowerFirstChar);
-    }
-    
-    requestUrlInitializerStringBuilder.Append(Environment.NewLine);
-    requestUrlInitializerStringBuilder.Append("            }");
-}
-
-private void AppendRequiredParameterException(StringBuilder actionRequiredParametersExceptionStringBuilder, OdcmParameter param)
-{
-    var paramCheckedCase = param.Name.ToCheckedCase();
-    var paramLowerFirstChar = param.Name.ToLowerFirstChar();
-    
-    if (actionRequiredParametersExceptionStringBuilder.Length > 0)
-    {
-        actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
-        actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
-        actionRequiredParametersExceptionStringBuilder.Append("            ");
-    }
-    
-    actionRequiredParametersExceptionStringBuilder.AppendFormat("if (this.{0} == null)", paramCheckedCase);
-    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
-    actionRequiredParametersExceptionStringBuilder.Append("            {");
-    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
-    actionRequiredParametersExceptionStringBuilder.Append("                throw new ServiceException(");
-    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
-    actionRequiredParametersExceptionStringBuilder.Append("                    new Error");
-    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
-    actionRequiredParametersExceptionStringBuilder.Append("                    {");
-    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
-    actionRequiredParametersExceptionStringBuilder.Append("                        Code = \"invalidRequest\",");
-    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
-    actionRequiredParametersExceptionStringBuilder.AppendFormat("                        Message = \"{0} is a required parameter for this method request.\",", paramLowerFirstChar);
-    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
-    actionRequiredParametersExceptionStringBuilder.Append("                    });");
-    actionRequiredParametersExceptionStringBuilder.Append(Environment.NewLine);
-    actionRequiredParametersExceptionStringBuilder.Append("            }");
-}
-
 #>
+            SetParameter("<#=p.Name#>", <#=p.ParameterName#>, <#=p.IsNullable.ToString().ToLowerInvariant()#>);
+<#
+    }
+#>
+        }
+
+<#
+}
+#>
+        /// <summary>
+        /// A method used by the base class to construct a request class instance.
+        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
+        /// <param name="options">The query and header options for the request.</param>
+        /// <returns>An instance of a specific request class.</returns>
+        protected override I<#=requestType#> CreateRequest(string functionUrl, IEnumerable<Option> options)
+        {
+            var request = new <#=requestType#>(functionUrl, this.Client, options);
+
+<#
+    if (isPost)
+    {
+        foreach (var m in methods)
+        {
+            foreach (var p in m.Parameters)
+            {
+#>
+            if (HasParameter("<#=p.Name#>"))
+                request.RequestBody.<#=p.PropertyName#> = GetParameter<<#=p.Type#>>("<#=p.Name#>");
+
+<#
+            }
+        }
+    }
+#>
+            return request;
+        }
+    }
+}

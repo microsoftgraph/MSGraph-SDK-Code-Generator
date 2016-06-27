@@ -6,12 +6,20 @@
 var method = host.CurrentType.AsOdcmMethod();
 var entityName = method.Class.Name.ToCheckedCase();
 var requestBody = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase() + "RequestBody";
+
+// These types of request bodies are only used for OData actions, which when containing parameters,
+// will always result in POST calls. The OData spec is explicit in saying that overload methods bound
+// to other types are explicitly not allowed. Therefore, any overload methods found here are invalid
+// and violate the spec.
+System.Diagnostics.Debug.Assert(!method.Overloads.Any(), "Overload actions are not allowed in OData services");
+
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Runtime.Serialization;
 
     /// <summary>
