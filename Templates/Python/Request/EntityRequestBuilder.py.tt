@@ -4,7 +4,7 @@
 <#
 CustomT4Host host       = (CustomT4Host) Host;
 var projection = host.CurrentType.Projection;
-var canExpand           = projection.CanExpand();
+var canExpand           = projection.SupportsExpand();
 OdcmModel model         = host.CurrentModel;
 CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 OdcmClass entity        = host.CurrentType.AsOdcmClass();
