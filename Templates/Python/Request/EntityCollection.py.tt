@@ -4,6 +4,9 @@
 <#
 CustomT4Host host       = (CustomT4Host) Host;
 OdcmModel model         = host.CurrentModel;
+var canExpand = projection.SupportsExpand();
+var canSelect = projection.BooleanValueOf("Selectable");
+var canUseTop = projection.BooleanValueOf("TopSupported");
 CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 var clientName          = model.GetEntityContainer().ToUpperFirstChar() + "Client";
 var clientNameLower     = clientName.ToLowerFirstChar();
