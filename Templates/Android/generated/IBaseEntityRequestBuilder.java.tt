@@ -6,11 +6,7 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<# if (c.BaseClass() != null) { #>
-<#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), ITypeRequestBuilder(c.BaseClass()))#>
-<# } else { #>
 <#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), "IRequestBuilder")#>
-<# } #>
     /**
      * Creates the request
      */

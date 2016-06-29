@@ -12,7 +12,7 @@ var canUseTop = projection.BooleanValueOf("TopSupported") != false;
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef(IBaseTypeRequest(c), c.AsOdcmClass().Base != null ? ITypeRequest(BaseClass(c)) : "IHttpRequest")#>
+<#=CreateInterfaceDef(IBaseTypeRequest(c), "IHttpRequest")#>
 
 <#  if (c.AsOdcmClass().IsAbstract && c.AsOdcmClass().Base == null)
     {

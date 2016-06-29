@@ -6,11 +6,7 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<# if (c.BaseClass() != null) { #>
-<#=CreateClassDef(BaseTypeRequestBuilder(c), TypeRequestBuilder(c.BaseClass()), IBaseTypeRequestBuilder(c))#>
-<# } else { #>
 <#=CreateClassDef(BaseTypeRequestBuilder(c), "BaseRequestBuilder", IBaseTypeRequestBuilder(c))#>
-<# } #>
 
     /**
      * The request builder for the <#=TypeName(c)#>
