@@ -265,8 +265,15 @@ public string GetStreamProperties(OdcmClass entity)
 // Creates the set of property definitions for OData method properties on the entity
 public string GetMethodProperties(OdcmClass entity)
 {
+    var allMethods = new List<OdcmMethod>();
+    foreach (var method in entity.Methods)
+    {
+        allMethods.Add(method);
+        allMethods.AddRange(method.Overloads);
+    }
+
     var methodPropertiesStringBuilder = new StringBuilder();
-    foreach(var method in entity.Methods)
+    foreach(var method in allMethods)
     {
         var methodName = this.GetMethodName(method);
         var baseName = string.Concat(this.GetEntityNameString(method.Class), methodName);
@@ -290,7 +297,7 @@ public string GetMethodProperties(OdcmClass entity)
             
             foreach (var param in requiredParameters)
             {
-                var paramVariableName = param.Name.ToLowerFirstChar();
+                var paramVariableName = param.Name.GetSanitizedParameterName();
                 var paramTypeString = param.Type.GetTypeString();
                 
                 if (param.IsCollection)
@@ -309,7 +316,7 @@ public string GetMethodProperties(OdcmClass entity)
             
             foreach (var param in optionalParameters)
             {
-                var paramVariableName = param.Name.ToLowerFirstChar();
+                var paramVariableName = param.Name.GetSanitizedParameterName();
                 var paramTypeString = param.Type.GetTypeString();
                 
                 if (param.IsCollection)

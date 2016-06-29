@@ -13,7 +13,8 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.IO;
+
     using Microsoft.Graph;
 
     /// <summary>
@@ -21,29 +22,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     /// </summary>
     public partial interface I<#=requestBuilderType#>
     {
-    <#
-    foreach (var param in method.Parameters)  
-    {
-        var paramTypeString = param.Type.GetTypeString();
-        
-        if (param.IsCollection)
-        {
-            paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
-        }
-        else if (!param.Type.IsTypeNullable() && param.IsNullable)
-        {
-            paramTypeString = string.Format("{0}?", paramTypeString);
-        } 
-    #>
-
-        /// <summary>
-        /// Gets the <#=param.Name.ToCheckedCase()#>.
-        /// </summary>
-        <#=paramTypeString#> <#=param.Name.ToCheckedCase()#> { get; }
-    <#
-    }
-    #>
-
         /// <summary>
         /// Builds the request.
         /// </summary>
