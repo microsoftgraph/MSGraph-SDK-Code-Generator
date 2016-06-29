@@ -8,7 +8,7 @@ var innerEntityType = innerEntity.Name.ToCheckedCase();
 var collectionRequest = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionRequest");
 var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionResponse");
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
-
+var features = host.CurrentType.GetFeatures();
 #>
 
 namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
@@ -67,6 +67,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return null;
         }
 
+<# if (features.CanExpand) { #>
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -78,6 +79,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanSelect) { #>
         /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
@@ -89,6 +92,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanUseTop) { #>
         /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
@@ -99,7 +104,9 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-        
+
+<# } #>
+<# if (features.CanFilter) { #>
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
@@ -111,6 +118,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanSkip) { #>
         /// <summary>
         /// Adds the specified skip value to the request.
         /// </summary>
@@ -122,6 +131,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanSort) { #>
         /// <summary>
         /// Adds the specified orderby value to the request.
         /// </summary>
@@ -132,5 +143,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             this.QueryOptions.Add(new QueryOption("$orderby", value));
             return this;
         }
+<# } #>
     }
 }

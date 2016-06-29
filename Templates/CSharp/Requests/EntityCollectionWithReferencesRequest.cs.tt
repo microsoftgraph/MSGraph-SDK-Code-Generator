@@ -11,6 +11,7 @@ var propName = prop.Name.ToCheckedCase();
 var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), propName , "CollectionWithReferencesResponse");
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), propName , "CollectionWithReferencesPage");
 
+var features = host.CurrentType.GetFeatures();
 #>
 
 namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
@@ -69,6 +70,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return null;
         }
 
+<# if (features.CanExpand) { #>
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -80,6 +82,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanSelect) { #>
         /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
@@ -91,6 +95,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanUseTop) { #>
         /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
@@ -102,6 +108,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanFilter) { #>
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
@@ -113,6 +121,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanSkip) { #>
         /// <summary>
         /// Adds the specified skip value to the request.
         /// </summary>
@@ -124,6 +134,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanSort) { #>
         /// <summary>
         /// Adds the specified orderby value to the request.
         /// </summary>
@@ -135,4 +147,5 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
     }
+<# } #>
 }
