@@ -9,14 +9,10 @@
           { "Template": "IEntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "I<Container>Client" },
           
           { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
-          { "Template": "EntityRequest", "SubProcessor": "NavigableComplexType", "Type": "Request", "Name": "<Class>Request" },
           { "Template": "IEntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>Request" },
-          { "Template": "IEntityRequest", "SubProcessor": "NavigableComplexType", "Type": "Request", "Name": "I<Class>Request" },
           
           { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
-          { "Template": "EntityRequestBuilder", "SubProcessor": "NavigableComplexType", "Type": "Request", "Name": "<Class>RequestBuilder" },
           { "Template": "IEntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>RequestBuilder" },
-          { "Template": "IEntityRequestBuilder", "SubProcessor": "NavigableComplexType", "Type": "Request", "Name": "I<Class>RequestBuilder" },
           
           { "Template": "EntityCollectionPage", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionPage" },
           { "Template": "IEntityCollectionPage", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Class><Property>CollectionPage" },

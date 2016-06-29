@@ -19,7 +19,8 @@
         }
     },
     "AsyncMethods": [ "oneDrive.copy" ],
-    "NavigableComplexTypes": [ "oneDrive.thumbnail" ],
+    "PassFunctionParametersAsQuery":  false,
+    "TelemetryHeaderServicePrefix":  "onedrive",
     "TemplateMapping": {
         "Shared": [
         ]

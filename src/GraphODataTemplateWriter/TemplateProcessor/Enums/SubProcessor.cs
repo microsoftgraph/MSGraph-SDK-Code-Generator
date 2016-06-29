@@ -6,7 +6,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor.Enums
     {
       EntityType,
       ComplexType,
-      NavigableComplexType,
       EnumType,
       MediaEntityType,
       Property,

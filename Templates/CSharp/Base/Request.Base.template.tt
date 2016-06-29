@@ -41,6 +41,9 @@ public string GetConstructor(string instanceTypeName)
             IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
+            this.SdkVersionHeaderPrefix = """);
+    stringBuilder.Append(ConfigurationService.Settings.TelemetryHeaderServicePrefix);
+    stringBuilder.Append(@""";
         }");
     
     return stringBuilder.ToString();

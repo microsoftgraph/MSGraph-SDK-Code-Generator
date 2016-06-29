@@ -74,7 +74,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
 
         public string[] AsyncMethods { get; set; }
 
-        public string[] NavigableComplexTypes { get; set; }
+        public bool PassFunctionParametersAsQueryString { get; set; }
+
+        public string TelemetryHeaderServicePrefix { get; set; }
 
         /// <summary>
         /// The template configuration mapping for all platforms.

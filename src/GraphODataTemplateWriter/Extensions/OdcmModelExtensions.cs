@@ -215,11 +215,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return model.GetEntityTypes().SelectMany(entityType => entityType.Methods);
         }
 
-        public static IEnumerable<OdcmClass> GetNavigableComplexTypes(this OdcmModel model)
-        {
-            return model.GetComplexTypes().Where(complexType => complexType.IsNavigableComplexType());
-        }
-
         public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty)
         {
             // Try to find the first collection navigation property for the specified type directly on the service
@@ -232,18 +227,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 .Classes
                 .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
                 .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
-                .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
-                .First();
+                .First(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName));
         }
 
         public static bool IsAsync(this OdcmMethod method)
         {
             return ConfigurationService.Settings.AsyncMethods.Contains(method.FullName);
-        }
-
-        public static bool IsNavigableComplexType(this OdcmClass complexType)
-        {
-            return ConfigurationService.Settings.NavigableComplexTypes.Contains(complexType.FullName);
         }
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
