@@ -6,9 +6,7 @@
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = this.GetEntityNameString(entity);
 
-var projection = host.CurrentType.Projection;
-var canExpand = projection.SupportsExpand();
-var canSelect = projection.BooleanValueOf("Selectable") != false;
+var features = host.CurrentType.GetFeatures();
 
 #>
 
@@ -28,14 +26,14 @@ namespace <#=this.GetNamespaceName(entity)#>
         <#=this.GetEntityGetAsyncMethod(entity, false)#>
 
 <#
-    if (canExpand)
+    if (features.CanExpand)
     {
         Write("        ");
         Write(this.GetEntityWithReferenceExpandMethod(entity));
         Write("\n\n");
     }
 
-    if (canSelect)
+    if (features.CanSelect)
     {
         Write("        ");
         Write(this.GetEntityWithReferenceSelectMethod(entity));

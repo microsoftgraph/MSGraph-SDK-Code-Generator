@@ -34,13 +34,7 @@ bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool includeRequestBody = hasParameters && isAction;
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
 
-var projection = host.CurrentType.Projection;
-var canExpand = projection.SupportsExpand();
-var canSelect = projection.BooleanValueOf("Selectable") != false;
-var canFilter = projection.BooleanValueOf("Filterable") != false;
-var canUseTop = projection.BooleanValueOf("TopSupported") != false;
-var canSkip = projection.BooleanValueOf("SkipSupported") != false;
-var canSort = projection.BooleanValueOf("Sortable") != false;
+var features = host.CurrentType.GetFeatures();
 
 #>
 
@@ -185,7 +179,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 <#
     if (!returnsStream)
     {
-        if (canExpand)
+        if (features.CanExpand)
         {
 #>
         /// <summary>
@@ -201,7 +195,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 <#
         }
 
-        if (canSelect)
+        if (features.CanSelect)
         {
 #>
 
@@ -220,7 +214,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 
         if (isCollection)
         {
-            if (canUseTop)
+            if (features.CanUseTop)
             {
 #>
 
@@ -237,7 +231,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 <#
             }
 
-            if (canFilter)
+            if (features.CanFilter)
             {
 #>
 
@@ -254,7 +248,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 <#
             }
 
-            if (canSkip)
+            if (features.CanSkip)
             {
 #>
 
@@ -271,7 +265,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 <#
             }
 
-            if (canSort)
+            if (features.CanSort)
             {
 #>
 

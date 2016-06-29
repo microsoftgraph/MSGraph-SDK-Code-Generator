@@ -8,15 +8,7 @@ var innerEntityType = innerEntity.Name.ToCheckedCase();
 var collectionRequest = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionRequest");
 var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionResponse");
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
-
-var projection = host.CurrentType.Projection;
-var canExpand = projection.SupportsExpand();
-var canSelect = projection.BooleanValueOf("Selectable") != false;
-var canFilter = projection.BooleanValueOf("Filterable") != false;
-var canUseTop = projection.BooleanValueOf("TopSupported") != false;
-var canSkip = projection.BooleanValueOf("SkipSupported") != false;
-var canSort = projection.BooleanValueOf("Sortable") != false;
-
+var features = host.CurrentType.GetFeatures();
 #>
 
 namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
@@ -75,7 +67,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return null;
         }
 
-<# if (canExpand) { #>
+<# if (features.CanExpand) { #>
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -88,7 +80,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         }
 
 <# } #>
-<# if (canSelect) { #>
+<# if (features.CanSelect) { #>
         /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
@@ -101,7 +93,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         }
 
 <# } #>
-<# if (canUseTop) { #>
+<# if (features.CanUseTop) { #>
         /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
@@ -114,7 +106,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         }
 
 <# } #>
-<# if (canFilter) { #>
+<# if (features.CanFilter) { #>
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
@@ -127,7 +119,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         }
 
 <# } #>
-<# if (canSkip) { #>
+<# if (features.CanSkip) { #>
         /// <summary>
         /// Adds the specified skip value to the request.
         /// </summary>
@@ -140,7 +132,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         }
 
 <# } #>
-<# if (canSort) { #>
+<# if (features.CanSort) { #>
         /// <summary>
         /// Adds the specified orderby value to the request.
         /// </summary>

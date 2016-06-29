@@ -6,8 +6,7 @@
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = this.GetEntityNameString(entity);
 
-var projection = host.CurrentType.Projection;
-var canDelete = projection.SupportsDelete();
+var features = host.CurrentType.GetFeatures();
 
 #>
 
@@ -21,7 +20,7 @@ namespace <#=this.GetNamespaceName(entity)#>
     <#=this.GetEntityReferenceRequestClassDefinition(entity)#>
     {
         <#=this.GetEntityReferenceRequestConstructor(entity)#>
-<# if (canDelete) { #>
+<# if (features.CanDelete) { #>
 
         <#=this.GetEntityReferenceDeleteAsyncMethod(entity)#>
 <# } #>

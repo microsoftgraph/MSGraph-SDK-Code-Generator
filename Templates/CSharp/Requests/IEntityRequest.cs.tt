@@ -6,13 +6,7 @@ OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
 var entityRequest = entityName + "Request";
 
-var projection = host.CurrentType.Projection;
-var canCreate = projection.SupportsInsert();
-var canDelete = projection.SupportsDelete();
-var canUpdate = projection.SupportsUpdate();
-var canExpand = projection.SupportsExpand();
-var canSelect = projection.BooleanValueOf("Selectable") != false;
-
+var features = host.CurrentType.GetFeatures();
 #>
 
 namespace <#=this.GetNamespaceName(entity)#>
@@ -26,14 +20,14 @@ namespace <#=this.GetNamespaceName(entity)#>
     <#=this.GetEntityRequestInterfaceDefinition(entity)#>
     {
 <#
-    if (canCreate)
+    if (features.CanCreate)
     {
         Write("        ");
         Write(this.GetEntityCreateAsyncMethod(entity));
         Write("\n\n");
     }
 
-    if (canDelete)
+    if (features.CanDelete)
     {
         Write("        ");
         Write(this.GetEntityDeleteAsyncMethod(entity));
@@ -44,21 +38,21 @@ namespace <#=this.GetNamespaceName(entity)#>
     Write(this.GetEntityGetAsyncMethod(entity));
     Write("\n\n");
 
-    if (canUpdate)
+    if (features.CanUpdate)
     {
         Write("        ");
         Write(this.GetEntityUpdateAsyncMethod(entity));
         Write("\n\n");
     }
 
-    if (canExpand)
+    if (features.CanExpand)
     {
         Write("        ");
         Write(this.GetEntityExpandMethod(entity));
         Write("\n\n");
     }
 
-    if (canSelect)
+    if (features.CanSelect)
     {
         Write("        ");
         Write(this.GetEntitySelectMethod(entity));
