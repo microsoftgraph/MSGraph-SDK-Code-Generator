@@ -4,6 +4,7 @@
 <#
 CustomT4Host host       = (CustomT4Host) Host;
 OdcmModel model         = host.CurrentModel;
+var projection = host.CurrentType.Projection;
 var canExpand = projection.SupportsExpand();
 var canSelect = projection.BooleanValueOf("Selectable");
 var canUseTop = projection.BooleanValueOf("TopSupported");

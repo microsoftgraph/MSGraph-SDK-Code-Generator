@@ -6,6 +6,8 @@ CustomT4Host host       = (CustomT4Host) Host;
 OdcmModel model         = host.CurrentModel;
 CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 OdcmClass entity        = host.CurrentType.AsOdcmClass();
+var baseTypeName        = entity.Base != null ? entity.Base.Name : "GraphObjectBase";
+var baseTypeModule      = baseTypeName.Equals("GraphObjectBase") ? "..graph_object_base" : "." + baseTypeName.ToUnderscore();
 TemplateWriterSettings settings = ConfigurationService.Settings;
 
 #>
@@ -36,16 +38,10 @@ from datetime import datetime
 <#
     }
 #>
-<#if(entity.Base != null && entity.Base.Name.Equals("entity")){#>
-from .entity import Entity
+from <#= baseTypeModule #> import <#=baseTypeName.ToUpperFirstChar()#>
 
-class <#=entity.Name.ToUpperFirstChar()#>(Entity):
-<#} else { #>
-from ..graph_object_base import GraphObjectBase
 
-class <#=entity.Name.ToUpperFirstChar()#>(GraphObjectBase):
-<#}#>
-
+class <#=entity.Name.ToUpperFirstChar()#>(<#=baseTypeName.ToUpperFirstChar()#>):
     def __init__(self, prop_dict={}):
         self._prop_dict = prop_dict
 
