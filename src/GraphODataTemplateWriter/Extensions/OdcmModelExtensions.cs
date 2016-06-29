@@ -42,7 +42,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         public static IEnumerable<OdcmClass> GetComplexTypes(this OdcmModel model)
         {
             var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x is OdcmComplexClass && x.CanonicalName() != "microsoft.graph.Json");
+            return @namespace.Classes.Where(x => x is OdcmComplexClass && x.CanonicalName().ToLowerInvariant() != "microsoft.graph.json");
         }
 
         public static IEnumerable<OdcmClass> GetEntityTypes(this OdcmModel model)
