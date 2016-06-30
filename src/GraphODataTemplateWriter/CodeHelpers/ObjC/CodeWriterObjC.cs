@@ -36,17 +36,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             return "";
         }
 
-        public override string WriteClosingCommentLine() 
+        public override string WriteClosingCommentLine()
         {
             return this.NewLineCharacter;
         }
 
-        public override string WriteInlineCommentChar() 
+        public override string WriteInlineCommentChar()
         {
             return "// ";
         }
 
-        public string GetInterfaceLine(OdcmClass entityType, string baseClass = null) 
+        public string GetInterfaceLine(OdcmClass entityType, string baseClass = null)
         {
             string baseEntity = null;
             if (baseClass != null)
@@ -59,7 +59,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                                            : this.GetPrefix() + entityType.Base.Name.Substring(entityType.Base.Name.LastIndexOf(".") + 1);
             }
             var interfaceLineBuilder = new StringBuilder();
-            // NSObject lives in Foundation/Foundation.h 
+            // NSObject lives in Foundation/Foundation.h
             var baseImport = (baseEntity.Equals("NSObject")) ? "#import <Foundation/Foundation.h>" : String.Format("#import \"{0}.h\"", baseEntity);
             interfaceLineBuilder.AppendLine(baseImport);
 
@@ -69,7 +69,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             return interfaceLineBuilder.ToString();
         }
 
-        public string GetHeaderDoc(string name) 
+        public string GetHeaderDoc(string name)
         {
 
             var stringBuilder = new StringBuilder();
@@ -80,7 +80,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             return stringBuilder.ToString();
         }
 
-        public string GetImplementationDoc(string name) 
+        public string GetImplementationDoc(string name)
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(@"/**");
@@ -90,16 +90,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             return stringBuilder.ToString();
         }
 
-        public string GetMethodDoc(string name, List<OdcmProperty> parameters) 
+        public string GetMethodDoc(string name, List<OdcmProperty> parameters)
         {
             return "";
         }
-        
-        public string GetParamsForRaw(IEnumerable<string> parameters) 
+
+        public string GetParamsForRaw(IEnumerable<string> parameters)
         {
             string param = "With";
 
-            foreach (var p in parameters) 
+            foreach (var p in parameters)
             {
                 param += param == "With" ? string.Format("{0}:(NSString *) {1} ", char.ToUpper(p[0]) + p.Substring(1), p.ToLowerFirstChar()) :
                  string.Format("{0}:(NSString *) {0} ", p.ToLowerFirstChar());
@@ -110,12 +110,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             return param;
         }
 
-        public string GetParamRaw(string type) 
+        public string GetParamRaw(string type)
         {
             return "NSString *" + type.ToLowerFirstChar();
         }
 
-        public string GetImportsClass(IEnumerable<OdcmProperty> references, IEnumerable<string> extraImports = null, IEnumerable<string> extraClasses = null) 
+        public string GetImportsClass(IEnumerable<OdcmProperty> references, IEnumerable<string> extraImports = null, IEnumerable<string> extraClasses = null)
         {
             if (references != null && references.Any())
             {
@@ -173,7 +173,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             return "";
         }
 
-        public string GetParametersToJsonRaw(IEnumerable<string> parameters) 
+        public string GetParametersToJsonRaw(IEnumerable<string> parameters)
         {
             if (!parameters.Any()) { return new StringBuilder().AppendLine().ToString(); }
 
@@ -260,7 +260,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                     else
                     {
                         param += string.Format("{0}:({1}){2}", paramName, p.Type.GetFullType(), p.Name.ToLowerFirstChar());
-                    }                
+                    }
                 }
                 param += " ";
             }
@@ -326,7 +326,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         {
             //Fixes names that violate semantic rules for methods that
             //create owned objects
-            
+
             if(SemanticOwnedObjectsKeywords.Any(x => propertyName.StartsWith(x,StringComparison.OrdinalIgnoreCase)))
             {
                 return "get" + propertyName.ToPascalize();
@@ -338,7 +338,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         public string GetPropertyDeclaration(string propertyName, string type)
         {
             var getterName = this.GetGetterString(propertyName);
-            var setterName = "set" + propertyName.ToPascalize();
 
             return "@property (nonatomic, getter=" + getterName + ") " + type + " " + propertyName + ";";
         }
