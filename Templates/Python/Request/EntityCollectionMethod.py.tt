@@ -38,7 +38,7 @@ class <#=collectionResponse#>(ItemsCollectionResponse):
         """The collection page stored in the response JSON
         
         Returns:
-            :class:`<#=collectionPage#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+            :class:`<#=collectionPage#><msgraph.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
                 The collection page
         """
 <#
@@ -91,9 +91,9 @@ foreach (var property in properties)
         Args:
             next_page_link (str): The URL for the next page request
                 to be sent to
-            client (:class:`OneDriveClient<onedrivesdk.model.one_drive_client.OneDriveClient>`:
+            client (:class:`GraphClient<msgraph.model.graph_client.GraphClient>`:
                 The client to be used for the request
-            options (list of :class:`Option<onedrivesdk.options.Option>`:
+            options (list of :class:`Option<msgraph.options.Option>`:
                 A list of options
         """
         self._next_page_request = <#=collectionRequest#>(next_page_link, client, options)
@@ -112,7 +112,7 @@ foreach (var property in properties)
         if (property.Type.IsComplex())
         {
 #>
-            :class:`<#=property.Type.GetTypeString()#><onedrivesdk.model.<#=property.Type.GetTypeString().ToUnderscore()#>.<#=property.Type.GetTypeString()#>>`:
+            :class:`<#=property.Type.GetTypeString()#><msgraph.model.<#=property.Type.GetTypeString().ToUnderscore()#>.<#=property.Type.GetTypeString()#>>`:
 <#
         } else {
 #>

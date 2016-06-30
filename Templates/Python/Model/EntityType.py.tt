@@ -6,16 +6,24 @@ CustomT4Host host       = (CustomT4Host) Host;
 OdcmModel model         = host.CurrentModel;
 CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 OdcmClass entity        = host.CurrentType.AsOdcmClass();
+var baseTypeName        = entity.Base != null ? entity.Base.Name : "GraphObjectBase";
+var baseTypeModule      = baseTypeName.Equals("GraphObjectBase") ? "..graph_object_base" : "." + baseTypeName.ToUnderscore();
 TemplateWriterSettings settings = ConfigurationService.Settings;
 
 #>
 <#=writer.WriteHeader(writer.GeneratedHeader)#>
 from __future__ import unicode_literals
 <# 
+	if (entity.Name.Equals("drive"))
+    {
+		Console.Write(1);
+    }
     List<String> list = new List<String>();
     foreach(var property in entity.Properties){
         var propertyName = property.Name.ToUnderscore();
         if (property.Type.IsComplex() 
+			&& !property.ContainsTarget
+			&& !property.IsCollection()
             && !list.Contains(property.Type.GetTypeString())
             && !property.Type.GetTypeString().Equals(entity.Name.ToUpperFirstChar())) {
             list.Add(property.Type.GetTypeString());
@@ -30,18 +38,17 @@ from datetime import datetime
 <#
     }
 #>
-from ..one_drive_object_base import OneDriveObjectBase
+from <#= baseTypeModule #> import <#=baseTypeName.ToUpperFirstChar()#>
 
 
-class <#=entity.Name.ToUpperFirstChar()#>(OneDriveObjectBase):
-
+class <#=entity.Name.ToUpperFirstChar()#>(<#=baseTypeName.ToUpperFirstChar()#>):
     def __init__(self, prop_dict={}):
         self._prop_dict = prop_dict
 
 <# 
         foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
-            var propertyName = property.Name.ToUnderscore();
-            var propertyNameCap = property.Name.ToUpperFirstChar();
+            var propertyName = property.Name.ToUnderscore().SanitizePropertyName();
+            var propertyNameCap = property.Name.ToUpperFirstChar().SanitizePropertyName();
             if (property.Type.IsComplex()) {
                 if (property.IsCollection()) {
 #>
@@ -50,7 +57,7 @@ class <#=entity.Name.ToUpperFirstChar()#>(OneDriveObjectBase):
         """Gets and sets the <#=property.Name#>
         
         Returns: 
-            :class:`<#=propertyNameCap#>CollectionPage<onedrivesdk.request.<#=(propertyNameCap+"Collection").ToUnderscore()#>.<#=propertyNameCap#>CollectionPage>`:
+            :class:`<#=propertyNameCap#>CollectionPage<microsoft.graph.request.<#=(propertyNameCap+"Collection").ToUnderscore()#>.<#=propertyNameCap#>CollectionPage>`:
                 The <#=property.Name#>
         """
         if "<#=property.Name#>" in self._prop_dict:
@@ -67,13 +74,13 @@ class <#=entity.Name.ToUpperFirstChar()#>(OneDriveObjectBase):
         Gets and sets the <#=property.Name#>
         
         Returns: 
-            :class:`<#=property.Type.GetTypeString()#><onedrivesdk.model.<#=property.Type.GetTypeString().ToUnderscore()#>.<#=property.Type.GetTypeString()#>>`:
+            :class:`<#=property.Type.GetTypeString()#><microsoft.graph.model.<#=property.Type.GetTypeString().ToUnderscore()#>.<#=property.Type.GetTypeString()#>>`:
                 The <#=property.Name#>
         """
         if "<#=property.Name#>" in self._prop_dict:
-            if isinstance(self._prop_dict["<#=property.Name#>"], OneDriveObjectBase):
+            if isinstance(self._prop_dict["<#=property.Name#>"], GraphObjectBase):
                 return self._prop_dict["<#=property.Name#>"]
-            else :
+            else:
                 self._prop_dict["<#=property.Name#>"] = <#=property.Type.GetTypeString()#>(self._prop_dict["<#=property.Name#>"])
                 return self._prop_dict["<#=property.Name#>"]
 
@@ -85,7 +92,7 @@ class <#=entity.Name.ToUpperFirstChar()#>(OneDriveObjectBase):
 
 <#
             }
-        } else {
+        } else if (!property.ContainsTarget) {
 #>
     @property
     def <#=propertyName#>(self):

@@ -8,14 +8,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
 
     public static class TypeHelperPython
     {
-        public const string ReservedPrefix = "$$__$$";
+        public const string ReservedSuffix = "_";
         public static ICollection<string> ReservedNames
         {
             get
             {
-                return new HashSet<string> {
-                    //"abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while"
-                };
+                HashSet<string> keywords = new HashSet<string> { "False", "None", "True", "and", "as", "assert", "break", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield" };
+                HashSet<string> builtInFunctions = new HashSet<string> {  "abs", "all", "any", "ascii", "bin", "bool", "bytearray", "bytes", "callable", "chr", "classmethod", "compile", "complex", "copyright", "credits", "delattr", "dict", "dir", "divmod", "enumerate", "eval", "exec", "exit", "filter", "float", "format", "frozenset", "getattr", "globals", "hasattr", "hash", "help", "hex", "id", "input", "int", "isinstance", "issubclass", "iter", "len", "license", "list", "locals", "map", "max", "memoryview", "min", "next", "object", "oct", "open", "ord", "pow", "print", "property", "quit", "range", "repr", "reversed", "round", "set", "setattr", "slice", "sorted", "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip"};
+                HashSet<string> allReservedNames = new HashSet<string>();
+                allReservedNames.UnionWith(keywords);
+                allReservedNames.UnionWith(builtInFunctions);
+                return allReservedNames;
             }
         }
 
@@ -41,6 +44,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
                 case "Binary":
                 case "Stream":
                     return "bytes";
+                case "Date":
+                    return "datetime";
                 default:
                     return @type.Name.ToUpperFirstChar();
             }
@@ -48,29 +53,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
 
         public static string GetTypeString(this OdcmParameter parameter)
         {
-            switch (@parameter.Type.Name)
-            {
-                case "String":
-                    return "str";
-                case "Int8":
-                case "Int16":
-                case "Int32":
-                case "Int64":
-                    return "int";
-                case "Double":
-                    return "float";
-                case "Guid":
-                    return "UUID";
-                case "DateTimeOffset":
-                    return "datetime";
-                case "Boolean":
-                    return "bool";
-                case "Binary":
-                case "Stream":
-                    return "bytes";
-                default:
-                    return @parameter.Type.Name.ToUpperFirstChar();
-            }
+            return GetTypeString(parameter.Type);
         }
 
 
@@ -101,10 +84,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
 
         public static string SanitizePropertyName(this OdcmProperty property)
         {
-            if (ReservedNames.Contains(property.Name.ToLower())) {
-                return ReservedPrefix + property.Name;
+            return SanitizePropertyName(property.Name);
+        }
+
+        public static string SanitizePropertyName(this string name)
+        {
+            if (ReservedNames.Contains(name.ToLower()))
+            {
+                return name + ReservedSuffix;
             }
-            return property.Name;
+            return name;
         }
 
         public static string GetToLowerImport(this OdcmProperty property)

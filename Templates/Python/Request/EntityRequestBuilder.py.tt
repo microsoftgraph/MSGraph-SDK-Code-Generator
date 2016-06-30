@@ -3,6 +3,9 @@
 <#@ output extension="\\" #>
 <#
 CustomT4Host host       = (CustomT4Host) Host;
+var projection = host.CurrentType.Projection;
+var canExpand           = projection.SupportsExpand();
+var canSelect = projection.BooleanValueOf("Selectable");
 OdcmModel model         = host.CurrentModel;
 CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 OdcmClass entity        = host.CurrentType.AsOdcmClass();
@@ -34,24 +37,39 @@ from ..request.<#=baseName.ToUnderscore()#> import <#=baseName#>RequestBuilder
 from ..request.<#=propName.ToUnderscore()#>_request import <#=propRequestBuilder#>
 <#
     }
-    List<String> builders = new List<String>();
-    foreach(var prop in entity.GetProperties().Where(t => t.Type.LongDescriptionContains("navigable")))
-    {
-        var propName = prop.Type.GetTypeString().ToUpperFirstChar();
-        var propRequestBuilder = propName+"RequestBuilder";
-        if (!builders.Contains(propRequestBuilder)) builders.Add(propRequestBuilder);
-    }
-    foreach(var propRequestBuilder in builders) {
-#>
-from ..request.<#=propRequestBuilder.ToUnderscore()#> import <#=propRequestBuilder#>
-<#
-    }
 
     if (!isPython2) {
 #>
 import asyncio
+
 <#
+}
+
+List<String> navigationPropModules = new List<String>();
+foreach(var prop in entity.NavigationProperties()){
+
+        var propName = prop.Name.ToUnderscore();
+        //var propRequestBuilder = prop.Name.ToUpperFirstChar() + "RequestBuilder";
+        //var isReturnTypeDirectoryObject = prop.Type.Name.Equals("directoryObject");
+        var propModule = "asdfasdf";
+    
+        if(prop.IsCollection())
+        {
+            propModule = prop.Type.Name.ToUnderscore() + "_collection";
+        }
+        else
+        {
+            propModule = prop.Type.Name.ToUnderscore() + "_request_builder";
+        }
+        if(!navigationPropModules.Contains(propModule)) navigationPropModules.Add(propModule);
     }
+
+foreach(var propModule in navigationPropModules)
+{
+#>
+from ..request import <#=propModule#>
+<#
+}
 #>
 
 
@@ -63,28 +81,28 @@ class <#=entityBuilder#>(RequestBuilderBase):
         Args:
             request_url (str): The url to perform the <#=entityRequest#>
                 on
-            client (:class:`OneDriveClient<onedrivesdk.request.one_drive_client.OneDriveClient>`):
+            client (:class:`GraphClient<msgraph.request.graph_client.GraphClient>`):
                 The client which will be used for the request
         """
         super(<#=entityBuilder#>, self).__init__(request_url, client)
 
-    def request(self, expand=None, select=None, options=None):
+    def request(self, <#= canExpand ? "expand=None, " : ""#><#= canExpand ? "select=None, " : ""#>options=None):
         """Builds the <#=entityRequest#>
 
         Args:
-            expand (str): Default None, comma-seperated list of relationships
+            expand (str): Default None, comma-separated list of relationships
                 to expand in the response.
-            select (str): Default None, comma-seperated list of properties to
+            select (str): Default None, comma-separated list of properties to
                 include in the response.
-            options (list of :class:`Option<onedrivesdk.options.Option>`):
+            options (list of :class:`Option<msgraph.options.Option>`):
                 A list of options to pass into the request. Defaults to None.
 
         Returns:
-            :class:`<#=entityRequest#><onedrivesdk.request.<#=entityRequest.ToUnderscore()#>.<#=entityRequest#>>`:
+            :class:`<#=entityRequest#><msgraph.request.<#=entityRequest.ToUnderscore()#>.<#=entityRequest#>>`:
                 The <#=entityRequest#>
         """
         req = <#=entityRequest#>(self._request_url, self._client, options)
-        req._set_query_options(expand=expand, select=select)
+        req._set_query_options(<#= canExpand ? "expand=expand, " : ""#><#= canExpand ? "select=select, " : ""#>)
         return req
 
     def delete(self):
@@ -105,7 +123,7 @@ class <#=entityBuilder#>(RequestBuilderBase):
         """Gets the specified <#=entityName#>.
         
         Returns:
-            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+            :class:`<#=entityName#><msgraph.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
                 The <#=entityName#>.
         """
         return self.request().get()
@@ -118,7 +136,7 @@ class <#=entityBuilder#>(RequestBuilderBase):
         """Gets the specified <#=entityName#> in async.
 
         Returns:
-            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+            :class:`<#=entityName#><msgraph.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
                 The <#=entityName#>.
         """
         entity = yield from self.request().get_async()
@@ -130,11 +148,11 @@ class <#=entityBuilder#>(RequestBuilderBase):
         """Updates the specified <#=entityName#>.
         
         Args:
-            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
+            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><msgraph.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
                 The <#=entityName#> to update.
 
         Returns:
-            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+            :class:`<#=entityName#><msgraph.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
                 The updated <#=entityName#>
         """
         return self.request().update(<#=entity.Name.ToUnderscore()#>)
@@ -147,11 +165,11 @@ class <#=entityBuilder#>(RequestBuilderBase):
         """Updates the specified <#=entityName#> in async
         
         Args:
-            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
+            <#=entity.Name.ToUnderscore()#> (:class:`<#=entityName#><msgraph.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`):
                 The <#=entityName#> to update.
 
         Returns:
-            :class:`<#=entityName#><onedrivesdk.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
+            :class:`<#=entityName#><msgraph.model.<#=entityName.ToUnderscore()#>.<#=entityName#>>`:
                 The updated <#=entityName#>.
         """
         entity = yield from self.request().update_async(<#=entity.Name.ToUnderscore()#>)
@@ -172,7 +190,7 @@ class <#=entityBuilder#>(RequestBuilderBase):
         Returns: 
             The created entity.
         """
-        return self.content.request().put(local_path)
+        return self.content.request().upload(local_path)
 
 <#
         if (!isPython2) {
@@ -232,7 +250,7 @@ class <#=entityBuilder#>(RequestBuilderBase):
         """The <#=childName#> for the <#=entityBuilder#>
 
         Returns:
-            :class:`<#=childNameBuilder#><onedrivesdk.request.<#=childNameBuilder.Replace("Builder", "").ToUnderscore()#>.<#=childNameBuilder#>>`:
+            :class:`<#=childNameBuilder#><msgraph.request.<#=childNameBuilder.Replace("Builder", "").ToUnderscore()#>.<#=childNameBuilder#>>`:
                 A request builder created from the <#=entityBuilder#>
         """
         return <#=childNameBuilder#>(self.append_to_request_url("<#=child.Name#>"), self._client)
@@ -243,11 +261,13 @@ class <#=entityBuilder#>(RequestBuilderBase):
     foreach(var prop in entity.NavigationProperties()){
 
         var propName = prop.Name.ToUnderscore();
-        var propRequestBuilder = prop.Name.ToUpperFirstChar() + "RequestBuilder";
+        //var propRequestBuilder = prop.Name.ToUpperFirstChar() + "RequestBuilder";
+        //var isReturnTypeDirectoryObject = prop.Type.Name.Equals("directoryObject");
     
         if(prop.IsCollection())
         {
-            var collectionRequestBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+            var propCollectionRequestBuilder =  prop.Type.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+            var propCollectionRequestBuilderModule = prop.Type.Name.ToUnderscore() + "_collection";
 #>
 
     @property
@@ -255,14 +275,16 @@ class <#=entityBuilder#>(RequestBuilderBase):
         """The <#=propName#> for the <#=entityBuilder#>
 
         Returns: 
-            :class:`<#=collectionRequestBuilder#><onedrivesdk.request.<#=prop.Name.ToUnderscore()+"_collection"#>.<#=collectionRequestBuilder#>>`:
+            :class:`<#=propCollectionRequestBuilder#><msgraph.request.<#=prop.Name.ToUnderscore()+"_collection"#>.<#=propCollectionRequestBuilder#>>`:
                 A request builder created from the <#=entityBuilder#>
         """
-        return <#=collectionRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+        return <#=propCollectionRequestBuilderModule#>.<#=propCollectionRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
 <#
         }
         else
         {
+            var propRequestBuilder = prop.Type.Name.ToUpperFirstChar() + "RequestBuilder";
+            var propRequestBuilderModule = prop.Type.Name.ToUnderscore() + "_request_builder";
 #>
 
     @property
@@ -270,10 +292,10 @@ class <#=entityBuilder#>(RequestBuilderBase):
         """The <#=propName#> for the <#=entityBuilder#>
 
         Returns: 
-            :class:`<#=propRequestBuilder#><onedrivesdk.request.<#=propRequestBuilder.Replace("Builder","").ToUnderscore()#>.<#=propRequestBuilder#>>`:
+            :class:`<#=propRequestBuilder#><msgraph.request.<#=propRequestBuilder.Replace("Builder","").ToUnderscore()#>.<#=propRequestBuilder#>>`:
                 A request builder created from the <#=entityBuilder#>
         """
-        return <#=propRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
+        return <#=propRequestBuilderModule#>.<#=propRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
 
 <#
         }
@@ -289,7 +311,7 @@ class <#=entityBuilder#>(RequestBuilderBase):
         """The <#=propName#> for the <#=entityBuilder#>
 
         Returns: 
-            :class:`<#=propRequestBuilder#><onedrivesdk.request.<#=propRequestBuilder.Replace("RequestBuilder","").ToUnderscore()#>.<#=propRequestBuilder#>>`:
+            :class:`<#=propRequestBuilder#><msgraph.request.<#=propRequestBuilder.Replace("RequestBuilder","").ToUnderscore()#>.<#=propRequestBuilder#>>`:
                 A request builder created from the <#=entityBuilder#>
         """
         return <#=propRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
@@ -307,7 +329,7 @@ class <#=entityBuilder#>(RequestBuilderBase):
         """The <#=propName#> for the <#=entityBuilder#>
 
         Returns: 
-            :class:`<#=propRequestBuilder#><onedrivesdk.request.<#=propRequestBuilder.Replace("Builder","").ToUnderscore()#>.<#=propRequestBuilder#>>`:
+            :class:`<#=propRequestBuilder#><msgraph.request.<#=propRequestBuilder.Replace("Builder","").ToUnderscore()#>.<#=propRequestBuilder#>>`:
                 A request builder created from the <#=entityBuilder#>
         """
         return <#=propRequestBuilder#>(self.append_to_request_url("<#=prop.Name#>"), self._client)
@@ -348,7 +370,7 @@ class <#=entityBuilder#>(RequestBuilderBase):
             foreach (var param in method.Parameters){
                 if (param.Type.IsComplex()) {
 #>
-            <#=param.Name.ToUnderscore()#> (:class:`<#=param.Type.GetTypeString()#><onedrivesdk.model.<#=param.Type.GetTypeString().ToUnderscore()#>.<#=param.Type.GetTypeString()#>>`):
+            <#=param.Name.ToUnderscore()#> (:class:`<#=param.Type.GetTypeString()#><msgraph.model.<#=param.Type.GetTypeString().ToUnderscore()#>.<#=param.Type.GetTypeString()#>>`):
                 <#=param.IsNullable ? "Defaults to None, " : "" #>The <#=param.Name.ToUnderscore()#> to use in the method request
 <#
                 } else {
@@ -362,19 +384,12 @@ class <#=entityBuilder#>(RequestBuilderBase):
 #>
 
         Returns:
-            :class:`<#=baseName#>RequestBuilder<onedrivesdk.request.<#=baseName.ToUnderscore()#>.<#=baseName#>RequestBuilder>`:
+            :class:`<#=baseName#>RequestBuilder<msgraph.request.<#=baseName.ToUnderscore()#>.<#=baseName#>RequestBuilder>`:
                 A <#=baseName#>RequestBuilder for the method
         """
         return <#=baseName#>RequestBuilder(<#=builderInitializerBuilder.ToString()#>)
 
 <#
     }
-foreach (var prop in entity.NavigationProperties())
-{
-    var propCollection = prop.Name.ToUpperFirstChar() + "Collection";
-    var propCollectionRequestBuilder = (propCollection + "RequestBuilder");
 #>
-from ..request.<#=propCollection.ToUnderscore()#> import <#=propCollectionRequestBuilder#>
-<#
-}
-#>
+

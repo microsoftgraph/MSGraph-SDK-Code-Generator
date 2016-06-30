@@ -1,3 +1,4 @@
+
 <# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ output extension="\\" #>
@@ -49,7 +50,7 @@ from .request.<#=(name+"Builder").ToUnderscore()#> import <#=(name+"Builder").To
 
 //Collections
 var collections = CurrentModel.GetProperties()
-                    .Where(prop => prop.IsCollection && prop.Type != null && prop.Type.Name != "String" && !prop.LongDescriptionContains("ignorableCollection"));
+                    .Where(prop => prop.IsCollection && prop.Type != null && prop.Type.Name != "String" && !prop.LongDescriptionContains("ignorableCollection") && !prop.Type.Name.Equals("directoryObject") && !prop.Type.Name.Equals("Guid") && prop.IsNavigation());
 
 
 foreach(OdcmProperty prop in collections){
@@ -96,14 +97,10 @@ from .request.<#=name.ToUnderscore()#>_request import <#=name#>Request, <#=name#
 var container = CurrentModel.EntityContainer;
 if (container != null){
 #>
-from .request.one_drive_client import OneDriveClient
+from .request.graph_service_client import GraphServiceClient
 <#
 }
 #>
-from .auth_provider import AuthProvider
 from .http_provider import HttpProvider
-from .extensions.onedrivesdk_helper import *
+from .extensions.graph_client_helper import *
 from .extensions import *
-import sys
-if sys.version_info >= (3, 4, 0):
-    from .version_bridge import *
