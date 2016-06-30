@@ -3,12 +3,6 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#host.TemplateName = IBaseTypeCollectionWithReferencesRequest(c);#>
-<#
-var projection = c.Projection;
-var canExpand = projection.SupportsExpand();
-var canSelect = projection.BooleanValueOf("Selectable") != false;
-var canUseTop = projection.BooleanValueOf("TopSupported") != false;
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -18,15 +12,15 @@ var canUseTop = projection.BooleanValueOf("TopSupported") != false;
 
     <#=ITypeCollectionWithReferencesPage(c)#> get() throws ClientException;
 
-<# if (canExpand) { #>
+<# if (c.GetFeatures().CanExpand) { #>
     <#=ITypeCollectionWithReferencesRequest(c)#> expand(final String value);
     
 <# } #>
-<# if (canSelect) { #>
+<# if (c.GetFeatures().CanSelect) { #>
     <#=ITypeCollectionWithReferencesRequest(c)#> select(final String value);
 
 <# } #>
-<# if (canUseTop) { #>
+<# if (c.GetFeatures().CanUseTop) { #>
     <#=ITypeCollectionWithReferencesRequest(c)#> top(final int value);
 
 <# } #>

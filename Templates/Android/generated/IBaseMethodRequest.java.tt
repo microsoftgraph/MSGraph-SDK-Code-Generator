@@ -3,12 +3,6 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#host.TemplateName = IBaseTypeRequest(c);#>
-<#
-var projection = c.Projection;
-var canExpand = projection.SupportsExpand();
-var canSelect = projection.BooleanValueOf("Selectable") != false;
-var canUseTop = projection.BooleanValueOf("TopSupported") != false;
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -34,7 +28,7 @@ import com.google.gson.annotations.*;
      */
     <#=ClassTypeName(c)#> post() throws ClientException;
 
-<# if (canSelect) { #>
+<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -44,7 +38,7 @@ import com.google.gson.annotations.*;
     <#=ITypeRequest(c)#> select(final String value);
 
 <# } #>
-<# if (canExpand) { #>
+<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -54,7 +48,7 @@ import com.google.gson.annotations.*;
     <#=ITypeRequest(c)#> expand(final String value);
 
 <# } #>
-<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && canUseTop) { #>
+<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
     /**
      * Sets the top value for the request
      *
@@ -97,7 +91,7 @@ import com.google.gson.annotations.*;
      */
     <#=ClassTypeName(c)#> get() throws ClientException;
 
-<# if (canSelect) { #>
+<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -107,7 +101,7 @@ import com.google.gson.annotations.*;
     <#=ITypeRequest(c)#> select(final String value);
 
 <# } #>
-<# if (canExpand) { #>
+<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -117,7 +111,7 @@ import com.google.gson.annotations.*;
     <#=ITypeRequest(c)#> expand(final String value);
 
 <# } #>
-<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && canUseTop) { #>
+<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
     /**
      * Sets the top value for the request
      *

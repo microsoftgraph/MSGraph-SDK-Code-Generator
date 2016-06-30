@@ -3,12 +3,6 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#host.TemplateName = IBaseTypeCollectionRequest(c);#>
-<#
-var projection = c.Projection;
-var canExpand = projection.SupportsExpand();
-var canSelect = projection.BooleanValueOf("Selectable") != false;
-var canUseTop = projection.BooleanValueOf("TopSupported") != false;
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -22,7 +16,7 @@ var canUseTop = projection.BooleanValueOf("TopSupported") != false;
 
     <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
 
-<# if (canExpand) { #>
+<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -32,7 +26,7 @@ var canUseTop = projection.BooleanValueOf("TopSupported") != false;
     <#=ITypeCollectionRequest(c)#> expand(final String value);
 
 <# } #>
-<# if (canSelect) { #>
+<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -42,7 +36,7 @@ var canUseTop = projection.BooleanValueOf("TopSupported") != false;
     <#=ITypeCollectionRequest(c)#> select(final String value);
 
 <# } #>
-<# if (canUseTop) { #>
+<# if (c.GetFeatures().CanUseTop) { #>
     /**
      * Sets the top value for the request
      *

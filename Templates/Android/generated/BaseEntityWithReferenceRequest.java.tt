@@ -3,11 +3,6 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#host.TemplateName = BaseTypeWithReferencesRequest(c);#>
-<#
-var projection = c.Projection;
-var canExpand = projection.SupportsExpand();
-var canSelect = projection.BooleanValueOf("Selectable") != false;
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -44,7 +39,7 @@ var canSelect = projection.BooleanValueOf("Selectable") != false;
        return send(HttpMethod.GET, null);
     }
 
-<# if (canSelect) { #>
+<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -57,7 +52,7 @@ var canSelect = projection.BooleanValueOf("Selectable") != false;
     }
 
 <# } #>
-<# if (canExpand) { #>
+<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *

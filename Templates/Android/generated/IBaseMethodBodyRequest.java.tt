@@ -20,12 +20,6 @@
     }
 #>
 <#host.TemplateName = iBaseTypeRequest;#>
-<#
-var projection = c.Projection;
-var canExpand = projection.SupportsExpand();
-var canSelect = projection.BooleanValueOf("Selectable") != false;
-var canUseTop = projection.BooleanValueOf("TopSupported") != false;
-#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
@@ -38,7 +32,7 @@ import com.google.gson.annotations.*;
 
     <#=ReturnType(c)#> post() throws ClientException;
 
-<# if (canSelect) { #>
+<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -48,7 +42,7 @@ import com.google.gson.annotations.*;
     <#=iTypeRequest#> select(final String value) ;
 
 <# } #>
-<# if (canUseTop) { #>
+<# if (c.GetFeatures().CanUseTop) { #>
     /**
      * Sets the top value for the request
      *
@@ -58,7 +52,7 @@ import com.google.gson.annotations.*;
     <#=iTypeRequest#> top(final int value);
 
 <# } #>
-<# if (canExpand) { #>
+<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
