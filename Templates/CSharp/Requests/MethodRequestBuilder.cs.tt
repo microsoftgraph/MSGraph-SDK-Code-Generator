@@ -53,7 +53,7 @@ var methods = overloads
 
 #>
 
-namespace Microsoft.Graph
+namespace <#=method.Namespace.GetNamespaceName()#>
 {
     using System;
     using System.Collections.Generic;
