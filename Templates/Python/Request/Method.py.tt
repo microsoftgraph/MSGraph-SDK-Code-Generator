@@ -4,6 +4,13 @@
 <#@include file="..\\other\\helpers.ttinclude"#>
 <#
 CustomT4Host host       = (CustomT4Host) Host;
+var projection = host.CurrentType.Projection;
+var canExpand = projection.BooleanValueOf("Expandable") != false;
+var canFilter = projection.BooleanValueOf("Filterable") != false;
+var canSkip = projection.BooleanValueOf("SkipSupported") != false;
+var canSort = projection.BooleanValueOf("Sortable") != false;
+var canSelect = projection.BooleanValueOf("Selectable") != false;
+var canUseTop = projection.BooleanValueOf("TopSupported") != false;
 OdcmModel model         = host.CurrentModel;
 CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 var clientName          = model.GetEntityContainer().ToUpperFirstChar() + "Client";
@@ -308,7 +315,7 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
     if (method.IsCollection) {
 #>
-    def request(self, expand=None, select=None, top=None<#=!method.LongDescriptionContains("excludeOrderBy") ? ", order_by=None" : ""#>, options=None):
+    def request(self,<#= canSelect ? "select=None, " : "" #><#= canFilter ? "filter=None, " : "" #><#= canUseTop ? "top=None, " : "" #><#= canSkip ? "skip=None, " : "" #><#= canSort ? "order_by=None, " : "" #>options=None):
 <#
     } else {
 #>
@@ -347,7 +354,7 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
     if (method.IsCollection) {
 #>
-        req._set_query_options(expand=expand, select=select, top=top<#=!method.LongDescriptionContains("excludeOrderBy") ? ", order_by=order_by" : ""#>)
+        req._set_query_options(<#= canSelect ? "select=select, " : "" #><#= canFilter ? "filter=filter, " : "" #><#= canUseTop ? "top=top, " : "" #><#= canSkip ? "skip=skip, " : "" #><#= canSort ? "order_by=order_by, " : "" #>)
 <#
     }
 #>
