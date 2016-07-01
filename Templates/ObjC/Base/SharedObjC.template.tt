@@ -241,7 +241,14 @@ private string GetStaticBaseObject()
 
 private string GeneratePropertyDeclarationLine(OdcmProperty prop)
 {
-    return "@property (nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
+    if(prop.IsNullable==true) 
+    {
+        return "@property (nullable, nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
+    }
+    else
+    {
+        return "@property (nonnull, nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
+    }
 }
 
 private void PropertyGetterImplementation(OdcmProperty prop)
@@ -252,6 +259,17 @@ private void PropertyGetterImplementation(OdcmProperty prop)
 <#+
     if(IsObjCTypeSameAsJsonType(prop.Projection.Type))
     {
+#>
+<#+
+    if(prop.IsNullable==true) 
+    {
+#>
+    if([[NSNull null] isEqual:self.dictionary[@"<#=prop.Name#>"]])
+    {
+        return nil;
+    }   
+<#+
+}
 #>
     return self.dictionary[@"<#=prop.Name#>"];
 <#+
@@ -280,6 +298,7 @@ private void PropertyGetterImplementation(OdcmProperty prop)
     }
 #>
 }
+
 <#+
 }
 
@@ -304,6 +323,7 @@ private void PropertySetterImplementation(OdcmProperty prop)
     }
 #>
 }
+
 <#+
 }
 #>
