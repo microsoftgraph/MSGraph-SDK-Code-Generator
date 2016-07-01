@@ -51,6 +51,5 @@
         getQueryOptions().add(new QueryOption("$expand", value));
         return (<#=TypeReferenceRequest(c)#>)this;
     }
-
 <# } #>
 }

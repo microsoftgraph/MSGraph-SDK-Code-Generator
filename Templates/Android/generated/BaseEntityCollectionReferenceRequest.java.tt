@@ -76,6 +76,5 @@
         addQueryOption(new QueryOption("$top", value + ""));
         return (<#=TypeCollectionReferenceRequest(c)#>)this;
     }
-
 <# } #>
 }
