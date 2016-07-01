@@ -5,9 +5,12 @@
     CustomT4Host host          = (CustomT4Host) Host;
     var model                  = host.CurrentModel;
     CodeWriterAndroid writer   = (CodeWriterAndroid) host.CodeWriter;
+    bool logTemplateSrc        = false;
     var c = host.CurrentType;
 #>
+<# if (logTemplateSrc) { #>
 // Template Source: <#= TemplateName(host.TemplateFile) #>
+<# } #>
 <#+
 
     /// Is this request type a post?
