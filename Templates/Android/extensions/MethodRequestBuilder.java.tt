@@ -12,8 +12,8 @@ methods.AddRange(c.AsOdcmMethod().Overloads);
 #>
 
 <#=CreateClassDef(TypeRequestBuilder(c), BaseTypeRequestBuilder(c), ITypeRequestBuilder(c))#>
-
 <# foreach (var method in methods) { #>
+
     /**
      * The request builder for this <#=TypeName(c)#>
      *
@@ -24,6 +24,5 @@ methods.AddRange(c.AsOdcmMethod().Overloads);
     public <#=TypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(method)#>) {
         super(requestUrl, client, options<#=MethodParametersValues(method)#>);
     }
-
 <# } #>
 }
