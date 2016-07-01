@@ -10,6 +10,7 @@ var methods = new List<OdcmMethod>();
 methods.Add(c.AsOdcmMethod());
 methods.AddRange(c.AsOdcmMethod().Overloads);
 #>
+
 <#=CreateClassDef(TypeRequestBuilder(c), BaseTypeRequestBuilder(c), ITypeRequestBuilder(c))#>
 
 <# foreach (var method in methods) { #>
