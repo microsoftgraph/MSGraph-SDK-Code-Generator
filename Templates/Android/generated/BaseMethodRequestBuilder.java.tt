@@ -5,15 +5,10 @@
 <#host.TemplateName = BaseTypeRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
-<#
-var methods = new List<OdcmMethod>();
-methods.Add(c.AsOdcmMethod());
-methods.AddRange(c.AsOdcmMethod().Overloads);
-#>
 <# bool isPost = IsPostRequestType(c.AsOdcmMethod()); #>
 <#=CreateClassDef(BaseTypeRequestBuilder(c),  RequestBuilderSuperClass(c))#>
 
-<# foreach (var method in methods) { #>
+<# foreach (var method in c.MethodsAndOverrides()) { #>
     /**
      * The request builder for this <#=TypeName(c)#>
      *

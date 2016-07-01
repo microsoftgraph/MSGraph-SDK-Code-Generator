@@ -5,14 +5,9 @@
 <#host.TemplateName = TypeRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
-<#
-var methods = new List<OdcmMethod>();
-methods.Add(c.AsOdcmMethod());
-methods.AddRange(c.AsOdcmMethod().Overloads);
-#>
 
 <#=CreateClassDef(TypeRequestBuilder(c), BaseTypeRequestBuilder(c), ITypeRequestBuilder(c))#>
-<# foreach (var method in methods) { #>
+<# foreach (var method in c.MethodsAndOverrides()) { #>
 
     /**
      * The request builder for this <#=TypeName(c)#>
