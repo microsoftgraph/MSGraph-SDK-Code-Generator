@@ -16,17 +16,20 @@ var returnTypeObject = method.ReturnType.AsOdcmClass();
 var returnType = isCollection ? "I" + entityName + methodName + "CollectionPage" : returnEntityType;
 var serializationType = isCollection ? entityName + methodName + "CollectionResponse" : returnEntityType;
 var hasParameters = method.Parameters != null && method.Parameters.Any();
+var namespaceName = method.Namespace.GetNamespaceName();
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-    
+<# if (!string.Equals("Microsoft.Graph", namespaceName)) { #>
+
     using Microsoft.Graph;
+<# } #>
 
     /// <summary>
     /// The type <#=monitorType#>.

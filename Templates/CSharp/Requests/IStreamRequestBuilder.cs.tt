@@ -35,8 +35,10 @@ else
 namespace <#=namespaceValue#>
 {
     using System.Collections.Generic;
-    
+<# if (!string.Equals("Microsoft.Graph", namespaceValue)) { #>
+
     using Microsoft.Graph;
+<# } #>
 
     /// <summary>
     /// The interface I<#=propRequestBuilder#>.

@@ -7,16 +7,19 @@ OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
 var entityRequest = entityName + "Request";
 var entityRequestBuilder = entityRequest + "Builder";
+var namespaceName = this.GetNamespaceName(entity);
 
 #>
 
-namespace <#=this.GetNamespaceName(entity)#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
+<# if (!string.Equals("Microsoft.Graph", namespaceName)) { #>
 
     using Microsoft.Graph;
+<# } #>
 
     <#=this.GetEntityRequestBuilderInterfaceDefinition(entity)#>
     {

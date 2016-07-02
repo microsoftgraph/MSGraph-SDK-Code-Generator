@@ -19,7 +19,7 @@
         }
     },
     "AsyncMethods": [ "oneDrive.copy" ],
-    "PassFunctionParametersAsQuery":  false,
+    "PassFunctionParametersAsQueryString":  true,
     "TelemetryHeaderServicePrefix":  "onedrive",
     "TemplateMapping": {
         "Shared": [

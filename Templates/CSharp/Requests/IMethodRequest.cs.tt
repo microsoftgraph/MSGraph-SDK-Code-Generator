@@ -41,11 +41,13 @@ var methodReturnTag = sendAsyncReturnType == null
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
 
+var namespaceName = method.Namespace.GetNamespaceName();
+
 var features = host.CurrentType.GetFeatures();
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
@@ -53,8 +55,10 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    
+<# if (!string.Equals("Microsoft.Graph", namespaceName)) { #>
+
     using Microsoft.Graph;
+<# } #>
     
     /// <summary>
     /// The interface I<#=requestType#>.

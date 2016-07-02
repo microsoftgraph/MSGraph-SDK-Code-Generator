@@ -4,18 +4,21 @@
 <#
 var prop = host.CurrentType.AsOdcmProperty();
 var collectionRequest = this.GetPropertyCollectionReferencesRequestName(prop);
+var namespaceName = this.GetNamespaceName(prop.Class.AsOdcmClass());
 
 #>
 
-namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    
+<# if (!string.Equals("Microsoft.Graph", namespaceName)) { #>
+
     using Microsoft.Graph;
+<# } #>
 
     <#=this.GetCollectionReferencesInterfaceDefinition(prop)#>
     {

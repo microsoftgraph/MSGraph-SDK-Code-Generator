@@ -35,8 +35,10 @@ namespace <#=namespaceValue#>
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    
+<# if (!string.Equals("Microsoft.Graph", namespaceValue)) { #>
+
     using Microsoft.Graph;
+<# } #>
 
     /// <summary>
     /// The interface I<#=propRequest#>.

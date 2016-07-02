@@ -10,19 +10,22 @@ var collectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop
 var propName = prop.Name.ToCheckedCase();
 var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), propName , "CollectionWithReferencesResponse");
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), propName , "CollectionWithReferencesPage");
+var namespaceName = this.GetNamespaceName(prop.Class.AsOdcmClass());
 
 var features = host.CurrentType.GetFeatures();
 #>
 
-namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    
+<# if (!string.Equals("Microsoft.Graph", namespaceName)) { #>
+
     using Microsoft.Graph;
+<# } #>
 
     <#=this.GetCollectionWithReferencesClassDefinition(prop)#>
     {

@@ -4,11 +4,14 @@
 <#
 var entityContainer = model.EntityContainer;
 var clientName = entityContainer.Name.ToCheckedCase() + "Client";
+var namespaceName = entityContainer.Namespace.GetNamespaceName();
 #>
 
-namespace <#=entityContainer.Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
+<# if (!string.Equals("Microsoft.Graph", namespaceName)) { #>
     using Microsoft.Graph;
+<# } #>
     
     /// <summary>
     /// The interface I<#=clientName#>.

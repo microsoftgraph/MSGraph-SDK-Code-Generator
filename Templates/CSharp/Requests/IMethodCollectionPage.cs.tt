@@ -11,12 +11,15 @@ var returnType = method.ReturnType is OdcmPrimitiveType ? method.ReturnType.GetT
 var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var entityCollectionRequest = responseNamePrefix + "Request";
 var entityCollectionPage = responseNamePrefix + "CollectionPage";
+var namespaceName = method.Namespace.GetNamespaceName();
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
+<# if (!string.Equals("Microsoft.Graph", namespaceName)) { #>
     using Microsoft.Graph;
+<# } #>
     using Newtonsoft.Json;
     
     /// <summary>
