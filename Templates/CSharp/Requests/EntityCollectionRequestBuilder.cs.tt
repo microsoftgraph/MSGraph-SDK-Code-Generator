@@ -12,7 +12,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System.Collections.Generic;
 
     <#=this.GetCollectionClassDefinition(prop)#>
-    {  
+    {
         <#=this.GetCollectionRequestBuilderConstructor(prop)#>
 
         <#=this.GetCollectionRequestMethod(prop)#>

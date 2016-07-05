@@ -54,7 +54,7 @@ public string GetEntityReferenceRequestBuilderProperty(OdcmClass odcmClass)
 {
     var stringBuilder = new StringBuilder();
     var requestBuilderTypeName = this.GetEntityReferenceRequestBuilderName(odcmClass);
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// Gets the request builder for the reference of the {0}.", this.GetEntityNameString(odcmClass).ToLowerFirstChar());
@@ -115,7 +115,7 @@ public string GetRequestBuilderProperty(string propertyName, string requestBuild
 public string GetRequestBuilderProperty(string propertyName, string urlValue, string requestBuilderTypeName)
 {
     var stringBuilder = new StringBuilder();
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// Gets the request builder for {0}.", propertyName);
@@ -174,7 +174,7 @@ public string GetMethodRequestBuilderMethod(
 {
     var requestBuilderTypeName = this.GetRequestBuilderString(requestBuilderBaseString);
     var stringBuilder = new StringBuilder();
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// Gets the request builder for {0}.", requestBuilderBaseString);
@@ -208,7 +208,7 @@ public string GetNavigationProperties(OdcmClass entity)
             stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append("        ");
         }
-        
+
         if (prop.IsCollection())
         {
             stringBuilder.Append(this.GetCollectionPropertyRequestBuilderProperty(this.GetEntityNameString(entity), prop));
@@ -218,7 +218,7 @@ public string GetNavigationProperties(OdcmClass entity)
             stringBuilder.Append(this.GetNonCollectionRequestBuilderProperty(prop));
         }
     }
-    
+
     return stringBuilder.ToString();
 }
 
@@ -235,18 +235,18 @@ public string GetStreamProperties(OdcmClass entity)
             stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append("        ");
         }
-        
+
         var propName = this.GetPropertyName(prop);
         if (propName.Equals("Content"))
         {
             contentStreamFound = true;
         }
-        
+
         var propRequestBuilder = this.GetRequestBuilderString(propName);
-        
+
         stringBuilder.Append(this.GetRequestBuilderProperty(propName, string.Concat(this.GetEntityNameString(entity), propRequestBuilder)));
     }
-    
+
     if (entity.Kind == OdcmClassKind.MediaEntity && !contentStreamFound)
     {
         if (stringBuilder.Length > 0)
@@ -255,10 +255,10 @@ public string GetStreamProperties(OdcmClass entity)
             stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append("        ");
         }
-        
+
         stringBuilder.Append(this.GetRequestBuilderProperty("Content", "$value", string.Concat(this.GetEntityNameString(entity), "ContentRequestBuilder")));
     }
-    
+
     return stringBuilder.ToString();
 }
 
@@ -294,12 +294,12 @@ public string GetMethodProperties(OdcmClass entity)
         {
             var requiredParameters = method.Parameters.Where(param => !param.IsNullable);
             var optionalParameters = method.Parameters.Where(param => param.IsNullable);
-            
+
             foreach (var param in requiredParameters)
             {
                 var paramVariableName = param.Name.GetSanitizedParameterName();
                 var paramTypeString = param.Type.GetTypeString();
-                
+
                 if (param.IsCollection)
                 {
                     paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
@@ -313,12 +313,12 @@ public string GetMethodProperties(OdcmClass entity)
                 builderInitializerStringBuilder.Append("                ");
                 builderInitializerStringBuilder.AppendFormat("{0},", paramVariableName);
             }
-            
+
             foreach (var param in optionalParameters)
             {
                 var paramVariableName = param.Name.GetSanitizedParameterName();
                 var paramTypeString = param.Type.GetTypeString();
-                
+
                 if (param.IsCollection)
                 {
                     paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
@@ -339,16 +339,16 @@ public string GetMethodProperties(OdcmClass entity)
 
             paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);
         }
-        
+
         builderInitializerStringBuilder.Remove(builderInitializerStringBuilder.Length - 1, 1);
-        
+
         if (methodPropertiesStringBuilder.Length > 0)
         {
             methodPropertiesStringBuilder.Append(Environment.NewLine);
             methodPropertiesStringBuilder.Append(Environment.NewLine);
             methodPropertiesStringBuilder.Append("        ");
         }
-        
+
         methodPropertiesStringBuilder.Append(
             this.GetMethodRequestBuilderMethod(
                 methodName,
@@ -356,7 +356,7 @@ public string GetMethodProperties(OdcmClass entity)
                 paramStringBuilder.ToString(),
                 builderInitializerStringBuilder.ToString()));
     }
-    
+
     return methodPropertiesStringBuilder.ToString();
 }
 

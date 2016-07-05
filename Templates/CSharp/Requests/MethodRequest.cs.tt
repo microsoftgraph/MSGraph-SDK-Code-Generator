@@ -18,18 +18,18 @@ var isCollection = method.IsCollection;
 var sendAsyncReturnType = isCollection
     ? "I" + entityName + methodName + "CollectionPage"
     : returnEntityType;
-        
+
 var methodReturnType = sendAsyncReturnType == null
-    ? "Task"
-    : "Task<" + sendAsyncReturnType + ">";
+    ? "System.Threading.Tasks.Task"
+    : "System.Threading.Tasks.Task<" + sendAsyncReturnType + ">";
 
 string methodOverloadReturnType = methodReturnType;
-    
+
 if (isCollection)
 {
     methodReturnType = string.Concat("async ", methodReturnType);
 }
-        
+
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool includeRequestBody = hasParameters && isAction;
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
@@ -45,7 +45,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type <#=requestType#>.
@@ -92,7 +91,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         {
             return this.<#=httpMethod.ToLower().ToCheckedCase()#>Async(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Issues the <#=httpMethod#> request.
         /// </summary>
@@ -135,7 +134,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
                 if (response.AdditionalData != null)
                 {
                     response.Value.AdditionalData = response.AdditionalData;
-                    
+
                     object nextPageLink;
                     response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
 
@@ -170,7 +169,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     else
     {
 #>
-            return this.SendAsync(<#=methodParameter#>, cancellationToken); 
+            return this.SendAsync(<#=methodParameter#>, cancellationToken);
 <#
     }
 #>

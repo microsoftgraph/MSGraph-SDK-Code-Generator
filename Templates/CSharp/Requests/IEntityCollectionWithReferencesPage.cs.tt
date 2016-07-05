@@ -3,7 +3,7 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-var prop = host.CurrentType.AsOdcmProperty(); 
+var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Projection.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
 var entityCollectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
@@ -14,9 +14,9 @@ var entityCollectionPage = string.Concat(this.GetEntityNameString(prop.Class), p
 namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
 {
     using System;
-    
+
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.
     /// </summary>

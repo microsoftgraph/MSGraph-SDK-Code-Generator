@@ -26,7 +26,7 @@ public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
 {
     var propTypeName = this.GetPropertyTypeName(odcmProperty);
     var entityRequestBuilder = this.GetPropertyTypeRequestBuilderName(odcmProperty);
-    
+
     return this.GetIndexRequestBuilder(propTypeName, entityRequestBuilder);
 }
 
@@ -88,7 +88,7 @@ public string GetIndexRequestBuilder(string propertyName, string requestBuilderT
     stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        I{0} this[string id] {{ get; }}", requestBuilderTypeName);
-    
+
     return stringBuilder.ToString();
 }
 
@@ -100,7 +100,7 @@ public string GetCollectionReferencesRequestBuilder(OdcmProperty odcmProperty)
     {
         var stringBuilder = new StringBuilder();
         var collectionReferencesRequestBuilder = this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty);
-        
+
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <summary>");
         stringBuilder.Append(Environment.NewLine);
@@ -112,10 +112,10 @@ public string GetCollectionReferencesRequestBuilder(OdcmProperty odcmProperty)
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("        I{0} References {{ get; }}", collectionReferencesRequestBuilder);
         stringBuilder.Append(Environment.NewLine);
-        
+
         return stringBuilder.ToString();
     }
-    
+
     return string.Empty;
 }
 
@@ -124,7 +124,7 @@ public string GetCollectionWithReferencesIndexRequestBuilder(OdcmProperty odcmPr
 {
     var propTypeName = this.GetPropertyTypeName(odcmProperty);
     var entityRequestBuilder = this.GetPropertyTypeWithReferenceRequestBuilderName(odcmProperty);
-    
+
     return this.GetIndexRequestBuilder(propTypeName, entityRequestBuilder);
 }
 
