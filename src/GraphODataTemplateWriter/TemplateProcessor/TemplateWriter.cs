@@ -33,7 +33,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         private void SetTemplatesDirectory(string templatesDirectory, bool relative = true)
         {
             string programDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string relativeTemplatesDirectory = templatesDirectory ?? "Templates";
 
             this.TemplatesDirectory = (relative) ? Path.Combine(programDir, templatesDirectory) : templatesDirectory;
 

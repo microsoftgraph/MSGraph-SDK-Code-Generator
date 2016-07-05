@@ -65,7 +65,7 @@ namespace <#=namespaceName#>
 <# } #>
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type <#=requestBuilderType#>.
     /// </summary>
     public partial class <#=requestBuilderType#> : Base<#=methodType#>MethodRequestBuilder<I<#=requestType#>>, I<#=requestBuilderType#>
     {
@@ -93,7 +93,7 @@ if (!isPost && ConfigurationService.Settings.PassFunctionParametersAsQueryString
     foreach (var p in m.Parameters)
     {
 #>
-            SetParameter("<#=p.Name#>", <#=p.ParameterName#>, <#=p.IsNullable.ToString().ToLowerInvariant()#>);
+            this.SetParameter("<#=p.Name#>", <#=p.ParameterName#>, <#=p.IsNullable.ToString().ToLowerInvariant()#>);
 <#
     }
 #>
@@ -120,8 +120,10 @@ if (!isPost && ConfigurationService.Settings.PassFunctionParametersAsQueryString
             foreach (var p in m.Parameters)
             {
 #>
-            if (HasParameter("<#=p.Name#>"))
-                request.RequestBody.<#=p.PropertyName#> = GetParameter<<#=p.Type#>>("<#=p.Name#>");
+            if (this.HasParameter("<#=p.Name#>"))
+            {
+                request.RequestBody.<#=p.PropertyName#> = this.GetParameter<<#=p.Type#>>("<#=p.Name#>");
+            }
 
 <#
             }

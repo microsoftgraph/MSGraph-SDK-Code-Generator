@@ -45,7 +45,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         public static IEnumerable<OdcmClass> GetComplexTypes(this OdcmModel model)
         {
             var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x is OdcmComplexClass && x.CanonicalName() != "microsoft.graph.Json");
+            return @namespace.Classes.Where(x => x is OdcmComplexClass && x.CanonicalName().ToLowerInvariant() != "microsoft.graph.json");
         }
 
         public static IEnumerable<OdcmClass> GetEntityTypes(this OdcmModel model)
@@ -220,7 +220,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             // Try to find the first collection navigation property for the specified type directly on the service
             // class object. Use First() instead of FirstOrDefault() so template generation would fail if not found
             // instead of silently continuing. If an entity is used in a reference property a navigation collection
-            // on the client for that type is required. 
+            // on the client for that type is required.
             return odcmProperty
                 .Class
                 .Namespace
@@ -285,8 +285,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         public static OdcmEnum AsOdcmEnum(this OdcmObject odcmObject)
         {
-            OdcmEnum foo = odcmObject as OdcmEnum;
-            var bar = foo.Members.LastOrDefault();
             return odcmObject as OdcmEnum;
         }
 
