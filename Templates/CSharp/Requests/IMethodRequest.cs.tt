@@ -17,15 +17,15 @@ var isCollection = method.IsCollection;
 var sendAsyncReturnType = isCollection
     ? "I" + entityName + methodName + "CollectionPage"
     : returnEntityType;
-        
+
 var methodReturnType = sendAsyncReturnType == null
-    ? "Task"
-    : "Task<" + sendAsyncReturnType + ">";
-    
+    ? "System.Threading.Tasks.Task"
+    : "System.Threading.Tasks.Task<" + sendAsyncReturnType + ">";
+
 var methodReturnTag = sendAsyncReturnType == null
     ? "The task to await."
     : string.Concat("The", sendAsyncReturnType);
-        
+
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
 
@@ -40,8 +40,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
-    
+
     /// <summary>
     /// The interface I<#=requestType#>.
     /// </summary>

@@ -17,7 +17,6 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     <#=this.GetEntityRequestClassDefinition(entity)#>
     {
@@ -83,7 +82,7 @@ namespace <#=this.GetNamespaceName(entity)#>
             {
                 var propertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
                 var propertyType = property.GetTypeString();
-                
+
                 if (propertyType.IsComplex())
                 {
 #>

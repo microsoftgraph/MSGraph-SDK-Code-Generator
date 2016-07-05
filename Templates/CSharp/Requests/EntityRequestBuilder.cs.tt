@@ -25,7 +25,7 @@ namespace <#=this.GetNamespaceName(entity)#>
     if (entity.NavigationProperties().Any())
     {
     #>
-    
+
         <#=this.GetNavigationProperties(entity)#>
     <#
     }
@@ -41,7 +41,7 @@ namespace <#=this.GetNamespaceName(entity)#>
     if(entity.Methods.Any())
     {
     #>
-    
+
         <#=this.GetMethodProperties(entity)#>
     <#
     }

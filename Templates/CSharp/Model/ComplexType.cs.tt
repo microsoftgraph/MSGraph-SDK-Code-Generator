@@ -42,7 +42,7 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
     <#=attributeStringBuilder.ToString()#>
     public <#=classType#> <#=typeDeclaration#>
     {
-    <# 
+    <#
         foreach(var property in complex.Properties)
         {
 
@@ -50,7 +50,7 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
             var propertyName = isMethodResponse
                 ? property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase()
                 : property.Name.ToCheckedCase().GetSanitizedPropertyName();
-                
+
             var attributeDefinition = string.Format("[DataMember(Name = \"{0}\", EmitDefaultValue = false, IsRequired = false)]", property.Name);
 
             if (property.IsTypeNullable() || property.IsCollection)

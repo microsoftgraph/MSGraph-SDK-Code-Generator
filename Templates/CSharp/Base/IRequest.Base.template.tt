@@ -6,7 +6,7 @@
 public string GetInterfaceDefinition(string interfaceName)
 {
     var stringBuilder = new StringBuilder();
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("    /// The interface I{0}.", interfaceName);
@@ -14,7 +14,7 @@ public string GetInterfaceDefinition(string interfaceName)
     stringBuilder.Append("    /// </summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("    public partial interface I{0} : IBaseRequest", interfaceName);
-    
+
     return stringBuilder.ToString();
 }
 

@@ -29,10 +29,10 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     public partial class <#=requestBody#>
     {
     <#
-    foreach (var param in method.Parameters)  
+    foreach (var param in method.Parameters)
     {
         var paramTypeString = param.Type.GetTypeString();
-        
+
         if (param.IsCollection)
         {
             paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
@@ -41,7 +41,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         {
             paramTypeString = string.Format("{0}?", paramTypeString);
         }
-        
+
         var paramName = param.Name.ToCheckedCase().GetSanitizedPropertyName();
     #>
 
