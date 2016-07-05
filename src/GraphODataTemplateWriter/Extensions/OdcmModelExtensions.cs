@@ -293,7 +293,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return null;
         }
 
-        /// Returns the complete list of methods supported by this OdcmObject, including its overloads
+        /// Returns a List containing the supplied method plus its overloads
         public static List<OdcmMethod> WithOverloads(this OdcmMethod odcmMethod)
         {
             var methods = new List<OdcmMethod>();
@@ -302,6 +302,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return methods;
         }
 
+        /// Returns a List containing the supplied class' methods plus their overloads
         public static List<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
         {
             var allMethods = new List<OdcmMethod>();
