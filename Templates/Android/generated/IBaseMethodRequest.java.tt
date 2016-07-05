@@ -28,6 +28,7 @@ import com.google.gson.annotations.*;
      */
     <#=ClassTypeName(c)#> post() throws ClientException;
 
+<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -36,6 +37,8 @@ import com.google.gson.annotations.*;
      */
     <#=ITypeRequest(c)#> select(final String value);
 
+<# } #>
+<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -44,7 +47,8 @@ import com.google.gson.annotations.*;
      */
     <#=ITypeRequest(c)#> expand(final String value);
 
-<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #>
+<# } #>
+<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
     /**
      * Sets the top value for the request
      *
@@ -87,6 +91,7 @@ import com.google.gson.annotations.*;
      */
     <#=ClassTypeName(c)#> get() throws ClientException;
 
+<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -95,6 +100,8 @@ import com.google.gson.annotations.*;
      */
     <#=ITypeRequest(c)#> select(final String value);
 
+<# } #>
+<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -103,7 +110,8 @@ import com.google.gson.annotations.*;
      */
     <#=ITypeRequest(c)#> expand(final String value);
 
-<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #>
+<# } #>
+<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
     /**
      * Sets the top value for the request
      *

@@ -53,15 +53,15 @@ if (c.AsOdcmClass() != null)
     }
 #>
 <#
-	foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
-	{
-		var propName = prop.Name.ToCheckedCase();
-		var propRequestBuilder = TypeRequestBuilder(prop);
+    foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
+    {
+        var propName = prop.Name.ToCheckedCase();
+        var propRequestBuilder = TypeRequestBuilder(prop);
 #>
 
     I<#=propRequestBuilder#> get<#=propName#>();
 <#
-	}
+    }
 #>
 
 <#
@@ -77,7 +77,7 @@ if (c.AsOdcmClass() != null)
 
 
 <#
-    foreach (var method in c.AsOdcmClass().Methods)
+    foreach (var method in c.AsOdcmClass().MethodsAndOverloads())
     {
         var parameterList = MethodParametersSignature(method);
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
@@ -88,7 +88,7 @@ if (c.AsOdcmClass() != null)
 <# 		} else { #>
     <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
 <#
-		}
+        }
     }
 }
 #>

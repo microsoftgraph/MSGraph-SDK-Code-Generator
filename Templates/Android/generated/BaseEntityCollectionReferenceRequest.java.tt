@@ -39,6 +39,7 @@
                 .post(new<#=TypeName(c)#>, body);
     }
 
+<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -46,10 +47,12 @@
      * @return The updated request
      */
     public <#=ITypeCollectionReferenceRequest(c)#> expand(final String value) {
-        addQueryOption(new QueryOption("expand", value));
+        addQueryOption(new QueryOption("$expand", value));
         return (<#=TypeCollectionReferenceRequest(c)#>)this;
     }
 
+<# } #>
+<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -57,10 +60,12 @@
      * @return The updated request
      */
     public <#=ITypeCollectionReferenceRequest(c)#> select(final String value) {
-        addQueryOption(new QueryOption("select", value));
+        addQueryOption(new QueryOption("$select", value));
         return (<#=TypeCollectionReferenceRequest(c)#>)this;
     }
 
+<# } #>
+<# if (c.GetFeatures().CanUseTop) { #>
     /**
      * Sets the top value for the request
      *
@@ -68,8 +73,8 @@
      * @return The updated request
      */
     public <#=ITypeCollectionReferenceRequest(c)#> top(final int value) {
-        addQueryOption(new QueryOption("top", value + ""));
+        addQueryOption(new QueryOption("$top", value + ""));
         return (<#=TypeCollectionReferenceRequest(c)#>)this;
     }
-
+<# } #>
 }
