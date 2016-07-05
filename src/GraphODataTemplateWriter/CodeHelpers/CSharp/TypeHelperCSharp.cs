@@ -2,11 +2,12 @@
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 {
+    using Microsoft.Graph.ODataTemplateWriter.Extensions;
+    using Settings;
     using System;
     using System.Collections.Generic;
-    using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
-    using Settings;
+
     public static class TypeHelperCSharp
     {
         public const string DefaultReservedPrefix = "@";
