@@ -8,7 +8,7 @@
 <# bool isPost = IsPostRequestType(c.AsOdcmMethod()); #>
 <#=CreateClassDef(BaseTypeRequestBuilder(c),  RequestBuilderSuperClass(c))#>
 
-<# foreach (var method in c.MethodsAndOverrides()) { #>
+<# foreach (var method in c.AsOdcmMethod().WithOverloads()) { #>
     /**
      * The request builder for this <#=TypeName(c)#>
      *

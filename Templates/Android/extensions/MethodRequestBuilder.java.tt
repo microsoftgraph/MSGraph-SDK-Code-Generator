@@ -7,7 +7,7 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateClassDef(TypeRequestBuilder(c), BaseTypeRequestBuilder(c), ITypeRequestBuilder(c))#>
-<# foreach (var method in c.MethodsAndOverrides()) { #>
+<# foreach (var method in c.AsOdcmMethod().WithOverloads()) { #>
 
     /**
      * The request builder for this <#=TypeName(c)#>
