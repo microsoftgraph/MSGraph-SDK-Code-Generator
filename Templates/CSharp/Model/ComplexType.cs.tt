@@ -36,7 +36,6 @@ namespace <#=namespaceName#>
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
     using Microsoft.Graph;
 <# } #>

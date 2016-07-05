@@ -15,7 +15,6 @@ var namespaceName = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 namespace <#=namespaceName#>
 {
     using System;
-
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
     using Microsoft.Graph;
 <# } #>

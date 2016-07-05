@@ -36,7 +36,6 @@ namespace <#=namespaceValue#>
 {
     using System.Collections.Generic;
 <# if (!string.Equals("Microsoft.Graph", namespaceValue)) { #>
-
     using Microsoft.Graph;
 <# } #>
 

@@ -23,7 +23,6 @@ namespace <#=namespaceName#>
     using System.IO;
     using System.Runtime.Serialization;
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
-
     using Microsoft.Graph;
 <# } #>
 

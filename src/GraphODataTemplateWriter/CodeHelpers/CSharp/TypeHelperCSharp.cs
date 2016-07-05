@@ -197,7 +197,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 return ConfigurationService.Settings.NamespaceOverride;
             }
 
-            return Inflector.Inflector.Pascalize(namespaceObject.Name);
+            return Inflector.Inflector.Titleize(namespaceObject.Name);
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)

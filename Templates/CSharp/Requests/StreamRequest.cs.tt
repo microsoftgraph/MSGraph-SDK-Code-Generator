@@ -35,7 +35,6 @@ namespace <#=namespaceValue#>
     using System.Net.Http;
     using System.Threading;
 <# if (!string.Equals("Microsoft.Graph", namespaceValue)) { #>
-
     using Microsoft.Graph;
 <# } #>
 

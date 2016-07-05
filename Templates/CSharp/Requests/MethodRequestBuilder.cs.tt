@@ -60,7 +60,6 @@ namespace <#=namespaceName#>
     using System.Collections.Generic;
     using System.IO;
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
-
     using Microsoft.Graph;
 <# } #>
 

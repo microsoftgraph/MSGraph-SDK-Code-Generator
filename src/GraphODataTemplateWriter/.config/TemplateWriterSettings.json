@@ -2,11 +2,11 @@
     "AvailableLanguages": [ "Android", "ObjC", "CSharp", "Python", "JavaScript" ],
     "TargetLanguage": "CSharp",
     "Plugins": [ ],
-    "PrimaryNamespaceName": "oneDrive",
+    "PrimaryNamespaceName": "com",
     "NamespacePrefix": "com",
     "InitializeCollections": "false",
     "AllowShortActions": "false",
-    "NamespaceOverride": "Microsoft.OneDrive.Sdk",
+    "NamespaceOverride": "",
     "TemplatesDirectory": "../../../../Templates",
     "DefaultFileCasing": "UpperCamel",
     "CustomFlags": [ "python2" ],
@@ -14,13 +14,10 @@
         "Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information."
     ],
     "AdditionalMethodProperties": {
-        "oneDrive.delta": {
-            "CollectionResponse": { "@delta.token": "Edm.String", "@delta.deltaLink": "Edm.String" }
-        }
     },
-    "AsyncMethods": [ "oneDrive.copy" ],
-    "PassFunctionParametersAsQueryString":  true,
-    "TelemetryHeaderServicePrefix":  "onedrive",
+    "AsyncMethods": [],
+    "PassFunctionParametersAsQueryString":  false,
+    "TelemetryHeaderServicePrefix":  "graph",
     "TemplateMapping": {
         "Shared": [
         ]

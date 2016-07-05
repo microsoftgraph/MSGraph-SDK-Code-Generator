@@ -10,7 +10,6 @@ var namespaceName = entityContainer.Namespace.GetNamespaceName();
 namespace <#=namespaceName#>
 {
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
-
     using Microsoft.Graph;
 <# } #>
    

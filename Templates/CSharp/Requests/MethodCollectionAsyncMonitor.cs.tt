@@ -26,7 +26,6 @@ namespace <#=namespaceName#>
     using System.Collections.Generic;
     using System.Threading;
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
-
     using Microsoft.Graph;
 <# } #>
 

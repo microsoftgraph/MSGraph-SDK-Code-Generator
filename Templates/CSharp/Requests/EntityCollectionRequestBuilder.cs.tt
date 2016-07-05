@@ -12,7 +12,6 @@ namespace <#=namespaceName#>
     using System;
     using System.Collections.Generic;
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
-
     using Microsoft.Graph;
 <# } #>
 

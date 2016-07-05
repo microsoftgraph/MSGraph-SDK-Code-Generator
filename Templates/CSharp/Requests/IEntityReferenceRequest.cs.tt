@@ -16,7 +16,6 @@ namespace <#=namespaceName#>
     using System.Net.Http;
     using System.Threading;
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
-
     using Microsoft.Graph;
 <# } #>
 
