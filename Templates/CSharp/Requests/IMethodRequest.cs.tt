@@ -13,21 +13,29 @@ var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
 
 var isCollection = method.IsCollection;
-bool isAsync = method.IsAsync();
+bool isAsyncMethod = method.IsAsync();
 
 string sendAsyncReturnType = null;
 
-if (isAsync)
+if (isCollection)
 {
-    sendAsyncReturnType = string.Format("I{0}{1}AsyncMonitor", entityName, methodName);
-}
-else if (isCollection)
-{
-    sendAsyncReturnType = string.Format("I{0}{1}CollectionPage", entityName, methodName);
+    if (isAsyncMethod)
+    {
+        sendAsyncReturnType = string.Format("I{0}{1}AsyncMonitor", entityName, methodName);
+    }
+    else
+    {
+        sendAsyncReturnType = string.Format("I{0}{1}CollectionPage", entityName, methodName);
+    }
 }
 else
 {
     sendAsyncReturnType = returnEntityType;
+
+    if (isAsyncMethod)
+    {
+        sendAsyncReturnType = string.Format("IAsyncMonitor<{0}>", sendAsyncReturnType);
+    }
 }
         
 var methodReturnType = sendAsyncReturnType == null

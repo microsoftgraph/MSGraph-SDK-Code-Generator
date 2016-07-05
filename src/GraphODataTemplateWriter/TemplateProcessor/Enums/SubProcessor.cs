@@ -16,7 +16,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor.Enums
       NavigationCollectionProperty,
       CollectionReferenceProperty,
       EntityReferenceType,
-      AsyncMethod,
+      AsyncCollectionMethod,
       Method,
       NonCollectionMethod,
       CollectionMethod,

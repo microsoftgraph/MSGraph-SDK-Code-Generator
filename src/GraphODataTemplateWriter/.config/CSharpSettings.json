@@ -77,8 +77,8 @@
           { "Template": "MethodCollectionResponse", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionResponse" },
           { "Template": "MethodCollectionPage", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionPage" },
           { "Template": "IMethodCollectionPage", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionPage" },
-          { "Template": "MethodAsyncMonitor", "SubProcessor": "AsyncMethod", "Type": "Request", "Name": "<Class><Method>AsyncMonitor" },
-          { "Template": "IMethodAsyncMonitor", "SubProcessor": "AsyncMethod", "Type": "Request", "Name": "I<Class><Method>AsyncMonitor" },
+          { "Template": "MethodAsyncMonitor", "SubProcessor": "AsyncCollectionMethod", "Type": "Request", "Name": "<Class><Method>AsyncMonitor" },
+          { "Template": "IMethodAsyncMonitor", "SubProcessor": "AsyncCollectionMethod", "Type": "Request", "Name": "I<Class><Method>AsyncMonitor" },
 
           { "Template": "SharedCSharp", "SubProcessor": "Other", "Type": "Shared" }
       ]

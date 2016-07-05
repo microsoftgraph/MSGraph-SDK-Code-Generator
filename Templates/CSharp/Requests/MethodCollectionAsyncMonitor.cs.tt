@@ -48,20 +48,13 @@ namespace <#=namespaceName#>
         methodParameter = "this.RequestBody";
     }
     
-    var asyncString = isCollection ? "async " : " ";
-    
     #>
 
         /// <summary>
         /// Polls until the async operation is complete and returns the resulting <#=returnType#>.
         /// </summary>
-        public <#=asyncString#>Task<<#=returnType#>> CompleteOperationAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken)
+        public async Task<<#=returnType#>> CompleteOperationAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken)
         {
-        <#
-        if (isCollection)
-        {
-        #>
-        
             var response = await this.PollForOperationCompletionAsync(progress, cancellationToken);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -81,38 +74,11 @@ namespace <#=namespaceName#>
                             nextPageLinkString);
                     }
                 }
-            <#
-            if (isSpecialCollection)
-            {
-                foreach (var property in returnTypeObject.Properties)
-                {
-                    if (!property.LongDescriptionContains("ignorableCollection"))
-                    {
-                        var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
-            #>
-
-                response.Value.<#=propertyName#> = response.<#=propertyName#>;
-            <#
-                    }
-                }
-            }
-            #>
 
                 return response.Value;
             }
 
             return null;
-        <#
-        }
-        else
-        {
-        #>
-        
-            return this.PollForOperationCompletionAsync(progress, cancellationToken);
-        <#
-        }
-        #>
-        
         }
     }
 }

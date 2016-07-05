@@ -9,11 +9,7 @@ var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCa
 var monitorType = entityName + methodName + "AsyncMonitor";
 var namespaceName = method.Namespace.GetNamespaceName();
 
-var isCollection = method.IsCollection || method.LongDescriptionContains("specialCollection");
-var returnEntityType = method.ReturnType.Name.ToCheckedCase();
-var returnType = isCollection ? "I" + entityName + methodName + "CollectionPage" : returnEntityType;
-bool isAsync = method.IsAsync();
-var asyncString = isCollection ? "async " : " ";
+var returnType = "I" + entityName + methodName + "CollectionPage";
 
 #>
 
@@ -35,6 +31,6 @@ namespace <#=namespaceName#>
         /// <summary>
         /// Polls until the async operation is complete and returns the resulting <#=returnType#>.
         /// </summary>
-        <#=asyncString#>Task<<#=returnType#>> CompleteOperationAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken);
+        Task<<#=returnType#>> CompleteOperationAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken);
     }
 }

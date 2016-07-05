@@ -205,11 +205,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return @namespace.Types.OfType<OdcmEnum>();
         }
 
-        public static IEnumerable<OdcmMethod> GetAsyncMethods(this OdcmModel model)
-        {
-            return model.GetEntityTypes().SelectMany(entityType => entityType.Methods).Where(method => method.IsAsync());
-        }
-
         public static IEnumerable<OdcmMethod> GetMethods(this OdcmModel model)
         {
             return model.GetEntityTypes().SelectMany(entityType => entityType.Methods);

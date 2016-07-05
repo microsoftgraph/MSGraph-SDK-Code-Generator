@@ -14,23 +14,32 @@ var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
 
 var isCollection = method.IsCollection;
-var isAsync = method.IsAsync();
+var isAsyncMethod = method.IsAsync();
 
-var monitorType = string.Format("{0}{1}AsyncMonitor", entityName, methodName);
-
+string monitorType = null;
 string sendAsyncReturnType = null;
 
-if (isAsync)
+if (isCollection)
 {
-    sendAsyncReturnType = string.Format("I{0}{1}AsyncMonitor", entityName, methodName);
-}
-else if (isCollection)
-{
-    sendAsyncReturnType = string.Format("I{0}{1}CollectionPage", entityName, methodName);
+    if (isAsyncMethod)
+    {
+        monitorType = string.Format("{0}{1}AsyncMonitor", entityName, methodName);
+        sendAsyncReturnType = string.Format("I{0}", monitorType);
+    }
+    else
+    {
+        sendAsyncReturnType = string.Format("I{0}{1}CollectionPage", entityName, methodName);
+    }
 }
 else
 {
     sendAsyncReturnType = returnEntityType;
+
+    if (isAsyncMethod)
+    {
+        monitorType = string.Format("AsyncMonitor<{0}>", sendAsyncReturnType);
+        sendAsyncReturnType = string.Format("I{0}", monitorType);
+    }
 }
         
 var methodReturnType = sendAsyncReturnType == null
@@ -39,7 +48,7 @@ var methodReturnType = sendAsyncReturnType == null
 
 string methodOverloadReturnType = methodReturnType;
     
-if (isAsync || isCollection)
+if (isAsyncMethod || isCollection)
 {
     methodReturnType = string.Concat("async ", methodReturnType);
 }
@@ -146,7 +155,7 @@ namespace <#=namespaceName#>
 <#
     var methodParameter = includeRequestBody ? "this.RequestBody" : "null";
 
-    if (isAsync)
+    if (isAsyncMethod)
     {
         
     #>
@@ -219,7 +228,7 @@ namespace <#=namespaceName#>
 <#
     }
 #>
-        }
+    }
 
 <#
     if (!returnsStream)
