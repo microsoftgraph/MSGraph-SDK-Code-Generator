@@ -671,12 +671,13 @@ public {1} {2}{3}{4} {{";
 ";
         foreach (var p in parameters)
         {
-            var propertyType = p.IsCollection ? string.Format("List<{0}>", ParamType(p)) : ParamType(p);
-                sb.AppendFormat(format,
+            sb.AppendFormat(
+                format,
                 ParamName(p).SplitCamelCase(),
                 ParamName(p),
                 ParamType(p),
-                p.SanitizePropertyName().ToLowerFirstChar());
+                p.SanitizePropertyName().ToLowerFirstChar()
+            );
         }
         return sb.ToString();
     }
