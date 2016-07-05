@@ -29,7 +29,7 @@ namespace <#=namespaceName#>
         /// Gets the next page <see cref="I<#=nextRequestType#>"/> instance.
         /// </summary>
         public I<#=nextRequestType#> NextPageRequest { get; private set; }
-        <#
+<#
         var additionalResponseProperties = method.GetAdditionalPropertiesForMethodCollectionResponse(model);
         
         if (additionalResponseProperties != null)
@@ -38,16 +38,16 @@ namespace <#=namespaceName#>
             {
                 var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
                 var propertyType = property.Projection.Type.GetTypeString();
-        #>
+#>
 
         /// <summary>
         /// Gets or sets the <#=propertyName#>.
         /// </summary>
         public <#=propertyType#> <#=propertyName#> { get; set; }
-        <#
+<#
             }
         }
-        #>
+#>
 
         /// <summary>
         /// Initializes the NextPageRequest property.
