@@ -18,7 +18,6 @@ namespace <#=namespaceName#>
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
 
     using Microsoft.Graph;
@@ -88,7 +87,7 @@ namespace <#=namespaceName#>
             {
                 var propertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
                 var propertyType = property.GetTypeString();
-                
+
                 if (propertyType.IsComplex())
                 {
 #>

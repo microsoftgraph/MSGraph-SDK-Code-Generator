@@ -17,12 +17,11 @@ namespace <#=namespaceName#>
 {
     using System;
     using System.Threading;
-    using System.Threading.Tasks;
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
 
     using Microsoft.Graph;
 <# } #>
-    
+
     /// <summary>
     /// The interface I<#=monitorType#>.
     /// </summary>
@@ -31,6 +30,6 @@ namespace <#=namespaceName#>
         /// <summary>
         /// Polls until the async operation is complete and returns the resulting <#=returnType#>.
         /// </summary>
-        Task<<#=returnType#>> CompleteOperationAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<<#=returnType#>> CompleteOperationAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken);
     }
 }

@@ -14,7 +14,7 @@ namespace <#=namespaceName#>
     using Microsoft.Graph;
 <# } #>
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The enum <#=enumName#>.
     /// </summary>
@@ -25,7 +25,7 @@ namespace <#=namespaceName#>
         foreach(var value in enumT.Members)
         {
     #>
-    
+
         /// <summary>
         /// <#=value.Name.SplitCamelCase()#>
         /// </summary>
@@ -33,6 +33,6 @@ namespace <#=namespaceName#>
     <#
         }
     #>
-    
+
     }
 }

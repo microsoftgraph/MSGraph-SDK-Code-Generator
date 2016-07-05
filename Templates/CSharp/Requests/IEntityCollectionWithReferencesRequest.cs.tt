@@ -16,7 +16,6 @@ namespace <#=namespaceName#>
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
 
     using Microsoft.Graph;
@@ -28,14 +27,14 @@ namespace <#=namespaceName#>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<I<#=collectionPage#>> GetAsync();
-        
+        System.Threading.Tasks.Task<I<#=collectionPage#>> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<I<#=collectionPage#>> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<I<#=collectionPage#>> GetAsync(CancellationToken cancellationToken);
 
 <# if (features.CanExpand) { #>
         /// <summary>

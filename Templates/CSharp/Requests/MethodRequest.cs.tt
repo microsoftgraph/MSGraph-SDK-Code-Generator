@@ -41,10 +41,10 @@ else
         sendAsyncReturnType = string.Format("I{0}", monitorType);
     }
 }
-        
+
 var methodReturnType = sendAsyncReturnType == null
-    ? "Task"
-    : "Task<" + sendAsyncReturnType + ">";
+    ? "System.Threading.Tasks.Task"
+    : "System.Threading.Tasks.Task<" + sendAsyncReturnType + ">";
 
 string methodOverloadReturnType = methodReturnType;
     
@@ -52,7 +52,7 @@ if (isAsyncMethod || isCollection)
 {
     methodReturnType = string.Concat("async ", methodReturnType);
 }
-        
+
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool includeRequestBody = hasParameters && isAction;
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
@@ -70,7 +70,6 @@ namespace <#=namespaceName#>
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
 
     using Microsoft.Graph;
@@ -121,7 +120,7 @@ namespace <#=namespaceName#>
         {
             return this.<#=httpMethod.ToLower().ToCheckedCase()#>Async(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Issues the <#=httpMethod#> request.
         /// </summary>
@@ -174,7 +173,7 @@ namespace <#=namespaceName#>
                 if (response.AdditionalData != null)
                 {
                     response.Value.AdditionalData = response.AdditionalData;
-                    
+
                     object nextPageLink;
                     response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
 
@@ -224,7 +223,7 @@ namespace <#=namespaceName#>
     else
     {
 #>
-            return this.SendAsync(<#=methodParameter#>, cancellationToken); 
+            return this.SendAsync(<#=methodParameter#>, cancellationToken);
 <#
     }
 #>

@@ -22,7 +22,7 @@ namespace <#=namespaceName#>
         <#=this.GetEntityWithReferenceRequestMethod(entity)#>
 
         <#=this.GetEntityWithReferenceRequestMethodWithOptions(entity)#>
-        
+
         <#=this.GetEntityReferenceRequestBuilderProperty(entity)#>
 
     }

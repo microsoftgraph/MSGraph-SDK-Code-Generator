@@ -30,7 +30,7 @@ namespace <#=namespaceName#>
     if (entity.NavigationProperties().Any())
     {
     #>
-    
+
         <#=this.GetNavigationProperties(entity)#>
     <#
     }
@@ -46,7 +46,7 @@ namespace <#=namespaceName#>
     if(entity.Methods.Any())
     {
     #>
-    
+
         <#=this.GetMethodProperties(entity)#>
     <#
     }

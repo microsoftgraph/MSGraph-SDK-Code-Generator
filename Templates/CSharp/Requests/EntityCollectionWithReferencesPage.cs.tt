@@ -3,7 +3,7 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 
-var prop = host.CurrentType.AsOdcmProperty(); 
+var prop = host.CurrentType.AsOdcmProperty();
 var innerEntity = prop.Projection.Type;
 var innerEntityType = innerEntity is OdcmPrimitiveType ? innerEntity.GetTypeString() : innerEntity.Name.ToCheckedCase();
 var entityCollectionRequest = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionWithReferencesRequest");
@@ -19,7 +19,7 @@ namespace <#=namespaceName#>
 
     using Microsoft.Graph;
 <# } #>
-    
+
     /// <summary>
     /// The type <#=entityCollectionPage#>.
     /// </summary>

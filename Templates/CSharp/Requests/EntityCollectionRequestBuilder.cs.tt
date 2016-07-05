@@ -17,7 +17,7 @@ namespace <#=namespaceName#>
 <# } #>
 
     <#=this.GetCollectionClassDefinition(prop)#>
-    {  
+    {
         <#=this.GetCollectionRequestBuilderConstructor(prop)#>
 
         <#=this.GetCollectionRequestMethod(prop)#>

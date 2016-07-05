@@ -25,7 +25,6 @@ namespace <#=namespaceName#>
     using System;
     using System.Collections.Generic;
     using System.Threading;
-    using System.Threading.Tasks;
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
 
     using Microsoft.Graph;
@@ -47,13 +46,12 @@ namespace <#=namespaceName#>
     {
         methodParameter = "this.RequestBody";
     }
-    
     #>
 
         /// <summary>
         /// Polls until the async operation is complete and returns the resulting <#=returnType#>.
         /// </summary>
-        public async Task<<#=returnType#>> CompleteOperationAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<<#=returnType#>> CompleteOperationAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken)
         {
             var response = await this.PollForOperationCompletionAsync(progress, cancellationToken);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
@@ -61,7 +59,7 @@ namespace <#=namespaceName#>
                 if (response.AdditionalData != null)
                 {
                     response.Value.AdditionalData = response.AdditionalData;
-                        
+
                     object nextPageLink;
                     response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
 

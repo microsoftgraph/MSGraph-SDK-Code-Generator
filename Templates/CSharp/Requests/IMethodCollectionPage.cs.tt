@@ -21,7 +21,7 @@ namespace <#=namespaceName#>
     using Microsoft.Graph;
 <# } #>
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.
     /// </summary>

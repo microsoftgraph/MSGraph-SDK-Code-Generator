@@ -37,15 +37,15 @@ else
         sendAsyncReturnType = string.Format("IAsyncMonitor<{0}>", sendAsyncReturnType);
     }
 }
-        
+
 var methodReturnType = sendAsyncReturnType == null
-    ? "Task"
-    : "Task<" + sendAsyncReturnType + ">";
-    
+    ? "System.Threading.Tasks.Task"
+    : "System.Threading.Tasks.Task<" + sendAsyncReturnType + ">";
+
 var methodReturnTag = sendAsyncReturnType == null
     ? "The task to await."
     : string.Concat("The", sendAsyncReturnType);
-        
+
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
 
@@ -62,12 +62,11 @@ namespace <#=namespaceName#>
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
 
     using Microsoft.Graph;
 <# } #>
-    
+
     /// <summary>
     /// The interface I<#=requestType#>.
     /// </summary>
