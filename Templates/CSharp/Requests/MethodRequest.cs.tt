@@ -161,6 +161,7 @@ namespace <#=namespaceName#>
             {
                 return new <#=monitorType#>(this.Client, response.Headers.Location.ToString());
             }
+
     <#
     }
     else if (isCollection)
@@ -226,7 +227,7 @@ namespace <#=namespaceName#>
 <#
     }
 #>
-    }
+        }
 
 <#
     if (!returnsStream)

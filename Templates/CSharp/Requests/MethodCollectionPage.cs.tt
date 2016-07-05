@@ -18,8 +18,8 @@ namespace <#=namespaceName#>
 {
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
     using Microsoft.Graph;
-<# } #>
 
+<# } #>
     /// <summary>
     /// The type <#=entityCollectionPage#>.
     /// </summary>
