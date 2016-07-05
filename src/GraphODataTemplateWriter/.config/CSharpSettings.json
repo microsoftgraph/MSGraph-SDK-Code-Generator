@@ -75,11 +75,8 @@
           { "Template": "IMethodRequestBuilder", "SubProcessor": "Method", "Type": "Request", "Name": "I<Class><Method>RequestBuilder" },
           { "Template": "MethodRequestBody", "SubProcessor": "MethodWithBody", "Type": "Model", "Name": "<Class><Method>RequestBody" },
           { "Template": "MethodCollectionResponse", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionResponse" },
-          { "Template": "MethodCollectionResponse", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>CollectionResponse" },
           { "Template": "MethodCollectionPage", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "<Class><Method>CollectionPage" },
-          { "Template": "MethodCollectionPage", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>CollectionPage" },
           { "Template": "IMethodCollectionPage", "SubProcessor": "CollectionMethod", "Type": "Request", "Name": "I<Class><Method>CollectionPage" },
-          { "Template": "IMethodCollectionPage", "SubProcessor": "Method", "Type": "Request", "Name": "I<Class><Method>CollectionPage" },
           { "Template": "MethodAsyncMonitor", "SubProcessor": "AsyncMethod", "Type": "Request", "Name": "<Class><Method>AsyncMonitor" },
           { "Template": "IMethodAsyncMonitor", "SubProcessor": "AsyncMethod", "Type": "Request", "Name": "I<Class><Method>AsyncMonitor" },
 
