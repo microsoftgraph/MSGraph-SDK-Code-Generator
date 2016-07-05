@@ -5,9 +5,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
-    using System.Text.RegularExpressions;
+
     public static class OdcmModelExtensions
     {
         private static readonly Regex CollectionRegex = new Regex(@"Collection\((?<typeDefinition>[^\)]+)\)");
