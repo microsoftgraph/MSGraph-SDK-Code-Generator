@@ -302,6 +302,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return methods;
         }
 
+        public static List<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
+        {
+            var allMethods = new List<OdcmMethod>();
+            foreach (var method in odcmClass.Methods)
+            {
+                allMethods.AddRange(method.WithOverloads());
+            }
+            return allMethods;
+        }
+
     }
 
 }

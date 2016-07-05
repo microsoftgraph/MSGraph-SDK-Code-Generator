@@ -77,12 +77,7 @@ if (c.AsOdcmClass() != null)
 
 
 <#
-    var allMethods = new List<OdcmMethod>();
-    foreach (var method in c.AsOdcmClass().Methods) {
-        allMethods.Add(method);
-        allMethods.AddRange(method.Overloads);
-    }
-    foreach (var method in allMethods)
+    foreach (var method in c.AsOdcmClass().MethodsAndOverloads())
     {
         var parameterList = MethodParametersSignature(method);
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
