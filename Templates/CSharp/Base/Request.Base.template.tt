@@ -6,7 +6,7 @@
 public string GetClassDefinition(string className)
 {
     var stringBuilder = new StringBuilder();
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("    /// The type {0}.", className);
@@ -14,14 +14,14 @@ public string GetClassDefinition(string className)
     stringBuilder.Append("    /// </summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("    public partial class {0} : BaseRequest, I{0}", className);
-    
+
     return stringBuilder.ToString();
 }
 
 public string GetConstructor(string instanceTypeName)
 {
     var stringBuilder = new StringBuilder();
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// Constructs a new {0}.", instanceTypeName);
@@ -31,7 +31,7 @@ public string GetConstructor(string instanceTypeName)
         /// <param name=""requestUrl"">The URL for the built request.</param>
         /// <param name=""client"">The <see cref=""IBaseClient""/> for handling requests.</param>
         /// <param name=""options"">Query and header option name value pairs for the request.</param>");
-        
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        public {0}(", instanceTypeName);
     stringBuilder.Append(Environment.NewLine);
@@ -42,7 +42,7 @@ public string GetConstructor(string instanceTypeName)
             : base(requestUrl, client, options)
         {
         }");
-    
+
     return stringBuilder.ToString();
 }
 
