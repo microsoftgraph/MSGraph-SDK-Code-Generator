@@ -16,7 +16,7 @@ namespace <#=namespaceName#>
     using System.Collections.Generic;
     using System.Runtime.Serialization;
 
-<# if (!string.Equals("Microsoft.Graph", namespaceName)) { #>
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
     using Microsoft.Graph;
 <# } #>
     using Newtonsoft.Json;

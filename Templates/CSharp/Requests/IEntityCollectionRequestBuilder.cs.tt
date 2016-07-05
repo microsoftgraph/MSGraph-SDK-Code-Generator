@@ -11,7 +11,7 @@ namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
-<# if (!string.Equals("Microsoft.Graph", namespaceName)) { #>
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
 
     using Microsoft.Graph;
 <# } #>

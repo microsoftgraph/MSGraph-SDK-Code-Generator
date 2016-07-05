@@ -24,16 +24,20 @@ if (entity.Derived != null && entity.Base == null)
     attributeStringBuilder.Append("[JsonConverter(typeof(DerivedTypeConverter))]");
 }
 
+var namespaceName = entity.Namespace.GetNamespaceName();
+
 #>
 
-namespace <#=entity.Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
 
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
     using Microsoft.Graph;
+<# } #>
     using Newtonsoft.Json;
 
     /// <summary>

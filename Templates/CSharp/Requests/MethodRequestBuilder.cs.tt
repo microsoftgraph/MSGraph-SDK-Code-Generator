@@ -59,7 +59,7 @@ namespace <#=namespaceName#>
     using System;
     using System.Collections.Generic;
     using System.IO;
-<# if (!string.Equals("Microsoft.Graph", namespaceName)) { #>
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
 
     using Microsoft.Graph;
 <# } #>

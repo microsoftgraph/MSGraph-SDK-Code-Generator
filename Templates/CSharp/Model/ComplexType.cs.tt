@@ -26,16 +26,20 @@ if (!complex.IsAbstract && complex.Derived != null && (complex.Base == null || c
     attributeStringBuilder.Append("[JsonConverter(typeof(DerivedTypeConverter))]");
 }
 
+var namespaceName = complex.Namespace.GetNamespaceName();
+
 #>
 
-namespace <#=complex.Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
 
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
     using Microsoft.Graph;
+<# } #>
     using Newtonsoft.Json;
 
     /// <summary>

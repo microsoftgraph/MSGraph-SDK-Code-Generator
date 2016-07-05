@@ -17,7 +17,7 @@ var namespaceName = method.Namespace.GetNamespaceName();
 
 namespace <#=namespaceName#>
 {
-<# if (!string.Equals("Microsoft.Graph", namespaceName)) { #>
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
     using Microsoft.Graph;
 <# } #>
     using Newtonsoft.Json;

@@ -22,7 +22,7 @@ namespace <#=namespaceName#>
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-<# if (!string.Equals("Microsoft.Graph", namespaceName)) { #>
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
 
     using Microsoft.Graph;
 <# } #>
