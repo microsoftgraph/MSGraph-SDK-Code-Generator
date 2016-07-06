@@ -13,7 +13,6 @@ namespace <#=namespaceName#>
     using Microsoft.Graph;
 
 <# } #>
-
     /// <summary>
     /// The type <#=clientName#>.
     /// </summary>
