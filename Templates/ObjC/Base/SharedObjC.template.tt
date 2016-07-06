@@ -241,13 +241,20 @@ private string GetStaticBaseObject()
 
 private string GeneratePropertyDeclarationLine(OdcmProperty prop)
 {
-    if(prop.IsNullable==true) 
+    if(prop.IsCollection || prop.IsComplex())
     {
-        return "@property (nullable, nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
+        if(prop.IsNullable==true) 
+        {
+            return "@property (nullable, nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
+        }
+        else
+        {
+            return "@property (nonnull, nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
+        }
     }
     else
     {
-        return "@property (nonnull, nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
+        return "@property (nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
     }
 }
 
