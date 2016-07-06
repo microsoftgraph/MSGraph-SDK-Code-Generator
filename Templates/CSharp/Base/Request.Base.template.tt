@@ -46,7 +46,7 @@ public string GetConstructor(string instanceTypeName)
         !string.Equals("graph", ConfigurationService.Settings.TelemetryHeaderServicePrefix, StringComparison.OrdinalIgnoreCase))
     {
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        this.SdkVersionHeaderPrefix = \"{0}\";", ConfigurationService.Settings.TelemetryHeaderServicePrefix);
+        stringBuilder.AppendFormat("            this.SdkVersionHeaderPrefix = \"{0}\";", ConfigurationService.Settings.TelemetryHeaderServicePrefix);
     }
 
     stringBuilder.Append(Environment.NewLine);
