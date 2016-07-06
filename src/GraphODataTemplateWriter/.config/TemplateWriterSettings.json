@@ -23,7 +23,7 @@
     },
     "AsyncMethods": [ "oneDrive.copy" ],
     "PassFunctionParametersAsQueryString":  true,
-    "TelemetryHeaderServicePrefix":  "graph",
+    "TelemetryHeaderServicePrefix":  "onedrive",
     "TemplateMapping": {
         "Shared": [
         ]
