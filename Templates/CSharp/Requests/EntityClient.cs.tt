@@ -11,8 +11,9 @@ namespace <#=namespaceName#>
 {
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
     using Microsoft.Graph;
+
 <# } #>
-   
+
     /// <summary>
     /// The type <#=clientName#>.
     /// </summary>
@@ -43,8 +44,7 @@ namespace <#=namespaceName#>
             : base(baseUrl, authenticationProvider, httpProvider)
         {
         }
-    <#
-
+<#
     foreach(var prop in model.EntityContainer.Properties)
     {
         var propName = string.Concat(entityContainer.Name.ToCheckedCase(), prop.Name.ToCheckedCase());
@@ -53,7 +53,7 @@ namespace <#=namespaceName#>
         if (prop.IsCollection())
         {
             var collectionRequestBuilder = propName + "CollectionRequestBuilder";
-    #>
+#>
 
         /// <summary>
         /// Gets the <#=propName#> request builder.
@@ -65,12 +65,12 @@ namespace <#=namespaceName#>
                 return new <#=collectionRequestBuilder#>(this.BaseUrl + "/<#=prop.Name#>", this);
             }
         }
-    <#
+<#
         }
         else
         {
             var requestBuilder = prop.Projection.Type.Name.ToCheckedCase() + "RequestBuilder";
-    #>
+#>
 
         /// <summary>
         /// Gets the <#=propName#> request builder.
@@ -82,10 +82,9 @@ namespace <#=namespaceName#>
                 return new <#=requestBuilder#>(this.BaseUrl + "/<#=prop.Name#>", this);
             }
         }
-    <#
+<#
         }
     }
-    #>
-
+#>
     }
 }

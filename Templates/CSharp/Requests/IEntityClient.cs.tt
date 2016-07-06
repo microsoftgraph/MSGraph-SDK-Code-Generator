@@ -11,15 +11,15 @@ namespace <#=namespaceName#>
 {
 <# if (!this.IsGraphNamespace(namespaceName)) { #>
     using Microsoft.Graph;
+
 <# } #>
-    
+
     /// <summary>
     /// The interface I<#=clientName#>.
     /// </summary>
     public partial interface I<#=clientName#> : IBaseClient
     {
-    <#
-
+<#
     foreach(var prop in model.EntityContainer.Properties)
     {
         var propName = string.Concat(entityContainer.Name.ToCheckedCase(), prop.Name.ToCheckedCase());
@@ -27,28 +27,26 @@ namespace <#=namespaceName#>
 
         if (prop.IsCollection())
         {
-    #>
-
+#>
         /// <summary>
         /// Gets the <#=propName#> request builder.
         /// </summary>
         I<#=propName#>CollectionRequestBuilder <#=sanitizedPropName#> { get; }
-    <#
+<#
         }
         else
         {
 
         var propType = prop.Projection.Type.Name.ToCheckedCase();
-    #>
+#>
 
         /// <summary>
         /// Gets the <#=propName#> request builder.
         /// </summary>
         I<#=propType#>RequestBuilder <#=sanitizedPropName#> { get; }
-    <#
+<#
         }
     }
-    #>
-
+#>
     }
 }
