@@ -12,6 +12,7 @@
 
     <#=TypeName(c)#> delete() throws ClientException;
 
+<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -20,6 +21,8 @@
      */
     <#=IBaseTypeReferenceRequest(c)#> select(final String value);
 
+<# } #>
+<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -28,4 +31,5 @@
      */
     <#=IBaseTypeReferenceRequest(c)#> expand(final String value);
 
+<# } #>
 }

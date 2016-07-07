@@ -18,4 +18,4 @@
     public <#=TypeWithReferencesRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
         super(requestUrl, client, options);
     }
- }
+}

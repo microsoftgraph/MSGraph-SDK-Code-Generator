@@ -17,7 +17,7 @@ namespace <#=this.GetNamespaceName(entity)#>
         <#=this.GetEntityWithReferenceRequestMethod(entity)#>
 
         <#=this.GetEntityWithReferenceRequestMethodWithOptions(entity)#>
-        
+
         <#=this.GetEntityReferenceRequestBuilderProperty(entity)#>
 
     }

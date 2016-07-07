@@ -38,7 +38,7 @@ For more information on submodules read [this chapter](http://git-scm.com/book/e
 1. Build the solution in Visual Studio.
 2. Go to the `src\T4TemplateWriter\bin\debug` folder to find all compiled components.
 3. In that folder, modify `.config\TemplateWriterSettings.json` to specify your template mapping see [Template Writer Settings](##Template-Writer-Settings) for more details.
-4. Open a command prompt as administrator in the same folder and run `Vipr.exe <path-or-url-to-metadata> --writer="Graph.ODataTemplateWriter"`
+4. Open a command prompt as administrator in the same folder and run `Vipr.exe <path-or-url-to-metadata> --writer="GraphODataTemplateWriter"`
 
 By default, output source code will be put in a folder named "output" next to the Vipr executable.
 

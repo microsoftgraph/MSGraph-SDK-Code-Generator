@@ -42,7 +42,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         public static IEnumerable<OdcmClass> GetComplexTypes(this OdcmModel model)
         {
             var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x is OdcmComplexClass);
+            return @namespace.Classes.Where(x => x is OdcmComplexClass && x.CanonicalName().ToLowerInvariant() != "microsoft.graph.json");
         }
 
         public static IEnumerable<OdcmClass> GetEntityTypes(this OdcmModel model)
@@ -137,7 +137,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             // Try to find the first collection navigation property for the specified type directly on the service
             // class object. Use First() instead of FirstOrDefault() so template generation would fail if not found
             // instead of silently continuing. If an entity is used in a reference property a navigation collection
-            // on the client for that type is required. 
+            // on the client for that type is required.
             return odcmProperty
                 .Class
                 .Namespace
@@ -198,8 +198,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         public static OdcmEnum AsOdcmEnum(this OdcmObject odcmObject)
         {
-            OdcmEnum foo = odcmObject as OdcmEnum;
-            var bar = foo.Members.LastOrDefault();
             return odcmObject as OdcmEnum;
         }
 
@@ -284,6 +282,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             var descriptionParts = odcmObject.GetLongDescriptionSegments();
             return descriptionParts != null && descriptionParts.Any(value => value.StartsWith(descriptionValue));
         }
+
         public static string[] GetLongDescriptionSegments(this OdcmObject odcmObject)
         {
             if (odcmObject.LongDescription != null)
@@ -292,6 +291,26 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             }
 
             return null;
+        }
+
+        /// Returns a List containing the supplied method plus its overloads
+        public static List<OdcmMethod> WithOverloads(this OdcmMethod odcmMethod)
+        {
+            var methods = new List<OdcmMethod>();
+            methods.Add(odcmMethod);
+            methods.AddRange(odcmMethod.Overloads);
+            return methods;
+        }
+
+        /// Returns a List containing the supplied class' methods plus their overloads
+        public static List<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
+        {
+            var allMethods = new List<OdcmMethod>();
+            foreach (var method in odcmClass.Methods)
+            {
+                allMethods.AddRange(method.WithOverloads());
+            }
+            return allMethods;
         }
 
     }

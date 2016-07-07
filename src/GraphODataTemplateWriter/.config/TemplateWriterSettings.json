@@ -1,6 +1,6 @@
 ﻿{
     "AvailableLanguages": [ "Android", "ObjC", "CSharp", "Python", "JavaScript" ],
-    "TargetLanguage": "CSharp",
+    "TargetLanguage": "Android",
     "Plugins": [ ],
     "PrimaryNamespaceName": "com",
     "NamespacePrefix": "com",
