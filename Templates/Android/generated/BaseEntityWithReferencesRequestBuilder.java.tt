@@ -1,0 +1,40 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeWithReferencesRequestBuilder(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(BaseTypeWithReferencesRequestBuilder(c), "BaseRequestBuilder", IBaseTypeWithReferencesRequestBuilder(c))#>
+
+    /**
+     * The request builder for the <#=TypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param options The options for this request
+     */
+    public <#=BaseTypeWithReferencesRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
+        super(requestUrl, client, options);
+    }
+
+    /**
+     * Creates the request
+     */
+    public <#=ITypeWithReferencesRequest(c)#> buildRequest() {
+        return buildRequest(getOptions());
+    }
+
+    /**
+     * Creates the request with specific options instead of the existing options
+     */
+    public <#=ITypeWithReferencesRequest(c)#> buildRequest(final List<Option> options) {
+        return new <#=TypeWithReferencesRequest(c)#>(getRequestUrl(), getClient(), options);
+    }
+
+    public <#=ITypeReferenceRequestBuilder(c)#> reference(){
+        return new <#=TypeReferenceRequestBuilder(c)#>(getRequestUrl() + "/$ref", getClient(), getOptions());
+    }
+
+}

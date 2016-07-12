@@ -1,8 +1,16 @@
 <# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ output extension="\\" #>
+<#@include file="..\\other\\helpers.ttinclude"#>
 <#
 CustomT4Host host       = (CustomT4Host) Host;
+var projection = host.CurrentType.Projection;
+var canExpand = projection.BooleanValueOf("Expandable") != false;
+var canFilter = projection.BooleanValueOf("Filterable") != false;
+var canSkip = projection.BooleanValueOf("SkipSupported") != false;
+var canSort = projection.BooleanValueOf("Sortable") != false;
+var canSelect = projection.BooleanValueOf("Selectable") != false;
+var canUseTop = projection.BooleanValueOf("TopSupported") != false;
 OdcmModel model         = host.CurrentModel;
 CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
 var clientName          = model.GetEntityContainer().ToUpperFirstChar() + "Client";
@@ -12,8 +20,8 @@ var entityName          = method.Class.Name.ToUpperFirstChar();
 var httpMethod          = method.IsAction() ? "POST" : "GET";
 var requestType         = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Request";
 var requestBuilderType  = requestType + "Builder";
-var returnType          = method.ReturnType.Name.ToUpperFirstChar();
-var returnTypeCollection= "ItemsCollectionResponse";
+var returnType          = method.ReturnType != null ? method.ReturnType.GetTypeString() : "None";
+var returnTypeCollection= "DriveItemCollectionResponse";
 if (method.LongDescriptionContains("specialCollection"))
 {
     returnTypeCollection=requestType.Replace("Request", "CollectionResponse");
@@ -26,10 +34,10 @@ var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("py
 #>
 <#=writer.WriteHeader(writer.GeneratedHeader)#>
 <#
-if (!method.LongDescriptionContains("specialCollection"))
+if (!method.LongDescriptionContains("specialCollection") && !IsBuiltIn(returnType))
 {
 #>
-from ..model.<#=returnType.ToUnderscore()#> import <#=returnType#>
+#from ..model.<#=returnType.ToUnderscore()#> import <#=returnType#>
 <#
 }
 #>
@@ -48,6 +56,11 @@ import json
 if (!isPython2) {
 #>
 import asyncio
+<#
+}
+if (method.IsCollection) {
+#>
+from ..request import <#=returnTypeCollection.Replace("Response", "").ToUnderscore()#> 
 <#
 }
 #>
@@ -120,15 +133,15 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         if (method.LongDescriptionContains("async")){
 #>
-            :class:`AsyncOperationMonitor<onedrivesdk.async_operation_monitor.AsyncOperationMonitor>`:
+            :class:`AsyncOperationMonitor<msgraph.async_operation_monitor.AsyncOperationMonitor>`:
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><msgraph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><msgraph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -144,7 +157,7 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         } else {
 #>
-        <#=method.IsCollection ? "collection_response" : "entity"#> = <#=method.IsCollection ? returnTypeCollection : returnType#>(json.loads(self.send(self.body_options).content))
+        <#=method.IsCollection ? "collection_response" : "entity"#> = <#=method.IsCollection ?  returnTypeCollection.Replace("Response", "").ToUnderscore() + "." + returnTypeCollection : returnType#>(json.loads(self.send(self.body_options).content))
 <#
         }
 #>
@@ -161,15 +174,15 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         if (method.LongDescriptionContains("async")){
 #>
-            :class:`AsyncOperationMonitor<onedrivesdk.async_operation_monitor.AsyncOperationMonitor>`:
+            :class:`AsyncOperationMonitor<msgraph.async_operation_monitor.AsyncOperationMonitor>`:
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><msgraph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><msgraph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -191,15 +204,15 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         if (method.LongDescriptionContains("async")){
 #>
-            :class:`AsyncOperationMonitor<onedrivesdk.async_operation_monitor.AsyncOperationMonitor>`:
+            :class:`AsyncOperationMonitor<msgraph.async_operation_monitor.AsyncOperationMonitor>`:
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><msgraph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><msgraph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -213,7 +226,7 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         } else {
 #>
-        <#=method.IsCollection ? "collection_response" : "entity"#> = <#=method.IsCollection ? returnTypeCollection : returnType#>(json.loads(self.send().content))
+        <#=method.IsCollection ? "collection_response" : "entity"#> = <#=method.IsCollection ? returnTypeCollection.Replace("Response", "").ToUnderscore() + "." + returnTypeCollection : returnType#>(json.loads(self.send().content))
 <#
         }
 #>
@@ -230,15 +243,15 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
 <#
         if (method.LongDescriptionContains("async")){
 #>
-            :class:`AsyncOperationMonitor<onedrivesdk.async_operation_monitor.AsyncOperationMonitor>`:
+            :class:`AsyncOperationMonitor<msgraph.async_operation_monitor.AsyncOperationMonitor>`:
 <#
         } else if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><msgraph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><msgraph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -302,7 +315,7 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
     if (method.IsCollection) {
 #>
-    def request(self, expand=None, select=None, top=None<#=!method.LongDescriptionContains("excludeOrderBy") ? ", order_by=None" : ""#>, options=None):
+    def request(self,<#= canSelect ? "select=None, " : "" #><#= canFilter ? "filter=None, " : "" #><#= canUseTop ? "top=None, " : "" #><#= canSkip ? "skip=None, " : "" #><#= canSort ? "order_by=None, " : "" #>options=None):
 <#
     } else {
 #>
@@ -316,32 +329,32 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
     if (method.IsCollection){
 #>
-            expand (str): Default None, comma-seperated list of relationships
+            expand (str): Default None, comma-separated list of relationships
                 to expand in the response.
-            select (str): Default None, comma-seperated list of properties to
+            select (str): Default None, comma-separated list of properties to
                 include in the response.
             top (int): Default None, the number of items to return in a result.
 <#
         if (!method.LongDescriptionContains("excludeOrderBy")){
 #>
-            order_by (str): Default None, comma-seperated list of properties
+            order_by (str): Default None, comma-separated list of properties
                 that are used to sort the order of items in the response.
 <#
         }
     }
 #>
-            options (list of :class:`Option<onedrivesdk.options.Option>`):
+            options (list of :class:`Option<msgraph.options.Option>`):
                 Default to None, list of options to include in the request
 
         Returns: 
-            :class:`<#=requestType#><onedrivesdk.request.<#=requestType.Replace("Request","").ToUnderscore()#>.<#=requestType#>>`:
+            :class:`<#=requestType#><msgraph.request.<#=requestType.Replace("Request","").ToUnderscore()#>.<#=requestType#>>`:
                 The request
         """
         req = <#=requestType#>(<#=requestConstructorBuilder#>)
 <#
     if (method.IsCollection) {
 #>
-        req._set_query_options(expand=expand, select=select, top=top<#=!method.LongDescriptionContains("excludeOrderBy") ? ", order_by=order_by" : ""#>)
+        req._set_query_options(<#= canSelect ? "select=select, " : "" #><#= canFilter ? "filter=filter, " : "" #><#= canUseTop ? "top=top, " : "" #><#= canSkip ? "skip=skip, " : "" #><#= canSort ? "order_by=order_by, " : "" #>)
 <#
     }
 #>
@@ -354,11 +367,11 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
         if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><msgraph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><msgraph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -377,11 +390,11 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 <#
         if (method.IsCollection){
 #>
-            :class:`<#=returnTypeCollection#><onedrivesdk.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
+            :class:`<#=returnTypeCollection#><msgraph.request.<#=returnTypeCollection.Replace("Response","").ToUnderscore()#>.<#=returnTypeCollection#>>`:
 <#
         } else {
 #>
-            :class:`<#=returnType#><onedrivesdk.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
+            :class:`<#=returnType#><msgraph.model.<#=returnType.ToUnderscore()#>.<#=returnType#>>`:
 <#
         }
 #>
@@ -392,9 +405,4 @@ class <#=requestBuilderType#>(RequestBuilderBase):
 
 <#
         }
-if (method.IsCollection) {
-#>
-from ..request.<#=returnTypeCollection.Replace("Response", "").ToUnderscore()#> import <#=returnTypeCollection#>
-<#
-}
 #>

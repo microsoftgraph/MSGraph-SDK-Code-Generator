@@ -39,11 +39,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
         }
 
         public override String WriteOpeningCommentLine() {
-            return "# -*- coding: utf-8 -*- " + this.NewLineCharacter + "\'\'\'" + this.NewLineCharacter;
+            return "# -*- coding: utf-8 -*- " + this.NewLineCharacter + "\"\"\"" + this.NewLineCharacter;
         }
 
         public override String WriteClosingCommentLine() {
-            return "\'\'\'" + this.NewLineCharacter;
+            return "\"\"\"" + this.NewLineCharacter;
         }
 
         public override string WriteInlineCommentChar() {
