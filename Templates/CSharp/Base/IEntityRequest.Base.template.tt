@@ -40,7 +40,7 @@ public void AppendEntityCreateAsyncMethodHeader(string entityName, string lowerC
     {
         stringBuilder.Append("        ");
     }
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// Creates the specified {0} using PUT.", entityName);
@@ -48,13 +48,13 @@ public void AppendEntityCreateAsyncMethodHeader(string entityName, string lowerC
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <param name=\"{0}ToCreate\">The {1} to create.</param>", lowerCaseEntityName, entityName);
-    
+
     if (includeSendParams)
     {
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
     }
-    
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", entityName);
 }
@@ -62,18 +62,18 @@ public void AppendEntityCreateAsyncMethodHeader(string entityName, string lowerC
 public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
 {
     var stringBuilder = new StringBuilder();
-    
+
     var entityName = this.GetEntityNameString(odcmClass);
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
-    
+
     this.AppendEntityCreateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, false);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        Task<{0}> CreateAsync({0} {1}ToCreate);", entityName, lowerCaseEntityName);
-    
+    stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate);", entityName, lowerCaseEntityName);
+
     this.AppendEntityCreateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        Task<{0}> CreateAsync({0} {1}ToCreate, CancellationToken cancellationToken);", entityName, lowerCaseEntityName);
-    
+    stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate, CancellationToken cancellationToken);", entityName, lowerCaseEntityName);
+
     return stringBuilder.ToString();
 }
 
@@ -89,13 +89,13 @@ public void AppendDeleteAsyncMethodHeader(string deleteTargetString, StringBuild
     stringBuilder.AppendFormat("        /// Deletes the specified {0}.", deleteTargetString);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
-    
+
     if (includeSendParams)
     {
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
     }
-    
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// <returns>The task to await.</returns>");
 }
@@ -106,15 +106,15 @@ public string GetDeleteAsyncMethod(string deleteTargetString)
 
     this.AppendDeleteAsyncMethodHeader(deleteTargetString, stringBuilder, false);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        Task DeleteAsync();");
-    
+    stringBuilder.Append("        System.Threading.Tasks.Task DeleteAsync();");
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
-    
+
     this.AppendDeleteAsyncMethodHeader(deleteTargetString, stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        Task DeleteAsync(CancellationToken cancellationToken);");
-    
+    stringBuilder.Append("        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);");
+
     return stringBuilder.ToString();
 }
 
@@ -129,19 +129,19 @@ public void AppendGetAsyncMethodHeader(string entityName, StringBuilder stringBu
     {
         stringBuilder.Append("        ");
     }
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// Gets the specified {0}.", entityName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
-    
+
     if (includeSendParams)
     {
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
     }
-    
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <returns>The {0}.</returns>", entityName);
 }
@@ -149,20 +149,20 @@ public void AppendGetAsyncMethodHeader(string entityName, StringBuilder stringBu
 public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
 {
     var stringBuilder = new StringBuilder();
-    
+
     var entityName = this.GetEntityNameString(odcmClass);
-    
+
     this.AppendGetAsyncMethodHeader(entityName, stringBuilder, false);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        Task<{0}> GetAsync();", entityName);
-    
+    stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> GetAsync();", entityName);
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
-    
+
     this.AppendGetAsyncMethodHeader(entityName, stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        Task<{0}> GetAsync(CancellationToken cancellationToken);", entityName);
-    
+    stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> GetAsync(CancellationToken cancellationToken);", entityName);
+
     return stringBuilder.ToString();
 }
 
@@ -172,7 +172,7 @@ public void AppendUpdateAsyncMethodHeader(string entityName, string lowerCaseEnt
     {
         stringBuilder.Append("        ");
     }
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// Updates the specified {0} using PATCH.", entityName);
@@ -180,35 +180,35 @@ public void AppendUpdateAsyncMethodHeader(string entityName, string lowerCaseEnt
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <param name=\"{0}ToUpdate\">The {1} to update.</param>", lowerCaseEntityName, entityName);
-    
+
     if (includeSendParams)
     {
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
     }
 
-    stringBuilder.Append(Environment.NewLine);    
+    stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <returns>The updated {0}.</returns>", entityName);
 }
 
 public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
 {
     var stringBuilder = new StringBuilder();
-    
+
     var entityName = this.GetEntityNameString(odcmClass);
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
-    
+
     this.AppendUpdateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, false);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        Task<{0}> UpdateAsync({0} {1}ToUpdate);", entityName, lowerCaseEntityName);
-    
+    stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate);", entityName, lowerCaseEntityName);
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
-    
+
     this.AppendUpdateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        Task<{0}> UpdateAsync({0} {1}ToUpdate, CancellationToken cancellationToken);", entityName, lowerCaseEntityName);
-    
+    stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate, CancellationToken cancellationToken);", entityName, lowerCaseEntityName);
+
     return stringBuilder.ToString();
 }
 
@@ -220,7 +220,7 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
 public string GetExpandMethod(string entityRequest)
 {
     var stringBuilder = new StringBuilder();
-    
+
     stringBuilder.Append(
       @"/// <summary>
         /// Adds the specified expand value to the request.
@@ -229,14 +229,14 @@ public string GetExpandMethod(string entityRequest)
         /// <returns>The request object to send.</returns>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        I{0} Expand(string value);", entityRequest);
-    
+
     return stringBuilder.ToString();
 }
 
 public string GetSelectMethod(string entityRequest)
 {
     var stringBuilder = new StringBuilder();
-    
+
     stringBuilder.Append(
       @"/// <summary>
         /// Adds the specified select value to the request.
@@ -245,7 +245,7 @@ public string GetSelectMethod(string entityRequest)
         /// <returns>The request object to send.</returns>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        I{0} Select(string value);", entityRequest);
-    
+
     return stringBuilder.ToString();
 }
 

@@ -7,6 +7,7 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateClassDef(TypeRequestBuilder(c), BaseTypeRequestBuilder(c), ITypeRequestBuilder(c))#>
+<# foreach (var method in c.AsOdcmMethod().WithOverloads()) { #>
 
     /**
      * The request builder for this <#=TypeName(c)#>
@@ -15,7 +16,8 @@
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=TypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
-        super(requestUrl, client, options<#=MethodParametersValues(c)#>);
+    public <#=TypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(method)#>) {
+        super(requestUrl, client, options<#=MethodParametersValues(method)#>);
     }
+<# } #>
 }

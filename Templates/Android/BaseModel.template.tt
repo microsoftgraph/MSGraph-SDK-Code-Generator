@@ -5,16 +5,48 @@
     CustomT4Host host          = (CustomT4Host) Host;
     var model                  = host.CurrentModel;
     CodeWriterAndroid writer   = (CodeWriterAndroid) host.CodeWriter;
+    bool logTemplateSrc        = false;
     var c = host.CurrentType;
+#>
+<# if (logTemplateSrc) { #>
+// Template Source: <#= TemplateName(host.TemplateFile) #>
+<# } #>
+<#+
 
-    if (c == null)
-    {
-//        throw new InvalidOperationException("Unable to get the current type!");
+    /// Is this request type a post?
+    public bool IsPostRequestType(OdcmMethod method) {
+        return method.IsAction()
+            && null != method.Parameters
+            && method.Parameters.Any();
     }
 
-#>
-<# //="// Template Source: '" + host.TemplateFile + "', Name: '" + c.Name + "' , TypeName: '" + TypeName(c) + "'"#>
-<#+
+    /// Choose an intermediate class type based on GETs/POSTs
+    public string RequestBuilderSuperClass(OdcmObject currentType) {
+        var isPostAction =
+            IsPostRequestType(
+                currentType.AsOdcmMethod()
+            );
+
+        string superClass;
+
+        if (isPostAction) {
+            superClass = "BasePostMethodRequestBuilder";
+        } else {
+            superClass = "BaseGetMethodRequestBuilder";
+        }
+
+        return superClass;
+    }
+
+    /// <summary>
+    /// Get the name of the current template being processed
+    /// </summary>
+    /// <param name="templateFile">The full path of the current template</param>
+    /// <returns>The template name, relative to the Templates directory.</returns>
+    public string TemplateName(string templateFile) {
+        return templateFile.Substring(templateFile.LastIndexOf("Templates"));
+    }
+
     public string TypeName(OdcmObject c) {
         if (c is OdcmMethod) {
             return ((OdcmMethod)c).Class.Name.ToUpperFirstChar() + c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
@@ -331,14 +363,18 @@
         return "Base" + TypeBody(c);
     }
 
+    /// Creates an 'm' prepended name for a field
+    /// based on its name as defined by the service $metadata
     public string FieldName(OdcmParameter c) {
         return "m" + ParamName(c).ToUpperFirstChar();
     }
 
+    /// Returns the name of the service <parameter> with the first char lowercase
     public string ParamName(OdcmParameter c) {
         return c.Name.ToLowerFirstChar();
     }
 
+    /// The Type of this param, as a string
     public string ParamType(OdcmParameter c) {
         if (c.IsCollection){
             return String.Format("List<{0}>", c.Type.GetTypeString());
@@ -352,19 +388,19 @@
         }
         return "Void";
     }
-
-    public string MethodParametersSignature(OdcmObject c) {
+    
+    public string MethodParametersSignature(OdcmMethod method) {
         var parameterSignatureBuilder = new StringBuilder();
-        foreach (var p in c.AsOdcmMethod().Parameters)
+        foreach (var p in method.Parameters)
         {
             parameterSignatureBuilder.AppendFormat(", final {0} {1}", ParamType(p), ParamName(p));
         }
         return parameterSignatureBuilder.ToString();
     }
 
-    public string MethodParametersValues(OdcmObject c) {
+    public string MethodParametersValues(OdcmMethod method) {
         var parameterValuesBuilder = new StringBuilder();
-        foreach (var p in c.AsOdcmMethod().Parameters)
+        foreach (var p in method.Parameters)
         {
             parameterValuesBuilder.AppendFormat(", {0}", ParamName(p));
         }
@@ -477,6 +513,10 @@ import java.util.List;";
             host.TemplateInfo.OutputParentDirectory);
         }
 
+    /// Creates a class declaration
+    /// name = the name of the class
+    /// extends = the class it extends
+    /// implements = the interface it extends
     public string CreateClassDef(string name, string extends = null, string implements = null)
     {
         return this.CreateClassOrInterface(name, true, extends, implements);
@@ -631,12 +671,13 @@ public {1} {2}{3}{4} {{";
 ";
         foreach (var p in parameters)
         {
-            var propertyType = p.IsCollection ? string.Format("List<{0}>", ParamType(p)) : ParamType(p);
-                sb.AppendFormat(format,
+            sb.AppendFormat(
+                format,
                 ParamName(p).SplitCamelCase(),
                 ParamName(p),
                 ParamType(p),
-                p.SanitizePropertyName().ToLowerFirstChar());
+                p.SanitizePropertyName().ToLowerFirstChar()
+            );
         }
         return sb.ToString();
     }

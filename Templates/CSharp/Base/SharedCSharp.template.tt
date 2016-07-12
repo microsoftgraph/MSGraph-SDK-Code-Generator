@@ -2,7 +2,7 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#
 
-CustomT4Host host   = (CustomT4Host)Host; 
+CustomT4Host host   = (CustomT4Host)Host;
 OdcmModel model     = host.CurrentModel;
 var writer          = (CodeWriterCSharp)host.CodeWriter;
 #>

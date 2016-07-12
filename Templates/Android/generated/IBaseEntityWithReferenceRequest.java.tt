@@ -16,8 +16,12 @@
 
     <#=TypeName(c)#> get() throws ClientException;
 
+<# if (c.GetFeatures().CanSelect) { #>
     <#=IBaseTypeWithReferencesRequest(c)#> select(final String value);
 
+<# } #>
+<# if (c.GetFeatures().CanExpand) { #>
     <#=IBaseTypeWithReferencesRequest(c)#> expand(final String value);
 
+<# } #>
 }
