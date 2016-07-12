@@ -40,13 +40,13 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withRefe
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler
 {
-    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self get]
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *sessionDataTask = [self taskWithRequest:[self get]
                                 odObjectWithDictionary:^(NSDictionary *response){
                                             return [[<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> alloc] initWithDictionary:response];
                                         }
                                              completion:completionHandler];
-    [task execute];
-    return task;
+    [sessionDataTask execute];
+    return sessionDataTask;
 }
 
 <# } #>
@@ -63,13 +63,13 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withRefe
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)update:(<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> *)<#=entity.Name#> withCompletion:<#=writer.GetNetworkCompletionBlock(writer.GetPrefix() + entity.Name.ToUpperFirstChar(), "response")#>completionHandler
 {
-    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self update:<#=entity.Name#>]
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *sessionDataTask = [self taskWithRequest:[self update:<#=entity.Name#>]
                                 odObjectWithDictionary:^(NSDictionary *response){
                                             return [[<#=writer.GetPrefix() + entity.Name.ToUpperFirstChar()#> alloc] initWithDictionary:response];
                                         }
                                               completion:completionHandler];
-    [task execute];
-    return task;
+    [sessionDataTask execute];
+    return sessionDataTask;
 }
 
 <# } #>
@@ -85,11 +85,11 @@ var entityName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + (withRefe
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)deleteWithCompletion:<#=writer.GetNetworkCompletionBlock(null, null)#>completionHandler
 {
-    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self delete] completion:^(NSDictionary *response, NSError *error){
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *sessionDataTask = [self taskWithRequest:[self delete] completion:^(NSDictionary *response, NSError *error){
                                                                     completionHandler(error);
                                                                  }];
-    [task execute];
-    return task;
+    [sessionDataTask execute];
+    return sessionDataTask;
 }
 
 <# } #>
