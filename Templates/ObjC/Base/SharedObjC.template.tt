@@ -105,7 +105,7 @@ private string GetJsonToObjCExpressionConversion(string expr,OdcmProperty prop)
             expr);
     }
 
-	if(GetObjCTypeIdentifier(prop,true)=="MSTimeOfDay")
+    if(GetObjCTypeIdentifier(prop,true)=="MSTimeOfDay")
     {
         return String.Format(@"[{0} ms_timeFromString: {1}]",
             GetObjCTypeIdentifier(prop,true),
