@@ -9,10 +9,9 @@
     var entityTypes             = model.GetEntityTypes();
     var enumTypes               = model.GetEnumTypes();
     var complexTypes            = model.GetComplexTypes();
-    var entityContainer         = model.EntityContainer;
 #>
 <#= writer.WriteHeader() #>
-//export module MicrosoftGraph {
+declare module MicrosoftGraph {
 <#
   foreach(var entityType in entityTypes)
     {
@@ -34,7 +33,7 @@
   foreach(var enumType in enumTypes)
   {
 #>
-  export enum <#= writer.UpperCaseFirstChar(enumType.Name) #> {
+  export const enum <#= writer.UpperCaseFirstChar(enumType.Name) #> {
 <#
       foreach(var member in enumType.Members)
       {
@@ -44,11 +43,9 @@
       }
       #>
   }
-<#
-  }
-#>
 
 <#
+  }
   foreach(var complexType in complexTypes)
   {
 #>
@@ -66,5 +63,4 @@
 <#
   }
 #>
-
-//}
+}
