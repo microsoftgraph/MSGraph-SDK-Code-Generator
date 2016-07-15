@@ -46,7 +46,7 @@ By default, output source code will be put in a folder named "output" next to th
 ## Template Writer Settings
 ### Available Languages
 
-There are four languages to choose from at the moment.  Java, ObjC, CSharp, and Python.  Specify which language you want to generate in the `TargetLanguage` setting.
+There are six languages to choose from at the moment.  Java, ObjC, CSharp, JavaScript, TypeScript and Python.  Specify which language you want to generate in the `TargetLanguage` setting.
 
 ### Templates
 You must specify a template directory under the `TemplatesDirectory` Settings.  The directory can be a full path or relative to the running directory.  The directory must contain a sub directory for each platform you want to generate code for. See the Templates directory for an example.

@@ -3,8 +3,6 @@
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Vipr.Core.CodeModel;
 
     public class CodeWriterTypeScript : CodeWriterBase
@@ -49,6 +47,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                     return "String";
                 case "DateTimeOffset":
                     return "Date";
+                case "Boolean":
+                    return "boolean";
             }
             return type;
         }

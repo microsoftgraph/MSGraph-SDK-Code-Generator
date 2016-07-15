@@ -29,7 +29,6 @@
     <#
     }
 #>
-//}
 
 <#
   foreach(var enumType in enumTypes)
@@ -58,11 +57,14 @@
     foreach(var prop in complexType.Properties)
     {
 #>
-      <#= prop.Name #>: <#= writer.FullTypeName(prop) #>
+      <#= prop.Name #>?: <#= writer.FullTypeName(prop) #>
 <#
     }
 #>
   }
+
 <#
   }
 #>
+
+//}
