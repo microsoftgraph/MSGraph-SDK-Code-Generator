@@ -10,14 +10,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         
         public static string GetTypeString(this OdcmProperty prop)
         {
-            OdcmType type = prop.Type;
-            string typeStr = UpperCaseFirstChar(type.Name);
-
-
-            if (type == null)
-            {
-                typeStr = "id";
-            }
+            string typeStr = UpperCaseFirstChar(prop.Type.Name);
 
             switch (typeStr)
             {
