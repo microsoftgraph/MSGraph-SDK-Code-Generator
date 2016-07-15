@@ -5,7 +5,7 @@
     CustomT4Host host          = (CustomT4Host) Host;
     var model                  = host.CurrentModel;
     CodeWriterAndroid writer   = (CodeWriterAndroid) host.CodeWriter;
-    bool logTemplateSrc        = false;
+    bool logTemplateSrc        = true;
     var c = host.CurrentType;
 #>
 <# if (logTemplateSrc) { #>
@@ -473,9 +473,15 @@
         return null;
     }
 
+    public string OdcmMethodReturnType(OdcmMethod method) {
+        return method.ReturnType is OdcmPrimitiveType
+            ? method.ReturnType.GetTypeString() : method.ReturnType.Name.ToCheckedCase();
+    }
+
     public string CollectionPageGeneric(OdcmObject c) {
         if (c is OdcmMethod) {
-            return "<" + ClassTypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
+            string returnType = OdcmMethodReturnType(c as OdcmMethod);
+            return "<" + returnType + ", " + ITypeCollectionRequestBuilder(c) + ">";
         }
         return "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
     }
