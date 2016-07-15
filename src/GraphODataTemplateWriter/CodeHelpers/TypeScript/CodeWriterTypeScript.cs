@@ -42,20 +42,22 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 case "Int64":
                 case "Double":
                 case "Binary": // let binary: number = 0b1010;
-                    return "Number";
+                    return "number";
                 case "Guid":
-                    return "String";
+                case "String":
+                    return "string"; //lowercase
                 case "DateTimeOffset":
                     return "Date";
                 case "Boolean":
                     return "boolean";
+                default:
+                    return type;
             }
-            return type;
         }
 
         public String UpperCaseFirstChar(String s)
         {
-            return char.ToUpper(s[0]) + s.Substring(1); ;
+            return char.ToUpper(s[0]) + s.Substring(1);
         }
 
         public String FullTypeName(OdcmProperty prop)
@@ -65,7 +67,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             // capitalize the first letter
             Name = UpperCaseFirstChar(Name);
             
-            // Needs to come after uppercase() because some native JS types need to be lowercase
+            // Needs to come after uppercase() because some native TS types need to be lowercase
             Name = ConvertToJSTypes(Name);
 
             return (prop.IsCollection) ? "[" + Name + "]" : Name;
