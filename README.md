@@ -10,6 +10,7 @@ Currently the following target languages are supported by this writer:
 - JavaScript
 - Objective-C
 - Python
+- TypeScript
 
 # Contents
 - [Prerequisites](#Prerequisites)

@@ -61,14 +61,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         public String FullTypeName(OdcmProperty prop)
         {
             var Name = prop.Projection.Type.Name;
-
-
+            
             // capitalize the first letter
             Name = UpperCaseFirstChar(Name);
-
-
+            
+            // Needs to come after uppercase() because some native JS types need to be lowercase
             Name = ConvertToJSTypes(Name);
-
 
             return (prop.IsCollection) ? "[" + Name + "]" : Name;
         }
