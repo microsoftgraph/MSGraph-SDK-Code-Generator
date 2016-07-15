@@ -32,18 +32,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         {
             get { return "\n"; }
         }
-
-        public IEnumerable<OdcmProperty> EntityProperties(OdcmClass obj)
-        {
-            return obj.Properties.Where(prop => !prop.IsLink).ToList();
-        }
-
-        public IEnumerable<OdcmProperty> EntityNavigationProperties(OdcmClass obj)
-        {
-            return obj.Properties.Where(prop => prop.IsLink).ToList();
-        }
-
-
+        
         public static string ConvertToJSTypes(string type)
         {
             switch (type)

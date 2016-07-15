@@ -8,69 +8,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
     public static class TypeHelperTypeScript
     {
-        public const string ReservedPrefix = "$$__$$";
-        public static ICollection<string> ReservedNames
-        {
-            get
-            {
-                return new HashSet<string> {
-                    "abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while"
-                };
-            }
-        }
 
-        public static string GetTypeString(this OdcmType @type)
-        {
-            switch (@type.Name)
-            {
-                case "Int16":
-                case "Int32":
-                    return "Integer";
-                case "Int64":
-                    return "Long";
-                case "Guid":
-                    return "javascript.util.UUID";
-                case "DateTimeOffset":
-                case "Date":
-                    return "javascript.util.Calendar";
-                case "Binary":
-                    return "byte[]";
-                default:
-                    return @type.Name.ToUpperFirstChar();
-            }
-        }
-
-        public static string GetTypeString(this OdcmParameter parameter)
-        {
-            return GetTypeString(parameter.Type);
-        }
-
-        public static string GetTypeString(this OdcmProperty property)
-        {
-            return GetTypeString(property.Projection.Type);
-        }
-
-        public static bool IsComplex(this OdcmParameter property)
-        {
-            string t = property.GetTypeString();
-            return !(t == "Integer" || t == "javascript.util.UUID" || t == "javascript.util.Calendar"
-                  || t == "byte[]" || t == "String" || "long" == t || "Byte[]" == t
-                  || t == "Short");
-        }
-
-        public static string GetToLowerFirstCharName(this OdcmProperty property)
-        {
-            return property.Name.ToLowerFirstChar();
-        }
-
-        public static string SanitizePropertyName(this OdcmObject property)
-        {
-            if (ReservedNames.Contains(property.Name.ToLower()))
-            {
-                return ReservedPrefix + property.Name;
-            }
-
-            return property.Name.Replace("@", string.Empty).Replace(".", "_");
-        }
     }
 }
