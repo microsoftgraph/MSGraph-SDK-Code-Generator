@@ -53,10 +53,22 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             return type;
         }
 
+        public String UpperCaseFirstChar(String s)
+        {
+            return char.ToUpper(s[0]) + s.Substring(1); ;
+        }
+
         public String FullTypeName(OdcmProperty prop)
         {
             var Name = prop.Projection.Type.Name;
+
+
+            // capitalize the first letter
+            Name = UpperCaseFirstChar(Name);
+
+
             Name = ConvertToJSTypes(Name);
+
 
             return (prop.IsCollection) ? "[" + Name + "]" : Name;
         }

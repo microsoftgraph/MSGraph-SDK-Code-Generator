@@ -11,25 +11,22 @@
     var complexTypes            = model.GetComplexTypes();
     var entityContainer         = model.EntityContainer;
 #>
-<#=writer.WriteHeader()#>
+<#= writer.WriteHeader() #>
 //export module MicrosoftGraph {
 <#
   foreach(var entityType in entityTypes)
     {
-        var methods       = entityType.Methods;
+        var methods = entityType.Methods;
 #>
 
-    export interface <#= entityType.Name #> <# if (entityType.Base != null) { #>extends <#=  entityType.Base.Name #><# }#> {
+    export interface <#= writer.UpperCaseFirstChar(entityType.Name) #> <# if (entityType.Base != null) { #>extends <#=  writer.UpperCaseFirstChar(entityType.Base.Name) #><# }#> {
 <#
             foreach(var prop in entityType.Properties.ToList()) {
 #>
       <#=  prop.Name #>?: <#= writer.FullTypeName(prop) #>
-<#
-            }
-
-        #>
+<# } #>
     }
-    <#    
+    <#
     }
 #>
 //}
@@ -38,7 +35,7 @@
   foreach(var enumType in enumTypes)
   {
 #>
-  export enum <#= enumType.Name #> {
+  export enum <#= writer.UpperCaseFirstChar(enumType.Name) #> {
 <#
       foreach(var member in enumType.Members)
       {
@@ -56,7 +53,7 @@
   foreach(var complexType in complexTypes)
   {
 #>
-  export interface <#= complexType.Name#> {
+  export interface <#= writer.UpperCaseFirstChar(complexType.Name)#> {
 <#
     foreach(var prop in complexType.Properties)
     {
