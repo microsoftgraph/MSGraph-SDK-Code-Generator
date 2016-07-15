@@ -2,8 +2,54 @@
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 {
+    using Vipr.Core.CodeModel;
+    using System;
+
     public static class TypeHelperTypeScript
     {
+        
+        public static string GetTypeString(this OdcmProperty prop)
+        {
+            OdcmType type = prop.Type;
+            string typeStr = UpperCaseFirstChar(type.Name);
 
+
+            if (type == null)
+            {
+                typeStr = "id";
+            }
+
+            switch (typeStr)
+            {
+                case "Stream":
+                    typeStr = "any";
+                    break;
+                case "Int16":
+                case "Int32":
+                case "Int64":
+                case "Double":
+                case "Binary": // let binary: number = 0b1010;
+                    typeStr = "number";
+                    break;
+                case "Guid":
+                case "String":
+                    typeStr = "string"; //lowercase
+                    break;
+                case "DateTimeOffset":
+                    typeStr = "Date";
+                    break;
+                case "Boolean":
+                    typeStr = "boolean";
+                    break;
+
+            }
+            return (prop.IsCollection) ? "[" + typeStr + "]" : typeStr;
+            
+        }
+        public static String UpperCaseFirstChar(String s)
+        {
+            return char.ToUpper(s[0]) + s.Substring(1);
+        }
+        
     }
 }

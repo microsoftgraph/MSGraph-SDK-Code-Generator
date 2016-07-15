@@ -22,7 +22,7 @@ declare module MicrosoftGraph {
 <#
             foreach(var prop in entityType.Properties.ToList()) {
 #>
-      <#=  prop.Name #>?: <#= writer.FullTypeName(prop) #>
+      <#=  prop.Name #>?: <#= prop.GetTypeString() #>
 <# } #>
     }
     <#
@@ -54,7 +54,7 @@ declare module MicrosoftGraph {
     foreach(var prop in complexType.Properties)
     {
 #>
-      <#= prop.Name #>?: <#= writer.FullTypeName(prop) #>
+      <#= prop.Name #>?: <#= prop.GetTypeString() #>
 <#
     }
 #>
