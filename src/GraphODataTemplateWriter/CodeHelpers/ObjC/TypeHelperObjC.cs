@@ -189,6 +189,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
 			return (t.Contains("int") || t == "BOOL" || t == "Byte" || t == "NSString" || t == "NSDate" || t == "NSStream" || t == "CGFloat");
 		}
 
+        public static bool IsComplexCollectionOpenType(this OdcmProperty property, OdcmModel model)
+        {
+            return property.IsComplex() && property.Projection.Type.Name.ToLower().EndsWith("collection") &&
+                model.GetComplexTypes().Any(complexType => complexType.Name.Equals(property.Projection.Type.Name) && complexType.IsOpen);
+        }
+
         public static bool IsDate(this OdcmProperty prop)
         {
             return prop.Projection.Type.IsDate();

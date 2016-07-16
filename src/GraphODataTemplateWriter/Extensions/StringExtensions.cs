@@ -72,5 +72,21 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return Inflector.Inflector.Underscore(input);
         }
 
+        public static string RemoveFromEnd(this string input, string suffix)
+        {
+            if (input.EndsWith(suffix))
+            {
+                return input.Substring(0, input.Length - suffix.Length);
+            }
+            else
+            {
+                return input;
+            }
+        }
+
+        public static bool Equals(this string input, string compareWith)
+        {
+            return input.Equals(compareWith);
+        }
     }
 }
