@@ -12,12 +12,11 @@ Currently the following target languages are supported by this writer:
 - Python
 
 # Contents
-- [Prerequisites](#Prerequisites)
-- [Getting started](#Getting-started)
-- [Using Vipr with this writer](#Using-Vipr-with-this-Writer)
-- [Using generated code](#Using-generated-code)
-- [Contributing](#Contributing)
-- [License](#License)
+- [Prerequisites](#prerequisites)
+- [Getting started](#getting-started)
+- [Using Vipr with this writer](#using-vipr-with-this-writer)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Prerequisites
 - [Visual Studio SDK](https://www.microsoft.com/en-us/download/details.aspx?id=40758)
@@ -36,9 +35,9 @@ For more information on submodules read [this chapter](http://git-scm.com/book/e
 ## Using Vipr with this Writer
 
 1. Build the solution in Visual Studio.
-2. Go to the `src\T4TemplateWriter\bin\debug` folder to find all compiled components.
+2. Go to the `src\GraphODataTemplateWriter\bin\debug` folder to find all compiled components.
 3. In that folder, modify `.config\TemplateWriterSettings.json` to specify your template mapping see [Template Writer Settings](##Template-Writer-Settings) for more details.
-4. Open a command prompt as administrator in the same folder and run `Vipr.exe <path-or-url-to-metadata> --writer="GraphODataTemplateWriter"`
+4. Open a command prompt as administrator in the same folder and run `Vipr.exe <path-or-url-to-metadata> --writer="GraphODataTemplateWriter"`.  An example metadata file can be found in the root of this project.
 
 By default, output source code will be put in a folder named "output" next to the Vipr executable.
 
