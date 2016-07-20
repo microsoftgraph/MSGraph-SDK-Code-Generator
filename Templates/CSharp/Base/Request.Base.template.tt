@@ -40,8 +40,17 @@ public string GetConstructor(string instanceTypeName)
             IBaseClient client,
             IEnumerable<Option> options)
             : base(requestUrl, client, options)
-        {
-        }");
+        {");
+
+    if (!string.IsNullOrEmpty(ConfigurationService.Settings.TelemetryHeaderServicePrefix) &&
+        !string.Equals("graph", ConfigurationService.Settings.TelemetryHeaderServicePrefix, StringComparison.OrdinalIgnoreCase))
+    {
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            this.SdkVersionHeaderPrefix = \"{0}\";", ConfigurationService.Settings.TelemetryHeaderServicePrefix);
+    }
+
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        }");
 
     return stringBuilder.ToString();
 }

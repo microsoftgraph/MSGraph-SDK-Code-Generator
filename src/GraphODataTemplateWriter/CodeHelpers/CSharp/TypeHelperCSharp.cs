@@ -2,9 +2,10 @@
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 {
+    using Microsoft.Graph.ODataTemplateWriter.Extensions;
+    using Settings;
     using System;
     using System.Collections.Generic;
-    using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
 
     public static class TypeHelperCSharp
@@ -191,6 +192,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static string GetNamespaceName(this OdcmNamespace namespaceObject)
         {
+            if (!string.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
+            {
+                return ConfigurationService.Settings.NamespaceOverride;
+            }
+
             return Inflector.Inflector.Titleize(namespaceObject.Name);
         }
 

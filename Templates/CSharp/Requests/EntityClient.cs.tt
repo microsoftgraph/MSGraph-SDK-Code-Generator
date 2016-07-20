@@ -4,11 +4,15 @@
 <#
 var entityContainer = model.EntityContainer;
 var clientName = entityContainer.Name.ToCheckedCase() + "Client";
+var namespaceName = entityContainer.Namespace.GetNamespaceName();
 #>
 
-namespace <#=entityContainer.Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
 
+<# } #>
     /// <summary>
     /// The type <#=clientName#>.
     /// </summary>
@@ -39,8 +43,7 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
             : base(baseUrl, authenticationProvider, httpProvider)
         {
         }
-    <#
-
+<#
     foreach(var prop in model.EntityContainer.Properties)
     {
         var propName = string.Concat(entityContainer.Name.ToCheckedCase(), prop.Name.ToCheckedCase());
@@ -49,7 +52,7 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
         if (prop.IsCollection())
         {
             var collectionRequestBuilder = propName + "CollectionRequestBuilder";
-    #>
+#>
 
         /// <summary>
         /// Gets the <#=propName#> request builder.
@@ -61,12 +64,12 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
                 return new <#=collectionRequestBuilder#>(this.BaseUrl + "/<#=prop.Name#>", this);
             }
         }
-    <#
+<#
         }
         else
         {
             var requestBuilder = prop.Projection.Type.Name.ToCheckedCase() + "RequestBuilder";
-    #>
+#>
 
         /// <summary>
         /// Gets the <#=propName#> request builder.
@@ -78,10 +81,9 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
                 return new <#=requestBuilder#>(this.BaseUrl + "/<#=prop.Name#>", this);
             }
         }
-    <#
+<#
         }
     }
-    #>
-
+#>
     }
 }

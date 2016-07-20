@@ -63,6 +63,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                 {SubProcessor.NavigationCollectionProperty, this.ProcessNavigationCollections},
                 {SubProcessor.CollectionReferenceProperty,  this.ProcessCollectionReferences},
                 {SubProcessor.EntityReferenceType,          this.ProcessEntityReferenceProperties},
+                {SubProcessor.AsyncCollectionMethod,        this.ProcessAsyncCollectionMethods},
                 {SubProcessor.Method,                       this.ProcessMethods},
                 {SubProcessor.NonCollectionMethod,          this.ProcessNonCollectionMethods},
                 {SubProcessor.CollectionMethod,             this.ProcessCollectionMethods},
@@ -166,6 +167,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             return this.ProcessMethods(templateInfo, this.MethodsWithBody);
         }
 
+        protected virtual IEnumerable<TextFile> ProcessAsyncCollectionMethods(ITemplateInfo templateInfo)
+        {
+            return this.ProcessMethods(templateInfo, this.AsyncCollectionMethods);
+        }
+
         protected virtual IEnumerable<TextFile> ProcessCollectionMethods(ITemplateInfo templateInfo)
         {
             return this.ProcessMethods(templateInfo, this.CollectionMethods);
@@ -209,6 +215,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         protected virtual IEnumerable<OdcmMethod> MethodsWithBody()
         {
             return this.CurrentModel.GetMethods().Where(method => method.Parameters != null && method.Parameters.Any() && method.IsAction());
+        }
+
+        protected virtual IEnumerable<OdcmMethod> AsyncCollectionMethods()
+        {
+            return this.CollectionMethods().Where(method => method.IsAsync());
         }
 
         protected virtual IEnumerable<OdcmMethod> CollectionMethods()

@@ -8,13 +8,16 @@ var innerEntity = prop.Projection.Type;
 var innerEntityType = innerEntity.Name.ToCheckedCase();
 var entityCollectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
 var entityCollectionPage = string.Concat(this.GetEntityNameString(prop.Class), prop.Name.ToCheckedCase(), "CollectionWithReferencesPage");
+var namespaceName = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 
 #>
 
-namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
     using System;
-
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
+<# } #>
     using Newtonsoft.Json;
 
     /// <summary>

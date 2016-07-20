@@ -9,13 +9,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
     {
         public static TemplateWriterSettings mainSettingsObject = null;
 
+        private readonly Dictionary<string, Dictionary<string, Dictionary<string, string>>> additionalMethodProperties;
         private readonly Dictionary<string, List<Dictionary<string, string>>> templateMapping;
 
         //TODO: Differentiate between Java and Obj-C
         public TemplateWriterSettings()
         {
             // defaults
-            this.AvailableLanguages = new List<string> { "Java", "ObjC" };
+            this.AvailableLanguages = new List<string> { "CSharp", "Java", "ObjC" };
             this.PrimaryNamespaceName = "";
             this.NamespacePrefix = "MS";
             this.StaticCodePrefix = "MS";
@@ -24,6 +25,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
             this.InitializeCollections = true;
             this.TargetLanguage = "Java";
             this.NamespaceOverride = "com.microsoft.services.onenote";
+            this.additionalMethodProperties = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
             this.templateMapping = new Dictionary<string, List<Dictionary<string, string>>>();
             this.templateConfiguration = new List<Dictionary<string, string>>();
             this.TemplatesDirectory = null;
@@ -54,6 +56,28 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
         /// The code language to be targeted by this templateInfo writer instance.
         /// </summary>
         public string TargetLanguage { get; set; }
+
+        /// <summary>
+        /// The configuration mappings for additional properties for a method.
+        /// </summary>
+        public Dictionary<string, Dictionary<string, Dictionary<string, string>>> AdditionalMethodProperties
+        {
+            get { return this.additionalMethodProperties; }
+            set
+            {
+                foreach (var entry in value)
+                {
+                    this.additionalMethodProperties[entry.Key] = entry.Value;
+                }
+
+            }
+        }
+
+        public string[] AsyncMethods { get; set; }
+
+        public bool PassFunctionParametersAsQueryString { get; set; }
+
+        public string TelemetryHeaderServicePrefix { get; set; }
 
         /// <summary>
         /// The template configuration mapping for all platforms.
