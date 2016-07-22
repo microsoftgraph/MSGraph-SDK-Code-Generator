@@ -18,7 +18,7 @@ declare module MicrosoftGraph {
         var methods = entityType.Methods;
 #>
 
-    export interface <#= writer.UpperCaseFirstChar(entityType.Name) #> <# if (entityType.Base != null) { #>extends <#=  writer.UpperCaseFirstChar(entityType.Base.Name) #><# }#> {
+    export interface <#= writer.UpperCaseFirstChar(entityType.Name) #><# if (entityType.Base != null) { #> extends <#=  writer.UpperCaseFirstChar(entityType.Base.Name) #><# }#> {
 <#
             foreach(var prop in entityType.Properties.ToList()) {
 #>
