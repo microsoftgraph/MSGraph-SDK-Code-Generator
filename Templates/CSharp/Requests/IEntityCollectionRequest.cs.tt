@@ -8,16 +8,20 @@ var innerEntityType = innerEntity.Name.ToCheckedCase();
 var collectionRequest = this.GetPropertyCollectionRequestName(prop);
 var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionResponse");
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
+var namespaceName = this.GetNamespaceName(prop.Class.AsOdcmClass());
 
 var features = host.CurrentType.GetFeatures();
 #>
 
-namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
+<# } #>
 
     <#=this.GetCollectionInterfaceDefinition(prop)#>
     {

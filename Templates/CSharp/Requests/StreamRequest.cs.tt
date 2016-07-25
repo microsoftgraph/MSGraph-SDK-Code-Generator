@@ -34,6 +34,9 @@ namespace <#=namespaceValue#>
     using System.IO;
     using System.Net.Http;
     using System.Threading;
+<# if (!string.Equals("Microsoft.Graph", namespaceValue)) { #>
+    using Microsoft.Graph;
+<# } #>
 
     /// <summary>
     /// The type <#=propRequest#>.

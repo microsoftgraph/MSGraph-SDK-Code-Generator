@@ -11,6 +11,7 @@ var requestBuilderType = requestType + "Builder";
 
 var isPost = method.IsAction() && method.Parameters != null && method.Parameters.Any();
 var methodType = isPost ? "Post" : "Get";
+var namespaceName = method.Namespace.GetNamespaceName();
 
 var overloads = new List<OdcmMethod>();
 overloads.Add(method);
@@ -53,11 +54,14 @@ var methods = overloads
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
+<# } #>
 
     /// <summary>
     /// The type <#=requestBuilderType#>.
@@ -79,6 +83,12 @@ foreach (var m in methods)
             : base(requestUrl, client)
         {
 <#
+if (!isPost && ConfigurationService.Settings.PassFunctionParametersAsQueryString)
+{
+#>
+            this.passParametersInQueryString = true;
+<#
+}
     foreach (var p in m.Parameters)
     {
 #>

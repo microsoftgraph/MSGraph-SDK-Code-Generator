@@ -10,11 +10,16 @@ var returnType = method.ReturnType is OdcmPrimitiveType ? method.ReturnType.GetT
 var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var nextRequestType = responseNamePrefix + "Request";
 var entityCollectionPage = responseNamePrefix + "CollectionPage";
+var namespaceName = method.Namespace.GetNamespaceName();
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
+
+<# } #>
     /// <summary>
     /// The type <#=entityCollectionPage#>.
     /// </summary>
@@ -24,6 +29,25 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// Gets the next page <see cref="I<#=nextRequestType#>"/> instance.
         /// </summary>
         public I<#=nextRequestType#> NextPageRequest { get; private set; }
+<#
+        var additionalResponseProperties = method.GetAdditionalPropertiesForMethodCollectionResponse(model);
+        
+        if (additionalResponseProperties != null)
+        {
+            foreach (var property in additionalResponseProperties)
+            {
+                var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
+                var propertyType = property.Projection.Type.GetTypeString();
+#>
+
+        /// <summary>
+        /// Gets or sets the <#=propertyName#>.
+        /// </summary>
+        public <#=propertyType#> <#=propertyName#> { get; set; }
+<#
+            }
+        }
+#>
 
         /// <summary>
         /// Initializes the NextPageRequest property.

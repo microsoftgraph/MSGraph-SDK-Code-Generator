@@ -20,6 +20,11 @@ public string GetNamespaceName(OdcmClass odcmClass)
     return odcmClass.Namespace.GetNamespaceName();
 }
 
+public bool IsGraphNamespace(string namespaceName)
+{
+    return string.Equals("Microsoft.Graph", namespaceName);
+}
+
 public string GetEntityNameString(OdcmClass entityClass)
 {
     return entityClass.Name.ToCheckedCase();

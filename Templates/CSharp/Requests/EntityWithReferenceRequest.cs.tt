@@ -5,18 +5,22 @@
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = this.GetEntityNameString(entity);
+var namespaceName = this.GetNamespaceName(entity);
 
 var features = host.CurrentType.GetFeatures();
 
 #>
 
-namespace <#=this.GetNamespaceName(entity)#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Net.Http;
     using System.Threading;
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
+<# } #>
 
     <#=this.GetEntityWithReferenceRequestClassDefinition(entity)#>
     {

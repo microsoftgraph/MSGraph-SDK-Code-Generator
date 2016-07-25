@@ -4,12 +4,16 @@
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
+var namespaceName = this.GetNamespaceName(prop.Class.AsOdcmClass());
 
 #>
-namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
+<# } #>
 
     <#=this.GetCollectionInterfaceDefinition(prop)#>
     {
