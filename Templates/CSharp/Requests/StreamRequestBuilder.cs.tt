@@ -59,10 +59,11 @@ namespace <#=namespaceValue#>
         /// <summary>
         /// Builds the request.
         /// </summary>
+        /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
-        public I<#=propRequest#> Request()
+        public I<#=propRequest#> Request(IEnumerable<Option> options = null)
         {
-            return new <#=propRequest#>(this.RequestUrl, this.Client, null);
+            return new <#=propRequest#>(this.RequestUrl, this.Client, options);
         }
     }
 }

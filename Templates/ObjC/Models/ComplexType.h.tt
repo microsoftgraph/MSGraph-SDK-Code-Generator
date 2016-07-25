@@ -15,9 +15,9 @@ var baseEntity = entity.Base;
 <#
 foreach(var prop in entity.Properties.Where(prop => GetObjCTypeIdentifier(prop)!="NSStream" ))
 {
-	#>
-	<#=GeneratePropertyDeclarationLine(prop)#>
-	<#
+#>
+<#=GeneratePropertyDeclarationLine(prop)#>
+<#
 }
 
 #>
