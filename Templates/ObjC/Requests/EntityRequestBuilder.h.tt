@@ -193,8 +193,7 @@ foreach(var prop in entity.Properties.Where( prop => prop.Projection.Type is Odc
 
 <#
 }
-
-foreach(var func in entity.MethodsAndOverloads())
+foreach(var func in entity.Methods)
 {
     var methodName = func.Name.Substring(func.Name.IndexOf('.') + 1).ToLowerFirstChar();
     var requestBuilderName = writer.GetPrefix() + entity.Name.ToUpperFirstChar() + methodName.ToUpperFirstChar() + "RequestBuilder";
@@ -204,6 +203,8 @@ foreach(var func in entity.MethodsAndOverloads())
     }
 #>
 - (<#=requestBuilderName#> *)<#=methodName#>;
+
+
 
 <#
 

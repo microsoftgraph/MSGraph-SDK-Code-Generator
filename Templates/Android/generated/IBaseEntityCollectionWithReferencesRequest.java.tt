@@ -12,16 +12,9 @@
 
     <#=ITypeCollectionWithReferencesPage(c)#> get() throws ClientException;
 
-<# if (c.GetFeatures().CanExpand) { #>
     <#=ITypeCollectionWithReferencesRequest(c)#> expand(final String value);
-    
-<# } #>
-<# if (c.GetFeatures().CanSelect) { #>
+
     <#=ITypeCollectionWithReferencesRequest(c)#> select(final String value);
 
-<# } #>
-<# if (c.GetFeatures().CanUseTop) { #>
     <#=ITypeCollectionWithReferencesRequest(c)#> top(final int value);
-
-<# } #>
 }

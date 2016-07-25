@@ -16,4 +16,5 @@
     public <#=TypeCollectionPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeCollectionRequestBuilder(c)#> builder) {
         super(response, builder);
     }
+
 }

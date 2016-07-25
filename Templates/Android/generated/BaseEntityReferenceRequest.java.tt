@@ -27,7 +27,6 @@
        return send(HttpMethod.DELETE, null);
     }
 
-<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -35,12 +34,10 @@
      * @return The updated request
      */
     public <#=ITypeReferenceRequest(c)#> select(final String value) {
-        getQueryOptions().add(new QueryOption("$select", value));
+        getQueryOptions().add(new QueryOption("select", value));
         return (<#=TypeReferenceRequest(c)#>)this;
     }
 
-<# } #>
-<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -48,8 +45,7 @@
      * @return The updated request
      */
     public <#=ITypeReferenceRequest(c)#> expand(final String value) {
-        getQueryOptions().add(new QueryOption("$expand", value));
+        getQueryOptions().add(new QueryOption("expand", value));
         return (<#=TypeReferenceRequest(c)#>)this;
     }
-<# } #>
 }

@@ -32,7 +32,6 @@ import com.google.gson.annotations.*;
 
     <#=ReturnType(c)#> post() throws ClientException;
 
-<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -41,8 +40,6 @@ import com.google.gson.annotations.*;
      */
     <#=iTypeRequest#> select(final String value) ;
 
-<# } #>
-<# if (c.GetFeatures().CanUseTop) { #>
     /**
      * Sets the top value for the request
      *
@@ -51,8 +48,6 @@ import com.google.gson.annotations.*;
      */
     <#=iTypeRequest#> top(final int value);
 
-<# } #>
-<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -60,6 +55,4 @@ import com.google.gson.annotations.*;
      * @return The updated request
      */
     <#=iTypeRequest#> expand(final String value);
-
-<# } #>
 }

@@ -16,4 +16,5 @@
     public <#=TypeCollectionWithReferencesPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeCollectionWithReferencesRequestBuilder(c)#> builder) {
         super(response, builder);
     }
+
 }

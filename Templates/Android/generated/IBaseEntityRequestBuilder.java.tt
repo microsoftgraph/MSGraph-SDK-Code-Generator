@@ -6,7 +6,11 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
+<# if (c.BaseClass() != null) { #>
+<#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), ITypeRequestBuilder(c.BaseClass()))#>
+<# } else { #>
 <#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), "IRequestBuilder")#>
+<# } #>
     /**
      * Creates the request
      */
@@ -72,7 +76,7 @@ if (c.AsOdcmClass() != null)
     }
 #>
 <#
-    foreach (var method in c.AsOdcmClass().MethodsAndOverloads())
+    foreach (var method in c.AsOdcmClass().Methods)
     {
         var parameterList = MethodParametersSignature(method);
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }

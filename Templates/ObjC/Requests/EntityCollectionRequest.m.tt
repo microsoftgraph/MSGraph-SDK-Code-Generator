@@ -48,7 +48,7 @@ if (innerEntityType.Equals(propName))
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)getWithCompletion:(<#=propName+ collectionNamer#>CompletionHandler)completionHandler
 {
 
-    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask * sessionDataTask = [self collectionTaskWithRequest:[self get]
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask * task = [self collectionTaskWithRequest:[self get]
                                              odObjectWithDictionary:^(id response){
 <#
     if (prop.IsSystem())
@@ -74,8 +74,8 @@ if (innerEntityType.Equals(propName))
                                                 completionHandler(collectionResponse, nil, error);
                                             }
                                         }];
-    [sessionDataTask execute];
-    return sessionDataTask;
+    [task execute];
+    return task;
 }
 
 <#
@@ -117,13 +117,13 @@ if (innerEntityType.Equals(propName))
 
 - (<#=writer.GetStaticCodePrefix()#>URLSessionDataTask *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#> withCompletion:(<#=innerEntityType#>CompletionHandler)completionHandler
 {
-    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *sessionDataTask = [self taskWithRequest:[self add<#=innerEntity.Name.ToUpperFirstChar()#>:<#=innerEntity.Name.ToLowerFirstChar()#>]
+    <#=writer.GetStaticCodePrefix()#>URLSessionDataTask *task = [self taskWithRequest:[self add<#=innerEntity.Name.ToUpperFirstChar()#>:<#=innerEntity.Name.ToLowerFirstChar()#>]
 							     odObjectWithDictionary:^(NSDictionary *response){
                                             return [[<#=innerEntityType#> alloc] initWithDictionary:response];
                                         }
                                               completion:completionHandler];
-    [sessionDataTask execute];
-    return sessionDataTask;
+    [task execute];
+    return task;
 }
 
 <#

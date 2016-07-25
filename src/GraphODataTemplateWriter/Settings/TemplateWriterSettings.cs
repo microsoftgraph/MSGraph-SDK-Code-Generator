@@ -29,7 +29,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
             this.TemplatesDirectory = null;
             this.DefaultFileCasing = "UpperCamel";
             this.CustomFlags = new List<string>();
-            this.DefaultBaseEndpointUrl = "https://graph.microsoft.com/v1.0";
         }
 
         public void CopyPropertiesFromMainSettings()
@@ -76,8 +75,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
         /// The default casing method to be used for file names when a casing method ins't specified.
         /// </summary>
         public string DefaultFileCasing;
-
-        public string DefaultBaseEndpointUrl { get; set; }
 
         public IList<string> CustomFlags { get; set; }
 

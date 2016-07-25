@@ -6,7 +6,7 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateClassDef(BaseTypeRequest(c), "BaseRequest", IBaseTypeRequest(c))#>
+<#=CreateClassDef(BaseTypeRequest(c), c.AsOdcmClass().Base != null ? TypeRequest(BaseClass(c)) : "BaseRequest", IBaseTypeRequest(c))#>
 
     /**
      * The request for the <#=TypeName(c)#>
@@ -53,7 +53,6 @@
 
     }
 #>
-<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -61,12 +60,10 @@
      * @return The updated request
      */
      public <#=ITypeRequest(c)#> select(final String value) {
-         getQueryOptions().add(new QueryOption("$select", value));
+         getQueryOptions().add(new QueryOption("select", value));
          return (<#=TypeRequest(c)#>)this;
      }
 
-<# } #>
-<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -74,12 +71,10 @@
      * @return The updated request
      */
      public <#=ITypeRequest(c)#> expand(final String value) {
-         getQueryOptions().add(new QueryOption("$expand", value));
+         getQueryOptions().add(new QueryOption("expand", value));
          return (<#=TypeRequest(c)#>)this;
      }
-
-<# } #>
-<# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
+<# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #>
 
     /**
      * Sets the top value for the request
@@ -88,7 +83,7 @@
      * @return The updated request
      */
      public <#=ITypeRequest(c)#> top(final int value) {
-         getQueryOptions().add(new QueryOption("$top", value+""));
+         getQueryOptions().add(new QueryOption("top", value+""));
          return (<#=TypeRequest(c)#>)this;
      }
 <# } #>

@@ -282,7 +282,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             var descriptionParts = odcmObject.GetLongDescriptionSegments();
             return descriptionParts != null && descriptionParts.Any(value => value.StartsWith(descriptionValue));
         }
-
         public static string[] GetLongDescriptionSegments(this OdcmObject odcmObject)
         {
             if (odcmObject.LongDescription != null)
@@ -291,26 +290,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             }
 
             return null;
-        }
-
-        /// Returns a List containing the supplied method plus its overloads
-        public static List<OdcmMethod> WithOverloads(this OdcmMethod odcmMethod)
-        {
-            var methods = new List<OdcmMethod>();
-            methods.Add(odcmMethod);
-            methods.AddRange(odcmMethod.Overloads);
-            return methods;
-        }
-
-        /// Returns a List containing the supplied class' methods plus their overloads
-        public static List<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
-        {
-            var allMethods = new List<OdcmMethod>();
-            foreach (var method in odcmClass.Methods)
-            {
-                allMethods.AddRange(method.WithOverloads());
-            }
-            return allMethods;
         }
 
     }

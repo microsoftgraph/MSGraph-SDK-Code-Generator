@@ -105,13 +105,6 @@ private string GetJsonToObjCExpressionConversion(string expr,OdcmProperty prop)
             expr);
     }
 
-    if(GetObjCTypeIdentifier(prop,true)=="MSTimeOfDay")
-    {
-        return String.Format(@"[{0} ms_timeFromString: {1}]",
-            GetObjCTypeIdentifier(prop,true),
-            expr);
-    }
-
     if(prop.IsEnum())
     {
         return String.Format(
@@ -248,21 +241,7 @@ private string GetStaticBaseObject()
 
 private string GeneratePropertyDeclarationLine(OdcmProperty prop)
 {
-    if(prop.IsCollection || prop.IsComplex())
-    {
-        if(prop.IsNullable==true) 
-        {
-            return "@property (nullable, nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
-        }
-        else
-        {
-            return "@property (nonnull, nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
-        }
-    }
-    else
-    {
-        return "@property (nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
-    }
+    return "@property (nonatomic, setter=" + GetObjCPropertySetter(prop) + ":, getter=" + GetObjCPropertyGetter(prop) + ") " + GetObjCTypeForVarDeclaration(prop) + " " + GetObjCProperty(prop) + ";";
 }
 
 private void PropertyGetterImplementation(OdcmProperty prop)
@@ -273,17 +252,6 @@ private void PropertyGetterImplementation(OdcmProperty prop)
 <#+
     if(IsObjCTypeSameAsJsonType(prop.Projection.Type))
     {
-#>
-<#+
-    if(prop.IsNullable==true) 
-    {
-#>
-    if([[NSNull null] isEqual:self.dictionary[@"<#=prop.Name#>"]])
-    {
-        return nil;
-    }   
-<#+
-}
 #>
     return self.dictionary[@"<#=prop.Name#>"];
 <#+
@@ -312,7 +280,6 @@ private void PropertyGetterImplementation(OdcmProperty prop)
     }
 #>
 }
-
 <#+
 }
 
@@ -337,7 +304,6 @@ private void PropertySetterImplementation(OdcmProperty prop)
     }
 #>
 }
-
 <#+
 }
 #>

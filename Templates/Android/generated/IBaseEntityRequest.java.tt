@@ -6,7 +6,7 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
-<#=CreateInterfaceDef(IBaseTypeRequest(c), "IHttpRequest")#>
+<#=CreateInterfaceDef(IBaseTypeRequest(c), c.AsOdcmClass().Base != null ? ITypeRequest(BaseClass(c)) : "IHttpRequest")#>
 
 <#  if (c.AsOdcmClass().IsAbstract && c.AsOdcmClass().Base == null)
     {
@@ -38,7 +38,6 @@
 
     }
 #>
-<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -47,8 +46,6 @@
      */
     <#=IBaseTypeRequest(c)#> select(final String value);
 
-<# } #>
-<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -56,9 +53,7 @@
      * @return The updated request
      */
     <#=IBaseTypeRequest(c)#> expand(final String value);
-
-<# } #>
-<# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
+<# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection) { #>
 
     /**
      * Sets the top value for the request

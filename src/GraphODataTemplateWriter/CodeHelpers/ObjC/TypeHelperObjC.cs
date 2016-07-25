@@ -108,18 +108,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                     return "NSDate";
                 case "Date":
                     return "MSDate";
-                case "TimeOfDay":
-                    return "MSTimeOfDay";
                 case "Binary":
                     return "NSString";
                 case "Boolean":
                     return "BOOL";
                 case "Stream":
                     return "NSStream";
-                case "Duration":
-                    return "Duration";
-                case "NSDictionary":
-                    return "NSDictionary";
                 default:
                     return Prefix + type.Name.ToUpperFirstChar();
             }
@@ -134,7 +128,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         {
             string t = GetTypeString(type);
             return
-                !(t == "int32_t" || t == "int64_t" || t == "int16_t" || t == "BOOL" || t == "Byte" || t == "CGFloat");
+                !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat");
         }
 
         public static bool IsComplex(this OdcmProperty property) 

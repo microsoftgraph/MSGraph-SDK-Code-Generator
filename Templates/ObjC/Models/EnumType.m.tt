@@ -63,7 +63,7 @@ foreach (var member in entity.Members.OrderBy(x => x.Value))
     {
 #>
         case <#=GetObjCEnumMember(entity,member)#>:
-            return [<#=typeName#> <#=member.Name.ToLowerFirstChar()#>];
+            return [<#=typeName#> <#=member.Name#>];
 <#
     }
 #>
@@ -111,7 +111,7 @@ foreach (var member in entity.Members.OrderBy(x => x.Value))
     {
     #>if([self isEqualToString:@"<#=member.Name#>"])
     {
-          return [<#=typeName#> <#=member.Name.ToLowerFirstChar()#>];
+          return [<#=typeName#> <#=member.Name#>];
     }
     else <#
     }

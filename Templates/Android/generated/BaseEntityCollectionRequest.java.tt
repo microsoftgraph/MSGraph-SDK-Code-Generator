@@ -53,7 +53,6 @@
             .post(new<#=TypeName(c)#>);
     }
 
-<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -61,12 +60,10 @@
      * @return The updated request
      */
     public <#=ITypeCollectionRequest(c)#> expand(final String value) {
-        addQueryOption(new QueryOption("$expand", value));
+        addQueryOption(new QueryOption("expand", value));
         return (<#=TypeCollectionRequest(c)#>)this;
     }
 
-<# } #>
-<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -74,12 +71,10 @@
      * @return The updated request
      */
     public <#=ITypeCollectionRequest(c)#> select(final String value) {
-        addQueryOption(new QueryOption("$select", value));
+        addQueryOption(new QueryOption("select", value));
         return (<#=TypeCollectionRequest(c)#>)this;
     }
 
-<# } #>
-<# if (c.GetFeatures().CanUseTop) { #>
     /**
      * Sets the top value for the request
      *
@@ -87,11 +82,10 @@
      * @return The updated request
      */
     public <#=ITypeCollectionRequest(c)#> top(final int value) {
-        addQueryOption(new QueryOption("$top", value + ""));
+        addQueryOption(new QueryOption("top", value + ""));
         return (<#=TypeCollectionRequest(c)#>)this;
     }
 
-<# } #>
     public <#=ITypeCollectionPage(c)#> buildFromResponse(final <#=BaseTypeCollectionResponse(c)#> response) {
         final <#=ITypeCollectionRequestBuilder(c)#> builder;
         if (response.nextLink != null) {

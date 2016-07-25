@@ -12,12 +12,7 @@
 
     <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
 
-<# if (c.GetFeatures().CanSelect) { #>
     <#=ITypeCollectionReferenceRequest(c)#> select(final String value);
 
-<# } #>
-<# if (c.GetFeatures().CanUseTop) { #>
     <#=ITypeCollectionReferenceRequest(c)#> top(final int value);
-
-<# } #>
 }
