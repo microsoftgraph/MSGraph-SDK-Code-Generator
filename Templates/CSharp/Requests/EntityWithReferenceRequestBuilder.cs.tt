@@ -4,13 +4,17 @@
 <#
 
 var entity = host.CurrentType.AsOdcmClass();
+var namespaceName = this.GetNamespaceName(entity);
 
 #>
 
-namespace <#=this.GetNamespaceName(entity)#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
+<# } #>
 
     <#=this.GetEntityWithReferenceRequestBuilderClassDefinition(entity)#>
     {

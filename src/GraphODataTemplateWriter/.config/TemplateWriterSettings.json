@@ -2,28 +2,30 @@
     "AvailableLanguages": [ "Android", "ObjC", "CSharp", "Python", "JavaScript" ],
     "TargetLanguage": "CSharp",
     "Plugins": [ ],
-    "PrimaryNamespaceName": "com",
+    "PrimaryNamespaceName": "oneDrive",
     "NamespacePrefix": "com",
     "InitializeCollections": "false",
     "AllowShortActions": "false",
-    "NamespaceOverride": "",
+    "NamespaceOverride": "Microsoft.OneDrive.Sdk",
     "TemplatesDirectory": "../../../../Templates",
     "DefaultFileCasing": "UpperCamel",
     "CustomFlags": [ "python2" ],
     "LicenseHeader": [
         "Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information."
     ],
+    "AdditionalMethodProperties": {
+        "oneDrive.delta": {
+            "CollectionResponse": {
+                "@delta.token": "Edm.String",
+                "@delta.deltaLink": "Edm.String"
+            }
+        }
+    },
+    "AsyncMethods": [ "oneDrive.copy" ],
+    "PassFunctionParametersAsQueryString":  true,
+    "TelemetryHeaderServicePrefix":  "onedrive",
     "TemplateMapping": {
         "Shared": [
-            { "Template": "EntityType", "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
-            { "Template": "ComplexType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Ignore": "methodResponse"},
-            { "Template": "EnumType", "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
-            { "Template": "EntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
-            { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
-            { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
-            { "Template": "StreamRequest", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "<Class><Property>Request" },
-            { "Template": "MethodRequest", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Request" },
-            { "Template": "MethodRequestBuilder", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
         ]
     }
 }

@@ -5,11 +5,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
 
     public static class OdcmModelExtensions
     {
+        private static readonly Regex CollectionRegex = new Regex(@"Collection\((?<typeDefinition>[^\)]+)\)");
+        private static readonly Regex TypeNameRegex = new Regex(@"(?<typeNamespace>.*)\.(?<typeName>[^.]+)");
+
         public static bool IsCollection(this OdcmProperty odcmProperty)
         {
             return odcmProperty.IsCollection;
@@ -97,6 +101,81 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return referenceEntityTypes;
         }
 
+
+        public static IEnumerable<OdcmProperty> GetAdditionalPropertiesForMethodCollectionResponse(this OdcmMethod method, OdcmModel model)
+        {
+            if (ConfigurationService.Settings.AdditionalMethodProperties == null)
+            {
+                return null;
+            }
+
+            Dictionary<string, Dictionary<string, string>> currentMethodMappings = null;
+
+            if (!ConfigurationService.Settings.AdditionalMethodProperties.TryGetValue(method.FullName, out currentMethodMappings))
+            {
+                return null;
+            }
+
+            Dictionary<string, string> returnTypeMappingsForMethod = null;
+
+            if (!currentMethodMappings.TryGetValue("CollectionResponse", out returnTypeMappingsForMethod))
+            {
+                return null;
+            }
+
+            return OdcmModelExtensions.GetAdditionalProperties(returnTypeMappingsForMethod, model);
+        }
+
+        public static IEnumerable<OdcmProperty> GetAdditionalProperties(Dictionary<string, string> additionalPropertyMappings, OdcmModel model)
+        {
+            if (additionalPropertyMappings == null)
+            {
+                return null;
+            }
+
+            var properties = new List<OdcmProperty>();
+
+            foreach (var configValue in additionalPropertyMappings)
+            {
+                var collectionMatch = CollectionRegex.Match(configValue.Value);
+
+                string typeDefinition = null;
+
+                if (collectionMatch.Success)
+                {
+                    typeDefinition = collectionMatch.Groups["typeDefinition"].Value;
+                }
+                else
+                {
+                    typeDefinition = configValue.Value;
+                }
+
+                var typeNameMatch = TypeNameRegex.Match(typeDefinition);
+
+                if (!typeNameMatch.Success)
+                {
+                    throw new ArgumentException(string.Format("Additional property type for {0} must include namespace.", configValue.Key));
+                }
+
+                var typeNamespace = typeNameMatch.Groups["typeNamespace"].Value;
+                var typeName = typeNameMatch.Groups["typeName"].Value;
+
+                OdcmType odcmType = null;
+
+                if (!model.TryResolveType<OdcmType>(typeName, typeNamespace, out odcmType))
+                {
+                    throw new ArgumentException(string.Format("Invalid type specified for additional property {0}.", configValue.Key));
+                }
+
+                var odcmProjection = new OdcmProjection { Type = odcmType };
+                var odcmProperty = new OdcmProperty(configValue.Key) { Projection = odcmProjection, IsCollection = collectionMatch.Success };
+
+                properties.Add(odcmProperty);
+            }
+
+            return properties;
+        }
+
         public static IEnumerable<OdcmProperty> FilterProperties(IEnumerable<OdcmProperty> properties, string typeName = null, string longDescriptionMatches = null)
         {
             var allProperties = properties;
@@ -144,8 +223,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 .Classes
                 .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
                 .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
-                .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
-                .First();
+                .First(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName));
+        }
+
+        public static bool IsAsync(this OdcmMethod method)
+        {
+            return ConfigurationService.Settings.AsyncMethods.Contains(method.FullName);
         }
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)

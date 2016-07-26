@@ -13,10 +13,30 @@ var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
 
 var isCollection = method.IsCollection;
+bool isAsyncMethod = method.IsAsync();
 
-var sendAsyncReturnType = isCollection
-    ? "I" + entityName + methodName + "CollectionPage"
-    : returnEntityType;
+string sendAsyncReturnType = null;
+
+if (isCollection)
+{
+    if (isAsyncMethod)
+    {
+        sendAsyncReturnType = string.Format("I{0}{1}AsyncMonitor", entityName, methodName);
+    }
+    else
+    {
+        sendAsyncReturnType = string.Format("I{0}{1}CollectionPage", entityName, methodName);
+    }
+}
+else
+{
+    sendAsyncReturnType = returnEntityType;
+
+    if (isAsyncMethod)
+    {
+        sendAsyncReturnType = string.Format("IAsyncMonitor<{0}>", sendAsyncReturnType);
+    }
+}
 
 var methodReturnType = sendAsyncReturnType == null
     ? "System.Threading.Tasks.Task"
@@ -29,17 +49,22 @@ var methodReturnTag = sendAsyncReturnType == null
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
 
+var namespaceName = method.Namespace.GetNamespaceName();
+
 var features = host.CurrentType.GetFeatures();
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Net.Http;
     using System.Threading;
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
+<# } #>
 
     /// <summary>
     /// The interface I<#=requestType#>.

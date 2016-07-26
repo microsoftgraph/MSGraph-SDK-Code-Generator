@@ -5,10 +5,14 @@
 <#
 var enumT = host.CurrentType.AsOdcmEnum();
 var enumName = enumT.Name.ToCheckedCase();
+var namespaceName = enumT.Namespace.GetNamespaceName();
 #>
 
-namespace <#=enumT.Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
+<# } #>
     using Newtonsoft.Json;
 
     /// <summary>

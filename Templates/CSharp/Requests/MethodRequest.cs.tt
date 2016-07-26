@@ -14,18 +14,41 @@ var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
 
 var isCollection = method.IsCollection;
+var isAsyncMethod = method.IsAsync();
 
-var sendAsyncReturnType = isCollection
-    ? "I" + entityName + methodName + "CollectionPage"
-    : returnEntityType;
+string monitorType = null;
+string sendAsyncReturnType = null;
+
+if (isCollection)
+{
+    if (isAsyncMethod)
+    {
+        monitorType = string.Format("{0}{1}AsyncMonitor", entityName, methodName);
+        sendAsyncReturnType = string.Format("I{0}", monitorType);
+    }
+    else
+    {
+        sendAsyncReturnType = string.Format("I{0}{1}CollectionPage", entityName, methodName);
+    }
+}
+else
+{
+    sendAsyncReturnType = returnEntityType;
+
+    if (isAsyncMethod)
+    {
+        monitorType = string.Format("AsyncMonitor<{0}>", sendAsyncReturnType);
+        sendAsyncReturnType = string.Format("I{0}", monitorType);
+    }
+}
 
 var methodReturnType = sendAsyncReturnType == null
     ? "System.Threading.Tasks.Task"
     : "System.Threading.Tasks.Task<" + sendAsyncReturnType + ">";
 
 string methodOverloadReturnType = methodReturnType;
-
-if (isCollection)
+    
+if (isAsyncMethod || isCollection)
 {
     methodReturnType = string.Concat("async ", methodReturnType);
 }
@@ -34,17 +57,22 @@ bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool includeRequestBody = hasParameters && isAction;
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
 
+var namespaceName = method.Namespace.GetNamespaceName();
+
 var features = host.CurrentType.GetFeatures();
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Net.Http;
     using System.Threading;
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
+<# } #>
 
     /// <summary>
     /// The type <#=requestType#>.
@@ -125,7 +153,18 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 <#
     var methodParameter = includeRequestBody ? "this.RequestBody" : "null";
 
-    if (isCollection)
+    if (isAsyncMethod)
+    {
+        
+#>
+            using (var response = await this.SendRequestAsync(<#=methodParameter#>, cancellationToken).ConfigureAwait(false))
+            {
+                return new <#=monitorType#>(this.Client, response.Headers.Location.ToString());
+            }
+
+<#
+    }
+    else if (isCollection)
     {
 #>
             var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>, cancellationToken).ConfigureAwait(false);
@@ -147,6 +186,21 @@ namespace <#=method.Namespace.GetNamespaceName()#>
                             nextPageLinkString);
                     }
                 }
+<#
+        var additionalResponseProperties = method.GetAdditionalPropertiesForMethodCollectionResponse(model);
+        
+        if (additionalResponseProperties != null)
+        {
+            foreach (var property in additionalResponseProperties)
+            {
+                var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
+#>
+
+               response.Value.<#=propertyName#> = response.<#=propertyName#>;
+<#
+            }
+        }
+#>
 
                 return response.Value;
             }

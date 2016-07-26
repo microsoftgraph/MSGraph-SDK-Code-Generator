@@ -9,14 +9,18 @@ var collectionRequest = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name
 var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionResponse");
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
 var features = host.CurrentType.GetFeatures();
+var namespaceName = this.GetNamespaceName(prop.Class.AsOdcmClass());
 #>
 
-namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+namespace <#=namespaceName#>
 {
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
+<# } #>
 
     <#=this.GetCollectionClassDefinition(prop)#>
     {

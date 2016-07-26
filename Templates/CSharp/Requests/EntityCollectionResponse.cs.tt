@@ -8,12 +8,16 @@ var entityName = prop.Class.Name.ToCheckedCase();
 var propName = prop.Name.ToCheckedCase();
 var collectionResponse = string.Concat(entityName, propName, "CollectionResponse");
 var collectionPage = string.Concat(entityName, propName, "CollectionPage");
+var namespaceName = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 
 #>
-namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
+namespace <#=namespaceName#>
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;
+<# if (!this.IsGraphNamespace(namespaceName)) { #>
+    using Microsoft.Graph;
+<# } #>
     using Newtonsoft.Json;
 
     /// <summary>
