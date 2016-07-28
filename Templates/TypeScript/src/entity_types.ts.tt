@@ -11,56 +11,38 @@
     var complexTypes            = model.GetComplexTypes();
 #>
 <#= writer.WriteHeader() #>
-declare module MicrosoftGraph {
+declare namespace MicrosoftGraph {
+
+<# foreach(var enumType in enumTypes) { #>
+  type <#= writer.UpperCaseFirstChar(enumType.Name) #> = <#= enumType.GetEnumValues() #>
+<# } #>
 <#
   foreach(var entityType in entityTypes)
     {
         var methods = entityType.Methods;
 #>
 
-    export interface <#= writer.UpperCaseFirstChar(entityType.Name) #><# if (entityType.Base != null) { #> extends <#=  writer.UpperCaseFirstChar(entityType.Base.Name) #><# }#> {
-<#
-            foreach(var prop in entityType.Properties.ToList()) {
-#>
-      <#=  prop.Name #>?: <#= prop.GetTypeString() #>
+  interface <#= writer.UpperCaseFirstChar(entityType.Name) #><# if (entityType.Base != null) { #> extends <#=  writer.UpperCaseFirstChar(entityType.Base.Name) #><# }#> {
+<# foreach(var prop in entityType.Properties.ToList()) { #>
+    <#=  prop.Name #>?: <#= prop.GetTypeString() #>
 <# } #>
-    }
+  }
     <#
     }
 #>
-
 <#
-  foreach(var enumType in enumTypes)
-  {
-#>
-  export const enum <#= writer.UpperCaseFirstChar(enumType.Name) #> {
-<#
-      foreach(var member in enumType.Members)
-      {
-#>
-    <#= member.Name #> = <#= member.Value #>,
-<#
-      }
-      #>
-  }
-
-<#
-  }
   foreach(var complexType in complexTypes)
   {
 #>
-  export interface <#= writer.UpperCaseFirstChar(complexType.Name)#> {
-<#
-    foreach(var prop in complexType.Properties)
-    {
-#>
-      <#= prop.Name #>?: <#= prop.GetTypeString() #>
-<#
-    }
-#>
-  }
 
-<#
+  interface <#= writer.UpperCaseFirstChar(complexType.Name)#> {
+<# foreach(var prop in complexType.Properties) { #>
+      <#= prop.Name #>?: <#= prop.GetTypeString() #>
+<# } #>
   }
-#>
+<# } #>
+}
+
+declare module "msgraph" {
+    export = MicrosoftGraph;
 }

@@ -7,6 +7,23 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
     public static class TypeHelperTypeScript
     {
+
+        // enum value string, ex: "low" | "normal" | "high"
+        public static String GetEnumValues(this OdcmEnum _enum) {
+            String enumVals = null;
+            foreach (var member in _enum.Members)
+            {
+                if (enumVals == null)
+                {
+                    enumVals = '"' + member.Name + '"';
+                } else
+                {
+                    enumVals += " | " + '"' + member.Name + '"';
+                }
+            }
+
+            return enumVals;
+        }
         
         public static string GetTypeString(this OdcmProperty prop)
         {
