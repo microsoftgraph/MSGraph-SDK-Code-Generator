@@ -27,9 +27,15 @@ private string GetObjCTypeIdentifier(OdcmObject o, bool getUnderlyingType=false)
     if(o is OdcmProperty)
     {
         OdcmProperty prop=(OdcmProperty)o;
+
         if(prop.IsCollection && !getUnderlyingType)
         {
             return @"NSArray";
+        }
+
+        if (prop.IsComplexCollectionOpenType(model) && !getUnderlyingType)
+        {
+            return @"NSDictionary";
         }
 
         return GetObjCTypeIdentifier(prop.Projection.Type,getUnderlyingType);
@@ -136,6 +142,17 @@ private string GetJsonToObjCExpressionConversion(string expr,OdcmProperty prop)
     type.GetNSNumberValueMethod());
 }
 
+private string GetObjCTypeIdentifierCollection(OdcmProperty prop)
+{
+    var propName =  GetObjCTypeIdentifier(prop,true);
+    if (prop.IsComplexCollectionOpenType(model))
+    {
+        propName = propName.RemoveFromEnd("Collection");
+    }
+
+    return propName;
+}
+
 private string GetHydratedPropertyFromDictionary(OdcmProperty prop)
 {
     return GetJsonToObjCExpressionConversion(String.Format(@"self.dictionary[@""{0}""]",prop.Name),prop);
@@ -198,8 +215,39 @@ private string GetHydratedIVarFromDictionary(OdcmProperty prop)
         GetJsonToObjCExpressionConversion(prop.Projection.Type.Name.ToLowerFirstChar(), prop));
     }
 
-    return String.Format(@"_{0} = {1};",GetObjCProperty(prop),GetHydratedPropertyFromDictionary(prop));
+    if(prop.IsComplexCollectionOpenType(model))
+    {
+        return String.Format(@"
+    NSMutableDictionary *{0}Result = [[NSMutableDictionary alloc] init];
+    NSDictionary *{0} = self.dictionary[@""{1}""];
 
+    if ([{0} isKindOfClass:[NSDictionary class]]){{
+        [{0} enumerateKeysAndObjectsUsingBlock:^(NSString* key, id value, BOOL* stop){{
+            [{0}Result setValue:{3} forKey:key];
+        }}];
+    }}
+
+    _{0} = {0}Result;
+        ",
+        GetObjCProperty(prop),
+        prop.Name,
+        prop.Projection.Type.Name.ToLowerFirstChar().RemoveFromEnd("Collection"),
+        GetJsonToObjCExpressionConversionOpenType(prop));
+    }
+
+    return String.Format(@"_{0} = {1};",GetObjCProperty(prop),GetHydratedPropertyFromDictionary(prop));
+}
+
+private string GetJsonToObjCExpressionConversionOpenType(OdcmProperty prop)
+{
+    string objCIdentifierType = GetObjCTypeIdentifierCollection(prop);
+
+    if(model.GetComplexTypes().Any(complexType => objCIdentifierType.Equals(writer.GetPrefix() + complexType.Name.ToUpperFirstChar())))
+    {
+        return String.Format("[[{0} alloc] initWithDictionary:value]", objCIdentifierType);
+    }
+
+    return "value";
 }
 
 public string GetFunctionParameterDictionary(List<OdcmParameter> parameters)
