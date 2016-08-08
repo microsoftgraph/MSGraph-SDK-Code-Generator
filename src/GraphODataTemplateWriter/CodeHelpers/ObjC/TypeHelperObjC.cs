@@ -108,12 +108,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                     return "NSDate";
                 case "Date":
                     return "MSDate";
+                case "TimeOfDay":
+                    return "MSTimeOfDay";
                 case "Binary":
                     return "NSString";
                 case "Boolean":
                     return "BOOL";
                 case "Stream":
                     return "NSStream";
+                case "Duration":
+                    return "Duration";
+                case "NSDictionary":
+                    return "NSDictionary";
                 default:
                     return Prefix + type.Name.ToUpperFirstChar();
             }
@@ -128,7 +134,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         {
             string t = GetTypeString(type);
             return
-                !(t.Contains("int") || t == "BOOL" || t == "Byte" || t == "CGFloat");
+                !(t == "int32_t" || t == "int64_t" || t == "int16_t" || t == "BOOL" || t == "Byte" || t == "CGFloat");
         }
 
         public static bool IsComplex(this OdcmProperty property) 
@@ -182,6 +188,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
 			string t = GetTypeString(type);
 			return (t.Contains("int") || t == "BOOL" || t == "Byte" || t == "NSString" || t == "NSDate" || t == "NSStream" || t == "CGFloat");
 		}
+
+        public static bool IsComplexCollectionOpenType(this OdcmProperty property, OdcmModel model)
+        {
+            return property.IsComplex() && property.Projection.Type.Name.ToLower().EndsWith("collection") &&
+                model.GetComplexTypes().Any(complexType => complexType.Name.Equals(property.Projection.Type.Name) && complexType.IsOpen);
+        }
 
         public static bool IsDate(this OdcmProperty prop)
         {

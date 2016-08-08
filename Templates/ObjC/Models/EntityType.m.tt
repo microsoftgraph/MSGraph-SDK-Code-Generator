@@ -57,6 +57,14 @@ if (entity.Base == null)
 {
     self.dictionary[@"@odata.type"] = val;
 }
+- (NSString*) oDataEtag
+{
+    return self.dictionary[@"@odata.etag"];
+}
+- (void) setODataEtag: (NSString*) val
+{
+    self.dictionary[@"@odata.etag"] = val;
+}
 <#
 }
 

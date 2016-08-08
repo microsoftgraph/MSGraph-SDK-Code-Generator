@@ -93,22 +93,6 @@ foreach(var et in entityTypes)
 
 foreach(var complexType in model.GetComplexTypes())
 {
-    foreach(var prop in complexType.GetProperties().Where(prop => prop.IsCollection && !(prop.Projection.Type is OdcmPrimitiveType) && !prop.IsEnum() && !prop.LongDescriptionContains("ignorableCollection")))
-    {
-        var baseName = writer.GetPrefix() + prop.Class.Name.ToUpperFirstChar() + prop.Name.ToUpperFirstChar();
-        if(!prop.IsReference())
-        {
-            classes.Add("#import \"" + baseName + "CollectionRequestBuilder.h\"");
-            classes.Add("#import \"" + baseName + "CollectionRequest.h\"");
-        }
-        else
-        {
-            classes.Add("#import \"" + baseName + "CollectionWithReferencesRequestBuilder.h\"");
-            classes.Add("#import \"" + baseName + "CollectionWithReferencesRequest.h\"");
-            classes.Add("#import \"" + baseName + "CollectionReferenceRequestBuilder.h\"");
-            classes.Add("#import \"" + baseName + "CollectionReferenceRequest.h\"");
-        }
-    }
     foreach(var streamProperty in complexType.GetProperties(typeName:"Stream"))
     {
         classes.Add("#import \"" + writer.GetPrefix() + streamProperty.Class.Name.ToUpperFirstChar() + streamProperty.Name.ToUpperFirstChar() + "Request.h\"");
