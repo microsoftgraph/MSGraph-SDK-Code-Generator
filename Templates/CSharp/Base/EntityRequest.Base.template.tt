@@ -156,7 +156,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("            this.Method = \"PUT\";");
+    stringBuilder.Append("            this.Method = \"POST\";");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            var newEntity = await this.SendAsync<{0}>({1}ToCreate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
