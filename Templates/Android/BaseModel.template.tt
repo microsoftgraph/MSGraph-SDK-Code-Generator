@@ -5,7 +5,7 @@
     CustomT4Host host          = (CustomT4Host) Host;
     var model                  = host.CurrentModel;
     CodeWriterAndroid writer   = (CodeWriterAndroid) host.CodeWriter;
-    bool logTemplateSrc        = false;
+    bool logTemplateSrc        = true;
     var c = host.CurrentType;
 #>
 <# if (logTemplateSrc) { #>
@@ -619,14 +619,14 @@ public {1} {2}{3}{4} {{";
      * The {0}.
      */
     @SerializedName(""{1}"")
-    public {4}{2} {3};
+    public {2} {3};
 
 ";
         var collectionFormat =
 @"    /**
      * The {0}.
      */
-    public transient {4}{2} {3};
+    public transient {2} {3};
 
 ";
 
@@ -635,7 +635,6 @@ public {1} {2}{3}{4} {{";
             var propertyName = property.Name.ToUpperFirstChar();
             var propertyType = "";
             var propertyFormat = format;
-            var shouldFullyQualify = TypeHelperAndroid.ReservedNames.Contains(propertyName);
             if (property.IsCollection)
             {
                 if (!property.IsNavigation())
@@ -657,8 +656,7 @@ public {1} {2}{3}{4} {{";
                 propertyName.SplitCamelCase(),
                 property.Name,
                 propertyType,
-                property.SanitizePropertyName().ToLowerFirstChar(),
-                shouldFullyQualify ? "com.microsoft.graph.extensions." : "");
+                property.SanitizePropertyName().ToLowerFirstChar());
         }
         return sb.ToString();
     }
