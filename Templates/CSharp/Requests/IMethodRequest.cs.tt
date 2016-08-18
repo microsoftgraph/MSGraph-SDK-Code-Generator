@@ -47,6 +47,7 @@ var methodReturnTag = sendAsyncReturnType == null
     : string.Concat("The", sendAsyncReturnType);
 
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
+bool includeRequestBody = hasParameters && isAction;
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
 
 var features = host.CurrentType.GetFeatures();
@@ -67,7 +68,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     public partial interface I<#=requestType#> : IBaseRequest
     {
 <#
-    if (hasParameters && (isAction || isComposable))
+    if (includeRequestBody)
     {
 #>
 
