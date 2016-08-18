@@ -5,7 +5,27 @@
 
 var method = host.CurrentType.AsOdcmMethod();
 var entityName = method.Class.Name.ToCheckedCase();
-var httpMethod = (method.IsAction()) ? "POST" : "GET";
+
+var isFunction = method.IsFunction;
+var isAction = !isFunction;
+var isComposable = method.IsComposable;
+var httpMethods = new System.Collections.Generic.List<string>();
+
+// Set the supported verbs based on whether this is function, composable function, or an action.
+if (isFunction)
+{
+    httpMethods.Add("GET");
+    if (isComposable)
+    {
+        httpMethods.Add("PATCH");
+        httpMethods.Add("PUT");
+    }
+} 
+else 
+{
+    httpMethods.Add("POST");
+}
+
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
@@ -47,7 +67,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     public partial interface I<#=requestType#> : IBaseRequest
     {
 <#
-    if (hasParameters && method.IsAction())
+    if (hasParameters && (isAction || isComposable))
     {
 #>
 
@@ -73,6 +93,8 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         sendOverloadParameters = "CancellationToken cancellationToken";
     }
 
+    foreach (string httpMethod in httpMethods) 
+    {
 #>
 
         /// <summary>
@@ -86,6 +108,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <#=sendParameterHeadersForOverload#>
         /// <returns><#=methodReturnTag#></returns>
         <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(<#=sendOverloadParameters#>);
+
+<# 
+    } // end foreach
+#>
+
+
 <#
     if (!returnsStream)
     {

@@ -5,8 +5,33 @@
 
 var method = host.CurrentType.AsOdcmMethod();
 var entityName = method.Class.Name.ToCheckedCase();
-var isAction = method.IsAction();
-var httpMethod = isAction ? "POST" : "GET";
+//var isAction = method.IsAction();// TODO: We don't need the IsAction extension for this. We should use odcmmethod.IsFunction()  
+
+    var overloadCount = method.Overloads.Count;
+var isFunction = method.IsFunction;
+var isAction = !isFunction;
+var isComposable = method.IsComposable;
+var httpMethods = new System.Collections.Generic.List<string>();
+
+// Set the supported verbs based on whether this is function, composable function, or an action.
+if (isFunction)
+{
+    httpMethods.Add("GET");
+    if (isComposable)
+    {
+        httpMethods.Add("PATCH");
+        httpMethods.Add("PUT");
+    }
+} 
+else 
+{
+    httpMethods.Add("POST");
+}
+
+
+
+
+//var httpMethod = isAction ? "POST" : "GET";
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
@@ -60,7 +85,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
-            this.Method = "<#=httpMethod#>";
 <#
     if (includeRequestBody)
     {
@@ -83,7 +107,10 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 <#
     }
 #>
-
+<# 
+    foreach (string httpMethod in httpMethods) // We need to create a method for each HTTP verb.
+    {
+#>
         /// <summary>
         /// Issues the <#=httpMethod#> request.
         /// </summary>
@@ -122,6 +149,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     }
 #>
         {
+            this.Method = "<#=httpMethod#>";
 <#
     var methodParameter = includeRequestBody ? "this.RequestBody" : "null";
 
@@ -174,6 +202,14 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     }
 #>
         }
+
+        
+
+<#
+    } // end the foreach httpmethods
+#>
+
+
 
 <#
     if (!returnsStream)
