@@ -383,8 +383,9 @@
     }
 
     public string ReturnType(OdcmObject c) {
-        if (c.AsOdcmMethod().ReturnType != null) {
-            return c.AsOdcmMethod().ReturnType.Name.ToUpperFirstChar();
+        var returnType = c.AsOdcmMethod().ReturnType;
+        if (returnType != null) {
+            return returnType.GetTypeString();
         }
         return "Void";
     }
