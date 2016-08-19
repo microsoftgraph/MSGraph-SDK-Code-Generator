@@ -376,16 +376,23 @@
 
     /// The Type of this param, as a string
     public string ParamType(OdcmParameter c) {
+        var typeString = c.Type.GetTypeString();
         if (c.IsCollection){
-            return String.Format("List<{0}>", c.Type.GetTypeString());
+            typeString = String.Format("List<{0}>", c.Type.GetTypeString());
+        } else if (typeString.Equals("Stream")) {
+            typeString = "byte[]";
         }
-        return c.Type.GetTypeString();
+        return typeString;
     }
 
     public string ReturnType(OdcmObject c) {
         var returnType = c.AsOdcmMethod().ReturnType;
         if (returnType != null) {
-            return returnType.GetTypeString();
+            var returnTypeString = returnType.GetTypeString();
+            if (returnTypeString.Equals("Stream")) {
+                returnTypeString = "InputStream";
+            }
+            return returnTypeString;
         }
         return "Void";
     }
