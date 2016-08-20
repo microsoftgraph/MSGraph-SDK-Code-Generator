@@ -390,7 +390,7 @@
         if (returnType != null) {
             var returnTypeString = returnType.GetTypeString();
             if (returnTypeString.Equals("Stream")) {
-                returnTypeString = "InputStream";
+                returnTypeString = "java.io.InputStream";
             }
             return returnTypeString;
         }
