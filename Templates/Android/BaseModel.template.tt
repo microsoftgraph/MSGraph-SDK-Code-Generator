@@ -380,6 +380,13 @@
         if (c.IsCollection){
             typeString = String.Format("List<{0}>", c.Type.GetTypeString());
         } else if (typeString.Equals("Stream")) {
+
+            // Excel introduced the use of "Edm.Stream" types
+            // normally this would be addressed at the TypeHelper level
+            // but because streams will use different data containers
+            // for outgoing vs. incoming streams I'm going to apply the type
+            // here. Outbound Streams will use byte[]
+
             typeString = "byte[]";
         }
         return typeString;
@@ -389,6 +396,13 @@
         var returnType = c.AsOdcmMethod().ReturnType;
         if (returnType != null) {
             var returnTypeString = returnType.GetTypeString();
+
+            // Excel introduced the use of "Edm.Stream" types
+            // normally this would be addressed at the TypeHelper level
+            // but because streams will use different data containers
+            // for outgoing vs. incoming streams I'm going to apply the type
+            // here. Inbound Streams will use java.io.InputStream
+
             if (returnTypeString.Equals("Stream")) {
                 returnTypeString = "java.io.InputStream";
             }
