@@ -39,16 +39,16 @@
                 options
         );
 
-<# foreach (var p in c.AsOdcmMethod().Parameters) { #>
-  <# if (isPost) { #>
+<# if (isPost) { #>
+  <# foreach (var p in c.AsOdcmMethod().Parameters) { #>
       if (hasParameter("<#=ParamName(p)#>")) {
             request.mBody.<#=ParamName(p)#> = getParameter("<#=ParamName(p)#>");
         }
-  <# } else { #>
+  <# } #>
+<# } else { #>
       for (FunctionOption option : mFunctionOptions) {
             request.addFunctionOption(option);
-        }
-  <# } #>
+      }
 <# } #>
 
         return request;
