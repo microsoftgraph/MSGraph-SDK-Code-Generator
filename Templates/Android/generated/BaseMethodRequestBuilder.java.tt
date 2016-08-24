@@ -14,10 +14,10 @@
      *
      * @param requestUrl The request url
      * @param client The service client
-     * @param options The options for this request
+     * @param requestOptions The options for this request
      */
-    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(method)#>) {
-        super(requestUrl, client, options);
+    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> requestOptions<#=MethodParametersSignature(method)#>) {
+        super(requestUrl, client, requestOptions);
 <#     foreach (var p in method.Parameters) { #>
 <#         if (isPost) { #>
         mBodyParams.put("<#=ParamName(p)#>", <#=ParamName(p)#>);
@@ -38,16 +38,16 @@
     }
 
     /**
-     * Creates the <#=ITypeRequest(c)#> with specific options instead of the existing options
+     * Creates the <#=ITypeRequest(c)#> with specific requestOptions instead of the existing requestOptions
      *
-     * @param options the options for the request
+     * @param requestOptions the options for the request
      * @return The <#=ITypeRequest(c)#> instance
      */
-    public <#=ITypeRequest(c)#> buildRequest(final List<Option> options) {
+    public <#=ITypeRequest(c)#> buildRequest(final List<Option> requestOptions) {
         <#=TypeRequest(c)#> request = new <#=TypeRequest(c)#>(
                 getRequestUrl(),
                 getClient(),
-                options
+                requestOptions
         );
 
 <# if (isPost) { #>

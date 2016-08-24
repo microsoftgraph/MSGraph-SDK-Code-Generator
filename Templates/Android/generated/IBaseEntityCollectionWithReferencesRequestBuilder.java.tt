@@ -13,7 +13,7 @@
 
     <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest();
 
-    <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest(final List<Option> options);
+    <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest(final List<Option> requestOptions);
 
     <#=ITypeWithReferencesRequestBuilder(c)#> byId(final String id);
 
