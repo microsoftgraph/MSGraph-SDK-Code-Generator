@@ -14,19 +14,19 @@ import com.google.gson.annotations.*;
 <# if (c.AsOdcmMethod().IsAction()) { #>
 <#      if (c.AsOdcmMethod().ReturnType != null) { #>
     /**
-     * Creates the <#=ClassTypeName(c)#>
+     * Creates the <#=ReturnType(c)#>
      *
      * @param callback The callback to be called after success or failure.
      */
-    void post(final ICallback<<#=ClassTypeName(c)#>> callback);
+    void post(final ICallback<<#=ReturnType(c)#>> callback);
 
     /**
-     * Creates the <#=ClassTypeName(c)#>
+     * Creates the <#=ReturnType(c)#>
      *
-     * @return The <#=ClassTypeName(c)#>
+     * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
      */
-    <#=ClassTypeName(c)#> post() throws ClientException;
+    <#=ReturnType(c)#> post() throws ClientException;
 
 <# if (c.GetFeatures().CanSelect) { #>
     /**
@@ -59,16 +59,16 @@ import com.google.gson.annotations.*;
 <#          } #>
 <#      } else { #>
     /**
-     * Creates the <#=ClassTypeName(c)#>
+     * Creates the <#=ReturnType(c)#>
      *
      * @param callback The callback to be called after success or failure.
      */
     void post(final ICallback<Void> callback);
 
     /**
-     * Creates the <#=ClassTypeName(c)#>
+     * Creates the <#=ReturnType(c)#>
      *
-     * @return The <#=ClassTypeName(c)#>
+     * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
      */
     void post() throws ClientException;
@@ -77,19 +77,18 @@ import com.google.gson.annotations.*;
 <# } else { #>
 <#      if (c.AsOdcmMethod().ReturnType != null) { #>
     /**
-     * Gets the <#=ClassTypeName(c)#>
-     *
+     * Gets the <#=ReturnType(c)#>
      * @param callback The callback to be called after success or failure.
      */
-    void get(final ICallback<<#=ClassTypeName(c)#>> callback);
+    void get(final ICallback<<#=ReturnType(c)#>> callback);
 
     /**
-     * Gets the <#=ClassTypeName(c)#>
+     * Gets the <#=ReturnType(c)#>
      *
-     * @return The <#=ClassTypeName(c)#>
+     * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
      */
-    <#=ClassTypeName(c)#> get() throws ClientException;
+    <#=ReturnType(c)#> get() throws ClientException;
 
 <# if (c.GetFeatures().CanSelect) { #>
     /**
