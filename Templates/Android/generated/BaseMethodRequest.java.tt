@@ -22,21 +22,21 @@
 <# if (c.AsOdcmMethod().IsAction()) { #>
 <#      if (c.AsOdcmMethod().ReturnType != null) { #>
     /**
-     * Creates the <#=ClassTypeName(c)#>
+     * Creates the <#=ReturnType(c)#>
      *
      * @param callback The callback to be called after success or failure.
      */
-    public void post(final ICallback<<#=ClassTypeName(c)#>> callback) {
+    public void post(final ICallback<<#=ReturnType(c)#>> callback) {
         send(HttpMethod.POST, callback, null);
     }
 
     /**
-     * Creates the <#=ClassTypeName(c)#>
+     * Creates the <#=ReturnType(c)#>
      *
-     * @return The <#=ClassTypeName(c)#>
+     * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
      */
-    public <#=ClassTypeName(c)#> post() throws ClientException {
+    public <#=ReturnType(c)#> post() throws ClientException {
        return send(HttpMethod.POST, null);
     }
 
@@ -81,7 +81,7 @@
 <#          } #>
 <#      } else { #>
     /**
-     * Creates the <#=ClassTypeName(c)#>
+     * Creates the <#=ReturnType(c)#>
      *
      * @param callback The callback to be called after success or failure.
      */
@@ -101,9 +101,9 @@
     }
 
     /**
-     * Creates the <#=ClassTypeName(c)#>
+     * Creates the <#=ReturnType(c)#>
      *
-     * @return The <#=ClassTypeName(c)#>
+     * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
      */
     public void post() throws ClientException {
@@ -113,21 +113,21 @@
 <#  } else { #>
 <#      if (c.AsOdcmMethod().ReturnType != null) { #>
     /**
-     * Gets the <#=ClassTypeName(c)#>
+     * Gets the <#=ReturnType(c)#>
      *
      * @param callback The callback to be called after success or failure.
      */
-    public void get(final ICallback<<#=ClassTypeName(c)#>> callback) {
+    public void get(final ICallback<<#=ReturnType(c)#>> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
     /**
-     * Gets the <#=ClassTypeName(c)#>
+     * Gets the <#=ReturnType(c)#>
      *
-     * @return The <#=ClassTypeName(c)#>
+     * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
      */
-    public <#=ClassTypeName(c)#> get() throws ClientException {
+    public <#=ReturnType(c)#> get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
 
