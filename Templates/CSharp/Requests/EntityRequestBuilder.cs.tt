@@ -42,7 +42,7 @@ namespace <#=this.GetNamespaceName(entity)#>
     {
     #>
 
-        <#=this.GetMethodProperties(entity)#>
+        <#=this.GetMethodProperties(entity, false)#>
     <#
     }
     #>
