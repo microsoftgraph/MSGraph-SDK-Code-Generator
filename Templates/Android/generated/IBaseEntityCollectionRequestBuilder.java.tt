@@ -16,4 +16,28 @@
     <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> requestOptions);
 
     <#=ITypeRequestBuilder(c)#> byId(final String id);
+
+<#
+var aa = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
+if (aa != null)
+{
+    foreach (var method in aa.AsOdcmClass().MethodsAndOverloads()) {
+
+        if (!method.IsBoundToCollection) {
+            continue;
+        }
+
+        var parameterList = MethodParametersSignature(method);
+        if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
+#>
+<# if (method.IsCollection) { #>
+
+    <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
+<#  } else { #>
+    <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
+<#
+        }
+    }
+}
+#>
 }
