@@ -18,19 +18,22 @@
     <#=ITypeRequestBuilder(c)#> byId(final String id);
 
 <#
-var aa = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
-if (aa != null)
+var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
+if (currentTypeProjection != null)
 {
-    foreach (var method in aa.AsOdcmClass().MethodsAndOverloads()) {
+    foreach (var method in currentTypeProjection.AsOdcmClass().MethodsAndOverloads()) {
 
         if (!method.IsBoundToCollection) {
             continue;
         }
 
         var parameterList = MethodParametersSignature(method);
-        if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
+        if (parameterList != "") {
+            parameterList = parameterList.Remove(0, 2);
+        }
+
+        if (method.IsCollection) {
 #>
-<# if (method.IsCollection) { #>
 
     <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
 <#  } else { #>

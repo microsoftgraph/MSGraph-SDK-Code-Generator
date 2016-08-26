@@ -31,9 +31,9 @@
         return new <#=TypeRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
     }
 <#
-var aa = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
-if (aa != null) {
-    foreach (var method in aa.MethodsAndOverloads()) {
+var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
+if (currentTypeProjection != null) {
+    foreach (var method in currentTypeProjection.MethodsAndOverloads()) {
 
         if (!method.IsBoundToCollection) {
             continue;
