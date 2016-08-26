@@ -72,8 +72,12 @@ if (c.AsOdcmClass() != null)
     }
 #>
 <#
-    foreach (var method in c.AsOdcmClass().MethodsAndOverloads())
-    {
+    foreach (var method in c.AsOdcmClass().MethodsAndOverloads()) {
+
+        if (method.IsBoundToCollection) {
+            continue;
+        }
+
         var parameterList = MethodParametersSignature(method);
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
 #>
