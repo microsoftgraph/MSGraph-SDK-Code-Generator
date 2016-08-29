@@ -5,6 +5,12 @@
 
 var prop = host.CurrentType.AsOdcmProperty();
 
+    var collectionRequestBuilderConstructor = this.GetCollectionRequestBuilderConstructor(prop);
+    var collectionRequestMethod = this.GetCollectionRequestMethod(prop);
+    var collectionRequestMethodWithOptions = this.GetCollectionRequestMethodWithOptions(prop);
+    var collectionIndexRequestBuilder = this.GetCollectionIndexRequestBuilder(prop);
+    var methodProperties = this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true);
+
 #>
 namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
@@ -13,14 +19,45 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 
     <#=this.GetCollectionClassDefinition(prop)#>
     {
-        <#=this.GetCollectionRequestBuilderConstructor(prop)#>
+<#
+if (collectionRequestBuilderConstructor.Length > 0)
+{
+#>
+        <#=collectionRequestBuilderConstructor#>
+<#
+}     
+#><#
+if (collectionRequestMethod.Length > 0)
+{
+#>
 
-        <#=this.GetCollectionRequestMethod(prop)#>
+        <#=collectionRequestMethod#>
+<#
+}     
+#><#
+if (collectionRequestMethodWithOptions.Length > 0)
+{
+#>
 
-        <#=this.GetCollectionRequestMethodWithOptions(prop)#>
+        <#=collectionRequestMethodWithOptions#>
+<#
+}     
+#><#
+if (collectionIndexRequestBuilder.Length > 0)
+{
+#>
 
-        <#=this.GetCollectionIndexRequestBuilder(prop)#>
+        <#=collectionIndexRequestBuilder#>
+<#
+}     
+#><#
+if (methodProperties.Length > 0)
+{
+#>
 
-        <#=this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true) #>
+        <#=methodProperties#>
+<#
+}     
+#>
     }
 }
