@@ -36,8 +36,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="*\*.tt" />
+    <Content Include="Android\BaseModel.template.tt" />
+    <Content Include="PHP\Model\ComplexType.php.tt" />
     <Content Include="*\*\*.tt" />
+    <Content Include="PHP\Model\EntityType.php.tt" />
+    <Content Include="PHP\Model\EnumType.php.tt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

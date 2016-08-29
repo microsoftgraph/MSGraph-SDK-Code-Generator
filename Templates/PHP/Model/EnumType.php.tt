@@ -1,0 +1,29 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterPHP writer   = (CodeWriterPHP) host.CodeWriter;
+var enumT = host.CurrentType.AsOdcmEnum();
+#>
+<#=writer.WriteHeader(writer.GetDocBlock(enumT.Name.ToCheckedCase()))#>
+namespace Microsoft\Graph\Model;
+
+<#=writer.GetClassBlock(enumT.Name.ToCheckedCase().ToString(), "Model")#>
+class <#=enumT.Name.ToUpperFirstChar()#> extends SplEnum
+{
+    /**
+    * The Enum <#=enumT.Name.ToUpperFirstChar()#>
+    */
+<#
+    int count = 0;
+    foreach(var value in enumT.Members)
+    {
+        count++;
+#>
+    const <#= value.Name.ToUnderscore().ToUpper()#> = <#= count#>;
+<#
+    }
+#>
+}
