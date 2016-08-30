@@ -9,22 +9,6 @@ var entityName = method.Class.Name.ToCheckedCase();
 var isFunction = method.IsFunction;
 var isAction = !isFunction;
 var isComposable = method.IsComposable;
-var httpMethods = new System.Collections.Generic.List<string>();
-
-// Set the supported verbs based on whether this is function, composable function, or an action.
-if (isFunction)
-{
-    httpMethods.Add("GET");
-    if (isComposable)
-    {
-        httpMethods.Add("PATCH");
-        httpMethods.Add("PUT");
-    }
-} 
-else 
-{
-    httpMethods.Add("POST");
-}
 
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
