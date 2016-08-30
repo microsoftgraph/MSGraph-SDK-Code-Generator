@@ -128,9 +128,9 @@ public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
         allMethods.AddRange(method.Overloads);
     }
     var renameItem = "";
-    if (allMethods.Exists(x => x.Name.Equals("item")))
+    if (allMethods.Exists(x => x.Name.ToLower().Equals("item")))
     {
-            renameItem = "        [System.Runtime.CompilerServices.IndexerName(\"ThisItem\")]";        
+            renameItem = "\n        [System.Runtime.CompilerServices.IndexerName(\"ThisItem\")]";        
     }
 
     var stringBuilder = new StringBuilder();
@@ -146,12 +146,8 @@ public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
     stringBuilder.AppendFormat("        /// <param name=\"id\">The ID for the {0}.</param>", propTypeName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityRequestBuilder);
+    stringBuilder.Append(renameItem);
     stringBuilder.Append(Environment.NewLine);
-    if (renameItem.Length > 0)
-    {
-        stringBuilder.Append(renameItem);
-        stringBuilder.Append(Environment.NewLine);
-    }
     stringBuilder.AppendFormat("        public I{0} this[string id]", entityRequestBuilder);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(

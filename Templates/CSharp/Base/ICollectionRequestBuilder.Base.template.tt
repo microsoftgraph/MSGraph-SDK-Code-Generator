@@ -36,7 +36,7 @@ public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
         allMethods.AddRange(method.Overloads);
     }
     
-    var hasItemMethod = allMethods.Exists(x => x.Name.Equals("item")) ? true : false;   
+    var hasItemMethod = allMethods.Exists(x => x.Name.ToLower().Equals("item")) ? true : false;   
 
     return this.GetIndexRequestBuilder(propTypeName, entityRequestBuilder, hasItemMethod);
 }
