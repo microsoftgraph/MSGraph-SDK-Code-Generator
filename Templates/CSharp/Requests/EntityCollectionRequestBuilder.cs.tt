@@ -19,45 +19,14 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 
     <#=this.GetCollectionClassDefinition(prop)#>
     {
-<#
-if (collectionRequestBuilderConstructor.Length > 0)
-{
-#>
-        <#=collectionRequestBuilderConstructor#>
-<#
-}     
-#><#
-if (collectionRequestMethod.Length > 0)
-{
-#>
+        <#=this.GetCollectionRequestBuilderConstructor(prop)#>
 
-        <#=collectionRequestMethod#>
-<#
-}     
-#><#
-if (collectionRequestMethodWithOptions.Length > 0)
-{
-#>
+        <#=this.GetCollectionRequestMethod(prop)#>
 
-        <#=collectionRequestMethodWithOptions#>
-<#
-}     
-#><#
-if (collectionIndexRequestBuilder.Length > 0)
-{
-#>
+        <#=this.GetCollectionRequestMethodWithOptions(prop)#>
 
-        <#=collectionIndexRequestBuilder#>
-<#
-}     
-#><#
-if (methodProperties.Length > 0)
-{
-#>
+        <#=this.GetCollectionIndexRequestBuilder(prop)#>
 
-        <#=methodProperties#>
-<#
-}     
-#>
+        <#=this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true) #>
     }
 }
