@@ -5,7 +5,7 @@
 <#host.TemplateName = BaseTypeRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
-<# bool isPost = IsPostRequestType(c.AsOdcmMethod()); #>
+<# bool isAction = !c.AsOdcmMethod().IsFunction; #>
 <#=CreateClassDef(BaseTypeRequestBuilder(c),  RequestBuilderSuperClass(c))#>
 
 <# foreach (var method in c.AsOdcmMethod().WithOverloads()) { #>
@@ -19,7 +19,7 @@
     public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> requestOptions<#=MethodParametersSignature(method)#>) {
         super(requestUrl, client, requestOptions);
 <#     foreach (var p in method.Parameters) { #>
-<#         if (isPost) { #>
+<#         if (isAction) { #>
         mBodyParams.put("<#=ParamName(p)#>", <#=ParamName(p)#>);
 <#         } else { #>
         mFunctionOptions.add(new FunctionOption("<#=ParamName(p)#>", <#=ParamName(p)#>));
@@ -50,18 +50,19 @@
                 requestOptions
         );
 
-<# if (isPost) { #>
-  <# foreach (var p in c.AsOdcmMethod().Parameters) { #>
-      if (hasParameter("<#=ParamName(p)#>")) {
+<# if (isAction) { #>
+<#   foreach (var p in c.AsOdcmMethod().Parameters) { #>
+        if (hasParameter("<#=ParamName(p)#>")) {
             request.mBody.<#=ParamName(p)#> = getParameter("<#=ParamName(p)#>");
         }
-  <# } #>
+
+<#   } #>
 <# } else { #>
       for (FunctionOption option : mFunctionOptions) {
             request.addFunctionOption(option);
       }
-<# } #>
 
+<# } #>
         return request;
     }
 }

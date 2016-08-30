@@ -5,7 +5,7 @@
     CustomT4Host host          = (CustomT4Host) Host;
     var model                  = host.CurrentModel;
     CodeWriterAndroid writer   = (CodeWriterAndroid) host.CodeWriter;
-    bool logTemplateSrc        = true;
+    bool logTemplateSrc        = false;
     var c = host.CurrentType;
 #>
 <# if (logTemplateSrc) { #>
@@ -13,29 +13,10 @@
 <# } #>
 <#+
 
-    /// Is this request type a post?
-    public bool IsPostRequestType(OdcmMethod method) {
-        return method.IsAction()
-            && null != method.Parameters
-            && method.Parameters.Any();
-    }
-
     /// Choose an intermediate class type based on GETs/POSTs
     public string RequestBuilderSuperClass(OdcmObject currentType) {
-        var isPostAction =
-            IsPostRequestType(
-                currentType.AsOdcmMethod()
-            );
-
-        string superClass;
-
-        if (isPostAction) {
-            superClass = "BasePostMethodRequestBuilder";
-        } else {
-            superClass = "BaseGetMethodRequestBuilder";
-        }
-
-        return superClass;
+        return currentType.AsOdcmMethod().IsFunction ?
+            "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder";
     }
 
     /// <summary>
