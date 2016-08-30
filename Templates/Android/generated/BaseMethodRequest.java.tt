@@ -19,8 +19,10 @@
         super(requestUrl, client, requestOptions, <#=ReturnType(c)#>.class);
     }
 
-<# if (c.AsOdcmMethod().IsAction()) { #>
-<#      if (c.AsOdcmMethod().ReturnType != null) { #>
+<#
+if (c.AsOdcmMethod().IsAction()) {
+    if (c.AsOdcmMethod().ReturnType != null) {
+#>
     /**
      * Creates the <#=ReturnType(c)#>
      *
@@ -40,7 +42,9 @@
        return send(HttpMethod.POST, null);
     }
 
-<# if (c.GetFeatures().CanSelect) { #>
+<#
+        if (c.GetFeatures().CanSelect) {
+#>
     /**
      * Sets the select clause for the request
      *
@@ -52,8 +56,11 @@
         return (<#=TypeRequest(c)#>)this;
     }
 
-<# } #>
-<# if (c.GetFeatures().CanExpand) { #>
+<#
+        }
+
+        if (c.GetFeatures().CanExpand) {
+#>
     /**
      * Sets the expand clause for the request
      *
@@ -65,8 +72,11 @@
         return (<#=TypeRequest(c)#>)this;
     }
 
-<# } #>
-<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
+<#
+        }
+
+        if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) {
+#>
 
     /**
      * Sets the top value for the request
@@ -78,8 +88,10 @@
         getQueryOptions().add(new QueryOption("$top", value+""));
         return (<#=TypeRequest(c)#>)this;
     }
-<#          } #>
-<#      } else { #>
+<#
+        }
+    } else {
+#>
     /**
      * Creates the <#=ReturnType(c)#>
      *
@@ -109,9 +121,11 @@
     public void post() throws ClientException {
         this.send(HttpMethod.POST, null);
     }
-<#      } #>
-<#  } else { #>
-<#      if (c.AsOdcmMethod().ReturnType != null) { #>
+<#
+    }
+} else {
+    if (c.AsOdcmMethod().ReturnType != null) {
+#>
     /**
      * Gets the <#=ReturnType(c)#>
      *
@@ -131,7 +145,9 @@
        return send(HttpMethod.GET, null);
     }
 
-<# if (c.GetFeatures().CanSelect) { #>
+<#
+        if (c.GetFeatures().CanSelect) {
+#>
     /**
      * Sets the select clause for the request
      *
@@ -143,8 +159,11 @@
         return (<#=TypeRequest(c)#>)this;
     }
 
-<# } #>
-<# if (c.GetFeatures().CanExpand) { #>
+<#
+        }
+
+        if (c.GetFeatures().CanExpand) {
+#>
     /**
      * Sets the expand clause for the request
      *
@@ -156,8 +175,11 @@
         return (<#=TypeRequest(c)#>)this;
     }
 
-<# } #>
-<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
+<#
+        }
+
+        if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) {
+#>
 
     /**
      * Sets the top value for the request
@@ -169,8 +191,10 @@
         getQueryOptions().add(new QueryOption("$top", value+""));
         return (<#=TypeRequest(c)#>)this;
     }
-<#          } #>
-<#      } else { #>
+<#
+        }
+    } else {
+#>
     public void get(final ICallback<Void> callback) {
         final IExecutors executors = getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
@@ -189,6 +213,8 @@
     public void get() throws ClientException {
         this.send(HttpMethod.GET, null);
     }
-<#      } #>
-<# } #>
+<#
+    }
+}
+#>
 }
