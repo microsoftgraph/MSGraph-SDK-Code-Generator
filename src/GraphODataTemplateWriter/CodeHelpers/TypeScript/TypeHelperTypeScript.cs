@@ -45,8 +45,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 case "String":
                     typeStr = "string"; //lowercase
                     break;
-                case "DateTimeOffset":
-                    typeStr = "Date";
+                // all dates need to be of type string so they can be wrapped in new Date(___)
+                case "DateTimeOffset": // ISO 8601 format in UTC time, ex 2014-01-01T00:00:00Z
+                case "Date":
+                    typeStr = "string";
                     break;
                 case "Boolean":
                     typeStr = "boolean";

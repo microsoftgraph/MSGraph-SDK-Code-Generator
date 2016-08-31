@@ -10,9 +10,14 @@
     var enumTypes               = model.GetEnumTypes();
     var complexTypes            = model.GetComplexTypes();
 #>
-<#= writer.WriteHeader() #>
-declare namespace MicrosoftGraph {
+// Type definitions for the Microsoft Graph API
+// Project: https://github.com/microsoftgraph/msgraph-typescript-typings
+// Definitions by: Microsoft Graph Team <https://github.com/microsoftgraph>
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
+<#= writer.WriteHeader() #>
+
+declare module MicrosoftGraph {
 <# foreach(var enumType in enumTypes) { #>
   type <#= writer.UpperCaseFirstChar(enumType.Name) #> = <#= enumType.GetEnumValues() #>
 <# } #>
@@ -27,7 +32,7 @@ declare namespace MicrosoftGraph {
     <#=  prop.Name #>?: <#= prop.GetTypeString() #>
 <# } #>
   }
-    <#
+<#
     }
 #>
 <#
@@ -43,6 +48,6 @@ declare namespace MicrosoftGraph {
 <# } #>
 }
 
-declare module "msgraph" {
+declare module "MicrosoftGraph" {
     export = MicrosoftGraph;
 }

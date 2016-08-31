@@ -13,12 +13,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
         public override String WriteOpeningCommentLine()
         {
-            return "/****************************************************************************" + this.NewLineCharacter;
+            return "//" + this.NewLineCharacter;
         }
 
         public override String WriteClosingCommentLine()
         {
-            return "*****************************************************************************/" + this.NewLineCharacter;
+            return "//" + this.NewLineCharacter;
         }
 
         public override string WriteInlineCommentChar()
