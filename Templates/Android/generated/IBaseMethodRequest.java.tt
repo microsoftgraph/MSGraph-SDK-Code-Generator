@@ -11,8 +11,10 @@ import com.google.gson.annotations.*;
 
 <#=CreateInterfaceDef(IBaseTypeRequest(c))#>
 
-<# if (c.AsOdcmMethod().IsAction()) { #>
-<#      if (c.AsOdcmMethod().ReturnType != null) { #>
+<#
+if (c.AsOdcmMethod().IsAction()) {
+    if (c.AsOdcmMethod().ReturnType != null) {
+#>
     /**
      * Creates the <#=ReturnType(c)#>
      *
@@ -28,7 +30,9 @@ import com.google.gson.annotations.*;
      */
     <#=ReturnType(c)#> post() throws ClientException;
 
-<# if (c.GetFeatures().CanSelect) { #>
+<#
+        if (c.GetFeatures().CanSelect) {
+#>
     /**
      * Sets the select clause for the request
      *
@@ -37,8 +41,11 @@ import com.google.gson.annotations.*;
      */
     <#=ITypeRequest(c)#> select(final String value);
 
-<# } #>
-<# if (c.GetFeatures().CanExpand) { #>
+<#
+        }
+
+        if (c.GetFeatures().CanExpand) {
+#>
     /**
      * Sets the expand clause for the request
      *
@@ -47,8 +54,13 @@ import com.google.gson.annotations.*;
      */
     <#=ITypeRequest(c)#> expand(final String value);
 
-<# } #>
-<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
+<#
+        }
+
+        if (c.AsOdcmProperty() != null 
+            && c.AsOdcmProperty().IsCollection
+            && c.GetFeatures().CanUseTop) {
+#>
     /**
      * Sets the top value for the request
      *
@@ -56,8 +68,10 @@ import com.google.gson.annotations.*;
      * @return The updated request
      */
     <#=ITypeRequest(c)#> top(final int value);
-<#          } #>
-<#      } else { #>
+<#
+        }
+    } else {
+#>
     /**
      * Creates the <#=ReturnType(c)#>
      *
@@ -73,9 +87,44 @@ import com.google.gson.annotations.*;
      */
     void post() throws ClientException;
 
-<#      } #>
-<# } else { #>
-<#      if (c.AsOdcmMethod().ReturnType != null) { #>
+<#
+    }
+} else {
+    if (c.AsOdcmMethod().ReturnType != null) {
+        if (c.AsOdcmMethod().IsComposable) {
+#>
+    /**
+     * Patches the <#=ReturnType(c)#>
+     *
+     * @param callback The callback to be called after success or failure
+     */
+    public void patch(final ICallback<<#=ReturnType(c)#>> callback);
+
+    /**
+     * Patches the <#=ReturnType(c)#>
+     *
+     * @return The <#=ReturnType(c)#>
+     * @throws ClientException An exception occurs if there was an error while the request was sent
+     */
+     public void patch() throws ClientException;
+
+    /**
+     * Puts the <#=ReturnType(c)#>
+     *
+     * @param callback The callback to be called after success or failure
+     */
+    public void put(final ICallback<<#=ReturnType(c)#>> callback);
+
+    /**
+     * Puts the <#=ReturnType(c)#>
+     *
+     * @return The <#=ReturnType(c)#>
+     * @throws ClientException An exception occurs if there was an error while the request was sent
+     */
+     public void put() throws ClientException;
+<#
+        }
+#>
     /**
      * Gets the <#=ReturnType(c)#>
      * @param callback The callback to be called after success or failure.
@@ -90,7 +139,9 @@ import com.google.gson.annotations.*;
      */
     <#=ReturnType(c)#> get() throws ClientException;
 
-<# if (c.GetFeatures().CanSelect) { #>
+<#
+        if (c.GetFeatures().CanSelect) {
+#>
     /**
      * Sets the select clause for the request
      *
@@ -99,8 +150,10 @@ import com.google.gson.annotations.*;
      */
     <#=ITypeRequest(c)#> select(final String value);
 
-<# } #>
-<# if (c.GetFeatures().CanExpand) { #>
+<#
+        }
+
+        if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -109,8 +162,13 @@ import com.google.gson.annotations.*;
      */
     <#=ITypeRequest(c)#> expand(final String value);
 
-<# } #>
-<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
+<#
+        }
+
+        if (c.AsOdcmProperty() != null
+            && c.AsOdcmProperty().IsCollection
+            && c.GetFeatures().CanUseTop) {
+#>
     /**
      * Sets the top value for the request
      *
@@ -118,12 +176,16 @@ import com.google.gson.annotations.*;
      * @return The updated request
      */
     <#=ITypeRequest(c)#> top(final int value);
-<#          } #>
-<#      } else { #>
+<#
+        }
+    } else {
+#>
     void get(final ICallback<Void> callback);
 
     void get() throws ClientException;
 
-<#      } #>
-<# } #>
+<#
+    }
+}
+#>
 }
