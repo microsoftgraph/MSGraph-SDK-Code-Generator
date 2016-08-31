@@ -13,7 +13,6 @@
 // Type definitions for the Microsoft Graph API
 // Project: https://github.com/microsoftgraph/msgraph-typescript-typings
 // Definitions by: Microsoft Graph Team <https://github.com/microsoftgraph>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 <#= writer.WriteHeader() #>
 
