@@ -18,6 +18,7 @@ if (baseEntity == null)
 {
 #>
   @property (nullable, nonatomic, setter=setODataType:, getter=oDataType) NSString *oDataType;
+  @property (nullable, nonatomic, setter=setODataEtag:, getter=oDataEtag) NSString *oDataEtag;
 <#
 }
 
