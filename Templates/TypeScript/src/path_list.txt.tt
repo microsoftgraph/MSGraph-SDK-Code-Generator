@@ -5,9 +5,7 @@
     CustomT4Host host           = (CustomT4Host) Host;
     CodeWriterTypeScript writer = (CodeWriterTypeScript) host.CodeWriter;
 
-    var model                   = host.CurrentModel;
     var entityTypes             = model.GetEntityTypes();
-    var complexTypes            = model.GetComplexTypes();
 	var entitySet               = model.EntityContainer.Properties;
 #>
 <# foreach(var es in entitySet) { #>

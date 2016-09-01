@@ -95,8 +95,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 newBase = baseString + "/" + prop.Name;
          
             }
+
             paths.Add(newBase);
-            
+            if (entity.Methods.Any()) // check for actions
+            {
+                foreach (var method in entity.Methods)
+                {
+                    paths.Add(newBase + "/" + method.Name);
+                }
+            }
+
             foreach (var eprop in entity.Properties)
             {
                 if (eprop.IsLink)
@@ -104,6 +112,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                     paths.AddRange(GetNavigationPaths(eprop, newBase, entities, depth + 1));
                 }
             }
+
+
             return paths;
         }
         
