@@ -1,7 +1,8 @@
 {
     "TemplateMapping": {
       "TypeScript": [
-          { "Template": "entity_types", "SubProcessor": "Other", "Name": "entity_types" }
+          { "Template": "entity_types", "SubProcessor": "Other", "Name": "entity_types" },
+          { "Template": "path_list", "SubProcessor": "Other", "Name": "path_list" }
       ]
     }
 }
