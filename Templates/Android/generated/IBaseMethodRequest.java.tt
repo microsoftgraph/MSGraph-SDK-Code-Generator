@@ -16,14 +16,14 @@ if (c.AsOdcmMethod().IsAction()) {
     if (c.AsOdcmMethod().ReturnType != null) {
 #>
     /**
-     * Creates the <#=ReturnType(c)#>
+     * Creates the <#=TypeName(c)#>
      *
      * @param callback The callback to be called after success or failure.
      */
     void post(final ICallback<<#=ReturnType(c)#>> callback);
 
     /**
-     * Creates the <#=ReturnType(c)#>
+     * Creates the <#=TypeName(c)#>
      *
      * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
@@ -73,16 +73,15 @@ if (c.AsOdcmMethod().IsAction()) {
     } else {
 #>
     /**
-     * Creates the <#=ReturnType(c)#>
+     * Creates the <#=TypeName(c)#>
      *
      * @param callback The callback to be called after success or failure.
      */
     void post(final ICallback<Void> callback);
 
     /**
-     * Creates the <#=ReturnType(c)#>
+     * Creates the <#=TypeName(c)#>
      *
-     * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
      */
     void post() throws ClientException;
@@ -94,34 +93,34 @@ if (c.AsOdcmMethod().IsAction()) {
         if (c.AsOdcmMethod().IsComposable) {
 #>
     /**
-     * Patches the <#=ReturnType(c)#>
+     * Patches the <#=TypeName(c)#>
      *
      * @param callback The callback to be called after success or failure
      */
-    public void patch(final ICallback<<#=ReturnType(c)#>> callback);
+    void patch(final ICallback<<#=ReturnType(c)#>> callback);
 
     /**
-     * Patches the <#=ReturnType(c)#>
+     * Patches the <#=TypeName(c)#>
      *
      * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent
      */
-     public void patch() throws ClientException;
+    <#=ReturnType(c)#> patch() throws ClientException;
 
     /**
-     * Puts the <#=ReturnType(c)#>
+     * Puts the <#=TypeName(c)#>
      *
      * @param callback The callback to be called after success or failure
      */
-    public void put(final ICallback<<#=ReturnType(c)#>> callback);
+    void put(final ICallback<<#=ReturnType(c)#>> callback);
 
     /**
-     * Puts the <#=ReturnType(c)#>
+     * Puts the <#=TypeName(c)#>
      *
      * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent
      */
-     public void put() throws ClientException;
+     <#=ReturnType(c)#> put() throws ClientException;
 <#
         }
 #>
