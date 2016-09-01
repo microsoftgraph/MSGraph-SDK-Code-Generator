@@ -35,7 +35,6 @@ foreach (var prop in model.EntityContainer.Properties)
     var propertyName = prop.Name.ToUpperFirstChar();
     if (prop.IsCollection())
     {
-        var requestCollectionBuilder = TypeCollectionRequestBuilder(prop);
 #>
 
     /**

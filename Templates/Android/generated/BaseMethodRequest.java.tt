@@ -24,7 +24,7 @@ if (c.AsOdcmMethod().IsAction()) {
     if (c.AsOdcmMethod().ReturnType != null) {
 #>
     /**
-     * Creates the <#=ReturnType(c)#>
+     * Creates the <#=TypeName(c)#>
      *
      * @param callback The callback to be called after success or failure.
      */
@@ -33,7 +33,7 @@ if (c.AsOdcmMethod().IsAction()) {
     }
 
     /**
-     * Creates the <#=ReturnType(c)#>
+     * Creates the <#=TypeName(c)#>
      *
      * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
@@ -93,7 +93,7 @@ if (c.AsOdcmMethod().IsAction()) {
     } else {
 #>
     /**
-     * Creates the <#=ReturnType(c)#>
+     * Creates the <#=TypeName(c)#>
      *
      * @param callback The callback to be called after success or failure.
      */
@@ -113,9 +113,8 @@ if (c.AsOdcmMethod().IsAction()) {
     }
 
     /**
-     * Creates the <#=ReturnType(c)#>
+     * Creates the <#=TypeName(c)#>
      *
-     * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
      */
     public void post() throws ClientException {
@@ -128,7 +127,7 @@ if (c.AsOdcmMethod().IsAction()) {
         if (c.AsOdcmMethod().IsComposable) {
 #>
     /**
-     * Patches the <#=ReturnType(c)#>
+     * Patches the <#=TypeName(c)#>
      *
      * @param callback The callback to be called after success or failure
      */
@@ -137,17 +136,17 @@ if (c.AsOdcmMethod().IsAction()) {
     }
 
     /**
-     * Patches the <#=ReturnType(c)#>
+     * Patches the <#=TypeName(c)#>
      *
      * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent
      */
-     public void patch() throws ClientException {
-        this.send(HttpMethod.PATCH, null);
+     public <#=ReturnType(c)#> patch() throws ClientException {
+        return this.send(HttpMethod.PATCH, null);
     }
 
     /**
-     * Puts the <#=ReturnType(c)#>
+     * Puts the <#=TypeName(c)#>
      *
      * @param callback The callback to be called after success or failure
      */
@@ -156,13 +155,13 @@ if (c.AsOdcmMethod().IsAction()) {
     }
 
     /**
-     * Puts the <#=ReturnType(c)#>
+     * Puts the <#=TypeName(c)#>
      *
      * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent
      */
-     public void put() throws ClientException {
-        this.send(HttpMethod.PUT, null);
+     public <#=ReturnType(c)#> put() throws ClientException {
+        return this.send(HttpMethod.PUT, null);
     }
 <#
         }

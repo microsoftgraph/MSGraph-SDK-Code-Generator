@@ -33,7 +33,6 @@ if (c.AsOdcmClass() != null)
     foreach(var prop in c.AsOdcmClass().NavigationProperties())
     {
         var propName = prop.Name.ToUpperFirstChar();
-        var propRequestBuilder = TypeRequestBuilder(prop);
         if (prop.IsCollection()) {
 #>
 
