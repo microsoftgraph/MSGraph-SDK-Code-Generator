@@ -109,7 +109,7 @@ public void AppendCreateAsyncHeader(string entityName, string lowerCaseEntityNam
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Creates the specified {0} using PUT.", entityName);
+    stringBuilder.AppendFormat("        /// Creates the specified {0} using POST.", entityName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
