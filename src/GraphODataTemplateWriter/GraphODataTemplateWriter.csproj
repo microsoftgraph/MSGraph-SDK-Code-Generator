@@ -55,6 +55,8 @@
     <Compile Include="CodeHelpers\CSharp\CodeWriterCSharp.cs" />
     <Compile Include="CodeHelpers\CSharp\TypeHelperCSharp.cs" />
     <Compile Include="CodeHelpers\Android\CodeWriterAndroid.cs" />
+    <Compile Include="CodeHelpers\GraphEndpointList\CodeWriterGraphEndpointList.cs" />
+    <Compile Include="CodeHelpers\GraphEndpointList\TypeHelperGraphEndpointList.cs" />
     <Compile Include="CodeHelpers\JavaScript\CodeWriterJavaScript.cs" />
     <Compile Include="CodeHelpers\JavaScript\TypeHelperJavaScript.cs" />
     <Compile Include="CodeHelpers\ObjC\CodeWriterObjC.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="CodeHelpers\Python\TypeHelperPython.cs" />
     <Compile Include="Extensions\FeatureExtensions.cs" />
     <Compile Include="PathWriters\CSharpPathWriter.cs" />
+    <Compile Include="PathWriters\GraphEndpointListPathWriter.cs" />
     <Compile Include="PathWriters\JavaScriptPathWriter.cs" />
     <Compile Include="PathWriters\PHPPathWriter.cs" />
     <Compile Include="PathWriters\PythonPathWriter.cs" />
@@ -93,6 +96,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".config\CSharpSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include=".config\GraphEndpointListSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include=".config\JavaScriptSettings.json">

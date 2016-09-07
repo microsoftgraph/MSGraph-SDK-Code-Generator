@@ -1,0 +1,7 @@
+{
+    "TemplateMapping": {
+      "GraphEndpointList": [
+          { "Template": "graph_endpoint_list", "SubProcessor": "Other", "Name": "graph_endpoint_list" }
+      ]
+    }
+}
