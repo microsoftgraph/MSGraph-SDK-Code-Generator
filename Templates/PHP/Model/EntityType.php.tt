@@ -92,13 +92,19 @@ class <#=entity.Name.ToCheckedCase()#>
     /**
     * Sets the <#=property.Name#>
     *
-    * @param string $val The <#=propertyName#>
+    * @param string $val The <#=property.Name#>
     *
     * @return null
     */
     public function set<#=property.Name.ToCheckedCase()#>($val)
     {
-        $this->_propDict["<#=propertyName#>"] = $val;
+<#  if (property.Type.GetTypeString() == "bool") { #>
+        $this->propDict["<#=property.Name#>"] = boolval($val);
+<#  } else if (property.Type.GetTypeString() == "int") { #>
+        $this->propDict["<#=property.Name#>"] = intval($val);
+<# } else { #>
+        $this->propDict["<#=property.Name#>"] = $val;
+<# } #>
     }
 <#
             }
@@ -132,7 +138,7 @@ class <#=entity.Name.ToCheckedCase()#>
     /**
     * Sets the <#=property.Name#>
     *
-    * @param <#=property.Type.GetTypeString()#> $val The <#=propertyName#>
+    * @param <#=property.Type.GetTypeString()#> $val The <#=property.Name#>
     *
     * @return null
     */
@@ -145,7 +151,13 @@ class <#=entity.Name.ToCheckedCase()#>
 <#
       } else {
 #>
-        $this->_propDict["<#=property.Name.ToCamelize()#>"] = $val;
+<#  if (property.Type.GetTypeString() == "bool") { #>
+        $this->propDict["<#=property.Name#>"] = boolval($val);
+<#  } else if (property.Type.GetTypeString() == "int") { #>
+        $this->propDict["<#=property.Name#>"] = intval($val);
+<# } else { #>
+        $this->propDict["<#=property.Name#>"] = $val;
+<# } #>
 <#
             }
 #>
