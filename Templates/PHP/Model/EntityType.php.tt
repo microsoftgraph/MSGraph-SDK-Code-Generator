@@ -39,7 +39,7 @@ class <#=entity.Name.ToCheckedCase()#>
     /**
     * Gets the item ID
     *
-    * @return array The item ID
+    * @return int The item ID
     */
     public function getId()
     {
@@ -116,7 +116,7 @@ class <#=entity.Name.ToCheckedCase()#>
 <#
             if (property.Type.GetTypeString() == "datetime") {
 #>
-            return datetime.strptime($this->_propDict["<#=property.Name.ToCamelize()#>"].replace("Z", ""), "%Y-%m-%dT%H:%M:%S.%f");
+            return new \DateTime($this->_propDict["<#=property.Name.ToCamelize()#>"]);
 <#
             } else {
 #>
@@ -132,7 +132,7 @@ class <#=entity.Name.ToCheckedCase()#>
     /**
     * Sets the <#=property.Name#>
     *
-    * @param string $val The <#=propertyName#>
+    * @param <#=property.Type.GetTypeString()#> $val The <#=propertyName#>
     *
     * @return null
     */
@@ -141,7 +141,7 @@ class <#=entity.Name.ToCheckedCase()#>
 <#
     if (property.Type.GetTypeString() == "datetime") {
 #>
-        $this->_propDict["<#=property.Name.ToCamelize()#>"] = $val->isoformat()+"Z";
+        $this->_propDict["<#=property.Name.ToCamelize()#>"] = $val->format(\DateTime::ISO8601) . "Z";
 <#
       } else {
 #>

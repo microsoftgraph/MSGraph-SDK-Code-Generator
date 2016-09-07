@@ -41,7 +41,7 @@ class <#=complex.Name.ToUpperFirstChar()#>
 <#
             if (property.Type.GetTypeString() == "datetime") {
 #>
-            return datetime.strptime($this->_propDict["<#=property.Name.ToCamelize()#>"].replace("Z", ""), "%Y-%m-%dT%H:%M:%S.%f");
+            return new \DateTime($this->_propDict["<#=property.Name.ToCamelize()#>"]);
 <#
             } else {
 #>
@@ -66,7 +66,7 @@ class <#=complex.Name.ToUpperFirstChar()#>
 <#
             if (property.Type.GetTypeString() == "datetime") {
 #>
-        $this->_propDict["<#=propertyName#>"] = $val->isoformat()+"Z";
+        $this->_propDict["<#=propertyName#>"] = $val->format(\DateTime::ISO8601) . "Z";
 <#
             } else {
 #>
@@ -106,7 +106,13 @@ class <#=complex.Name.ToUpperFirstChar()#>
     */
     public function set<#=property.Name.ToCheckedCase()#>($val)
     {
+<#  if (property.Type.GetTypeString() == "bool") { #>
+        $this->propDict["<#=property.Name#>"] = boolval($val);
+<#  } else if (property.Type.GetTypeString() == "int") { #>
+        $this->propDict["<#=property.Name#>"] = intval($val);
+<# } else { #>
         $this->propDict["<#=property.Name#>"] = $val;
+<# } #>
     }
 <#
         }
