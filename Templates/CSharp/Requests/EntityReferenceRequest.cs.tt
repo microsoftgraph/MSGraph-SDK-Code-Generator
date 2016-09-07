@@ -23,5 +23,9 @@ namespace <#=this.GetNamespaceName(entity)#>
 
         <#=this.GetEntityReferenceDeleteAsyncMethod(entity)#>
 <# } #>
+<# if (features.CanUpdate) { #>
+
+        <#=this.GetEntityReferencePutAsyncMethod(entity)#>
+<# } #>
     }
 }

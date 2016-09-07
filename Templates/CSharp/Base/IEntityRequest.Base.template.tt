@@ -21,6 +21,10 @@ public string GetEntityReferenceDeleteAsyncMethod(OdcmClass odcmClass)
     return this.GetDeleteAsyncMethod(string.Concat(this.GetEntityNameString(odcmClass), " reference"));
 }
 
+public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass)
+{
+    return this.GetPutAsyncMethod(string.Concat(this.GetEntityNameString(odcmClass), " reference"));
+}
 
 // -------------------------------------------------------------
 // Methods for standard entity requests
@@ -114,6 +118,47 @@ public string GetDeleteAsyncMethod(string deleteTargetString)
     this.AppendDeleteAsyncMethodHeader(deleteTargetString, stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);");
+
+    return stringBuilder.ToString();
+}
+
+public void AppendPutAsyncMethodHeader(string putTargetString, StringBuilder stringBuilder, bool includeSendParams)
+{
+    if (includeSendParams)
+    {
+        stringBuilder.Append("        ");
+    }
+
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Puts the specified {0}.", putTargetString);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+
+    if (includeSendParams)
+    {
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
+    }
+
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// <returns>The task to await.</returns>");
+}
+
+public string GetPutAsyncMethod(string putTargetString)
+{
+    var stringBuilder = new StringBuilder();
+
+    this.AppendPutAsyncMethodHeader(putTargetString, stringBuilder, false);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        System.Threading.Tasks.Task PutAsync(string id);");
+
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(Environment.NewLine);
+
+    this.AppendPutAsyncMethodHeader(putTargetString, stringBuilder, true);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken);");
 
     return stringBuilder.ToString();
 }
