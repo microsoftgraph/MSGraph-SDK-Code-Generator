@@ -116,11 +116,10 @@
     <None Include=".config\CSharpSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-<<<<<<< HEAD
     <None Include=".config\TypeScriptSettings.json">
-=======
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include=".config\GraphEndpointListSettings.json">
->>>>>>> master
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include=".config\JavaScriptSettings.json">
