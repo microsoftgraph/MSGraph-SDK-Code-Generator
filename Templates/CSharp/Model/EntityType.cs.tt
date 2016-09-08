@@ -14,7 +14,7 @@ if (entity.Base != null)
 }
 
 var attributeStringBuilder = new StringBuilder();
-attributeStringBuilder.Append("[DataContract]");
+attributeStringBuilder.Append("[JsonObject(MemberSerialization = MemberSerialization.OptIn)]");
 
 // We only want to add the derived type converter to the classes at the top of the inheritance hierarchy
 if (entity.Derived != null && entity.Base == null)
@@ -61,7 +61,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
             var propertyName = property.Name.ToCheckedCase();
             var propertyCollectionPage = property.IsReference() ? string.Concat(entityName, propertyName, "CollectionWithReferencesPage") : string.Concat(entityName, propertyName, "CollectionPage");
 
-            var attributeDefinition = string.Format("[DataMember(Name = \"{0}\", EmitDefaultValue = false, IsRequired = false)]", property.Name);
+            var attributeDefinition = string.Format("[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = \"{0}\", Required = Required.Default)]", property.Name);
 
             if (property.IsCollection())
             {
@@ -109,7 +109,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        [DataMember(Name = "@odata.type", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.type", Required = Required.Default)]
         public string ODataType { get; set; }
 
         /// <summary>
