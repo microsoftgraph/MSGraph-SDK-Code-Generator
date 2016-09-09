@@ -1,5 +1,5 @@
 ﻿{
-    "AvailableLanguages": [ "Android", "ObjC", "CSharp", "Python", "JavaScript", "GraphEndpointList" ],
+    "AvailableLanguages": [ "Android", "ObjC", "CSharp", "Python", "GraphEndpointList" ],
     "TargetLanguage": "GraphEndpointList",
     "Plugins": [ ],
     "PrimaryNamespaceName": "com",
