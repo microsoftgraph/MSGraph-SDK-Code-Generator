@@ -18,5 +18,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         <#=this.GetCollectionRequestMethodWithOptions(prop)#>
 
         <#=this.GetCollectionIndexRequestBuilder(prop)#>
+
+        <#=this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true) #>
     }
 }
