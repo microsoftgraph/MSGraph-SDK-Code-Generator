@@ -622,6 +622,7 @@ public {1} {2}{3}{4} {{";
      * The {0}.
      */
     @SerializedName(""{1}"")
+    @Expose
     public {2} {3};
 
 ";
@@ -673,6 +674,7 @@ public {1} {2}{3}{4} {{";
      * The {0}.
      */
     @SerializedName(""{1}"")
+    @Expose
     public {2} {3};
 
 ";
