@@ -5,7 +5,7 @@
     CustomT4Host host          = (CustomT4Host) Host;
     var model                  = host.CurrentModel;
     CodeWriterAndroid writer   = (CodeWriterAndroid) host.CodeWriter;
-    bool logTemplateSrc        = true;
+    bool logTemplateSrc        = false;
     var c = host.CurrentType;
 #>
 <# if (logTemplateSrc) { #>
