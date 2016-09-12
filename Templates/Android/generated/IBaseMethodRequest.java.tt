@@ -95,32 +95,36 @@ if (c.AsOdcmMethod().IsAction()) {
     /**
      * Patches the <#=TypeName(c)#>
      *
+     * @param src<#=ReturnType(c)#> The <#=ReturnType(c)#> with which to PATCH
      * @param callback The callback to be called after success or failure
      */
-    void patch(final ICallback<<#=ReturnType(c)#>> callback);
+    void patch(<#=ReturnType(c)#> src<#=ReturnType(c)#>, final ICallback<<#=ReturnType(c)#>> callback);
 
     /**
      * Patches the <#=TypeName(c)#>
      *
+     * @param src<#=ReturnType(c)#> The <#=ReturnType(c)#> with which to PATCH
      * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent
      */
-    <#=ReturnType(c)#> patch() throws ClientException;
+    <#=ReturnType(c)#> patch(<#=ReturnType(c)#> src<#=ReturnType(c)#>) throws ClientException;
 
     /**
      * Puts the <#=TypeName(c)#>
      *
+     * @param src<#=ReturnType(c)#> The <#=ReturnType(c)#> to PUT
      * @param callback The callback to be called after success or failure
      */
-    void put(final ICallback<<#=ReturnType(c)#>> callback);
+    void put(<#=ReturnType(c)#> src<#=ReturnType(c)#>, final ICallback<<#=ReturnType(c)#>> callback);
 
     /**
      * Puts the <#=TypeName(c)#>
      *
+     * @param src<#=ReturnType(c)#> The <#=ReturnType(c)#> to PUT
      * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent
      */
-     <#=ReturnType(c)#> put() throws ClientException;
+     <#=ReturnType(c)#> put(<#=ReturnType(c)#> src<#=ReturnType(c)#>) throws ClientException;
 <#
         }
 #>
