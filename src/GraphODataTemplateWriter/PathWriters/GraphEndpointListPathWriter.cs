@@ -9,7 +9,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
 
-    public class JavaScriptPathWriter : PathWriterBase
+    public class GraphEndpointListPathWriter : PathWriterBase
     {
 
         public override string WritePath(ITemplateInfo template, String baseFileName)
