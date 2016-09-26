@@ -30,10 +30,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         {
             get { return "\n"; }
         }
-        public String UpperCaseFirstChar(String s)
-        {
-            return char.ToUpper(s[0]) + s.Substring(1);
-        }
 
     }
 

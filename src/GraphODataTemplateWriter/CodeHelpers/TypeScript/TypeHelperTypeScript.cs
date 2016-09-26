@@ -4,7 +4,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 {
     using Vipr.Core.CodeModel;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     public static class TypeHelperTypeScript
@@ -12,25 +11,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
         // enum value string, ex: "low" | "normal" | "high"
         public static String GetEnumValues(this OdcmEnum _enum) {
-            String enumVals = null;
-            foreach (var member in _enum.Members)
-            {
-                if (enumVals == null)
-                {
-                    enumVals = '"' + member.Name + '"';
-                } else
-                {
-                    enumVals += " | " + '"' + member.Name + '"';
-                }
-            }
-
-            return enumVals;
+            return _enum.Members.Select(m => "\"" + m.Name + "\"").Aggregate((cur, next) =>  cur + " | " + next);
         }
 
 
         public static string GetTypeString(this OdcmProperty prop)
         {
-            string typeStr = UpperCaseFirstChar(prop.Type.Name);
+            string typeStr = prop.Type.Name.UpperCaseFirstChar();
 
             switch (typeStr)
             {
@@ -62,7 +49,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             return (prop.IsCollection) ? "[" + typeStr + "]" : typeStr;
             
         }
-        public static String UpperCaseFirstChar(String s)
+        public static String UpperCaseFirstChar(this String s)
         {
             return char.ToUpper(s[0]) + s.Substring(1);
         }

@@ -45,9 +45,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
 
         private string CreatePathFromNamespace(string @namespace)
         {
-            var splittedPaths = @namespace.Split('.');
+            var splitPaths = @namespace.Split('.');
 
-            var destinationPath = splittedPaths.Aggregate(string.Empty, (current, path) =>
+            var destinationPath = splitPaths.Aggregate(string.Empty, (current, path) =>
                                   current + string.Format("{0}{1}", path, Path.DirectorySeparatorChar));
             return destinationPath;
         }

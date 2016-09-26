@@ -18,7 +18,7 @@
 
 
 <# foreach(var enumType in enumTypes) { #>
-export type <#= writer.UpperCaseFirstChar(enumType.Name) #> = <#= enumType.GetEnumValues() #>
+export type <#= enumType.Name.UpperCaseFirstChar() #> = <#= enumType.GetEnumValues() #>
 <# } #>
 <#
   foreach(var entityType in entityTypes)
@@ -26,7 +26,7 @@ export type <#= writer.UpperCaseFirstChar(enumType.Name) #> = <#= enumType.GetEn
         var methods = entityType.Methods;
 #>
 
-export interface <#= writer.UpperCaseFirstChar(entityType.Name) #><# if (entityType.Base != null) { #> extends <#=  writer.UpperCaseFirstChar(entityType.Base.Name) #><# }#> {
+export interface <#= entityType.Name.UpperCaseFirstChar() #><# if (entityType.Base != null) { #> extends <#=  entityType.Base.Name.UpperCaseFirstChar() #><# }#> {
 <# foreach(var prop in entityType.Properties.ToList()) { #>
     <#=  prop.Name #>?: <#= prop.GetTypeString() #>
 <# } #>
@@ -39,7 +39,7 @@ export interface <#= writer.UpperCaseFirstChar(entityType.Name) #><# if (entityT
   {
 #>
 
-export interface <#= writer.UpperCaseFirstChar(complexType.Name)#> {
+export interface <#= complexType.Name.UpperCaseFirstChar()#> {
 <# foreach(var prop in complexType.Properties) { #>
       <#= prop.Name #>?: <#= prop.GetTypeString() #>
 <# } #>
