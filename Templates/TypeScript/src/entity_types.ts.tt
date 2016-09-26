@@ -16,9 +16,9 @@
 
 <#= writer.WriteHeader() #>
 
-declare module MicrosoftGraph {
+
 <# foreach(var enumType in enumTypes) { #>
-  type <#= writer.UpperCaseFirstChar(enumType.Name) #> = <#= enumType.GetEnumValues() #>
+export type <#= writer.UpperCaseFirstChar(enumType.Name) #> = <#= enumType.GetEnumValues() #>
 <# } #>
 <#
   foreach(var entityType in entityTypes)
@@ -26,11 +26,11 @@ declare module MicrosoftGraph {
         var methods = entityType.Methods;
 #>
 
-  interface <#= writer.UpperCaseFirstChar(entityType.Name) #><# if (entityType.Base != null) { #> extends <#=  writer.UpperCaseFirstChar(entityType.Base.Name) #><# }#> {
+export interface <#= writer.UpperCaseFirstChar(entityType.Name) #><# if (entityType.Base != null) { #> extends <#=  writer.UpperCaseFirstChar(entityType.Base.Name) #><# }#> {
 <# foreach(var prop in entityType.Properties.ToList()) { #>
     <#=  prop.Name #>?: <#= prop.GetTypeString() #>
 <# } #>
-  }
+}
 <#
     }
 #>
@@ -39,14 +39,9 @@ declare module MicrosoftGraph {
   {
 #>
 
-  interface <#= writer.UpperCaseFirstChar(complexType.Name)#> {
+export interface <#= writer.UpperCaseFirstChar(complexType.Name)#> {
 <# foreach(var prop in complexType.Properties) { #>
       <#= prop.Name #>?: <#= prop.GetTypeString() #>
 <# } #>
-  }
+}
 <# } #>
-}
-
-declare module "MicrosoftGraph" {
-    export = MicrosoftGraph;
-}

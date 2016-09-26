@@ -246,9 +246,6 @@
     <Content Include="Python\Request\EntityRequestBuilder.py.tt" />
     <Content Include="Python\Request\Method.py.tt" />
     <Content Include="Python\Request\Stream.py.tt" />
-    <Content Include="TypeScript\src\path_list.txt.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
