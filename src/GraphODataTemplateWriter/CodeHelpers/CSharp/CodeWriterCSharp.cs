@@ -3,8 +3,6 @@
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Vipr.Core.CodeModel;
 
     public class CodeWriterCSharp : CodeWriterBase
@@ -27,11 +25,5 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         }
 
         public string jsonContentType = "application/json";
-
-
-        public static string GetPaths(OdcmProperty prop)
-        {
-            return "entities.First().Name";
-        }
     }
 }
