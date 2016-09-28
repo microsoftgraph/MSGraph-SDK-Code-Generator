@@ -5,6 +5,12 @@
 
 var prop = host.CurrentType.AsOdcmProperty();
 
+    var collectionRequestBuilderConstructor = this.GetCollectionRequestBuilderConstructor(prop);
+    var collectionRequestMethod = this.GetCollectionRequestMethod(prop);
+    var collectionRequestMethodWithOptions = this.GetCollectionRequestMethodWithOptions(prop);
+    var collectionIndexRequestBuilder = this.GetCollectionIndexRequestBuilder(prop);
+    var methodProperties = this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true);
+
 #>
 namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
@@ -20,5 +26,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         <#=this.GetCollectionRequestMethodWithOptions(prop)#>
 
         <#=this.GetCollectionIndexRequestBuilder(prop)#>
+
+        <#=this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true) #>
     }
 }

@@ -5,11 +5,17 @@
 
 var method = host.CurrentType.AsOdcmMethod();
 var entityName = method.Class.Name.ToCheckedCase();
-var httpMethod = (method.IsAction()) ? "POST" : "GET";
+
+var isFunction = method.IsFunction;
+var isAction = !isFunction;
+var isComposable = method.IsComposable;
+
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
 var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString().ToCheckedCase();
+var returnEntityParameter = string.Empty;
+if (returnEntityType != null) {returnEntityParameter = returnEntityType.ToLower();}
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
 
 var isCollection = method.IsCollection;
@@ -22,11 +28,8 @@ var methodReturnType = sendAsyncReturnType == null
     ? "System.Threading.Tasks.Task"
     : "System.Threading.Tasks.Task<" + sendAsyncReturnType + ">";
 
-var methodReturnTag = sendAsyncReturnType == null
-    ? "The task to await."
-    : string.Concat("The", sendAsyncReturnType);
-
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
+bool includeRequestBody = hasParameters && isAction;
 bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
 
 var features = host.CurrentType.GetFeatures();
@@ -47,7 +50,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     public partial interface I<#=requestType#> : IBaseRequest
     {
 <#
-    if (hasParameters && method.IsAction())
+    if (includeRequestBody)
     {
 #>
 
@@ -72,20 +75,186 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         sendParameterHeadersForOverload = "/// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>";
         sendOverloadParameters = "CancellationToken cancellationToken";
     }
+#>
 
+<# 
+    if(isAction) // POST
+    {
 #>
 
         /// <summary>
-        /// Issues the <#=httpMethod#> request.
+        /// Issues the POST request.
         /// </summary>
-        <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async();
+        <#=methodReturnType#> PostAsync();
 
         /// <summary>
-        /// Issues the <#=httpMethod#> request.
+        /// Issues the POST request.
         /// </summary>
-        /// <#=sendParameterHeadersForOverload#>
-        /// <returns><#=methodReturnTag#></returns>
-        <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(<#=sendOverloadParameters#>);
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+<#
+    if (returnsStream)
+    {
+#>
+        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+<#
+    }
+#>
+        /// <returns>The task to await for async call.</returns>
+        <#=methodReturnType#> PostAsync(
+<#
+    if (returnsStream)
+    {
+#>
+            CancellationToken cancellationToken,
+            HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead);
+<#
+    }
+    else
+    {
+#>
+            CancellationToken cancellationToken);
+<#
+    }
+#>
+        
+<#  } // End POST
+
+#>
+
+<# 
+    if(method.IsFunction) // GET for a OData function.
+    {
+#>
+        /// <summary>
+        /// Issues the GET request.
+        /// </summary>
+        <#=methodReturnType#> GetAsync();
+        
+        /// <summary>
+        /// Issues the GET request.
+        /// </summary>
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+<#
+    if (returnsStream)
+    {
+#>
+        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+<#
+    }
+#>
+        /// <returns>The task to await for async call.</returns>
+        <#=methodReturnType#> GetAsync(
+<#
+    if (returnsStream)
+    {
+#>
+            CancellationToken cancellationToken,
+            HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead);
+<#
+    }
+    else
+    {
+#>
+            CancellationToken cancellationToken);
+<#
+    }
+#>
+  
+<#  } // End GET
+ #>
+
+<# 
+    if(method.IsFunction && method.IsComposable) // PATCH for a OData function.
+    {
+#>
+
+        /// <summary>
+        /// Issues the PATCH request.
+        /// </summary>
+        /// <param name=<#=returnEntityParameter#>>The <#=returnEntityType#> object set with the properties to update.</param>
+        /// <returns>The task to await for async call.</returns>
+        <#=methodReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter#>);
+
+        /// <summary>
+        /// Issues the PATCH request.
+        /// </summary>
+        /// <param name=<#=returnEntityParameter#>>The <#=returnEntityType#> object set with the properties to update.</param>
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+<#
+    if (returnsStream)
+    {
+#>
+        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+<#
+    }
+#>
+        /// <returns>The task to await for async call.</returns>
+        <#=methodReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter#>, 
+<#
+    if (returnsStream)
+    {
+#>
+            CancellationToken cancellationToken,
+            HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead);
+<#
+    }
+    else
+    {
+#>
+            CancellationToken cancellationToken);
+<#
+    }
+#>
+          
+<#  } // End PATCH for a OData function.
+#>
+<# 
+    if(method.IsFunction && method.IsComposable) // PUT for a OData function.
+    {
+#>
+
+        /// <summary>
+        /// Issues the PUT request.
+        /// </summary>
+        /// <param name=<#=returnEntityParameter#>>The <#=returnEntityType#> object to update.</param>
+        /// <returns>The task to await for async call.</returns>
+        <#=methodReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter#>);
+
+        /// <summary>
+        /// Issues the PUT request.
+        /// </summary>
+        /// <param name=<#=returnEntityParameter#>>The <#=returnEntityType#> object to update.</param>
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+<#
+    if (returnsStream)
+    {
+#>
+        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+<#
+    }
+#>
+        /// <returns>The task to await for async call.</returns>
+        <#=methodReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter#>, 
+<#
+    if (returnsStream)
+    {
+#>
+            CancellationToken cancellationToken,
+            HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead);
+<#
+    }
+    else
+    {
+#>
+            CancellationToken cancellationToken);
+<#
+    }
+#>
+
+<#  } // End PUT for a OData function.
+#>
+
+
 <#
     if (!returnsStream)
     {

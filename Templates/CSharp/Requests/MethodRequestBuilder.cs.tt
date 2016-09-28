@@ -10,7 +10,7 @@ var requestType = entityName + methodName + "Request";
 var requestBuilderType = requestType + "Builder";
 
 var isPost = method.IsAction() && method.Parameters != null && method.Parameters.Any();
-var methodType = isPost ? "Post" : "Get";
+var methodType = method.IsFunction ? "Function" : "Action";
 
 var overloads = new List<OdcmMethod>();
 overloads.Add(method);

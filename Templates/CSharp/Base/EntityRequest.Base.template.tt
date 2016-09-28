@@ -100,6 +100,71 @@ public string GetEntityDeleteAsyncMethod(OdcmClass odcmClass)
     return this.GetDeleteAsyncMethod(entityName, entityName);
 }
 
+public void AppendPutRefenceAsyncHeader(string putTargetString, StringBuilder stringBuilder, bool includeSendParams)
+{
+    if (includeSendParams)
+    {
+        stringBuilder.AppendFormat("        ");
+    }
+
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Puts the specified {0} reference.", putTargetString);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <param name=\"id\">The {0} reference to update.</param>", putTargetString);
+
+    if (includeSendParams)
+    {
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
+    }
+
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// <returns>The task to await.</returns>");
+}
+
+public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass)
+{
+    var entityName = this.GetEntityNameString(odcmClass);
+
+    var stringBuilder = new StringBuilder();
+
+    this.AppendPutRefenceAsyncHeader(entityName, stringBuilder, false);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        public System.Threading.Tasks.Task PutAsync(string id)");
+    stringBuilder.Append(@"
+        {
+            return this.PutAsync(id, CancellationToken.None);
+        }");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(Environment.NewLine);
+
+    this.AppendPutRefenceAsyncHeader(entityName, stringBuilder, true);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        public async System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken)");
+    stringBuilder.Append(@"
+        {
+            var baseUrl = this.Client.BaseUrl;");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(@"            var objectUri = string.Format(@""{0}/users/{1}"", baseUrl, id);");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(@"            var payload = new Newtonsoft.Json.Linq.JObject(");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(@"                            new Newtonsoft.Json.Linq.JProperty(""@odata.id"", objectUri));");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(@"            this.Method = ""PUT"";");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(@"            this.ContentType = ""application/json"";");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            await this.SendAsync(payload.ToString(), cancellationToken).ConfigureAwait(false);");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        }");
+
+    return stringBuilder.ToString();
+}
+
 public void AppendCreateAsyncHeader(string entityName, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams)
 {
     if (includeSendParams)
@@ -109,7 +174,7 @@ public void AppendCreateAsyncHeader(string entityName, string lowerCaseEntityNam
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Creates the specified {0} using PUT.", entityName);
+    stringBuilder.AppendFormat("        /// Creates the specified {0} using POST.", entityName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);

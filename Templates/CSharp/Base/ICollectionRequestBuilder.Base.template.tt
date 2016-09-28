@@ -27,7 +27,18 @@ public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
     var propTypeName = this.GetPropertyTypeName(odcmProperty);
     var entityRequestBuilder = this.GetPropertyTypeRequestBuilderName(odcmProperty);
 
-    return this.GetIndexRequestBuilder(propTypeName, entityRequestBuilder);
+    // In case there is an action or function with the name of item. This is to avoid CS0102
+    // https://msdn.microsoft.com/en-US/library/26f2y168%28v=VS.90%29.aspx
+    var allMethods = new List<OdcmMethod>();
+    foreach (var method in odcmProperty.Projection.Type.AsOdcmClass().Methods)
+    {
+        allMethods.Add(method);
+        allMethods.AddRange(method.Overloads);
+    }
+    
+    var hasItemMethod = allMethods.Exists(x => x.Name.ToLower().Equals("item")) ? true : false;   
+
+    return this.GetIndexRequestBuilder(propTypeName, entityRequestBuilder, hasItemMethod);
 }
 
 
@@ -73,7 +84,7 @@ public string GetCollectionWithReferencesRequestMethodWithOptions(OdcmProperty o
 // Indexer properties
 // -------------------------------------------------------------
 // Creates an indexer for the specified property name and requestBuilderTypeName
-public string GetIndexRequestBuilder(string propertyName, string requestBuilderTypeName)
+public string GetIndexRequestBuilder(string propertyName, string requestBuilderTypeName, bool hasItemMethod)
 {
     var stringBuilder = new StringBuilder();
 
@@ -87,6 +98,11 @@ public string GetIndexRequestBuilder(string propertyName, string requestBuilderT
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
     stringBuilder.Append(Environment.NewLine);
+    if (hasItemMethod) 
+    {
+        stringBuilder.AppendFormat("        [System.Runtime.CompilerServices.IndexerName(\"ThisItem\")]"); // Special case for methods named Item. 
+        stringBuilder.Append(Environment.NewLine);
+    }
     stringBuilder.AppendFormat("        I{0} this[string id] {{ get; }}", requestBuilderTypeName);
 
     return stringBuilder.ToString();
@@ -125,7 +141,7 @@ public string GetCollectionWithReferencesIndexRequestBuilder(OdcmProperty odcmPr
     var propTypeName = this.GetPropertyTypeName(odcmProperty);
     var entityRequestBuilder = this.GetPropertyTypeWithReferenceRequestBuilderName(odcmProperty);
 
-    return this.GetIndexRequestBuilder(propTypeName, entityRequestBuilder);
+    return this.GetIndexRequestBuilder(propTypeName, entityRequestBuilder, false);
 }
 
 #>
