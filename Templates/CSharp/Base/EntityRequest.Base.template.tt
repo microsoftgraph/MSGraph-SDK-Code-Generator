@@ -486,7 +486,7 @@ public string GetExpandMethod(string requestType)
 public string GetEntityExpandMethods(OdcmClass odcmClass)
 {
     string entityName = this.GetEntityNameString(odcmClass);
-    return this.GetExpandMethod(this.GetRequestString(this.GetEntityNameString(odcmClass))) +
+    return this.GetExpandMethod(this.GetRequestString(entityName)) +
     Environment.NewLine + Environment.NewLine + "        " +
     this.GetExpandExpressionMethod(this.GetRequestString(entityName), entityName);
 }
@@ -494,7 +494,7 @@ public string GetEntityExpandMethods(OdcmClass odcmClass)
 public string GetEntitySelectMethods(OdcmClass odcmClass)
 {
     string entityName = this.GetEntityNameString(odcmClass);
-    return this.GetSelectMethod(this.GetRequestString(this.GetEntityNameString(odcmClass))) +
+    return this.GetSelectMethod(this.GetRequestString(entityName)) +
     Environment.NewLine + Environment.NewLine + "        " +
     this.GetSelectExpressionMethod(this.GetRequestString(entityName), entityName);
 }
@@ -502,16 +502,18 @@ public string GetEntitySelectMethods(OdcmClass odcmClass)
 // Entity with references
 public string GetEntityWithReferenceExpandMethods(OdcmClass odcmClass)
 {
-    return this.GetExpandMethod(this.GetEntityWithReferenceRequestName(odcmClass)) +
+	string entityWithReferenceRequestName = this.GetEntityWithReferenceRequestName(odcmClass);
+    return this.GetExpandMethod(entityWithReferenceRequestName) +
     Environment.NewLine + Environment.NewLine + "        " +
-    this.GetExpandExpressionMethod(this.GetEntityWithReferenceRequestName(odcmClass), this.GetEntityNameString(odcmClass));
+    this.GetExpandExpressionMethod(entityWithReferenceRequestName, this.GetEntityNameString(odcmClass));
 }
 
 public string GetEntityWithReferenceSelectMethods(OdcmClass odcmClass)
 {
+	string entityWithReferenceRequestName = this.GetEntityWithReferenceRequestName(odcmClass);
     return this.GetSelectMethod(this.GetEntityWithReferenceRequestName(odcmClass)) +
     Environment.NewLine + Environment.NewLine + "        " +
-    this.GetSelectExpressionMethod(this.GetEntityWithReferenceRequestName(odcmClass), this.GetEntityNameString(odcmClass));
+    this.GetSelectExpressionMethod(entityWithReferenceRequestName, this.GetEntityNameString(odcmClass));
 }
 
 #>
