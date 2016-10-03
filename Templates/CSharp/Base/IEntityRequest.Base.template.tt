@@ -349,7 +349,7 @@ public string GetEntityWithReferenceExpandMethods(OdcmClass odcmClass)
     string entityWithReferenceRequestName = this.GetEntityWithReferenceRequestName(odcmClass);
     return this.GetExpandMethod(entityWithReferenceRequestName) +
     Environment.NewLine + Environment.NewLine + "        " +
-    this.GetExpandExpressionMethod(entityWithReferenceRequestName, this.GetEntityNameString(odcmClass)););
+    this.GetExpandExpressionMethod(entityWithReferenceRequestName, this.GetEntityNameString(odcmClass));
 }
 
 public string GetEntityWithReferenceSelectMethods(OdcmClass odcmClass)
@@ -357,7 +357,7 @@ public string GetEntityWithReferenceSelectMethods(OdcmClass odcmClass)
     string entityWithReferenceRequestName = this.GetEntityWithReferenceRequestName(odcmClass);
     return this.GetSelectMethod(entityWithReferenceRequestName) +
     Environment.NewLine + Environment.NewLine + "        " +
-    this.GetSelectExpressionMethod(entityWithReferenceRequestName, this.GetEntityNameString(odcmClass)););}
+    this.GetSelectExpressionMethod(entityWithReferenceRequestName, this.GetEntityNameString(odcmClass));
 }
 
 #>
