@@ -3,7 +3,6 @@
 <#@ include file="BaseModel.template.tt"#>
 <#@ output extension="\\" #>
 <#host.TemplateName = ITypeRequestBuilder(c);#>
-
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 

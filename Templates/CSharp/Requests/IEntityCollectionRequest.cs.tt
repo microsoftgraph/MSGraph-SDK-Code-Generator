@@ -9,6 +9,7 @@ var collectionRequest = this.GetPropertyCollectionRequestName(prop);
 var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionResponse");
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
 
+var features = host.CurrentType.GetFeatures();
 #>
 
 namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
@@ -27,15 +28,16 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<I<#=collectionPage#>> GetAsync();
-        
+        System.Threading.Tasks.Task<I<#=collectionPage#>> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<I<#=collectionPage#>> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<I<#=collectionPage#>> GetAsync(CancellationToken cancellationToken);
 
+<# if (features.CanExpand) { #>
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -43,6 +45,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> Expand(string value);
 
+<# } #>
+<# if (features.CanSelect) { #>
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -57,6 +61,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> Select(string value);
 
+<# } #>
+<# if (features.CanUseTop) { #>
         /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
@@ -70,7 +76,9 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> Top(int value);
-        
+
+<# } #>
+<# if (features.CanFilter) { #>
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
@@ -78,6 +86,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> Filter(string value);
 
+<# } #>
+<# if (features.CanSkip) { #>
         /// <summary>
         /// Adds the specified skip value to the request.
         /// </summary>
@@ -85,11 +95,14 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> Skip(int value);
 
+<# } #>
+<# if (features.CanSort) { #>
         /// <summary>
         /// Adds the specified orderby value to the request.
         /// </summary>
         /// <param name="value">The orderby value.</param>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> OrderBy(string value);
+<# } #>
     }
 }

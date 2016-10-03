@@ -8,7 +8,7 @@ var innerEntityType = innerEntity.Name.ToCheckedCase();
 var collectionRequest = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionRequest");
 var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionResponse");
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
-
+var features = host.CurrentType.GetFeatures();
 #>
 
 namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
@@ -23,22 +23,22 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     <#=this.GetCollectionClassDefinition(prop)#>
     {
         <#=GetCollectionRequestConstructor(prop)#>
-        <#=GetPostAsyncMethod(prop)#>  
+        <#=GetPostAsyncMethod(prop)#>
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public Task<I<#=collectionPage#>> GetAsync()
+        public System.Threading.Tasks.Task<I<#=collectionPage#>> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async Task<I<#=collectionPage#>> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<I<#=collectionPage#>> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var response = await this.SendAsync<<#=collectionResponse#>>(null, cancellationToken).ConfigureAwait(false);
@@ -57,7 +57,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
                             this.Client,
                             nextPageLinkString);
                     }
-                    
+
                     // Copy the additional data collection to the page itself so that information is not lost
                     response.Value.AdditionalData = response.AdditionalData;
                 }
@@ -68,6 +68,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return null;
         }
 
+<# if (features.CanExpand) { #>
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -79,6 +80,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanSelect) { #>
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -114,6 +117,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanUseTop) { #>
         /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
@@ -148,7 +153,9 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-        
+
+<# } #>
+<# if (features.CanFilter) { #>
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
@@ -160,6 +167,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanSkip) { #>
         /// <summary>
         /// Adds the specified skip value to the request.
         /// </summary>
@@ -171,6 +180,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanSort) { #>
         /// <summary>
         /// Adds the specified orderby value to the request.
         /// </summary>
@@ -181,5 +192,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             this.QueryOptions.Add(new QueryOption("$orderby", value));
             return this;
         }
+<# } #>
     }
 }

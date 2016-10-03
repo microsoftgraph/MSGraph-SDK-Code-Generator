@@ -6,6 +6,8 @@
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = this.GetEntityNameString(entity);
 
+var features = host.CurrentType.GetFeatures();
+
 #>
 
 namespace <#=this.GetNamespaceName(entity)#>
@@ -22,42 +24,70 @@ namespace <#=this.GetNamespaceName(entity)#>
     {
         <#=this.GetEntityRequestConstructor(entity)#>
 
-        <#=this.GetEntityCreateAsyncMethod(entity)#>
+<#
+    if (features.CanCreate)
+    {
+        Write("        ");
+        Write(this.GetEntityCreateAsyncMethod(entity));
+        Write("\n\n");
+    }
 
-        <#=this.GetEntityDeleteAsyncMethod(entity)#>
+    if (features.CanDelete)
+    {
+        Write("        ");
+        Write(this.GetEntityDeleteAsyncMethod(entity));
+        Write("\n\n");
+    }
 
-        <#=this.GetEntityGetAsyncMethod(entity)#>
+    Write("        ");
+    Write(this.GetEntityGetAsyncMethod(entity));
+    Write("\n\n");
 
-        <#=this.GetEntityUpdateAsyncMethod(entity)#>
+    if (features.CanUpdate)
+    {
+        Write("        ");
+        Write(this.GetEntityUpdateAsyncMethod(entity));
+        Write("\n\n");
+    }
 
-        <#=this.GetEntityExpandMethods(entity)#>
+    if (features.CanExpand)
+    {
+        Write("        ");
+        Write(this.GetEntityExpandMethod(entity));
+        Write("\n\n");
+    }
 
-        <#=this.GetEntitySelectMethods(entity)#>
-
+    if (features.CanSelect)
+    {
+        Write("        ");
+        Write(this.GetEntitySelectMethod(entity));
+        Write("\n\n");
+    }
+#>
         /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
         /// </summary>
         /// <param name="<#=entity.Name#>ToInitialize">The <see cref="<#=entityName#>"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(<#=entityName#> <#=entity.Name#>ToInitialize)
         {
-        <#
+<#
         var navigationCollectionProperties = entity.Properties.Where(property => property.IsCollection() && property.IsNavigation());
 
         if (navigationCollectionProperties.Any())
         {
-        #>
+#>
 
             if (<#=entity.Name#>ToInitialize != null && <#=entity.Name#>ToInitialize.AdditionalData != null)
             {
-        <#
+<#
             foreach(var property in navigationCollectionProperties)
             {
                 var propertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
                 var propertyType = property.GetTypeString();
-                
+
                 if (propertyType.IsComplex())
                 {
-        #>
+#>
 
                 if (<#=entity.Name#>ToInitialize.<#=propertyName#> != null && <#=entity.Name#>ToInitialize.<#=propertyName#>.CurrentPage != null)
                 {
@@ -74,16 +104,16 @@ namespace <#=this.GetNamespaceName(entity)#>
                             nextPageLinkString);
                     }
                 }
-        <#
+<#
                 }
             }
-        #>
+#>
 
             }
 
-        <#
+<#
         }
-        #>
+#>
 
         }
     }

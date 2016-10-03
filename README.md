@@ -7,17 +7,16 @@ Source code writers for [VIPR][vipr-source-repo] utilizing T4 templates. The Gra
 Currently the following target languages are supported by this writer:
 - Android
 - CSharp
-- JavaScript
 - Objective-C
 - Python
+- TypeScript
 
 # Contents
-- [Prerequisites](#Prerequisites)
-- [Getting started](#Getting-started)
-- [Using Vipr with this writer](#Using-Vipr-with-this-Writer)
-- [Using generated code](#Using-generated-code)
-- [Contributing](#Contributing)
-- [License](#License)
+- [Prerequisites](#prerequisites)
+- [Getting started](#getting-started)
+- [Using Vipr with this writer](#using-vipr-with-this-writer)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Prerequisites
 - [Visual Studio SDK](https://www.microsoft.com/en-us/download/details.aspx?id=40758)
@@ -36,16 +35,16 @@ For more information on submodules read [this chapter](http://git-scm.com/book/e
 ## Using Vipr with this Writer
 
 1. Build the solution in Visual Studio.
-2. Go to the `src\T4TemplateWriter\bin\debug` folder to find all compiled components.
+2. Go to the `src\GraphODataTemplateWriter\bin\debug` folder to find all compiled components.
 3. In that folder, modify `.config\TemplateWriterSettings.json` to specify your template mapping see [Template Writer Settings](##Template-Writer-Settings) for more details.
-4. Open a command prompt as administrator in the same folder and run `Vipr.exe <path-or-url-to-metadata> --writer="Graph.ODataTemplateWriter"`
+4. Open a command prompt as administrator in the same folder and run `Vipr.exe <path-or-url-to-metadata> --writer="GraphODataTemplateWriter"`.  An example metadata file can be found in the root of this project.
 
 By default, output source code will be put in a folder named "output" next to the Vipr executable.
 
 ## Template Writer Settings
 ### Available Languages
 
-There are four languages to choose from at the moment.  Java, ObjC, CSharp, and Python.  Specify which language you want to generate in the `TargetLanguage` setting.
+There are five languages to choose from at the moment.  Java, ObjC, CSharp, TypeScript and Python.  Specify which language you want to generate in the `TargetLanguage` setting.
 
 ### Templates
 You must specify a template directory under the `TemplatesDirectory` Settings.  The directory can be a full path or relative to the running directory.  The directory must contain a sub directory for each platform you want to generate code for. See the Templates directory for an example.

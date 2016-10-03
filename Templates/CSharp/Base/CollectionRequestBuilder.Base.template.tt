@@ -82,7 +82,7 @@ public string GetCollectionReferencesRequestBuilder(OdcmProperty odcmProperty)
     {
         var stringBuilder = new StringBuilder();
         var entityReferencesRequestBuilder = this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty);
-        
+
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <summary>");
         stringBuilder.Append(Environment.NewLine);
@@ -108,7 +108,7 @@ public string GetCollectionReferencesRequestBuilder(OdcmProperty odcmProperty)
 
         return stringBuilder.ToString();
     }
-    
+
     return string.Empty;
 }
 
@@ -119,10 +119,24 @@ public string GetCollectionReferencesRequestBuilder(OdcmProperty odcmProperty)
 // Creates the indexer property definition for a standard navigation collection
 public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
 {
+    // In case there is an action or function with the name of item. This is to avoid CS0102
+    // https://msdn.microsoft.com/en-US/library/26f2y168%28v=VS.90%29.aspx
+    var allMethods = new List<OdcmMethod>();
+    foreach (var method in odcmProperty.Projection.Type.AsOdcmClass().Methods)
+    {
+        allMethods.Add(method);
+        allMethods.AddRange(method.Overloads);
+    }
+    var renameItem = "";
+    if (allMethods.Exists(x => x.Name.ToLower().Equals("item")))
+    {
+            renameItem = "\n        [System.Runtime.CompilerServices.IndexerName(\"ThisItem\")]";        
+    }
+
     var stringBuilder = new StringBuilder();
     var propTypeName = string.Concat(this.GetEntityNameString(odcmProperty.Class), this.GetPropertyTypeName(odcmProperty));
     var entityRequestBuilder = this.GetPropertyTypeRequestBuilderName(odcmProperty);
-        
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the specified {1}.", entityRequestBuilder, propTypeName);
@@ -132,6 +146,7 @@ public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
     stringBuilder.AppendFormat("        /// <param name=\"id\">The ID for the {0}.</param>", propTypeName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityRequestBuilder);
+    stringBuilder.Append(renameItem);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        public I{0} this[string id]", entityRequestBuilder);
     stringBuilder.Append(Environment.NewLine);
@@ -140,12 +155,12 @@ public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
             get
             {
 ");
-        
+
     stringBuilder.AppendFormat("                return new {0}(this.AppendSegmentToRequestUrl(id), this.Client);", entityRequestBuilder);
     stringBuilder.Append(@"
             }
         }");
-        
+
     return stringBuilder.ToString();
 }
 
@@ -156,7 +171,7 @@ public string GetCollectionWithReferencesIndexRequestBuilder(OdcmProperty odcmPr
 
     var propTypeName = string.Concat(this.GetEntityNameString(odcmProperty.Class), this.GetPropertyTypeName(odcmProperty));
     var entityRequestBuilder = this.GetPropertyTypeWithReferenceRequestBuilderName(odcmProperty);
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the specified {1}.", entityRequestBuilder, propTypeName);
@@ -179,7 +194,7 @@ public string GetCollectionWithReferencesIndexRequestBuilder(OdcmProperty odcmPr
             }
         }
 ");
-    
+
     return stringBuilder.ToString();
 }
 

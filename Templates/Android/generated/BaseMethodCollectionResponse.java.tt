@@ -13,12 +13,15 @@ import com.google.gson.annotations.*;
 <#=CreateClassDef(BaseTypeCollectionResponse(c), null, "IJsonBackedObject")#>
 
     @SerializedName("value")
-    public List<<#=ClassTypeName(c)#>> value;
+    public List<<#=OdcmMethodReturnType(c as OdcmMethod)#>> value;
 
     @SerializedName("@odata.nextLink")
     public String nextLink;
 
 <#=CreateRawJsonObject()#>
-<#=UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
+<# if ( ! ((c as OdcmMethod).ReturnType is OdcmPrimitiveType) ) { #>
+<#=    UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
+<# } else { #>
+    }
+<# } #>
 }
-	

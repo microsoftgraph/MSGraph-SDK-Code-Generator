@@ -33,12 +33,9 @@
      * @param client The service client
      * @param options The options for this request
      */
-    public <#=baseTypeRequest#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(c)#>) {
+    public <#=baseTypeRequest#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
         super(requestUrl, client, options, <#=returnType#>.class);
         mBody = new <#=TypeBody(c)#>();
-<# foreach (var p in c.AsOdcmMethod().Parameters) { #>
-        mBody.<#=ParamName(p)#> = <#=ParamName(p)#>;
-<# } #>
     }
 
     public void post(final ICallback<<#=returnType#>> callback) {
@@ -49,6 +46,7 @@
         return send(HttpMethod.POST, mBody);
     }
 
+<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -56,10 +54,12 @@
      * @return The updated request
      */
     public <#=iTypeRequest#> select(final String value) {
-        getQueryOptions().add(new QueryOption("select", value));
+        getQueryOptions().add(new QueryOption("$select", value));
         return (<#=typeRequest#>)this;
     }
 
+<# } #>
+<# if (c.GetFeatures().CanUseTop) { #>
     /**
      * Sets the top value for the request
      *
@@ -67,10 +67,12 @@
      * @return The updated request
      */
     public <#=iTypeRequest#> top(final int value) {
-        getQueryOptions().add(new QueryOption("top", value+""));
+        getQueryOptions().add(new QueryOption("$top", value+""));
         return (<#=typeRequest#>)this;
     }
 
+<# } #>
+<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -78,7 +80,9 @@
      * @return The updated request
      */
     public <#=iTypeRequest#> expand(final String value) {
-        getQueryOptions().add(new QueryOption("expand", value));
+        getQueryOptions().add(new QueryOption("$expand", value));
         return (<#=typeRequest#>)this;
     }
+
+<# } #>
 }

@@ -7,7 +7,7 @@ public string GetEntityInterfaceDefinition(OdcmClass entity)
 {
     string typeDeclaration = null;
     var className = this.GetEntityRequestBuilderName(entity);
-    
+
     if (entity.Base == null)
     {
         typeDeclaration = string.Format("I{0} : IBaseRequestBuilder", className);
@@ -16,9 +16,9 @@ public string GetEntityInterfaceDefinition(OdcmClass entity)
     {
         typeDeclaration = string.Format("I{0} : I{1}RequestBuilder", className, entity.Base.Name.ToCheckedCase());
     }
-    
+
     var stringBuilder = new StringBuilder();
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("    /// The interface I{0}.", className);
@@ -26,14 +26,14 @@ public string GetEntityInterfaceDefinition(OdcmClass entity)
     stringBuilder.Append("    /// </summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("    public partial interface {0}", typeDeclaration);
-    
+
     return stringBuilder.ToString();
 }
 
 public string GetInterfaceDefinition(string interfaceName)
 {
     var stringBuilder = new StringBuilder();
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("    /// The interface I{0}.", interfaceName);
@@ -41,7 +41,7 @@ public string GetInterfaceDefinition(string interfaceName)
     stringBuilder.Append("    /// </summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("    public partial interface I{0}", interfaceName);
-    
+
     return stringBuilder.ToString();
 }
 
@@ -50,7 +50,7 @@ public string GetRequestMethod(string requestTypeName, bool includeNewKeyword = 
     var stringBuilder = new StringBuilder();
     stringBuilder.Append(this.GetRequestMethodHeader());
     stringBuilder.Append(Environment.NewLine);
-    
+
     if (includeNewKeyword)
     {
         stringBuilder.AppendFormat("        new I{0} Request();", requestTypeName);
@@ -59,16 +59,16 @@ public string GetRequestMethod(string requestTypeName, bool includeNewKeyword = 
     {
         stringBuilder.AppendFormat("        I{0} Request();", requestTypeName);
     }
-    
+
     return stringBuilder.ToString();
 }
 
 public string GetRequestMethodWithOptions(string requestTypeName, bool includeNewKeyword = false)
 {
     var stringBuilder = new StringBuilder();
-    stringBuilder.Append(this.GetRequestMethodWithOptionsHeader());     
+    stringBuilder.Append(this.GetRequestMethodWithOptionsHeader());
     stringBuilder.Append(Environment.NewLine);
-    
+
     if (includeNewKeyword)
     {
         stringBuilder.AppendFormat("        new I{0} Request(IEnumerable<Option> options);", requestTypeName);
@@ -77,8 +77,115 @@ public string GetRequestMethodWithOptions(string requestTypeName, bool includeNe
     {
         stringBuilder.AppendFormat("        I{0} Request(IEnumerable<Option> options);", requestTypeName);
     }
-    
+
     return stringBuilder.ToString();
 }
 
+
+// Creates the set of property definitions for OData method properties on the entity
+public string GetMethodProperties(OdcmClass entity, bool isCollection)
+{
+    var allMethods = new List<OdcmMethod>();
+    foreach (var method in entity.Methods)
+    {
+        allMethods.Add(method);
+        allMethods.AddRange(method.Overloads);
+    }
+
+    var methodPropertiesStringBuilder = new StringBuilder();
+    foreach(var method in allMethods)
+    {
+		if (method.IsBoundToCollection != isCollection)
+		{
+			continue; 
+		}
+
+        var methodName = this.GetMethodName(method);
+        var baseName = string.Concat(this.GetEntityNameString(method.Class), methodName);
+
+        var paramStringBuilder = new System.Text.StringBuilder();
+
+        var hasParameters = method.Parameters != null && method.Parameters.Any();
+
+        if (hasParameters)
+        {
+            var requiredParameters = method.Parameters.Where(param => !param.IsNullable);
+            var optionalParameters = method.Parameters.Where(param => param.IsNullable);
+
+            foreach (var param in requiredParameters)
+            {
+                var paramVariableName = param.Name.GetSanitizedParameterName();
+                var paramTypeString = param.Type.GetTypeString();
+
+                if (param.IsCollection)
+                {
+                    paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
+                }
+
+                paramStringBuilder.Append(Environment.NewLine);
+                paramStringBuilder.Append("            ");
+                paramStringBuilder.AppendFormat("{0} {1},", paramTypeString, paramVariableName);
+            }
+
+            foreach (var param in optionalParameters)
+            {
+                var paramVariableName = param.Name.GetSanitizedParameterName();
+                var paramTypeString = param.Type.GetTypeString();
+
+                if (param.IsCollection)
+                {
+                    paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
+                }
+                else if(!param.Type.IsTypeNullable())
+                {
+                    paramTypeString = string.Format("{0}?", paramTypeString);
+                }
+
+                paramStringBuilder.Append(Environment.NewLine);
+                paramStringBuilder.Append("            ");
+                paramStringBuilder.AppendFormat("{0} {1} = null,", paramTypeString, paramVariableName);
+            }
+
+            paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);
+        }
+
+        if (methodPropertiesStringBuilder.Length > 0)
+        {
+            methodPropertiesStringBuilder.Append(Environment.NewLine);
+            methodPropertiesStringBuilder.Append(Environment.NewLine);
+            methodPropertiesStringBuilder.Append("        ");
+        }
+
+        methodPropertiesStringBuilder.Append(
+            this.GetMethodRequestBuilderMethod(
+                methodName,
+                baseName,
+                paramStringBuilder.ToString()));
+    }
+
+    return methodPropertiesStringBuilder.ToString();
+}
+
+// -------------------------------------------------------------
+// Methods to create an OData method property definition within an entity class
+// -------------------------------------------------------------
+public string GetMethodRequestBuilderMethod(
+    string methodName,
+    string requestBuilderBaseString,
+    string methodParamaterString)
+{
+    var requestBuilderTypeName = this.GetRequestBuilderString(requestBuilderBaseString);
+    var stringBuilder = new StringBuilder();
+
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// Gets the request builder for {0}.", requestBuilderBaseString);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        I{0} {1}({2});", requestBuilderTypeName, methodName, methodParamaterString);
+    return stringBuilder.ToString();
+}
 #>

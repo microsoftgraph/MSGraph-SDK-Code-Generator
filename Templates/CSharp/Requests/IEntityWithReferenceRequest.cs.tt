@@ -6,6 +6,7 @@ OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
 var entityRequest = entityName + "Request";
 
+var features = host.CurrentType.GetFeatures();
 #>
 
 namespace <#=this.GetNamespaceName(entity)#>
@@ -21,8 +22,20 @@ namespace <#=this.GetNamespaceName(entity)#>
     {
         <#=this.GetEntityGetAsyncMethod(entity)#>
 
-        <#=this.GetEntityWithReferenceExpandMethods(entity)#>
+<#
+    if (features.CanExpand)
+    {
+        Write("        ");
+        Write(this.GetEntityWithReferenceExpandMethod(entity));
+        Write("\n\n");
+    }
 
-        <#=this.GetEntityWithReferenceSelectMethods(entity)#>
+    if (features.CanSelect)
+    {
+        Write("        ");
+        Write(this.GetEntityWithReferenceSelectMethod(entity));
+        Write("\n\n");
+    }
+#>
     }
 }

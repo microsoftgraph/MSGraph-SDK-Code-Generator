@@ -24,7 +24,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System;
     using System.Collections.Generic;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type <#=monitorType#>.
@@ -42,28 +41,28 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     {
         methodParameter = "this.RequestBody";
     }
-    
-    var asyncString = isCollection ? "async " : " ";
-    
+
+    var asyncString = isCollection ? "async " : "";
+
     #>
 
         /// <summary>
         /// Polls until the async operation is complete and returns the resulting <#=returnType#>.
         /// </summary>
-        public <#=asyncString#>Task<<#=returnType#>> CompleteOperationAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken)
+        public <#=asyncString#>System.Threading.Tasks.Task<<#=returnType#>> CompleteOperationAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken)
         {
         <#
         if (isCollection)
         {
         #>
-        
+
             var response = await this.PollForOperationCompletionAsync(progress, cancellationToken);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
                 if (response.AdditionalData != null)
                 {
                     response.Value.AdditionalData = response.AdditionalData;
-                        
+
                     object nextPageLink;
                     response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
 
@@ -102,12 +101,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         else
         {
         #>
-        
+
             return this.PollForOperationCompletionAsync(progress, cancellationToken);
         <#
         }
         #>
-        
+
         }
     }
 }

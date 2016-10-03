@@ -54,7 +54,7 @@ public string GetEntityReferenceRequestBuilderProperty(OdcmClass odcmClass)
 {
     var stringBuilder = new StringBuilder();
     var requestBuilderTypeName = this.GetEntityReferenceRequestBuilderName(odcmClass);
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// Gets the request builder for the reference of the {0}.", this.GetEntityNameString(odcmClass).ToLowerFirstChar());
@@ -115,7 +115,7 @@ public string GetRequestBuilderProperty(string propertyName, string requestBuild
 public string GetRequestBuilderProperty(string propertyName, string urlValue, string requestBuilderTypeName)
 {
     var stringBuilder = new StringBuilder();
-    
+
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// Gets the request builder for {0}.", propertyName);
@@ -162,40 +162,6 @@ public string GetNonCollectionRequestBuilderProperty(OdcmProperty odcmProperty)
     return this.GetRequestBuilderProperty(propertyName, propertyRequestBuilder);
 }
 
-
-// -------------------------------------------------------------
-// Methods to create an OData method property definition within an entity class
-// -------------------------------------------------------------
-public string GetMethodRequestBuilderMethod(
-    string methodName,
-    string requestBuilderBaseString,
-    string methodParamaterString,
-    string requestBuilderInitializerString)
-{
-    var requestBuilderTypeName = this.GetRequestBuilderString(requestBuilderBaseString);
-    var stringBuilder = new StringBuilder();
-    
-    stringBuilder.Append("/// <summary>");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Gets the request builder for {0}.", requestBuilderBaseString);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        /// </summary>");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public I{0} {1}({2})", requestBuilderTypeName, methodName, methodParamaterString);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(
-@"        {
-");
-    stringBuilder.AppendFormat("            return new {0}({1});", requestBuilderTypeName, requestBuilderInitializerString);
-    stringBuilder.Append(
-@"
-        }");
-
-    return stringBuilder.ToString();
-}
-
 // Creates the set of property definitions for navigation properties on the entity
 public string GetNavigationProperties(OdcmClass entity)
 {
@@ -208,7 +174,7 @@ public string GetNavigationProperties(OdcmClass entity)
             stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append("        ");
         }
-        
+
         if (prop.IsCollection())
         {
             stringBuilder.Append(this.GetCollectionPropertyRequestBuilderProperty(this.GetEntityNameString(entity), prop));
@@ -218,7 +184,7 @@ public string GetNavigationProperties(OdcmClass entity)
             stringBuilder.Append(this.GetNonCollectionRequestBuilderProperty(prop));
         }
     }
-    
+
     return stringBuilder.ToString();
 }
 
@@ -235,18 +201,18 @@ public string GetStreamProperties(OdcmClass entity)
             stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append("        ");
         }
-        
+
         var propName = this.GetPropertyName(prop);
         if (propName.Equals("Content"))
         {
             contentStreamFound = true;
         }
-        
+
         var propRequestBuilder = this.GetRequestBuilderString(propName);
-        
+
         stringBuilder.Append(this.GetRequestBuilderProperty(propName, string.Concat(this.GetEntityNameString(entity), propRequestBuilder)));
     }
-    
+
     if (entity.Kind == OdcmClassKind.MediaEntity && !contentStreamFound)
     {
         if (stringBuilder.Length > 0)
@@ -255,102 +221,10 @@ public string GetStreamProperties(OdcmClass entity)
             stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append("        ");
         }
-        
+
         stringBuilder.Append(this.GetRequestBuilderProperty("Content", "$value", string.Concat(this.GetEntityNameString(entity), "ContentRequestBuilder")));
     }
-    
+
     return stringBuilder.ToString();
 }
-
-// Creates the set of property definitions for OData method properties on the entity
-public string GetMethodProperties(OdcmClass entity)
-{
-    var methodPropertiesStringBuilder = new StringBuilder();
-    foreach(var method in entity.Methods)
-    {
-        var methodName = this.GetMethodName(method);
-        var baseName = string.Concat(this.GetEntityNameString(method.Class), methodName);
-
-        var paramStringBuilder = new System.Text.StringBuilder();
-        var builderInitializerStringBuilder = new StringBuilder();
-
-        builderInitializerStringBuilder.Append(Environment.NewLine);
-        builderInitializerStringBuilder.Append("                ");
-        builderInitializerStringBuilder.AppendFormat("this.AppendSegmentToRequestUrl(\"{0}.{1}\"),", method.Namespace.Name, method.Name);
-        builderInitializerStringBuilder.Append(Environment.NewLine);
-        builderInitializerStringBuilder.Append("                ");
-        builderInitializerStringBuilder.Append("this.Client,");
-
-        var hasParameters = method.Parameters != null && method.Parameters.Any();
-
-        if (hasParameters)
-        {
-            var requiredParameters = method.Parameters.Where(param => !param.IsNullable);
-            var optionalParameters = method.Parameters.Where(param => param.IsNullable);
-            
-            foreach (var param in requiredParameters)
-            {
-                var paramVariableName = param.Name.ToLowerFirstChar();
-                var paramTypeString = param.Type.GetTypeString();
-                
-                if (param.IsCollection)
-                {
-                    paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
-                }
-
-                paramStringBuilder.Append(Environment.NewLine);
-                paramStringBuilder.Append("            ");
-                paramStringBuilder.AppendFormat("{0} {1},", paramTypeString, paramVariableName);
-
-                builderInitializerStringBuilder.Append(Environment.NewLine);
-                builderInitializerStringBuilder.Append("                ");
-                builderInitializerStringBuilder.AppendFormat("{0},", paramVariableName);
-            }
-            
-            foreach (var param in optionalParameters)
-            {
-                var paramVariableName = param.Name.ToLowerFirstChar();
-                var paramTypeString = param.Type.GetTypeString();
-                
-                if (param.IsCollection)
-                {
-                    paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
-                }
-                else if(!param.Type.IsTypeNullable())
-                {
-                    paramTypeString = string.Format("{0}?", paramTypeString);
-                }
-
-                paramStringBuilder.Append(Environment.NewLine);
-                paramStringBuilder.Append("            ");
-                paramStringBuilder.AppendFormat("{0} {1} = null,", paramTypeString, paramVariableName);
-
-                builderInitializerStringBuilder.Append(Environment.NewLine);
-                builderInitializerStringBuilder.Append("                ");
-                builderInitializerStringBuilder.AppendFormat("{0},", paramVariableName);
-            }
-
-            paramStringBuilder.Remove(paramStringBuilder.Length - 1, 1);
-        }
-        
-        builderInitializerStringBuilder.Remove(builderInitializerStringBuilder.Length - 1, 1);
-        
-        if (methodPropertiesStringBuilder.Length > 0)
-        {
-            methodPropertiesStringBuilder.Append(Environment.NewLine);
-            methodPropertiesStringBuilder.Append(Environment.NewLine);
-            methodPropertiesStringBuilder.Append("        ");
-        }
-        
-        methodPropertiesStringBuilder.Append(
-            this.GetMethodRequestBuilderMethod(
-                methodName,
-                baseName,
-                paramStringBuilder.ToString(),
-                builderInitializerStringBuilder.ToString()));
-    }
-    
-    return methodPropertiesStringBuilder.ToString();
-}
-
 #>

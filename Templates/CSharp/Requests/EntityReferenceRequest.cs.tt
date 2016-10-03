@@ -6,6 +6,8 @@
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = this.GetEntityNameString(entity);
 
+var features = host.CurrentType.GetFeatures();
+
 #>
 
 namespace <#=this.GetNamespaceName(entity)#>
@@ -13,12 +15,17 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     <#=this.GetEntityReferenceRequestClassDefinition(entity)#>
     {
         <#=this.GetEntityReferenceRequestConstructor(entity)#>
-        
+<# if (features.CanDelete) { #>
+
         <#=this.GetEntityReferenceDeleteAsyncMethod(entity)#>
+<# } #>
+<# if (features.CanUpdate) { #>
+
+        <#=this.GetEntityReferencePutAsyncMethod(entity)#>
+<# } #>
     }
 }

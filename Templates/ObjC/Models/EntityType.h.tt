@@ -17,7 +17,8 @@ IEnumerable<string> extraClasses = null;
 if (baseEntity == null)
 {
 #>
-  @property (nonatomic, setter=setODataType:, getter=oDataType) NSString *oDataType;
+  @property (nullable, nonatomic, setter=setODataType:, getter=oDataType) NSString *oDataType;
+  @property (nullable, nonatomic, setter=setODataEtag:, getter=oDataEtag) NSString *oDataEtag;
 <#
 }
 
