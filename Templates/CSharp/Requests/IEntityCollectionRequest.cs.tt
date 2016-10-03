@@ -18,7 +18,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
     using System.Linq.Expressions;
 
     <#=this.GetCollectionInterfaceDefinition(prop)#>
@@ -45,8 +44,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> Expand(string value);
 
-<# } #>
-<# if (features.CanSelect) { #>
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -54,6 +51,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> Expand(Expression<Func<<#=innerEntityType#>, object>> expandExpression);
 
+<# } #>
+<# if (features.CanSelect) { #>
         /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
@@ -61,8 +60,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> Select(string value);
 
-<# } #>
-<# if (features.CanUseTop) { #>
         /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
@@ -70,6 +67,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         I<#=collectionRequest#> Select(Expression<Func<<#=innerEntityType#>, object>> selectExpression);
 
+<# } #>
+<# if (features.CanUseTop) { #>
         /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>

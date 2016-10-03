@@ -17,7 +17,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
     using System.Linq.Expressions;
 
     <#=this.GetCollectionClassDefinition(prop)#>
@@ -80,8 +79,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
-<# } #>
-<# if (features.CanSelect) { #>
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -106,6 +103,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanSelect) { #>
         /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
@@ -117,8 +116,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
-<# } #>
-<# if (features.CanUseTop) { #>
         /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
@@ -143,6 +140,8 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
             return this;
         }
 
+<# } #>
+<# if (features.CanUseTop) { #>
         /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
