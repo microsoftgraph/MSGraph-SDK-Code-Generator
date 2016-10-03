@@ -26,14 +26,14 @@ namespace <#=this.GetNamespaceName(entity)#>
     if (features.CanExpand)
     {
         Write("        ");
-        Write(this.GetEntityWithReferenceExpandMethod(entity));
+        Write(this.GetEntityWithReferenceExpandMethods(entity));
         Write("\n\n");
     }
 
     if (features.CanSelect)
     {
         Write("        ");
-        Write(this.GetEntityWithReferenceSelectMethod(entity));
+        Write(this.GetEntityWithReferenceSelectMethods(entity));
         Write("\n\n");
     }
 #>

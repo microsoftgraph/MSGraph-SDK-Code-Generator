@@ -49,14 +49,14 @@ namespace <#=this.GetNamespaceName(entity)#>
     if (features.CanExpand)
     {
         Write("        ");
-        Write(this.GetEntityExpandMethod(entity));
+        Write(this.GetEntityExpandMethods(entity));
         Write("\n\n");
     }
 
     if (features.CanSelect)
     {
         Write("        ");
-        Write(this.GetEntitySelectMethod(entity));
+        Write(this.GetEntitySelectMethods(entity));
         Write("\n\n");
     }
 #>
