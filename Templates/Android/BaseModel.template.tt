@@ -30,9 +30,9 @@
         string superClass;
 
         if (isPostAction) {
-            superClass = "BasePostMethodRequestBuilder";
+            superClass = "BaseActionRequestBuilder";
         } else {
-            superClass = "BaseGetMethodRequestBuilder";
+            superClass = "BaseFunctionRequestBuilder";
         }
 
         return superClass;
