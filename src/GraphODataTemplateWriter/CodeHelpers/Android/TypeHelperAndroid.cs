@@ -37,6 +37,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
                     return "com.microsoft.graph.model.DateOnly";
                 case "Binary":
                     return "byte[]";
+                case "Stream":
+                    return "java.io.InputStream";
+                case "Duration":
+                    return "javax.xml.datatype.Duration";
+                case "TimeOfDay":
+                case "Json":
+                    return "String";
                 default:
                     return @type.Name.ToUpperFirstChar();
             }
