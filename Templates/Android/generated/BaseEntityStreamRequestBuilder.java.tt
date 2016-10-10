@@ -13,10 +13,10 @@
      *
      * @param requestUrl The request url
      * @param client The service client
-     * @param options The options for this request
+     * @param requestOptions The options for this request
      */
-    public <#=BaseTypeStreamRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
-        super(requestUrl, client, options);
+    public <#=BaseTypeStreamRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
     }
 
     /**
@@ -29,8 +29,8 @@
     /**
      * Creates the request with specific options instead of the existing options
      */
-    public <#=ITypeStreamRequest(c)#> buildRequest(final List<Option> options) {
-        return new <#=TypeStreamRequest(c)#>(getRequestUrl(), getClient(), options);
+    public <#=ITypeStreamRequest(c)#> buildRequest(final List<Option> requestOptions) {
+        return new <#=TypeStreamRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
     }
 <#
 if (c.AsOdcmClass() != null)
@@ -50,7 +50,6 @@ if (c.AsOdcmClass() != null)
     foreach(var prop in c.AsOdcmClass().NavigationProperties())
     {
         var propName = prop.Name.ToUpperFirstChar();
-        var propRequestBuilder = TypeRequestBuilder(prop);
         if (prop.IsCollection()) {
 #>
     public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>() {

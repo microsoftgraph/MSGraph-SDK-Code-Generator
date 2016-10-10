@@ -11,24 +11,28 @@ import com.google.gson.annotations.*;
 
 <#=CreateInterfaceDef(IBaseTypeRequest(c))#>
 
-<# if (c.AsOdcmMethod().IsAction()) { #>
-<#      if (c.AsOdcmMethod().ReturnType != null) { #>
+<#
+if (c.AsOdcmMethod().IsAction()) {
+    if (c.AsOdcmMethod().ReturnType != null) {
+#>
     /**
-     * Creates the <#=ClassTypeName(c)#>
+     * Creates the <#=TypeName(c)#>
      *
      * @param callback The callback to be called after success or failure.
      */
-    void post(final ICallback<<#=ClassTypeName(c)#>> callback);
+    void post(final ICallback<<#=ReturnType(c)#>> callback);
 
     /**
-     * Creates the <#=ClassTypeName(c)#>
+     * Creates the <#=TypeName(c)#>
      *
-     * @return The <#=ClassTypeName(c)#>
+     * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
      */
-    <#=ClassTypeName(c)#> post() throws ClientException;
+    <#=ReturnType(c)#> post() throws ClientException;
 
-<# if (c.GetFeatures().CanSelect) { #>
+<#
+        if (c.GetFeatures().CanSelect) {
+#>
     /**
      * Sets the select clause for the request
      *
@@ -37,8 +41,11 @@ import com.google.gson.annotations.*;
      */
     <#=ITypeRequest(c)#> select(final String value);
 
-<# } #>
-<# if (c.GetFeatures().CanExpand) { #>
+<#
+        }
+
+        if (c.GetFeatures().CanExpand) {
+#>
     /**
      * Sets the expand clause for the request
      *
@@ -47,8 +54,13 @@ import com.google.gson.annotations.*;
      */
     <#=ITypeRequest(c)#> expand(final String value);
 
-<# } #>
-<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
+<#
+        }
+
+        if (c.AsOdcmProperty() != null 
+            && c.AsOdcmProperty().IsCollection
+            && c.GetFeatures().CanUseTop) {
+#>
     /**
      * Sets the top value for the request
      *
@@ -56,42 +68,83 @@ import com.google.gson.annotations.*;
      * @return The updated request
      */
     <#=ITypeRequest(c)#> top(final int value);
-<#          } #>
-<#      } else { #>
+<#
+        }
+    } else {
+#>
     /**
-     * Creates the <#=ClassTypeName(c)#>
+     * Creates the <#=TypeName(c)#>
      *
      * @param callback The callback to be called after success or failure.
      */
     void post(final ICallback<Void> callback);
 
     /**
-     * Creates the <#=ClassTypeName(c)#>
+     * Creates the <#=TypeName(c)#>
      *
-     * @return The <#=ClassTypeName(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
      */
     void post() throws ClientException;
 
-<#      } #>
-<# } else { #>
-<#      if (c.AsOdcmMethod().ReturnType != null) { #>
+<#
+    }
+} else {
+    if (c.AsOdcmMethod().ReturnType != null) {
+        if (c.AsOdcmMethod().IsComposable) {
+#>
     /**
-     * Gets the <#=ClassTypeName(c)#>
+     * Patches the <#=TypeName(c)#>
      *
+     * @param src<#=ReturnType(c)#> The <#=ReturnType(c)#> with which to PATCH
+     * @param callback The callback to be called after success or failure
+     */
+    void patch(<#=ReturnType(c)#> src<#=ReturnType(c)#>, final ICallback<<#=ReturnType(c)#>> callback);
+
+    /**
+     * Patches the <#=TypeName(c)#>
+     *
+     * @param src<#=ReturnType(c)#> The <#=ReturnType(c)#> with which to PATCH
+     * @return The <#=ReturnType(c)#>
+     * @throws ClientException An exception occurs if there was an error while the request was sent
+     */
+    <#=ReturnType(c)#> patch(<#=ReturnType(c)#> src<#=ReturnType(c)#>) throws ClientException;
+
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=ReturnType(c)#> The <#=ReturnType(c)#> to PUT
+     * @param callback The callback to be called after success or failure
+     */
+    void put(<#=ReturnType(c)#> src<#=ReturnType(c)#>, final ICallback<<#=ReturnType(c)#>> callback);
+
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=ReturnType(c)#> The <#=ReturnType(c)#> to PUT
+     * @return The <#=ReturnType(c)#>
+     * @throws ClientException An exception occurs if there was an error while the request was sent
+     */
+     <#=ReturnType(c)#> put(<#=ReturnType(c)#> src<#=ReturnType(c)#>) throws ClientException;
+<#
+        }
+#>
+    /**
+     * Gets the <#=ReturnType(c)#>
      * @param callback The callback to be called after success or failure.
      */
-    void get(final ICallback<<#=ClassTypeName(c)#>> callback);
+    void get(final ICallback<<#=ReturnType(c)#>> callback);
 
     /**
-     * Gets the <#=ClassTypeName(c)#>
+     * Gets the <#=ReturnType(c)#>
      *
-     * @return The <#=ClassTypeName(c)#>
+     * @return The <#=ReturnType(c)#>
      * @throws ClientException An exception occurs if there was an error while the request was sent.
      */
-    <#=ClassTypeName(c)#> get() throws ClientException;
+    <#=ReturnType(c)#> get() throws ClientException;
 
-<# if (c.GetFeatures().CanSelect) { #>
+<#
+        if (c.GetFeatures().CanSelect) {
+#>
     /**
      * Sets the select clause for the request
      *
@@ -100,8 +153,10 @@ import com.google.gson.annotations.*;
      */
     <#=ITypeRequest(c)#> select(final String value);
 
-<# } #>
-<# if (c.GetFeatures().CanExpand) { #>
+<#
+        }
+
+        if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -110,8 +165,13 @@ import com.google.gson.annotations.*;
      */
     <#=ITypeRequest(c)#> expand(final String value);
 
-<# } #>
-<#          if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
+<#
+        }
+
+        if (c.AsOdcmProperty() != null
+            && c.AsOdcmProperty().IsCollection
+            && c.GetFeatures().CanUseTop) {
+#>
     /**
      * Sets the top value for the request
      *
@@ -119,12 +179,16 @@ import com.google.gson.annotations.*;
      * @return The updated request
      */
     <#=ITypeRequest(c)#> top(final int value);
-<#          } #>
-<#      } else { #>
+<#
+        }
+    } else {
+#>
     void get(final ICallback<Void> callback);
 
     void get() throws ClientException;
 
-<#      } #>
-<# } #>
+<#
+    }
+}
+#>
 }

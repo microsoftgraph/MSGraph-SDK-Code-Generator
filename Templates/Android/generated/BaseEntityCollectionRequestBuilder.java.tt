@@ -13,21 +13,54 @@
      *
      * @param requestUrl The request url
      * @param client The service client
-     * @param options The options for this request
+     * @param requestOptions The options for this request
      */
-    public <#=BaseTypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
-        super(requestUrl, client, options);
+    public <#=BaseTypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
     }
 
     public <#=ITypeCollectionRequest(c)#> buildRequest() {
         return buildRequest(getOptions());
     }
 
-    public <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> options) {
-        return new <#=TypeCollectionRequest(c)#>(getRequestUrl(), getClient(), options);
+    public <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> requestOptions) {
+        return new <#=TypeCollectionRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
     }
 
     public <#=ITypeRequestBuilder(c)#> byId(final String id) {
         return new <#=TypeRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
     }
+<#
+var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
+if (currentTypeProjection != null) {
+    foreach (var method in currentTypeProjection.MethodsAndOverloads()) {
+
+        if (!method.IsBoundToCollection) {
+            continue;
+        }
+
+        var parameterList = MethodParametersSignature(method);
+
+        if (parameterList != "") {
+            parameterList = parameterList.Remove(0, 2);
+        }
+
+        if (method.IsCollection) {
+#>
+
+    public <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
+        return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    }
+<#
+        } else {
+#>
+
+    public <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
+        return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    }
+<#
+        }
+    }
+}
+#>
 }

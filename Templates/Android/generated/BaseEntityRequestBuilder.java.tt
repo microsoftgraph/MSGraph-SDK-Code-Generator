@@ -13,10 +13,10 @@
      *
      * @param requestUrl The request url
      * @param client The service client
-     * @param options The options for this request
+     * @param requestOptions The options for this request
      */
-    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
-        super(requestUrl, client, options);
+    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
     }
 
     /**
@@ -27,10 +27,10 @@
     }
 
     /**
-     * Creates the request with specific options instead of the existing options
+     * Creates the request with specific requestOptions instead of the existing requestOptions
      */
-    public <#=ITypeRequest(c)#> buildRequest(final List<Option> options) {
-        return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), options);
+    public <#=ITypeRequest(c)#> buildRequest(final List<Option> requestOptions) {
+        return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
     }
 
 <#
@@ -100,12 +100,20 @@ if (c.AsOdcmClass() != null)
     }
 #>
 <#
-    foreach (var method in c.AsOdcmClass().MethodsAndOverloads())
-    {
+    foreach (var method in c.AsOdcmClass().MethodsAndOverloads()) {
+
+        if (method.IsBoundToCollection) {
+            continue;
+        }
+
         var parameterList = MethodParametersSignature(method);
-        if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
+
+        if (parameterList != "") {
+            parameterList = parameterList.Remove(0, 2);
+        }
+
+        if (method.IsCollection) {
 #>
-<#      if (method.IsCollection) { #>
 
     public <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
         return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);

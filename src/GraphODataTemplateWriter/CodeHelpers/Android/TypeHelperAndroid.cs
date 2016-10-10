@@ -35,6 +35,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
                     return "java.util.Calendar";
                 case "Date":
                     return "com.microsoft.graph.model.DateOnly";
+                case "Json":
+                    return "com.google.gson.JsonElement";
                 case "Binary":
                     return "byte[]";
                 default:
@@ -49,7 +51,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
 
         public static string GetTypeString(this OdcmProperty property)
         {
-            return GetTypeString(property.Projection.Type);
+            var propertyType = property.Projection.Type;
+            var typeString = GetTypeString(propertyType);
+            if (propertyType.Namespace != OdcmNamespace.Edm && ReservedNames.Contains(typeString))
+            {
+                typeString = "com.microsoft.graph.extensions." + typeString;
+            }
+            return typeString;
         }
 
         public static bool IsComplex(this OdcmParameter property)

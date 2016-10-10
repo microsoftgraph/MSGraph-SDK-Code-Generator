@@ -15,7 +15,7 @@
     /**
      * Creates the request with specific options instead of the existing options
      */
-    <#=ITypeRequest(c)#> buildRequest(final List<Option> options);
+    <#=ITypeRequest(c)#> buildRequest(final List<Option> requestOptions);
 <#
 if (c.AsOdcmClass() != null)
 {
@@ -72,12 +72,20 @@ if (c.AsOdcmClass() != null)
     }
 #>
 <#
-    foreach (var method in c.AsOdcmClass().MethodsAndOverloads())
-    {
+    foreach (var method in c.AsOdcmClass().MethodsAndOverloads()) {
+
+        if (method.IsBoundToCollection) {
+            continue;
+        }
+
         var parameterList = MethodParametersSignature(method);
-        if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
+
+        if (parameterList != "") {
+            parameterList = parameterList.Remove(0, 2);
+        }
+
+        if (method.IsCollection) {
 #>
-<# if (method.IsCollection) { #>
 
     <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
 <#  } else { #>
