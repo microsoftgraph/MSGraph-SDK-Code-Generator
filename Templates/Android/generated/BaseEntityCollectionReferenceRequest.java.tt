@@ -25,7 +25,7 @@
         String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType().Name;
 #>
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
-        final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + newDirectoryObject.id);
+        final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + new<#=TypeName(c)#>.id);
         new <#=TypeWithReferencesRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest()
             .post(new<#=TypeName(c)#>, body, callback);
@@ -33,7 +33,7 @@
 
     public <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
-        final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + newDirectoryObject.id);
+        final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + new<#=TypeName(c)#>.id);
         return new <#=TypeWithReferencesRequestBuilder(c)#>(requestUrl,getBaseRequest().getClient(), /* Options */ null)
                 .buildRequest()
                 .post(new<#=TypeName(c)#>, body);
