@@ -10,8 +10,10 @@ var enumT = host.CurrentType.AsOdcmEnum();
 <#=writer.WriteHeader(writer.GetDocBlock(enumT.Name.ToCheckedCase()))#>
 namespace Microsoft\Graph\Model;
 
+use Microsoft\Graph\Core\Enum;
+
 <#=writer.GetClassBlock(enumT.Name.ToCheckedCase().ToString(), "Model")#>
-class <#=enumT.Name.ToUpperFirstChar()#> extends SplEnum
+class <#=enumT.Name.ToUpperFirstChar()#> extends Enum
 {
     /**
     * The Enum <#=enumT.Name.ToUpperFirstChar()#>
