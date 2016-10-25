@@ -1,8 +1,6 @@
 {
     "TemplateMapping": {
       "Python": [
-          { "Template": "EntityCollection", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-          { "Template": "EntityCollectionMethod", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>_collection", "Exclude": "nextExpectedRanges;roles", "Matches": "specialCollection" },
           { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request", "Exclude": "nextExpctedRanges;roles" },
           { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>_request_builder", "Exclude": "nextExpectedRanges;roles" },
           { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>_request", "Matches": "navigable" },
@@ -11,7 +9,6 @@
           { "Template": "SpecialMethod", "SubProcessor": "Method", "Type": "Request", "Name": "<Class>_<Method>", "Matches": "specialMethod" },
           { "Template": "Stream", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "<Class>_<Property>_request" },
           { "Template": "__init__", "SubProcessor": "Other", "Type": "Other", "Name": "__init__" },
-          { "Template": "EntityCollectionPage", "SubProcessor": "CollectionProperty",                                                         "Name": "<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "IEntityCollectionPage", "SubProcessor": "CollectionProperty",                                                        "Name": "IBase<Property>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionProperty",                                                      "Name": "<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "IEntityCollectionRequest", "SubProcessor": "CollectionProperty",                                                     "Name": "I<Property>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
@@ -30,8 +27,12 @@
           { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "ComplexType",                                                           "Name": "IBase<Class>RequestBuilder" },
           { "Template": "BaseEntityRequestBuilder", "SubProcessor": "ComplexType",                                                            "Name": "Base<Class>RequestBuilder" },
 
+          { "Template": "EntityType", "SubProcessor": "EntityType", "Name": "<Class>" },
           { "Template": "ComplexType", "SubProcessor": "ComplexType", "Name": "<Class>" },
           { "Template": "EnumType", "SubProcessor": "EnumType", "Name": "<Class>" },
+          { "Template": "EntityCollection", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+          { "Template": "EntityCollectionPage", "SubProcessor": "CollectionProperty", "Type": "EntityType", "Name": "<Property>_collection_page", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
+
 
           { "Template": "EntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "<Container>Client" },
           { "Template": "EntityRequest", "SubProcessor": "EntityType", "Name": "<Class>Request" },

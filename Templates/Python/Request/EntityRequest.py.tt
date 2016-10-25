@@ -141,10 +141,10 @@ class <#=entityRequest#>(RequestBase):
                 var propertyName = property.Name.ToUnderscore();
                 var propertyType = property.GetTypeString();
 #>
-            if value.<#=propertyName#> and value.<#=propertyName#>._prop_dict:
+            if value.<#=propertyName#>:
                 if "<#=propertyName.ToLowerFirstChar()#>@odata.nextLink" in value._prop_dict:
                     next_page_link = value._prop_dict["<#=propertyName.ToLowerFirstChar()#>@odata.nextLink"]
-                    value.<#=propertyName#>._init_next_page_request(next_page_link, self._client, None)
+                    value.<#=propertyName#>._next_page_link = next_page_link
 <#
             }
         }

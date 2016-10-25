@@ -22,12 +22,12 @@ var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("py
 #>
 <#=writer.WriteHeader(writer.GeneratedHeader)#>
 from __future__ import unicode_literals
-from ..collection_base import CollectionRequestBase, CollectionResponseBase, CollectionPageBase
+from ..collection_base import CollectionRequestBase, CollectionResponseBase
 from ..request_builder_base import RequestBuilderBase
 <#
 if (innerEntity.IsComplex()) {
 #>
-from ..model.<#=innerEntityType.ToUnderscore()#> import <#=innerEntityType#>
+from ..model.<#=collectionPage.ToUnderscore()#> import <#=collectionPage#>
 <#
 }
 #>
@@ -103,7 +103,7 @@ class <#=collectionRequest#>(CollectionRequestBase):
         """Gets the <#=collectionPage#>
 
         Returns: 
-            :class:`<#=collectionPage#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+            :class:`<#=collectionPage#><onedrivesdk.model.<#=collectionPage.ToUnderscore()#>.<#=collectionPage#>>`:
                 The <#=collectionPage#>
         """
         self.method = "GET"
@@ -118,7 +118,7 @@ class <#=collectionRequest#>(CollectionRequestBase):
         """Gets the <#=collectionPage#> in async
 
         Yields: 
-            :class:`<#=collectionPage#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+            :class:`<#=collectionPage#><onedrivesdk.model.<#=collectionPage.ToUnderscore()#>.<#=collectionPage#>>`:
                 The <#=collectionPage#>
         """
         future = self._client._loop.run_in_executor(None,
@@ -128,6 +128,27 @@ class <#=collectionRequest#>(CollectionRequestBase):
 <#
         }
 #>
+
+    @staticmethod
+    def get_next_page_request(collection_page, client, options=None):
+        """Gets the <#=collectionRequest#> for the next page. Returns None if there is no next page
+
+        Args:
+            collection_page (:class:`<#=collectionPage#><onedrivesdk.model.<#=collectionPage.ToUnderscore()#>.<#=collectionPage#>>`):
+                The collection to get the next page for
+            client (:class:`OneDriveClient<onedrivesdk.request.one_drive_client.OneDriveClient>`):
+                The client which will be used for the request
+            options (list of :class:`Option<onedrivesdk.options.Option>`):
+                A list of options to pass into the request. Defaults to None.
+
+        Yields: 
+            :class:`<#=collectionRequest#><onedrivesdk.request.<#=collectionPage.Replace("Page", "").ToUnderscore()#>.<#=collectionRequest#>>`:
+                The <#=collectionRequest#>
+        """
+        if collection_page._next_page_link:
+            return <#=collectionRequest#>(collection_page._next_page_link, client, options)
+        else:
+            return None
 
 class <#=collectionRequestBuilder#>(RequestBuilderBase):
 
@@ -207,7 +228,7 @@ class <#=collectionRequestBuilder#>(RequestBuilderBase):
         """Gets the <#=collectionPage#>
 
         Returns: 
-            :class:`<#=collectionPage#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+            :class:`<#=collectionPage#><onedrivesdk.model.<#=collectionPage.ToUnderscore()#>.<#=collectionPage#>>`:
                 The <#=collectionPage#>
         """
         return self.request().get()
@@ -220,7 +241,7 @@ class <#=collectionRequestBuilder#>(RequestBuilderBase):
         """Gets the <#=collectionPage#> in async
 
         Yields: 
-            :class:`<#=collectionPage#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+            :class:`<#=collectionPage#><onedrivesdk.model.<#=collectionPage.ToUnderscore()#>.<#=collectionPage#>>`:
                 The <#=collectionPage#>
         """
         collection_page = yield from self.request().get_async()
@@ -237,7 +258,7 @@ class <#=collectionResponse#>(CollectionResponseBase):
         """The collection page stored in the response JSON
         
         Returns:
-            :class:`<#=collectionPage#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=collectionPage#>>`:
+            :class:`<#=collectionPage#><onedrivesdk.model.<#=collectionPage.ToUnderscore()#>.<#=collectionPage#>>`:
                 The collection page
         """
         if self._collection_page:
@@ -246,44 +267,6 @@ class <#=collectionResponse#>(CollectionResponseBase):
             self._collection_page = <#=collectionPage#>(self._prop_dict["value"])
 
         return self._collection_page
-
-
-class <#=collectionPage#>(CollectionPageBase):
-
-    def __getitem__(self, index):
-        """Get the <#=innerEntityType#> at the index specified
-        
-        Args:
-            index (int): The index of the item to get from the <#=collectionPage#>
-
-        Returns:
-            :class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
-                The <#=innerEntityType#> at the index
-        """
-        return <#=innerEntityType#>(self._prop_list[index])
-
-    def <#=prop.Name.ToUnderscore()#>(self):
-        """Get a generator of <#=innerEntityType#> within the <#=collectionPage#>
-        
-        Yields:
-            :class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
-                The next <#=innerEntityType#> in the collection
-        """
-        for item in self._prop_list:
-            yield <#=innerEntityType#>(item)
-
-    def _init_next_page_request(self, next_page_link, client, options):
-        """Initialize the next page request for the <#=collectionPage#>
-        
-        Args:
-            next_page_link (str): The URL for the next page request
-                to be sent to
-            client (:class:`OneDriveClient<onedrivesdk.model.one_drive_client.OneDriveClient>`:
-                The client to be used for the request
-            options (list of :class:`Option<onedrivesdk.options.Option>`:
-                A list of options
-        """
-        self._next_page_request = <#=collectionRequest#>(next_page_link, client, options)
 
 
 from ..request.<#=innerEntityRequestBuilder.ToUnderscore()#> import <#=innerEntityRequestBuilder#>
