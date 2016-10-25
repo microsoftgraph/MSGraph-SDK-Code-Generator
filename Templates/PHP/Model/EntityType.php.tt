@@ -16,7 +16,9 @@ namespace Microsoft\Graph\Model;
 class <#=entity.Name.ToCheckedCase()#>
 {
     /**
-    * The array of properties available to the model
+    * The array of properties available
+    * to the model
+    *
     * @var array(string => string)
     */
     private $_propDict;
@@ -141,7 +143,8 @@ class <#=entity.Name.ToCheckedCase()#>
 <#
     if (property.Type.GetTypeString() == "datetime") {
 #>
-        $this->_propDict["<#=property.Name.ToCamelize()#>"] = $val->format(\DateTime::ISO8601) . "Z";
+        $this->_propDict["<#=property.Name.ToCamelize()#>"] 
+            = $val->format(\DateTime::ISO8601) . "Z";
 <#
       } else {
 #>

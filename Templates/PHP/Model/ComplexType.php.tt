@@ -13,14 +13,17 @@ namespace Microsoft\Graph\Model;
 class <#=complex.Name.ToUpperFirstChar()#>
 {
     /**
-    * The array of properties available to the model
+    * The array of properties available 
+    * to the model
+    *
     * @var array(string => string)
     */
     private $_propDict;
     /**
     * <#=complex.Name.ToCheckedCase()#> constructor
     *
-    * @param array $propDict List of properties to set, defaults to an empty array
+    * @param array $propDict List of properties to set
+    * Defaults to an empty array
     *
     * @return null
     */
@@ -70,7 +73,8 @@ class <#=complex.Name.ToUpperFirstChar()#>
 <#
             if (property.Type.GetTypeString() == "datetime") {
 #>
-        $this->_propDict["<#=propertyName#>"] = $val->format(\DateTime::ISO8601) . "Z";
+        $this->_propDict["<#=propertyName#>"] 
+            = $val->format(\DateTime::ISO8601) . "Z";
 <#
             } else {
 #>
