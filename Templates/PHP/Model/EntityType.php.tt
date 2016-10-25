@@ -15,6 +15,10 @@ namespace Microsoft\Graph\Model;
 <#=writer.GetClassBlock(entity.Name.ToCheckedCase().ToString(), "Model")#>
 class <#=entity.Name.ToCheckedCase()#>
 {
+    /**
+    * The array of properties available to the model
+    * @var array(string => string)
+    */
     private $_propDict;
     /**
     * Construct a new <#=entity.Name.ToUpperFirstChar()#>
