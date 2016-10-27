@@ -32,9 +32,9 @@ class <#=complex.Name.ToUpperFirstChar()#>
         $this->_propDict = $propDict;
     }
 <# 
-        foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
-            var propertyName = property.Name.ToUnderscore();
-            if (!property.Type.IsComplex()) {
+foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
+    var propertyName = property.Name.ToUnderscore();
+    if (!property.Type.IsComplex()) {
 #>
     
     /**
@@ -85,7 +85,7 @@ class <#=complex.Name.ToUpperFirstChar()#>
         return $this;
     }
 <#
-        } else {
+   } else {
 #>
 
     /**
