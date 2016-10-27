@@ -47,7 +47,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                                 "*" + this.NewLineCharacter +
                                 "* @category  Library" + this.NewLineCharacter +
                                 "* @package   Microsoft.Graph" + this.NewLineCharacter +
-                                "* @author    Caitlin Bales <caitbal@microsoft.com>" + this.NewLineCharacter +
                                 "* @copyright 2016 Microsoft Corporation" + this.NewLineCharacter +
                                 "* @license   https://opensource.org/licenses/MIT MIT License" + this.NewLineCharacter +
                                 "* @version   GIT: 0.1.0" + this.NewLineCharacter +
@@ -61,7 +60,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                     "*" + this.NewLineCharacter +
                     "* @category  " + category + this.NewLineCharacter +
                     "* @package   Microsoft.Graph" + this.NewLineCharacter +
-                    "* @author    Caitlin Bales <caitbal@microsoft.com>" + this.NewLineCharacter +
                     "* @copyright 2016 Microsoft Corporation" + this.NewLineCharacter +
                     "* @license   https://opensource.org/licenses/MIT MIT License" + this.NewLineCharacter +
                     "* @version   Release: 0.1.0" + this.NewLineCharacter +
