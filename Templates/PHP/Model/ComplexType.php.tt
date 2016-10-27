@@ -82,6 +82,7 @@ class <#=complex.Name.ToUpperFirstChar()#>
 <#
             }
 #>
+        return $this;
     }
 <#
         } else {
@@ -110,7 +111,7 @@ class <#=complex.Name.ToUpperFirstChar()#>
     *
     * @param <#=property.Type.GetTypeString()#> $val The value to assign to the <#=property.Name#>
     *
-    * @return null
+    * @return The <#=complex.Name.ToUpperFirstChar()#>
     */
     public function set<#=property.Name.ToCheckedCase()#>($val)
     {
@@ -121,6 +122,7 @@ class <#=complex.Name.ToUpperFirstChar()#>
 <# } else { #>
         $this->propDict["<#=property.Name#>"] = $val;
 <# } #>
+         return $this;
     }
 <#
         }

@@ -90,7 +90,7 @@ class <#=entity.Name.ToCheckedCase()#>
     *
     * @param string $val The <#=property.Name#>
     *
-    * @return null
+    * @return <#=entity.Name.ToCheckedCase()#>
     */
     public function set<#=property.Name.ToCheckedCase()#>($val)
     {
@@ -101,6 +101,7 @@ class <#=entity.Name.ToCheckedCase()#>
 <# } else { #>
         $this->propDict["<#=property.Name#>"] = $val;
 <# } #>
+        return $this;
     }
 <#
             }
@@ -136,7 +137,7 @@ class <#=entity.Name.ToCheckedCase()#>
     *
     * @param <#=property.Type.GetTypeString()#> $val The <#=property.Name#>
     *
-    * @return null
+    * @return <#=entity.Name.ToCheckedCase()#>
     */
     public function set<#=property.Name.ToCheckedCase()#>($val)
     {
@@ -158,6 +159,7 @@ class <#=entity.Name.ToCheckedCase()#>
 <#
             }
 #>
+        return $this;
     }
 <#
 		}
