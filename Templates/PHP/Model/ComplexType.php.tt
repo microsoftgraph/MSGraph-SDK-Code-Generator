@@ -96,22 +96,12 @@ class <#=complex.Name.ToUpperFirstChar()#>
     public function get<#=property.Name.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->propDict)) {
-<#
-	if (property.Type.GetTypeString() == "Json") {
-#>
-            return $this->_propDict["<#=property.Name.ToCamelize()#>"];
-<#	
-	} else {
-#>
             if (is_a($this->propDict["<#=property.Name.ToCamelize()#>"], '<#=property.Type.GetTypeString()#>')) {
                 return $this->propDict["<#=property.Name.ToCamelize()#>"];
             } else {
                 $this->propDict["<#=property.Name.ToCamelize()#>"] = new <#=property.Type.GetTypeString()#>($this->propDict["<#=property.Name.ToCamelize()#>"]);
                 return $this->propDict["<#=property.Name.ToCamelize()#>"];
             }
-<#
-	}
-#>
         }
         return null;
     }
