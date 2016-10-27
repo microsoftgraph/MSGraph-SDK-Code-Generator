@@ -41,6 +41,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             switch (@type.Name)
             {
                 case "String":
+                case "Json":
                     return "string";
                 case "Int8":
                 case "Int16":
@@ -52,6 +53,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                 case "Guid":
                     return "UUID";
                 case "DateTimeOffset":
+                case "Date":
                     return "datetime";
                 case "Boolean":
                     return "bool";
