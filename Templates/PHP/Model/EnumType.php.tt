@@ -5,6 +5,7 @@
 CustomT4Host host       = (CustomT4Host) Host;
 OdcmModel model         = host.CurrentModel;
 CodeWriterPHP writer   = (CodeWriterPHP) host.CodeWriter;
+
 var enumT = host.CurrentType.AsOdcmEnum();
 #>
 <#=writer.WriteHeader(writer.GetDocBlock(enumT.Name.ToCheckedCase()))#>
@@ -23,9 +24,17 @@ class <#=enumT.Name.ToUpperFirstChar()#> extends Enum
     foreach(var value in enumT.Members)
     {
         count++;
+		var needsPrefix = TypeHelperPHP.ReservedNames.Contains(value.Name.ToUnderscore());
+
+		if (needsPrefix)
+		{
+#>
+    const <#=TypeHelperPHP.ReservedPrefix.ToUpper() #><#=value.Name.ToUnderscore().ToUpper()#> = <#= count#>;
+<#
+		} else {
 #>
     const <#= value.Name.ToUnderscore().ToUpper()#> = <#= count#>;
-<#
+<#		}
     }
 #>
 }
