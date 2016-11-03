@@ -250,6 +250,25 @@ class <#=requestType#>(<#=method.IsCollection ? "CollectionRequestBase" : "Reque
         return <#=method.IsCollection ? "collection_response" : "entity"#>
 <#
         }
+
+        if (method.IsCollection) {
+            var collectionPage = requestType.Replace("Request", "") + "Page";
+#>
+    
+    @staticmethod
+    def get_next_page_request(collection_page, <#=paramStringBuilder.ToString().Replace("self, request_url, ", "")#>):
+        """Gets the <#=requestType#> for the next page. Returns None if there is no next page
+
+        Yields: 
+            :class:`<#=requestType#><onedrivesdk.request.<#=collectionPage.Replace("Page","").ToUnderscore()#>.<#=requestType#>>`:
+                The <#=requestType#>
+        """
+        if collection_page._next_page_link:
+            return <#=requestType#>(collection_page._next_page_link, client, options, token)
+        else:
+            return None
+<#
+        }
     }
 #>
 

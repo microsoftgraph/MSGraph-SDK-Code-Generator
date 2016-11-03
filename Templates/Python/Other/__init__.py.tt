@@ -58,7 +58,8 @@ foreach(OdcmProperty prop in collections){
     var collectionPage = prop.Name.ToUpperFirstChar() + "CollectionPage";
     var collectionResponse = prop.Name.ToUpperFirstChar() + "CollectionResponse";
 #>
-from .request.<#=(prop.Name+"Collection").ToUnderscore()#> import <#=collectionRequest#>, <#=collectionRequestBuilder#>, <#=collectionPage#>, <#=collectionResponse#>
+from .request.<#=(prop.Name+"Collection").ToUnderscore()#> import <#=collectionRequest#>, <#=collectionRequestBuilder#>, <#=collectionResponse#>
+from .model.<#=collectionPage.ToUnderscore()#> import <#=collectionPage#>
 <#
 }
 

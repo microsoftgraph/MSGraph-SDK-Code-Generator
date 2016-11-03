@@ -1,0 +1,57 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterPython writer = (CodeWriterPython) host.CodeWriter;
+var clientName          = model.GetEntityContainer().ToUpperFirstChar() + "Client";
+var clientNameLower     = clientName.ToLowerFirstChar();
+var prop                = host.CurrentType as OdcmProperty;
+var innerEntity = prop.Type;
+var innerEntityType = innerEntity.IsComplex() ? innerEntity.GetTypeString().ToUpperFirstChar() : innerEntity.GetTypeString();
+var innerEntityRequestBuilder = innerEntityType + "RequestBuilder";
+var collectionRequest = prop.Name.ToUpperFirstChar() + "CollectionRequest";
+var collectionRequestBuilder = prop.Name.ToUpperFirstChar() + "CollectionRequestBuilder";
+var collectionPage = prop.Name.ToUpperFirstChar() + "CollectionPage";
+var collectionResponse = prop.Name.ToUpperFirstChar() + "CollectionResponse";
+TemplateWriterSettings settings = ConfigurationService.Settings;
+var jsonContentType     = "application/json";
+var isPython2           = ConfigurationService.Settings.CustomFlags.Contains("python2");
+
+#>
+<#=writer.WriteHeader(writer.GeneratedHeader)#>
+from __future__ import unicode_literals
+from ..collection_base import CollectionPageBase
+<#
+if (innerEntity.IsComplex()) {
+#>
+from ..model.<#=innerEntityType.ToUnderscore()#> import <#=innerEntityType#>
+<#
+}
+#>
+
+
+class <#=collectionPage#>(CollectionPageBase):
+
+    def __getitem__(self, index):
+        """Get the <#=innerEntityType#> at the index specified
+        
+        Args:
+            index (int): The index of the item to get from the <#=collectionPage#>
+
+        Returns:
+            :class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
+                The <#=innerEntityType#> at the index
+        """
+        return <#=innerEntityType#>(self._prop_list[index])
+
+    def <#=prop.Name.ToUnderscore()#>(self):
+        """Get a generator of <#=innerEntityType#> within the <#=collectionPage#>
+        
+        Yields:
+            :class:`<#=innerEntityType#><onedrivesdk.model.<#=innerEntityType.ToUnderscore()#>.<#=innerEntityType#>>`:
+                The next <#=innerEntityType#> in the collection
+        """
+        for item in self._prop_list:
+            yield <#=innerEntityType#>(item)
