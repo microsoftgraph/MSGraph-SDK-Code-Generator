@@ -58,7 +58,9 @@
         <NavigationProperty Name="permissions" Type="Collection(oneDrive.permission)" ContainsTarget="true" />
         <NavigationProperty Name="subscriptions" Type="Collection(oneDrive.subscription)" ContainsTarget="true"/>
         <NavigationProperty Name="versions" Type="Collection(oneDrive.item)" ContainsTarget="true" />
-        <NavigationProperty Name="children" Type="Collection(oneDrive.item)" ContainsTarget="true" />
+        <NavigationProperty Name="children" Type="Collection(oneDrive.item)" ContainsTarget="true">
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="writable" />
+        </NavigationProperty>
         <NavigationProperty Name="tags" Type="Collection(oneDrive.tag)" ContainsTarget="true"/>
         <NavigationProperty Name="thumbnails" Type="Collection(oneDrive.thumbnailSet)" ContainsTarget="true" />
       </EntityType>
