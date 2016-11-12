@@ -20,6 +20,13 @@ import com.google.gson.annotations.*;
     @Expose(serialize = false)
     public String nextLink;
 
+    private transient AdditionalDataDelegate additionalDataDelegate = new AdditionalDataDelegate(this);
+
+    @Override
+    public final AdditionalDataDelegate getAdditionalDataDelegate() {
+        return additionalDataDelegate;
+    }
+
 <#=CreateRawJsonObject()#>
 <# if ( ! ((c as OdcmMethod).ReturnType is OdcmPrimitiveType) ) { #>
 <#=    UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
