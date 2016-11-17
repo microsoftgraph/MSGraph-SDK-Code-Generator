@@ -818,6 +818,7 @@
         <Property Name="height" Type="Edm.Int32"/>
         <Property Name="url" Type="Edm.String" Unicode="false"/>
         <Property Name="width" Type="Edm.Int32"/>
+        <Annotation Term="Org.OData.Core.V1.LongDescription" String="navigable" />
       </ComplexType>
       <EntityType Name="sharedDriveItem" BaseType="microsoft.graph.entity">
         <Property Name="name" Type="Edm.String" Unicode="false"/>
