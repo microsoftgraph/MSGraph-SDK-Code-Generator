@@ -27,7 +27,12 @@ from ..request_builder_base import RequestBuilderBase
 <#
 if (innerEntity.IsComplex()) {
 #>
-from ..model.<#=collectionPage.ToUnderscore()#> import <#=collectionPage#>
+from ..model.<#=collectionPage.ToLowerFirstChar().ToUnderscore()#> import <#=collectionPage#>
+<#
+}
+if (prop.LongDescriptionContains("writable")){
+#>
+from ..model.<#=innerEntityType.ToUnderscore()#> import <#=innerEntityType#>
 <#
 }
 #>
