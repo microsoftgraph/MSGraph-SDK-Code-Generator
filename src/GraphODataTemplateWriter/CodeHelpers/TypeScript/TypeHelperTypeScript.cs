@@ -30,6 +30,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 case "Int64":
                 case "Double":
                 case "Binary": // let binary: number = 0b1010;
+                case "Duration": //Edm.Duration
                     typeStr = "number";
                     break;
                 case "Guid":
@@ -39,6 +40,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 // all dates need to be of type string so they can be wrapped in new Date(___)
                 case "DateTimeOffset": // ISO 8601 format in UTC time, ex 2014-01-01T00:00:00Z
                 case "Date":
+                case "TimeOfDay":
                     typeStr = "string";
                     break;
                 case "Boolean":
