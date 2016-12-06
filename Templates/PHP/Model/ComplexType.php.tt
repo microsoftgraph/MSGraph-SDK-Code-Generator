@@ -10,7 +10,7 @@ OdcmClass complex		= (OdcmClass)host.CurrentType;
 <#=writer.WriteHeader(writer.GetDocBlock(complex.Name.ToCheckedCase()))#>
 namespace Microsoft\Graph\Model;
 <#=writer.GetClassBlock(complex.Name.ToCheckedCase().ToString(), "Model")#>
-class <#=complex.Name.ToUpperFirstChar()#> extends Entity
+class <#=complex.Name.ToCheckedCase()#> extends Entity
 {
     /**
     * The array of properties available 
@@ -25,10 +25,11 @@ class <#=complex.Name.ToUpperFirstChar()#> extends Entity
     * @param array $propDict List of properties to set
     * Defaults to an empty array
     *
-    * @return null
+    * @return <#=complex.Name.ToCheckedCase()#>
     */
     public function __construct($propDict=array())
     {
+        parent::__construct();
         $this->_propDict = $propDict;
     }
 

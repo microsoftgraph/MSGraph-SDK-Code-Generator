@@ -34,12 +34,15 @@ class <#=entity.Name.ToCheckedCase()#> extends Entity
     private $_propDict;
     
     /**
-    * Construct a new <#=entity.Name.ToUpperFirstChar()#>
+    * Construct a new <#=entity.Name.ToCheckedCase()#>
     *
     * @param array $propDict A list of properties to set
+    *
+    * @return <#=entity.Name.ToCheckedCase()#>
     */
     function __construct($propDict = array())
     {
+        parent::__construct();
         $this->_propDict = $propDict;
     }
 
