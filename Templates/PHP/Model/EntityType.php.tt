@@ -42,7 +42,13 @@ class <#=entity.Name.ToCheckedCase()#> extends Entity
     */
     function __construct($propDict = array())
     {
+<#
+if (!(entity.Name.ToCheckedCase() == "Entity")) {
+#>
         parent::__construct();
+<#
+}
+#>
         $this->_propDict = $propDict;
     }
 
@@ -155,7 +161,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
 <#
-            if (property.Type.GetTypeString() == "datetime") {
+            if (property.Type.GetTypeString() == "\\DateTime") {
 #>
             return new \DateTime($this->_propDict["<#=property.Name.ToCamelize()#>"]);
 <#
@@ -180,7 +186,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     public function set<#=property.Name.ToCheckedCase()#>($val)
     {
 <#
-    if (property.Type.GetTypeString() == "datetime") {
+    if (property.Type.GetTypeString() == "\\DateTime") {
 #>
         $this->_propDict["<#=property.Name.ToCamelize()#>"] 
             = $val->format(\DateTime::ISO8601) . "Z";

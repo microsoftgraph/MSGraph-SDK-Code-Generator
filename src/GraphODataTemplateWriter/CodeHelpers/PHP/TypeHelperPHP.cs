@@ -42,6 +42,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             {
                 case "String":
                 case "Json":
+                case "Guid":
                     return "string";
                 case "Int8":
                 case "Int16":
@@ -50,16 +51,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                     return "int";
                 case "Double":
                     return "float";
-                case "Guid":
-                    return "UUID";
                 case "DateTimeOffset":
                 case "Date":
-                    return "datetime";
+                    return "\\DateTime";
                 case "Boolean":
                     return "bool";
                 case "Binary":
                 case "Stream":
-                    return "bytes";
+                    return "\\GuzzleHttp\\Psr7\\Stream";
                 default:
                     return @type.Name.ToUpperFirstChar();
             }
