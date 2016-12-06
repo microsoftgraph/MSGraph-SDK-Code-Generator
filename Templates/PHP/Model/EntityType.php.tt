@@ -73,23 +73,12 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     /** 
     * Gets the <#=property.Name#>
     *
-    * @return array(<#=property.Name.ToCheckedCase().Remove(property.Name.ToCheckedCase().Length - 1)#>) The <#=property.Name#>
+    * @return array The <#=property.Name#>
     */
     public function get<#=property.Name.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
-		    if (array_key_exists(0, $this->_propDict["<#=property.Name.ToCamelize()#>"]) && 
-                is_a($this->_propDict["<#=property.Name.ToCamelize()#>"][0], 'Microsoft\\Graph\\Model\\<#=property.Name.ToCheckedCase().Remove(property.Name.ToCheckedCase().Length - 1)#>')) {
-                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
-            } else {
-                $collection = array();
-                foreach ($this->_propDict["<#=property.Name.ToCamelize()#>"] as $item)
-                {
-                    $collection[] = new <#=property.Name.ToCheckedCase().Remove(property.Name.ToCheckedCase().Length - 1)#>($item);
-                }
-                $this->_propDict["<#=property.Name.ToCamelize()#>"] = $collection;
-                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
-			}
+           return $this->_propDict["<#=property.Name.ToCamelize()#>"];
         } else {
             return null;
         }
@@ -120,7 +109,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     public function get<#=property.Name.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
-            if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], '<#=property.Type.GetTypeString()#>')) {
+            if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=property.Type.GetTypeString()#>")) {
                 return $this->_propDict["<#=property.Name.ToCamelize()#>"];
             } else {
                 $this->_propDict["<#=property.Name.ToCamelize()#>"] = new <#=property.Type.GetTypeString()#>($this->_propDict["<#=property.Name.ToCamelize()#>"]);
