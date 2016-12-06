@@ -34,7 +34,7 @@ class <#=complex.Name.ToCheckedCase()#> extends Entity
         return $this;
     }
 
-	/**
+    /**
     * Gets the property dictionary of the <#=complex.Name.ToCheckedCase()#>
     *
     * @return array The list of properties
