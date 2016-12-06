@@ -31,6 +31,7 @@ class <#=complex.Name.ToCheckedCase()#> extends Entity
     {
         parent::__construct();
         $this->_propDict = $propDict;
+        return $this;
     }
 
 	/**

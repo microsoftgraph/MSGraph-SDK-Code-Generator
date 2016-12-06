@@ -50,6 +50,7 @@ if (!(entity.Name.ToCheckedCase() == "Entity")) {
 }
 #>
         $this->_propDict = $propDict;
+        return $this;
     }
 
     /**
