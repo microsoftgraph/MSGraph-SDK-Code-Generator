@@ -13,18 +13,18 @@
      *
      * @param requestUrl The request url
      * @param client The service client
-     * @param options The options for this request
+     * @param requestOptions The options for this request
      */
-    public <#=BaseTypeCollectionWithReferencesRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options) {
-        super(requestUrl, client, options);
+    public <#=BaseTypeCollectionWithReferencesRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
     }
 
     public <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest() {
         return buildRequest(getOptions());
     }
 
-    public <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest(final List<Option> options) {
-        return new <#=TypeCollectionWithReferencesRequest(c)#>(getRequestUrl(), getClient(), options);
+    public <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest(final List<Option> requestOptions) {
+        return new <#=TypeCollectionWithReferencesRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
     }
 
     public <#=ITypeWithReferencesRequestBuilder(c)#> byId(final String id) {

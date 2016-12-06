@@ -14,10 +14,10 @@
      *
      * @param requestUrl The request url
      * @param client The service client
-     * @param options The options for this request
+     * @param requestOptions The options for this request
      */
-    public <#=BaseTypeCollectionWithReferencesRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final List<Option> options) {
-        super(requestUrl, client, options, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
+    public <#=BaseTypeCollectionWithReferencesRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final List<Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
     }
 
     public void get(final ICallback<<#=ITypeCollectionWithReferencesPage(c)#>> callback) {

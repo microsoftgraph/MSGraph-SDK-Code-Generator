@@ -13,6 +13,6 @@
 
     <#=ITypeCollectionRequest(c)#> buildRequest();
 
-    <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> options);
+    <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> requestOptions);
 
 }

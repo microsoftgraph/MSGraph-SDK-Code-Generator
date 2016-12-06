@@ -177,12 +177,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         public static bool IsAction(this OdcmMethod method)
         {
-            return method.Verbs == OdcmAllowedVerbs.Post;
-        }
-
-        public static bool IsFunction(this OdcmMethod method)
-        {
-            return method.IsComposable; //TODO:REVIEW
+            return !method.IsFunction;
         }
 
         public static string GetNamespace(this OdcmModel model)

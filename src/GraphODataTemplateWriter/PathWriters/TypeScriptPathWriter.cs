@@ -9,7 +9,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
 
-    public class JavaScriptPathWriter : PathWriterBase
+    public class TypeScriptPathWriter : PathWriterBase
     {
 
         public override string WritePath(ITemplateInfo template, String baseFileName)
@@ -45,9 +45,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
 
         private string CreatePathFromNamespace(string @namespace)
         {
-            var splittedPaths = @namespace.Split('.');
+            var splitPaths = @namespace.Split('.');
 
-            var destinationPath = splittedPaths.Aggregate(string.Empty, (current, path) =>
+            var destinationPath = splitPaths.Aggregate(string.Empty, (current, path) =>
                                   current + string.Format("{0}{1}", path, Path.DirectorySeparatorChar));
             return destinationPath;
         }

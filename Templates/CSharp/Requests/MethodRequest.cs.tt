@@ -5,12 +5,18 @@
 
 var method = host.CurrentType.AsOdcmMethod();
 var entityName = method.Class.Name.ToCheckedCase();
-var isAction = method.IsAction();
-var httpMethod = isAction ? "POST" : "GET";
+
+var isFunction = method.IsFunction;
+var isAction = !isFunction;
+var isComposable = method.IsComposable;
+
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
 var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString().ToCheckedCase();
+var returnEntityParameter = string.Empty;
+if (returnEntityType != null) {returnEntityParameter = returnEntityType.ToLower();}
+
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
 
 var isCollection = method.IsCollection;
@@ -60,7 +66,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
             IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
-            this.Method = "<#=httpMethod#>";
 <#
     if (includeRequestBody)
     {
@@ -83,17 +88,21 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 <#
     }
 #>
+<# 
+    if(isAction) // POST
+    {
+#>
 
         /// <summary>
-        /// Issues the <#=httpMethod#> request.
+        /// Issues the POST request.
         /// </summary>
-        public <#=methodOverloadReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async()
+        public <#=methodOverloadReturnType#> PostAsync()
         {
-            return this.<#=httpMethod.ToLower().ToCheckedCase()#>Async(CancellationToken.None);
+            return this.PostAsync(CancellationToken.None);
         }
 
         /// <summary>
-        /// Issues the <#=httpMethod#> request.
+        /// Issues the POST request.
         /// </summary>
         /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
 <#
@@ -105,7 +114,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     }
 #>
         /// <returns>The task to await for async call.</returns>
-        public <#=methodReturnType#> <#=httpMethod.ToLower().ToCheckedCase()#>Async(
+        public <#=methodReturnType#> PostAsync(
 <#
     if (returnsStream)
     {
@@ -122,6 +131,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     }
 #>
         {
+            this.Method = "POST";
 <#
     var methodParameter = includeRequestBody ? "this.RequestBody" : "null";
 
@@ -175,12 +185,317 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 #>
         }
 
+<#  } // End POST
+
+#>
+
+<# 
+    if(method.IsFunction) // GET for a OData function.
+    {
+#>
+        /// <summary>
+        /// Issues the GET request.
+        /// </summary>
+        public <#=methodOverloadReturnType#> GetAsync()
+        {
+            return this.GetAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Issues the GET request.
+        /// </summary>
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+<#
+    if (returnsStream)
+    {
+#>
+        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+<#
+    }
+#>
+        /// <returns>The task to await for async call.</returns>
+        public <#=methodReturnType#> GetAsync(
+<#
+    if (returnsStream)
+    {
+#>
+            CancellationToken cancellationToken,
+            HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)
+<#
+    }
+    else
+    {
+#>
+            CancellationToken cancellationToken)
+<#
+    }
+#>
+        {
+            this.Method = "GET";
+<#
+   // var methodParameter = includeRequestBody ? "this.RequestBody" : "null";
+
+    if (isCollection)
+    {
+#>
+            var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(null, cancellationToken).ConfigureAwait(false);
+            if (response != null && response.Value != null && response.Value.CurrentPage != null)
+            {
+                if (response.AdditionalData != null)
+                {
+                    response.Value.AdditionalData = response.AdditionalData;
+
+                    object nextPageLink;
+                    response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
+
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        response.Value.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                return response.Value;
+            }
+
+            return null;
+<#
+    }
+    else if (returnsStream)
+    {
+#>
+            return this.SendStreamRequestAsync(null, cancellationToken, httpCompletionOption);
+<#
+    }
+    else if (!string.IsNullOrEmpty(sendAsyncReturnType))
+    {
+#>
+            return this.SendAsync<<#=sendAsyncReturnType#>>(null, cancellationToken);
+<#
+    }
+    else
+    {
+#>
+            return this.SendAsync(null, cancellationToken);
+<#
+    }
+#>
+        }
+<#  } // End GET
+ #>
+
+<# 
+    if(method.IsFunction && method.IsComposable) // PATCH for a OData function.
+    {
+#>
+
+        /// <summary>
+        /// Issues the PATCH request.
+        /// </summary>
+        /// <param name=<#=returnEntityParameter#>>The <#=returnEntityType#> object set with the properties to update.</param>
+        /// <returns>The task to await for async call.</returns>
+        public <#=methodReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter#>)
+        {
+            return this.PatchAsync(<#=returnEntityParameter#>, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Issues the PATCH request.
+        /// </summary>
+        /// <param name=<#=returnEntityParameter#>>The <#=returnEntityType#> object set with the properties to update.</param>
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+<#
+    if (returnsStream)
+    {
+#>
+        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+<#
+    }
+#>
+        /// <returns>The task to await for async call.</returns>
+        public <#=methodReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter#>, 
+<#
+    if (returnsStream)
+    {
+#>
+            CancellationToken cancellationToken,
+            HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)
+<#
+    }
+    else
+    {
+#>
+            CancellationToken cancellationToken)
+<#
+    }
+#>
+        {
+            this.Method = "PATCH";
+<#
+    var methodParameter = includeRequestBody ? "this.RequestBody" : "null";
+
+    if (isCollection)
+    {
+#>
+            var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=returnEntityParameter#>, cancellationToken).ConfigureAwait(false);
+            if (response != null && response.Value != null && response.Value.CurrentPage != null)
+            {
+                if (response.AdditionalData != null)
+                {
+                    response.Value.AdditionalData = response.AdditionalData;
+
+                    object nextPageLink;
+                    response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
+
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        response.Value.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                return response.Value;
+            }
+
+            return null;
+<#
+    }
+    else if (returnsStream)
+    {
+#>
+            return this.SendStreamRequestAsync(null, cancellationToken, httpCompletionOption);
+<#
+    }
+    else if (!string.IsNullOrEmpty(sendAsyncReturnType))
+    {
+#>
+            return this.SendAsync<<#=sendAsyncReturnType#>>(<#=returnEntityParameter#>, cancellationToken);
+<#
+    }
+    else
+    {
+#>
+            return this.SendAsync(<#=returnEntityParameter#>, cancellationToken);
+<#
+    }
+#>
+        }        
+<#  } // End PATCH for a OData function.
+#>
+<# 
+    if(method.IsFunction && method.IsComposable) // PUT for a OData function.
+    {
+#>
+
+        /// <summary>
+        /// Issues the PUT request.
+        /// </summary>
+        /// <param name=<#=returnEntityParameter#>>The <#=returnEntityType#> object to update.</param>
+        /// <returns>The task to await for async call.</returns>
+        public <#=methodReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter#>)
+        {
+            return this.PutAsync(<#=returnEntityParameter#>, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Issues the PUT request.
+        /// </summary>
+        /// <param name=<#=returnEntityParameter#>>The <#=returnEntityType#> object to update.</param>
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+<#
+    if (returnsStream)
+    {
+#>
+        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+<#
+    }
+#>
+        /// <returns>The task to await for async call.</returns>
+        public <#=methodReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter#>, 
+<#
+    if (returnsStream)
+    {
+#>
+            CancellationToken cancellationToken,
+            HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)
+<#
+    }
+    else
+    {
+#>
+            CancellationToken cancellationToken)
+<#
+    }
+#>
+        {
+            this.Method = "PUT";
+<#
+    var methodParameter = includeRequestBody ? "this.RequestBody" : "null";
+
+    if (isCollection)
+    {
+#>
+            var response = await this.SendAsync<<#=entityName#><#=methodName#>CollectionResponse>(<#=returnEntityParameter#>, cancellationToken).ConfigureAwait(false);
+            if (response != null && response.Value != null && response.Value.CurrentPage != null)
+            {
+                if (response.AdditionalData != null)
+                {
+                    response.Value.AdditionalData = response.AdditionalData;
+
+                    object nextPageLink;
+                    response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
+
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        response.Value.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                return response.Value;
+            }
+
+            return null;
+<#
+    }
+    else if (returnsStream)
+    {
+#>
+            return this.SendStreamRequestAsync(null, cancellationToken, httpCompletionOption);
+<#
+    }
+    else if (!string.IsNullOrEmpty(sendAsyncReturnType))
+    {
+#>
+            return this.SendAsync<<#=sendAsyncReturnType#>>(<#=returnEntityParameter#>, cancellationToken);
+<#
+    }
+    else
+    {
+#>
+            return this.SendAsync(<#=returnEntityParameter#>, cancellationToken);
+<#
+    }
+#>
+        }        
+<#  } // End PUT for a OData function.
+#>
 <#
     if (!returnsStream)
     {
         if (features.CanExpand)
         {
 #>
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
