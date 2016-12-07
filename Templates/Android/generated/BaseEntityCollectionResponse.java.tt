@@ -26,6 +26,13 @@ import com.google.gson.annotations.*;
     @Expose(serialize = false)
     public String nextLink;
 
+    private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
+
+    @Override
+    public final AdditionalDataManager getAdditionalDataManager() {
+        return additionalDataManager;
+    }
+
 <#=CreateRawJsonObject()#>
 <#=UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
 }
