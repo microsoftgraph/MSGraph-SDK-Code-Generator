@@ -1,0 +1,143 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License. \n See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension="\\" #>
+<#
+CustomT4Host host       = (CustomT4Host) Host;
+OdcmModel model         = host.CurrentModel;
+CodeWriterPHP writer    = (CodeWriterPHP) host.CodeWriter;
+OdcmClass complex		= (OdcmClass)host.CurrentType;
+#>
+<#=writer.WriteHeader(writer.GetDocBlock(complex.Name.ToCheckedCase()))#>
+namespace Microsoft\Graph\Model;
+<#=writer.GetClassBlock(complex.Name.ToCheckedCase().ToString(), "Model")#>
+class <#=complex.Name.ToCheckedCase()#> extends Entity
+{
+    /**
+    * The array of properties available 
+    * to the model
+    *
+    * @var array(string => string)
+    */
+    private $_propDict;
+    /**
+    * <#=complex.Name.ToCheckedCase()#> constructor
+    *
+    * @param array $propDict List of properties to set
+    * Defaults to an empty array
+    *
+    * @return <#=complex.Name.ToCheckedCase()#>
+    */
+    public function __construct($propDict=array())
+    {
+        parent::__construct();
+        $this->_propDict = $propDict;
+        return $this;
+    }
+
+    /**
+    * Gets the property dictionary of the <#=complex.Name.ToCheckedCase()#>
+    *
+    * @return array The list of properties
+    */
+    public function getProperties()
+    {
+        return $this->_propDict;
+    }
+<# 
+foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
+    var propertyName = property.Name.ToUnderscore();
+    if (!property.Type.IsComplex()) {
+#>
+    
+    /**
+    * Gets the <#=property.Name#>
+    *
+    * @return <#=property.Type.GetTypeString()#> The <#=property.Name#>
+    */
+    public function get<#=property.Name.ToCheckedCase()#>()
+    {
+        if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
+<#
+            if (property.Type.GetTypeString() == "\\DateTime") {
+#>
+            return new \DateTime($this->_propDict["<#=property.Name.ToCamelize()#>"]);
+<#
+            } else {
+#>
+            return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+<#
+            }
+#>
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the <#=property.Name#>
+    *
+    * @param <#=property.Type.GetTypeString()#> $val The value of the <#=property.Name#>
+    *
+    * @return <#=complex.Name.ToCheckedCase()#>
+    */
+    public function set<#=property.Name.ToCheckedCase()#>($val)
+    {
+<#
+            if (property.Type.GetTypeString() == "\\DateTime") {
+#>
+        $this->_propDict["<#=propertyName#>"] 
+            = $val->format(\DateTime::ISO8601) . "Z";
+<#
+            } else {
+#>
+        $this->_propDict["<#=propertyName#>"] = $val;
+<#
+            }
+#>
+        return $this;
+    }
+<#
+   } else {
+#>
+
+    /**
+    * Gets the <#=property.Name#>
+    *
+    * @return <#=property.Type.GetTypeString()#> The <#=property.Name#>
+    */
+    public function get<#=property.Name.ToCheckedCase()#>()
+    {
+        if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
+            if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=property.Type.GetTypeString()#>")) {
+                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+            } else {
+                $this->_propDict["<#=property.Name.ToCamelize()#>"] = new <#=property.Type.GetTypeString()#>($this->_propDict["<#=property.Name.ToCamelize()#>"]);
+                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the <#=property.Name#>
+    *
+    * @param <#=property.Type.GetTypeString()#> $val The value to assign to the <#=property.Name#>
+    *
+    * @return <#=complex.Name.ToCheckedCase()#> The <#=complex.Name.ToUpperFirstChar()#>
+    */
+    public function set<#=property.Name.ToCheckedCase()#>($val)
+    {
+<#  if (property.Type.GetTypeString() == "bool") { #>
+        $this->_propDict["<#=property.Name#>"] = boolval($val);
+<#  } else if (property.Type.GetTypeString() == "int") { #>
+        $this->_propDict["<#=property.Name#>"] = intval($val);
+<# } else { #>
+        $this->_propDict["<#=property.Name#>"] = $val;
+<# } #>
+         return $this;
+    }
+<#
+        }
+    }
+#>
+}
