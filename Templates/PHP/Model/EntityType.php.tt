@@ -25,34 +25,29 @@ class <#=entity.Name.ToCheckedCase()#> extends Entity
 }
 #>
 {
+<#
+if (entity.Name.ToCheckedCase() == "Entity") {
+#>
     /**
     * The array of properties available
     * to the model
     *
     * @var array(string => string)
     */
-    private $_propDict;
+    protected $_propDict;
     
     /**
     * Construct a new <#=entity.Name.ToCheckedCase()#>
     *
     * @param array $propDict A list of properties to set
-    *
-    * @return <#=entity.Name.ToCheckedCase()#>
     */
     function __construct($propDict = array())
     {
-<#
-if (!(entity.Name.ToCheckedCase() == "Entity")) {
-#>
-        parent::__construct();
+		$this->_propDict = $propDict;
+    }
 <#
 }
 #>
-        $this->_propDict = $propDict;
-        return $this;
-    }
-
     /**
     * Gets the property dictionary of the <#=entity.Name.ToUpperFirstChar()#>
     *
@@ -70,11 +65,11 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
         if (property.IsCollection()) {
 #>
 
-    /** 
-    * Gets the <#=property.Name#>
-    *
-    * @return array The <#=property.Name#>
-    */
+     /** 
+     * Gets the <#=property.Name#>
+     *
+     * @return array The <#=property.Name#>
+     */
     public function get<#=property.Name.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
