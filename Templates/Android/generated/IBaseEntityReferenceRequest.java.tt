@@ -32,4 +32,22 @@
     <#=IBaseTypeReferenceRequest(c)#> expand(final String value);
 
 <# } #>
+<# if (c.GetFeatures().CanUpdate) { #>
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=TypeName(c)#> The <#=TypeName(c)#> to PUT
+     * @param callback The callback to be called after success or failure
+     */
+    void put(<#=TypeName(c)#> src<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=TypeName(c)#> The <#=TypeName(c)#> to PUT
+     * @return The <#=TypeName(c)#>
+     * @throws ClientException An exception occurs if there was an error while the request was sent
+     */
+    <#=TypeName(c)#> put(<#=TypeName(c)#> src<#=TypeName(c)#>) throws ClientException;
+<# } #>
 }

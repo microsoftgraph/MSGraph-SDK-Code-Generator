@@ -52,4 +52,26 @@
         return (<#=TypeReferenceRequest(c)#>)this;
     }
 <# } #>
+<# if (c.GetFeatures().CanUpdate) { #>
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=TypeName(c)#> The <#=TypeName(c)#> reference to PUT
+     * @param callback The callback to be called after success or failure
+     */
+    public void put(<#=TypeName(c)#> src<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
+        send(HttpMethod.PUT, callback, src<#=TypeName(c)#>);
+    }
+
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=TypeName(c)#> The <#=TypeName(c)#> reference to PUT
+     * @return The <#=TypeName(c)#>
+     * @throws ClientException An exception occurs if there was an error while the request was sent
+     */
+    public <#=TypeName(c)#> put(<#=TypeName(c)#> src<#=TypeName(c)#>) throws ClientException {
+        return send(HttpMethod.PUT, src<#=TypeName(c)#>);
+    }
+<# } #>
 }
