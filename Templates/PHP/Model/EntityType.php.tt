@@ -20,7 +20,7 @@ class <#=entity.Name.ToCheckedCase()#> implements \JsonSerializable
 <#
 } else {
 #>
-class <#=entity.Name.ToCheckedCase()#> extends Entity
+class <#=entity.Name.ToCheckedCase()#> extends <#=entity.Base.Name.ToCheckedCase() #>
 <# 
 }
 #>
@@ -45,9 +45,7 @@ if (entity.Name.ToCheckedCase() == "Entity") {
     {
 		$this->_propDict = $propDict;
     }
-<#
-}
-#>
+
     /**
     * Gets the property dictionary of the <#=entity.Name.ToUpperFirstChar()#>
     *
@@ -57,14 +55,15 @@ if (entity.Name.ToCheckedCase() == "Entity") {
     {
         return $this->_propDict;
     }
-<# 
+    
+<#
+}
 foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
     var propertyName = property.Name.ToUnderscore();
     var propertyNameCap = property.Name.ToUpperFirstChar();
     if (property.Type.IsComplex()) {
         if (property.IsCollection()) {
 #>
-
     /** 
     * Gets the <#=property.Name#>
     *
@@ -78,7 +77,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
             return null;
         }
     }
-	
+    
     /** 
     * Sets the <#=property.Name#>
     *
@@ -91,11 +90,10 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 		$this->_propDict["<#=property.Name.ToCamelize()#>"] = $val;
         return $this;
     }
-
+    
 <#
    } else {
 #>
-
     /**
     * Gets the <#=property.Name#>
     *
@@ -113,7 +111,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
         }
         return null;
     }
-
+    
     /**
     * Sets the <#=property.Name#>
     *
@@ -132,11 +130,11 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 <# } #>
         return $this;
     }
+    
 <#
             }
         } else {
 #>
-
     /**
     * Gets the <#=property.Name#>
     *
@@ -160,7 +158,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
             return null;
         }
     }
-
+    
     /**
     * Sets the <#=property.Name#>
     *
@@ -190,6 +188,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 #>
         return $this;
     }
+    
 <#
 		}
 	}
