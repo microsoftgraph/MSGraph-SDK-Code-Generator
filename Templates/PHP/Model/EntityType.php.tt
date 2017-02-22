@@ -16,7 +16,7 @@ namespace Microsoft\Graph\Model;
 <#
 if (entity.Name.ToCheckedCase() == "Entity") {
 #>
-class <#=entity.Name.ToCheckedCase()#>
+class <#=entity.Name.ToCheckedCase()#> implements \JsonSerializable
 <#
 } else {
 #>
@@ -65,11 +65,11 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
         if (property.IsCollection()) {
 #>
 
-     /** 
-     * Gets the <#=property.Name#>
-     *
-     * @return array The <#=property.Name#>
-     */
+    /** 
+    * Gets the <#=property.Name#>
+    *
+    * @return array The <#=property.Name#>
+    */
     public function get<#=property.Name.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
@@ -192,6 +192,19 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     }
 <#
 		}
+	}
+	if (entity.Name.ToCheckedCase() == "Entity") {
+#>
+    /**
+    * Serializes the object by property array
+    *
+    * @return array The list of properties
+    */
+    public function jsonSerialize()
+    {
+        return $this->getProperties();
+    }
+<#
 	}
 #>
 }
