@@ -79,8 +79,13 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
             if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=property.Type.GetTypeString()#>")) {
                 return $this->_propDict["<#=property.Name.ToCamelize()#>"];
             } else {
+<# if (property.Type.GetTypeString() == "\\GuzzleHttp\\Psr7\\Stream") { #>
+                $this->_propDict["<#=property.Name.ToCamelize()#>"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["<#=property.Name.ToCamelize()#>"]);
+                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+<# } else { #>
                 $this->_propDict["<#=property.Name.ToCamelize()#>"] = new <#=property.Type.GetTypeString()#>($this->_propDict["<#=property.Name.ToCamelize()#>"]);
                 return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+<# } #>
             }
         }
         return null;
