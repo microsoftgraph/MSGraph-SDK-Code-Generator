@@ -10,7 +10,17 @@ OdcmClass complex		= (OdcmClass)host.CurrentType;
 <#=writer.WriteHeader(writer.GetDocBlock(complex.Name.ToCheckedCase()))#>
 namespace Microsoft\Graph\Model;
 <#=writer.GetClassBlock(complex.Name.ToCheckedCase().ToString(), "Model")#>
+<#
+if (complex.Base != null) {
+#>
+class <#=complex.Name.ToCheckedCase()#> extends <#=complex.Base.Name.ToCheckedCase()#>
+<#
+} else {
+#>
 class <#=complex.Name.ToCheckedCase()#> extends Entity
+<#
+}
+#>
 {
 <# 
 foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
