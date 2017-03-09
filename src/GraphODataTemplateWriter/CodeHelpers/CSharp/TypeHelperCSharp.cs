@@ -212,7 +212,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return GetSanitizedPropertyName(property.Name);
         }
 
-        public static string GetSanitizedPropertyName(this string property, string prefix = null, bool hasReservedModelWords)
+        public static string GetSanitizedPropertyName(this string property, string prefix = null, bool hasReservedModelWords = false)
         {
             if (GetReservedNames().Contains(property) || (hasReservedModelWords && GetReservedModelNames().Contains(property)))
             {
