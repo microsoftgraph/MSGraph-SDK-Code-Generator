@@ -13,7 +13,7 @@ var isComposable = method.IsComposable;
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
-var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString().ToCheckedCase();
+var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.ToCheckedCase().GetTypeString();
 var returnEntityParameter = string.Empty;
 if (returnEntityType != null) {returnEntityParameter = returnEntityType.ToLower();}
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();

@@ -138,6 +138,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 case "binary":
                     return "byte[]";
                 case "boolean":
+                case "bool":
                     return "bool";
                 case "date":
                     return "Date";
