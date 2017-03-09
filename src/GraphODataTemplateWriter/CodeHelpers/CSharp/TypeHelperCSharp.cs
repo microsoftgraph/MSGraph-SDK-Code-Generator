@@ -104,6 +104,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             };
         }
 
+        public static ICollection<string> GetReservedModelNames()
+        {
+            return new HashSet<string>(StringComparer.Ordinal)
+            {
+                "Required"
+            };
+        }
+
         private static readonly ICollection<string> SimpleTypes =
             new HashSet<string> (StringComparer.OrdinalIgnoreCase)
             {
@@ -204,9 +212,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return GetSanitizedPropertyName(property.Name);
         }
 
-        public static string GetSanitizedPropertyName(this string property, string prefix = null)
+        public static string GetSanitizedPropertyName(this string property, string prefix = null, bool hasReservedModelWords)
         {
-            if (GetReservedNames().Contains(property))
+            if (GetReservedNames().Contains(property) || (hasReservedModelWords && GetReservedModelNames().Contains(property)))
             {
                 var reservedPrefix = string.IsNullOrEmpty(prefix) ? DefaultReservedPrefix : prefix;
 
