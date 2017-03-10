@@ -96,7 +96,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
         /// </summary>
         <#=attributeDefinition#>
-        public <#=propertyType#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
+        public <#=propertyType#> <#=propertyName.GetSanitizedPropertyName(property)#> { get; set; }
     <#
             }
         }
