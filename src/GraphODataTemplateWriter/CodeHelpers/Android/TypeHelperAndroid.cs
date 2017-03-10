@@ -20,6 +20,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
             }
         }
 
+        public static string GetReservedPrefix(this OdcmType @type)
+        {
+            return ReservedPrefix;
+        }
+
         public static string GetTypeString(this OdcmType @type)
         {
             switch (@type.Name)
