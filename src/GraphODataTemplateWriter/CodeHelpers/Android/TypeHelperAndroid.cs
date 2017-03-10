@@ -44,6 +44,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
                     return "com.google.gson.JsonElement";
                 case "Binary":
                     return "byte[]";
+                case "Single":
+                    return "float";
                 default:
                     return @type.Name.ToUpperFirstChar();
             }
