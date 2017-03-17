@@ -158,7 +158,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         public static bool IsTypeNullable(this OdcmType type)
         {
             var t = type.GetTypeString();
-            return type is OdcmClass || t == "Date" || t == "Stream" || t == "string" || t == "byte[]";
+            return type is OdcmClass || t == "Date" || t == "Stream" || t == "string" || t == "byte[]" || t == "TimeOfDay" || t == "Duration";
         }
 
         public static bool IsByteArray(this OdcmProperty property)
