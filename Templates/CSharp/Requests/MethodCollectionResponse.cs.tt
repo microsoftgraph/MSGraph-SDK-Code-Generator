@@ -44,7 +44,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets the <#=propertyName#>.
         /// </summary>
-		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="<#=property.Name#>", Required = Required.Default)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="<#=property.Name#>", Required = Newtonsoft.Json.Required.Default)]
         public <#=propertyType#> <#=propertyName#> { get; set; }
         <#
                 }
