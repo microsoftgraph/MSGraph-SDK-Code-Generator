@@ -197,8 +197,16 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
 
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
+
     var entityName = this.GetEntityNameString(odcmClass);
-    var lowerCaseEntityName = entityName.ToLowerFirstChar();
+    
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (entityName.EndsWith("Request"))
+	{
+		entityName = String.Concat(entityName, "Object");
+	}
+
+	var lowerCaseEntityName = entityName.ToLowerFirstChar();
 
     this.AppendCreateAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, false);
     stringBuilder.Append(Environment.NewLine);
@@ -235,6 +243,13 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
 
 public void AppendGetAsyncHeader(string entityName, StringBuilder stringBuilder, bool includeSendParams)
 {
+
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (entityName.EndsWith("Request"))
+	{
+		entityName = String.Concat(entityName, "Object");
+	}
+
     if (includeSendParams)
     {
         stringBuilder.AppendFormat("        ");
@@ -297,6 +312,12 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool initializeCollec
 
 public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams)
 {
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (entityName.EndsWith("Request"))
+	{
+		entityName = String.Concat(entityName, "Object");
+	}
+
     if (includeSendParams)
     {
         stringBuilder.AppendFormat("        ");
@@ -325,6 +346,13 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
     var stringBuilder = new StringBuilder();
 
     var entityName = this.GetEntityNameString(odcmClass);
+
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (entityName.EndsWith("Request"))
+	{
+		entityName = String.Concat(entityName, "Object");
+	}
+
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
 
     var templateWriterHost = (CustomT4Host)Host;
@@ -395,6 +423,13 @@ public string GetSelectMethod(string requestType)
 
 public string GetSelectExpressionMethod(string requestType, string underlyingType)
 {
+
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (underlyingType.EndsWith("Request"))
+	{
+		underlyingType = String.Concat(underlyingType, "Object");
+	}
+
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append(
@@ -429,6 +464,13 @@ public string GetSelectExpressionMethod(string requestType, string underlyingTyp
 
 public string GetExpandExpressionMethod(string requestType, string underlyingType)
 {
+
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (underlyingType.EndsWith("Request"))
+	{
+		underlyingType = String.Concat(underlyingType, "Object");
+	}
+
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append(
