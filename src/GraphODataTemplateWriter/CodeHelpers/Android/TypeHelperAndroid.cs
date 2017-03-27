@@ -42,6 +42,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
                     return "com.microsoft.graph.model.DateOnly";
                 case "TimeOfDay":
                     return "com.microsoft.graph.model.TimeOfDay";
+                case "Duration":
+                    return "javax.xml.datatype.Duration";
                 case "Json":
                     return "com.google.gson.JsonElement";
                 case "Binary":
