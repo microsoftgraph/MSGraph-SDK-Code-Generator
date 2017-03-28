@@ -359,7 +359,7 @@
     public string ParamType(OdcmParameter c) {
         var typeString = c.Type.GetTypeString();
         if (c.IsCollection){
-            typeString = String.Format("List<{0}>", c.Type.GetTypeString());
+            typeString = String.Format("java.util.List<{0}>", c.Type.GetTypeString());
         } else if (typeString.Equals("Stream")) {
 
             // Excel introduced the use of "Edm.Stream" types
@@ -515,8 +515,7 @@ import {0}.generated.*;
 import {0}.options.*;
 import {0}.serializer.*;
 
-import java.util.Arrays;
-import java.util.List;";
+import java.util.Arrays;";
         return string.Format(format,
             host.CurrentModel.NamespaceName(),
             host.TemplateInfo.OutputParentDirectory);
@@ -643,7 +642,7 @@ public {1} {2}{3}{4} {{";
             {
                 if (!property.IsNavigation())
                 {
-                    propertyType = "List<" + property.GetTypeString() + ">";
+                    propertyType = "java.util.List<" + property.GetTypeString() + ">";
                 }
                 else
                 {
