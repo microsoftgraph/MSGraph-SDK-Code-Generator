@@ -21,7 +21,7 @@
      * @param client The service client
      * @param requestOptions The options for this request
      */
-    public <#=BaseTypeCollectionRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> requestOptions) {
+    public <#=BaseTypeCollectionRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
         super(requestUrl, client, requestOptions, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
 <# } else { #>

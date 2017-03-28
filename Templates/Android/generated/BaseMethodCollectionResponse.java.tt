@@ -14,7 +14,7 @@ import com.google.gson.annotations.*;
 
     @SerializedName("value")
     @Expose
-    public List<<#=OdcmMethodReturnType(c as OdcmMethod)#>> value;
+    public java.util.List<<#=OdcmMethodReturnType(c as OdcmMethod)#>> value;
 
     @SerializedName("@odata.nextLink")
     @Expose(serialize = false)

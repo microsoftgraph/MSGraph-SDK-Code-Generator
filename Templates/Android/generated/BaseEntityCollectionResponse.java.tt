@@ -17,7 +17,7 @@ import com.google.gson.annotations.*;
      */
     @SerializedName("value")
     @Expose
-    public List<<#=TypeName(c)#>> value;
+    public java.util.List<<#=TypeName(c)#>> value;
 
     /**
      * The url to the next page of this collection, or null

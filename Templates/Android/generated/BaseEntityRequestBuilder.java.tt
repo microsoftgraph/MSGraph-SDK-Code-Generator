@@ -15,7 +15,7 @@
      * @param client The service client
      * @param requestOptions The options for this request
      */
-    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> requestOptions) {
+    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -29,7 +29,7 @@
     /**
      * Creates the request with specific requestOptions instead of the existing requestOptions
      */
-    public <#=ITypeRequest(c)#> buildRequest(final List<Option> requestOptions) {
+    public <#=ITypeRequest(c)#> buildRequest(final java.util.List<Option> requestOptions) {
         return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
     }
 
