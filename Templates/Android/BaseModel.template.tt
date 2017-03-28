@@ -660,7 +660,7 @@ public {1} {2}{3}{4} {{";
                 propertyName.SplitCamelCase(),
                 property.Name,
                 propertyType,
-                property.SanitizePropertyName().ToLowerFirstChar());
+                property.Name.SanitizePropertyName(property).ToLowerFirstChar());
         }
         return sb.ToString();
     }
@@ -685,7 +685,7 @@ public {1} {2}{3}{4} {{";
                 ParamName(p).SplitCamelCase(),
                 ParamName(p),
                 ParamType(p),
-                p.SanitizePropertyName().ToLowerFirstChar()
+                ParamName(p).SanitizePropertyName(p).ToLowerFirstChar()
             );
         }
         return sb.ToString();
@@ -755,7 +755,7 @@ public {1} {2}{3}{4} {{";
             {0} = new {2}(response, null);
         }}
 ",
-            property.SanitizePropertyName(),
+            property.Name.SanitizePropertyName(property),
             BaseTypeCollectionResponse(property),
             TypeCollectionPage(property),
             property.GetTypeString());

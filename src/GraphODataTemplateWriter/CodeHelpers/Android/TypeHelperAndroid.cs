@@ -84,14 +84,27 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
             return property.Name.ToLowerFirstChar();
         }
 
-        public static string SanitizePropertyName(this OdcmObject property)
+        public static string SanitizePropertyName(this string property, OdcmObject odcmProperty = null)
         {
-            if (ReservedNames.Contains(property.Name))
+            if (ReservedNames.Contains(property))
             {
-                return ReservedPrefix + property.Name;
+                return ReservedPrefix + property;
             }
 
-            return property.Name.Replace("@", string.Empty).Replace(".", "_");
+            if (odcmProperty != null && property == odcmProperty.Name.ToUpperFirstChar())
+            {
+                // Check whether the property type is the same as the class name.
+                if (odcmProperty.Projection.Type.Name.ToUpperFirstChar() == odcmProperty.Name.ToUpperFirstChar())
+                {
+                    // Name the property: {metadataName} + "Property"
+                    return string.Concat(property, "Property");
+                }
+
+                // Name the property by its type. Sanitize it in case the type is a reserved name.  
+                return odcmProperty.Projection.Type.Name.ToUpperFirstChar().SanitizePropertyName(odcmProperty);
+            }
+
+            return property.Replace("@", string.Empty).Replace(".", "_");
         }
 
         public static string GetToLowerImport(this OdcmProperty property)
