@@ -46,6 +46,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 case "Boolean":
                     typeStr = "boolean";
                     break;
+                case "Single":
+                    typeStr = "any";
+                    break;
+                case "Byte": //https://graph.microsoft.io/en-us/docs/api-reference/beta/resources/intune_onboarding_rgbcolor
+                    typeStr = "number";
+                    break;
 
             }
             return (prop.IsCollection) ? "[" + typeStr + "]" : typeStr;
