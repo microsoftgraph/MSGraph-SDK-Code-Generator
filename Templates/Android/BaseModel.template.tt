@@ -619,6 +619,7 @@ public {1} {2}{3}{4} {{";
         var format =
 @"    /**
      * The {0}.
+	 * {4}
      */
     @SerializedName(""{1}"")
     @Expose
@@ -628,6 +629,7 @@ public {1} {2}{3}{4} {{";
         var collectionFormat =
 @"    /**
      * The {0}.
+	 * {4}
      */
     public transient {2} {3};
 
@@ -659,7 +661,8 @@ public {1} {2}{3}{4} {{";
                 propertyName.SplitCamelCase(),
                 property.Name,
                 propertyType,
-                property.Name.SanitizePropertyName(property).ToLowerFirstChar());
+                property.Name.SanitizePropertyName(property).ToLowerFirstChar(),
+				property.LongDescription);
         }
         return sb.ToString();
     }
@@ -671,10 +674,11 @@ public {1} {2}{3}{4} {{";
         var format =
 @"    /**
      * The {0}.
+	 * {1}
      */
-    @SerializedName(""{1}"")
+    @SerializedName(""{2}"")
     @Expose
-    public {2} {3};
+    public {3} {4};
 
 ";
         foreach (var p in parameters)
@@ -682,6 +686,7 @@ public {1} {2}{3}{4} {{";
             sb.AppendFormat(
                 format,
                 ParamName(p).SplitCamelCase(),
+				p.LongDescription,
                 ParamName(p),
                 ParamType(p),
                 ParamName(p).SanitizePropertyName(p).ToLowerFirstChar()

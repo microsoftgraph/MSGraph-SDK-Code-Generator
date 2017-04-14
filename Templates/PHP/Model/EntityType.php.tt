@@ -67,6 +67,10 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 
      /** 
      * Gets the <#=property.Name#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
      *
      * @return array The <#=property.Name#>
      */
@@ -81,6 +85,10 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 	
     /** 
     * Sets the <#=property.Name#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
     * @param string $val The <#=property.Name#>
     *
@@ -98,6 +106,10 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 
     /**
     * Gets the <#=property.Name#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
     * @return <#=property.Type.GetTypeString()#> The <#=property.Name#>
     */
@@ -116,6 +128,10 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 
     /**
     * Sets the <#=property.Name#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
     * @param string $val The <#=property.Name#>
     *
@@ -139,6 +155,10 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 
     /**
     * Gets the <#=property.Name#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
     * @return <#=property.Type.GetTypeString()#> The <#=property.Name#>
     */
@@ -163,6 +183,10 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 
     /**
     * Sets the <#=property.Name#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
     * @param <#=property.Type.GetTypeString()#> $val The <#=property.Name#>
     *

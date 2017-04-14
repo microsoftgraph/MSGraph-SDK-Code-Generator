@@ -29,6 +29,10 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     
     /**
     * Gets the <#=property.Name#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
     * @return <#=property.Type.GetTypeString()#> The <#=property.Name#>
     */
@@ -53,6 +57,10 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 
     /**
     * Sets the <#=property.Name#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
     * @param <#=property.Type.GetTypeString()#> $val The value of the <#=property.Name#>
     *
@@ -80,6 +88,10 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 
     /**
     * Gets the <#=property.Name#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
     * @return <#=property.Type.GetTypeString()#> The <#=property.Name#>
     */
@@ -98,6 +110,10 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 
     /**
     * Sets the <#=property.Name#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
     * @param <#=property.Type.GetTypeString()#> $val The value to assign to the <#=property.Name#>
     *
