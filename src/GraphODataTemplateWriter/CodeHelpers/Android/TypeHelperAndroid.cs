@@ -27,6 +27,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
 
         public static string GetTypeString(this OdcmType @type)
         {
+            // If isFlags = true, return an EnumSet instead of an enum. This will be 
+            // serialized to and deserialized from a string
+            if (String.Equals(@type.ToString(), "Vipr.Core.CodeModel.OdcmEnum") && @type.AsOdcmEnum().IsFlags)
+            {
+                return "EnumSet<" + @type.Name.ToUpperFirstChar() + ">";
+            }
+
             switch (@type.Name)
             {
                 case "Int16":

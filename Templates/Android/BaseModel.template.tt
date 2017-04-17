@@ -515,7 +515,8 @@ import {0}.generated.*;
 import {0}.options.*;
 import {0}.serializer.*;
 
-import java.util.Arrays;";
+import java.util.Arrays;
+import java.util.EnumSet;";
         return string.Format(format,
             host.CurrentModel.NamespaceName(),
             host.TemplateInfo.OutputParentDirectory);
