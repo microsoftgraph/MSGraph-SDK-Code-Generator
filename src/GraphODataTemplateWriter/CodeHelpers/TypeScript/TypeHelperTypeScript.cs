@@ -52,7 +52,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                     break;
 
             }
-            return (prop.IsCollection) ? "[" + typeStr + "]" : typeStr;
+            return (prop.IsCollection) ? typeStr + "[]" : typeStr;
             
         }
         public static String UpperCaseFirstChar(this String s)
