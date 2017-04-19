@@ -16,11 +16,11 @@ namespace Microsoft\Graph\Model;
 <#
 if (entity.Name.ToCheckedCase() == "Entity") {
 #>
-class <#=entity.Name.ToCheckedCase()#>
+class <#=entity.Name.ToCheckedCase()#> implements \JsonSerializable
 <#
 } else {
 #>
-class <#=entity.Name.ToCheckedCase()#> extends Entity
+class <#=entity.Name.ToCheckedCase()#> extends <#=entity.Base.Name.ToCheckedCase() #>
 <# 
 }
 #>
@@ -45,9 +45,7 @@ if (entity.Name.ToCheckedCase() == "Entity") {
     {
 		$this->_propDict = $propDict;
     }
-<#
-}
-#>
+
     /**
     * Gets the property dictionary of the <#=entity.Name.ToUpperFirstChar()#>
     *
@@ -57,19 +55,20 @@ if (entity.Name.ToCheckedCase() == "Entity") {
     {
         return $this->_propDict;
     }
-<# 
+    
+<#
+}
 foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
     var propertyName = property.Name.ToUnderscore();
     var propertyNameCap = property.Name.ToUpperFirstChar();
     if (property.Type.IsComplex()) {
         if (property.IsCollection()) {
 #>
-
-     /** 
-     * Gets the <#=property.Name#>
-     *
-     * @return array The <#=property.Name#>
-     */
+    /** 
+    * Gets the <#=property.Name#>
+    *
+    * @return array The <#=property.Name#>
+    */
     public function get<#=property.Name.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
@@ -78,7 +77,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
             return null;
         }
     }
-	
+    
     /** 
     * Sets the <#=property.Name#>
     *
@@ -91,11 +90,10 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 		$this->_propDict["<#=property.Name.ToCamelize()#>"] = $val;
         return $this;
     }
-
+    
 <#
    } else {
 #>
-
     /**
     * Gets the <#=property.Name#>
     *
@@ -107,13 +105,18 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
             if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=property.Type.GetTypeString()#>")) {
                 return $this->_propDict["<#=property.Name.ToCamelize()#>"];
             } else {
+<# if (property.Type.GetTypeString() == "\\GuzzleHttp\\Psr7\\Stream") { #>
+                $this->_propDict["<#=property.Name.ToCamelize()#>"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["<#=property.Name.ToCamelize()#>"]);
+                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+<# } else { #>
                 $this->_propDict["<#=property.Name.ToCamelize()#>"] = new <#=property.Type.GetTypeString()#>($this->_propDict["<#=property.Name.ToCamelize()#>"]);
                 return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+<# } #>
             }
         }
         return null;
     }
-
+    
     /**
     * Sets the <#=property.Name#>
     *
@@ -132,11 +135,11 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 <# } #>
         return $this;
     }
+    
 <#
             }
         } else {
 #>
-
     /**
     * Gets the <#=property.Name#>
     *
@@ -160,7 +163,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
             return null;
         }
     }
-
+    
     /**
     * Sets the <#=property.Name#>
     *
@@ -190,8 +193,44 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 #>
         return $this;
     }
+    
 <#
 		}
+	}
+	if (entity.Name.ToCheckedCase() == "Entity") {
+#>
+    /**
+    * Gets the ODataType
+    *
+    * @return string The ODataType
+    */
+    public function getODataType()
+    {
+        return $this->_propDict["@odata.type"];
+    }
+    
+    /**
+    * Sets the ODataType
+    *
+    * @param string The ODataType
+    *
+    * @return Entity
+    */
+    public function setODataType($val)
+    {
+        $this->_propDict["@odata.type"] = $val;
+    }
+    
+    /**
+    * Serializes the object by property array
+    *
+    * @return array The list of properties
+    */
+    public function jsonSerialize()
+    {
+        return $this->getProperties();
+    }
+<#
 	}
 #>
 }
