@@ -16,6 +16,7 @@
 
 <#= writer.WriteHeader() #>
 
+export as namespace microsoftgraph;
 
 <# foreach(var enumType in enumTypes) { #>
 export type <#= enumType.Name.UpperCaseFirstChar() #> = <#= enumType.GetEnumValues() #>
@@ -39,7 +40,7 @@ export interface <#= entityType.Name.UpperCaseFirstChar() #><# if (entityType.Ba
   {
 #>
 
-export interface <#= complexType.Name.UpperCaseFirstChar()#> {
+export interface <#= complexType.Name.UpperCaseFirstChar()#><# if (complexType.Base != null) { #> extends <#=  complexType.Base.Name.UpperCaseFirstChar() #><# }#> {
 <# foreach(var prop in complexType.Properties) { #>
       <#= prop.Name #>?: <#= prop.GetTypeString() #>
 <# } #>

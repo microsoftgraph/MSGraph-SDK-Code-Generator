@@ -29,11 +29,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 case "Int32":
                 case "Int64":
                 case "Double":
+                case "Single":
                 case "Binary": // let binary: number = 0b1010;
-                case "Duration": //Edm.Duration
                     typeStr = "number";
                     break;
                 case "Guid":
+                case "Duration":
                 case "String":
                     typeStr = "string"; //lowercase
                     break;
@@ -45,6 +46,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                     break;
                 case "Boolean":
                     typeStr = "boolean";
+                    break;
+                case "Byte": //https://graph.microsoft.io/en-us/docs/api-reference/beta/resources/intune_onboarding_rgbcolor
+                    typeStr = "number";
                     break;
 
             }
