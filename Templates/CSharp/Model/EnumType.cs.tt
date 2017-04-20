@@ -15,19 +15,26 @@ namespace <#=enumT.Namespace.GetNamespaceName()#>
     /// The enum <#=enumName#>.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
+<#  if (enumT.IsFlags == true)
+    {
+#>
+	[System.Flags]
+<#
+		}
+#>
     public enum <#=enumName#>
     {
     <#
-        foreach(var value in enumT.Members)
+        foreach(var emumMember in enumT.Members)
         {
     #>
 
         /// <summary>
-        /// <#=value.Name.SplitCamelCase()#>
+        /// <#=emumMember.Name.SplitCamelCase()#>
         /// </summary>
-        <#=value.Name.ToCheckedCase().GetSanitizedPropertyName()#>,
-    <#
-        }
+        <#=emumMember.Name.ToCheckedCase().GetSanitizedPropertyName()#> = <#=emumMember.Value#>,
+	<#
+		}
     #>
 
     }

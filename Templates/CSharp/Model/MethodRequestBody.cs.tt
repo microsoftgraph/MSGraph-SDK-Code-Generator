@@ -46,7 +46,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         }
 
         var paramName = param.Name.ToCheckedCase().GetSanitizedPropertyName();
-		var attributeDefinition = string.Format("[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = \"{0}\", Required = Required.Default)]", param.Name);
+		var attributeDefinition = string.Format("[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = \"{0}\", Required = Newtonsoft.Json.Required.Default)]", param.Name);
     #>
 
         /// <summary>

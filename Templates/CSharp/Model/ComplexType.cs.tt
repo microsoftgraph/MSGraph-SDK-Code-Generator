@@ -49,9 +49,9 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
             var propertyType = property.IsCollection ? string.Format("IEnumerable<{0}>", property.GetTypeString()) : property.GetTypeString();
             var propertyName = isMethodResponse
                 ? property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase()
-                : property.Name.ToCheckedCase().GetSanitizedPropertyName();
+                : property.Name.ToCheckedCase().GetSanitizedPropertyName(property);
 
-            var attributeDefinition = string.Format("[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = \"{0}\", Required = Required.Default)]", property.Name);
+            var attributeDefinition = string.Format("[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = \"{0}\", Required = Newtonsoft.Json.Required.Default)]", property.Name);
 
             if (property.IsTypeNullable() || property.IsCollection)
             {

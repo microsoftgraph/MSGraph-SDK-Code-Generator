@@ -31,7 +31,7 @@ if (prop.Class.Derived != null && prop.Class.Base == null)
         /// <summary>
         /// Gets or sets the <see cref="I<#=collectionPage#>"/> value.
         /// </summary>
-		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Newtonsoft.Json.Required.Default)]
         public I<#=collectionPage#> Value { get; set; }
 
         /// <summary>

@@ -81,7 +81,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             // Instead, take the properties that we know are references and not collections and grab the appropriate entity type
             // for each, returning those.
             var entityTypes = model.GetEntityTypes();
-            var referencePropertyTypes = model.GetProperties().Where(prop => prop.IsReference() && !prop.IsCollection).Select(prop => prop.Projection.Type).Distinct();
+
+            // Removed the !IsCollection condition as that was removing expected entity references from the collection.
+            var referencePropertyTypes = model.GetProperties().Where(prop => prop.IsReference()).Select(prop => prop.Projection.Type).Distinct();
 
             var referenceEntityTypes = new List<OdcmClass>();
             foreach (var referencePropertyType in referencePropertyTypes)
