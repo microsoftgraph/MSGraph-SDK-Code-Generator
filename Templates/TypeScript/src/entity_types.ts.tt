@@ -28,8 +28,13 @@ export type <#= enumType.Name.UpperCaseFirstChar() #> = <#= enumType.GetEnumValu
 #>
 
 export interface <#= entityType.Name.UpperCaseFirstChar() #><# if (entityType.Base != null) { #> extends <#=  entityType.Base.Name.UpperCaseFirstChar() #><# }#> {
+
 <# foreach(var prop in entityType.Properties.ToList()) { #>
+	<# if (prop.LongDescription != null) { #>
+    /** <#=prop.LongDescription#> */
+	<# } #>
     <#=  prop.Name #>?: <#= prop.GetTypeString() #>
+
 <# } #>
 }
 <#
@@ -39,10 +44,14 @@ export interface <#= entityType.Name.UpperCaseFirstChar() #><# if (entityType.Ba
   foreach(var complexType in complexTypes)
   {
 #>
-
 export interface <#= complexType.Name.UpperCaseFirstChar()#><# if (complexType.Base != null) { #> extends <#=  complexType.Base.Name.UpperCaseFirstChar() #><# }#> {
+
 <# foreach(var prop in complexType.Properties) { #>
-      <#= prop.Name #>?: <#= prop.GetTypeString() #>
+	<# if (prop.LongDescription != null) { #>
+    /** <#=prop.LongDescription#> */
+	<# } #>
+    <#= prop.Name #>?: <#= prop.GetTypeString() #>
+
 <# } #>
 }
 <# } #>

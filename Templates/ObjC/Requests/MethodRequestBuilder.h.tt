@@ -3,9 +3,9 @@
 <#@ include file="SharedObjC.template.tt"#>
 <#
 
-var func = host.CurrentType.AsOdcmMethod();
+OdcmMethod func = host.CurrentType.AsOdcmMethod();
 var entityName = writer.GetPrefix() + func.Class.Name.ToUpperFirstChar();
-var method = (func.IsFunction()) ? "GET" : "POST";
+var method = (func.IsFunction) ? "GET" : "POST";
 var methodName = "request"; 
 var requestType = entityName + func.Name.Substring(func.Name.IndexOf('.') + 1).ToUpperFirstChar() + "Request";
 var requestBuilderType = requestType + "Builder";
