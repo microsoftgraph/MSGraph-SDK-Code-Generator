@@ -66,13 +66,12 @@ namespace <#=this.GetNamespaceName(entity)#>
 	// This change supports the scenario where we have an entity based model whose name ends with "Request".
 	// This will disambiguate with Request objects that are created for models.
 	var thisEntity_Name = entity.Name;
-	var thisEntityName = entityName;
 
 	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
 	if (entityName.EndsWith("Request"))
 	{
 		thisEntity_Name = String.Concat(entity.Name, "Object");
-		thisEntityName = String.Concat(entityName, "Object");
+		entityName = String.Concat(entityName, "Object");
 	}
 
 
@@ -80,8 +79,8 @@ namespace <#=this.GetNamespaceName(entity)#>
         /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
         /// </summary>
-        /// <param name="<#=thisEntity_Name#>ToInitialize">The <see cref="<#=thisEntityName#>"/> with the collection properties to initialize.</param>
-        private void InitializeCollectionProperties(<#=thisEntityName#> <#=thisEntity_Name#>ToInitialize)
+        /// <param name="<#=thisEntity_Name#>ToInitialize">The <see cref="<#=entityName#>"/> with the collection properties to initialize.</param>
+        private void InitializeCollectionProperties(<#=entityName#> <#=thisEntity_Name#>ToInitialize)
         {
 <#
         var navigationCollectionProperties = entity.Properties.Where(property => property.IsCollection() && property.IsNavigation());
