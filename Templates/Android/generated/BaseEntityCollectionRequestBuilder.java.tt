@@ -52,6 +52,15 @@ if (currentTypeProjection != null) {
         return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
 <#
+	// Add a method to support delta query by string (opaque deltaLink)
+	if (MethodName(method) == "Delta") {
+#>
+
+	public <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(final String deltaLink) {
+        return new <#=TypeCollectionRequestBuilder(method)#>(deltaLink, getClient(), null<#=MethodParametersValues(method)#>);
+    }
+<# } #>
+<#
         } else {
 #>
 
