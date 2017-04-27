@@ -5,12 +5,26 @@
 <#host.TemplateName = BaseTypeCollectionPage(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
+<# 
+	var deltaPage = false;
+	if (TypeName(c).Length > 6 && TypeName(c).Substring(TypeName(c).Length-5) == "Delta") {
+		deltaPage = true;
+	}
+#>
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.*;
 
 <#=CreateClassDef(BaseTypeCollectionPage(c), "BaseCollectionPage" + CollectionPageGeneric(c), IBaseTypeCollectionPage(c))#>
 
+<# if (deltaPage) { #>
+    /**
+     * The opaque link to query delta after the 
+     * initial request
+     */
+    public String deltaLink;
+
+<# } #>
     /**
      * A collection page for <#=TypeName(c)#>.
      *
@@ -19,5 +33,23 @@ import com.google.gson.annotations.*;
      */
     public <#=BaseTypeCollectionPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeCollectionRequestBuilder(c)#> builder) {
        super(response.value, builder);
+<# if (deltaPage) { #>
+
+        if (response.getRawObject().get("@odata.deltaLink") != null) {
+            deltaLink = response.getRawObject().get("@odata.deltaLink").getAsString();
+        } else {
+            deltaLink = null;
+        }
+<# } #>
     }
+<# if (deltaPage) { #>
+    /**
+     * The deltaLink to make future delta requests
+     *
+     * @return String The deltaLink URL
+     */
+    public String getDeltaLink() {
+        return deltaLink;
+    }
+<# } #>
 }

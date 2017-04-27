@@ -5,8 +5,22 @@
 <#host.TemplateName = IBaseTypeCollectionPage(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
+<# 
+	var deltaPage = false;
+	if (TypeName(c).Length > 6 && TypeName(c).Substring(TypeName(c).Length-5) == "Delta") {
+		deltaPage = true;
+	}
+#>
 
 import com.google.gson.JsonObject;
 
 <#=CreateInterfaceDef(IBaseTypeCollectionPage(c), "IBaseCollectionPage" + CollectionPageGeneric(c))#>
+<# if (deltaPage) { #>
+    /**
+     * The deltaLink to make future delta requests
+     *
+     * @return String The deltaLink URL
+     */
+    public String getDeltaLink();
+<# } #>
 }
