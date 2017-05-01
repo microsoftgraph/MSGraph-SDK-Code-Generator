@@ -6,8 +6,15 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 <# 
+	/** 
+	* Manual check for deltaLink
+	* This allows for a user to get the delta link URL with which 
+	* to make future delta query calls to the service. Since it is 
+	* not surfaced in the additionalDataManager, we add it manually
+	* to the object for easy access.
+	*/
 	var deltaPage = false;
-	if (TypeName(c).Length > 6 && TypeName(c).Substring(TypeName(c).Length-5) == "Delta") {
+	if (c.Name == "delta") {
 		deltaPage = true;
 	}
 #>
