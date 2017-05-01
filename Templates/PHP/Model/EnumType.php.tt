@@ -33,7 +33,7 @@ class <#=enumT.Name.ToUpperFirstChar()#> extends Enum
 <#
 		} else {
 #>
-    const <#= value.Name.ToUnderscore().ToUpper()#> = "<#= count#>";
+    const <#= value.Name.ToUnderscore().ToUpper()#> = "<#= value.Name.ToCamelize()#>";
 <#		}
 	count++;
     }
