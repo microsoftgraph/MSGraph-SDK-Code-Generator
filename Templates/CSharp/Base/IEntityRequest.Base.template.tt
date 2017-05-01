@@ -40,6 +40,12 @@ public string GetEntityRequestInterfaceDefinition(OdcmClass odcmClass)
 // -------------------------------------------------------------
 public void AppendEntityCreateAsyncMethodHeader(string entityName, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams)
 {
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (entityName.EndsWith("Request"))
+	{
+		entityName = String.Concat(entityName, "Object");
+	}
+
     if (includeSendParams)
     {
         stringBuilder.Append("        ");
@@ -68,6 +74,13 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
     var stringBuilder = new StringBuilder();
 
     var entityName = this.GetEntityNameString(odcmClass);
+
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (entityName.EndsWith("Request"))
+	{
+		entityName = String.Concat(entityName, "Object");
+	}
+
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
 
     this.AppendEntityCreateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, false);
@@ -83,6 +96,12 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
 
 public void AppendDeleteAsyncMethodHeader(string deleteTargetString, StringBuilder stringBuilder, bool includeSendParams)
 {
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (deleteTargetString.EndsWith("Request"))
+	{
+		deleteTargetString = String.Concat(deleteTargetString, "Object");
+	}
+
     if (includeSendParams)
     {
         stringBuilder.Append("        ");
@@ -106,6 +125,12 @@ public void AppendDeleteAsyncMethodHeader(string deleteTargetString, StringBuild
 
 public string GetDeleteAsyncMethod(string deleteTargetString)
 {
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (deleteTargetString.EndsWith("Request"))
+	{
+		deleteTargetString = String.Concat(deleteTargetString, "Object");
+	}
+
     var stringBuilder = new StringBuilder();
 
     this.AppendDeleteAsyncMethodHeader(deleteTargetString, stringBuilder, false);
@@ -170,6 +195,12 @@ public string GetEntityDeleteAsyncMethod(OdcmClass odcmClass)
 
 public void AppendGetAsyncMethodHeader(string entityName, StringBuilder stringBuilder, bool includeSendParams)
 {
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (entityName.EndsWith("Request"))
+	{
+		entityName = String.Concat(entityName, "Object");
+	}
+
     if (includeSendParams)
     {
         stringBuilder.Append("        ");
@@ -197,6 +228,12 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
 
     var entityName = this.GetEntityNameString(odcmClass);
 
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (entityName.EndsWith("Request"))
+	{
+		entityName = String.Concat(entityName, "Object");
+	}
+
     this.AppendGetAsyncMethodHeader(entityName, stringBuilder, false);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> GetAsync();", entityName);
@@ -213,6 +250,12 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
 
 public void AppendUpdateAsyncMethodHeader(string entityName, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams)
 {
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (entityName.EndsWith("Request"))
+	{
+		entityName = String.Concat(entityName, "Object");
+	}
+
     if (includeSendParams)
     {
         stringBuilder.Append("        ");
@@ -241,6 +284,13 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
     var stringBuilder = new StringBuilder();
 
     var entityName = this.GetEntityNameString(odcmClass);
+
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (entityName.EndsWith("Request"))
+	{
+		entityName = String.Concat(entityName, "Object");
+	}
+
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
 
     this.AppendUpdateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, false);
@@ -264,6 +314,13 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
 
 public string GetExpandExpressionMethod(string requestType, string underlyingType)
 {
+
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (underlyingType.EndsWith("Request"))
+	{
+		underlyingType = String.Concat(underlyingType, "Object");
+	}
+
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append(
@@ -296,6 +353,13 @@ public string GetExpandMethod(string entityRequest)
 
 public string GetSelectExpressionMethod(string requestType, string underlyingType)
 {
+
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (underlyingType.EndsWith("Request"))
+	{
+		underlyingType = String.Concat(underlyingType, "Object");
+	}
+
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append(

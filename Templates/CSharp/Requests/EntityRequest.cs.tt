@@ -62,12 +62,25 @@ namespace <#=this.GetNamespaceName(entity)#>
         Write(this.GetEntitySelectMethods(entity));
         Write("\n\n");
     }
+
+	// This change supports the scenario where we have an entity based model whose name ends with "Request".
+	// This will disambiguate with Request objects that are created for models.
+	var thisEntity_Name = entity.Name;
+
+	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+	if (entityName.EndsWith("Request"))
+	{
+		thisEntity_Name = String.Concat(entity.Name, "Object");
+		entityName = String.Concat(entityName, "Object");
+	}
+
+
 #>
         /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
         /// </summary>
-        /// <param name="<#=entity.Name#>ToInitialize">The <see cref="<#=entityName#>"/> with the collection properties to initialize.</param>
-        private void InitializeCollectionProperties(<#=entityName#> <#=entity.Name#>ToInitialize)
+        /// <param name="<#=thisEntity_Name#>ToInitialize">The <see cref="<#=entityName#>"/> with the collection properties to initialize.</param>
+        private void InitializeCollectionProperties(<#=entityName#> <#=thisEntity_Name#>ToInitialize)
         {
 <#
         var navigationCollectionProperties = entity.Properties.Where(property => property.IsCollection() && property.IsNavigation());
@@ -76,7 +89,7 @@ namespace <#=this.GetNamespaceName(entity)#>
         {
 #>
 
-            if (<#=entity.Name#>ToInitialize != null && <#=entity.Name#>ToInitialize.AdditionalData != null)
+            if (<#=thisEntity_Name#>ToInitialize != null && <#=thisEntity_Name#>ToInitialize.AdditionalData != null)
             {
 <#
             foreach(var property in navigationCollectionProperties)
@@ -88,17 +101,17 @@ namespace <#=this.GetNamespaceName(entity)#>
                 {
 #>
 
-                if (<#=entity.Name#>ToInitialize.<#=propertyName#> != null && <#=entity.Name#>ToInitialize.<#=propertyName#>.CurrentPage != null)
+                if (<#=thisEntity_Name#>ToInitialize.<#=propertyName#> != null && <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.CurrentPage != null)
                 {
-                    <#=entity.Name#>ToInitialize.<#=propertyName#>.AdditionalData = <#=entity.Name#>ToInitialize.AdditionalData;
+                    <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.AdditionalData = <#=thisEntity_Name#>ToInitialize.AdditionalData;
 
                     object nextPageLink;
-                    <#=entity.Name#>ToInitialize.AdditionalData.TryGetValue("<#=propertyName.ToLowerFirstChar()#>@odata.nextLink", out nextPageLink);
+                    <#=thisEntity_Name#>ToInitialize.AdditionalData.TryGetValue("<#=propertyName.ToLowerFirstChar()#>@odata.nextLink", out nextPageLink);
                     var nextPageLinkString = nextPageLink as string;
 
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
-                        <#=entity.Name#>ToInitialize.<#=propertyName#>.InitializeNextPageRequest(
+                        <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.InitializeNextPageRequest(
                             this.Client,
                             nextPageLinkString);
                     }
