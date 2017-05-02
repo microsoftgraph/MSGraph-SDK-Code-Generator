@@ -89,7 +89,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
-        public I<#=propertyCollectionPage#> <#=propertyName.GetSanitizedPropertyName(null, true)#> { get; set; }
+        public I<#=propertyCollectionPage#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
     <#
                 }
                 else
@@ -104,7 +104,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
-        public IEnumerable<<#=propertyType#>> <#=propertyName.GetSanitizedPropertyName(null, true)#> { get; set; }
+        public IEnumerable<<#=propertyType#>> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
     <#
                 }
             }
