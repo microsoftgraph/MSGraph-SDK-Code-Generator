@@ -2,41 +2,45 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ output extension="\\" #>
 <#
-CustomT4Host host       = (CustomT4Host) Host;
-OdcmModel model         = host.CurrentModel;
-CodeWriterPHP writer    = (CodeWriterPHP) host.CodeWriter;
-OdcmClass complex		= (OdcmClass)host.CurrentType;
+CustomT4Host host      = (CustomT4Host) Host;
+OdcmModel model        = host.CurrentModel;
+CodeWriterPHP writer   = (CodeWriterPHP) host.CodeWriter;
+OdcmClass complex      = (OdcmClass)host.CurrentType;
+String complexName     = complex.Name.SanitizeEntityName();
+String complexBaseName = "";
+if (complex.Base != null)
+	complexBaseName = complex.Base.Name.SanitizeEntityName();
 #>
-<#=writer.WriteHeader(writer.GetDocBlock(complex.Name.ToCheckedCase()))#>
+<#=writer.WriteHeader(writer.GetDocBlock(complexName.ToCheckedCase()))#>
 namespace Microsoft\Graph\Model;
-<#=writer.GetClassBlock(complex.Name.ToCheckedCase().ToString(), "Model")#>
+<#=writer.GetClassBlock(complexName.ToCheckedCase().ToString(), "Model")#>
 <#
 if (complex.Base != null) {
 #>
-class <#=complex.Name.ToCheckedCase()#> extends <#=complex.Base.Name.ToCheckedCase()#>
+class <#=complexName.ToCheckedCase()#> extends <#=complexBaseName.ToCheckedCase()#>
 <#
 } else {
 #>
-class <#=complex.Name.ToCheckedCase()#> extends Entity
+class <#=complexName.ToCheckedCase()#> extends Entity
 <#
 }
 #>
 {
 <# 
 foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
-    var propertyName = property.Name.ToUnderscore();
+    var propertyName = property.Name.SanitizePropertyName(complexName);
     if (!property.Type.IsComplex()) {
 #>
     /**
-    * Gets the <#=property.Name#>
+    * Gets the <#=propertyName#>
 <# if (property.LongDescription != null) {
 #>
     * <#=property.LongDescription#>
 <# } #>
     *
-    * @return <#=property.Type.GetTypeString()#> The <#=property.Name#>
+    * @return <#=property.Type.GetTypeString()#> The <#=propertyName#>
     */
-    public function get<#=property.Name.ToCheckedCase()#>()
+    public function get<#=propertyName.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
 <#
@@ -56,17 +60,17 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     }
 
     /**
-    * Sets the <#=property.Name#>
+    * Sets the <#=propertyName#>
 <# if (property.LongDescription != null) {
 #>
     * <#=property.LongDescription#>
 <# } #>
     *
-    * @param <#=property.Type.GetTypeString()#> $val The value of the <#=property.Name#>
+    * @param <#=property.Type.GetTypeString()#> $val The value of the <#=propertyName#>
     *
-    * @return <#=complex.Name.ToCheckedCase()#>
+    * @return <#=complexName.ToCheckedCase()#>
     */
-    public function set<#=property.Name.ToCheckedCase()#>($val)
+    public function set<#=propertyName.ToCheckedCase()#>($val)
     {
 <#
             if (property.Type.GetTypeString() == "\\DateTime") {
@@ -87,15 +91,15 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 #>
 
     /**
-    * Gets the <#=property.Name#>
+    * Gets the <#=propertyName#>
 <# if (property.LongDescription != null) {
 #>
     * <#=property.LongDescription#>
 <# } #>
     *
-    * @return <#=property.Type.GetTypeString()#> The <#=property.Name#>
+    * @return <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> The <#=propertyName#>
     */
-    public function get<#=property.Name.ToCheckedCase()#>()
+    public function get<#=propertyName.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
             if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "Microsoft\Graph\Model\<#=property.Type.GetTypeString()#>")) {
@@ -105,7 +109,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
                 $this->_propDict["<#=property.Name.ToCamelize()#>"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["<#=property.Name.ToCamelize()#>"]);
                 return $this->_propDict["<#=property.Name.ToCamelize()#>"];
 <# } else { #>
-                $this->_propDict["<#=property.Name.ToCamelize()#>"] = new <#=property.Type.GetTypeString()#>($this->_propDict["<#=property.Name.ToCamelize()#>"]);
+                $this->_propDict["<#=property.Name.ToCamelize()#>"] = new <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#>($this->_propDict["<#=property.Name.ToCamelize()#>"]);
                 return $this->_propDict["<#=property.Name.ToCamelize()#>"];
 <# } #>
             }
@@ -114,7 +118,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     }
 
     /**
-    * Sets the <#=property.Name#>
+    * Sets the <#=propertyName#>
 <# if (property.LongDescription != null) {
 #>
     * <#=property.LongDescription#>
@@ -122,9 +126,9 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     *
     * @param <#=property.Type.GetTypeString()#> $val The value to assign to the <#=property.Name#>
     *
-    * @return <#=complex.Name.ToCheckedCase()#> The <#=complex.Name.ToUpperFirstChar()#>
+    * @return <#=complexName.ToCheckedCase()#> The <#=complexName.ToCheckedCase()#>
     */
-    public function set<#=property.Name.ToCheckedCase()#>($val)
+    public function set<#=propertyName.ToCheckedCase()#>($val)
     {
 <#  if (property.Type.GetTypeString() == "bool") { #>
         $this->_propDict["<#=property.Name#>"] = boolval($val);
