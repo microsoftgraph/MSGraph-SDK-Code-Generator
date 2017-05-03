@@ -92,7 +92,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     * <#=property.LongDescription#>
 <# } #>
     *
-    * @param string $val The <#=propertyName#>
+    * @param <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> $val The <#=propertyName#>
     *
     * @return <#=entity.Name.ToCheckedCase()#>
     */
@@ -145,7 +145,7 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
     * <#=property.LongDescription#>
 <# } #>
     *
-    * @param string $val The <#=propertyName#>
+    * @param <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> $val The <#=propertyName#>
     *
     * @return <#=entity.Name.ToCheckedCase()#>
     */
