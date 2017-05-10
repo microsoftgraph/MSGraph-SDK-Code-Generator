@@ -39,6 +39,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
                     return "com.google.gson.JsonElement";
                 case "Binary":
                     return "byte[]";
+                case "Stream":
+                    return "java.io.InputStream";
+                case "Duration":
+                    return "javax.xml.datatype.Duration";
+                case "TimeOfDay":
+                case "Json":
+                    return "String";
                 default:
                     return @type.Name.ToUpperFirstChar();
             }
