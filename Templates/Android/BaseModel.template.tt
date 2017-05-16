@@ -359,7 +359,7 @@
     public string ParamType(OdcmParameter c) {
         var typeString = c.Type.GetTypeString();
         if (c.IsCollection){
-            typeString = String.Format("List<{0}>", c.Type.GetTypeString());
+            typeString = String.Format("java.util.List<{0}>", c.Type.GetTypeString());
         } else if (typeString.Equals("Stream")) {
 
             // Excel introduced the use of "Edm.Stream" types
@@ -516,7 +516,7 @@ import {0}.options.*;
 import {0}.serializer.*;
 
 import java.util.Arrays;
-import java.util.List;";
+import java.util.EnumSet;";
         return string.Format(format,
             host.CurrentModel.NamespaceName(),
             host.TemplateInfo.OutputParentDirectory);
@@ -620,6 +620,7 @@ public {1} {2}{3}{4} {{";
         var format =
 @"    /**
      * The {0}.
+	 * {4}
      */
     @SerializedName(""{1}"")
     @Expose
@@ -629,6 +630,7 @@ public {1} {2}{3}{4} {{";
         var collectionFormat =
 @"    /**
      * The {0}.
+	 * {4}
      */
     public transient {2} {3};
 
@@ -643,7 +645,7 @@ public {1} {2}{3}{4} {{";
             {
                 if (!property.IsNavigation())
                 {
-                    propertyType = "List<" + property.GetTypeString() + ">";
+                    propertyType = "java.util.List<" + property.GetTypeString() + ">";
                 }
                 else
                 {
@@ -660,7 +662,8 @@ public {1} {2}{3}{4} {{";
                 propertyName.SplitCamelCase(),
                 property.Name,
                 propertyType,
-                property.SanitizePropertyName().ToLowerFirstChar());
+                property.Name.SanitizePropertyName(property).ToLowerFirstChar(),
+				property.LongDescription);
         }
         return sb.ToString();
     }
@@ -672,10 +675,11 @@ public {1} {2}{3}{4} {{";
         var format =
 @"    /**
      * The {0}.
+	 * {1}
      */
-    @SerializedName(""{1}"")
+    @SerializedName(""{2}"")
     @Expose
-    public {2} {3};
+    public {3} {4};
 
 ";
         foreach (var p in parameters)
@@ -683,9 +687,10 @@ public {1} {2}{3}{4} {{";
             sb.AppendFormat(
                 format,
                 ParamName(p).SplitCamelCase(),
+				p.LongDescription,
                 ParamName(p),
                 ParamType(p),
-                p.SanitizePropertyName().ToLowerFirstChar()
+                ParamName(p).SanitizePropertyName(p).ToLowerFirstChar()
             );
         }
         return sb.ToString();
@@ -755,7 +760,7 @@ public {1} {2}{3}{4} {{";
             {0} = new {2}(response, null);
         }}
 ",
-            property.SanitizePropertyName(),
+            property.Name.SanitizePropertyName(property),
             BaseTypeCollectionResponse(property),
             TypeCollectionPage(property),
             property.GetTypeString());

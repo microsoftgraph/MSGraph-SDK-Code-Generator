@@ -82,7 +82,11 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     #>
 
         /// <summary>
-        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+		/// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+<# if (property.LongDescription != null) {
+#>
+		/// <#=property.LongDescription#>
+<# } #>
         /// </summary>
         <#=attributeDefinition#>
         public I<#=propertyCollectionPage#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
@@ -93,7 +97,11 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     #>
 
         /// <summary>
-        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+		/// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+<# if (property.LongDescription != null) {
+#>
+		/// <#=property.LongDescription#>
+<# } #>
         /// </summary>
         <#=attributeDefinition#>
         public IEnumerable<<#=propertyType#>> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
@@ -105,7 +113,11 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     #>
 
         /// <summary>
-        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+		/// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+<# if (property.LongDescription != null) {
+#>
+		/// <#=property.LongDescription#>
+<# } #>
         /// </summary>
         <#=attributeDefinition#>
         public <#=propertyType#> <#=propertyName.GetSanitizedPropertyName(property)#> { get; set; }

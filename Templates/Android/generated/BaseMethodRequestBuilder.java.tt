@@ -16,7 +16,7 @@
      * @param client The service client
      * @param requestOptions The options for this request
      */
-    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> requestOptions<#=MethodParametersSignature(method)#>) {
+    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions<#=MethodParametersSignature(method)#>) {
         super(requestUrl, client, requestOptions);
 <#     foreach (var p in method.Parameters) { #>
 <#         if (isAction) { #>
@@ -43,7 +43,7 @@
      * @param requestOptions the options for the request
      * @return The <#=ITypeRequest(c)#> instance
      */
-    public <#=ITypeRequest(c)#> buildRequest(final List<Option> requestOptions) {
+    public <#=ITypeRequest(c)#> buildRequest(final java.util.List<Option> requestOptions) {
         <#=TypeRequest(c)#> request = new <#=TypeRequest(c)#>(
                 getRequestUrl(),
                 getClient(),

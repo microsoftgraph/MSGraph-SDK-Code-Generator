@@ -104,6 +104,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             };
         }
 
+        public static ICollection<string> GetReservedModelNames()
+        {
+            return new HashSet<string>(StringComparer.Ordinal)
+            {
+                "Required"
+            };
+        }
+
         private static readonly ICollection<string> SimpleTypes =
             new HashSet<string> (StringComparer.OrdinalIgnoreCase)
             {
@@ -130,6 +138,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 case "binary":
                     return "byte[]";
                 case "boolean":
+                case "bool":
                     return "bool";
                 case "date":
                     return "Date";

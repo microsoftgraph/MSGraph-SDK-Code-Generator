@@ -15,7 +15,7 @@
      * @param client The service client
      * @param requestOptions The options for this request
      */
-    public <#=BaseTypeCollectionWithReferencesRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> requestOptions) {
+    public <#=BaseTypeCollectionWithReferencesRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -23,7 +23,7 @@
         return buildRequest(getOptions());
     }
 
-    public <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest(final List<Option> requestOptions) {
+    public <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest(final java.util.List<Option> requestOptions) {
         return new <#=TypeCollectionWithReferencesRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
     }
 

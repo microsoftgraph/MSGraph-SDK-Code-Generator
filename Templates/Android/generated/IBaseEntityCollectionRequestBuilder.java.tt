@@ -13,7 +13,7 @@
 
     <#=ITypeCollectionRequest(c)#> buildRequest();
 
-    <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> requestOptions);
+    <#=ITypeCollectionRequest(c)#> buildRequest(final java.util.List<Option> requestOptions);
 
     <#=ITypeRequestBuilder(c)#> byId(final String id);
 

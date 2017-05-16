@@ -59,6 +59,10 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
 
         /// <summary>
         /// Gets or sets <#=property.Name#>.
+<# if (property.LongDescription != null) {
+#>
+		/// <#=property.LongDescription#>
+<# } #>
         /// </summary>
         <#=attributeDefinition#>
         public <#=propertyType#> <#=propertyName#> { get; set; }
@@ -70,6 +74,10 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
 
         /// <summary>
         /// Gets or sets <#=property.Name#>.
+<# if (property.LongDescription != null) {
+#>
+		/// <#=property.LongDescription#>
+<# } #>
         /// </summary>
         <#=attributeDefinition#>
         public <#=propertyType#>? <#=propertyName#> { get; set; }

@@ -14,6 +14,7 @@ var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCa
 var requestType = entityName + methodName + "Request";
 
 var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString();
+
 var returnEntityParameter = string.Empty;
 if (returnEntityType != null) {returnEntityParameter = returnEntityType.ToLower();}
 
