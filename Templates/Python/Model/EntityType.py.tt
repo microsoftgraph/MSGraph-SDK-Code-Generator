@@ -24,6 +24,7 @@ from ..model.<#=property.Type.GetTypeString().ToUnderscore()#> import <#=propert
 <#
         }
     }
+
     if (entity.Properties.Any(prop => prop.Type.GetTypeString() == "datetime")){
 #>
 from datetime import datetime
@@ -116,13 +117,25 @@ class <#=entity.Name.ToUpperFirstChar()#>(OneDriveObjectBase):
 <#
             if (property.Type.GetTypeString() == "datetime") {
 #>
-        self._prop_dict["<#=property.Name#>"] = val.isoformat()+"Z"
+        self._prop_dict["<#=property.Name#>"] = val.isoformat()+((".0" if val.time().microsecond == 0 else "")+"Z")
 
 <#
             } else {
 #>
         self._prop_dict["<#=property.Name#>"] = val
 
+<#
+            }
+        }
+    }
+
+    foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
+        var propertyName = property.Name.ToUnderscore();
+        var propertyNameCap = property.Name.ToUpperFirstChar();
+        if (property.Type.IsComplex()) {
+            if (property.IsCollection()) {
+#>
+from ..model.<#=(propertyNameCap+"CollectionPage").ToUnderscore()#> import <#=propertyNameCap#>CollectionPage
 <#
             }
         }
