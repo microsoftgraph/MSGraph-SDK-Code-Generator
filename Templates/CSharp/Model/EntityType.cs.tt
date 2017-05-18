@@ -16,7 +16,7 @@ var typeDeclaration = entityName;
 
 if (typeDeclaration.EndsWith("Request"))
 {
-	typeDeclaration = String.Concat(typeDeclaration, "Object");
+    typeDeclaration = String.Concat(typeDeclaration, "Object");
 }
 
 
@@ -82,10 +82,10 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     #>
 
         /// <summary>
-		/// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# if (property.LongDescription != null) {
 #>
-		/// <#=property.LongDescription#>
+        /// <#=property.LongDescription#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
@@ -97,10 +97,10 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     #>
 
         /// <summary>
-		/// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# if (property.LongDescription != null) {
 #>
-		/// <#=property.LongDescription#>
+        /// <#=property.LongDescription#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
@@ -113,10 +113,10 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     #>
 
         /// <summary>
-		/// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# if (property.LongDescription != null) {
 #>
-		/// <#=property.LongDescription#>
+        /// <#=property.LongDescription#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
