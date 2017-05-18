@@ -1026,6 +1026,7 @@
                 <Property Name="sourceItemId" Type="Edm.String" Unicode="false"/>
                 <Property Name="url" Type="Edm.String" Unicode="false"/>
                 <Property Name="width" Type="Edm.Int32"/>
+                <Annotation Term="Org.OData.Core.V1.LongDescription" String="navigable" />
             </ComplexType>
             <ComplexType Name="driveItemUploadableProperties">
                 <Property Name="description" Type="Edm.String" Unicode="false"/>
