@@ -27,7 +27,7 @@
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + new<#=TypeName(c)#>.id);
         new <#=TypeWithReferencesRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest()
+            .buildRequest(getBaseRequest().getOptions())
             .post(new<#=TypeName(c)#>, body, callback);
     }
 
@@ -35,7 +35,7 @@
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/" + new<#=TypeName(c)#>.id);
         return new <#=TypeWithReferencesRequestBuilder(c)#>(requestUrl,getBaseRequest().getClient(), /* Options */ null)
-                .buildRequest()
+                .buildRequest(getBaseRequest().getOptions())
                 .post(new<#=TypeName(c)#>, body);
     }
 
