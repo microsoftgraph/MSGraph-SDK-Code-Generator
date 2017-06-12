@@ -1504,7 +1504,7 @@
                 <NavigationProperty Name="sections" Type="Collection(microsoft.graph.onenoteSection)" ContainsTarget="true"/>
                 <NavigationProperty Name="sectionGroups" Type="Collection(microsoft.graph.sectionGroup)" ContainsTarget="true"/>
             </EntityType>
-            <EntityType Name="onenotePage" BaseType="microsoft.graph.onenoteEntitySchemaObjectModel" HasStream="true">
+            <EntityType Name="onenotePage" BaseType="microsoft.graph.onenoteEntitySchemaObjectModel">
                 <Property Name="title" Type="Edm.String" Unicode="false"/>
                 <Property Name="createdByAppId" Type="Edm.String" Unicode="false"/>
                 <Property Name="links" Type="microsoft.graph.pageLinks"/>
@@ -1517,7 +1517,7 @@
                 <NavigationProperty Name="parentSection" Type="microsoft.graph.onenoteSection" ContainsTarget="true"/>
                 <NavigationProperty Name="parentNotebook" Type="microsoft.graph.notebook" ContainsTarget="true"/>
             </EntityType>
-            <EntityType Name="onenoteResource" BaseType="microsoft.graph.onenoteEntityBaseModel" HasStream="true">
+            <EntityType Name="onenoteResource" BaseType="microsoft.graph.onenoteEntityBaseModel">
                 <Property Name="content" Type="Edm.Stream"/>
                 <Property Name="contentUrl" Type="Edm.String" Unicode="false"/>
             </EntityType>
@@ -1803,8 +1803,8 @@
             </Action>
             <Action Name="createLink" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem"/>
-                <Parameter Name="scope" Type="Edm.String" Unicode="false"/>
                 <Parameter Name="type" Type="Edm.String" Unicode="false"/>
+                <Parameter Name="scope" Type="Edm.String" Unicode="false"/>
                 <ReturnType Type="microsoft.graph.permission"/>
             </Action>
             <Action Name="createUploadSession" IsBound="true">
