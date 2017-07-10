@@ -266,6 +266,8 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
         foreach ($serializableProperties as $property => $val) {
             if (is_a($val, "\DateTime")) {
                 $serializableProperties[$property] = $val->format(\DateTime::RFC3339);
+            } else if (is_a($val, "\Microsoft\Graph\Core\Enum")) {
+                $serializableProperties[$property] = $val->value();
             }
         }
         return $serializableProperties;
