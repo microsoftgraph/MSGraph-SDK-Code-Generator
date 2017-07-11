@@ -252,6 +252,7 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
     public function setODataType($val)
     {
         $this->_propDict["@odata.type"] = $val;
+        return $this;
     }
     
     /**
