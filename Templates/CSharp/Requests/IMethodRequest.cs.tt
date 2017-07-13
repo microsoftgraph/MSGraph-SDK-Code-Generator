@@ -65,8 +65,8 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 
     if (returnsStream)
     {
-        sendParameterHeadersForOverload = @"/// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <param name="httpCompletionOption">The <see cref="HttpCompletionOption"/> for the request.</param>";
+        sendParameterHeadersForOverload = @"/// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>";
 
         sendOverloadParameters = "CancellationToken cancellationToken, HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead";
     }

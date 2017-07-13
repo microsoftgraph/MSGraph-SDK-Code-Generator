@@ -110,7 +110,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     if (returnsStream)
     {
 #>
-        /// <param name="httpCompletionOption\">The <see cref=\"HttpCompletionOption"/> for the request.</param>
+        /// <param name="httpCompletionOption">The <see cref="HttpCompletionOption"/> for the request.</param>
 <#
     }
 #>
