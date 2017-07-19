@@ -10,6 +10,7 @@ Currently the following target languages are supported by this writer:
 - Objective-C
 - Python
 - TypeScript
+- PHP
 
 # Contents
 - [Prerequisites](#prerequisites)
@@ -123,6 +124,21 @@ Note: You can also check in a template by `odcjObject.LongDescriptionContains("f
 
 **Note: Includes/Excludes and Ignore/Matches were used before Vipr had full support for annotations; now that annotations have been added to Vipr usage of these parameters should be limited to legacy scenarios**
 
+## Building against Graph Metadata
+
+There are currently several steps we take to form the metadata into one that will successfully generate SDKs in the shape we expect:
+
+  - Remove capability annotations (see [#132](https://github.com/Microsoft/Vipr/issues/132))
+  - Add navigation annotation to thumbnail
+     ```xml
+     <Annotation String="navigable" Term="Org.OData.Core.V1.LongDescription"/>
+     ```
+  - Remove HasStream properties from ```onenoteEntitySchemaObjectModel``` and ```onenoteEntityBaseModel```
+  - Add ```ContainsTarget="true"``` to navigation properties that do not have a corresponding EntitySet
+  - Add long descriptions to types and properties from [docs](https://developer.microsoft.com/en-us/graph/docs/concepts/overview)
+  
+In order to build against metadata other than that stored in the [metadata](https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/tree/master/metadata) directory, you will need to perform the first four on this list.
+  
 ## Contributing
 
 Before we can accept your pull request, you'll need to electronically complete Microsoft's [Contributor License Agreement](https://cla.microsoft.com/). If you've done this for other Microsoft projects, then you're already covered.
