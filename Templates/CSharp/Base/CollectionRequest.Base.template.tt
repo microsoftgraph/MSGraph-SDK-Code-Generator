@@ -135,6 +135,8 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
     var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType();
+	if (serviceNavigationProperty == null)
+		return string.Empty;
 
     var stringBuilder = new StringBuilder();
 
