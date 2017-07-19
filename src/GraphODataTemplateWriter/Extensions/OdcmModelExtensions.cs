@@ -140,14 +140,22 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             // class object. Use First() instead of FirstOrDefault() so template generation would fail if not found
             // instead of silently continuing. If an entity is used in a reference property a navigation collection
             // on the client for that type is required.
-            return odcmProperty
-                .Class
-                .Namespace
-                .Classes
-                .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
-                .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
-                .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
-                .First();
+            try
+            {
+                return odcmProperty
+                    .Class
+                    .Namespace
+                    .Classes
+                    .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                    .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
+                    .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
+                    .First();
+            } catch (Exception e)
+            {
+                //TODO: Pass the exception to the logger
+                Console.WriteLine("Error: The navigation property \"{0}\" on class \"{1}\" does not specify it is self-contained nor is it defined in an EntitySet", odcmProperty.Name.ToString(), odcmProperty.Class.FullName.ToString());
+                return null;
+            }
         }
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
