@@ -20,8 +20,8 @@ Currently the following target languages are supported by this writer:
 - [License](#license)
 
 ## Prerequisites
-- [Visual Studio SDK](https://www.microsoft.com/en-us/download/details.aspx?id=40758)
-- [Visual Studio Modeling SDK](https://www.microsoft.com/en-us/download/details.aspx?id=40754)
+- [Visual Studio SDK](https://msdn.microsoft.com/en-us/library/bb166441.aspx)
+- [Visual Studio Modeling SDK](https://msdn.microsoft.com/en-us/library/bb126259.aspx)
 
 # Getting started
 
