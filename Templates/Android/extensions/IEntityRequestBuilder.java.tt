@@ -8,4 +8,5 @@
 
 <#=CreateInterfaceDef(ITypeRequestBuilder(c), IBaseTypeRequestBuilder(c))#>
 
+<#=AddCustomCode(ITypeRequestBuilder(c))#>
 }
