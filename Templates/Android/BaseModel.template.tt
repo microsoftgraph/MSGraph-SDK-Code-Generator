@@ -808,4 +808,12 @@ public {1} {2}{3}{4} {{";
 
 		return property != null ? property.GetValue(customMethods).ToString() : string.Empty;
 	}
+
+	public string AddCustomImport(string className) {
+		CustomImports customImports = new CustomImports();
+		var type = customImports.GetType();
+		var property = type.GetFields().Where(x => x.Name == className).FirstOrDefault();
+
+		return property != null ? property.GetValue(customImports).ToString() : string.Empty;
+	}
 #>
