@@ -40,8 +40,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             {
                 throw new DirectoryNotFoundException(string.Format("Could not find : {0}", this.TemplatesDirectory));
             }
-
-            Console.WriteLine("Using templates from {0}", this.TemplatesDirectory);
         }
 
         IEnumerable<TextFile> ProcessTemplates()
@@ -66,10 +64,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                     yield return outputFile;
                 }
             }
-
-            Console.WriteLine("Done processing templates");
-            Console.WriteLine();
-            Console.WriteLine(this.Processor.GetProcessorVerboseOutput());
         }
 
         // IConfigurationProvider

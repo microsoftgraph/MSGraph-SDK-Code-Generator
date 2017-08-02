@@ -96,7 +96,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         {
             Func<ITemplateInfo, IEnumerable<TextFile>> subProcessor = this.ProcessTemplate;
             this.SubProcessors.TryGetValue(templateInfo.SubprocessorType, out subProcessor);
-            Console.WriteLine("Current Subprocessor Type: {0}", templateInfo.SubprocessorType);
             return subProcessor(templateInfo);
         }
 
