@@ -6,9 +6,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
     using System;
+    using NLog;
 
     public static class TypeHelperAndroid
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public const string ReservedPrefix = "msgraph_";
         public static HashSet<string> ReservedNames
         {
@@ -95,6 +97,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
         {
             if (ReservedNames.Contains(property))
             {
+                logger.Info("Property {0} is a reserved word in Android. Converting to {1}{0}", property, ReservedPrefix);
                 return ReservedPrefix + property;
             }
 
@@ -104,6 +107,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
                 if (odcmProperty.Projection.Type.Name.ToUpperFirstChar() == odcmProperty.Name.ToUpperFirstChar())
                 {
                     // Name the property: {metadataName} + "Property"
+                    logger.Info("Property type {0} has the same name as the class. Converting to {0}Property", property);
                     return string.Concat(property, "Property");
                 }
 

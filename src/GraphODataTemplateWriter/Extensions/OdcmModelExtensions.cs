@@ -7,9 +7,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
     using System.Linq;
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
+    using NLog;
 
     public static class OdcmModelExtensions
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static bool IsCollection(this OdcmProperty odcmProperty)
         {
             return odcmProperty.IsCollection;
@@ -152,8 +155,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                     .First();
             } catch (Exception e)
             {
-                //TODO: Pass the exception to the logger
-                Console.WriteLine("Error: The navigation property \"{0}\" on class \"{1}\" does not specify it is self-contained nor is it defined in an EntitySet", odcmProperty.Name.ToString(), odcmProperty.Class.FullName.ToString());
+                logger.Error("The navigation property \"{0}\" on class \"{1}\" does not specify it is self-contained nor is it defined in an EntitySet", odcmProperty.Name.ToString(), odcmProperty.Class.FullName.ToString());
+                logger.Error(e);
                 return null;
             }
         }
