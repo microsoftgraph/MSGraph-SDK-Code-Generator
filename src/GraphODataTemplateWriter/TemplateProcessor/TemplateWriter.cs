@@ -12,6 +12,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
     using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor.Enums;
     using Vipr.Core;
     using Vipr.Core.CodeModel;
+    using NLog;
 
     public class TemplateWriter : IConfigurable, IOdcmWriter
     {
@@ -19,6 +20,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         private ITemplateProcessor Processor { get; set; }
         private OdcmModel CurrentModel { get; set; }
         private ITemplateInfoProvider TemplateInfoProvider { get; set; }
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private string pathWriterClassNameFormatString;
         private string PathWriterClassNameFormatString
@@ -49,11 +52,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
             // Initialize processor.
             var pathWriterClassName = String.Format(this.PathWriterClassNameFormatString, ConfigurationService.Settings.TargetLanguage);
+
             var type = Type.GetType(pathWriterClassName);
             if (type == null)
             {
                 throw new InvalidOperationException("Unable to find path writer " + pathWriterClassName);
             }
+
             IPathWriter pathWriterInstance = (IPathWriter)Activator.CreateInstance(type);
             this.Processor = new TemplateProcessor(pathWriterInstance, this.CurrentModel, this.TemplatesDirectory);
 
@@ -61,6 +66,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             {
                 foreach (TextFile outputFile in this.Processor.Process(template))
                 {
+                    logger.Debug("Created file {0}", outputFile.RelativePath);
                     yield return outputFile;
                 }
             }
@@ -85,6 +91,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         public IEnumerable<TextFile> GenerateProxy(OdcmModel model)
         {
             this.CurrentModel = model;
+            logger.Debug("Currently processing model {0}", model);
             return this.ProcessTemplates();
         }
     }
