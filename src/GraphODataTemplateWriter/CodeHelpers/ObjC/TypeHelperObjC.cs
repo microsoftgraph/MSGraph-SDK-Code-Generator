@@ -7,10 +7,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
+    using NLog;
 
     public static class TypeHelperObjC
     {
         public static string Prefix = ConfigurationService.Settings.NamespacePrefix;
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private static ICollection<string> reservedNames;
         public static ICollection<string> ReservedNames
@@ -157,6 +160,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         {
             if (ReservedNames.Contains(property.Name.ToLower()))
             {
+                logger.Info("Property \"{0}\" is a reserved word in Objective-C. Converting to \"{1}{0}\"", 
+                    property.Name.ToUpperFirstChar(), 
+                    property.Class.Name.ToLowerFirstChar()
+                );
                 return property.Class.Name.ToLowerFirstChar() + property.Name.ToUpperFirstChar();
             }
             return property.Name;

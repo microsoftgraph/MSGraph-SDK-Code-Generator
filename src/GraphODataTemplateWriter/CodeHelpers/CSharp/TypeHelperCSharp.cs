@@ -238,7 +238,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             {
                 var reservedPrefix = string.IsNullOrEmpty(prefix) ? DefaultReservedPrefix : prefix;
 
-                logger.Info("Property {0} is a reserved word in .NET. Converting to {1}{0}", property.ToUpperFirstChar(), reservedPrefix);
+                logger.Info("Property \"{0}\" is a reserved word in .NET. Converting to \"{1}{0}\"", property.ToUpperFirstChar(), reservedPrefix);
                 return string.Concat(reservedPrefix, property.ToUpperFirstChar());
             }
 
@@ -251,7 +251,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 if (odcmProperty.Projection.Type.Name.ToUpperFirstChar() == odcmProperty.Class.Name.ToUpperFirstChar())
                 {
                     // Name the property: {metadataName} + "Property"
-                    logger.Info("Property type {0} has the same name as the class. Converting to {0}Property", property);
+                    logger.Info("Property type \"{0}\" has the same name as the class. Converting to \"{0}Property\"", property);
                     return string.Concat(property, "Property");
                 }
 
