@@ -4,7 +4,7 @@
 <#@ output extension="\\" #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
-
+<#=AddCustomImport(TypeName(c))#>
 <#=CreateClassDef(TypeName(c), BaseTypeName(c))#>
 
 }
