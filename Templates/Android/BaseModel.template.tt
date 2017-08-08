@@ -621,7 +621,7 @@ public {1} {2}{3}{4} {{";
         var format =
 @"    /**
      * The {0}.
-	 * {4}
+     * {4}
      */
     @SerializedName(""{1}"")
     @Expose
@@ -631,7 +631,7 @@ public {1} {2}{3}{4} {{";
         var collectionFormat =
 @"    /**
      * The {0}.
-	 * {4}
+     * {4}
      */
     public transient {2} {3};
 
@@ -676,7 +676,7 @@ public {1} {2}{3}{4} {{";
         var format =
 @"    /**
      * The {0}.
-	 * {1}
+     * {1}
      */
     @SerializedName(""{2}"")
     @Expose
