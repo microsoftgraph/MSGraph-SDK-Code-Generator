@@ -69,6 +69,7 @@
     <#=IBaseTypeRequest(c)#> top(final int value);
 <# } #>
 }
+<#=PostProcess(IBaseTypeRequest(c))#>
 <#+
     public String deleteMethods(OdcmObject c)
     {

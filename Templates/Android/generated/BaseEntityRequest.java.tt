@@ -93,6 +93,7 @@
      }
 <# } #>
 }
+<#=PostProcess(BaseTypeRequest(c))#>
 <#+
     public String deleteMethods(OdcmObject c)
     {

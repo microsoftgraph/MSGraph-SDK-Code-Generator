@@ -104,3 +104,4 @@
         return page;
     }
 }
+<#=PostProcess(BaseTypeCollectionRequest(c))#>

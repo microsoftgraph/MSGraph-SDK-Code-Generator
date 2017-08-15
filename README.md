@@ -133,7 +133,7 @@ There are currently several steps we take to form the metadata into one that wil
      ```xml
      <Annotation String="navigable" Term="Org.OData.Core.V1.LongDescription"/>
      ```
-  - Remove HasStream properties from ```onenoteEntitySchemaObjectModel``` and ```onenoteEntityBaseModel```
+  - Remove HasStream properties from ```onenotePage``` and ```onenoteEntityBaseModel```
   - Add ```ContainsTarget="true"``` to navigation properties that do not have a corresponding EntitySet
   - Add long descriptions to types and properties from [docs](https://developer.microsoft.com/en-us/graph/docs/concepts/overview)
   
