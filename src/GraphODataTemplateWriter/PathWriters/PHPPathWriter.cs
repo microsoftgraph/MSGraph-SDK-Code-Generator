@@ -8,6 +8,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
+    using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP;
 
     public class PHPPathWriter : PathWriterBase
     {
@@ -17,7 +18,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
             var theNamespace = this.CreateNamespace(template.TemplateType.ToString().ToUpperFirstChar());
             var namespacePath = this.CreatePathFromNamespace(theNamespace);
 
-            var fileName = Extensions.StringExtensions.ToCheckedCase(this.TransformFileName(template, entityTypeName));
+            var fileName = Extensions.StringExtensions.ToCheckedCase(this.TransformFileName(template, TypeHelperPHP.SanitizeEntityName(entityTypeName)));
 
             String filePath = Path.Combine(namespacePath, fileName);
             return filePath;

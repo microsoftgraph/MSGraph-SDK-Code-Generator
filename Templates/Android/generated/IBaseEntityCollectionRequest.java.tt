@@ -47,3 +47,4 @@
 
 <# } #>
 }
+<#=PostProcess(IBaseTypeCollectionRequest(c))#>

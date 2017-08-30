@@ -18,4 +18,6 @@
     public <#=TypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
+
+<#=AddCustomCode(TypeRequestBuilder(c))#>
 }

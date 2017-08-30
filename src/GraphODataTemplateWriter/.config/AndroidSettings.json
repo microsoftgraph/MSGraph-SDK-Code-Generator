@@ -41,7 +41,7 @@
           { "Template": "IBaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                            "Name": "IBase<Class>RequestBuilder" },
           { "Template": "BaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                             "Name": "Base<Class>RequestBuilder" },
 
-          { "Template": "ExtensableEntity", "SubProcessor": "EntityType",                                                                     "Name": "<Class>" },
+          { "Template": "ExtensibleEntity", "SubProcessor": "EntityType",                                                                     "Name": "<Class>" },
           { "Template": "BaseEntity", "SubProcessor": "EntityType",                                                                           "Name": "Base<Class>" },
           { "Template": "IEntityRequest", "SubProcessor": "EntityType",                                                                       "Name": "I<Class>Request" },
           { "Template": "EntityRequest", "SubProcessor": "EntityType",                                                                        "Name": "<Class>Request" },
@@ -50,7 +50,7 @@
           { "Template": "IEntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                         "Name": "I<Class>WithReferencesRequestBuilder" },
           { "Template": "EntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                          "Name": "<Class>WithReferencesRequestBuilder" },
 
-          { "Template": "ExtensableEntity", "SubProcessor": "ComplexType",                                                                    "Name": "<Class>" },
+          { "Template": "ExtensibleEntity", "SubProcessor": "ComplexType",                                                                    "Name": "<Class>" },
           { "Template": "BaseEntity", "SubProcessor": "ComplexType",                                                                          "Name": "Base<Class>" },
 
           { "Template": "EntityCollectionPage", "SubProcessor": "NavigationCollectionProperty",                                               "Name": "<PropertyType>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
@@ -78,8 +78,9 @@
           { "Template": "EntityReferenceRequest", "SubProcessor": "EntityReferenceType",                                                      "Name": "<Class>ReferenceRequest" },
           { "Template": "IEntityWithReferenceRequest", "SubProcessor": "EntityReferenceType",                                                "Name": "I<Class>WithReferencesRequest" },
           { "Template": "EntityWithReferenceRequest", "SubProcessor": "EntityReferenceType",                                                 "Name": "<Class>WithReferencesRequest" },
-          
-          { "Template": "IEntityRequestBuilder", "SubProcessor": "ComplexType",                                                               "Name": "I<Class>RequestBuilder", "Matches": "navigable" },
+
+        {
+          "Template": "IEntityRequestBuilder", "SubProcessor": "ComplexType",                                                               "Name": "I<Class>RequestBuilder", "Matches": "navigable" },
           { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType",                                                                "Name": "<Class>RequestBuilder", "Matches": "navigable" },
           { "Template": "IEntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                         "Name": "I<Class>WithReferencesRequestBuilder"},
           { "Template": "EntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                          "Name": "<Class>WithReferencesRequestBuilder"},
@@ -139,7 +140,22 @@
           { "Template": "IClient", "SubProcessor": "EntityContainer", "Type": "Client",                                                       "Name": "I<Container>Client" },
           { "Template": "Client", "SubProcessor": "EntityContainer", "Type": "Client",                                                        "Name": "<Container>Client" },
           { "Template": "IBaseClient", "SubProcessor": "EntityContainer", "Type": "Client",                                                   "Name": "IBase<Container>Client" },
-          { "Template": "BaseClient", "SubProcessor": "EntityContainer", "Type": "Client",                                                    "Name": "Base<Container>Client" }
+        {
+          "Template": "BaseClient",
+          "SubProcessor": "EntityContainer",
+          "Type": "Client",
+          "Name": "Base<Container>Client"
+        },
+        {
+          "Template": "ChunkedUploadRequest",
+          "SubProcessor": "Other",
+          "Name": "ChunkedUploadRequest"
+        },
+        {
+          "Template": "ChunkedUploadResult",
+          "SubProcessor": "Other",
+          "Name":  "ChunkedUploadResult"
+        }
       ]
     }
 }

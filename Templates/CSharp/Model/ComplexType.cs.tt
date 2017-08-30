@@ -18,8 +18,8 @@ var classType = complex.IsAbstract ? "abstract partial class" : "partial class";
 var attributeStringBuilder = new StringBuilder();
 attributeStringBuilder.Append("[JsonObject(MemberSerialization = MemberSerialization.OptIn)]");
 
-// We only want to add the derived type converter to the concrete class at the top of the inheritance hierarchy
-if (!complex.IsAbstract && complex.Derived != null && (complex.Base == null || complex.Base.IsAbstract))
+// We only want to add the derived type converter to the class at the top of the inheritance hierarchy
+if (complex.Derived != null && complex.Base == null)
 {
     attributeStringBuilder.Append(Environment.NewLine);
     attributeStringBuilder.Append("    ");
@@ -61,7 +61,7 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name#>.
 <# if (property.LongDescription != null) {
 #>
-		/// <#=property.LongDescription#>
+        /// <#=property.LongDescription#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
@@ -76,7 +76,7 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name#>.
 <# if (property.LongDescription != null) {
 #>
-		/// <#=property.LongDescription#>
+        /// <#=property.LongDescription#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
