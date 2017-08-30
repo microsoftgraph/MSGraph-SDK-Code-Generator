@@ -72,7 +72,7 @@ import android.app.Activity;
          * @param logger The logger
          * @return the instance of this builder
          */
-        public Builder logger(final ILogger logger) {
+        private Builder logger(final ILogger logger) {
             mClient.setLogger(logger);
             return this;
         }
