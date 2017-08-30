@@ -89,7 +89,7 @@ if (innerEntityType.Equals(propName))
 - (NSMutableURLRequest *)add<#=innerEntity.Name.ToUpperFirstChar()#>:(<#=innerEntityType#>*)<#=innerEntity.Name.ToLowerFirstChar()#>
 {
 <#
-    if(collectionReference)
+    if(collectionReference && prop.GetServiceCollectionNavigationPropertyForPropertyType() != null)
     {
 #>
 

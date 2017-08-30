@@ -6,10 +6,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
     using System;
+    using NLog;
 
     public static class TypeHelperPHP
     {
         public const string ReservedPrefix = "Graph";
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static HashSet<string> ReservedNames
         {
             get
@@ -120,6 +123,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
         {
             if (ReservedNames.Contains(name))
             {
+                logger.Info("Property \"{0}\" is a reserved word in PHP. Converting to \"{1}{0}\"", name, ReservedPrefix);
                 return ReservedPrefix + name.ToCheckedCase();
             }
 
@@ -130,6 +134,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
         {
             if (name == "properties")
             {
+                logger.Info("Property \"{0}\" is a reserved word in PHP. Converting to \"{1}{0}\"", name, ReservedPrefix);
                 return entityName + name.ToCheckedCase();
             }
 
