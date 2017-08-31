@@ -12,7 +12,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
         public void RecordProcessed(ITemplateInfo template, string type, string file)
         {
-            Console.WriteLine("{0}\t{1}\t->\t\t{2}", template.TemplateName, type, file);
             if (!this.ProcessedTemplates.ContainsKey(template.TemplateName))
             {
                 this.ProcessedTemplates.Add(template.TemplateName, new List<string> { file });
