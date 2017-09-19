@@ -75,7 +75,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
         /// <summary>
         /// The default casing method to be used for file names when a casing method ins't specified.
         /// </summary>
-        public string DefaultFileCasing;
+        public string DefaultFileCasing { get; set; }
 
         public string DefaultBaseEndpointUrl { get; set; }
 
