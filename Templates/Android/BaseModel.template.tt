@@ -811,7 +811,11 @@ public {1} {2}{3}{4} {{";
 		var type = customMethods.GetType();
 		var property = type.GetFields().Where(x => x.Name == className).FirstOrDefault();
 
-		return property != null ? property.GetValue(customMethods).ToString() : string.Empty;
+		if (property != null) {
+			return "\r\n\r\n" + property.GetValue(customMethods).ToString();
+		} else {
+			return string.Empty;
+		}
 	}
 
 	/*
