@@ -29,7 +29,7 @@ class <#=enumT.Name.ToUpperFirstChar()#> extends Enum
 		if (needsPrefix)
 		{
 #>
-    const <#=TypeHelperPHP.ReservedPrefix.ToUpper() #><#=value.Name.ToUnderscore().ToUpper()#> = <#= count#>;
+    const <#=TypeHelperPHP.ReservedPrefix.ToUpper() #><#=value.Name.ToUnderscore().ToUpper()#> = "<#= value.Name.ToCamelize()#>";
 <#
 		} else {
 #>
