@@ -35,16 +35,16 @@ if (currentTypeProjection != null)
         if (method.IsCollection) {
 #>
 
-    <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
+    <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>);
 <#
 	// Add a method to support delta query by string (opaque deltaLink)
 	if (MethodName(method) == "Delta") {
 #>
 
-	<#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(final String deltaLink);
+	<#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(final String deltaLink);
 <# } #>
 <#  } else { #>
-    <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
+    <#=ITypeRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>);
 <#
         }
     }

@@ -42,7 +42,7 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return The request builder for the collection of <#=propertyName#> objects
      */
-    public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propertyName#>() {
+    public <#=ITypeCollectionRequestBuilder(prop)#> <#=prop.Name#>() {
         return new <#=TypeCollectionRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);
     }
 
@@ -52,7 +52,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @param id The id of the <#=propertyName#> to retrieve.
      * @return The request builder for the <#=propertyName#> object
      */
-    public <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>(final String id) {
+    public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>(final String id) {
         return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>/" + id, (<#=IClientType(c)#>)this, null);
     }
 <#
@@ -66,7 +66,7 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return the <#=prop.Projection.Type.GetTypeString()#>.
      */
-    public <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>() {
+    public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>() {
         return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);
     }
 <#

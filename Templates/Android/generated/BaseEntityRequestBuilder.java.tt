@@ -51,14 +51,15 @@ if (c.AsOdcmClass() != null)
     foreach(var prop in c.AsOdcmClass().NavigationProperties())
     {
         var propName = prop.Name.ToUpperFirstChar();
+		var sanitizedProperty = propName.SanitizePropertyName().ToLowerFirstChar();
         var propRequestBuilder = TypeRequestBuilder(prop);
         if (prop.IsCollection()) {
 #>
-    public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>() {
+    public <#=ITypeCollectionRequestBuilder(prop)#> <#=sanitizedProperty#>() {
         return new <#=TypeCollectionRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 
-    public <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id) {
+    public <#=ITypeRequestBuilder(prop)#> <#=sanitizedProperty#>(final String id) {
         return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
     }
 <#
@@ -68,7 +69,7 @@ if (c.AsOdcmClass() != null)
     /**
      * Gets the request builder for <#=TypeName(prop)#>.
      */
-    public <#=ITypeRequestBuilder(prop)#> get<#=propName#>() {
+    public <#=ITypeRequestBuilder(prop)#> <#=sanitizedProperty#>() {
         return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 <#
@@ -79,13 +80,16 @@ if (c.AsOdcmClass() != null)
 	foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
 	{
 		var propName = prop.Name.ToCheckedCase();
+		var sanitizedName = propName;
 		if (c is OdcmMediaClass && propName == "Content") {
-			 propName = prop.Type.GetReservedPrefix().ToCheckedCase() + prop.Name.ToCheckedCase();
+			 sanitizedName = prop.Type.GetReservedPrefix().ToCheckedCase() + prop.Name.ToCheckedCase();
+		} else {
+			sanitizedName = propName.SanitizePropertyName().ToLowerFirstChar();
 		}
 		var propRequestBuilder = TypeRequestBuilder(prop);
 #>
 
-    public I<#=propRequestBuilder#> get<#=propName#>() {
+    public I<#=propRequestBuilder#> <#=sanitizedName#>() {
         return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 <#
@@ -96,7 +100,7 @@ if (c.AsOdcmClass() != null)
     {
 #>
 
-    public <#=ITypeStreamRequestBuilder(c)#> getContent() {
+    public <#=ITypeStreamRequestBuilder(c)#> content() {
         return new <#=TypeStreamRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment("$value"), getClient(), null);
     }
 <#
@@ -115,15 +119,17 @@ if (c.AsOdcmClass() != null)
             parameterList = parameterList.Remove(0, 2);
         }
 
+		var sanitizedMethod = MethodName(method).SanitizePropertyName().ToLowerFirstChar();
+
         if (method.IsCollection) {
 #>
 
-    public <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
+    public <#=ITypeCollectionRequestBuilder(method)#> <#=sanitizedMethod#>(<#=parameterList#>) {
         return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
 <#      } else { #>
 
-    public <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
+    public <#=ITypeRequestBuilder(method)#> <#=sanitizedMethod#>(<#=parameterList#>) {
         return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
 <#

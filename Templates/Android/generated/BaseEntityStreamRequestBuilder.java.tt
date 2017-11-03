@@ -52,11 +52,11 @@ if (c.AsOdcmClass() != null)
         var propName = prop.Name.ToUpperFirstChar();
         if (prop.IsCollection()) {
 #>
-    public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>() {
+    public <#=ITypeCollectionRequestBuilder(prop)#> <#=prop.Name#>() {
         return new <#=TypeCollectionRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 
-    public <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id) {
+    public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>(final String id) {
         return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
     }
 <#
@@ -66,7 +66,7 @@ if (c.AsOdcmClass() != null)
     /**
      * Gets the request builder for <#=TypeName(prop)#>.
      */
-    public <#=ITypeRequestBuilder(prop)#> get<#=propName#>() {
+    public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>() {
         return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 <#
@@ -80,7 +80,7 @@ if (c.AsOdcmClass() != null)
         var propRequestBuilder = TypeRequestBuilder(prop);
 #>
 
-    public I<#=propRequestBuilder#> get<#=propName#>() {
+    public I<#=propRequestBuilder#> <#=prop.Name#>() {
         return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 <#
@@ -93,7 +93,7 @@ if (c.AsOdcmClass() != null)
         var propName = prop.Name.ToCheckedCase();
 #>
 
-    public <#=ITypeStreamRequestBuilder(prop)#> get<#=propName#>Value() {
+    public <#=ITypeStreamRequestBuilder(prop)#> <#=prop.Name#>Value() {
         return new <#=TypeStreamRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>/$value"), getClient(), null);
     }
 <#
@@ -108,13 +108,13 @@ if (c.AsOdcmClass() != null)
 #>
 <#		if (method.IsCollection) { #>
 
-    public <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
+    public <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>) {
         return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
 
 <# 		} else { #>
 
-    public <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
+    public <#=ITypeRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>) {
         return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
 <#

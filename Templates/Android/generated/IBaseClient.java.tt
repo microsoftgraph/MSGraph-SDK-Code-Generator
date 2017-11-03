@@ -19,7 +19,7 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return The request builder for the collection of <#=propertyName#> objects
      */
-    <#=ITypeCollectionRequestBuilder(prop)#> get<#=propertyName#>();
+    <#=ITypeCollectionRequestBuilder(prop)#> <#=prop.Name#>();
 
     /**
      * Gets a single <#=propertyName#>.
@@ -27,7 +27,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @param id The id of the <#=propertyName#> to retrieve.
      * @return The request builder for the <#=propertyName#> object
      */
-    <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>(final String id);
+    <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>(final String id);
 <#
     }
     else
@@ -39,7 +39,7 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return the <#=prop.Projection.Type.GetTypeString()#>.
      */
-    <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>();
+    <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>();
 <#
     }
 }

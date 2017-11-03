@@ -7,7 +7,6 @@
 
 import <#=host.CurrentModel.NamespaceName()#>.authentication.*;
 import <#=host.CurrentModel.NamespaceName()#>.logger.*;
-import android.app.Activity;
 
 <#=CreateClassDef(ClientType(c), BaseClientType(c), IClientType(c))#>
 
