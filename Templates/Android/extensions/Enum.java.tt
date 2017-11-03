@@ -17,12 +17,12 @@ public enum <#= c.Name.ToUpperFirstChar()#>
     /**
     * <#= value.Name.SplitCamelCase()#>
     */
-    <#= value.Name.ToUpper() #>,
+    <#= value.Name.ToUnderscore().ToUpper() #>,
 <#
     }
 #>
     /**
     * <#= String.Format("For {0} values that were not expected from the service", c.Name.ToUpperFirstChar())#>
     */
-    unexpectedValue
+    UNEXPECTED_VALUE
 }
