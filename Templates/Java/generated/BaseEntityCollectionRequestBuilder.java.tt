@@ -1,0 +1,75 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeCollectionRequestBuilder(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(BaseTypeCollectionRequestBuilder(c), "BaseRequestBuilder", IBaseTypeCollectionRequestBuilder(c))#>
+
+    /**
+     * The request builder for this collection of <#=ClassTypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param requestOptions The options for this request
+     */
+    public <#=BaseTypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
+    }
+
+    public <#=ITypeCollectionRequest(c)#> buildRequest() {
+        return buildRequest(getOptions());
+    }
+
+    public <#=ITypeCollectionRequest(c)#> buildRequest(final java.util.List<Option> requestOptions) {
+        return new <#=TypeCollectionRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
+    }
+
+    public <#=ITypeRequestBuilder(c)#> byId(final String id) {
+        return new <#=TypeRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
+    }
+<#
+var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
+if (currentTypeProjection != null) {
+    foreach (var method in currentTypeProjection.MethodsAndOverloads()) {
+
+        if (!method.IsBoundToCollection) {
+            continue;
+        }
+
+        var parameterList = MethodParametersSignature(method);
+
+        if (parameterList != "") {
+            parameterList = parameterList.Remove(0, 2);
+        }
+
+        if (method.IsCollection) {
+#>
+
+    public <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>) {
+        return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    }
+<#
+	// Add a method to support delta query by string (opaque deltaLink)
+	if (MethodName(method) == "Delta") {
+#>
+
+	public <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(final String deltaLink) {
+        return new <#=TypeCollectionRequestBuilder(method)#>(deltaLink, getClient(), null<#=MethodParametersValues(method)#>);
+    }
+<# } #>
+<#
+        } else {
+#>
+
+    public <#=ITypeRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>) {
+        return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    }
+<#
+        }
+    }
+}
+#>
+}

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
 {
@@ -12,8 +8,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
      * The field name should be equal to the name of the class you wish to edit
      * This will be used in BaseModel.template.tt in the AddCustomImports() method
      */
-    public class CustomImports
+    public class CustomImports : Java.CustomImports
     {
-        public const string UploadSession = "import com.microsoft.graph.concurrency.ChunkedUploadProvider;\r\n";
+        
     }
 }

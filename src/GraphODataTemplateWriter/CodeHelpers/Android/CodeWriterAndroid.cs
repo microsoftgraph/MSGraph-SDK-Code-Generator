@@ -4,26 +4,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
 {
     using System;
     using Vipr.Core.CodeModel;
+    using CodeHelpers.Java;
 
-    public class CodeWriterAndroid : CodeWriterBase
+    public class CodeWriterAndroid : CodeWriterJava
     {
         public CodeWriterAndroid() : base() { }
 
         public CodeWriterAndroid(OdcmModel model) : base(model) { }
-
-        public override String WriteOpeningCommentLine()
-        {
-            return "// ------------------------------------------------------------------------------" + this.NewLineCharacter;
-        }
-
-        public override String WriteClosingCommentLine()
-        {
-            return "// ------------------------------------------------------------------------------" + this.NewLineCharacter;
-        }
-
-        public override string WriteInlineCommentChar()
-        {
-            return "// ";
-        }
     }
 }

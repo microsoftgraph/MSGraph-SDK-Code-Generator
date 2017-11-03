@@ -29,7 +29,7 @@ import com.google.gson.annotations.*;
     private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
 
     @Override
-    public final AdditionalDataManager additionalDataManager() {
+    public final AdditionalDataManager getAdditionalDataManager() {
         return additionalDataManager;
     }
 

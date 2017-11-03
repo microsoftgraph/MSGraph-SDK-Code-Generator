@@ -1,0 +1,125 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeStreamRequestBuilder(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(BaseTypeStreamRequestBuilder(c), "BaseRequestBuilder", IBaseTypeStreamRequestBuilder(c))#>
+
+    /**
+     * The request builder for the <#=TypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param requestOptions The options for this request
+     */
+    public <#=BaseTypeStreamRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
+    }
+
+    /**
+     * Creates the request
+     */
+    public <#=ITypeStreamRequest(c)#> buildRequest() {
+        return buildRequest(getOptions());
+    }
+
+    /**
+     * Creates the request with specific options instead of the existing options
+     */
+    public <#=ITypeStreamRequest(c)#> buildRequest(final java.util.List<Option> requestOptions) {
+        return new <#=TypeStreamRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
+    }
+<#
+if (c.AsOdcmClass() != null)
+{
+    foreach(var child in c.AsOdcmClass().Derived)
+    {
+        var childName = child.Name.ToCheckedCase();
+#>
+
+    public <#=ITypeRequestBuilder(child)#> <#=childName.ToLowerFirstChar()#>() {
+        return new <#=TypeRequestBuilder(child)#>(getRequestUrlWithAdditionalSegment("<#=child.Name#>"), getClient(), null);
+    }
+<#
+    }
+#>
+<#
+    foreach(var prop in c.AsOdcmClass().NavigationProperties())
+    {
+        var propName = prop.Name.ToUpperFirstChar();
+        if (prop.IsCollection()) {
+#>
+    public <#=ITypeCollectionRequestBuilder(prop)#> <#=prop.Name#>() {
+        return new <#=TypeCollectionRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+
+    public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>(final String id) {
+        return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
+    }
+<#
+        } else {
+#>
+
+    /**
+     * Gets the request builder for <#=TypeName(prop)#>.
+     */
+    public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>() {
+        return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+<#
+        }
+    }
+#>
+<#
+    foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
+    {
+        var propName = prop.Name.ToCheckedCase();
+        var propRequestBuilder = TypeRequestBuilder(prop);
+#>
+
+    public I<#=propRequestBuilder#> <#=prop.Name#>() {
+        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+<#
+    }
+#>
+
+<#
+    foreach (var prop in c.AsOdcmClass().Properties.Where(x => x.Projection.Type is OdcmMediaClass))
+    {
+        var propName = prop.Name.ToCheckedCase();
+#>
+
+    public <#=ITypeStreamRequestBuilder(prop)#> <#=prop.Name#>Value() {
+        return new <#=TypeStreamRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>/$value"), getClient(), null);
+    }
+<#
+    }
+#>
+
+<#
+    foreach (var method in c.AsOdcmClass().MethodsAndOverloads())
+    {
+        var parameterList = MethodParametersSignature(method);
+        if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
+#>
+<#		if (method.IsCollection) { #>
+
+    public <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>) {
+        return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    }
+
+<# 		} else { #>
+
+    public <#=ITypeRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>) {
+        return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    }
+<#
+        }
+    }
+}
+#>
+}

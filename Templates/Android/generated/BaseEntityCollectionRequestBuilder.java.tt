@@ -48,7 +48,7 @@ if (currentTypeProjection != null) {
         if (method.IsCollection) {
 #>
 
-    public <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>) {
+    public <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
         return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
 <#
@@ -56,7 +56,7 @@ if (currentTypeProjection != null) {
 	if (MethodName(method) == "Delta") {
 #>
 
-	public <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(final String deltaLink) {
+	public <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(final String deltaLink) {
         return new <#=TypeCollectionRequestBuilder(method)#>(deltaLink, getClient(), null<#=MethodParametersValues(method)#>);
     }
 <# } #>
@@ -64,7 +64,7 @@ if (currentTypeProjection != null) {
         } else {
 #>
 
-    public <#=ITypeRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>) {
+    public <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
         return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
 <#

@@ -11,13 +11,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
     public static class TypeHelperAndroid
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        public const string ReservedPrefix = "msgraph";
+        public const string ReservedPrefix = "msgraph_";
         public static HashSet<string> ReservedNames
         {
             get
             {
                 return new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
-                    "abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while", "true", "false", "null"
+                    "abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while"
                 };
             }
         }
@@ -115,7 +115,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
                 return odcmProperty.Projection.Type.Name.ToUpperFirstChar().SanitizePropertyName(odcmProperty);
             }
 
-            return property.Replace("@", string.Empty).Replace(".", string.Empty);
+            return property.Replace("@", string.Empty).Replace(".", "_");
         }
 
         public static string GetToLowerImport(this OdcmProperty property)

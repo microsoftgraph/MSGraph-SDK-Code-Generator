@@ -20,9 +20,9 @@
         super(requestUrl, client, requestOptions);
 <# foreach (var p in method.Parameters) { #>
   <# if (isAction) { #>
-      bodyParams.put("<#=ParamName(p)#>", <#=ParamName(p)#>);
+      mBodyParams.put("<#=ParamName(p)#>", <#=ParamName(p)#>);
   <# } else { #>
-      functionOptions.add(new FunctionOption("<#=ParamName(p)#>", <#=ParamName(p)#>));
+      mFunctionOptions.add(new FunctionOption("<#=ParamName(p)#>", <#=ParamName(p)#>));
   <# } #>
 <# } #>
     }
@@ -42,11 +42,11 @@
 <# if (isAction) { #>
   <# foreach (var p in c.AsOdcmMethod().Parameters) { #>
       if (hasParameter("<#=ParamName(p)#>")) {
-            request.body.<#=ParamName(p)#> = getParameter("<#=ParamName(p)#>");
+            request.mBody.<#=ParamName(p)#> = getParameter("<#=ParamName(p)#>");
         }
   <# } #>
 <# } else { #>
-      for (FunctionOption option : functionOptions) {
+      for (FunctionOption option : mFunctionOptions) {
             request.addFunctionOption(option);
       }
 <# } #>

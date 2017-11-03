@@ -28,6 +28,6 @@ import com.google.gson.JsonObject;
      *
      * @return String The deltaLink URL
      */
-    public String deltaLink();
+    public String getDeltaLink();
 <# } #>
 }

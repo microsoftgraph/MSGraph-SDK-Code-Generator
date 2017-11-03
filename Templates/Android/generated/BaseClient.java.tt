@@ -15,19 +15,19 @@
     /**
      * The current endpoint
      */
-    private String endpoint;
+    private String mEndpoint;
 
     @Override
     public String getServiceRoot() {
-        if (endpoint == null) {
-            endpoint = DEFAULT_GRAPH_ENDPOINT;
+        if (mEndpoint == null) {
+            mEndpoint = DEFAULT_GRAPH_ENDPOINT;
         }
-        return endpoint;
+        return mEndpoint;
     }
 
     @Override
     public void setServiceRoot(String value) {
-        endpoint = value;
+        mEndpoint = value;
     }
 <#
 foreach (var prop in model.EntityContainer.Properties)
@@ -42,7 +42,7 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return The request builder for the collection of <#=propertyName#> objects
      */
-    public <#=ITypeCollectionRequestBuilder(prop)#> <#=prop.Name#>() {
+    public <#=ITypeCollectionRequestBuilder(prop)#> get<#=propertyName#>() {
         return new <#=TypeCollectionRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);
     }
 
@@ -52,7 +52,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @param id The id of the <#=propertyName#> to retrieve.
      * @return The request builder for the <#=propertyName#> object
      */
-    public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>(final String id) {
+    public <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>(final String id) {
         return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>/" + id, (<#=IClientType(c)#>)this, null);
     }
 <#
@@ -66,7 +66,7 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return the <#=prop.Projection.Type.GetTypeString()#>.
      */
-    public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>() {
+    public <#=ITypeRequestBuilder(prop)#> get<#=propertyName#>() {
         return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);
     }
 <#

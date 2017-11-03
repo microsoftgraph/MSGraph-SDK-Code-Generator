@@ -1,0 +1,50 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeCollectionRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseTypeCollectionRequest(c))#>
+
+    void get(final ICallback<<#=ITypeCollectionPage(c)#>> callback);
+
+    <#=ITypeCollectionPage(c)#> get() throws ClientException;
+
+    void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
+
+<# if (c.GetFeatures().CanExpand) { #>
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value The expand clause
+     * @return The updated request
+     */
+    <#=ITypeCollectionRequest(c)#> expand(final String value);
+
+<# } #>
+<# if (c.GetFeatures().CanSelect) { #>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value The select clause
+     * @return The updated request
+     */
+    <#=ITypeCollectionRequest(c)#> select(final String value);
+
+<# } #>
+<# if (c.GetFeatures().CanUseTop) { #>
+    /**
+     * Sets the top value for the request
+     *
+     * @param value The max number of items to return
+     * @return The updated request
+     */
+    <#=ITypeCollectionRequest(c)#> top(final int value);
+
+<# } #>
+}
+<#=PostProcess(IBaseTypeCollectionRequest(c))#>

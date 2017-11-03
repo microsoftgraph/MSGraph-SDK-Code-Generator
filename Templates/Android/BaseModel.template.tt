@@ -345,6 +345,12 @@
         return "Base" + TypeBody(c);
     }
 
+    /// Creates an 'm' prepended name for a field
+    /// based on its name as defined by the service $metadata
+    public string FieldName(OdcmParameter c) {
+        return "m" + ParamName(c).ToUpperFirstChar();
+    }
+
     /// Returns the name of the service <parameter> with the first char lowercase
     public string ParamName(OdcmParameter c) {
         return c.Name.ToLowerFirstChar();
@@ -409,7 +415,7 @@
         var parameterValuesBuilder = new StringBuilder();
         foreach (var p in c.AsOdcmMethod().Parameters)
         {
-            parameterValuesBuilder.AppendFormat(", {0}", ParamName(p));
+            parameterValuesBuilder.AppendFormat(", {0}", FieldName(p));
         }
         return parameterValuesBuilder.ToString();
     }

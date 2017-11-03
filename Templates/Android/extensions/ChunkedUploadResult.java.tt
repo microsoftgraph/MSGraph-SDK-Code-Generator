@@ -16,17 +16,17 @@ public class ChunkedUploadResult<UploadType> {
     /**
      * The uploaded item response.
      */
-    private final UploadType uploadedItem;
+    private final UploadType mUploadedItem;
 
     /**
      * The next session response.
      */
-    private final UploadSession session;
+    private final UploadSession mSession;
 
     /**
      * The error happened during upload.
      */
-    private final ClientException error;
+    private final ClientException mError;
 
     /**
      * Construct result with item created.
@@ -34,9 +34,9 @@ public class ChunkedUploadResult<UploadType> {
      * @param uploaded The created item.
      */
     public ChunkedUploadResult(UploadType uploaded) {
-        this.uploadedItem = uploaded;
-        this.session = null;
-        this.error = null;
+        this.mUploadedItem = uploaded;
+        this.mSession = null;
+        this.mError = null;
     }
 
     /**
@@ -45,9 +45,9 @@ public class ChunkedUploadResult<UploadType> {
      * @param session The next session.
      */
     public ChunkedUploadResult(UploadSession session) {
-        this.session = session;
-        this.uploadedItem = null;
-        this.error = null;
+        this.mSession = session;
+        this.mUploadedItem = null;
+        this.mError = null;
     }
 
     /**
@@ -56,9 +56,9 @@ public class ChunkedUploadResult<UploadType> {
      * @param error The error occurred during uploading.
      */
     public ChunkedUploadResult(ClientException error) {
-        this.error = error;
-        this.uploadedItem = null;
-        this.session = null;
+        this.mError = error;
+        this.mUploadedItem = null;
+        this.mSession = null;
     }
 
     /**
@@ -67,7 +67,7 @@ public class ChunkedUploadResult<UploadType> {
      * @param exception The exception received from server.
      */
     public ChunkedUploadResult(GraphServiceException exception) {
-        this(new ClientException(exception.getMessage(/* verbose */ true), exception, GraphErrorCodes.UPLOAD_SESSION_FAILED));
+        this(new ClientException(exception.getMessage(/* verbose */ true), exception, GraphErrorCodes.UploadSessionFailed));
     }
 
     /**
@@ -76,25 +76,25 @@ public class ChunkedUploadResult<UploadType> {
      * @return true if current chunk upload is completed.
      */
     public boolean chunkCompleted() {
-        return this.uploadedItem != null || this.session != null;
+        return this.mUploadedItem != null || this.mSession != null;
     }
 
     /**
      * Checks the whole upload is completed.
      *
-     * @return true if the response is an item.
+     * @return true if the response is a an item.
      */
     public boolean uploadCompleted() {
-        return this.uploadedItem != null;
+        return this.mUploadedItem != null;
     }
 
     /**
-     * Checks if an error happened.
+     * Checks if error happened.
      *
      * @return true if current request has error.
      */
     public boolean hasError() {
-        return this.error != null;
+        return this.mError != null;
     }
 
     /**
@@ -103,7 +103,7 @@ public class ChunkedUploadResult<UploadType> {
      * @return The item.
      */
     public UploadType getItem() {
-        return this.uploadedItem;
+        return this.mUploadedItem;
     }
 
     /**
@@ -112,7 +112,7 @@ public class ChunkedUploadResult<UploadType> {
      * @return The next session for uploading.
      */
     public UploadSession getSession() {
-        return this.session;
+        return this.mSession;
     }
 
     /**
@@ -121,6 +121,6 @@ public class ChunkedUploadResult<UploadType> {
      * @return The error.
      */
     public ClientException getError() {
-        return this.error;
+        return this.mError;
     }
 }

@@ -1,0 +1,37 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeCollectionWithReferencesRequestBuilder(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(BaseTypeCollectionWithReferencesRequestBuilder(c), "BaseRequestBuilder", IBaseTypeCollectionWithReferencesRequestBuilder(c))#>
+
+    /**
+     * The request builder for this collection of <#=ClassTypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param requestOptions The options for this request
+     */
+    public <#=BaseTypeCollectionWithReferencesRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
+    }
+
+    public <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest() {
+        return buildRequest(getOptions());
+    }
+
+    public <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest(final java.util.List<Option> requestOptions) {
+        return new <#=TypeCollectionWithReferencesRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
+    }
+
+    public <#=ITypeWithReferencesRequestBuilder(c)#> byId(final String id) {
+        return new <#=TypeWithReferencesRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
+    }
+
+    public <#=ITypeCollectionReferenceRequestBuilder(c)#> references(){
+        return new <#=TypeCollectionReferenceRequestBuilder(c)#>(getRequestUrl() + "/$ref", getClient(), getOptions());
+    }
+}

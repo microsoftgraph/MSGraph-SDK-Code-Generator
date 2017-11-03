@@ -32,14 +32,13 @@ if (c.AsOdcmClass() != null)
     foreach(var prop in c.AsOdcmClass().NavigationProperties())
     {
         var propName = prop.Name.ToUpperFirstChar();
-		var sanitizedName = prop.Name.SanitizePropertyName();
         var propRequestBuilder = TypeRequestBuilder(prop);
         if (prop.IsCollection()) {
 #>
 
-    <#=ITypeCollectionRequestBuilder(prop)#> <#=sanitizedName.ToLowerFirstChar()#>();
+    <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>();
 
-    <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>(final String id);
+    <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id);
 <#
         } else {
 #>
@@ -47,7 +46,7 @@ if (c.AsOdcmClass() != null)
     /**
      * Gets the request builder for <#=TypeName(prop)#>.
      */
-    <#=ITypeRequestBuilder(prop)#> <#=sanitizedName.ToLowerFirstChar()#>();
+    <#=ITypeRequestBuilder(prop)#> get<#=propName#>();
 <#
         }
     }
@@ -56,18 +55,14 @@ if (c.AsOdcmClass() != null)
     foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
     {
 		var propName = prop.Name.ToCheckedCase();
-		var sanitizedName = propName;
-
 		if (c is OdcmMediaClass && propName == "Content") {
-			 sanitizedName = prop.Type.GetReservedPrefix().ToCheckedCase() + prop.Name.ToCheckedCase();
-		} else {
-			sanitizedName = prop.Name.SanitizePropertyName();
+			 propName = prop.Type.GetReservedPrefix().ToCheckedCase() + prop.Name.ToCheckedCase();
 		}
 
         var propRequestBuilder = TypeRequestBuilder(prop);
 #>
 
-    I<#=propRequestBuilder#> <#=sanitizedName#>();
+    I<#=propRequestBuilder#> get<#=propName#>();
 <#
     }
 #>
@@ -76,7 +71,7 @@ if (c.AsOdcmClass() != null)
     {
 #>
 
-    <#=ITypeStreamRequestBuilder(c)#> content();
+    <#=ITypeStreamRequestBuilder(c)#> getContent();
 <#
     }
 #>
@@ -92,14 +87,12 @@ if (c.AsOdcmClass() != null)
             parameterList = parameterList.Remove(0, 2);
         }
 
-		var sanitizedMethod = MethodName(method).SanitizePropertyName().ToLowerFirstChar();
-
         if (method.IsCollection) {
 #>
 
-    <#=ITypeCollectionRequestBuilder(method)#> <#=sanitizedMethod#>(<#=parameterList#>);
+    <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
 <#  } else { #>
-    <#=ITypeRequestBuilder(method)#> <#=sanitizedMethod#>(<#=parameterList#>);
+    <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
 <#
         }
     }

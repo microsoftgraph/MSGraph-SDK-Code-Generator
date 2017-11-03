@@ -36,9 +36,9 @@ if (c.AsOdcmClass() != null)
         if (prop.IsCollection()) {
 #>
 
-    <#=ITypeCollectionRequestBuilder(prop)#> <#=prop.Name#>();
+    <#=ITypeCollectionRequestBuilder(prop)#> get<#=propName#>();
 
-    <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>(final String id);
+    <#=ITypeRequestBuilder(prop)#> get<#=propName#>(final String id);
 <#
         } else {
 #>
@@ -46,7 +46,7 @@ if (c.AsOdcmClass() != null)
     /**
      * Gets the request builder for <#=TypeName(prop)#>.
      */
-    <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>();
+    <#=ITypeRequestBuilder(prop)#> get<#=propName#>();
 <#
         }
     }
@@ -58,7 +58,7 @@ if (c.AsOdcmClass() != null)
         var propRequestBuilder = TypeRequestBuilder(prop);
 #>
 
-    I<#=propRequestBuilder#> <#=prop.Name#>();
+    I<#=propRequestBuilder#> get<#=propName#>();
 <#
     }
 #>
@@ -69,7 +69,7 @@ if (c.AsOdcmClass() != null)
         var propName = prop.Name.ToCheckedCase();
 #>
 
-    <#=ITypeStreamRequestBuilder(prop)#> <#=prop.Name#>Value();
+    <#=ITypeStreamRequestBuilder(prop)#> get<#=propName#>Value();
 <#
     }
 #>
@@ -83,9 +83,9 @@ if (c.AsOdcmClass() != null)
 #>
 <#		if (method.IsCollection){#>
 
-    <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>);
+    <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
 <# 		} else { #>
-    <#=ITypeRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>);
+    <#=ITypeRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>);
 <#
         }
     }

@@ -1,0 +1,53 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeCollectionRequestBuilder(c);#>
+<#
+    var genericType = "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
+#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseTypeCollectionRequestBuilder(c), "IRequestBuilder")#>
+
+    <#=ITypeCollectionRequest(c)#> buildRequest();
+
+    <#=ITypeCollectionRequest(c)#> buildRequest(final java.util.List<Option> requestOptions);
+
+    <#=ITypeRequestBuilder(c)#> byId(final String id);
+
+<#
+var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
+if (currentTypeProjection != null)
+{
+    foreach (var method in currentTypeProjection.AsOdcmClass().MethodsAndOverloads()) {
+
+        if (!method.IsBoundToCollection) {
+            continue;
+        }
+
+        var parameterList = MethodParametersSignature(method);
+        if (parameterList != "") {
+            parameterList = parameterList.Remove(0, 2);
+        }
+
+        if (method.IsCollection) {
+#>
+
+    <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>);
+<#
+	// Add a method to support delta query by string (opaque deltaLink)
+	if (MethodName(method) == "Delta") {
+#>
+
+	<#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(final String deltaLink);
+<# } #>
+<#  } else { #>
+    <#=ITypeRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>);
+<#
+        }
+    }
+}
+#>
+}
