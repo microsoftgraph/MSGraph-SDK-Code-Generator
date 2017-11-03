@@ -24,7 +24,7 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
         /**
          * The client under construction
          */
-        private final <#=ClientType(c)#> mClient = new <#=ClientType(c)#>();
+        private final <#=ClientType(c)#> client = new <#=ClientType(c)#>();
 
         /**
          * Sets the serializer
@@ -32,7 +32,7 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
          * @return the instance of this builder
          */
         public Builder serializer(final ISerializer serializer) {
-            mClient.setSerializer(serializer);
+            client.setSerializer(serializer);
             return this;
         }
 
@@ -42,7 +42,7 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
          * @return the instance of this builder
          */
         public Builder httpProvider(final IHttpProvider httpProvider) {
-            mClient.setHttpProvider(httpProvider);
+            client.setHttpProvider(httpProvider);
             return this;
         }
 
@@ -52,7 +52,7 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
          * @return the instance of this builder
          */
         public Builder authenticationProvider(final IAuthenticationProvider authenticationProvider) {
-            mClient.setAuthenticationProvider(authenticationProvider);
+            client.setAuthenticationProvider(authenticationProvider);
             return this;
         }
 
@@ -62,7 +62,7 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
          * @return the instance of this builder
          */
         public Builder executors(final IExecutors executors) {
-            mClient.setExecutors(executors);
+            client.setExecutors(executors);
             return this;
         }
 
@@ -72,7 +72,7 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
          * @return the instance of this builder
          */
         public Builder logger(final ILogger logger) {
-            mClient.setLogger(logger);
+            client.setLogger(logger);
             return this;
         }
 
@@ -94,8 +94,8 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
          * @throws ClientException if there was an exception creating the client
          */
         public <#=IClientType(c)#> buildClient() throws ClientException  {
-            mClient.validate();
-            return mClient;
+            client.validate();
+            return client;
         }
     }
 }

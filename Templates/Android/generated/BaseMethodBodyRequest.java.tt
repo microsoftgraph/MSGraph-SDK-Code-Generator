@@ -24,7 +24,7 @@
 <#=CreatePackageDef(host)#>
 
 <#=CreateClassDef(baseTypeRequest, baseClass, iBaseTypeRequest)#>
-    protected final <#=TypeBody(c)#> mBody;
+    protected final <#=TypeBody(c)#> body;
 
     /**
      * The request for this <#=TypeName(c)#>
@@ -35,15 +35,15 @@
      */
     public <#=baseTypeRequest#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=returnType#>.class);
-        mBody = new <#=TypeBody(c)#>();
+        body = new <#=TypeBody(c)#>();
     }
 
     public void post(final ICallback<<#=returnType#>> callback) {
-        send(HttpMethod.POST, callback, mBody);
+        send(HttpMethod.POST, callback, body);
     }
 
     public <#=returnType#> post() throws ClientException {
-        return send(HttpMethod.POST, mBody);
+        return send(HttpMethod.POST, body);
     }
 
 <# if (c.GetFeatures().CanSelect) { #>

@@ -10,7 +10,7 @@
 
 <# if (c.AsOdcmMethod().IsAction()) { #>
 
-    protected final <#=TypeBody(c)#> mBody;
+    protected final <#=TypeBody(c)#> body;
 
 <# } #>
 
@@ -28,7 +28,7 @@
         super(requestUrl, client, requestOptions, null);
 <# } #>
 <# if (c.AsOdcmMethod().IsAction()) { #>
-        mBody = new <#=TypeBody(c)#>();
+        body = new <#=TypeBody(c)#>();
 <# } #>
     }
 
@@ -50,7 +50,7 @@
 
     public <#=ITypeCollectionPage(c)#> post() throws ClientException {
 <# if (c.AsOdcmMethod().IsAction()) { #>
-        final <#=BaseTypeCollectionResponse(c)#> response = post(mBody);
+        final <#=BaseTypeCollectionResponse(c)#> response = post(body);
 <# } else { #>
         final <#=BaseTypeCollectionResponse(c)#> response = post();
 <# } #>
