@@ -11,7 +11,10 @@ var requestBody = entityName + method.Name.Substring(method.Name.IndexOf('.') + 
 // will always result in POST calls. The OData spec is explicit in saying that overload methods bound
 // to other types are explicitly not allowed. Therefore, any overload methods found here are invalid
 // and violate the spec.
-System.Diagnostics.Debug.Assert(!method.Overloads.Any(), "Overload actions are not allowed in OData services");
+// System.Diagnostics.Debug.Assert(!method.Overloads.Any(), "Overload actions are not allowed in OData services");
+// Commenting this out as 12.1.1.1, Action Overload Rules, states "Bound actions support overloading (multiple 
+// actions having the same name within the same namespace) by binding parameter type. The combination of action 
+// name and the binding parameter type MUST be unique within a namespace."
 
 var attributeStringBuilder = new StringBuilder();
 attributeStringBuilder.Append("[JsonObject(MemberSerialization = MemberSerialization.OptIn)]");
