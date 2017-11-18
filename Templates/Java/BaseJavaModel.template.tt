@@ -798,36 +798,6 @@ public {1} {2}{3}{4} {{";
     }
 
 	/*
-	 * Add additional methods to a generated class
-	 * @param className The class that you will be adding methods to
-	 * @return The additional text to add to the generated file
-	 */
-	public string AddCustomCode(string className) {
-		CustomMethods customMethods = new CustomMethods();
-		var type = customMethods.GetType();
-		var property = type.GetFields().Where(x => x.Name == className).FirstOrDefault();
-
-		if (property != null) {
-			return "\r\n\r\n" + property.GetValue(customMethods).ToString();
-		} else {
-			return string.Empty;
-		}
-	}
-
-	/*
-	 * Add additional import statements to a generated class
-	 * @param className The class that you will be adding methods to
-	 * @return The additional text to add to the generated file
-	 */
-	public string AddCustomImport(string className) {
-		CustomImports customImports = new CustomImports();
-		var type = customImports.GetType();
-		var property = type.GetFields().Where(x => x.Name == className).FirstOrDefault();
-
-		return property != null ? property.GetValue(customImports).ToString() : string.Empty;
-	}
-
-	/*
 	 * Find and replace overwrite values for the given class
 	 * @param className The class that you will be applying overwrites to
 	 * @return An empty string (does not write anything new to the file)
