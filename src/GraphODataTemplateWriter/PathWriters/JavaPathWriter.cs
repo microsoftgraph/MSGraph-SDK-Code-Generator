@@ -14,7 +14,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
 
         public override string WritePath(ITemplateInfo template, String baseFileName)
         {
-            var theNamespace = this.CreateNamespace(template.OutputParentDirectory.ToLower());
+            //switch from models_generated to models.
+            var theNamespace = this.CreateNamespace(template.OutputParentDirectory.Replace("_", "."));
             var namespacePath = this.CreatePathFromNamespace(theNamespace);
             var fileName = this.TransformFileName(template, baseFileName);
             String filePath = Path.Combine(namespacePath, fileName);
