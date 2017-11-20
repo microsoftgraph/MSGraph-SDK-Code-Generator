@@ -298,7 +298,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// </summary>
         /// <param name="<#=returnEntityParameter#>">The <#=returnEntityType#> object set with the properties to update.</param>
         /// <returns>The task to await for async call.</returns>
-        public <#=methodReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter#>)
+        public <#=methodOverloadReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter#>)
         {
             return this.PatchAsync(<#=returnEntityParameter#>, CancellationToken.None);
         }
@@ -399,7 +399,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// </summary>
         /// <param name="<#=returnEntityParameter#>">The <#=returnEntityType#> object to update.</param>
         /// <returns>The task to await for async call.</returns>
-        public <#=methodReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter#>)
+        public <#=methodOverloadReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter#>)
         {
             return this.PutAsync(<#=returnEntityParameter#>, CancellationToken.None);
         }
