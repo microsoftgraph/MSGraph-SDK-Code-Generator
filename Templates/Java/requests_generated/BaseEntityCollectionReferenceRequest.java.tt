@@ -16,7 +16,7 @@
      * @param client The service client
      * @param requestOptions The options for this request
      */
-    public <#=BaseTypeCollectionReferenceRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions) {
+    public <#=BaseTypeCollectionReferenceRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
     }
 

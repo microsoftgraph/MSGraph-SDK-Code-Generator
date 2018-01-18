@@ -16,5 +16,5 @@
     /**
      * Creates the request with specific options instead of the existing options
      */
-    <#=ITypeReferenceRequest(c)#> buildRequest(final java.util.List<Option> requestOptions);
+    <#=ITypeReferenceRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
 }

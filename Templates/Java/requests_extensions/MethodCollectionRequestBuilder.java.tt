@@ -16,7 +16,7 @@
      * @param client The service client
      * @param requestOptions The options for this request
      */
-    public <#=TypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions<#=MethodParametersSignature(method)#>) {
+    public <#=TypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions<#=MethodParametersSignature(method)#>) {
         super(requestUrl, client, requestOptions<#=MethodParametersValues(method)#>);
     }
 <# } #>

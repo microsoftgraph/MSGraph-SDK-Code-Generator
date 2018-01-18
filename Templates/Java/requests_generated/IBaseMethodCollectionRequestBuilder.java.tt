@@ -13,6 +13,6 @@
 
     <#=ITypeCollectionRequest(c)#> buildRequest();
 
-    <#=ITypeCollectionRequest(c)#> buildRequest(final java.util.List<Option> requestOptions);
+    <#=ITypeCollectionRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
 
 }
