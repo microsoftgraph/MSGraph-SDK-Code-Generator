@@ -19,16 +19,6 @@
 <#
 if (c.AsOdcmClass() != null)
 {
-    foreach(var child in c.AsOdcmClass().Derived)
-    {
-        var childName = child.Name.ToCheckedCase();
-#>
-
-    <#=ITypeRequestBuilder(child)#> <#=childName.ToLowerFirstChar()#>();
-<#
-    }
-#>
-<#
     foreach(var prop in c.AsOdcmClass().NavigationProperties())
     {
         var propName = prop.Name.ToUpperFirstChar();
