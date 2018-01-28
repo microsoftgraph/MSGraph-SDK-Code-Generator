@@ -42,7 +42,9 @@ from <#= baseTypeModule #> import <#=baseTypeName.ToUpperFirstChar()#>
 
 
 class <#=entity.Name.ToUpperFirstChar()#>(<#=baseTypeName.ToUpperFirstChar()#>):
-    def __init__(self, prop_dict={}):
+    def __init__(self, prop_dict=None):
+        if prop_dict is None:
+            prop_dict = {}
         self._prop_dict = prop_dict
 
 <# 

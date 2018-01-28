@@ -33,7 +33,9 @@ from ..graph_object_base import GraphObjectBase
 
 class <#=complex.Name.ToUpperFirstChar()#>(GraphObjectBase):
 
-    def __init__(self, prop_dict={}):
+    def __init__(self, prop_dict=None):
+        if prop_dict is None:
+            prop_dict = {}
         self._prop_dict = prop_dict
 
 <# 
