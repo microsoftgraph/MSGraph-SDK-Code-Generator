@@ -98,14 +98,14 @@
      * Gets the {0} from the service
      * @param callback The callback to be called after success or failure.
      */
-    void get{1}(final ICallback<{0}> callback);
+    void get(final ICallback<{0}> callback);
 
     /**
      * Gets the {0} from the service
      * @return The {0} from the request.
      * @throws ClientException This exception occurs if the request was unable to complete for any reason.
      */
-    {0} get{1}() throws ClientException;
+    {0} get() throws ClientException;
 ";
         return string.Format(formatString, TypeName(odcmObject), odcmObject.Derived.Any() ? TypeName(odcmObject) : string.Empty );
     }
