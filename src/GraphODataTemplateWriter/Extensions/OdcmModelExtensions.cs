@@ -140,22 +140,54 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty)
         {
             // Try to find the first collection navigation property for the specified type directly on the service
-            // class object. Use First() instead of FirstOrDefault() so template generation would fail if not found
-            // instead of silently continuing. If an entity is used in a reference property a navigation collection
+            // class object. If an entity is used in a reference property a navigation collection
             // on the client for that type is required.
             try
             {
-                return odcmProperty
+                var explicitProperty = odcmProperty
                     .Class
                     .Namespace
                     .Classes
                     .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
                     .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
                     .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
-                    .First();
+                    .FirstOrDefault();
+
+                if (explicitProperty != null)
+                    return explicitProperty;
+
+                // Check the singletons for a matching implicit EntitySet
+                else
+                {
+                    var implicitProperty = odcmProperty
+                        .Class
+                        .Namespace
+                        .Classes
+                        .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                        .First()
+                        .Properties
+                        .Where(property => property.GetType() == typeof(OdcmSingleton)) //Get the list of singletons defined by the service
+                        .Where(singleton => singleton
+                            .Type
+                            .AsOdcmClass()
+                            .Properties
+                            //Find navigation properties on the singleton that are self-contained (implicit EntitySets) that match the type
+                            //we are searching for
+                            .Where(prop => prop.ContainsTarget == true && prop.Type.Name == odcmProperty.Type.Name)
+                            .FirstOrDefault() != null
+                         )
+                         .FirstOrDefault();
+
+                    if (implicitProperty != null)
+                        return implicitProperty;
+                }
+                //If we are unable to find a valid EntitySet for the property, treat this
+                //as an exception so the service has an opportunity to correct this in the metadata
+                throw new Exception("Found no valid EntitySet for the given property.");
+
             } catch (Exception e)
             {
-                logger.Error("The navigation property \"{0}\" on class \"{1}\" does not specify it is self-contained nor is it defined in an EntitySet", odcmProperty.Name.ToString(), odcmProperty.Class.FullName.ToString());
+                logger.Error("The navigation property \"{0}\" on class \"{1}\" does not specify it is self-contained nor is it defined in an explicit or implicit EntitySet", odcmProperty.Name.ToString(), odcmProperty.Class.FullName.ToString());
                 logger.Error(e);
                 return null;
             }
