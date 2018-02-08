@@ -46,13 +46,23 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="Vipr.Core">
+      <HintPath>..\..\vipr\src\Core\Vipr.Core\bin\Debug\Vipr.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="*.cs" />
+    <Compile Include="*\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\GraphODataTemplateWriter\GraphODataTemplateWriter.csproj">
+      <Project>{e6b5202f-4f66-428a-ab92-0aaa11ba81de}</Project>
+      <Name>GraphODataTemplateWriter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
