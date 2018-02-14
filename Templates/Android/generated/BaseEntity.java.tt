@@ -17,7 +17,7 @@ import java.util.Map;
     if(((OdcmClass)c).Base == null){
 #>
     @SerializedName("@odata.type")
-    @Expose(serialize = false)
+    @Expose
     public String oDataType;
 
     private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
@@ -29,10 +29,6 @@ import java.util.Map;
 <#
     }
 #>
-
-    public <#=BaseTypeName(c)#>() {
-        oDataType = "<#=((OdcmClass)c).FullName#>";
-    }
 
 <#=CreatePropertyDef(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
 <#=CreateRawJsonObject()#>
