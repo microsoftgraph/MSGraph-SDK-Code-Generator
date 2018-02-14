@@ -41,6 +41,9 @@
     <Reference Include="Vipr.Core">
       <HintPath>..\..\vipr\src\Core\Vipr.Core\bin\Debug\Vipr.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Vipr.Reader.OData.v4">
+      <HintPath>..\submodules\vipr\src\Readers\Vipr.Reader.OData.v4\bin\Debug\Vipr.Reader.OData.v4.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="*.cs" />
@@ -54,6 +57,9 @@
       <Project>{e6b5202f-4f66-428a-ab92-0aaa11ba81de}</Project>
       <Name>GraphODataTemplateWriter</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Edmx\Containment.xml" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
