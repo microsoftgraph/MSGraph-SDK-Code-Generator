@@ -137,6 +137,21 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return model.GetEntityTypes().SelectMany(entityType => entityType.Methods);
         }
 
+        /// <summary>
+        /// Get the service collection navigation property for the given property type
+        /// 
+        /// We have revised the LINQ statement to support the following OData rules 
+        /// regarding containment:
+        /// 
+        /// 1. If a navigation property specifies "ContainsTarget='true'", it is self-contained. 
+        ///    Generate a direct path to the item (ie "parent/child").
+        /// 2. If a navigation property does not specify ContainsTarget but there is a defined EntitySet 
+        ///    of the given type, it is a reference relationship. Generate a reference path to the item (ie "item/$ref").
+        /// 3. If a navigation property does not have a defined EntitySet but there is a Singleton which has 
+        ///    a self-contained reference to the given type, we can make a relationship to the implied EntitySet of 
+        ///    the singleton. Generate a reference path to the item (ie "singleton/item/$ref").
+        /// 4. If none of the above pertain to the navigation property, it should be treated as a metadata error.
+        /// </summary>
         public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty)
         {
             // Try to find the first collection navigation property for the specified type directly on the service
