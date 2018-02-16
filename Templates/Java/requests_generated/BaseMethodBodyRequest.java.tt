@@ -1,0 +1,88 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#
+    var baseClass = "BaseRequest";
+    var typeRequest = TypeRequest(c);
+    var iTypeRequest = ITypeRequest(c);
+    var baseTypeRequest = BaseTypeRequest(c);
+    var iBaseTypeRequest = IBaseTypeRequest(c);
+    var returnType = ReturnType(c);
+
+    if (c.AsOdcmMethod().IsCollection)
+    {
+        baseClass = "BaseCollectionRequest";
+        typeRequest = TypeCollectionRequest(c);
+        iTypeRequest = ITypeCollectionRequest(c);
+        baseTypeRequest = BaseTypeCollectionRequest(c);
+        iBaseTypeRequest = IBaseTypeCollectionRequest(c);
+    }
+#>
+<#host.TemplateName = baseTypeRequest;#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(baseTypeRequest, baseClass, iBaseTypeRequest)#>
+    protected final <#=TypeBody(c)#> body;
+
+    /**
+     * The request for this <#=TypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param requestOptions The options for this request
+     */
+    public <#=baseTypeRequest#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=returnType#>.class);
+        body = new <#=TypeBody(c)#>();
+    }
+
+    public void post(final ICallback<<#=returnType#>> callback) {
+        send(HttpMethod.POST, callback, body);
+    }
+
+    public <#=returnType#> post() throws ClientException {
+        return send(HttpMethod.POST, body);
+    }
+
+<# if (c.GetFeatures().CanSelect) { #>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value The select clause
+     * @return The updated request
+     */
+    public <#=iTypeRequest#> select(final String value) {
+        getQueryOptions().add(new QueryOption("$select", value));
+        return (<#=typeRequest#>)this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanUseTop) { #>
+    /**
+     * Sets the top value for the request
+     *
+     * @param value The max number of items to return
+     * @return The updated request
+     */
+    public <#=iTypeRequest#> top(final int value) {
+        getQueryOptions().add(new QueryOption("$top", value+""));
+        return (<#=typeRequest#>)this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanExpand) { #>
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value The expand clause
+     * @return The updated request
+     */
+    public <#=iTypeRequest#> expand(final String value) {
+        getQueryOptions().add(new QueryOption("$expand", value));
+        return (<#=typeRequest#>)this;
+    }
+
+<# } #>
+}

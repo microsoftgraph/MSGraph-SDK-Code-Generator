@@ -1,0 +1,128 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeRequestBuilder(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(BaseTypeRequestBuilder(c), "BaseRequestBuilder", IBaseTypeRequestBuilder(c))#>
+
+    /**
+     * The request builder for the <#=TypeName(c)#>
+     *
+     * @param requestUrl The request url
+     * @param client The service client
+     * @param requestOptions The options for this request
+     */
+    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
+    }
+
+    /**
+     * Creates the request
+     */
+    public <#=ITypeRequest(c)#> buildRequest() {
+        return buildRequest(getOptions());
+    }
+
+    /**
+     * Creates the request with specific requestOptions instead of the existing requestOptions
+     */
+    public <#=ITypeRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
+        return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
+    }
+
+<#
+if (c.AsOdcmClass() != null)
+{
+    foreach(var prop in c.AsOdcmClass().NavigationProperties())
+    {
+        var propName = prop.Name.ToUpperFirstChar();
+		var sanitizedProperty = propName.SanitizePropertyName().ToLowerFirstChar();
+        var propRequestBuilder = TypeRequestBuilder(prop);
+        if (prop.IsCollection()) {
+#>
+    public <#=ITypeCollectionRequestBuilder(prop)#> <#=sanitizedProperty#>() {
+        return new <#=TypeCollectionRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+
+    public <#=ITypeRequestBuilder(prop)#> <#=sanitizedProperty#>(final String id) {
+        return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
+    }
+<#
+        } else {
+#>
+
+    /**
+     * Gets the request builder for <#=TypeName(prop)#>.
+     */
+    public <#=ITypeRequestBuilder(prop)#> <#=sanitizedProperty#>() {
+        return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+<#
+        }
+    }
+#>
+<#
+	foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
+	{
+		var propName = prop.Name.ToCheckedCase();
+		var sanitizedName = propName;
+		if (c is OdcmMediaClass && propName == "Content") {
+			 sanitizedName = prop.Type.GetReservedPrefix().ToCheckedCase() + prop.Name.ToCheckedCase();
+		} else {
+			sanitizedName = propName.SanitizePropertyName().ToLowerFirstChar();
+		}
+		var propRequestBuilder = TypeRequestBuilder(prop);
+#>
+
+    public I<#=propRequestBuilder#> <#=sanitizedName#>() {
+        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+<#
+	}
+#>
+<#
+    if (c is OdcmMediaClass)
+    {
+#>
+
+    public <#=ITypeStreamRequestBuilder(c)#> content() {
+        return new <#=TypeStreamRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment("$value"), getClient(), null);
+    }
+<#
+    }
+#>
+<#
+    foreach (var method in c.AsOdcmClass().MethodsAndOverloads()) {
+
+        if (method.IsBoundToCollection) {
+            continue;
+        }
+
+        var parameterList = MethodParametersSignature(method);
+
+        if (parameterList != "") {
+            parameterList = parameterList.Remove(0, 2);
+        }
+
+		var sanitizedMethod = MethodName(method).SanitizePropertyName().ToLowerFirstChar();
+
+        if (method.IsCollection) {
+#>
+
+    public <#=ITypeCollectionRequestBuilder(method)#> <#=sanitizedMethod#>(<#=parameterList#>) {
+        return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    }
+<#      } else { #>
+
+    public <#=ITypeRequestBuilder(method)#> <#=sanitizedMethod#>(<#=parameterList#>) {
+        return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    }
+<#
+        }
+    }
+}
+#>
+}

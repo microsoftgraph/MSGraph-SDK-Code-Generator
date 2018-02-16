@@ -1,0 +1,101 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+import <#=host.CurrentModel.NamespaceName()#>.authentication.*;
+import <#=host.CurrentModel.NamespaceName()#>.logger.*;
+
+<#=CreateClassDef(ClientType(c), BaseClientType(c), IClientType(c))#>
+
+    /**
+     * Restricted constructor
+     */
+    protected <#=ClientType(c)#>() {
+    }
+
+    /**
+     * The builder for this <#=ClientType(c)#>
+     */
+    public static class Builder  {
+
+        /**
+         * The client under construction
+         */
+        private final <#=ClientType(c)#> client = new <#=ClientType(c)#>();
+
+        /**
+         * Sets the serializer
+         * @param serializer The serializer
+         * @return the instance of this builder
+         */
+        public Builder serializer(final ISerializer serializer) {
+            client.setSerializer(serializer);
+            return this;
+        }
+
+        /**
+         * Sets the httpProvider
+         * @param httpProvider The httpProvider
+         * @return the instance of this builder
+         */
+        public Builder httpProvider(final IHttpProvider httpProvider) {
+            client.setHttpProvider(httpProvider);
+            return this;
+        }
+
+        /**
+         * Sets the authentication provider
+         * @param authenticationProvider The authentication provider
+         * @return the instance of this builder
+         */
+        public Builder authenticationProvider(final IAuthenticationProvider authenticationProvider) {
+            client.setAuthenticationProvider(authenticationProvider);
+            return this;
+        }
+
+        /**
+         * Sets the executors
+         * @param executors The executors
+         * @return the instance of this builder
+         */
+        public Builder executors(final IExecutors executors) {
+            client.setExecutors(executors);
+            return this;
+        }
+
+        /**
+         * Sets the logger
+         * @param logger The logger
+         * @return the instance of this builder
+         */
+        public Builder logger(final ILogger logger) {
+            client.setLogger(logger);
+            return this;
+        }
+
+        /**
+         * Set this builder based on the client configuration
+         * @param clientConfig The client configuration
+         * @return the instance of this builder
+         */
+        public Builder fromConfig(final IClientConfig clientConfig) {
+            return this.authenticationProvider(clientConfig.getAuthenticationProvider())
+                       .executors(clientConfig.getExecutors())
+                       .httpProvider(clientConfig.getHttpProvider())
+                       .logger(clientConfig.getLogger())
+                       .serializer(clientConfig.getSerializer());
+        }
+
+        /**
+         * Builds and returns the <#=ClientType(c)#>
+         * @throws ClientException if there was an exception creating the client
+         */
+        public <#=IClientType(c)#> buildClient() throws ClientException  {
+            client.validate();
+            return client;
+        }
+    }
+}

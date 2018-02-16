@@ -14,7 +14,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
      */
     public class CustomMethods
     {
-        public const string DriveItemRequestBuilder = 
+        public const string DriveItemRequestBuilder =
             "    @Override\r\n" +
             "    public IDriveItemRequestBuilder getItemWithPath(final String path) {\r\n" +
             "        return new DriveItemRequestBuilder(getRequestUrl() + \":/\" + path + \":\", getClient(), null);\r\n" +
