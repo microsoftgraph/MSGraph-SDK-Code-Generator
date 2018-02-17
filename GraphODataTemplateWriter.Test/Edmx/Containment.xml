@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+  <edmx:DataServices>
+    <Schema Namespace="graph" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="entity">
+        <Key>
+          <PropertyRef Name="id"/>
+        </Key>
+        <Property Name="id" Unicode="false" Nullable="false" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="testType"></EntityType>
+      <EntityType Name="testType2"></EntityType>
+      <EntityType Name="testType3"></EntityType>
+      <EntityType Name="testEntity">
+        <NavigationProperty Name="testNav" Type="graph.testType"/>
+        <NavigationProperty Name="testInvalidNav" Type="graph.testType2"/>
+        <NavigationProperty Name="testExplicitNav" Type="graph.testType3"/>
+      </EntityType>
+      <EntityType Name="testSingleton">
+        <NavigationProperty Name="testSingleNav" Type="graph.testType" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="testSingleton2">
+        <NavigationProperty Name="testSingleNav2" Type="graph.testType3" ContainsTarget="true" />
+      </EntityType>
+      <EntityContainer Name="GraphService">
+        <Singleton Name="testSingleton" Type="graph.testSingleton"/>
+        <Singleton Name="testSingleton2" Type="graph.testSingleton2"/>
+        <EntitySet Name="testTypes" EntityType="graph.testType3"/>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
