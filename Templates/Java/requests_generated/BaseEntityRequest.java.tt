@@ -5,21 +5,29 @@
 <#host.TemplateName = BaseTypeRequest(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
+<#
+String classDeclaration = "";
+if (c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
+{
+	classDeclaration += "? extends ";
+}
+classDeclaration += TypeName(c);
+#>
 
 <#=CreateClassDef(BaseTypeRequest(c), "BaseRequest", IBaseTypeRequest(c))#>
 
     /**
      * The request for the <#=TypeName(c)#>
      *
-     * @param requestUrl The request url
+     * @param requestUrl The request URL
      * @param client The service client
      * @param requestOptions The options for this request
-     * @param responseClass The class of the reponse
+     * @param responseClass The class of the response
      */
     public <#=BaseTypeRequest(c)#>(final String requestUrl,
             final <#=IBaseClientType()#> client,
             final java.util.List<? extends Option> requestOptions,
-            final Class responseClass) {
+            final Class<<#=classDeclaration#>> responseClass) {
         super(requestUrl, client, requestOptions, responseClass);
     }
 
