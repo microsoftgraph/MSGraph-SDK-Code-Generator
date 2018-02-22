@@ -14,7 +14,16 @@ var methodType = method.IsFunction ? "Function" : "Action";
 
 var overloads = new List<OdcmMethod>();
 overloads.Add(method);
-overloads.AddRange(method.Overloads);
+
+// So far, it appears that the overloads on the functions are working as expected. 
+// The overloads on actions should be skipped. If we see more issues here, we may need to
+// revisit how VIPR determines overloaded methods. 
+if (method.IsFunction)
+{
+	overloads.AddRange(method.Overloads);
+}
+
+
 
 var methods = overloads
     .Select(m =>
@@ -66,7 +75,9 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     {
 <#
 foreach (var m in methods)
+
 {
+
 #>
         /// <summary>
         /// Constructs a new <see cref="<#=requestBuilderType#>"/>.
