@@ -60,5 +60,37 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                 "OnenotePage post(final byte[] newOnenotePage) throws ClientException;"
             }
         };
+
+        public static Dictionary<string, string> BasePlannerAssignments = new Dictionary<string, string>()
+        {
+            {
+                "public class BasePlannerAssignments implements IJsonBackedObject {",
+                "public class BasePlannerAssignments extends HashMap<String, PlannerAssignment> implements IJsonBackedObject {"
+            }
+        };
+
+        public static Dictionary<string, string> BasePlannerChecklistItems = new Dictionary<string, string>()
+        {
+            {
+                "public class BasePlannerChecklistItems implements IJsonBackedObject {",
+                "public class BasePlannerChecklistItems extends HashMap<String, PlannerChecklistItem> implements IJsonBackedObject {"
+            }
+        };
+
+        public static Dictionary<string, string> BasePlannerExternalReferences = new Dictionary<string, string>()
+        {
+            {
+                "public class BasePlannerExternalReferences implements IJsonBackedObject {",
+                "public class BasePlannerExternalReferences extends HashMap<String, Object> implements IJsonBackedObject {"
+            }
+        };
+
+        public static Dictionary<string, string> BasePlannerOrderHintsByAssignee = new Dictionary<string, string>()
+        {
+            {
+                "public class BasePlannerOrderHintsByAssignee implements IJsonBackedObject {",
+                "public class BasePlannerOrderHintsByAssignee extends HashMap<String, String> implements IJsonBackedObject {"
+            }
+        };
     }
 }

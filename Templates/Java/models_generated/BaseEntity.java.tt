@@ -33,4 +33,4 @@ import java.util.Map;
 <#=CreatePropertyDef(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
 <#=CreateRawJsonObject()#>
 <#=UpdatePropertiesWithinSetRawObject(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
-}
+<#=PostProcess(BaseTypeName(c))#>}
