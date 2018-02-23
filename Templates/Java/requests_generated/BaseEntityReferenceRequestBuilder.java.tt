@@ -12,9 +12,9 @@
     /**
      * The request builder for the <#=TypeName(c)#>
      *
-     * @param requestUrl The request url
-     * @param client The service client
-     * @param requestOptions The options for this request
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
      */
     public <#=BaseTypeReferenceRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
         super(requestUrl, client, requestOptions);
@@ -32,8 +32,8 @@
     /**
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
-     * @param requestOptions The options for this request
-     * @return The <#=ITypeReferenceRequest(c)#> instance
+     * @param requestOptions the options for this request
+     * @return the <#=ITypeReferenceRequest(c)#> instance
      */
     public <#=ITypeReferenceRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
         return new <#=TypeReferenceRequest(c)#>(getRequestUrl(), getClient(), requestOptions);

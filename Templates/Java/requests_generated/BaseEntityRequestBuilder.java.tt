@@ -11,9 +11,9 @@
     /**
      * The request builder for the <#=TypeName(c)#>
      *
-     * @param requestUrl The request url
-     * @param client The service client
-     * @param requestOptions The options for this request
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
      */
     public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
         super(requestUrl, client, requestOptions);
@@ -22,7 +22,7 @@
     /**
      * Creates the request
      *
-     * @return The <#=ITypeRequest(c)#> instance
+     * @return the <#=ITypeRequest(c)#> instance
      */
     public <#=ITypeRequest(c)#> buildRequest() {
         return buildRequest(getOptions());
@@ -31,8 +31,8 @@
     /**
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
-     * @param requestOptions The options for this request
-     * @return The <#=ITypeRequest(c)#> instance
+     * @param requestOptions the options for this request
+     * @return the <#=ITypeRequest(c)#> instance
      */
     public <#=ITypeRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
         return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
@@ -60,9 +60,9 @@ if (c.AsOdcmClass() != null)
 #>
 
     /**
-     * Gets the request builder for <#=TypeName(prop)#>.
+     * Gets the request builder for <#=TypeName(prop)#>
      *
-     * @return The <#=ITypeRequestBuilder(prop)#> instance
+     * @return the <#=ITypeRequestBuilder(prop)#> instance
      */
     public <#=ITypeRequestBuilder(prop)#> <#=sanitizedProperty#>() {
         return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);

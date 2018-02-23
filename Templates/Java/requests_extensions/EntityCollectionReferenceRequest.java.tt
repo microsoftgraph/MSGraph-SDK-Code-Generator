@@ -11,9 +11,9 @@
     /**
      * The request for this collection of <#=ClassTypeName(c)#>
      *
-     * @param requestUrl The request url
-     * @param client The service client
-     * @param options The options for this request
+     * @param requestUrl the request URL
+     * @param client     the service client
+     * @param options    the options for this request
      */
     public <#=TypeCollectionReferenceRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> options) {
         super(requestUrl, client, options);

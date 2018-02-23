@@ -28,7 +28,7 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
 
         /**
          * Sets the serializer
-         * @param serializer The serializer
+         * @param serializer the serializer
          * @return the instance of this builder
          */
         public Builder serializer(final ISerializer serializer) {
@@ -38,7 +38,7 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
 
         /**
          * Sets the httpProvider
-         * @param httpProvider The httpProvider
+         * @param httpProvider the httpProvider
          * @return the instance of this builder
          */
         public Builder httpProvider(final IHttpProvider httpProvider) {
@@ -48,7 +48,7 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
 
         /**
          * Sets the authentication provider
-         * @param authenticationProvider The authentication provider
+         * @param authenticationProvider the authentication provider
          * @return the instance of this builder
          */
         public Builder authenticationProvider(final IAuthenticationProvider authenticationProvider) {
@@ -58,7 +58,7 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
 
         /**
          * Sets the executors
-         * @param executors The executors
+         * @param executors the executors
          * @return the instance of this builder
          */
         public Builder executors(final IExecutors executors) {
@@ -68,7 +68,7 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
 
         /**
          * Sets the logger
-         * @param logger The logger
+         * @param logger the logger
          * @return the instance of this builder
          */
         public Builder logger(final ILogger logger) {
@@ -78,7 +78,7 @@ import <#=host.CurrentModel.NamespaceName()#>.logger.*;
 
         /**
          * Set this builder based on the client configuration
-         * @param clientConfig The client configuration
+         * @param clientConfig the client configuration
          * @return the instance of this builder
          */
         public Builder fromConfig(final IClientConfig clientConfig) {

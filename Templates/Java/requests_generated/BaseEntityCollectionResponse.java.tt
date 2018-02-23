@@ -20,7 +20,7 @@ import com.google.gson.annotations.*;
     public java.util.List<<#=TypeName(c)#>> value;
 
     /**
-     * The url to the next page of this collection, or null
+     * The URL to the next page of this collection, or null
      */
     @SerializedName("@odata.nextLink")
     @Expose(serialize = false)

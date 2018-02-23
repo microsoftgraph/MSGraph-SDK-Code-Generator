@@ -11,9 +11,9 @@
     /**
      * The request for the <#=TypeName(c)#>
      *
-     * @param requestUrl The request url
-     * @param client The service client
-     * @param requestOptions The options for this request
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
      */
     public <#=BaseTypeWithReferencesRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, java.util.List<? extends Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=ClassTypeName(c)#>.class);
@@ -43,8 +43,8 @@
     /**
      * Sets the select clause for the request
      *
-     * @param value The select clause
-     * @return The updated request
+     * @param value the select clause
+     * @return the updated request
      */
     public <#=ITypeWithReferencesRequest(c)#> select(final String value) {
         getQueryOptions().add(new QueryOption("$select", value));
@@ -56,8 +56,8 @@
     /**
      * Sets the expand clause for the request
      *
-     * @param value The expand clause
-     * @return The updated request
+     * @param value the expand clause
+     * @return the updated request
      */
     public <#=ITypeWithReferencesRequest(c)#> expand(final String value) {
         getQueryOptions().add(new QueryOption("$expand", value));

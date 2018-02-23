@@ -19,10 +19,10 @@ classDeclaration += TypeName(c);
     /**
      * The request for the <#=TypeName(c)#>
      *
-     * @param requestUrl The request URL
-     * @param client The service client
-     * @param requestOptions The options for this request
-     * @param responseClass The class of the response
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     * @param responseClass  the class of the response
      */
     public <#=BaseTypeRequest(c)#>(final String requestUrl,
             final <#=IBaseClientType()#> client,
@@ -65,8 +65,8 @@ classDeclaration += TypeName(c);
     /**
      * Sets the select clause for the request
      *
-     * @param value The select clause
-     * @return The updated request
+     * @param value the select clause
+     * @return the updated request
      */
      public <#=ITypeRequest(c)#> select(final String value) {
          getQueryOptions().add(new QueryOption("$select", value));
@@ -78,8 +78,8 @@ classDeclaration += TypeName(c);
     /**
      * Sets the expand clause for the request
      *
-     * @param value The expand clause
-     * @return The updated request
+     * @param value the expand clause
+     * @return the updated request
      */
      public <#=ITypeRequest(c)#> expand(final String value) {
          getQueryOptions().add(new QueryOption("$expand", value));
@@ -92,8 +92,8 @@ classDeclaration += TypeName(c);
     /**
      * Sets the top value for the request
      *
-     * @param value The max number of items to return
-     * @return The updated request
+     * @param value the max number of items to return
+     * @return the updated request
      */
      public <#=ITypeRequest(c)#> top(final int value) {
          getQueryOptions().add(new QueryOption("$top", value+""));
@@ -108,15 +108,17 @@ classDeclaration += TypeName(c);
         var odcmObject = c.AsOdcmClass();
         var formatString =
 @"    /**
-     * Delete this item from the service.
-     * @param callback The callback when the deletion action has completed
+     * Delete this item from the service
+     *
+     * @param callback the callback when the deletion action has completed
      */
     public void delete(final ICallback<Void> callback) {{
         send(HttpMethod.DELETE, callback, null);
     }}
 
     /**
-     * Delete this item from the service.
+     * Delete this item from the service
+     *
      * @throws ClientException if there was an exception during the delete operation
      */
     public void delete() throws ClientException {{
@@ -132,7 +134,8 @@ classDeclaration += TypeName(c);
         var formatString =
 @"    /**
      * Gets the {0} from the service
-     * @param callback The callback to be called after success or failure.
+     *
+     * @param callback the callback to be called after success or failure
      */
     public void get(final ICallback<{0}> callback) {{
         send(HttpMethod.GET, callback, null);
@@ -140,8 +143,9 @@ classDeclaration += TypeName(c);
 
     /**
      * Gets the {0} from the service
-     * @return The {0} from the request.
-     * @throws ClientException This exception occurs if the request was unable to complete for any reason.
+     *
+     * @return the {0} from the request
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     public {0} get() throws ClientException {{
        return send(HttpMethod.GET, null);
@@ -156,8 +160,9 @@ classDeclaration += TypeName(c);
         var formatString =
 @"    /**
      * Patches this {0} with a source
-     * @param source{0} The source object with updates
-     * @param callback The callback to be called after success or failure.
+     *
+     * @param source{0} the source object with updates
+     * @param callback the callback to be called after success or failure
      */
     public void patch(final {0} source{0}, final ICallback<{0}> callback) {{
         send(HttpMethod.PATCH, callback, source{0});
@@ -165,9 +170,10 @@ classDeclaration += TypeName(c);
 
     /**
      * Patches this {0} with a source
-     * @param source{0} The source object with updates
-     * @return The updated {0}
-     * @throws ClientException This exception occurs if the request was unable to complete for any reason.
+     *
+     * @param source{0} the source object with updates
+     * @return the updated {0}
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     public {0} patch(final {0} source{0}) throws ClientException {{
         return send(HttpMethod.PATCH, source{0});
@@ -182,8 +188,9 @@ classDeclaration += TypeName(c);
         var formatString =
 @"    /**
      * Creates a {0} with a new object
-     * @param new{0} The new object to create
-     * @param callback The callback to be called after success or failure.
+     *
+     * @param new{0} the new object to create
+     * @param callback the callback to be called after success or failure
      */
     public void post(final {0} new{0}, final ICallback<{0}> callback) {{
         send(HttpMethod.POST, callback, new{0});
@@ -191,9 +198,10 @@ classDeclaration += TypeName(c);
 
     /**
      * Creates a {0} with a new object
-     * @param new{0} The new object to create
-     * @return The created {0}
-     * @throws ClientException This exception occurs if the request was unable to complete for any reason.
+     *
+     * @param new{0} the new object to create
+     * @return the created {0}
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     public {0} post(final {0} new{0}) throws ClientException {{
         return send(HttpMethod.POST, new{0});
