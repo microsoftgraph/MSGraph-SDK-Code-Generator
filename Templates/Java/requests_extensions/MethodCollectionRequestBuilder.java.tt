@@ -14,7 +14,7 @@
      *
      * @param requestUrl The request url
      * @param client The service client
-     * @param requestOptions The options for this request
+     * @param requestOptions The options for this request<#=MethodParametersJavadocSignature(method)#>
      */
     public <#=TypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions<#=MethodParametersSignature(method)#>) {
         super(requestUrl, client, requestOptions<#=MethodParametersValues(method)#>);

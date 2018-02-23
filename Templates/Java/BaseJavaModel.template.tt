@@ -386,6 +386,15 @@
         }
         return "Void";
     }
+
+	public string MethodParametersJavadocSignature(OdcmMethod method) {
+		var parameterSignatureBuilder = new StringBuilder();
+        foreach (var p in method.Parameters)
+        {
+            parameterSignatureBuilder.AppendFormat("\r\n     * @param {0} The {0}", ParamName(p));
+        }
+        return parameterSignatureBuilder.ToString();
+	}
     
     public string MethodParametersSignature(OdcmMethod method) {
         var parameterSignatureBuilder = new StringBuilder();
