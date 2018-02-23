@@ -21,6 +21,8 @@
 
     /**
      * Creates the request
+     *
+     * @return The <#=ITypeWithReferencesRequest(c)#> instance
      */
     public <#=ITypeWithReferencesRequest(c)#> buildRequest() {
         return buildRequest(getOptions());
@@ -28,6 +30,9 @@
 
     /**
      * Creates the request with specific options instead of the existing options
+	 *
+     * @param requestOptions The options for this request
+     * @return The <#=ITypeWithReferencesRequest(c)#> instance
      */
     public <#=ITypeWithReferencesRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
         return new <#=TypeWithReferencesRequest(c)#>(getRequestUrl(), getClient(), requestOptions);

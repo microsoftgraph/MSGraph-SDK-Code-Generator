@@ -21,6 +21,8 @@
 
     /**
      * Creates the request
+     *
+     * @return The <#=ITypeRequest(c)#> instance
      */
     public <#=ITypeRequest(c)#> buildRequest() {
         return buildRequest(getOptions());
@@ -28,6 +30,9 @@
 
     /**
      * Creates the request with specific requestOptions instead of the existing requestOptions
+     *
+     * @param requestOptions The options for this request
+     * @return The <#=ITypeRequest(c)#> instance
      */
     public <#=ITypeRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
         return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
@@ -56,6 +61,8 @@ if (c.AsOdcmClass() != null)
 
     /**
      * Gets the request builder for <#=TypeName(prop)#>.
+     *
+     * @return The <#=ITypeRequestBuilder(prop)#> instance
      */
     public <#=ITypeRequestBuilder(prop)#> <#=sanitizedProperty#>() {
         return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
