@@ -11,9 +11,9 @@
     /**
      * The request builder for the <#=TypeName(c)#>
      *
-     * @param requestUrl The request url
-     * @param client The service client
-     * @param requestOptions The options for this request
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
      */
     public <#=BaseTypeStreamRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
         super(requestUrl, client, requestOptions);
@@ -21,6 +21,8 @@
 
     /**
      * Creates the request
+     *
+     * @return the <#=ITypeStreamRequest(c)#> instance
      */
     public <#=ITypeStreamRequest(c)#> buildRequest() {
         return buildRequest(getOptions());
@@ -28,6 +30,9 @@
 
     /**
      * Creates the request with specific options instead of the existing options
+	 *
+     * @param requestOptions the options for this request
+     * @return the <#=ITypeStreamRequest(c)#> instance
      */
     public <#=ITypeStreamRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
         return new <#=TypeStreamRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
@@ -52,7 +57,9 @@ if (c.AsOdcmClass() != null)
 #>
 
     /**
-     * Gets the request builder for <#=TypeName(prop)#>.
+     * Gets the request builder for <#=TypeName(prop)#>
+     *
+     * @return the <#=ITypeRequestBuilder(prop)#>
      */
     public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>() {
         return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);

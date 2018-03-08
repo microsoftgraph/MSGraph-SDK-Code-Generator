@@ -16,8 +16,8 @@
     /**
      * Sets the select clause for the request
      *
-     * @param value The select clause
-     * @return The updated request
+     * @param value the select clause
+     * @return the updated request
      */
     <#=IBaseTypeReferenceRequest(c)#> select(final String value);
 
@@ -26,8 +26,8 @@
     /**
      * Sets the expand clause for the request
      *
-     * @param value The expand clause
-     * @return The updated request
+     * @param value the expand clause
+     * @return the updated request
      */
     <#=IBaseTypeReferenceRequest(c)#> expand(final String value);
 
@@ -36,17 +36,17 @@
     /**
      * Puts the <#=TypeName(c)#>
      *
-     * @param src<#=TypeName(c)#> The <#=TypeName(c)#> to PUT
-     * @param callback The callback to be called after success or failure
+     * @param src<#=TypeName(c)#> the <#=TypeName(c)#> to PUT
+     * @param callback the callback to be called after success or failure
      */
     void put(<#=TypeName(c)#> src<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
 
     /**
      * Puts the <#=TypeName(c)#>
      *
-     * @param src<#=TypeName(c)#> The <#=TypeName(c)#> to PUT
-     * @return The <#=TypeName(c)#>
-     * @throws ClientException An exception occurs if there was an error while the request was sent
+     * @param src<#=TypeName(c)#> the <#=TypeName(c)#> to PUT
+     * @return the <#=TypeName(c)#>
+     * @throws ClientException an exception occurs if there was an error while the request was sent
      */
     <#=TypeName(c)#> put(<#=TypeName(c)#> src<#=TypeName(c)#>) throws ClientException;
 <# } #>

@@ -10,8 +10,8 @@
     /**
      * A collection page for <#=ClassTypeName(c)#>.
      *
-     * @param response The serialized <#=BaseTypeCollectionResponse(c)#> from the service
-     * @param builder The request builder for the next collection page
+     * @param response the serialized <#=BaseTypeCollectionResponse(c)#> from the service
+     * @param builder  the request builder for the next collection page
      */
     public <#=TypeCollectionWithReferencesPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeCollectionWithReferencesRequestBuilder(c)#> builder) {
         super(response, builder);

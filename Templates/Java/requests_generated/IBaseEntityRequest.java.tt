@@ -42,8 +42,8 @@
     /**
      * Sets the select clause for the request
      *
-     * @param value The select clause
-     * @return The updated request
+     * @param value the select clause
+     * @return the updated request
      */
     <#=IBaseTypeRequest(c)#> select(final String value);
 
@@ -52,8 +52,8 @@
     /**
      * Sets the expand clause for the request
      *
-     * @param value The expand clause
-     * @return The updated request
+     * @param value the expand clause
+     * @return the updated request
      */
     <#=IBaseTypeRequest(c)#> expand(final String value);
 
@@ -63,8 +63,8 @@
     /**
      * Sets the top value for the request
      *
-     * @param value The max number of items to return
-     * @return The updated request
+     * @param value the max number of items to return
+     * @return the updated request
      */
     <#=IBaseTypeRequest(c)#> top(final int value);
 <# } #>
@@ -76,13 +76,15 @@
         var odcmObject = c.AsOdcmClass();
         var formatString =
 @"    /**
-     * Delete this item from the service.
-     * @param callback The callback when the deletion action has completed
+     * Delete this item from the service
+     *
+     * @param callback the callback when the deletion action has completed
      */
     void delete(final ICallback<Void> callback);
 
     /**
-     * Delete this item from the service.
+     * Delete this item from the service
+     *
      * @throws ClientException if there was an exception during the delete operation
      */
     void delete() throws ClientException;
@@ -96,14 +98,16 @@
         var formatString =
 @"    /**
      * Gets the {0} from the service
-     * @param callback The callback to be called after success or failure.
+     *
+     * @param callback the callback to be called after success or failure
      */
     void get(final ICallback<{0}> callback);
 
     /**
      * Gets the {0} from the service
-     * @return The {0} from the request.
-     * @throws ClientException This exception occurs if the request was unable to complete for any reason.
+     *
+     * @return the {0} from the request
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     {0} get() throws ClientException;
 ";
@@ -116,16 +120,18 @@
         var formatString =
 @"    /**
      * Patches this {0} with a source
-     * @param source{0} The source object with updates
-     * @param callback The callback to be called after success or failure.
+     *
+     * @param source{0} the source object with updates
+     * @param callback the callback to be called after success or failure
      */
     void patch(final {0} source{0}, final ICallback<{0}> callback);
 
     /**
      * Patches this {0} with a source
-     * @param source{0} The source object with updates
-     * @return The updated {0}
-     * @throws ClientException This exception occurs if the request was unable to complete for any reason.
+     *
+     * @param source{0} the source object with updates
+     * @return the updated {0}
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     {0} patch(final {0} source{0}) throws ClientException;
 ";
@@ -138,16 +144,18 @@
         var formatString =
 @"    /**
      * Posts a {0} with a new object
-     * @param new{0} The new object to create
-     * @param callback The callback to be called after success or failure.
+     *
+     * @param new{0} the new object to create
+     * @param callback the callback to be called after success or failure
      */
     void post(final {0} new{0}, final ICallback<{0}> callback);
 
     /**
      * Posts a {0} with a new object
-     * @param new{0} The new object to create
-     * @return The created {0}
-     * @throws ClientException This exception occurs if the request was unable to complete for any reason.
+     *
+     * @param new{0} the new object to create
+     * @return the created {0}
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     {0} post(final {0} new{0}) throws ClientException;
 ";

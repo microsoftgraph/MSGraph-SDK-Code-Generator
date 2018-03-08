@@ -10,11 +10,16 @@
 
     /**
      * Creates the request
+     *
+     * @return the <#=ITypeWithReferencesRequest(c)#> instance
      */
     <#=ITypeWithReferencesRequest(c)#> buildRequest();
 
     /**
      * Creates the request with specific options instead of the existing options
+     *
+     * @param requestOptions the options for this request
+     * @return the <#=ITypeWithReferencesRequest(c)#> instance
      */
     <#=ITypeWithReferencesRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
 

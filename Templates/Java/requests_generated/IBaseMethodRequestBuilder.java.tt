@@ -11,7 +11,7 @@
     /**
      * Creates the <#=ITypeRequest(c)#>
      *
-     * @return The <#=ITypeRequest(c)#> instance
+     * @return the <#=ITypeRequest(c)#> instance
      */
     <#=ITypeRequest(c)#> buildRequest();
 
@@ -19,7 +19,7 @@
      * Creates the <#=ITypeRequest(c)#> with specific options instead of the existing options
      *
      * @param requestOptions the options for the request
-     * @return The <#=ITypeRequest(c)#> instance
+     * @return the <#=ITypeRequest(c)#> instance
      */
     <#=ITypeRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
 }

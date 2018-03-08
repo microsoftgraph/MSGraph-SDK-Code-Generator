@@ -386,6 +386,15 @@
         }
         return "Void";
     }
+
+	public string MethodParametersJavadocSignature(OdcmMethod method) {
+		var parameterSignatureBuilder = new StringBuilder();
+        foreach (var p in method.Parameters)
+        {
+            parameterSignatureBuilder.AppendFormat("\r\n     * @param {0} the {0}", ParamName(p));
+        }
+        return parameterSignatureBuilder.ToString();
+	}
     
     public string MethodParametersSignature(OdcmMethod method) {
         var parameterSignatureBuilder = new StringBuilder();
@@ -660,7 +669,7 @@ public {1} {2}{3}{4} {{";
                 property.Name,
                 propertyType,
                 property.Name.SanitizePropertyName(property).ToLowerFirstChar(),
-				property.LongDescription);
+				ReplaceInvalidCharacters(property.LongDescription));
         }
         return sb.ToString();
     }
@@ -684,7 +693,7 @@ public {1} {2}{3}{4} {{";
             sb.AppendFormat(
                 format,
                 ParamName(p).SplitCamelCase(),
-				p.LongDescription,
+				ReplaceInvalidCharacters(p.LongDescription),
                 ParamName(p),
                 ParamType(p),
                 ParamName(p).SanitizePropertyName(p).ToLowerFirstChar()
@@ -707,6 +716,7 @@ public {1} {2}{3}{4} {{";
 
     /**
      * Gets the raw representation of this class
+     *
      * @return the raw representation of this class
      */
     public JsonObject getRawObject() {
@@ -715,6 +725,7 @@ public {1} {2}{3}{4} {{";
 
     /**
      * Gets serializer
+     *
      * @return the serializer
      */
     protected ISerializer getSerializer() {
@@ -722,10 +733,10 @@ public {1} {2}{3}{4} {{";
     }
 
     /**
-     * Sets the raw json object
+     * Sets the raw JSON object
      *
-     * @param serializer The serializer
-     * @param json The json object to set this object to
+     * @param serializer the serializer
+     * @param json the JSON object to set this object to
      */
     public void setRawObject(final ISerializer serializer, final JsonObject json) {
         this.serializer = serializer;
@@ -824,5 +835,16 @@ public {1} {2}{3}{4} {{";
 		//This seems to be a requirement of the template builder
 		//Specifying a return type of "void" throws an error
 	   return string.Empty;
+	}
+
+	/**
+	* Replaces invalid Javadoc characters with HTML
+	*/
+	public string ReplaceInvalidCharacters(string inputString)
+	{
+		if (inputString != null) {
+			return inputString.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
+		}
+		return null;
 	}
 #>

@@ -11,9 +11,9 @@
     /**
      * The request for the <#=TypeName(c)#>
      *
-     * @param requestUrl The request url
-     * @param client The service client
-     * @param requestOptions The options for this request
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
      */
     public <#=BaseTypeReferenceRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, java.util.List<? extends Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=ClassTypeName(c)#>.class);
@@ -31,8 +31,8 @@
     /**
      * Sets the select clause for the request
      *
-     * @param value The select clause
-     * @return The updated request
+     * @param value the select clause
+     * @return the updated request
      */
     public <#=ITypeReferenceRequest(c)#> select(final String value) {
         getQueryOptions().add(new QueryOption("$select", value));
@@ -44,8 +44,8 @@
     /**
      * Sets the expand clause for the request
      *
-     * @param value The expand clause
-     * @return The updated request
+     * @param value the expand clause
+     * @return the updated request
      */
     public <#=ITypeReferenceRequest(c)#> expand(final String value) {
         getQueryOptions().add(new QueryOption("$expand", value));
@@ -56,8 +56,8 @@
     /**
      * Puts the <#=TypeName(c)#>
      *
-     * @param src<#=TypeName(c)#> The <#=TypeName(c)#> reference to PUT
-     * @param callback The callback to be called after success or failure
+     * @param src<#=TypeName(c)#> the <#=TypeName(c)#> reference to PUT
+     * @param callback the callback to be called after success or failure
      */
     public void put(<#=TypeName(c)#> src<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
         send(HttpMethod.PUT, callback, src<#=TypeName(c)#>);
@@ -66,9 +66,9 @@
     /**
      * Puts the <#=TypeName(c)#>
      *
-     * @param src<#=TypeName(c)#> The <#=TypeName(c)#> reference to PUT
-     * @return The <#=TypeName(c)#>
-     * @throws ClientException An exception occurs if there was an error while the request was sent
+     * @param src<#=TypeName(c)#> the <#=TypeName(c)#> reference to PUT
+     * @return the <#=TypeName(c)#>
+     * @throws ClientException an exception occurs if there was an error while the request was sent
      */
     public <#=TypeName(c)#> put(<#=TypeName(c)#> src<#=TypeName(c)#>) throws ClientException {
         return send(HttpMethod.PUT, src<#=TypeName(c)#>);

@@ -10,11 +10,16 @@
 
     /**
      * Creates the request
+     *
+     * @return the <#=ITypeStreamRequest(c)#> instance
      */
     <#=ITypeStreamRequest(c)#> buildRequest();
 
     /**
      * Creates the request with specific options instead of the existing options
+     *
+     * @param requestOptions the options for this request
+     * @return the <#=ITypeStreamRequest(c)#> instance
      */
     <#=ITypeStreamRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
 <#
@@ -34,7 +39,9 @@ if (c.AsOdcmClass() != null)
 #>
 
     /**
-     * Gets the request builder for <#=TypeName(prop)#>.
+     * Gets the request builder for <#=TypeName(prop)#>
+     *
+     * @return the <#=ITypeRequestBuilder(prop)#> instance
      */
     <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>();
 <#

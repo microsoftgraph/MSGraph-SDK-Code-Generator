@@ -12,10 +12,10 @@ import com.google.gson.annotations.*;
 <#=CreateClassDef(BaseTypeCollectionWithReferencesPage(c), "BaseCollectionPage" + CollectionPageWithReferencesGeneric(c), IBaseTypeCollectionWithReferencesPage(c))#>
 
     /**
-     * A collection page for <#=TypeName(c)#>.
+     * A collection page for <#=TypeName(c)#>
      *
-     * @param response The serialized <#=BaseTypeCollectionResponse(c)#> from the service
-     * @param builder The request builder for the next collection page
+     * @param response the serialized <#=BaseTypeCollectionResponse(c)#> from the service
+     * @param builder  the request builder for the next collection page
      */
     public <#=BaseTypeCollectionWithReferencesPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeCollectionWithReferencesRequestBuilder(c)#> builder) {
         super(response.value, builder);
