@@ -843,7 +843,7 @@ public {1} {2}{3}{4} {{";
 	public string ReplaceInvalidCharacters(string inputString)
 	{
 		if (inputString != null) {
-			return inputString.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
+			return inputString.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;").Replace("\\", "&#92;");
 		}
 		return null;
 	}
