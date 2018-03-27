@@ -26,6 +26,11 @@ else
     propRequest = propClass + prop.Name.ToCheckedCase() + "Request";
     namespaceValue = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 }
+
+	if (propClass.EndsWith("Request"))
+	{
+		propClass = String.Concat(propClass, "Object");
+	}
 #>
 
 namespace <#=namespaceValue#>
