@@ -90,6 +90,8 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
 
     var stringBuilder = new StringBuilder();
 
+	stringBuilder.Append(Environment.NewLine);
+	this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        System.Threading.Tasks.Task AddAsync({0} {1});", propertyType, sanitizedPropertyName);
 
