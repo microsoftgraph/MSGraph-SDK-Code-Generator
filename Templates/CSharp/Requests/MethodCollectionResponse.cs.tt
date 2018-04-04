@@ -22,13 +22,13 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     /// <summary>
     /// The type <#=collectionResponse#>.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class <#=collectionResponse#>
     {
         /// <summary>
         /// Gets or sets the <see cref="I<#=collectionPage#>"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public I<#=collectionPage#> Value { get; set; }
         <#
         if (isSpecialCollection)
@@ -44,7 +44,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets the <#=propertyName#>.
         /// </summary>
-        [DataMember(Name = "<#=property.Name#>", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="<#=property.Name#>", Required = Newtonsoft.Json.Required.Default)]
         public <#=propertyType#> <#=propertyName#> { get; set; }
         <#
                 }

@@ -1,0 +1,195 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseTypeRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.*;
+
+<#=CreateInterfaceDef(IBaseTypeRequest(c))#>
+
+<#
+if (c.AsOdcmMethod().IsAction()) {
+    if (c.AsOdcmMethod().ReturnType != null) {
+#>
+    /**
+     * Creates the <#=TypeName(c)#>
+     *
+     * @param callback the callback to be called after success or failure
+     */
+    void post(final ICallback<<#=ReturnType(c)#>> callback);
+
+    /**
+     * Creates the <#=TypeName(c)#>
+     *
+     * @return the <#=ReturnType(c)#>
+     * @throws ClientException an exception occurs if there was an error while the request was sent
+     */
+    <#=ReturnType(c)#> post() throws ClientException;
+
+<#
+        if (c.GetFeatures().CanSelect) {
+#>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value the select clause
+     * @return the updated request
+     */
+    <#=ITypeRequest(c)#> select(final String value);
+
+<#
+        }
+
+        if (c.GetFeatures().CanExpand) {
+#>
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value the expand clause
+     * @return the updated request
+     */
+    <#=ITypeRequest(c)#> expand(final String value);
+
+<#
+        }
+
+        if (c.AsOdcmProperty() != null 
+            && c.AsOdcmProperty().IsCollection
+            && c.GetFeatures().CanUseTop) {
+#>
+    /**
+     * Sets the top value for the request
+     *
+     * @param value the max number of items to return
+     * @return the updated request
+     */
+    <#=ITypeRequest(c)#> top(final int value);
+<#
+        }
+    } else {
+#>
+    /**
+     * Creates the <#=TypeName(c)#>
+     *
+     * @param callback the callback to be called after success or failure
+     */
+    void post(final ICallback<Void> callback);
+
+    /**
+     * Creates the <#=TypeName(c)#>
+     *
+     * @throws ClientException an exception occurs if there was an error while the request was sent
+     */
+    void post() throws ClientException;
+
+<#
+    }
+} else {
+    if (c.AsOdcmMethod().ReturnType != null) {
+        if (c.AsOdcmMethod().IsComposable) {
+#>
+    /**
+     * Patches the <#=TypeName(c)#>
+     *
+     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> with which to PATCH
+     * @param callback the callback to be called after success or failure
+     */
+    void patch(<#=ReturnType(c)#> src<#=ReturnType(c)#>, final ICallback<<#=ReturnType(c)#>> callback);
+
+    /**
+     * Patches the <#=TypeName(c)#>
+     *
+     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> with which to PATCH
+     * @return the <#=ReturnType(c)#>
+     * @throws ClientException an exception occurs if there was an error while the request was sent
+     */
+    <#=ReturnType(c)#> patch(<#=ReturnType(c)#> src<#=ReturnType(c)#>) throws ClientException;
+
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> to PUT
+     * @param callback the callback to be called after success or failure
+     */
+    void put(<#=ReturnType(c)#> src<#=ReturnType(c)#>, final ICallback<<#=ReturnType(c)#>> callback);
+
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> to PUT
+     * @return the <#=ReturnType(c)#>
+     * @throws ClientException an exception occurs if there was an error while the request was sent
+     */
+     <#=ReturnType(c)#> put(<#=ReturnType(c)#> src<#=ReturnType(c)#>) throws ClientException;
+<#
+        }
+#>
+    /**
+     * Gets the <#=ReturnType(c)#>
+     *
+     * @param callback the callback to be called after success or failure
+     */
+    void get(final ICallback<<#=ReturnType(c)#>> callback);
+
+    /**
+     * Gets the <#=ReturnType(c)#>
+     *
+     * @return the <#=ReturnType(c)#>
+     * @throws ClientException an exception occurs if there was an error while the request was sent
+     */
+    <#=ReturnType(c)#> get() throws ClientException;
+
+<#
+        if (c.GetFeatures().CanSelect) {
+#>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value the select clause
+     * @return the updated request
+     */
+    <#=ITypeRequest(c)#> select(final String value);
+
+<#
+        }
+
+        if (c.GetFeatures().CanExpand) { #>
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value the expand clause
+     * @return the updated request
+     */
+    <#=ITypeRequest(c)#> expand(final String value);
+
+<#
+        }
+
+        if (c.AsOdcmProperty() != null
+            && c.AsOdcmProperty().IsCollection
+            && c.GetFeatures().CanUseTop) {
+#>
+    /**
+     * Sets the top value for the request
+     *
+     * @param value the max number of items to return
+     * @return the updated request
+     */
+    <#=ITypeRequest(c)#> top(final int value);
+<#
+        }
+    } else {
+#>
+    void get(final ICallback<Void> callback);
+
+    void get() throws ClientException;
+
+<#
+    }
+}
+#>
+}

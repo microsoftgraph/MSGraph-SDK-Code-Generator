@@ -15,7 +15,7 @@
      * @param client The service client
      * @param requestOptions The options for this request
      */
-    public <#=BaseTypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> requestOptions) {
+    public <#=BaseTypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -23,7 +23,7 @@
         return buildRequest(getOptions());
     }
 
-    public <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> requestOptions) {
+    public <#=ITypeCollectionRequest(c)#> buildRequest(final java.util.List<Option> requestOptions) {
         return new <#=TypeCollectionRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
     }
 
@@ -51,6 +51,15 @@ if (currentTypeProjection != null) {
     public <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(<#=parameterList#>) {
         return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
     }
+<#
+	// Add a method to support delta query by string (opaque deltaLink)
+	if (MethodName(method) == "Delta") {
+#>
+
+	public <#=ITypeCollectionRequestBuilder(method)#> get<#=MethodName(method)#>(final String deltaLink) {
+        return new <#=TypeCollectionRequestBuilder(method)#>(deltaLink, getClient(), null<#=MethodParametersValues(method)#>);
+    }
+<# } #>
 <#
         } else {
 #>

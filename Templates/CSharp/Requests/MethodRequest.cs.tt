@@ -13,7 +13,8 @@ var isComposable = method.IsComposable;
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
-var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString().ToCheckedCase();
+var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString();
+
 var returnEntityParameter = string.Empty;
 if (returnEntityType != null) {returnEntityParameter = returnEntityType.ToLower();}
 
@@ -104,12 +105,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
 <#
     if (returnsStream)
     {
 #>
-        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+        /// <param name="httpCompletionOption">The <see cref="HttpCompletionOption"/> for the request.</param>
 <#
     }
 #>
@@ -204,12 +205,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Issues the GET request.
         /// </summary>
-        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
 <#
     if (returnsStream)
     {
 #>
-        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+        /// <param name="httpCompletionOption">The <see cref="HttpCompletionOption"/> for the request.</param>
 <#
     }
 #>
@@ -295,9 +296,9 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Issues the PATCH request.
         /// </summary>
-        /// <param name=<#=returnEntityParameter#>>The <#=returnEntityType#> object set with the properties to update.</param>
+        /// <param name="<#=returnEntityParameter#>">The <#=returnEntityType#> object set with the properties to update.</param>
         /// <returns>The task to await for async call.</returns>
-        public <#=methodReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter#>)
+        public <#=methodOverloadReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter#>)
         {
             return this.PatchAsync(<#=returnEntityParameter#>, CancellationToken.None);
         }
@@ -305,13 +306,13 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Issues the PATCH request.
         /// </summary>
-        /// <param name=<#=returnEntityParameter#>>The <#=returnEntityType#> object set with the properties to update.</param>
-        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <param name="<#=returnEntityParameter#>">The <#=returnEntityType#> object set with the properties to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
 <#
     if (returnsStream)
     {
 #>
-        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+        /// <param name="httpCompletionOption">The <see cref="HttpCompletionOption"/> for the request.</param>
 <#
     }
 #>
@@ -396,9 +397,9 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Issues the PUT request.
         /// </summary>
-        /// <param name=<#=returnEntityParameter#>>The <#=returnEntityType#> object to update.</param>
+        /// <param name="<#=returnEntityParameter#>">The <#=returnEntityType#> object to update.</param>
         /// <returns>The task to await for async call.</returns>
-        public <#=methodReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter#>)
+        public <#=methodOverloadReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter#>)
         {
             return this.PutAsync(<#=returnEntityParameter#>, CancellationToken.None);
         }
@@ -406,13 +407,13 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Issues the PUT request.
         /// </summary>
-        /// <param name=<#=returnEntityParameter#>>The <#=returnEntityType#> object to update.</param>
-        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <param name="<#=returnEntityParameter#>">The <#=returnEntityType#> object to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
 <#
     if (returnsStream)
     {
 #>
-        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+        /// <param name="httpCompletionOption">The <see cref="HttpCompletionOption"/> for the request.</param>
 <#
     }
 #>

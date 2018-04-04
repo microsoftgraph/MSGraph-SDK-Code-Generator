@@ -2,25 +2,28 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ output extension="\\" #>
 <#
-CustomT4Host host       = (CustomT4Host) Host;
-OdcmModel model         = host.CurrentModel;
-CodeWriterPHP writer	= (CodeWriterPHP) host.CodeWriter;
-OdcmClass entity        = host.CurrentType.AsOdcmClass();
+CustomT4Host host               = (CustomT4Host) Host;
+OdcmModel model                 = host.CurrentModel;
+CodeWriterPHP writer	        = (CodeWriterPHP) host.CodeWriter;
+OdcmClass entity                = host.CurrentType.AsOdcmClass();
 TemplateWriterSettings settings = ConfigurationService.Settings;
-
+String entityName               = entity.Name.SanitizeEntityName();
+String entityBaseName           = "";
+if (entity.Base != null)
+	entityBaseName = entity.Base.Name.SanitizeEntityName();
 #>
-<#=writer.WriteHeader(writer.GetDocBlock(entity.Name.ToCheckedCase()))#>
+<#=writer.WriteHeader(writer.GetDocBlock(entityName.ToCheckedCase()))#>
 namespace Microsoft\Graph\Model;
 
-<#=writer.GetClassBlock(entity.Name.ToCheckedCase().ToString(), "Model")#>
+<#=writer.GetClassBlock(entityName.ToCheckedCase().ToString(), "Model")#>
 <#
 if (entity.Name.ToCheckedCase() == "Entity") {
 #>
-class <#=entity.Name.ToCheckedCase()#>
+class <#=entity.Name.ToCheckedCase()#> implements \JsonSerializable
 <#
 } else {
 #>
-class <#=entity.Name.ToCheckedCase()#> extends Entity
+class <#=entityName.ToCheckedCase()#> extends <#=entityBaseName.ToCheckedCase() #>
 <# 
 }
 #>
@@ -45,9 +48,7 @@ if (entity.Name.ToCheckedCase() == "Entity") {
     {
 		$this->_propDict = $propDict;
     }
-<#
-}
-#>
+
     /**
     * Gets the property dictionary of the <#=entity.Name.ToUpperFirstChar()#>
     *
@@ -57,20 +58,25 @@ if (entity.Name.ToCheckedCase() == "Entity") {
     {
         return $this->_propDict;
     }
-<# 
+    
+<#
+}
 foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
-    var propertyName = property.Name.ToUnderscore();
-    var propertyNameCap = property.Name.ToUpperFirstChar();
+	String propertyName = property.Name.SanitizePropertyName(entityName).ToCamelize();
     if (property.Type.IsComplex()) {
         if (property.IsCollection()) {
 #>
 
      /** 
-     * Gets the <#=property.Name#>
+     * Gets the <#=propertyName#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
      *
-     * @return array The <#=property.Name#>
+     * @return array The <#=propertyName#>
      */
-    public function get<#=property.Name.ToCheckedCase()#>()
+    public function get<#=propertyName.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
            return $this->_propDict["<#=property.Name.ToCamelize()#>"];
@@ -78,71 +84,97 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
             return null;
         }
     }
-	
+    
     /** 
-    * Sets the <#=property.Name#>
+    * Sets the <#=propertyName#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
-    * @param string $val The <#=property.Name#>
+    * @param <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> $val The <#=propertyName#>
     *
     * @return <#=entity.Name.ToCheckedCase()#>
     */
-    public function set<#=property.Name.ToCheckedCase()#>($val)
+    public function set<#=propertyName.ToCheckedCase()#>($val)
     {
 		$this->_propDict["<#=property.Name.ToCamelize()#>"] = $val;
         return $this;
     }
-
+    
 <#
    } else {
 #>
-
     /**
-    * Gets the <#=property.Name#>
+    * Gets the <#=propertyName#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
-    * @return <#=property.Type.GetTypeString()#> The <#=property.Name#>
+    * @return <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> The <#=propertyName#>
     */
-    public function get<#=property.Name.ToCheckedCase()#>()
+    public function get<#=propertyName.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
+<# 
+// Check whether this type is a generated model type or a PHP type
+if (property.Type.GetTypeString()[0] == '\\') { #>
             if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=property.Type.GetTypeString()#>")) {
+<# } else { #>
+            if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "Microsoft\Graph\Model\<#=property.Type.GetTypeString()#>")) {
+<# } #>
                 return $this->_propDict["<#=property.Name.ToCamelize()#>"];
             } else {
-                $this->_propDict["<#=property.Name.ToCamelize()#>"] = new <#=property.Type.GetTypeString()#>($this->_propDict["<#=property.Name.ToCamelize()#>"]);
+<# if (property.Type.GetTypeString() == "\\GuzzleHttp\\Psr7\\Stream") { #>
+                $this->_propDict["<#=property.Name.ToCamelize()#>"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["<#=property.Name.ToCamelize()#>"]);
                 return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+<# } else { #>
+                $this->_propDict["<#=property.Name.ToCamelize()#>"] = new <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#>($this->_propDict["<#=property.Name.ToCamelize()#>"]);
+                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+<# } #>
             }
         }
         return null;
     }
-
+    
     /**
-    * Sets the <#=property.Name#>
+    * Sets the <#=propertyName#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
-    * @param string $val The <#=property.Name#>
+    * @param <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> $val The <#=propertyName#>
     *
     * @return <#=entity.Name.ToCheckedCase()#>
     */
-    public function set<#=property.Name.ToCheckedCase()#>($val)
+    public function set<#=propertyName.ToCheckedCase()#>($val)
     {
 <#  if (property.Type.GetTypeString() == "bool") { #>
-        $this->_propDict["<#=property.Name#>"] = boolval($val);
+        $this->_propDict["<#=property.Name.ToCamelize()#>"] = boolval($val);
 <#  } else if (property.Type.GetTypeString() == "int") { #>
-        $this->_propDict["<#=property.Name#>"] = intval($val);
+        $this->_propDict["<#=property.Name.ToCamelize()#>"] = intval($val);
 <# } else { #>
-        $this->_propDict["<#=property.Name#>"] = $val;
+        $this->_propDict["<#=property.Name.ToCamelize()#>"] = $val;
 <# } #>
         return $this;
     }
+    
 <#
             }
         } else {
 #>
-
     /**
-    * Gets the <#=property.Name#>
+    * Gets the <#=propertyName#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
-    * @return <#=property.Type.GetTypeString()#> The <#=property.Name#>
+    * @return <#=property.Type.GetTypeString()#> The <#=propertyName#>
     */
-    public function get<#=property.Name.ToCheckedCase()#>()
+    public function get<#=propertyName.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
 <#
@@ -160,15 +192,19 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
             return null;
         }
     }
-
+    
     /**
-    * Sets the <#=property.Name#>
+    * Sets the <#=propertyName#>
+<# if (property.LongDescription != null) {
+#>
+    * <#=property.LongDescription#>
+<# } #>
     *
-    * @param <#=property.Type.GetTypeString()#> $val The <#=property.Name#>
+    * @param <#=property.Type.GetTypeString()#> $val The <#=propertyName#>
     *
     * @return <#=entity.Name.ToCheckedCase()#>
     */
-    public function set<#=property.Name.ToCheckedCase()#>($val)
+    public function set<#=propertyName.ToCheckedCase()#>($val)
     {
 <#
     if (property.Type.GetTypeString() == "\\DateTime") {
@@ -190,8 +226,54 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 #>
         return $this;
     }
+    
 <#
 		}
+	}
+	if (entity.Name.ToCheckedCase() == "Entity") {
+#>
+    /**
+    * Gets the ODataType
+    *
+    * @return string The ODataType
+    */
+    public function getODataType()
+    {
+        return $this->_propDict["@odata.type"];
+    }
+    
+    /**
+    * Sets the ODataType
+    *
+    * @param string The ODataType
+    *
+    * @return Entity
+    */
+    public function setODataType($val)
+    {
+        $this->_propDict["@odata.type"] = $val;
+        return $this;
+    }
+    
+    /**
+    * Serializes the object by property array
+	* Manually serialize DateTime into RFC3339 format
+    *
+    * @return array The list of properties
+    */
+    public function jsonSerialize()
+    {
+        $serializableProperties = $this->getProperties();
+        foreach ($serializableProperties as $property => $val) {
+            if (is_a($val, "\DateTime")) {
+                $serializableProperties[$property] = $val->format(\DateTime::RFC3339);
+            } else if (is_a($val, "\Microsoft\Graph\Core\Enum")) {
+                $serializableProperties[$property] = $val->value();
+            }
+        }
+        return $serializableProperties;
+    }
+<#
 	}
 #>
 }

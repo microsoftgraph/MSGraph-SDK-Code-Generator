@@ -7,9 +7,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
     using System.Linq;
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
+    using NLog;
 
     public static class OdcmModelExtensions
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static bool IsCollection(this OdcmProperty odcmProperty)
         {
             return odcmProperty.IsCollection;
@@ -81,7 +84,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             // Instead, take the properties that we know are references and not collections and grab the appropriate entity type
             // for each, returning those.
             var entityTypes = model.GetEntityTypes();
-            var referencePropertyTypes = model.GetProperties().Where(prop => prop.IsReference() && !prop.IsCollection).Select(prop => prop.Projection.Type).Distinct();
+
+            // Removed the !IsCollection condition as that was removing expected entity references from the collection.
+            var referencePropertyTypes = model.GetProperties().Where(prop => prop.IsReference()).Select(prop => prop.Projection.Type).Distinct();
 
             var referenceEntityTypes = new List<OdcmClass>();
             foreach (var referencePropertyType in referencePropertyTypes)
@@ -132,20 +137,75 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return model.GetEntityTypes().SelectMany(entityType => entityType.Methods);
         }
 
+        /// <summary>
+        /// Get the service collection navigation property for the given property type
+        /// 
+        /// We have revised the LINQ statement to support the following OData rules 
+        /// regarding containment:
+        /// 
+        /// 1. If a navigation property specifies "ContainsTarget='true'", it is self-contained. 
+        ///    Generate a direct path to the item (ie "parent/child").
+        /// 2. If a navigation property does not specify ContainsTarget but there is a defined EntitySet 
+        ///    of the given type, it is a reference relationship. Generate a reference path to the item (ie "item/$ref").
+        /// 3. If a navigation property does not have a defined EntitySet but there is a Singleton which has 
+        ///    a self-contained reference to the given type, we can make a relationship to the implied EntitySet of 
+        ///    the singleton. Generate a reference path to the item (ie "singleton/item/$ref").
+        /// 4. If none of the above pertain to the navigation property, it should be treated as a metadata error.
+        /// </summary>
         public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty)
         {
             // Try to find the first collection navigation property for the specified type directly on the service
-            // class object. Use First() instead of FirstOrDefault() so template generation would fail if not found
-            // instead of silently continuing. If an entity is used in a reference property a navigation collection
+            // class object. If an entity is used in a reference property a navigation collection
             // on the client for that type is required.
-            return odcmProperty
-                .Class
-                .Namespace
-                .Classes
-                .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
-                .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
-                .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
-                .First();
+            try
+            {
+                var explicitProperty = odcmProperty
+                    .Class
+                    .Namespace
+                    .Classes
+                    .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                    .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
+                    .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
+                    .FirstOrDefault();
+
+                if (explicitProperty != null)
+                    return explicitProperty;
+
+                // Check the singletons for a matching implicit EntitySet
+                else
+                {
+                    var implicitProperty = odcmProperty
+                        .Class
+                        .Namespace
+                        .Classes
+                        .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                        .First()
+                        .Properties
+                        .Where(property => property.GetType() == typeof(OdcmSingleton)) //Get the list of singletons defined by the service
+                        .Where(singleton => singleton
+                            .Type
+                            .AsOdcmClass()
+                            .Properties
+                            //Find navigation properties on the singleton that are self-contained (implicit EntitySets) that match the type
+                            //we are searching for
+                            .Where(prop => prop.ContainsTarget == true && prop.Type.Name == odcmProperty.Type.Name)
+                            .FirstOrDefault() != null
+                         )
+                         .FirstOrDefault();
+
+                    if (implicitProperty != null)
+                        return implicitProperty;
+                }
+                //If we are unable to find a valid EntitySet for the property, treat this
+                //as an exception so the service has an opportunity to correct this in the metadata
+                throw new Exception("Found no valid EntitySet for the given property.");
+
+            } catch (Exception e)
+            {
+                logger.Error("The navigation property \"{0}\" on class \"{1}\" does not specify it is self-contained nor is it defined in an explicit or implicit EntitySet", odcmProperty.Name.ToString(), odcmProperty.Class.FullName.ToString());
+                logger.Error(e);
+                return null;
+            }
         }
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)

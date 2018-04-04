@@ -8,6 +8,18 @@ var entityName = entity.Name.ToCheckedCase();
 
 var typeDeclaration = entityName;
 
+// In the case a entity type name ends with "Request", we will have a collision with the Request objects
+// when we generate. For example, there are entities named EventMessage and EventMessageRequest. Those entities 
+// lead to the generation of an EventMessageRequest and EventMessageRequestRequest request objects in the same 
+// namespace as the entities. We add 'Object' to the end of the name to disambiguate the entity.
+// This change needs to sync with changes for the *Request templates.
+
+if (typeDeclaration.EndsWith("Request"))
+{
+    typeDeclaration = String.Concat(typeDeclaration, "Object");
+}
+
+
 if (entity.Base != null)
 {
     typeDeclaration = string.Format("{0} : {1}", typeDeclaration, entity.Base.Name.ToCheckedCase());
@@ -61,7 +73,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
             var propertyName = property.Name.ToCheckedCase();
             var propertyCollectionPage = property.IsReference() ? string.Concat(entityName, propertyName, "CollectionWithReferencesPage") : string.Concat(entityName, propertyName, "CollectionPage");
 
-            var attributeDefinition = string.Format("[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = \"{0}\", Required = Required.Default)]", property.Name);
+            var attributeDefinition = string.Format("[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = \"{0}\", Required = Newtonsoft.Json.Required.Default)]", property.Name);
 
             if (property.IsCollection())
             {
@@ -71,6 +83,10 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 
         /// <summary>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+<# if (property.LongDescription != null) {
+#>
+        /// <#=property.LongDescription#>
+<# } #>
         /// </summary>
         <#=attributeDefinition#>
         public I<#=propertyCollectionPage#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
@@ -82,6 +98,10 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 
         /// <summary>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+<# if (property.LongDescription != null) {
+#>
+        /// <#=property.LongDescription#>
+<# } #>
         /// </summary>
         <#=attributeDefinition#>
         public IEnumerable<<#=propertyType#>> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
@@ -94,9 +114,13 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 
         /// <summary>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
+<# if (property.LongDescription != null) {
+#>
+        /// <#=property.LongDescription#>
+<# } #>
         /// </summary>
         <#=attributeDefinition#>
-        public <#=propertyType#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
+        public <#=propertyType#> <#=propertyName.GetSanitizedPropertyName(property)#> { get; set; }
     <#
             }
         }
@@ -109,7 +133,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.type", Required = Required.Default)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.type", Required = Newtonsoft.Json.Required.Default)]
         public string ODataType { get; set; }
 
         /// <summary>

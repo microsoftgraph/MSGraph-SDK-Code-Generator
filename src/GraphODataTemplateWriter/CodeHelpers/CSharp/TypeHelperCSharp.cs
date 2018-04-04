@@ -6,9 +6,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
     using System.Collections.Generic;
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
+    using NLog;
 
     public static class TypeHelperCSharp
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public const string DefaultReservedPrefix = "@";
         public static ICollection<string> GetReservedNames()
         {
@@ -104,6 +107,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             };
         }
 
+        public static ICollection<string> GetReservedModelNames()
+        {
+            return new HashSet<string>(StringComparer.Ordinal)
+            {
+                "Required"
+            };
+        }
+
         private static readonly ICollection<string> SimpleTypes =
             new HashSet<string> (StringComparer.OrdinalIgnoreCase)
             {
@@ -130,6 +141,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 case "binary":
                     return "byte[]";
                 case "boolean":
+                case "bool":
                     return "bool";
                 case "date":
                     return "Date";
@@ -158,7 +170,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         public static bool IsTypeNullable(this OdcmType type)
         {
             var t = type.GetTypeString();
-            return type is OdcmClass || t == "Date" || t == "Stream" || t == "string" || t == "byte[]";
+            return type is OdcmClass || t == "Date" || t == "Stream" || t == "string" || t == "byte[]" || t == "TimeOfDay" || t == "Duration";
         }
 
         public static bool IsByteArray(this OdcmProperty property)
@@ -206,11 +218,45 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static string GetSanitizedPropertyName(this string property, string prefix = null)
         {
+            return GetSanitizedPropertyName(property, null, prefix);
+        }
+
+        /// <summary>
+        /// Sanitizes a property name for the following conditions: 
+        /// 1) a property has the same name as a C# keyword. Prefix @ to the property name to make it valid. 
+        /// 2) a property has the same name as the class. First we'll try to change the property name to the
+        /// return type name. If the return type name is the same as the class name, then we'll append 
+        /// "Property" to the property name.
+        /// </summary>
+        /// <param name="property">The string that called this extension.</param>
+        /// <param name="odcmProperty">An OdcmProperty. Use the property that you want to sanitize.</param>
+        /// <param name="prefix">The prefix to use on this property.</param>
+        /// <returns></returns>
+        public static string GetSanitizedPropertyName(this string property, OdcmProperty odcmProperty, string prefix = null)
+        {
             if (GetReservedNames().Contains(property))
             {
                 var reservedPrefix = string.IsNullOrEmpty(prefix) ? DefaultReservedPrefix : prefix;
 
+                logger.Info("Property \"{0}\" is a reserved word in .NET. Converting to \"{1}{0}\"", property.ToUpperFirstChar(), reservedPrefix);
                 return string.Concat(reservedPrefix, property.ToUpperFirstChar());
+            }
+
+            // Check whether the propertyObject is null (means they called the extension from a string).
+            // Check whether the property name is the same as the class name.
+            // Only constructor members may be named the same as the class name.
+            if (odcmProperty != null && property == odcmProperty.Class.Name.ToUpperFirstChar())
+            {
+                // Check whether the property type is the same as the class name.
+                if (odcmProperty.Projection.Type.Name.ToUpperFirstChar() == odcmProperty.Class.Name.ToUpperFirstChar())
+                {
+                    // Name the property: {metadataName} + "Property"
+                    logger.Info("Property type \"{0}\" has the same name as the class. Converting to \"{0}Property\"", property);
+                    return string.Concat(property, "Property");
+                }
+
+                // Name the property by its type. Sanitize it in case the type is a reserved name.  
+                return odcmProperty.Projection.Type.Name.ToUpperFirstChar().GetSanitizedPropertyName();
             }
 
             return property;

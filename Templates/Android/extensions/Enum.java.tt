@@ -17,7 +17,17 @@ public enum <#= c.Name.ToUpperFirstChar()#>
     /**
     * <#= value.Name.SplitCamelCase()#>
     */
-    <#= value.SanitizePropertyName() #>,
+<# 
+if (value.Name == value.Name.SanitizePropertyName(c)) { 
+#>
+    <#= value.Name #>,
+<# 
+} else { 
+#>
+    <#= value.Name.ToUpper() #>,
+<# 
+} 
+#>
 <#
     }
 #>

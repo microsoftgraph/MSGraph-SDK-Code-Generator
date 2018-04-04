@@ -15,20 +15,10 @@
     /**
      * Creates the request with specific options instead of the existing options
      */
-    <#=ITypeRequest(c)#> buildRequest(final List<Option> requestOptions);
+    <#=ITypeRequest(c)#> buildRequest(final java.util.List<Option> requestOptions);
 <#
 if (c.AsOdcmClass() != null)
 {
-    foreach(var child in c.AsOdcmClass().Derived)
-    {
-        var childName = child.Name.ToCheckedCase();
-#>
-
-    <#=ITypeRequestBuilder(child)#> <#=childName.ToLowerFirstChar()#>();
-<#
-    }
-#>
-<#
     foreach(var prop in c.AsOdcmClass().NavigationProperties())
     {
         var propName = prop.Name.ToUpperFirstChar();
@@ -54,7 +44,11 @@ if (c.AsOdcmClass() != null)
 <#
     foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
     {
-        var propName = prop.Name.ToCheckedCase();
+		var propName = prop.Name.ToCheckedCase();
+		if (c is OdcmMediaClass && propName == "Content") {
+			 propName = prop.Type.GetReservedPrefix().ToCheckedCase() + prop.Name.ToCheckedCase();
+		}
+
         var propRequestBuilder = TypeRequestBuilder(prop);
 #>
 
@@ -73,7 +67,6 @@ if (c.AsOdcmClass() != null)
 #>
 <#
     foreach (var method in c.AsOdcmClass().MethodsAndOverloads()) {
-
         if (method.IsBoundToCollection) {
             continue;
         }

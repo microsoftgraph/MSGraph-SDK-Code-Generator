@@ -1,0 +1,68 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeRequestBuilder(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+<# bool isAction = !c.AsOdcmMethod().IsFunction; #>
+<#=CreateClassDef(BaseTypeRequestBuilder(c),  RequestBuilderSuperClass(c))#>
+
+<# foreach (var method in c.AsOdcmMethod().WithOverloads()) { #>
+    /**
+     * The request builder for this <#=TypeName(c)#>
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request<#=MethodParametersJavadocSignature(method)#>
+     */
+    public <#=BaseTypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions<#=MethodParametersSignature(method)#>) {
+        super(requestUrl, client, requestOptions);
+<#     foreach (var p in method.Parameters) { #>
+<#         if (isAction) { #>
+        bodyParams.put("<#=ParamName(p)#>", <#=ParamName(p)#>);
+<#         } else { #>
+        functionOptions.add(new FunctionOption("<#=ParamName(p)#>", <#=ParamName(p)#>));
+<#         } #>
+<#     } #>
+    }
+<# } #>
+
+    /**
+     * Creates the <#=ITypeRequest(c)#>
+     *
+     * @return the <#=ITypeRequest(c)#> instance
+     */
+    public <#=ITypeRequest(c)#> buildRequest() {
+        return buildRequest(getOptions());
+    }
+
+    /**
+     * Creates the <#=ITypeRequest(c)#> with specific requestOptions instead of the existing requestOptions
+     *
+     * @param requestOptions the options for the request
+     * @return the <#=ITypeRequest(c)#> instance
+     */
+    public <#=ITypeRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
+        <#=TypeRequest(c)#> request = new <#=TypeRequest(c)#>(
+                getRequestUrl(),
+                getClient(),
+                requestOptions
+        );
+
+<# if (isAction) { #>
+<#   foreach (var p in c.AsOdcmMethod().Parameters) { #>
+        if (hasParameter("<#=ParamName(p)#>")) {
+            request.body.<#=ParamName(p)#> = getParameter("<#=ParamName(p)#>");
+        }
+
+<#   } #>
+<# } else { #>
+      for (FunctionOption option : functionOptions) {
+            request.addFunctionOption(option);
+      }
+
+<# } #>
+        return request;
+    }
+}

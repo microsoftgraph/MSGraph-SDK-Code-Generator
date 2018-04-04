@@ -38,6 +38,10 @@
     <Reference Include="Mono.TextTemplating">
       <HintPath>..\..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,10 +55,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeHelpers\Android\CodeWriterAndroid.cs" />
+    <Compile Include="CodeHelpers\Android\CustomImports.cs" />
+    <Compile Include="CodeHelpers\Android\CustomMethods.cs" />
+    <Compile Include="CodeHelpers\Android\CustomOverwrites.cs" />
     <Compile Include="CodeHelpers\CodeWriterBase.cs" />
     <Compile Include="CodeHelpers\CSharp\CodeWriterCSharp.cs" />
     <Compile Include="CodeHelpers\CSharp\TypeHelperCSharp.cs" />
-    <Compile Include="CodeHelpers\Android\CodeWriterAndroid.cs" />
+    <Compile Include="CodeHelpers\Java\CodeWriterJava.cs" />
+    <Compile Include="CodeHelpers\Java\CustomOverwrites.cs" />
+    <Compile Include="CodeHelpers\Java\TypeHelperJava.cs" />
     <Compile Include="CodeHelpers\TypeScript\CodeWriterTypeScript.cs" />
     <Compile Include="CodeHelpers\TypeScript\TypeHelperTypeScript.cs" />
     <Compile Include="CodeHelpers\GraphEndpointList\CodeWriterGraphEndpointList.cs" />
@@ -65,6 +75,7 @@
     <Compile Include="CodeHelpers\Python\CodeWriterPython.cs" />
     <Compile Include="CodeHelpers\Python\TypeHelperPython.cs" />
     <Compile Include="Extensions\FeatureExtensions.cs" />
+    <Compile Include="PathWriters\AndroidPathWriter.cs" />
     <Compile Include="PathWriters\CSharpPathWriter.cs" />
     <Compile Include="PathWriters\TypeScriptPathWriter.cs" />
     <Compile Include="PathWriters\GraphEndpointListPathWriter.cs" />
@@ -77,7 +88,7 @@
     <Compile Include="Extensions\OdcmModelExtensions.cs" />
     <Compile Include="PathWriters\PathWriterBase.cs" />
     <Compile Include="PathWriters\IPathWriter.cs" />
-    <Compile Include="PathWriters\AndroidPathWriter.cs" />
+    <Compile Include="PathWriters\JavaPathWriter.cs" />
     <Compile Include="PathWriters\ObjCPathWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ConfigurationService.cs" />
@@ -95,6 +106,9 @@
     <Compile Include="TemplateProcessor\TemplateFileInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".config\JavaSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include=".config\CSharpSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -118,6 +132,12 @@
     </None>
     <None Include=".config\TemplateWriterSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

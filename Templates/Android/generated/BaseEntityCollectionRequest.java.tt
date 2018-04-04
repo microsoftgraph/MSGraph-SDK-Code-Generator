@@ -16,7 +16,7 @@
      * @param client The service client
      * @param requestOptions The options for this request
      */
-    public <#=BaseTypeCollectionRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final List<Option> requestOptions) {
+    public <#=BaseTypeCollectionRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final java.util.List<Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
     }
 
@@ -42,14 +42,14 @@
     public void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new <#=TypeRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest()
+            .buildRequest(getBaseRequest().getOptions())
             .post(new<#=TypeName(c)#>, callback);
     }
 
     public <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new <#=TypeRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest()
+            .buildRequest(getBaseRequest().getOptions())
             .post(new<#=TypeName(c)#>);
     }
 
@@ -104,3 +104,4 @@
         return page;
     }
 }
+<#=PostProcess(BaseTypeCollectionRequest(c))#>

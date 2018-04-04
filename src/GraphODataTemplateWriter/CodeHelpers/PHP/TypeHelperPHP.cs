@@ -6,20 +6,23 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
     using System;
+    using NLog;
 
     public static class TypeHelperPHP
     {
-        public const string ReservedPrefix = "msgraph_";
+        public const string ReservedPrefix = "Graph";
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static HashSet<string> ReservedNames
         {
             get
             {
                 return new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
-                    "abstract", "and", "array()", "as", "break", "callable", "case", "catch", "class", "clone", "const", "continue", "declare", "default", "die()",
-                    "do", "echo", "else", "elseif", "empty()", "enddeclare", "endfor", "endforeach", "endif", "endswitch", "endwhile", "eval()", "exit()", "extends",
+                    "abstract", "and", "array", "as", "break", "callable", "case", "catch", "class", "clone", "const", "continue", "declare", "default", "die",
+                    "do", "echo", "else", "elseif", "empty", "enddeclare", "endfor", "endforeach", "endif", "endswitch", "endwhile", "eval", "exit", "extends",
                     "final", "finally", "for", "foreach", "function", "global", "goto", "if", "implements", "include", "include_once", "instanceof", "insteadof", "interface",
-                    "isset()", "list()", "namespace", "new", "or", "print", "private", "protected", "public", "require", "require_once", "return", "static", "switch",
-                    "throw", "trait", "try", "unset()", "use", "var", "while", "xor", "yield", "int", "float", "bool", "string", "true", "false", "null"
+                    "isset", "list", "namespace", "new", "or", "print", "private", "protected", "public", "require", "require_once", "return", "static", "switch",
+                    "throw", "trait", "try", "unset", "use", "var", "while", "xor", "yield", "int", "float", "bool", "string", "true", "false", "null"
                 };
             }
         }
@@ -116,25 +119,27 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             return property.Name.ToLowerFirstChar();
         }
 
-        public static string SanitizePropertyName(this OdcmObject property)
+        public static string SanitizeEntityName(this String name)
         {
-            if (ReservedNames.Contains(property.Name))
+            if (ReservedNames.Contains(name))
             {
-                return ReservedPrefix + property.Name;
+                logger.Info("Property \"{0}\" is a reserved word in PHP. Converting to \"{1}{0}\"", name, ReservedPrefix);
+                return ReservedPrefix + name.ToCheckedCase();
             }
 
-            return property.Name.Replace("@", string.Empty).Replace(".", "_");
+            return name.Replace("@", string.Empty).Replace(".", "_");
         }
 
-        public static string GetToLowerImport(this OdcmProperty property)
+        public static string SanitizePropertyName(this String name, String entityName)
         {
-            var type = property.Projection.Type;
-            var index = type.Name.LastIndexOf('.');
-            return type.Name.Substring(0, index).ToLower() + type.Name.Substring(index);
+            if (name == "properties")
+            {
+                logger.Info("Property \"{0}\" is a reserved word in PHP. Converting to \"{1}{0}\"", name, ReservedPrefix);
+                return entityName + name.ToCheckedCase();
+            }
+
+            return name.Replace("@", string.Empty).Replace(".", "_");
         }
-        public static string GetNamespaceName(this OdcmNamespace namespaceObject)
-        {
-            return Inflector.Inflector.Titleize(namespaceObject.Name);
-        }
+
     }
 }

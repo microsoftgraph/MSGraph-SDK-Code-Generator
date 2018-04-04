@@ -6,9 +6,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
     using System;
+    using NLog;
 
     public static class TypeHelperAndroid
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public const string ReservedPrefix = "msgraph_";
         public static HashSet<string> ReservedNames
         {
@@ -20,8 +22,20 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
             }
         }
 
+        public static string GetReservedPrefix(this OdcmType @type)
+        {
+            return ReservedPrefix;
+        }
+
         public static string GetTypeString(this OdcmType @type)
         {
+            // If isFlags = true, return an EnumSet instead of an enum. This will be 
+            // serialized to and deserialized from a string
+            if (String.Equals(@type.ToString(), "Vipr.Core.CodeModel.OdcmEnum") && @type.AsOdcmEnum().IsFlags)
+            {
+                return "EnumSet<" + @type.Name.ToUpperFirstChar() + ">";
+            }
+
             switch (@type.Name)
             {
                 case "Int16":
@@ -35,10 +49,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
                     return "java.util.Calendar";
                 case "Date":
                     return "com.microsoft.graph.model.DateOnly";
+                case "TimeOfDay":
+                    return "com.microsoft.graph.model.TimeOfDay";
+                case "Duration":
+                    return "javax.xml.datatype.Duration";
                 case "Json":
                     return "com.google.gson.JsonElement";
                 case "Binary":
                     return "byte[]";
+                case "Single":
+                    return "float";
                 default:
                     return @type.Name.ToUpperFirstChar();
             }
@@ -73,14 +93,29 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
             return property.Name.ToLowerFirstChar();
         }
 
-        public static string SanitizePropertyName(this OdcmObject property)
+        public static string SanitizePropertyName(this string property, OdcmObject odcmProperty = null)
         {
-            if (ReservedNames.Contains(property.Name))
+            if (ReservedNames.Contains(property))
             {
-                return ReservedPrefix + property.Name;
+                logger.Info("Property \"{0}\" is a reserved word in Android. Converting to \"{1}{0}\"", property, ReservedPrefix);
+                return ReservedPrefix + property;
             }
 
-            return property.Name.Replace("@", string.Empty).Replace(".", "_");
+            if (odcmProperty != null && property == odcmProperty.Name.ToUpperFirstChar())
+            {
+                // Check whether the property type is the same as the class name.
+                if (odcmProperty.Projection.Type.Name.ToUpperFirstChar() == odcmProperty.Name.ToUpperFirstChar())
+                {
+                    // Name the property: {metadataName} + "Property"
+                    logger.Info("Property type \"{0}\" has the same name as the class. Converting to \"{0}Property\"", property);
+                    return string.Concat(property, "Property");
+                }
+
+                // Name the property by its type. Sanitize it in case the type is a reserved name.  
+                return odcmProperty.Projection.Type.Name.ToUpperFirstChar().SanitizePropertyName(odcmProperty);
+            }
+
+            return property.Replace("@", string.Empty).Replace(".", "_");
         }
 
         public static string GetToLowerImport(this OdcmProperty property)

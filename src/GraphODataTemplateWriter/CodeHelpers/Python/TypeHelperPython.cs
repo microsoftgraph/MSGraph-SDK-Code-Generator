@@ -5,10 +5,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
     using System.Collections.Generic;
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
+    using NLog;
 
     public static class TypeHelperPython
     {
         public const string ReservedPrefix = "$$__$$";
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static ICollection<string> ReservedNames
         {
             get
@@ -102,6 +105,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Python
         public static string SanitizePropertyName(this OdcmProperty property)
         {
             if (ReservedNames.Contains(property.Name.ToLower())) {
+                logger.Info("Property \"{0}\" is a reserved word in Python. Converting to \"{1}{0}\"", property.Name, ReservedPrefix);
                 return ReservedPrefix + property.Name;
             }
             return property.Name;

@@ -10,6 +10,7 @@ Currently the following target languages are supported by this writer:
 - Objective-C
 - Python
 - TypeScript
+- PHP
 
 # Contents
 - [Prerequisites](#prerequisites)
@@ -19,8 +20,8 @@ Currently the following target languages are supported by this writer:
 - [License](#license)
 
 ## Prerequisites
-- [Visual Studio SDK](https://www.microsoft.com/en-us/download/details.aspx?id=40758)
-- [Visual Studio Modeling SDK](https://www.microsoft.com/en-us/download/details.aspx?id=40754)
+- [Visual Studio SDK](https://msdn.microsoft.com/en-us/library/bb166441.aspx)
+- [Visual Studio Modeling SDK](https://msdn.microsoft.com/en-us/library/bb126259.aspx)
 
 # Getting started
 
@@ -123,9 +124,26 @@ Note: You can also check in a template by `odcjObject.LongDescriptionContains("f
 
 **Note: Includes/Excludes and Ignore/Matches were used before Vipr had full support for annotations; now that annotations have been added to Vipr usage of these parameters should be limited to legacy scenarios**
 
+## Building against Graph Metadata
+
+There are currently several steps we take to form the metadata into one that will successfully generate SDKs in the shape we expect:
+
+  - Remove capability annotations (see [#132](https://github.com/Microsoft/Vipr/issues/132))
+  - Add navigation annotation to thumbnail
+     ```xml
+     <Annotation String="navigable" Term="Org.OData.Core.V1.LongDescription"/>
+     ```
+  - Remove HasStream properties from ```onenotePage``` and ```onenoteEntityBaseModel```
+  - Add ```ContainsTarget="true"``` to navigation properties that do not have a corresponding EntitySet
+  - Add long descriptions to types and properties from [docs](https://developer.microsoft.com/en-us/graph/docs/concepts/overview)
+  
+In order to build against metadata other than that stored in the [metadata](https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/tree/master/metadata) directory, you will need to perform the first four on this list.
+  
 ## Contributing
 
 Before we can accept your pull request, you'll need to electronically complete Microsoft's [Contributor License Agreement](https://cla.microsoft.com/). If you've done this for other Microsoft projects, then you're already covered.
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 [Why a CLA?](https://www.gnu.org/licenses/why-assign.html) (from the FSF)
 

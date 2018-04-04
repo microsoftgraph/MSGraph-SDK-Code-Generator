@@ -16,20 +16,10 @@
     /**
      * Creates the request with specific options instead of the existing options
      */
-    <#=ITypeStreamRequest(c)#> buildRequest(final List<Option> requestOptions);
+    <#=ITypeStreamRequest(c)#> buildRequest(final java.util.List<Option> requestOptions);
 <#
 if (c.AsOdcmClass() != null)
 {
-    foreach(var child in c.AsOdcmClass().Derived)
-    {
-        var childName = child.Name.ToCheckedCase();
-#>
-
-    <#=ITypeRequestBuilder(child)#> <#=childName.ToLowerFirstChar()#>();
-<#
-    }
-#>
-<#
     foreach(var prop in c.AsOdcmClass().NavigationProperties())
     {
         var propName = prop.Name.ToUpperFirstChar();

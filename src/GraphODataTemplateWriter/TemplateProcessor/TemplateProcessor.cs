@@ -15,10 +15,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
     using Microsoft.VisualStudio.TextTemplating;
     using Vipr.Core;
     using Vipr.Core.CodeModel;
+    using NLog;
 
     public class TemplateProcessor : ITemplateProcessor
     {
         private static CustomT4Host _host;
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         protected static CustomT4Host Host(ITemplateInfo templateInfo, string templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel)
         {
@@ -96,7 +99,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         {
             Func<ITemplateInfo, IEnumerable<TextFile>> subProcessor = this.ProcessTemplate;
             this.SubProcessors.TryGetValue(templateInfo.SubprocessorType, out subProcessor);
-            Console.WriteLine("Current Subprocessor Type: {0}", templateInfo.SubprocessorType);
+            logger.Info("Current subprocessor type: {0}", templateInfo.SubprocessorType);
             return subProcessor(templateInfo);
         }
 
@@ -287,6 +290,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                 for (int i = 0; i < results.Errors.Count; i++)
                 {
                     if (! results.Errors[i].IsWarning) realError = true;
+                    logger.Error((results.Errors[i].IsWarning ? "Warning" : "Error") + "(" + i.ToString() + "): " + results.Errors[i].ToString());
                     Console.WriteLine( (results.Errors[i].IsWarning?"Warning":"Error") + "(" + i.ToString() + "): " + results.Errors[i].ToString());
                 }
 
@@ -341,10 +345,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             if (host.Errors != null && host.Errors.HasErrors)
             {
                 var errors = this.LogErrors(host, templateInfo);
+                logger.Error(errors);
                 throw new InvalidOperationException(errors);
             }
 
             var path = this.PathWriter.WritePath(templateInfo, fileName);
+            logger.Debug("Wrote template to path {0}", path);
 
             host.TemplateHostStats.RecordProcessed(templateInfo, odcmObject != null ? odcmObject.Name : string.Empty, path);
             return new TextFile(path, output);
