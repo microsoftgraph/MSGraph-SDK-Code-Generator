@@ -5,7 +5,7 @@
 <#host.TemplateName = BaseTypeCollectionRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
-<# bool isPost = IsPostRequestType(c.AsOdcmMethod()); #>
+<# bool isAction = !c.AsOdcmMethod().IsFunction; #>
 <#=CreateClassDef(BaseTypeCollectionRequestBuilder(c), RequestBuilderSuperClass(c), IBaseTypeCollectionRequestBuilder(c))#>
 
 <# foreach (var method in c.AsOdcmMethod().WithOverloads()) { #>
@@ -14,12 +14,12 @@
      *
      * @param requestUrl The request url
      * @param client The service client
-     * @param options The options for this request
+     * @param requestOptions The options for this request
      */
-    public <#=BaseTypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> options<#=MethodParametersSignature(method)#>) {
-        super(requestUrl, client, options);
+    public <#=BaseTypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final List<Option> requestOptions<#=MethodParametersSignature(method)#>) {
+        super(requestUrl, client, requestOptions);
 <# foreach (var p in method.Parameters) { #>
-  <# if (isPost) { #>
+  <# if (isAction) { #>
       mBodyParams.put("<#=ParamName(p)#>", <#=ParamName(p)#>);
   <# } else { #>
       mFunctionOptions.add(new FunctionOption("<#=ParamName(p)#>", <#=ParamName(p)#>));
@@ -32,23 +32,23 @@
         return buildRequest(getOptions());
     }
 
-    public <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> options) {
+    public <#=ITypeCollectionRequest(c)#> buildRequest(final List<Option> requestOptions) {
         <#= TypeCollectionRequest(c)#> request = new <#=TypeCollectionRequest(c)#>(
                 getRequestUrl(),
                 getClient(),
-                options
+                requestOptions
         );
 
-<# foreach (var p in c.AsOdcmMethod().Parameters) { #>
-  <# if (isPost) { #>
+<# if (isAction) { #>
+  <# foreach (var p in c.AsOdcmMethod().Parameters) { #>
       if (hasParameter("<#=ParamName(p)#>")) {
             request.mBody.<#=ParamName(p)#> = getParameter("<#=ParamName(p)#>");
         }
-  <# } else { #>
+  <# } #>
+<# } else { #>
       for (FunctionOption option : mFunctionOptions) {
             request.addFunctionOption(option);
-        }
-  <# } #>
+      }
 <# } #>
 
         return request;

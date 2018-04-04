@@ -55,14 +55,20 @@
     <Compile Include="CodeHelpers\CSharp\CodeWriterCSharp.cs" />
     <Compile Include="CodeHelpers\CSharp\TypeHelperCSharp.cs" />
     <Compile Include="CodeHelpers\Android\CodeWriterAndroid.cs" />
-    <Compile Include="CodeHelpers\JavaScript\CodeWriterJavaScript.cs" />
-    <Compile Include="CodeHelpers\JavaScript\TypeHelperJavaScript.cs" />
+    <Compile Include="CodeHelpers\TypeScript\CodeWriterTypeScript.cs" />
+    <Compile Include="CodeHelpers\TypeScript\TypeHelperTypeScript.cs" />
+    <Compile Include="CodeHelpers\GraphEndpointList\CodeWriterGraphEndpointList.cs" />
+    <Compile Include="CodeHelpers\GraphEndpointList\TypeHelperGraphEndpointList.cs" />
     <Compile Include="CodeHelpers\ObjC\CodeWriterObjC.cs" />
+    <Compile Include="CodeHelpers\PHP\CodeWriterPHP.cs" />
+    <Compile Include="CodeHelpers\PHP\TypeHelperPHP.cs" />
     <Compile Include="CodeHelpers\Python\CodeWriterPython.cs" />
     <Compile Include="CodeHelpers\Python\TypeHelperPython.cs" />
     <Compile Include="Extensions\FeatureExtensions.cs" />
     <Compile Include="PathWriters\CSharpPathWriter.cs" />
-    <Compile Include="PathWriters\JavaScriptPathWriter.cs" />
+    <Compile Include="PathWriters\TypeScriptPathWriter.cs" />
+    <Compile Include="PathWriters\GraphEndpointListPathWriter.cs" />
+    <Compile Include="PathWriters\PHPPathWriter.cs" />
     <Compile Include="PathWriters\PythonPathWriter.cs" />
     <Compile Include="TemplateProcessor\CustomT4Host.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -92,13 +98,19 @@
     <None Include=".config\CSharpSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include=".config\JavaScriptSettings.json">
+    <None Include=".config\TypeScriptSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include=".config\GraphEndpointListSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include=".config\AndroidSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include=".config\ObjCSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include=".config\PHPSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include=".config\PythonSettings.json">

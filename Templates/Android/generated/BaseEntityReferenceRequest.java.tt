@@ -13,10 +13,10 @@
      *
      * @param requestUrl The request url
      * @param client The service client
-     * @param options The options for this request
+     * @param requestOptions The options for this request
      */
-    public <#=BaseTypeReferenceRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, List<Option> options) {
-        super(requestUrl, client, options, <#=ClassTypeName(c)#>.class);
+    public <#=BaseTypeReferenceRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, List<Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=ClassTypeName(c)#>.class);
     }
 
     public void delete(final ICallback<<#=TypeName(c)#>> callback) {

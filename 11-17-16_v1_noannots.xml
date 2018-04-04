@@ -2,6 +2,16 @@
 <edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
   <edmx:DataServices>
     <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="microsoft.graph">
+      <EnumType Name="automaticRepliesStatus">
+        <Member Name="disabled" Value="0"/>
+        <Member Name="alwaysEnabled" Value="1"/>
+        <Member Name="scheduled" Value="2"/>
+      </EnumType>
+      <EnumType Name="externalAudienceScope">
+        <Member Name="none" Value="0"/>
+        <Member Name="contactsOnly" Value="1"/>
+        <Member Name="all" Value="2"/>
+      </EnumType>
       <EnumType Name="bodyType">
         <Member Name="text" Value="0"/>
         <Member Name="html" Value="1"/>
@@ -187,6 +197,8 @@
         <Property Name="changeKey" Type="Edm.String" Unicode="false"/>
         <NavigationProperty Name="events" Type="Collection(microsoft.graph.event)" ContainsTarget="true"/>
         <NavigationProperty Name="calendarView" Type="Collection(microsoft.graph.event)" ContainsTarget="true"/>
+        <NavigationProperty Name="singleValueExtendedProperties" Type="Collection(microsoft.graph.singleValueLegacyExtendedProperty)" ContainsTarget="true"/>
+        <NavigationProperty Name="multiValueExtendedProperties" Type="Collection(microsoft.graph.multiValueLegacyExtendedProperty)" ContainsTarget="true"/>
       </EntityType>
       <EntityType Name="outlookItem" BaseType="microsoft.graph.entity" Abstract="true">
         <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
@@ -222,10 +234,13 @@
         <Property Name="attendees" Type="Collection(microsoft.graph.attendee)"/>
         <Property Name="organizer" Type="microsoft.graph.recipient"/>
         <Property Name="webLink" Type="Edm.String" Unicode="false"/>
+        <Property Name="onlineMeetingUrl" Type="Edm.String" Unicode="false"/>
         <NavigationProperty Name="calendar" Type="microsoft.graph.calendar" ContainsTarget="true"/>
         <NavigationProperty Name="instances" Type="Collection(microsoft.graph.event)" ContainsTarget="true"/>
         <NavigationProperty Name="extensions" Type="Collection(microsoft.graph.extension)" ContainsTarget="true"/>
         <NavigationProperty Name="attachments" Type="Collection(microsoft.graph.attachment)" ContainsTarget="true"/>
+        <NavigationProperty Name="singleValueExtendedProperties" Type="Collection(microsoft.graph.singleValueLegacyExtendedProperty)" ContainsTarget="true"/>
+        <NavigationProperty Name="multiValueExtendedProperties" Type="Collection(microsoft.graph.multiValueLegacyExtendedProperty)" ContainsTarget="true"/>
       </EntityType>
       <EntityType Name="conversation" BaseType="microsoft.graph.entity">
         <Property Name="topic" Type="Edm.String" Nullable="false" Unicode="false"/>
@@ -337,6 +352,7 @@
         <Property Name="usageLocation" Type="Edm.String" Unicode="false"/>
         <Property Name="userPrincipalName" Type="Edm.String" Unicode="false"/>
         <Property Name="userType" Type="Edm.String" Unicode="false"/>
+        <Property Name="mailboxSettings" Type="microsoft.graph.mailboxSettings"/>
         <Property Name="aboutMe" Type="Edm.String" Unicode="false"/>
         <Property Name="birthday" Type="Edm.DateTimeOffset" Nullable="false"/>
         <Property Name="hireDate" Type="Edm.DateTimeOffset" Nullable="false"/>
@@ -366,6 +382,7 @@
         <NavigationProperty Name="inferenceClassification" Type="microsoft.graph.inferenceClassification" ContainsTarget="true"/>
         <NavigationProperty Name="photo" Type="microsoft.graph.profilePhoto" ContainsTarget="true"/>
         <NavigationProperty Name="drive" Type="microsoft.graph.drive" ContainsTarget="true"/>
+        <NavigationProperty Name="drives" Type="Collection(microsoft.graph.drive)" ContainsTarget="true"/>
       </EntityType>
       <ComplexType Name="assignedLicense">
         <Property Name="disabledPlans" Type="Collection(Edm.Guid)" Nullable="false"/>
@@ -374,6 +391,27 @@
       <ComplexType Name="passwordProfile">
         <Property Name="password" Type="Edm.String" Unicode="false"/>
         <Property Name="forceChangePasswordNextSignIn" Type="Edm.Boolean"/>
+      </ComplexType>
+      <ComplexType Name="mailboxSettings">
+        <Property Name="automaticRepliesSetting" Type="microsoft.graph.automaticRepliesSetting"/>
+        <Property Name="timeZone" Type="Edm.String" Unicode="false"/>
+        <Property Name="language" Type="microsoft.graph.localeInfo"/>
+      </ComplexType>
+      <ComplexType Name="automaticRepliesSetting">
+        <Property Name="status" Type="microsoft.graph.automaticRepliesStatus"/>
+        <Property Name="externalAudience" Type="microsoft.graph.externalAudienceScope"/>
+        <Property Name="scheduledStartDateTime" Type="microsoft.graph.dateTimeTimeZone"/>
+        <Property Name="scheduledEndDateTime" Type="microsoft.graph.dateTimeTimeZone"/>
+        <Property Name="internalReplyMessage" Type="Edm.String" Unicode="false"/>
+        <Property Name="externalReplyMessage" Type="Edm.String" Unicode="false"/>
+      </ComplexType>
+      <ComplexType Name="dateTimeTimeZone">
+        <Property Name="dateTime" Type="Edm.String" Nullable="false" Unicode="false"/>
+        <Property Name="timeZone" Type="Edm.String" Unicode="false"/>
+      </ComplexType>
+      <ComplexType Name="localeInfo">
+        <Property Name="locale" Type="Edm.String" Unicode="false"/>
+        <Property Name="displayName" Type="Edm.String" Unicode="false"/>
       </ComplexType>
       <EntityType Name="message" BaseType="microsoft.graph.outlookItem">
         <Property Name="receivedDateTime" Type="Edm.DateTimeOffset"/>
@@ -399,8 +437,10 @@
         <Property Name="isDraft" Type="Edm.Boolean"/>
         <Property Name="webLink" Type="Edm.String" Unicode="false"/>
         <Property Name="inferenceClassification" Type="microsoft.graph.inferenceClassificationType"/>
-        <NavigationProperty Name="extensions" Type="Collection(microsoft.graph.extension)" ContainsTarget="true"/>
         <NavigationProperty Name="attachments" Type="Collection(microsoft.graph.attachment)" ContainsTarget="true"/>
+        <NavigationProperty Name="extensions" Type="Collection(microsoft.graph.extension)" ContainsTarget="true"/>
+        <NavigationProperty Name="singleValueExtendedProperties" Type="Collection(microsoft.graph.singleValueLegacyExtendedProperty)" ContainsTarget="true"/>
+        <NavigationProperty Name="multiValueExtendedProperties" Type="Collection(microsoft.graph.multiValueLegacyExtendedProperty)" ContainsTarget="true"/>
       </EntityType>
       <EntityType Name="mailFolder" BaseType="microsoft.graph.entity">
         <Property Name="displayName" Type="Edm.String" Unicode="false"/>
@@ -410,6 +450,8 @@
         <Property Name="totalItemCount" Type="Edm.Int32"/>
         <NavigationProperty Name="messages" Type="Collection(microsoft.graph.message)" ContainsTarget="true"/>
         <NavigationProperty Name="childFolders" Type="Collection(microsoft.graph.mailFolder)" ContainsTarget="true"/>
+        <NavigationProperty Name="singleValueExtendedProperties" Type="Collection(microsoft.graph.singleValueLegacyExtendedProperty)" ContainsTarget="true"/>
+        <NavigationProperty Name="multiValueExtendedProperties" Type="Collection(microsoft.graph.multiValueLegacyExtendedProperty)" ContainsTarget="true"/>
       </EntityType>
       <EntityType Name="calendarGroup" BaseType="microsoft.graph.entity">
         <Property Name="name" Type="Edm.String" Unicode="false"/>
@@ -452,6 +494,8 @@
         <Property Name="personalNotes" Type="Edm.String" Unicode="false"/>
         <Property Name="children" Type="Collection(Edm.String)" Unicode="false"/>
         <NavigationProperty Name="extensions" Type="Collection(microsoft.graph.extension)" ContainsTarget="true"/>
+        <NavigationProperty Name="singleValueExtendedProperties" Type="Collection(microsoft.graph.singleValueLegacyExtendedProperty)" ContainsTarget="true"/>
+        <NavigationProperty Name="multiValueExtendedProperties" Type="Collection(microsoft.graph.multiValueLegacyExtendedProperty)" ContainsTarget="true"/>
         <NavigationProperty Name="photo" Type="microsoft.graph.profilePhoto" ContainsTarget="true"/>
       </EntityType>
       <EntityType Name="contactFolder" BaseType="microsoft.graph.entity">
@@ -459,6 +503,8 @@
         <Property Name="displayName" Type="Edm.String" Unicode="false"/>
         <NavigationProperty Name="contacts" Type="Collection(microsoft.graph.contact)" ContainsTarget="true"/>
         <NavigationProperty Name="childFolders" Type="Collection(microsoft.graph.contactFolder)" ContainsTarget="true"/>
+        <NavigationProperty Name="singleValueExtendedProperties" Type="Collection(microsoft.graph.singleValueLegacyExtendedProperty)" ContainsTarget="true"/>
+        <NavigationProperty Name="multiValueExtendedProperties" Type="Collection(microsoft.graph.multiValueLegacyExtendedProperty)" ContainsTarget="true"/>
       </EntityType>
       <EntityType Name="inferenceClassification" BaseType="microsoft.graph.entity">
         <NavigationProperty Name="overrides" Type="Collection(microsoft.graph.inferenceClassificationOverride)" ContainsTarget="true"/>
@@ -480,10 +526,6 @@
         <Property Name="eventWebLink" Type="Edm.String" Unicode="false"/>
         <Property Name="reminderFireTime" Type="microsoft.graph.dateTimeTimeZone"/>
       </ComplexType>
-      <ComplexType Name="dateTimeTimeZone">
-        <Property Name="dateTime" Type="Edm.String" Nullable="false" Unicode="false"/>
-        <Property Name="timeZone" Type="Edm.String" Unicode="false"/>
-      </ComplexType>
       <ComplexType Name="location">
         <Property Name="displayName" Type="Edm.String" Unicode="false"/>
         <Property Name="address" Type="microsoft.graph.physicalAddress"/>
@@ -495,6 +537,12 @@
         <Property Name="countryOrRegion" Type="Edm.String" Unicode="false"/>
         <Property Name="postalCode" Type="Edm.String" Unicode="false"/>
       </ComplexType>
+      <EntityType Name="singleValueLegacyExtendedProperty" BaseType="microsoft.graph.entity">
+        <Property Name="value" Type="Edm.String" Unicode="false"/>
+      </EntityType>
+      <EntityType Name="multiValueLegacyExtendedProperty" BaseType="microsoft.graph.entity">
+        <Property Name="value" Type="Collection(Edm.String)" Unicode="false"/>
+      </EntityType>
       <ComplexType Name="itemBody">
         <Property Name="contentType" Type="microsoft.graph.bodyType"/>
         <Property Name="content" Type="Edm.String" Unicode="false"/>
@@ -563,6 +611,8 @@
         <NavigationProperty Name="extensions" Type="Collection(microsoft.graph.extension)" ContainsTarget="true"/>
         <NavigationProperty Name="inReplyTo" Type="microsoft.graph.post" ContainsTarget="true"/>
         <NavigationProperty Name="attachments" Type="Collection(microsoft.graph.attachment)" ContainsTarget="true"/>
+        <NavigationProperty Name="singleValueExtendedProperties" Type="Collection(microsoft.graph.singleValueLegacyExtendedProperty)" ContainsTarget="true"/>
+        <NavigationProperty Name="multiValueExtendedProperties" Type="Collection(microsoft.graph.multiValueLegacyExtendedProperty)" ContainsTarget="true"/>
       </EntityType>
       <EntityType Name="inferenceClassificationOverride" BaseType="microsoft.graph.entity">
         <Property Name="classifyAs" Type="microsoft.graph.inferenceClassificationType"/>
@@ -585,38 +635,40 @@
         <Property Name="used" Type="Edm.Int64"/>
       </ComplexType>
       <EntityType Name="driveItem" BaseType="microsoft.graph.entity" OpenType="true">
-        <Property Name="content" Type="Edm.Stream"/>
         <Property Name="createdBy" Type="microsoft.graph.identitySet"/>
-        <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
-        <Property Name="cTag" Type="Edm.String" Unicode="false"/>
+        <Property Name="createdDateTime" Type="Edm.DateTimeOffset" Nullable="false"/>
         <Property Name="description" Type="Edm.String" Unicode="false"/>
         <Property Name="eTag" Type="Edm.String" Unicode="false"/>
         <Property Name="lastModifiedBy" Type="microsoft.graph.identitySet"/>
-        <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset"/>
+        <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset" Nullable="false"/>
         <Property Name="name" Type="Edm.String" Unicode="false"/>
-        <Property Name="parentReference" Type="microsoft.graph.itemReference"/>
-        <Property Name="size" Type="Edm.Int64"/>
-        <Property Name="webDavUrl" Type="Edm.String" Unicode="false"/>
         <Property Name="webUrl" Type="Edm.String" Unicode="false"/>
         <Property Name="audio" Type="microsoft.graph.audio"/>
+        <Property Name="content" Type="Edm.Stream"/>
+        <Property Name="cTag" Type="Edm.String" Unicode="false"/>
         <Property Name="deleted" Type="microsoft.graph.deleted"/>
         <Property Name="file" Type="microsoft.graph.file"/>
         <Property Name="fileSystemInfo" Type="microsoft.graph.fileSystemInfo"/>
         <Property Name="folder" Type="microsoft.graph.folder"/>
         <Property Name="image" Type="microsoft.graph.image"/>
         <Property Name="location" Type="microsoft.graph.geoCoordinates"/>
+        <Property Name="package" Type="microsoft.graph.package"/>
+        <Property Name="parentReference" Type="microsoft.graph.itemReference"/>
         <Property Name="photo" Type="microsoft.graph.photo"/>
         <Property Name="remoteItem" Type="microsoft.graph.remoteItem"/>
+        <Property Name="root" Type="microsoft.graph.root"/>
         <Property Name="searchResult" Type="microsoft.graph.searchResult"/>
         <Property Name="shared" Type="microsoft.graph.shared"/>
+        <Property Name="sharepointIds" Type="microsoft.graph.sharepointIds"/>
+        <Property Name="size" Type="Edm.Int64"/>
         <Property Name="specialFolder" Type="microsoft.graph.specialFolder"/>
         <Property Name="video" Type="microsoft.graph.video"/>
-        <Property Name="package" Type="microsoft.graph.package"/>
+        <Property Name="webDavUrl" Type="Edm.String" Unicode="false"/>
         <NavigationProperty Name="createdByUser" Type="microsoft.graph.user"/>
         <NavigationProperty Name="workbook" Type="microsoft.graph.workbook" ContainsTarget="true"/>
         <NavigationProperty Name="lastModifiedByUser" Type="microsoft.graph.user"/>
-        <NavigationProperty Name="permissions" Type="Collection(microsoft.graph.permission)" ContainsTarget="true"/>
         <NavigationProperty Name="children" Type="Collection(microsoft.graph.driveItem)" ContainsTarget="true"/>
+        <NavigationProperty Name="permissions" Type="Collection(microsoft.graph.permission)" ContainsTarget="true"/>
         <NavigationProperty Name="thumbnails" Type="Collection(microsoft.graph.thumbnailSet)" ContainsTarget="true"/>
       </EntityType>
       <EntityType Name="workbook" BaseType="microsoft.graph.entity">
@@ -626,11 +678,6 @@
         <NavigationProperty Name="worksheets" Type="Collection(microsoft.graph.workbookWorksheet)" ContainsTarget="true"/>
         <NavigationProperty Name="functions" Type="microsoft.graph.workbookFunctions" ContainsTarget="true"/>
       </EntityType>
-      <ComplexType Name="itemReference">
-        <Property Name="driveId" Type="Edm.String" Unicode="false"/>
-        <Property Name="id" Type="Edm.String" Unicode="false"/>
-        <Property Name="path" Type="Edm.String" Unicode="false"/>
-      </ComplexType>
       <ComplexType Name="audio">
         <Property Name="album" Type="Edm.String" Unicode="false"/>
         <Property Name="albumArtist" Type="Edm.String" Unicode="false"/>
@@ -655,10 +702,12 @@
       <ComplexType Name="file">
         <Property Name="hashes" Type="microsoft.graph.hashes"/>
         <Property Name="mimeType" Type="Edm.String" Unicode="false"/>
+        <Property Name="processingMetadata" Type="Edm.Boolean"/>
       </ComplexType>
       <ComplexType Name="hashes">
         <Property Name="crc32Hash" Type="Edm.String" Unicode="false"/>
         <Property Name="sha1Hash" Type="Edm.String" Unicode="false"/>
+        <Property Name="quickXorHash" Type="Edm.String" Unicode="false"/>
       </ComplexType>
       <ComplexType Name="fileSystemInfo">
         <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
@@ -676,6 +725,16 @@
         <Property Name="latitude" Type="Edm.Double"/>
         <Property Name="longitude" Type="Edm.Double"/>
       </ComplexType>
+      <ComplexType Name="package">
+        <Property Name="type" Type="Edm.String" Unicode="false"/>
+      </ComplexType>
+      <ComplexType Name="itemReference">
+        <Property Name="driveId" Type="Edm.String" Unicode="false"/>
+        <Property Name="id" Type="Edm.String" Unicode="false"/>
+        <Property Name="name" Type="Edm.String" Unicode="false"/>
+        <Property Name="path" Type="Edm.String" Unicode="false"/>
+        <Property Name="shareId" Type="Edm.String" Unicode="false"/>
+      </ComplexType>
       <ComplexType Name="photo">
         <Property Name="cameraMake" Type="Edm.String" Unicode="false"/>
         <Property Name="cameraModel" Type="Edm.String" Unicode="false"/>
@@ -687,14 +746,34 @@
         <Property Name="iso" Type="Edm.Int32"/>
       </ComplexType>
       <ComplexType Name="remoteItem">
+        <Property Name="createdBy" Type="microsoft.graph.identitySet"/>
+        <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
         <Property Name="file" Type="microsoft.graph.file"/>
         <Property Name="fileSystemInfo" Type="microsoft.graph.fileSystemInfo"/>
         <Property Name="folder" Type="microsoft.graph.folder"/>
         <Property Name="id" Type="Edm.String" Unicode="false"/>
+        <Property Name="lastModifiedBy" Type="microsoft.graph.identitySet"/>
+        <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset"/>
         <Property Name="name" Type="Edm.String" Unicode="false"/>
+        <Property Name="package" Type="microsoft.graph.package"/>
         <Property Name="parentReference" Type="microsoft.graph.itemReference"/>
+        <Property Name="sharepointIds" Type="microsoft.graph.sharepointIds"/>
         <Property Name="size" Type="Edm.Int64"/>
+        <Property Name="specialFolder" Type="microsoft.graph.specialFolder"/>
+        <Property Name="webDavUrl" Type="Edm.String" Unicode="false"/>
+        <Property Name="webUrl" Type="Edm.String" Unicode="false"/>
       </ComplexType>
+      <ComplexType Name="sharepointIds">
+        <Property Name="listId" Type="Edm.String" Unicode="false"/>
+        <Property Name="listItemId" Type="Edm.String" Unicode="false"/>
+        <Property Name="listItemUniqueId" Type="Edm.String" Unicode="false"/>
+        <Property Name="siteId" Type="Edm.String" Unicode="false"/>
+        <Property Name="webId" Type="Edm.String" Unicode="false"/>
+      </ComplexType>
+      <ComplexType Name="specialFolder">
+        <Property Name="name" Type="Edm.String" Unicode="false"/>
+      </ComplexType>
+      <ComplexType Name="root"/>
       <ComplexType Name="searchResult">
         <Property Name="onClickTelemetryUrl" Type="Edm.String" Unicode="false"/>
       </ComplexType>
@@ -702,17 +781,11 @@
         <Property Name="owner" Type="microsoft.graph.identitySet"/>
         <Property Name="scope" Type="Edm.String" Unicode="false"/>
       </ComplexType>
-      <ComplexType Name="specialFolder">
-        <Property Name="name" Type="Edm.String" Unicode="false"/>
-      </ComplexType>
       <ComplexType Name="video">
         <Property Name="bitrate" Type="Edm.Int32"/>
         <Property Name="duration" Type="Edm.Int64"/>
         <Property Name="height" Type="Edm.Int32"/>
         <Property Name="width" Type="Edm.Int32"/>
-      </ComplexType>
-      <ComplexType Name="package">
-        <Property Name="type" Type="Edm.String" Unicode="false"/>
       </ComplexType>
       <EntityType Name="permission" BaseType="microsoft.graph.entity">
         <Property Name="grantedTo" Type="microsoft.graph.identitySet"/>
@@ -737,6 +810,7 @@
       <ComplexType Name="sharingLink">
         <Property Name="application" Type="microsoft.graph.identity"/>
         <Property Name="type" Type="Edm.String" Unicode="false"/>
+        <Property Name="scope" Type="Edm.String" Unicode="false"/>
         <Property Name="webUrl" Type="Edm.String" Unicode="false"/>
       </ComplexType>
       <ComplexType Name="thumbnail">
@@ -745,6 +819,27 @@
         <Property Name="url" Type="Edm.String" Unicode="false"/>
         <Property Name="width" Type="Edm.Int32"/>
         <Annotation Term="Org.OData.Core.V1.LongDescription" String="navigable" />
+      </ComplexType>
+      <EntityType Name="sharedDriveItem" BaseType="microsoft.graph.entity">
+        <Property Name="name" Type="Edm.String" Unicode="false"/>
+        <Property Name="owner" Type="microsoft.graph.identitySet"/>
+        <NavigationProperty Name="root" Type="microsoft.graph.driveItem" ContainsTarget="true"/>
+        <NavigationProperty Name="items" Type="Collection(microsoft.graph.driveItem)" ContainsTarget="true"/>
+      </EntityType>
+      <ComplexType Name="driveRecipient">
+        <Property Name="email" Type="Edm.String" Unicode="false"/>
+        <Property Name="alias" Type="Edm.String" Unicode="false"/>
+        <Property Name="objectId" Type="Edm.String" Unicode="false"/>
+      </ComplexType>
+      <ComplexType Name="driveItemUploadableProperties">
+        <Property Name="name" Type="Edm.String" Unicode="false"/>
+        <Property Name="description" Type="Edm.String" Unicode="false"/>
+        <Property Name="fileSystemInfo" Type="microsoft.graph.fileSystemInfo"/>
+      </ComplexType>
+      <ComplexType Name="uploadSession">
+        <Property Name="uploadUrl" Type="Edm.String" Unicode="false"/>
+        <Property Name="expirationDateTime" Type="Edm.DateTimeOffset"/>
+        <Property Name="nextExpectedRanges" Type="Collection(Edm.String)" Unicode="false"/>
       </ComplexType>
       <EntityType Name="workbookApplication" BaseType="microsoft.graph.entity">
         <Property Name="calculationMode" Type="Edm.String" Nullable="false" Unicode="false"/>
@@ -1164,19 +1259,29 @@
         <Parameter Name="q" Type="Edm.String" Unicode="false"/>
         <ReturnType Type="Collection(microsoft.graph.driveItem)" Nullable="false"/>
       </Function>
+      <Function Name="search" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.drive" Nullable="false"/>
+        <Parameter Name="q" Type="Edm.String" Unicode="false"/>
+        <ReturnType Type="Collection(microsoft.graph.driveItem)" Nullable="false"/>
+      </Function>
       <Action Name="createLink" IsBound="true">
         <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false"/>
         <Parameter Name="type" Type="Edm.String" Nullable="false" Unicode="false"/>
         <Parameter Name="scope" Type="Edm.String" Unicode="false"/>
         <ReturnType Type="microsoft.graph.permission" Nullable="false"/>
       </Action>
+      <Action Name="createUploadSession" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false"/>
+        <Parameter Name="item" Type="microsoft.graph.driveItemUploadableProperties"/>
+        <ReturnType Type="microsoft.graph.uploadSession" Nullable="false"/>
+      </Action>
       <Function Name="delta" IsBound="true">
         <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false"/>
-        <Parameter Name="token" Type="Edm.String" Unicode="false"/>
         <ReturnType Type="Collection(microsoft.graph.driveItem)" Nullable="false"/>
       </Function>
       <Function Name="delta" IsBound="true">
         <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false"/>
+        <Parameter Name="token" Type="Edm.String" Unicode="false"/>
         <ReturnType Type="Collection(microsoft.graph.driveItem)" Nullable="false"/>
       </Function>
       <Function Name="recent" IsBound="true">
@@ -1187,6 +1292,15 @@
         <Parameter Name="bindingParameter" Type="microsoft.graph.drive" Nullable="false"/>
         <ReturnType Type="Collection(microsoft.graph.driveItem)" Nullable="false"/>
       </Function>
+      <Action Name="invite" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false"/>
+        <Parameter Name="requireSignIn" Type="Edm.Boolean"/>
+        <Parameter Name="roles" Type="Collection(Edm.String)" Unicode="false"/>
+        <Parameter Name="sendInvitation" Type="Edm.Boolean"/>
+        <Parameter Name="message" Type="Edm.String" Unicode="false"/>
+        <Parameter Name="recipients" Type="Collection(microsoft.graph.driveRecipient)" Nullable="false"/>
+        <ReturnType Type="Collection(microsoft.graph.permission)" Nullable="false"/>
+      </Action>
       <Action Name="copy" IsBound="true">
         <Parameter Name="bindingParameter" Type="microsoft.graph.driveItem" Nullable="false"/>
         <Parameter Name="name" Type="Edm.String" Unicode="false"/>
@@ -3910,6 +4024,7 @@
           <NavigationPropertyBinding Path="microsoft.graph.driveItem/lastModifiedByUser" Target="users"/>
           <NavigationPropertyBinding Path="microsoft.graph.driveItem/createdByUser" Target="users"/>
         </EntitySet>
+        <EntitySet Name="shares" EntityType="microsoft.graph.sharedDriveItem"/>
         <EntitySet Name="workbooks" EntityType="microsoft.graph.driveItem"/>
         <EntitySet Name="subscriptions" EntityType="microsoft.graph.subscription"/>
         <Singleton Name="me" Type="microsoft.graph.user">

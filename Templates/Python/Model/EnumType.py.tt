@@ -16,10 +16,11 @@ class <#=enumT.Name.ToUpperFirstChar()#>(Enum):
     count = 0
     foreach(var value in enumT.Members)
     {
-        count++;
+        
 #>
     #<#= value.Name.SplitCamelCase()#>
-    <#= value.Name.SanitizePropertyName()#> = <#= count#>
+    <#= value.Name.SanitizePropertyName()#> = "<#= count#>"
 <#
+		count++;
     }
 #>

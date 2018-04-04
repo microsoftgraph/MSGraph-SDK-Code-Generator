@@ -16,13 +16,22 @@ import com.google.gson.annotations.*;
      * The list of <#=TypeName(c)#> within this collection page
      */
     @SerializedName("value")
+    @Expose
     public List<<#=TypeName(c)#>> value;
 
     /**
      * The url to the next page of this collection, or null
      */
     @SerializedName("@odata.nextLink")
+    @Expose(serialize = false)
     public String nextLink;
+
+    private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
+
+    @Override
+    public final AdditionalDataManager getAdditionalDataManager() {
+        return additionalDataManager;
+    }
 
 <#=CreateRawJsonObject()#>
 <#=UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>

@@ -1,0 +1,25 @@
+{
+  "TemplateMapping": {
+    "Shared": [],
+    "PHP": [
+      {
+        "Template": "EntityType",
+        "SubProcessor": "EntityType",
+        "Type": "Model",
+        "Name": "<Class>"
+      },
+      {
+        "Template": "ComplexType",
+        "SubProcessor": "ComplexType",
+        "Type": "Model",
+        "Name": "<Class>"
+      },
+      {
+        "Template": "EnumType",
+        "SubProcessor": "EnumType",
+        "Type": "Model",
+        "Name": "<Class>"
+      }
+    ]
+  }
+}

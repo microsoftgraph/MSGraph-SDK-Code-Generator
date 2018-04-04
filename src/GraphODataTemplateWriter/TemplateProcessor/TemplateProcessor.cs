@@ -292,6 +292,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
                 if (realError)
                 {
+                    File.WriteAllText("__ErrorFile.cs", generatedCode);
                     throw new InvalidOperationException("Template error.");
                 }
             }

@@ -13,29 +13,10 @@
 <# } #>
 <#+
 
-    /// Is this request type a post?
-    public bool IsPostRequestType(OdcmMethod method) {
-        return method.IsAction()
-            && null != method.Parameters
-            && method.Parameters.Any();
-    }
-
     /// Choose an intermediate class type based on GETs/POSTs
     public string RequestBuilderSuperClass(OdcmObject currentType) {
-        var isPostAction =
-            IsPostRequestType(
-                currentType.AsOdcmMethod()
-            );
-
-        string superClass;
-
-        if (isPostAction) {
-            superClass = "BasePostMethodRequestBuilder";
-        } else {
-            superClass = "BaseGetMethodRequestBuilder";
-        }
-
-        return superClass;
+        return currentType.AsOdcmMethod().IsFunction ?
+            "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder";
     }
 
     /// <summary>
@@ -376,15 +357,37 @@
 
     /// The Type of this param, as a string
     public string ParamType(OdcmParameter c) {
+        var typeString = c.Type.GetTypeString();
         if (c.IsCollection){
-            return String.Format("List<{0}>", c.Type.GetTypeString());
+            typeString = String.Format("List<{0}>", c.Type.GetTypeString());
+        } else if (typeString.Equals("Stream")) {
+
+            // Excel introduced the use of "Edm.Stream" types
+            // normally this would be addressed at the TypeHelper level
+            // but because streams will use different data containers
+            // for outgoing vs. incoming streams I'm going to apply the type
+            // here. Outbound Streams will use byte[]
+
+            typeString = "byte[]";
         }
-        return c.Type.GetTypeString();
+        return typeString;
     }
 
     public string ReturnType(OdcmObject c) {
-        if (c.AsOdcmMethod().ReturnType != null) {
-            return c.AsOdcmMethod().ReturnType.Name.ToUpperFirstChar();
+        var returnType = c.AsOdcmMethod().ReturnType;
+        if (returnType != null) {
+            var returnTypeString = returnType.GetTypeString();
+
+            // Excel introduced the use of "Edm.Stream" types
+            // normally this would be addressed at the TypeHelper level
+            // but because streams will use different data containers
+            // for outgoing vs. incoming streams I'm going to apply the type
+            // here. Inbound Streams will use java.io.InputStream
+
+            if (returnTypeString.Equals("Stream")) {
+                returnTypeString = "java.io.InputStream";
+            }
+            return returnTypeString;
         }
         return "Void";
     }
@@ -619,14 +622,15 @@ public {1} {2}{3}{4} {{";
      * The {0}.
      */
     @SerializedName(""{1}"")
-    public {4}{2} {3};
+    @Expose
+    public {2} {3};
 
 ";
         var collectionFormat =
 @"    /**
      * The {0}.
      */
-    public transient {4}{2} {3};
+    public transient {2} {3};
 
 ";
 
@@ -635,7 +639,6 @@ public {1} {2}{3}{4} {{";
             var propertyName = property.Name.ToUpperFirstChar();
             var propertyType = "";
             var propertyFormat = format;
-            var shouldFullyQualify = TypeHelperAndroid.ReservedNames.Contains(propertyName);
             if (property.IsCollection)
             {
                 if (!property.IsNavigation())
@@ -657,8 +660,7 @@ public {1} {2}{3}{4} {{";
                 propertyName.SplitCamelCase(),
                 property.Name,
                 propertyType,
-                property.SanitizePropertyName().ToLowerFirstChar(),
-                shouldFullyQualify ? "com.microsoft.graph.extensions." : "");
+                property.SanitizePropertyName().ToLowerFirstChar());
         }
         return sb.ToString();
     }
@@ -672,6 +674,7 @@ public {1} {2}{3}{4} {{";
      * The {0}.
      */
     @SerializedName(""{1}"")
+    @Expose
     public {2} {3};
 
 ";

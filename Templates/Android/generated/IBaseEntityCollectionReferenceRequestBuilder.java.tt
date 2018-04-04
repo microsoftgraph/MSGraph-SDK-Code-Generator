@@ -13,5 +13,5 @@
 
     <#=ITypeCollectionReferenceRequest(c)#> buildRequest();
 
-    <#=ITypeCollectionReferenceRequest(c)#> buildRequest(final List<Option> options);
+    <#=ITypeCollectionReferenceRequest(c)#> buildRequest(final List<Option> requestOptions);
 }
