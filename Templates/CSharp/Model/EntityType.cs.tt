@@ -88,7 +88,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# if (property.LongDescription != null) {
 #>
-        /// <#=property.LongDescription#>
+        /// <#=property.GetSanitizedLongDescription()#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
@@ -103,7 +103,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# if (property.LongDescription != null) {
 #>
-        /// <#=property.LongDescription#>
+        /// <#=property.GetSanitizedLongDescription()#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
@@ -119,7 +119,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# if (property.LongDescription != null) {
 #>
-        /// <#=property.LongDescription#>
+        /// <#=property.GetSanitizedLongDescription()#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
