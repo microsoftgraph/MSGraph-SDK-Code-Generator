@@ -57,6 +57,9 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         {
     #>
 
+		///<summary>
+		/// The internal <#=entityName#> constructor
+		///</summary>
         protected internal <#=entityName#>()
         {
             // Don't allow initialization of abstract entity types
