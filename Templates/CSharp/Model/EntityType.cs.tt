@@ -57,6 +57,9 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         {
     #>
 
+		///<summary>
+		/// The internal <#=entityName#> constructor
+		///</summary>
         protected internal <#=entityName#>()
         {
             // Don't allow initialization of abstract entity types
@@ -85,7 +88,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# if (property.LongDescription != null) {
 #>
-        /// <#=property.LongDescription#>
+        /// <#=property.GetSanitizedLongDescription()#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
@@ -100,7 +103,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# if (property.LongDescription != null) {
 #>
-        /// <#=property.LongDescription#>
+        /// <#=property.GetSanitizedLongDescription()#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
@@ -116,7 +119,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# if (property.LongDescription != null) {
 #>
-        /// <#=property.LongDescription#>
+        /// <#=property.GetSanitizedLongDescription()#>
 <# } #>
         /// </summary>
         <#=attributeDefinition#>

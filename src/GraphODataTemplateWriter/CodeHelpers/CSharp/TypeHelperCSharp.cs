@@ -211,6 +211,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return property.Name.ToLowerFirstChar();
         }
 
+        public static string GetSanitizedLongDescription(this OdcmProperty property)
+        {
+            if (property.LongDescription != null)
+            {
+                return property.LongDescription.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
+            }
+            return null;
+        }
+
         public static string GetSanitizedPropertyName(this OdcmProperty property)
         {
             return GetSanitizedPropertyName(property.Name);
