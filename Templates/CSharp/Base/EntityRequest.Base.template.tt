@@ -70,6 +70,11 @@ public string GetDeleteAsyncMethod(string deleteTargetString, string deleteTarge
 {
     var stringBuilder = new StringBuilder();
 
+	if (deleteTargetType.EndsWith("Request"))
+	{
+		deleteTargetType = String.Concat(deleteTargetType, "Object");
+	}
+
     this.AppendDeleteAsyncHeader(deleteTargetString, stringBuilder, false);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        public System.Threading.Tasks.Task DeleteAsync()");

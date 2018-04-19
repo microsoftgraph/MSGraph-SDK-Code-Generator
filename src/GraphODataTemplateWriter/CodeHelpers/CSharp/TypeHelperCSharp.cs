@@ -216,6 +216,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return GetSanitizedPropertyName(property.Name);
         }
 
+        public static string GetSanitizedClassName(this OdcmClass odcmClass)
+        {
+            return GetSanitizedClassName(odcmClass.Name, odcmClass);
+        }
+
         public static string GetSanitizedPropertyName(this string property, string prefix = null)
         {
             return GetSanitizedPropertyName(property, null, prefix);
@@ -260,6 +265,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             }
 
             return property;
+        }
+
+        public static string GetSanitizedClassName(this string className, OdcmClass odcmClass)
+        {
+            var entityName = className.ToCheckedCase();
+            if (entityName.EndsWith("Request"))
+            {
+                entityName = String.Concat(entityName, "Object");
+            }
+            return entityName;
         }
 
         public static string GetSanitizedParameterName(this string parameter, string prefix = null)

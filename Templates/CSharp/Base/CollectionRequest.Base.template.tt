@@ -73,6 +73,11 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
         var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
         var propertyType = this.GetPropertyTypeName(odcmProperty);
 
+		if (propertyType.EndsWith("Request"))
+		{
+			propertyType = String.Concat(propertyType, "Object");
+		}
+
         var templateWriterHost = (CustomT4Host)Host;
         var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
