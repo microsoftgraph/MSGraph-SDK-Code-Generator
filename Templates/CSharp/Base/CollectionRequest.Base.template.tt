@@ -73,6 +73,11 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
         var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
         var propertyType = this.GetPropertyTypeName(odcmProperty);
 
+		if (propertyType.EndsWith("Request"))
+		{
+			propertyType = String.Concat(propertyType, "Object");
+		}
+
         var templateWriterHost = (CustomT4Host)Host;
         var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
@@ -137,6 +142,11 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
     var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType();
 	if (serviceNavigationProperty == null)
 		return string.Empty;
+	
+	//Append the singleton's navigation type to the @odata.id if relevant
+	var implicitNavigationProperty = string.Empty;
+	if (serviceNavigationProperty.GetType() == typeof(OdcmSingleton)) 
+		implicitNavigationProperty = "/" + odcmProperty.Name;
 
     var stringBuilder = new StringBuilder();
 
@@ -178,7 +188,7 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
     stringBuilder.Append("            }");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var requestBody = new ReferenceRequestBody {{ ODataId = string.Format(\"{{0}}/{0}/{{1}}\", this.Client.BaseUrl, {1}.Id) }};", serviceNavigationProperty.Name, sanitizedPropertyName);
+    stringBuilder.AppendFormat("            var requestBody = new ReferenceRequestBody {{ ODataId = string.Format(\"{{0}}/{0}{1}/{{1}}\", this.Client.BaseUrl, {2}.Id) }};", serviceNavigationProperty.Name, implicitNavigationProperty, sanitizedPropertyName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            return this.SendAsync(requestBody, cancellationToken);");
     stringBuilder.Append(Environment.NewLine);

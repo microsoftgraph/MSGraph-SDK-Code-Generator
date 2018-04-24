@@ -1,0 +1,212 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+<#
+String classDeclaration = "";
+if (c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
+{
+	classDeclaration += "? extends ";
+}
+classDeclaration += TypeName(c);
+#>
+
+<#=CreateClassDef(BaseTypeRequest(c), "BaseRequest", IBaseTypeRequest(c))#>
+
+    /**
+     * The request for the <#=TypeName(c)#>
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     * @param responseClass  the class of the response
+     */
+    public <#=BaseTypeRequest(c)#>(final String requestUrl,
+            final <#=IBaseClientType()#> client,
+            final java.util.List<? extends Option> requestOptions,
+            final Class<<#=classDeclaration#>> responseClass) {
+        super(requestUrl, client, requestOptions, responseClass);
+    }
+
+<#  if (c.AsOdcmClass().IsAbstract && c.AsOdcmClass().Base == null)
+    {
+        // Do nothing
+    }
+    else if (c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
+    { #>
+<#=getMethods(c)#>
+<#=deleteMethods(c)#>
+<#=patchMethods(c)#>
+<#=postMethods(c)#>
+<#  }
+    else if (!c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
+    { #>
+<#=getMethods(c)#>
+<#=deleteMethods(c)#>
+<#=patchMethods(c)#>
+<#=postMethods(c)#>
+<#  }
+    else if (c.AsOdcmClass().Base == null)
+    { #>
+<#=getMethods(c)#>
+<#=deleteMethods(c)#>
+<#=patchMethods(c)#>
+<#=postMethods(c)#>
+<#  }
+    else
+    {
+
+    }
+#>
+<# if (c.GetFeatures().CanSelect) { #>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value the select clause
+     * @return the updated request
+     */
+     public <#=ITypeRequest(c)#> select(final String value) {
+         getQueryOptions().add(new QueryOption("$select", value));
+         return (<#=TypeRequest(c)#>)this;
+     }
+
+<# } #>
+<# if (c.GetFeatures().CanExpand) { #>
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value the expand clause
+     * @return the updated request
+     */
+     public <#=ITypeRequest(c)#> expand(final String value) {
+         getQueryOptions().add(new QueryOption("$expand", value));
+         return (<#=TypeRequest(c)#>)this;
+     }
+
+<# } #>
+<# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
+
+    /**
+     * Sets the top value for the request
+     *
+     * @param value the max number of items to return
+     * @return the updated request
+     */
+     public <#=ITypeRequest(c)#> top(final int value) {
+         getQueryOptions().add(new QueryOption("$top", value+""));
+         return (<#=TypeRequest(c)#>)this;
+     }
+<# } #>
+}
+<#=PostProcess(BaseTypeRequest(c))#>
+<#+
+    public String deleteMethods(OdcmObject c)
+    {
+        var odcmObject = c.AsOdcmClass();
+        var formatString =
+@"    /**
+     * Delete this item from the service
+     *
+     * @param callback the callback when the deletion action has completed
+     */
+    public void delete(final ICallback<Void> callback) {{
+        send(HttpMethod.DELETE, callback, null);
+    }}
+
+    /**
+     * Delete this item from the service
+     *
+     * @throws ClientException if there was an exception during the delete operation
+     */
+    public void delete() throws ClientException {{
+        send(HttpMethod.DELETE, null);
+    }}
+";
+        return formatString;
+    }
+
+    public string getMethods(OdcmObject c)
+    {
+        var odcmObject = c.AsOdcmClass();
+        var formatString =
+@"    /**
+     * Gets the {0} from the service
+     *
+     * @param callback the callback to be called after success or failure
+     */
+    public void get(final ICallback<{0}> callback) {{
+        send(HttpMethod.GET, callback, null);
+    }}
+
+    /**
+     * Gets the {0} from the service
+     *
+     * @return the {0} from the request
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public {0} get() throws ClientException {{
+       return send(HttpMethod.GET, null);
+    }}
+";
+        return string.Format(formatString, TypeName(odcmObject), odcmObject.Derived.Any() ? TypeName(odcmObject) : string.Empty);
+    }
+
+    public string patchMethods(OdcmObject c)
+    {
+        var odcmObject = c.AsOdcmClass();
+        var formatString =
+@"    /**
+     * Patches this {0} with a source
+     *
+     * @param source{0} the source object with updates
+     * @param callback the callback to be called after success or failure
+     */
+    public void patch(final {0} source{0}, final ICallback<{0}> callback) {{
+        send(HttpMethod.PATCH, callback, source{0});
+    }}
+
+    /**
+     * Patches this {0} with a source
+     *
+     * @param source{0} the source object with updates
+     * @return the updated {0}
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public {0} patch(final {0} source{0}) throws ClientException {{
+        return send(HttpMethod.PATCH, source{0});
+    }}
+";
+        return string.Format(formatString, TypeName(odcmObject));
+    }
+
+    public string postMethods(OdcmObject c)
+    {
+        var odcmObject = c.AsOdcmClass();
+        var formatString =
+@"    /**
+     * Creates a {0} with a new object
+     *
+     * @param new{0} the new object to create
+     * @param callback the callback to be called after success or failure
+     */
+    public void post(final {0} new{0}, final ICallback<{0}> callback) {{
+        send(HttpMethod.POST, callback, new{0});
+    }}
+
+    /**
+     * Creates a {0} with a new object
+     *
+     * @param new{0} the new object to create
+     * @return the created {0}
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public {0} post(final {0} new{0}) throws ClientException {{
+        return send(HttpMethod.POST, new{0});
+    }}
+";
+        return string.Format(formatString, TypeName(odcmObject));
+    }
+ #>

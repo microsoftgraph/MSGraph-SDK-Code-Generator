@@ -1,8 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
 {
@@ -14,53 +12,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Android
      * and the latter is the replace value
      * This will be used in BaseModel.template.tt in the PostProcess() method
      */
-    public class CustomOverwrites
+    public class CustomOverwrites : Java.CustomOverwrites
     {
-        public static Dictionary<string, string> BaseOnenotePageCollectionRequest = new Dictionary<string, string>() {
-            {
-                "public void post(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback) {",
-                "public void post(final byte[] newOnenotePage, final ICallback<OnenotePage> callback) {"
-            },
-            {
-                "public OnenotePage post(final OnenotePage newOnenotePage) throws ClientException {",
-                "public OnenotePage post(final byte[] newOnenotePage) throws ClientException {"
-            }
-        };
-
-        public static Dictionary<string, string> BaseOnenotePageRequest = new Dictionary<string, string>()
-        {
-            {
-                "public void post(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback) {",
-                "public void post(final byte[] newOnenotePage, final ICallback<OnenotePage> callback) {"
-            },
-            {
-                "public OnenotePage post(final OnenotePage newOnenotePage) throws ClientException {",
-                "public OnenotePage post(final byte[] newOnenotePage) throws ClientException {"
-            }
-        };
-
-        public static Dictionary<string, string> IBaseOnenotePageCollectionRequest = new Dictionary<string, string>()
-        {
-            {
-                "void post(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback);",
-                "void post(final byte[] newOnenotePage, final ICallback<OnenotePage> callback);"
-            },
-            {
-                "OnenotePage post(final OnenotePage newOnenotePage) throws ClientException;",
-                "OnenotePage post(final byte[] newOnenotePage) throws ClientException;"
-            }
-        };
-
-        public static Dictionary<string, string> IBaseOnenotePageRequest = new Dictionary<string, string>()
-        {
-            {
-                "void post(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback);",
-                "void post(final byte[] newOnenotePage, final ICallback<OnenotePage> callback);"
-            },
-            {
-                "OnenotePage post(final OnenotePage newOnenotePage) throws ClientException;",
-                "OnenotePage post(final byte[] newOnenotePage) throws ClientException;"
-            }
-        };
     }
 }

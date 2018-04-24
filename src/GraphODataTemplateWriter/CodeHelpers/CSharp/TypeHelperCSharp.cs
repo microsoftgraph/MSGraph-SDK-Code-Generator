@@ -211,9 +211,23 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return property.Name.ToLowerFirstChar();
         }
 
+        public static string GetSanitizedLongDescription(this OdcmProperty property)
+        {
+            if (property.LongDescription != null)
+            {
+                return property.LongDescription.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
+            }
+            return null;
+        }
+
         public static string GetSanitizedPropertyName(this OdcmProperty property)
         {
             return GetSanitizedPropertyName(property.Name);
+        }
+
+        public static string GetSanitizedClassName(this OdcmClass odcmClass)
+        {
+            return GetSanitizedClassName(odcmClass.Name, odcmClass);
         }
 
         public static string GetSanitizedPropertyName(this string property, string prefix = null)
@@ -260,6 +274,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             }
 
             return property;
+        }
+
+        public static string GetSanitizedClassName(this string className, OdcmClass odcmClass)
+        {
+            var entityName = className.ToCheckedCase();
+            if (entityName.EndsWith("Request"))
+            {
+                entityName = String.Concat(entityName, "Object");
+            }
+            return entityName;
         }
 
         public static string GetSanitizedParameterName(this string parameter, string prefix = null)

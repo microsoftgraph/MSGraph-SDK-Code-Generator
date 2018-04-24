@@ -159,7 +159,8 @@ public void AppendPutAsyncMethodHeader(string putTargetString, StringBuilder str
     stringBuilder.AppendFormat("        /// Puts the specified {0}.", putTargetString);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
-
+	stringBuilder.Append(Environment.NewLine);
+	stringBuilder.AppendFormat("        /// <param name=\"id\">The {0} reference to update.</param>", putTargetString);
     if (includeSendParams)
     {
         stringBuilder.Append(Environment.NewLine);

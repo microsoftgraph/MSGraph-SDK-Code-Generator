@@ -1,0 +1,263 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = BaseTypeRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(BaseTypeRequest(c), "BaseRequest", IBaseTypeRequest(c))#>
+
+    /**
+     * The request for this <#=TypeName(c)#>
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     */
+    public <#=BaseTypeRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=ReturnType(c)#>.class);
+    }
+
+<#
+if (c.AsOdcmMethod().IsAction()) {
+    if (c.AsOdcmMethod().ReturnType != null) {
+#>
+    /**
+     * Creates the <#=TypeName(c)#>
+     *
+     * @param callback the callback to be called after success or failure
+     */
+    public void post(final ICallback<<#=ReturnType(c)#>> callback) {
+        send(HttpMethod.POST, callback, null);
+    }
+
+    /**
+     * Creates the <#=TypeName(c)#>
+     *
+     * @return the <#=ReturnType(c)#>
+     * @throws ClientException an exception occurs if there was an error while the request was sent
+     */
+    public <#=ReturnType(c)#> post() throws ClientException {
+       return send(HttpMethod.POST, null);
+    }
+
+<#
+        if (c.GetFeatures().CanSelect) {
+#>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value the select clause
+     * @return the updated request
+     */
+    public <#=ITypeRequest(c)#> select(final String value) {
+        getQueryOptions().add(new QueryOption("$select", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+<#
+        }
+
+        if (c.GetFeatures().CanExpand) {
+#>
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value the expand clause
+     * @return the updated request
+     */
+    public <#=ITypeRequest(c)#> expand(final String value) {
+        getQueryOptions().add(new QueryOption("$expand", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+<#
+        }
+
+        if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) {
+#>
+
+    /**
+     * Sets the top value for the request
+     *
+     * @param value the max number of items to return
+     * @return the updated request
+     */
+    public <#=ITypeRequest(c)#> top(final int value) {
+        getQueryOptions().add(new QueryOption("$top", value+""));
+        return (<#=TypeRequest(c)#>)this;
+    }
+<#
+        }
+    } else {
+#>
+    /**
+     * Creates the <#=TypeName(c)#>
+     *
+     * @param callback the callback to be called after success or failure
+     */
+    public void post(final ICallback<Void> callback) {
+        final IExecutors executors = getClient().getExecutors();
+        executors.performOnBackground(new Runnable() {
+           @Override
+           public void run() {
+                try {
+                    post();
+                    executors.performOnForeground((Void)null, callback);
+                } catch (final ClientException e) {
+                    executors.performOnForeground(e, callback);
+                }
+           }
+        });
+    }
+
+    /**
+     * Creates the <#=TypeName(c)#>
+     *
+     * @throws ClientException an exception occurs if there was an error while the request was sent
+     */
+    public void post() throws ClientException {
+        this.send(HttpMethod.POST, null);
+    }
+<#
+    }
+} else { // FUNCTIONS
+    if (c.AsOdcmMethod().ReturnType != null) {
+        if (c.AsOdcmMethod().IsComposable) {
+#>
+    /**
+     * Patches the <#=TypeName(c)#>
+     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> with which to PATCH
+     * @param callback the callback to be called after success or failure
+     */
+    public void patch(<#=ReturnType(c)#> src<#=ReturnType(c)#>, final ICallback<<#=ReturnType(c)#>> callback) {
+        send(HttpMethod.PATCH, callback, src<#=ReturnType(c)#>);
+    }
+
+    /**
+     * Patches the <#=TypeName(c)#>
+     *
+     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> with which to PATCH
+     * @return the <#=ReturnType(c)#>
+     * @throws ClientException an exception occurs if there was an error while the request was sent
+     */
+     public <#=ReturnType(c)#> patch(<#=ReturnType(c)#> src<#=ReturnType(c)#>) throws ClientException {
+        return this.send(HttpMethod.PATCH, src<#=ReturnType(c)#>);
+    }
+
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> to PUT
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(<#=ReturnType(c)#> src<#=ReturnType(c)#>, final ICallback<<#=ReturnType(c)#>> callback) {
+        send(HttpMethod.PUT, callback, src<#=ReturnType(c)#>);
+    }
+
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> to PUT
+     * @return the <#=ReturnType(c)#>
+     * @throws ClientException an exception occurs if there was an error while the request was sent
+     */
+     public <#=ReturnType(c)#> put(<#=ReturnType(c)#> src<#=ReturnType(c)#>) throws ClientException {
+        return this.send(HttpMethod.PUT, src<#=ReturnType(c)#>);
+    }
+<#
+        }
+#>
+    /**
+     * Gets the <#=ReturnType(c)#>
+     *
+     * @param callback the callback to be called after success or failure
+     */
+    public void get(final ICallback<<#=ReturnType(c)#>> callback) {
+        send(HttpMethod.GET, callback, null);
+    }
+
+    /**
+     * Gets the <#=ReturnType(c)#>
+     *
+     * @return the <#=ReturnType(c)#>
+     * @throws ClientException an exception occurs if there was an error while the request was sent
+     */
+    public <#=ReturnType(c)#> get() throws ClientException {
+       return send(HttpMethod.GET, null);
+    }
+
+<#
+        if (c.GetFeatures().CanSelect) {
+#>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value the select clause
+     * @return the updated request
+     */
+    public <#=ITypeRequest(c)#> select(final String value) {
+        getQueryOptions().add(new QueryOption("$select", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+<#
+        }
+
+        if (c.GetFeatures().CanExpand) {
+#>
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value the expand clause
+     * @return the updated request
+     */
+    public <#=ITypeRequest(c)#> expand(final String value) {
+        getQueryOptions().add(new QueryOption("$expand", value));
+        return (<#=TypeRequest(c)#>)this;
+    }
+
+<#
+        }
+
+        if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) {
+#>
+
+    /**
+     * Sets the top value for the request
+     *
+     * @param value the max number of items to return
+     * @return the updated request
+     */
+    public <#=ITypeRequest(c)#> top(final int value) {
+        getQueryOptions().add(new QueryOption("$top", value+""));
+        return (<#=TypeRequest(c)#>)this;
+    }
+<#
+        }
+    } else {
+#>
+    public void get(final ICallback<Void> callback) {
+        final IExecutors executors = getClient().getExecutors();
+        executors.performOnBackground(new Runnable() {
+           @Override
+           public void run() {
+                try {
+                    get();
+                    executors.performOnForeground((Void)null, callback);
+                } catch (final ClientException e) {
+                    executors.performOnForeground(e, callback);
+                }
+           }
+        });
+    }
+
+    public void get() throws ClientException {
+        this.send(HttpMethod.GET, null);
+    }
+<#
+    }
+}
+#>
+}
