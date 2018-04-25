@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx xmlns:ags="http://aggregator.microsoft.com/internal" Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
   <edmx:DataServices>
     <Schema Namespace="microsoft.graph" xmlns="http://docs.oasis-open.org/odata/ns/edm">
@@ -268,30 +267,6 @@
         <Member Name="child" Value="5" />
         <Member Name="other" Value="6" />
         <Member Name="unknownFutureValue" Value="7" />
-      </EnumType>
-      <EnumType Name="mdmAppConfigKeyType" IsFlags="false">
-        <Member Name="stringType" Value="0" />
-        <Member Name="integerType" Value="1" />
-        <Member Name="realType" Value="2" />
-        <Member Name="booleanType" Value="3" />
-        <Member Name="tokenType" Value="4" />
-      </EnumType>
-      <EnumType Name="managedDeviceOwnerType" IsFlags="false">
-        <Member Name="unknown" Value="0" />
-        <Member Name="company" Value="1" />
-        <Member Name="personal" Value="2" />
-      </EnumType>
-      <EnumType Name="vppTokenState" IsFlags="false">
-        <Member Name="unknown" Value="0" />
-        <Member Name="valid" Value="1" />
-        <Member Name="expired" Value="2" />
-        <Member Name="invalid" Value="3" />
-      </EnumType>
-      <EnumType Name="vppTokenSyncStatus" IsFlags="false">
-        <Member Name="none" Value="0" />
-        <Member Name="inProgress" Value="1" />
-        <Member Name="completed" Value="2" />
-        <Member Name="failed" Value="3" />
       </EnumType>
       <EnumType Name="status" IsFlags="false">
         <Member Name="active" Value="0" />
@@ -1044,7 +1019,7 @@
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="The company name which the user is associated. Read-only." />
         </Property>
         <Property Name="country" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The country/region in which the user is located; for example, “US” or “UK”. Supports $filter." />
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The country/region in which the user is located; for example, &quot;US&quot; or &quot;UK&quot;. Supports $filter." />
         </Property>
         <Property Name="department" Type="Edm.String" Unicode="false">
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="The name for the department in which the user works. Supports $filter." />
@@ -1057,7 +1032,7 @@
         </Property>
         <Property Name="imAddresses" Type="Collection(Edm.String)" Unicode="false" />
         <Property Name="jobTitle" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The user’s job title. Supports $filter." />
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The user's job title. Supports $filter." />
         </Property>
         <Property Name="mail" Type="Edm.String" Unicode="false">
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="The SMTP address for the user, for example, &quot;jeff@contoso.onmicrosoft.com&quot;. Read-Only. Supports $filter." />
@@ -1069,7 +1044,7 @@
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="The primary cellular telephone number for the user." />
         </Property>
         <Property Name="onPremisesImmutableId" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="This property is used to associate an on-premises Active Directory user account to their Azure AD user object. This property must be specified when creating a new user account in the Graph if you are using a federated domain for the user’s userPrincipalName (UPN) property. Important: The $ and  characters cannot be used when specifying this property. Supports $filter." />
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="This property is used to associate an on-premises Active Directory user account to their Azure AD user object. This property must be specified when creating a new user account in the Graph if you are using a federated domain for the user's userPrincipalName (UPN) property. Important: The $ and  characters cannot be used when specifying this property. Supports $filter." />
         </Property>
         <Property Name="onPremisesLastSyncDateTime" Type="Edm.DateTimeOffset">
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="Indicates the last time at which the object was synced with the on-premises directory; for example: &quot;2013-02-16T03:04:54Z&quot;. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only." />
@@ -1081,10 +1056,10 @@
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="true if this object is synced from an on-premises directory; false if this object was originally synced from an on-premises directory but is no longer synced; null if this object has never been synced from an on-premises directory (default). Read-only" />
         </Property>
         <Property Name="passwordPolicies" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="Specifies password policies for the user. This value is an enumeration with one possible value being “DisableStrongPassword”, which allows weaker passwords than the default policy to be specified. “DisablePasswordExpiration” can also be specified. The two may be specified together; for example: &quot;DisablePasswordExpiration, DisableStrongPassword&quot;." />
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="Specifies password policies for the user. This value is an enumeration with one possible value being &quot;DisableStrongPassword&quot;, which allows weaker passwords than the default policy to be specified. &quot;DisablePasswordExpiration&quot; can also be specified. The two may be specified together; for example: &quot;DisablePasswordExpiration, DisableStrongPassword&quot;." />
         </Property>
         <Property Name="passwordProfile" Type="microsoft.graph.passwordProfile">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="Specifies the password profile for the user. The profile contains the user’s password. This property is required when a user is created. The password in the profile must satisfy minimum requirements as specified by the passwordPolicies property. By default, a strong password is required." />
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="Specifies the password profile for the user. The profile contains the user's password. This property is required when a user is created. The password in the profile must satisfy minimum requirements as specified by the passwordPolicies property. By default, a strong password is required." />
         </Property>
         <Property Name="officeLocation" Type="Edm.String" Unicode="false">
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="The office location in the user's place of business." />
@@ -1114,10 +1089,10 @@
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="A two letter country code (ISO standard 3166). Required for users that will be assigned licenses due to legal requirement to check for availability of services in countries.  Examples include: &quot;US&quot;, &quot;JP&quot;, and &quot;GB&quot;. Not nullable. Supports $filter." />
         </Property>
         <Property Name="userPrincipalName" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The user principal name (UPN) of the user. The UPN is an Internet-style login name for the user based on the Internet standard RFC 822. By convention, this should map to the user's email name. The general format is alias@domain, where domain must be present in the tenant’s collection of verified domains. This property is required when a user is created. The verified domains for the tenant can be accessed from the verifiedDomains property of organization. Supports $filter and $orderby." />
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The user principal name (UPN) of the user. The UPN is an Internet-style login name for the user based on the Internet standard RFC 822. By convention, this should map to the user's email name. The general format is alias@domain, where domain must be present in the tenant's collection of verified domains. This property is required when a user is created. The verified domains for the tenant can be accessed from the verifiedDomains property of organization. Supports $filter and $orderby." />
         </Property>
         <Property Name="userType" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="A string value that can be used to classify user types in your directory, such as “Member” and “Guest”. Supports $filter." />
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="A string value that can be used to classify user types in your directory, such as &quot;Member&quot; and &quot;Guest&quot;. Supports $filter." />
         </Property>
         <Property Name="mailboxSettings" Type="microsoft.graph.mailboxSettings">
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="Settings for the primary mailbox of the signed-in user. You can get or update settings for sending automatic replies to incoming messages, locale and time zone." />
@@ -1159,7 +1134,7 @@
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="Devices that are registered for the user. Read-only. Nullable." />
         </NavigationProperty>
         <NavigationProperty Name="manager" Type="microsoft.graph.directoryObject">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The user or contact that is this user’s manager. Read-only. (HTTP Methods: GET, PUT, DELETE.)" />
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The user or contact that is this user's manager. Read-only. (HTTP Methods: GET, PUT, DELETE.)" />
         </NavigationProperty>
         <NavigationProperty Name="directReports" Type="Collection(microsoft.graph.directoryObject)">
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="The users and contacts that report to the user. (The users and contacts that have their manager property set to this user.) Read-only. Nullable." />
@@ -1472,7 +1447,7 @@
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="The contact's instant messaging (IM) addresses." />
         </Property>
         <Property Name="jobTitle" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The contact’s job title." />
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The contact's job title." />
         </Property>
         <Property Name="companyName" Type="Edm.String" Unicode="false">
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="The name of the contact's company." />
@@ -2770,58 +2745,6 @@
         </NavigationProperty>
         <NavigationProperty Name="user" Type="microsoft.graph.user" />
       </EntityType>
-      <EntityType Name="vppToken" BaseType="microsoft.graph.entity">
-        <Property Name="organizationName" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The organization associated with the Apple Volume Purchase Program Token" />
-        </Property>
-        <Property Name="vppTokenAccountType" Type="microsoft.graph.vppTokenAccountType" Nullable="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The type of volume purchase program which the given Apple Volume Purchase Program Token is associated with. Possible values are: business, education. Possible values are: business, education." />
-        </Property>
-        <Property Name="appleId" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The apple Id associated with the given Apple Volume Purchase Program Token." />
-        </Property>
-        <Property Name="expirationDateTime" Type="Edm.DateTimeOffset" Nullable="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The expiration date time of the Apple Volume Purchase Program Token." />
-        </Property>
-        <Property Name="lastSyncDateTime" Type="Edm.DateTimeOffset" Nullable="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The last time when an application sync was done with the Apple volume purchase program service using the the Apple Volume Purchase Program Token." />
-        </Property>
-        <Property Name="token" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The Apple Volume Purchase Program Token string downloaded from the Apple Volume Purchase Program." />
-        </Property>
-        <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset" Nullable="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="Last modification date time associated with the Apple Volume Purchase Program Token." />
-        </Property>
-        <Property Name="state" Type="microsoft.graph.vppTokenState" Nullable="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="Current state of the Apple Volume Purchase Program Token. Possible values are: unknown, valid, expired, invalid. Possible values are: unknown, valid, expired, invalid." />
-        </Property>
-        <Property Name="lastSyncStatus" Type="microsoft.graph.vppTokenSyncStatus" Nullable="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="Current sync status of the last application sync which was triggered using the Apple Volume Purchase Program Token. Possible values are: none, inProgress, completed, failed. Possible values are: none, inProgress, completed, failed." />
-        </Property>
-        <Property Name="automaticallyUpdateApps" Type="Edm.Boolean" Nullable="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="Whether or not apps for the VPP token will be automatically updated." />
-        </Property>
-        <Property Name="countryOrRegion" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="Whether or not apps for the VPP token will be automatically updated." />
-        </Property>
-      </EntityType>
-      <EntityType Name="managedDeviceMobileAppConfigurationDeviceStatus" BaseType="microsoft.graph.entity">
-        <Property Name="deviceDisplayName" Type="Edm.String" Unicode="false" />
-        <Property Name="userName" Type="Edm.String" Unicode="false" />
-        <Property Name="deviceModel" Type="Edm.String" Unicode="false" />
-        <Property Name="complianceGracePeriodExpirationDateTime" Type="Edm.DateTimeOffset" Nullable="false" />
-        <Property Name="status" Type="microsoft.graph.complianceStatus" Nullable="false" />
-        <Property Name="lastReportedDateTime" Type="Edm.DateTimeOffset" Nullable="false" />
-        <Property Name="userPrincipalName" Type="Edm.String" Unicode="false" />
-      </EntityType>
-      <EntityType Name="iosMobileAppConfiguration" BaseType="microsoft.graph.managedDeviceMobileAppConfiguration">
-        <Property Name="encodedSettingXml" Type="Edm.Binary">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="mdm app configuration Base64 binary." />
-        </Property>
-        <Property Name="settings" Type="Collection(microsoft.graph.appConfigurationSettingItem)">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="app configuration setting items." />
-        </Property>
-      </EntityType>
       <EntityType Name="activityHistoryItem" BaseType="microsoft.graph.entity">
         <Property Name="status" Type="microsoft.graph.status" />
         <Property Name="activeDurationSeconds" Type="Edm.Int32" />
@@ -2879,10 +2802,10 @@
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="The date and time at which the plan was assigned; for example: 2013-01-02T19:32:30Z. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'" />
         </Property>
         <Property Name="capabilityStatus" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="For example, “Enabled”." />
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="For example, &quot;Enabled&quot;." />
         </Property>
         <Property Name="service" Type="Edm.String" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The name of the service; for example, “Exchange”." />
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The name of the service; for example, &quot;Exchange&quot;." />
         </Property>
         <Property Name="servicePlanId" Type="Edm.Guid">
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="A GUID that identifies the service plan." />
@@ -3445,7 +3368,7 @@
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="The email address." />
         </Property>
         <Property Name="relevanceScore" Type="Edm.Double">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The relevance score of the email address. A relevance score is used as a sort key, in relation to the other returned results. A higher relevance score value corresponds to a more relevant result. Relevance is determined by the user’s communication and collaboration patterns and business relationships." />
+          <Annotation Term="Org.OData.Core.V1.LongDescription" String="The relevance score of the email address. A relevance score is used as a sort key, in relation to the other returned results. A higher relevance score value corresponds to a more relevant result. Relevance is determined by the user's communication and collaboration patterns and business relationships." />
         </Property>
         <Property Name="selectionLikelihood" Type="microsoft.graph.selectionLikelihoodInfo" />
       </ComplexType>
@@ -4289,17 +4212,6 @@
         </Property>
         <Property Name="displayName" Type="Edm.String" Unicode="false">
           <Annotation Term="Org.OData.Core.V1.LongDescription" String="Display name of the term." />
-        </Property>
-      </ComplexType>
-      <ComplexType Name="appConfigurationSettingItem">
-        <Property Name="appConfigKey" Type="Edm.String" Nullable="false" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="app configuration key." />
-        </Property>
-        <Property Name="appConfigKeyType" Type="microsoft.graph.mdmAppConfigKeyType" Nullable="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="app configuration key type. Possible values are: stringType, integerType, realType, booleanType, tokenType." />
-        </Property>
-        <Property Name="appConfigKeyValue" Type="Edm.String" Nullable="false" Unicode="false">
-          <Annotation Term="Org.OData.Core.V1.LongDescription" String="app configuration key value." />
         </Property>
       </ComplexType>
       <ComplexType Name="imageInfo">
@@ -7909,10 +7821,6 @@
       </Action>
       <Action Name="renew" IsBound="true">
         <Parameter Name="bindingParameter" Type="microsoft.graph.group" />
-      </Action>
-      <Action Name="syncLicenses" IsBound="true">
-        <Parameter Name="bindingParameter" Type="microsoft.graph.vppToken" />
-        <ReturnType Type="microsoft.graph.vppToken" />
       </Action>
       <Term Name="conflictBehavior" Type="Edm.String" AppliesTo="microsoft.graph.driveItem" />
       <Term Name="downloadUrl" Type="Edm.String" AppliesTo="microsoft.graph.driveItem" />
