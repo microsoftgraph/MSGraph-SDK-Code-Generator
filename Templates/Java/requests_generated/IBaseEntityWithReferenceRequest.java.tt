@@ -16,6 +16,14 @@
 
     <#=TypeName(c)#> get() throws ClientException;
 
+	void delete(final ICallback<<#=TypeName(c)#>> callback);
+
+	void delete() throws ClientException;
+
+	void patch(final <#=TypeName(c)#> source<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+
+	<#=TypeName(c)#> patch(final <#=TypeName(c)#> source<#=TypeName(c)#>) throws ClientException;
+
 <# if (c.GetFeatures().CanSelect) { #>
     <#=IBaseTypeWithReferencesRequest(c)#> select(final String value);
 
