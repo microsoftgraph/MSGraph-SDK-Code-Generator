@@ -39,6 +39,22 @@
        return send(HttpMethod.GET, null);
     }
 
+	public void delete(final ICallback<<#=TypeName(c)#>> callback) {
+		send(HttpMethod.DELETE, callback, null);
+	}
+
+	public void delete() throws ClientException {
+		send(HttpMethod.DELETE, null);
+	}
+
+	public void patch(final <#=TypeName(c)#> source<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
+		send(HttpMethod.PATCH, callback, source<#=TypeName(c)#>);
+	}
+
+	public <#=TypeName(c)#> patch(final <#=TypeName(c)#> source<#=TypeName(c)#>) throws ClientException {
+		return send(HttpMethod.PATCH, source<#=TypeName(c)#>);
+	}
+
 <# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request

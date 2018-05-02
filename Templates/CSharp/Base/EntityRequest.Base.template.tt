@@ -196,7 +196,7 @@ public void AppendCreateAsyncHeader(string entityName, string lowerCaseEntityNam
     stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", entityName);
 }
 
-public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
+public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCollectionProperties = true)
 {
     var stringBuilder = new StringBuilder();
 
@@ -238,10 +238,14 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            var newEntity = await this.SendAsync<{0}>({1}ToCreate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(
-@"            this.InitializeCollectionProperties(newEntity);
-            return newEntity;
+	if (initializeCollectionProperties) {
+		stringBuilder.Append(
+	@"            this.InitializeCollectionProperties(newEntity);");
+		stringBuilder.Append(Environment.NewLine);
+	}
+	stringBuilder.Append(@"            return newEntity;
         }");
+	
 
     return stringBuilder.ToString();
 }
@@ -352,7 +356,7 @@ public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityNam
     stringBuilder.AppendFormat("        /// <returns>The updated {0}.</returns>", entityName);
 }
 
-public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
+public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCollectionProperties = true)
 {
     var stringBuilder = new StringBuilder();
 
@@ -393,9 +397,12 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            var updatedEntity = await this.SendAsync<{0}>({1}ToUpdate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(
-@"            this.InitializeCollectionProperties(updatedEntity);
-            return updatedEntity;
+	if (initializeCollectionProperties) {
+		stringBuilder.Append(
+	@"            this.InitializeCollectionProperties(updatedEntity);");
+	stringBuilder.Append(Environment.NewLine);
+	}
+	stringBuilder.Append(@"            return updatedEntity;
         }");
 
     return stringBuilder.ToString();

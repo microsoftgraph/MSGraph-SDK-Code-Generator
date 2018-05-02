@@ -25,6 +25,12 @@ namespace <#=this.GetNamespaceName(entity)#>
 
         <#=this.GetEntityGetAsyncMethod(entity, false)#>
 
+		<#=this.GetEntityCreateAsyncMethod(entity, false)#>
+
+		<#=this.GetEntityUpdateAsyncMethod(entity, false)#>
+
+		<#=this.GetEntityDeleteAsyncMethod(entity)#>
+
 <#
     if (features.CanExpand)
     {
