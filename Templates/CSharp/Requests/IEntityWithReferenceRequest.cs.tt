@@ -19,11 +19,11 @@ namespace <#=this.GetNamespaceName(entity)#>
 
     <#=this.GetEntityWithReferenceRequestInterfaceDefinition(entity)#>
     {
-        <#=this.GetEntityGetAsyncMethod(entity, false)#>
+        <#=this.GetEntityGetAsyncMethod(entity)#>
 
-		<#=this.GetEntityCreateAsyncMethod(entity, false)#>
+		<#=this.GetEntityCreateAsyncMethod(entity)#>
 
-		<#=this.GetEntityUpdateAsyncMethod(entity, false)#>
+		<#=this.GetEntityUpdateAsyncMethod(entity)#>
 
 		<#=this.GetEntityDeleteAsyncMethod(entity)#>
 
