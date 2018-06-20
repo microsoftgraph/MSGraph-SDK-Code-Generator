@@ -555,7 +555,18 @@
 		
 		return getPrefixForModels(propertyType);	
 	}
-	
+
+	public string CreatePackageDefinition(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		var packageFormat = @"package {0}.{1};";
+		sb.AppendFormat(packageFormat,
+						host.CurrentModel.NamespaceName(),
+						host.TemplateInfo.OutputParentDirectory.Replace("_", "."));
+		sb.Append("\n");
+		return sb.ToString();
+	}
+
 	//Fixing package and import statement for model classes
 	public string CreatePackageDefForEntity(CustomT4Host host)
     {
