@@ -4,10 +4,13 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = BaseTypeBody(c);#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=CreatePackageDefinition(host)#>
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.*;
+import com.microsoft.graph.serializer.ISerializer;
+import com.microsoft.graph.models.extensions.*;
 
 <#=CreateClassDef(BaseTypeBody(c))#>
 
