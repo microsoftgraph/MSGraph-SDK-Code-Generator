@@ -567,6 +567,45 @@
 		return sb.ToString();
 	}
 
+	public string CreatePackageDefIBaseMethodRequestBuilder(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+		var importFormat = @"import {0}.{1}.{2};";
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeRequest(host.CurrentType));
+		sb.Append("\n");
+		return sb.ToString();
+	}
+
+	public string CreatePackageDefForBaseEntityCollectionPage(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+
+		var importFormat = @"import {0}.{1}.{2};";
+		string modelClassName;
+		if (host.CurrentType is OdcmMethod)
+            modelClassName = OdcmMethodReturnType(host.CurrentType as OdcmMethod);
+		else 
+			modelClassName = TypeName(host.CurrentType);
+		
+
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						modelClassName);
+		sb.Append("\n");
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeCollectionRequestBuilder(host.CurrentType));
+
+		return sb.ToString();
+	}
+
 	//Fixing package and import statement for model classes
 	public string CreatePackageDefForEntity(CustomT4Host host)
     {

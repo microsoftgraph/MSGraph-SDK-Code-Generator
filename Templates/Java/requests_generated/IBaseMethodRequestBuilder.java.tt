@@ -4,7 +4,9 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = IBaseTypeRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=CreatePackageDefIBaseMethodRequestBuilder(host)#>
+import com.microsoft.graph.http.IRequestBuilder;
+import com.microsoft.graph.options.Option;
 
 <#=CreateInterfaceDef(IBaseTypeRequestBuilder(c), "IRequestBuilder")#>
 
