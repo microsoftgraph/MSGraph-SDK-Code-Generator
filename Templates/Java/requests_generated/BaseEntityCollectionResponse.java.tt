@@ -4,11 +4,14 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = BaseTypeCollectionResponse(c);#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
-
+<#=CreatePackageDefForBaseEntityCollectionResponse(host)#>
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.*;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.microsoft.graph.serializer.AdditionalDataManager;
+import com.microsoft.graph.serializer.IJsonBackedObject;
+import com.microsoft.graph.serializer.ISerializer;
 
 <#=CreateClassDef(BaseTypeCollectionResponse(c), null, "IJsonBackedObject")#>
 
