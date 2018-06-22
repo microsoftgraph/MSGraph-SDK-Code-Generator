@@ -567,6 +567,58 @@
 		return sb.ToString();
 	}
 
+	public string CreatePackageDefForBaseMethodBodyRequest(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+		var importFormat = @"import {0}.{1}.{2};";
+
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						TypeBody(host.CurrentType));
+		sb.Append("\n");
+		var returnType = ReturnType(host.CurrentType);
+		if(returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
+		{
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						ReturnType(host.CurrentType));
+			sb.Append("\n");
+		}
+
+		if(host.CurrentType.AsOdcmMethod().IsCollection)
+		{
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeCollectionRequest(host.CurrentType));
+			sb.Append("\n");
+
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						TypeCollectionRequest(host.CurrentType));
+			sb.Append("\n");
+		}
+		else
+		{
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeRequest(host.CurrentType));
+			sb.Append("\n");
+
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						TypeRequest(host.CurrentType));
+			sb.Append("\n");
+		}
+		return sb.ToString();
+	}
+
 	public string CreatePackageDefIBaseMethodRequestBuilder(CustomT4Host host)
 	{
 		var sb = new StringBuilder();
