@@ -4,7 +4,14 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = BaseTypeRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=CreatePackageDefForBaseMethodRequestBuilder(host)#>
+import com.microsoft.graph.core.BaseActionRequestBuilder;
+import com.microsoft.graph.core.BaseFunctionRequestBuilder;
+import com.microsoft.graph.core.IBaseClient;
+import com.microsoft.graph.options.Option;
+import com.microsoft.graph.options.FunctionOption;
+import com.google.gson.JsonElement;
+
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
 <#=CreateClassDef(BaseTypeRequestBuilder(c),  RequestBuilderSuperClass(c))#>
 
