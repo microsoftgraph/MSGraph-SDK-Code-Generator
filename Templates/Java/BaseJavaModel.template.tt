@@ -615,6 +615,19 @@
 		return sb.ToString();
 	}
 
+	public string CreatePackageDefForIBaseEntityRequest(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+		var importFormat = @"import {0}.{1}.{2};";
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						TypeName(host.CurrentType.AsOdcmClass()));
+		sb.Append("\n");
+		return sb.ToString();
+	}
+
 	public string CreatePackageDefForBaseMethodRequest(CustomT4Host host)
 	{
 		var sb = new StringBuilder();

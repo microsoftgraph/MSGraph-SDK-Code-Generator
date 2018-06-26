@@ -4,7 +4,10 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = IBaseTypeRequest(c);#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=CreatePackageDefForIBaseEntityRequest(host)#>
+import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.http.IHttpRequest;
 
 <#=CreateInterfaceDef(IBaseTypeRequest(c), "IHttpRequest")#>
 
