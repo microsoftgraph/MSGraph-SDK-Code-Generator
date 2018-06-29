@@ -4,7 +4,14 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = BaseTypeRequest(c);#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=CreatePackageDefForBaseEntityRequest(host)#>
+import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.core.IBaseClient;
+import com.microsoft.graph.http.BaseRequest;
+import com.microsoft.graph.http.HttpMethod;
+import com.microsoft.graph.options.Option;
+import com.microsoft.graph.options.QueryOption;
 <#
 String classDeclaration = "";
 if (c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
@@ -209,4 +216,29 @@ classDeclaration += TypeName(c);
 ";
         return string.Format(formatString, TypeName(odcmObject));
     }
+
+	public string CreatePackageDefForBaseEntityRequest(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+		var importFormat = @"import {0}.{1}.{2};";
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeRequest(host.CurrentType));
+		sb.Append("\n");
+
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						TypeRequest(host.CurrentType));
+		sb.Append("\n");
+
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						TypeName(host.CurrentType.AsOdcmClass()));
+		sb.Append("\n");
+		return sb.ToString();
+	}
  #>
