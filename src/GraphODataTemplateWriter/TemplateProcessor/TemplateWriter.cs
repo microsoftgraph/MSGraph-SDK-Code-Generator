@@ -19,7 +19,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         private String TemplatesDirectory { get; set;}
         private ITemplateProcessor Processor { get; set; }
         private OdcmModel CurrentModel { get; set; }
-        private ITemplateInfoProvider TemplateInfoProvider { get; set; }
+        public ITemplateInfoProvider TemplateInfoProvider { get; set; }
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -72,16 +72,32 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             }
         }
 
+        private string targetLanguage;
+
+        public TemplateWriter()
+        {
+
+        }
+
+        public TemplateWriter(string targetLanguage)
+        {
+            this.targetLanguage = targetLanguage;
+        }
+
         // IConfigurationProvider
         public void SetConfigurationProvider(IConfigurationProvider configurationProvider)
         {
-            ConfigurationService.Initialize(configurationProvider);
+            ConfigurationService.Initialize(configurationProvider, this.targetLanguage);
             FileNameCasing nameCasing;
             if(!Enum.TryParse(ConfigurationService.Settings.DefaultFileCasing, out nameCasing))
             {
                 nameCasing = FileNameCasing.UpperCamel;
             }
-            this.SetTemplatesDirectory(ConfigurationService.Settings.TemplatesDirectory);
+            if (Directory.Exists("templates")) {
+                this.SetTemplatesDirectory("templates", true);
+            } else {
+                this.SetTemplatesDirectory(ConfigurationService.Settings.TemplatesDirectory);
+            }
             this.TemplateInfoProvider = new TemplateInfoProvider(ConfigurationService.Settings.TemplateConfiguration,
                                                                  Path.Combine(this.TemplatesDirectory, ConfigurationService.Settings.TargetLanguage),
                                                                 defaultNameCasing: nameCasing);
