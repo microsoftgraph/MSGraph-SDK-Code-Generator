@@ -22,9 +22,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphODataTemplateWriter.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphSDKGenerator", "src\GraphSDKGenerator\GraphSDKGenerator.csproj", "{CA08F5D7-AA00-462E-BE5E-E4F54C257FA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Core", "src\Vipr.Core\Vipr.Core.csproj", "{04C24936-006A-4FD8-A872-EE55588C1CBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Core", "submodules\vipr\src\Core\Vipr.Core\Vipr.Core.csproj", "{04C24936-006A-4FD8-A872-EE55588C1CBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Reader.OData.v4", "src\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj", "{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Reader.OData.v4", "submodules\vipr\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj", "{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
