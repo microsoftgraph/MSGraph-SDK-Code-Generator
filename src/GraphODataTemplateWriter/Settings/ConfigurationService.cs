@@ -12,7 +12,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
         private static IConfigurationProvider _configurationProvider;
         private static TemplateWriterSettings templateWriterSettings = null;
         private static string targetLanguage = null;
-        public static void Initialize(IConfigurationProvider configurationProvider, string targetLanguage)
+        public static void Initialize(IConfigurationProvider configurationProvider, string targetLanguage = null)
         {
             _configurationProvider = configurationProvider;
             if (!String.IsNullOrEmpty(targetLanguage))
