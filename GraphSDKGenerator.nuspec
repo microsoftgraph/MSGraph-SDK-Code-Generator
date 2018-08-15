@@ -5,7 +5,7 @@
     <version>$version$</version>
     <authors>Microsoft</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Tool for validating API documentation</description>
+    <description>Tool for generating Graph SDKs</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright Microsoft</copyright>
     <licenseUrl>http://msdn.microsoft.com/en-US/cc300389</licenseUrl>
