@@ -83,7 +83,7 @@ import com.microsoft.graph.http.IHttpRequest;
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<Void> callback);
+    void delete(final ICallback<{0}> callback);
 
     /**
      * Delete this item from the service
@@ -92,7 +92,7 @@ import com.microsoft.graph.http.IHttpRequest;
      */
     void delete() throws ClientException;
 ";
-        return formatString;
+        return string.Format(formatString, TypeName(odcmObject));
     }
 
     public string getMethods(OdcmObject c)
