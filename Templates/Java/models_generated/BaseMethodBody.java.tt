@@ -11,6 +11,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.JsonObject;
 import com.microsoft.graph.serializer.ISerializer;
 import com.microsoft.graph.models.extensions.*;
+import java.util.EnumSet;
 
 <#=CreateClassDef(BaseTypeBody(c))#>
 

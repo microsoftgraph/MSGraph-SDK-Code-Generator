@@ -8,6 +8,7 @@
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequestBuilder;
 import com.microsoft.graph.options.Option;
+import java.util.EnumSet;
 
 <#=CreateClassDef(BaseTypeRequestBuilder(c), "BaseRequestBuilder", IBaseTypeRequestBuilder(c))#>
 
@@ -225,10 +226,15 @@ if (c.AsOdcmClass() != null)
 				foreach (var p in method.Parameters)
 				{
 					if(!(p.Type is OdcmPrimitiveType) && p.Type.GetTypeString() != "com.google.gson.JsonElement") {
+						var typeString = p.Type.GetTypeString();
+						if(p.Type.GetTypeString().StartsWith("EnumSet<")){
+							typeString = typeString.Substring(typeString.IndexOf("<") + 1);
+							typeString = typeString.Substring(0, typeString.Length-1);
+						}
 						sb.AppendFormat(importFormat,
 							host.CurrentModel.NamespaceName(),
 							getPackagePrefix(p),
-							p.Type.GetTypeString());
+							typeString);
 						sb.Append("\n");
 					}
 				}
