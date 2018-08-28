@@ -17,6 +17,6 @@
     <file src="src\GraphSDKGenerator\bin\Release\GraphSDKGenerator.exe" target="tools" />
     <file src="src\GraphSDKGenerator\bin\Release\*.dll" target="tools" />
     <file src="src\GraphSDKGenerator\bin\Release\.config\*" target="tools\.config" />
-    <file src="Templates\*" target="tools\templates" />
+    <file src="Templates\**\*.*" target="tools\templates" />
   </files>
 </package>

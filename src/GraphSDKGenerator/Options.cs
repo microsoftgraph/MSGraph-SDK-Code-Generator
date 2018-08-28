@@ -7,6 +7,14 @@ using CommandLine;
 
 namespace GraphSDKGenerator
 {
+    public enum VerbosityLevel
+    {
+        Minimal,
+        Info,
+        Debug, 
+        Trace
+    }
+
     class Options
     {
         [Option('l', "language", Default = "CSharp", HelpText = "Desired output language")]
@@ -15,8 +23,8 @@ namespace GraphSDKGenerator
         [Option('m', "metadata", Default = "https://graph.microsoft.com/v1.0/$metadata", HelpText = "Location of metadata.  Local file path or URL")]
         public string Metadata { get; set; }
 
-        [Option('v', "verbose", HelpText = "Output Verbose logs")]
-        public bool Verbose { get; set; }
+        [Option('v', "verbosity", Default= VerbosityLevel.Minimal, HelpText = "Log verbosity level")]
+        public VerbosityLevel Verbosity { get; set; }
 
         [Option('o', "output", HelpText = "Path to output folder")]
         public string Output { get; set; }

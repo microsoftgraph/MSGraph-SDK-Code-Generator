@@ -325,6 +325,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
         protected TextFile ProcessTemplate(ITemplateInfo templateInfo, OdcmObject odcmObject, string fileName)
         {
+            logger.Trace($"Generating file {fileName}");
             var host = TemplateProcessor.Host(templateInfo, this.TemplatesDirectory, odcmObject, this.CurrentModel);
 
             Func<ITextTemplatingEngineHost, string> preProcessedTemplate;

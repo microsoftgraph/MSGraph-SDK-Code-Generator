@@ -36,7 +36,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         private void SetTemplatesDirectory(string templatesDirectory, bool relative = true)
         {
             string programDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
+            
             this.TemplatesDirectory = (relative) ? Path.Combine(programDir, templatesDirectory) : templatesDirectory;
 
             if (!new DirectoryInfo(this.TemplatesDirectory).Exists)
@@ -50,8 +50,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             // There is no need to process "shared" tempaltes, they are only meant to be imported from other templates.
             var templates = this.TemplateInfoProvider.Templates().Where(templateInfo => templateInfo.TemplateType != Template.Shared);
 
+            logger.Debug($"Processing {templates.Count()} templates.");
+
             // Initialize processor.
             var pathWriterClassName = String.Format(this.PathWriterClassNameFormatString, ConfigurationService.Settings.TargetLanguage);
+
+            logger.Debug($"Using writer {pathWriterClassName}.");
 
             var type = Type.GetType(pathWriterClassName);
             if (type == null)
@@ -93,8 +97,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             {
                 nameCasing = FileNameCasing.UpperCamel;
             }
-            if (Directory.Exists("templates")) {
-                this.SetTemplatesDirectory("templates", true);
+            if (Directory.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Templates"))) {
+                this.SetTemplatesDirectory("Templates", true);
             } else {
                 this.SetTemplatesDirectory(ConfigurationService.Settings.TemplatesDirectory);
             }

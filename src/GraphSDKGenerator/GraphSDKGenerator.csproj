@@ -51,9 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="NLog.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\submodules\vipr\src\Core\Vipr.Core\Vipr.Core.csproj">

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Its.Configuration;
 using Vipr.Core;
 
@@ -9,8 +10,7 @@ namespace GraphSDKGenerator
     {
         public ConfigurationProvider()
         {
-            if (!String.IsNullOrWhiteSpace(Environment.CurrentDirectory))
-                Settings.SettingsDirectory = Path.Combine(Environment.CurrentDirectory, ".config");
+                Settings.SettingsDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ".config");
         }
 
         public T GetConfiguration<T>()
