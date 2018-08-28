@@ -3,6 +3,8 @@
 <#@ include file="Request.Base.template.tt"#>
 <#+
 
+using System.Linq.Enumerable;
+
 // -------------------------------------------------------------
 // Methods for standard entity collection classes
 // -------------------------------------------------------------
@@ -146,7 +148,58 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
 	//Append the singleton's navigation type to the @odata.id if relevant
 	var implicitNavigationProperty = string.Empty;
 	if (serviceNavigationProperty.GetType() == typeof(OdcmSingleton)) 
-		implicitNavigationProperty = "/" + odcmProperty.Name;
+	{
+		var singleton = (OdcmSingleton)serviceNavigationProperty;
+
+        // (1) Get all of the keys (Binding Paths) that contain our target path name, in this case, "teachers". This should be the end part of the BindingPath.
+        IEnumerable<string> keys = singleton.NavigationPropertyBindings.Where(kvp => kvp.Key.EndsWith(odcmProperty.Name)).Select(kvp => kvp.Key);
+		// TODO: if keys.Count == 0, we need to short circuit this. 
+
+/*
+        // Check that we actually matched a key. If we have NavigationPropertyBindings and we didn't find a potential match, then we have an error
+        if (singleton.NavigationPropertyBindings.Count != 0 && keys.Count() == 0) // I don't think this is good.
+        {
+            throw new Exception("Expected that a prospect key match is found. No key was found.");
+        }
+*/
+
+		// (2) We need to query the paths in {keys} against the entity (odcmProperty.Class) that contains this navigation property (odcmProperty). 
+		//	   We need to determine the unique binding path from the singleton through the entity on to this navigation property, query the keys
+		//       for it, and then get the target. There could be 1 or more hops that we need to account for.
+
+		// odcmProperty.Name; // --> "teachers"
+
+		var navPropClassToFind = odcmProperty.Class.Name; // -- > "educationClass";
+		string firstBindingPathSegment = ""; // We are incorrectly assuming to segment.
+
+		
+		foreach (OdcmProperty prop in (singleton.Type as OdcmEntityClass).Properties)
+		{
+			if (prop.Type.Name == navPropClassToFind)
+			{
+				firstBindingPathSegment = prop.Name;
+				break;
+			}		 	
+		}
+
+		string secondBindingPathSegment = odcmProperty.Name;
+
+		//string bindingPath = firstBindingPathSegment + "/" + keys.First(); // TODO: Need to fix this.
+		string bindingPath = firstBindingPathSegment + "/" + secondBindingPathSegment;
+
+		string bindingTarget;
+
+		if (singleton.NavigationPropertyBindings.TryGetValue(bindingPath, out bindingTarget))
+		{
+			// We found the target
+			implicitNavigationProperty = "/" + bindingTarget;
+		}
+		else
+			implicitNavigationProperty = "/" + odcmProperty.Name;
+		
+			
+	}
+	
 
     var stringBuilder = new StringBuilder();
 
