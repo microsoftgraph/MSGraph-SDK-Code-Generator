@@ -19,21 +19,21 @@ namespace GraphSDKGenerator
 
             public static string GetMetadata(string metadataPath)
             {
-                string edmxContents = "";
+                string csdlContents = "";
 
                 if (Uri.IsWellFormedUriString(metadataPath, UriKind.Absolute))
                 {
                     Logger.Info("Downloading metadata from {0}.", metadataPath);
 
-                    edmxContents = LoadEdmxFromWeb(metadataPath).Result;
+                    csdlContents = LoadEdmxFromWeb(metadataPath).Result;
                 }
                 else
                 {
                     Logger.Info("Loading metadata from {0}.", metadataPath);
 
-                    edmxContents = LoadEdmxFromFile(metadataPath);
+                    csdlContents = LoadEdmxFromFile(metadataPath);
                 }
-                return edmxContents;
+                return csdlContents;
             }
 
             private static string LoadEdmxFromFile(string filepath)

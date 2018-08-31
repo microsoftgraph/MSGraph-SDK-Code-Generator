@@ -33,13 +33,13 @@ namespace GraphSDKGenerator
 
             SetupLogging(opts.Verbosity);
 
-            var edmxContents = MetadataResolver.GetMetadata(opts.Metadata);
+            var csdlContents = MetadataResolver.GetMetadata(opts.Metadata);
 
             // fix edmx
 
             // filter out problem workloads
 
-            var files = MetadataToClientSource(edmxContents, opts.Language);
+            var files = MetadataToClientSource(csdlContents, opts.Language);
             FileWriter.WriteAsync(files,opts.Output);
 
             stopwatch.Stop();
@@ -55,30 +55,27 @@ namespace GraphSDKGenerator
                 Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}",
                 Name = "Console"
             });
-
             
-               
-                switch (verbosity)
-                {
-                    case VerbosityLevel.Minimal:
-                        config.AddRule(LogLevel.Warn, LogLevel.Fatal, "Console" );
-                        break;
-                    case VerbosityLevel.Info:
-                        config.AddRule(LogLevel.Info, LogLevel.Fatal, "Console");
-                        break;
-                    case VerbosityLevel.Debug:
-                        config.AddRule(LogLevel.Debug, LogLevel.Fatal, "Console");
-                        break;
-                    case VerbosityLevel.Trace:
-                        config.AddRule(LogLevel.Trace, LogLevel.Fatal, "Console");
-                        break;
-                    default:
-                        config.AddRule(LogLevel.Warn, LogLevel.Fatal, "Console");
-                        break;
-                }
-                
+            switch (verbosity)
+            {
+                case VerbosityLevel.Minimal:
+                    config.AddRule(LogLevel.Warn, LogLevel.Fatal, "Console" );
+                    break;
+                case VerbosityLevel.Info:
+                    config.AddRule(LogLevel.Info, LogLevel.Fatal, "Console");
+                    break;
+                case VerbosityLevel.Debug:
+                    config.AddRule(LogLevel.Debug, LogLevel.Fatal, "Console");
+                    break;
+                case VerbosityLevel.Trace:
+                    config.AddRule(LogLevel.Trace, LogLevel.Fatal, "Console");
+                    break;
+                default:
+                    config.AddRule(LogLevel.Warn, LogLevel.Fatal, "Console");
+                    break;
+            }
 
-            LogManager.Configuration = config;  // Active configuration
+            LogManager.Configuration = config;  // Activate configuration
         }
 
         private static void HandleError(IEnumerable<Error> errors)

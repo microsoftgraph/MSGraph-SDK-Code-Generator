@@ -17,7 +17,7 @@ namespace GraphSDKGenerator
 
     class Options
     {
-        [Option('l', "language", Default = "CSharp", HelpText = "Desired output language")]
+        [Option('l', "language", Default = "CSharp", HelpText = "The target language for the generated code files. The values can be: Android, Java, ObjC, CSharp, PHP, Python, TypeScript, or GraphEndpointList")]
         public string Language { get; set; }
 
         [Option('m', "metadata", Default = "https://graph.microsoft.com/v1.0/$metadata", HelpText = "Location of metadata.  Local file path or URL")]
@@ -26,7 +26,7 @@ namespace GraphSDKGenerator
         [Option('v', "verbosity", Default= VerbosityLevel.Minimal, HelpText = "Log verbosity level")]
         public VerbosityLevel Verbosity { get; set; }
 
-        [Option('o', "output", HelpText = "Path to output folder")]
+        [Option('o', "output", Default= "./com/microsoft/graph", HelpText = "Path to output folder")]
         public string Output { get; set; }
     }
 }

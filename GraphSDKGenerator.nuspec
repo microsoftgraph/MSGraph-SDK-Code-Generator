@@ -7,7 +7,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Tool for generating Graph SDKs</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright Microsoft</copyright>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <licenseUrl>http://msdn.microsoft.com/en-US/cc300389</licenseUrl>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="net45" />
