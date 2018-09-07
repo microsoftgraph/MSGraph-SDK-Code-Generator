@@ -1,9 +1,11 @@
 <# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="Request.Base.template.tt"#>
+
+
 <#+
 
-using System.Linq.Enumerable;
+// using System.Linq.Enumerable;
 
 // -------------------------------------------------------------
 // Methods for standard entity collection classes
@@ -133,46 +135,47 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
     return string.Empty;
 }
 
-public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
+public string GetImplicitNavigationPropertyUrlSegment(OdcmSingleton singleton, OdcmProperty odcmProperty)
 {
-    var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
-    var propertyType = this.GetPropertyTypeName(odcmProperty);
-
-    var templateWriterHost = (CustomT4Host)Host;
-    var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
-
-    var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType();
-	if (serviceNavigationProperty == null)
-		return string.Empty;
-	
-	//Append the singleton's navigation type to the @odata.id if relevant
-	var implicitNavigationProperty = string.Empty;
-	if (serviceNavigationProperty.GetType() == typeof(OdcmSingleton)) 
-	{
-		var singleton = (OdcmSingleton)serviceNavigationProperty;
-
-        // (1) Get all of the keys (Binding Paths) that contain our target path name, in this case, "teachers". This should be the end part of the BindingPath.
-        IEnumerable<string> keys = singleton.NavigationPropertyBindings.Where(kvp => kvp.Key.EndsWith(odcmProperty.Name)).Select(kvp => kvp.Key);
-		// TODO: if keys.Count == 0, we need to short circuit this. 
-
-/*
-        // Check that we actually matched a key. If we have NavigationPropertyBindings and we didn't find a potential match, then we have an error
-        if (singleton.NavigationPropertyBindings.Count != 0 && keys.Count() == 0) // I don't think this is good.
+        // (1) Check that there are NavigationPropertyBindings. If there aren't any, then we know this segment of 
+		// the canonical path to the reference.
+        if (singleton.NavigationPropertyBindings.Count == 0)
         {
-            throw new Exception("Expected that a prospect key match is found. No key was found.");
+			return "/" + odcmProperty.Name;
         }
-*/
 
-		// (2) We need to query the paths in {keys} against the entity (odcmProperty.Class) that contains this navigation property (odcmProperty). 
+        // (2) Get all of the keys that contain our target path name. The keys come from the Path attribute on a 
+		// NavigationPropertyBinding. So if our target property (OdcmProperty.Name) is named 'schools', then we need to only consider
+		// NavigationPropertyBinding paths that end with 'schools'. The NavigationPropertyBindings are found in the Singleton that 
+		// defines the EntitySet that contains this property. The NavigationPropertyBindings provide generation hints for how to 
+		// reference non-contained entities that are defined within the same Singleton (this statement is conjecture). This generation
+		// hints is used to specify a reference URL for $ref call. 
+
+		// TODO DELETE: in this case, "teachers". This should be the end part of the BindingPath.
+
+        IEnumerable<string> keys = singleton.NavigationPropertyBindings.Where(kvp => kvp.Key.EndsWith(odcmProperty.Name)).Select(kvp => kvp.Key);
+		/*
+                <Singleton Name="education" Type="microsoft.graph.educationRoot">
+                     <NavigationPropertyBinding Path="classes/teachers" Target="users" />
+                    <NavigationPropertyBinding Path="classes/members" Target="users" />
+                    <NavigationPropertyBinding Path="classes/schools" Target="schools" />
+                    <NavigationPropertyBinding Path="schools/classes" Target="classes" />
+                    <NavigationPropertyBinding Path="schools/users" Target="users" />
+                    <NavigationPropertyBinding Path="users/schools" Target="schools" />
+                    <NavigationPropertyBinding Path="users/classes" Target="classes" />
+                </Singleton>
+		*/
+
+		// We need to support long NavPropBindings. That is, we need to support multi-segment NavigationPropertyBinding paths
+		// (3) We need to query the paths in {keys} against the entity (odcmProperty.Class) that contains this navigation property (odcmProperty). 
 		//	   We need to determine the unique binding path from the singleton through the entity on to this navigation property, query the keys
 		//       for it, and then get the target. There could be 1 or more hops that we need to account for.
 
 		// odcmProperty.Name; // --> "teachers"
 
-		var navPropClassToFind = odcmProperty.Class.Name; // -- > "educationClass";
+		var navPropClassToFind = odcmProperty.Class.Name; // -- > "educationClass"; This is the EntityType that contains the navigation property
 		string firstBindingPathSegment = ""; // We are incorrectly assuming to segment.
-
-		
+				
 		foreach (OdcmProperty prop in (singleton.Type as OdcmEntityClass).Properties)
 		{
 			if (prop.Type.Name == navPropClassToFind)
@@ -192,14 +195,35 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
 		if (singleton.NavigationPropertyBindings.TryGetValue(bindingPath, out bindingTarget))
 		{
 			// We found the target
-			implicitNavigationProperty = "/" + bindingTarget;
+			return "/" + bindingTarget;
 		}
 		else
-			implicitNavigationProperty = "/" + odcmProperty.Name;
-		
-			
-	}
+			 return "/" + odcmProperty.Name;
+}
+
+public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
+{
+    var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
+    var propertyType = this.GetPropertyTypeName(odcmProperty);
+
+    var templateWriterHost = (CustomT4Host)Host;
+    var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
+
+    var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType();
+	if (serviceNavigationProperty == null)
+		return string.Empty;
 	
+	var implicitNavigationProperty = string.Empty;
+	
+	// If the odcmProperty is a part of Singleton, then we need to determine whether there is a  
+	// NavigationPropertyBinding generation hint. If there is, then we need to use it for 
+	// creating the URL of a reference entity in a POST body. 
+	if (serviceNavigationProperty.GetType() == typeof(OdcmSingleton)) 
+	{
+		var singleton = (OdcmSingleton)serviceNavigationProperty;
+
+        implicitNavigationProperty = GetImplicitNavigationPropertyUrlSegment(singleton, odcmProperty);
+	}
 
     var stringBuilder = new StringBuilder();
 
