@@ -137,6 +137,14 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
 
 public string GetImplicitNavigationPropertyUrlSegment(OdcmSingleton singleton, OdcmProperty odcmProperty)
 {
+		/****
+		To help the future dev in figuring this out, put a break point on the next executable line
+		with the condition odcmProperty.Name == "teachers". The CSDL in and entities mentioned in these 
+		comments are an example of the use of this scenario. 
+		
+		****/
+
+
         // (1) Check that there are NavigationPropertyBindings. If there aren't any, then we know this segment of 
 		// the canonical path to the reference.
         if (singleton.NavigationPropertyBindings.Count == 0)
@@ -145,13 +153,13 @@ public string GetImplicitNavigationPropertyUrlSegment(OdcmSingleton singleton, O
         }
 
         // (2) Get all of the keys that contain our target path name. The keys come from the Path attribute on a 
-		// NavigationPropertyBinding. So if our target property (OdcmProperty.Name) is named 'schools', then we need to only consider
-		// NavigationPropertyBinding paths that end with 'schools'. The NavigationPropertyBindings are found in the Singleton that 
+		// NavigationPropertyBinding. So if our target property (OdcmProperty.Name) is named 'teachers', then we need to only consider
+		// NavigationPropertyBinding paths that end with 'teachers'. The NavigationPropertyBindings are found in the Singleton that 
 		// defines the EntitySet that contains this property. The NavigationPropertyBindings provide generation hints for how to 
 		// reference non-contained entities that are defined within the same Singleton (this statement is conjecture). This generation
 		// hints is used to specify a reference URL for $ref call. 
 
-		// TODO DELETE: in this case, "teachers". This should be the end part of the BindingPath.
+		// Example: in this case, "teachers". This should be the end part of the BindingPath.
 
         IEnumerable<string> keys = singleton.NavigationPropertyBindings.Where(kvp => kvp.Key.EndsWith(odcmProperty.Name)).Select(kvp => kvp.Key);
 		/*
@@ -164,18 +172,50 @@ public string GetImplicitNavigationPropertyUrlSegment(OdcmSingleton singleton, O
                     <NavigationPropertyBinding Path="users/schools" Target="schools" />
                     <NavigationPropertyBinding Path="users/classes" Target="classes" />
                 </Singleton>
+
+				<EntityType Name="educationRoot" BaseType="microsoft.graph.entity">
+					<NavigationProperty Name="synchronizationProfiles" Type="Collection(microsoft.graph.educationSynchronizationProfile)" ContainsTarget="true" />
+					 <NavigationProperty Name="classes" Type="Collection(microsoft.graph.educationClass)" ContainsTarget="true" />
+					<NavigationProperty Name="schools" Type="Collection(microsoft.graph.educationSchool)" ContainsTarget="true" />
+					<NavigationProperty Name="users" Type="Collection(microsoft.graph.educationUser)" ContainsTarget="true" />
+					<NavigationProperty Name="me" Type="microsoft.graph.educationUser" ContainsTarget="true" />
+				</EntityType>
+
+				<EntityType Name="educationClass" BaseType="microsoft.graph.entity">
+					<Property Name="displayName" Type="Edm.String" Nullable="false" />
+					<NavigationProperty Name="schools" Type="Collection(microsoft.graph.educationSchool)" />
+					<NavigationProperty Name="members" Type="Collection(microsoft.graph.educationUser)" />
+ 					 <NavigationProperty Name="teachers" Type="Collection(microsoft.graph.educationUser)" />
+					<NavigationProperty Name="group" Type="microsoft.graph.group" />
+					<NavigationProperty Name="assignments" Type="Collection(microsoft.graph.educationAssignment)" ContainsTarget="true" />
+				</EntityType>
 		*/
 
 		// We need to support long NavPropBindings. That is, we need to support multi-segment NavigationPropertyBinding paths
 		// (3) We need to query the paths in {keys} against the entity (odcmProperty.Class) that contains this navigation property (odcmProperty). 
 		//	   We need to determine the unique binding path from the singleton through the entity on to this navigation property, query the keys
-		//       for it, and then get the target. There could be 1 or more hops that we need to account for.
+		//       for it, and then get the target. There could be 1 or more pat segments that we need to account for.
+		// Example: odcmProperty.Class is the entity "educationClass" that has the non-contained navigation property represented by odcmProperty,
+		// which is named 'teachers'. At this point, we know the singleton and all of its NavigationPropertyBindings, we know the singleton's entity type,
+		// which is named 'educationRoot'.
+		// We need to determine whether a NavigationPropertyBinding pth and target is different than the CSDL described path to the reference non-contained entity. 
 
 		// odcmProperty.Name; // --> "teachers"
 
 		var navPropClassToFind = odcmProperty.Class.Name; // -- > "educationClass"; This is the EntityType that contains the navigation property
 		string firstBindingPathSegment = ""; // We are incorrectly assuming to segment.
 				
+		// Get the path segments.
+		//string[] navPropBindingSegments = keys.First().Split('/'); 
+
+		// Example: After hitting the conditional breakpoint, singleton.Type.Name is "educationRoot". 
+		// We are going to inspect each navigation property on singleton's type and compare to the segments
+		// in the keys IEnumerable. 
+		// The assumption here is that the first segment is a navigation property of the singleton's type
+		// The second assumption is that there are only two segments. We know this is a bad assumption.
+		// The third assumption is that the last segment is the most meaningful. 
+		// In short, this only works for a Path that has two segments.
+
 		foreach (OdcmProperty prop in (singleton.Type as OdcmEntityClass).Properties)
 		{
 			if (prop.Type.Name == navPropClassToFind)
@@ -184,6 +224,32 @@ public string GetImplicitNavigationPropertyUrlSegment(OdcmSingleton singleton, O
 				break;
 			}		 	
 		}
+
+		/*
+			What we know.
+
+			We know the navigation property name and type.
+			We know whih entity contains the navigation property.
+			We know that the navigation property does not contain the entity.
+			We know which singleton is the entity set for the navigation property.
+			We know the singleton's type.
+			We know the NavigationPropertyBindings and which candidates CAN be the one to define the reference path to the entity in the navigation.
+
+			We don't know the paths to the entity that contains our navigation property. So, the question is, can we know the context in which the 
+			navigation property is being accessed at generation time? I don't think we can.
+
+			The next question is can we code the templates to generate code that is context aware and can create the ref path based on that context. 
+			This is a maybe. 
+
+			Our current example works since the scenario only has two levels of entities. What happens when we have three level of entities like
+			/schools/classes/teachers. We know the teachers segments. We don't have context which entities are accessed across the request builders
+			at runtime. 
+
+			We may need to generate a dictionary from the NavPropBindings in to the code files and use those at runtime to discover the context in
+			which a navigtion is called in order to provide the correct reference path. 
+
+			TODO: investigate what it would take to generate code that is context aware of binding path.
+		*/
 
 		string secondBindingPathSegment = odcmProperty.Name;
 
