@@ -135,48 +135,6 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
     return string.Empty;
 }
 
-public string GetImplicitNavigationPropertyUrlSegment(OdcmSingleton singleton, OdcmProperty odcmProperty)
-{
-		/****
-		To help the future dev in figuring this out, put a break point on the next executable line
-		with the condition odcmProperty.Name == "teachers". The CSDL in and entities mentioned in these 
-		comments are an example of the use of this scenario. 
-		****/
-
-        // (1) Check that there are NavigationPropertyBindings. If there aren't any, then we know this segment is 
-		// the canonical path to the reference.
-        if (singleton.NavigationPropertyBindings.Count == 0)
-        {
-			return "/" + odcmProperty.Name;
-        }
-
-        // (2) Get all of the keys that contain our target path name. The keys come from the Path attribute on a 
-		// NavigationPropertyBinding. So if our target property (OdcmProperty.Name) is named 'teachers', then we need to only consider
-		// NavigationPropertyBinding paths that end with 'teachers'. The NavigationPropertyBindings are found in the Singleton that 
-		// defines the EntitySet that contains this property. The NavigationPropertyBindings provide generation hints for how to 
-		// reference non-contained entities that are defined within the same Singleton (this statement is conjecture). This generation
-		// hints is used to specify a reference URL for $ref call. 
-		// Example: in this case, "teachers". This should be the end part of the BindingPath.
-
-        IEnumerable<string> keys = singleton.NavigationPropertyBindings.Where(kvp => kvp.Key.EndsWith(odcmProperty.Name)).Select(kvp => kvp.Key);
-
-		string bindingTarget;
-
-        // The first assumption is that CSDL is added with a convention where the last path segment in NavigationPropertyBinding.Path
-        // is named consistently in a singleton so it doesn't matter what the preceding segments are. 
-        // The second assumption is that if the last path is named consistently, the target will be consistent as well.
-        // These may turn out to be a weak assumption. We use this assumption since we can't determine a unique path
-        // for three or more segments since *RequestBuilder and *Request objects are generated per entity+navigation,
-        // and not [entity+navigation]*n --> across multiple navigations.
-		if (keys.Count() > 0 && singleton.NavigationPropertyBindings.TryGetValue(keys.First(), out bindingTarget))
-		{
-			// We found the target
-			return "/" + bindingTarget;
-		}
-		else
-			 return "/" + odcmProperty.Name;
-}
-
 public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
 {
     var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
@@ -195,11 +153,7 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
 	// NavigationPropertyBinding generation hint. If there is, then we need to use it for 
 	// creating the URL of a reference entity in a POST body. 
 	if (serviceNavigationProperty.GetType() == typeof(OdcmSingleton)) 
-	{
-		var singleton = (OdcmSingleton)serviceNavigationProperty;
-
-        implicitNavigationProperty = GetImplicitNavigationPropertyUrlSegment(singleton, odcmProperty);
-	}
+	    implicitNavigationProperty = "/" + odcmProperty.GetImplicitPropertyName((OdcmSingleton)serviceNavigationProperty);
 
     var stringBuilder = new StringBuilder();
 
