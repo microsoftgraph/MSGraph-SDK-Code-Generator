@@ -1,11 +1,7 @@
 <# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="Request.Base.template.tt"#>
-
-
 <#+
-
-// using System.Linq.Enumerable;
 
 // -------------------------------------------------------------
 // Methods for standard entity collection classes
