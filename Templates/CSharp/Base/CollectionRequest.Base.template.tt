@@ -146,7 +146,8 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
 	//Append the singleton's navigation type to the @odata.id if relevant
 	var implicitNavigationProperty = string.Empty;
 	if (serviceNavigationProperty.GetType() == typeof(OdcmSingleton)) 
-		implicitNavigationProperty = "/" + odcmProperty.Name;
+      implicitNavigationProperty = "/" + odcmProperty.GetImplicitPropertyName((OdcmSingleton)serviceNavigationProperty);
+  
 
     var stringBuilder = new StringBuilder();
 
