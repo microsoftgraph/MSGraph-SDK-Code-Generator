@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package >
   <metadata>
-    <id>GraphSDKGenerator</id>
+    <id>Typewriter</id>
     <version>$version$</version>
     <authors>Microsoft</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Tool for generating Graph SDKs</description>
+    <description>Tool for generating types for the Microsoft Graph SDK</description>
     <releaseNotes></releaseNotes>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <licenseUrl>http://msdn.microsoft.com/en-US/cc300389</licenseUrl>
@@ -14,9 +14,9 @@
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="src\GraphSDKGenerator\bin\Release\GraphSDKGenerator.exe" target="tools" />
-    <file src="src\GraphSDKGenerator\bin\Release\*.dll" target="tools" />
-    <file src="src\GraphSDKGenerator\bin\Release\.config\*" target="tools\.config" />
+    <file src="src\Typewriter\bin\Release\GraphSDKGenerator.exe" target="tools" />
+    <file src="src\Typewriter\bin\Release\*.dll" target="tools" />
+    <file src="src\Typewriter\bin\Release\.config\*" target="tools\.config" />
     <file src="Templates\**\*.*" target="tools\templates" />
   </files>
 </package>

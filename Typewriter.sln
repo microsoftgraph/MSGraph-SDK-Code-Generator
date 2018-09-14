@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphODataTemplateWriter.Te
 		{5F526973-F69E-4C26-B8AD-612590A17A9E} = {5F526973-F69E-4C26-B8AD-612590A17A9E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphSDKGenerator", "src\GraphSDKGenerator\GraphSDKGenerator.csproj", "{CA08F5D7-AA00-462E-BE5E-E4F54C257FA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typewriter", "src\Typewriter\Typewriter.csproj", "{CA08F5D7-AA00-462E-BE5E-E4F54C257FA5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Core", "submodules\vipr\src\Core\Vipr.Core\Vipr.Core.csproj", "{04C24936-006A-4FD8-A872-EE55588C1CBE}"
 EndProject

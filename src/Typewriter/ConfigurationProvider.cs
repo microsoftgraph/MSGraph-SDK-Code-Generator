@@ -4,7 +4,7 @@ using System.Reflection;
 using Its.Configuration;
 using Vipr.Core;
 
-namespace GraphSDKGenerator
+namespace Typewriter
 {
     public class ConfigurationProvider : IConfigurationProvider
     {

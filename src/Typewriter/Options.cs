@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
 
-namespace GraphSDKGenerator
+namespace Typewriter
 {
     public enum VerbosityLevel
     {

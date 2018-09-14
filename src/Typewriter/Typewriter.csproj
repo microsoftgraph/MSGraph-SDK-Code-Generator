@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CA08F5D7-AA00-462E-BE5E-E4F54C257FA5}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>GraphSDKGenerator</RootNamespace>
-    <AssemblyName>GraphSDKGenerator</AssemblyName>
+    <RootNamespace>Typewriter</RootNamespace>
+    <AssemblyName>Typewriter</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

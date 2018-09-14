@@ -9,7 +9,7 @@ using Nito.AsyncEx;
 using NLog;
 using Vipr.Core;
 
-namespace GraphSDKGenerator
+namespace Typewriter
 {
 
     internal static class FileWriter

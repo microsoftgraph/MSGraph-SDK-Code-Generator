@@ -10,14 +10,13 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using Vipr.Core;
-using Vipr.Core.CodeModel;
 using Vipr.Reader.OData.v4;
 
-namespace GraphSDKGenerator
+namespace Typewriter
 {
     class Program
     {
-        internal static Logger Logger => LogManager.GetLogger("GraphSDKGenerator");
+        internal static Logger Logger => LogManager.GetLogger("Typewriter");
 
         static void Main(string[] args)
         {
