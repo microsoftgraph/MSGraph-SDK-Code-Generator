@@ -266,8 +266,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
             var parameters = new CompilerParameters
             {
-                OutputAssembly = templateInfo.TemplateName + ".dll",
-                GenerateInMemory = false,
+               // OutputAssembly = templateInfo.TemplateName + ".dll",
+                GenerateInMemory = true,
                 GenerateExecutable = false,
                 IncludeDebugInformation = true,
             };

@@ -26,7 +26,7 @@ namespace Typewriter
         [Option('v', "verbosity", Default= VerbosityLevel.Minimal, HelpText = "Log verbosity level")]
         public VerbosityLevel Verbosity { get; set; }
 
-        [Option('o', "output", Default= "./com/microsoft/graph", HelpText = "Path to output folder")]
+        [Option('o', "output", Default= ".", HelpText = "Path to output folder")]
         public string Output { get; set; }
     }
 }
