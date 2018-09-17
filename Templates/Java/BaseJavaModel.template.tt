@@ -819,6 +819,7 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 
 		sb.Append("\n");		
         var importFormat = @"import {0}.{1}.{2};";
+		Dictionary<string, int> uniqueStore = new Dictionary<string, int>();
 
         foreach (var property in properties.Where(p => !p.Projection.Type.Name.Equals("Stream")))
         { 
@@ -833,11 +834,15 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 				propertyType = propertyType.Substring("EnumSet<".Length, propertyType.Length-("EnumSet<".Length+1));
 				
 			string prefixValue = getPackagePrefix(property);
-			sb.AppendFormat(importFormat,
+			string importstr= String.Format(importFormat,
 						host.CurrentModel.NamespaceName(),
 						prefixValue,
 						propertyType);
-			sb.Append("\n");
+			if(!uniqueStore.ContainsKey(importstr)){
+				uniqueStore.Add(importstr, 0);						
+				sb.Append(importstr);
+				sb.Append("\n");
+			}
 			
         }
 
@@ -845,29 +850,41 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 		if(baseClassNameType != "")
 		{
 			string prefixValue = getPrefixForModels(baseClassNameType);
-			sb.AppendFormat(importFormat,
+			string importstr= String.Format(importFormat,
 						host.CurrentModel.NamespaceName(),
 						prefixValue,
 						baseClassNameType);
-			sb.Append("\n");
+			if(!uniqueStore.ContainsKey(importstr)){
+				uniqueStore.Add(importstr, 0);						
+				sb.Append(importstr);
+				sb.Append("\n");
+			}
 		}
 		
 		string baseTypeNameStr = BaseTypeName(host.CurrentType);
 		if(baseTypeNameStr == "BasePlannerAssignments")
 		{
-			sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+			string importstr= String.Format(importFormat,
+							host.CurrentModel.NamespaceName(),
 						"models.extensions",
 						 "PlannerAssignment");
-					sb.Append("\n");
+			if(!uniqueStore.ContainsKey(importstr)){
+				uniqueStore.Add(importstr, 0);						
+				sb.Append(importstr);
+				sb.Append("\n");
+			}
 		}
 		if(baseTypeNameStr == "BasePlannerChecklistItems")
-		{
-			sb.AppendFormat(importFormat,
+		{			
+			string importstr= String.Format(importFormat,
 						host.CurrentModel.NamespaceName(),
 						"models.extensions",
 						 "PlannerChecklistItem");
-					sb.Append("\n");
+			if(!uniqueStore.ContainsKey(importstr)){
+				uniqueStore.Add(importstr, 0);						
+				sb.Append(importstr);
+				sb.Append("\n");
+			}
 		}
 		
 		if (properties != null)
@@ -878,19 +895,26 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 					continue;
 
 				var propertyType = BaseTypeCollectionResponse(property);
-				
-				sb.AppendFormat(importFormat,
-					host.CurrentModel.NamespaceName(),
-					getPrefixForRequests(propertyType),
-					propertyType);
-				sb.Append("\n");
+				string importstr= String.Format(importFormat,
+							host.CurrentModel.NamespaceName(),
+							getPrefixForRequests(propertyType),
+							propertyType);
+				if(!uniqueStore.ContainsKey(importstr)){
+					uniqueStore.Add(importstr, 0);						
+					sb.Append(importstr);
+					sb.Append("\n");
+				}
 					
 				string propertyValue = TypeCollectionPage(property);	
-				sb.AppendFormat(importFormat,
+				string importstr1= String.Format(importFormat,
 					host.CurrentModel.NamespaceName(),
 					getPrefixForRequests(propertyValue),
 					propertyValue);
-				sb.Append("\n");
+				if(!uniqueStore.ContainsKey(importstr1)){
+					uniqueStore.Add(importstr1, 0);						
+					sb.Append(importstr1);
+					sb.Append("\n");
+				}
 			}
         }
         return sb.ToString();
