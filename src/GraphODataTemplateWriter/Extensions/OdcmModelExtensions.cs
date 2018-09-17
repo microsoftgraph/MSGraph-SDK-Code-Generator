@@ -208,6 +208,21 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             }
         }
 
+        public static string GetImplicitPropertyName(this OdcmProperty property, OdcmSingleton singleton)
+        {
+            var implicitPropertyName = property.Name;
+            // Default behavior
+            if (singleton.NavigationPropertyBindings.Count() > 0)
+            {
+                var target = singleton.NavigationPropertyBindings.Where(kv => kv.Key.EndsWith(property.Name)).Select(kvp => kvp.Value).FirstOrDefault();
+                if (target != null)
+                {
+                    implicitPropertyName = target;
+                }
+            }
+            return implicitPropertyName;
+        }
+
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
         {
             return odcmClass.Properties.Where(prop => prop.IsNavigation());

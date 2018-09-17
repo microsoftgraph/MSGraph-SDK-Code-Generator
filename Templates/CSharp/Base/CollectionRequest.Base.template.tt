@@ -143,10 +143,13 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
 	if (serviceNavigationProperty == null)
 		return string.Empty;
 	
-	//Append the singleton's navigation type to the @odata.id if relevant
 	var implicitNavigationProperty = string.Empty;
+	
+	// If the odcmProperty is a part of Singleton, then we need to determine whether there is a  
+	// NavigationPropertyBinding generation hint. If there is, then we need to use it for 
+	// creating the URL of a reference entity in a POST body. 
 	if (serviceNavigationProperty.GetType() == typeof(OdcmSingleton)) 
-		implicitNavigationProperty = "/" + odcmProperty.Name;
+	    implicitNavigationProperty = "/" + odcmProperty.GetImplicitPropertyName((OdcmSingleton)serviceNavigationProperty);
 
     var stringBuilder = new StringBuilder();
 

@@ -119,7 +119,7 @@ classDeclaration += TypeName(c);
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<Void> callback) {{
+    public void delete(final ICallback<{0}> callback) {{
         send(HttpMethod.DELETE, callback, null);
     }}
 
@@ -132,7 +132,7 @@ classDeclaration += TypeName(c);
         send(HttpMethod.DELETE, null);
     }}
 ";
-        return formatString;
+        return string.Format(formatString, TypeName(odcmObject));
     }
 
     public string getMethods(OdcmObject c)
