@@ -16,3 +16,6 @@ Update to the Subscription entity.
 ## Notes
 renew function bound to educationClass entityType removed - it never worked.
 educationSchool/administrativeUnits removed.
+
+## Beta metadata
+beta_2018_09_14_descriptions.xml contains the long descriptions. This was not run through the MetadataProcessor.exe since we are only using this for model generation.
