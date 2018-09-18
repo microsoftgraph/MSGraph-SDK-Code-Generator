@@ -33,11 +33,7 @@ export interface <#= entityType.Name.UpperCaseFirstChar() #><# if (entityType.Ba
 	<# if (prop.LongDescription != null) { #>
     /** <#=prop.LongDescription#> */
 	<# } #>
-	<# if (prop.IsNullable == false) { #>
-        <#=  prop.Name #>: <#= prop.GetTypeString() #>
-	<# } else { #>
-        <#=  prop.Name #>?: <#= prop.GetTypeString() #>
-	<# } #>
+	<#=  prop.Name #>?: <#= prop.GetTypeString() #>
 
 <# } #>
 }
@@ -54,11 +50,7 @@ export interface <#= complexType.Name.UpperCaseFirstChar()#><# if (complexType.B
 	<# if (prop.LongDescription != null) { #>
     /** <#=prop.LongDescription#> */
 	<# } #>
-	<# if (prop.IsNullable == false) { #>
-        <#= prop.Name #>: <#= prop.GetTypeString() #>
-	<# } else { #>
-        <#= prop.Name #>?: <#= prop.GetTypeString() #>
-	<# } #>
+	<#= prop.Name #>?: <#= prop.GetTypeString() #>
 
 <# } #>
 }
