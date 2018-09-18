@@ -47,9 +47,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                                 "*" + this.NewLineCharacter +
                                 "* @category  Library" + this.NewLineCharacter +
                                 "* @package   Microsoft.Graph" + this.NewLineCharacter +
-                                "* @copyright 2016 Microsoft Corporation" + this.NewLineCharacter +
+                                "* @copyright © Microsoft Corporation. All rights reserved." + this.NewLineCharacter +
                                 "* @license   https://opensource.org/licenses/MIT MIT License" + this.NewLineCharacter +
-                                "* @version   GIT: 0.1.0" + this.NewLineCharacter +
+                                "* @version   GIT: 1.4.0" + this.NewLineCharacter +
                                 "* @link      https://graph.microsoft.io/";
         }
 
@@ -60,9 +60,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                     "*" + this.NewLineCharacter +
                     "* @category  " + category + this.NewLineCharacter +
                     "* @package   Microsoft.Graph" + this.NewLineCharacter +
-                    "* @copyright 2016 Microsoft Corporation" + this.NewLineCharacter +
+                    "* @copyright © Microsoft Corporation. All rights reserved." + this.NewLineCharacter +
                     "* @license   https://opensource.org/licenses/MIT MIT License" + this.NewLineCharacter +
-                    "* @version   Release: 0.1.0" + this.NewLineCharacter +
+                    "* @version   Release: 1.4.0" + this.NewLineCharacter +
                     "* @link      https://graph.microsoft.io/" + this.NewLineCharacter +
                     "*/";
         }
