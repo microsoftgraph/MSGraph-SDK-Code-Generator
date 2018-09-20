@@ -44,7 +44,10 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
     {
 
 <#
-// We need to set the @odata.type property when this type has 
+// Set the @odata.type property when this type is not abstract. If problems are caused by this, 
+// then we should consider only setting @odata.type when this types base class is an abstract class
+// referenced as the type for a property. That is really the only time when the API will need the
+// disambiguation.
 if (!complex.IsAbstract)
 {
 #>        public <#=complexTypeName#>()
