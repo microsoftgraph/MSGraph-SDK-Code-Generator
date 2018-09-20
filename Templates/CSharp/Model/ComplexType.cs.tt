@@ -43,18 +43,16 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
     public <#=classType#> <#=typeDeclaration#>
     {
 
-    <# 
-    // We need to set the @odata.type property when this type has 
-    if (!complex.Base.IsAbstract)
-    {
-    #>
-        public <#=complexTypeName#>()
+<#
+// We need to set the @odata.type property when this type has 
+if (!complex.IsAbstract)
+{
+#>        public <#=complexTypeName#>()
         {
-            this.ODataType = this.GetType().FullName;
+            this.ODataType = "<#=complex.FullName#>";
         }
-
     <#
-    }
+}
         foreach(var property in complex.Properties)
         {
 
