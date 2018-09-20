@@ -42,7 +42,19 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
     <#=attributeStringBuilder.ToString()#>
     public <#=classType#> <#=typeDeclaration#>
     {
+
+    <# 
+    // We need to set the @odata.type property when this type has 
+    if (!complex.Base.IsAbstract)
+    {
+    #>
+        public <#=complexTypeName#>()
+        {
+            this.ODataType = this.GetType().FullName;
+        }
+
     <#
+    }
         foreach(var property in complex.Properties)
         {
 
@@ -86,6 +98,7 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
         }
 
     // Only include AdditionalData in the base classes.
+    // Adding odata.type to all complex types with no base class. 
     if (complex.Base == null)
     {
     #>
@@ -95,6 +108,12 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
         /// </summary>
         [JsonExtensionData(ReadData = true)]
         public IDictionary<string, object> AdditionalData { get; set; }
+
+        /// <summary>
+        /// Gets or sets @odata.type.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.type", Required = Newtonsoft.Json.Required.Default)]
+        public string ODataType { get; set; }
     <#
     }
     #>
