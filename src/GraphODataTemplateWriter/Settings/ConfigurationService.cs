@@ -11,18 +11,27 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
     {
         private static IConfigurationProvider _configurationProvider;
         private static TemplateWriterSettings templateWriterSettings = null;
-
-        public static void Initialize(IConfigurationProvider configurationProvider)
+        private static string targetLanguage = null;
+        public static void Initialize(IConfigurationProvider configurationProvider, string targetLanguage = null)
         {
             _configurationProvider = configurationProvider;
+            if (!String.IsNullOrEmpty(targetLanguage))
+            {
+                ConfigurationService.targetLanguage = targetLanguage;
+            }
         }
 
         private static TemplateWriterSettings LoadSettingsForLanguage()
         {
             TemplateWriterSettings mainTWS = _configurationProvider.GetConfiguration<TemplateWriterSettings>();
 
-            TemplateWriterSettings.mainSettingsObject = mainTWS;
+            if (targetLanguage != null)
+            {
+                mainTWS.TargetLanguage = targetLanguage;
+            }
 
+            TemplateWriterSettings.mainSettingsObject = mainTWS;
+            
             //First dynamically create a new class that holds settings for the target language
             //We store a reference on the default constructor to the mainTWS and then copy
             //all properties on it.

@@ -213,9 +213,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static string GetSanitizedLongDescription(this OdcmProperty property)
         {
-            if (property.LongDescription != null)
+            var description = property.LongDescription ?? property.Description;
+
+            if (description != null)
             {
-                return property.LongDescription.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
+                return description.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
             }
             return null;
         }
