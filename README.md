@@ -134,7 +134,7 @@ There are currently several steps we take to form the metadata into one that wil
      <Annotation String="navigable" Term="Org.OData.Core.V1.LongDescription"/>
      ```
   - Remove HasStream properties from ```onenotePage``` and ```onenoteEntityBaseModel```
-  - Add ```ContainsTarget="true"``` to navigation properties that do not have a corresponding EntitySet
+  - Add ```ContainsTarget="true"``` to navigation properties that do not have a corresponding EntitySet. This currently applies to navigation properties that contain plannerBucket, plannerTask, plannerPlan, and plannerDelta.
   - Add long descriptions to types and properties from [docs](https://developer.microsoft.com/en-us/graph/docs/concepts/overview)
   
 In order to build against metadata other than that stored in the [metadata](https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/tree/master/metadata) directory, you will need to perform the first four on this list.
