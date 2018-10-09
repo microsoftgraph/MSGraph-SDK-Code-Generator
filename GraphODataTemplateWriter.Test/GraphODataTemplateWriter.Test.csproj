@@ -40,9 +40,11 @@
     <Reference Include="System.Core" />
     <Reference Include="Vipr.Core">
       <HintPath>..\submodules\vipr\src\Core\Vipr.Core\bin\Debug\Vipr.Core.dll</HintPath>
+      <HintPath>..\submodules\vipr\src\Core\Vipr.Core\bin\Release\Vipr.Core.dll</HintPath>
     </Reference>
     <Reference Include="Vipr.Reader.OData.v4">
       <HintPath>..\submodules\vipr\src\Readers\Vipr.Reader.OData.v4\bin\Debug\Vipr.Reader.OData.v4.dll</HintPath>
+      <HintPath>..\submodules\vipr\src\Readers\Vipr.Reader.OData.v4\bin\Release\Vipr.Reader.OData.v4.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
