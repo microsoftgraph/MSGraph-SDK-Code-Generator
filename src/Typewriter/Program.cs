@@ -25,21 +25,20 @@ namespace Typewriter
                 .WithNotParsed((errs) => HandleError(errs));
         }
 
-        private static void GenerateSDK(Options opts)
+        private static void GenerateSDK(Options options)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            SetupLogging(opts.Verbosity);
+            SetupLogging(options.Verbosity);
 
-            var csdlContents = MetadataResolver.GetMetadata(opts.Metadata);
+            var csdlContents = MetadataResolver.GetMetadata(options.Metadata);
 
-            // fix edmx
+            // Clean up EDMX to work with the generators assumptions.
+            var processCsdlContents = MetadataPreprocessor.CleanMetadata(csdlContents);
 
-            // filter out problem workloads
-
-            var files = MetadataToClientSource(csdlContents, opts.Language);
-            FileWriter.WriteAsync(files,opts.Output);
+            var files = MetadataToClientSource(processCsdlContents, options.Language);
+            FileWriter.WriteAsync(files, options.Output);
 
             stopwatch.Stop();
             Logger.Info($"Generation time: {stopwatch.Elapsed } seconds.");
