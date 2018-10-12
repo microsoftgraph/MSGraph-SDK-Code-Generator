@@ -22,11 +22,53 @@
       <EntityType Name="testSingleton2">
         <NavigationProperty Name="testSingleNav2" Type="graph.testType3" ContainsTarget="true" />
       </EntityType>
+      <ComplexType Name="thumbnail">
+        <Property Name="content" Type="Edm.Stream" />
+        <Property Name="height" Type="Edm.Int32" />
+        <Property Name="sourceItemId" Type="Edm.String" />
+        <Property Name="url" Type="Edm.String" />
+        <Property Name="width" Type="Edm.Int32" />
+      </ComplexType>
+      <EntityType Name="onenotePage" BaseType="microsoft.graph.onenoteEntitySchemaObjectModel" HasStream="true">
+        <Property Name="content" Type="Edm.Stream" />
+        <NavigationProperty Name="parentNotebook" Type="microsoft.graph.notebook" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="plannerGroup" BaseType="microsoft.graph.entity">
+        <NavigationProperty Name="plans" Type="Collection(microsoft.graph.plannerPlan)" />
+      </EntityType>
       <EntityContainer Name="GraphService">
         <Singleton Name="testSingleton" Type="graph.testSingleton"/>
         <Singleton Name="testSingleton2" Type="graph.testSingleton2"/>
         <EntitySet Name="testTypes" EntityType="graph.testType3"/>
       </EntityContainer>
+      <Annotations Target="microsoft.graph.directoryObject">
+        <Annotation Term="Org.OData.Capabilities.V1.ExpandRestrictions">
+          <Record>
+            <PropertyValue Property="Expandable" Bool="false" />
+          </Record>
+        </Annotation>
+        <Annotation Term="Org.OData.Capabilities.V1.NavigationRestrictions">
+          <Record>
+            <PropertyValue Property="Referenceable" Bool="false" />
+          </Record>
+        </Annotation>
+        <Annotation Term="Org.OData.Capabilities.V1.SelectRestrictions">
+          <Record>
+            <PropertyValue Property="Selectable" Bool="false" />
+          </Record>
+        </Annotation>
+        <Annotation Term="Org.OData.Capabilities.V1.CountRestrictions">
+          <Record>
+            <PropertyValue Property="Countable" Bool="false" />
+          </Record>
+        </Annotation>
+        <Annotation Term="Org.OData.Capabilities.V1.FilterRestrictions">
+          <Record>
+            <PropertyValue Property="Filterable" Bool="false" />
+          </Record>
+        </Annotation>
+        <Annotation Term="Org.OData.Capabilities.V1.SkipSupported" Bool="false" />
+      </Annotations>
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>

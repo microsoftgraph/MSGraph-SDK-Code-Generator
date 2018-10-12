@@ -23,6 +23,12 @@ namespace Typewriter
             return xMetadata;
         }
 
+        // Added for tests.
+        internal static void SetXMetadata(XDocument metadata)
+        {
+            xMetadata = metadata;
+        }
+
         /// <summary>
         /// Cleans metadata to match the assumptions in the generator and templates.
         /// </summary>
