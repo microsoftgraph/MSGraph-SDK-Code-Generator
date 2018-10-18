@@ -1,5 +1,5 @@
 #
-# Creates the Chocolatey package version based on assembly version,
+# Creates the Chocolatey package, sets the version based on assembly version,
 # and whether there is already a CI revision set.
 #
 param([String]$pat, [String]$targetPackageName = 'typewriter')
@@ -40,21 +40,21 @@ $packageFeedNormalizedVersionParts = $packageFeedNormalizedVersion.Split('-')
 
 # Check whether the assembly version and feed version match.
 if ($packageFeedNormalizedVersionParts[0] -eq $assemblySemver) {
-    # The assembly version and feed version match.
+    # The assembly version and feed version match. We'll need to either set the initial ci revision or increment it.
      
     # Check whether the latest package in the feed has been updated with a ci release, eg '-ci*'
     if ($packageFeedNormalizedVersionParts.length -eq 1) {
-        # Append the starting ci revision.
+        # Append the initial ci revision.
         $finalPackageVersion = $assemblySemver + $ciToken + "0"
     } 
     else {
-        # increment the ci revision, eg "0.1.2-ci3" become "0.1.2-ci4"
+        # Increment the ci revision, eg "0.1.2-ci3" becomes "0.1.2-ci4"
         $number = $packageFeedNormalizedVersionParts[1].Remove(0, 2) -as [int] # removing 'ci'    
         $finalPackageVersion = $assemblySemver + $ciToken + ($number += 1)
     }
 
 }
-# The don't match so just use the assembly version.
+# They don't match so just use the assembly version.
 else {
     $finalPackageVersion = $assemblySemver
 }
