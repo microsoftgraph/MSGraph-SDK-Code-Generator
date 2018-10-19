@@ -11,6 +11,7 @@ using NLog.Config;
 using NLog.Targets;
 using Vipr.Core;
 using Vipr.Reader.OData.v4;
+using ApiDoctor.Publishing;
 
 namespace Typewriter
 {
@@ -32,12 +33,15 @@ namespace Typewriter
 
             SetupLogging(options.Verbosity);
 
-            var csdlContents = MetadataResolver.GetMetadata(options.Metadata);
+            string csdlContents = MetadataResolver.GetMetadata(options.Metadata);
 
             // Clean up EDMX to work with the generators assumptions.
-            var processCsdlContents = MetadataPreprocessor.CleanMetadata(csdlContents);
+            string processedCsdlContents = MetadataPreprocessor.CleanMetadata(csdlContents);
 
-            var files = MetadataToClientSource(processCsdlContents, options.Language);
+            // Inject documentation annotations into the CSDL using ApiDoctor.
+            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(processedCsdlContents, options);
+            
+            var files = MetadataToClientSource(csdlWithDocAnnotations, options.Language);
             FileWriter.WriteAsync(files, options.Output);
 
             stopwatch.Stop();
