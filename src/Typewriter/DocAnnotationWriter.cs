@@ -2,6 +2,7 @@
 using ApiDoctor.Validation;
 using ApiDoctor.Validation.Error;
 using ApiDoctor.Validation.OData;
+using ApiDoctor.Validation.OData.Transformation;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -15,22 +16,25 @@ namespace Typewriter
     internal class DocAnnotationWriter : ApiDoctor.Publishing.CSDL.CsdlWriter// or this a helper, will name this later
     {
         private static Logger Logger => LogManager.GetLogger("DocAnnotationWriter");
-        private string csdl;
+        //private string csdl;
 
         internal IssueLogger IssueLogger { get; set; }
         internal DocSet DocSet { get; set; }
+        internal string Csdl { get; set; }
 
         private readonly CsdlWriterOptions options;
 
         internal DocAnnotationWriter(DocSet docSet, CsdlWriterOptions options, string csdl) : base(docSet, options)
         {
-            this.csdl = csdl;
+            this.Csdl = csdl;
             this.DocSet = docSet;
             this.options = options; // Can change the base access modifier so we could use it. 
         }
 
-        private async Task<string> PublishToStringAsync(IssueLogger issues)
+        public async Task<string> PublishToStringAsync(IssueLogger issues)
         {
+            string outputFilenameSuffix = "";
+
             // Step 1: Generate an EntityFramework OM from the documentation and/or template file
             EntityFramework framework = CreateEntityFrameworkFromDocs(issues);
             if (null == framework)
@@ -72,15 +76,7 @@ namespace Typewriter
             }
 
             // Step 2: Generate XML representation of EDMX
-            string xmlData = null;
-            if (options.Formats.HasFlag(MetadataFormat.EdmxOutput))
-            {
-                xmlData = ODataParser.Serialize<EntityFramework>(framework, options.AttributesOnNewLines);
-            }
-            else if (options.Formats.HasFlag(MetadataFormat.SchemaOutput))
-            {
-                xmlData = ODataParser.Serialize<Schema>(framework.DataServices.Schemas.First(), options.AttributesOnNewLines);
-            }
+            string xmlData = ODataParser.Serialize<EntityFramework>(framework, options.AttributesOnNewLines);
 
             return xmlData;
         }
@@ -90,7 +86,7 @@ namespace Typewriter
     {
         private static Logger Logger => LogManager.GetLogger("AnnotationHelper");
 
-        internal static string ApplyAnnotationsToCsdl(string csdl, Options options)
+        internal async static Task<string> ApplyAnnotationsToCsdl(string csdl, Options options)
         {
             // Get DocSet
             DocSet docs = GetDocSet(options, new IssueLogger());
@@ -100,7 +96,7 @@ namespace Typewriter
             // Create DocAnnotationWriter
             DocAnnotationWriter docWriter = new DocAnnotationWriter(docs, csdlWriterOptions, csdl);
 
-            throw new NotImplementedException();
+            return await docWriter.PublishToStringAsync(new IssueLogger()); 
         }
 
         private static DocSet GetDocSet(Options options, IssueLogger issues)
@@ -120,6 +116,7 @@ namespace Typewriter
 
             Logger.Info("Scanning documentation files");
             var stopwatch = new Stopwatch();
+            stopwatch.Start();
             docSet.ScanDocumentation(string.Empty, issues);
             stopwatch.Stop();
             Logger.Info($"Took {stopwatch.Elapsed} to parse {docSet.Files.Length} source files.");

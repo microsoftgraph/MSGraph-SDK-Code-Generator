@@ -39,7 +39,7 @@ namespace Typewriter
             string processedCsdlContents = MetadataPreprocessor.CleanMetadata(csdlContents);
 
             // Inject documentation annotations into the CSDL using ApiDoctor.
-            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(processedCsdlContents, options);
+            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(processedCsdlContents, options).Result;
             
             var files = MetadataToClientSource(csdlWithDocAnnotations, options.Language);
             FileWriter.WriteAsync(files, options.Output);
@@ -90,6 +90,9 @@ namespace Typewriter
 
         static private IEnumerable<TextFile> MetadataToClientSource(string edmxString, string targetLanguage)
         {
+            if (String.IsNullOrEmpty(edmxString))
+                throw new ArgumentNullException("edmxString", "The EDMX file string contains no content.");
+
             var reader = new OdcmReader();
             var writer = new TemplateWriter(targetLanguage);
             writer.SetConfigurationProvider(new ConfigurationProvider());

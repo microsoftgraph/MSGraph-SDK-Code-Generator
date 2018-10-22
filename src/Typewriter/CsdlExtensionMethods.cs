@@ -4,6 +4,8 @@ namespace Typewriter
 {
     using ApiDoctor.Validation;
     using ApiDoctor.Validation.Error;
+    using ApiDoctor.Validation.OData;
+    using ApiDoctor.Validation.Utility;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -102,13 +104,13 @@ namespace Typewriter
             return string.Join(",", allParams.OrderBy(p => p));
         }
 
-        public static string HttpMethodVerb(this MethodDefinition method)
-        {
-            HttpParser parser = new HttpParser();
-            var request = parser.ParseHttpRequest(method.Request);
-            return request.Method;
+        //public static string HttpMethodVerb(this MethodDefinition method)
+        //{
+        //    HttpParser parser = new HttpParser();
+        //    var request = parser.ParseHttpRequest(method.Request);
+        //    return request.Method;
 
-        }
+        //}
 
         internal static void AppendWithCondition(this System.Text.StringBuilder sb, bool condition, string text, string prefixIfExistingContent = null)
         {
@@ -153,11 +155,6 @@ namespace Typewriter
 
             return edmx;
 
-
         }
-
-
-
-
     }
 }
