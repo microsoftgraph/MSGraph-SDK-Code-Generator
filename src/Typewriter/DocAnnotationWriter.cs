@@ -91,7 +91,14 @@ namespace Typewriter
             // Get DocSet
             DocSet docs = GetDocSet(options, new IssueLogger());
             // Create CsdlWriterOptions
-            var csdlWriterOptions = new CsdlWriterOptions() { DocumentationSetPath = options.DocsRoot + "\\api-reference\\v1.0\\" };
+            var csdlWriterOptions = new CsdlWriterOptions()
+            {
+                DocumentationSetPath = options.DocsRoot + "\\api-reference\\v1.0\\",
+                //Annotations = AnnotationOptions.AllAnnotations,
+                MergeWithMetadataPath = options.Metadata,
+                SkipMetadataGeneration = true,
+                Formats = MetadataFormat.EdmxInput
+            };
 
             // Create DocAnnotationWriter
             DocAnnotationWriter docWriter = new DocAnnotationWriter(docs, csdlWriterOptions, csdl);
