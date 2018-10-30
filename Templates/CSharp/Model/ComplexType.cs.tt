@@ -69,7 +69,7 @@ if (complex.IsBaseAbstractAndReferencedAsPropertyType() && !complex.IsAbstract)
 
         /// <summary>
         /// Gets or sets <#=property.Name#>.
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
         /// <#=property.GetSanitizedLongDescription()#>
 <# } #>
@@ -84,7 +84,7 @@ if (complex.IsBaseAbstractAndReferencedAsPropertyType() && !complex.IsAbstract)
 
         /// <summary>
         /// Gets or sets <#=property.Name#>.
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
         /// <#=property.GetSanitizedLongDescription()#>
 <# } #>
