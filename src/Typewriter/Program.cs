@@ -41,6 +41,7 @@ namespace Typewriter
             // Inject documentation annotations into the CSDL using ApiDoctor.
             string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(processedCsdlContents, options).Result;
             
+            // Create code files from the CSDL with annotations for the target platform and write those files to disk.
             var files = MetadataToClientSource(csdlWithDocAnnotations, options.Language);
             FileWriter.WriteAsync(files, options.Output);
 
@@ -88,6 +89,12 @@ namespace Typewriter
             }
         }
 
+        /// <summary>
+        /// Generates code files from an edmx file.
+        /// </summary>
+        /// <param name="edmxString">The EDMX file as a string.</param>
+        /// <param name="targetLanguage">Specifies the target language. Possible values are csharp, php, etc.</param>
+        /// <returns></returns>
         static private IEnumerable<TextFile> MetadataToClientSource(string edmxString, string targetLanguage)
         {
             if (String.IsNullOrEmpty(edmxString))

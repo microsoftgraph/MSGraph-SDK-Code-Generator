@@ -13,27 +13,25 @@ using System.Threading.Tasks;
 
 namespace Typewriter
 {
-    internal class DocAnnotationWriter : ApiDoctor.Publishing.CSDL.CsdlWriter// or this a helper, will name this later
+    /// <summary>
+    /// Creates a CSDL file with documentation annotations sourced from documentation.
+    /// </summary>
+    internal class DocAnnotationWriter : ApiDoctor.Publishing.CSDL.CsdlWriter
     {
         private static Logger Logger => LogManager.GetLogger("DocAnnotationWriter");
-        //private string csdl;
-
-        internal IssueLogger IssueLogger { get; set; }
-        internal DocSet DocSet { get; set; }
-        internal string Csdl { get; set; }
-
+        
         private readonly CsdlWriterOptions options;
 
         internal DocAnnotationWriter(DocSet docSet, CsdlWriterOptions options, string csdl) : base(docSet, options)
         {
-            this.Csdl = csdl;
-            this.DocSet = docSet;
             this.options = options; // Can change the base access modifier so we could use it. 
         }
 
         public async Task<string> PublishToStringAsync(IssueLogger issues)
         {
             string outputFilenameSuffix = "";
+
+            Logger.Info("Begin creating metadata file with documentation annotations.");
 
             // Step 1: Generate an EntityFramework OM from the documentation and/or template file
             EntityFramework framework = CreateEntityFrameworkFromDocs(issues);
@@ -78,6 +76,8 @@ namespace Typewriter
             // Step 2: Generate XML representation of EDMX
             string xmlData = ODataParser.Serialize<EntityFramework>(framework, options.AttributesOnNewLines);
 
+            Logger.Info("Finish creating metadata file with documentation annotations.");
+
             return xmlData;
         }
     }
@@ -90,7 +90,7 @@ namespace Typewriter
         {
             // Get DocSet
             DocSet docs = GetDocSet(options, new IssueLogger());
-            // Create CsdlWriterOptions
+
             var csdlWriterOptions = new CsdlWriterOptions()
             {
                 DocumentationSetPath = options.DocsRoot + "\\api-reference\\v1.0\\",
@@ -100,11 +100,11 @@ namespace Typewriter
                 Formats = MetadataFormat.EdmxInput
             };
 
-            // Create DocAnnotationWriter
             DocAnnotationWriter docWriter = new DocAnnotationWriter(docs, csdlWriterOptions, csdl);
 
             return await docWriter.PublishToStringAsync(new IssueLogger()); 
         }
+
 
         private static DocSet GetDocSet(Options options, IssueLogger issues)
         {
@@ -118,10 +118,10 @@ namespace Typewriter
             catch (System.IO.FileNotFoundException ex)
             {
                 Logger.Error(ex.Message);
-                return null; // Hmmmmm. TODO
+                return null;
             }
 
-            Logger.Info("Scanning documentation files");
+            Logger.Info("Parsing documentation files");
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             docSet.ScanDocumentation(string.Empty, issues);
