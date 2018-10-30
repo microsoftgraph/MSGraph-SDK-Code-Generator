@@ -94,8 +94,8 @@ namespace Typewriter
             var csdlWriterOptions = new CsdlWriterOptions()
             {
                 DocumentationSetPath = options.DocsRoot + "\\api-reference\\v1.0\\",
-                //Annotations = AnnotationOptions.AllAnnotations,
-                MergeWithMetadataPath = options.Metadata,
+                Annotations = AnnotationOptions.Properties,
+                SourceMetadataPath = options.Metadata,
                 SkipMetadataGeneration = true,
                 Formats = MetadataFormat.EdmxInput
             };
