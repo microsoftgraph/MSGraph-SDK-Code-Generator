@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationProvider.cs" />
-    <Compile Include="CsdlExtensionMethods.cs" />
     <Compile Include="DocAnnotationWriter.cs" />
     <Compile Include="FileWriter.cs" />
     <Compile Include="MetadataPreprocessor.cs" />

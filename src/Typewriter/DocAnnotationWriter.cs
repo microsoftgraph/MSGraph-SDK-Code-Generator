@@ -36,13 +36,6 @@ namespace Typewriter
             if (null == framework)
                 return string.Empty;
 
-            if (!string.IsNullOrEmpty(options.MergeWithMetadataPath))
-            {
-                EntityFramework secondFramework = CreateEntityFrameworkFromDocs(issues, options.MergeWithMetadataPath, generateFromDocs: false);
-                framework = framework.MergeWith(secondFramework);
-                outputFilenameSuffix += "-merged";
-            }
-
             // Step 1a: Apply an transformations that may be defined in the documentation
             if (!string.IsNullOrEmpty(options.TransformOutput))
             {
