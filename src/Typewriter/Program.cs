@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommandLine;
+﻿using CommandLine;
 using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Vipr.Core;
 using Vipr.Reader.OData.v4;
-using ApiDoctor.Publishing;
 
 namespace Typewriter
 {
