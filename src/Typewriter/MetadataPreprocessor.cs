@@ -129,24 +129,31 @@ namespace Typewriter
         /// </summary>
         internal static void AddLongDescriptionToThumbnail()
         {
-            // Thumbnail hack - add LongDescription annotation
-            XElement thumbnailComplexType = xMetadata.Descendants()
-                .Where(x => (string)x.Name.LocalName == "ComplexType")
-                .Where(x => x.Attribute("Name").Value == "thumbnail")
-                .First();
-
-            if (thumbnailComplexType != null)
+            try
             {
-                // need to specify namespace so default xmlns="" isn't added that breaks VIPR
-                XElement thumbnailAnnotation = new XElement(thumbnailComplexType.Name.Namespace + "Annotation");
+                // Thumbnail hack - add LongDescription annotation
+                XElement thumbnailComplexType = xMetadata.Descendants()
+                    .Where(x => (string)x.Name.LocalName == "ComplexType")
+                    .Where(x => x.Attribute("Name").Value == "thumbnail")
+                    .First();
 
-                thumbnailAnnotation.Add(new XAttribute("Term", "Org.OData.Core.V1.LongDescription"));
-                thumbnailAnnotation.Add(new XAttribute("String", "navigable"));
-                thumbnailComplexType.Add(thumbnailAnnotation);
+                if (thumbnailComplexType != null)
+                {
+                    // need to specify namespace so default xmlns="" isn't added that breaks VIPR
+                    XElement thumbnailAnnotation = new XElement(thumbnailComplexType.Name.Namespace + "Annotation");
 
-                Logger.Info("AddLongDescriptionToThumbnail rule was applied to the thumbnail complex type.");
+                    thumbnailAnnotation.Add(new XAttribute("Term", "Org.OData.Core.V1.LongDescription"));
+                    thumbnailAnnotation.Add(new XAttribute("String", "navigable"));
+                    thumbnailComplexType.Add(thumbnailAnnotation);
+
+                    Logger.Info("AddLongDescriptionToThumbnail rule was applied to the thumbnail complex type.");
+                }
+                else
+                {
+                    Logger.Error("AddLongDescriptionToThumbnail rule was not applied to the thumbnail complex type because the type wasn't found.");
+                }
             }
-            else
+            catch (InvalidOperationException)
             {
                 Logger.Error("AddLongDescriptionToThumbnail rule was not applied to the thumbnail complex type because the type wasn't found.");
             }

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommandLine;
+﻿using CommandLine;
 using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Vipr.Core;
 using Vipr.Reader.OData.v4;
 
@@ -32,12 +29,16 @@ namespace Typewriter
 
             SetupLogging(options.Verbosity);
 
-            var csdlContents = MetadataResolver.GetMetadata(options.Metadata);
+            string csdlContents = MetadataResolver.GetMetadata(options.Metadata);
 
             // Clean up EDMX to work with the generators assumptions.
-            var processCsdlContents = MetadataPreprocessor.CleanMetadata(csdlContents);
+            string processedCsdlContents = MetadataPreprocessor.CleanMetadata(csdlContents);
 
-            var files = MetadataToClientSource(processCsdlContents, options.Language);
+            // Inject documentation annotations into the CSDL using ApiDoctor.
+            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(processedCsdlContents, options).Result;
+            
+            // Create code files from the CSDL with annotations for the target platform and write those files to disk.
+            var files = MetadataToClientSource(csdlWithDocAnnotations, options.Language);
             FileWriter.WriteAsync(files, options.Output);
 
             stopwatch.Stop();
@@ -84,8 +85,17 @@ namespace Typewriter
             }
         }
 
+        /// <summary>
+        /// Generates code files from an edmx file.
+        /// </summary>
+        /// <param name="edmxString">The EDMX file as a string.</param>
+        /// <param name="targetLanguage">Specifies the target language. Possible values are csharp, php, etc.</param>
+        /// <returns></returns>
         static private IEnumerable<TextFile> MetadataToClientSource(string edmxString, string targetLanguage)
         {
+            if (String.IsNullOrEmpty(edmxString))
+                throw new ArgumentNullException("edmxString", "The EDMX file string contains no content.");
+
             var reader = new OdcmReader();
             var writer = new TemplateWriter(targetLanguage);
             writer.SetConfigurationProvider(new ConfigurationProvider());

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommandLine;
+﻿using CommandLine;
 
 namespace Typewriter
 {
@@ -28,5 +23,8 @@ namespace Typewriter
 
         [Option('o', "output", Default= ".", HelpText = "Path to output folder")]
         public string Output { get; set; }
+
+        [Option('d', "docs", Default = ".", HelpText = "Path to the root of the documentation repo folder")]
+        public string DocsRoot { get; set; }
     }
 }
