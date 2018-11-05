@@ -31,16 +31,40 @@ namespace Typewriter
 
             string csdlContents = MetadataResolver.GetMetadata(options.Metadata);
 
+            // Generate the files from the input metadata and do not preprocess.
+            if (options.GenerateMode == GenerationMode.Files)
+            {
+                var files = MetadataToClientSource(csdlContents, options.Language);
+                FileWriter.WriteAsync(files, options.Output);
+
+                stopwatch.Stop();
+                Logger.Info($"Generation time: {stopwatch.Elapsed } seconds.");
+
+                return;
+            }
+
             // Clean up EDMX to work with the generators assumptions.
             string processedCsdlContents = MetadataPreprocessor.CleanMetadata(csdlContents);
 
             // Inject documentation annotations into the CSDL using ApiDoctor.
             string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(processedCsdlContents, options).Result;
+
+            // Output the clean and annotated metadata. 
+            if (options.GenerateMode == GenerationMode.Metadata)
+            {
+                // TODO: Write the metadata to the output directory using csdlWithDocAnnotations.
+
+                stopwatch.Stop();
+                Logger.Info($"Generation time: {stopwatch.Elapsed } seconds.");
+
+                return;
+            }
             
+            // Default GenerationMode.Full.
             // Create code files from the CSDL with annotations for the target platform and write those files to disk.
             var files = MetadataToClientSource(csdlWithDocAnnotations, options.Language);
             FileWriter.WriteAsync(files, options.Output);
-
+            
             stopwatch.Stop();
             Logger.Info($"Generation time: {stopwatch.Elapsed } seconds.");
         }
