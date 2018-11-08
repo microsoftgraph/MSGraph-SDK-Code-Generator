@@ -34,8 +34,8 @@ namespace Typewriter
             // Generate the files from the input metadata and do not preprocess.
             if (options.GenerateMode == GenerationMode.Files)
             {
-                var files = MetadataToClientSource(csdlContents, options.Language);
-                FileWriter.WriteAsync(files, options.Output);
+                var codeFiles = MetadataToClientSource(csdlContents, options.Language);
+                FileWriter.WriteAsync(codeFiles, options.Output);
 
                 stopwatch.Stop();
                 Logger.Info($"Generation time: {stopwatch.Elapsed } seconds.");
@@ -46,13 +46,16 @@ namespace Typewriter
             // Clean up EDMX to work with the generators assumptions.
             string processedCsdlContents = MetadataPreprocessor.CleanMetadata(csdlContents);
 
-            // Inject documentation annotations into the CSDL using ApiDoctor.
-            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(processedCsdlContents, options).Result;
+            // Create clean metadata and provide a path to it.
+            string pathToCleanMetadata = FileWriter.WriteMetadata(processedCsdlContents, "cleanMetadata.xml");
+
+            // Inject documentation annotations into the clean CSDL using ApiDoctor and get back the file as a string.
+            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata).Result;
 
             // Output the clean and annotated metadata. 
             if (options.GenerateMode == GenerationMode.Metadata)
             {
-                // TODO: Write the metadata to the output directory using csdlWithDocAnnotations.
+                FileWriter.WriteMetadata(csdlWithDocAnnotations, "cleanMetadataWithDescriptions_v10.xml", options.Output);
 
                 stopwatch.Stop();
                 Logger.Info($"Generation time: {stopwatch.Elapsed } seconds.");
@@ -65,7 +68,7 @@ namespace Typewriter
             var files = MetadataToClientSource(csdlWithDocAnnotations, options.Language);
             FileWriter.WriteAsync(files, options.Output);
             
-            stopwatch.Stop();
+            stopwatch.Stop();   
             Logger.Info($"Generation time: {stopwatch.Elapsed } seconds.");
         }
 

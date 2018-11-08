@@ -18,6 +18,26 @@ namespace Typewriter
         internal static Logger Logger => LogManager.GetLogger("FileWriter");
 
         /// <summary>
+        /// Writes a metadata file to disk.
+        /// </summary>
+        /// <param name="metadata">The metadata to write.</param>
+        /// <param name="outputDirectoryPath">Metadata write location.</param>
+        public static string WriteMetadata(string metadata, string fileName, string outputDirectoryPath = null)
+        {
+            if (!string.IsNullOrWhiteSpace(outputDirectoryPath) && !Directory.Exists(outputDirectoryPath))
+                Directory.CreateDirectory(outputDirectoryPath);
+            if (string.IsNullOrWhiteSpace(outputDirectoryPath))
+                outputDirectoryPath = Environment.CurrentDirectory;
+
+            var fullFileName = string.Concat(outputDirectoryPath, "\\", fileName);
+
+            File.WriteAllText(fullFileName, metadata);
+            Logger.Info($"Metadata written to {fullFileName}");
+
+            return fullFileName;
+        }
+
+        /// <summary>
         /// Write all generated files to disk
         /// </summary>
         /// <param name="textFilesToWrite">A list of files to write</param>
