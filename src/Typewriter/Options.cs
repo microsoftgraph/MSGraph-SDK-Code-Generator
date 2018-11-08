@@ -1,4 +1,7 @@
 ﻿using CommandLine;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("GraphODataTemplateWriter.Test")]
 
 namespace Typewriter
 {
@@ -29,7 +32,7 @@ namespace Typewriter
         Files
     }
 
-    class Options
+    public class Options
     {
         [Option('l', "language", Default = "CSharp", HelpText = "The target language for the generated code files. The values can be: Android, Java, ObjC, CSharp, PHP, Python, TypeScript, or GraphEndpointList")]
         public string Language { get; set; }
@@ -50,6 +53,12 @@ namespace Typewriter
             "the output code files by cleaning the input metadata, parsing the documentation, and adding annotations before generating the output files. Metadata generation mode" +
             "produces an output metadata file by cleaning metadata, documentation parsing, and adding documentation annotations. Files generation mode produces code files from" +
             "an input metadata and bypasses the cleaning, documentation parsing, and adding documentation annotations.")]
-        public GenerationMode GenerateMode { get; set; }
+        public GenerationMode GenerationMode { get; set; }
+
+        [Option('f', "outputMetadataFileName", Default = "cleanMetadataWithDescriptions", HelpText = "The output metadata filename. Only applicable for GenerationMode.Metadata.")]
+        public string OutputMetadataFileName { get; set; }
+
+        [Option('e', "endpointVersion", Default = "v1.0", HelpText = "The endpoint version. Expected values are 'v1.0' and 'beta'. Only applicable for GenerationMode.Metadata.")]
+        public string EndpointVersion { get; set; }
     }
 }

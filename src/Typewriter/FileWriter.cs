@@ -21,6 +21,7 @@ namespace Typewriter
         /// Writes a metadata file to disk.
         /// </summary>
         /// <param name="metadata">The metadata to write.</param>
+        /// <param name="fileName">The output metadata filename.</param>
         /// <param name="outputDirectoryPath">Metadata write location.</param>
         public static string WriteMetadata(string metadata, string fileName, string outputDirectoryPath = null)
         {

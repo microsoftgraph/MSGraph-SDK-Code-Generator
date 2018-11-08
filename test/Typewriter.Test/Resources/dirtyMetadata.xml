@@ -29,7 +29,7 @@
         <Property Name="url" Type="Edm.String" />
         <Property Name="width" Type="Edm.Int32" />
       </ComplexType>
-      <EntityType Name="onenotePage" BaseType="microsoft.graph.onenoteEntitySchemaObjectModel" HasStream="true">
+      <EntityType Name="onenotePage" HasStream="true">
         <Property Name="content" Type="Edm.Stream" />
         <NavigationProperty Name="parentNotebook" Type="microsoft.graph.notebook" ContainsTarget="true" />
       </EntityType>
