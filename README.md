@@ -9,6 +9,7 @@ Source code writers for [VIPR][vipr-source-repo] utilizing T4 templates. The Gra
 Currently the following target languages are supported by this writer:
 - Android
 - CSharp
+- Java
 - Objective-C
 - Python
 - TypeScript
