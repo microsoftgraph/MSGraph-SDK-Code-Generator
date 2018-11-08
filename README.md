@@ -36,6 +36,41 @@ Once setup is complete, you can work with the GraphODataTemplateWriter solution 
 
 For more information on submodules read [this chapter](http://git-scm.com/book/en/v2/Git-Tools-Submodules) from the Git book and search the Web.
 
+## Using Typewriter
+
+Typewriter is a new solution for generating code files using the GraphODataTemplateWriter and VIPR. It is an executable that is intended to simplify the generation of code files. Build the solution to find the typewriter executable in `\MSGraph-SDK-Code-Generator\src\Typewriter\bin\Release`. The typewriter run options are:
+
+* **-l**, **-language**:  The target language for the generated code files. The values can be: `Android`, `Java`, `ObjC`, `CSharp`, `PHP`, `Python`, `TypeScript`, or `GraphEndpointList`. The default value is `CSharp`. This is not applicable when only generating clean and annotated metadata as specified by the `-generationmode Metadata` option.
+* **-m**, **-metadata**: The local file path or URL to the target input metadata. The default value is `https://graph.microsoft.com/v1.0/$metadata`. This value is required.
+* **-v**, **-verbosity**: The log verbosity level. The values can be: `Minimal`, `Info`, `Debug`, or `Trace`. The default value is `Minimal`.
+* **-o**, **-output**: Specifies the path to the output folder. The default value is the directory that contains typewriter.exe. The structure and contents of the output directory will be different based on the `-generationmode` and `-language` options.
+* **-d**, **-docs**: Specifies the path to the local root of the [microsoft-graph-docs](https://github.com/microsoftgraph/microsoft-graph-docs) repo. The default value is the directory that contains typewriter.exe. The documentation is parsed to provide documentation annotations to the metadata which is then used to add doc comments in the generated code files. This option is required when using `-generationmode` values of `Metadata` or `Full`.
+* **-g**, **-generationmode**: Specifies the generation mode. The values can be: `Full`, `Metadata`, or `Files`. `Full` (default) generation mode produces the output code files by cleaning the input metadata, parsing the documentation, and adding annotations before generating the output files. `Metadata` generation mode produces an output metadata file by cleaning metadata, documentation parsing, and adding documentation annotations. `Files` generation mode produces code files from an input metadata and bypasses the cleaning, documentation parsing, and adding documentation annotations.
+* **-f**, **-outputMetadataFileName**: The base output metadata filename. Only applicable for `-generationmode Metadata`. The default value is `cleanMetadataWithDescriptions` which is used with the value of the `-endpointVersion` to generate a metadata file named `cleanMetadataWithDescriptionsv1.0.xml`.
+* **-e**, **-endpointVersion**: The endpoint version used when naming a metadata file. Expected values are `v1.0` and `beta`. Only applicable for `-generationmode Metadata`.
+
+### Example typewriter usage
+
+#### Generate TypeScript typings from a CSDL (metadata) file without cleaning or annotating the CSDL. 
+
+The output will go in to the `outputTypeScript` directory.
+
+`.\typewriter.exe -v Info -m D:\cleanMetadataWithDescriptions_v10.xml -o outputTypeScript -l TypeScript -g Files`
+
+#### Clean and annotate a metadata file with documentation annotations sourced from the documentation repo 
+
+The output metadata file will go in to the `output2` directory. The output metadata file will be named `cleanMetadataWithDescriptionsv1.0.xml` based on the default values.
+
+`.\typewriter.exe -v Info -m D:\v1.0_2018_10_23_source.xml -o output2 -d D:\repos\microsoft-graph-docs -g Metadata`
+
+#### Generate C# code files from the metadata that will be cleaned and annotated with documentation annotations sourced from the documentation repo
+
+The output C# code files will go in to the `output` directory.
+
+`.\typewriter.exe -v Info -m D:\v1.0_2018_10_23_source.xml -o output -l CSharp -d D:\repos\microsoft-graph-docs -g Full`
+
+
+
 ## Using Vipr with this Writer
 
 1. Build the solution in Visual Studio.
