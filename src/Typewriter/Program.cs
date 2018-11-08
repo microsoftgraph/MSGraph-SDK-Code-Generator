@@ -45,7 +45,7 @@ namespace Typewriter
                     break;
             }
 
-            stopwatch.Stop();   
+            stopwatch.Stop();
             Logger.Info($"Generation time: {stopwatch.Elapsed } seconds.");
         }
 
@@ -88,25 +88,5 @@ namespace Typewriter
                 Console.Write(item.ToString());
             }
         }
-
-        /// <summary>
-        /// Generates code files from an edmx file.
-        /// </summary>
-        /// <param name="edmxString">The EDMX file as a string.</param>
-        /// <param name="targetLanguage">Specifies the target language. Possible values are csharp, php, etc.</param>
-        /// <returns></returns>
-        //static private IEnumerable<TextFile> MetadataToClientSource(string edmxString, string targetLanguage)
-        //{
-        //    if (String.IsNullOrEmpty(edmxString))
-        //        throw new ArgumentNullException("edmxString", "The EDMX file string contains no content.");
-
-        //    var reader = new OdcmReader();
-        //    var writer = new TemplateWriter(targetLanguage);
-        //    writer.SetConfigurationProvider(new ConfigurationProvider());
-
-        //    var model = reader.GenerateOdcmModel(new List<TextFile> { new TextFile("$metadata", edmxString) });
-
-        //    return writer.GenerateProxy(model);
-        //}
     }
 }

@@ -95,7 +95,7 @@ namespace Typewriter
                 Formats = MetadataFormat.EdmxInput
             };
 
-            // We only intend to ues the source metadata when we don't pass in a CSDL.
+            // We only intend to use the source metadata when we don't pass in a CSDL.
             if (string.IsNullOrEmpty(pathToCleanMetadata))
                 csdlWriterOptions.SourceMetadataPath = options.Metadata;
             else
