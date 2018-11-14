@@ -20,7 +20,7 @@ namespace Typewriter
         
         private readonly CsdlWriterOptions options;
 
-        internal DocAnnotationWriter(DocSet docSet, CsdlWriterOptions options, string csdl) : base(docSet, options)
+        internal DocAnnotationWriter(DocSet docSet, CsdlWriterOptions options) : base(docSet, options)
         {
             this.options = options; // Can change the base access modifier so we could use it. 
         }
@@ -77,21 +77,31 @@ namespace Typewriter
     {
         private static Logger Logger => LogManager.GetLogger("AnnotationHelper");
 
-        internal async static Task<string> ApplyAnnotationsToCsdl(string csdl, Options options)
+        /// <summary>
+        /// Applies annotations to CSDL file.
+        /// </summary>
+        /// <param name="options">The typewriter input options.</param>
+        /// <param name="pathToCleanMetadata">Optional. Contains the path to a clean metadata to use when applying annotations. Overrides Option.Metadata.</param>
+        /// <returns>An annotated metadata file.</returns>
+        internal async static Task<string> ApplyAnnotationsToCsdl(Options options, string pathToCleanMetadata = null)
         {
-            // Get DocSet
             DocSet docs = GetDocSet(options, new IssueLogger());
 
             var csdlWriterOptions = new CsdlWriterOptions()
             {
                 DocumentationSetPath = options.DocsRoot + "\\api-reference\\v1.0\\",
                 Annotations = AnnotationOptions.Properties,
-                SourceMetadataPath = options.Metadata,
                 SkipMetadataGeneration = true,
                 Formats = MetadataFormat.EdmxInput
             };
 
-            DocAnnotationWriter docWriter = new DocAnnotationWriter(docs, csdlWriterOptions, csdl);
+            // We only intend to use the source metadata when we don't pass in a CSDL.
+            if (string.IsNullOrEmpty(pathToCleanMetadata))
+                csdlWriterOptions.SourceMetadataPath = options.Metadata;
+            else
+                csdlWriterOptions.SourceMetadataPath = pathToCleanMetadata;
+
+            DocAnnotationWriter docWriter = new DocAnnotationWriter(docs, csdlWriterOptions);
 
             return await docWriter.PublishToStringAsync(new IssueLogger()); 
         }

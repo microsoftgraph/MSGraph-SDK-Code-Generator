@@ -31,15 +31,19 @@ namespace Typewriter
 
             string csdlContents = MetadataResolver.GetMetadata(options.Metadata);
 
-            // Clean up EDMX to work with the generators assumptions.
-            string processedCsdlContents = MetadataPreprocessor.CleanMetadata(csdlContents);
-
-            // Inject documentation annotations into the CSDL using ApiDoctor.
-            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(processedCsdlContents, options).Result;
-            
-            // Create code files from the CSDL with annotations for the target platform and write those files to disk.
-            var files = MetadataToClientSource(csdlWithDocAnnotations, options.Language);
-            FileWriter.WriteAsync(files, options.Output);
+            switch (options.GenerationMode)
+            {
+                case GenerationMode.Files:
+                    Generator.GenerateFiles(csdlContents, options);
+                    break;
+                case GenerationMode.Metadata:
+                    Generator.WriteCleanAnnotatedMetadata(csdlContents, options);
+                    break;
+                case GenerationMode.Full:
+                default:
+                    Generator.GenerateFilesFromCleanMetadata(csdlContents, options);
+                    break;
+            }
 
             stopwatch.Stop();
             Logger.Info($"Generation time: {stopwatch.Elapsed } seconds.");
@@ -83,26 +87,6 @@ namespace Typewriter
             {
                 Console.Write(item.ToString());
             }
-        }
-
-        /// <summary>
-        /// Generates code files from an edmx file.
-        /// </summary>
-        /// <param name="edmxString">The EDMX file as a string.</param>
-        /// <param name="targetLanguage">Specifies the target language. Possible values are csharp, php, etc.</param>
-        /// <returns></returns>
-        static private IEnumerable<TextFile> MetadataToClientSource(string edmxString, string targetLanguage)
-        {
-            if (String.IsNullOrEmpty(edmxString))
-                throw new ArgumentNullException("edmxString", "The EDMX file string contains no content.");
-
-            var reader = new OdcmReader();
-            var writer = new TemplateWriter(targetLanguage);
-            writer.SetConfigurationProvider(new ConfigurationProvider());
-
-            var model = reader.GenerateOdcmModel(new List<TextFile> { new TextFile("$metadata", edmxString) });
-
-            return writer.GenerateProxy(model);
         }
     }
 }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Text;
-using Typewriter;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace Typewriter.Test
 {
