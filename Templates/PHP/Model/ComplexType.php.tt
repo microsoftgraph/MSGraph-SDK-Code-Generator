@@ -49,9 +49,9 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 #>
     /**
     * Gets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @return <#=property.Type.GetTypeString()#> The <#=propertyName#>
@@ -77,9 +77,9 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 
     /**
     * Sets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @param <#=property.Type.GetTypeString()#> $val The value of the <#=propertyName#>
@@ -108,9 +108,9 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 
     /**
     * Gets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @return <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> The <#=propertyName#>
@@ -135,9 +135,9 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 
     /**
     * Sets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @param <#=property.Type.GetTypeString()#> $val The value to assign to the <#=property.Name#>
