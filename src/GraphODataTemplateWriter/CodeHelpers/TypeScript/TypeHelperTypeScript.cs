@@ -62,12 +62,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
         public static string GetSanitizedLongDescription(this OdcmProperty property)
         {
-            var description = property.LongDescription ?? property.Description;
-            if (description != null)
-            {
-                return description.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
-            }
-            return null;
+            return property.LongDescription ?? property.Description;
         }
     }
 }
