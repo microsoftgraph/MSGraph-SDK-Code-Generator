@@ -69,9 +69,9 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 
      /** 
      * Gets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
      *
      * @return array The <#=propertyName#>
@@ -87,9 +87,9 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     
     /** 
     * Sets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @param <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> $val The <#=propertyName#>
@@ -107,9 +107,9 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 #>
     /**
     * Gets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @return <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> The <#=propertyName#>
@@ -140,9 +140,9 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
     
     /**
     * Sets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @param <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> $val The <#=propertyName#>
@@ -167,9 +167,9 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
 #>
     /**
     * Gets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @return <#=property.Type.GetTypeString()#> The <#=propertyName#>
@@ -195,9 +195,9 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
     
     /**
     * Sets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @param <#=property.Type.GetTypeString()#> $val The <#=propertyName#>

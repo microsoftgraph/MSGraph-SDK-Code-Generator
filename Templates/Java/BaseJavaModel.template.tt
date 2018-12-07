@@ -1080,7 +1080,7 @@ public {1} {2}{3}{4} {{";
                 property.Name,
                 propertyType,
                 property.Name.SanitizePropertyName(property).ToLowerFirstChar(),
-				ReplaceInvalidCharacters(property.LongDescription));
+				GetSanitizedDescription(property));
         }
         return sb.ToString();
     }
@@ -1258,4 +1258,14 @@ public {1} {2}{3}{4} {{";
 		}
 		return null;
 	}
+
+    /**
+    * Get the description from the LongDescription or Description annotation and then return the sanitized string.
+    */
+    public string GetSanitizedDescription(OdcmProperty property)
+    {
+        var description = property.LongDescription ?? property.Description;
+
+        return ReplaceInvalidCharacters(description);
+    }
 #>
