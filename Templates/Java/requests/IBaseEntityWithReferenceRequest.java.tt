@@ -1,0 +1,35 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = ITypeWithReferencesRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(ITypeWithReferencesRequest(c), "IHttpRequest")#>
+
+    void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final IJsonBackedObject payload, final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final IJsonBackedObject payload) throws ClientException;
+
+    void get(final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> get() throws ClientException;
+
+	void delete(final ICallback<<#=TypeName(c)#>> callback);
+
+	void delete() throws ClientException;
+
+	void patch(final <#=TypeName(c)#> source<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+
+	<#=TypeName(c)#> patch(final <#=TypeName(c)#> source<#=TypeName(c)#>) throws ClientException;
+
+<# if (c.GetFeatures().CanSelect) { #>
+    <#=ITypeWithReferencesRequest(c)#> select(final String value);
+
+<# } #>
+<# if (c.GetFeatures().CanExpand) { #>
+    <#=ITypeWithReferencesRequest(c)#> expand(final String value);
+
+<# } #>
+}

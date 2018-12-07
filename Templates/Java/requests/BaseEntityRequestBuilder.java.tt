@@ -1,0 +1,285 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = TypeRequestBuilder(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDefForBaseEntityRequestBuilder(host)#>
+import com.microsoft.graph.core.IBaseClient;
+import com.microsoft.graph.http.BaseRequestBuilder;
+import com.microsoft.graph.options.Option;
+import java.util.EnumSet;
+
+<#=CreateClassDef(TypeRequestBuilder(c), "BaseRequestBuilder", ITypeRequestBuilder(c))#>
+
+    /**
+     * The request builder for the <#=TypeName(c)#>
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     */
+    public <#=TypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
+    }
+
+    /**
+     * Creates the request
+     *
+     * @return the <#=ITypeRequest(c)#> instance
+     */
+    public <#=ITypeRequest(c)#> buildRequest() {
+        return buildRequest(getOptions());
+    }
+
+    /**
+     * Creates the request with specific requestOptions instead of the existing requestOptions
+     *
+     * @param requestOptions the options for this request
+     * @return the <#=ITypeRequest(c)#> instance
+     */
+    public <#=ITypeRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
+        return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
+    }
+
+<#
+	if(host.TemplateName.Equals("DriveItemRequestBuilder")){
+#>
+    @Override
+    public IDriveItemRequestBuilder itemWithPath(final String path) {
+        return new DriveItemRequestBuilder(getRequestUrl() + ":/" + path + ":", getClient(), null);
+    }
+<# } else if(host.TemplateName.Equals("ThumbnailSetRequestBuilder")){ #>
+    @Override
+    public IThumbnailRequestBuilder getThumbnailSize(final String size) {
+        return new ThumbnailRequestBuilder(getRequestUrlWithAdditionalSegment(size), getClient(), /* options */ null);
+    }
+<# } #>
+
+<#
+if (c.AsOdcmClass() != null)
+{
+    foreach(var prop in c.AsOdcmClass().NavigationProperties())
+    {
+        var propName = prop.Name.ToUpperFirstChar();
+		var sanitizedProperty = propName.SanitizePropertyName().ToLowerFirstChar();
+        var propRequestBuilder = TypeRequestBuilder(prop);
+        if (prop.IsCollection()) {
+#>
+    public <#=ITypeCollectionRequestBuilder(prop)#> <#=sanitizedProperty#>() {
+        return new <#=TypeCollectionRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+
+    public <#=ITypeRequestBuilder(prop)#> <#=sanitizedProperty#>(final String id) {
+        return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
+    }
+<#
+        } else {
+#>
+
+    /**
+     * Gets the request builder for <#=TypeName(prop)#>
+     *
+     * @return the <#=ITypeRequestBuilder(prop)#> instance
+     */
+    public <#=ITypeRequestBuilder(prop)#> <#=sanitizedProperty#>() {
+        return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+<#
+        }
+    }
+#>
+<#
+	foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
+	{
+		var propName = prop.Name.ToCheckedCase();
+		var sanitizedName = propName;
+		if (c is OdcmMediaClass && propName == "Content") {
+			 sanitizedName = prop.Type.GetReservedPrefix().ToCheckedCase() + prop.Name.ToCheckedCase();
+		} else {
+			sanitizedName = propName.SanitizePropertyName().ToLowerFirstChar();
+		}
+		var propRequestBuilder = TypeRequestBuilder(prop);
+#>
+
+    public I<#=propRequestBuilder#> <#=sanitizedName#>() {
+        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+<#
+	}
+#>
+<#
+    if (c is OdcmMediaClass)
+    {
+#>
+
+    public <#=ITypeStreamRequestBuilder(c)#> content() {
+        return new <#=TypeStreamRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment("$value"), getClient(), null);
+    }
+<#
+    }
+#>
+<#
+    foreach (var method in c.AsOdcmClass().MethodsAndOverloads()) {
+
+        if (method.IsBoundToCollection) {
+            continue;
+        }
+
+        var parameterList = MethodParametersSignature(method);
+
+        if (parameterList != "") {
+            parameterList = parameterList.Remove(0, 2);
+        }
+
+		var sanitizedMethod = MethodName(method).SanitizePropertyName().ToLowerFirstChar();
+
+        if (method.IsCollection) {
+#>
+
+    public <#=ITypeCollectionRequestBuilder(method)#> <#=sanitizedMethod#>(<#=parameterList#>) {
+        return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    }
+<#      } else { #>
+
+    public <#=ITypeRequestBuilder(method)#> <#=sanitizedMethod#>(<#=parameterList#>) {
+        return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    }
+<#
+        }
+    }
+}
+#>
+}
+
+<#+
+	public string CreatePackageDefForBaseEntityRequestBuilder(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+
+		var importFormat = @"import {0}.{1}.{2};";
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						ITypeRequest(host.CurrentType));
+		sb.Append("\n");
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						TypeRequest(host.CurrentType));
+		sb.Append("\n");
+		var c = host.CurrentType;
+		if (c.AsOdcmClass() != null)
+		{
+			foreach(var prop in c.AsOdcmClass().NavigationProperties())
+			{
+				if (prop.IsCollection()) {
+					
+					sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						ITypeCollectionRequestBuilder(prop));
+					sb.Append("\n");
+
+					sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						TypeCollectionRequestBuilder(prop));
+					sb.Append("\n");
+				}
+				sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						ITypeRequestBuilder(prop));
+				sb.Append("\n");
+
+				sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						TypeRequestBuilder(prop));
+				sb.Append("\n");
+			}
+
+			foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
+			{
+				var propRequestBuilder = TypeRequestBuilder(prop);
+				sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						"I" + propRequestBuilder);
+				sb.Append("\n");
+
+				sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						propRequestBuilder);
+				sb.Append("\n");
+			}
+
+			if (c is OdcmMediaClass)
+			{
+				sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						ITypeStreamRequestBuilder(host.CurrentType));
+				sb.Append("\n");
+
+				sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						TypeStreamRequestBuilder(host.CurrentType));
+				sb.Append("\n");
+			}
+
+			foreach (var method in c.AsOdcmClass().MethodsAndOverloads()) {
+				if (method.IsBoundToCollection) {
+					continue;
+				}
+
+				foreach (var p in method.Parameters)
+				{
+					if(!(p.Type is OdcmPrimitiveType) && p.Type.GetTypeString() != "com.google.gson.JsonElement") {
+						var typeString = p.Type.GetTypeString();
+						if(p.Type.GetTypeString().StartsWith("EnumSet<")){
+							typeString = typeString.Substring(typeString.IndexOf("<") + 1);
+							typeString = typeString.Substring(0, typeString.Length-1);
+						}
+						sb.AppendFormat(importFormat,
+							host.CurrentModel.NamespaceName(),
+							getPackagePrefix(p),
+							typeString);
+						sb.Append("\n");
+					}
+				}
+
+				if (method.IsCollection) {
+					sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						ITypeCollectionRequestBuilder(method));
+					sb.Append("\n");
+
+					sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						TypeCollectionRequestBuilder(method));
+					sb.Append("\n");
+				} else {
+					sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						ITypeRequestBuilder(method));
+					sb.Append("\n");
+
+					sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests",
+						TypeRequestBuilder(method));
+					sb.Append("\n");
+				}
+			}
+		}
+		return sb.ToString();
+	}
+#>

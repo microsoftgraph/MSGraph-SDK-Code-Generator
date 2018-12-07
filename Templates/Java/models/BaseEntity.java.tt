@@ -1,0 +1,271 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = TypeName(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDefForEntity(host)#>
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
+import com.google.gson.annotations.*;
+import java.util.HashMap;
+import java.util.Map;
+<# if(host.TemplateName.Equals("PlannerChecklistItems")){ #>
+import java.util.UUID;
+import com.google.gson.JsonPrimitive;
+<# } #>
+
+<#=CreateClassDef(TypeName(c), BaseClassName(c), "IJsonBackedObject")#>
+<# if(host.TemplateName.Equals("PlannerAppliedCategories")){ #>
+    /**
+     * The Category1
+    */
+    @SerializedName("category1")
+    @Expose
+    public boolean category1;
+	
+    /**
+	 * The Category1
+	 */
+	@SerializedName("category2")
+	@Expose
+	public boolean category2;
+	
+	/**
+	 * The Category1
+	 */
+	@SerializedName("category3")
+	@Expose
+	public boolean category3;
+	
+	/**
+	 * The Category1
+	 */
+	@SerializedName("category4")
+	@Expose
+	public boolean category4;
+	
+	/**
+	 * The Category1
+	 */
+	@SerializedName("category5")
+	@Expose
+	public boolean category5;
+	
+	/**
+	 * The Category1
+	 */
+	@SerializedName("category6")
+	@Expose
+	public boolean category6;
+<# } else if(host.TemplateName.Equals("PlannerAssignedToTaskBoardTaskFormat")) { #>
+    /**
+     * The Etag.
+     */
+    @SerializedName("@odata.etag")
+    @Expose
+    public String etag;
+    
+	/**
+	 * The GetOrderHintForAssignee
+	 * 
+	 * @param userId The assignee ID to get the order hint for
+	 * @return The order hint for the given user
+	 */
+	public String orderHintForAssignee(String userId)
+	{
+		String orderHints = this.orderHintsByAssignee.get(userId);
+		return (orderHints != null) ? orderHints : this.unassignedOrderHint;
+	}
+<# } else if(host.TemplateName.Equals("PlannerAssignment")) { #>
+    public PlannerAssignment() {
+		oDataType = "#microsoft.graph.plannerAssignment";
+	}
+<# } else if(host.TemplateName.Equals("PlannerBucket")) { #>
+    /**
+     * The Etag.
+     */
+    @SerializedName("@odata.etag")
+    @Expose
+    public String etag;
+    
+    public PlannerBucket() {
+    	oDataType = "#microsoft.graph.plannerBucket";
+    }
+<# } else if(host.TemplateName.Equals("PlannerBucketTaskBoardTaskFormat")) { #>
+    /**
+     * The Etag.
+     */
+    @SerializedName("@odata.etag")
+    @Expose
+    public String etag;
+<# } else if(host.TemplateName.Equals("PlannerChecklistItem")) { #>
+
+    public PlannerChecklistItem() {
+		oDataType = "#microsoft.graph.plannerChecklistItem";
+	}
+<# } else if(host.TemplateName.Equals("PlannerChecklistItems")) { #>
+    /**
+	 * Create a new checklist item with the given title
+	 * @param title Title of the checklist item
+	 * @return The ID of the checklist item
+	 */
+	public String addChecklistItem(String title) {
+		PlannerChecklistItem plannerChecklistItem = new PlannerChecklistItem();
+		plannerChecklistItem.title = title;
+		String newChecklistItemId = UUID.randomUUID().toString();
+		
+		ISerializer serializer = this.getSerializer();
+		String serializedItem = serializer.serializeObject(plannerChecklistItem);
+
+		this.additionalDataManager().put(newChecklistItemId, new JsonPrimitive(serializedItem));
+		
+		return newChecklistItemId;
+	}
+<# } else if(host.TemplateName.Equals("PlannerExternalReference")) { #>
+    public PlannerExternalReference() {
+		oDataType = "#microsoft.graph.plannerExternalReference";
+	}
+<# } else if(host.TemplateName.Equals("PlannerExternalReference")) { #>
+    /*
+	 * Specifies the character - encoding pairs to apply on the external reference URLs
+	 */
+	private static String[][] conversions = { { "%", "%25" }, { "@", "%40" }, { ".", "%2E" }, { ":", "%3A" } };
+	
+	/**
+	 * Gets external reference data for a given reference URL
+	 * @param url The external reference URL
+	 * @return The external reference
+	 */
+	public PlannerExternalReference reference(String url) {
+		if (url == null || url.isEmpty()) {
+			throw new InvalidParameterException("URL cannot be empty");
+		}
+		if (this.additionalDataManager().containsKey(encode(url))) {
+			JsonElement refObject = this.additionalDataManager().get(encode(url));
+			ISerializer serializer = this.getSerializer();
+			return serializer.deserializeObject(
+					refObject.getAsString(), 
+					PlannerExternalReference.class
+				);
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Adds a new external reference with the given URL and short name
+	 * @param url URL of the external reference
+	 * @param alias Short name for the external reference
+	 * @return The created external reference
+	 */
+	public PlannerExternalReference addReference(String url, String alias) {
+		if (url == null || url.isEmpty()) {
+			throw new InvalidParameterException("URL cannot be empty");
+		}
+		if (alias == null || alias.isEmpty()) {
+			throw new InvalidParameterException("Alias cannot be empty");
+		}
+		
+		PlannerExternalReference plannerExternalReference = new PlannerExternalReference();
+		plannerExternalReference.alias = alias;
+		this.additionalDataManager().put(encode(url), plannerExternalReference.getRawObject());
+		return plannerExternalReference;
+	}
+	
+	/**
+	 * Encodes the URL of an external reference to be compatible with OData property naming requirements
+	 * @param externalReferenceUrl URL to encode
+	 * @return Encoded URL
+	 */
+	private static String encode(String externalReferenceUrl) {
+		if (externalReferenceUrl == null || externalReferenceUrl.isEmpty()) {
+			throw new InvalidParameterException("URL cannot be empty");
+		}
+		
+		for (int i = 0; i < conversions.length; i++)
+		{
+			externalReferenceUrl = externalReferenceUrl.replace(conversions[i][0], conversions[i][1]);
+		}
+		return externalReferenceUrl;
+	}
+	
+	/**
+	 * Decodes an encoded URL of an external reference
+	 * @param externalReferenceUrl URL to encode
+	 * @return Decoded URL
+	 */
+	private static String decode(String externalReferenceUrl) {
+		if (externalReferenceUrl == null || externalReferenceUrl.isEmpty()) {
+			throw new InvalidParameterException("URL cannot be empty");
+		}
+		
+		for (int i = conversions.length - 1; i >= 0; i--) {
+			externalReferenceUrl = externalReferenceUrl.replace(conversions[i][1], conversions[i][0]);
+		}
+		return externalReferenceUrl;
+	}
+<# } else if(host.TemplateName.Equals("PlannerPlanDetails")) { #>
+
+	/**
+     * The Etag.
+     */
+    @SerializedName("@odata.etag")
+    @Expose
+    public String etag;
+<# } else if(host.TemplateName.Equals("PlannerProgressTaskBoardTaskFormat")) { #>
+
+	/**
+     * The Etag.
+     */
+    @SerializedName("@odata.etag")
+    @Expose
+    public String etag;
+<# } else if(host.TemplateName.Equals("PlannerTask")) { #>
+
+	/**
+     * The Etag.
+     */
+    @SerializedName("@odata.etag")
+    @Expose
+    public String etag;
+    
+    public PlannerTask() {
+    	oDataType = "#microsoft.graph.plannerTask";
+    }
+<# } else if(host.TemplateName.Equals("PlannerTaskDetails")) { #>
+
+	/**
+     * The Etag.
+     */
+    @SerializedName("@odata.etag")
+    @Expose
+    public String etag;
+    
+    public PlannerTaskDetails() {
+    	oDataType = "#microsoft.graph.plannerTaskDetails";
+    }
+<# } #>
+
+<#
+    if(((OdcmClass)c).Base == null){
+#>
+    @SerializedName("@odata.type")
+    @Expose
+    public String oDataType;
+
+    private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
+
+    @Override
+    public final AdditionalDataManager additionalDataManager() {
+        return additionalDataManager;
+    }
+<#
+    }
+#>
+
+<#=CreatePropertyDef(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
+<#=CreateRawJsonObject()#>
+<#=UpdatePropertiesWithinSetRawObject(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
+<#=PostProcess(TypeName(c))#>}

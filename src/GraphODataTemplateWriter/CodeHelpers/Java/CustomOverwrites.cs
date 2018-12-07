@@ -14,7 +14,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
      */
     public class CustomOverwrites
     {
-        public static Dictionary<string, string> BaseOnenotePageCollectionRequest = new Dictionary<string, string>() {
+        public static Dictionary<string, string> OnenotePageCollectionRequest = new Dictionary<string, string>() {
             {
                 "public void post(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback) {",
                 "public void post(final byte[] newOnenotePage, final ICallback<OnenotePage> callback) {"
@@ -25,7 +25,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             }
         };
 
-        public static Dictionary<string, string> BaseOnenotePageRequest = new Dictionary<string, string>()
+        public static Dictionary<string, string> OnenotePageRequest = new Dictionary<string, string>()
         {
             {
                 "public void post(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback) {",
@@ -37,7 +37,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             }
         };
 
-        public static Dictionary<string, string> IBaseOnenotePageCollectionRequest = new Dictionary<string, string>()
+        public static Dictionary<string, string> IOnenotePageCollectionRequest = new Dictionary<string, string>()
         {
             {
                 "void post(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback);",
@@ -49,7 +49,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             }
         };
 
-        public static Dictionary<string, string> IBaseOnenotePageRequest = new Dictionary<string, string>()
+        public static Dictionary<string, string> IOnenotePageRequest = new Dictionary<string, string>()
         {
             {
                 "void post(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback);",
@@ -61,35 +61,35 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             }
         };
 
-        public static Dictionary<string, string> BasePlannerAssignments = new Dictionary<string, string>()
+        public static Dictionary<string, string> PlannerAssignments = new Dictionary<string, string>()
         {
             {
-                "public class BasePlannerAssignments implements IJsonBackedObject {",
-                "public class BasePlannerAssignments extends HashMap<String, PlannerAssignment> implements IJsonBackedObject {"
+                "public class PlannerAssignments implements IJsonBackedObject {",
+                "public class PlannerAssignments extends HashMap<String, PlannerAssignment> implements IJsonBackedObject {"
             }
         };
 
-        public static Dictionary<string, string> BasePlannerChecklistItems = new Dictionary<string, string>()
+        public static Dictionary<string, string> PlannerChecklistItems = new Dictionary<string, string>()
         {
             {
-                "public class BasePlannerChecklistItems implements IJsonBackedObject {",
-                "public class BasePlannerChecklistItems extends HashMap<String, PlannerChecklistItem> implements IJsonBackedObject {"
+                "public class PlannerChecklistItems implements IJsonBackedObject {",
+                "public class PlannerChecklistItems extends HashMap<String, PlannerChecklistItem> implements IJsonBackedObject {"
             }
         };
 
-        public static Dictionary<string, string> BasePlannerExternalReferences = new Dictionary<string, string>()
+        public static Dictionary<string, string> PlannerExternalReferences = new Dictionary<string, string>()
         {
             {
-                "public class BasePlannerExternalReferences implements IJsonBackedObject {",
-                "public class BasePlannerExternalReferences extends HashMap<String, Object> implements IJsonBackedObject {"
+                "public class PlannerExternalReferences implements IJsonBackedObject {",
+                "public class PlannerExternalReferences extends HashMap<String, Object> implements IJsonBackedObject {"
             }
         };
 
-        public static Dictionary<string, string> BasePlannerOrderHintsByAssignee = new Dictionary<string, string>()
+        public static Dictionary<string, string> PlannerOrderHintsByAssignee = new Dictionary<string, string>()
         {
             {
-                "public class BasePlannerOrderHintsByAssignee implements IJsonBackedObject {",
-                "public class BasePlannerOrderHintsByAssignee extends HashMap<String, String> implements IJsonBackedObject {"
+                "public class PlannerOrderHintsByAssignee implements IJsonBackedObject {",
+                "public class PlannerOrderHintsByAssignee extends HashMap<String, String> implements IJsonBackedObject {"
             }
         };
     }

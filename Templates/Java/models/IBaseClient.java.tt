@@ -1,0 +1,49 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = IBaseClientType(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(IBaseClientType(c), "IBaseClient")#>
+<#
+foreach (var prop in model.EntityContainer.Properties)
+{
+    var propertyName = prop.Name.ToUpperFirstChar();
+    if (prop.IsCollection())
+    {
+#>
+
+    /**
+     * Gets the collection of <#=propertyName#> objects
+     *
+     * @return the request builder for the collection of <#=propertyName#> objects
+     */
+    <#=ITypeCollectionRequestBuilder(prop)#> <#=prop.Name#>();
+
+    /**
+     * Gets a single <#=propertyName#>
+     *
+     * @param id the id of the <#=propertyName#> to retrieve
+     * @return the request builder for the <#=propertyName#> object
+     */
+    <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>(final String id);
+<#
+    }
+    else
+    {
+#>
+
+    /**
+     * Gets the <#=TypeRequestBuilder(c)#>
+     *
+     * @return the <#=prop.Projection.Type.GetTypeString()#>
+     */
+    <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>();
+<#
+    }
+}
+#>
+
+}
