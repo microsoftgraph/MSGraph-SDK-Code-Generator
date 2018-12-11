@@ -49,7 +49,7 @@ import com.google.gson.JsonPrimitive;
 	/**
 	 * The Category1
 	 */
-	@SerializedName("category5")
+	@SerializedName("category5")  
 	@Expose
 	public boolean category5;
 	
