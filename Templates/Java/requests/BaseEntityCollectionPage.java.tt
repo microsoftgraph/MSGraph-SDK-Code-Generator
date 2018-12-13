@@ -15,10 +15,10 @@ String s = TypeName(c);
     /**
      * A collection page for <#=TypeName(c)#>
      *
-     * @param response the serialized <#=BaseTypeCollectionResponse(c)#> from the service
+     * @param response the serialized <#=TypeCollectionResponse(c)#> from the service
      * @param builder  the request builder for the next collection page
      */
-    public <#=TypeCollectionPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeCollectionRequestBuilder(c)#> builder) {
+    public <#=TypeCollectionPage(c)#>(final <#=TypeCollectionResponse(c)#> response, final <#=ITypeCollectionRequestBuilder(c)#> builder) {
         super(response.value, builder);
     }
 }

@@ -16,7 +16,7 @@
      * @param requestOptions the options for this request
      */
     public <#=TypeCollectionReferenceRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
+        super(requestUrl, client, requestOptions, <#=TypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
     }
 
     public void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {

@@ -237,6 +237,10 @@
         return TypeName(c) + "CollectionResponse";
     }
 
+	public string TypeCollectionResponse(OdcmObject c) {
+        return TypeName(c) + "CollectionResponse";
+    } 
+
     public string TypeCollectionRequest(OdcmObject c) {
         if(c is OdcmProperty && c.AsOdcmProperty().IsReference()){
             return TypeCollectionWithReferencesRequest(c);
@@ -502,9 +506,9 @@
 
     public string CollectionRequestGeneric(OdcmObject c) {
         if (c is OdcmMethod) {
-            return "<" + BaseTypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
+            return "<" + TypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
         }
-        return "<" + BaseTypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
+        return "<" + TypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
     }
 	
 	//Creating package definition for Enum.java.tt template file
@@ -894,7 +898,7 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 				if(property.Type is OdcmPrimitiveType)
 					continue;
 
-				var propertyType = BaseTypeCollectionResponse(property);
+				var propertyType = TypeCollectionResponse(property);
 				string importstr= String.Format(importFormat,
 							host.CurrentModel.NamespaceName(),
 							getPrefixForRequests(propertyType),
@@ -1175,7 +1179,7 @@ public {1} {2}{3}{4} {{";
         }}
 ",
             property.Name.SanitizePropertyName(property),
-            BaseTypeCollectionResponse(property),
+            TypeCollectionResponse(property),
             TypeCollectionPage(property),
             property.GetTypeString());
             }

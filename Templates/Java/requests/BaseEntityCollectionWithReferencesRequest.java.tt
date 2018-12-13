@@ -16,7 +16,7 @@
      * @param requestOptions the options for this request
      */
     public <#=TypeCollectionWithReferencesRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
+        super(requestUrl, client, requestOptions, <#=TypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
     }
 
     public void get(final ICallback<<#=ITypeCollectionWithReferencesPage(c)#>> callback) {
@@ -34,7 +34,7 @@
     }
 
     public <#=ITypeCollectionWithReferencesPage(c)#> get() throws ClientException {
-        final <#=BaseTypeCollectionResponse(c)#> response = send();
+        final <#=TypeCollectionResponse(c)#> response = send();
         return buildFromResponse(response);
     }
 
@@ -59,7 +59,7 @@
     }
 
 <# } #>
-    public <#=ITypeCollectionWithReferencesPage(c)#> buildFromResponse(final <#=BaseTypeCollectionResponse(c)#> response) {
+    public <#=ITypeCollectionWithReferencesPage(c)#> buildFromResponse(final <#=TypeCollectionResponse(c)#> response) {
         final <#=ITypeCollectionRequestBuilder(c)#> builder;
         if (response.nextLink != null) {
             builder = new <#=TypeCollectionRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);

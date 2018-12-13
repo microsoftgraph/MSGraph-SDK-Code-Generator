@@ -48,9 +48,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                 case "DateTimeOffset":
                     return "java.util.Calendar";
                 case "Date":
-                    return "com.microsoft.graph.models.extensions.DateOnly";
+                    return "com.microsoft.graph.models.DateOnly";
                 case "TimeOfDay":
-                    return "com.microsoft.graph.models.extensions.TimeOfDay";
+                    return "com.microsoft.graph.models.TimeOfDay";
                 case "Duration":
                     return "javax.xml.datatype.Duration";
                 case "Json":
@@ -75,7 +75,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             var typeString = GetTypeString(propertyType);
             if (propertyType.Namespace != OdcmNamespace.Edm && ReservedNames.Contains(typeString))
             {
-                typeString = "com.microsoft.graph.models.extensions." + typeString;
+                typeString = "com.microsoft.graph.models." + typeString;
             }
             return typeString;
         }

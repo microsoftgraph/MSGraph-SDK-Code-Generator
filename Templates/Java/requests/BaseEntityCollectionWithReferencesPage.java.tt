@@ -14,10 +14,10 @@ import com.google.gson.annotations.*;
     /**
      * A collection page for <#=TypeName(c)#>
      *
-     * @param response the serialized <#=BaseTypeCollectionResponse(c)#> from the service
+     * @param response the serialized <#=TypeCollectionResponse(c)#> from the service
      * @param builder  the request builder for the next collection page
      */
-    public <#=TypeCollectionWithReferencesPage(c)#>(final <#=BaseTypeCollectionResponse(c)#> response, final <#=ITypeCollectionWithReferencesRequestBuilder(c)#> builder) {
+    public <#=TypeCollectionWithReferencesPage(c)#>(final <#=TypeCollectionResponse(c)#> response, final <#=ITypeCollectionWithReferencesRequestBuilder(c)#> builder) {
         super(response.value, builder);
     }
 }

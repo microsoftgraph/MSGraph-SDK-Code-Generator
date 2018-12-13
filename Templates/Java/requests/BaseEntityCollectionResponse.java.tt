@@ -2,7 +2,7 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = BaseTypeCollectionResponse(c);#>
+<#host.TemplateName = TypeCollectionResponse(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDefForBaseEntityCollectionResponse(host)#>
 import com.google.gson.JsonArray;
@@ -13,7 +13,7 @@ import com.microsoft.graph.serializer.AdditionalDataManager;
 import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.ISerializer;
 
-<#=CreateClassDef(BaseTypeCollectionResponse(c), null, "IJsonBackedObject")#>
+<#=CreateClassDef(TypeCollectionResponse(c), null, "IJsonBackedObject")#>
 
     /**
      * The list of <#=TypeName(c)#> within this collection page

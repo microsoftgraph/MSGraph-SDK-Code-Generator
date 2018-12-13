@@ -23,7 +23,7 @@
      */
     public <#=TypeCollectionRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
-        super(requestUrl, client, requestOptions, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
+        super(requestUrl, client, requestOptions, <#=TypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
 <# } else { #>
         super(requestUrl, client, requestOptions, null);
 <# } #>
@@ -50,9 +50,9 @@
 
     public <#=ITypeCollectionPage(c)#> post() throws ClientException {
 <# if (c.AsOdcmMethod().IsAction()) { #>
-        final <#=BaseTypeCollectionResponse(c)#> response = post(body);
+        final <#=TypeCollectionResponse(c)#> response = post(body);
 <# } else { #>
-        final <#=BaseTypeCollectionResponse(c)#> response = post();
+        final <#=TypeCollectionResponse(c)#> response = post();
 <# } #>
         return buildFromResponse(response);
     }
@@ -74,13 +74,13 @@
     }
 
     public <#=ITypeCollectionPage(c)#> get() throws ClientException {
-        final <#=BaseTypeCollectionResponse(c)#> response = send();
+        final <#=TypeCollectionResponse(c)#> response = send();
         return buildFromResponse(response);
     }
 
 <# } #>
 
-    public <#=ITypeCollectionPage(c)#> buildFromResponse(final <#=BaseTypeCollectionResponse(c)#> response) {
+    public <#=ITypeCollectionPage(c)#> buildFromResponse(final <#=TypeCollectionResponse(c)#> response) {
         final <#=ITypeCollectionRequestBuilder(c)#> builder;
         if (response.nextLink != null) {
             builder = new <#=TypeCollectionRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), /* options */ null<#=MethodPageValues(c)#>);

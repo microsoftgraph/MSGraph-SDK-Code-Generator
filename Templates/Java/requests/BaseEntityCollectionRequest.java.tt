@@ -16,7 +16,7 @@
      * @param requestOptions the options for this request
      */
     public <#=TypeCollectionRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=BaseTypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
+        super(requestUrl, client, requestOptions, <#=TypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
     }
 
     public void get(final ICallback<<#=ITypeCollectionPage(c)#>> callback) {
@@ -34,7 +34,7 @@
     }
 
     public <#=ITypeCollectionPage(c)#> get() throws ClientException {
-        final <#=BaseTypeCollectionResponse(c)#> response = send();
+        final <#=TypeCollectionResponse(c)#> response = send();
         return buildFromResponse(response);
     }
 
