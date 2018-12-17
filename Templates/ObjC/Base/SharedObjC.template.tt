@@ -136,6 +136,11 @@ private string GetJsonToObjCExpressionConversion(string expr,OdcmProperty prop)
         expr);
     }
 
+	if(type.Name == "Byte")
+	{
+		return expr;
+	}
+
     return String.Format(
     @"[{0} {1}]",
     expr,
@@ -203,7 +208,7 @@ private string GetHydratedIVarFromDictionary(OdcmProperty prop)
 
     if ([{0} isKindOfClass:[NSArray class]]){{
         for (id {2} in {0}){{
-            [{0}Result addObject:{3}];
+            [{0}Result addObject:{2}];
         }}
     }}
 
@@ -211,7 +216,7 @@ private string GetHydratedIVarFromDictionary(OdcmProperty prop)
         ",
         GetObjCProperty(prop),
         prop.Name,
-        prop.Projection.Type.Name.ToLowerFirstChar(),
+        "temp"+prop.Projection.Type.Name.ToUpperFirstChar(),
         GetJsonToObjCExpressionConversion(prop.Projection.Type.Name.ToLowerFirstChar(), prop));
     }
 

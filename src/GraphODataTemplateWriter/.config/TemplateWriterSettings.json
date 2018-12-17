@@ -1,9 +1,9 @@
 {
   "AvailableLanguages": [ "Android", "Java", "ObjC", "CSharp", "PHP", "Python", "TypeScript", "GraphEndpointList" ],
-  "TargetLanguage": "CSharp",
+  "TargetLanguage": "ObjC",
   "Plugins": [],
-  "PrimaryNamespaceName": "com",
-  "NamespacePrefix": "com",
+  "PrimaryNamespaceName": "MSGraph",
+  "NamespacePrefix": "MSGraph",
   "InitializeCollections": "false",
   "AllowShortActions": "false",
   "NamespaceOverride": "",

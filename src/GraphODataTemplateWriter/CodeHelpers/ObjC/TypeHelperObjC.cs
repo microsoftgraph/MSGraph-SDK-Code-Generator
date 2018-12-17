@@ -81,7 +81,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                         "readwrite",
                         "readonly",
                         "inline",
-                        "operations"
+                        "operations",
+                        "Duration",
+                        "False"
+
                     };
                 }
                 return reservedNames;
@@ -107,6 +110,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                     return "NSString";
                 case "Double":
                 case "Float":
+                case "Single":
                     return "CGFloat";
                 case "DateTimeOffset":
                     return "NSDate";
@@ -121,9 +125,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                 case "Stream":
                     return "NSStream";
                 case "Duration":
-                    return "Duration";
+                    return "MSDate";
                 case "NSDictionary":
                     return "NSDictionary";
+                case "JSON":
+                    return "NSDictionary";
+                case "Json":
+                    return "NSDictionary";
+                case "Byte":
+                    return "Byte";
+
                 default:
                     return Prefix + type.Name.ToUpperFirstChar();
             }
@@ -194,7 +205,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         public static bool IsSystem(this OdcmType type)
         {
             string t = GetTypeString(type);
-            return (t.Contains("int") || t == "BOOL" || t == "Byte" || t == "NSString" || t == "NSDate" || t == "NSStream" || t == "CGFloat");
+            return (t == "int32_t" || t == "int64_t" || t == "int16_t" || t == "BOOL" || t == "Byte" || t == "NSString" || t == "NSDate" || t == "NSStream" || t == "CGFloat");
         }
 
         public static bool IsComplexCollectionOpenType(this OdcmProperty property, OdcmModel model)
