@@ -234,7 +234,7 @@
     }
 
     public string BaseTypeCollectionResponse(OdcmObject c) {
-        return TypeName(c) + "CollectionResponse";
+        return TypeCollectionResponse(c);
     }
 
 	public string TypeCollectionResponse(OdcmObject c) {
