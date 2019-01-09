@@ -161,12 +161,12 @@ if (c.AsOdcmClass() != null)
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 		sb.Append("\n");
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						TypeRequest(host.CurrentType));
 		sb.Append("\n");
 		var c = host.CurrentType;
@@ -178,25 +178,25 @@ if (c.AsOdcmClass() != null)
 					
 					sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeCollectionRequestBuilder(prop));
 					sb.Append("\n");
 
 					sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						TypeCollectionRequestBuilder(prop));
 					sb.Append("\n");
 				}
 				sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeRequestBuilder(prop));
 				sb.Append("\n");
 
 				sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						TypeRequestBuilder(prop));
 				sb.Append("\n");
 			}
@@ -206,13 +206,13 @@ if (c.AsOdcmClass() != null)
 				var propRequestBuilder = TypeRequestBuilder(prop);
 				sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						"I" + propRequestBuilder);
 				sb.Append("\n");
 
 				sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						propRequestBuilder);
 				sb.Append("\n");
 			}
@@ -221,13 +221,13 @@ if (c.AsOdcmClass() != null)
 			{
 				sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeStreamRequestBuilder(host.CurrentType));
 				sb.Append("\n");
 
 				sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						TypeStreamRequestBuilder(host.CurrentType));
 				sb.Append("\n");
 			}
@@ -256,25 +256,25 @@ if (c.AsOdcmClass() != null)
 				if (method.IsCollection) {
 					sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeCollectionRequestBuilder(method));
 					sb.Append("\n");
 
 					sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						TypeCollectionRequestBuilder(method));
 					sb.Append("\n");
 				} else {
 					sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeRequestBuilder(method));
 					sb.Append("\n");
 
 					sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						TypeRequestBuilder(method));
 					sb.Append("\n");
 				}

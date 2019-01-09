@@ -237,19 +237,19 @@ classDeclaration += TypeName(c);
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 		sb.Append("\n");
 
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						TypeRequest(host.CurrentType));
 		sb.Append("\n");
 
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"models",
+						"models.extensions",
 						TypeName(host.CurrentType.AsOdcmClass()));
 		sb.Append("\n");
 		return sb.ToString();

@@ -529,24 +529,24 @@
 		if(propertyName.StartsWith("Base"))
 		{
 			if(propertyName == "BaseItem" || propertyName == "BaseItemVersion")
-				return "models";
+				return "models.extensions";
 			else
-				return "models";
+				return "models.extensions";
 		}
 		
-		return "models";
+		return "models.extensions";
 	}
 	
 	//Getting import prefix using property name for Request classes
 	public string getPrefixForRequests(string propertyName)
 	{
 		if(propertyName == "BaseItemCollectionPage")
-			return "requests";
+			return "requests.extensions";
 			
 		if(propertyName.StartsWith("Base") || propertyName.StartsWith("IBase"))
-			return "requests";
+			return "requests.extensions";
 	
-		return "requests";
+		return "requests.extensions";
 	}
 	
 	//Get package prefix using OdcmProperty for model classes
@@ -555,7 +555,7 @@
 		var propertyType = property.GetTypeString();
 	
 		if(property.Type is OdcmEnum)
-			return "models";
+			return "models.extensions";
 		
 		return getPrefixForModels(propertyType);	
 	}
@@ -566,7 +566,7 @@
 		var propertyType = property.GetTypeString();
 	
 		if(property.Type is OdcmEnum)
-			return "models";
+			return "models.extensions";
 		
 		return getPrefixForModels(propertyType);	
 	}
@@ -589,7 +589,7 @@
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"models",
+						"models.extensions",
 						TypeName(host.CurrentType));
 		sb.Append("\n");
 		return sb.ToString();
@@ -606,14 +606,14 @@
 		{
 			sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"models",
+						"models.extensions",
 						ReturnType(host.CurrentType));
 			sb.Append("\n");
 		}
 
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 		sb.Append("\n");
 		return sb.ToString();
@@ -626,7 +626,7 @@
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"models",
+						"models.extensions",
 						TypeName(host.CurrentType.AsOdcmClass()));
 		sb.Append("\n");
 		return sb.ToString();
@@ -639,7 +639,7 @@
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						TypeRequest(host.CurrentType));
 		sb.Append("\n");
 		return sb.ToString();
@@ -652,13 +652,13 @@
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 		sb.Append("\n");
 
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						TypeRequest(host.CurrentType));
 		sb.Append("\n");
 
@@ -693,7 +693,7 @@
 		{
 			sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"models",
+						"models.extensions",
 						ReturnType(host.CurrentType));
 			sb.Append("\n");
 		}
@@ -701,7 +701,7 @@
 		{
 			sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeCollectionRequest(host.CurrentType));
 			sb.Append("\n");
 		}
@@ -709,7 +709,7 @@
 		{
 			sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 			sb.Append("\n");
 		}
@@ -725,7 +725,7 @@
 
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"models",
+						"models.extensions",
 						TypeBody(host.CurrentType));
 		sb.Append("\n");
 		var returnType = ReturnType(host.CurrentType);
@@ -733,7 +733,7 @@
 		{
 			sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"models",
+						"models.extensions",
 						ReturnType(host.CurrentType));
 			sb.Append("\n");
 		}
@@ -742,13 +742,13 @@
 		{
 			sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeCollectionRequest(host.CurrentType));
 			sb.Append("\n");
 
 			sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						TypeCollectionRequest(host.CurrentType));
 			sb.Append("\n");
 		}
@@ -756,13 +756,13 @@
 		{
 			sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 			sb.Append("\n");
 
 			sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						TypeRequest(host.CurrentType));
 			sb.Append("\n");
 		}
@@ -776,7 +776,7 @@
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 		sb.Append("\n");
 		return sb.ToString();
@@ -797,12 +797,12 @@
 
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"models",
+						"models.extensions",
 						modelClassName);
 		sb.Append("\n");
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"requests",
+						"requests.extensions",
 						ITypeCollectionRequestBuilder(host.CurrentType));
 
 		return sb.ToString();
@@ -876,7 +876,7 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 		{
 			string importstr= String.Format(importFormat,
 							host.CurrentModel.NamespaceName(),
-						"models",
+						"models.extensions",
 						 "PlannerAssignment");
 			if(!uniqueStore.ContainsKey(importstr)){
 				uniqueStore.Add(importstr, 0);						
@@ -888,7 +888,7 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 		{			
 			string importstr= String.Format(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"models",
+						"models.extensions",
 						 "PlannerChecklistItem");
 			if(!uniqueStore.ContainsKey(importstr)){
 				uniqueStore.Add(importstr, 0);						
@@ -936,9 +936,9 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 
 import {0}.concurrency.*;
 import {0}.core.*;
-import {0}.models.*;
+import {0}.models.extensions.*;
 import {0}.http.*;
-import {0}.requests.*;
+import {0}.requests.extensions.*;
 import {0}.options.*;
 import {0}.serializer.*;
 
