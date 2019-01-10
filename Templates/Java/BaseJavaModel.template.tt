@@ -555,7 +555,7 @@
 		var propertyType = property.GetTypeString();
 	
 		if(property.Type is OdcmEnum)
-			return "models.extensions";
+			return "models.generated";
 		
 		return getPrefixForModels(propertyType);	
 	}
@@ -566,7 +566,7 @@
 		var propertyType = property.GetTypeString();
 	
 		if(property.Type is OdcmEnum)
-			return "models.extensions";
+			return "models.generated";
 		
 		return getPrefixForModels(propertyType);	
 	}
@@ -937,6 +937,7 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 import {0}.concurrency.*;
 import {0}.core.*;
 import {0}.models.extensions.*;
+import {0}.models.generated.*;
 import {0}.http.*;
 import {0}.requests.extensions.*;
 import {0}.options.*;
