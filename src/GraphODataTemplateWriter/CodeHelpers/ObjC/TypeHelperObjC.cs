@@ -111,7 +111,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                 case "Double":
                 case "Float":
                 case "Single":
-                    return "CGFloat";
+                    return "double";
                 case "DateTimeOffset":
                     return "NSDate";
                 case "Date":
@@ -149,7 +149,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         {
             string t = GetTypeString(type);
             return
-                !(t == "int32_t" || t == "int64_t" || t == "int16_t" || t == "BOOL" || t == "Byte" || t == "CGFloat");
+                !(t == "int32_t" || t == "int64_t" || t == "int16_t" || t == "BOOL" || t == "Byte" || t == "double");
         }
 
         public static bool IsComplex(this OdcmProperty property)
@@ -205,7 +205,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         public static bool IsSystem(this OdcmType type)
         {
             string t = GetTypeString(type);
-            return (t == "int32_t" || t == "int64_t" || t == "int16_t" || t == "BOOL" || t == "Byte" || t == "NSString" || t == "NSDate" || t == "NSStream" || t == "CGFloat");
+            return (t == "int32_t" || t == "int64_t" || t == "int16_t" || t == "BOOL" || t == "Byte" || t == "NSString" || t == "NSDate" || t == "NSStream" || t == "double");
         }
 
         public static bool IsComplexCollectionOpenType(this OdcmProperty property, OdcmModel model)
@@ -261,7 +261,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             {
                 return "boolValue";
             }
-            else if (objectiveCType.Equals("CGFloat"))
+            else if (objectiveCType.Equals("double"))
             {
                 return "floatValue";
             }
