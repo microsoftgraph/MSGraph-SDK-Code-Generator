@@ -118,6 +118,13 @@ private string GetJsonToObjCExpressionConversion(string expr,OdcmProperty prop)
             expr);
     }
 
+	if(GetObjCTypeIdentifier(prop,true)=="MSDuration")
+    {
+        return String.Format(@"[{0} ms_durationFromString: {1}]",
+            GetObjCTypeIdentifier(prop,true),
+            expr);
+    }
+
     if(prop.IsEnum())
     {
         return String.Format(
@@ -195,6 +202,27 @@ private string SetDictionaryPropertyInJsonConvertibleForm(OdcmProperty prop, str
     // Dictionary entries can either be directly NSJSON-typed, or convertible to
     //   a NSJSON type via [MSObject getNSJsonSerializationCompatibleValue].
     // 
+
+	if(GetObjCTypeIdentifier(prop,true)=="NSDate" ||
+       GetObjCTypeIdentifier(prop,true)=="MSDate")
+    {
+        return String.Format(@"self.dictionary[@""{0}""] = {1};",
+		prop.Name,
+		String.Format(@"[{0} ms_toString]",GetObjCToJsonConvertibleExpressionConversion(prop,val)));
+    }
+
+    if(GetObjCTypeIdentifier(prop,true)=="MSTimeOfDay")
+    {
+       return String.Format(@"self.dictionary[@""{0}""] = {1};",
+		prop.Name,
+		String.Format(@"[{0} ms_toString]",GetObjCToJsonConvertibleExpressionConversion(prop,val)));
+    }
+
+	if(GetObjCTypeIdentifier(prop,true)=="MSDuration")
+    {
+       return String.Format(@"self.dictionary[@""{0}""] = {1};",prop.Name,String.Format(@"{0}.durationString",GetObjCToJsonConvertibleExpressionConversion(prop,val)));
+    }
+
     return String.Format(@"self.dictionary[@""{0}""] = {1};",prop.Name,GetObjCToJsonConvertibleExpressionConversion(prop,val));
 }
 

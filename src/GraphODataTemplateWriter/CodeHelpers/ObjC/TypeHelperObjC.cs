@@ -125,7 +125,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                 case "Stream":
                     return "NSStream";
                 case "Duration":
-                    return "MSDate";
+                    return "MSDuration";
                 case "NSDictionary":
                     return "NSDictionary";
                 case "JSON":
