@@ -1,0 +1,53 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = ITypeReferenceRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateInterfaceDef(ITypeReferenceRequest(c), "IHttpRequest")#>
+
+    void delete(final ICallback<<#=TypeName(c)#>> callback);
+
+    <#=TypeName(c)#> delete() throws ClientException;
+
+<# if (c.GetFeatures().CanSelect) { #>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value the select clause
+     * @return the updated request
+     */
+    <#=ITypeReferenceRequest(c)#> select(final String value);
+
+<# } #>
+<# if (c.GetFeatures().CanExpand) { #>
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value the expand clause
+     * @return the updated request
+     */
+    <#=ITypeReferenceRequest(c)#> expand(final String value);
+
+<# } #>
+<# if (c.GetFeatures().CanUpdate) { #>
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=TypeName(c)#> the <#=TypeName(c)#> to PUT
+     * @param callback the callback to be called after success or failure
+     */
+    void put(<#=TypeName(c)#> src<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=TypeName(c)#> the <#=TypeName(c)#> to PUT
+     * @return the <#=TypeName(c)#>
+     * @throws ClientException an exception occurs if there was an error while the request was sent
+     */
+    <#=TypeName(c)#> put(<#=TypeName(c)#> src<#=TypeName(c)#>) throws ClientException;
+<# } #>
+}
