@@ -173,7 +173,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// </summary>
         /// <param name="<#=returnEntityParameter#>">The <#=returnEntityType#> object set with the properties to update.</param>
         /// <returns>The task to await for async call.</returns>
-        <#=methodReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter#>);
+        <#=methodReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>);
 
         /// <summary>
         /// Issues the PATCH request.
@@ -189,7 +189,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     }
 #>
         /// <returns>The task to await for async call.</returns>
-        <#=methodReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter#>, 
+        <#=methodReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>, 
 <#
     if (returnsStream)
     {
@@ -218,7 +218,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// </summary>
         /// <param name="<#=returnEntityParameter#>">The <#=returnEntityType#> object to update.</param>
         /// <returns>The task to await for async call.</returns>
-        <#=methodReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter#>);
+        <#=methodReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>);
 
         /// <summary>
         /// Issues the PUT request.
@@ -234,7 +234,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     }
 #>
         /// <returns>The task to await for async call.</returns>
-        <#=methodReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter#>, 
+        <#=methodReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>, 
 <#
     if (returnsStream)
     {
