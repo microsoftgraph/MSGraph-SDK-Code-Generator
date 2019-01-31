@@ -3,21 +3,45 @@
 namespace Microsoft.Graph.ODataTemplateWriter.Settings
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
     using Vipr.Core;
 
+    /// <summary>
+    /// The ConfigurationService configures the template writer with the target language and 
+    /// other properties used to direct how the code files are generated.
+    /// </summary>
     public static class ConfigurationService
     {
         private static IConfigurationProvider _configurationProvider;
         private static TemplateWriterSettings templateWriterSettings = null;
         private static string targetLanguage = null;
-        public static void Initialize(IConfigurationProvider configurationProvider, string targetLanguage = null)
+        private static Dictionary<string, string> properties = null;
+
+        public static void Initialize(IConfigurationProvider configurationProvider, string targetLanguage = null, IEnumerable<string> properties = null)
         {
             _configurationProvider = configurationProvider;
             if (!String.IsNullOrEmpty(targetLanguage))
             {
                 ConfigurationService.targetLanguage = targetLanguage;
+            }
+            if (properties != null)
+            {
+                Dictionary<string, string> propertyDictionary = new Dictionary<string, string>();
+                foreach (string property in properties)
+                {
+                    string[] props = property.Split(':');
+
+                    if (props.Length != 2)
+                    {
+                        throw new ArgumentException("A property was set in a unexpected form from the typewriter commandline.", "-p -properties");
+                    }
+
+                    propertyDictionary.Add(props[0],props[1]);
+                }
+
+                ConfigurationService.properties = propertyDictionary;
             }
         }
 
@@ -29,6 +53,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
             {
                 mainTWS.TargetLanguage = targetLanguage;
             }
+            if (properties != null)
+            {
+                mainTWS.Properties = properties;
+            }
+
 
             TemplateWriterSettings.mainSettingsObject = mainTWS;
             

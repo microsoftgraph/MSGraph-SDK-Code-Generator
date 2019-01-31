@@ -48,16 +48,17 @@ Typewriter is a new solution for generating code files using the GraphODataTempl
 * **-g**, **-generationmode**: Specifies the generation mode. The values can be: `Full`, `Metadata`, or `Files`. `Full` (default) generation mode produces the output code files by cleaning the input metadata, parsing the documentation, and adding annotations before generating the output files. `Metadata` generation mode produces an output metadata file by cleaning metadata, documentation parsing, and adding documentation annotations. `Files` generation mode produces code files from an input metadata and bypasses the cleaning, documentation parsing, and adding documentation annotations.
 * **-f**, **-outputMetadataFileName**: The base output metadata filename. Only applicable for `-generationmode Metadata`. The default value is `cleanMetadataWithDescriptions` which is used with the value of the `-endpointVersion` to generate a metadata file named `cleanMetadataWithDescriptionsv1.0.xml`.
 * **-e**, **-endpointVersion**: The endpoint version used when naming a metadata file. Expected values are `v1.0` and `beta`. Only applicable for `-generationmode Metadata`.
+* **-p**, **-properties**: Specify properties to support generation logic in the T4 templates. Properties must take the form of *key-string:value-string*. Multiple properties can be specified by setting a space in between property. The only property currently supported is the *php.namespace* property to specify the generated model file namespace. This property is optional.
 
 ### Example typewriter usage
 
-#### Generate TypeScript typings from a CSDL (metadata) file without cleaning or annotating the CSDL. 
+#### Generate TypeScript typings from a CSDL (metadata) file without cleaning or annotating the CSDL.
 
 The output will go in to the `outputTypeScript` directory.
 
 `.\typewriter.exe -v Info -m D:\cleanMetadataWithDescriptions_v10.xml -o outputTypeScript -l TypeScript -g Files`
 
-#### Clean and annotate a metadata file with documentation annotations sourced from the documentation repo 
+#### Clean and annotate a metadata file with documentation annotations sourced from the documentation repo
 
 The output metadata file will go in to the `output2` directory. The output metadata file will be named `cleanMetadataWithDescriptionsv1.0.xml` based on the default values.
 
@@ -144,7 +145,7 @@ The type of template.
 
 #### Template Name
 
-To set the name of the template using the `Name` format string. You can insert `<Class>`, `<Property>`, `<Method>`, and `<Container>` the values will be replaced by the names of the corresponding object.  If you insert an item that doesn't exist it will be replaced with an empty string.  
+To set the name of the template using the `Name` format string. You can insert `<Class>`, `<Property>`, `<Method>`, and `<Container>` the values will be replaced by the names of the corresponding object.  If you insert an item that doesn't exist it will be replaced with an empty string.
 Note: You can also set the template name from inside the template by : `host.SetTemplateName("foo");`
 
 #### Template Editing
@@ -174,9 +175,9 @@ There are currently several steps we take to form the metadata into one that wil
   - Remove HasStream properties from ```onenotePage``` and ```onenoteEntityBaseModel```
   - Add ```ContainsTarget="true"``` to navigation properties that do not have a corresponding EntitySet. This currently applies to navigation properties that contain plannerBucket, plannerTask, plannerPlan, and plannerDelta.
   - Add long descriptions to types and properties from [docs](https://developer.microsoft.com/en-us/graph/docs/concepts/overview)
-  
+
 In order to build against metadata other than that stored in the [metadata](https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/tree/master/metadata) directory, you will need to perform the first four on this list.
-  
+
 ## Contributing
 
 Before we can accept your pull request, you'll need to electronically complete Microsoft's [Contributor License Agreement](https://cla.microsoft.com/). If you've done this for other Microsoft projects, then you're already covered.
