@@ -8,18 +8,18 @@
         </Key>
         <Property Name="id" Unicode="false" Nullable="false" Type="Edm.String"/>
       </EntityType>
-      <EntityType Name="testType"></EntityType>
-      <EntityType Name="testType2"></EntityType>
-      <EntityType Name="testType3"></EntityType>
-      <EntityType Name="testEntity">
+      <EntityType Name="testType" BaseType="graph.entity"></EntityType>
+      <EntityType Name="testType2" BaseType="graph.entity"></EntityType>
+      <EntityType Name="testType3" BaseType="graph.entity"></EntityType>
+      <EntityType Name="testEntity" BaseType="graph.entity">
         <NavigationProperty Name="testNav" Type="graph.testType"/>
         <NavigationProperty Name="testInvalidNav" Type="graph.testType2"/>
         <NavigationProperty Name="testExplicitNav" Type="graph.testType3"/>
       </EntityType>
-      <EntityType Name="testSingleton">
+      <EntityType Name="testSingleton" BaseType="graph.entity">
         <NavigationProperty Name="testSingleNav" Type="graph.testType" ContainsTarget="true" />
       </EntityType>
-      <EntityType Name="testSingleton2">
+      <EntityType Name="testSingleton2" BaseType="graph.entity">
         <NavigationProperty Name="testSingleNav2" Type="graph.testType3" ContainsTarget="true" />
       </EntityType>
       <ComplexType Name="thumbnail">
@@ -29,19 +29,19 @@
         <Property Name="url" Type="Edm.String" />
         <Property Name="width" Type="Edm.Int32" />
       </ComplexType>
-      <EntityType Name="onenotePage" HasStream="true">
+      <EntityType Name="onenotePage" HasStream="true" BaseType="graph.entity">
         <Property Name="content" Type="Edm.Stream" />
-        <NavigationProperty Name="parentNotebook" Type="microsoft.graph.notebook" ContainsTarget="true" />
+        <NavigationProperty Name="parentNotebook" Type="graph.notebook" ContainsTarget="true" />
       </EntityType>
-      <EntityType Name="plannerGroup" BaseType="microsoft.graph.entity">
-        <NavigationProperty Name="plans" Type="Collection(microsoft.graph.plannerPlan)" />
+      <EntityType Name="plannerGroup" BaseType="graph.entity">
+        <NavigationProperty Name="plans" Type="Collection(graph.plannerPlan)" />
       </EntityType>
       <EntityContainer Name="GraphService">
         <Singleton Name="testSingleton" Type="graph.testSingleton"/>
         <Singleton Name="testSingleton2" Type="graph.testSingleton2"/>
         <EntitySet Name="testTypes" EntityType="graph.testType3"/>
       </EntityContainer>
-      <Annotations Target="microsoft.graph.directoryObject">
+      <Annotations Target="graph.directoryObject">
         <Annotation Term="Org.OData.Capabilities.V1.ExpandRestrictions">
           <Record>
             <PropertyValue Property="Expandable" Bool="false" />
