@@ -7,7 +7,7 @@ var typeName = GetObjCTypeIdentifier(entity);
 var valueTypeName = typeName + "Value";
 #>
 
-#include <<#=typeName#>.h>
+#import "<#=typeName#>.h"
 
 @interface <#=typeName#> () {
     <#=valueTypeName#> _enumValue;

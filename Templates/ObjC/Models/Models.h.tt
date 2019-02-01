@@ -4,6 +4,7 @@
 
 #import "MSDate.h"
 #import "MSTimeOfDay.h"
+#import "MSDuration.h"
 <#		
 var enums = model.GetEnumTypes();
 foreach(var e in enums)
