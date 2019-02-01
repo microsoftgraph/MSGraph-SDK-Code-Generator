@@ -57,7 +57,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\Entity.php");
-            Assert.IsTrue(fileInfo.Exists, "The expected file was not found.");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the namespace applied at the CLI was added to the document.
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);

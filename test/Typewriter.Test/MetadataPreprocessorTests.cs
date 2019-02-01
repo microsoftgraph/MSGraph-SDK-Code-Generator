@@ -51,7 +51,7 @@ namespace Typewriter.Test
             bool doesntContainTargetBefore = MetadataPreprocessor.GetXMetadata().Descendants()
                     .Where(x => x.Name.LocalName == "NavigationProperty")
                     .Where(x => x.Attribute("ContainsTarget") == null || x.Attribute("ContainsTarget").Value.Equals("false"))
-                    .Where(x => x.Attribute("Type").Value == "Collection(microsoft.graph." + navPropTypeToProcess + ")")
+                    .Where(x => x.Attribute("Type").Value == "Collection(graph." + navPropTypeToProcess + ")")
                     .Any();
 
             Assert.IsTrue(doesntContainTargetBefore, "Expected: ContainsTarget is false. Actual: ContainsTarget is true");
@@ -62,7 +62,7 @@ namespace Typewriter.Test
                     .Where(x => x.Name.LocalName == "NavigationProperty")
                     .Where(x => x.Attribute("ContainsTarget") != null)
                     .Where(x => x.Attribute("ContainsTarget").Value == "true")
-                    .Where(x => x.Attribute("Type").Value == "Collection(microsoft.graph." + navPropTypeToProcess + ")")
+                    .Where(x => x.Attribute("Type").Value == "Collection(graph." + navPropTypeToProcess + ")")
                     .Any();
 
             Assert.IsTrue(doesContainTargetAfter, "Expected: ContainsTarget is true. Actual: ContainsTarget is false");
