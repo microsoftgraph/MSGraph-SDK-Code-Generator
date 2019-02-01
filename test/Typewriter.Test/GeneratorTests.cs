@@ -12,7 +12,7 @@ namespace Typewriter.Test
     {
         public string testMetadata;
         // The second segment is generated from the namespace in the target metadata file.
-        public string generatedOutputUrl = @"\com\Graph";
+        public string generatedOutputUrl = @"\com\microsoft\Graph";
 
         /// <summary>
         /// Load metadata from file into a string so we can validate MetadataPreprocessor.
@@ -37,7 +37,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\src\Microsoft-graph.d.ts");
-            Assert.IsTrue(fileInfo.Exists);
+            Assert.IsTrue(fileInfo.Exists, $"Expected {fileInfo.FullName}. File was not found.");
         }
 
         [TestMethod]
