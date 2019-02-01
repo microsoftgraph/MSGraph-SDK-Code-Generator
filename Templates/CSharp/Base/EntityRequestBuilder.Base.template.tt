@@ -142,7 +142,8 @@ public string GetRequestBuilderProperty(string propertyName, string urlValue, st
 
 public string GetCollectionPropertyRequestBuilderProperty(string entityName, OdcmProperty odcmProperty)
 {
-    var propertyName = this.GetPropertyName(odcmProperty).GetSanitizedPropertyName();
+    var propertyName = this.GetPropertyName(odcmProperty);
+    propertyName = propertyName.GetSanitizedPropertyName(suffix: propertyName == "Request" ? "_" : null);
     var propertyPrefix = string.Concat(entityName, this.GetPropertyName(odcmProperty));
     var collectionRequestBuilder = odcmProperty.IsReference()
         ? this.GetCollectionWithReferencesRequestBuilderString(propertyPrefix)
@@ -153,7 +154,8 @@ public string GetCollectionPropertyRequestBuilderProperty(string entityName, Odc
 
 public string GetNonCollectionRequestBuilderProperty(OdcmProperty odcmProperty)
 {
-    var propertyName = this.GetPropertyName(odcmProperty).GetSanitizedPropertyName();
+    var propertyName = this.GetPropertyName(odcmProperty);
+    propertyName = propertyName.GetSanitizedPropertyName(suffix: propertyName == "Request" ? "_" : null);
     var propertyPrefix = this.GetPropertyTypeName(odcmProperty);
     var propertyRequestBuilder = odcmProperty.IsReference()
         ? this.GetWithReferenceRequestBuilderString(propertyPrefix)
