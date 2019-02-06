@@ -101,7 +101,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
         {
             get
             {
-                if (templateWriterSettings == null)
+                if (templateWriterSettings == null || templateWriterSettings.TargetLanguage != ConfigurationService.targetLanguage)
                 {
                     templateWriterSettings = _configurationProvider != null
                         ? LoadSettingsForLanguage()
