@@ -8,7 +8,7 @@ namespace Typewriter.Test
     /// End to end tests that check the results of running Typewriter from the CLI.
     /// </summary>
     [TestClass]
-    public class GeneratorTests
+    public class Given_a_valid_metadata_file_to_Typewriter
     {
         public string testMetadata;
         // The second segment is generated from the namespace in the target metadata file.
@@ -24,7 +24,7 @@ namespace Typewriter.Test
         }
 
         [TestMethod]
-        public void GenerateFilesTest()
+        public void It_generates_a_typings_file()
         {
             const string outputDirectory = "output"; 
 
@@ -41,7 +41,7 @@ namespace Typewriter.Test
         }
 
         [TestMethod]
-        public void Validate_PHP_Generated_Beta_Namespace_Tests()
+        public void It_generates_PHP_models_with_a_property()
         {
             const string testNamespace = "TEST.NAMESPACE";
             const string outputDirectory = "output";
