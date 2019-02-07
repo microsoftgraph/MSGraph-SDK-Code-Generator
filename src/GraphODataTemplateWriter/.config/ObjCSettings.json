@@ -14,7 +14,7 @@
         ],
 
         "ObjC": [
-            { "Template": "Models", "SubProcessor": "Other", "Type": "Model", "Name": "Models" },
+            { "Template": "ClientModels", "SubProcessor": "Other", "Type": "Model", "Name": "ClientModels" },
             { "Template": "ODataEntities", "SubProcessor": "Other", "Type": "Model", "Name": "ODataEntities" }
         ]
     }

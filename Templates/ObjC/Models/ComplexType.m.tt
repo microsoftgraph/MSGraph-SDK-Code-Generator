@@ -7,7 +7,7 @@ var complexType = host.CurrentType.AsOdcmClass();
 
 #import "NSDate+MSSerialization.h"
 
-#import "<#=writer.GetPrefix()#>Models.h"
+#import "<#=writer.GetPrefix()#>ClientModels.h"
 
 @interface <#=writer.GetStaticCodePrefix()#>Object()
 
