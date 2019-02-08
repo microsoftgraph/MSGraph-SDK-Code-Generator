@@ -295,7 +295,7 @@
     <Content Include="ObjC\Models\EntityType.m.tt" />
     <Content Include="ObjC\Models\EnumType.h.tt" />
     <Content Include="ObjC\Models\EnumType.m.tt" />
-    <Content Include="ObjC\Models\Models.h.tt" />
+    <Content Include="ObjC\Models\ClientModels.h.tt" />
     <Content Include="PHP\Model\ComplexType.php.tt" />
     <Content Include="PHP\Model\EntityType.php.tt" />
     <Content Include="PHP\Model\EnumType.php.tt" />
