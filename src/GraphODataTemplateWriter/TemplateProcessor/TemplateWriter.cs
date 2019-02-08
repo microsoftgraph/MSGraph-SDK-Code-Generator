@@ -24,6 +24,25 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private string pathWriterClassNameFormatString;
+        
+        private string targetLanguage;
+        private IEnumerable<string> properties;
+
+        public TemplateWriter()
+        {
+        }
+
+        public TemplateWriter(string targetLanguage)  
+        {
+            this.targetLanguage = targetLanguage;
+        }
+
+        public TemplateWriter(string targetLanguage, IEnumerable<string> properties)
+        {
+            this.targetLanguage = targetLanguage;
+            this.properties = properties;
+        }
+
         private string PathWriterClassNameFormatString
         {
             get {
@@ -76,22 +95,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             }
         }
 
-        private string targetLanguage;
-
-        public TemplateWriter()
-        {
-
-        }
-
-        public TemplateWriter(string targetLanguage)
-        {
-            this.targetLanguage = targetLanguage;
-        }
-
         // IConfigurationProvider
         public void SetConfigurationProvider(IConfigurationProvider configurationProvider)
         {
-            ConfigurationService.Initialize(configurationProvider, this.targetLanguage);
+            ConfigurationService.Initialize(configurationProvider, this.targetLanguage, this.properties);
             FileNameCasing nameCasing;
             if(!Enum.TryParse(ConfigurationService.Settings.DefaultFileCasing, out nameCasing))
             {

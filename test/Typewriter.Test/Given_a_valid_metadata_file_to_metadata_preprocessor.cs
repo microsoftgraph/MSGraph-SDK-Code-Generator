@@ -5,7 +5,7 @@ using System.Xml.Linq;
 namespace Typewriter.Test
 {
     [TestClass]
-    public class MetadataPreprocessorTests
+    public class Given_a_valid_metadata_file_to_metadata_preprocessor
     {
         public string testMetadata;
         public XDocument testXMetadata;
@@ -22,7 +22,7 @@ namespace Typewriter.Test
         }
 
         [TestMethod]
-        public void RemoveHasStreamTest()
+        public void It_removes_the_HasStream_attribute()
         {
             var entityToProcess = "onenotePage";
 
@@ -44,14 +44,14 @@ namespace Typewriter.Test
         }
 
         [TestMethod]
-        public void AddContainsTargetTest()
+        public void It_adds_the_ContainsTarget_attribute()
         {
             var navPropTypeToProcess = "plannerPlan";
 
             bool doesntContainTargetBefore = MetadataPreprocessor.GetXMetadata().Descendants()
                     .Where(x => x.Name.LocalName == "NavigationProperty")
                     .Where(x => x.Attribute("ContainsTarget") == null || x.Attribute("ContainsTarget").Value.Equals("false"))
-                    .Where(x => x.Attribute("Type").Value == "Collection(microsoft.graph." + navPropTypeToProcess + ")")
+                    .Where(x => x.Attribute("Type").Value == $"Collection(microsoft.graph.{navPropTypeToProcess})")
                     .Any();
 
             Assert.IsTrue(doesntContainTargetBefore, "Expected: ContainsTarget is false. Actual: ContainsTarget is true");
@@ -62,14 +62,14 @@ namespace Typewriter.Test
                     .Where(x => x.Name.LocalName == "NavigationProperty")
                     .Where(x => x.Attribute("ContainsTarget") != null)
                     .Where(x => x.Attribute("ContainsTarget").Value == "true")
-                    .Where(x => x.Attribute("Type").Value == "Collection(microsoft.graph." + navPropTypeToProcess + ")")
+                    .Where(x => x.Attribute("Type").Value == $"Collection(microsoft.graph.{navPropTypeToProcess})")
                     .Any();
 
             Assert.IsTrue(doesContainTargetAfter, "Expected: ContainsTarget is true. Actual: ContainsTarget is false");
         }
 
         [TestMethod]
-        public void RemoveCapabilityAnnotationsTest()
+        public void It_removes_capability_annotations()
         {
             bool hasCapabilityAnnotationsBefore = MetadataPreprocessor.GetXMetadata().Descendants()
                     .Where(x => (string)x.Name.LocalName == "Annotation")
@@ -86,7 +86,7 @@ namespace Typewriter.Test
         }
 
         [TestMethod]
-        public void AddLongDescriptionToThumbnailTest()
+        public void It_adds_long_description_to_thumbnail()
         {
             XElement thumbnailComplexTypeBefore = MetadataPreprocessor.GetXMetadata().Descendants()
                 .Where(x => (string)x.Name.LocalName == "ComplexType")

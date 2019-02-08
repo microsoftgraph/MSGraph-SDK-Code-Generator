@@ -2,14 +2,23 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ output extension="\\" #>
 <#
-CustomT4Host host       = (CustomT4Host) Host;
-OdcmModel model         = host.CurrentModel;
-CodeWriterPHP writer   = (CodeWriterPHP) host.CodeWriter;
+CustomT4Host host               = (CustomT4Host) Host;
+OdcmModel model                 = host.CurrentModel;
+CodeWriterPHP writer            = (CodeWriterPHP) host.CodeWriter;
+TemplateWriterSettings settings = ConfigurationService.Settings;
+string targetNamespace          = @"Microsoft\Graph\Model";
+var enumT                       = host.CurrentType.AsOdcmEnum();
 
-var enumT = host.CurrentType.AsOdcmEnum();
+// TemplateWriterSettings.Properties are set at the Typewriter command line. Check the command line 
+// documentation for more information on how the TemplateWriterSettings.Properties is used.
+if (settings.Properties.ContainsKey("php.namespace"))
+{
+    targetNamespace = settings.Properties["php.namespace"];
+}      
+
 #>
 <#=writer.WriteHeader(writer.GetDocBlock(enumT.Name.ToCheckedCase()))#>
-namespace Microsoft\Graph\Model;
+namespace <#=targetNamespace#>;
 
 use Microsoft\Graph\Core\Enum;
 
