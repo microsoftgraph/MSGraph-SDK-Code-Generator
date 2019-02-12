@@ -213,16 +213,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static string GetSanitizedLongDescription(this OdcmProperty property)
         {
-            if (property.LongDescription != null)
+            var description = property.LongDescription ?? property.Description;
+
+            if (description != null)
             {
-                return property.LongDescription.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
+                return description.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
             }
             return null;
         }
 
-        public static string GetSanitizedPropertyName(this OdcmProperty property)
+        public static string GetSanitizedPropertyName(this OdcmProperty property, string prefix = null, string suffix = null)
         {
-            return GetSanitizedPropertyName(property.Name);
+            return GetSanitizedPropertyName(property.Name, prefix, suffix);
         }
 
         public static string GetSanitizedClassName(this OdcmClass odcmClass)
@@ -230,9 +232,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return GetSanitizedClassName(odcmClass.Name, odcmClass);
         }
 
-        public static string GetSanitizedPropertyName(this string property, string prefix = null)
+        public static string GetSanitizedPropertyName(this string property, string prefix = null, string suffix = null)
         {
-            return GetSanitizedPropertyName(property, null, prefix);
+            return GetSanitizedPropertyName(property, null, prefix, suffix);
         }
 
         /// <summary>
@@ -246,34 +248,37 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         /// <param name="odcmProperty">An OdcmProperty. Use the property that you want to sanitize.</param>
         /// <param name="prefix">The prefix to use on this property.</param>
         /// <returns></returns>
-        public static string GetSanitizedPropertyName(this string property, OdcmProperty odcmProperty, string prefix = null)
+        public static string GetSanitizedPropertyName(this string property, OdcmProperty odcmProperty, string prefix = null, string suffix = null)
         {
+            string result = property;
             if (GetReservedNames().Contains(property))
             {
                 var reservedPrefix = string.IsNullOrEmpty(prefix) ? DefaultReservedPrefix : prefix;
 
                 logger.Info("Property \"{0}\" is a reserved word in .NET. Converting to \"{1}{0}\"", property.ToUpperFirstChar(), reservedPrefix);
-                return string.Concat(reservedPrefix, property.ToUpperFirstChar());
+                result = string.Concat(reservedPrefix, property.ToUpperFirstChar());
             }
-
-            // Check whether the propertyObject is null (means they called the extension from a string).
-            // Check whether the property name is the same as the class name.
-            // Only constructor members may be named the same as the class name.
-            if (odcmProperty != null && property == odcmProperty.Class.Name.ToUpperFirstChar())
+            else if (odcmProperty != null && property == odcmProperty.Class.Name.ToUpperFirstChar())
             {
+                // Check whether the propertyObject is null (means they called the extension from a string).
+                // Check whether the property name is the same as the class name.
+                // Only constructor members may be named the same as the class name.
+
                 // Check whether the property type is the same as the class name.
                 if (odcmProperty.Projection.Type.Name.ToUpperFirstChar() == odcmProperty.Class.Name.ToUpperFirstChar())
                 {
                     // Name the property: {metadataName} + "Property"
                     logger.Info("Property type \"{0}\" has the same name as the class. Converting to \"{0}Property\"", property);
-                    return string.Concat(property, "Property");
+                    result = string.Concat(property, "Property");
                 }
-
-                // Name the property by its type. Sanitize it in case the type is a reserved name.  
-                return odcmProperty.Projection.Type.Name.ToUpperFirstChar().GetSanitizedPropertyName();
+                else
+                {
+                    // Name the property by its type. Sanitize it in case the type is a reserved name.  
+                    result = odcmProperty.Projection.Type.Name.ToUpperFirstChar().GetSanitizedPropertyName();
+                }
             }
 
-            return property;
+            return result+suffix;
         }
 
         public static string GetSanitizedClassName(this string className, OdcmClass odcmClass)

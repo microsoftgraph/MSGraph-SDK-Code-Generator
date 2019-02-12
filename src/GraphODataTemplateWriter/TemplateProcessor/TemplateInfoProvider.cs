@@ -7,6 +7,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
     using System.IO;
     using System.Linq;
     using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor.Enums;
+    using NLog;
 
     /// <summary>
     /// Configures and creates the ITemplateInfo from the json config file.
@@ -19,6 +20,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         private readonly FileNameCasing defaultCasing;
         private readonly SubProcessor defaultSubProcessor;
         private readonly Template defaultTemplate;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Creates a TemplateInfoProvider
@@ -43,9 +45,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
         public IEnumerable<ITemplateInfo> Templates()
         {
+            logger.Debug($"Processing {this.mapping.Count()} mappings.");
+
             var templates = this.ReadTemplateFiles();
             foreach (var templateInfo in this.mapping)
             {
+                //logger.Trace($"Loading template: {templateInfo.}");
                 string templateName = null;
                 if (templateInfo.TryGetValue("Template", out templateName) && templates.ContainsKey(templateName))
                 {
@@ -64,6 +69,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         private Dictionary<string, IList<string>> ReadTemplateFiles()
         {
             var templates = new Dictionary<string, IList<string>>();
+            logger.Debug($"Loading templates from {this.templatesDirectory}");
+
             foreach (string path in (Directory.EnumerateFiles(this.templatesDirectory, "*.*.tt", SearchOption.AllDirectories)))
             {
                 // Remove the .tt and then remove the file type extension

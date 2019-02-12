@@ -8,12 +8,22 @@ CodeWriterPHP writer	        = (CodeWriterPHP) host.CodeWriter;
 OdcmClass entity                = host.CurrentType.AsOdcmClass();
 TemplateWriterSettings settings = ConfigurationService.Settings;
 String entityName               = entity.Name.SanitizeEntityName();
+string targetNamespace          = @"Microsoft\Graph\Model";
 String entityBaseName           = "";
+
 if (entity.Base != null)
 	entityBaseName = entity.Base.Name.SanitizeEntityName();
+
+// TemplateWriterSettings.Properties are set at the Typewriter command line. Check the command line 
+// documentation for more information on how the TemplateWriterSettings.Properties is used.
+if (settings.Properties.ContainsKey("php.namespace"))
+{
+    targetNamespace = settings.Properties["php.namespace"];
+}      
+
 #>
 <#=writer.WriteHeader(writer.GetDocBlock(entityName.ToCheckedCase()))#>
-namespace Microsoft\Graph\Model;
+namespace <#=targetNamespace#>;
 
 <#=writer.GetClassBlock(entityName.ToCheckedCase().ToString(), "Model")#>
 <#
@@ -69,9 +79,9 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 
      /** 
      * Gets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
      *
      * @return array The <#=propertyName#>
@@ -87,9 +97,9 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     
     /** 
     * Sets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @param <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> $val The <#=propertyName#>
@@ -107,9 +117,9 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 #>
     /**
     * Gets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @return <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> The <#=propertyName#>
@@ -122,7 +132,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 if (property.Type.GetTypeString()[0] == '\\') { #>
             if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=property.Type.GetTypeString()#>")) {
 <# } else { #>
-            if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "Microsoft\Graph\Model\<#=property.Type.GetTypeString()#>")) {
+            if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=targetNamespace#>\<#=property.Type.GetTypeString()#>")) {
 <# } #>
                 return $this->_propDict["<#=property.Name.ToCamelize()#>"];
             } else {
@@ -140,9 +150,9 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
     
     /**
     * Sets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @param <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> $val The <#=propertyName#>
@@ -167,9 +177,9 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
 #>
     /**
     * Gets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @return <#=property.Type.GetTypeString()#> The <#=propertyName#>
@@ -195,9 +205,9 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
     
     /**
     * Sets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @param <#=property.Type.GetTypeString()#> $val The <#=propertyName#>

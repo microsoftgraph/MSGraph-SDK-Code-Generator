@@ -25,14 +25,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
         protected static CustomT4Host Host(ITemplateInfo templateInfo, string templatesDirectory, OdcmObject odcmObject, OdcmModel odcmModel)
         {
-            if (_host == null)
-            {
-                _host = new CustomT4Host(templateInfo, templatesDirectory, odcmObject, odcmModel);
-            }
-            else
-            {
-                _host.Reset(templateInfo, templatesDirectory, odcmObject, odcmModel);
-            }
+            // Need to always set the host. Typically, this is run against a single platform when generating codefiels.
+            // In test cases, we need to target multiple platforms. Since much of this code is static, we need to make sure 
+            // reset the information provided to the template processor. This change fixes a bug when targeting 
+            // multiple platforms in a test.
+            _host = new CustomT4Host(templateInfo, templatesDirectory, odcmObject, odcmModel);
 
             return _host;
         }
@@ -266,8 +263,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
             var parameters = new CompilerParameters
             {
-                OutputAssembly = templateInfo.TemplateName + ".dll",
-                GenerateInMemory = false,
+               // OutputAssembly = templateInfo.TemplateName + ".dll",
+                GenerateInMemory = true,
                 GenerateExecutable = false,
                 IncludeDebugInformation = true,
             };
@@ -325,6 +322,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
         protected TextFile ProcessTemplate(ITemplateInfo templateInfo, OdcmObject odcmObject, string fileName)
         {
+            logger.Trace($"Generating file {fileName}");
             var host = TemplateProcessor.Host(templateInfo, this.TemplatesDirectory, odcmObject, this.CurrentModel);
 
             Func<ITextTemplatingEngineHost, string> preProcessedTemplate;

@@ -19,11 +19,30 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         private String TemplatesDirectory { get; set;}
         private ITemplateProcessor Processor { get; set; }
         private OdcmModel CurrentModel { get; set; }
-        private ITemplateInfoProvider TemplateInfoProvider { get; set; }
+        public ITemplateInfoProvider TemplateInfoProvider { get; set; }
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private string pathWriterClassNameFormatString;
+        
+        private string targetLanguage;
+        private IEnumerable<string> properties;
+
+        public TemplateWriter()
+        {
+        }
+
+        public TemplateWriter(string targetLanguage)  
+        {
+            this.targetLanguage = targetLanguage;
+        }
+
+        public TemplateWriter(string targetLanguage, IEnumerable<string> properties)
+        {
+            this.targetLanguage = targetLanguage;
+            this.properties = properties;
+        }
+
         private string PathWriterClassNameFormatString
         {
             get {
@@ -36,7 +55,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         private void SetTemplatesDirectory(string templatesDirectory, bool relative = true)
         {
             string programDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
+            
             this.TemplatesDirectory = (relative) ? Path.Combine(programDir, templatesDirectory) : templatesDirectory;
 
             if (!new DirectoryInfo(this.TemplatesDirectory).Exists)
@@ -50,8 +69,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             // There is no need to process "shared" tempaltes, they are only meant to be imported from other templates.
             var templates = this.TemplateInfoProvider.Templates().Where(templateInfo => templateInfo.TemplateType != Template.Shared);
 
+            logger.Debug($"Processing {templates.Count()} templates.");
+
             // Initialize processor.
             var pathWriterClassName = String.Format(this.PathWriterClassNameFormatString, ConfigurationService.Settings.TargetLanguage);
+
+            logger.Debug($"Using writer {pathWriterClassName}.");
 
             var type = Type.GetType(pathWriterClassName);
             if (type == null)
@@ -75,13 +98,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         // IConfigurationProvider
         public void SetConfigurationProvider(IConfigurationProvider configurationProvider)
         {
-            ConfigurationService.Initialize(configurationProvider);
+            ConfigurationService.Initialize(configurationProvider, this.targetLanguage, this.properties);
             FileNameCasing nameCasing;
             if(!Enum.TryParse(ConfigurationService.Settings.DefaultFileCasing, out nameCasing))
             {
                 nameCasing = FileNameCasing.UpperCamel;
             }
-            this.SetTemplatesDirectory(ConfigurationService.Settings.TemplatesDirectory);
+            if (Directory.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Templates"))) {
+                this.SetTemplatesDirectory("Templates", true);
+            } else {
+                this.SetTemplatesDirectory(ConfigurationService.Settings.TemplatesDirectory);
+            }
             this.TemplateInfoProvider = new TemplateInfoProvider(ConfigurationService.Settings.TemplateConfiguration,
                                                                  Path.Combine(this.TemplatesDirectory, ConfigurationService.Settings.TargetLanguage),
                                                                 defaultNameCasing: nameCasing);

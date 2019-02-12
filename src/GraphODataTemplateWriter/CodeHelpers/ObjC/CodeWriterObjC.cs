@@ -133,7 +133,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                     {
                         imports.AppendFormat("#import <UIKit/UiKit.h>").AppendLine();
                     }
-                    else if (type.IsComplex() && !type.IsSystem() && type.GetTypeString() != "id" &&
+                    else if (!type.IsSystem() && type.IsComplex() && type.GetTypeString() != "id" &&
                              type.GetTypeString() != classType)
                     {
                         classes.AppendFormat("{0}, ", type.GetTypeString());

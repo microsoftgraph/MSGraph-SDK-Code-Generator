@@ -5,14 +5,24 @@
 CustomT4Host host      = (CustomT4Host) Host;
 OdcmModel model        = host.CurrentModel;
 CodeWriterPHP writer   = (CodeWriterPHP) host.CodeWriter;
+TemplateWriterSettings settings = ConfigurationService.Settings;
 OdcmClass complex      = (OdcmClass)host.CurrentType;
 String complexName     = complex.Name.SanitizeEntityName();
+string targetNamespace = @"Microsoft\Graph\Model";
 String complexBaseName = "";
 if (complex.Base != null)
 	complexBaseName = complex.Base.Name.SanitizeEntityName();
+
+// TemplateWriterSettings.Properties are set at the Typewriter command line. Check the command line 
+// documentation for more information on how the TemplateWriterSettings.Properties is used.
+if (settings.Properties.ContainsKey("php.namespace"))
+{
+    targetNamespace = settings.Properties["php.namespace"];
+}      
+
 #>
 <#=writer.WriteHeader(writer.GetDocBlock(complexName.ToCheckedCase()))#>
-namespace Microsoft\Graph\Model;
+namespace <#=targetNamespace#>;
 <#=writer.GetClassBlock(complexName.ToCheckedCase().ToString(), "Model")#>
 <#
 if (complex.Base != null) {
@@ -27,15 +37,31 @@ class <#=complexName.ToCheckedCase()#> extends Entity
 #>
 {
 <# 
+// Generate a constructor to initialize the @odata.type property when this type is not abstract and if this 
+// type's base is abstract and the base is referenced as the type of a structural property. We need this
+// to disambiguate the type of the descendant class being sent. 
+if (complex.IsBaseAbstractAndReferencedAsPropertyType() && !complex.IsAbstract)
+{
+#>    /**
+    * Set the @odata.type since this type is immediately descended from an abstract
+    * type that is referenced as the type in an entity.
+    */
+    public function __construct()
+    {
+        $this->setODataType("#<#=complex.FullName#>");
+    }
+
+<# 
+}
 foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
     var propertyName = property.Name.SanitizePropertyName(complexName);
     if (!property.Type.IsComplex()) {
 #>
     /**
     * Gets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @return <#=property.Type.GetTypeString()#> The <#=propertyName#>
@@ -61,9 +87,9 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 
     /**
     * Sets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @param <#=property.Type.GetTypeString()#> $val The value of the <#=propertyName#>
@@ -92,9 +118,9 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 
     /**
     * Gets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @return <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> The <#=propertyName#>
@@ -102,7 +128,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     public function get<#=propertyName.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
-            if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "Microsoft\Graph\Model\<#=property.Type.GetTypeString()#>")) {
+            if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=targetNamespace#>\<#=property.Type.GetTypeString()#>")) {
                 return $this->_propDict["<#=property.Name.ToCamelize()#>"];
             } else {
 <# if (property.Type.GetTypeString() == "\\GuzzleHttp\\Psr7\\Stream") { #>
@@ -119,9 +145,9 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 
     /**
     * Sets the <#=propertyName#>
-<# if (property.LongDescription != null) {
+<# if (property.LongDescription != null || property.Description != null) {
 #>
-    * <#=property.LongDescription#>
+    * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
     * @param <#=property.Type.GetTypeString()#> $val The value to assign to the <#=property.Name#>

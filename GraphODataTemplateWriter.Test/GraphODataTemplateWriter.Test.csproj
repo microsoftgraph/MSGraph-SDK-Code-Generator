@@ -38,12 +38,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Vipr.Core">
-      <HintPath>..\submodules\vipr\src\Core\Vipr.Core\bin\Debug\Vipr.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Vipr.Reader.OData.v4">
-      <HintPath>..\submodules\vipr\src\Readers\Vipr.Reader.OData.v4\bin\Debug\Vipr.Reader.OData.v4.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="*.cs" />
@@ -56,6 +50,14 @@
     <ProjectReference Include="..\src\GraphODataTemplateWriter\GraphODataTemplateWriter.csproj">
       <Project>{e6b5202f-4f66-428a-ab92-0aaa11ba81de}</Project>
       <Name>GraphODataTemplateWriter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\submodules\vipr\src\Core\Vipr.Core\Vipr.Core.csproj">
+      <Project>{04c24936-006a-4fd8-a872-ee55588c1cbe}</Project>
+      <Name>Vipr.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\submodules\vipr\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj">
+      <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>
+      <Name>Vipr.Reader.OData.v4</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

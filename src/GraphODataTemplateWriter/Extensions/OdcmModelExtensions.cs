@@ -208,6 +208,45 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             }
         }
 
+        public static string GetImplicitPropertyName(this OdcmProperty property, OdcmSingleton singleton)
+        {
+            var implicitPropertyName = property.Name;
+            // Default behavior
+            if (singleton.NavigationPropertyBindings.Count() > 0)
+            {
+                var target = singleton.NavigationPropertyBindings.Where(kv => kv.Key.EndsWith(property.Name)).Select(kvp => kvp.Value).FirstOrDefault();
+                if (target != null)
+                {
+                    implicitPropertyName = target;
+                }
+            }
+            return implicitPropertyName;
+        }
+
+        /// <summary>
+        /// Indicates whether the abstract base class of a descendant is referenced as the type of a structural property.
+        /// This has significance to scenarios where client needs to set the @odata.type property because the type cannot
+        /// be inferred since the reference is the to abstract base class and the actual class used by the client is
+        /// one of its descendants. 
+        /// </summary>
+        /// <param name="complex">The ComplexType that we want to query whether its base type is the referenced type for any property in any entity.</param>
+        /// <returns></returns>
+        public static bool IsBaseAbstractAndReferencedAsPropertyType(this OdcmClass complex)
+        {
+            if (complex.Base == null)
+            {
+                return false;
+            }
+            else
+            {
+                return complex.Namespace.Types.Select(someType => (someType as OdcmEntityClass))
+                               .Where(someType => someType is OdcmEntityClass)
+                               .Where(someType => (someType as OdcmEntityClass).Properties
+                                    .Any(x => x.Type.Name == complex.Base.Name && complex.Base.IsAbstract))
+                               .Any();
+            }
+        }
+
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
         {
             return odcmClass.Properties.Where(prop => prop.IsNavigation());

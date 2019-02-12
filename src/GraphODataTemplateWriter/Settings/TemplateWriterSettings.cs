@@ -102,6 +102,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
         private readonly List<Dictionary<string, string>> templateConfiguration;
 
         /// <summary>
+        /// A dictionary of strings that represent a property. These properties can be provided from the command line
+        /// and used in the templates.
+        /// </summary>
+        public Dictionary<string, string> Properties { get; set; }
+
+        /// <summary>
         /// The dictionary created by combining the "Shared" and current language mapping.
         /// </summary>
         public IList<Dictionary<string, string>> TemplateConfiguration

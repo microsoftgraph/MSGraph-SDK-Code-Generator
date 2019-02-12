@@ -234,8 +234,12 @@
     }
 
     public string BaseTypeCollectionResponse(OdcmObject c) {
-        return "Base" + TypeName(c) + "CollectionResponse";
+        return TypeCollectionResponse(c);
     }
+
+	public string TypeCollectionResponse(OdcmObject c) {
+        return TypeName(c) + "CollectionResponse";
+    } 
 
     public string TypeCollectionRequest(OdcmObject c) {
         if(c is OdcmProperty && c.AsOdcmProperty().IsReference()){
@@ -502,9 +506,428 @@
 
     public string CollectionRequestGeneric(OdcmObject c) {
         if (c is OdcmMethod) {
-            return "<" + BaseTypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
+            return "<" + TypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
         }
-        return "<" + BaseTypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
+        return "<" + TypeCollectionResponse(c) + ", " + ITypeCollectionPage(c) + ">";
+    }
+	
+	//Creating package definition for Enum.java.tt template file
+	public string CreatePackageDefForEnum(CustomT4Host host)
+    {
+		var sb = new StringBuilder();
+		var packageFormat = @"package {0}.{1};";
+		sb.AppendFormat(packageFormat,
+						host.CurrentModel.NamespaceName(),
+						host.TemplateInfo.OutputParentDirectory.Replace("_", "."));
+		sb.Append("\n");
+		return sb.ToString();
+    }
+	
+	//Getting import prefix using property name for model classes
+	public string getPrefixForModels(string propertyName)
+	{
+		if(propertyName.StartsWith("Base"))
+		{
+			if(propertyName == "BaseItem" || propertyName == "BaseItemVersion")
+				return "models.extensions";
+			else
+				return "models.extensions";
+		}
+		
+		return "models.extensions";
+	}
+	
+	//Getting import prefix using property name for Request classes
+	public string getPrefixForRequests(string propertyName)
+	{
+		if(propertyName == "BaseItemCollectionPage")
+			return "requests.extensions";
+			
+		if(propertyName.StartsWith("Base") || propertyName.StartsWith("IBase"))
+			return "requests.extensions";
+	
+		return "requests.extensions";
+	}
+	
+	//Get package prefix using OdcmProperty for model classes
+	public string getPackagePrefix(OdcmProperty property)
+	{
+		var propertyType = property.GetTypeString();
+	
+		if(property.Type is OdcmEnum)
+			return "models.generated";
+		
+		return getPrefixForModels(propertyType);	
+	}
+
+	//Get package prefix using OdcmProperty for model classes
+	public string getPackagePrefix(OdcmParameter property)
+	{
+		var propertyType = property.GetTypeString();
+	
+		if(property.Type is OdcmEnum)
+			return "models.generated";
+		
+		return getPrefixForModels(propertyType);	
+	}
+
+	public string CreatePackageDefinition(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		var packageFormat = @"package {0}.{1};";
+		sb.AppendFormat(packageFormat,
+						host.CurrentModel.NamespaceName(),
+						host.TemplateInfo.OutputParentDirectory.Replace("_", "."));
+		sb.Append("\n");
+		return sb.ToString();
+	}
+
+	public string CreatePackageDefForBaseEntityCollectionResponse(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+		var importFormat = @"import {0}.{1}.{2};";
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						TypeName(host.CurrentType));
+		sb.Append("\n");
+		return sb.ToString();
+	}
+
+	public string CreatePackageDefForIBaseMethodRequest(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+		var importFormat = @"import {0}.{1}.{2};";
+
+		var returnType = ReturnType(host.CurrentType);
+		if(returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
+		{
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						ReturnType(host.CurrentType));
+			sb.Append("\n");
+		}
+
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeRequest(host.CurrentType));
+		sb.Append("\n");
+		return sb.ToString();
+	}
+
+	public string CreatePackageDefForIBaseEntityRequest(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+		var importFormat = @"import {0}.{1}.{2};";
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						TypeName(host.CurrentType.AsOdcmClass()));
+		sb.Append("\n");
+		return sb.ToString();
+	}
+
+	public string CreatePackageDefForBaseMethodRequest(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefForIBaseMethodRequest(host));
+		var importFormat = @"import {0}.{1}.{2};";
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						TypeRequest(host.CurrentType));
+		sb.Append("\n");
+		return sb.ToString();
+	}
+
+	public string CreatePackageDefForBaseMethodRequestBuilder(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+		var importFormat = @"import {0}.{1}.{2};";
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeRequest(host.CurrentType));
+		sb.Append("\n");
+
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						TypeRequest(host.CurrentType));
+		sb.Append("\n");
+
+		foreach (var method in host.CurrentType.AsOdcmMethod().WithOverloads()) {
+			foreach (var p in method.Parameters)
+			{
+				if(!(p.Type is OdcmPrimitiveType) && p.Type.GetTypeString() != "com.google.gson.JsonElement") {
+					var propertyType = p.Type.GetTypeString();
+					if(propertyType.StartsWith("EnumSet")){
+						propertyType = propertyType.Substring("EnumSet<".Length, propertyType.Length-("EnumSet<".Length+1));
+						sb.Append("import java.util.EnumSet;\n");
+					}
+						
+					sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						getPackagePrefix(p),
+						propertyType);
+					sb.Append("\n");
+				}
+			}
+		}
+		return sb.ToString();
+	}
+
+	public string CreatePackageDefForIBaseMethodBodyRequest(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+		var importFormat = @"import {0}.{1}.{2};";
+		var returnType = ReturnType(host.CurrentType);
+		if(returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
+		{
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						ReturnType(host.CurrentType));
+			sb.Append("\n");
+		}
+		if(host.CurrentType.AsOdcmMethod().IsCollection)
+		{
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeCollectionRequest(host.CurrentType));
+			sb.Append("\n");
+		}
+		else
+		{
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeRequest(host.CurrentType));
+			sb.Append("\n");
+		}
+
+		return sb.ToString();
+	}
+
+	public string CreatePackageDefForBaseMethodBodyRequest(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+		var importFormat = @"import {0}.{1}.{2};";
+
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						TypeBody(host.CurrentType));
+		sb.Append("\n");
+		var returnType = ReturnType(host.CurrentType);
+		if(returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
+		{
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						ReturnType(host.CurrentType));
+			sb.Append("\n");
+		}
+
+		if(host.CurrentType.AsOdcmMethod().IsCollection)
+		{
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeCollectionRequest(host.CurrentType));
+			sb.Append("\n");
+
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						TypeCollectionRequest(host.CurrentType));
+			sb.Append("\n");
+		}
+		else
+		{
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeRequest(host.CurrentType));
+			sb.Append("\n");
+
+			sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						TypeRequest(host.CurrentType));
+			sb.Append("\n");
+		}
+		return sb.ToString();
+	}
+
+	public string CreatePackageDefIBaseMethodRequestBuilder(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+		var importFormat = @"import {0}.{1}.{2};";
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeRequest(host.CurrentType));
+		sb.Append("\n");
+		return sb.ToString();
+	}
+
+	public string CreatePackageDefForBaseEntityCollectionPage(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+
+		var importFormat = @"import {0}.{1}.{2};";
+		string modelClassName;
+		if (host.CurrentType is OdcmMethod)
+            modelClassName = OdcmMethodReturnType(host.CurrentType as OdcmMethod);
+		else 
+			modelClassName = TypeName(host.CurrentType);
+		
+
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						modelClassName);
+		sb.Append("\n");
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeCollectionRequestBuilder(host.CurrentType));
+
+		return sb.ToString();
+	}
+
+	//Fixing package and import statement for model classes
+	public string CreatePackageDefForEntity(CustomT4Host host)
+    {
+		IEnumerable<OdcmProperty> properties = ((OdcmClass)host.CurrentType).Properties;
+        var sb = new StringBuilder();
+		var packageFormat = @"package {0}.{1};";
+		sb.AppendFormat(packageFormat,
+						host.CurrentModel.NamespaceName(),
+						host.TemplateInfo.OutputParentDirectory.Replace("_", "."));
+		sb.Append("\n");
+
+		 sb.AppendFormat(@"import {0}.concurrency.*;
+import {0}.core.*;
+import {0}.http.*;
+import {0}.options.*;
+import {0}.serializer.*;
+import java.util.Arrays;
+import java.util.EnumSet;", host.CurrentModel.NamespaceName());
+
+		sb.Append("\n");		
+        var importFormat = @"import {0}.{1}.{2};";
+		Dictionary<string, int> uniqueStore = new Dictionary<string, int>();
+
+        foreach (var property in properties.Where(p => !p.Projection.Type.Name.Equals("Stream")))
+        { 
+            var propertyType = property.GetTypeString();
+			if(property.Type is OdcmPrimitiveType)
+				continue;
+				
+			if(propertyType == "com.google.gson.JsonElement" || propertyType == "com.google.gson.JsonElement" || propertyType.StartsWith("com.microsoft.graph.models"))
+				continue;
+				
+			if(propertyType.StartsWith("EnumSet"))
+				propertyType = propertyType.Substring("EnumSet<".Length, propertyType.Length-("EnumSet<".Length+1));
+				
+			string prefixValue = getPackagePrefix(property);
+			string importstr= String.Format(importFormat,
+						host.CurrentModel.NamespaceName(),
+						prefixValue,
+						propertyType);
+			if(!uniqueStore.ContainsKey(importstr)){
+				uniqueStore.Add(importstr, 0);						
+				sb.Append(importstr);
+				sb.Append("\n");
+			}
+			
+        }
+
+		string baseClassNameType = BaseClassName(host.CurrentType);
+		if(baseClassNameType != "")
+		{
+			string prefixValue = getPrefixForModels(baseClassNameType);
+			string importstr= String.Format(importFormat,
+						host.CurrentModel.NamespaceName(),
+						prefixValue,
+						baseClassNameType);
+			if(!uniqueStore.ContainsKey(importstr)){
+				uniqueStore.Add(importstr, 0);						
+				sb.Append(importstr);
+				sb.Append("\n");
+			}
+		}
+		
+		string baseTypeNameStr = BaseTypeName(host.CurrentType);
+		if(baseTypeNameStr == "BasePlannerAssignments")
+		{
+			string importstr= String.Format(importFormat,
+							host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						 "PlannerAssignment");
+			if(!uniqueStore.ContainsKey(importstr)){
+				uniqueStore.Add(importstr, 0);						
+				sb.Append(importstr);
+				sb.Append("\n");
+			}
+		}
+		if(baseTypeNameStr == "BasePlannerChecklistItems")
+		{			
+			string importstr= String.Format(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						 "PlannerChecklistItem");
+			if(!uniqueStore.ContainsKey(importstr)){
+				uniqueStore.Add(importstr, 0);						
+				sb.Append(importstr);
+				sb.Append("\n");
+			}
+		}
+		
+		if (properties != null)
+        {
+            foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation())) 
+			{
+				if(property.Type is OdcmPrimitiveType)
+					continue;
+
+				var propertyType = TypeCollectionResponse(property);
+				string importstr= String.Format(importFormat,
+							host.CurrentModel.NamespaceName(),
+							getPrefixForRequests(propertyType),
+							propertyType);
+				if(!uniqueStore.ContainsKey(importstr)){
+					uniqueStore.Add(importstr, 0);						
+					sb.Append(importstr);
+					sb.Append("\n");
+				}
+					
+				string propertyValue = TypeCollectionPage(property);	
+				string importstr1= String.Format(importFormat,
+					host.CurrentModel.NamespaceName(),
+					getPrefixForRequests(propertyValue),
+					propertyValue);
+				if(!uniqueStore.ContainsKey(importstr1)){
+					uniqueStore.Add(importstr1, 0);						
+					sb.Append(importstr1);
+					sb.Append("\n");
+				}
+			}
+        }
+        return sb.ToString();
     }
 
     public string CreatePackageDef(CustomT4Host host)
@@ -517,7 +940,6 @@ import {0}.models.extensions.*;
 import {0}.models.generated.*;
 import {0}.http.*;
 import {0}.requests.extensions.*;
-import {0}.requests.generated.*;
 import {0}.options.*;
 import {0}.serializer.*;
 
@@ -569,12 +991,7 @@ public {1} {2}{3}{4} {{";
             extendsStr,
             implementsStr);
 
-        if (name.StartsWith("Base") || name.StartsWith("IBase"))
-        {
-            return CreatAutogeneratedWarning() + declaration;
-        }
-
-        return CreateExtensiblityMessage() + declaration;
+        return CreatAutogeneratedWarning() + declaration;
     }
 
     public string GenericRequest(OdcmObject c){
@@ -669,7 +1086,7 @@ public {1} {2}{3}{4} {{";
                 property.Name,
                 propertyType,
                 property.Name.SanitizePropertyName(property).ToLowerFirstChar(),
-				ReplaceInvalidCharacters(property.LongDescription));
+				GetSanitizedDescription(property));
         }
         return sb.ToString();
     }
@@ -769,7 +1186,7 @@ public {1} {2}{3}{4} {{";
         }}
 ",
             property.Name.SanitizePropertyName(property),
-            BaseTypeCollectionResponse(property),
+            TypeCollectionResponse(property),
             TypeCollectionPage(property),
             property.GetTypeString());
             }
@@ -847,4 +1264,14 @@ public {1} {2}{3}{4} {{";
 		}
 		return null;
 	}
+
+    /**
+    * Get the description from the LongDescription or Description annotation and then return the sanitized string.
+    */
+    public string GetSanitizedDescription(OdcmProperty property)
+    {
+        var description = property.LongDescription ?? property.Description;
+
+        return ReplaceInvalidCharacters(description);
+    }
 #>

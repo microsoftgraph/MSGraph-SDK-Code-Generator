@@ -1,0 +1,77 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = TypeReferenceRequest(c);#>
+<#=writer.WriteHeader()#>
+<#=CreatePackageDef(host)#>
+
+<#=CreateClassDef(TypeReferenceRequest(c), "BaseRequest", ITypeReferenceRequest(c))#>
+
+    /**
+     * The request for the <#=TypeName(c)#>
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     */
+    public <#=TypeReferenceRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, java.util.List<? extends Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=ClassTypeName(c)#>.class);
+    }
+
+    public void delete(final ICallback<<#=TypeName(c)#>> callback) {
+        send(HttpMethod.DELETE, callback, null);
+    }
+
+    public <#=TypeName(c)#> delete() throws ClientException {
+       return send(HttpMethod.DELETE, null);
+    }
+
+<# if (c.GetFeatures().CanSelect) { #>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value the select clause
+     * @return the updated request
+     */
+    public <#=ITypeReferenceRequest(c)#> select(final String value) {
+        getQueryOptions().add(new QueryOption("$select", value));
+        return (<#=TypeReferenceRequest(c)#>)this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanExpand) { #>
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value the expand clause
+     * @return the updated request
+     */
+    public <#=ITypeReferenceRequest(c)#> expand(final String value) {
+        getQueryOptions().add(new QueryOption("$expand", value));
+        return (<#=TypeReferenceRequest(c)#>)this;
+    }
+<# } #>
+<# if (c.GetFeatures().CanUpdate) { #>
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=TypeName(c)#> the <#=TypeName(c)#> reference to PUT
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(<#=TypeName(c)#> src<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
+        send(HttpMethod.PUT, callback, src<#=TypeName(c)#>);
+    }
+
+    /**
+     * Puts the <#=TypeName(c)#>
+     *
+     * @param src<#=TypeName(c)#> the <#=TypeName(c)#> reference to PUT
+     * @return the <#=TypeName(c)#>
+     * @throws ClientException an exception occurs if there was an error while the request was sent
+     */
+    public <#=TypeName(c)#> put(<#=TypeName(c)#> src<#=TypeName(c)#>) throws ClientException {
+        return send(HttpMethod.PUT, src<#=TypeName(c)#>);
+    }
+<# } #>
+}

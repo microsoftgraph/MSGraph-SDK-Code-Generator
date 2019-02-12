@@ -10,37 +10,12 @@
 
             { "Template": "EntityType", "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>" },
             { "Template": "ComplexType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Ignore": "methodResponse" },
-            { "Template": "EnumType", "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" },
-            { "Template": "EntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>Request" },
-            { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType", "Type": "Request", "Name": "<Class>RequestBuilder" },
-            { "Template": "StreamRequest", "SubProcessor": "StreamProperty", "Type": "Request", "Name": "<Class><Property>Request" },
-            { "Template": "MethodRequest", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Request" },
-            { "Template": "MethodRequestBuilder", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>RequestBuilder" }
+            { "Template": "EnumType", "SubProcessor": "EnumType", "Type": "Model", "Name": "<Class>" }
         ],
 
         "ObjC": [
-            { "Template": "Models", "SubProcessor": "Other", "Type": "Model", "Name": "Models" },
-            { "Template": "ODataEntities", "SubProcessor": "Other", "Type": "Model", "Name": "ODataEntities" },
-            
-            { "Template": "StreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "<Class>StreamRequest" },
-            
-            { "Template": "EntityWithReferenceRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferenceRequest" },
-            { "Template": "EntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>WithReferenceRequestBuilder" },
-            { "Template": "EntityReferenceRequest", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>ReferenceRequest" },
-            { "Template": "EntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType", "Type": "Request", "Name": "<Class>ReferenceRequestBuilder" },
-
-            { "Template": "EntityCollectionRequest", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionRequest", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
-            { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionRequestBuilder", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },  
-            { "Template": "EntityCollectionRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesRequest", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
-            { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesRequestBuilder", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
-
-            { "Template": "EntityCollectionReferenceRequest", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionReferencesRequest", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
-            { "Template": "EntityCollectionReferenceRequestBuilder", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionReferencesRequestBuilder", "Exclude": "daysOfWeek;ignorableCollection2", "Ignore": "ignorableCollection" },
-
-            { "Template": "MethodCollection", "SubProcessor": "Method", "Type": "Request", "Name": "<Class><Method>Collection", "Matches": "specialCollection" },
-
-            { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>Request", "Matches": "navigable" },
-            { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>RequestBuilder", "Matches": "navigable" }
+            { "Template": "ClientModels", "SubProcessor": "Other", "Type": "Model", "Name": "ClientModels" },
+            { "Template": "ODataEntities", "SubProcessor": "Other", "Type": "Model", "Name": "ODataEntities" }
         ]
     }
 }

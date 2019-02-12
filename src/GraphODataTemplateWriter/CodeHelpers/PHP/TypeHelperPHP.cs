@@ -37,7 +37,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                 "double",
                 "string"
             };
+        public static string GetSanitizedLongDescription(this OdcmProperty property)
+        {
+            var description = property.LongDescription ?? property.Description;
 
+            if (description != null)
+            {
+                return description.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
+            }
+            return null;
+        }
 
         public static string GetTypeString(this OdcmType @type)
         {
