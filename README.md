@@ -109,7 +109,11 @@ and optionally :
 
 Example :
 
-` { "Template": "EntityType", "SubProcessor": "EntityType", "Type": "Model", "Name": "<Class>", "Matches" : "includeThisType", "Exclude" : "ExcludedTypeName;OtherExcludedTypeName" }`
+` { "Template": "EntityCollectionPage", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionPage", "Matches" : "includeThisType", "Exclude" : "ExcludedTypeName;OtherExcludedTypeName" }`
+
+It is important to understand that subprocessors are mapped to methods that query the **OdcmModel** and return a set of OData objects. This mapping is maintained in [TemplateProcess.InitializeSubprocessor()](https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/blob/dev/src/GraphODataTemplateWriter/TemplateProcessor/TemplateProcessor.cs#L54). The language specific mappings exist in the [config directory](https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/tree/dev/src/GraphODataTemplateWriter/.config). Each OData object returned by the subprocessor is applied to the mapped template which results in a code file output per each OData object.
+
+In the above example, the objects in result set of the NavigationCollectionProperty subprocessor will each be applied to the EntityCollectionPage template. Each result will be a code file for each object returned by the NavigationCollectionProperty subprocessor. 
 
 #### SubProcessors
 
