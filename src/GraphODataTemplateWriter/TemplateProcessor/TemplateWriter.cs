@@ -27,6 +27,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         
         private string targetLanguage;
         private IEnumerable<string> properties;
+        private string endpointVersion;
 
         public TemplateWriter()
         {
@@ -41,6 +42,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         {
             this.targetLanguage = targetLanguage;
             this.properties = properties;
+        }
+
+        public TemplateWriter(string targetLanguage, IEnumerable<string> properties, string endpointVersion)
+        {
+            this.targetLanguage = targetLanguage;
+            this.properties = properties;
+            this.endpointVersion = endpointVersion;
         }
 
         private string PathWriterClassNameFormatString
@@ -98,7 +106,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         // IConfigurationProvider
         public void SetConfigurationProvider(IConfigurationProvider configurationProvider)
         {
-            ConfigurationService.Initialize(configurationProvider, this.targetLanguage, this.properties);
+            ConfigurationService.Initialize(configurationProvider, this.targetLanguage, this.properties, this.endpointVersion);
             FileNameCasing nameCasing;
             if(!Enum.TryParse(ConfigurationService.Settings.DefaultFileCasing, out nameCasing))
             {
