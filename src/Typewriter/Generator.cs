@@ -18,7 +18,7 @@ namespace Typewriter
         /// <param name="options">The options bag</param>
         static internal void GenerateFiles(string csdlContents, Options options)
         {
-            var filesToWrite = MetadataToClientSource(csdlContents, options.Language, options.Properties);
+            var filesToWrite = MetadataToClientSource(csdlContents, options.Language, options.Properties, options.EndpointVersion);
             FileWriter.WriteAsync(filesToWrite, options.Output);
         }
 
@@ -65,13 +65,13 @@ namespace Typewriter
         /// <param name="edmxString">The EDMX file as a string.</param>
         /// <param name="targetLanguage">Specifies the target language. Possible values are csharp, php, etc.</param>
         /// <returns></returns>
-        static private IEnumerable<TextFile> MetadataToClientSource(string edmxString, string targetLanguage, IEnumerable<string> properties)
+        static private IEnumerable<TextFile> MetadataToClientSource(string edmxString, string targetLanguage, IEnumerable<string> properties, string endpointVersion = "v1.0")
         {
             if (String.IsNullOrEmpty(edmxString))
                 throw new ArgumentNullException("edmxString", "The EDMX file string contains no content.");
 
             var reader = new OdcmReader();
-            var writer = new TemplateWriter(targetLanguage, properties);
+            var writer = new TemplateWriter(targetLanguage, properties, endpointVersion);
             writer.SetConfigurationProvider(new ConfigurationProvider());
 
             var model = reader.GenerateOdcmModel(new List<TextFile> { new TextFile("$metadata", edmxString) });

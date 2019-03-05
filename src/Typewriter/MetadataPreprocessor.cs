@@ -51,6 +51,15 @@ namespace Typewriter
             AddContainsTarget("plannerPlan");
             AddContainsTarget("plannerDelta");
 
+            AddContainsTarget("teamsAppDefinition");
+            AddContainsTarget("itemActivity");
+            
+            // Intune
+            AddContainsTarget("windows81TrustedRootCertificate");
+            AddContainsTarget("iosTrustedRootCertificate");
+            AddContainsTarget("mobileContainedApp");
+            AddContainsTarget("managedDeviceCertificateState");
+
             return xMetadata.ToString();
         }
 
