@@ -72,5 +72,39 @@ namespace Typewriter.Test
             } 
             Assert.IsTrue(isExpectedNamespaceSet, $"The expected namespace, {testNamespace}, was not set in the generated test file.");
         }
+
+        [TestMethod]
+        public void It_generates_dotNet_client_with_default_beta_baseUrl()
+        {
+            const string outputDirectory = "output";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files,
+                EndpointVersion = "beta"
+            };
+
+            Generator.GenerateFiles(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\GraphServiceClient.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            // Check that the beta endpoint was set as the default endpoint. Otherwise it uses v1.0.
+            // https://github.com/microsoftgraph/msgraph-sdk-dotnet/blob/dev/src/Microsoft.Graph/Requests/Generated/GraphServiceClient.cs#L25
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            bool hasFoundBetaUrl = false;
+            string betaUrl = "https://graph.microsoft.com/beta";
+            foreach (var line in lines)
+            {
+                if (line.Contains(betaUrl))
+                {
+                    hasFoundBetaUrl = true;
+                    break;
+                }
+            }
+            Assert.IsTrue(hasFoundBetaUrl, $"The expected default base URL, {betaUrl}, was not set in the generated test file.");
+        }
     }
 }
