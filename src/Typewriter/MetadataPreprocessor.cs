@@ -53,7 +53,8 @@ namespace Typewriter
 
             AddContainsTarget("teamsAppDefinition");
             AddContainsTarget("itemActivity");
-            
+            AddContainsTarget("labelPolicy");
+
             // Intune
             AddContainsTarget("windows81TrustedRootCertificate");
             AddContainsTarget("iosTrustedRootCertificate");
