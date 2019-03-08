@@ -25,6 +25,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 case "Json":
                     typeStr = "any";
                     break;
+                case "Decimal":
                 case "Int16":
                 case "Int32":
                 case "Int64":
