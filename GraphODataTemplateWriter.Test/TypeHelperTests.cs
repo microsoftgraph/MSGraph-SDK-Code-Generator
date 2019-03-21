@@ -1,0 +1,95 @@
+﻿using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
+using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript;
+using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Vipr.Core.CodeModel;
+
+
+namespace GraphODataTemplateWriter.Test
+{
+    [TestClass]
+    public class TypeHelperTests
+    {
+        OdcmProperty testProperty;
+        string actualInputString = "\r\n Test string";
+        string expectedOutputString = "\r\n/// Test string";
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            testProperty = new OdcmProperty("testPropertyName");
+        }
+
+        /// <summary>
+        /// Test that GetSanitizedLongDescription provides long descriptions without uncommented lines of text.
+        /// </summary>
+        [TestMethod]
+        public void Long_Description_Doesnt_Contain_Uncommented_NewLine_For_CSharp()
+        {
+            testProperty.LongDescription = actualInputString;
+            string sanitizedString = TypeHelperCSharp.GetSanitizedLongDescription(testProperty); // Explicitly bind to extension method.
+
+            Assert.AreEqual(expectedOutputString, sanitizedString, "GetSanitizedLongDescription is not handling escaped CRLF.");
+        }
+
+        /// <summary>
+        /// Test that GetSanitizedLongDescription provides descriptions without uncommented lines of text.
+        /// </summary>
+        [TestMethod]
+        public void Description_Doesnt_Contain_Uncommented_NewLine_For_CSharp()
+        {
+            testProperty.Description = actualInputString;
+            string sanitizedString = TypeHelperCSharp.GetSanitizedLongDescription(testProperty);
+
+            Assert.AreEqual(expectedOutputString, sanitizedString, "GetSanitizedLongDescription is not handling escaped CRLF.");
+        }
+
+        /// <summary>
+        /// Test that GetSanitizedLongDescription provides long descriptions without uncommented lines of text for Typescript.
+        /// </summary>
+        [TestMethod]
+        public void Long_Description_Doesnt_Contain_Uncommented_NewLine_For_Typescript()
+        {
+            testProperty.LongDescription = actualInputString;
+            string sanitizedString = TypeHelperTypeScript.GetSanitizedLongDescription(testProperty); // Explicitly bind to extension method.
+
+            Assert.AreEqual(expectedOutputString, sanitizedString, "GetSanitizedLongDescription is not handling escaped CRLF.");
+        }
+
+        /// <summary>
+        /// Test that GetSanitizedLongDescription provides descriptions without uncommented lines of text for Typescript.
+        /// </summary>
+        [TestMethod]
+        public void Description_Doesnt_Contain_Uncommented_NewLine_For_Typescript()
+        {
+            testProperty.Description = actualInputString;
+            string sanitizedString = TypeHelperTypeScript.GetSanitizedLongDescription(testProperty);
+
+            Assert.AreEqual(expectedOutputString, sanitizedString, "GetSanitizedLongDescription is not handling escaped CRLF.");
+        }
+
+        /// <summary>
+        /// Test that GetSanitizedLongDescription provides long descriptions without uncommented lines of text for PHP.
+        /// </summary>
+        [TestMethod]
+        public void Long_Description_Doesnt_Contain_Uncommented_NewLine_For_PHP()
+        {
+            testProperty.LongDescription = actualInputString;
+            string sanitizedString = TypeHelperPHP.GetSanitizedLongDescription(testProperty); // Explicitly bind to extension method.
+
+            Assert.AreEqual(expectedOutputString, sanitizedString, "GetSanitizedLongDescription is not handling escaped CRLF.");
+        }
+
+        /// <summary>
+        /// Test that GetSanitizedLongDescription provides descriptions without uncommented lines of text for PHP.
+        /// </summary>
+        [TestMethod]
+        public void Description_Doesnt_Contain_Uncommented_NewLine_For_PHP()
+        {
+            testProperty.Description = actualInputString;
+            string sanitizedString = TypeHelperPHP.GetSanitizedLongDescription(testProperty);
+
+            Assert.AreEqual(expectedOutputString, sanitizedString, "GetSanitizedLongDescription is not handling escaped CRLF.");
+        }
+    }
+}
