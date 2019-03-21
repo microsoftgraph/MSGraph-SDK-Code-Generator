@@ -87,6 +87,9 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate);", entityName, lowerCaseEntityName);
 
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(Environment.NewLine);
+
     this.AppendEntityCreateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate, CancellationToken cancellationToken);", entityName, lowerCaseEntityName);

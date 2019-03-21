@@ -48,10 +48,14 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
 // to disambiguate the type of the descendant class being sent. 
 if (complex.IsBaseAbstractAndReferencedAsPropertyType() && !complex.IsAbstract)
 {
-#>        public <#=complexTypeName#>()
+#>        /// <summary>
+        /// Initializes a new instance of the <see cref="<#=complexTypeName#>"/> class.
+        /// </summary>
+        public <#=complexTypeName#>()
         {
             this.ODataType = "<#=complex.FullName#>";
-        }<#
+        }
+<#
 }
         foreach(var property in complex.Properties)
         {
