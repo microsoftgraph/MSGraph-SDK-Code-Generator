@@ -30,7 +30,7 @@ namespace <#=enumT.Namespace.GetNamespaceName()#>
     #>
 
         /// <summary>
-        /// <#=emumMember.Name.SplitCamelCase()#>
+        /// <#=emumMember.Name.ToUpperFirstChar().SplitCamelCase()#>
         /// </summary>
         <#=emumMember.Name.ToCheckedCase().GetSanitizedPropertyName()#> = <#=emumMember.Value#>,
 	<#
