@@ -40,7 +40,7 @@ public string GetInterfaceDefinition(string interfaceName)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("    /// </summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("    public partial interface I{0}", interfaceName);
+    stringBuilder.AppendFormat("    public partial interface I{0} : IBaseRequestBuilder", interfaceName);
 
     return stringBuilder.ToString();
 }
