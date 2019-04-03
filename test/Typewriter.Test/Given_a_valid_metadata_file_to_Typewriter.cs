@@ -106,5 +106,39 @@ namespace Typewriter.Test
             }
             Assert.IsTrue(hasFoundBetaUrl, $"The expected default base URL, {betaUrl}, was not set in the generated test file.");
         }
+
+
+        [TestMethod]
+        public void It_generates_dotNet_client_with_commented_out_code_comments()
+        {
+            const string outputDirectory = "output";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\OnenotePage.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            // Check that the test string is found in the output file. Converting "&#xD;&#xA; Test token string" to "/// Test token string" is what we are testing.
+            // We are making sure that the documentation annotation is handled correctly for this scenario.
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            bool hasTestString = false;
+            string testString = @"/// Test token string";
+            foreach (var line in lines)
+            {
+                if (line.Contains(testString))
+                {
+                    hasTestString = true;
+                    break;
+                }
+            }
+            Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We are not correctly handling the \r\n coming from the annotations.");
+        }
     }
 }

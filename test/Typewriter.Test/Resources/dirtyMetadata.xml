@@ -41,6 +41,9 @@
         <Singleton Name="testSingleton2" Type="microsoft.graph.testSingleton2"/>
         <EntitySet Name="testTypes" EntityType="microsoft.graph.testType3"/>
       </EntityContainer>
+      <Annotations Target="microsoft.graph.onenotePage/content">
+        <Annotation Term="Org.OData.Core.V1.Description" String="The OneNotePage content.&#xD;&#xA;&#xD;&#xA; Test token string" />
+      </Annotations>
       <Annotations Target="microsoft.graph.directoryObject">
         <Annotation Term="Org.OData.Capabilities.V1.ExpandRestrictions">
           <Record>
