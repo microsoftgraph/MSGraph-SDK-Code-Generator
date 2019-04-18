@@ -42,7 +42,7 @@ class <#=enumT.Name.ToUpperFirstChar()#> extends Enum
 <#
 		} else {
 #>
-    const <#= value.Name.ToUnderscore().ToUpper()#> = "<#= value.Name.ToCamelize()#>";
+    const <#= value.Name.ToUnderscorePHPEnum().ToUpper()#> = "<#= value.Name#>";
 <#		}
 	count++;
     }

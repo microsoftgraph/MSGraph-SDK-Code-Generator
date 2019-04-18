@@ -72,6 +72,26 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return Inflector.Inflector.Underscore(input);
         }
 
+        /// <summary>
+        /// Replaces underscores with double underscore, adds underscore between camel
+        /// case, converts hypehns to underscore.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string ToUnderscorePHPEnum(this string input)
+        {
+            return Regex.Replace(
+                        Regex.Replace(
+                            Regex.Replace(
+                                Regex.Replace(input, @"([_\s])([A-Z])", "$1_$2"), 
+                                    @"([a-z\d])([A-Z])",
+                                    "$1_$2"),
+                                @"([A-Z]+)([A-Z][a-z])", "$1_$2"),
+                            @"[-\s]",
+                            "_")
+                        .ToLower();
+        }
+
         public static string RemoveFromEnd(this string input, string suffix)
         {
             if (input.EndsWith(suffix))
