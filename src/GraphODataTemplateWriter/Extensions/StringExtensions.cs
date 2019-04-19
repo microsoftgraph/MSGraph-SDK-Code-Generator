@@ -74,7 +74,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         /// <summary>
         /// Replaces underscores with double underscore, adds underscore between camel
-        /// case, converts hypehns to underscore.
+        /// case, converts hyphens to underscore. It does the same as ToUnderscore but 
+        /// adds the double underscore capability.
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
