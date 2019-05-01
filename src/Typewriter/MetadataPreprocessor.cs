@@ -60,6 +60,8 @@ namespace Typewriter
             AddContainsTarget("iosTrustedRootCertificate");
             AddContainsTarget("mobileContainedApp");
             AddContainsTarget("managedDeviceCertificateState");
+            AddContainsTarget("deviceManagementSettingInstance");
+
 
             return xMetadata.ToString();
         }
