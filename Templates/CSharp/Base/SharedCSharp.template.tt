@@ -15,9 +15,7 @@ bool logTemplateSrc = true;
 
 <# if (logTemplateSrc) { #>
 // Template Source: <#= TemplateName(host.TemplateFile) #>
-
-<#=this.GetUsingStatements(model)#>
-<# } else { #>
+<# } #><# if (model.Namespaces.Count > 2) { #>
 <#=this.GetUsingStatements(model)#>
 <# } #>
 <#+
