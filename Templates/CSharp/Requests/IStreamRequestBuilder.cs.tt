@@ -35,6 +35,7 @@ else
 namespace <#=namespaceValue#>
 {
     using System.Collections.Generic;
+    <#=this.GetUsingStatements(model)#>
 
     /// <summary>
     /// The interface I<#=propRequestBuilder#>.

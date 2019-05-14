@@ -16,6 +16,7 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System.Net.Http;
     using System.Threading;
     using System.Linq.Expressions;
+    <#=this.GetUsingStatements(model)#>
 
     <#=this.GetEntityWithReferenceRequestInterfaceDefinition(entity)#>
     {

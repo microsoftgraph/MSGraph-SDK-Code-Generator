@@ -16,6 +16,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
     using System;
     using System.Collections.Generic;
+    <#=this.GetUsingStatements(model)#>
 
     <#=this.GetCollectionClassDefinition(prop)#>
     {

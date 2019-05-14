@@ -13,6 +13,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
+    <#=this.GetUsingStatements(model)#>
 
     <#=this.GetCollectionReferencesClassDefinition(prop)#>
     {

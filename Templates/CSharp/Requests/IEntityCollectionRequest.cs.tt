@@ -24,6 +24,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System.Net.Http;
     using System.Threading;
     using System.Linq.Expressions;
+    <#=this.GetUsingStatements(model)#>
 
     <#=this.GetCollectionInterfaceDefinition(prop)#>
     {

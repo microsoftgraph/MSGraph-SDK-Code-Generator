@@ -67,6 +67,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System;
     using System.Collections.Generic;
     using System.IO;
+    <#=this.GetUsingStatements(model)#>
 
     /// <summary>
     /// The type <#=requestBuilderType#>.

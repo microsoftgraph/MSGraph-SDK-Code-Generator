@@ -35,6 +35,15 @@ public string GetNamespaceName(OdcmClass odcmClass)
     return odcmClass.Namespace.GetNamespaceName();
 }
 
+public string GetUsingStatements(OdcmModel model)
+{
+    var filtered = model.Namespaces
+        .Where(x => !x.Name.Equals("Edm", StringComparison.InvariantCultureIgnoreCase))
+        .Select(x => string.Format("    using {0};", x.GetNamespaceName()));
+
+    return string.Join(Environment.NewLine, filtered).Trim();
+}
+
 public string GetEntityNameString(OdcmClass entityClass)
 {
     return entityClass.Name.ToCheckedCase();

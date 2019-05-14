@@ -17,6 +17,7 @@ var entityCollectionPage = responseNamePrefix + "CollectionPage";
 namespace <#=method.Namespace.GetNamespaceName()#>
 {
     using Newtonsoft.Json;
+    <#=this.GetUsingStatements(model)#>
 
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.

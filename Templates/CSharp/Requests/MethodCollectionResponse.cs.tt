@@ -18,6 +18,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System.Collections.Generic;
     using System.Runtime.Serialization;
     using Newtonsoft.Json;
+    <#=this.GetUsingStatements(model)#>
 
     /// <summary>
     /// The type <#=collectionResponse#>.

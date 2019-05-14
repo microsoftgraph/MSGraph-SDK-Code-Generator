@@ -18,46 +18,41 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return odcmProperty.IsCollection;
         }
 
-        private static OdcmNamespace GetOdcmNamespace(OdcmModel model)
+        private static IEnumerable<OdcmNamespace> GetOdcmNamespaces(OdcmModel model)
         {
-            OdcmNamespace namespaceFound;
-            var filtered = model.Namespaces.Where(x => !x.Name.Equals("Edm", StringComparison.InvariantCultureIgnoreCase))
-                                           .ToList();
-            if (filtered.Count() == 1)
+            IEnumerable<OdcmNamespace> namespacesFound;
+            var filtered = model.Namespaces
+                .Where(x => !x.Name.Equals("Edm", StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
+
+            if (filtered.Count < 1)
             {
-                namespaceFound = filtered.Single();
+                namespacesFound = null;
             }
             else
             {
-                namespaceFound =
-                    model.Namespaces.Find(x => String.Equals(x.Name, ConfigurationService.Settings.PrimaryNamespaceName,
-                        StringComparison.InvariantCultureIgnoreCase));
+                namespacesFound = filtered;
             }
 
-            if (namespaceFound == null)
-            {
-                throw new InvalidOperationException("Multiple namespaces defined in metadata and no matches." +
-                                                    "\nPlease check 'PrimaryNamespace' Setting in 'config.json'");
-            }
-            return namespaceFound;
+            return namespacesFound;
         }
 
         public static IEnumerable<OdcmClass> GetComplexTypes(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x is OdcmComplexClass && x.CanonicalName().ToLowerInvariant() != "microsoft.graph.json");
+            var namespaces = GetOdcmNamespaces(model);
+            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmComplexClass && x.CanonicalName().ToLowerInvariant() != "microsoft.graph.json"));
         }
 
         public static IEnumerable<OdcmClass> GetEntityTypes(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x is OdcmEntityClass || x is OdcmMediaClass);
+            var namespaces = GetOdcmNamespaces(model);
+            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmEntityClass || x is OdcmMediaClass));
         }
 
         public static IEnumerable<OdcmClass> GetMediaEntityTypes(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x is OdcmMediaClass);
+            var namespaces = GetOdcmNamespaces(model);
+            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmMediaClass));
         }
 
         public static IEnumerable<OdcmProperty> GetProperties(this OdcmModel model)
@@ -128,8 +123,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         public static IEnumerable<OdcmEnum> GetEnumTypes(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
-            return @namespace.Types.OfType<OdcmEnum>();
+            var namespaces = GetOdcmNamespaces(model);
+            return namespaces.SelectMany(@namespace => @namespace.Types.OfType<OdcmEnum>());
         }
 
         public static IEnumerable<OdcmMethod> GetMethods(this OdcmModel model)
@@ -281,7 +276,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         public static string GetNamespace(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
+            var @namespace = model.Namespaces
+                .Find(x =>
+                    string.Equals(x.Name, ConfigurationService.Settings.PrimaryNamespaceName, StringComparison.InvariantCultureIgnoreCase));
+            @namespace = @namespace ?? GetOdcmNamespaces(model).First();
             return @namespace.Name;
         }
 
@@ -342,11 +340,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return false;
         }
 
-        public static string NamespaceName(this OdcmModel model)
+        public static string NamespaceName(this OdcmNamespace @namespace)
         {
             if (string.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
             {
-                var @namespace = GetOdcmNamespace(model).Name;
                 var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace);
                 return name.ToLower();
             }
@@ -355,7 +352,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         public static string ODataPackageNamespace(this OdcmModel model)
         {
-            var @namespace = NamespaceName(model);
+            var @namespace = model.Namespaces
+                .Find(x =>
+                    string.Equals(x.Name, ConfigurationService.Settings.PrimaryNamespaceName, StringComparison.InvariantCultureIgnoreCase));
+            @namespace = @namespace ?? GetOdcmNamespaces(model).First();
             var package = string.Format("{0}.{1}", @namespace, "fetchers");
             return package.ToLower();
         }

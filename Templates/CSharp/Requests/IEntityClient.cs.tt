@@ -8,6 +8,7 @@ var clientName = entityContainer.Name.ToCheckedCase() + "Client";
 
 namespace <#=entityContainer.Namespace.GetNamespaceName()#>
 {
+    <#=this.GetUsingStatements(model)#>
 
     /// <summary>
     /// The interface I<#=clientName#>.

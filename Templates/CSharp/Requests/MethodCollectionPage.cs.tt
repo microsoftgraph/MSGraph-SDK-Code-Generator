@@ -15,6 +15,8 @@ var entityCollectionPage = responseNamePrefix + "CollectionPage";
 
 namespace <#=method.Namespace.GetNamespaceName()#>
 {
+    <#=this.GetUsingStatements(model)#>
+
     /// <summary>
     /// The type <#=entityCollectionPage#>.
     /// </summary>

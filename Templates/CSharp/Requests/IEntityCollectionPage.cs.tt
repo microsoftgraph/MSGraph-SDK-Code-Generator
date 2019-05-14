@@ -19,8 +19,8 @@ var entityCollectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.N
 namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
 {
     using System;
-
     using Newtonsoft.Json;
+    <#=this.GetUsingStatements(model)#>
 
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.
