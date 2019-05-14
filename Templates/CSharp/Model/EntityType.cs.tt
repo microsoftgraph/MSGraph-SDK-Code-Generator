@@ -45,7 +45,6 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     using System.IO;
     using System.Runtime.Serialization;
     using Newtonsoft.Json;
-    <#=this.GetUsingStatements(model)#>
 
     /// <summary>
     /// The type <#=entityName.SplitCamelCase()#>.

@@ -23,7 +23,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-    <#=this.GetUsingStatements(model)#>
 
     /// <summary>
     /// The type <#=requestBody#>.

@@ -14,7 +14,6 @@ var entityCollectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.N
 namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
 {
     using System;
-    <#=this.GetUsingStatements(model)#>
 
     /// <summary>
     /// The type <#=entityCollectionPage#>.

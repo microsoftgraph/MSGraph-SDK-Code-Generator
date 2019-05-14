@@ -10,7 +10,6 @@ var enumName = enumT.Name.ToCheckedCase();
 namespace <#=enumT.Namespace.GetNamespaceName()#>
 {
     using Newtonsoft.Json;
-    <#=this.GetUsingStatements(model)#>
 
     /// <summary>
     /// The enum <#=enumName#>.

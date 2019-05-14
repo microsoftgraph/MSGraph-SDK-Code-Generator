@@ -52,7 +52,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    <#=this.GetUsingStatements(model)#>
 
     /// <summary>
     /// The type <#=requestType#>.

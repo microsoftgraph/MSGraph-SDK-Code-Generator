@@ -24,7 +24,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System;
     using System.Collections.Generic;
     using System.Threading;
-    <#=this.GetUsingStatements(model)#>
 
     /// <summary>
     /// The type <#=monitorType#>.

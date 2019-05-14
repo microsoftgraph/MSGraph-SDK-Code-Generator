@@ -12,7 +12,6 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System;
     using System.Collections.Generic;
     using System.IO;
-    <#=this.GetUsingStatements(model)#>
 
     <#=this.GetEntityRequestBuilderClassDefinition(entity)#>
     {
