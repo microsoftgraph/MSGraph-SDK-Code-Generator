@@ -62,6 +62,9 @@ namespace Typewriter
             AddContainsTarget("managedDeviceCertificateState");
             AddContainsTarget("deviceManagementSettingInstance");
 
+            AddContainsTarget("onPremisesAgentGroup"); 
+            AddContainsTarget("onPremisesAgent");
+            AddContainsTarget("publishedResource");
 
             return xMetadata.ToString();
         }
