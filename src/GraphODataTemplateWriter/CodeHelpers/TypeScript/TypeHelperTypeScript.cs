@@ -25,6 +25,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 case "Json":
                     typeStr = "any";
                     break;
+                case "Decimal":
                 case "Int16":
                 case "Int32":
                 case "Int64":
@@ -65,7 +66,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             var description = property.LongDescription ?? property.Description;
             if (description != null)
             {
-                return description.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
+                return description.Replace("<", "&lt;")
+                                  .Replace(">", "&gt;")
+                                  .Replace("&", "&amp;")
+                                  .Replace("\r\n", "\r\n///"); // &#xD;&#xA; The HTML encoded has already been converted to escaped chars.
             }
             return null;
         }
