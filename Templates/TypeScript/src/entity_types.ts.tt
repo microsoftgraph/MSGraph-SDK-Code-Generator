@@ -1,5 +1,6 @@
 <# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
 <#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="utils.tt" #>
 <#@ output extension="\\" #>
 <#
     CustomT4Host host           = (CustomT4Host) Host;
@@ -9,45 +10,110 @@
     var entityTypes             = model.GetEntityTypes();
     var enumTypes               = model.GetEnumTypes();
     var complexTypes            = model.GetComplexTypes();
+
+    var maxLineLength = 180;
 #>
-// Type definitions for the Microsoft Graph <VERSION_STRING>
-// Project: https://github.com/microsoftgraph/msgraph-typescript-typings
+// Type definitions for non-npm package microsoft-graph <VERSION_STRING>
 // Definitions by: Microsoft Graph Team <https://github.com/microsoftgraph>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.1
 
 export as namespace microsoftgraph;
 
-<# foreach(var enumType in enumTypes) { #>
-export type <#= enumType.Name.UpperCaseFirstChar() #> = <#= enumType.GetEnumValues() #>;
-<# } #>
 <#
-  foreach(var entityType in entityTypes)
-    {
-        var methods = entityType.Methods;
+    foreach(var enumType in enumTypes) { 
 #>
-
-export interface <#= entityType.Name.UpperCaseFirstChar() #><# if (entityType.Base != null) { #> extends <#=  entityType.Base.Name.UpperCaseFirstChar() #><# }#> {
-<# foreach(var prop in entityType.Properties.ToList()) { #>
-	<# if (prop.LongDescription != null || prop.Description != null) { #>
-    /** <#=prop.GetSanitizedLongDescription()#> */
-	<# } #>
-	<#=  prop.Name #>?: <#= prop.GetTypeString() #>;
-<# } #>
-}
+export type <#= enumType.Name.UpperCaseFirstChar() #> = <#= enumType.GetEnumValues() #>;
 <#
     }
+
+    foreach(var entityType in entityTypes) {
+        var propCount = entityType.Properties.ToList().Count;
+        if(propCount == 0) { 
 #>
+// tslint:disable-next-line: no-empty-interface
 <#
-  foreach(var complexType in complexTypes)
-  {
+        }
 #>
-export interface <#= complexType.Name.UpperCaseFirstChar()#><# if (complexType.Base != null) { #> extends <#=  complexType.Base.Name.UpperCaseFirstChar() #><# }#> {
-<# foreach(var prop in complexType.Properties) { #>
-	<# if (prop.LongDescription != null || prop.Description != null) { #>
-    /** <#=prop.GetSanitizedLongDescription()#> */
-	<# } #>
-	<#= prop.Name #>?: <#= prop.GetTypeString() #>;
-<# } #>
+export interface <#= entityType.Name.UpperCaseFirstChar() #><# 
+        if (entityType.Base != null) { 
+#>
+ extends <#= entityType.Base.Name.UpperCaseFirstChar() #><#
+        }
+#> {<#
+        if(propCount == 0){
+#>}<#  
+        } else {
+#>
+
+<#
+            foreach(var prop in entityType.Properties.ToList()) {
+                if (prop.LongDescription != null || prop.Description != null) {
+                    List<string> multiLineDescriptions = Utils.splitString(prop.GetSanitizedLongDescription(), maxLineLength); 
+#>
+    /**
+<#
+                    foreach(var descriptionLine in multiLineDescriptions) {
+#>
+     * <#= descriptionLine #>
+<#
+                    }
+#>
+     */
+<#
+                }
+#>
+    <#=  prop.Name #>?: <#= prop.GetTypeString() #>;
+<#
+            }
+#>
 }
-<# } #>
+<#
+        }
+    }
+
+    foreach(var complexType in complexTypes) {
+        var propCount = complexType.Properties.Count;
+        if(propCount == 0) { 
+#>
+// tslint:disable-next-line: no-empty-interface
+<#
+        }
+#>
+export interface <#= complexType.Name.UpperCaseFirstChar() #><# 
+        if (complexType.Base != null) { 
+#>
+ extends <#= complexType.Base.Name.UpperCaseFirstChar() #><#
+        }
+#> {<#
+        if(propCount == 0){
+#>}<#  
+        } else {
+#>
+
+<#
+            foreach(var prop in complexType.Properties) {
+                if (prop.LongDescription != null || prop.Description != null) {
+                    List<string> multiLineDescriptions = Utils.splitString(prop.GetSanitizedLongDescription(), maxLineLength); 
+#>
+    /**
+<#
+                    foreach(var descriptionLine in multiLineDescriptions) {
+#>
+     * <#= descriptionLine #>
+<#
+                    }
+#>
+     */
+<#
+                }
+#>
+    <#=  prop.Name #>?: <#= prop.GetTypeString() #>;
+<#
+            }
+#>
+}
+<#
+        }
+    }
+#>
