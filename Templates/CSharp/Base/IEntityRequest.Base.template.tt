@@ -277,6 +277,8 @@ public void AppendUpdateAsyncMethodHeader(string entityName, string lowerCaseEnt
     {
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        /// <exception cref=\"ClientException\">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>");
     }
 
     stringBuilder.Append(Environment.NewLine);
