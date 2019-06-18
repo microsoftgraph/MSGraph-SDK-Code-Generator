@@ -11,7 +11,7 @@
     var enumTypes               = model.GetEnumTypes();
     var complexTypes            = model.GetComplexTypes();
 
-    var maxLineLength = 180;
+    var maxLineLength = 120;
 #>
 // Type definitions for non-npm package microsoft-graph <VERSION_STRING>
 // Definitions by: Microsoft Graph Team <https://github.com/microsoftgraph>
