@@ -59,7 +59,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 #>
     /**
     * Gets the <#=propertyName#>
-<# if (property.LongDescription != null || property.Description != null) {
+<# if (property.HasSanitizedLongDescription()) {
 #>
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
@@ -87,7 +87,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 
     /**
     * Sets the <#=propertyName#>
-<# if (property.LongDescription != null || property.Description != null) {
+<# if (property.HasSanitizedLongDescription()) {
 #>
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
@@ -118,7 +118,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 
     /**
     * Gets the <#=propertyName#>
-<# if (property.LongDescription != null || property.Description != null) {
+<# if (property.HasSanitizedLongDescription()) {
 #>
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
@@ -145,7 +145,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
 
     /**
     * Sets the <#=propertyName#>
-<# if (property.LongDescription != null || property.Description != null) {
+<# if (property.HasSanitizedLongDescription()) {
 #>
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>

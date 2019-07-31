@@ -37,7 +37,11 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
     using Newtonsoft.Json;
 
     /// <summary>
-    /// The type <#=complexTypeName#>.
+<# if (complex.HasSanitizedLongDescription()) { #>
+    /// <#=complex.GetSanitizedLongDescription()#>
+<# } else { #>
+    /// The type <#=complexTypeName.SplitCamelCase()#>.
+<# } #>
     /// </summary>
     <#=attributeStringBuilder.ToString()#>
     public <#=classType#> <#=typeDeclaration#>
@@ -72,10 +76,10 @@ if (complex.IsBaseAbstractAndReferencedAsPropertyType() && !complex.IsAbstract)
     #>
 
         /// <summary>
-        /// Gets or sets <#=property.Name#>.
-<# if (property.LongDescription != null || property.Description != null) {
-#>
+<# if (property.HasSanitizedLongDescription()) { #>
         /// <#=property.GetSanitizedLongDescription()#>
+<# } else { #>
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
@@ -87,10 +91,10 @@ if (complex.IsBaseAbstractAndReferencedAsPropertyType() && !complex.IsAbstract)
     #>
 
         /// <summary>
-        /// Gets or sets <#=property.Name#>.
-<# if (property.LongDescription != null || property.Description != null) {
-#>
+<# if (property.HasSanitizedLongDescription()) { #>
         /// <#=property.GetSanitizedLongDescription()#>
+<# } else { #>
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# } #>
         /// </summary>
         <#=attributeDefinition#>

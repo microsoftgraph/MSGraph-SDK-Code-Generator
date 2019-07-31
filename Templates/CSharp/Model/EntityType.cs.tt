@@ -47,7 +47,11 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     using Newtonsoft.Json;
 
     /// <summary>
+<# if (entity.HasSanitizedLongDescription()) { #>
+    /// <#=entity.GetSanitizedLongDescription()#>
+<# } else { #>
     /// The type <#=entityName.SplitCamelCase()#>.
+<# } #>
     /// </summary>
     <#=attributeStringBuilder.ToString()#>
     public partial class <#=typeDeclaration#>
@@ -85,10 +89,10 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     #>
 
         /// <summary>
-        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
-<# if (property.LongDescription != null || property.Description != null) {
-#>
+<# if (property.HasSanitizedLongDescription()) { #>
         /// <#=property.GetSanitizedLongDescription()#>
+<# } else { #>
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
@@ -100,10 +104,10 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     #>
 
         /// <summary>
-        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
-<# if (property.LongDescription != null || property.Description != null) {
-#>
+<# if (property.HasSanitizedLongDescription()) { #>
         /// <#=property.GetSanitizedLongDescription()#>
+<# } else { #>
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
@@ -116,10 +120,10 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     #>
 
         /// <summary>
-        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
-<# if (property.LongDescription != null || property.Description != null) {
-#>
+<# if (property.HasSanitizedLongDescription()) { #>
         /// <#=property.GetSanitizedLongDescription()#>
+<# } else { #>
+        /// Gets or sets <#=property.Name.SplitCamelCase().ToLower()#>.
 <# } #>
         /// </summary>
         <#=attributeDefinition#>
