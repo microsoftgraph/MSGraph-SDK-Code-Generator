@@ -223,11 +223,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
             if (description != null)
             {
-                return description.Replace("<", "&lt;")
-                                  .Replace(">", "&gt;")
-                                  .Replace("&", "&amp;")
-                                  .Replace("\r\n", "\r\n///"); // &#xD;&#xA; The HTML encoded has already been converted to escaped chars.
+                return description.Replace("\r\n", "\r\n///"); // &#xD;&#xA; The HTML encoded has already been converted to escaped chars.
             }
+
             return null;
         }
 
