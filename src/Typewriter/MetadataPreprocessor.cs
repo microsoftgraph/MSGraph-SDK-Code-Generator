@@ -55,6 +55,11 @@ namespace Typewriter
             AddContainsTarget("itemActivity");
             AddContainsTarget("labelPolicy");
 
+            // RoleManagement singleton
+            AddContainsTarget("unifiedRoleDefinition");
+
+            
+
             // Intune
             AddContainsTarget("windows81TrustedRootCertificate");
             AddContainsTarget("iosTrustedRootCertificate");

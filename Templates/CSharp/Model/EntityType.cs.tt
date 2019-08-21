@@ -8,9 +8,10 @@ var entityName = entity.Name.ToCheckedCase();
 
 var typeDeclaration = entityName;
 
+
 // In the case a entity type name ends with "Request", we will have a collision with the Request objects
-// when we generate. For example, there are entities named EventMessage and EventMessageRequest. Those entities 
-// lead to the generation of an EventMessageRequest and EventMessageRequestRequest request objects in the same 
+// when we generate. For example, there are entities named EventMessage and EventMessageRequest. Those entities
+// lead to the generation of an EventMessageRequest and EventMessageRequestRequest request objects in the same
 // namespace as the entities. We add 'Object' to the end of the name to disambiguate the entity.
 // This change needs to sync with changes for the *Request templates.
 
@@ -19,10 +20,18 @@ if (typeDeclaration.EndsWith("Request"))
     typeDeclaration = String.Concat(typeDeclaration, "Object");
 }
 
+string cstorTypeDeclaration = typeDeclaration;
 
 if (entity.Base != null)
 {
-    typeDeclaration = string.Format("{0} : {1}", typeDeclaration, entity.Base.Name.ToCheckedCase());
+    var baseTypeDeclaration = entity.Base.Name.ToCheckedCase();
+
+    if (baseTypeDeclaration.EndsWith("Request"))
+    {
+        baseTypeDeclaration = String.Concat(baseTypeDeclaration, "Object");
+    }
+
+    typeDeclaration = string.Format("{0} : {1}", typeDeclaration, baseTypeDeclaration);
 }
 
 var attributeStringBuilder = new StringBuilder();
@@ -60,7 +69,7 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 		///<summary>
 		/// The internal <#=entityName#> constructor
 		///</summary>
-        protected internal <#=entityName#>()
+        protected internal <#=cstorTypeDeclaration#>()
         {
             // Don't allow initialization of abstract entity types
         }
