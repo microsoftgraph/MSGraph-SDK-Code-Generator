@@ -43,10 +43,8 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
     public <#=classType#> <#=typeDeclaration#>
     {
 <#
-// Generate a constructor to initialize the @odata.type property when this type is not abstract and if this 
-// type's base is abstract and the base is referenced as the type of a structural property. We need this
-// to disambiguate the type of the descendant class being sent. 
-if (complex.IsBaseAbstractAndReferencedAsPropertyType() && !complex.IsAbstract)
+// Generate a constructor to initialize the @odata.type property when this type is not abstract.
+if (!complex.IsAbstract)
 {
 #>        /// <summary>
         /// Initializes a new instance of the <see cref="<#=complexTypeName#>"/> class.

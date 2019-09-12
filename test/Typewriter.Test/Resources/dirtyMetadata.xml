@@ -2,7 +2,7 @@
 <edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
   <edmx:DataServices>
     <Schema Namespace="microsoft.graph" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-      <EntityType Name="entity">
+      <EntityType Name="entity" Abstract="true">
         <Key>
           <PropertyRef Name="id"/>
         </Key>
@@ -29,6 +29,7 @@
         <Property Name="url" Type="Edm.String" />
         <Property Name="width" Type="Edm.Int32" />
       </ComplexType>
+      <ComplexType Name="emptyComplexType" Abstract="true"/>
       <EntityType Name="onenotePage" HasStream="true" BaseType="microsoft.graph.entity">
         <Property Name="content" Type="Edm.Stream" />
         <NavigationProperty Name="parentNotebook" Type="microsoft.graph.notebook" ContainsTarget="true" />
