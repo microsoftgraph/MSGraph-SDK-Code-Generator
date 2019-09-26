@@ -44,7 +44,8 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Instantiates a new <#=clientName#>.
         /// </summary>
-        /// <param name="httpClient">Http client to use in making requests</param>
+        /// <param name="httpClient">The <see cref="HttpClient"/> to use for making requests to Microsoft Graph. Use the <see cref="GraphClientFactory"/>
+        /// to get a pre-configured HttpClient that is optimized for use with the Microsoft Graph service API. </param>
         public <#=clientName#>(
             HttpClient httpClient)
             : base("<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>", httpClient)
