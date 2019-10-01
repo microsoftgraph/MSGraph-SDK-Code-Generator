@@ -75,7 +75,19 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
         }
     <#
         }
+		else
+		{
+	#>
 
+		///<summary>
+		/// The <#=entityName#> constructor
+		///</summary>
+        public <#=cstorTypeDeclaration#>()
+        {
+            this.ODataType = "<#=entity.FullName#>";
+        }
+	<#
+		}
         foreach(var property in entity.Properties)
         {
             var propertyType = property.IsTypeNullable() || property.IsCollection()
