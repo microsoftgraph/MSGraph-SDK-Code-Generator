@@ -1,8 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+
 using NLog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Typewriter
 {
@@ -11,7 +13,7 @@ namespace Typewriter
     /// fixes, and workarounds for issues in the metadata. Why the metadata has these issues 
     /// is a long story.
     /// </summary>
-    
+
     internal class MetadataPreprocessor
     {
         private static Logger Logger => LogManager.GetLogger("MetadataPreprocessor");
@@ -73,6 +75,9 @@ namespace Typewriter
 
             AddContainsTarget("appVulnerabilityManagedDevice");
             AddContainsTarget("appVulnerabilityMobileApp");
+
+            // TODO: Reorder elements. inspect metadata so tht we capture all changes.
+
 
             return xMetadata.ToString();
         }
@@ -179,6 +184,92 @@ namespace Typewriter
             catch (InvalidOperationException)
             {
                 Logger.Error("AddLongDescriptionToThumbnail rule was not applied to the thumbnail complex type because the type wasn't found.");
+            }
+        }
+
+        /// <summary>
+        /// Reorders a Microsoft Graph metadata element's child elements.
+        /// </summary>
+        /// <param name="metadataDefinitionType"></param>
+        /// <param name="targetGlobalElementName">The name of the element to target for reordering its child elements.</param>
+        /// <param name="newElementOrder">An ordered list of strings that represents the new order for the 
+        /// target element's child elements. Each entry string represents the name of the ordered element.</param>
+        /// <param name="bindingParameterType">Specifies the type of the entity that is bound by this function. Only applies to Actions and Functions.</param>
+        internal static void ReorderElements(MetadataDefinitionType metadataDefinitionType, 
+                                             string targetGlobalElementName, 
+                                             List<string> newElementOrder,
+                                             string bindingParameterType = "")
+        {
+            // Actions or Functions require a binding element.
+            if (metadataDefinitionType == MetadataDefinitionType.Action || 
+                metadataDefinitionType == MetadataDefinitionType.Function &&
+                String.IsNullOrEmpty(bindingParameterType))
+            {
+                throw new ArgumentNullException(nameof(bindingParameterType), "The binding parameter type must be set in case an Action" +
+                    "or Function with the same name and parameter list exist.");
+            }
+
+
+            // Validate that the specified new element order is meaningful.
+            if (newElementOrder.Count < 2)
+            {
+                throw new ArgumentOutOfRangeException(nameof(newElementOrder), "ReorderElements: expected 2 or more elements to reorder.");
+            }
+
+            // Sort the newElementOrder so we can compare the sequence to the potential overloads returned for the
+            // the targetGlobalElementName. We should only ever find a single match.
+            var newElementsAlphaOrdered = newElementOrder.OrderByDescending(x => x.ToString());
+
+            try
+            {
+                // Get all of the global elements of type MetadataDefinitionType named targetGlobalElementName.
+                // For example, there are many Actions named "forward", we need to choose the correct one based on signature. 
+                List<XElement> globalElements = xMetadata.Descendants()
+                    .Where(x => (string)x.Name.LocalName == metadataDefinitionType.ToString())
+                    .Where(x => x.Attribute("Name").Value == targetGlobalElementName).ToList();
+
+                
+                // Get the element that matches in terms of child elements.
+                XElement targetElement = null;
+
+                // Compare the signature of each element where the signature is {targetGlobalElementName} and find the one that matches the newElementOrder.
+                // Identify the target overload by matching the elements.
+                foreach (var element in globalElements)
+                {
+                    var originalElementOrdered = element.Elements().Select(e => e.Attribute("Name").Value)
+                                                    .OrderByDescending(e => e.ToString());
+
+                    // TODO: This comparison needs to be based on XElement, and not element names.
+                    // 
+                    if (originalElementOrdered.SequenceEqual(newElementsAlphaOrdered))
+                    {
+                        targetElement = element;
+                        break;
+                    }
+                }
+
+                // There wasn't a match. We need to check our inputs.
+                if (targetElement is null)
+                    throw new ArgumentException($"ReorderElements: Didn't find a {metadataDefinitionType.ToString()} " +
+                                                $"named {targetGlobalElementName} that matched the elements in {nameof(newElementOrder)}");
+
+                // Reorder the elements
+                List<XElement> newPropertyList = new List<System.Xml.Linq.XElement>();
+                var propertyList = targetElement.Elements().ToList();
+                foreach (string propertyName in newElementOrder)
+                {
+                    var index = propertyList.FindIndex(x => x.Attribute("Name").Value == propertyName);
+                    newPropertyList.Add(propertyList[index]);
+
+                }
+                
+                targetElement.Elements().Remove();
+                targetElement.Add(newPropertyList);
+                // TODO: Add the sorted element to the metadata.
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"ReorderElements exception caught.\r\nException message: {ex.Message}");
             }
         }
     }

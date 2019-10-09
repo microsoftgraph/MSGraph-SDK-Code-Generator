@@ -46,6 +46,7 @@
     <Compile Include="DocAnnotationWriter.cs" />
     <Compile Include="FileWriter.cs" />
     <Compile Include="Generator.cs" />
+    <Compile Include="MetadataDefinitionType.cs" />
     <Compile Include="MetadataPreprocessor.cs" />
     <Compile Include="MetadataResolver.cs" />
     <Compile Include="Options.cs" />

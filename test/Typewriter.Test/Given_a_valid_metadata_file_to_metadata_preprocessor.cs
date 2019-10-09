@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -109,6 +110,25 @@ namespace Typewriter.Test
                 .Where(x => x.Attribute("String").Value.Equals("navigable")).Any();
 
             Assert.IsTrue(foundAnnotationAfter, "Expected: thumbnailComplexType set with an annotation. Actual: annotation wasn't found.");
+        }
+
+        public void It_reorders_elements()
+        {
+            // Arrange - Specify the new element
+            var targetMetadataDefType = MetadataDefinitionType.Action;
+            var targetMetadataDefName = "forward";
+            var newElementOrder = new List<string>() { "bindingParameter", "Comment", "ToRecipients" };
+            var bindingParameterType = "onenotePage";
+            var fullBindingParameterType = $"microsoft.graph.{bindingParameterType}";
+
+            // Act
+            MetadataPreprocessor.ReorderElements(targetMetadataDefType, targetMetadataDefName, newElementOrder, bindingParameterType);
+
+            //MetadataPreprocessor.GetXMetadata().Descendants().Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
+            //                                                 .Where(x => x.Attribute("Name").Value == targetMetadataDefName)
+            //                                                 .Where(x => x.Elements().Where(parameter => parameter.Attribute("Type").Value == fullBindingParameterType));
+
+
         }
     }
 }
