@@ -45,13 +45,22 @@
       <Action Name="forward" IsBound="true">
         <Parameter Name="bindingParameter" Type="microsoft.graph.onenotePage" />
         <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
+        <Parameter Name="Details" Type="Edm.String" Unicode="false" />
         <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
       </Action>
+
       <Action Name="forward" IsBound="true">
         <Parameter Name="bindingParameter" Type="microsoft.graph.testType3" />
         <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
         <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
       </Action>
+      <Action Name="forward" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.onenotePage" />
+        <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
+        <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+      </Action>
+
+ 
       <Action Name="forward" IsBound="true">
         <Parameter Name="bindingParameter" Type="microsoft.graph.testType3" />
         <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />

@@ -188,28 +188,29 @@ namespace Typewriter
         }
 
         /// <summary>
-        /// Reorders a Microsoft Graph metadata element's child elements.
+        /// Reorders a Microsoft Graph metadata element's child elements. 
+        /// Note: if we have to query and alter the metadata ofter, we may want to add a System.Action parameter to perform the query.
         /// </summary>
         /// <param name="metadataDefinitionType"></param>
         /// <param name="targetGlobalElementName">The name of the element to target for reordering its child elements.</param>
         /// <param name="newElementOrder">An ordered list of strings that represents the new order for the 
         /// target element's child elements. Each entry string represents the name of the ordered element.</param>
-        /// <param name="bindingParameterType">Specifies the type of the entity that is bound by this function. Only applies to Actions and Functions.</param>
+        /// <param name="bindingParameterType">Specifies the type of the entity that is bound by the function identified 
+        /// by targetGlobalElementName. Only applies to Actions and Functions.</param>
         internal static void ReorderElements(MetadataDefinitionType metadataDefinitionType, 
                                              string targetGlobalElementName, 
                                              List<string> newElementOrder,
                                              string bindingParameterType = "")
         {
             // Actions or Functions require a binding element.
-            if (metadataDefinitionType == MetadataDefinitionType.Action || 
-                metadataDefinitionType == MetadataDefinitionType.Function &&
-                String.IsNullOrEmpty(bindingParameterType))
+            if (String.IsNullOrEmpty(bindingParameterType) && 
+                metadataDefinitionType == MetadataDefinitionType.Action || 
+                metadataDefinitionType == MetadataDefinitionType.Function)
             {
                 throw new ArgumentNullException(nameof(bindingParameterType), "The binding parameter type must be set in case an Action" +
-                    "or Function with the same name and parameter list exist.");
+                    " or Function with the same name and parameter list.");
             }
-
-
+            
             // Validate that the specified new element order is meaningful.
             if (newElementOrder.Count < 2)
             {
@@ -222,30 +223,28 @@ namespace Typewriter
 
             try
             {
-                // Get all of the global elements of type MetadataDefinitionType named targetGlobalElementName.
-                // For example, there are many Actions named "forward", we need to choose the correct one based on signature. 
-                List<XElement> globalElements = xMetadata.Descendants()
-                    .Where(x => (string)x.Name.LocalName == metadataDefinitionType.ToString())
-                    .Where(x => x.Attribute("Name").Value == targetGlobalElementName).ToList();
+                // Get the target element that has the target type (i.e. Action, EntityType), with the target Name (i.e. forward)
+                // where it has the same element list as the new element list 
+                // where its binding parameter (the first element) has a Type attribute that matches the given 
+                // bindingParameterType in the case of Action or Function.
 
-                
-                // Get the element that matches in terms of child elements.
+                var results = xMetadata.Descendants()
+                    .Where(x => x.Name.LocalName == metadataDefinitionType.ToString())
+                    .Where(x => x.Attribute("Name").Value == targetGlobalElementName)
+                    .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
+                                              .OrderByDescending(e => e.ToString())
+                                              .SequenceEqual(newElementsAlphaOrdered));
+
                 XElement targetElement = null;
 
-                // Compare the signature of each element where the signature is {targetGlobalElementName} and find the one that matches the newElementOrder.
-                // Identify the target overload by matching the elements.
-                foreach (var element in globalElements)
+                // Reordering elements by element Name attributes. Useful for non Action or Function.
+                if (String.IsNullOrEmpty(bindingParameterType))
                 {
-                    var originalElementOrdered = element.Elements().Select(e => e.Attribute("Name").Value)
-                                                    .OrderByDescending(e => e.ToString());
-
-                    // TODO: This comparison needs to be based on XElement, and not element names.
-                    // 
-                    if (originalElementOrdered.SequenceEqual(newElementsAlphaOrdered))
-                    {
-                        targetElement = element;
-                        break;
-                    }
+                    targetElement = results.FirstOrDefault();
+                }
+                else // We are reordering an Action or Function and must match the bindingParameterType.
+                {
+                    targetElement = results.Where(e => e.Elements().Any(a => a.Attribute("Type").Value == bindingParameterType)).FirstOrDefault();
                 }
 
                 // There wasn't a match. We need to check our inputs.
@@ -263,9 +262,9 @@ namespace Typewriter
 
                 }
                 
+                // Update the metadata
                 targetElement.Elements().Remove();
                 targetElement.Add(newPropertyList);
-                // TODO: Add the sorted element to the metadata.
             }
             catch (Exception ex)
             {

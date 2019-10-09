@@ -112,22 +112,35 @@ namespace Typewriter.Test
             Assert.IsTrue(foundAnnotationAfter, "Expected: thumbnailComplexType set with an annotation. Actual: annotation wasn't found.");
         }
 
+        [TestMethod]
         public void It_reorders_elements()
         {
-            // Arrange - Specify the new element
+            /* The element to reorder from the testMetadata file.
+            <Action Name="forward" IsBound="true">
+                <Parameter Name="bindingParameter" Type="microsoft.graph.onenotePage" />
+                <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
+                <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+            </Action>
+             */
+
+
+            // Arrange - Specify the element
             var targetMetadataDefType = MetadataDefinitionType.Action;
             var targetMetadataDefName = "forward";
             var newElementOrder = new List<string>() { "bindingParameter", "Comment", "ToRecipients" };
-            var bindingParameterType = "onenotePage";
-            var fullBindingParameterType = $"microsoft.graph.{bindingParameterType}";
+            var bindingParameterType = "microsoft.graph.onenotePage";
 
             // Act
             MetadataPreprocessor.ReorderElements(targetMetadataDefType, targetMetadataDefName, newElementOrder, bindingParameterType);
 
-            //MetadataPreprocessor.GetXMetadata().Descendants().Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
-            //                                                 .Where(x => x.Attribute("Name").Value == targetMetadataDefName)
-            //                                                 .Where(x => x.Elements().Where(parameter => parameter.Attribute("Type").Value == fullBindingParameterType));
+            var results = MetadataPreprocessor.GetXMetadata().Descendants()
+                                                             .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
+                                                             .Where(x => x.Attribute("Name").Value == targetMetadataDefName) // Returns all Action elements named forward.
+                                                             .Where(el => el.Descendants().FirstOrDefault(x => x.Attribute("Type").Value == bindingParameterType) != null);
 
+            // TODO: complete test
+            results.Select(a => a.Attribute("Name").Value).OrderByDescending(e => e.ToString())
+                                                          .SequenceEqual(newElementOrder);
 
         }
     }
