@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 
 namespace Typewriter.Test
@@ -112,10 +113,13 @@ namespace Typewriter.Test
             Assert.IsTrue(foundAnnotationAfter, "Expected: thumbnailComplexType set with an annotation. Actual: annotation wasn't found.");
         }
 
+        /// <summary>
+        /// Tests that we reorder parameters according to an input listof parameters.
+        /// </summary>
         [TestMethod]
-        public void It_reorders_elements()
+        public void It_reorders_parameters_in_an_action()
         {
-            /* The element to reorder from the testMetadata file.
+            /* The element to reorder from the resources/dirtymetadata.xml file.
             <Action Name="forward" IsBound="true">
                 <Parameter Name="bindingParameter" Type="microsoft.graph.onenotePage" />
                 <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
@@ -123,25 +127,119 @@ namespace Typewriter.Test
             </Action>
              */
 
-
-            // Arrange - Specify the element
+            // Specify the metadata definition to reorder and the new element order specification.
             var targetMetadataDefType = MetadataDefinitionType.Action;
             var targetMetadataDefName = "forward";
-            var newElementOrder = new List<string>() { "bindingParameter", "Comment", "ToRecipients" };
+            var newParameterOrder = new List<string>() { "bindingParameter", "Comment", "ToRecipients" };
             var bindingParameterType = "microsoft.graph.onenotePage";
 
-            // Act
-            MetadataPreprocessor.ReorderElements(targetMetadataDefType, targetMetadataDefName, newElementOrder, bindingParameterType);
+            // Check whether an element exists in the metadata that matches our reordered element list before we reorder.
+            var isTargetDefinitionInMetadataBefore = MetadataPreprocessor.GetXMetadata().Descendants()
+                                                 .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
+                                                 .Where(x => x.Attribute("Name").Value == targetMetadataDefName) // Returns all Action elements named forward.
+                                                 .Where(el => el.Descendants().FirstOrDefault(x => x.Attribute("Type").Value == bindingParameterType) != null)
+                                                 .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
+                                                    .SequenceEqual(newParameterOrder)).Any();
 
+            // Make a call to reorder the parameters for the target action in the metadata loaded into memory. 
+            MetadataPreprocessor.ReorderElements(targetMetadataDefType, targetMetadataDefName, newParameterOrder, bindingParameterType);
+
+            // Query the updated metadata for the results that match the reordered element.
             var results = MetadataPreprocessor.GetXMetadata().Descendants()
                                                              .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
                                                              .Where(x => x.Attribute("Name").Value == targetMetadataDefName) // Returns all Action elements named forward.
-                                                             .Where(el => el.Descendants().FirstOrDefault(x => x.Attribute("Type").Value == bindingParameterType) != null);
+                                                             .Where(el => el.Descendants().FirstOrDefault(x => x.Attribute("Type").Value == bindingParameterType) != null)
+                                                             .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
+                                                                .SequenceEqual(newParameterOrder));
 
-            // TODO: complete test
-            results.Select(a => a.Attribute("Name").Value).OrderByDescending(e => e.ToString())
-                                                          .SequenceEqual(newElementOrder);
+            Assert.IsFalse(isTargetDefinitionInMetadataBefore);
+            // Added multiple elements with the same binding parameter - we want to make sure there is only one in the results.
+            Assert.IsTrue(results.Count() == 1, $"Expected: A single result item. Actual: found {results.Count()} items.");
+            Assert.AreEqual(newParameterOrder.Count(),
+                results.FirstOrDefault().Elements().Count(),
+                "The reordered element list doesn't match the count of elements in the input new order list.");
+            Assert.IsTrue(results.FirstOrDefault().Elements().Select(a => a.Attribute("Name").Value).SequenceEqual(newParameterOrder),
+                          "The element list was not reordered as expected.");
+        }
 
+        /// <summary>
+        /// Tests that we reorder parameters according to an input element name list.
+        /// </summary>
+        [TestMethod]
+        public void It_reorders_elements_in_a_complextype()
+        {
+            /* The element to reorder from the resources/dirtymetadata.xml file.
+              <ComplexType Name="thumbnail">
+                <Property Name="content" Type="Edm.Stream" />
+                <Property Name="height" Type="Edm.Int32" />
+                <Property Name="sourceItemId" Type="Edm.String" />
+                <Property Name="url" Type="Edm.String" />
+                <Property Name="width" Type="Edm.Int32" />
+              </ComplexType>
+             */
+
+            // Specify the metadata definition to reorder and the new element order specification.
+            var targetMetadataDefType = MetadataDefinitionType.ComplexType;
+            var targetMetadataDefName = "thumbnail";
+            var newParameterOrder = new List<string>() { "width", "url", "sourceItemId", "height", "content" };
+
+            // Check whether an element exists in the metadata that matches our reordered element list before we reorder.
+            var isTargetDefinitionInMetadataBefore = MetadataPreprocessor.GetXMetadata().Descendants()
+                                                 .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
+                                                 .Where(x => x.Attribute("Name").Value == targetMetadataDefName) 
+                                                 .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
+                                                    .SequenceEqual(newParameterOrder)).Any();
+
+            // Make a call to reorder the parameters for the target complex type in the metadata loaded into memory. 
+            MetadataPreprocessor.ReorderElements(targetMetadataDefType, targetMetadataDefName, newParameterOrder);
+
+            // Query the updated metadata for the results that match the reordered element.
+            var results = MetadataPreprocessor.GetXMetadata().Descendants()
+                                                             .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
+                                                             .Where(x => x.Attribute("Name").Value == targetMetadataDefName) 
+                                                             .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
+                                                                .SequenceEqual(newParameterOrder));
+
+            Assert.IsFalse(isTargetDefinitionInMetadataBefore);
+            Assert.IsTrue(results.Count() == 1, $"Expected: A single result item. Actual: found {results.Count()} items.");
+            Assert.AreEqual(newParameterOrder.Count(),
+                            results.FirstOrDefault().Elements().Count(),
+                            "The reordered element list doesn't match the count of elements in the input new order list.");
+            Assert.IsTrue(results.FirstOrDefault().Elements().Select(a => a.Attribute("Name").Value).SequenceEqual(newParameterOrder), 
+                          "The element list was not reordered as expected.");
+        }
+
+        [TestMethod]
+        public void It_does_not_reorder_when_element_list_does_not_match_in_a_complextype()
+        {
+            /* The element to attempt to reorder from the resources/dirtymetadata.xml file. The element
+             * list, newParameterOrder does not match the thumbnail type in the metadata (missing 'content' element) so 
+             * we expect that the reorder attempt fails.
+              <ComplexType Name="thumbnail">
+                <Property Name="content" Type="Edm.Stream" />
+                <Property Name="height" Type="Edm.Int32" />
+                <Property Name="sourceItemId" Type="Edm.String" />
+                <Property Name="url" Type="Edm.String" />
+                <Property Name="width" Type="Edm.Int32" />
+              </ComplexType>
+             */
+
+            // Specify the metadata definition to reorder and the new element order specification.
+            var targetMetadataDefType = MetadataDefinitionType.ComplexType;
+            var targetMetadataDefName = "thumbnail";
+            var newParameterOrder = new List<string>() { "width", "url", "sourceItemId", "height" };
+
+            // Make a call to reorder the parameters for the target complex type in the metadata loaded into memory. 
+            MetadataPreprocessor.ReorderElements(targetMetadataDefType, targetMetadataDefName, newParameterOrder);
+
+            // Query the updated metadata for the results that match the reordered element.
+            var results = MetadataPreprocessor.GetXMetadata().Descendants()
+                                                             .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
+                                                             .Where(x => x.Attribute("Name").Value == targetMetadataDefName)
+                                                             .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
+                                                                .SequenceEqual(newParameterOrder));
+
+            Assert.IsTrue(results.Count() == 0, $"Expected: Zero results. Actual: found {results.Count()} items.");
         }
     }
 }

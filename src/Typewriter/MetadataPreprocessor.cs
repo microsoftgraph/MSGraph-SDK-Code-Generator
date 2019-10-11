@@ -76,8 +76,22 @@ namespace Typewriter
             AddContainsTarget("appVulnerabilityManagedDevice");
             AddContainsTarget("appVulnerabilityMobileApp");
 
-            // TODO: Reorder elements. inspect metadata so tht we capture all changes.
-
+            ReorderElements(MetadataDefinitionType.Action,
+                            "forward",
+                            new List<string>() { "bindingParameter", "Comment", "ToRecipients" },
+                            "microsoft.graph.post");
+            ReorderElements(MetadataDefinitionType.Action,
+                            "accept",
+                            new List<string>() { "bindingParameter", "Comment", "SendResponse" },
+                            "microsoft.graph.event");
+            ReorderElements(MetadataDefinitionType.Action,
+                            "decline",
+                            new List<string>() { "bindingParameter", "Comment", "SendResponse" },
+                            "microsoft.graph.event");
+            ReorderElements(MetadataDefinitionType.Action,
+                            "tentativelyAccept",
+                            new List<string>() { "bindingParameter", "Comment", "SendResponse" },
+                            "microsoft.graph.event");
 
             return xMetadata.ToString();
         }
@@ -189,12 +203,15 @@ namespace Typewriter
 
         /// <summary>
         /// Reorders a Microsoft Graph metadata element's child elements. 
-        /// Note: if we have to query and alter the metadata ofter, we may want to add a System.Action parameter to perform the query.
+        /// Note: if we have to query and alter the metadata often, we may want to add a System.Action parameter to perform the query.
         /// </summary>
         /// <param name="metadataDefinitionType"></param>
         /// <param name="targetGlobalElementName">The name of the element to target for reordering its child elements.</param>
         /// <param name="newElementOrder">An ordered list of strings that represents the new order for the 
-        /// target element's child elements. Each entry string represents the name of the ordered element.</param>
+        /// target element's child elements. Each entry string represents the name of an element.
+        /// Each element in the list must match to a child element in the target global metadata element 
+        /// identified by targetGlobalElementName. This is particularly important for Actions and Functions
+        /// as they may have overloads.</param>
         /// <param name="bindingParameterType">Specifies the type of the entity that is bound by the function identified 
         /// by targetGlobalElementName. Only applies to Actions and Functions.</param>
         internal static void ReorderElements(MetadataDefinitionType metadataDefinitionType, 
@@ -253,18 +270,19 @@ namespace Typewriter
                                                 $"named {targetGlobalElementName} that matched the elements in {nameof(newElementOrder)}");
 
                 // Reorder the elements
-                List<XElement> newPropertyList = new List<System.Xml.Linq.XElement>();
+                List<XElement> newPropertyList = new List<XElement>();
                 var propertyList = targetElement.Elements().ToList();
                 foreach (string propertyName in newElementOrder)
                 {
                     var index = propertyList.FindIndex(x => x.Attribute("Name").Value == propertyName);
                     newPropertyList.Add(propertyList[index]);
-
                 }
                 
                 // Update the metadata
                 targetElement.Elements().Remove();
                 targetElement.Add(newPropertyList);
+
+                Logger.Info($"Reordered the {targetGlobalElementName} {metadataDefinitionType.ToString()} child elements.");
             }
             catch (Exception ex)
             {
