@@ -48,7 +48,6 @@
         <Parameter Name="Details" Type="Edm.String" Unicode="false" />
         <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
       </Action>
-
       <Action Name="forward" IsBound="true">
         <Parameter Name="bindingParameter" Type="microsoft.graph.testType3" />
         <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
@@ -59,15 +58,12 @@
         <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
         <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
       </Action>
-
- 
       <Action Name="forward" IsBound="true">
         <Parameter Name="bindingParameter" Type="microsoft.graph.testType3" />
         <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
         <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
         <Parameter Name="TestProperty" Type="Edm.String" Nullable="true"/>
       </Action>
-
 
       <EntityContainer Name="GraphService">
         <Singleton Name="testSingleton" Type="microsoft.graph.testSingleton"/>
