@@ -224,18 +224,20 @@ namespace Typewriter
                 metadataDefinitionType == MetadataDefinitionType.Action || 
                 metadataDefinitionType == MetadataDefinitionType.Function)
             {
-                throw new ArgumentNullException(nameof(bindingParameterType), "The binding parameter type must be set in case an Action" +
+                throw new ArgumentNullException(nameof(bindingParameterType), 
+                    "The binding parameter type must be set in the case of an Action" +
                     " or Function with the same name and parameter list.");
             }
             
             // Validate that the specified new element order is meaningful.
             if (newElementOrder.Count < 2)
             {
-                throw new ArgumentOutOfRangeException(nameof(newElementOrder), "ReorderElements: expected 2 or more elements to reorder.");
+                throw new ArgumentOutOfRangeException(nameof(newElementOrder), 
+                    "ReorderElements: expected 2 or more elements to reorder.");
             }
 
-            // Sort the newElementOrder so we can compare the sequence to the potential overloads returned for the
-            // the targetGlobalElementName. We should only ever find a single match.
+            // Sort the newElementOrder so we can compare the sequence to the potential overloads
+            // returned for the the targetGlobalElementName. We should only ever find a single match.
             var newElementsAlphaOrdered = newElementOrder.OrderByDescending(x => x.ToString());
 
             try
@@ -261,7 +263,10 @@ namespace Typewriter
                 }
                 else // We are reordering an Action or Function and must match the bindingParameterType.
                 {
-                    targetElement = results.Where(e => e.Elements().Any(a => a.Attribute("Type").Value == bindingParameterType)).FirstOrDefault();
+                    targetElement = results.Where(e => e.Elements()
+                                                        .Take(1)
+                                                        .Any(a => a.Attribute("Type").Value == bindingParameterType))
+                                           .FirstOrDefault();
                 }
 
                 // There wasn't a match. We need to check our inputs.

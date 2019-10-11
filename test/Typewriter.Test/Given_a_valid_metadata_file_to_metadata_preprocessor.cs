@@ -53,7 +53,8 @@ namespace Typewriter.Test
 
             bool doesntContainTargetBefore = MetadataPreprocessor.GetXMetadata().Descendants()
                     .Where(x => x.Name.LocalName == "NavigationProperty")
-                    .Where(x => x.Attribute("ContainsTarget") == null || x.Attribute("ContainsTarget").Value.Equals("false"))
+                    .Where(x => x.Attribute("ContainsTarget") == null || 
+                                x.Attribute("ContainsTarget").Value.Equals("false"))
                     .Where(x => x.Attribute("Type").Value == $"Collection(microsoft.graph.{navPropTypeToProcess})")
                     .Any();
 
@@ -131,27 +132,32 @@ namespace Typewriter.Test
             // Specify the metadata definition to reorder and the new element order specification.
             var targetMetadataDefType = MetadataDefinitionType.Action;
             var targetMetadataDefName = "forward";
-            var newParameterOrder = new List<string>() { "bindingParameter", "Comment", "ToRecipients" };
+            var newParameterOrder = new List<string>() { "bindingParameter",
+                                                         "Comment",
+                                                         "ToRecipients" };
             var bindingParameterType = "microsoft.graph.onenotePage";
 
             // Check whether an element exists in the metadata that matches our reordered element list before we reorder.
             var isTargetDefinitionInMetadataBefore = MetadataPreprocessor.GetXMetadata().Descendants()
-                                                 .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
-                                                 .Where(x => x.Attribute("Name").Value == targetMetadataDefName) // Returns all Action elements named forward.
-                                                 .Where(el => el.Descendants().FirstOrDefault(x => x.Attribute("Type").Value == bindingParameterType) != null)
-                                                 .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
-                                                    .SequenceEqual(newParameterOrder)).Any();
+                    .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
+                    .Where(x => x.Attribute("Name").Value == targetMetadataDefName) // Returns all Action elements named forward.
+                    .Where(el => el.Descendants().FirstOrDefault(x => x.Attribute("Type").Value == bindingParameterType) != null)
+                    .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
+                        .SequenceEqual(newParameterOrder)).Any();
 
             // Make a call to reorder the parameters for the target action in the metadata loaded into memory. 
-            MetadataPreprocessor.ReorderElements(targetMetadataDefType, targetMetadataDefName, newParameterOrder, bindingParameterType);
+            MetadataPreprocessor.ReorderElements(targetMetadataDefType, 
+                                                 targetMetadataDefName, 
+                                                 newParameterOrder, 
+                                                 bindingParameterType);
 
             // Query the updated metadata for the results that match the reordered element.
             var results = MetadataPreprocessor.GetXMetadata().Descendants()
-                                                             .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
-                                                             .Where(x => x.Attribute("Name").Value == targetMetadataDefName) // Returns all Action elements named forward.
-                                                             .Where(el => el.Descendants().FirstOrDefault(x => x.Attribute("Type").Value == bindingParameterType) != null)
-                                                             .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
-                                                                .SequenceEqual(newParameterOrder));
+                    .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
+                    .Where(x => x.Attribute("Name").Value == targetMetadataDefName) // Returns all Action elements named forward.
+                    .Where(el => el.Descendants().FirstOrDefault(x => x.Attribute("Type").Value == bindingParameterType) != null)
+                    .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
+                        .SequenceEqual(newParameterOrder));
 
             Assert.IsFalse(isTargetDefinitionInMetadataBefore);
             // Added multiple elements with the same binding parameter - we want to make sure there is only one in the results.
@@ -159,7 +165,10 @@ namespace Typewriter.Test
             Assert.AreEqual(newParameterOrder.Count(),
                 results.FirstOrDefault().Elements().Count(),
                 "The reordered element list doesn't match the count of elements in the input new order list.");
-            Assert.IsTrue(results.FirstOrDefault().Elements().Select(a => a.Attribute("Name").Value).SequenceEqual(newParameterOrder),
+            Assert.IsTrue(results.FirstOrDefault()
+                                 .Elements()
+                                 .Select(a => a.Attribute("Name").Value)
+                                 .SequenceEqual(newParameterOrder),
                           "The element list was not reordered as expected.");
         }
 
@@ -182,24 +191,32 @@ namespace Typewriter.Test
             // Specify the metadata definition to reorder and the new element order specification.
             var targetMetadataDefType = MetadataDefinitionType.ComplexType;
             var targetMetadataDefName = "thumbnail";
-            var newParameterOrder = new List<string>() { "width", "url", "sourceItemId", "height", "content" };
+            var newParameterOrder = new List<string>() { "width",
+                                                         "url",
+                                                         "sourceItemId",
+                                                         "height",
+                                                         "content" };
 
-            // Check whether an element exists in the metadata that matches our reordered element list before we reorder.
+            // Check whether an element exists in the metadata that
+            // matches our reordered element list before we reorder.
             var isTargetDefinitionInMetadataBefore = MetadataPreprocessor.GetXMetadata().Descendants()
-                                                 .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
-                                                 .Where(x => x.Attribute("Name").Value == targetMetadataDefName) 
-                                                 .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
-                                                    .SequenceEqual(newParameterOrder)).Any();
+                    .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
+                    .Where(x => x.Attribute("Name").Value == targetMetadataDefName) 
+                    .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
+                        .SequenceEqual(newParameterOrder)).Any();
 
-            // Make a call to reorder the parameters for the target complex type in the metadata loaded into memory. 
-            MetadataPreprocessor.ReorderElements(targetMetadataDefType, targetMetadataDefName, newParameterOrder);
+            // Make a call to reorder the parameters for the target 
+            // complex type in the metadata loaded into memory. 
+            MetadataPreprocessor.ReorderElements(targetMetadataDefType, 
+                                                 targetMetadataDefName, 
+                                                 newParameterOrder);
 
             // Query the updated metadata for the results that match the reordered element.
             var results = MetadataPreprocessor.GetXMetadata().Descendants()
-                                                             .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
-                                                             .Where(x => x.Attribute("Name").Value == targetMetadataDefName) 
-                                                             .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
-                                                                .SequenceEqual(newParameterOrder));
+                    .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
+                    .Where(x => x.Attribute("Name").Value == targetMetadataDefName) 
+                    .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
+                        .SequenceEqual(newParameterOrder));
 
             Assert.IsFalse(isTargetDefinitionInMetadataBefore);
             Assert.IsTrue(results.Count() == 1, $"Expected: A single result item. Actual: found {results.Count()} items.");
@@ -213,9 +230,10 @@ namespace Typewriter.Test
         [TestMethod]
         public void It_does_not_reorder_when_element_list_does_not_match_in_a_complextype()
         {
-            /* The element to attempt to reorder from the resources/dirtymetadata.xml file. The element
-             * list, newParameterOrder does not match the thumbnail type in the metadata (missing 'content' element) so 
-             * we expect that the reorder attempt fails.
+            /* The element to attempt to reorder from the resources/dirtymetadata.xml file. 
+             * The element list, newParameterOrder does not match the thumbnail type 
+             * in the metadata (missing 'content' element) so we expect that the 
+             * reorder attempt fails.
               <ComplexType Name="thumbnail">
                 <Property Name="content" Type="Edm.Stream" />
                 <Property Name="height" Type="Edm.Int32" />
@@ -225,22 +243,30 @@ namespace Typewriter.Test
               </ComplexType>
              */
 
-            // Specify the metadata definition to reorder and the new element order specification.
+            // Specify the metadata definition to reorder and the new 
+            // element order specification.
             var targetMetadataDefType = MetadataDefinitionType.ComplexType;
             var targetMetadataDefName = "thumbnail";
-            var newParameterOrder = new List<string>() { "width", "url", "sourceItemId", "height" };
+            var newParameterOrder = new List<string>() { "width",
+                                                         "url",
+                                                         "sourceItemId",
+                                                         "height" };
 
-            // Make a call to reorder the parameters for the target complex type in the metadata loaded into memory. 
-            MetadataPreprocessor.ReorderElements(targetMetadataDefType, targetMetadataDefName, newParameterOrder);
+            // Make a call to reorder the parameters for the target 
+            // complex type in the metadata loaded into memory. 
+            MetadataPreprocessor.ReorderElements(targetMetadataDefType, 
+                                                 targetMetadataDefName, 
+                                                 newParameterOrder);
 
             // Query the updated metadata for the results that match the reordered element.
             var results = MetadataPreprocessor.GetXMetadata().Descendants()
-                                                             .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
-                                                             .Where(x => x.Attribute("Name").Value == targetMetadataDefName)
-                                                             .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
-                                                                .SequenceEqual(newParameterOrder));
+                    .Where(x => x.Name.LocalName == targetMetadataDefType.ToString())
+                    .Where(x => x.Attribute("Name").Value == targetMetadataDefName)
+                    .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
+                        .SequenceEqual(newParameterOrder));
 
-            Assert.IsTrue(results.Count() == 0, $"Expected: Zero results. Actual: found {results.Count()} items.");
+            Assert.IsTrue(results.Count() == 0, 
+                          $"Expected: Zero results. Actual: found {results.Count()} items.");
         }
     }
 }
