@@ -77,10 +77,6 @@ namespace Typewriter
             AddContainsTarget("appVulnerabilityMobileApp");
 
             ReorderElements(MetadataDefinitionType.Action,
-                            "forward",
-                            new List<string>() { "bindingParameter", "Comment", "ToRecipients" },
-                            "microsoft.graph.post");
-            ReorderElements(MetadataDefinitionType.Action,
                             "accept",
                             new List<string>() { "bindingParameter", "Comment", "SendResponse" },
                             "microsoft.graph.event");
