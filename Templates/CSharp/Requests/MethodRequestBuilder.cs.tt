@@ -36,6 +36,11 @@ var methods = overloads
                         var parameterName = p.Name.GetSanitizedParameterName();
                         var propertyName = p.Name.ToCheckedCase();
 
+                        // Adds support for classes ending in "Request" that have been dismabiguated.
+                        if (type.EndsWith("Request"))
+                        {   
+                            type = String.Concat(type, "Object");
+                        }
                         if (p.IsCollection)
                         {
                             type = string.Format("IEnumerable<{0}>", type);
@@ -51,6 +56,8 @@ var methods = overloads
 
             var paramStrings = parameters.Select(p => string.Format(",\n            {0} {1}", p.Type, p.ParameterName));
             var paramComments = parameters.Select(p => string.Format("\n        /// <param name=\"{0}\">A {0} parameter for the OData method call.</param>", p.ParameterName));
+
+            
 
             return new
             {
