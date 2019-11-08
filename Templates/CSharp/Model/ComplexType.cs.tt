@@ -7,9 +7,31 @@ OdcmClass complex = host.CurrentType.AsOdcmClass();
 var complexTypeName = complex.Name.ToCheckedCase();
 var typeDeclaration = complexTypeName;
 
+// In the case a complex type name ends with "Request", we will have a collision with the *Request objects
+// when we generate. For example, there is a complex type named SearchRequest and an entity named Search.
+// The SearchRequest complex type results in a SearchResult class in our models collection. The Search entity
+// results in a SearchRequest request object causing conflicts.
+
+if (typeDeclaration.EndsWith("Request"))
+{
+    typeDeclaration = String.Concat(typeDeclaration, "Object");
+}
+
+// Capture the cstor type declaration as the typedeclaration may get appended with a base type. 
+string cstorTypeDeclaration = typeDeclaration;
+
 if (complex.Base != null)
 {
-    typeDeclaration = string.Format("{0} : {1}", typeDeclaration, complex.Base.Name.ToCheckedCase());
+    // Disambiguate the base type declaration for the same reason we did this 
+	// for typeDeclaration.
+	var baseTypeDeclaration = complex.Base.Name.ToCheckedCase();
+
+    if (baseTypeDeclaration.EndsWith("Request"))
+    {
+        baseTypeDeclaration = String.Concat(baseTypeDeclaration, "Object");
+    }
+
+    typeDeclaration = string.Format("{0} : {1}", typeDeclaration, baseTypeDeclaration);
 }
 
 var isMethodResponse = complex.LongDescriptionContains("methodResponse");
@@ -47,9 +69,9 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
 if (!complex.IsAbstract)
 {
 #>        /// <summary>
-        /// Initializes a new instance of the <see cref="<#=complexTypeName#>"/> class.
+        /// Initializes a new instance of the <see cref="<#=cstorTypeDeclaration#>"/> class.
         /// </summary>
-        public <#=complexTypeName#>()
+        public <#=cstorTypeDeclaration#>()
         {
             this.ODataType = "<#=complex.FullName#>";
         }
