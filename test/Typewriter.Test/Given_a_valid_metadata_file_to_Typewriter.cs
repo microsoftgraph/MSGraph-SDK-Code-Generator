@@ -280,5 +280,193 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
             Assert.IsFalse(hasTestODataInitString, $"The unexpected test token string, '{testODataInitString}', was set in the generated test file. We didn't properly generate the cstor code.");
         }
+
+        [TestMethod]
+        public void It_creates_disambiguated_abstract_base_complextype_models()
+        {
+            const string outputDirectory = "output";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\EmptyBaseComplexTypeRequest.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            bool hasTestString = false;
+            string testString = "public abstract partial class EmptyBaseComplexTypeRequestObject";
+
+            foreach (var line in lines)
+            {
+                if (line.Contains(testString))
+                {
+                    hasTestString = true;
+                    break;
+                }
+            }
+
+            Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the type declaration code.");
+        }
+
+        [TestMethod]
+        public void It_creates_disambiguated_complextype_models()
+        {
+            const string outputDirectory = "output";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\DerivedComplexTypeRequest.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            bool hasTestTypeDeclaration = false;
+            string testTypeDeclaration = "public partial class DerivedComplexTypeRequestObject : EmptyBaseComplexTypeRequestObject";
+            bool hasTestTypeCstor = false;
+            string testTypeCstor = "public DerivedComplexTypeRequestObject";
+            bool hasTestOdataType = false;
+            string testOdataType = "this.ODataType = \"microsoft.graph.derivedComplexTypeRequest\"";
+
+            foreach (var line in lines)
+            {
+                // We only need to check once.
+                if (line.Contains(testTypeDeclaration) && !hasTestTypeDeclaration)
+                {
+                    hasTestTypeDeclaration = true;
+                    continue;
+                }
+                if (line.Contains(testTypeCstor) && !hasTestTypeCstor)
+                {
+                    hasTestTypeCstor = true;
+                    continue;
+                }
+                if (line.Contains(testOdataType) && !hasTestOdataType)
+                {
+                    hasTestOdataType = true;
+                    break; // This is the last expected line.
+                }
+            }
+
+            Assert.IsTrue(hasTestTypeDeclaration, $"The expected test token string, '{testTypeDeclaration}', was not set in the generated test file. We didn't properly generate the type declaration code.");
+            Assert.IsTrue(hasTestTypeCstor, $"The expected test token string, '{testTypeCstor}', was not set in the generated test file. We didn't properly generate the cstor code.");
+            Assert.IsTrue(hasTestOdataType, $"The expected test token string, '{testOdataType}', was not set in the generated test file. We didn't properly generate the initialized odata.type code.");
+        }
+
+        [TestMethod]
+        public void It_creates_disambiguated_MethodRequestBuilder_parameters()
+        {
+            const string outputDirectory = "output";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\TestTypeQueryRequestBuilder.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            bool hasTestParameter = false;
+            string testParameter = "IEnumerable<DerivedComplexTypeRequestObject> requests)";
+            
+
+            foreach (var line in lines)
+            {
+                // We only need to check once.
+                if (line.Contains(testParameter))
+                {
+                    hasTestParameter = true;
+                    break;
+                }
+            }
+
+            Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
+        }
+
+        [TestMethod]
+        public void It_creates_disambiguated_EntityRequestBuilder_parameters()
+        {
+            const string outputDirectory = "output";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\TestTypeRequestBuilder.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+
+            bool hasTestParameter = false;
+            string testParameter = "IEnumerable<DerivedComplexTypeRequestObject> requests)";
+            
+            foreach (var line in lines)
+            {
+                // We only need to check once.
+                if (line.Contains(testParameter))
+                {
+                    hasTestParameter = true;
+                    break;
+                }
+            }
+
+            Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
+        }
+
+        [TestMethod]
+        public void It_creates_disambiguated_IEntityRequestBuilder_parameters()
+        {
+            const string outputDirectory = "output";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\ITestTypeRequestBuilder.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+
+            bool hasTestParameter = false;
+            string testParameter = "IEnumerable<DerivedComplexTypeRequestObject> requests)";
+
+            foreach (var line in lines)
+            {
+                // We only need to check once.
+                if (line.Contains(testParameter))
+                {
+                    hasTestParameter = true;
+                    break;
+                }
+            }
+
+            Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
+        }
     }
 }

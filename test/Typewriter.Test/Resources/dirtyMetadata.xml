@@ -8,7 +8,22 @@
         </Key>
         <Property Name="id" Unicode="false" Nullable="false" Type="Edm.String"/>
       </EntityType>
-      <EntityType Name="testType" BaseType="microsoft.graph.entity"></EntityType>
+      
+      <EntityType Name="testType" BaseType="microsoft.graph.entity">
+        <Property Name="propertyAlpha" Type="microsoft.graph.derivedComplexTypeRequest"/>
+      </EntityType>
+      <ComplexType Name="emptyBaseComplexTypeRequest" Abstract="true"/>
+      <ComplexType Name="derivedComplexTypeRequest" BaseType="microsoft.graph.emptyBaseComplexTypeRequest">
+        <Property Name="propName1" Type="Edm.String" />
+        <Property Name="propName2" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="responseObject" />
+      <Action Name="query" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.testType" />
+        <Parameter Name="requests" Type="Collection(microsoft.graph.derivedComplexTypeRequest)" Nullable="false" />
+        <ReturnType Type="Collection(microsoft.graph.responseObject)" Nullable="false" />
+      </Action>
+      
       <EntityType Name="testType2" BaseType="microsoft.graph.entity"></EntityType>
       <EntityType Name="testType3" BaseType="microsoft.graph.entity"></EntityType>
       <EntityType Name="testEntity" BaseType="microsoft.graph.entity">
