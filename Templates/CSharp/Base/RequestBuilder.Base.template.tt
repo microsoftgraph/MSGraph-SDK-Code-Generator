@@ -188,6 +188,11 @@ public string GetMethodProperties(OdcmClass entity, bool isCollection)
                 var paramVariableName = param.Name.GetSanitizedParameterName();
                 var paramTypeString = param.Type.GetTypeString();
 
+                // Adds support for classes ending in "Request" that have been dismabiguated.
+                if (paramTypeString.EndsWith("Request"))
+                {   
+                    paramTypeString = String.Concat(paramTypeString, "Object");
+                }
                 if (param.IsCollection)
                 {
                     paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
