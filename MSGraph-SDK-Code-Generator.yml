@@ -1,0 +1,45 @@
+page_type: sample
+products:
+  - office-excel
+  - office-365
+  - office-outlook
+  - office-onedrive
+  - office-onenote
+  - office-planner
+  - office-sp
+  - ms-graph
+languages:
+  - csharp
+  - java
+  - objc
+  - php
+  - python
+  - typescript
+extensions:
+  contentType: sdks
+  technologies:
+    - Microsoft Graph
+    - Microsoft identity platform
+  services:
+    - Bookings
+    - Education
+    - Excel
+    - Groups
+    - Insights
+    - Intune
+    - Microsoft identity platform
+    - Office 365
+    - Outlook
+    - OneDrive
+    - OneNote
+    - Planner
+    - Reports
+    - Security
+    - SharePoint
+    - Users
+  platforms:
+    - Android
+    - iOS
+  createdDate: '3/21/2016 9:51:25 PM'
+title: Microsoft Graph SDK Code Generator
+description: Source code writers for VIPR utilizing T4 templates. The GraphODataTemplateWriter receives an OdcmModel from VIPR and uses it to fill in a T4 template located within this repository.r
