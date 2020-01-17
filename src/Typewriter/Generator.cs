@@ -1,7 +1,11 @@
 ﻿using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Xml;
+using System.Xml.XPath;
+using System.Xml.Xsl;
 using Vipr.Core;
 using Vipr.Reader.OData.v4;
 
@@ -57,6 +61,41 @@ namespace Typewriter
 
             // Inject documentation annotations into the CSDL using ApiDoctor and get back the file as a string.
             return AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata).Result;
+        }
+
+        /// <summary>
+        /// Transform CSDL with XSLT.
+        /// </summary>
+        /// <param name="csdlContents">The CSDL to transform.</param>
+        /// <param name="options">The options bag that must contain the -transform -t parameter.</param>
+        static internal void Transform(string csdlContents, Options options)
+        {
+            using (var reader = new StringReader(csdlContents))
+            using (var doc = XmlReader.Create(reader))
+            using (XmlWriter writer = XmlWriter.Create(options.Output))
+            {
+                XslCompiledTransform transform = new XslCompiledTransform();
+                XsltSettings settings = new XsltSettings();
+                settings.EnableScript = true;
+                transform.Load(options.Transform, settings, null);
+
+                // Execute the transformation, writes the transformed file.
+                transform.Transform(doc, writer);
+            }
+        }
+
+        /// <summary>
+        /// Transform CSDL with XSLT and add documentation.
+        /// </summary>
+        /// <param name="csdlContents">The CSDL to transform.</param>
+        /// <param name="options">The options bag that must contain the -transform -t parameter,
+        /// and the -docs -d parameter.</param>
+        static internal void TransformWithDocs(string csdlContents, Options options)
+        {
+            Transform(csdlContents, options);
+
+            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(options, options.Output).Result;
+            FileWriter.WriteMetadata(csdlWithDocAnnotations, options.Output, null);
         }
 
         /// <summary>
