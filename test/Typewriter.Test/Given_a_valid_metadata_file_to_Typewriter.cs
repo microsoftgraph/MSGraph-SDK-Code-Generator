@@ -468,5 +468,57 @@ namespace Typewriter.Test
 
             Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
         }
+
+        [TestMethod]
+        public void It_transforms_metadata()
+        {
+            const string outputDirectory = "output";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                GenerationMode = GenerationMode.Transform,
+                Transform = "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/mm/xslt/transforms/csdl/preprocess_csdl.xsl"
+
+            };
+
+            Generator.Transform(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + @"\cleanMetadata.xml");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+
+            bool hasThumbnailAnnotationBeenAdded = false; // Expect true
+            bool hasHasStreamAttribute = false; // Expect false
+            bool hasContainsTargetBeenSet = false; // Expect true
+            bool hasCapabilityAnnotations = false; // Expect false
+
+            // Check the document for these values.
+            foreach (var line in lines)
+            {
+                if (line.Contains(@"<Annotation Term=""Org.OData.Core.V1.LongDescription"" String=""navigable"" />"))
+                {
+                    hasThumbnailAnnotationBeenAdded = true;
+                }
+                if (line.Contains("HasStream"))
+                {
+                    hasHasStreamAttribute = true;
+                }
+                if (line.Contains(@"<NavigationProperty Name=""plans"" Type=""Collection(microsoft.graph.plannerPlan)"" ContainsTarget=""true"" />"))
+                {
+                    hasContainsTargetBeenSet = true;
+                }
+                if (line.Contains("Org.OData.Capabilities"))
+                {
+                    hasCapabilityAnnotations = true;
+                }
+            }
+
+            Assert.IsTrue(hasThumbnailAnnotationBeenAdded, $"The expected LongDescription annotation wasn't set in the transformed cleaned metadata.");
+            Assert.IsFalse(hasHasStreamAttribute, $"The HasStream attribute was't removed from the metadata.");
+            Assert.IsTrue(hasContainsTargetBeenSet, $"The expected ContainsTarget attribute wasn't set in the transformed cleaned metadata.");
+            Assert.IsFalse(hasCapabilityAnnotations, $"The expected capability annotations weren't removed in the transformed cleaned metadata.");
+        }
     }
 }

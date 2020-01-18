@@ -1,8 +1,10 @@
 ﻿using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
@@ -15,6 +17,8 @@ namespace Typewriter
 {
     internal static class Generator
     {
+        internal static Logger Logger => LogManager.GetLogger("Generator");
+
         /// <summary>
         /// Generate code files from the input metadata and do not preprocess.
         /// </summary>
@@ -68,12 +72,25 @@ namespace Typewriter
         /// </summary>
         /// <param name="csdlContents">The CSDL to transform.</param>
         /// <param name="options">The options bag that must contain the -transform -t parameter.</param>
-        static internal void Transform(string csdlContents, Options options)
+        /// <returns>The location of the generated file.</returns>
+        static internal string Transform(string csdlContents, Options options)
         {
+            var outputDirectoryPath = options.Output;
+
+            if (!string.IsNullOrWhiteSpace(outputDirectoryPath) && !Directory.Exists(outputDirectoryPath))
+                Directory.CreateDirectory(outputDirectoryPath);
+            if (string.IsNullOrWhiteSpace(outputDirectoryPath))
+                outputDirectoryPath = Environment.CurrentDirectory;
+
+            var pathToCleanMetadata = string.Concat(outputDirectoryPath, "\\cleanMetadata.xml");
+
             using (var reader = new StringReader(csdlContents))
             using (var doc = XmlReader.Create(reader))
-            using (XmlWriter writer = XmlWriter.Create(options.Output))
+            using (XmlTextWriter writer = new XmlTextWriter(pathToCleanMetadata, Encoding.ASCII))
             {
+                writer.Indentation = 2;
+                writer.Formatting = Formatting.Indented;
+
                 XslCompiledTransform transform = new XslCompiledTransform();
                 XsltSettings settings = new XsltSettings();
                 settings.EnableScript = true;
@@ -82,6 +99,10 @@ namespace Typewriter
                 // Execute the transformation, writes the transformed file.
                 transform.Transform(doc, writer);
             }
+
+            Logger.Info($"Transformed metadata written to {pathToCleanMetadata}");
+
+            return pathToCleanMetadata;
         }
 
         /// <summary>
@@ -92,10 +113,14 @@ namespace Typewriter
         /// and the -docs -d parameter.</param>
         static internal void TransformWithDocs(string csdlContents, Options options)
         {
-            Transform(csdlContents, options);
+            var pathToCleanMetadata = Transform(csdlContents, options);
 
-            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(options, options.Output).Result;
-            FileWriter.WriteMetadata(csdlWithDocAnnotations, options.Output, null);
+            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata).Result;
+            string outputMetadataFilename = options.OutputMetadataFileName ?? "cleanMetadataWithDescriptions";
+            string metadataFileName = string.Concat(outputMetadataFilename, options.EndpointVersion, ".xml");
+            FileWriter.WriteMetadata(csdlWithDocAnnotations, metadataFileName, options.Output);
+
+            Logger.Info($"Transformed metadata with documentation written to {metadataFileName}");
         }
 
         /// <summary>
