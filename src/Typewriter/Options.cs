@@ -32,7 +32,15 @@ namespace Typewriter
         /// <summary>
         /// Uses the input metadata and only generates code files for the target platform. It bypasses the cleaning, doc parsing, and adding doc annotations.
         /// </summary>
-        Files
+        Files,
+        /// <summary>
+        /// Uses the input metadata to transform the CSDL with the specified XSLT.
+        /// </summary>
+        Transform,
+        /// <summary>
+        /// Uses the input metadata to transform the CSDL with the specified XSLT and adds documentation annotations.
+        /// </summary>
+        TransformWithDocs
     }
 
     public class Options
@@ -52,10 +60,11 @@ namespace Typewriter
         [Option('d', "docs", Default = ".", HelpText = "Path to the root of the documentation repo folder")]
         public string DocsRoot { get; set; }
 
-        [Option('g', "generationmode", Default = GenerationMode.Full, HelpText = "Specifies the generation mode. The values can be: Full, Metadata, or Files. Full generation mode produces " +
+        [Option('g', "generationmode", Default = GenerationMode.Full, HelpText = "Specifies the generation mode. The values can be: Full, Metadata, Files, Transform, or TransformWithDocs. Full generation mode produces " +
             "the output code files by cleaning the input metadata, parsing the documentation, and adding annotations before generating the output files. Metadata generation mode" +
             "produces an output metadata file by cleaning metadata, documentation parsing, and adding documentation annotations. Files generation mode produces code files from" +
-            "an input metadata and bypasses the cleaning, documentation parsing, and adding documentation annotations.")]
+            "an input metadata and bypasses the cleaning, documentation parsing, and adding documentation annotations. Transform generation mode processes the metadata according to the" +
+            "XSLT provided with the -t option. TransformWithDocs generation mode processes the metadata according to the XSLT and adds documentation annotations.")]
         public GenerationMode GenerationMode { get; set; }
 
         [Option('f', "outputMetadataFileName", Default = "cleanMetadataWithDescriptions", HelpText = "The output metadata filename. Only applicable for GenerationMode.Metadata.")]
@@ -68,5 +77,9 @@ namespace Typewriter
             "templates from the TemplateWriterSettings object returned by ConfigurationService.Settings. The suggested convention for specifying a key should be " +
             "the targeted template language name and the property name. For example, php.namespace:Microsoft\\Graph\\Beta\\Model would be a property to be consumed in the PHP templates.")]
         public IEnumerable<string> Properties { get; set; }
+
+        [Option('t', "transform", HelpText = "Specify the URI to the XSLT that will preprocess the metadata. Overrides the" +
+            "cleaning done by embeddeded typewriter.exe rules.")]
+        public string Transform { get; set; }
     }
 }
