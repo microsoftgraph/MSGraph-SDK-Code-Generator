@@ -478,7 +478,7 @@ namespace Typewriter.Test
             {
                 Output = outputDirectory,
                 GenerationMode = GenerationMode.Transform,
-                Transform = "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/mm/xslt/transforms/csdl/preprocess_csdl.xsl"
+                Transform = "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/transforms/csdl/preprocess_csdl.xsl"
 
             };
 
