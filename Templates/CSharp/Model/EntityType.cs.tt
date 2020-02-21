@@ -51,7 +51,18 @@ if (entity.Derived != null && entity.Base == null)
         shouldImportGraph = true;
     }
 }
-
+    
+// Check if Microsoft.Graph should be imported for Date objects when generating outside the Microsoft.Graph namespace.
+foreach (var property in entity.Properties)
+{
+    var propertyType = property.IsTypeNullable() || property.IsCollection()
+        ? property.GetTypeString()
+        : property.GetTypeString() + "?";    
+    if(propertyType == "Date") {
+        shouldImportGraph = true;
+		break;
+	}
+}
 #>
 
 namespace <#=entity.Namespace.GetNamespaceName()#>

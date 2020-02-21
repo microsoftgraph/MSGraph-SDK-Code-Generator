@@ -14,6 +14,17 @@ var requestBody = entityName + method.Name.Substring(method.Name.IndexOf('.') + 
 
 var attributeStringBuilder = new StringBuilder();
 attributeStringBuilder.Append("[JsonObject(MemberSerialization = MemberSerialization.OptIn)]");
+
+// Check if Microsoft.Graph should be imported for Duration object when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+foreach (var param in method.Parameters)
+{
+    var paramTypeString = param.Type.GetTypeString();
+    if(paramTypeString == "Duration") {
+        shouldImportGraph = true;
+		break;
+	}
+}
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
@@ -23,6 +34,13 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     /// <summary>
     /// The type <#=requestBody#>.

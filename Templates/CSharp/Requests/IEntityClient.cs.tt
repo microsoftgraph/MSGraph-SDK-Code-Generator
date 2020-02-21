@@ -4,10 +4,23 @@
 <#
 var entityContainer = model.EntityContainer;
 var clientName = entityContainer.Name.ToCheckedCase() + "Client";
+
+// Check if Microsoft.Graph should be imported for IBaseClient object when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(entityContainer.Namespace.GetNamespaceName() != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
 #>
 
 namespace <#=entityContainer.Namespace.GetNamespaceName()#>
 {
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     /// <summary>
     /// The interface I<#=clientName#>.
