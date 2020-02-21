@@ -8,13 +8,26 @@ var entityName = entity.Name.ToCheckedCase();
 var entityRequest = entityName + "Request";
 var entityRequestBuilder = entityRequest + "Builder";
 
+// Check if Microsoft.Graph should be imported for IBaseRequestBuilder interface and Option object when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(entity.Namespace.GetNamespaceName() != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
+
 #>
 
 namespace <#=this.GetNamespaceName(entity)#>
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
+    using System.IO;	
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     <#=this.GetEntityRequestBuilderInterfaceDefinition(entity)#>
     {

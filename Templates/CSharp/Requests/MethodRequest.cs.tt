@@ -43,6 +43,12 @@ bool returnsStream = string.Equals(sendAsyncReturnType, "Stream");
 
 var features = host.CurrentType.GetFeatures();
 
+// Check if Microsoft.Graph should be imported for BaseRequest object when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(method.Namespace.GetNamespaceName() != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
+
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
@@ -52,6 +58,13 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System.IO;
     using System.Net.Http;
     using System.Threading;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     /// <summary>
     /// The type <#=requestType#>.
