@@ -5,11 +5,24 @@
 <#
 var enumT = host.CurrentType.AsOdcmEnum();
 var enumName = enumT.Name.ToCheckedCase();
+
+// Check if Microsoft.Graph should be imported for EnumConverter when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(enumT.Namespace.GetNamespaceName() != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
 #>
 
 namespace <#=enumT.Namespace.GetNamespaceName()#>
 {
     using Newtonsoft.Json;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     /// <summary>
     /// The enum <#=enumName#>.

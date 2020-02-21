@@ -37,12 +37,19 @@ if (entity.Base != null)
 var attributeStringBuilder = new StringBuilder();
 attributeStringBuilder.Append("[JsonObject(MemberSerialization = MemberSerialization.OptIn)]");
 
+var shouldImportGraph = false;
+
 // We only want to add the derived type converter to the classes at the top of the inheritance hierarchy
 if (entity.Derived != null && entity.Base == null)
 {
     attributeStringBuilder.Append(Environment.NewLine);
     attributeStringBuilder.Append("    ");
     attributeStringBuilder.Append("[JsonConverter(typeof(DerivedTypeConverter))]");
+
+    // Check if Microsoft.Graph should be imported for DerivedTypeConverter when generating outside the Microsoft.Graph namespace.
+    if(entity.Namespace.GetNamespaceName() != "Microsoft.Graph") {
+        shouldImportGraph = true;
+    }
 }
 
 #>
@@ -54,6 +61,13 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
     using System.IO;
     using System.Runtime.Serialization;
     using Newtonsoft.Json;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     /// <summary>
     /// The type <#=entityName.SplitCamelCase()#>.

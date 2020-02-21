@@ -5,11 +5,23 @@
 
 var prop = host.CurrentType.AsOdcmProperty();
 
+// Check if Microsoft.Graph should be imported for IBaseRequestBuilder interface when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(this.GetNamespaceName(prop.Class.AsOdcmClass()) != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
 #>
 namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 {
     using System;
     using System.Collections.Generic;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     <#=this.GetCollectionInterfaceDefinition(prop)#>
     {

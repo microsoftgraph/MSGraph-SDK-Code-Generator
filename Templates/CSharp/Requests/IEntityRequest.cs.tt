@@ -7,6 +7,12 @@ var entityName = entity.Name.ToCheckedCase();
 var entityRequest = entityName + "Request";
 
 var features = host.CurrentType.GetFeatures();
+
+// Check if Microsoft.Graph should be imported for IBaseRequest interface when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(entity.Namespace.GetNamespaceName() != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
 #>
 
 namespace <#=this.GetNamespaceName(entity)#>
@@ -16,6 +22,13 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System.Net.Http;
     using System.Threading;
     using System.Linq.Expressions;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     <#=this.GetEntityRequestInterfaceDefinition(entity)#>
     {
