@@ -31,6 +31,12 @@ else
 	{
 		propClass = String.Concat(propClass, "Object");
 	}
+	
+// Check if Microsoft.Graph should be imported for IBaseRequest object when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(namespaceValue != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
 #>
 
 namespace <#=namespaceValue#>
@@ -39,6 +45,13 @@ namespace <#=namespaceValue#>
     using System.IO;
     using System.Net.Http;
     using System.Threading;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     /// <summary>
     /// The interface I<#=propRequest#>.

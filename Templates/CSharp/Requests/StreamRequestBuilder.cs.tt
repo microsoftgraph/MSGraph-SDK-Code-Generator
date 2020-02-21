@@ -30,11 +30,23 @@ else
     namespaceValue = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 }
 
+// Check if Microsoft.Graph should be imported for BaseRequest object when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(namespaceValue != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
 #>
 
 namespace <#=namespaceValue#>
 {
     using System.Collections.Generic;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     /// <summary>
     /// The type <#=propRequestBuilder#>.

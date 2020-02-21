@@ -8,6 +8,11 @@ var entityName = this.GetEntityNameString(entity);
 
 var features = host.CurrentType.GetFeatures();
 
+// Check if Microsoft.Graph should be imported for BaseRequest object when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(this.GetNamespaceName(entity) != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
 #>
 
 namespace <#=this.GetNamespaceName(entity)#>
@@ -18,6 +23,13 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System.Net.Http;
     using System.Threading;
     using System.Linq.Expressions;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     <#=this.GetEntityRequestClassDefinition(entity)#>
     {

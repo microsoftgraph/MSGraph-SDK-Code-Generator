@@ -11,10 +11,23 @@ var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substri
 var nextRequestType = responseNamePrefix + "Request";
 var entityCollectionPage = responseNamePrefix + "CollectionPage";
 
+// Check if Microsoft.Graph should be imported for InterfaceConverter object when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(method.Namespace.GetNamespaceName() != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
 {
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
+
     /// <summary>
     /// The type <#=entityCollectionPage#>.
     /// </summary>

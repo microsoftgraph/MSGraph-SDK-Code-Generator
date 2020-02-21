@@ -12,11 +12,24 @@ if (innerEntityType.EndsWith("Request"))
 	{
 		innerEntityType = String.Concat(innerEntityType, "Object");
 	}
+
+// Check if Microsoft.Graph should be imported for Options object when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(prop.Class.AsOdcmClass().Namespace.GetNamespaceName() != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
 #>
 
 namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
 {
     using System;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     /// <summary>
     /// The type <#=entityCollectionPage#>.

@@ -5,6 +5,11 @@
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 
+// Check if Microsoft.Graph should be imported for Options object when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(this.GetNamespaceName(entity) != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
 #>
 
 namespace <#=this.GetNamespaceName(entity)#>
@@ -12,6 +17,13 @@ namespace <#=this.GetNamespaceName(entity)#>
     using System;
     using System.Collections.Generic;
     using System.IO;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     <#=this.GetEntityRequestBuilderClassDefinition(entity)#>
     {
