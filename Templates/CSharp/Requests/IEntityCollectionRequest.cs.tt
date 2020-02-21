@@ -15,6 +15,12 @@ var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Nam
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
 
 var features = host.CurrentType.GetFeatures();
+
+// Check if Microsoft.Graph should be imported for IBaseRequest interface when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(this.GetNamespaceName(prop.Class.AsOdcmClass()) != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
 #>
 
 namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
@@ -24,6 +30,13 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     using System.Net.Http;
     using System.Threading;
     using System.Linq.Expressions;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     <#=this.GetCollectionInterfaceDefinition(prop)#>
     {

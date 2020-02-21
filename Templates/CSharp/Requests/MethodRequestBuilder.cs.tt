@@ -61,6 +61,11 @@ var methods = overloads
             };
         });
 
+// Check if Microsoft.Graph should be imported for BaseActionMethodRequestBuilder object when generating outside the Microsoft.Graph namespace.
+var shouldImportGraph = false;
+if(method.Namespace.GetNamespaceName() != "Microsoft.Graph") {
+    shouldImportGraph = true;
+}
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
@@ -68,6 +73,13 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     using System;
     using System.Collections.Generic;
     using System.IO;
+<#
+if(shouldImportGraph){
+#>
+    using Microsoft.Graph;
+<#
+}
+#>
 
     /// <summary>
     /// The type <#=requestBuilderType#>.
