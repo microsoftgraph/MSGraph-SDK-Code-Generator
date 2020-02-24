@@ -91,5 +91,25 @@ namespace GraphODataTemplateWriter.Test
 
             Assert.AreEqual(expectedOutputString, sanitizedString, "GetSanitizedLongDescription is not handling escaped CRLF.");
         }
-    }
+
+        [TestMethod]
+        public void Namespace_Shouldnt_Contain_Whitespace_For_CSharp()
+        {
+            var testNamespace = new OdcmNamespace("Microsoft.OutlookServices");
+
+            var namespaceName = TypeHelperCSharp.GetNamespaceName(testNamespace);
+
+            Assert.AreEqual(namespaceName, "Microsoft.OutlookServices");
+        }
+
+        [TestMethod]
+        public void Namespace_Should_PascalCase_For_CSharp()
+        {
+            var testNamespace = new OdcmNamespace("microsoft.graph");
+
+            var namespaceName = TypeHelperCSharp.GetNamespaceName(testNamespace);
+
+            Assert.AreEqual(namespaceName, "Microsoft.Graph");
+        }
+     }
 }
