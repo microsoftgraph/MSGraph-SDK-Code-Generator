@@ -57,13 +57,13 @@ Typewriter is a new solution for generating code files using the GraphODataTempl
 
 The output `cleanMetadata.xml` will be located in the same directory as typewriter.exe.
 
-`.\typewriter.exe -v Info -m https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/mm/xslt/v1.0_metadata.xml -g Transform -t https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/mm/xslt/transforms/csdl/preprocess_csdl.xsl`
+`.\typewriter.exe -v Info -m https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/v1.0_metadata.xml -g Transform -t https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/transforms/csdl/preprocess_csdl.xsl`
 
 #### Transform metadata with XSLT and add documentation annotations.
 
 The output `cleanMetadataWithDescriptionsv1.0.xml` will be located in the same directory as typewriter.exe.
 
-`.\typewriter.exe -v Info -m https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/mm/xslt/v1.0_metadata.xml -g TransformWithDocs -t https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/mm/xslt/transforms/csdl/preprocess_csdl.xsl -d D:\repos\microsoft-graph-docs`
+`.\typewriter.exe -v Info -m https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/v1.0_metadata.xml -g TransformWithDocs -t https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/transforms/csdl/preprocess_csdl.xsl -d D:\repos\microsoft-graph-docs`
 
 #### Generate TypeScript typings from a CSDL (metadata) file without cleaning or annotating the CSDL.
 
