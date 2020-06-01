@@ -39,6 +39,12 @@ namespace Typewriter
                 case GenerationMode.Metadata:
                     Generator.WriteCleanAnnotatedMetadata(csdlContents, options);
                     break;
+                case GenerationMode.Transform:
+                    Generator.Transform(csdlContents, options);
+                    break;
+                case GenerationMode.TransformWithDocs:
+                    Generator.TransformWithDocs(csdlContents, options);
+                    break;
                 case GenerationMode.Full:
                 default:
                     Generator.GenerateFilesFromCleanMetadata(csdlContents, options);

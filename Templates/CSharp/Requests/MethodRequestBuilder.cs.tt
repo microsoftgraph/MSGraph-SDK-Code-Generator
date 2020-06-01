@@ -12,18 +12,12 @@ var requestBuilderType = requestType + "Builder";
 var isPost = method.IsAction() && method.Parameters != null && method.Parameters.Any();
 var methodType = method.IsFunction ? "Function" : "Action";
 
+// Overloads are determined based on the name of method and the type of the binding parameter.
+// There is no differentiation between an entity, and a collection of the same entities.
+// This may cause issues in the future that would require changes.
 var overloads = new List<OdcmMethod>();
 overloads.Add(method);
-
-// So far, it appears that the overloads on the functions are working as expected. 
-// The overloads on actions should be skipped. If we see more issues here, we may need to
-// revisit how VIPR determines overloaded methods. 
-if (method.IsFunction)
-{
-	overloads.AddRange(method.Overloads);
-}
-
-
+overloads.AddRange(method.Overloads);
 
 var methods = overloads
     .Select(m =>
@@ -36,6 +30,11 @@ var methods = overloads
                         var parameterName = p.Name.GetSanitizedParameterName();
                         var propertyName = p.Name.ToCheckedCase();
 
+                        // Adds support for classes ending in "Request" that have been dismabiguated.
+                        if (type.EndsWith("Request"))
+                        {   
+                            type = String.Concat(type, "Object");
+                        }
                         if (p.IsCollection)
                         {
                             type = string.Format("IEnumerable<{0}>", type);
@@ -51,6 +50,8 @@ var methods = overloads
 
             var paramStrings = parameters.Select(p => string.Format(",\n            {0} {1}", p.Type, p.ParameterName));
             var paramComments = parameters.Select(p => string.Format("\n        /// <param name=\"{0}\">A {0} parameter for the OData method call.</param>", p.ParameterName));
+
+            
 
             return new
             {
@@ -74,10 +75,14 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     public partial class <#=requestBuilderType#> : Base<#=methodType#>MethodRequestBuilder<I<#=requestType#>>, I<#=requestBuilderType#>
     {
 <#
+// We only want to generate unique method signatures. 
+// We'll use the ParametersAsArguments to define the uniqueness of a method.
+HashSet<string> uniqueMethods = new HashSet<string>();
 foreach (var m in methods)
-
 {
-
+    // Only generate a unique method.
+    if (uniqueMethods.Add(m.ParametersAsArguments) == true) 
+    {
 #>
         /// <summary>
         /// Constructs a new <see cref="<#=requestBuilderType#>"/>.
@@ -90,16 +95,17 @@ foreach (var m in methods)
             : base(requestUrl, client)
         {
 <#
-    foreach (var p in m.Parameters)
-    {
+        foreach (var p in m.Parameters)
+        {
 #>
             this.SetParameter("<#=p.Name#>", <#=p.ParameterName#>, <#=p.IsNullable.ToString().ToLowerInvariant()#>);
 <#
-    }
+        }
 #>
         }
 
 <#
+    }
 }
 #>
         /// <summary>
@@ -115,10 +121,15 @@ foreach (var m in methods)
 <#
     if (isPost)
     {
+        HashSet<string> uniqueParameters = new HashSet<string>();
+
         foreach (var m in methods)
         {
             foreach (var p in m.Parameters)
             {
+                // We only want to add unique parameters to CreateRequest. 
+                if (uniqueParameters.Add(p.Name) == true) 
+                {
 #>
             if (this.HasParameter("<#=p.Name#>"))
             {
@@ -126,6 +137,7 @@ foreach (var m in methods)
             }
 
 <#
+                }
             }
         }
     }

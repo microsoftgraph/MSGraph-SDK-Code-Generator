@@ -8,6 +8,7 @@ var clientName = entityContainer.Name.ToCheckedCase() + "Client";
 
 namespace <#=entityContainer.Namespace.GetNamespaceName()#>
 {
+    using System.Net.Http;
 
     /// <summary>
     /// The type <#=clientName#>.
@@ -37,6 +38,17 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
             IAuthenticationProvider authenticationProvider,
             IHttpProvider httpProvider = null)
             : base(baseUrl, authenticationProvider, httpProvider)
+        {
+        }
+
+        /// <summary>
+        /// Instantiates a new <#=clientName#>.
+        /// </summary>
+        /// <param name="httpClient">The <see cref="HttpClient"/> to use for making requests to Microsoft Graph. Use the <see cref="GraphClientFactory"/>
+        /// to get a pre-configured HttpClient that is optimized for use with the Microsoft Graph service API. </param>
+        public <#=clientName#>(
+            HttpClient httpClient)
+            : base("<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>", httpClient)
         {
         }
     <#

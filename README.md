@@ -44,13 +44,26 @@ Typewriter is a new solution for generating code files using the GraphODataTempl
 * **-m**, **-metadata**: The local file path or URL to the target input metadata. The default value is `https://graph.microsoft.com/v1.0/$metadata`. This value is required.
 * **-v**, **-verbosity**: The log verbosity level. The values can be: `Minimal`, `Info`, `Debug`, or `Trace`. The default value is `Minimal`.
 * **-o**, **-output**: Specifies the path to the output folder. The default value is the directory that contains typewriter.exe. The structure and contents of the output directory will be different based on the `-generationmode` and `-language` options.
-* **-d**, **-docs**: Specifies the path to the local root of the [microsoft-graph-docs](https://github.com/microsoftgraph/microsoft-graph-docs) repo. The default value is the directory that contains typewriter.exe. The documentation is parsed to provide documentation annotations to the metadata which is then used to add doc comments in the generated code files. This option is required when using `-generationmode` values of `Metadata` or `Full`.
-* **-g**, **-generationmode**: Specifies the generation mode. The values can be: `Full`, `Metadata`, or `Files`. `Full` (default) generation mode produces the output code files by cleaning the input metadata, parsing the documentation, and adding annotations before generating the output files. `Metadata` generation mode produces an output metadata file by cleaning metadata, documentation parsing, and adding documentation annotations. `Files` generation mode produces code files from an input metadata and bypasses the cleaning, documentation parsing, and adding documentation annotations.
+* **-d**, **-docs**: Specifies the path to the local root of the [microsoft-graph-docs](https://github.com/microsoftgraph/microsoft-graph-docs) repo. The default value is the directory that contains typewriter.exe. The documentation is parsed to provide documentation annotations to the metadata which is then used to add doc comments in the generated code files. This option is required when using `-generationmode` values of `Metadata`, `Full`, or `TransformWithDocs`.
+* **-g**, **-generationmode**: Specifies the generation mode. The values can be: `Full`, `Metadata`, `Files`, `Transform` or `TransformWithDocs`. `Full` (default) generation mode produces the output code files by cleaning the input metadata, parsing the documentation, and adding annotations before generating the output files. `Metadata` generation mode produces an output metadata file by cleaning metadata, documentation parsing, and adding documentation annotations. `Files` generation mode produces code files from an input metadata and bypasses the cleaning, documentation parsing, and adding documentation annotations. `Transform` generation mode processes the metadata according to the XSLT provided with the -t option. `TransformWithDocs` generation mode processes the metadata according to the XSLT and adds documentation annotations. `Transform` and `TransformWithDocs` require the -t argument to specify the XSLT file.
 * **-f**, **-outputMetadataFileName**: The base output metadata filename. Only applicable for `-generationmode Metadata`. The default value is `cleanMetadataWithDescriptions` which is used with the value of the `-endpointVersion` to generate a metadata file named `cleanMetadataWithDescriptionsv1.0.xml`.
 * **-e**, **-endpointVersion**: The endpoint version used when naming a metadata file. Expected values are `v1.0` and `beta`. Only applicable for `-generationmode Metadata`.
 * **-p**, **-properties**: Specify properties to support generation logic in the T4 templates. Properties must take the form of *key-string:value-string*. Multiple properties can be specified by setting a space in between property. The only property currently supported is the *php.namespace* property to specify the generated model file namespace. This property is optional.
+* **-t**, **-transform**: Specify the URI to the XSLT that will preprocess the metadata. Only applicable for `-generationmode Transform` or `-generationmode TransformWitDocs`.
 
 ### Example typewriter usage
+
+#### Transform metadata with XSLT.
+
+The output `cleanMetadata.xml` will be located in the same directory as typewriter.exe.
+
+`.\typewriter.exe -v Info -m https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/v1.0_metadata.xml -g Transform -t https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/transforms/csdl/preprocess_csdl.xsl`
+
+#### Transform metadata with XSLT and add documentation annotations.
+
+The output `cleanMetadataWithDescriptionsv1.0.xml` will be located in the same directory as typewriter.exe.
+
+`.\typewriter.exe -v Info -m https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/v1.0_metadata.xml -g TransformWithDocs -t https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/transforms/csdl/preprocess_csdl.xsl -d D:\repos\microsoft-graph-docs`
 
 #### Generate TypeScript typings from a CSDL (metadata) file without cleaning or annotating the CSDL.
 
@@ -113,7 +126,7 @@ Example :
 
 It is important to understand that subprocessors are mapped to methods that query the **OdcmModel** and return a set of OData objects. This mapping is maintained in [TemplateProcess.InitializeSubprocessor()](https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/blob/dev/src/GraphODataTemplateWriter/TemplateProcessor/TemplateProcessor.cs#L54). The language specific mappings exist in the [config directory](https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/tree/dev/src/GraphODataTemplateWriter/.config). Each OData object returned by the subprocessor is applied to the mapped template which results in a code file output per each OData object.
 
-In the above example, the objects in result set of the NavigationCollectionProperty subprocessor will each be applied to the EntityCollectionPage template. Each result will be a code file for each object returned by the NavigationCollectionProperty subprocessor. 
+In the above example, the objects in result set of the NavigationCollectionProperty subprocessor will each be applied to the EntityCollectionPage template. Each result will be a code file for each object returned by the NavigationCollectionProperty subprocessor.
 
 #### SubProcessors
 

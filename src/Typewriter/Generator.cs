@@ -1,7 +1,13 @@
 ﻿using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Xml;
+using System.Xml.XPath;
+using System.Xml.Xsl;
 using Vipr.Core;
 using Vipr.Reader.OData.v4;
 
@@ -11,6 +17,8 @@ namespace Typewriter
 {
     internal static class Generator
     {
+        internal static Logger Logger => LogManager.GetLogger("Generator");
+
         /// <summary>
         /// Generate code files from the input metadata and do not preprocess.
         /// </summary>
@@ -57,6 +65,62 @@ namespace Typewriter
 
             // Inject documentation annotations into the CSDL using ApiDoctor and get back the file as a string.
             return AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata).Result;
+        }
+
+        /// <summary>
+        /// Transform CSDL with XSLT.
+        /// </summary>
+        /// <param name="csdlContents">The CSDL to transform.</param>
+        /// <param name="options">The options bag that must contain the -transform -t parameter.</param>
+        /// <returns>The location of the generated file.</returns>
+        static internal string Transform(string csdlContents, Options options)
+        {
+            var outputDirectoryPath = options.Output;
+
+            if (!string.IsNullOrWhiteSpace(outputDirectoryPath) && !Directory.Exists(outputDirectoryPath))
+                Directory.CreateDirectory(outputDirectoryPath);
+            if (string.IsNullOrWhiteSpace(outputDirectoryPath))
+                outputDirectoryPath = Environment.CurrentDirectory;
+
+            var pathToCleanMetadata = string.Concat(outputDirectoryPath, "\\cleanMetadata.xml");
+
+            using (var reader = new StringReader(csdlContents))
+            using (var doc = XmlReader.Create(reader))
+            using (XmlTextWriter writer = new XmlTextWriter(pathToCleanMetadata, Encoding.ASCII))
+            {
+                writer.Indentation = 2;
+                writer.Formatting = Formatting.Indented;
+
+                XslCompiledTransform transform = new XslCompiledTransform();
+                XsltSettings settings = new XsltSettings();
+                settings.EnableScript = true;
+                transform.Load(options.Transform, settings, null);
+
+                // Execute the transformation, writes the transformed file.
+                transform.Transform(doc, writer);
+            }
+
+            Logger.Info($"Transformed metadata written to {pathToCleanMetadata}");
+
+            return pathToCleanMetadata;
+        }
+
+        /// <summary>
+        /// Transform CSDL with XSLT and add documentation.
+        /// </summary>
+        /// <param name="csdlContents">The CSDL to transform.</param>
+        /// <param name="options">The options bag that must contain the -transform -t parameter,
+        /// and the -docs -d parameter.</param>
+        static internal void TransformWithDocs(string csdlContents, Options options)
+        {
+            var pathToCleanMetadata = Transform(csdlContents, options);
+
+            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata).Result;
+            string outputMetadataFilename = options.OutputMetadataFileName ?? "cleanMetadataWithDescriptions";
+            string metadataFileName = string.Concat(outputMetadataFilename, options.EndpointVersion, ".xml");
+            FileWriter.WriteMetadata(csdlWithDocAnnotations, metadataFileName, options.Output);
+
+            Logger.Info($"Transformed metadata with documentation written to {metadataFileName}");
         }
 
         /// <summary>

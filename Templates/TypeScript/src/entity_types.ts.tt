@@ -1,5 +1,6 @@
 <# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
 <#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="utils.tt" #>
 <#@ output extension="\\" #>
 <#
     CustomT4Host host           = (CustomT4Host) Host;
@@ -9,45 +10,165 @@
     var entityTypes             = model.GetEntityTypes();
     var enumTypes               = model.GetEnumTypes();
     var complexTypes            = model.GetComplexTypes();
+
+    var maxLineLength = 120;
 #>
-// Type definitions for the Microsoft Graph <VERSION_STRING>
+// Type definitions for non-npm package microsoft-graph <VERSION_STRING>
 // Project: https://github.com/microsoftgraph/msgraph-typescript-typings
 // Definitions by: Microsoft Graph Team <https://github.com/microsoftgraph>
+//                 Muthurathinam Muthusamy <https://github.com/muthurathinam>
+//                 Darrel Miller <https://github.com/darrelmiller>
+//                 Nimeesh Patel <https://github.com/nimeesh-msft>
+//                 Michael Mainer <https://github.com/MIchaelMainer>
+//                 Nakul Sabharwal <https://github.com/NakulSabharwal>
+//                 Peter Ombwa <https://github.com/peombwa>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.1
 
 export as namespace microsoftgraph;
 
-<# foreach(var enumType in enumTypes) { #>
-export type <#= enumType.Name.UpperCaseFirstChar() #> = <#= enumType.GetEnumValues() #>;
-<# } #>
 <#
-  foreach(var entityType in entityTypes)
-    {
-        var methods = entityType.Methods;
+    foreach(var enumType in enumTypes) {
+        var enumTypeName = enumType.Name.UpperCaseFirstChar();
+        var enumValues = enumType.GetEnumValues();
+        var exportTypeLength = "export type".Length + enumTypeName.Length + enumValues.Length + 3;
+        if (exportTypeLength < maxLineLength) {
+#>
+export type <#= enumTypeName #> = <#= enumValues #>;
+<#
+        } else {
+#>
+export type <#= enumTypeName #> =<#
+            var enums = enumValues.Split('|');
+            for(var i = 0; i < enums.Length; i++) {
 #>
 
-export interface <#= entityType.Name.UpperCaseFirstChar() #><# if (entityType.Base != null) { #> extends <#=  entityType.Base.Name.UpperCaseFirstChar() #><# }#> {
-<# foreach(var prop in entityType.Properties.ToList()) { #>
-	<# if (prop.LongDescription != null || prop.Description != null) { #>
-    /** <#=prop.GetSanitizedLongDescription()#> */
-	<# } #>
-	<#=  prop.Name #>?: <#= prop.GetTypeString() #>;
-<# } #>
+    | <#= enums[i].Trim() #><#
+            }
+#>;
+<#
+        }
+    }
+
+    foreach(var entityType in entityTypes) {
+        var propCount = entityType.Properties.ToList().Count;
+        var entityTypeName = entityType.Name.UpperCaseFirstChar();
+        if(propCount == 0 && entityTypeName[0] == 'I') {
+#>
+// tslint:disable-next-line: interface-name no-empty-interface
+<#
+        } else if (entityTypeName[0] == 'I') {
+#>
+// tslint:disable-next-line: interface-name
+<#
+        } else if(propCount == 0) { 
+#>
+// tslint:disable-next-line: no-empty-interface
+<#
+        }
+#>
+export interface <#= entityTypeName #><# 
+        if (entityType.Base != null) { 
+#>
+ extends <#= entityType.Base.Name.UpperCaseFirstChar() #><#
+        }
+#> {<#
+        if(propCount == 0){
+#>}
+<#  
+        } else {
+#>
+
+<#
+            foreach(var prop in entityType.Properties.ToList()) {
+                if (prop.LongDescription != null || prop.Description != null) {
+                    List<string> multiLineDescriptions = Utils.splitString(prop.GetSanitizedLongDescription(), maxLineLength);
+                    if(multiLineDescriptions.Count() == 1) {
+#>
+    // <#= multiLineDescriptions.First() #>
+<#
+                    } else {
+#>
+    /**
+<#
+                        foreach(var descriptionLine in multiLineDescriptions) {
+#>
+     * <#= descriptionLine #>
+<#
+                        }
+#>
+     */
+<#
+                    }
+                }
+#>
+    <#=  prop.Name #>?: <#= prop.GetTypeString() #>;
+<#
+            }
+#>
 }
 <#
+        }
+    }
+
+    foreach(var complexType in complexTypes) {
+        var propCount = complexType.Properties.ToList().Count;
+        var complexTypeName = complexType.Name.UpperCaseFirstChar();
+        if(propCount == 0 && complexTypeName[0] == 'I') {
+#>
+// tslint:disable-next-line: interface-name no-empty-interface
+<#
+        } else if (complexTypeName[0] == 'I') {
+#>
+// tslint:disable-next-line: interface-name
+<#
+        } else if(propCount == 0) { 
+#>
+// tslint:disable-next-line: no-empty-interface
+<#
+        }
+#>
+export interface <#= complexTypeName #><# 
+        if (complexType.Base != null) { 
+#>
+ extends <#= complexType.Base.Name.UpperCaseFirstChar() #><#
+        }
+#> {<#
+        if(propCount == 0){
+#>}
+<#  
+        } else {
+#>
+
+<#
+            foreach(var prop in complexType.Properties) {
+                if (prop.LongDescription != null || prop.Description != null) {
+                    List<string> multiLineDescriptions = Utils.splitString(prop.GetSanitizedLongDescription(), maxLineLength);
+                    if(multiLineDescriptions.Count() == 1) {
+#>
+    // <#= multiLineDescriptions.First() #>
+<#
+                    } else {
+#>
+    /**
+<#
+                        foreach(var descriptionLine in multiLineDescriptions) {
+#>
+     * <#= descriptionLine #>
+<#
+                        }
+#>
+     */
+<#
+                    }
+                }
+#>
+    <#=  prop.Name #>?: <#= prop.GetTypeString() #>;
+<#
+            }
+#>
+}
+<#
+        }
     }
 #>
-<#
-  foreach(var complexType in complexTypes)
-  {
-#>
-export interface <#= complexType.Name.UpperCaseFirstChar()#><# if (complexType.Base != null) { #> extends <#=  complexType.Base.Name.UpperCaseFirstChar() #><# }#> {
-<# foreach(var prop in complexType.Properties) { #>
-	<# if (prop.LongDescription != null || prop.Description != null) { #>
-    /** <#=prop.GetSanitizedLongDescription()#> */
-	<# } #>
-	<#= prop.Name #>?: <#= prop.GetTypeString() #>;
-<# } #>
-}
-<# } #>
