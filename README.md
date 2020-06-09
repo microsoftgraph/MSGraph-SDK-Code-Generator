@@ -83,7 +83,26 @@ The output C# code files will go in to the `output` directory.
 
 `.\typewriter.exe -v Info -m D:\v1.0_2018_10_23_source.xml -o output -l CSharp -d D:\repos\microsoft-graph-docs -g Full`
 
+## Use Typewriter to test your beta metadata
 
+We assume that the metadata you are using is based off the beta metadata file.
+
+1. Download the [latest Typewriter release](https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/releases).
+2. Run Typewriter to generate a clean metadata file from your test metadata file. The output file will be `cleanMetadata.xml`.
+
+`.\typewriter.exe -v Info -m <TODO-SET-PATH-TO-YOUR-METADATA> -g Transform -t https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/transforms/csdl/preprocess_csdl.xsl`
+
+<!-- Excludes documentation which would make for an ugly diff. May need to add the doc step for diff purposes. -->
+
+3. Generate .NET code files with Typewriter using the generated `cleanMetadata.xml`.
+
+`.\typewriter.exe -v Info -m D:\cleanMetadata.xml -o outputDirectory -g Files`
+
+4. Clone the Beta .NET SDK https://github.com/microsoftgraph/msgraph-beta-sdk-dotnet.
+5. Replace the files under `src/Microsoft.Graph/Requests/Generated` and `src/Microsoft.Graph/Models/Generated` in the Beta .Net SDK with the generated files.
+6. Build the Beta .Net SDK to validate that the generated files compile.
+
+At this point you should have a valid SDK.
 
 ## Using Vipr with this Writer
 
