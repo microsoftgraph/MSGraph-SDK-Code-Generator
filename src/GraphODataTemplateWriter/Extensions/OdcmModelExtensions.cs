@@ -8,6 +8,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
     using NLog;
+    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
 
     public static class OdcmModelExtensions
     {
@@ -135,6 +136,84 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         public static IEnumerable<OdcmMethod> GetMethods(this OdcmModel model)
         {
             return model.GetEntityTypes().SelectMany(entityType => entityType.Methods);
+        }
+
+        /// <summary>
+        /// This extension method determines whether the current type needs to be disambiguated.
+        /// If does need dismabiguation, we then provide a fully qualified import statement
+        /// for the model
+        /// This currently operates only on entities whose name ends in "Request". We do this
+        /// because Every entity results in a request object. So, assume we have the following
+        /// two entities: timeOff and timeOffRequest. The timeOff entity will trigger the generation
+        /// of classes named model.timeOff and request.timeOffRequest. The timeOffRequest entity
+        /// will trigger the generation of a model.timeOffRequest and request.timeOffRequestRequest.
+        /// The request.timeOffRequest and model.timeOffRequest will result in a name collision in
+        /// a few files. 
+        /// Assumptions: 1) host.CurrentType is an OdcmProperty.
+        /// </summary>
+        /// <param name="host">The T4Host that orchestrates applying templates to the OdcmModel.</param>
+        /// <returns>A boolean value that indicates whether the current type needs to be disambiguated.</returns>
+        public static bool DoesCurrentTypeNeedDisambiguation(this CustomT4Host host)
+        {
+            // At this point this is only applicable to OdcmProperty.
+            // Challenging this assumption will require a lot more investigation.
+            if (!(host.CurrentType is OdcmProperty))
+                return false; 
+
+            // We only support "Request" dismabiguation at this point. Check whether the
+            // current typeends in "Request".
+            var requestSuffix = "Request";
+            var currentTypeName = (host.CurrentType as OdcmProperty).Type.Name;
+            int index = currentTypeName.IndexOf(requestSuffix);
+            if (index == -1)
+                return false; // Doesn't need disambiguation
+
+            // If it does end in "Request", let's capture the base name to check if an entity of that name 
+            // exists in the schema.
+            string entityNameToCheckForCollision = currentTypeName.Remove(index, requestSuffix.Length);
+
+            // Search across namespaces, looking only at EntityType, to determine whether this type requires 
+            // disambiguation. This needs to be supported across namespaces.
+            var classes = host.CurrentModel.Namespaces.SelectMany(n => n.Classes);
+            var requiresDisambiguation = classes.Where(entity => entity.Kind == OdcmClassKind.Entity
+                                                       && entity.Name == entityNameToCheckForCollision).Any();
+
+            return requiresDisambiguation;
+        }
+
+        /// <summary>
+        /// An extension method to get an import statement for the fully qualified name of current type.
+        /// Assumptions: 1) host.CurrentType is an OdcmProperty. 2) the generated namespace of the current type is in models.generated.
+        /// This method should support multiple namespaces.
+        /// This currently (6/2020) applies to the following templates:
+        ///   BaseEntityCollectionRequest.java.tt
+        ///   IBaseEntityCollectionRequest.java.tt
+        ///   IBaseEntityCollectionPage.java.tt
+        /// This currently unintentionally applies to the following templates when the disambiguation condition is met.
+        /// This is not an issue as there is already a wild card import for the namespace that we should address first.
+        ///   IBaseEntityCollectionRequestBuilder.java.tt
+        ///   BaseEntityCollectionRequestBuilder.java.tt
+        /// </summary>
+        /// <param name="host">The T4Host that orchestrates applying templates to the OdcmModel.</param>
+        /// <returns>A string that represents the import statement of the fully qualified name of the current type.</returns>
+        public static string GetFullyQualifiedImportStatementForModel(this CustomT4Host host)
+        {
+            // By default, we don't need to disambiguate the model in the generated code file.
+            // This will be the general case.
+            var importStatement = "";
+
+            // Check whether we need to disambiguate the current type for generation of the model in the code file.
+            var shouldDisambiguate = host.DoesCurrentTypeNeedDisambiguation();
+
+            if (shouldDisambiguate)
+            {
+                // Form the import statement to disambiguate the model in the generated code file.
+                var thisNamespace = host.CurrentModel.NamespaceName();
+                var thisTypeName = (host.CurrentType as OdcmProperty).Type.Name.ToUpperFirstChar();
+                importStatement = $"\nimport {thisNamespace}.models.generated.{thisTypeName};";
+            }
+
+            return importStatement;
         }
 
         /// <summary>

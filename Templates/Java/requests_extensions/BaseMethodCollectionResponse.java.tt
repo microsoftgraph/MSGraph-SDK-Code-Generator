@@ -28,7 +28,7 @@ import com.google.gson.annotations.*;
     }
 
 <#=CreateRawJsonObject()#>
-<# if ( ! ((c as OdcmMethod).ReturnType is OdcmPrimitiveType) ) { #>
+<# if ( ! ((c as OdcmMethod).ReturnType is OdcmPrimitiveType) && ! ((c as OdcmMethod).ReturnType is OdcmEnum) ) { #>
 <#=    UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
 <# } else { #>
     }
