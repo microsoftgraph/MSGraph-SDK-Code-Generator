@@ -140,15 +140,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         /// <summary>
         /// This extension method determines whether the current type needs to be disambiguated.
-        /// If does need dismabiguation, we then provide a fully qualified import statement
-        /// for the model
+        /// If the current type needs dismabiguation, we then provide a fully qualified 
+        /// import statement for the model.
         /// This currently operates only on entities whose name ends in "Request". We do this
-        /// because Every entity results in a request object. So, assume we have the following
+        /// because every entity results in a request object. For example, assume we have the following
         /// two entities: timeOff and timeOffRequest. The timeOff entity will trigger the generation
         /// of classes named model.timeOff and request.timeOffRequest. The timeOffRequest entity
         /// will trigger the generation of a model.timeOffRequest and request.timeOffRequestRequest.
-        /// The request.timeOffRequest and model.timeOffRequest will result in a name collision in
-        /// a few files. 
+        /// The request.timeOffRequest and model.timeOffRequest classes will result in a name collision in
+        /// a few files.
         /// Assumptions: 1) host.CurrentType is an OdcmProperty.
         /// </summary>
         /// <param name="host">The T4Host that orchestrates applying templates to the OdcmModel.</param>
@@ -161,7 +161,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 return false; 
 
             // We only support "Request" dismabiguation at this point. Check whether the
-            // current typeends in "Request".
+            // current type ends in "Request".
             var requestSuffix = "Request";
             var currentTypeName = (host.CurrentType as OdcmProperty).Type.Name;
             int index = currentTypeName.IndexOf(requestSuffix);
@@ -175,15 +175,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             // Search across namespaces, looking only at EntityType, to determine whether this type requires 
             // disambiguation. This needs to be supported across namespaces.
             var classes = host.CurrentModel.Namespaces.SelectMany(n => n.Classes);
-            var requiresDisambiguation = classes.Where(entity => entity.Kind == OdcmClassKind.Entity
+            var shouldDisambiguate = classes.Where(entity => entity.Kind == OdcmClassKind.Entity
                                                        && entity.Name == entityNameToCheckForCollision).Any();
 
-            return requiresDisambiguation;
+            return shouldDisambiguate;
         }
 
         /// <summary>
-        /// An extension method to get an import statement for the fully qualified name of current type.
-        /// Assumptions: 1) host.CurrentType is an OdcmProperty. 2) the generated namespace of the current type is in models.generated.
+        /// An extension method to get an import statement for the fully qualified name of the current type.
+        /// Assumptions: 1) host.CurrentType is an OdcmProperty. 2) the generated namespace of the current type 
+        /// is in models.generated output namespace (in the generated file, not in the metadata).
         /// This method should support multiple namespaces.
         /// This currently (6/2020) applies to the following templates:
         ///   BaseEntityCollectionRequest.java.tt
