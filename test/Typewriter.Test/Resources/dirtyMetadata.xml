@@ -49,6 +49,19 @@
         <Property Name="email" Type="Edm.String" />
       </ComplexType>
       <ComplexType Name="emptyComplexType" Abstract="true"/>
+      
+      <EntityType Name="timeOffRequest" BaseType="microsoft.graph.entity">
+        <Property Name="name" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="timeOff" BaseType="microsoft.graph.entity">
+        <Property Name="name" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="schedule" BaseType="microsoft.graph.entity">
+        <Property Name="enabled" Type="Edm.Boolean" />
+        <NavigationProperty Name="timesOff" Type="Collection(microsoft.graph.timeOff)" ContainsTarget="true" />
+        <NavigationProperty Name="timeOffRequests" Type="Collection(microsoft.graph.timeOffRequest)" ContainsTarget="true" />
+      </EntityType>
+      
       <EntityType Name="onenotePage" HasStream="true" BaseType="microsoft.graph.entity">
         <Property Name="content" Type="Edm.Stream" />
         <NavigationProperty Name="parentNotebook" Type="microsoft.graph.notebook" ContainsTarget="true" />

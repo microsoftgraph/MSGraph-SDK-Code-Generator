@@ -154,7 +154,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// <param name="host">The T4Host that orchestrates applying templates to the OdcmModel.</param>
         /// <returns>A boolean value that indicates whether the current type needs to be disambiguated.</returns>
         public static bool DoesCurrentTypeNeedDisambiguation(this CustomT4Host host)
-        {
+        {   
             // At this point this is only applicable to OdcmProperty.
             // Challenging this assumption will require a lot more investigation.
             if (!(host.CurrentType is OdcmProperty))
@@ -165,7 +165,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             var requestSuffix = "Request";
             var currentTypeName = (host.CurrentType as OdcmProperty).Type.Name;
             int index = currentTypeName.IndexOf(requestSuffix);
-            if (index == -1)
+            if (index == -1 || !currentTypeName.EndsWith(requestSuffix))
                 return false; // Doesn't need disambiguation
 
             // If it does end in "Request", let's capture the base name to check if an entity of that name 

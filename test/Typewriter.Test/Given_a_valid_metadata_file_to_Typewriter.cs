@@ -74,6 +74,41 @@ namespace Typewriter.Test
             Assert.IsTrue(isExpectedNamespaceSet, $"The expected namespace, {testNamespace}, was not set in the generated test file.");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void It_generates_Java_models_with_disambiguated_import()
+        {
+            const string outputDirectory = "outputJava";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                Language = "Java",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\requests\extensions\TimeOffRequestCollectionRequest.java");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            // Check that the namespace applied at the CLI was added to the document.
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            bool isExpectedImportStatementFound = false;
+            string expected = "import com.microsoft.graph.models.generated.TimeOffRequest;";
+            foreach (var line in lines)
+            {
+                if (line.Contains(expected))
+                {
+                    isExpectedImportStatementFound = true;
+                    break;
+                }
+            }
+            Assert.IsTrue(isExpectedImportStatementFound, $"The expected statement was not found. Expected: {expected}");
+        }
+
         [TestMethod]
         public void It_generates_dotNet_client_with_default_beta_baseUrl()
         {
