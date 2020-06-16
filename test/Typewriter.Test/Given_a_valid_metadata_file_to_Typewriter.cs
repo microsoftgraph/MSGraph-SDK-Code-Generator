@@ -97,7 +97,7 @@ namespace Typewriter.Test
             // Check that the namespace applied at the CLI was added to the document.
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool isExpectedImportStatementFound = false;
-            string expected = "import com.microsoft.graph.models.generated.TimeOffRequest;";
+            string expected = "import com.microsoft.graph.models.extensions.TimeOffRequest;";
             foreach (var line in lines)
             {
                 if (line.Contains(expected))
