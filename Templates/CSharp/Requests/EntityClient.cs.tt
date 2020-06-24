@@ -4,9 +4,11 @@
 <#
 var entityContainer = model.EntityContainer;
 var clientName = entityContainer.Name.ToCheckedCase() + "Client";
+
+var @namespace = entityContainer.Namespace.GetNamespaceName();
 #>
 
-namespace <#=entityContainer.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System.Net.Http;
 

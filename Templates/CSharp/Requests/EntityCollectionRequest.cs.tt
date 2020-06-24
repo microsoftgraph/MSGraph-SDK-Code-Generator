@@ -3,8 +3,9 @@
 <#@ include file="CollectionRequest.Base.template.tt"#>
 <#
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Projection.Type;
-var innerEntityType = innerEntity.Name.ToCheckedCase();
+var @namespace = this.GetNamespaceName(prop.Class.AsOdcmClass());
+
+var innerEntityType = prop.GetTypeString(@namespace);
 if (innerEntityType.EndsWith("Request"))
 {
 	innerEntityType = String.Concat(innerEntityType, "Object");
@@ -15,7 +16,7 @@ var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.To
 var features = host.CurrentType.GetFeatures();
 #>
 
-namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     <#=this.GetCollectionClassDefinition(prop)#>
     {
         <#=GetCollectionRequestConstructor(prop)#>
-        <#=GetPostAsyncMethod(prop)#>
+        <#=GetPostAsyncMethod(prop, @namespace)#>
         /// <summary>
         /// Gets the collection page.
         /// </summary>

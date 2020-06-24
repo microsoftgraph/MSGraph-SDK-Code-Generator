@@ -4,12 +4,13 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
+var @namespace = method.Namespace.GetNamespaceName();
 var entityName = method.Class.Name.ToCheckedCase();
 var requestType = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase() + "Request";
 var requestBuilderType = requestType + "Builder";
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;

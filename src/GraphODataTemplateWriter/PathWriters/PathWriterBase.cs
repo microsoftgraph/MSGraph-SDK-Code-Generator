@@ -36,6 +36,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
             );
         }
 
+        public virtual string WritePath(ITemplateInfo template, string @namespace, string baseFileName)
+        {
+            return Path.Combine(
+                template.TemplateLanguage,
+                template.OutputParentDirectory,
+                this.TransformFileName(template, baseFileName)
+            );
+        }
+
         public void CreateDirectory(string directoryPath)
         {
             Directory.CreateDirectory(directoryPath);

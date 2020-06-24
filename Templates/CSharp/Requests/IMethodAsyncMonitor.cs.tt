@@ -4,19 +4,20 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
+var @namespace = method.Namespace.GetNamespaceName();
 var entityName = method.Class.Name.ToCheckedCase();
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var monitorType = entityName + methodName + "AsyncMonitor";
 
 var isCollection = method.IsCollection || method.LongDescriptionContains("specialCollection");
-var returnEntityType = method.ReturnType.Name.ToCheckedCase();
+var returnEntityType = method.ReturnType.GetTypeString(@namespace);
 var returnType = isCollection ? "I" + entityName + methodName + "CollectionPage" : returnEntityType;
 bool isAsync = method.LongDescriptionContains("async");
 var asyncString = isCollection ? "async " : "";
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Threading;

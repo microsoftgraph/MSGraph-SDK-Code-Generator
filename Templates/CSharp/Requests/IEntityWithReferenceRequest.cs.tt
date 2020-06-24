@@ -3,13 +3,14 @@
 <#@ include file="IEntityRequest.Base.template.tt"#>
 <#
 OdcmClass entity = host.CurrentType.AsOdcmClass();
+var @namespace = this.GetNamespaceName(entity);
 var entityName = entity.Name.ToCheckedCase();
 var entityRequest = entityName + "Request";
 
 var features = host.CurrentType.GetFeatures();
 #>
 
-namespace <#=this.GetNamespaceName(entity)#>
+namespace <#=@namespace#>
 {
     using System;
     using System.IO;

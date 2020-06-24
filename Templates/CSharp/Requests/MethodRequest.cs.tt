@@ -4,6 +4,7 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
+var @namespace = method.Namespace.GetNamespaceName();
 var entityName = method.Class.Name.ToCheckedCase();
 
 var isFunction = method.IsFunction;
@@ -13,12 +14,10 @@ var isComposable = method.IsComposable;
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
-var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString();
+var returnEntityType = method.ReturnType == null ? null : method.ReturnType.GetTypeString(@namespace);
 
 var returnEntityParameter = string.Empty;
 if (returnEntityType != null) {returnEntityParameter = returnEntityType.ToLower();}
-
-var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
 
 var isCollection = method.IsCollection;
 
@@ -45,7 +44,7 @@ var features = host.CurrentType.GetFeatures();
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;

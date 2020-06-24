@@ -3,10 +3,11 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#
 var entityContainer = model.EntityContainer;
+var @namespace = entityContainer.Namespace.GetNamespaceName();
 var clientName = entityContainer.Name.ToCheckedCase() + "Client";
 #>
 
-namespace <#=entityContainer.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
 
     /// <summary>

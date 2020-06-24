@@ -5,14 +5,16 @@
 
 var prop = host.CurrentType.AsOdcmProperty();
 
-    var collectionRequestBuilderConstructor = this.GetCollectionRequestBuilderConstructor(prop);
-    var collectionRequestMethod = this.GetCollectionRequestMethod(prop);
-    var collectionRequestMethodWithOptions = this.GetCollectionRequestMethodWithOptions(prop);
-    var collectionIndexRequestBuilder = this.GetCollectionIndexRequestBuilder(prop);
-    var methodProperties = this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true);
+var @namespace = this.GetNamespaceName(prop.Class.AsOdcmClass());
+
+var collectionRequestBuilderConstructor = this.GetCollectionRequestBuilderConstructor(prop);
+var collectionRequestMethod = this.GetCollectionRequestMethod(prop);
+var collectionRequestMethodWithOptions = this.GetCollectionRequestMethodWithOptions(prop);
+var collectionIndexRequestBuilder = this.GetCollectionIndexRequestBuilder(prop);
+var methodProperties = this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true);
 
 #>
-namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;

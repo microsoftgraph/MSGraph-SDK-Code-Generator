@@ -8,7 +8,7 @@ var prop = host.CurrentType.AsOdcmProperty();
 string propName = null;
 string propClass = null;
 string propRequest = null;
-string namespaceValue = null;
+string @namespace = null;
 
 // If the current type isn't a property it's a content $value stream for a media entity
 if (prop == null)
@@ -17,14 +17,14 @@ if (prop == null)
     propName = "content";
     propClass = entity.Name.ToCheckedCase();
     propRequest = propClass + "ContentRequest";
-    namespaceValue = entity.Namespace.GetNamespaceName();
+    @namespace = entity.Namespace.GetNamespaceName();
 }
 else
 {
     propName = prop.Name;
     propClass = prop.Class.Name.ToCheckedCase();
     propRequest = propClass + prop.Name.ToCheckedCase() + "Request";
-    namespaceValue = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
+    @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 }
 
 	if (propClass.EndsWith("Request"))
@@ -33,7 +33,7 @@ else
 	}
 #>
 
-namespace <#=namespaceValue#>
+namespace <#=@namespace#>
 {
     using System.Collections.Generic;
     using System.IO;

@@ -4,14 +4,14 @@
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Projection.Type;
-var innerEntityType = innerEntity.Name.ToCheckedCase();
+var @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
+var innerEntityType = prop.GetTypeString(@namespace);
 var entityCollectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
 var entityCollectionPage = string.Concat(this.GetEntityNameString(prop.Class), prop.Name.ToCheckedCase(), "CollectionWithReferencesPage");
 
 #>
 
-namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
 

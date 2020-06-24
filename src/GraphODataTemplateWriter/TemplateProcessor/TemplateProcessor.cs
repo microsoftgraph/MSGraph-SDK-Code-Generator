@@ -16,6 +16,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
     using Vipr.Core;
     using Vipr.Core.CodeModel;
     using NLog;
+    using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
 
     public class TemplateProcessor : ITemplateProcessor
     {
@@ -347,7 +348,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                 throw new InvalidOperationException(errors);
             }
 
-            var path = this.PathWriter.WritePath(templateInfo, fileName);
+            var @namespace = (odcmObject as OdcmType)?.Namespace.GetNamespaceName()
+                ?? (odcmObject as OdcmProperty)?.Class.Namespace.GetNamespaceName();
+
+            var path = this.PathWriter.WritePath(templateInfo, @namespace, fileName);
             logger.Debug("Wrote template to path {0}", path);
 
             host.TemplateHostStats.RecordProcessed(templateInfo, odcmObject != null ? odcmObject.Name : string.Empty, path);

@@ -4,7 +4,8 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
-var returnType = method.ReturnType.Name.ToCheckedCase();
+var @namespace = method.Namespace.GetNamespaceName();
+var returnType = method.ReturnType.GetTypeString(@namespace);
 var returnTypeObject = method.ReturnType.AsOdcmClass();
 var isSpecialCollection = method.LongDescriptionContains("specialCollection");
 
@@ -13,7 +14,7 @@ var collectionResponse = responseNamePrefix + "CollectionResponse";
 var collectionPage = responseNamePrefix + "CollectionPage";
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;
@@ -38,7 +39,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
                 if (!property.LongDescriptionContains("ignorableCollection"))
                 {
                     var propertyName = property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase();
-                    var propertyType = property.Projection.Type.GetTypeString();
+                    var propertyType = property.GetTypeString(@namespace);
         #>
 
         /// <summary>
