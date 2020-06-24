@@ -4,13 +4,14 @@
 <#
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
+var @namespace = this.GetNamespaceName(entity);
 var entityName = entity.Name.ToCheckedCase();
 var entityRequest = entityName + "Request";
 var entityRequestBuilder = entityRequest + "Builder";
 
 #>
 
-namespace <#=this.GetNamespaceName(entity)#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;

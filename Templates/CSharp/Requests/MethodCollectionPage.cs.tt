@@ -4,8 +4,9 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
+var @namespace = method.Namespace.GetNamespaceName();
 
-var returnType = method.ReturnType is OdcmPrimitiveType ? method.ReturnType.GetTypeString() : method.ReturnType.Name.ToCheckedCase();
+var returnType = method.ReturnType.GetTypeString(@namespace);
 
 var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var nextRequestType = responseNamePrefix + "Request";
@@ -13,7 +14,7 @@ var entityCollectionPage = responseNamePrefix + "CollectionPage";
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     /// <summary>
     /// The type <#=entityCollectionPage#>.

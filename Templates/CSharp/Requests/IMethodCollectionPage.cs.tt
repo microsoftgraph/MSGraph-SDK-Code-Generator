@@ -4,9 +4,9 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
-var entityName = method.Class.Name.ToCheckedCase();
+var @namespace = method.Namespace.GetNamespaceName();
 
-var returnType = method.ReturnType is OdcmPrimitiveType ? method.ReturnType.GetTypeString() : method.ReturnType.Name.ToCheckedCase();
+var returnType = method.ReturnType.GetTypeString(@namespace);
 
 var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var entityCollectionRequest = responseNamePrefix + "Request";
@@ -14,7 +14,7 @@ var entityCollectionPage = responseNamePrefix + "CollectionPage";
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using Newtonsoft.Json;
 

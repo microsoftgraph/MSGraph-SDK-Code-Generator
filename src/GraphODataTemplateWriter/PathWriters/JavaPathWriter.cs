@@ -22,9 +22,19 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
             return filePath;
         }
 
-        private string CreateNamespace(string folderName)
+        public override string WritePath(ITemplateInfo template, string @namespace, string baseFileName)
         {
-            var @namespace = this.Model.GetNamespace();
+            //switch from models_generated to models.
+            var theNamespace = this.CreateNamespace(template.OutputParentDirectory.Replace("_", "."), @namespace);
+            var namespacePath = this.CreatePathFromNamespace(theNamespace);
+            var fileName = this.TransformFileName(template, baseFileName);
+            String filePath = Path.Combine(namespacePath, fileName);
+            return filePath;
+        }
+
+        private string CreateNamespace(string folderName, string @namespace = null)
+        {
+            @namespace = @namespace ?? this.Model.GetNamespace();
             var prefix = ConfigurationService.Settings.NamespacePrefix;
 
             if (String.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))

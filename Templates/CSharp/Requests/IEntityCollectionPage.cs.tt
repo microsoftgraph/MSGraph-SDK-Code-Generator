@@ -4,19 +4,19 @@
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Projection.Type;
-var innerEntityType = innerEntity is OdcmPrimitiveType ? innerEntity.GetTypeString() : innerEntity.Name.ToCheckedCase();
+var @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
+var innerEntityType = prop.GetTypeString(@namespace);
 if (innerEntityType.EndsWith("Request"))
-	{
-		innerEntityType = String.Concat(innerEntityType, "Object");
-	}
+{
+    innerEntityType = String.Concat(innerEntityType, "Object");
+}
 
 var entityCollectionRequest = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionRequest");
 var entityCollectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
 
 #>
 
-namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
 

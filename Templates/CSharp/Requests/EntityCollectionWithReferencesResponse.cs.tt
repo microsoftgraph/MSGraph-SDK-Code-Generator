@@ -4,13 +4,14 @@
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
+var @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 var entityName = prop.Class.Name.ToCheckedCase();
 var propName = prop.Name.ToCheckedCase();
 var collectionResponse = string.Concat(entityName, propName, "CollectionWithReferencesResponse");
 var collectionPage = string.Concat(entityName, propName, "CollectionWithReferencesPage");
 
 #>
-namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;

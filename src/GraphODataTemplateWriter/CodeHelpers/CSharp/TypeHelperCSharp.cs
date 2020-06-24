@@ -162,9 +162,34 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return GetTypeString(property.Projection.Type);
         }
 
+        public static string GetTypeString(this OdcmType type, string namespaceContext)
+        {
+            var typesNamespace = type.Namespace.GetNamespaceName().Replace("edm.", "");
+            var plainTypeString = type.GetTypeString();
+            if (string.Equals(typesNamespace, namespaceContext, StringComparison.OrdinalIgnoreCase)
+            || typesNamespace == "Edm")
+            {
+                return plainTypeString;
+            }
+            else
+            {
+                return typesNamespace + "." + plainTypeString;
+            }
+        }
+
+        public static string GetTypeString(this OdcmProperty property, string namespaceContext)
+        {
+            return property.Projection.Type.GetTypeString(namespaceContext);
+        }
+
         public static bool IsTypeNullable(this OdcmProperty property)
         {
             return property.Projection.Type.IsTypeNullable();
+        }
+
+        public static string GetNamespaceName(this OdcmProperty property)
+        {
+            return property.Projection.Type.Namespace.GetNamespaceName();
         }
 
         public static bool IsTypeNullable(this OdcmType type)

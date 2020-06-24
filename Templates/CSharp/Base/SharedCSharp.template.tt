@@ -194,6 +194,11 @@ public string GetPropertyTypeName(OdcmProperty odcmProperty)
     return odcmProperty.Projection.Type.Name.ToCheckedCase();
 }
 
+public string GetPropertyTypeName(OdcmProperty odcmProperty, string namespaceContext)
+{
+    return odcmProperty.GetTypeString(namespaceContext);
+}
+
 public string GetPropertyReferenceTypeName(OdcmProperty odcmProperty)
 {
     return this.GetReferenceString(this.GetPropertyTypeName(odcmProperty));

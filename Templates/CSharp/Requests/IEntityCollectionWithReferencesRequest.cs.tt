@@ -3,15 +3,15 @@
 <#@ include file="ICollectionRequest.Base.template.tt"#>
 <#
 var prop = host.CurrentType.AsOdcmProperty();
+var @namespace = this.GetNamespaceName(prop.Class.AsOdcmClass());
 var collectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionWithReferencesPage");
-var innerEntity = prop.Projection.Type;
-var innerEntityType = innerEntity.Name.ToCheckedCase();
+var innerEntityType = prop.GetTypeString(@namespace);
 
 var features = host.CurrentType.GetFeatures();
 #>
 
-namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;

@@ -44,12 +44,12 @@ public void AppendMethodHeaderToPostAsyncMethod(string propertyType, string sani
     stringBuilder.AppendFormat("        /// <param name=\"{0}\">The {1} to add.</param>", sanitizedPropertyName, propertyType);
 }
 
-public string GetPostAsyncMethod(OdcmProperty odcmProperty)
+public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace)
 {
     if (!odcmProperty.LongDescriptionContains("readonly"))
     {
         var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
-        var propertyType = this.GetPropertyTypeName(odcmProperty);
+        var propertyType = this.GetPropertyTypeName(odcmProperty, @namespace);
 
 		if (propertyType.EndsWith("Request"))
 		{
@@ -85,10 +85,10 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty)
     return string.Empty;
 }
 
-public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
+public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, string @namespace)
 {
     var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
-    var propertyType = this.GetPropertyTypeName(odcmProperty);
+    var propertyType = this.GetPropertyTypeName(odcmProperty, @namespace);
 
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;

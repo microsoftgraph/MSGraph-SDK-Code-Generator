@@ -4,6 +4,7 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
+var @namespace = method.Namespace.GetNamespaceName();
 var entityName = method.Class.Name.ToCheckedCase();
 var methodName = method.Name.ToCheckedCase();
 var requestType = entityName + methodName + "Request";
@@ -25,14 +26,14 @@ var methods = overloads
             var parameters = m.Parameters
                 .Select(p =>
                     {
-                        var type = p.Type.GetTypeString();
+                        var type = p.Type.GetTypeString(@namespace);
                         var name = p.Name.ToLowerFirstChar();
                         var parameterName = p.Name.GetSanitizedParameterName();
                         var propertyName = p.Name.ToCheckedCase();
 
                         // Adds support for classes ending in "Request" that have been dismabiguated.
                         if (type.EndsWith("Request"))
-                        {   
+                        {
                             type = String.Concat(type, "Object");
                         }
                         if (p.IsCollection)
@@ -51,8 +52,6 @@ var methods = overloads
             var paramStrings = parameters.Select(p => string.Format(",\n            {0} {1}", p.Type, p.ParameterName));
             var paramComments = parameters.Select(p => string.Format("\n        /// <param name=\"{0}\">A {0} parameter for the OData method call.</param>", p.ParameterName));
 
-            
-
             return new
             {
                 Parameters = parameters,
@@ -63,7 +62,7 @@ var methods = overloads
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;

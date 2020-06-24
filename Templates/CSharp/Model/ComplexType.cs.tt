@@ -24,7 +24,7 @@ if (complex.Base != null)
 {
     // Disambiguate the base type declaration for the same reason we did this 
 	// for typeDeclaration.
-	var baseTypeDeclaration = complex.Base.Name.ToCheckedCase();
+	var baseTypeDeclaration = complex.Base.GetTypeString(complex.Namespace.GetNamespaceName());
 
     if (baseTypeDeclaration.EndsWith("Request"))
     {
@@ -80,7 +80,8 @@ if (!complex.IsAbstract)
         foreach(var property in complex.Properties)
         {
 
-            var propertyType = property.IsCollection ? string.Format("IEnumerable<{0}>", property.GetTypeString()) : property.GetTypeString();
+            var propertyTypeString = property.GetTypeString(complex.Namespace.GetNamespaceName());
+            var propertyType = property.IsCollection ? string.Format("IEnumerable<{0}>", propertyTypeString) : propertyTypeString;
             var propertyName = isMethodResponse
                 ? property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase()
                 : property.Name.ToCheckedCase().GetSanitizedPropertyName(property);

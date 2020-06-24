@@ -24,7 +24,7 @@ string cstorTypeDeclaration = typeDeclaration;
 
 if (entity.Base != null)
 {
-    var baseTypeDeclaration = entity.Base.Name.ToCheckedCase();
+    var baseTypeDeclaration = entity.Base.GetTypeString(entity.Namespace.GetNamespaceName());
 
     if (baseTypeDeclaration.EndsWith("Request"))
     {
@@ -90,15 +90,16 @@ namespace <#=entity.Namespace.GetNamespaceName()#>
 		}
         foreach(var property in entity.Properties)
         {
+            var propertyTypeString = property.GetTypeString(entity.Namespace.GetNamespaceName());
             var propertyType = property.IsTypeNullable() || property.IsCollection()
-                    ? property.GetTypeString()
-                    : property.GetTypeString() + "?";
-        
+                    ? propertyTypeString
+                    : propertyTypeString + "?";
+
             // We want to disambiguate structural property return types in case there is a naming 
             // collision with a request builder, like what we had for the Search entity, and the SearchRequest
-            // complex type. 
+            // complex type.
             if (propertyType.EndsWith("Request") && property.IsNavigation() == false)
-            { 
+            {
                 propertyType = String.Concat(propertyType, "Object");
             }
 
