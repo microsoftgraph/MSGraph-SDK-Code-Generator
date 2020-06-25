@@ -204,9 +204,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             if (shouldDisambiguate)
             {
                 // Form the import statement to disambiguate the model in the generated code file.
-                var thisNamespace = host.CurrentModel.NamespaceName();
-                var thisTypeName = (host.CurrentType as OdcmProperty).Type.Name.ToUpperFirstChar();
-                importStatement = $"\nimport {thisNamespace}.models.extensions.{thisTypeName};";
+                //var thisNamespace = host.CurrentModel.NamespaceName();
+                //var thisTypeName = (host.CurrentType as OdcmProperty).Type.Name.ToUpperFirstChar();
+                //importStatement = $"\nimport {thisNamespace}.models.extensions.{thisTypeName};";
             }
 
             return importStatement;
