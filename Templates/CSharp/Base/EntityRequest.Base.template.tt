@@ -18,12 +18,12 @@ public string GetEntityWithReferenceRequestClassDefinition(OdcmClass odcmClass)
 
 public string GetEntityReferenceRequestConstructor(OdcmClass odcmClass)
 {
-    return this.GetConstructor(this.GetEntityReferenceRequestName(odcmClass));
+    return this.GetConstructor(this.GetEntityReferenceRequestName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 public string GetEntityWithReferenceRequestConstructor(OdcmClass odcmClass)
 {
-    return this.GetConstructor(this.GetEntityWithReferenceRequestName(odcmClass));
+    return this.GetConstructor(this.GetEntityWithReferenceRequestName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 // -------------------------------------------------------------
@@ -36,7 +36,7 @@ public string GetEntityRequestClassDefinition(OdcmClass odcmClass)
 
 public string GetEntityRequestConstructor(OdcmClass odcmClass)
 {
-    return this.GetConstructor(this.GetEntityRequestName(odcmClass));
+    return this.GetConstructor(this.GetEntityRequestName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 

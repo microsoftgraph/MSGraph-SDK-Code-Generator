@@ -45,8 +45,10 @@ public string GetEntityClassDefinition(OdcmClass entity)
     return stringBuilder.ToString();
 }
 
-public string GetConstructor(string instanceTypeName)
+public string GetConstructor(string instanceTypeName, string @namespace)
 {
+    var iBaseClientTypeName = @namespace.GetMiddlewareTypeName("IBaseClient");
+
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append("/// <summary>");
@@ -56,14 +58,17 @@ public string GetConstructor(string instanceTypeName)
     stringBuilder.Append(
 @"        /// </summary>
         /// <param name=""requestUrl"">The URL for the built request.</param>
-        /// <param name=""client"">The <see cref=""IBaseClient""/> for handling requests.</param>");
+        /// <param name=""client"">The <see cref=""");
+    stringBuilder.Append(iBaseClientTypeName);
+    stringBuilder.Append(@"""/> for handling requests.</param>");
 
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        public {0}(", instanceTypeName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(
-@"            string requestUrl,
-            IBaseClient client)
+    stringBuilder.Append(@"            string requestUrl,
+            ");
+    stringBuilder.Append(iBaseClientTypeName);
+    stringBuilder.Append(@" client)
             : base(requestUrl, client)
         {
         }");
