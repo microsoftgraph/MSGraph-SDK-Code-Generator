@@ -162,12 +162,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return GetTypeString(property.Projection.Type);
         }
 
-        public static string GetTypeString(this OdcmType type, string namespaceContext)
+        public static string GetTypeString(this OdcmType type, string namespaceContext, string format = null)
         {
             var typesNamespace = type.Namespace.GetNamespaceName().Replace("edm.", "");
             var plainTypeString = type.GetTypeString();
+            if (format != null)
+            {
+                plainTypeString = string.Format(format, plainTypeString);
+            }
+
             if (string.Equals(typesNamespace, namespaceContext, StringComparison.OrdinalIgnoreCase)
-            || typesNamespace == "Edm")
+                || typesNamespace == "Edm")
             {
                 return plainTypeString;
             }
@@ -177,9 +182,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             }
         }
 
-        public static string GetTypeString(this OdcmProperty property, string namespaceContext)
+        public static string GetTypeString(this OdcmProperty property, string namespaceContext, string format = null)
         {
-            return property.Projection.Type.GetTypeString(namespaceContext);
+            return property.Projection.Type.GetTypeString(namespaceContext, format);
         }
 
         public static bool IsTypeNullable(this OdcmProperty property)
@@ -336,6 +341,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             var type = property.Projection.Type;
             var index = type.Name.LastIndexOf('.');
             return type.Name.Substring(0, index).ToLower() + type.Name.Substring(index);
+        }
+
+        public static string GetMiddlewareTypeName(this string namespaceContext, string typeName)
+        {
+            if (namespaceContext == "Microsoft.Graph")
+            {
+                return typeName;
+            }
+            else
+            {
+                return $"Microsoft.Graph.{typeName}";
+            }
         }
     }
 }
