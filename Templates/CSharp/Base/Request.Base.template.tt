@@ -18,8 +18,11 @@ public string GetClassDefinition(string className)
     return stringBuilder.ToString();
 }
 
-public string GetConstructor(string instanceTypeName)
+public string GetConstructor(string instanceTypeName, string @namespace)
 {
+    var iBaseClientTypeName = @namespace.GetMiddlewareTypeName("IBaseClient");
+    var optionTypeName = @namespace.GetMiddlewareTypeName("Option");
+
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append("/// <summary>");
@@ -29,7 +32,9 @@ public string GetConstructor(string instanceTypeName)
     stringBuilder.Append(
 @"        /// </summary>
         /// <param name=""requestUrl"">The URL for the built request.</param>
-        /// <param name=""client"">The <see cref=""IBaseClient""/> for handling requests.</param>
+        /// <param name=""client"">The <see cref=""");
+    stringBuilder.Append(iBaseClientTypeName);
+    stringBuilder.Append(@"""/> for handling requests.</param>
         /// <param name=""options"">Query and header option name value pairs for the request.</param>");
 
     stringBuilder.Append(Environment.NewLine);
@@ -37,8 +42,12 @@ public string GetConstructor(string instanceTypeName)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(
 @"            string requestUrl,
-            IBaseClient client,
-            IEnumerable<Option> options)
+            ");
+    stringBuilder.Append(iBaseClientTypeName);
+    stringBuilder.Append(@" client,
+            IEnumerable<");
+    stringBuilder.Append(optionTypeName);
+    stringBuilder.Append(@"> options)
             : base(requestUrl, client, options)
         {
         }");

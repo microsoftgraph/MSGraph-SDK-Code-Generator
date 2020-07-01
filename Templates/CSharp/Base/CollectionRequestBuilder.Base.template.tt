@@ -13,7 +13,7 @@ public string GetCollectionClassDefinition(OdcmProperty odcmProperty)
 
 public string GetCollectionRequestBuilderConstructor(OdcmProperty odcmProperty)
 {
-    return this.GetConstructor(this.GetPropertyCollectionRequestBuilderName(odcmProperty));
+    return this.GetConstructor(this.GetPropertyCollectionRequestBuilderName(odcmProperty), odcmProperty.Class.AsOdcmClass().GetNamespaceName());
 }
 
 public string GetCollectionRequestMethod(OdcmProperty odcmProperty)
@@ -37,7 +37,7 @@ public string GetCollectionReferencesClassDefinition(OdcmProperty odcmProperty)
 
 public string GetCollectionReferencesRequestBuilderConstructor(OdcmProperty odcmProperty)
 {
-    return this.GetConstructor(this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty));
+    return this.GetConstructor(this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty), odcmProperty.Class.AsOdcmClass().GetNamespaceName());
 }
 
 public string GetCollectionReferencesRequestMethod(OdcmProperty odcmProperty)
@@ -61,7 +61,7 @@ public string GetCollectionWithReferencesClassDefinition(OdcmProperty odcmProper
 
 public string GetCollectionWithReferencesRequestBuilderConstructor(OdcmProperty odcmProperty)
 {
-    return this.GetConstructor(this.GetPropertyCollectionWithReferencesRequestBuilderName(odcmProperty));
+    return this.GetConstructor(this.GetPropertyCollectionWithReferencesRequestBuilderName(odcmProperty), odcmProperty.Class.AsOdcmClass().GetNamespaceName());
 }
 
 public string GetCollectionWithReferencesRequestMethod(OdcmProperty odcmProperty)
