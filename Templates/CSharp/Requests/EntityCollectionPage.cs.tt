@@ -32,7 +32,7 @@ namespace <#=@namespace#>
         /// <summary>
         /// Initializes the NextPageRequest property.
         /// </summary>
-        public void InitializeNextPageRequest(IBaseClient client, string nextPageLinkString)
+        public void InitializeNextPageRequest(<#=@namespace.GetMiddlewareTypeName("IBaseClient")#> client, string nextPageLinkString)
         {
             if (!string.IsNullOrEmpty(nextPageLinkString))
             {
