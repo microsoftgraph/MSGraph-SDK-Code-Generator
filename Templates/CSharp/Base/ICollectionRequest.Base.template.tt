@@ -8,7 +8,7 @@
 // -------------------------------------------------------------
 public string GetCollectionInterfaceDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetInterfaceDefinition(this.GetPropertyCollectionRequestName(odcmProperty));
+    return this.GetInterfaceDefinition(this.GetPropertyCollectionRequestName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 
@@ -17,7 +17,7 @@ public string GetCollectionInterfaceDefinition(OdcmProperty odcmProperty)
 // -------------------------------------------------------------
 public string GetCollectionReferencesInterfaceDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetInterfaceDefinition(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
+    return this.GetInterfaceDefinition(this.GetPropertyCollectionReferencesRequestName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 
@@ -26,7 +26,7 @@ public string GetCollectionReferencesInterfaceDefinition(OdcmProperty odcmProper
 // -------------------------------------------------------------
 public string GetCollectionWithReferencesInterfaceDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetInterfaceDefinition(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
+    return this.GetInterfaceDefinition(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 
