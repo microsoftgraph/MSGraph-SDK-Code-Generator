@@ -128,7 +128,13 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     public function get<#=propertyName.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
+<#
+// Check whether this type is a generated model type or a PHP type
+if (property.Type.GetTypeString()[0] == '\\') { #>
+            if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=property.Type.GetTypeString()#>")) {
+<# } else { #>
             if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=targetNamespace#>\<#=property.Type.GetTypeString()#>")) {
+<# } #>
                 return $this->_propDict["<#=property.Name.ToCamelize()#>"];
             } else {
 <# if (property.Type.GetTypeString() == "\\GuzzleHttp\\Psr7\\Stream") { #>
