@@ -90,20 +90,20 @@ public string GetIndexRequestBuilder(string propertyName, string requestBuilderT
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the specified {1}.", requestBuilderTypeName, propertyName);
+    stringBuilder.AppendFormat("        /// Gets an <see cref=\"{0}\"/> for the specified {1}.", requestBuilderTypeName.ClassToInterface(), propertyName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <param name=\"id\">The ID for the {0}.</param>", propertyName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"{0}\"/>.</returns>", requestBuilderTypeName.ClassToInterface());
     stringBuilder.Append(Environment.NewLine);
     if (hasItemMethod) 
     {
         stringBuilder.AppendFormat("        [System.Runtime.CompilerServices.IndexerName(\"ThisItem\")]"); // Special case for methods named Item. 
         stringBuilder.Append(Environment.NewLine);
     }
-    stringBuilder.AppendFormat("        I{0} this[string id] {{ get; }}", requestBuilderTypeName);
+    stringBuilder.AppendFormat("        {0} this[string id] {{ get; }}", requestBuilderTypeName.ClassToInterface());
 
     return stringBuilder.ToString();
 }

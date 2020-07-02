@@ -61,9 +61,9 @@ public string GetEntityReferenceRequestBuilderProperty(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"{0}\"/>.</returns>", requestBuilderTypeName.ClassToInterface());
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public I{0} Reference", requestBuilderTypeName);
+    stringBuilder.AppendFormat("        public {0} Reference", requestBuilderTypeName.ClassToInterface());
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(
 @"        {
@@ -122,9 +122,9 @@ public string GetRequestBuilderProperty(string propertyName, string urlValue, st
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"{0}\"/>.</returns>", requestBuilderTypeName.ClassToInterface());
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public I{0} {1}", requestBuilderTypeName, propertyName);
+    stringBuilder.AppendFormat("        public {0} {1}", requestBuilderTypeName.ClassToInterface(), propertyName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(
 @"        {

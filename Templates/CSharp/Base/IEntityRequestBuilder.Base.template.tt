@@ -91,9 +91,9 @@ public string GetRequestBuilderProperty(string propertyName, string requestBuild
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"{0}\"/>.</returns>", requestBuilderTypeName.ClassToInterface());
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        I{0} {1} {{ get; }}", requestBuilderTypeName, propertyName);
+    stringBuilder.AppendFormat("        {0} {1} {{ get; }}", requestBuilderTypeName.ClassToInterface(), propertyName);
     return stringBuilder.ToString();
 }
 
