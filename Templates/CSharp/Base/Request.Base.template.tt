@@ -3,8 +3,9 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#+
 
-public string GetClassDefinition(string className)
+public string GetClassDefinition(string className, string @namespace)
 {
+    var baseRequestTypeName = @namespace.GetMiddlewareTypeName("BaseRequest");
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append("/// <summary>");
@@ -13,7 +14,7 @@ public string GetClassDefinition(string className)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("    /// </summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("    public partial class {0} : BaseRequest, I{0}", className);
+    stringBuilder.AppendFormat("    public partial class {0} : {1}, I{0}", className, baseRequestTypeName);
 
     return stringBuilder.ToString();
 }

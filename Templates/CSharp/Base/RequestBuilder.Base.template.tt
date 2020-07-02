@@ -3,8 +3,9 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#+
 
-public string GetClassDefinition(string className)
+public string GetClassDefinition(string className, string @namespace)
 {
+    var baseRequestBuilderTypeName = @namespace.GetMiddlewareTypeName("BaseRequestBuilder");
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append("/// <summary>");
@@ -13,13 +14,14 @@ public string GetClassDefinition(string className)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("    /// </summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("    public partial class {0} : BaseRequestBuilder, I{0}", className);
+    stringBuilder.AppendFormat("    public partial class {0} : {1}, I{0}", className, baseRequestBuilderTypeName);
 
     return stringBuilder.ToString();
 }
 
 public string GetEntityClassDefinition(OdcmClass entity)
 {
+    var baseRequestBuilderTypeName = entity.GetNamespaceName().GetMiddlewareTypeName("BaseRequestBuilder");
     string typeDeclaration = null;
     var className = this.GetEntityRequestBuilderName(entity);
 
@@ -29,7 +31,7 @@ public string GetEntityClassDefinition(OdcmClass entity)
     }
     else
     {
-        typeDeclaration = string.Format("{0} : BaseRequestBuilder, I{0}", className);
+        typeDeclaration = string.Format("{0} : {1}, I{0}", className, baseRequestBuilderTypeName);
     }
 
     var stringBuilder = new StringBuilder();
