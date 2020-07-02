@@ -30,8 +30,9 @@ public string GetEntityInterfaceDefinition(OdcmClass entity)
     return stringBuilder.ToString();
 }
 
-public string GetInterfaceDefinition(string interfaceName)
+public string GetInterfaceDefinition(string interfaceName, string @namespace)
 {
+    var iBaseRequestBuilderTypeName = @namespace.GetMiddlewareTypeName("IBaseRequestBuilder");
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append("/// <summary>");
@@ -40,7 +41,7 @@ public string GetInterfaceDefinition(string interfaceName)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("    /// </summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("    public partial interface I{0} : IBaseRequestBuilder", interfaceName);
+    stringBuilder.AppendFormat("    public partial interface I{0} : {1}", interfaceName, iBaseRequestBuilderTypeName);
 
     return stringBuilder.ToString();
 }

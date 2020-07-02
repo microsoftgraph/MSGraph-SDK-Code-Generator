@@ -27,7 +27,7 @@ public string GetEntityRequestMethodWithOptions(OdcmClass odcmClass)
 // -------------------------------------------------------------
 public string GetEntityReferenceRequestBuilderInterfaceDefinition(OdcmClass odcmClass)
 {
-    return this.GetInterfaceDefinition(this.GetEntityReferenceRequestBuilderName(odcmClass));
+    return this.GetInterfaceDefinition(this.GetEntityReferenceRequestBuilderName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 public string GetEntityReferenceRequestMethod(OdcmClass odcmClass)
@@ -64,7 +64,7 @@ public string GetEntityReferenceRequestBuilderProperty(OdcmClass odcmClass)
 // -------------------------------------------------------------
 public string GetEntityWithReferenceRequestBuilderInterfaceDefinition(OdcmClass odcmClass)
 {
-    return this.GetInterfaceDefinition(this.GetEntityWithReferenceRequestBuilderName(odcmClass));
+    return this.GetInterfaceDefinition(this.GetEntityWithReferenceRequestBuilderName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 public string GetEntityWithReferenceRequestMethod(OdcmClass odcmClass)
