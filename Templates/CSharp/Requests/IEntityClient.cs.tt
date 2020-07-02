@@ -35,13 +35,13 @@ namespace <#=@namespace#>
         else
         {
 
-        var propType = prop.Projection.Type.Name.ToCheckedCase();
+        var iRequestBuilder = prop.GetTypeString(@namespace, "I{0}RequestBuilder");
     #>
 
         /// <summary>
         /// Gets the <#=propName#> request builder.
         /// </summary>
-        I<#=propType#>RequestBuilder <#=sanitizedPropName#> { get; }
+        <#=iRequestBuilder#>> <#=sanitizedPropName#> { get; }
     <#
         }
     }

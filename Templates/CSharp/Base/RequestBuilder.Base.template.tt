@@ -169,7 +169,7 @@ public string GetMethodProperties(OdcmClass entity, bool isCollection)
             foreach (var param in requiredParameters)
             {
                 var paramVariableName = param.Name.GetSanitizedParameterName();
-                var paramTypeString = param.Type.GetTypeString();
+                var paramTypeString = param.Type.GetTypeString(entity.GetNamespaceName());
 
                 // Adds support for classes ending in "Request" that have been dismabiguated.
                 if (paramTypeString.EndsWith("Request"))
@@ -260,9 +260,9 @@ public string GetMethodRequestBuilderMethod(
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"{0}\"/>.</returns>", requestBuilderTypeName.ClassToInterface());
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public I{0} {1}({2})", requestBuilderTypeName, methodName, methodParamaterString);
+    stringBuilder.AppendFormat("        public {0} {1}({2})", requestBuilderTypeName.ClassToInterface(), methodName, methodParamaterString);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(
 @"        {

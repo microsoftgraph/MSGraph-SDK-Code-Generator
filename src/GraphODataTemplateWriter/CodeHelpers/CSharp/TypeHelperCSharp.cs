@@ -3,6 +3,7 @@
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 {
     using System;
+    using System.Text;
     using System.Collections.Generic;
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
@@ -190,6 +191,20 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         public static bool IsTypeNullable(this OdcmProperty property)
         {
             return property.Projection.Type.IsTypeNullable();
+        }
+
+        // converts from Microsoft.Graph.CallRecords.Class to Microsoft.Graph.CallRecords.IClass
+        public static string ClassToInterface(this string @class)
+        {
+            var split = @class.Split('.');
+            var interfaceStringBuilder = new StringBuilder();
+            for (int i = 0; i < split.Length - 1; i++)
+            {
+                interfaceStringBuilder.Append($"{split[i]}.");
+            }
+
+            interfaceStringBuilder.Append($"I{split[split.Length - 1]}");
+            return interfaceStringBuilder.ToString();
         }
 
         public static string GetClassNamespace(this OdcmProperty property)
