@@ -63,19 +63,20 @@ public string GetRequestMethod(string requestTypeName, bool includeNewKeyword = 
     return stringBuilder.ToString();
 }
 
-public string GetRequestMethodWithOptions(string requestTypeName, bool includeNewKeyword = false)
+public string GetRequestMethodWithOptions(string requestTypeName, string @namespace, bool includeNewKeyword = false)
 {
+    var optionTypeName = @namespace.GetMiddlewareTypeName("Option");
     var stringBuilder = new StringBuilder();
     stringBuilder.Append(this.GetRequestMethodWithOptionsHeader());
     stringBuilder.Append(Environment.NewLine);
 
     if (includeNewKeyword)
     {
-        stringBuilder.AppendFormat("        new I{0} Request(IEnumerable<Option> options);", requestTypeName);
+        stringBuilder.AppendFormat("        new I{0} Request(IEnumerable<{1}> options);", requestTypeName, optionTypeName);
     }
     else
     {
-        stringBuilder.AppendFormat("        I{0} Request(IEnumerable<Option> options);", requestTypeName);
+        stringBuilder.AppendFormat("        I{0} Request(IEnumerable<{1}> options);", requestTypeName, optionTypeName);
     }
 
     return stringBuilder.ToString();

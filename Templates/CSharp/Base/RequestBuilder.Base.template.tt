@@ -100,8 +100,9 @@ public string GetRequestMethod(string requestTypeName, bool includeNewKeyword = 
     return stringBuilder.ToString();
 }
 
-public string GetRequestMethodWithOptions(string requestTypeName, bool includeNewKeyword = false)
+public string GetRequestMethodWithOptions(string requestTypeName, string @namespace, bool includeNewKeyword = false)
 {
+    var optionTypeName = @namespace.GetMiddlewareTypeName("Option");
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append(this.GetRequestMethodWithOptionsHeader());
@@ -109,11 +110,11 @@ public string GetRequestMethodWithOptions(string requestTypeName, bool includeNe
 
     if (includeNewKeyword)
     {
-        stringBuilder.AppendFormat("        public new I{0} Request(IEnumerable<Option> options)", requestTypeName);
+        stringBuilder.AppendFormat("        public new I{0} Request(IEnumerable<{1}> options)", requestTypeName, optionTypeName);
     }
     else
     {
-        stringBuilder.AppendFormat("        public I{0} Request(IEnumerable<Option> options)", requestTypeName);
+        stringBuilder.AppendFormat("        public I{0} Request(IEnumerable<{1}> options)", requestTypeName, optionTypeName);
     }
 
     stringBuilder.Append(Environment.NewLine);

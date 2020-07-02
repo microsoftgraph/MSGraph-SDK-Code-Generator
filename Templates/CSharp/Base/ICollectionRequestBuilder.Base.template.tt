@@ -18,7 +18,7 @@ public string GetCollectionRequestMethod(OdcmProperty odcmProperty)
 
 public string GetCollectionRequestMethodWithOptions(OdcmProperty odcmProperty)
 {
-    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionRequestName(odcmProperty));
+    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionRequestName(odcmProperty), odcmProperty.Class.AsOdcmClass().GetNamespaceName());
 }
 
 // Creates the indexer property definition for the collection
@@ -57,7 +57,7 @@ public string GetCollectionReferencesRequestMethod(OdcmProperty odcmProperty)
 
 public string GetCollectionReferencesRequestMethodWithOptions(OdcmProperty odcmProperty)
 {
-    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
+    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionReferencesRequestName(odcmProperty), odcmProperty.Class.AsOdcmClass().GetNamespaceName());
 }
 
 
@@ -76,7 +76,7 @@ public string GetCollectionWithReferencesRequestMethod(OdcmProperty odcmProperty
 
 public string GetCollectionWithReferencesRequestMethodWithOptions(OdcmProperty odcmProperty)
 {
-    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
+    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty), odcmProperty.Class.AsOdcmClass().GetNamespaceName());
 }
 
 
