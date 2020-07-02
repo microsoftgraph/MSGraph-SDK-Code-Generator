@@ -192,9 +192,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return property.Projection.Type.IsTypeNullable();
         }
 
-        public static string GetNamespaceName(this OdcmProperty property)
+        public static string GetClassNamespace(this OdcmProperty property)
         {
-            return property.Projection.Type.Namespace.GetNamespaceName();
+            return property.Class.AsOdcmClass().GetNamespaceName();
         }
 
         public static string GetNamespaceName(this OdcmClass odcmClass)
