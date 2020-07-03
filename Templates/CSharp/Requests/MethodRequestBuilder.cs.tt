@@ -92,7 +92,7 @@ foreach (var m in methods)
         /// Constructs a new <see cref="<#=requestBuilderType#>"/>.
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
-        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param><#=m.ParameterComments#>
+        /// <param name="client">The <see cref="<#=iBaseClientTypeName#>"/> for handling requests.</param><#=m.ParameterComments#>
         public <#=requestBuilderType#>(
             string requestUrl,
             <#=iBaseClientTypeName#> client<#=m.ParametersAsArguments#>)
