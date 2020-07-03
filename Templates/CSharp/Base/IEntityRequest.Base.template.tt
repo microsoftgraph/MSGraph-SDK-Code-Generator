@@ -249,8 +249,9 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
     return stringBuilder.ToString();
 }
 
-public void AppendUpdateAsyncMethodHeader(string entityName, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams)
+public void AppendUpdateAsyncMethodHeader(string entityName, string lowerCaseEntityName, string @namespace, StringBuilder stringBuilder, bool includeSendParams)
 {
+    var clientExceptionTypeName = @namespace.GetMiddlewareTypeName("ClientException");
 	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
 	if (entityName.EndsWith("Request"))
 	{
@@ -275,7 +276,7 @@ public void AppendUpdateAsyncMethodHeader(string entityName, string lowerCaseEnt
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append("        /// <exception cref=\"ClientException\">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>");
+        stringBuilder.AppendFormat("        /// <exception cref=\"{0}\">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>", clientExceptionTypeName);
     }
 
     stringBuilder.Append(Environment.NewLine);
@@ -296,14 +297,14 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass)
 
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
 
-    this.AppendUpdateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, false);
+    this.AppendUpdateAsyncMethodHeader(entityName, lowerCaseEntityName, odcmClass.GetNamespaceName(), stringBuilder, false);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate);", entityName, lowerCaseEntityName);
 
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
 
-    this.AppendUpdateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, true);
+    this.AppendUpdateAsyncMethodHeader(entityName, lowerCaseEntityName, odcmClass.GetNamespaceName(), stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate, CancellationToken cancellationToken);", entityName, lowerCaseEntityName);
 
@@ -334,7 +335,7 @@ public string GetExpandExpressionMethod(string requestType, string underlyingTyp
         /// <returns>The request object to send.</returns>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        I{0} Expand(Expression<Func<{1}, object>> expandExpression);", requestType, underlyingType);
-    
+
     return stringBuilder.ToString();
 }
 
@@ -350,7 +351,7 @@ public string GetExpandMethod(string entityRequest)
         /// <returns>The request object to send.</returns>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        I{0} Expand(string value);", entityRequest);
-    
+
     return stringBuilder.ToString();
 }
 
@@ -373,7 +374,7 @@ public string GetSelectExpressionMethod(string requestType, string underlyingTyp
         /// <returns>The request object to send.</returns>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        I{0} Select(Expression<Func<{1}, object>> selectExpression);", requestType, underlyingType);
-    
+
     return stringBuilder.ToString();
 }
 
@@ -389,7 +390,7 @@ public string GetSelectMethod(string entityRequest)
         /// <returns>The request object to send.</returns>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        I{0} Select(string value);", entityRequest);
-    
+
     return stringBuilder.ToString();
 }
 
