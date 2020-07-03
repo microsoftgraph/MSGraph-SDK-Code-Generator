@@ -5,6 +5,9 @@
 
 var prop = host.CurrentType.AsOdcmProperty();
 var @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
+
+var collectionPageTypeName = @namespace.GetMiddlewareTypeName("CollectionPage");
+
 var innerEntity = prop.Projection.Type;
 var innerEntityType = innerEntity.GetTypeString(@namespace);
 var entityCollectionRequest = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionRequest");
@@ -22,7 +25,7 @@ namespace <#=@namespace#>
     /// <summary>
     /// The type <#=entityCollectionPage#>.
     /// </summary>
-    public partial class <#=entityCollectionPage#> : CollectionPage<<#=innerEntityType#>>, I<#=entityCollectionPage#>
+    public partial class <#=entityCollectionPage#> : <#=collectionPageTypeName#><<#=innerEntityType#>>, I<#=entityCollectionPage#>
     {
         /// <summary>
         /// Gets the next page <see cref="I<#=entityCollectionRequest#>"/> instance.
