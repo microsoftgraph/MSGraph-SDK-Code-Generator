@@ -5,6 +5,11 @@
 
 var prop = host.CurrentType.AsOdcmProperty();
 var @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
+
+var interfaceConverterTypeName = @namespace.GetMiddlewareTypeName("InterfaceConverter");
+var iCollectionPageTypeName = @namespace.GetMiddlewareTypeName("ICollectionPage");
+var iBaseClientTypeName = @namespace.GetMiddlewareTypeName("IBaseClient");
+
 var innerEntityType = prop.GetTypeString(@namespace);
 var entityCollectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
 var entityCollectionPage = string.Concat(this.GetEntityNameString(prop.Class), prop.Name.ToCheckedCase(), "CollectionWithReferencesPage");
@@ -20,8 +25,8 @@ namespace <#=@namespace#>
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.
     /// </summary>
-    [JsonConverter(typeof(InterfaceConverter<<#=entityCollectionPage#>>))]
-    public interface I<#=entityCollectionPage#> : ICollectionPage<<#=innerEntityType#>>
+    [JsonConverter(typeof(<#=interfaceConverterTypeName#><<#=entityCollectionPage#>>))]
+    public interface I<#=entityCollectionPage#> : <#=iCollectionPageTypeName#><<#=innerEntityType#>>
     {
         /// <summary>
         /// Gets the next page <see cref="I<#=entityCollectionRequest#>"/> instance.
@@ -31,6 +36,6 @@ namespace <#=@namespace#>
         /// <summary>
         /// Initializes the NextPageRequest property.
         /// </summary>
-        void InitializeNextPageRequest(IBaseClient client, string nextPageLinkString);
+        void InitializeNextPageRequest(<#=iBaseClientTypeName#> client, string nextPageLinkString);
     }
 }
