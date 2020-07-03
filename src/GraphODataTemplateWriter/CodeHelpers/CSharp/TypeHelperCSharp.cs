@@ -167,6 +167,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         {
             var typesNamespace = type.Namespace.GetNamespaceName().Replace("edm.", "");
             var plainTypeString = type.GetTypeString();
+
+            // refer to core implementation when they are available for Edm types
+            var coreModelTypes = new List<string> { "Duration", "TimeOfDay" }; // TODO list not complete.
+            if (typesNamespace == "Edm" && coreModelTypes.Contains(plainTypeString))
+            {
+                typesNamespace = "Microsoft.Graph";
+            }
+
             if (format != null)
             {
                 plainTypeString = string.Format(format, plainTypeString);
