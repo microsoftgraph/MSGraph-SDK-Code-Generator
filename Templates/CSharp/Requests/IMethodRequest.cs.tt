@@ -7,6 +7,8 @@ var method = host.CurrentType.AsOdcmMethod();
 var @namespace = method.Namespace.GetNamespaceName();
 var entityName = method.Class.Name.ToCheckedCase();
 
+var iBaseRequestTypeName = @namespace.GetMiddlewareTypeName("IBaseRequest");
+
 var isFunction = method.IsFunction;
 var isAction = !isFunction;
 var isComposable = method.IsComposable;
@@ -48,7 +50,7 @@ namespace <#=@namespace#>
     /// <summary>
     /// The interface I<#=requestType#>.
     /// </summary>
-    public partial interface I<#=requestType#> : IBaseRequest
+    public partial interface I<#=requestType#> : <#=iBaseRequestTypeName#>
     {
 <#
     if (includeRequestBody)

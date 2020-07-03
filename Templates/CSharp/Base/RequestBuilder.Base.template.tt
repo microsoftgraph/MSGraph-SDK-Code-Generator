@@ -21,13 +21,16 @@ public string GetClassDefinition(string className, string @namespace)
 
 public string GetEntityClassDefinition(OdcmClass entity)
 {
-    var baseRequestBuilderTypeName = entity.GetNamespaceName().GetMiddlewareTypeName("BaseRequestBuilder");
+    var @namespace = entity.GetNamespaceName();
+    var baseRequestBuilderTypeName = @namespace.GetMiddlewareTypeName("BaseRequestBuilder");
+
     string typeDeclaration = null;
     var className = this.GetEntityRequestBuilderName(entity);
 
     if (entity.Base != null)
     {
-        typeDeclaration = string.Format("{0} : {1}RequestBuilder, I{0}", className, entity.Base.Name.ToCheckedCase());
+        var baseTypeRequestBuilderTypeName = entity.Base.GetTypeString(@namespace, "{0}RequestBuilder");
+        typeDeclaration = string.Format("{0} : {1}, I{0}", className, baseTypeRequestBuilderTypeName);
     }
     else
     {

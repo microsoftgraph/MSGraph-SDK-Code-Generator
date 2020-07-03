@@ -5,6 +5,7 @@
 
 var method = host.CurrentType.AsOdcmMethod();
 var @namespace = method.Namespace.GetNamespaceName();
+
 var entityName = method.Class.Name.ToCheckedCase();
 var methodName = method.Name.ToCheckedCase();
 var requestType = entityName + methodName + "Request";
@@ -12,6 +13,10 @@ var requestBuilderType = requestType + "Builder";
 
 var isPost = method.IsAction() && method.Parameters != null && method.Parameters.Any();
 var methodType = method.IsFunction ? "Function" : "Action";
+
+var baseMethodRequestBuilderTypeName = @namespace.GetMiddlewareTypeName("Base" + methodType + "MethodRequestBuilder");
+var iBaseClientTypeName = @namespace.GetMiddlewareTypeName("IBaseClient");
+var optionTypeName = @namespace.GetMiddlewareTypeName("Option");
 
 // Overloads are determined based on the name of method and the type of the binding parameter.
 // There is no differentiation between an entity, and a collection of the same entities.
@@ -71,7 +76,7 @@ namespace <#=@namespace#>
     /// <summary>
     /// The type <#=requestBuilderType#>.
     /// </summary>
-    public partial class <#=requestBuilderType#> : Base<#=methodType#>MethodRequestBuilder<I<#=requestType#>>, I<#=requestBuilderType#>
+    public partial class <#=requestBuilderType#> : <#=baseMethodRequestBuilderTypeName#><I<#=requestType#>>, I<#=requestBuilderType#>
     {
 <#
 // We only want to generate unique method signatures. 
@@ -90,7 +95,7 @@ foreach (var m in methods)
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param><#=m.ParameterComments#>
         public <#=requestBuilderType#>(
             string requestUrl,
-            IBaseClient client<#=m.ParametersAsArguments#>)
+            <#=iBaseClientTypeName#> client<#=m.ParametersAsArguments#>)
             : base(requestUrl, client)
         {
 <#
@@ -113,7 +118,7 @@ foreach (var m in methods)
         /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>An instance of a specific request class.</returns>
-        protected override I<#=requestType#> CreateRequest(string functionUrl, IEnumerable<Option> options)
+        protected override I<#=requestType#> CreateRequest(string functionUrl, IEnumerable<<#=optionTypeName#>> options)
         {
             var request = new <#=requestType#>(functionUrl, this.Client, options);
 

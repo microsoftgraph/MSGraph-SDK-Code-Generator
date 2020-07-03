@@ -5,6 +5,11 @@
 
 var method = host.CurrentType.AsOdcmMethod();
 var @namespace = method.Namespace.GetNamespaceName();
+
+var baseRequestTypeName = @namespace.GetMiddlewareTypeName("BaseRequest");
+var iBaseClientTypeName = @namespace.GetMiddlewareTypeName("IBaseClient");
+var optionTypeName = @namespace.GetMiddlewareTypeName("Option");
+
 var entityName = method.Class.Name.ToCheckedCase();
 
 var isFunction = method.IsFunction;
@@ -55,15 +60,15 @@ namespace <#=@namespace#>
     /// <summary>
     /// The type <#=requestType#>.
     /// </summary>
-    public partial class <#=requestType#> : BaseRequest, I<#=requestType#>
+    public partial class <#=requestType#> : <#=baseRequestTypeName#>, I<#=requestType#>
     {
         /// <summary>
         /// Constructs a new <#=requestType#>.
         /// </summary>
         public <#=requestType#>(
             string requestUrl,
-            IBaseClient client,
-            IEnumerable<Option> options)
+            <#=iBaseClientTypeName#> client,
+            IEnumerable<<#=optionTypeName#>> options)
             : base(requestUrl, client, options)
         {
 <#

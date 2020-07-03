@@ -7,14 +7,17 @@ public string GetEntityInterfaceDefinition(OdcmClass entity)
 {
     string typeDeclaration = null;
     var className = this.GetEntityRequestBuilderName(entity);
+    var @namespace = entity.GetNamespaceName();
+    var iBaseRequestBuilderTypeName = @namespace.GetMiddlewareTypeName("IBaseRequestBuilder");
 
     if (entity.Base == null)
     {
-        typeDeclaration = string.Format("I{0} : IBaseRequestBuilder", className);
+        typeDeclaration = string.Format("I{0} : {1}", className, iBaseRequestBuilderTypeName);
     }
     else
     {
-        typeDeclaration = string.Format("I{0} : I{1}RequestBuilder", className, entity.Base.Name.ToCheckedCase());
+        var baseIRequestBuilderTypeName = entity.Base.GetTypeString(@namespace, "I{0}RequestBuilder");
+        typeDeclaration = string.Format("I{0} : {1}", className, baseIRequestBuilderTypeName);
     }
 
     var stringBuilder = new StringBuilder();
