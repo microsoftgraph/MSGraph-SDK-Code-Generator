@@ -5,6 +5,9 @@
 var prop = host.CurrentType.AsOdcmProperty();
 var @namespace = this.GetNamespaceName(prop.Class.AsOdcmClass());
 
+var queryOptionTypeName = @namespace.GetMiddlewareTypeName("QueryOption");
+var expressionExtractHelperTypeName = @namespace.GetMiddlewareTypeName("ExpressionExtractHelper");
+
 var innerEntityType = prop.GetTypeString(@namespace);
 if (innerEntityType.EndsWith("Request"))
 {
@@ -80,7 +83,7 @@ namespace <#=@namespace#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> Expand(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$expand", value));
             return this;
         }
 
@@ -96,14 +99,14 @@ namespace <#=@namespace#>
                 throw new ArgumentNullException(nameof(expandExpression));
             }
             string error;
-            string value = ExpressionExtractHelper.ExtractMembers(expandExpression, out error);
+            string value = <#=expressionExtractHelperTypeName#>.ExtractMembers(expandExpression, out error);
             if (value == null)
             {
                 throw new ArgumentException(error, nameof(expandExpression));
             }
             else
             {
-                this.QueryOptions.Add(new QueryOption("$expand", value));
+                this.QueryOptions.Add(new <#=queryOptionTypeName#>("$expand", value));
             }
             return this;
         }
@@ -117,7 +120,7 @@ namespace <#=@namespace#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> Select(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$select", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$select", value));
             return this;
         }
 
@@ -133,14 +136,14 @@ namespace <#=@namespace#>
                 throw new ArgumentNullException(nameof(selectExpression));
             }
             string error;
-            string value = ExpressionExtractHelper.ExtractMembers(selectExpression, out error);
+            string value = <#=expressionExtractHelperTypeName#>.ExtractMembers(selectExpression, out error);
             if (value == null)
             {
                 throw new ArgumentException(error, nameof(selectExpression));
             }
             else
             {
-                this.QueryOptions.Add(new QueryOption("$select", value));
+                this.QueryOptions.Add(new <#=queryOptionTypeName#>("$select", value));
             }
             return this;
         }
@@ -154,7 +157,7 @@ namespace <#=@namespace#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> Top(int value)
         {
-            this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$top", value.ToString()));
             return this;
         }
 
@@ -167,7 +170,7 @@ namespace <#=@namespace#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> Filter(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$filter", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$filter", value));
             return this;
         }
 
@@ -180,7 +183,7 @@ namespace <#=@namespace#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> Skip(int value)
         {
-            this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$skip", value.ToString()));
             return this;
         }
 
@@ -193,7 +196,7 @@ namespace <#=@namespace#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> OrderBy(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$orderby", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$orderby", value));
             return this;
         }
 <# } #>

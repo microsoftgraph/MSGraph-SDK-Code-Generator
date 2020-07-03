@@ -6,6 +6,7 @@
 var method = host.CurrentType.AsOdcmMethod();
 var @namespace = method.Namespace.GetNamespaceName();
 
+var queryOptionTypeName = @namespace.GetMiddlewareTypeName("QueryOption");
 var baseRequestTypeName = @namespace.GetMiddlewareTypeName("BaseRequest");
 var iBaseClientTypeName = @namespace.GetMiddlewareTypeName("IBaseClient");
 var optionTypeName = @namespace.GetMiddlewareTypeName("Option");
@@ -508,7 +509,7 @@ namespace <#=@namespace#>
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Expand(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$expand", value));
             return this;
         }
 <#
@@ -525,7 +526,7 @@ namespace <#=@namespace#>
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Select(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$select", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$select", value));
             return this;
         }
 <#
@@ -544,7 +545,7 @@ namespace <#=@namespace#>
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Top(int value)
         {
-            this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$top", value.ToString()));
             return this;
         }
 <#
@@ -561,7 +562,7 @@ namespace <#=@namespace#>
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Filter(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$filter", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$filter", value));
             return this;
         }
 <#
@@ -578,7 +579,7 @@ namespace <#=@namespace#>
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Skip(int value)
         {
-            this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$skip", value.ToString()));
             return this;
         }
 <#
@@ -595,7 +596,7 @@ namespace <#=@namespace#>
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> OrderBy(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$orderby", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$orderby", value));
             return this;
         }
 <#
