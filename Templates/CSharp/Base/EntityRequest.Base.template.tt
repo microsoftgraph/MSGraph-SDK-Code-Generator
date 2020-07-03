@@ -204,7 +204,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
     var entityName = this.GetEntityNameString(odcmClass);
-    
+
 	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
 	if (entityName.EndsWith("Request"))
 	{
@@ -245,7 +245,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
 	}
 	stringBuilder.Append(@"            return newEntity;
         }");
-	
+
 
     return stringBuilder.ToString();
 }
@@ -361,6 +361,11 @@ public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityNam
 public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCollectionProperties = true)
 {
     var stringBuilder = new StringBuilder();
+    var @namespace = odcmClass.GetNamespaceName();
+    var clientExceptionTypeName = @namespace.GetMiddlewareTypeName("ClientException");
+    var errorTypeName = @namespace.GetMiddlewareTypeName("Error");
+    var generatedErrorConstantsTypeName = @namespace.GetMiddlewareTypeName("GeneratedErrorConstants");
+    var constantsTypeName = @namespace.GetMiddlewareTypeName("Constants");
 
     var entityName = this.GetEntityNameString(odcmClass);
 
@@ -397,27 +402,27 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
 	stringBuilder.Append(Environment.NewLine);
 	stringBuilder.Append("			{");
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("				if ({0}ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||", lowerCaseEntityName);       
-    stringBuilder.Append(Environment.NewLine);           
-    stringBuilder.AppendFormat("					{0}ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))", lowerCaseEntityName);          
+    stringBuilder.AppendFormat("				if ({0}ToUpdate.AdditionalData.ContainsKey({1}.HttpPropertyNames.ResponseHeaders) ||", lowerCaseEntityName, constantsTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("					{0}ToUpdate.AdditionalData.ContainsKey({1}.HttpPropertyNames.StatusCode))", lowerCaseEntityName, constantsTypeName);
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("				{");         
+    stringBuilder.Append("				{");
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("					throw new ClientException(");                
+    stringBuilder.AppendFormat("					throw new {0}(", clientExceptionTypeName);
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("						new Error");                  
+    stringBuilder.AppendFormat("						new {0}", errorTypeName);
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("						{");                    
+    stringBuilder.Append("						{");
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("							Code = GeneratedErrorConstants.Codes.NotAllowed,");                        
+    stringBuilder.AppendFormat("							Code = {0}.Codes.NotAllowed,", generatedErrorConstantsTypeName);
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, {0}ToUpdate.GetType().Name)", lowerCaseEntityName);                        
+    stringBuilder.AppendFormat("							Message = String.Format({0}.Messages.ResponseObjectUsedForUpdate, {1}ToUpdate.GetType().Name)", generatedErrorConstantsTypeName, lowerCaseEntityName);
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("						});");                   
+    stringBuilder.Append("						});");
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("				}");   
+    stringBuilder.Append("				}");
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("			}");	
+    stringBuilder.Append("			}");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            if ({0}ToUpdate.AdditionalData != null)", lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
@@ -429,21 +434,21 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("                {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("                    throw new ClientException(");
+    stringBuilder.AppendFormat("                    throw new {0}(", clientExceptionTypeName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("                        new Error");
+    stringBuilder.AppendFormat("                        new {0}", errorTypeName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("                        {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("                            Code = GeneratedErrorConstants.Codes.NotAllowed,");
+    stringBuilder.AppendFormat("                            Code = {0}.Codes.NotAllowed,", generatedErrorConstantsTypeName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, {0}ToUpdate.GetType().Name)", lowerCaseEntityName);
+    stringBuilder.AppendFormat("                            Message = String.Format({0}.Messages.ResponseObjectUsedForUpdate, {1}ToUpdate.GetType().Name)", generatedErrorConstantsTypeName, lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("                        });");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("                }");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("            }");	
+    stringBuilder.Append("            }");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
     stringBuilder.Append(Environment.NewLine);
@@ -530,7 +535,7 @@ public string GetSelectExpressionMethod(string requestType, string underlyingTyp
             }
             return this;
         }");
-    
+
     return stringBuilder.ToString();
 }
 
@@ -571,7 +576,7 @@ public string GetExpandExpressionMethod(string requestType, string underlyingTyp
             }
             return this;
         }");
-    
+
     return stringBuilder.ToString();
 }
 
