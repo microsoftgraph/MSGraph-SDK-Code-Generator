@@ -6,6 +6,9 @@
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
 
+var @namespace = entity.Namespace.GetNamespaceName();
+var derivedTypeConverterTypeName = @namespace.GetMiddlewareTypeName("DerivedTypeConverter");
+
 var typeDeclaration = entityName;
 
 
@@ -42,12 +45,12 @@ if (entity.Derived != null && entity.Base == null)
 {
     attributeStringBuilder.Append(Environment.NewLine);
     attributeStringBuilder.Append("    ");
-    attributeStringBuilder.Append("[JsonConverter(typeof(DerivedTypeConverter))]");
+    attributeStringBuilder.AppendFormat("[JsonConverter(typeof({0}))]", derivedTypeConverterTypeName);
 }
 
 #>
 
-namespace <#=entity.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;
