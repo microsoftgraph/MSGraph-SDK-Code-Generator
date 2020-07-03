@@ -136,19 +136,23 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
     var propertyType = this.GetPropertyTypeName(odcmProperty, @namespace);
 
+    var serviceExceptionTypeName = @namespace.GetMiddlewareTypeName("ServiceException");
+    var errorTypeName = @namespace.GetMiddlewareTypeName("Error");
+    var referenceRequestBodyTypeName = @namespace.GetMiddlewareTypeName("ReferenceRequestBody");
+
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
     var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType();
 	if (serviceNavigationProperty == null)
 		return string.Empty;
-	
+
 	var implicitNavigationProperty = string.Empty;
-	
-	// If the odcmProperty is a part of Singleton, then we need to determine whether there is a  
-	// NavigationPropertyBinding generation hint. If there is, then we need to use it for 
-	// creating the URL of a reference entity in a POST body. 
-	if (serviceNavigationProperty.GetType() == typeof(OdcmSingleton)) 
+
+	// If the odcmProperty is a part of Singleton, then we need to determine whether there is a
+	// NavigationPropertyBinding generation hint. If there is, then we need to use it for
+	// creating the URL of a reference entity in a POST body.
+	if (serviceNavigationProperty.GetType() == typeof(OdcmSingleton))
 	    implicitNavigationProperty = "/" + odcmProperty.GetImplicitPropertyName((OdcmSingleton)serviceNavigationProperty);
 
     var stringBuilder = new StringBuilder();
@@ -186,12 +190,12 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("                throw new ServiceException(new Error { Code = \"invalidRequest\", Message = \"ID is required to add a reference.\" });");
+    stringBuilder.AppendFormat("                throw new {0}(new {1} { Code = \"invalidRequest\", Message = \"ID is required to add a reference.\" });", serviceExceptionTypeName, errorTypeName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            }");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var requestBody = new ReferenceRequestBody {{ ODataId = string.Format(\"{{0}}/{0}{1}/{{1}}\", this.Client.BaseUrl, {2}.Id) }};", serviceNavigationProperty.Name, implicitNavigationProperty, sanitizedPropertyName);
+    stringBuilder.AppendFormat("            var requestBody = new {0} {{ ODataId = string.Format(\"{{1}}/{1}{2}/{{2}}\", this.Client.BaseUrl, {2}.Id) }};", referenceRequestBodyTypeName, serviceNavigationProperty.Name, implicitNavigationProperty, sanitizedPropertyName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            return this.SendAsync(requestBody, cancellationToken);");
     stringBuilder.Append(Environment.NewLine);
