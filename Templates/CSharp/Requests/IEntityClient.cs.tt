@@ -41,7 +41,7 @@ namespace <#=@namespace#>
         /// <summary>
         /// Gets the <#=propName#> request builder.
         /// </summary>
-        <#=iRequestBuilder#>> <#=sanitizedPropName#> { get; }
+        <#=iRequestBuilder#> <#=sanitizedPropName#> { get; }
     <#
         }
     }
