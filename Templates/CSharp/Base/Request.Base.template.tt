@@ -5,7 +5,7 @@
 
 public string GetClassDefinition(string className, string @namespace)
 {
-    var baseRequestTypeName = @namespace.GetCoreLibraryName("BaseRequest");
+    var baseRequestTypeName = @namespace.GetCoreLibraryType("BaseRequest");
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append("/// <summary>");
@@ -21,8 +21,8 @@ public string GetClassDefinition(string className, string @namespace)
 
 public string GetConstructor(string instanceTypeName, string @namespace)
 {
-    var iBaseClientTypeName = @namespace.GetCoreLibraryName("IBaseClient");
-    var optionTypeName = @namespace.GetCoreLibraryName("Option");
+    var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
+    var optionTypeName = @namespace.GetCoreLibraryType("Option");
 
     var stringBuilder = new StringBuilder();
 

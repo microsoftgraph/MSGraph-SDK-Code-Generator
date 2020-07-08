@@ -7,7 +7,7 @@ OdcmClass entity = host.CurrentType.AsOdcmClass();
 var entityName = entity.Name.ToCheckedCase();
 
 var @namespace = entity.Namespace.GetNamespaceName();
-var derivedTypeConverterTypeName = @namespace.GetCoreLibraryName("DerivedTypeConverter");
+var derivedTypeConverterTypeName = @namespace.GetCoreLibraryType("DerivedTypeConverter");
 
 var typeDeclaration = entityName;
 
