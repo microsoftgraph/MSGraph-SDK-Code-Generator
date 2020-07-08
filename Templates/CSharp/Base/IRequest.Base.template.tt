@@ -5,7 +5,7 @@
 
 public string GetInterfaceDefinition(string interfaceName, string @namespace)
 {
-    var iBaseRequestTypeName = @namespace.GetCoreLibraryName("IBaseRequest");
+    var iBaseRequestTypeName = @namespace.GetCoreLibraryType("IBaseRequest");
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append("/// <summary>");

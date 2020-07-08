@@ -5,8 +5,8 @@
 var prop = host.CurrentType.AsOdcmProperty();
 var @namespace = this.GetNamespaceName(prop.Class.AsOdcmClass());
 
-var queryOptionTypeName = @namespace.GetCoreLibraryName("QueryOption");
-var expressionExtractHelperTypeName = @namespace.GetCoreLibraryName("ExpressionExtractHelper");
+var queryOptionTypeName = @namespace.GetCoreLibraryType("QueryOption");
+var expressionExtractHelperTypeName = @namespace.GetCoreLibraryType("ExpressionExtractHelper");
 
 var innerEntityType = prop.GetTypeString(@namespace);
 if (innerEntityType.EndsWith("Request"))

@@ -7,7 +7,7 @@ var method = host.CurrentType.AsOdcmMethod();
 var @namespace = method.Namespace.GetNamespaceName();
 var entityName = method.Class.Name.ToCheckedCase();
 
-var iBaseRequestTypeName = @namespace.GetCoreLibraryName("IBaseRequest");
+var iBaseRequestTypeName = @namespace.GetCoreLibraryType("IBaseRequest");
 
 var isFunction = method.IsFunction;
 var isAction = !isFunction;

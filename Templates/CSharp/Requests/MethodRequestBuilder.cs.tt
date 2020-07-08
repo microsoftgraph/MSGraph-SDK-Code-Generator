@@ -14,9 +14,9 @@ var requestBuilderType = requestType + "Builder";
 var isPost = method.IsAction() && method.Parameters != null && method.Parameters.Any();
 var methodType = method.IsFunction ? "Function" : "Action";
 
-var baseMethodRequestBuilderTypeName = @namespace.GetCoreLibraryName("Base" + methodType + "MethodRequestBuilder");
-var iBaseClientTypeName = @namespace.GetCoreLibraryName("IBaseClient");
-var optionTypeName = @namespace.GetCoreLibraryName("Option");
+var baseMethodRequestBuilderTypeName = @namespace.GetCoreLibraryType("Base" + methodType + "MethodRequestBuilder");
+var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
+var optionTypeName = @namespace.GetCoreLibraryType("Option");
 
 // Overloads are determined based on the name of method and the type of the binding parameter.
 // There is no differentiation between an entity, and a collection of the same entities.
