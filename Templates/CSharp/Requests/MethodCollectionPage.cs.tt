@@ -6,7 +6,7 @@
 var method = host.CurrentType.AsOdcmMethod();
 var @namespace = method.Namespace.GetNamespaceName();
 
-var collectionPageTypeName = @namespace.GetMiddlewareTypeName("CollectionPage");
+var collectionPageTypeName = @namespace.GetCoreLibraryName("CollectionPage");
 
 var returnType = method.ReturnType.GetTypeString(@namespace);
 

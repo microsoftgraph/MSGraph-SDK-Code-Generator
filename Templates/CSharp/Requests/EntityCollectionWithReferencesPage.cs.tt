@@ -6,7 +6,7 @@
 var prop = host.CurrentType.AsOdcmProperty();
 var @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 
-var collectionPageTypeName = @namespace.GetMiddlewareTypeName("CollectionPage");
+var collectionPageTypeName = @namespace.GetCoreLibraryName("CollectionPage");
 
 var innerEntity = prop.Projection.Type;
 var innerEntityType = innerEntity.GetTypeString(@namespace);

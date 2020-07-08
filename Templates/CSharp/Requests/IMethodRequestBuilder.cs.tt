@@ -6,7 +6,7 @@
 var method = host.CurrentType.AsOdcmMethod();
 var @namespace = method.Namespace.GetNamespaceName();
 
-var optionTypeName = @namespace.GetMiddlewareTypeName("Option");
+var optionTypeName = @namespace.GetCoreLibraryName("Option");
 
 var entityName = method.Class.Name.ToCheckedCase();
 var requestType = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase() + "Request";

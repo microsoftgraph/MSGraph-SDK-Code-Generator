@@ -9,7 +9,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
     {
         OdcmModel Model { get; set; }
         string WritePath(ITemplateInfo template, string entityTypeName);
-
         string WritePath(ITemplateInfo template, string @namespace, string entityTypeName);
     }
 }

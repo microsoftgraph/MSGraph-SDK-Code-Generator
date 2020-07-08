@@ -136,9 +136,9 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
     var propertyType = this.GetPropertyTypeName(odcmProperty, @namespace);
 
-    var serviceExceptionTypeName = @namespace.GetMiddlewareTypeName("ServiceException");
-    var errorTypeName = @namespace.GetMiddlewareTypeName("Error");
-    var referenceRequestBodyTypeName = @namespace.GetMiddlewareTypeName("ReferenceRequestBody");
+    var serviceExceptionTypeName = @namespace.GetCoreLibraryName("ServiceException");
+    var errorTypeName = @namespace.GetCoreLibraryName("Error");
+    var referenceRequestBodyTypeName = @namespace.GetCoreLibraryName("ReferenceRequestBody");
 
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;

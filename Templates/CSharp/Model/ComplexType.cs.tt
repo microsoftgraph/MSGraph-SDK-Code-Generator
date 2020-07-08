@@ -7,7 +7,7 @@ OdcmClass complex = host.CurrentType.AsOdcmClass();
 var complexTypeName = complex.Name.ToCheckedCase();
 
 var @namespace = complex.Namespace.GetNamespaceName();
-var derivedTypeConverterTypeName = @namespace.GetMiddlewareTypeName("DerivedTypeConverter");
+var derivedTypeConverterTypeName = @namespace.GetCoreLibraryName("DerivedTypeConverter");
 
 var typeDeclaration = complexTypeName;
 

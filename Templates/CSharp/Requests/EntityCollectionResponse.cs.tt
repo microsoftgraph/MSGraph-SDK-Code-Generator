@@ -6,7 +6,7 @@
 var prop = host.CurrentType.AsOdcmProperty();
 var @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 
-var derivedTypeConverterTypeName = @namespace.GetMiddlewareTypeName("DerivedTypeConverter");
+var derivedTypeConverterTypeName = @namespace.GetCoreLibraryName("DerivedTypeConverter");
 
 var entityName = prop.Class.Name.ToCheckedCase();
 var propName = prop.Name.ToCheckedCase();

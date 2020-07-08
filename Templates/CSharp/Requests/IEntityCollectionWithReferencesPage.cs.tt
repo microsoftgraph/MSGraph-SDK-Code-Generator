@@ -6,9 +6,9 @@
 var prop = host.CurrentType.AsOdcmProperty();
 var @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 
-var interfaceConverterTypeName = @namespace.GetMiddlewareTypeName("InterfaceConverter");
-var iCollectionPageTypeName = @namespace.GetMiddlewareTypeName("ICollectionPage");
-var iBaseClientTypeName = @namespace.GetMiddlewareTypeName("IBaseClient");
+var interfaceConverterTypeName = @namespace.GetCoreLibraryName("InterfaceConverter");
+var iCollectionPageTypeName = @namespace.GetCoreLibraryName("ICollectionPage");
+var iBaseClientTypeName = @namespace.GetCoreLibraryName("IBaseClient");
 
 var innerEntityType = prop.GetTypeString(@namespace);
 var entityCollectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
