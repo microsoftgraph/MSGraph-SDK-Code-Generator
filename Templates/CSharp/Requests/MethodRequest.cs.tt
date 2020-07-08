@@ -6,10 +6,10 @@
 var method = host.CurrentType.AsOdcmMethod();
 var @namespace = method.Namespace.GetNamespaceName();
 
-var queryOptionTypeName = @namespace.GetMiddlewareTypeName("QueryOption");
-var baseRequestTypeName = @namespace.GetMiddlewareTypeName("BaseRequest");
-var iBaseClientTypeName = @namespace.GetMiddlewareTypeName("IBaseClient");
-var optionTypeName = @namespace.GetMiddlewareTypeName("Option");
+var queryOptionTypeName = @namespace.GetCoreLibraryName("QueryOption");
+var baseRequestTypeName = @namespace.GetCoreLibraryName("BaseRequest");
+var iBaseClientTypeName = @namespace.GetCoreLibraryName("IBaseClient");
+var optionTypeName = @namespace.GetCoreLibraryName("Option");
 
 var entityName = method.Class.Name.ToCheckedCase();
 

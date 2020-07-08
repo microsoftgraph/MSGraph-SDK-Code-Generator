@@ -22,6 +22,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
             return filePath;
         }
 
+        /// <summary>
+        /// Determines write location for generated files
+        /// </summary>
+        /// <param name="template">template</param>
+        /// <param name="namespace">namespaces of the file that is to be written</param>
+        /// <param name="baseFileName">file name</param>
+        /// <returns>Full path where the generated file needs to be written</returns>
         public override string WritePath(ITemplateInfo template, string @namespace, string baseFileName)
         {
             //switch from models_generated to models.

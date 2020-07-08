@@ -6,9 +6,9 @@
 var method = host.CurrentType.AsOdcmMethod();
 var @namespace = method.Namespace.GetNamespaceName();
 
-var interfaceConverterTypeName = @namespace.GetMiddlewareTypeName("InterfaceConverter");
-var iCollectionPageTypeName = @namespace.GetMiddlewareTypeName("ICollectionPage");
-var iBaseClientTypeName = @namespace.GetMiddlewareTypeName("IBaseClient");
+var interfaceConverterTypeName = @namespace.GetCoreLibraryName("InterfaceConverter");
+var iCollectionPageTypeName = @namespace.GetCoreLibraryName("ICollectionPage");
+var iBaseClientTypeName = @namespace.GetCoreLibraryName("IBaseClient");
 
 var returnType = method.ReturnType.GetTypeString(@namespace);
 

@@ -8,6 +8,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Vipr.Core.CodeModel;
     using NLog;
+    using System.Linq;
 
     public static class TypeHelperCSharp
     {
@@ -163,6 +164,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return GetTypeString(property.Projection.Type);
         }
 
+        /// <summary>
+        /// Determines whether the type needs fully qualified name or simple type name in the given namespace context
+        /// </summary>
+        /// <param name="type">type</param>
+        /// <param name="namespaceContext">namespace where type is referenced</param>
+        /// <param name="format">a generated type format, such as I{0}RequestBuilder</param>
+        /// <returns>Either the fully qualified or plain type name</returns>
         public static string GetTypeString(this OdcmType type, string namespaceContext, string format = null)
         {
             var typesNamespace = type.Namespace.GetNamespaceName().Replace("edm.", "");
@@ -191,6 +199,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             }
         }
 
+        /// <summary>
+        /// Wrapper for GetTypeString for property input
+        /// </summary>
+        /// <param name="property">property whose type needs to be resolved</param>
+        /// <param name="namespaceContext">namespace where property is referenced</param>
+        /// <param name="format">a generated type format, such as I{0}RequestBuilder</param>
+        /// <returns>Either the fully qualified or plain type name</returns>
         public static string GetTypeString(this OdcmProperty property, string namespaceContext, string format = null)
         {
             return property.Projection.Type.GetTypeString(namespaceContext, format);
@@ -201,28 +216,41 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return property.Projection.Type.IsTypeNullable();
         }
 
-        // converts from Microsoft.Graph.CallRecords.Class to Microsoft.Graph.CallRecords.IClass
+        /// <summary>
+        /// converts from Microsoft.Graph.CallRecords.Class to Microsoft.Graph.CallRecords.IClass
+        /// </summary>
+        /// <param name="class">Class name (which can be fully qualified with namespaces)</param>
+        /// <returns>Interface name</returns>
         public static string ClassToInterface(this string @class)
         {
-            var split = @class.Split('.');
-            var interfaceStringBuilder = new StringBuilder();
-            for (int i = 0; i < split.Length - 1; i++)
+            if (@class == null)
             {
-                interfaceStringBuilder.Append($"{split[i]}.");
+                throw new ArgumentNullException(nameof(@class));
             }
 
-            interfaceStringBuilder.Append($"I{split[split.Length - 1]}");
-            return interfaceStringBuilder.ToString();
+            var split = @class.Split('.');
+            split[split.Length - 1] = $"I{split.Last()}";
+            return string.Join(".", split);
         }
 
+        /// <summary>
+        /// Gets the class' namespace where the property appears
+        /// </summary>
+        /// <param name="property">property</param>
+        /// <returns>Namespace where class of a property belongs to</returns>
         public static string GetClassNamespace(this OdcmProperty property)
         {
-            return property.Class.AsOdcmClass().GetNamespaceName();
+            return property?.Class?.AsOdcmClass()?.GetNamespaceName();
         }
 
+        /// <summary>
+        /// Gets namespace of a class
+        /// </summary>
+        /// <param name="odcmClass">odcm class</param>
+        /// <returns>Namespace of a class</returns>
         public static string GetNamespaceName(this OdcmClass odcmClass)
         {
-            return odcmClass.Namespace.GetNamespaceName();
+            return odcmClass?.Namespace?.GetNamespaceName();
         }
 
         public static bool IsTypeNullable(this OdcmType type)
@@ -371,15 +399,22 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return type.Name.Substring(0, index).ToLower() + type.Name.Substring(index);
         }
 
-        public static string GetMiddlewareTypeName(this string namespaceContext, string typeName)
+        /// <summary>
+        /// If the type appears in Microsoft.Graph namespace, use plain type name
+        /// otherwise use fully qualified type name.
+        /// </summary>
+        /// <param name="namespace">Namespace where type appears</param>
+        /// <param name="type">type</param>
+        /// <returns>Either the fully qualified or plain type name for core library types</returns>
+        public static string GetCoreLibraryType(this string @namespace, string type)
         {
-            if (namespaceContext == "Microsoft.Graph")
+            if (@namespace == "Microsoft.Graph")
             {
-                return typeName;
+                return type;
             }
             else
             {
-                return $"Microsoft.Graph.{typeName}";
+                return $"Microsoft.Graph.{type}";
             }
         }
     }

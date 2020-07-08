@@ -7,7 +7,7 @@ var enumT = host.CurrentType.AsOdcmEnum();
 var enumName = enumT.Name.ToCheckedCase();
 var @namespace = enumT.Namespace.GetNamespaceName();
 
-var enumConverterTypeName = @namespace.GetMiddlewareTypeName("EnumConverter");
+var enumConverterTypeName = @namespace.GetCoreLibraryName("EnumConverter");
 #>
 
 namespace <#=enumT.Namespace.GetNamespaceName()#>

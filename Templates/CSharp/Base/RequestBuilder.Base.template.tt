@@ -5,7 +5,7 @@
 
 public string GetClassDefinition(string className, string @namespace)
 {
-    var baseRequestBuilderTypeName = @namespace.GetMiddlewareTypeName("BaseRequestBuilder");
+    var baseRequestBuilderTypeName = @namespace.GetCoreLibraryName("BaseRequestBuilder");
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append("/// <summary>");
@@ -22,7 +22,7 @@ public string GetClassDefinition(string className, string @namespace)
 public string GetEntityClassDefinition(OdcmClass entity)
 {
     var @namespace = entity.GetNamespaceName();
-    var baseRequestBuilderTypeName = @namespace.GetMiddlewareTypeName("BaseRequestBuilder");
+    var baseRequestBuilderTypeName = @namespace.GetCoreLibraryName("BaseRequestBuilder");
 
     string typeDeclaration = null;
     var className = this.GetEntityRequestBuilderName(entity);
@@ -52,7 +52,7 @@ public string GetEntityClassDefinition(OdcmClass entity)
 
 public string GetConstructor(string instanceTypeName, string @namespace)
 {
-    var iBaseClientTypeName = @namespace.GetMiddlewareTypeName("IBaseClient");
+    var iBaseClientTypeName = @namespace.GetCoreLibraryName("IBaseClient");
 
     var stringBuilder = new StringBuilder();
 
@@ -107,7 +107,7 @@ public string GetRequestMethod(string requestTypeName, bool includeNewKeyword = 
 
 public string GetRequestMethodWithOptions(string requestTypeName, string @namespace, bool includeNewKeyword = false)
 {
-    var optionTypeName = @namespace.GetMiddlewareTypeName("Option");
+    var optionTypeName = @namespace.GetCoreLibraryName("Option");
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append(this.GetRequestMethodWithOptionsHeader());
