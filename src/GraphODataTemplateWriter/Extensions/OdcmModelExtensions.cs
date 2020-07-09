@@ -227,21 +227,22 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         ///    the singleton. Generate a reference path to the item (ie "singleton/item/$ref").
         /// 4. If none of the above pertain to the navigation property, it should be treated as a metadata error.
         /// </summary>
-        public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty)
+        public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty, OdcmModel model)
         {
             // Try to find the first collection navigation property for the specified type directly on the service
             // class object. If an entity is used in a reference property a navigation collection
             // on the client for that type is required.
             try
             {
-                var explicitProperty = odcmProperty
-                    .Class
-                    .Namespace
-                    .Classes
-                    .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
-                    .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
-                    .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
-                    .FirstOrDefault();
+                var explicitProperty = GetOdcmNamespaces(model)
+                    .SelectMany(
+                        @namespace =>
+                        @namespace
+                        .Classes
+                        .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                        .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
+                        .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
+                    ).FirstOrDefault();
 
                 if (explicitProperty != null)
                     return explicitProperty;
@@ -249,24 +250,25 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 // Check the singletons for a matching implicit EntitySet
                 else
                 {
-                    var implicitProperty = odcmProperty
-                        .Class
-                        .Namespace
-                        .Classes
-                        .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
-                        .First()
-                        .Properties
-                        .Where(property => property.GetType() == typeof(OdcmSingleton)) //Get the list of singletons defined by the service
-                        .Where(singleton => singleton
-                            .Type
-                            .AsOdcmClass()
+                    var implicitProperty = GetOdcmNamespaces(model)
+                        .SelectMany(
+                            @namespace =>
+                            @namespace
+                            .Classes
+                            .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                            .First()
                             .Properties
-                            //Find navigation properties on the singleton that are self-contained (implicit EntitySets) that match the type
-                            //we are searching for
-                            .Where(prop => prop.ContainsTarget == true && prop.Type.Name == odcmProperty.Type.Name)
-                            .FirstOrDefault() != null
-                         )
-                         .FirstOrDefault();
+                            .Where(property => property.GetType() == typeof(OdcmSingleton)) //Get the list of singletons defined by the service
+                            .Where(singleton => singleton
+                                .Type
+                                .AsOdcmClass()
+                                .Properties
+                                //Find navigation properties on the singleton that are self-contained (implicit EntitySets) that match the type
+                                //we are searching for
+                                .Where(prop => prop.ContainsTarget == true && prop.Type.Name == odcmProperty.Type.Name)
+                                .FirstOrDefault() != null
+                             )
+                         ).FirstOrDefault();
 
                     if (implicitProperty != null)
                         return implicitProperty;

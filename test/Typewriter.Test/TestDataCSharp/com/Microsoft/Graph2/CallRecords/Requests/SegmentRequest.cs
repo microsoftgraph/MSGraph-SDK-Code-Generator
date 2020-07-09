@@ -231,6 +231,28 @@ namespace Microsoft.Graph2.CallRecords
         private void InitializeCollectionProperties(Segment segmentToInitialize)
         {
 
+            if (segmentToInitialize != null && segmentToInitialize.AdditionalData != null)
+            {
+
+                if (segmentToInitialize.RefTypes != null && segmentToInitialize.RefTypes.CurrentPage != null)
+                {
+                    segmentToInitialize.RefTypes.AdditionalData = segmentToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    segmentToInitialize.AdditionalData.TryGetValue("refTypes@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        segmentToInitialize.RefTypes.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+            }
+
+
         }
     }
 }

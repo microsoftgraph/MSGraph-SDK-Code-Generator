@@ -7,6 +7,7 @@ var prop = host.CurrentType.AsOdcmProperty();
 var @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 
 var collectionPageTypeName = @namespace.GetCoreLibraryType("CollectionPage");
+var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
 
 var innerEntity = prop.Projection.Type;
 var innerEntityType = innerEntity.GetTypeString(@namespace);
@@ -32,7 +33,7 @@ namespace <#=@namespace#>
         /// <summary>
         /// Initializes the NextPageRequest property.
         /// </summary>
-        public void InitializeNextPageRequest(IBaseClient client, string nextPageLinkString)
+        public void InitializeNextPageRequest(<#=iBaseClientTypeName#> client, string nextPageLinkString)
         {
             if (!string.IsNullOrEmpty(nextPageLinkString))
             {

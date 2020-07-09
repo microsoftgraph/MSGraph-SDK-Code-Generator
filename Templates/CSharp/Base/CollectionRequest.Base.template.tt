@@ -143,7 +143,7 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
-    var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType();
+    var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel);
 	if (serviceNavigationProperty == null)
 		return string.Empty;
 
@@ -190,12 +190,12 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("                throw new {0}(new {1} { Code = \"invalidRequest\", Message = \"ID is required to add a reference.\" });", serviceExceptionTypeName, errorTypeName);
+    stringBuilder.AppendFormat("                throw new {0}(new {1} {{ Code = \"invalidRequest\", Message = \"ID is required to add a reference.\" }});", serviceExceptionTypeName, errorTypeName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            }");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var requestBody = new {0} {{ ODataId = string.Format(\"{{1}}/{1}{2}/{{2}}\", this.Client.BaseUrl, {2}.Id) }};", referenceRequestBodyTypeName, serviceNavigationProperty.Name, implicitNavigationProperty, sanitizedPropertyName);
+    stringBuilder.AppendFormat("            var requestBody = new {0} {{ ODataId = string.Format(\"{{1}}/{1}{2}/{{2}}\", this.Client.BaseUrl, {3}.Id) }};", referenceRequestBodyTypeName, serviceNavigationProperty.Name, implicitNavigationProperty, sanitizedPropertyName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            return this.SendAsync(requestBody, cancellationToken);");
     stringBuilder.Append(Environment.NewLine);

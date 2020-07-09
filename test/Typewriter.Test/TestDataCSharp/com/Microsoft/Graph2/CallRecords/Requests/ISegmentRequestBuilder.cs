@@ -32,6 +32,12 @@ namespace Microsoft.Graph2.CallRecords
         new ISegmentRequest Request(IEnumerable<Microsoft.Graph.Option> options);
     
         /// <summary>
+        /// Gets the request builder for RefTypes.
+        /// </summary>
+        /// <returns>The <see cref="ISegmentRefTypesCollectionWithReferencesRequestBuilder"/>.</returns>
+        ISegmentRefTypesCollectionWithReferencesRequestBuilder RefTypes { get; }
+    
+        /// <summary>
         /// Gets the request builder for SegmentForward.
         /// </summary>
         /// <returns>The <see cref="ISegmentForwardRequestBuilder"/>.</returns>
