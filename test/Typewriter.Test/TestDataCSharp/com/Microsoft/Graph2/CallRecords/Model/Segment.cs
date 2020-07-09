@@ -66,6 +66,12 @@ namespace Microsoft.Graph2.CallRecords
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "media", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<Media> Media { get; set; }
     
+        /// <summary>
+        /// Gets or sets ref types.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "refTypes", Required = Newtonsoft.Json.Required.Default)]
+        public ISegmentRefTypesCollectionWithReferencesPage RefTypes { get; set; }
+    
     }
 }
 

@@ -51,6 +51,18 @@ namespace Microsoft.Graph2.CallRecords
         }
     
         /// <summary>
+        /// Gets the request builder for RefTypes.
+        /// </summary>
+        /// <returns>The <see cref="ISegmentRefTypesCollectionWithReferencesRequestBuilder"/>.</returns>
+        public ISegmentRefTypesCollectionWithReferencesRequestBuilder RefTypes
+        {
+            get
+            {
+                return new SegmentRefTypesCollectionWithReferencesRequestBuilder(this.AppendSegmentToRequestUrl("refTypes"), this.Client);
+            }
+        }
+    
+        /// <summary>
         /// Gets the request builder for SegmentForward.
         /// </summary>
         /// <returns>The <see cref="ISegmentForwardRequestBuilder"/>.</returns>

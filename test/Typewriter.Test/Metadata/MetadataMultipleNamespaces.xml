@@ -192,6 +192,7 @@
         <Property Name="callee" Type="microsoft.graph2.callRecords.endpoint" />
         <Property Name="failureInfo" Type="microsoft.graph2.callRecords.failureInfo" />
         <Property Name="media" Type="Collection(microsoft.graph2.callRecords.media)" />
+        <NavigationProperty Name="refTypes" Type="Collection(graph.entityType3)" />
       </EntityType>
       <ComplexType Name="endpoint">
         <Property Name="userAgent" Type="microsoft.graph2.callRecords.userAgent" />

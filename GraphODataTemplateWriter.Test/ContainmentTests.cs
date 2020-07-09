@@ -57,7 +57,7 @@ namespace GraphODataTemplateWriter.Test
             var type = model.GetEntityTypes().Where(t => t.Name == "testEntity").First();
             var prop = type.Properties.Where(p => p.Name == "testNav").First();
 
-            OdcmProperty result = OdcmModelExtensions.GetServiceCollectionNavigationPropertyForPropertyType(prop);
+            OdcmProperty result = OdcmModelExtensions.GetServiceCollectionNavigationPropertyForPropertyType(prop, model);
             var singleton = model.GetEntityTypes().Where(t => t.Name == "testSingleton").First();
             Assert.AreEqual(singleton.Name, result.Name);
         }
@@ -72,7 +72,7 @@ namespace GraphODataTemplateWriter.Test
             var type = model.GetEntityTypes().Where(t => t.Name == "testEntity").First();
             var prop = type.Properties.Where(p => p.Name == "testInvalidNav").First(); ;
 
-            OdcmProperty result = OdcmModelExtensions.GetServiceCollectionNavigationPropertyForPropertyType(prop);
+            OdcmProperty result = OdcmModelExtensions.GetServiceCollectionNavigationPropertyForPropertyType(prop, model);
             Assert.IsNull(result);
         }
 
@@ -86,7 +86,7 @@ namespace GraphODataTemplateWriter.Test
             var type = model.GetEntityTypes().Where(t => t.Name == "testEntity").First();
             var prop = type.Properties.Where(p => p.Name == "testExplicitNav").First();
 
-            OdcmProperty result = OdcmModelExtensions.GetServiceCollectionNavigationPropertyForPropertyType(prop);
+            OdcmProperty result = OdcmModelExtensions.GetServiceCollectionNavigationPropertyForPropertyType(prop, model);
             
             var entitySet = model.EntityContainer.Properties.Where(t => t.Name == "testTypes").First();
             Assert.AreEqual(entitySet.Name, result.Name);
