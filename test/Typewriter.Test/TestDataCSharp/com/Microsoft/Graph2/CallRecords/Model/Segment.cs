@@ -72,6 +72,12 @@ namespace Microsoft.Graph2.CallRecords
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "refTypes", Required = Newtonsoft.Json.Required.Default)]
         public ISegmentRefTypesCollectionWithReferencesPage RefTypes { get; set; }
     
+        /// <summary>
+        /// Gets or sets ref type.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "refType", Required = Newtonsoft.Json.Required.Default)]
+        public Microsoft.Graph.Call RefType { get; set; }
+    
     }
 }
 

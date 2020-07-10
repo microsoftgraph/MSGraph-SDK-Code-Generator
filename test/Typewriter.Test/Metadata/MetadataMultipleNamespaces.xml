@@ -193,6 +193,7 @@
         <Property Name="failureInfo" Type="microsoft.graph2.callRecords.failureInfo" />
         <Property Name="media" Type="Collection(microsoft.graph2.callRecords.media)" />
         <NavigationProperty Name="refTypes" Type="Collection(graph.entityType3)" />
+        <NavigationProperty Name="refType" Type="graph.call" /> <!-- No ContainsTarget -->
       </EntityType>
       <ComplexType Name="endpoint">
         <Property Name="userAgent" Type="microsoft.graph2.callRecords.userAgent" />
