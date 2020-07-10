@@ -48,6 +48,12 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <returns>The <see cref="ISessionWithReferenceRequestBuilder"/>.</returns>
         ISessionWithReferenceRequestBuilder SessionRef { get; }
+
+        /// <summary>
+        /// Gets the request builder for Photo.
+        /// </summary>
+        /// <returns>The <see cref="IPhotoRequestBuilder"/>.</returns>
+        IPhotoRequestBuilder Photo { get; }
     
         /// <summary>
         /// Gets the request builder for SegmentForward.
@@ -59,6 +65,12 @@ namespace Microsoft.Graph2.CallRecords
             IEnumerable<Session> MultipleSessions,
             Session SingleSession,
             string Comment = null);
+
+        /// <summary>
+        /// Gets the request builder for SegmentTestAction.
+        /// </summary>
+        /// <returns>The <see cref="ISegmentTestActionRequestBuilder"/>.</returns>
+        ISegmentTestActionRequestBuilder TestAction();
     
     }
 }

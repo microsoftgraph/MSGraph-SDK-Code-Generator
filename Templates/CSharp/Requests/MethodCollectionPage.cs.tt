@@ -7,6 +7,7 @@ var method = host.CurrentType.AsOdcmMethod();
 var @namespace = method.Namespace.GetNamespaceName();
 
 var collectionPageTypeName = @namespace.GetCoreLibraryType("CollectionPage");
+var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
 
 var returnType = method.ReturnType.GetTypeString(@namespace);
 
@@ -31,7 +32,7 @@ namespace <#=@namespace#>
         /// <summary>
         /// Initializes the NextPageRequest property.
         /// </summary>
-        public void InitializeNextPageRequest(IBaseClient client, string nextPageLinkString)
+        public void InitializeNextPageRequest(<#=iBaseClientTypeName#> client, string nextPageLinkString)
         {
             if (!string.IsNullOrEmpty(nextPageLinkString))
             {

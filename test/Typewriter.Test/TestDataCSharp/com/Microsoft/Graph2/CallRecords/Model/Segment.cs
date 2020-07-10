@@ -84,6 +84,12 @@ namespace Microsoft.Graph2.CallRecords
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sessionRef", Required = Newtonsoft.Json.Required.Default)]
         public Session SessionRef { get; set; }
     
+        /// <summary>
+        /// Gets or sets photo.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "photo", Required = Newtonsoft.Json.Required.Default)]
+        public Photo Photo { get; set; }
+    
     }
 }
 

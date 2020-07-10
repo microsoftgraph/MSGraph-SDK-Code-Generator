@@ -195,6 +195,10 @@
         <NavigationProperty Name="refTypes" Type="Collection(graph.entityType3)" />
         <NavigationProperty Name="refType" Type="graph.call" /> <!-- No ContainsTarget -->
         <NavigationProperty Name="sessionRef" Type="microsoft.graph2.callRecords.session" /> <!-- No ContainsTarget -->
+        <NavigationProperty Name="photo" Type="microsoft.graph2.callRecords.photo" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="photo" BaseType="graph.entity" HasStream="true">
+        <Property Name="failureInfo" Type="microsoft.graph2.callRecords.failureInfo" />
       </EntityType>
       <ComplexType Name="endpoint">
         <Property Name="userAgent" Type="microsoft.graph2.callRecords.userAgent" />
@@ -261,6 +265,10 @@
         <Parameter Name="MultipleSessions" Type="Collection(microsoft.graph2.callRecords.session)" Nullable="false" />
         <Parameter Name="SingleSession" Type="microsoft.graph2.callRecords.session" Nullable="false" />
         <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+      </Action>
+      <Action Name="testAction" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph2.callRecords.segment" />
+        <ReturnType Type="Collection(microsoft.graph2.callRecords.session)" />
       </Action>
     </Schema>
   </edmx:DataServices>

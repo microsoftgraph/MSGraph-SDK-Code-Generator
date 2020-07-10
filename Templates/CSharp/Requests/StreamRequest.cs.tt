@@ -27,10 +27,16 @@ else
 
     propRequest = propClass + prop.Name.ToCheckedCase() + "Request";
 }
-	if (propClass.EndsWith("Request"))
-	{
-		propClass = String.Concat(propClass, "Object");
-	}
+
+var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
+var optionTypeName = @namespace.GetCoreLibraryType("Option");
+var baseRequestTypeName = @namespace.GetCoreLibraryType("BaseRequest");
+var iHttpProviderTypeName = @namespace.GetCoreLibraryType("IHttpProvider");
+
+if (propClass.EndsWith("Request"))
+{
+    propClass = String.Concat(propClass, "Object");
+}
 #>
 
 namespace <#=@namespace#>
@@ -43,18 +49,18 @@ namespace <#=@namespace#>
     /// <summary>
     /// The type <#=propRequest#>.
     /// </summary>
-    public partial class <#=propRequest#> : BaseRequest, I<#=propRequest#>
+    public partial class <#=propRequest#> : <#=baseRequestTypeName#>, I<#=propRequest#>
     {
         /// <summary>
         /// Constructs a new <#=propRequest#>.
         /// <param name="requestUrl">The request URL.</param>
-        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="client">The <see cref="<#=iBaseClientTypeName#>"/> for handling requests.</param>
         /// <param name="options">Query option name value pairs for the request.</param>
         /// </summary>
         public <#=propRequest#>(
             string requestUrl,
-            IBaseClient client,
-            IEnumerable<Option> options)
+            <#=iBaseClientTypeName#> client,
+            IEnumerable<<#=optionTypeName#>> options)
             : base(requestUrl, client, options)
         {
         }
@@ -72,7 +78,7 @@ namespace <#=@namespace#>
         /// Gets the stream.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="<#=iHttpProviderTypeName#>"/> on send.</param>
         /// <returns>The stream.</returns>
         public System.Threading.Tasks.Task<Stream> GetAsync(CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
@@ -101,7 +107,7 @@ namespace <#=@namespace#>
         /// <typeparam name="T">The type returned by the PUT call.</typeparam>
         /// <param name="<#=propName#>">The stream to PUT.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="<#=iHttpProviderTypeName#>"/> on send.</param>
         /// <returns>The object returned by the PUT call.</returns>
         public System.Threading.Tasks.Task<T> PutAsync<T>(Stream <#=propName#>, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : <#=propClass#>
         {
@@ -130,7 +136,7 @@ namespace <#=@namespace#>
         /// </summary>
         /// <param name="<#=propName#>">The stream to PUT.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="<#=iHttpProviderTypeName#>"/> on send.</param>
         /// <returns>The updated stream.</returns>
         public System.Threading.Tasks.Task<Stream> PutAsync(Stream <#=propName#>, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
