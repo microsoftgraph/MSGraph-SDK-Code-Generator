@@ -30,6 +30,8 @@ else
     @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 }
 
+var optionTypeName = @namespace.GetCoreLibraryType("Option");
+
 #>
 
 namespace <#=@namespace#>
@@ -46,6 +48,6 @@ namespace <#=@namespace#>
         /// </summary>
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
-        I<#=propRequest#> Request(IEnumerable<Option> options = null);
+        I<#=propRequest#> Request(IEnumerable<<#=optionTypeName#>> options = null);
     }
 }
