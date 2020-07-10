@@ -194,6 +194,7 @@
         <Property Name="media" Type="Collection(microsoft.graph2.callRecords.media)" />
         <NavigationProperty Name="refTypes" Type="Collection(graph.entityType3)" />
         <NavigationProperty Name="refType" Type="graph.call" /> <!-- No ContainsTarget -->
+        <NavigationProperty Name="sessionRef" Type="microsoft.graph2.callRecords.session" /> <!-- No ContainsTarget -->
       </EntityType>
       <ComplexType Name="endpoint">
         <Property Name="userAgent" Type="microsoft.graph2.callRecords.userAgent" />
