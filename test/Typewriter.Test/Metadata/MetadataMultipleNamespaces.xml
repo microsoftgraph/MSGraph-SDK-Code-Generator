@@ -197,8 +197,10 @@
         <NavigationProperty Name="sessionRef" Type="microsoft.graph2.callRecords.session" /> <!-- No ContainsTarget -->
         <NavigationProperty Name="photo" Type="microsoft.graph2.callRecords.photo" ContainsTarget="true" />
       </EntityType>
+      <EntityType Name="option" BaseType="graph.entity" />
       <EntityType Name="photo" BaseType="graph.entity" HasStream="true">
         <Property Name="failureInfo" Type="microsoft.graph2.callRecords.failureInfo" />
+        <Property Name="option" Type="microsoft.graph2.callRecords.option" />
       </EntityType>
       <ComplexType Name="endpoint">
         <Property Name="userAgent" Type="microsoft.graph2.callRecords.userAgent" />

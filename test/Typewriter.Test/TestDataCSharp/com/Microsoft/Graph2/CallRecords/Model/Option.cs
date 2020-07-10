@@ -16,32 +16,20 @@ namespace Microsoft.Graph2.CallRecords
     using Newtonsoft.Json;
 
     /// <summary>
-    /// The type Photo.
+    /// The type Option.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public partial class Photo : Microsoft.Graph.Entity
+    public partial class Option : Microsoft.Graph.Entity
     {
     
 		///<summary>
-		/// The Photo constructor
+		/// The Option constructor
 		///</summary>
-        public Photo()
+        public Option()
         {
-            this.ODataType = "microsoft.graph2.callRecords.photo";
+            this.ODataType = "microsoft.graph2.callRecords.option";
         }
 	
-        /// <summary>
-        /// Gets or sets failure info.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "failureInfo", Required = Newtonsoft.Json.Required.Default)]
-        public FailureInfo FailureInfo { get; set; }
-    
-        /// <summary>
-        /// Gets or sets option.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "option", Required = Newtonsoft.Json.Required.Default)]
-        public Option Option { get; set; }
-    
     }
 }
 
