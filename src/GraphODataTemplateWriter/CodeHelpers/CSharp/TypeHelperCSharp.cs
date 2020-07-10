@@ -177,7 +177,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             var plainTypeString = type.GetTypeString();
 
             // refer to core implementation when they are available for Edm types
-            var coreModelTypes = new List<string> { "Duration", "TimeOfDay" }; // TODO list not complete.
+            var coreModelTypes = new List<string> { "Date", "Duration", "TimeOfDay" };
             if (typesNamespace == "Edm" && coreModelTypes.Contains(plainTypeString))
             {
                 typesNamespace = "Microsoft.Graph";
