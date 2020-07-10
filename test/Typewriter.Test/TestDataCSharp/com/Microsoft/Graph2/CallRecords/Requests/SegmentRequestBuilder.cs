@@ -73,6 +73,18 @@ namespace Microsoft.Graph2.CallRecords
                 return new Microsoft.Graph.CallWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("refType"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for SessionRef.
+        /// </summary>
+        /// <returns>The <see cref="ISessionWithReferenceRequestBuilder"/>.</returns>
+        public ISessionWithReferenceRequestBuilder SessionRef
+        {
+            get
+            {
+                return new SessionWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("sessionRef"), this.Client);
+            }
+        }
     
         /// <summary>
         /// Gets the request builder for SegmentForward.
