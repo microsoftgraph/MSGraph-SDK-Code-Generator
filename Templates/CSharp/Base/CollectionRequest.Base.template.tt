@@ -195,7 +195,7 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     stringBuilder.Append("            }");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var requestBody = new {0} {{ ODataId = string.Format(\"{{1}}/{1}{2}/{{2}}\", this.Client.BaseUrl, {3}.Id) }};", referenceRequestBodyTypeName, serviceNavigationProperty.Name, implicitNavigationProperty, sanitizedPropertyName);
+    stringBuilder.AppendFormat("            var requestBody = new {0} {{ ODataId = string.Format(\"{{0}}/{1}{2}/{{1}}\", this.Client.BaseUrl, {3}.Id) }};", referenceRequestBodyTypeName, serviceNavigationProperty.Name, implicitNavigationProperty, sanitizedPropertyName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            return this.SendAsync(requestBody, cancellationToken);");
     stringBuilder.Append(Environment.NewLine);

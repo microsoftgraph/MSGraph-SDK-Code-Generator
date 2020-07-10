@@ -59,7 +59,7 @@ namespace Microsoft.Graph2.CallRecords
                 throw new Microsoft.Graph.ServiceException(new Microsoft.Graph.Error { Code = "invalidRequest", Message = "ID is required to add a reference." });
             }
 
-            var requestBody = new Microsoft.Graph.ReferenceRequestBody { ODataId = string.Format("{1}/testTypes/{2}", this.Client.BaseUrl, entityType3.Id) };
+            var requestBody = new Microsoft.Graph.ReferenceRequestBody { ODataId = string.Format("{0}/testTypes/{1}", this.Client.BaseUrl, entityType3.Id) };
             return this.SendAsync(requestBody, cancellationToken);
         }
 
