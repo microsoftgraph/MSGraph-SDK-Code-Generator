@@ -2,7 +2,7 @@
   "AvailableLanguages": [ "Android", "Java", "ObjC", "CSharp", "PHP", "Python", "TypeScript", "GraphEndpointList" ],
   "TargetLanguage": "CSharp",
   "Plugins": [],
-  "PrimaryNamespaceName": "com",
+  "PrimaryNamespaceName": "microsoft.graph",
   "NamespacePrefix": "com",
   "InitializeCollections": "false",
   "AllowShortActions": "false",

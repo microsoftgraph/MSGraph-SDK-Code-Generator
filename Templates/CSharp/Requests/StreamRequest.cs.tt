@@ -8,32 +8,38 @@ var prop = host.CurrentType.AsOdcmProperty();
 string propName = null;
 string propClass = null;
 string propRequest = null;
-string namespaceValue = null;
+string @namespace = null;
 
 // If the current type isn't a property it's a content $value stream for a media entity
 if (prop == null)
 {
     var entity = host.CurrentType.AsOdcmClass();
+    @namespace = entity.Namespace.GetNamespaceName();
     propName = "content";
-    propClass = entity.Name.ToCheckedCase();
+    propClass = entity.GetTypeString(@namespace);
     propRequest = propClass + "ContentRequest";
-    namespaceValue = entity.Namespace.GetNamespaceName();
 }
 else
 {
     propName = prop.Name;
-    propClass = prop.Class.Name.ToCheckedCase();
+    @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
+    propClass = prop.Class.GetTypeString(@namespace);
 
     propRequest = propClass + prop.Name.ToCheckedCase() + "Request";
-    namespaceValue = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 }
-	if (propClass.EndsWith("Request"))
-	{
-		propClass = String.Concat(propClass, "Object");
-	}
+
+var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
+var optionTypeName = @namespace.GetCoreLibraryType("Option");
+var baseRequestTypeName = @namespace.GetCoreLibraryType("BaseRequest");
+var iHttpProviderTypeName = @namespace.GetCoreLibraryType("IHttpProvider");
+
+if (propClass.EndsWith("Request"))
+{
+    propClass = String.Concat(propClass, "Object");
+}
 #>
 
-namespace <#=namespaceValue#>
+namespace <#=@namespace#>
 {
     using System.Collections.Generic;
     using System.IO;
@@ -43,18 +49,18 @@ namespace <#=namespaceValue#>
     /// <summary>
     /// The type <#=propRequest#>.
     /// </summary>
-    public partial class <#=propRequest#> : BaseRequest, I<#=propRequest#>
+    public partial class <#=propRequest#> : <#=baseRequestTypeName#>, I<#=propRequest#>
     {
         /// <summary>
         /// Constructs a new <#=propRequest#>.
         /// <param name="requestUrl">The request URL.</param>
-        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="client">The <see cref="<#=iBaseClientTypeName#>"/> for handling requests.</param>
         /// <param name="options">Query option name value pairs for the request.</param>
         /// </summary>
         public <#=propRequest#>(
             string requestUrl,
-            IBaseClient client,
-            IEnumerable<Option> options)
+            <#=iBaseClientTypeName#> client,
+            IEnumerable<<#=optionTypeName#>> options)
             : base(requestUrl, client, options)
         {
         }
@@ -72,7 +78,7 @@ namespace <#=namespaceValue#>
         /// Gets the stream.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="<#=iHttpProviderTypeName#>"/> on send.</param>
         /// <returns>The stream.</returns>
         public System.Threading.Tasks.Task<Stream> GetAsync(CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
@@ -101,7 +107,7 @@ namespace <#=namespaceValue#>
         /// <typeparam name="T">The type returned by the PUT call.</typeparam>
         /// <param name="<#=propName#>">The stream to PUT.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="<#=iHttpProviderTypeName#>"/> on send.</param>
         /// <returns>The object returned by the PUT call.</returns>
         public System.Threading.Tasks.Task<T> PutAsync<T>(Stream <#=propName#>, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : <#=propClass#>
         {
@@ -130,7 +136,7 @@ namespace <#=namespaceValue#>
         /// </summary>
         /// <param name="<#=propName#>">The stream to PUT.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="<#=iHttpProviderTypeName#>"/> on send.</param>
         /// <returns>The updated stream.</returns>
         public System.Threading.Tasks.Task<Stream> PutAsync(Stream <#=propName#>, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {

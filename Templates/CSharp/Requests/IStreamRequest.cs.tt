@@ -8,7 +8,7 @@ var prop = host.CurrentType.AsOdcmProperty();
 string propName = null;
 string propClass = null;
 string propRequest = null;
-string namespaceValue = null;
+string @namespace = null;
 
 // If the current type isn't a property it's a content $value stream for a media entity
 if (prop == null)
@@ -17,23 +17,26 @@ if (prop == null)
     propName = "content";
     propClass = entity.Name.ToCheckedCase();
     propRequest = propClass + "ContentRequest";
-    namespaceValue = entity.Namespace.GetNamespaceName();
+    @namespace = entity.Namespace.GetNamespaceName();
 }
 else
 {
     propName = prop.Name;
     propClass = prop.Class.Name.ToCheckedCase();
     propRequest = propClass + prop.Name.ToCheckedCase() + "Request";
-    namespaceValue = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
+    @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 }
 
-	if (propClass.EndsWith("Request"))
-	{
-		propClass = String.Concat(propClass, "Object");
-	}
+var iBaseRequestTypeName = @namespace.GetCoreLibraryType("IBaseRequest");
+var iHttpProviderTypeName = @namespace.GetCoreLibraryType("IHttpProvider");
+
+if (propClass.EndsWith("Request"))
+{
+    propClass = String.Concat(propClass, "Object");
+}
 #>
 
-namespace <#=namespaceValue#>
+namespace <#=@namespace#>
 {
     using System.Collections.Generic;
     using System.IO;
@@ -43,7 +46,7 @@ namespace <#=namespaceValue#>
     /// <summary>
     /// The interface I<#=propRequest#>.
     /// </summary>
-    public partial interface I<#=propRequest#> : IBaseRequest
+    public partial interface I<#=propRequest#> : <#=iBaseRequestTypeName#>
     {
         /// <summary>
         /// Gets the stream.
@@ -55,7 +58,7 @@ namespace <#=namespaceValue#>
         /// Gets the stream.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="<#=iHttpProviderTypeName#>"/> on send.</param>
         /// <returns>The stream.</returns>
         System.Threading.Tasks.Task<Stream> GetAsync(CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
 
@@ -78,7 +81,7 @@ namespace <#=namespaceValue#>
         /// <typeparam name="T">The type returned by the PUT call.</typeparam>
         /// <param name="<#=propName#>">The stream to PUT.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="<#=iHttpProviderTypeName#>"/> on send.</param>
         /// <returns>The object returned by the PUT call.</returns>
         System.Threading.Tasks.Task<T> PutAsync<T>(Stream <#=propName#>, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : <#=propClass#>;
     <#
@@ -99,7 +102,7 @@ namespace <#=namespaceValue#>
         /// </summary>
         /// <param name="<#=propName#>">The stream to PUT.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="<#=iHttpProviderTypeName#>"/> on send.</param>
         /// <returns>The updated stream.</returns>
         System.Threading.Tasks.Task<Stream> PutAsync(Stream <#=propName#>, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
     <#

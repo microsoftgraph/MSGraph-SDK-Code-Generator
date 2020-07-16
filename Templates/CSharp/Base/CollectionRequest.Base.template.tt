@@ -8,12 +8,12 @@
 // -------------------------------------------------------------
 public string GetCollectionClassDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetClassDefinition(this.GetPropertyCollectionRequestName(odcmProperty));
+    return this.GetClassDefinition(this.GetPropertyCollectionRequestName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 public string GetCollectionRequestConstructor(OdcmProperty odcmProperty)
 {
-    return this.GetConstructor(this.GetPropertyCollectionRequestName(odcmProperty));
+    return this.GetConstructor(this.GetPropertyCollectionRequestName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 
@@ -22,12 +22,12 @@ public string GetCollectionRequestConstructor(OdcmProperty odcmProperty)
 // -------------------------------------------------------------
 public string GetCollectionReferencesClassDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetClassDefinition(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
+    return this.GetClassDefinition(this.GetPropertyCollectionReferencesRequestName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 public string GetCollectionReferencesRequestConstructor(OdcmProperty odcmProperty)
 {
-    return this.GetConstructor(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
+    return this.GetConstructor(this.GetPropertyCollectionReferencesRequestName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 
@@ -36,12 +36,12 @@ public string GetCollectionReferencesRequestConstructor(OdcmProperty odcmPropert
 // -------------------------------------------------------------
 public string GetCollectionWithReferencesClassDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetClassDefinition(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
+    return this.GetClassDefinition(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 public string GetCollectionWithReferencesRequestConstructor(OdcmProperty odcmProperty)
 {
-    return this.GetConstructor(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
+    return this.GetConstructor(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 
@@ -66,12 +66,12 @@ public void AppendMethodHeaderToPostAsyncMethod(string propertyType, string sani
     }
 }
 
-public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody = null)
+public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace, string requestBody = null)
 {
     if (!odcmProperty.LongDescriptionContains("readonly"))
     {
         var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
-        var propertyType = this.GetPropertyTypeName(odcmProperty);
+        var propertyType = this.GetPropertyTypeName(odcmProperty, @namespace);
 
 		if (propertyType.EndsWith("Request"))
 		{
@@ -131,24 +131,28 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string requestBody =
     return string.Empty;
 }
 
-public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
+public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, string @namespace)
 {
     var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
-    var propertyType = this.GetPropertyTypeName(odcmProperty);
+    var propertyType = this.GetPropertyTypeName(odcmProperty, @namespace);
+
+    var serviceExceptionTypeName = @namespace.GetCoreLibraryType("ServiceException");
+    var errorTypeName = @namespace.GetCoreLibraryType("Error");
+    var referenceRequestBodyTypeName = @namespace.GetCoreLibraryType("ReferenceRequestBody");
 
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
-    var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType();
+    var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel);
 	if (serviceNavigationProperty == null)
 		return string.Empty;
-	
+
 	var implicitNavigationProperty = string.Empty;
-	
-	// If the odcmProperty is a part of Singleton, then we need to determine whether there is a  
-	// NavigationPropertyBinding generation hint. If there is, then we need to use it for 
-	// creating the URL of a reference entity in a POST body. 
-	if (serviceNavigationProperty.GetType() == typeof(OdcmSingleton)) 
+
+	// If the odcmProperty is a part of Singleton, then we need to determine whether there is a
+	// NavigationPropertyBinding generation hint. If there is, then we need to use it for
+	// creating the URL of a reference entity in a POST body.
+	if (serviceNavigationProperty.GetType() == typeof(OdcmSingleton))
 	    implicitNavigationProperty = "/" + odcmProperty.GetImplicitPropertyName((OdcmSingleton)serviceNavigationProperty);
 
     var stringBuilder = new StringBuilder();
@@ -186,12 +190,12 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("                throw new ServiceException(new Error { Code = \"invalidRequest\", Message = \"ID is required to add a reference.\" });");
+    stringBuilder.AppendFormat("                throw new {0}(new {1} {{ Code = \"invalidRequest\", Message = \"ID is required to add a reference.\" }});", serviceExceptionTypeName, errorTypeName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            }");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var requestBody = new ReferenceRequestBody {{ ODataId = string.Format(\"{{0}}/{0}{1}/{{1}}\", this.Client.BaseUrl, {2}.Id) }};", serviceNavigationProperty.Name, implicitNavigationProperty, sanitizedPropertyName);
+    stringBuilder.AppendFormat("            var requestBody = new {0} {{ ODataId = string.Format(\"{{0}}/{1}{2}/{{1}}\", this.Client.BaseUrl, {3}.Id) }};", referenceRequestBodyTypeName, serviceNavigationProperty.Name, implicitNavigationProperty, sanitizedPropertyName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            return this.SendAsync(requestBody, cancellationToken);");
     stringBuilder.Append(Environment.NewLine);

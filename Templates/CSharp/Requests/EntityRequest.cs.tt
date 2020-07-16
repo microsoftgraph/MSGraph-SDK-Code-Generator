@@ -4,13 +4,14 @@
 <#
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
+var @namespace = this.GetNamespaceName(entity);
 var entityName = this.GetEntityNameString(entity);
 
 var features = host.CurrentType.GetFeatures();
 
 #>
 
-namespace <#=this.GetNamespaceName(entity)#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;
@@ -95,9 +96,8 @@ namespace <#=this.GetNamespaceName(entity)#>
             foreach(var property in navigationCollectionProperties)
             {
                 var propertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
-                var propertyType = property.GetTypeString();
 
-                if (propertyType.IsComplex())
+                if (property.IsComplex())
                 {
 #>
 

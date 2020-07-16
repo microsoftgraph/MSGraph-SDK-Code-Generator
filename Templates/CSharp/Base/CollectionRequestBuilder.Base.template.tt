@@ -8,12 +8,12 @@
 // -------------------------------------------------------------
 public string GetCollectionClassDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetClassDefinition(this.GetPropertyCollectionRequestBuilderName(odcmProperty));
+    return this.GetClassDefinition(this.GetPropertyCollectionRequestBuilderName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 public string GetCollectionRequestBuilderConstructor(OdcmProperty odcmProperty)
 {
-    return this.GetConstructor(this.GetPropertyCollectionRequestBuilderName(odcmProperty));
+    return this.GetConstructor(this.GetPropertyCollectionRequestBuilderName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 public string GetCollectionRequestMethod(OdcmProperty odcmProperty)
@@ -23,7 +23,7 @@ public string GetCollectionRequestMethod(OdcmProperty odcmProperty)
 
 public string GetCollectionRequestMethodWithOptions(OdcmProperty odcmProperty)
 {
-    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionRequestName(odcmProperty));
+    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionRequestName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 
@@ -32,12 +32,12 @@ public string GetCollectionRequestMethodWithOptions(OdcmProperty odcmProperty)
 // -------------------------------------------------------------
 public string GetCollectionReferencesClassDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetClassDefinition(this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty));
+    return this.GetClassDefinition(this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 public string GetCollectionReferencesRequestBuilderConstructor(OdcmProperty odcmProperty)
 {
-    return this.GetConstructor(this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty));
+    return this.GetConstructor(this.GetPropertyCollectionReferencesRequestBuilderName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 public string GetCollectionReferencesRequestMethod(OdcmProperty odcmProperty)
@@ -47,7 +47,7 @@ public string GetCollectionReferencesRequestMethod(OdcmProperty odcmProperty)
 
 public string GetCollectionReferencesRequestMethodWithOptions(OdcmProperty odcmProperty)
 {
-    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionReferencesRequestName(odcmProperty));
+    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionReferencesRequestName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 
@@ -56,12 +56,12 @@ public string GetCollectionReferencesRequestMethodWithOptions(OdcmProperty odcmP
 // -------------------------------------------------------------
 public string GetCollectionWithReferencesClassDefinition(OdcmProperty odcmProperty)
 {
-    return this.GetClassDefinition(this.GetPropertyCollectionWithReferencesRequestBuilderName(odcmProperty));
+    return this.GetClassDefinition(this.GetPropertyCollectionWithReferencesRequestBuilderName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 public string GetCollectionWithReferencesRequestBuilderConstructor(OdcmProperty odcmProperty)
 {
-    return this.GetConstructor(this.GetPropertyCollectionWithReferencesRequestBuilderName(odcmProperty));
+    return this.GetConstructor(this.GetPropertyCollectionWithReferencesRequestBuilderName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 public string GetCollectionWithReferencesRequestMethod(OdcmProperty odcmProperty)
@@ -71,7 +71,7 @@ public string GetCollectionWithReferencesRequestMethod(OdcmProperty odcmProperty
 
 public string GetCollectionWithReferencesRequestMethodWithOptions(OdcmProperty odcmProperty)
 {
-    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty));
+    return this.GetRequestMethodWithOptions(this.GetPropertyCollectionWithReferencesRequestName(odcmProperty), odcmProperty.GetClassNamespace());
 }
 
 // Creates the request builder property definition for the $ref navigation on the collection
@@ -139,16 +139,16 @@ public string GetCollectionIndexRequestBuilder(OdcmProperty odcmProperty)
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the specified {1}.", entityRequestBuilder, propTypeName);
+    stringBuilder.AppendFormat("        /// Gets an <see cref=\"{0}\"/> for the specified {1}.", entityRequestBuilder.ClassToInterface(), propTypeName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <param name=\"id\">The ID for the {0}.</param>", propTypeName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityRequestBuilder);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"{0}\"/>.</returns>", entityRequestBuilder.ClassToInterface());
     stringBuilder.Append(renameItem);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public I{0} this[string id]", entityRequestBuilder);
+    stringBuilder.AppendFormat("        public {0} this[string id]", entityRequestBuilder.ClassToInterface());
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(
 @"        {
@@ -174,15 +174,15 @@ public string GetCollectionWithReferencesIndexRequestBuilder(OdcmProperty odcmPr
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Gets an <see cref=\"I{0}\"/> for the specified {1}.", entityRequestBuilder, propTypeName);
+    stringBuilder.AppendFormat("        /// Gets an <see cref=\"{0}\"/> for the specified {1}.", entityRequestBuilder.ClassToInterface(), propTypeName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <param name=\"id\">The ID for the {0}.</param>", propTypeName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", entityRequestBuilder);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"{0}\"/>.</returns>", entityRequestBuilder.ClassToInterface());
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public I{0} this[string id]", entityRequestBuilder);
+    stringBuilder.AppendFormat("        public {0} this[string id]", entityRequestBuilder.ClassToInterface());
     stringBuilder.Append(@"
         {
             get

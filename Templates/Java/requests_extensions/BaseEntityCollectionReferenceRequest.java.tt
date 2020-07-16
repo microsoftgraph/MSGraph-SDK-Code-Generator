@@ -21,7 +21,7 @@
 
     public void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
 <#
-		var navigationProperty = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType();
+		var navigationProperty = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel);
 		if (navigationProperty != null) {
 
 			//Append the singleton's navigation type to the @odata.id if relevant
@@ -29,7 +29,7 @@
 			if (navigationProperty.GetType() == typeof(OdcmSingleton)) 
 				implicitNavigationProperty = c.AsOdcmProperty().Name + "/";
 
-            String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType().Name;
+            String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel).Name;
 #>
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=TypeName(c)#>.id);

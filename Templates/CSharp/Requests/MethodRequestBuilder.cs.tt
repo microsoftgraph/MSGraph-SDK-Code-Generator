@@ -4,6 +4,8 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
+var @namespace = method.Namespace.GetNamespaceName();
+
 var entityName = method.Class.Name.ToCheckedCase();
 var methodName = method.Name.ToCheckedCase();
 var requestType = entityName + methodName + "Request";
@@ -11,6 +13,10 @@ var requestBuilderType = requestType + "Builder";
 
 var isPost = method.IsAction() && method.Parameters != null && method.Parameters.Any();
 var methodType = method.IsFunction ? "Function" : "Action";
+
+var baseMethodRequestBuilderTypeName = @namespace.GetCoreLibraryType("Base" + methodType + "MethodRequestBuilder");
+var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
+var optionTypeName = @namespace.GetCoreLibraryType("Option");
 
 // Overloads are determined based on the name of method and the type of the binding parameter.
 // There is no differentiation between an entity, and a collection of the same entities.
@@ -25,14 +31,14 @@ var methods = overloads
             var parameters = m.Parameters
                 .Select(p =>
                     {
-                        var type = p.Type.GetTypeString();
+                        var type = p.Type.GetTypeString(@namespace);
                         var name = p.Name.ToLowerFirstChar();
                         var parameterName = p.Name.GetSanitizedParameterName();
                         var propertyName = p.Name.ToCheckedCase();
 
                         // Adds support for classes ending in "Request" that have been dismabiguated.
                         if (type.EndsWith("Request"))
-                        {   
+                        {
                             type = String.Concat(type, "Object");
                         }
                         if (p.IsCollection)
@@ -51,8 +57,6 @@ var methods = overloads
             var paramStrings = parameters.Select(p => string.Format(",\n            {0} {1}", p.Type, p.ParameterName));
             var paramComments = parameters.Select(p => string.Format("\n        /// <param name=\"{0}\">A {0} parameter for the OData method call.</param>", p.ParameterName));
 
-            
-
             return new
             {
                 Parameters = parameters,
@@ -63,7 +67,7 @@ var methods = overloads
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;
@@ -72,7 +76,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     /// <summary>
     /// The type <#=requestBuilderType#>.
     /// </summary>
-    public partial class <#=requestBuilderType#> : Base<#=methodType#>MethodRequestBuilder<I<#=requestType#>>, I<#=requestBuilderType#>
+    public partial class <#=requestBuilderType#> : <#=baseMethodRequestBuilderTypeName#><I<#=requestType#>>, I<#=requestBuilderType#>
     {
 <#
 // We only want to generate unique method signatures. 
@@ -88,10 +92,10 @@ foreach (var m in methods)
         /// Constructs a new <see cref="<#=requestBuilderType#>"/>.
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
-        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param><#=m.ParameterComments#>
+        /// <param name="client">The <see cref="<#=iBaseClientTypeName#>"/> for handling requests.</param><#=m.ParameterComments#>
         public <#=requestBuilderType#>(
             string requestUrl,
-            IBaseClient client<#=m.ParametersAsArguments#>)
+            <#=iBaseClientTypeName#> client<#=m.ParametersAsArguments#>)
             : base(requestUrl, client)
         {
 <#
@@ -114,7 +118,7 @@ foreach (var m in methods)
         /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>An instance of a specific request class.</returns>
-        protected override I<#=requestType#> CreateRequest(string functionUrl, IEnumerable<Option> options)
+        protected override I<#=requestType#> CreateRequest(string functionUrl, IEnumerable<<#=optionTypeName#>> options)
         {
             var request = new <#=requestType#>(functionUrl, this.Client, options);
 

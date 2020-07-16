@@ -22,9 +22,26 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
             return filePath;
         }
 
-        private string CreateNamespace(string folderName)
+        /// <summary>
+        /// Determines write location for generated files
+        /// </summary>
+        /// <param name="template">template</param>
+        /// <param name="namespace">namespaces of the file that is to be written</param>
+        /// <param name="baseFileName">file name</param>
+        /// <returns>Full path where the generated file needs to be written</returns>
+        public override string WritePath(ITemplateInfo template, string @namespace, string baseFileName)
         {
-            var @namespace = this.Model.GetNamespace();
+            //switch from models_generated to models.
+            var theNamespace = this.CreateNamespace(template.OutputParentDirectory.Replace("_", "."), @namespace);
+            var namespacePath = this.CreatePathFromNamespace(theNamespace);
+            var fileName = this.TransformFileName(template, baseFileName);
+            String filePath = Path.Combine(namespacePath, fileName);
+            return filePath;
+        }
+
+        private string CreateNamespace(string folderName, string @namespace = null)
+        {
+            @namespace = @namespace ?? this.Model.GetNamespace();
             var prefix = ConfigurationService.Settings.NamespacePrefix;
 
             if (String.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
