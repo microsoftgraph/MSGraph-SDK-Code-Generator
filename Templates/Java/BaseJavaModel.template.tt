@@ -517,7 +517,7 @@
 		var sb = new StringBuilder();
 		var packageFormat = @"package {0}.{1};";
 		sb.AppendFormat(packageFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						host.TemplateInfo.OutputParentDirectory.Replace("_", "."));
 		sb.Append("\n");
 		return sb.ToString();
@@ -576,7 +576,7 @@
 		var sb = new StringBuilder();
 		var packageFormat = @"package {0}.{1};";
 		sb.AppendFormat(packageFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						host.TemplateInfo.OutputParentDirectory.Replace("_", "."));
 		sb.Append("\n");
 		return sb.ToString();
@@ -588,7 +588,7 @@
 		sb.Append(CreatePackageDefinition(host));
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"models.extensions",
 						TypeName(host.CurrentType));
 		sb.Append("\n");
@@ -605,14 +605,14 @@
 		if(returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
 		{
 			sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"models.extensions",
 						ReturnType(host.CurrentType));
 			sb.Append("\n");
 		}
 
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 		sb.Append("\n");
@@ -625,7 +625,7 @@
 		sb.Append(CreatePackageDefinition(host));
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"models.extensions",
 						TypeName(host.CurrentType.AsOdcmClass()));
 		sb.Append("\n");
@@ -638,7 +638,7 @@
 		sb.Append(CreatePackageDefForIBaseMethodRequest(host));
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						TypeRequest(host.CurrentType));
 		sb.Append("\n");
@@ -651,13 +651,13 @@
 		sb.Append(CreatePackageDefinition(host));
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 		sb.Append("\n");
 
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						TypeRequest(host.CurrentType));
 		sb.Append("\n");
@@ -673,7 +673,7 @@
 					}
 						
 					sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						getPackagePrefix(p),
 						propertyType);
 					sb.Append("\n");
@@ -692,7 +692,7 @@
 		if(returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
 		{
 			sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"models.extensions",
 						ReturnType(host.CurrentType));
 			sb.Append("\n");
@@ -700,7 +700,7 @@
 		if(host.CurrentType.AsOdcmMethod().IsCollection)
 		{
 			sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeCollectionRequest(host.CurrentType));
 			sb.Append("\n");
@@ -708,7 +708,7 @@
 		else
 		{
 			sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 			sb.Append("\n");
@@ -724,7 +724,7 @@
 		var importFormat = @"import {0}.{1}.{2};";
 
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"models.extensions",
 						TypeBody(host.CurrentType));
 		sb.Append("\n");
@@ -732,7 +732,7 @@
 		if(returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
 		{
 			sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"models.extensions",
 						ReturnType(host.CurrentType));
 			sb.Append("\n");
@@ -741,13 +741,13 @@
 		if(host.CurrentType.AsOdcmMethod().IsCollection)
 		{
 			sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeCollectionRequest(host.CurrentType));
 			sb.Append("\n");
 
 			sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						TypeCollectionRequest(host.CurrentType));
 			sb.Append("\n");
@@ -755,13 +755,13 @@
 		else
 		{
 			sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 			sb.Append("\n");
 
 			sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						TypeRequest(host.CurrentType));
 			sb.Append("\n");
@@ -775,7 +775,7 @@
 		sb.Append(CreatePackageDefinition(host));
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 		sb.Append("\n");
@@ -796,12 +796,12 @@
 		
 
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"models.extensions",
 						modelClassName);
 		sb.Append("\n");
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeCollectionRequestBuilder(host.CurrentType));
 
@@ -815,7 +815,7 @@
         var sb = new StringBuilder();
 		var packageFormat = @"package {0}.{1};";
 		sb.AppendFormat(packageFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						host.TemplateInfo.OutputParentDirectory.Replace("_", "."));
 		sb.Append("\n");
 
@@ -825,7 +825,7 @@ import {0}.http.*;
 import {0}.options.*;
 import {0}.serializer.*;
 import java.util.Arrays;
-import java.util.EnumSet;", host.CurrentModel.NamespaceName());
+import java.util.EnumSet;", host.CurrentModel.GetNamespace());
 
 		sb.Append("\n");		
         var importFormat = @"import {0}.{1}.{2};";
@@ -845,7 +845,7 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 				
 			string prefixValue = getPackagePrefix(property);
 			string importstr= String.Format(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						prefixValue,
 						propertyType);
 			if(!uniqueStore.ContainsKey(importstr)){
@@ -861,7 +861,7 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 		{
 			string prefixValue = getPrefixForModels(baseClassNameType);
 			string importstr= String.Format(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						prefixValue,
 						baseClassNameType);
 			if(!uniqueStore.ContainsKey(importstr)){
@@ -875,7 +875,7 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 		if(baseTypeNameStr == "BasePlannerAssignments")
 		{
 			string importstr= String.Format(importFormat,
-							host.CurrentModel.NamespaceName(),
+							host.CurrentModel.GetNamespace(),
 						"models.extensions",
 						 "PlannerAssignment");
 			if(!uniqueStore.ContainsKey(importstr)){
@@ -887,7 +887,7 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 		if(baseTypeNameStr == "BasePlannerChecklistItems")
 		{			
 			string importstr= String.Format(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"models.extensions",
 						 "PlannerChecklistItem");
 			if(!uniqueStore.ContainsKey(importstr)){
@@ -906,7 +906,7 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 
 				var propertyType = TypeCollectionResponse(property);
 				string importstr= String.Format(importFormat,
-							host.CurrentModel.NamespaceName(),
+							host.CurrentModel.GetNamespace(),
 							getPrefixForRequests(propertyType),
 							propertyType);
 				if(!uniqueStore.ContainsKey(importstr)){
@@ -917,7 +917,7 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 					
 				string propertyValue = TypeCollectionPage(property);	
 				string importstr1= String.Format(importFormat,
-					host.CurrentModel.NamespaceName(),
+					host.CurrentModel.GetNamespace(),
 					getPrefixForRequests(propertyValue),
 					propertyValue);
 				if(!uniqueStore.ContainsKey(importstr1)){
@@ -950,7 +950,7 @@ import java.util.EnumSet;";
         string fullyQualifiedImport = host.GetFullyQualifiedImportStatementForModel(); 
 
         return string.Format(format,
-            host.CurrentModel.NamespaceName(),
+            host.CurrentModel.GetNamespace(),
             host.TemplateInfo.OutputParentDirectory.Replace("_", "."), fullyQualifiedImport);
         }
 
