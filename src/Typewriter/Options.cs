@@ -45,7 +45,7 @@ namespace Typewriter
 
     public class Options
     {
-        [Option('l', "language", Default = "CSharp", HelpText = "The target language for the generated code files. The values can be: Android, Java, ObjC, CSharp, PHP, Python, TypeScript, or GraphEndpointList")]
+        [Option('l', "language", Default = "CSharp", HelpText = "The target language for the generated code files. The values can be: Java, ObjC, CSharp, PHP, Python, TypeScript, or GraphEndpointList")]
         public string Language { get; set; }
 
         [Option('m', "metadata", Default = "https://graph.microsoft.com/v1.0/$metadata", HelpText = "Location of metadata.  Local file path or URL")]
