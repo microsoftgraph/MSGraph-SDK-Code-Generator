@@ -133,7 +133,7 @@ if (c.AsOdcmClass() != null)
 		sb.Append(CreatePackageDefinition(host));
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeRequest(host.CurrentType));
 		sb.Append("\n");
@@ -145,19 +145,19 @@ if (c.AsOdcmClass() != null)
 				if (prop.IsCollection()) {
 					
 					sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeCollectionRequestBuilder(prop));
 					sb.Append("\n");
 
 					sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeRequestBuilder(prop));
 					sb.Append("\n");
 				} else {
 					sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeRequestBuilder(prop));
 					sb.Append("\n");
@@ -168,7 +168,7 @@ if (c.AsOdcmClass() != null)
 			{
 				var propRequestBuilder = TypeRequestBuilder(prop);
 				sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						"I" + propRequestBuilder);
 				sb.Append("\n");
@@ -177,7 +177,7 @@ if (c.AsOdcmClass() != null)
 			if (c is OdcmMediaClass)
 			{
 				sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeStreamRequestBuilder(host.CurrentType));
 				sb.Append("\n");
@@ -197,7 +197,7 @@ if (c.AsOdcmClass() != null)
 							typeString = typeString.Substring(0, typeString.Length-1);
 						}
 						sb.AppendFormat(importFormat,
-							host.CurrentModel.NamespaceName(),
+							host.CurrentModel.GetNamespace(),
 							getPackagePrefix(p),
 							typeString);
 						sb.Append("\n");
@@ -206,13 +206,13 @@ if (c.AsOdcmClass() != null)
 
 				if (method.IsCollection) {
 					sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeCollectionRequestBuilder(method));
 					sb.Append("\n");
 				} else {
 					sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
+						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
 						ITypeRequestBuilder(method));
 					sb.Append("\n");
