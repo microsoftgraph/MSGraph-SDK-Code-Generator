@@ -2,9 +2,9 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeName(c);#>
+<#host.TemplateName = c.TypeName();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForEntity(host)#>
+<#=host.CreatePackageDefForEntity()#>
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
@@ -12,7 +12,7 @@ import com.google.gson.annotations.*;
 import java.util.HashMap;
 import java.util.Map;
 
-<#=CreateClassDef(TypeName(c), BaseClassName(c), "IJsonBackedObject")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeName(), c.BaseClassName(), "IJsonBackedObject")#>
 
 <#
     if(((OdcmClass)c).Base == null){
@@ -31,7 +31,7 @@ import java.util.Map;
     }
 #>
 
-<#=CreatePropertyDef(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
-<#=CreateRawJsonObject()#>
-<#=UpdatePropertiesWithinSetRawObject(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
-<#=PostProcess(TypeName(c))#>}
+<#=TypeHelperJava.CreatePropertyDef(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
+<#=TypeHelperJava.CreateRawJsonObject()#>
+<#=TypeHelperJava.UpdatePropertiesWithinSetRawObject(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
+<#=PostProcess(c.TypeName())#>}

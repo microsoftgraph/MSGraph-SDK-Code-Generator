@@ -4,24 +4,24 @@
 <#@ output extension="\\" #>
 <#
     var baseClass = "BaseRequest";
-    var typeRequest = TypeRequest(c);
-    var iTypeRequest = ITypeRequest(c);
-    var baseTypeRequest = TypeRequest(c);
-    var iBaseTypeRequest = ITypeRequest(c);
-    var returnType = ReturnType(c);
+    var typeRequest = c.TypeRequest();
+    var iTypeRequest = c.ITypeRequest();
+    var baseTypeRequest = c.TypeRequest();
+    var iBaseTypeRequest = c.ITypeRequest();
+    var returnType = c.ReturnType();
 
     if (c.AsOdcmMethod().IsCollection)
     {
         baseClass = "BaseCollectionRequest";
-        typeRequest = TypeCollectionRequest(c);
-        iTypeRequest = ITypeCollectionRequest(c);
-        baseTypeRequest = TypeCollectionRequest(c);
-        iBaseTypeRequest = ITypeCollectionRequest(c);
+        typeRequest = c.TypeCollectionRequest();
+        iTypeRequest = c.ITypeCollectionRequest();
+        baseTypeRequest = c.TypeCollectionRequest();
+        iBaseTypeRequest = c.ITypeCollectionRequest();
     }
 #>
 <#host.TemplateName = baseTypeRequest;#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForBaseMethodBodyRequest(host)#>
+<#=host.CreatePackageDefForBaseMethodBodyRequest()#>
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.core.IBaseClient;
@@ -42,19 +42,19 @@ import com.microsoft.graph.http.HttpMethod;
 	}
 #>
 
-<#=CreateClassDef(baseTypeRequest, baseClass, iBaseTypeRequest)#>
-    protected final <#=TypeBody(c)#> body;
+<#=TypeHelperJava.CreateClassDef(baseTypeRequest, baseClass, iBaseTypeRequest)#>
+    protected final <#=c.TypeBody()#> body;
 
     /**
-     * The request for this <#=TypeName(c)#>
+     * The request for this <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=baseTypeRequest#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+    public <#=baseTypeRequest#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=returnType#>.class);
-        body = new <#=TypeBody(c)#>();
+        body = new <#=c.TypeBody()#>();
     }
 
     public void post(final ICallback<<#=returnType#>> callback) {

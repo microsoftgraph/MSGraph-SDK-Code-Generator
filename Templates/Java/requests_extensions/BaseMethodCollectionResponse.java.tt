@@ -2,19 +2,19 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeCollectionResponse(c);#>
+<#host.TemplateName = c.TypeCollectionResponse();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.*;
 
-<#=CreateClassDef(TypeCollectionResponse(c), null, "IJsonBackedObject")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "IJsonBackedObject")#>
 
     @SerializedName("value")
     @Expose
-    public java.util.List<<#=OdcmMethodReturnType(c as OdcmMethod)#>> value;
+    public java.util.List<<#=(c as OdcmMethod).OdcmMethodReturnType()#>> value;
 
     @SerializedName("@odata.nextLink")
     @Expose(serialize = false)
@@ -27,9 +27,9 @@ import com.google.gson.annotations.*;
         return additionalDataManager;
     }
 
-<#=CreateRawJsonObject()#>
+<#=TypeHelperJava.CreateRawJsonObject()#>
 <# if ( ! ((c as OdcmMethod).ReturnType is OdcmPrimitiveType) && ! ((c as OdcmMethod).ReturnType is OdcmEnum) ) { #>
-<#=    UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
+<#=    TypeHelperJava.UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
 <# } else { #>
     }
 <# } #>

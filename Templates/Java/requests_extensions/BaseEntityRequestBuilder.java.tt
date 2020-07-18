@@ -2,7 +2,7 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeRequestBuilder(c);#>
+<#host.TemplateName = c.TypeRequestBuilder();#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDefForBaseEntityRequestBuilder(host)#>
 import com.microsoft.graph.core.IBaseClient;
@@ -10,25 +10,25 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 import com.microsoft.graph.options.Option;
 import java.util.EnumSet;
 
-<#=CreateClassDef(TypeRequestBuilder(c), "BaseRequestBuilder", ITypeRequestBuilder(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder", c.ITypeRequestBuilder())#>
 
     /**
-     * The request builder for the <#=TypeName(c)#>
+     * The request builder for the <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+    public <#=c.TypeRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
     /**
      * Creates the request
      *
-     * @return the <#=ITypeRequest(c)#> instance
+     * @return the <#=c.ITypeRequest()#> instance
      */
-    public <#=ITypeRequest(c)#> buildRequest() {
+    public <#=c.ITypeRequest()#> buildRequest() {
         return buildRequest(getOptions());
     }
 
@@ -36,10 +36,10 @@ import java.util.EnumSet;
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the <#=ITypeRequest(c)#> instance
+     * @return the <#=c.ITypeRequest()#> instance
      */
-    public <#=ITypeRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
-        return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
+    public <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends Option> requestOptions) {
+        return new <#=c.TypeRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 
 <#
@@ -63,27 +63,27 @@ if (c.AsOdcmClass() != null)
     {
         var propName = prop.Name.ToUpperFirstChar();
 		var sanitizedProperty = propName.SanitizePropertyName().ToLowerFirstChar();
-        var propRequestBuilder = TypeRequestBuilder(prop);
+        var propRequestBuilder = prop.TypeRequestBuilder();
         if (prop.IsCollection()) {
 #>
-    public <#=ITypeCollectionRequestBuilder(prop)#> <#=sanitizedProperty#>() {
-        return new <#=TypeCollectionRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    public <#=prop.ITypeCollectionRequestBuilder()#> <#=sanitizedProperty#>() {
+        return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 
-    public <#=ITypeRequestBuilder(prop)#> <#=sanitizedProperty#>(final String id) {
-        return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
+    public <#=prop.ITypeRequestBuilder()#> <#=sanitizedProperty#>(final String id) {
+        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
     }
 <#
         } else {
 #>
 
     /**
-     * Gets the request builder for <#=TypeName(prop)#>
+     * Gets the request builder for <#=prop.TypeName()#>
      *
-     * @return the <#=ITypeRequestBuilder(prop)#> instance
+     * @return the <#=prop.ITypeRequestBuilder()#> instance
      */
-    public <#=ITypeRequestBuilder(prop)#> <#=sanitizedProperty#>() {
-        return new <#=TypeRequestBuilder(prop)#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    public <#=prop.ITypeRequestBuilder()#> <#=sanitizedProperty#>() {
+        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 <#
         }
@@ -99,7 +99,7 @@ if (c.AsOdcmClass() != null)
 		} else {
 			sanitizedName = propName.SanitizePropertyName().ToLowerFirstChar();
 		}
-		var propRequestBuilder = TypeRequestBuilder(prop);
+		var propRequestBuilder = prop.TypeRequestBuilder();
 #>
 
     public I<#=propRequestBuilder#> <#=sanitizedName#>() {
@@ -113,8 +113,8 @@ if (c.AsOdcmClass() != null)
     {
 #>
 
-    public <#=ITypeStreamRequestBuilder(c)#> content() {
-        return new <#=TypeStreamRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment("$value"), getClient(), null);
+    public <#=c.ITypeStreamRequestBuilder()#> content() {
+        return new <#=c.TypeStreamRequestBuilder()#>(getRequestUrlWithAdditionalSegment("$value"), getClient(), null);
     }
 <#
     }
@@ -126,24 +126,24 @@ if (c.AsOdcmClass() != null)
             continue;
         }
 
-        var parameterList = MethodParametersSignature(method);
+        var parameterList = method.MethodParametersSignature();
 
         if (parameterList != "") {
             parameterList = parameterList.Remove(0, 2);
         }
 
-		var sanitizedMethod = MethodName(method).SanitizePropertyName().ToLowerFirstChar();
+		var sanitizedMethod = method.MethodName().SanitizePropertyName().ToLowerFirstChar();
 
         if (method.IsCollection) {
 #>
 
-    public <#=ITypeCollectionRequestBuilder(method)#> <#=sanitizedMethod#>(<#=parameterList#>) {
-        return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    public <#=method.ITypeCollectionRequestBuilder()#> <#=sanitizedMethod#>(<#=parameterList#>) {
+        return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }
 <#      } else { #>
 
-    public <#=ITypeRequestBuilder(method)#> <#=sanitizedMethod#>(<#=parameterList#>) {
-        return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    public <#=method.ITypeRequestBuilder()#> <#=sanitizedMethod#>(<#=parameterList#>) {
+        return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }
 <#
         }
@@ -156,18 +156,18 @@ if (c.AsOdcmClass() != null)
 	public string CreatePackageDefForBaseEntityRequestBuilder(CustomT4Host host)
 	{
 		var sb = new StringBuilder();
-		sb.Append(CreatePackageDefinition(host));
+		sb.Append(host.CreatePackageDefinition());
 
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
-						ITypeRequest(host.CurrentType));
+						host.CurrentType.ITypeRequest());
 		sb.Append("\n");
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
-						TypeRequest(host.CurrentType));
+						host.CurrentType.TypeRequest());
 		sb.Append("\n");
 		var c = host.CurrentType;
 		if (c.AsOdcmClass() != null)
@@ -179,31 +179,31 @@ if (c.AsOdcmClass() != null)
 					sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
-						ITypeCollectionRequestBuilder(prop));
+						prop.ITypeCollectionRequestBuilder());
 					sb.Append("\n");
 
 					sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
-						TypeCollectionRequestBuilder(prop));
+						prop.TypeCollectionRequestBuilder());
 					sb.Append("\n");
 				}
 				sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
-						ITypeRequestBuilder(prop));
+						prop.ITypeRequestBuilder());
 				sb.Append("\n");
 
 				sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
-						TypeRequestBuilder(prop));
+						prop.TypeRequestBuilder());
 				sb.Append("\n");
 			}
 
 			foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
 			{
-				var propRequestBuilder = TypeRequestBuilder(prop);
+				var propRequestBuilder = prop.TypeRequestBuilder();
 				sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
@@ -222,13 +222,13 @@ if (c.AsOdcmClass() != null)
 				sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
-						ITypeStreamRequestBuilder(host.CurrentType));
+						host.CurrentType.ITypeStreamRequestBuilder());
 				sb.Append("\n");
 
 				sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
-						TypeStreamRequestBuilder(host.CurrentType));
+						host.CurrentType.TypeStreamRequestBuilder());
 				sb.Append("\n");
 			}
 
@@ -247,7 +247,7 @@ if (c.AsOdcmClass() != null)
 						}
 						sb.AppendFormat(importFormat,
 							host.CurrentModel.GetNamespace(),
-							getPackagePrefix(p),
+							p.GetPackagePrefix(),
 							typeString);
 						sb.Append("\n");
 					}
@@ -257,25 +257,25 @@ if (c.AsOdcmClass() != null)
 					sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
-						ITypeCollectionRequestBuilder(method));
+						method.ITypeCollectionRequestBuilder());
 					sb.Append("\n");
 
 					sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
-						TypeCollectionRequestBuilder(method));
+						method.TypeCollectionRequestBuilder());
 					sb.Append("\n");
 				} else {
 					sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
-						ITypeRequestBuilder(method));
+						method.ITypeRequestBuilder());
 					sb.Append("\n");
 
 					sb.AppendFormat(importFormat,
 						host.CurrentModel.GetNamespace(),
 						"requests.extensions",
-						TypeRequestBuilder(method));
+						method.TypeRequestBuilder());
 					sb.Append("\n");
 				}
 			}
