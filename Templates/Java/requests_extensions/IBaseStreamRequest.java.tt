@@ -2,13 +2,13 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeStreamRequest(c);#>
+<#host.TemplateName = c.ITypeStreamRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
 import java.io.*;
 
-<#=CreateInterfaceDef(ITypeStreamRequest(c), "IHttpStreamRequest")#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeStreamRequest(), "IHttpStreamRequest")#>
 
     /**
      * Gets the contents of this stream
@@ -31,7 +31,7 @@ import java.io.*;
      * @param fileContents the contents of the stream to upload
      * @param callback the callback to be called after success or failure
      */
-    void put(final byte[] fileContents, final ICallback<<#=ClassTypeName(c)#>> callback);
+    void put(final byte[] fileContents, final ICallback<<#=c.ClassTypeName()#>> callback);
 
     /**
      * Uploads to the stream
@@ -40,5 +40,5 @@ import java.io.*;
      * @return the result of the upload
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    <#=ClassTypeName(c)#> put(final byte[] fileContents) throws ClientException;
+    <#=c.ClassTypeName()#> put(final byte[] fileContents) throws ClientException;
 }

@@ -2,9 +2,9 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeBody(c);#>
+<#host.TemplateName = c.TypeBody();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefinition(host)#>
+<#=host.CreatePackageDefinition()#>
 import com.microsoft.graph.models.generated.*;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -12,9 +12,9 @@ import com.google.gson.JsonObject;
 import com.microsoft.graph.serializer.ISerializer;
 import java.util.EnumSet;
 
-<#=CreateClassDef(TypeBody(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeBody())#>
 
-<#=CreateParameterDef(c.AsOdcmMethod().Parameters)#>
-<#=CreateRawJsonObject()#>
+<#=TypeHelperJava.CreateParameterDef(c.AsOdcmMethod().Parameters)#>
+<#=TypeHelperJava.CreateRawJsonObject()#>
     }
 }

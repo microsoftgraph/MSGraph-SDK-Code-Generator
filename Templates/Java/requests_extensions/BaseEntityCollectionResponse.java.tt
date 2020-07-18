@@ -2,9 +2,9 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeCollectionResponse(c);#>
+<#host.TemplateName = c.TypeCollectionResponse();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForBaseEntityCollectionResponse(host)#>
+<#=host.CreatePackageDefForBaseEntityCollectionResponse()#>
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
@@ -13,14 +13,14 @@ import com.microsoft.graph.serializer.AdditionalDataManager;
 import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.ISerializer;
 
-<#=CreateClassDef(TypeCollectionResponse(c), null, "IJsonBackedObject")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "IJsonBackedObject")#>
 
     /**
-     * The list of <#=TypeName(c)#> within this collection page
+     * The list of <#=c.TypeName()#> within this collection page
      */
     @SerializedName("value")
     @Expose
-    public java.util.List<<#=TypeName(c)#>> value;
+    public java.util.List<<#=c.TypeName()#>> value;
 
     /**
      * The URL to the next page of this collection, or null
@@ -36,6 +36,6 @@ import com.microsoft.graph.serializer.ISerializer;
         return additionalDataManager;
     }
 
-<#=CreateRawJsonObject()#>
-<#=UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
+<#=TypeHelperJava.CreateRawJsonObject()#>
+<#=TypeHelperJava.UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
 }

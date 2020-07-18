@@ -2,20 +2,20 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeCollectionWithReferencesRequestBuilder(c);#>
+<#host.TemplateName = c.ITypeCollectionWithReferencesRequestBuilder();#>
 <#
-    var genericType = "<" + TypeName(c) + ", " + ITypeCollectionWithReferencesRequestBuilder(c) + ">";
+    var genericType = "<" + c.TypeName() + ", " + c.ITypeCollectionWithReferencesRequestBuilder() + ">";
 #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateInterfaceDef(ITypeCollectionWithReferencesRequestBuilder(c), "IRequestBuilder")#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesRequestBuilder(), "IRequestBuilder")#>
 
-    <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest();
+    <#=c.ITypeCollectionWithReferencesRequest()#> buildRequest();
 
-    <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeCollectionWithReferencesRequest()#> buildRequest(final java.util.List<? extends Option> requestOptions);
 
-    <#=ITypeWithReferencesRequestBuilder(c)#> byId(final String id);
+    <#=c.ITypeWithReferencesRequestBuilder()#> byId(final String id);
 
-    <#=ITypeCollectionReferenceRequestBuilder(c)#> references();
+    <#=c.ITypeCollectionReferenceRequestBuilder()#> references();
 }
