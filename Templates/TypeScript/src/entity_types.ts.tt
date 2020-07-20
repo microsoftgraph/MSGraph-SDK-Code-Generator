@@ -163,7 +163,17 @@ export interface <#= complexTypeName #><#
                     }
                 }
 #>
-    <#=  prop.Name #>: Option<<#= prop.GetTypeString() #>>;
+<#
+    if(prop.IsNullable) {
+#>
+    <#= prop.Name #>: Option<<#= prop.GetTypeString() #>>;
+<#
+    } else {
+#>
+    <#= prop.Name #>?: <#= prop.GetTypeString() #>;
+<#
+    }
+#>
 <#
             }
 #>
