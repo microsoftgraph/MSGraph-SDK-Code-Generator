@@ -25,6 +25,8 @@
 
 export as namespace microsoftgraph;
 
+type Option<T> = T | undefined | null;
+
 <#
     foreach(var enumType in enumTypes) {
         var enumTypeName = enumType.Name.UpperCaseFirstChar();
@@ -161,7 +163,7 @@ export interface <#= complexTypeName #><#
                     }
                 }
 #>
-    <#=  prop.Name #>?: <#= prop.GetTypeString() #>;
+    <#=  prop.Name #>: Option<<#= prop.GetTypeString() #>>;
 <#
             }
 #>
