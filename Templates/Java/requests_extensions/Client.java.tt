@@ -5,8 +5,8 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentModel.GetNamespace()#>.authentication.*;
-import <#=host.CurrentModel.GetNamespace()#>.logger.*;
+import <#=host.CurrentModel.GetNamespace().NamespaceName()#>.authentication.*;
+import <#=host.CurrentModel.GetNamespace().NamespaceName()#>.logger.*;
 import com.google.gson.JsonObject;
 
 <#=TypeHelperJava.CreateClassDef(c.ClientType(host), c.BaseClientType(host), c.IClientType(host))#>

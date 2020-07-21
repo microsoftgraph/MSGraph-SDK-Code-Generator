@@ -41,7 +41,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
 
         private string CreateNamespace(string folderName, string @namespace = null)
         {
-            @namespace = @namespace ?? this.Model.GetNamespace();
+            @namespace = @namespace ?? this.Model.GetNamespace().NamespaceName();
             var prefix = ConfigurationService.Settings.NamespacePrefix;
 
             if (String.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
