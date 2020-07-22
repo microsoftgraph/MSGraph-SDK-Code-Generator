@@ -108,9 +108,6 @@
     <None Include=".config\GraphEndpointListSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include=".config\AndroidSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include=".config\ObjCSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
