@@ -108,7 +108,7 @@ namespace Microsoft.Graph
         /// <returns>The request object to send.</returns>
         public IGraphServiceTestTypesCollectionRequest Expand(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
+            this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$expand", value));
             return this;
         }
 
@@ -131,7 +131,7 @@ namespace Microsoft.Graph
             }
             else
             {
-                this.QueryOptions.Add(new QueryOption("$expand", value));
+                this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$expand", value));
             }
             return this;
         }
@@ -143,7 +143,7 @@ namespace Microsoft.Graph
         /// <returns>The request object to send.</returns>
         public IGraphServiceTestTypesCollectionRequest Select(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$select", value));
+            this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$select", value));
             return this;
         }
 
@@ -166,7 +166,7 @@ namespace Microsoft.Graph
             }
             else
             {
-                this.QueryOptions.Add(new QueryOption("$select", value));
+                this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$select", value));
             }
             return this;
         }
@@ -178,7 +178,7 @@ namespace Microsoft.Graph
         /// <returns>The request object to send.</returns>
         public IGraphServiceTestTypesCollectionRequest Top(int value)
         {
-            this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
+            this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$top", value.ToString()));
             return this;
         }
 
@@ -189,7 +189,7 @@ namespace Microsoft.Graph
         /// <returns>The request object to send.</returns>
         public IGraphServiceTestTypesCollectionRequest Filter(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$filter", value));
+            this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$filter", value));
             return this;
         }
 
@@ -200,7 +200,7 @@ namespace Microsoft.Graph
         /// <returns>The request object to send.</returns>
         public IGraphServiceTestTypesCollectionRequest Skip(int value)
         {
-            this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
+            this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$skip", value.ToString()));
             return this;
         }
 
@@ -211,7 +211,7 @@ namespace Microsoft.Graph
         /// <returns>The request object to send.</returns>
         public IGraphServiceTestTypesCollectionRequest OrderBy(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$orderby", value));
+            this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$orderby", value));
             return this;
         }
     }

@@ -35,7 +35,7 @@
      * @return the updated request
      */
     public <#=c.ITypeReferenceRequest()#> select(final String value) {
-        getQueryOptions().add(new QueryOption("$select", value));
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (<#=c.TypeReferenceRequest()#>)this;
     }
 
@@ -48,7 +48,7 @@
      * @return the updated request
      */
     public <#=c.ITypeReferenceRequest()#> expand(final String value) {
-        getQueryOptions().add(new QueryOption("$expand", value));
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (<#=c.TypeReferenceRequest()#>)this;
     }
 <# } #>
