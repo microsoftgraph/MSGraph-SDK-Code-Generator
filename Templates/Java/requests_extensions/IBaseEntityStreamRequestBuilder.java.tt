@@ -2,26 +2,26 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeStreamRequestBuilder(c);#>
+<#host.TemplateName = c.ITypeStreamRequestBuilder();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateInterfaceDef(ITypeStreamRequestBuilder(c), "IRequestBuilder")#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeStreamRequestBuilder(), "IRequestBuilder")#>
 
     /**
      * Creates the request
      *
-     * @return the <#=ITypeStreamRequest(c)#> instance
+     * @return the <#=c.ITypeStreamRequest()#> instance
      */
-    <#=ITypeStreamRequest(c)#> buildRequest();
+    <#=c.ITypeStreamRequest()#> buildRequest();
 
     /**
      * Creates the request with specific options instead of the existing options
      *
      * @param requestOptions the options for this request
-     * @return the <#=ITypeStreamRequest(c)#> instance
+     * @return the <#=c.ITypeStreamRequest()#> instance
      */
-    <#=ITypeStreamRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeStreamRequest()#> buildRequest(final java.util.List<? extends Option> requestOptions);
 <#
 if (c.AsOdcmClass() != null)
 {
@@ -31,19 +31,19 @@ if (c.AsOdcmClass() != null)
         if (prop.IsCollection()) {
 #>
 
-    <#=ITypeCollectionRequestBuilder(prop)#> <#=prop.Name#>();
+    <#=prop.ITypeCollectionRequestBuilder()#> <#=prop.Name#>();
 
-    <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>(final String id);
+    <#=prop.ITypeRequestBuilder()#> <#=prop.Name#>(final String id);
 <#
         } else {
 #>
 
     /**
-     * Gets the request builder for <#=TypeName(prop)#>
+     * Gets the request builder for <#=prop.TypeName()#>
      *
-     * @return the <#=ITypeRequestBuilder(prop)#> instance
+     * @return the <#=prop.ITypeRequestBuilder()#> instance
      */
-    <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>();
+    <#=prop.ITypeRequestBuilder()#> <#=prop.Name#>();
 <#
         }
     }
@@ -52,7 +52,7 @@ if (c.AsOdcmClass() != null)
     foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
     {
         var propName = prop.Name.ToCheckedCase();
-        var propRequestBuilder = TypeRequestBuilder(prop);
+        var propRequestBuilder = prop.TypeRequestBuilder();
 #>
 
     I<#=propRequestBuilder#> <#=prop.Name#>();
@@ -66,7 +66,7 @@ if (c.AsOdcmClass() != null)
         var propName = prop.Name.ToCheckedCase();
 #>
 
-    <#=ITypeStreamRequestBuilder(prop)#> <#=prop.Name#>Value();
+    <#=prop.ITypeStreamRequestBuilder()#> <#=prop.Name#>Value();
 <#
     }
 #>
@@ -75,14 +75,14 @@ if (c.AsOdcmClass() != null)
 <#
     foreach (var method in c.AsOdcmClass().MethodsAndOverloads())
     {
-        var parameterList = MethodParametersSignature(method);
+        var parameterList = method.MethodParametersSignature();
         if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
 #>
 <#		if (method.IsCollection){#>
 
-    <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>);
+    <#=method.ITypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>);
 <# 		} else { #>
-    <#=ITypeRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>);
+    <#=method.ITypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>);
 <#
         }
     }

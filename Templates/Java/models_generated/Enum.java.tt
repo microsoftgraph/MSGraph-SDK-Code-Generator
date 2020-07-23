@@ -3,7 +3,7 @@
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForEnum(host)#>
+<#=host.CreatePackageDefForEnum()#>
 
 /**
  * The Enum <#=c.Name.ToUpperFirstChar().SplitCamelCase()#>.

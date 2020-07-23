@@ -204,8 +204,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             if (shouldDisambiguate)
             {
                 // Form the import statement to disambiguate the model in the generated code file.
-                var thisNamespace = host.CurrentModel.GetNamespace();
-                var thisTypeName = (host.CurrentType as OdcmProperty).Type.Name.ToUpperFirstChar();
+                var thisType = (host.CurrentType as OdcmProperty).Projection.Type;
+                var thisNamespace = thisType.Namespace.Name.NamespaceName();
+                var thisTypeName = thisType.Name.ToUpperFirstChar();
                 importStatement = $"\nimport {thisNamespace}.models.extensions.{thisTypeName};";
             }
 
@@ -423,6 +424,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         }
 
         public static string NamespaceName(this OdcmNamespace @namespace)
+        {
+            return @namespace.ToString().NamespaceName();
+        }
+
+        public static string NamespaceName(this string @namespace)
         {
             if (string.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
             {

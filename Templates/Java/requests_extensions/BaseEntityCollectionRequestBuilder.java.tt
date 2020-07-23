@@ -2,33 +2,33 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeCollectionRequestBuilder(c);#>
+<#host.TemplateName = c.TypeCollectionRequestBuilder();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateClassDef(TypeCollectionRequestBuilder(c), "BaseRequestBuilder", ITypeCollectionRequestBuilder(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), "BaseRequestBuilder", c.ITypeCollectionRequestBuilder())#>
 
     /**
-     * The request builder for this collection of <#=ClassTypeName(c)#>
+     * The request builder for this collection of <#=c.ClassTypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeCollectionRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+    public <#=c.TypeCollectionRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
-    public <#=ITypeCollectionRequest(c)#> buildRequest() {
+    public <#=c.ITypeCollectionRequest()#> buildRequest() {
         return buildRequest(getOptions());
     }
 
-    public <#=ITypeCollectionRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
-        return new <#=TypeCollectionRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
+    public <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends Option> requestOptions) {
+        return new <#=c.TypeCollectionRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public <#=ITypeRequestBuilder(c)#> byId(final String id) {
-        return new <#=TypeRequestBuilder(c)#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
+    public <#=c.ITypeRequestBuilder()#> byId(final String id) {
+        return new <#=c.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
     }
 
 <#
@@ -48,7 +48,7 @@ if (currentTypeProjection != null) {
             continue;
         }
 
-        var parameterList = MethodParametersSignature(method);
+        var parameterList = method.MethodParametersSignature();
 
         if (parameterList != "") {
             parameterList = parameterList.Remove(0, 2);
@@ -57,24 +57,24 @@ if (currentTypeProjection != null) {
         if (method.IsCollection) {
 #>
 
-    public <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>) {
-        return new <#=TypeCollectionRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    public <#=method.ITypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
+        return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }
 <#
 	// Add a method to support delta query by string (opaque deltaLink)
-	if (MethodName(method) == "Delta") {
+	if (method.MethodName() == "Delta") {
 #>
 
-	public <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(final String deltaLink) {
-        return new <#=TypeCollectionRequestBuilder(method)#>(deltaLink, getClient(), null<#=MethodParametersValues(method)#>);
+	public <#=method.ITypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(final String deltaLink) {
+        return new <#=method.TypeCollectionRequestBuilder()#>(deltaLink, getClient(), null<#=method.MethodParametersValues()#>);
     }
 <# } #>
 <#
         } else {
 #>
 
-    public <#=ITypeRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>) {
-        return new <#=TypeRequestBuilder(method)#>(getRequestUrlWithAdditionalSegment("<#=MethodFullName(method)#>"), getClient(), null<#=MethodParametersValues(method)#>);
+    public <#=method.ITypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
+        return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }
 <#
         }

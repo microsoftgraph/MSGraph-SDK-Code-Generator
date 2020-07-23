@@ -2,9 +2,9 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeCollectionPage(c);#>
+<#host.TemplateName = c.TypeCollectionPage();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 <# 
 	/** 
 	* Manual check for deltaLink
@@ -22,7 +22,7 @@
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.*;
 
-<#=CreateClassDef(TypeCollectionPage(c), "BaseCollectionPage" + CollectionPageGeneric(c), ITypeCollectionPage(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage" + c.CollectionPageGeneric(), c.ITypeCollectionPage())#>
 
 <# if (deltaPage) { #>
     /**
@@ -33,12 +33,12 @@ import com.google.gson.annotations.*;
 
 <# } #>
     /**
-     * A collection page for <#=TypeName(c)#>.
+     * A collection page for <#=c.TypeName()#>.
      *
-     * @param response The serialized <#=TypeCollectionResponse(c)#> from the service
+     * @param response The serialized <#=c.TypeCollectionResponse()#> from the service
      * @param builder The request builder for the next collection page
      */
-    public <#=TypeCollectionPage(c)#>(final <#=TypeCollectionResponse(c)#> response, final <#=ITypeCollectionRequestBuilder(c)#> builder) {
+    public <#=c.TypeCollectionPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.ITypeCollectionRequestBuilder()#> builder) {
        super(response.value, builder);
 <# if (deltaPage) { #>
 
