@@ -23,11 +23,14 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="Microsoft.Graph.IBaseClient"/> for handling requests.</param>
+        /// <param name="value">A value parameter for the OData method call.</param>
         public SegmentTestActionRequestBuilder(
             string requestUrl,
-            Microsoft.Graph.IBaseClient client)
+            Microsoft.Graph.IBaseClient client,
+            Microsoft.Graph.IdentitySet value)
             : base(requestUrl, client)
         {
+            this.SetParameter("value", value, true);
         }
 
         /// <summary>
@@ -39,6 +42,11 @@ namespace Microsoft.Graph2.CallRecords
         protected override ISegmentTestActionRequest CreateRequest(string functionUrl, IEnumerable<Microsoft.Graph.Option> options)
         {
             var request = new SegmentTestActionRequest(functionUrl, this.Client, options);
+
+            if (this.HasParameter("value"))
+            {
+                request.RequestBody.Value = this.GetParameter<Microsoft.Graph.IdentitySet>("value");
+            }
 
             return request;
         }
