@@ -10,8 +10,6 @@ import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.options.QueryOption;
 <#
 String classDeclaration = "";
 if (c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
@@ -89,7 +87,7 @@ classDeclaration += c.TypeName();
      * @return the updated request
      */
      public <#=c.ITypeRequest()#> select(final String value) {
-         getQueryOptions().add(new QueryOption("$select", value));
+         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (<#=c.TypeRequest()#>)this;
      }
 
@@ -102,7 +100,7 @@ classDeclaration += c.TypeName();
      * @return the updated request
      */
      public <#=c.ITypeRequest()#> expand(final String value) {
-         getQueryOptions().add(new QueryOption("$expand", value));
+         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (<#=c.TypeRequest()#>)this;
      }
 
@@ -116,7 +114,7 @@ classDeclaration += c.TypeName();
      * @return the updated request
      */
      public <#=c.ITypeRequest()#> top(final int value) {
-         getQueryOptions().add(new QueryOption("$top", value+""));
+         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
          return (<#=c.TypeRequest()#>)this;
      }
 <# } #>

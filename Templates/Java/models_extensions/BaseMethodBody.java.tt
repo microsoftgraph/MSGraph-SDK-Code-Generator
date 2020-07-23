@@ -5,7 +5,11 @@
 <#host.TemplateName = c.TypeBody();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefinition()#>
-import com.microsoft.graph.models.generated.*;
+<#
+    var sb = new StringBuilder();
+    sb = TypeHelperJava.ImportClassesOfMethodParameters(c.AsOdcmMethod(), "import {0}.{1}.{2};", sb);
+#>
+<#=sb.ToString()#>
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.JsonObject;
