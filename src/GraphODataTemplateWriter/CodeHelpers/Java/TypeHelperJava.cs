@@ -860,6 +860,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 
         public static StringBuilder ImportClassesOfMethodParameters(OdcmMethod method, string importFormat, StringBuilder sb)
         {
+            var importStatements = new HashSet<string>();
+            var appendEnumSet = false;
             foreach (var p in method.Parameters)
             {
                 if (!(p.Type is OdcmPrimitiveType) && p.Type.GetTypeString() != "com.google.gson.JsonElement")
@@ -868,15 +870,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                     if (propertyType.StartsWith("EnumSet"))
                     {
                         propertyType = propertyType.Substring("EnumSet<".Length, propertyType.Length - ("EnumSet<".Length + 1));
-                        sb.Append("import java.util.EnumSet;\n");
+                        appendEnumSet = true;
                     }
 
-                    sb.AppendFormat(importFormat,
-                        p.Type.Namespace.Name.NamespaceName(),
-                        p.GetPackagePrefix(),
-                        propertyType);
-                    sb.Append("\n");
+                    importStatements.Add(string.Format(importFormat, p.Type.Namespace.Name.NamespaceName(), p.GetPackagePrefix(), propertyType));
                 }
+            }
+
+            sb.Append(string.Join("\n", importStatements));
+
+            if (appendEnumSet)
+            {
+                sb.Append("\nimport java.util.EnumSet;\n");
             }
 
             return sb;
