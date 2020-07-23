@@ -755,7 +755,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             var sb = new StringBuilder();
             var packageFormat = @"package {0}.{1};";
             sb.AppendFormat(packageFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             host.TemplateInfo.OutputParentDirectory.Replace("_", "."));
             sb.Append("\n");
             return sb.ToString();
@@ -765,7 +765,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             var sb = new StringBuilder();
             var packageFormat = @"package {0}.{1};";
             sb.AppendFormat(packageFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             host.TemplateInfo.OutputParentDirectory.Replace("_", "."));
             sb.Append("\n");
             return sb.ToString();
@@ -777,7 +777,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.Append(host.CreatePackageDefinition());
             var importFormat = @"import {0}.{1}.{2};";
             sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "models.extensions",
                             TypeName(host.CurrentType));
             sb.Append("\n");
@@ -790,20 +790,20 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.Append(host.CreatePackageDefinition());
             var importFormat = @"import {0}.{1}.{2};";
 
-            var returnType = ReturnType(host.CurrentType);
+            var returnType = host.CurrentType.ReturnType();
             if (returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
             {
                 sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "models.extensions",
-                            ReturnType(host.CurrentType));
+                            returnType);
                 sb.Append("\n");
             }
 
             sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "requests.extensions",
-                            ITypeRequest(host.CurrentType));
+                            host.CurrentType.ITypeRequest());
             sb.Append("\n");
             return sb.ToString();
         }
@@ -814,9 +814,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.Append(host.CreatePackageDefinition());
             var importFormat = @"import {0}.{1}.{2};";
             sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "models.extensions",
-                            TypeName(host.CurrentType.AsOdcmClass()));
+                            host.CurrentType.TypeName());
             sb.Append("\n");
             return sb.ToString();
         }
@@ -827,9 +827,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.Append(host.CreatePackageDefForIBaseMethodRequest());
             var importFormat = @"import {0}.{1}.{2};";
             sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "requests.extensions",
-                            TypeRequest(host.CurrentType));
+                            host.CurrentType.TypeRequest());
             sb.Append("\n");
             return sb.ToString();
         }
@@ -840,15 +840,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.Append(host.CreatePackageDefinition());
             var importFormat = @"import {0}.{1}.{2};";
             sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "requests.extensions",
-                            ITypeRequest(host.CurrentType));
+                            host.CurrentType.ITypeRequest());
             sb.Append("\n");
 
             sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "requests.extensions",
-                            TypeRequest(host.CurrentType));
+                            host.CurrentType.TypeRequest());
             sb.Append("\n");
 
             foreach (var method in host.CurrentType.AsOdcmMethod().WithOverloads())
@@ -865,7 +865,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                         }
 
                         sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            p.Type.Namespace.Name.NamespaceName(),
                             p.GetPackagePrefix(),
                             propertyType);
                         sb.Append("\n");
@@ -880,29 +880,29 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             var sb = new StringBuilder();
             sb.Append(host.CreatePackageDefinition());
             var importFormat = @"import {0}.{1}.{2};";
-            var returnType = ReturnType(host.CurrentType);
+            var returnType = host.CurrentType.ReturnType();
             if (returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
             {
                 sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "models.extensions",
-                            ReturnType(host.CurrentType));
+                            returnType);
                 sb.Append("\n");
             }
             if (host.CurrentType.AsOdcmMethod().IsCollection)
             {
                 sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "requests.extensions",
-                            ITypeCollectionRequest(host.CurrentType));
+                            host.CurrentType.ITypeCollectionRequest());
                 sb.Append("\n");
             }
             else
             {
                 sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "requests.extensions",
-                            ITypeRequest(host.CurrentType));
+                            host.CurrentType.ITypeRequest());
                 sb.Append("\n");
             }
 
@@ -916,46 +916,46 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             var importFormat = @"import {0}.{1}.{2};";
 
             sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "models.extensions",
-                            TypeBody(host.CurrentType));
+                            host.CurrentType.TypeBody());
             sb.Append("\n");
-            var returnType = ReturnType(host.CurrentType);
+            var returnType = host.CurrentType.ReturnType();
             if (returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
             {
                 sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "models.extensions",
-                            ReturnType(host.CurrentType));
+                            returnType);
                 sb.Append("\n");
             }
 
             if (host.CurrentType.AsOdcmMethod().IsCollection)
             {
                 sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "requests.extensions",
-                            ITypeCollectionRequest(host.CurrentType));
+                            host.CurrentType.ITypeCollectionRequest());
                 sb.Append("\n");
 
                 sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "requests.extensions",
-                            TypeCollectionRequest(host.CurrentType));
+                            host.CurrentType.TypeCollectionRequest());
                 sb.Append("\n");
             }
             else
             {
                 sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "requests.extensions",
-                            ITypeRequest(host.CurrentType));
+                            host.CurrentType.ITypeRequest());
                 sb.Append("\n");
 
                 sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "requests.extensions",
-                            TypeRequest(host.CurrentType));
+                            host.CurrentType.TypeRequest());
                 sb.Append("\n");
             }
             return sb.ToString();
@@ -967,9 +967,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.Append(host.CreatePackageDefinition());
             var importFormat = @"import {0}.{1}.{2};";
             sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "requests.extensions",
-                            ITypeRequest(host.CurrentType));
+                            host.CurrentType.ITypeRequest());
             sb.Append("\n");
             return sb.ToString();
         }
@@ -988,14 +988,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 
 
             sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "models.extensions",
                             modelClassName);
             sb.Append("\n");
             sb.AppendFormat(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             "requests.extensions",
-                            ITypeCollectionRequestBuilder(host.CurrentType));
+                            host.CurrentType.ITypeCollectionRequestBuilder());
 
             return sb.ToString();
         }
@@ -1003,11 +1003,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         //Fixing package and import statement for model classes
         public static string CreatePackageDefForEntity(this CustomT4Host host)
         {
-            IEnumerable<OdcmProperty> properties = ((OdcmClass)host.CurrentType).Properties;
+            var type = host.CurrentType as OdcmClass;
+            IEnumerable<OdcmProperty> properties = type.Properties;
             var sb = new StringBuilder();
             var packageFormat = @"package {0}.{1};";
             sb.AppendFormat(packageFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentNamespace(),
                             host.TemplateInfo.OutputParentDirectory.Replace("_", "."));
             sb.Append("\n");
 
@@ -1037,7 +1038,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
 
                 string prefixValue = property.GetPackagePrefix();
                 string importstr = String.Format(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            property.Projection.Type.Namespace.Name.NamespaceName(),
                             prefixValue,
                             propertyType);
                 if (!uniqueStore.ContainsKey(importstr))
@@ -1054,7 +1055,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
             {
                 string prefixValue = GetPrefixForModels();
                 string importstr = String.Format(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            (host.CurrentType.BaseClass() as OdcmClass).Namespace.Name.NamespaceName(),
                             prefixValue,
                             baseClassNameType);
                 if (!uniqueStore.ContainsKey(importstr))
@@ -1102,7 +1103,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
 
                     var propertyType = TypeCollectionResponse(property);
                     string importstr = String.Format(importFormat,
-                                host.CurrentModel.GetNamespace().NamespaceName(),
+                                property.Projection.Type.Namespace.Name.NamespaceName(),
                                 GetPrefixForRequests(),
                                 propertyType);
                     if (!uniqueStore.ContainsKey(importstr))
@@ -1114,7 +1115,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
 
                     string propertyValue = TypeCollectionPage(property);
                     string importstr1 = String.Format(importFormat,
-                        host.CurrentModel.GetNamespace().NamespaceName(),
+                        property.Projection.Type.Namespace.Name.NamespaceName(),
                         GetPrefixForRequests(),
                         propertyValue);
                     if (!uniqueStore.ContainsKey(importstr1))
@@ -1132,14 +1133,14 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
         {
             var format = @"package {0}.{1};
 
-import {0}.concurrency.*;
-import {0}.core.*;
+import {2}.concurrency.*;
+import {2}.core.*;
 import {0}.models.extensions.*;
-import {0}.models.generated.*;{2}
-import {0}.http.*;
+import {0}.models.generated.*;{3}
+import {2}.http.*;
 import {0}.requests.extensions.*;
-import {0}.options.*;
-import {0}.serializer.*;
+import {2}.options.*;
+import {2}.serializer.*;
 
 import java.util.Arrays;
 import java.util.EnumSet;";
@@ -1148,8 +1149,23 @@ import java.util.EnumSet;";
             string fullyQualifiedImport = host.GetFullyQualifiedImportStatementForModel();
 
             return string.Format(format,
+                host.CurrentNamespace(),
+                host.TemplateInfo.OutputParentDirectory.Replace("_", "."),
                 host.CurrentModel.GetNamespace().NamespaceName(),
-                host.TemplateInfo.OutputParentDirectory.Replace("_", "."), fullyQualifiedImport);
+                fullyQualifiedImport);
+        }
+
+        public static string CurrentNamespace(this CustomT4Host host)
+        {
+            switch (host.CurrentType)
+            {
+                case OdcmType t:
+                    return t.Namespace.Name.NamespaceName();
+                case OdcmProperty p:
+                    return p.Projection.Type.Namespace.Name.NamespaceName();
+                default:
+                    return string.Empty;
+            }
         }
 
         //Getting import prefix using property name for model classes

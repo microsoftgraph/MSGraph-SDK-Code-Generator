@@ -13,7 +13,7 @@
 
     <#=c.ITypeCollectionRequest()#> buildRequest();
 
-    <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
 
     <#=c.ITypeRequestBuilder()#> byId(final String id);
 

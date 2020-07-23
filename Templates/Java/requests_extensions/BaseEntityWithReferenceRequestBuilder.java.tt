@@ -15,7 +15,7 @@
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeWithReferencesRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+    public <#=c.TypeWithReferencesRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -34,7 +34,7 @@
      * @param requestOptions the options for this request
      * @return the <#=c.ITypeWithReferencesRequest()#> instance
      */
-    public <#=c.ITypeWithReferencesRequest()#> buildRequest(final java.util.List<? extends Option> requestOptions) {
+    public <#=c.ITypeWithReferencesRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new <#=c.TypeWithReferencesRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 

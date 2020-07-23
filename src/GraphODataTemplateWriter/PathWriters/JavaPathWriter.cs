@@ -67,7 +67,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
 
             var destinationPath = splittedPaths.Aggregate(string.Empty, (current, path) =>
                                   current + string.Format("{0}{1}", path, Path.DirectorySeparatorChar));
-            return destinationPath;
+            return destinationPath.ToLower();
         }
     }
 }

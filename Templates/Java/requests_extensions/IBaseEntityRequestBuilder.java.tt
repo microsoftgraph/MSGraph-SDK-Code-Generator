@@ -23,7 +23,7 @@ import java.util.EnumSet;
      * @param requestOptions the options for this request
      * @return the <#=c.ITypeRequest()#> instance
      */
-    <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
 
 <# if(host.TemplateName.Equals("IThumbnailSetRequestBuilder")){#>
     /**
@@ -133,7 +133,7 @@ if (c.AsOdcmClass() != null)
 		sb.Append(host.CreatePackageDefinition());
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.GetNamespace().NamespaceName(),
+						host.CurrentNamespace(),
 						"requests.extensions",
 						host.CurrentType.ITypeRequest());
 		sb.Append("\n");
@@ -145,19 +145,19 @@ if (c.AsOdcmClass() != null)
 				if (prop.IsCollection()) {
 					
 					sb.AppendFormat(importFormat,
-						host.CurrentModel.GetNamespace().NamespaceName(),
+						prop.Projection.Type.Namespace.Name.NamespaceName(),
 						"requests.extensions",
 						prop.ITypeCollectionRequestBuilder());
 					sb.Append("\n");
 
 					sb.AppendFormat(importFormat,
-						host.CurrentModel.GetNamespace().NamespaceName(),
+						prop.Projection.Type.Namespace.Name.NamespaceName(),
 						"requests.extensions",
 						prop.ITypeRequestBuilder());
 					sb.Append("\n");
 				} else {
 					sb.AppendFormat(importFormat,
-						host.CurrentModel.GetNamespace().NamespaceName(),
+						prop.Projection.Type.Namespace.Name.NamespaceName(),
 						"requests.extensions",
 						prop.ITypeRequestBuilder());
 					sb.Append("\n");
@@ -168,7 +168,7 @@ if (c.AsOdcmClass() != null)
 			{
 				var propRequestBuilder = prop.TypeRequestBuilder();
 				sb.AppendFormat(importFormat,
-						host.CurrentModel.GetNamespace().NamespaceName(),
+						prop.Projection.Type.Namespace.Name.NamespaceName(),
 						"requests.extensions",
 						"I" + propRequestBuilder);
 				sb.Append("\n");
@@ -177,7 +177,7 @@ if (c.AsOdcmClass() != null)
 			if (c is OdcmMediaClass)
 			{
 				sb.AppendFormat(importFormat,
-						host.CurrentModel.GetNamespace().NamespaceName(),
+						host.CurrentNamespace(),
 						"requests.extensions",
 						host.CurrentType.ITypeStreamRequestBuilder());
 				sb.Append("\n");
@@ -197,7 +197,7 @@ if (c.AsOdcmClass() != null)
 							typeString = typeString.Substring(0, typeString.Length-1);
 						}
 						sb.AppendFormat(importFormat,
-							host.CurrentModel.GetNamespace().NamespaceName(),
+							p.Type.Namespace.Name.NamespaceName(),
 							p.GetPackagePrefix(),
 							typeString);
 						sb.Append("\n");
@@ -206,13 +206,13 @@ if (c.AsOdcmClass() != null)
 
 				if (method.IsCollection) {
 					sb.AppendFormat(importFormat,
-						host.CurrentModel.GetNamespace().NamespaceName(),
+						method.Namespace.Name.NamespaceName(),
 						"requests.extensions",
 						method.ITypeCollectionRequestBuilder());
 					sb.Append("\n");
 				} else {
 					sb.AppendFormat(importFormat,
-						host.CurrentModel.GetNamespace().NamespaceName(),
+						method.Namespace.Name.NamespaceName(),
 						"requests.extensions",
 						method.ITypeRequestBuilder());
 					sb.Append("\n");

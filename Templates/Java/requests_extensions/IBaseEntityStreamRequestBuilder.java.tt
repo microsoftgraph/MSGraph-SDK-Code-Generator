@@ -21,7 +21,7 @@
      * @param requestOptions the options for this request
      * @return the <#=c.ITypeStreamRequest()#> instance
      */
-    <#=c.ITypeStreamRequest()#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeStreamRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
 <#
 if (c.AsOdcmClass() != null)
 {

@@ -13,5 +13,5 @@
 
     <#=c.ITypeCollectionReferenceRequest()#> buildRequest();
 
-    <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
 }
