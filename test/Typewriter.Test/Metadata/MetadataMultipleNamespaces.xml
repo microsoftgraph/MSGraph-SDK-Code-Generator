@@ -11,10 +11,15 @@
       <EntityType Name="testType" BaseType="graph.entity">
         <Property Name="propertyAlpha" Type="graph.derivedComplexTypeRequest" />
       </EntityType>
+      <EnumType Name="enum1">
+        <Member Name="value0" Value="0" />
+        <Member Name="value1" Value="1" />
+      </EnumType>
       <ComplexType Name="emptyBaseComplexTypeRequest" Abstract="true" />
       <ComplexType Name="derivedComplexTypeRequest" BaseType="graph.emptyBaseComplexTypeRequest">
         <Property Name="property1" Type="Edm.String" />
         <Property Name="property2" Type="Edm.String" />
+        <Property Name="enumProperty" Type="graph.enum1" />
       </ComplexType>
       <ComplexType Name="responseObject" />
       <Action Name="query" IsBound="true">

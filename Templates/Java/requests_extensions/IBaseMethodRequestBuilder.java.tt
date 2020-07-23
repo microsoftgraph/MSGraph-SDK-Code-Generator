@@ -23,5 +23,5 @@ import com.microsoft.graph.options.Option;
      * @param requestOptions the options for the request
      * @return the <#=c.ITypeRequest()#> instance
      */
-    <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
 }

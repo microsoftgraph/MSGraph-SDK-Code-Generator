@@ -21,7 +21,7 @@
      * @param requestOptions the options for this request
      * @return the <#=c.ITypeWithReferencesRequest()#> instance
      */
-    <#=c.ITypeWithReferencesRequest()#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeWithReferencesRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
 
     <#=c.ITypeReferenceRequestBuilder()#> reference();
 

@@ -23,7 +23,7 @@ import com.google.gson.JsonElement;
      * @param client         the service client
      * @param requestOptions the options for this request<#=method.MethodParametersJavadocSignature()#>
      */
-    public <#=c.TypeRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions<#=method.MethodParametersSignature()#>) {
+    public <#=c.TypeRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions<#=method.MethodParametersSignature()#>) {
         super(requestUrl, client, requestOptions);
 <#     foreach (var p in method.Parameters) { #>
 <#         if (isAction) { #>
@@ -50,7 +50,7 @@ import com.google.gson.JsonElement;
      * @param requestOptions the options for the request
      * @return the <#=c.ITypeRequest()#> instance
      */
-    public <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends Option> requestOptions) {
+    public <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         <#=c.TypeRequest()#> request = new <#=c.TypeRequest()#>(
                 getRequestUrl(),
                 getClient(),

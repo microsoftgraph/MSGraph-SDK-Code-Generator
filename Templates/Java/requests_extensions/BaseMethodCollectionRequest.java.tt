@@ -21,7 +21,7 @@
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+    public <#=c.TypeCollectionRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.ITypeCollectionPage()#>.class);
 <# } else { #>
