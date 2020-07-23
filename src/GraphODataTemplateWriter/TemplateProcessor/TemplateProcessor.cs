@@ -17,6 +17,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
     using Vipr.Core.CodeModel;
     using NLog;
     using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
+    using System.Windows.Markup;
 
     public class TemplateProcessor : ITemplateProcessor
     {
@@ -348,8 +349,29 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                 throw new InvalidOperationException(errors);
             }
 
-            var @namespace = (odcmObject as OdcmType)?.Namespace.GetNamespaceName()
-                ?? (odcmObject as OdcmProperty)?.Class.Namespace.GetNamespaceName();
+            string @namespace;
+            switch (odcmObject)
+            {
+                case OdcmType t:
+                    @namespace = t.Namespace.GetNamespaceName();
+                    break;
+                case OdcmProperty p:
+                    if (templateInfo.TemplateLanguage.Equals("java", StringComparison.OrdinalIgnoreCase))
+                    {
+                        @namespace = p.Type.Namespace.Name;
+                        if (@namespace == "Edm")
+                        {
+                            @namespace = "Microsoft.Graph";
+                        }
+                    }
+                    else
+                    {
+                        @namespace = p?.Class.Namespace.GetNamespaceName();
+                    }
+                    break;
+                default:
+                    throw new ArgumentException(nameof(odcmObject));
+            }
 
             var path = this.PathWriter.WritePath(templateInfo, @namespace, fileName);
             logger.Debug("Wrote template to path {0}", path);
