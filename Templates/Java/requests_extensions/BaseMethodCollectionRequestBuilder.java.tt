@@ -25,7 +25,7 @@
 		}
   <# } else { #>
    	 if(<#=p.ParamName()#>!=null){
-			functionOptions.add(new FunctionOption("<#=p.ParamName()#>", <#=p.ParamName()#>));
+			functionOptions.add(new com.microsoft.graph.options.FunctionOption("<#=p.ParamName()#>", <#=p.ParamName()#>));
 		}
   <# } #>
 <# } #>
@@ -50,7 +50,7 @@
         }
   <# } #>
 <# } else { #>
-      for (FunctionOption option : functionOptions) {
+      for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
             request.addFunctionOption(option);
       }
 <# } #>

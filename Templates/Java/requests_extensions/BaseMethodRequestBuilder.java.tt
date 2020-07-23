@@ -8,8 +8,6 @@
 import com.microsoft.graph.core.BaseActionRequestBuilder;
 import com.microsoft.graph.core.BaseFunctionRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.options.FunctionOption;
 import com.google.gson.JsonElement;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
@@ -29,7 +27,7 @@ import com.google.gson.JsonElement;
 <#         if (isAction) { #>
         bodyParams.put("<#=p.ParamName()#>", <#=p.ParamName()#>);
 <#         } else { #>
-        functionOptions.add(new FunctionOption("<#=p.ParamName()#>", <#=p.ParamName()#>));
+        functionOptions.add(new com.microsoft.graph.options.FunctionOption("<#=p.ParamName()#>", <#=p.ParamName()#>));
 <#         } #>
 <#     } #>
     }
@@ -65,7 +63,7 @@ import com.google.gson.JsonElement;
 
 <#   } #>
 <# } else { #>
-      for (FunctionOption option : functionOptions) {
+      for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
             request.addFunctionOption(option);
       }
 
