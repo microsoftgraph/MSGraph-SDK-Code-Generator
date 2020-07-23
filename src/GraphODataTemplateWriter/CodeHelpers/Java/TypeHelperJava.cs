@@ -1146,8 +1146,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
 
 import {2}.concurrency.*;
 import {2}.core.*;
-import {0}.models.extensions.*;
-import {0}.models.generated.*;{3}{4}
+import {0}.models.extensions.*;{3}{4}
 import {2}.http.*;
 import {0}.requests.extensions.*;
 import {2}.serializer.*;
