@@ -21,6 +21,11 @@ namespace Microsoft.Graph2.CallRecords
     public partial interface ISegmentTestActionRequest : Microsoft.Graph.IBaseRequest
     {
 
+        /// <summary>
+        /// Gets the request body.
+        /// </summary>
+        SegmentTestActionRequestBody RequestBody { get; }
+
 
         /// <summary>
         /// Issues the POST request.

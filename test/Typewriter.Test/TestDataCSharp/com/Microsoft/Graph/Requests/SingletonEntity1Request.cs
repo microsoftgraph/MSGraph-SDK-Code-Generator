@@ -161,7 +161,7 @@ namespace Microsoft.Graph
         /// <returns>The request object to send.</returns>
         public ISingletonEntity1Request Expand(string value)
         {
-            this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$expand", value));
+            this.QueryOptions.Add(new QueryOption("$expand", value));
             return this;
         }
 
@@ -184,7 +184,7 @@ namespace Microsoft.Graph
             }
             else
             {
-                this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$expand", value));
+                this.QueryOptions.Add(new QueryOption("$expand", value));
             }
             return this;
         }
@@ -196,7 +196,7 @@ namespace Microsoft.Graph
         /// <returns>The request object to send.</returns>
         public ISingletonEntity1Request Select(string value)
         {
-            this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$select", value));
+            this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
 
@@ -219,7 +219,7 @@ namespace Microsoft.Graph
             }
             else
             {
-                this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$select", value));
+                this.QueryOptions.Add(new QueryOption("$select", value));
             }
             return this;
         }
