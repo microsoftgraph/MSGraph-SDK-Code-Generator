@@ -853,26 +853,33 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 
             foreach (var method in host.CurrentType.AsOdcmMethod().WithOverloads())
             {
-                foreach (var p in method.Parameters)
-                {
-                    if (!(p.Type is OdcmPrimitiveType) && p.Type.GetTypeString() != "com.google.gson.JsonElement")
-                    {
-                        var propertyType = p.Type.GetTypeString();
-                        if (propertyType.StartsWith("EnumSet"))
-                        {
-                            propertyType = propertyType.Substring("EnumSet<".Length, propertyType.Length - ("EnumSet<".Length + 1));
-                            sb.Append("import java.util.EnumSet;\n");
-                        }
-
-                        sb.AppendFormat(importFormat,
-                            p.Type.Namespace.Name.NamespaceName(),
-                            p.GetPackagePrefix(),
-                            propertyType);
-                        sb.Append("\n");
-                    }
-                }
+                sb = ImportClassesOfMethodParameters(method, importFormat, sb);
             }
             return sb.ToString();
+        }
+
+        public static StringBuilder ImportClassesOfMethodParameters(OdcmMethod method, string importFormat, StringBuilder sb)
+        {
+            foreach (var p in method.Parameters)
+            {
+                if (!(p.Type is OdcmPrimitiveType) && p.Type.GetTypeString() != "com.google.gson.JsonElement")
+                {
+                    var propertyType = p.Type.GetTypeString();
+                    if (propertyType.StartsWith("EnumSet"))
+                    {
+                        propertyType = propertyType.Substring("EnumSet<".Length, propertyType.Length - ("EnumSet<".Length + 1));
+                        sb.Append("import java.util.EnumSet;\n");
+                    }
+
+                    sb.AppendFormat(importFormat,
+                        p.Type.Namespace.Name.NamespaceName(),
+                        p.GetPackagePrefix(),
+                        propertyType);
+                    sb.Append("\n");
+                }
+            }
+
+            return sb;
         }
 
         public static string CreatePackageDefForIBaseMethodBodyRequest(this CustomT4Host host)
@@ -1136,7 +1143,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
 import {2}.concurrency.*;
 import {2}.core.*;
 import {0}.models.extensions.*;
-import {0}.models.generated.*;{3}
+import {0}.models.generated.*;{3}{4}
 import {2}.http.*;
 import {0}.requests.extensions.*;
 import {2}.options.*;
@@ -1148,11 +1155,28 @@ import java.util.EnumSet;";
             // We need this for disambiguation of generated model class/interfaces references.
             string fullyQualifiedImport = host.GetFullyQualifiedImportStatementForModel();
 
+            string @namespace;
+            string methodImports = string.Empty;
+            switch (host.CurrentType)
+            {
+                case OdcmProperty p:
+                    @namespace = p.Type.Namespace.Name.NamespaceName();
+                    break;
+                case OdcmMethod m:
+                    var sb = new StringBuilder(Environment.NewLine);
+                    methodImports = ImportClassesOfMethodParameters(m, "import {0}.{1}.{2};", sb).ToString();
+                    goto default;
+                default:
+                    @namespace = host.CurrentNamespace();
+                    break;
+            }
+
             return string.Format(format,
-                host.CurrentNamespace(),
+                @namespace,
                 host.TemplateInfo.OutputParentDirectory.Replace("_", "."),
                 host.CurrentModel.GetNamespace().NamespaceName(),
-                fullyQualifiedImport);
+                fullyQualifiedImport,
+                methodImports);
         }
 
         public static string CurrentNamespace(this CustomT4Host host)

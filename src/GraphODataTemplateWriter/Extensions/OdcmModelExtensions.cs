@@ -432,8 +432,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         {
             if (string.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
             {
-                var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace);
-                return name.ToLower();
+                var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace).ToLower();
+                return name == "com.edm" ? "com.microsoft.graph" : name;
             }
             return ConfigurationService.Settings.NamespaceOverride;
         }

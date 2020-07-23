@@ -275,6 +275,7 @@
       </Action>
       <Action Name="testAction" IsBound="true">
         <Parameter Name="bindingParameter" Type="microsoft.graph2.callRecords.segment" />
+        <Parameter Name="value" Type="graph.identitySet" />
         <ReturnType Type="Collection(microsoft.graph2.callRecords.session)" />
       </Action>
     </Schema>
