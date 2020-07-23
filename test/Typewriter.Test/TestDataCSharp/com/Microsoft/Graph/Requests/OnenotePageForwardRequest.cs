@@ -68,7 +68,7 @@ namespace Microsoft.Graph
         /// <returns>The request object to send.</returns>
         public IOnenotePageForwardRequest Expand(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
+            this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$expand", value));
             return this;
         }
 
@@ -79,7 +79,7 @@ namespace Microsoft.Graph
         /// <returns>The request object to send.</returns>
         public IOnenotePageForwardRequest Select(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$select", value));
+            this.QueryOptions.Add(new com.microsoft.graph.options.QueryOption("$select", value));
             return this;
         }
     }

@@ -60,7 +60,7 @@
      * @return the updated request
      */
     public <#=c.ITypeCollectionRequest()#> expand(final String value) {
-        addQueryOption(new QueryOption("$expand", value));
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (<#=c.TypeCollectionRequest()#>)this;
     }
 
@@ -73,7 +73,7 @@
      * @return the updated request
      */
     public <#=c.ITypeCollectionRequest()#> select(final String value) {
-        addQueryOption(new QueryOption("$select", value));
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return (<#=c.TypeCollectionRequest()#>)this;
     }
 
@@ -86,7 +86,7 @@
      * @return the updated request
      */
     public <#=c.ITypeCollectionRequest()#> top(final int value) {
-        addQueryOption(new QueryOption("$top", value + ""));
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
         return (<#=c.TypeCollectionRequest()#>)this;
     }
 

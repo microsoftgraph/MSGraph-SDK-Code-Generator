@@ -1027,7 +1027,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.AppendFormat(@"import {0}.concurrency.*;
 import {0}.core.*;
 import {0}.http.*;
-import {0}.options.*;
 import {0}.serializer.*;
 import java.util.Arrays;
 import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
@@ -1151,7 +1150,6 @@ import {0}.models.extensions.*;
 import {0}.models.generated.*;{3}{4}
 import {2}.http.*;
 import {0}.requests.extensions.*;
-import {2}.options.*;
 import {2}.serializer.*;
 
 import java.util.Arrays;
