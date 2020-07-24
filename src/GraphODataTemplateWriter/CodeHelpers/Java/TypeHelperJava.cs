@@ -608,6 +608,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return parameterSignatureBuilder.ToString();
         }
 
+        public static string GetPropertyNamespace(this OdcmProperty p) => p.Projection.Type.Namespace.Name.NamespaceName();
+
         public static string MethodParametersSignature(this OdcmMethod method)
         {
             var parameterSignatureBuilder = new StringBuilder();
