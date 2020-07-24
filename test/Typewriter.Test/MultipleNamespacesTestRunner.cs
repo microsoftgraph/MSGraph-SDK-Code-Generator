@@ -81,8 +81,8 @@ namespace Typewriter.Test
         /// <param name="errorCounter">Error counter for the test run</param>
         private static void CompareFiles(StringBuilder testOutputBuilder, string expectedFilePath, string actualOutputFilePath, ref int errorCounter)
         {
-            var expectedFileContents = File.ReadAllText(expectedFilePath);
-            var actualFileContents = File.ReadAllText(actualOutputFilePath);
+            var expectedFileContents = File.ReadAllText(expectedFilePath).Replace("\r", "");
+            var actualFileContents = File.ReadAllText(actualOutputFilePath).Replace("\r", "");
             if (expectedFileContents != actualFileContents)
             {
                 testOutputBuilder.AppendLine();
