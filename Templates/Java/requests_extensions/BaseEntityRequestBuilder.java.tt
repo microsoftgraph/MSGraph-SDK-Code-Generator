@@ -246,7 +246,7 @@ if (c.AsOdcmClass() != null)
 							typeString = typeString.Substring(0, typeString.Length-1);
 						}
 						sb.AppendFormat(importFormat,
-							p.Type.Namespace.Name.NamespaceName(),
+							p.Type.Namespace.Name.AddPrefix(),
 							p.GetPackagePrefix(),
 							typeString);
 						sb.Append("\n");
@@ -255,25 +255,25 @@ if (c.AsOdcmClass() != null)
 
 				if (method.IsCollection) {
 					sb.AppendFormat(importFormat,
-						method.Namespace.Name.NamespaceName(),
+						method.Namespace.Name.AddPrefix(),
 						"requests.extensions",
 						method.ITypeCollectionRequestBuilder());
 					sb.Append("\n");
 
 					sb.AppendFormat(importFormat,
-						method.Namespace.Name.NamespaceName(),
+						method.Namespace.Name.AddPrefix(),
 						"requests.extensions",
 						method.TypeCollectionRequestBuilder());
 					sb.Append("\n");
 				} else {
 					sb.AppendFormat(importFormat,
-						method.Namespace.Name.NamespaceName(),
+						method.Namespace.Name.AddPrefix(),
 						"requests.extensions",
 						method.ITypeRequestBuilder());
 					sb.Append("\n");
 
 					sb.AppendFormat(importFormat,
-						method.Namespace.Name.NamespaceName(),
+						method.Namespace.Name.AddPrefix(),
 						"requests.extensions",
 						method.TypeRequestBuilder());
 					sb.Append("\n");
