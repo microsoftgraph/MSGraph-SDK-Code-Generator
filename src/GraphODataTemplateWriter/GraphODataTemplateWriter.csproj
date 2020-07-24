@@ -58,6 +58,8 @@
     <Compile Include="CodeHelpers\Java\CustomOverwrites.cs" />
     <Compile Include="CodeHelpers\Java\TypeHelperJava.cs" />
     <Compile Include="CodeHelpers\TypeScript\CodeWriterTypeScript.cs" />
+    <Compile Include="CodeHelpers\TypeScript\TypeScriptNamespace.cs" />
+    <Compile Include="CodeHelpers\TypeScript\TypeScriptNamespaces.cs" />
     <Compile Include="CodeHelpers\TypeScript\TypeHelperTypeScript.cs" />
     <Compile Include="CodeHelpers\GraphEndpointList\CodeWriterGraphEndpointList.cs" />
     <Compile Include="CodeHelpers\GraphEndpointList\TypeHelperGraphEndpointList.cs" />

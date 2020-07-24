@@ -18,6 +18,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
     using NLog;
     using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
     using System.Windows.Markup;
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
 
     public class TemplateProcessor : ITemplateProcessor
     {
@@ -349,7 +350,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                 throw new InvalidOperationException(errors);
             }
 
-            string @namespace;
+            string @namespace = ConfigurationService.Settings.PrimaryNamespaceName;
             switch (odcmObject)
             {
                 case OdcmType t:
@@ -370,7 +371,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                     }
                     break;
                 default:
-                    throw new ArgumentException(nameof(odcmObject));
+                    break;
             }
 
             var path = this.PathWriter.WritePath(templateInfo, @namespace, fileName);

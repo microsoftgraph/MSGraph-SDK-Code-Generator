@@ -5,6 +5,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
     using Vipr.Core.CodeModel;
     using System;
     using System.Linq;
+    using System.Collections.Generic;
+    using Microsoft.Graph.ODataTemplateWriter.Extensions;
 
     public static class TypeHelperTypeScript
     {
@@ -13,7 +15,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         public static String GetEnumValues(this OdcmEnum _enum) {
             return _enum.Members.Select(m => "\"" + m.Name + "\"").Aggregate((cur, next) =>  cur + " | " + next);
         }
-
 
         public static string GetTypeString(this OdcmProperty prop)
         {
@@ -72,6 +73,36 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                                   .Replace("\r\n", "\r\n///"); // &#xD;&#xA; The HTML encoded has already been converted to escaped chars.
             }
             return null;
+        }
+
+        /// <summary>
+        /// Converts an OdcmModel into printable TypeScript namespaces
+        /// </summary>
+        /// <param name="model">Odcm model</param>
+        /// <returns>Main and Subnamespaces</returns>
+        public static TypeScriptNamespaces GetTypeScriptNamespaces(this OdcmModel model)
+        {
+            TypeScriptNamespace mainNamespace = null;
+            var subNamespaces = new Dictionary<string, TypeScriptNamespace>();
+
+            foreach(var odcmNamespace in model.GetOdcmNamespaces())
+            {
+                var typeScriptNamespace = new TypeScriptNamespace(odcmNamespace);
+                if (typeScriptNamespace.IsMainNamespace)
+                {
+                    mainNamespace = typeScriptNamespace;
+                }
+                else
+                {
+                    subNamespaces[typeScriptNamespace.Name] = typeScriptNamespace;
+                }
+            }
+
+            return new TypeScriptNamespaces()
+            {
+                MainNamespace = mainNamespace,
+                SubNamespaces = subNamespaces
+            };
         }
     }
 }
