@@ -622,7 +622,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return parameterSignatureBuilder.ToString();
         }
 
-        public static string GetPropertyNamespace(this OdcmProperty p) => p.Projection.Type.Namespace.Name.NamespaceName();
+        public static string GetPropertyNamespace(this OdcmProperty p) => p.Projection.Type.Namespace.Name.AddPrefix();
 
         public static string MethodParametersSignature(this OdcmMethod method)
         {
@@ -875,7 +875,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                         appendEnumSet = true;
                     }
 
-                    importStatements.Add(string.Format(importFormat, p.Type.Namespace.Name.NamespaceName(), p.GetPackagePrefix(), propertyType));
+                    importStatements.Add(string.Format(importFormat, p.Type.Namespace.Name.AddPrefix(), p.GetPackagePrefix(), propertyType));
                 }
             }
 
@@ -1031,7 +1031,7 @@ import {0}.core.*;
 import {0}.http.*;
 import {0}.serializer.*;
 import java.util.Arrays;
-import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
+import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
 
             sb.Append("\n");
             var importFormat = @"import {0}.{1}.{2};";
@@ -1051,7 +1051,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
 
                 string prefixValue = property.GetPackagePrefix();
                 string importstr = String.Format(importFormat,
-                            property.Projection.Type.Namespace.Name.NamespaceName(),
+                            property.Projection.Type.Namespace.Name.AddPrefix(),
                             prefixValue,
                             propertyType);
                 if (!uniqueStore.ContainsKey(importstr))
@@ -1068,7 +1068,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
             {
                 string prefixValue = GetPrefixForModels();
                 string importstr = String.Format(importFormat,
-                            (host.CurrentType.BaseClass() as OdcmClass).Namespace.Name.NamespaceName(),
+                            (host.CurrentType.BaseClass() as OdcmClass).Namespace.Name.AddPrefix(),
                             prefixValue,
                             baseClassNameType);
                 if (!uniqueStore.ContainsKey(importstr))
@@ -1083,7 +1083,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
             if (baseTypeNameStr == "BasePlannerAssignments")
             {
                 string importstr = String.Format(importFormat,
-                                host.CurrentModel.GetNamespace().NamespaceName(),
+                                host.CurrentModel.GetNamespace().AddPrefix(),
                             "models.extensions",
                              "PlannerAssignment");
                 if (!uniqueStore.ContainsKey(importstr))
@@ -1096,7 +1096,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
             if (baseTypeNameStr == "BasePlannerChecklistItems")
             {
                 string importstr = String.Format(importFormat,
-                            host.CurrentModel.GetNamespace().NamespaceName(),
+                            host.CurrentModel.GetNamespace().AddPrefix(),
                             "models.extensions",
                              "PlannerChecklistItem");
                 if (!uniqueStore.ContainsKey(importstr))
@@ -1116,7 +1116,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
 
                     var propertyType = TypeCollectionResponse(property);
                     string importstr = String.Format(importFormat,
-                                property.Projection.Type.Namespace.Name.NamespaceName(),
+                                property.Projection.Type.Namespace.Name.AddPrefix(),
                                 GetPrefixForRequests(),
                                 propertyType);
                     if (!uniqueStore.ContainsKey(importstr))
@@ -1128,7 +1128,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().NamespaceName());
 
                     string propertyValue = TypeCollectionPage(property);
                     string importstr1 = String.Format(importFormat,
-                        property.Projection.Type.Namespace.Name.NamespaceName(),
+                        property.Projection.Type.Namespace.Name.AddPrefix(),
                         GetPrefixForRequests(),
                         propertyValue);
                     if (!uniqueStore.ContainsKey(importstr1))
@@ -1165,7 +1165,7 @@ import java.util.EnumSet;";
             switch (host.CurrentType)
             {
                 case OdcmProperty p:
-                    @namespace = p.Type.Namespace.Name.NamespaceName();
+                    @namespace = p.Type.Namespace.Name.AddPrefix();
                     break;
                 case OdcmMethod m:
                     var sb = new StringBuilder(Environment.NewLine);
@@ -1179,7 +1179,7 @@ import java.util.EnumSet;";
             return string.Format(format,
                 @namespace,
                 host.TemplateInfo.OutputParentDirectory.Replace("_", "."),
-                host.CurrentModel.GetNamespace().NamespaceName(),
+                host.CurrentModel.GetNamespace().AddPrefix(),
                 fullyQualifiedImport,
                 methodImports);
         }
@@ -1189,9 +1189,9 @@ import java.util.EnumSet;";
             switch (host.CurrentType)
             {
                 case OdcmType t:
-                    return t.Namespace.Name.NamespaceName();
+                    return t.Namespace.Name.AddPrefix();
                 case OdcmProperty p:
-                    return p.Projection.Type.Namespace.Name.NamespaceName();
+                    return p.Projection.Type.Namespace.Name.AddPrefix();
                 default:
                     return string.Empty;
             }
