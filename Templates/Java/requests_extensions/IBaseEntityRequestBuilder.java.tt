@@ -145,19 +145,19 @@ if (c.AsOdcmClass() != null)
 				if (prop.IsCollection()) {
 					
 					sb.AppendFormat(importFormat,
-						prop.Projection.Type.Namespace.Name.NamespaceName(),
+						prop.GetPropertyNamespace(),
 						"requests.extensions",
 						prop.ITypeCollectionRequestBuilder());
 					sb.Append("\n");
 
 					sb.AppendFormat(importFormat,
-						prop.Projection.Type.Namespace.Name.NamespaceName(),
+						prop.GetPropertyNamespace(),
 						"requests.extensions",
 						prop.ITypeRequestBuilder());
 					sb.Append("\n");
 				} else {
 					sb.AppendFormat(importFormat,
-						prop.Projection.Type.Namespace.Name.NamespaceName(),
+						prop.GetPropertyNamespace(),
 						"requests.extensions",
 						prop.ITypeRequestBuilder());
 					sb.Append("\n");
@@ -168,7 +168,7 @@ if (c.AsOdcmClass() != null)
 			{
 				var propRequestBuilder = prop.TypeRequestBuilder();
 				sb.AppendFormat(importFormat,
-						prop.Projection.Type.Namespace.Name.NamespaceName(),
+						prop.GetPropertyNamespace(),
 						"requests.extensions",
 						"I" + propRequestBuilder);
 				sb.Append("\n");
