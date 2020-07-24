@@ -433,6 +433,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             if (string.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
             {
                 var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace).ToLower();
+
+                // special case com.edm happens when we reach here from a property and property is an edm type, e.g. Stream.
                 return name == "com.edm" ? "com.microsoft.graph" : name;
             }
             return ConfigurationService.Settings.NamespaceOverride;

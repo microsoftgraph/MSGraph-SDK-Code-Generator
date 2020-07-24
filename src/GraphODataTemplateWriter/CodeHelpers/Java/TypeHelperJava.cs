@@ -622,6 +622,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return parameterSignatureBuilder.ToString();
         }
 
+        /// <summary>
+        /// Takes a property object and gets to its type, then returns that types fully qualified namespace: e.g. com.microsoft.graph.callrecords
+        /// </summary>
+        /// <param name="p">property object</param>
+        /// <returns>fully qualified namespace of a property</returns>
         public static string GetPropertyNamespace(this OdcmProperty p) => p.Projection.Type.Namespace.Name.AddPrefix();
 
         public static string MethodParametersSignature(this OdcmMethod method)
@@ -860,6 +865,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Appends import statements of types that appear as a method's parameters
+        /// </summary>
+        /// <param name="method">Method whose parameter types will be consumed</param>
+        /// <param name="importFormat">import format, e.g. "import {0}.{1}.{2}"</param>
+        /// <param name="sb">StringBuilder object currently in use</param>
+        /// <returns>StringBuilder object with import statements inserted</returns>
         public static StringBuilder ImportClassesOfMethodParameters(OdcmMethod method, string importFormat, StringBuilder sb)
         {
             var importStatements = new HashSet<string>();
@@ -1144,6 +1156,11 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
 
         public static string CreatePackageDef(this CustomT4Host host)
         {
+            // {0}: type's namespace with prefix, e.g. com.microsoft.graph.callrecords
+            // {1}: relative path, e.g. "models.extensions" or "models.requests" etc.
+            // {2}: main namespace, i.e. microsoft.graph
+            // {3}: fully qualified import for disambiguation, e.g. TimeOff vs TimeOffRequest
+            // {4}: method parameters fully qualified imports
             var format = @"package {0}.{1};
 
 import {2}.concurrency.*;
@@ -1160,6 +1177,7 @@ import java.util.EnumSet;";
             // We need this for disambiguation of generated model class/interfaces references.
             string fullyQualifiedImport = host.GetFullyQualifiedImportStatementForModel();
 
+            // determine current namespace and generate method imports if applicable
             string @namespace;
             string methodImports = string.Empty;
             switch (host.CurrentType)
@@ -1184,6 +1202,11 @@ import java.util.EnumSet;";
                 methodImports);
         }
 
+        /// <summary>
+        /// Determines which namespace current type belongs to
+        /// </summary>
+        /// <param name="host">Host object to reach current type being processed</param>
+        /// <returns>namespace with prefix prepended, e.g. com.microsoft.graph.callrecords</returns>
         public static string CurrentNamespace(this CustomT4Host host)
         {
             switch (host.CurrentType)
