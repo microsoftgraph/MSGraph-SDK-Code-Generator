@@ -6,7 +6,7 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), c.RequestBuilderSuperClass(), c.ITypeCollectionRequestBuilder())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), c.GetMethodRequestBuilderSuperClass(), c.ITypeCollectionRequestBuilder())#>
 
 <# foreach (var method in c.AsOdcmMethod().WithOverloads()) { #>
     /**

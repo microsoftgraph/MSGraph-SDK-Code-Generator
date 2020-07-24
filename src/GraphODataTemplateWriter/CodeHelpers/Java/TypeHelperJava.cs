@@ -115,7 +115,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         }
 
         /// Choose an intermediate class type based on GETs/POSTs
-        public static string RequestBuilderSuperClass(this OdcmObject currentType)
+        public static string GetMethodRequestBuilderSuperClass(this OdcmObject currentType)
         {
             return currentType.AsOdcmMethod().IsFunction ?
                 "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder";
