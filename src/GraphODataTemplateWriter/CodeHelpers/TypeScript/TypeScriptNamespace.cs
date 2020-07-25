@@ -34,7 +34,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         // constants
         private const int MaxLineLength = 120;
         private const string MainNamespaceName = "Microsoft.Graph";
+
         private const string TabSpace = "    ";
+        private string NamespaceIndent => IsMainNamespace ? string.Empty : TabSpace;
 
         /// <summary>
         /// Groups entity, complex and enum types to be printed
@@ -80,9 +82,19 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         {
             sb = new StringBuilder();
 
+            if (!IsMainNamespace)
+            {
+                sb.AppendLine($"export namespace {Name.Replace("Microsoft.Graph", "")} {{");
+            }
+
             Enums.ForEach(@enum => AddEnum(@enum));
             Entities.ForEach(entity => AddEntityOrComplexType(entity));
             ComplexTypes.ForEach(complex => AddEntityOrComplexType(complex));
+
+            if (!IsMainNamespace)
+            {
+                sb.AppendLine("}");
+            }
 
             return sb.ToString();
         }
@@ -104,14 +116,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             var exportTypeLength = "export type".Length + enumTypeName.Length + enumValues.Length + 3;
             if (exportTypeLength < MaxLineLength)
             {
-                sb.AppendLine($"export type {enumTypeName} = {enumValues};");
+                sb.AppendLine($"{NamespaceIndent}export type {enumTypeName} = {enumValues};");
             }
             else
             {
-                sb.AppendLine($"export type {enumTypeName} =");
+                sb.AppendLine($"{NamespaceIndent}export type {enumTypeName} =");
                 var enums = enumValues.Split('|');
-                sb.Append($"{TabSpace}| ");
-                sb.Append(string.Join(Environment.NewLine + TabSpace + "| ", enums.Select(@enum => @enum.Trim())));
+                sb.Append($"{NamespaceIndent}{TabSpace}| ");
+                sb.Append(string.Join(Environment.NewLine + NamespaceIndent + TabSpace + "| ", enums.Select(@enum => @enum.Trim())));
                 sb.AppendLine(";");
             }
         }
@@ -147,7 +159,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             var extendsStatement = @class.Base == null
                 ? string.Empty
                 : $" extends {@class.Base.Name.UpperCaseFirstChar()}";
-            var exportInterfaceLine = "export interface " + entityTypeName + extendsStatement + " {";
+            var exportInterfaceLine = NamespaceIndent + "export interface " + entityTypeName + extendsStatement + " {";
             if (propCount == 0)
             {
                 sb.AppendLine(exportInterfaceLine + "}");
@@ -156,7 +168,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             {
                 sb.AppendLine(exportInterfaceLine);
                 @class.Properties.ForEach(prop => AddProperties(prop));
-                sb.AppendLine("}");
+                sb.AppendLine(NamespaceIndent + "}");
             }
         }
 
@@ -171,21 +183,21 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 List<string> multiLineDescriptions = SplitString(prop.GetSanitizedLongDescription());
                 if (multiLineDescriptions.Count() == 1)
                 {
-                    sb.AppendLine($"{TabSpace}// {multiLineDescriptions.First()}");
+                    sb.AppendLine($"{NamespaceIndent}{TabSpace}// {multiLineDescriptions.First()}");
                 }
                 else
                 {
-                    sb.AppendLine($"{TabSpace}/**");
+                    sb.AppendLine($"{NamespaceIndent}{TabSpace}/**");
                     foreach (var descriptionLine in multiLineDescriptions)
                     {
-                        sb.AppendLine($"{TabSpace} * {descriptionLine}");
+                        sb.AppendLine($"{NamespaceIndent}{TabSpace} * {descriptionLine}");
                     }
 
-                    sb.AppendLine($"{TabSpace} */");
+                    sb.AppendLine($"{NamespaceIndent}{TabSpace} */");
                 }
             }
 
-            sb.AppendLine($"{TabSpace}{prop.Name}?: {prop.GetTypeString()};");
+            sb.AppendLine($"{NamespaceIndent}{TabSpace}{prop.Name}?: {prop.GetTypeString()};");
         }
 
         /// <summary>

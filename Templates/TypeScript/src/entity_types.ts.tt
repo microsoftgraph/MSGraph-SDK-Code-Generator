@@ -21,3 +21,12 @@
 export as namespace microsoftgraph;
 
 <#=typeScriptNamespaces.MainNamespace.ToString()#>
+
+<#
+foreach (var subNamespace in typeScriptNamespaces.SubNamespaces)
+{
+#>
+<#=subNamespace.Value.ToString()#>
+<#
+}
+#>
