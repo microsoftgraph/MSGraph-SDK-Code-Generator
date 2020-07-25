@@ -94,7 +94,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 }
                 else
                 {
-                    subNamespaces[typeScriptNamespace.Name] = typeScriptNamespace;
+                    subNamespaces[typeScriptNamespace.NamespaceName] = typeScriptNamespace;
                 }
             }
 

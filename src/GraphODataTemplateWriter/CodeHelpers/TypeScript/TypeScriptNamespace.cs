@@ -15,9 +15,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// <summary>
         /// Namespace name, e.g. Microsoft.Graph.CallRecords
         /// </summary>
-        public string Name { get; }
+        public string NamespaceName { get; }
 
-        public bool IsMainNamespace => Name == MainNamespaceName;
+        public bool IsMainNamespace => NamespaceName == MainNamespaceName;
+        private string NamespaceIndent => IsMainNamespace ? string.Empty : TabSpace;
 
         /// <summary>
         /// Groups of types to be printed
@@ -34,9 +35,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         // constants
         private const int MaxLineLength = 120;
         private const string MainNamespaceName = "Microsoft.Graph";
-
+        private const string TypeScriptMainNamespaceName = "microsoftgraph";
         private const string TabSpace = "    ";
-        private string NamespaceIndent => IsMainNamespace ? string.Empty : TabSpace;
 
         /// <summary>
         /// Groups entity, complex and enum types to be printed
@@ -44,7 +44,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// <param name="odcmNamespace">Odcm Namespace</param>
         public TypeScriptNamespace(OdcmNamespace odcmNamespace)
         {
-            Name = odcmNamespace.GetNamespaceName();
+            NamespaceName = odcmNamespace.GetNamespaceName();
             Entities = new List<OdcmEntityClass>();
             ComplexTypes = new List<OdcmComplexClass>();
             Enums = new List<OdcmEnum>();
@@ -84,7 +84,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
             if (!IsMainNamespace)
             {
-                sb.AppendLine($"export namespace {Name.Replace("Microsoft.Graph", "")} {{");
+                sb.AppendLine($"export namespace {NamespaceName.Replace("Microsoft.Graph", "")} {{");
             }
 
             Enums.ForEach(@enum => AddEnum(@enum));
@@ -158,7 +158,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
             var extendsStatement = @class.Base == null
                 ? string.Empty
-                : $" extends {@class.Base.Name.UpperCaseFirstChar()}";
+                : $" extends {GetFullyQualifiedTypeScriptTypeName(@class.Base.GetTypeString(), @class.Base.Namespace.GetNamespaceName())}";
             var exportInterfaceLine = NamespaceIndent + "export interface " + entityTypeName + extendsStatement + " {";
             if (propCount == 0)
             {
@@ -197,7 +197,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 }
             }
 
-            sb.AppendLine($"{NamespaceIndent}{TabSpace}{prop.Name}?: {prop.GetTypeString()};");
+            sb.AppendLine($"{NamespaceIndent}{TabSpace}{prop.Name}?: {GetFullyQualifiedTypeScriptTypeName(prop.GetTypeString(), prop.Projection.Type.Namespace.GetNamespaceName())};");
         }
 
         /// <summary>
@@ -238,6 +238,23 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             }
 
             return multiLineDescription;
+        }
+
+        /// <summary>
+        /// Gets either fully qualified or plain type name for a type
+        /// </summary>
+        /// <param name="type">plain type name</param>
+        /// <param name="namespace">namespace that type belongs to</param>
+        /// <returns>fully qualified or plain type name</returns>
+        private string GetFullyQualifiedTypeScriptTypeName(string type, string @namespace)
+        {
+            if (@namespace == NamespaceName || @namespace == "Edm")
+            {
+                return type;
+            }
+
+            // replace Microsoft.Graph with microsoftgraph
+            return @namespace.Replace(MainNamespaceName, TypeScriptMainNamespaceName) + "." + type;
         }
     }
 }
