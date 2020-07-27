@@ -41,7 +41,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
 
         private string CreateNamespace(string folderName, string @namespace = null)
         {
-            @namespace = @namespace ?? this.Model.GetNamespace().NamespaceName();
+            @namespace = @namespace ?? this.Model.GetNamespace().AddPrefix();
             var prefix = ConfigurationService.Settings.NamespacePrefix;
 
             if (String.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
@@ -67,7 +67,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
 
             var destinationPath = splittedPaths.Aggregate(string.Empty, (current, path) =>
                                   current + string.Format("{0}{1}", path, Path.DirectorySeparatorChar));
-            return destinationPath;
+            return destinationPath.ToLower();
         }
     }
 }

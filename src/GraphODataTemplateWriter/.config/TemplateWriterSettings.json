@@ -1,5 +1,5 @@
 {
-  "AvailableLanguages": [ "Android", "Java", "ObjC", "CSharp", "PHP", "Python", "TypeScript", "GraphEndpointList" ],
+  "AvailableLanguages": [ "Java", "ObjC", "CSharp", "PHP", "Python", "TypeScript", "GraphEndpointList" ],
   "TargetLanguage": "CSharp",
   "Plugins": [],
   "PrimaryNamespaceName": "microsoft.graph",

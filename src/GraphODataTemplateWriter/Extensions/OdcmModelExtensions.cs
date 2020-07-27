@@ -205,7 +205,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             {
                 // Form the import statement to disambiguate the model in the generated code file.
                 var thisType = (host.CurrentType as OdcmProperty).Projection.Type;
-                var thisNamespace = thisType.Namespace.Name.NamespaceName();
+                var thisNamespace = thisType.Namespace.Name.AddPrefix();
                 var thisTypeName = thisType.Name.ToUpperFirstChar();
                 importStatement = $"\nimport {thisNamespace}.models.extensions.{thisTypeName};";
             }
@@ -423,17 +423,19 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return false;
         }
 
-        public static string NamespaceName(this OdcmNamespace @namespace)
+        public static string AddPrefix(this OdcmNamespace @namespace)
         {
-            return @namespace.ToString().NamespaceName();
+            return @namespace.ToString().AddPrefix();
         }
 
-        public static string NamespaceName(this string @namespace)
+        public static string AddPrefix(this string @namespace)
         {
             if (string.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
             {
-                var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace);
-                return name.ToLower();
+                var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace).ToLower();
+
+                // special case com.edm happens when we reach here from a property and property is an edm type, e.g. Stream.
+                return name == "com.edm" ? "com.microsoft.graph" : name;
             }
             return ConfigurationService.Settings.NamespaceOverride;
         }

@@ -70,7 +70,8 @@ namespace Microsoft.Graph2.CallRecords
         /// Gets the request builder for SegmentTestAction.
         /// </summary>
         /// <returns>The <see cref="ISegmentTestActionRequestBuilder"/>.</returns>
-        ISegmentTestActionRequestBuilder TestAction();
+        ISegmentTestActionRequestBuilder TestAction(
+            IdentitySet value = null);
     
     }
 }

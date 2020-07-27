@@ -123,11 +123,13 @@ namespace Microsoft.Graph2.CallRecords
         /// Gets the request builder for SegmentTestAction.
         /// </summary>
         /// <returns>The <see cref="ISegmentTestActionRequestBuilder"/>.</returns>
-        public ISegmentTestActionRequestBuilder TestAction()
+        public ISegmentTestActionRequestBuilder TestAction(
+            IdentitySet value = null)
         {
             return new SegmentTestActionRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph2.callRecords.testAction"),
-                this.Client);
+                this.Client,
+                value);
         }
     
     }

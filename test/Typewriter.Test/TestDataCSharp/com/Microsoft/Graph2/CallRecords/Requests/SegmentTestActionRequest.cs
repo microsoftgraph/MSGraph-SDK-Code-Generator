@@ -29,7 +29,14 @@ namespace Microsoft.Graph2.CallRecords
             IEnumerable<Microsoft.Graph.Option> options)
             : base(requestUrl, client, options)
         {
+            this.ContentType = "application/json";
+            this.RequestBody = new SegmentTestActionRequestBody();
         }
+
+        /// <summary>
+        /// Gets the request body.
+        /// </summary>
+        public SegmentTestActionRequestBody RequestBody { get; private set; }
 
         /// <summary>
         /// Issues the POST request.
@@ -48,7 +55,7 @@ namespace Microsoft.Graph2.CallRecords
             CancellationToken cancellationToken)
         {
             this.Method = "POST";
-            var response = await this.SendAsync<SegmentTestActionCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
+            var response = await this.SendAsync<SegmentTestActionCollectionResponse>(this.RequestBody, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
                 if (response.AdditionalData != null)

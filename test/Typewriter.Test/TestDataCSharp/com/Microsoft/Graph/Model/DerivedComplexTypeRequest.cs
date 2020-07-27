@@ -41,5 +41,11 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "property2", Required = Newtonsoft.Json.Required.Default)]
         public string Property2 { get; set; }
     
+        /// <summary>
+        /// Gets or sets enumProperty.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "enumProperty", Required = Newtonsoft.Json.Required.Default)]
+        public Enum1? EnumProperty { get; set; }
+    
     }
 }

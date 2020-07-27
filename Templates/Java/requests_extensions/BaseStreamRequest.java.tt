@@ -17,7 +17,7 @@ import java.io.*;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeStreamRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+    public <#=c.TypeStreamRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 

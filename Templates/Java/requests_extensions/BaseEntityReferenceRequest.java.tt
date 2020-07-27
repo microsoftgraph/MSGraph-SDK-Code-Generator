@@ -15,7 +15,7 @@
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeReferenceRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends Option> requestOptions) {
+    public <#=c.TypeReferenceRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
@@ -35,7 +35,7 @@
      * @return the updated request
      */
     public <#=c.ITypeReferenceRequest()#> select(final String value) {
-        getQueryOptions().add(new QueryOption("$select", value));
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (<#=c.TypeReferenceRequest()#>)this;
     }
 
@@ -48,7 +48,7 @@
      * @return the updated request
      */
     public <#=c.ITypeReferenceRequest()#> expand(final String value) {
-        getQueryOptions().add(new QueryOption("$expand", value));
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (<#=c.TypeReferenceRequest()#>)this;
     }
 <# } #>

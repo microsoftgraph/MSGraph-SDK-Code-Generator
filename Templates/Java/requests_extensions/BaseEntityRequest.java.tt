@@ -10,8 +10,6 @@ import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.options.QueryOption;
 <#
 String classDeclaration = "";
 if (c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
@@ -34,7 +32,7 @@ classDeclaration += c.TypeName();
      */
     public <#=c.TypeRequest()#>(final String requestUrl,
             final <#=TypeHelperJava.IBaseClientType()#> client,
-            final java.util.List<? extends Option> requestOptions,
+            final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions,
             final Class<<# if(!host.TemplateName.Equals("EntityRequest")){ #>? extends <#}#><#=c.ClassTypeName()#>> responseClass) {
         super(requestUrl, client, requestOptions, responseClass);
     }
@@ -47,7 +45,7 @@ classDeclaration += c.TypeName();
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+    public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
@@ -89,7 +87,7 @@ classDeclaration += c.TypeName();
      * @return the updated request
      */
      public <#=c.ITypeRequest()#> select(final String value) {
-         getQueryOptions().add(new QueryOption("$select", value));
+         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (<#=c.TypeRequest()#>)this;
      }
 
@@ -102,7 +100,7 @@ classDeclaration += c.TypeName();
      * @return the updated request
      */
      public <#=c.ITypeRequest()#> expand(final String value) {
-         getQueryOptions().add(new QueryOption("$expand", value));
+         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (<#=c.TypeRequest()#>)this;
      }
 
@@ -116,7 +114,7 @@ classDeclaration += c.TypeName();
      * @return the updated request
      */
      public <#=c.ITypeRequest()#> top(final int value) {
-         getQueryOptions().add(new QueryOption("$top", value+""));
+         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
          return (<#=c.TypeRequest()#>)this;
      }
 <# } #>
@@ -236,19 +234,19 @@ classDeclaration += c.TypeName();
 		sb.Append(host.CreatePackageDefinition());
 		var importFormat = @"import {0}.{1}.{2};";
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.GetNamespace().NamespaceName(),
+						TypeHelperJava.CurrentNamespace(host),
 						"requests.extensions",
 						host.CurrentType.ITypeRequest());
 		sb.Append("\n");
 
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.GetNamespace().NamespaceName(),
+						TypeHelperJava.CurrentNamespace(host),
 						"requests.extensions",
 						host.CurrentType.TypeRequest());
 		sb.Append("\n");
 
 		sb.AppendFormat(importFormat,
-						host.CurrentModel.GetNamespace().NamespaceName(),
+						TypeHelperJava.CurrentNamespace(host),
 						"models.extensions",
 						host.CurrentType.AsOdcmClass().TypeName());
 		sb.Append("\n");
