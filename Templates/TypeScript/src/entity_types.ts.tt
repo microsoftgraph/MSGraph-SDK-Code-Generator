@@ -102,7 +102,17 @@ export interface <#= entityTypeName #><#
                     }
                 }
 #>
-    <#=  prop.Name #>?: <#= prop.GetTypeString() #>;
+<#
+    if(prop.IsNullable) {
+#>
+    <#= prop.Name #>?: Option<<#= prop.GetTypeString() #>>;
+<#
+    } else {
+#>
+    <#= prop.Name #>?: <#= prop.GetTypeString() #>;
+<#
+    }
+#>
 <#
             }
 #>
