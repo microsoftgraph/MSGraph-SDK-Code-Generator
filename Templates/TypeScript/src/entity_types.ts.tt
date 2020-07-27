@@ -25,7 +25,7 @@
 
 export as namespace microsoftgraph;
 
-type Option<T> = T | undefined | null;
+type Option<T> = T | null;
 
 <#
     foreach(var enumType in enumTypes) {
@@ -166,7 +166,7 @@ export interface <#= complexTypeName #><#
 <#
     if(prop.IsNullable) {
 #>
-    <#= prop.Name #>: Option<<#= prop.GetTypeString() #>>;
+    <#= prop.Name #>?: Option<<#= prop.GetTypeString() #>>;
 <#
     } else {
 #>
