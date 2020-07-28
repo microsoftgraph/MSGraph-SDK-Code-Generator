@@ -25,7 +25,7 @@
 
 export as namespace microsoftgraph;
 
-type Option<T> = T | null;
+type NullableOption<T> = T | null;
 
 <#
     foreach(var enumType in enumTypes) {
@@ -105,7 +105,7 @@ export interface <#= entityTypeName #><#
 <#
     if(prop.IsNullable) {
 #>
-    <#= prop.Name #>?: Option<<#= prop.GetTypeString() #>>;
+    <#= prop.Name #>?: NullableOption<<#= prop.GetTypeString() #>>;
 <#
     } else {
 #>
@@ -176,7 +176,7 @@ export interface <#= complexTypeName #><#
 <#
     if(prop.IsNullable) {
 #>
-    <#= prop.Name #>?: Option<<#= prop.GetTypeString() #>>;
+    <#= prop.Name #>?: NullableOption<<#= prop.GetTypeString() #>>;
 <#
     } else {
 #>
