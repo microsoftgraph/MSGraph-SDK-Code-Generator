@@ -25,6 +25,8 @@
 
 export as namespace microsoftgraph;
 
+type NullableOption<T> = T | null;
+
 <#
     foreach(var enumType in enumTypes) {
         var enumTypeName = enumType.Name.UpperCaseFirstChar();
@@ -100,7 +102,17 @@ export interface <#= entityTypeName #><#
                     }
                 }
 #>
-    <#=  prop.Name #>?: <#= prop.GetTypeString() #>;
+<#
+    if(prop.IsNullable) {
+#>
+    <#= prop.Name #>?: NullableOption<<#= prop.GetTypeString() #>>;
+<#
+    } else {
+#>
+    <#= prop.Name #>?: <#= prop.GetTypeString() #>;
+<#
+    }
+#>
 <#
             }
 #>
@@ -161,7 +173,17 @@ export interface <#= complexTypeName #><#
                     }
                 }
 #>
-    <#=  prop.Name #>?: <#= prop.GetTypeString() #>;
+<#
+    if(prop.IsNullable) {
+#>
+    <#= prop.Name #>?: NullableOption<<#= prop.GetTypeString() #>>;
+<#
+    } else {
+#>
+    <#= prop.Name #>?: <#= prop.GetTypeString() #>;
+<#
+    }
+#>
 <#
             }
 #>
