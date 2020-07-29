@@ -26,7 +26,7 @@
 
 export as namespace microsoftgraph;
 
-type NullableOption<T> = T | null;
+export type NullableOption<T> = T | null;
 
 <#
     foreach(var enumType in enumTypes) {
