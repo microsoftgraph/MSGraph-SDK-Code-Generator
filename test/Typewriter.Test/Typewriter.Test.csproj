@@ -51,6 +51,9 @@
   <ItemGroup>
     <Compile Include="JavaMultipleNamespacesTests.cs" />
     <Compile Include="CSharpMultipleNamespacesTests.cs" />
+    <Content Include="Metadata\MetadataWithSubNamespaces.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestDataCSharp\**\*.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

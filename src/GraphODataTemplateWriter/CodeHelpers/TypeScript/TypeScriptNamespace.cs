@@ -84,7 +84,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
             if (!IsMainNamespace)
             {
-                sb.AppendLine($"export namespace {NamespaceName.Replace("Microsoft.Graph", "")} {{");
+                sb.AppendLine($"export namespace {NamespaceName.Replace(MainNamespaceName + ".", "")} {{");
             }
 
             Enums.ForEach(@enum => AddEnum(@enum));
@@ -248,13 +248,19 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// <returns>fully qualified or plain type name</returns>
         private string GetFullyQualifiedTypeScriptTypeName(string type, string @namespace)
         {
-            if (@namespace == NamespaceName || @namespace == "Edm")
+            if (@namespace == this.NamespaceName || @namespace == "Edm")
             {
                 return type;
             }
 
-            // replace Microsoft.Graph with microsoftgraph
-            return @namespace.Replace(MainNamespaceName, TypeScriptMainNamespaceName) + "." + type;
+            if (@namespace == MainNamespaceName) // types in main namespace e.g. microsoftgraph.Entity
+            {
+                return TypeScriptMainNamespaceName + "." + type;
+            }
+
+            // names in subnamespaces e.g. microsoftgraph.CallRecords.CallRecord
+            // we use CallRecords.CallRecord in this case as that is sufficient
+            return @namespace.Replace(MainNamespaceName + ".", string.Empty) + "." + type;
         }
     }
 }
