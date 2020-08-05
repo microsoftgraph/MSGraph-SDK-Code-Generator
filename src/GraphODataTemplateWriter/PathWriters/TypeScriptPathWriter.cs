@@ -21,6 +21,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
             return filePath;
         }
 
+        public override string WritePath(ITemplateInfo template, string @namespace, string baseFileName)
+        {
+            // Typescript uses a single namespace, so redirect the call to other WritePath method:
+            return WritePath(template, baseFileName);
+        }
+
         private string CreateNamespace(string folderName)
         {
             var @namespace = this.Model.GetNamespace();

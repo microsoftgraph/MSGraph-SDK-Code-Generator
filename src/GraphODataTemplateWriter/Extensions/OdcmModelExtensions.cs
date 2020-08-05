@@ -19,7 +19,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return odcmProperty.IsCollection;
         }
 
-        private static IEnumerable<OdcmNamespace> GetOdcmNamespaces(OdcmModel model)
+        public static IEnumerable<OdcmNamespace> GetOdcmNamespaces(this OdcmModel model)
         {
             IEnumerable<OdcmNamespace> namespacesFound;
             var filtered = model.Namespaces

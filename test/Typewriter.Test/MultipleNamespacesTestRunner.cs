@@ -11,7 +11,8 @@ namespace Typewriter.Test
     public enum TestLanguage
     {
         CSharp,
-        Java
+        Java,
+        TypeScript
     }
 
     public static class MultipleNamespacesTestRunner
@@ -20,8 +21,31 @@ namespace Typewriter.Test
         private const string TestDataDirectoryPrefix = "TestData";
         private const string MetadataDirectoryName = "Metadata";
 
+        // contains microsoft.graph and microsoft.graph2.callRecords namespaces
+        private const string MetadataMultipleNamespacesFile = "MetadataMultipleNamespaces.xml";
+
+        // contains microsoft.graph and microsoft.graph.callRecords
+        // TypeScript relies on the assumption that all namespaces will be a subnamespace to microsoft.graph
+        // and generation process creates a single file with nested namespaces
+        private const string MetadataWithSubNamespacesFile = "MetadataWithSubNamespaces.xml";
+
         public static void Run(TestLanguage language)
         {
+            string getMetadataFile(TestLanguage testLanguage)
+            {
+                switch (testLanguage)
+                {
+                    case TestLanguage.CSharp:
+                        return MetadataMultipleNamespacesFile;
+                    case TestLanguage.Java:
+                        return MetadataMultipleNamespacesFile;
+                    case TestLanguage.TypeScript:
+                        return MetadataWithSubNamespacesFile;
+                    default:
+                        throw new ArgumentException("unexpected test language", nameof(testLanguage));
+                }
+            }
+
             // Arrange
             var languageStr = language.ToString();
             var outputDirectoryName = OutputDirectoryPrefix + languageStr;
@@ -30,7 +54,7 @@ namespace Typewriter.Test
             var currentDirectory = Directory.GetCurrentDirectory();
             var outputDirectory = Path.Combine(currentDirectory, outputDirectoryName);
             var dataDirectory = Path.Combine(currentDirectory, testDataDirectoryName);
-            var metadataFile = Path.Combine(currentDirectory, MetadataDirectoryName, "MetadataMultipleNamespaces.xml");
+            var metadataFile = Path.Combine(currentDirectory, MetadataDirectoryName, getMetadataFile(language));
             var typewriterParameters = $"-v Info -m {metadataFile} -o {outputDirectory} -g Files -l {languageStr}";
 
             // Act
@@ -112,6 +136,11 @@ namespace Typewriter.Test
                 case TestLanguage.Java:
                     extension = "*.java";
                     break;
+                case TestLanguage.TypeScript:
+                    extension = "*.ts";
+                    break;
+                default:
+                    throw new ArgumentException("unexpected test language", nameof(language));
             }
 
             return from file in new DirectoryInfo(dataDirectory).GetFiles(extension, SearchOption.AllDirectories)
