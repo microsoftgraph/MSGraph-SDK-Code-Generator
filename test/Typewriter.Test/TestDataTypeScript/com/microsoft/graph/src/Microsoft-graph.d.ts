@@ -5,87 +5,90 @@
 //                 Peter Ombwa <https://github.com/peombwa>
 //                 Mustafa Zengin <https://github.com/zengin>
 //                 DeVere Dyett <https://github.com/ddyett>
+//                 Nikitha Udaykumar Chettiar <https://github.com/nikithauc>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.1
 
 export as namespace microsoftgraph;
+
+export type NullableOption<T> = T | null;
 
 export type Enum1 = "value0" | "value1";
 export interface Entity {
     id?: string;
 }
 export interface TestType extends Entity {
-    propertyAlpha?: DerivedComplexTypeRequest;
+    propertyAlpha?: NullableOption<DerivedComplexTypeRequest>;
 }
 // tslint:disable-next-line: no-empty-interface
 export interface EntityType2 extends Entity {}
 // tslint:disable-next-line: no-empty-interface
 export interface EntityType3 extends Entity {}
 export interface TestEntity extends Entity {
-    testNav?: TestType;
-    testInvalidNav?: EntityType2;
-    testExplicitNav?: EntityType3;
+    testNav?: NullableOption<TestType>;
+    testInvalidNav?: NullableOption<EntityType2>;
+    testExplicitNav?: NullableOption<EntityType3>;
 }
 export interface Endpoint extends Entity {
-    property1?: number;
+    property1?: NullableOption<number>;
 }
 export interface SingletonEntity1 extends Entity {
-    testSingleNav?: TestType;
+    testSingleNav?: NullableOption<TestType>;
 }
 export interface SingletonEntity2 extends Entity {
-    testSingleNav2?: EntityType3;
+    testSingleNav2?: NullableOption<EntityType3>;
 }
 export interface TimeOffRequest extends Entity {
-    name?: string;
+    name?: NullableOption<string>;
 }
 export interface TimeOff extends Entity {
-    name?: string;
+    name?: NullableOption<string>;
 }
 export interface Schedule extends Entity {
-    enabled?: boolean;
-    timesOff?: TimeOff[];
-    timeOffRequests?: TimeOffRequest[];
+    enabled?: NullableOption<boolean>;
+    timesOff?: NullableOption<TimeOff[]>;
+    timeOffRequests?: NullableOption<TimeOffRequest[]>;
 }
 export interface Call extends Entity {
-    subject?: string;
+    subject?: NullableOption<string>;
 }
 export interface CloudCommunications extends Entity {
-    calls?: Call[];
-    callRecords?: CallRecords.CallRecord[];
+    calls?: NullableOption<Call[]>;
+    callRecords?: NullableOption<CallRecords.CallRecord[]>;
 }
 export interface OnenotePage extends Entity {
     // The OneNotePage content.
 ///
 /// Test token string
-    content?: any;
+    content?: NullableOption<any>;
 }
 // tslint:disable-next-line: no-empty-interface
 export interface PlannerGroup extends Entity {}
 // tslint:disable-next-line: no-empty-interface
 export interface EmptyBaseComplexTypeRequest {}
 export interface DerivedComplexTypeRequest extends EmptyBaseComplexTypeRequest {
-    property1?: string;
-    property2?: string;
-    enumProperty?: Enum1;
+    property1?: NullableOption<string>;
+    property2?: NullableOption<string>;
+    enumProperty?: NullableOption<Enum1>;
 }
 // tslint:disable-next-line: no-empty-interface
 export interface ResponseObject {}
 export interface Recipient {
-    name?: string;
-    email?: string;
+    name?: NullableOption<string>;
+    email?: NullableOption<string>;
 }
 // tslint:disable-next-line: no-empty-interface
 export interface EmptyComplexType {}
 // tslint:disable-next-line: interface-name
 export interface Identity {
-    displayName?: string;
-    id?: string;
+    displayName?: NullableOption<string>;
+    id?: NullableOption<string>;
 }
 // tslint:disable-next-line: interface-name
 export interface IdentitySet {
-    application?: Identity;
-    device?: Identity;
-    user?: Identity;
+    application?: NullableOption<Identity>;
+    device?: NullableOption<Identity>;
+    user?: NullableOption<Identity>;
 }
 
 
@@ -102,7 +105,7 @@ export namespace CallRecords {
     export type WifiRadioType = "unknown" | "wifi80211a";
     export type Modality = "audio" | "video";
     export interface SingletonEntity1 extends microsoftgraph.Entity {
-        testSingleNav?: microsoftgraph.TestType;
+        testSingleNav?: NullableOption<microsoftgraph.TestType>;
     }
     export interface CallRecord extends microsoftgraph.Entity {
         version?: number;
@@ -111,86 +114,86 @@ export namespace CallRecords {
         lastModifiedDateTime?: string;
         startDateTime?: string;
         endDateTime?: string;
-        organizer?: microsoftgraph.IdentitySet;
-        participants?: microsoftgraph.IdentitySet[];
-        joinWebUrl?: string;
-        sessions?: Session[];
-        recipients?: microsoftgraph.EntityType2[];
+        organizer?: NullableOption<microsoftgraph.IdentitySet>;
+        participants?: NullableOption<microsoftgraph.IdentitySet[]>;
+        joinWebUrl?: NullableOption<string>;
+        sessions?: NullableOption<Session[]>;
+        recipients?: NullableOption<microsoftgraph.EntityType2[]>;
     }
     export interface Session extends microsoftgraph.Entity {
         modalities?: Modality[];
         startDateTime?: string;
         endDateTime?: string;
-        caller?: Endpoint;
-        callee?: Endpoint;
-        failureInfo?: FailureInfo;
-        segments?: Segment[];
+        caller?: NullableOption<Endpoint>;
+        callee?: NullableOption<Endpoint>;
+        failureInfo?: NullableOption<FailureInfo>;
+        segments?: NullableOption<Segment[]>;
     }
     export interface Segment extends microsoftgraph.Entity {
         startDateTime?: string;
         endDateTime?: string;
-        caller?: Endpoint;
-        callee?: Endpoint;
-        failureInfo?: FailureInfo;
-        media?: Media[];
-        refTypes?: microsoftgraph.EntityType3[];
-        refType?: microsoftgraph.Call;
-        sessionRef?: Session;
-        photo?: Photo;
+        caller?: NullableOption<Endpoint>;
+        callee?: NullableOption<Endpoint>;
+        failureInfo?: NullableOption<FailureInfo>;
+        media?: NullableOption<Media[]>;
+        refTypes?: NullableOption<microsoftgraph.EntityType3[]>;
+        refType?: NullableOption<microsoftgraph.Call>;
+        sessionRef?: NullableOption<Session>;
+        photo?: NullableOption<Photo>;
     }
 // tslint:disable-next-line: no-empty-interface
     export interface Option extends microsoftgraph.Entity {}
     export interface Photo extends microsoftgraph.Entity {
-        failureInfo?: FailureInfo;
-        option?: Option;
+        failureInfo?: NullableOption<FailureInfo>;
+        option?: NullableOption<Option>;
     }
     export interface Endpoint {
-        userAgent?: UserAgent;
+        userAgent?: NullableOption<UserAgent>;
     }
     export interface UserAgent {
-        headerValue?: string;
-        applicationVersion?: string;
+        headerValue?: NullableOption<string>;
+        applicationVersion?: NullableOption<string>;
     }
     export interface FailureInfo {
         stage?: FailureStage;
-        reason?: string;
+        reason?: NullableOption<string>;
     }
     export interface Media {
-        label?: string;
-        callerNetwork?: NetworkInfo;
-        callerDevice?: DeviceInfo;
-        streams?: MediaStream[];
+        label?: NullableOption<string>;
+        callerNetwork?: NullableOption<NetworkInfo>;
+        callerDevice?: NullableOption<DeviceInfo>;
+        streams?: NullableOption<MediaStream[]>;
     }
     export interface NetworkInfo {
         connectionType?: NetworkConnectionType;
         wifiBand?: WifiBand;
-        basicServiceSetIdentifier?: string;
+        basicServiceSetIdentifier?: NullableOption<string>;
         wifiRadioType?: WifiRadioType;
-        wifiSignalStrength?: number;
-        bandwidthLowEventRatio?: number;
+        wifiSignalStrength?: NullableOption<number>;
+        bandwidthLowEventRatio?: NullableOption<number>;
     }
     export interface DeviceInfo {
-        captureDeviceName?: string;
-        sentSignalLevel?: number;
-        speakerGlitchRate?: number;
+        captureDeviceName?: NullableOption<string>;
+        sentSignalLevel?: NullableOption<number>;
+        speakerGlitchRate?: NullableOption<number>;
     }
     export interface MediaStream {
-        streamId?: string;
-        startDateTime?: string;
+        streamId?: NullableOption<string>;
+        startDateTime?: NullableOption<string>;
         streamDirection?: MediaStreamDirection;
-        packetUtilization?: number;
-        wasMediaBypassed?: boolean;
-        lowVideoProcessingCapabilityRatio?: number;
-        averageAudioNetworkJitter?: string;
+        packetUtilization?: NullableOption<number>;
+        wasMediaBypassed?: NullableOption<boolean>;
+        lowVideoProcessingCapabilityRatio?: NullableOption<number>;
+        averageAudioNetworkJitter?: NullableOption<string>;
     }
     export interface ParticipantEndpoint extends Endpoint {
-        identity?: microsoftgraph.IdentitySet;
-        feedback?: UserFeedback;
+        identity?: NullableOption<microsoftgraph.IdentitySet>;
+        feedback?: NullableOption<UserFeedback>;
     }
     export interface UserFeedback {
-        text?: string;
+        text?: NullableOption<string>;
         rating?: UserFeedbackRating;
-        tokens?: FeedbackTokenSet;
+        tokens?: NullableOption<FeedbackTokenSet>;
     }
 // tslint:disable-next-line: no-empty-interface
     export interface FeedbackTokenSet {}

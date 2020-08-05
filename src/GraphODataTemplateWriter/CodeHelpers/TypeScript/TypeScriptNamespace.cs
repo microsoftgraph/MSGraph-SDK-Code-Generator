@@ -197,7 +197,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 }
             }
 
-            sb.AppendLine($"{NamespaceIndent}{TabSpace}{prop.Name}?: {GetFullyQualifiedTypeScriptTypeName(prop.GetTypeString(), prop.Projection.Type.Namespace.GetNamespaceName())};");
+            var typeName = GetFullyQualifiedTypeScriptTypeName(prop.GetTypeString(), prop.Projection.Type.Namespace.GetNamespaceName());
+            if (prop.IsNullable)
+            {
+                typeName = $"NullableOption<{typeName}>";
+            }
+
+            sb.AppendLine($"{NamespaceIndent}{TabSpace}{prop.Name}?: {typeName};");
         }
 
         /// <summary>
