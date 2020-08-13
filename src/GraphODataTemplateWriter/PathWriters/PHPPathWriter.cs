@@ -26,10 +26,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
 
         public override string WritePath(ITemplateInfo template, string @namespace, string entityTypeName)
         {
+            var namespacePrefix = string.Empty;
+            // TemplateWriterSettings.Properties are set at the Typewriter command line. Check the command line 
+            // documentation for more information on how the TemplateWriterSettings.Properties is used.
+            if (ConfigurationService.Settings.Properties.ContainsKey("php.namespacePrefix"))
+            {
+                namespacePrefix = ConfigurationService.Settings.Properties["php.namespacePrefix"] + ".";
+            }
+
             // for backwards compatibility e.g. we want folders to be com/Microsoft/Graph/Model for default namespace.
             // TODO: maybe we can break this assumption by modifying the pipelines which copy the files after generation.
             // maybe remove this.
-            var theNamespace = "com." + @namespace + ".Model";
+            var theNamespace = $"com.{namespacePrefix}{@namespace}.Model";
             var namespacePath = this.CreatePathFromNamespace(theNamespace);
 
             var fileName = Extensions.StringExtensions.ToCheckedCase(this.TransformFileName(template, TypeHelperPHP.SanitizeEntityName(entityTypeName)));

@@ -44,20 +44,20 @@ namespace Typewriter.Test
         [TestMethod]
         public void It_generates_PHP_models_with_a_property()
         {
-            const string testNamespace = "TEST.NAMESPACE";
+            const string testNamespace = "Beta";
             const string outputDirectory = "output";
             
             Options options = new Options()
             {
                 Output = outputDirectory,
                 Language = "PHP",
-                Properties = new List<string>() { $"php.namespace:{testNamespace}" },
+                Properties = new List<string>() { $"php.namespacePrefix:{testNamespace}" },
                 GenerationMode = GenerationMode.Files
             };
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\Entity.php");
+            FileInfo fileInfo = new FileInfo(outputDirectory + @"\com\Beta\Microsoft\Graph\Model\Entity.php");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the namespace applied at the CLI was added to the document.
