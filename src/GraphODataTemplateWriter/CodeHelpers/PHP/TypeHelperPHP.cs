@@ -7,6 +7,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
     using Vipr.Core.CodeModel;
     using System;
     using NLog;
+    using Inflector;
+    using System.Linq;
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
 
     public static class TypeHelperPHP
     {
@@ -153,5 +156,50 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             return name.Replace("@", string.Empty).Replace(".", "_");
         }
 
+        /// <summary>
+        /// Creates php namespace from a type's namespace
+        /// </summary>
+        /// <param name="namespace">Odcm namespace</param>
+        /// <param name="prefix">optional prefix, to create Beta models</param>
+        /// <returns>Namespace in PHP namespace format e.g. Microsoft\Graph or Beta\Microsoft\Graph</returns>
+        public static string GetPHPNamespace(this string @namespace, string prefix = "")
+        {
+            var pieces = new List<string>();
+            if (prefix != string.Empty)
+            {
+                pieces.Add(prefix);
+            }
+
+            pieces.AddRange(@namespace.Split('.').ToList());
+
+            var pascalCasePieces = pieces.Select(piece => piece.Pascalize());
+            return string.Join("\\", pascalCasePieces);
+        }
+
+        /// <summary>
+        /// Creates php namespace from a type's namespace
+        /// </summary>
+        /// <param name="currentType">type whose namespace is requested</param>
+        /// <param name="settings">reference to settings in case php:namespacePrefix is defined</param>
+        /// <returns>Namespace in PHP namespace format e.g. Microsoft\Graph or Beta\Microsoft\Graph</returns>
+        public static string GetPHPNamespace(OdcmType currentType, TemplateWriterSettings settings)
+        {
+            var namespacePrefix = string.Empty;
+            // TemplateWriterSettings.Properties are set at the Typewriter command line. Check the command line 
+            // documentation for more information on how the TemplateWriterSettings.Properties is used.
+            if (settings.Properties.ContainsKey("php.namespacePrefix"))
+            {
+                namespacePrefix = settings.Properties["php.namespacePrefix"];
+            }
+
+            var @namespace = currentType.Namespace.Name;
+            if (@namespace.Equals("edm", StringComparison.OrdinalIgnoreCase))
+            {
+                // for edm types that we generate for (e.g. TimeOfDay)
+                @namespace = "microsoft.graph";
+            }
+
+            return GetPHPNamespace(@namespace, namespacePrefix) + @"\Model";
+        }
     }
 }

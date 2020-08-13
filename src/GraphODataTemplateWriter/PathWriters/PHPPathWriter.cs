@@ -24,6 +24,20 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
             return filePath;
         }
 
+        public override string WritePath(ITemplateInfo template, string @namespace, string entityTypeName)
+        {
+            // for backwards compatibility e.g. we want folders to be com/Microsoft/Graph/Model for default namespace.
+            // TODO: maybe we can break this assumption by modifying the pipelines which copy the files after generation.
+            // maybe remove this.
+            var theNamespace = "com." + @namespace + ".Model";
+            var namespacePath = this.CreatePathFromNamespace(theNamespace);
+
+            var fileName = Extensions.StringExtensions.ToCheckedCase(this.TransformFileName(template, TypeHelperPHP.SanitizeEntityName(entityTypeName)));
+
+            String filePath = Path.Combine(namespacePath, fileName);
+            return filePath;
+        }
+
         private string CreateNamespace(string folderName)
         {
             var @namespace = this.Model.GetNamespace();
