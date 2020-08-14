@@ -8,11 +8,8 @@ CodeWriterPHP writer   = (CodeWriterPHP) host.CodeWriter;
 TemplateWriterSettings settings = ConfigurationService.Settings;
 OdcmClass complex      = (OdcmClass)host.CurrentType;
 String complexName     = complex.Name.SanitizeEntityName();
-String complexBaseName = "";
-if (complex.Base != null)
-	complexBaseName = complex.Base.Name.SanitizeEntityName();
-
-string targetNamespace          = TypeHelperPHP.GetPHPNamespace(complex, settings);
+String targetNamespace = TypeHelperPHP.GetPHPNamespace(complex, settings);
+String complexBaseName = TypeHelperPHP.GetBaseTypeFullName(complex.Base, targetNamespace, settings);
 
 #>
 <#=writer.WriteHeader(writer.GetDocBlock(complexName.ToCheckedCase()))#>
@@ -21,11 +18,12 @@ namespace <#=targetNamespace#>;
 <#
 if (complex.Base != null) {
 #>
-class <#=complexName.ToCheckedCase()#> extends <#=complexBaseName.ToCheckedCase()#>
+class <#=complexName.ToCheckedCase()#> extends <#=complexBaseName#>
 <#
 } else {
+    var entityTypeFullName = targetNamespace == "Microsoft\\Graph\\Model" ? "Entity" : "Microsoft\\Graph\\Model\\Entity";
 #>
-class <#=complexName.ToCheckedCase()#> extends Entity
+class <#=complexName.ToCheckedCase()#> extends <#=entityTypeFullName#>
 <#
 }
 #>

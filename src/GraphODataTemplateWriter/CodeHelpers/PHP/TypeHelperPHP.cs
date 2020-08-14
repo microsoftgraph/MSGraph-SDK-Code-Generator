@@ -201,5 +201,29 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
 
             return GetPHPNamespace(@namespace, namespacePrefix) + @"\Model";
         }
+
+        /// <summary>
+        /// Creates a base type reference for class declaration
+        /// </summary>
+        /// <param name="base">base odcm type</param>
+        /// <param name="childNamespace">child classes namespace (i.e. in which context the namespace is referenced)</param>
+        /// <param name="settings">settings in case namespacePrefix is set</param>
+        /// <returns>Either fully qualified or plain type name of a base type</returns>
+        public static string GetBaseTypeFullName(OdcmType @base, string childNamespace, TemplateWriterSettings settings)
+        {
+            if (@base == null)
+            {
+                return string.Empty;
+            }
+
+            var baseNamespace = GetPHPNamespace(@base, settings);
+            var baseTypeName = @base.Name.SanitizeEntityName().ToCheckedCase();
+            if (baseNamespace == childNamespace)
+            {
+                return baseTypeName;
+            }
+
+            return string.Join("\\", baseNamespace, baseTypeName);
+        }
     }
 }

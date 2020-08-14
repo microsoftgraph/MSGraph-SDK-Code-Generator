@@ -8,12 +8,8 @@ CodeWriterPHP writer	        = (CodeWriterPHP) host.CodeWriter;
 OdcmClass entity                = host.CurrentType.AsOdcmClass();
 TemplateWriterSettings settings = ConfigurationService.Settings;
 String entityName               = entity.Name.SanitizeEntityName();
-String entityBaseName           = "";
-
-if (entity.Base != null)
-	entityBaseName = entity.Base.Name.SanitizeEntityName();
-
-string targetNamespace          = TypeHelperPHP.GetPHPNamespace(entity, settings);
+String targetNamespace          = TypeHelperPHP.GetPHPNamespace(entity, settings);
+String entityBaseName           = TypeHelperPHP.GetBaseTypeFullName(entity.Base, targetNamespace, settings);
 
 #>
 <#=writer.WriteHeader(writer.GetDocBlock(entityName.ToCheckedCase()))#>
@@ -27,7 +23,7 @@ class <#=entity.Name.ToCheckedCase()#> implements \JsonSerializable
 <#
 } else {
 #>
-class <#=entityName.ToCheckedCase()#> extends <#=entityBaseName.ToCheckedCase() #>
+class <#=entityName.ToCheckedCase()#> extends <#=entityBaseName#>
 <# 
 }
 #>
