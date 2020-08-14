@@ -12,7 +12,8 @@ namespace Typewriter.Test
     {
         CSharp,
         Java,
-        TypeScript
+        TypeScript,
+        PHP
     }
 
     public static class MultipleNamespacesTestRunner
@@ -25,7 +26,7 @@ namespace Typewriter.Test
         private const string MetadataMultipleNamespacesFile = "MetadataMultipleNamespaces.xml";
 
         // contains microsoft.graph and microsoft.graph.callRecords
-        // TypeScript relies on the assumption that all namespaces will be a subnamespace to microsoft.graph
+        // TypeScript and PHP rely on the assumption that all namespaces will be a subnamespace to microsoft.graph
         // and generation process creates a single file with nested namespaces
         private const string MetadataWithSubNamespacesFile = "MetadataWithSubNamespaces.xml";
 
@@ -40,6 +41,8 @@ namespace Typewriter.Test
                     case TestLanguage.Java:
                         return MetadataMultipleNamespacesFile;
                     case TestLanguage.TypeScript:
+                        return MetadataWithSubNamespacesFile;
+                    case TestLanguage.PHP:
                         return MetadataWithSubNamespacesFile;
                     default:
                         throw new ArgumentException("unexpected test language", nameof(testLanguage));
@@ -138,6 +141,9 @@ namespace Typewriter.Test
                     break;
                 case TestLanguage.TypeScript:
                     extension = "*.ts";
+                    break;
+                case TestLanguage.PHP:
+                    extension = "*.php";
                     break;
                 default:
                     throw new ArgumentException("unexpected test language", nameof(language));
