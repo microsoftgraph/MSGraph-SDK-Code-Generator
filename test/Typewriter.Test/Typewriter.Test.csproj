@@ -62,7 +62,7 @@
     <Content Include="TestDataJava\**\*.java">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestDataPHP\**\*.php">
+    <Content Include="TestDataPHP*\**\*.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestDataTypeScript\**\*.ts">

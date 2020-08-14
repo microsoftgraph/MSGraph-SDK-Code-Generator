@@ -241,5 +241,23 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
 
             return string.Join("\\", baseNamespace, baseTypeName);
         }
+
+        public static string GetPHPEntityTypeReference(string @namespace, TemplateWriterSettings settings)
+        {
+            switch (@namespace)
+            {
+                case "Microsoft\\Graph\\Model":
+                    return "Entity";
+                case "Beta\\Microsoft\\Graph\\Model":
+                    return "Entity";
+                default:
+                    if (settings.Properties.ContainsKey("php.namespacePrefix"))
+                    {
+                        return $"\\{settings.Properties["php.namespacePrefix"]}\\Microsoft\\Graph\\Model\\Entity";
+                    }
+
+                    return "\\Microsoft\\Graph\\Model\\Entity";
+            }
+        }
     }
 }

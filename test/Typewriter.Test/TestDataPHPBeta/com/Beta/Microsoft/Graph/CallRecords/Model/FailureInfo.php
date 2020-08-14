@@ -11,7 +11,7 @@
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-namespace Microsoft\Graph\CallRecords\Model;
+namespace Beta\Microsoft\Graph\CallRecords\Model;
 /**
 * FailureInfo class
 *
@@ -21,7 +21,7 @@ namespace Microsoft\Graph\CallRecords\Model;
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-class FailureInfo extends \Microsoft\Graph\Model\Entity
+class FailureInfo extends \Beta\Microsoft\Graph\Model\Entity
 {
 
     /**
@@ -32,7 +32,7 @@ class FailureInfo extends \Microsoft\Graph\Model\Entity
     public function getStage()
     {
         if (array_key_exists("stage", $this->_propDict)) {
-            if (is_a($this->_propDict["stage"], "Microsoft\Graph\CallRecords\Model\FailureStage")) {
+            if (is_a($this->_propDict["stage"], "Beta\Microsoft\Graph\CallRecords\Model\FailureStage")) {
                 return $this->_propDict["stage"];
             } else {
                 $this->_propDict["stage"] = new FailureStage($this->_propDict["stage"]);

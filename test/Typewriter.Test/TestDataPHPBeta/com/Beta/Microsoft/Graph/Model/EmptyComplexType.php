@@ -2,7 +2,7 @@
 /**
 * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 * 
-* FeedbackTokenSet File
+* EmptyComplexType File
 * PHP version 7
 *
 * @category  Library
@@ -11,9 +11,9 @@
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-namespace Microsoft\Graph\CallRecords\Model;
+namespace Beta\Microsoft\Graph\Model;
 /**
-* FeedbackTokenSet class
+* EmptyComplexType class
 *
 * @category  Model
 * @package   Microsoft.Graph
@@ -21,6 +21,6 @@ namespace Microsoft\Graph\CallRecords\Model;
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-class FeedbackTokenSet extends \Microsoft\Graph\Model\Entity
+class EmptyComplexType extends Entity
 {
 }

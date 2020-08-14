@@ -11,7 +11,7 @@
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-namespace Microsoft\Graph\CallRecords\Model;
+namespace Beta\Microsoft\Graph\CallRecords\Model;
 /**
 * UserAgent class
 *
@@ -21,7 +21,7 @@ namespace Microsoft\Graph\CallRecords\Model;
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-class UserAgent extends \Microsoft\Graph\Model\Entity
+class UserAgent extends \Beta\Microsoft\Graph\Model\Entity
 {
     /**
     * Gets the headerValue

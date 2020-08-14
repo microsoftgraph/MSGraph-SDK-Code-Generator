@@ -10,5 +10,11 @@ namespace Typewriter.Test
         {
             MultipleNamespacesTestRunner.Run(TestLanguage.PHP);
         }
+
+        [TestMethod]
+        public void TestBeta()
+        {
+            MultipleNamespacesTestRunner.Run(TestLanguage.PHP, isPhpBeta: true);
+        }
     }
 }

@@ -10,6 +10,10 @@ OdcmClass complex      = (OdcmClass)host.CurrentType;
 String complexName     = complex.Name.SanitizeEntityName();
 String targetNamespace = TypeHelperPHP.GetPHPNamespace(complex, settings);
 String complexBaseName = TypeHelperPHP.GetBaseTypeFullName(complex.Base, targetNamespace, settings);
+if (complexBaseName.Contains("\\"))
+{
+    complexBaseName = "\\" + complexBaseName;
+}
 
 #>
 <#=writer.WriteHeader(writer.GetDocBlock(complexName.ToCheckedCase()))#>
@@ -21,7 +25,7 @@ if (complex.Base != null) {
 class <#=complexName.ToCheckedCase()#> extends <#=complexBaseName#>
 <#
 } else {
-    var entityTypeFullName = targetNamespace == "Microsoft\\Graph\\Model" ? "Entity" : "Microsoft\\Graph\\Model\\Entity";
+    var entityTypeFullName = TypeHelperPHP.GetPHPEntityTypeReference(targetNamespace, settings);
 #>
 class <#=complexName.ToCheckedCase()#> extends <#=entityTypeFullName#>
 <#

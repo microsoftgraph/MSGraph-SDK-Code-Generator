@@ -11,7 +11,7 @@
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-namespace Microsoft\Graph\CallRecords\Model;
+namespace Beta\Microsoft\Graph\CallRecords\Model;
 /**
 * DeviceInfo class
 *
@@ -21,7 +21,7 @@ namespace Microsoft\Graph\CallRecords\Model;
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-class DeviceInfo extends \Microsoft\Graph\Model\Entity
+class DeviceInfo extends \Beta\Microsoft\Graph\Model\Entity
 {
     /**
     * Gets the captureDeviceName
@@ -79,15 +79,15 @@ class DeviceInfo extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the speakerGlitchRate
     *
-    * @return Microsoft\Graph\Model\Single The speakerGlitchRate
+    * @return Beta\Microsoft\Graph\Model\Single The speakerGlitchRate
     */
     public function getSpeakerGlitchRate()
     {
         if (array_key_exists("speakerGlitchRate", $this->_propDict)) {
-            if (is_a($this->_propDict["speakerGlitchRate"], "Microsoft\Graph\Model\Single")) {
+            if (is_a($this->_propDict["speakerGlitchRate"], "Beta\Microsoft\Graph\Model\Single")) {
                 return $this->_propDict["speakerGlitchRate"];
             } else {
-                $this->_propDict["speakerGlitchRate"] = new Microsoft\Graph\Model\Single($this->_propDict["speakerGlitchRate"]);
+                $this->_propDict["speakerGlitchRate"] = new Beta\Microsoft\Graph\Model\Single($this->_propDict["speakerGlitchRate"]);
                 return $this->_propDict["speakerGlitchRate"];
             }
         }
@@ -97,7 +97,7 @@ class DeviceInfo extends \Microsoft\Graph\Model\Entity
     /**
     * Sets the speakerGlitchRate
     *
-    * @param Microsoft\Graph\Model\Single $val The value to assign to the speakerGlitchRate
+    * @param Beta\Microsoft\Graph\Model\Single $val The value to assign to the speakerGlitchRate
     *
     * @return DeviceInfo The DeviceInfo
     */

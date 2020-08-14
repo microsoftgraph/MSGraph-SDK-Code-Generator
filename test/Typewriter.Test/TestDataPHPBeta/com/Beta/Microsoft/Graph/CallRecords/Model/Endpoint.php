@@ -11,7 +11,7 @@
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-namespace Microsoft\Graph\CallRecords\Model;
+namespace Beta\Microsoft\Graph\CallRecords\Model;
 /**
 * Endpoint class
 *
@@ -21,7 +21,7 @@ namespace Microsoft\Graph\CallRecords\Model;
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-class Endpoint extends \Microsoft\Graph\Model\Entity
+class Endpoint extends \Beta\Microsoft\Graph\Model\Entity
 {
 
     /**
@@ -32,7 +32,7 @@ class Endpoint extends \Microsoft\Graph\Model\Entity
     public function getUserAgent()
     {
         if (array_key_exists("userAgent", $this->_propDict)) {
-            if (is_a($this->_propDict["userAgent"], "Microsoft\Graph\CallRecords\Model\UserAgent")) {
+            if (is_a($this->_propDict["userAgent"], "Beta\Microsoft\Graph\CallRecords\Model\UserAgent")) {
                 return $this->_propDict["userAgent"];
             } else {
                 $this->_propDict["userAgent"] = new UserAgent($this->_propDict["userAgent"]);

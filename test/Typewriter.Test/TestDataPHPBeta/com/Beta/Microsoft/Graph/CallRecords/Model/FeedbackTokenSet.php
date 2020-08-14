@@ -11,7 +11,7 @@
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-namespace Microsoft\Graph\CallRecords\Model;
+namespace Beta\Microsoft\Graph\CallRecords\Model;
 /**
 * FeedbackTokenSet class
 *
@@ -21,6 +21,6 @@ namespace Microsoft\Graph\CallRecords\Model;
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-class FeedbackTokenSet extends \Microsoft\Graph\Model\Entity
+class FeedbackTokenSet extends \Beta\Microsoft\Graph\Model\Entity
 {
 }
