@@ -242,6 +242,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             return string.Join("\\", baseNamespace, baseTypeName);
         }
 
+        /// <summary>
+        /// Gets either fully qualified or plain type name for entity
+        /// </summary>
+        /// <param name="namespace">namespace of the file which references Entity</param>
+        /// <param name="settings">settings in case namespacePrefix is set</param>
+        /// <returns>
+        /// if the namespace is shared
+        ///     Entity
+        /// if from another namespace:
+        ///     <\OptionalNamespacePrefix>\Microsoft\Graph\Model\Entity e.g. \Beta\Microsoft\Graph\Model\Entity or \Microsoft\Graph\Model\Entity
+        /// </returns>
         public static string GetPHPEntityTypeReference(string @namespace, TemplateWriterSettings settings)
         {
             switch (@namespace)

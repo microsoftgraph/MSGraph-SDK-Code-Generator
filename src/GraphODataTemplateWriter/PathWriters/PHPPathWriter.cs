@@ -2,62 +2,62 @@
 
 namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
 {
-    using System;
     using System.IO;
     using System.Linq;
     using Microsoft.Graph.ODataTemplateWriter.Extensions;
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
     using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP;
+    using System.Text;
 
     public class PHPPathWriter : PathWriterBase
     {
 
-        public override String WritePath(ITemplateInfo template, String entityTypeName)
+        public override string WritePath(ITemplateInfo template, string entityTypeName)
         {
-            var theNamespace = this.CreateNamespace(template.TemplateType.ToString().ToUpperFirstChar());
-            var namespacePath = this.CreatePathFromNamespace(theNamespace);
-
-            var fileName = Extensions.StringExtensions.ToCheckedCase(this.TransformFileName(template, TypeHelperPHP.SanitizeEntityName(entityTypeName)));
-
-            String filePath = Path.Combine(namespacePath, fileName);
-            return filePath;
+            return WritePath(template, Model.GetNamespace(), entityTypeName);
         }
 
         public override string WritePath(ITemplateInfo template, string @namespace, string entityTypeName)
         {
-            var namespacePrefix = string.Empty;
+            var theNamespace = this.CreateNamespace(@namespace, template.TemplateType.ToString().ToUpperFirstChar());
+            var namespacePath = this.CreatePathFromNamespace(theNamespace);
+
+            var fileName = StringExtensions.ToCheckedCase(this.TransformFileName(template, TypeHelperPHP.SanitizeEntityName(entityTypeName)));
+
+            return Path.Combine(namespacePath, fileName);
+        }
+
+        /// <summary>
+        /// Creates a full namespace using odcm namespace and optionally prepending prefixes such as com and Beta
+        /// and appending folderName such as Model
+        /// </summary>
+        /// <param name="namespace">odcm namespace</param>
+        /// <param name="folderName">folder name e.g. Model</param>
+        /// <returns>full namespace such as com.Beta.Microsoft.Graph.CallRecords.Model</returns>
+        private string CreateNamespace(string @namespace, string folderName)
+        {
+            var namespaceBuilder = new StringBuilder();
+            var prefix = ConfigurationService.Settings.NamespacePrefix;
+            if (!string.IsNullOrEmpty(prefix))
+            {
+                namespaceBuilder.Append($"{prefix}."); // e.g. "com."
+            }
+
             // TemplateWriterSettings.Properties are set at the Typewriter command line. Check the command line 
             // documentation for more information on how the TemplateWriterSettings.Properties is used.
             if (ConfigurationService.Settings.Properties.ContainsKey("php.namespacePrefix"))
             {
-                namespacePrefix = ConfigurationService.Settings.Properties["php.namespacePrefix"] + ".";
+                namespaceBuilder.Append($"{ConfigurationService.Settings.Properties["php.namespacePrefix"]}."); // e.g. "com.Beta."
             }
 
-            // for backwards compatibility e.g. we want folders to be com/Microsoft/Graph/Model for default namespace.
-            // TODO: maybe we can break this assumption by modifying the pipelines which copy the files after generation.
-            // maybe remove this.
-            var theNamespace = $"com.{namespacePrefix}{@namespace}.Model";
-            var namespacePath = this.CreatePathFromNamespace(theNamespace);
-
-            var fileName = Extensions.StringExtensions.ToCheckedCase(this.TransformFileName(template, TypeHelperPHP.SanitizeEntityName(entityTypeName)));
-
-            String filePath = Path.Combine(namespacePath, fileName);
-            return filePath;
-        }
-
-        private string CreateNamespace(string folderName)
-        {
-            var @namespace = this.Model.GetNamespace();
-            var prefix = ConfigurationService.Settings.NamespacePrefix;
-
-            if (string.IsNullOrEmpty(folderName))
+            namespaceBuilder.Append(@namespace); // e.g. com.Beta.Microsoft.Graph.CallRecords
+            if (!string.IsNullOrEmpty(folderName))
             {
-                return string.IsNullOrEmpty(prefix) ? @namespace
-                                                    : string.Format("{0}.{1}", prefix, @namespace);
+                namespaceBuilder.Append($".{folderName}"); // e.g. com.Beta.Microsoft.Graph.CallRecords.Model
             }
-            return string.IsNullOrEmpty(prefix) ? string.Format("{0}.{1}", @namespace, folderName)
-                                                : string.Format("{0}.{1}.{2}", prefix, @namespace, folderName);
+
+            return namespaceBuilder.ToString();
         }
 
         private string CreatePathFromNamespace(string @namespace)
