@@ -82,6 +82,22 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             }
         }
 
+        public static bool IsPHPPrimitiveType(this string type)
+        {
+            switch (type)
+            {
+                case "string":
+                    return true;
+                case "int":
+                    return true;
+                case "bool":
+                    return true;
+                case "float":
+                    return true;
+                default:
+                    return false;
+            }
+        }
 
         public static string GetTypeString(this OdcmParameter parameter)
         {
