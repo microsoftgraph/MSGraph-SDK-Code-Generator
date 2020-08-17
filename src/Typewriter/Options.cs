@@ -75,7 +75,7 @@ namespace Typewriter
 
         [Option('p', "properties",  HelpText = "A space separated list of properties in the form of 'key:value'. These properties can be accessed in the " +
             "templates from the TemplateWriterSettings object returned by ConfigurationService.Settings. The suggested convention for specifying a key should be " +
-            "the targeted template language name and the property name. For example, php.namespace:Microsoft\\Graph\\Beta\\Model would be a property to be consumed in the PHP templates.")]
+            "the targeted template language name and the property name. For example, php.namespacePrefix:Beta would be a property to be consumed in the PHP templates.")]
         public IEnumerable<string> Properties { get; set; }
 
         [Option('t', "transform", HelpText = "Specify the URI to the XSLT that will preprocess the metadata. Overrides the" +
