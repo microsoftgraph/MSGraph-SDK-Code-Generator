@@ -12,7 +12,8 @@ namespace Typewriter.Test
     {
         CSharp,
         Java,
-        TypeScript
+        TypeScript,
+        PHP
     }
 
     public static class MultipleNamespacesTestRunner
@@ -25,11 +26,11 @@ namespace Typewriter.Test
         private const string MetadataMultipleNamespacesFile = "MetadataMultipleNamespaces.xml";
 
         // contains microsoft.graph and microsoft.graph.callRecords
-        // TypeScript relies on the assumption that all namespaces will be a subnamespace to microsoft.graph
+        // TypeScript and PHP rely on the assumption that all namespaces will be a subnamespace to microsoft.graph
         // and generation process creates a single file with nested namespaces
         private const string MetadataWithSubNamespacesFile = "MetadataWithSubNamespaces.xml";
 
-        public static void Run(TestLanguage language)
+        public static void Run(TestLanguage language, bool isPhpBeta = false)
         {
             string getMetadataFile(TestLanguage testLanguage)
             {
@@ -41,6 +42,8 @@ namespace Typewriter.Test
                         return MetadataMultipleNamespacesFile;
                     case TestLanguage.TypeScript:
                         return MetadataWithSubNamespacesFile;
+                    case TestLanguage.PHP:
+                        return MetadataWithSubNamespacesFile;
                     default:
                         throw new ArgumentException("unexpected test language", nameof(testLanguage));
                 }
@@ -48,14 +51,20 @@ namespace Typewriter.Test
 
             // Arrange
             var languageStr = language.ToString();
-            var outputDirectoryName = OutputDirectoryPrefix + languageStr;
-            var testDataDirectoryName = TestDataDirectoryPrefix + languageStr;
+            var directoryPostfix = isPhpBeta ? "PHPBeta" : languageStr;
+            var outputDirectoryName = OutputDirectoryPrefix + directoryPostfix;
+            var testDataDirectoryName = TestDataDirectoryPrefix + directoryPostfix;
 
             var currentDirectory = Directory.GetCurrentDirectory();
             var outputDirectory = Path.Combine(currentDirectory, outputDirectoryName);
             var dataDirectory = Path.Combine(currentDirectory, testDataDirectoryName);
             var metadataFile = Path.Combine(currentDirectory, MetadataDirectoryName, getMetadataFile(language));
             var typewriterParameters = $"-v Info -m {metadataFile} -o {outputDirectory} -g Files -l {languageStr}";
+
+            if (isPhpBeta)
+            {
+                typewriterParameters += " -p php.namespacePrefix:Beta";
+            }
 
             // Act
             if (Directory.Exists(outputDirectory))
@@ -138,6 +147,9 @@ namespace Typewriter.Test
                     break;
                 case TestLanguage.TypeScript:
                     extension = "*.ts";
+                    break;
+                case TestLanguage.PHP:
+                    extension = "*.php";
                     break;
                 default:
                     throw new ArgumentException("unexpected test language", nameof(language));
