@@ -13,7 +13,8 @@ namespace Typewriter.Test
         CSharp,
         Java,
         TypeScript,
-        PHP
+        PHP,
+        ObjC
     }
 
     public static class MultipleNamespacesTestRunner
@@ -26,7 +27,7 @@ namespace Typewriter.Test
         private const string MetadataMultipleNamespacesFile = "MetadataMultipleNamespaces.xml";
 
         // contains microsoft.graph and microsoft.graph.callRecords
-        // TypeScript and PHP rely on the assumption that all namespaces will be a subnamespace to microsoft.graph
+        // TypeScript, ObjC and PHP rely on the assumption that all namespaces will be a subnamespace to microsoft.graph
         // and generation process creates a single file with nested namespaces
         private const string MetadataWithSubNamespacesFile = "MetadataWithSubNamespaces.xml";
 
@@ -43,6 +44,8 @@ namespace Typewriter.Test
                     case TestLanguage.TypeScript:
                         return MetadataWithSubNamespacesFile;
                     case TestLanguage.PHP:
+                        return MetadataWithSubNamespacesFile;
+                    case TestLanguage.ObjC:
                         return MetadataWithSubNamespacesFile;
                     default:
                         throw new ArgumentException("unexpected test language", nameof(testLanguage));
@@ -136,26 +139,32 @@ namespace Typewriter.Test
         /// <returns></returns>
         private static IEnumerable<(string, string)> GetFilePaths(TestLanguage language, string dataDirectory, string testDataDirectoryName, string outputDirectoryName)
         {
-            string extension = string.Empty;
+            HashSet<string> extensions = new HashSet<string>();
             switch (language)
             {
                 case TestLanguage.CSharp:
-                    extension = "*.cs";
+                    extensions.Add(".cs");
                     break;
                 case TestLanguage.Java:
-                    extension = "*.java";
+                    extensions.Add(".java");
                     break;
                 case TestLanguage.TypeScript:
-                    extension = "*.ts";
+                    extensions.Add(".ts");
                     break;
                 case TestLanguage.PHP:
-                    extension = "*.php";
+                    extensions.Add(".php");
+                    break;
+                case TestLanguage.ObjC:
+                    extensions.Add(".m");
+                    extensions.Add(".h");
                     break;
                 default:
                     throw new ArgumentException("unexpected test language", nameof(language));
             }
 
-            return from file in new DirectoryInfo(dataDirectory).GetFiles(extension, SearchOption.AllDirectories)
+            return from file in new DirectoryInfo(dataDirectory)
+                       .EnumerateFiles("*", SearchOption.AllDirectories)
+                       .Where(f => extensions.Contains(f.Extension))
                    let actualOutputFilePath = file.FullName.Replace(testDataDirectoryName, outputDirectoryName)
                    let expectedFilePath = file.FullName
                    select (expectedFilePath, actualOutputFilePath);
