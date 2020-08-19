@@ -149,6 +149,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         /// <returns>ObjC representation of an Odcm namespace</returns>
         public static string GetNamespacePrefix(string @namespace)
         {
+            if (@namespace.Equals("Edm", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.Empty;
+            }
+
             var primaryNamespace = ConfigurationService.Settings.PrimaryNamespaceName; // microsoft.graph
             var defaultPrefix = ConfigurationService.Settings.NamespacePrefix; // MSGraph
             if (@namespace.Equals(primaryNamespace, StringComparison.OrdinalIgnoreCase))
