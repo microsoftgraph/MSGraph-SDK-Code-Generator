@@ -143,9 +143,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         /// <summary>
         /// Constructs a namespace prefix for ObjC types, microsoft.graph is converted into MSGraph and rest of
         /// the namespace parts are concatenated with PascalCase.
-        /// e.g. microsoft.graph.sub1.sub2 is converted into MSGraphSub1Sub2
+        /// e.g. microsoft.graph.sub1.sub2 is converted into the prefix MSGraphSub1Sub2
         /// </summary>
-        /// <param name="type">odcm type whose namespace will be converted</param>
+        /// <param name="namespace">namespace that will be converted into a prefix</param>
         /// <returns>ObjC representation of an Odcm namespace</returns>
         public static string GetNamespacePrefix(string @namespace)
         {
