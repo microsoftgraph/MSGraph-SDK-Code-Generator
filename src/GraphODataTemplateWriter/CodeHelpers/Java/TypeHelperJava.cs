@@ -91,25 +91,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         {
             if (ReservedNames.Value.Contains(property))
             {
-                logger.Info("Property \"{0}\" is a reserved word in Java. Converting to \"{1}{0}\"", property, ReservedPrefix);
-                return ReservedPrefix + property.ToUpperFirstChar();
+                var result = ReservedPrefix + property.ToUpperFirstChar();
+                logger.Info($"Property \"{property}\" is a reserved word in Java. Converting to \"{result}\"");
+                return result;
             }
-
-            if (odcmProperty != null && property == odcmProperty.Name.ToUpperFirstChar())
+            else if (property == odcmProperty?.Name?.ToUpperFirstChar() && !(odcmProperty?.Name?.StartsWith("_") ?? false))
             {
-                // Check whether the property type is the same as the class name.
-                if (odcmProperty.Projection.Type?.Name?.ToUpperFirstChar() == odcmProperty.Name.ToUpperFirstChar())
-                {
-                    // Name the property: {metadataName} + "Property"
-                    logger.Info("Property type \"{0}\" has the same name as the class. Converting to \"{0}Property\"", property);
-                    return string.Concat(property, "Property");
-                }
-
                 // Name the property by its type. Sanitize it in case the type is a reserved name.  
-                return odcmProperty.Projection.Type?.Name?.ToUpperFirstChar()?.SanitizePropertyName(odcmProperty) ?? property.SanitizePropertyName();
+                return odcmProperty?.Projection?.Type?.Name?.ToUpperFirstChar()?.SanitizePropertyName(odcmProperty) ?? odcmProperty?.Name?.SanitizePropertyName();
             }
-
-            return property.Replace("@", string.Empty).Replace(".", string.Empty);
+            else
+                return property?.Replace("@", string.Empty)?.Replace(".", string.Empty);
         }
 
         public static string GetToLowerImport(this OdcmProperty property)
