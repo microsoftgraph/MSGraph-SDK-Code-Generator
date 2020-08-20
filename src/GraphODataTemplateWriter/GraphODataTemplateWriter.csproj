@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Graph.ODataTemplateWriter</RootNamespace>
     <AssemblyName>GraphODataTemplateWriter</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,11 +40,15 @@
       <HintPath>..\..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\NLog.4.5.7\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -141,6 +146,14 @@
     <ProjectReference Include="..\..\submodules\vipr\src\Core\Vipr.Core\Vipr.Core.csproj">
       <Project>{04c24936-006a-4fd8-a872-ee55588c1cbe}</Project>
       <Name>Vipr.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\submodules\vipr\src\Core\Vipr\Vipr.csproj">
+      <Project>{d9e57059-bad6-483b-985c-c7d1da24ed7f}</Project>
+      <Name>Vipr</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\submodules\vipr\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj">
+      <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>
+      <Name>Vipr.Reader.OData.v4</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
