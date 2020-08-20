@@ -43,7 +43,7 @@
     }
 
     public string MethodName(OdcmObject c) {
-        return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
+        return c.Name.Substring(c.Name.IndexOf(".") + 1).SanitizePropertyName(property).ToUpperFirstChar();
     }
 
     public string MethodFullName(OdcmObject c) {
