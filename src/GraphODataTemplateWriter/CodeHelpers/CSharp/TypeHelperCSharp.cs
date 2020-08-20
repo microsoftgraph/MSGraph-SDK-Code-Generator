@@ -198,7 +198,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static bool IsComplex(this string t)
         {
-            return !TypeHelperCSharp.SimpleTypes.Contains(t);
+            return !SimpleTypes.Contains(t);
         }
 
         public static string GetNamespaceName(this OdcmNamespace namespaceObject)
