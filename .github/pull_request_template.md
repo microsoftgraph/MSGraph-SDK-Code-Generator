@@ -1,6 +1,6 @@
 ## Summary
 
-Give a description of what your pull request does and what platform[s] it targets. Use the *breaking changes* tag if applicable.
+Give a description of what your pull request does and what platform[s] it targets. Use the *breaking changes* tag if applicable. Breaking changes can include changes to generated code files which will impact API signature or behaviors, and changes to directory structures which may impact DevOp pipelines and scripts.
 
 ## Generated code differences
 
