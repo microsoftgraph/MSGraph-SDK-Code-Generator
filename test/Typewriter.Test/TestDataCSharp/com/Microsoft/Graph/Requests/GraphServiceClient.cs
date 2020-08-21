@@ -24,14 +24,14 @@ namespace Microsoft.Graph
         public GraphServiceClient(
             IAuthenticationProvider authenticationProvider,
             IHttpProvider httpProvider = null)
-            : this("https://graph.microsoft.com/v1.0", authenticationProvider, httpProvider)
+            : this("https://graph.microsoft.com/", authenticationProvider, httpProvider)
         {
         }
 
         /// <summary>
         /// Instantiates a new GraphServiceClient.
         /// </summary>
-        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0".</param>
+        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/".</param>
         /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
         /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
         public GraphServiceClient(
@@ -49,7 +49,7 @@ namespace Microsoft.Graph
         /// to get a pre-configured HttpClient that is optimized for use with the Microsoft Graph service API. </param>
         public GraphServiceClient(
             HttpClient httpClient)
-            : base("https://graph.microsoft.com/v1.0", httpClient)
+            : base("https://graph.microsoft.com/", httpClient)
         {
         }
     
