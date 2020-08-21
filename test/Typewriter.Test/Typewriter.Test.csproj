@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PHPMultipleNamespacesTests.cs" />
+    <Compile Include="ObjCMultipeNamespacesTests.cs" />
     <Compile Include="TypeScriptMultipeNamespacesTests.cs" />
     <Compile Include="JavaMultipleNamespacesTests.cs" />
     <Compile Include="CSharpMultipleNamespacesTests.cs" />
@@ -60,6 +61,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestDataJava\**\*.java">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDataObjC\**\*.m">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDataObjC\**\*.h">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestDataPHP*\**\*.php">

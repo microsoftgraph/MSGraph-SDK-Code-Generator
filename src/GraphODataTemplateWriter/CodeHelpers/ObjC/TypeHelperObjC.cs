@@ -8,11 +8,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
     using NLog;
+    using System;
 
     public static class TypeHelperObjC
     {
-        public static string Prefix = ConfigurationService.Settings.NamespacePrefix;
-
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private static ICollection<string> reservedNames;
@@ -136,8 +135,34 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
                     return "Byte";
 
                 default:
-                    return Prefix + type.Name.ToUpperFirstChar();
+                    return GetNamespacePrefixForType(type) + type.Name.ToUpperFirstChar();
             }
+        }
+        public static string GetNamespacePrefixForType(OdcmType type) => GetNamespacePrefix(type.Namespace.Name);
+
+        /// <summary>
+        /// Constructs a namespace prefix for ObjC types, microsoft.graph is converted into MSGraph and rest of
+        /// the namespace parts are concatenated with PascalCase.
+        /// e.g. microsoft.graph.sub1.sub2 is converted into the prefix MSGraphSub1Sub2
+        /// </summary>
+        /// <param name="namespace">namespace that will be converted into a prefix</param>
+        /// <returns>ObjC representation of an Odcm namespace</returns>
+        public static string GetNamespacePrefix(string @namespace)
+        {
+            if (@namespace.Equals("Edm", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.Empty;
+            }
+
+            var primaryNamespace = ConfigurationService.Settings.PrimaryNamespaceName; // microsoft.graph
+            var defaultPrefix = ConfigurationService.Settings.NamespacePrefix; // MSGraph
+            if (@namespace.Equals(primaryNamespace, StringComparison.OrdinalIgnoreCase))
+            {
+                return defaultPrefix;
+            }
+
+            var subNamespace = @namespace.Substring(primaryNamespace.Length + 1); // extract sub1.sub2 from microsoft.graph.sub1.sub2
+            return defaultPrefix + string.Join(string.Empty, subNamespace.Split('.').Select(x => x.ToPascalize()));
         }
 
         public static string GetTypeString(this OdcmProperty property)
