@@ -35,7 +35,7 @@
         } else if (c is OdcmProperty && c.AsOdcmProperty().IsCollection) {
             return c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
         } else if (c is OdcmProperty && c.AsOdcmProperty().Projection.Type is OdcmPrimitiveType) {
-            return ClassTypeName(c) + c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
+            return ClassTypeName(c) + c.Name.SanitizePropertyName(c).ToUpperFirstChar() + c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
         } else if (c is OdcmProperty) {
             return c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
         }
