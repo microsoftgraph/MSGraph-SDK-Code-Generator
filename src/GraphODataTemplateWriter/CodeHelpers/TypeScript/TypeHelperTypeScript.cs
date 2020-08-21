@@ -61,9 +61,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             return char.ToUpper(s[0]) + s.Substring(1);
         }
 
-        public static string GetSanitizedLongDescription(this OdcmProperty property)
+        public static bool HasSanitizedLongDescription(this OdcmObject @object)
         {
-            var description = property.LongDescription ?? property.Description;
+            var description = @object.LongDescription ?? @object.Description;
+            return !string.IsNullOrWhiteSpace(description);
+        }
+
+        public static string GetSanitizedLongDescription(this OdcmObject @object)
+        {
+            var description = @object.LongDescription ?? @object.Description;
+
             if (description != null)
             {
                 return description.Replace("<", "&lt;")

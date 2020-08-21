@@ -81,7 +81,7 @@ export interface <#= entityTypeName #><#
 
 <#
             foreach(var prop in entityType.Properties.ToList()) {
-                if (prop.LongDescription != null || prop.Description != null) {
+                if (prop.HasSanitizedLongDescription()) {
                     List<string> multiLineDescriptions = Utils.splitString(prop.GetSanitizedLongDescription(), maxLineLength);
                     if(multiLineDescriptions.Count() == 1) {
 #>
@@ -152,7 +152,7 @@ export interface <#= complexTypeName #><#
 
 <#
             foreach(var prop in complexType.Properties) {
-                if (prop.LongDescription != null || prop.Description != null) {
+                if (prop.HasSanitizedLongDescription()) {
                     List<string> multiLineDescriptions = Utils.splitString(prop.GetSanitizedLongDescription(), maxLineLength);
                     if(multiLineDescriptions.Count() == 1) {
 #>
