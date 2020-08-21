@@ -1,17 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace Typewriter.Test
 {
-    [TestClass]
+    [TestFixture]
     public class PHPMultipleNamespacesTests
     {
-        [TestMethod]
+        [Test, RunInApplicationDomain]
         public void Test()
         {
             MultipleNamespacesTestRunner.Run(TestLanguage.PHP);
         }
 
-        [TestMethod]
+        [Test, RunInApplicationDomain]
         public void TestBeta()
         {
             MultipleNamespacesTestRunner.Run(TestLanguage.PHP, isPhpBeta: true);

@@ -58,7 +58,7 @@ namespace Typewriter.Test
             var outputDirectoryName = OutputDirectoryPrefix + directoryPostfix;
             var testDataDirectoryName = TestDataDirectoryPrefix + directoryPostfix;
 
-            var currentDirectory = Directory.GetCurrentDirectory();
+            var currentDirectory = Path.GetDirectoryName(typeof(MultipleNamespacesTestRunner).Assembly.Location); //Directory.GetCurrentDirectory();
             var outputDirectory = Path.Combine(currentDirectory, outputDirectoryName);
             var dataDirectory = Path.Combine(currentDirectory, testDataDirectoryName);
             var metadataFile = Path.Combine(currentDirectory, MetadataDirectoryName, getMetadataFile(language));

@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace Typewriter.Test
 {
-    [TestClass]
+    [TestFixture]
     public class CSharpMultipleNamespacesTests
     {
-        [TestMethod]
+        [Test]
         public void Test()
         {
             MultipleNamespacesTestRunner.Run(TestLanguage.CSharp);

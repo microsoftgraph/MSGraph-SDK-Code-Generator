@@ -106,13 +106,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
         {
             get
             {
-                // settings are considered new if
-                // 1. templateWriterSettings are not initialized
-                // 2. targetLanguage or properties are different between templateWriterSettings and ConfigurationService
-                if (templateWriterSettings == null
-                    || templateWriterSettings.TargetLanguage != ConfigurationService.targetLanguage
-                    || (templateWriterSettings.Properties == null ^ ConfigurationService.properties == null) // when only one of them is null, they are different
-                    || (templateWriterSettings.Properties != null && templateWriterSettings.Properties.SequenceEqual(ConfigurationService.properties)))
+                if (templateWriterSettings == null || templateWriterSettings.TargetLanguage != ConfigurationService.targetLanguage)
                 {
                     templateWriterSettings = _configurationProvider != null
                         ? LoadSettingsForLanguage()
