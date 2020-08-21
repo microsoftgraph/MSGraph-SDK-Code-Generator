@@ -203,7 +203,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             var namespacePrefix = string.Empty;
             // TemplateWriterSettings.Properties are set at the Typewriter command line. Check the command line 
             // documentation for more information on how the TemplateWriterSettings.Properties is used.
-            if (settings.Properties.ContainsKey("php.namespacePrefix"))
+            if (settings.Properties?.ContainsKey("php.namespacePrefix") == true)
             {
                 namespacePrefix = settings.Properties["php.namespacePrefix"];
             }
@@ -262,7 +262,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                 case "Beta\\Microsoft\\Graph\\Model":
                     return "Entity";
                 default:
-                    if (settings.Properties.ContainsKey("php.namespacePrefix"))
+                    if (settings.Properties?.ContainsKey("php.namespacePrefix") == true)
                     {
                         return $"\\{settings.Properties["php.namespacePrefix"]}\\Microsoft\\Graph\\Model\\Entity";
                     }

@@ -62,11 +62,19 @@ namespace Typewriter.Test
             var outputDirectory = Path.Combine(currentDirectory, outputDirectoryName);
             var dataDirectory = Path.Combine(currentDirectory, testDataDirectoryName);
             var metadataFile = Path.Combine(currentDirectory, MetadataDirectoryName, getMetadataFile(language));
-            var typewriterParameters = $"-v Info -m {metadataFile} -o {outputDirectory} -g Files -l {languageStr}";
+
+            var csdlContents = MetadataResolver.GetMetadata(metadataFile);
+            var options = new Options
+            {
+                Verbosity = VerbosityLevel.Info,
+                Output = outputDirectory,
+                GenerationMode = GenerationMode.Files,
+                Language = languageStr
+            };
 
             if (isPhpBeta)
             {
-                typewriterParameters += " -p php.namespacePrefix:Beta";
+                options.Properties = new List<string> { "php.namespacePrefix:Beta" };
             }
 
             // Act
@@ -75,7 +83,7 @@ namespace Typewriter.Test
                 Directory.Delete(outputDirectory, recursive: true); // clean up any previous runs
             }
 
-            Program.Main(typewriterParameters.Split(' '));
+            Generator.GenerateFiles(csdlContents, options);
 
             // Assert
             var testOutputBuilder = new StringBuilder();

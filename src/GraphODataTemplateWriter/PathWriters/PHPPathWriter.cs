@@ -46,7 +46,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.PathWriters
 
             // TemplateWriterSettings.Properties are set at the Typewriter command line. Check the command line 
             // documentation for more information on how the TemplateWriterSettings.Properties is used.
-            if (ConfigurationService.Settings.Properties.ContainsKey("php.namespacePrefix"))
+            if (ConfigurationService.Settings.Properties?.ContainsKey("php.namespacePrefix") == true)
             {
                 namespaceBuilder.Append($"{ConfigurationService.Settings.Properties["php.namespacePrefix"]}."); // e.g. "com.Beta."
             }
