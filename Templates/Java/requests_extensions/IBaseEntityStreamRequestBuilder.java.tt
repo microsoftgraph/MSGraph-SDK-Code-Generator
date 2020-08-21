@@ -4,7 +4,12 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = ITypeStreamRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=CreatePackageDefForBaseEntityRequestBuilder(host)#>
+import com.microsoft.graph.core.IBaseClient;
+import com.microsoft.graph.http.BaseRequestBuilder;
+import com.microsoft.graph.options.Option;
+import com.microsoft.graph.http.IRequestBuilder;
+import java.util.EnumSet;
 
 <#=CreateInterfaceDef(ITypeStreamRequestBuilder(c), "IRequestBuilder")#>
 

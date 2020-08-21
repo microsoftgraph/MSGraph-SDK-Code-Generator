@@ -4,7 +4,11 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = TypeStreamRequest(c);#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=CreatePackageDefForBaseEntityRequestBuilder(host)#>
+import com.microsoft.graph.core.IBaseClient;
+import com.microsoft.graph.http.BaseRequestBuilder;
+import com.microsoft.graph.options.Option;
+import java.util.EnumSet;
 
 import java.io.*;
 
