@@ -154,7 +154,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 
         public static string MethodName(this OdcmObject c)
         {
-            return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
+            return c.Name.Substring(c.Name.IndexOf(".") + 1).SanitizePropertyName(c).ToUpperFirstChar();
         }
 
         public static string MethodFullName(this OdcmObject c)
@@ -1438,7 +1438,7 @@ import java.util.EnumSet;";
                     propertyName.SplitCamelCase(),
                     property.Name,
                     propertyType,
-                    property.Name.SanitizePropertyName(property).ToLowerFirstChar(),
+                    property.Name.ToLowerFirstChar().SanitizePropertyName(property),
                     GetSanitizedDescription(property));
             }
             return sb.ToString();
