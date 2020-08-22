@@ -53,6 +53,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                     return "byte[]";
                 case "Single":
                     return "float";
+                case "Decimal":
+                    return "java.math.BigDecimal";
                 default:
                     return @type.Name.ToUpperFirstChar();
             }
