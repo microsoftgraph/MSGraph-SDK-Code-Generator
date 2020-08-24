@@ -2,23 +2,23 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeCollectionPage(c);#>
+<#host.TemplateName = c.TypeCollectionPage();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForBaseEntityCollectionPage(host)#>
+<#=host.CreatePackageDefForBaseEntityCollectionPage()#>
 import com.microsoft.graph.http.BaseCollectionPage;
 
-<#=CreateClassDef(TypeCollectionPage(c), "BaseCollectionPage" + CollectionPageGeneric(c), ITypeCollectionPage(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage" + c.CollectionPageGeneric(), c.ITypeCollectionPage())#>
 <#
-String s = TypeName(c);
+String s = c.TypeName();
 #>
 
     /**
-     * A collection page for <#=TypeName(c)#>
+     * A collection page for <#=c.TypeName()#>
      *
-     * @param response the serialized <#=TypeCollectionResponse(c)#> from the service
+     * @param response the serialized <#=c.TypeCollectionResponse()#> from the service
      * @param builder  the request builder for the next collection page
      */
-    public <#=TypeCollectionPage(c)#>(final <#=TypeCollectionResponse(c)#> response, final <#=ITypeCollectionRequestBuilder(c)#> builder) {
+    public <#=c.TypeCollectionPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.ITypeCollectionRequestBuilder()#> builder) {
         super(response.value, builder);
     }
 }

@@ -2,28 +2,28 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeCollectionReferenceRequestBuilder(c);#>
+<#host.TemplateName = c.TypeCollectionReferenceRequestBuilder();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateClassDef(TypeCollectionReferenceRequestBuilder(c), "BaseRequestBuilder", ITypeCollectionReferenceRequestBuilder(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequestBuilder(), "BaseRequestBuilder", c.ITypeCollectionReferenceRequestBuilder())#>
 
     /**
-     * The request builder for this collection of <#=ClassTypeName(c)#>
+     * The request builder for this collection of <#=c.ClassTypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeCollectionReferenceRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+    public <#=c.TypeCollectionReferenceRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
-    public <#=ITypeCollectionReferenceRequest(c)#> buildRequest() {
+    public <#=c.ITypeCollectionReferenceRequest()#> buildRequest() {
         return buildRequest(getOptions());
     }
 
-    public <#=ITypeCollectionReferenceRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
-        return new <#=TypeCollectionReferenceRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
+    public <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        return new <#=c.TypeCollectionReferenceRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 }

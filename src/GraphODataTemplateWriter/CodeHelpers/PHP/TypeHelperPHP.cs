@@ -7,6 +7,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
     using Vipr.Core.CodeModel;
     using System;
     using NLog;
+    using Inflector;
+    using System.Linq;
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
 
     public static class TypeHelperPHP
     {
@@ -79,6 +82,22 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             }
         }
 
+        public static bool IsPHPPrimitiveType(this string type)
+        {
+            switch (type)
+            {
+                case "string":
+                    return true;
+                case "int":
+                    return true;
+                case "bool":
+                    return true;
+                case "float":
+                    return true;
+                default:
+                    return false;
+            }
+        }
 
         public static string GetTypeString(this OdcmParameter parameter)
         {
@@ -153,5 +172,103 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             return name.Replace("@", string.Empty).Replace(".", "_");
         }
 
+        /// <summary>
+        /// Creates php namespace from a type's namespace
+        /// </summary>
+        /// <param name="namespace">Odcm namespace</param>
+        /// <param name="prefix">optional prefix, to create Beta models</param>
+        /// <returns>Namespace in PHP namespace format e.g. Microsoft\Graph or Beta\Microsoft\Graph</returns>
+        public static string GetPHPNamespace(this string @namespace, string prefix = "")
+        {
+            var pieces = new List<string>();
+            if (prefix != string.Empty)
+            {
+                pieces.Add(prefix);
+            }
+
+            pieces.AddRange(@namespace.Split('.').ToList());
+
+            var pascalCasePieces = pieces.Select(piece => piece.Pascalize());
+            return string.Join("\\", pascalCasePieces);
+        }
+
+        /// <summary>
+        /// Creates php namespace from a type's namespace
+        /// </summary>
+        /// <param name="currentType">type whose namespace is requested</param>
+        /// <param name="settings">reference to settings in case php:namespacePrefix is defined</param>
+        /// <returns>Namespace in PHP namespace format e.g. Microsoft\Graph or Beta\Microsoft\Graph</returns>
+        public static string GetPHPNamespace(OdcmType currentType, TemplateWriterSettings settings)
+        {
+            var namespacePrefix = string.Empty;
+            // TemplateWriterSettings.Properties are set at the Typewriter command line. Check the command line 
+            // documentation for more information on how the TemplateWriterSettings.Properties is used.
+            if (settings.Properties?.ContainsKey("php.namespacePrefix") == true)
+            {
+                namespacePrefix = settings.Properties["php.namespacePrefix"];
+            }
+
+            var @namespace = currentType.Namespace.Name;
+            if (@namespace.Equals("edm", StringComparison.OrdinalIgnoreCase))
+            {
+                // for edm types that we generate for (e.g. TimeOfDay)
+                @namespace = "microsoft.graph";
+            }
+
+            return GetPHPNamespace(@namespace, namespacePrefix) + @"\Model";
+        }
+
+        /// <summary>
+        /// Creates a base type reference for class declaration
+        /// </summary>
+        /// <param name="base">base odcm type</param>
+        /// <param name="childNamespace">child classes namespace (i.e. in which context the namespace is referenced)</param>
+        /// <param name="settings">settings in case namespacePrefix is set</param>
+        /// <returns>Either fully qualified or plain type name of a base type</returns>
+        public static string GetBaseTypeFullName(OdcmType @base, string childNamespace, TemplateWriterSettings settings)
+        {
+            if (@base == null)
+            {
+                return string.Empty;
+            }
+
+            var baseNamespace = GetPHPNamespace(@base, settings);
+            var baseTypeName = @base.Name.SanitizeEntityName().ToCheckedCase();
+            if (baseNamespace == childNamespace)
+            {
+                return baseTypeName;
+            }
+
+            return string.Join("\\", baseNamespace, baseTypeName);
+        }
+
+        /// <summary>
+        /// Gets either fully qualified or plain type name for entity
+        /// </summary>
+        /// <param name="namespace">namespace of the file which references Entity</param>
+        /// <param name="settings">settings in case namespacePrefix is set</param>
+        /// <returns>
+        /// if the namespace is shared
+        ///     Entity
+        /// if from another namespace:
+        ///     <\OptionalNamespacePrefix>\Microsoft\Graph\Model\Entity e.g. \Beta\Microsoft\Graph\Model\Entity or \Microsoft\Graph\Model\Entity
+        /// </returns>
+        public static string GetPHPEntityTypeReference(string @namespace, TemplateWriterSettings settings)
+        {
+            switch (@namespace)
+            {
+                case "Microsoft\\Graph\\Model":
+                    return "Entity";
+                case "Beta\\Microsoft\\Graph\\Model":
+                    return "Entity";
+                default:
+                    if (settings.Properties?.ContainsKey("php.namespacePrefix") == true)
+                    {
+                        return $"\\{settings.Properties["php.namespacePrefix"]}\\Microsoft\\Graph\\Model\\Entity";
+                    }
+
+                    return "\\Microsoft\\Graph\\Model\\Entity";
+            }
+        }
     }
 }

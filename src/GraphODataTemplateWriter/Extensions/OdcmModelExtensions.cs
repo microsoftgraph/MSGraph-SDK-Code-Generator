@@ -19,46 +19,41 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return odcmProperty.IsCollection;
         }
 
-        private static OdcmNamespace GetOdcmNamespace(OdcmModel model)
+        public static IEnumerable<OdcmNamespace> GetOdcmNamespaces(this OdcmModel model)
         {
-            OdcmNamespace namespaceFound;
-            var filtered = model.Namespaces.Where(x => !x.Name.Equals("Edm", StringComparison.InvariantCultureIgnoreCase))
-                                           .ToList();
-            if (filtered.Count() == 1)
+            IEnumerable<OdcmNamespace> namespacesFound;
+            var filtered = model.Namespaces
+                .Where(x => !x.Name.Equals("Edm", StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
+
+            if (filtered.Count < 1)
             {
-                namespaceFound = filtered.Single();
+                namespacesFound = null;
             }
             else
             {
-                namespaceFound =
-                    model.Namespaces.Find(x => String.Equals(x.Name, ConfigurationService.Settings.PrimaryNamespaceName,
-                        StringComparison.InvariantCultureIgnoreCase));
+                namespacesFound = filtered;
             }
 
-            if (namespaceFound == null)
-            {
-                throw new InvalidOperationException("Multiple namespaces defined in metadata and no matches." +
-                                                    "\nPlease check 'PrimaryNamespace' Setting in 'config.json'");
-            }
-            return namespaceFound;
+            return namespacesFound;
         }
 
         public static IEnumerable<OdcmClass> GetComplexTypes(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x is OdcmComplexClass && x.CanonicalName().ToLowerInvariant() != "microsoft.graph.json");
+            var namespaces = GetOdcmNamespaces(model);
+            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmComplexClass && x.CanonicalName().ToLowerInvariant() != "microsoft.graph.json"));
         }
 
         public static IEnumerable<OdcmClass> GetEntityTypes(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x is OdcmEntityClass || x is OdcmMediaClass);
+            var namespaces = GetOdcmNamespaces(model);
+            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmEntityClass || x is OdcmMediaClass));
         }
 
         public static IEnumerable<OdcmClass> GetMediaEntityTypes(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x is OdcmMediaClass);
+            var namespaces = GetOdcmNamespaces(model);
+            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmMediaClass));
         }
 
         public static IEnumerable<OdcmProperty> GetProperties(this OdcmModel model)
@@ -129,8 +124,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         public static IEnumerable<OdcmEnum> GetEnumTypes(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
-            return @namespace.Types.OfType<OdcmEnum>();
+            var namespaces = GetOdcmNamespaces(model);
+            return namespaces.SelectMany(@namespace => @namespace.Types.OfType<OdcmEnum>());
         }
 
         public static IEnumerable<OdcmMethod> GetMethods(this OdcmModel model)
@@ -209,8 +204,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             if (shouldDisambiguate)
             {
                 // Form the import statement to disambiguate the model in the generated code file.
-                var thisNamespace = host.CurrentModel.NamespaceName();
-                var thisTypeName = (host.CurrentType as OdcmProperty).Type.Name.ToUpperFirstChar();
+                var thisType = (host.CurrentType as OdcmProperty).Projection.Type;
+                var thisNamespace = thisType.Namespace.Name.AddPrefix();
+                var thisTypeName = thisType.Name.ToUpperFirstChar();
                 importStatement = $"\nimport {thisNamespace}.models.extensions.{thisTypeName};";
             }
 
@@ -232,21 +228,22 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         ///    the singleton. Generate a reference path to the item (ie "singleton/item/$ref").
         /// 4. If none of the above pertain to the navigation property, it should be treated as a metadata error.
         /// </summary>
-        public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty)
+        public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty, OdcmModel model)
         {
             // Try to find the first collection navigation property for the specified type directly on the service
             // class object. If an entity is used in a reference property a navigation collection
             // on the client for that type is required.
             try
             {
-                var explicitProperty = odcmProperty
-                    .Class
-                    .Namespace
-                    .Classes
-                    .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
-                    .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
-                    .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
-                    .FirstOrDefault();
+                var explicitProperty = GetOdcmNamespaces(model)
+                    .SelectMany(
+                        @namespace =>
+                        @namespace
+                        .Classes
+                        .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                        .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
+                        .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
+                    ).FirstOrDefault();
 
                 if (explicitProperty != null)
                     return explicitProperty;
@@ -254,24 +251,25 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 // Check the singletons for a matching implicit EntitySet
                 else
                 {
-                    var implicitProperty = odcmProperty
-                        .Class
-                        .Namespace
-                        .Classes
-                        .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
-                        .First()
-                        .Properties
-                        .Where(property => property.GetType() == typeof(OdcmSingleton)) //Get the list of singletons defined by the service
-                        .Where(singleton => singleton
-                            .Type
-                            .AsOdcmClass()
+                    var implicitProperty = GetOdcmNamespaces(model)
+                        .SelectMany(
+                            @namespace =>
+                            @namespace
+                            .Classes
+                            .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                            .First()
                             .Properties
-                            //Find navigation properties on the singleton that are self-contained (implicit EntitySets) that match the type
-                            //we are searching for
-                            .Where(prop => prop.ContainsTarget == true && prop.Type.Name == odcmProperty.Type.Name)
-                            .FirstOrDefault() != null
-                         )
-                         .FirstOrDefault();
+                            .Where(property => property.GetType() == typeof(OdcmSingleton)) //Get the list of singletons defined by the service
+                            .Where(singleton => singleton
+                                .Type
+                                .AsOdcmClass()
+                                .Properties
+                                //Find navigation properties on the singleton that are self-contained (implicit EntitySets) that match the type
+                                //we are searching for
+                                .Where(prop => prop.ContainsTarget == true && prop.Type.Name == odcmProperty.Type.Name)
+                                .FirstOrDefault() != null
+                             )
+                         ).FirstOrDefault();
 
                     if (implicitProperty != null)
                         return implicitProperty;
@@ -361,7 +359,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         public static string GetNamespace(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
+            var @namespace = model.Namespaces
+                .Find(x =>
+                    string.Equals(x.Name, ConfigurationService.Settings.PrimaryNamespaceName, StringComparison.InvariantCultureIgnoreCase));
+            @namespace = @namespace ?? GetOdcmNamespaces(model).First();
             return @namespace.Name;
         }
 
@@ -422,20 +423,29 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return false;
         }
 
-        public static string NamespaceName(this OdcmModel model)
+        public static string AddPrefix(this OdcmNamespace @namespace)
+        {
+            return @namespace.ToString().AddPrefix();
+        }
+
+        public static string AddPrefix(this string @namespace)
         {
             if (string.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
             {
-                var @namespace = GetOdcmNamespace(model).Name;
-                var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace);
-                return name.ToLower();
+                var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace).ToLower();
+
+                // special case com.edm happens when we reach here from a property and property is an edm type, e.g. Stream.
+                return name == "com.edm" ? "com.microsoft.graph" : name;
             }
             return ConfigurationService.Settings.NamespaceOverride;
         }
 
         public static string ODataPackageNamespace(this OdcmModel model)
         {
-            var @namespace = NamespaceName(model);
+            var @namespace = model.Namespaces
+                .Find(x =>
+                    string.Equals(x.Name, ConfigurationService.Settings.PrimaryNamespaceName, StringComparison.InvariantCultureIgnoreCase));
+            @namespace = @namespace ?? GetOdcmNamespaces(model).First();
             var package = string.Format("{0}.{1}", @namespace, "fetchers");
             return package.ToLower();
         }

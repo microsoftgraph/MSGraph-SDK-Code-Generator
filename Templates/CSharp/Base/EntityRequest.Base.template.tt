@@ -8,22 +8,22 @@
 // -------------------------------------------------------------
 public string GetEntityReferenceRequestClassDefinition(OdcmClass odcmClass)
 {
-    return this.GetClassDefinition(this.GetEntityReferenceRequestName(odcmClass));
+    return this.GetClassDefinition(this.GetEntityReferenceRequestName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 public string GetEntityWithReferenceRequestClassDefinition(OdcmClass odcmClass)
 {
-    return this.GetClassDefinition(this.GetEntityWithReferenceRequestName(odcmClass));
+    return this.GetClassDefinition(this.GetEntityWithReferenceRequestName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 public string GetEntityReferenceRequestConstructor(OdcmClass odcmClass)
 {
-    return this.GetConstructor(this.GetEntityReferenceRequestName(odcmClass));
+    return this.GetConstructor(this.GetEntityReferenceRequestName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 public string GetEntityWithReferenceRequestConstructor(OdcmClass odcmClass)
 {
-    return this.GetConstructor(this.GetEntityWithReferenceRequestName(odcmClass));
+    return this.GetConstructor(this.GetEntityWithReferenceRequestName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 // -------------------------------------------------------------
@@ -31,12 +31,12 @@ public string GetEntityWithReferenceRequestConstructor(OdcmClass odcmClass)
 // -------------------------------------------------------------
 public string GetEntityRequestClassDefinition(OdcmClass odcmClass)
 {
-    return this.GetClassDefinition(this.GetEntityRequestName(odcmClass));
+    return this.GetClassDefinition(this.GetEntityRequestName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 public string GetEntityRequestConstructor(OdcmClass odcmClass)
 {
-    return this.GetConstructor(this.GetEntityRequestName(odcmClass));
+    return this.GetConstructor(this.GetEntityRequestName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 
@@ -204,7 +204,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
     var entityName = this.GetEntityNameString(odcmClass);
-    
+
 	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
 	if (entityName.EndsWith("Request"))
 	{
@@ -245,7 +245,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
 	}
 	stringBuilder.Append(@"            return newEntity;
         }");
-	
+
 
     return stringBuilder.ToString();
 }
@@ -325,8 +325,10 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool initializeCollec
     return stringBuilder.ToString();
 }
 
-public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams)
+public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityName, string @namespace, StringBuilder stringBuilder, bool includeSendParams)
 {
+    var clientExceptionTypeName = @namespace.GetCoreLibraryType("ClientException");
+
 	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
 	if (entityName.EndsWith("Request"))
 	{
@@ -351,7 +353,7 @@ public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityNam
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append("        /// <exception cref=\"ClientException\">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>");
+        stringBuilder.AppendFormat("        /// <exception cref=\"{0}\">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>", clientExceptionTypeName);
 	}
 
     stringBuilder.Append(Environment.NewLine);
@@ -361,6 +363,11 @@ public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityNam
 public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCollectionProperties = true)
 {
     var stringBuilder = new StringBuilder();
+    var @namespace = odcmClass.GetNamespaceName();
+    var clientExceptionTypeName = @namespace.GetCoreLibraryType("ClientException");
+    var errorTypeName = @namespace.GetCoreLibraryType("Error");
+    var generatedErrorConstantsTypeName = @namespace.GetCoreLibraryType("GeneratedErrorConstants");
+    var constantsTypeName = @namespace.GetCoreLibraryType("Constants");
 
     var entityName = this.GetEntityNameString(odcmClass);
 
@@ -375,7 +382,7 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
-    this.AppendUpdateAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, false);
+    this.AppendUpdateAsyncHeader(entityName, lowerCaseEntityName, @namespace, stringBuilder, false);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate)", entityName, lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
@@ -387,7 +394,7 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
 
-    this.AppendUpdateAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, true);
+    this.AppendUpdateAsyncHeader(entityName, lowerCaseEntityName, @namespace, stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
@@ -397,53 +404,53 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
 	stringBuilder.Append(Environment.NewLine);
 	stringBuilder.Append("			{");
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("				if ({0}ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||", lowerCaseEntityName);       
-    stringBuilder.Append(Environment.NewLine);           
-    stringBuilder.AppendFormat("					{0}ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))", lowerCaseEntityName);          
+    stringBuilder.AppendFormat("				if ({0}ToUpdate.AdditionalData.ContainsKey({1}.HttpPropertyNames.ResponseHeaders) ||", lowerCaseEntityName, constantsTypeName);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("					{0}ToUpdate.AdditionalData.ContainsKey({1}.HttpPropertyNames.StatusCode))", lowerCaseEntityName, constantsTypeName);
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("				{");         
+    stringBuilder.Append("				{");
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("					throw new ClientException(");                
+    stringBuilder.AppendFormat("					throw new {0}(", clientExceptionTypeName);
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("						new Error");                  
+    stringBuilder.AppendFormat("						new {0}", errorTypeName);
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("						{");                    
+    stringBuilder.Append("						{");
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("							Code = GeneratedErrorConstants.Codes.NotAllowed,");                        
+    stringBuilder.AppendFormat("							Code = {0}.Codes.NotAllowed,", generatedErrorConstantsTypeName);
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, {0}ToUpdate.GetType().Name)", lowerCaseEntityName);                        
+    stringBuilder.AppendFormat("							Message = String.Format({0}.Messages.ResponseObjectUsedForUpdate, {1}ToUpdate.GetType().Name)", generatedErrorConstantsTypeName, lowerCaseEntityName);
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("						});");                   
+    stringBuilder.Append("						});");
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("				}");   
+    stringBuilder.Append("				}");
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("			}");	
+    stringBuilder.Append("			}");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            if ({0}ToUpdate.AdditionalData != null)", lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("                if ({0}ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||", lowerCaseEntityName);
+    stringBuilder.AppendFormat("                if ({0}ToUpdate.AdditionalData.ContainsKey({1}.HttpPropertyNames.ResponseHeaders) ||", lowerCaseEntityName, constantsTypeName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("                    {0}ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))", lowerCaseEntityName);
+    stringBuilder.AppendFormat("                    {0}ToUpdate.AdditionalData.ContainsKey({1}.HttpPropertyNames.StatusCode))", lowerCaseEntityName, constantsTypeName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("                {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("                    throw new ClientException(");
+    stringBuilder.AppendFormat("                    throw new {0}(", clientExceptionTypeName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("                        new Error");
+    stringBuilder.AppendFormat("                        new {0}", errorTypeName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("                        {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("                            Code = GeneratedErrorConstants.Codes.NotAllowed,");
+    stringBuilder.AppendFormat("                            Code = {0}.Codes.NotAllowed,", generatedErrorConstantsTypeName);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, {0}ToUpdate.GetType().Name)", lowerCaseEntityName);
+    stringBuilder.AppendFormat("                            Message = String.Format({0}.Messages.ResponseObjectUsedForUpdate, {1}ToUpdate.GetType().Name)", generatedErrorConstantsTypeName, lowerCaseEntityName);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("                        });");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("                }");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("            }");	
+    stringBuilder.Append("            }");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
     stringBuilder.Append(Environment.NewLine);
@@ -472,8 +479,9 @@ public string GetEntityReferenceDeleteAsyncMethod(OdcmClass odcmClass)
 // -------------------------------------------------------------
 // Build select and expand methods
 // -------------------------------------------------------------
-public string GetSelectMethod(string requestType)
+public string GetSelectMethod(string requestType, string @namespace)
 {
+    var queryOptionTypeName = @namespace.GetCoreLibraryType("QueryOption");
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append(
@@ -486,15 +494,19 @@ public string GetSelectMethod(string requestType)
     stringBuilder.AppendFormat("        public I{0} Select(string value)", requestType);
     stringBuilder.Append(@"
         {
-            this.QueryOptions.Add(new QueryOption(""$select"", value));
+            this.QueryOptions.Add(new ");
+    stringBuilder.Append(queryOptionTypeName);
+    stringBuilder.Append(@"(""$select"", value));
             return this;
         }");
 
     return stringBuilder.ToString();
 }
 
-public string GetSelectExpressionMethod(string requestType, string underlyingType)
+public string GetSelectExpressionMethod(string requestType, string @namespace, string underlyingType)
 {
+    var expressionExtractHelperTypeName = @namespace.GetCoreLibraryType("ExpressionExtractHelper");
+    var queryOptionTypeName = @namespace.GetCoreLibraryType("QueryOption");
 
 	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
 	if (underlyingType.EndsWith("Request"))
@@ -519,23 +531,29 @@ public string GetSelectExpressionMethod(string requestType, string underlyingTyp
                 throw new ArgumentNullException(nameof(selectExpression));
             }
             string error;
-            string value = ExpressionExtractHelper.ExtractMembers(selectExpression, out error);
+            string value = ");
+    stringBuilder.Append(expressionExtractHelperTypeName);
+    stringBuilder.Append(@".ExtractMembers(selectExpression, out error);
             if (value == null)
             {
                 throw new ArgumentException(error, nameof(selectExpression));
             }
             else
             {
-                this.QueryOptions.Add(new QueryOption(""$select"", value));
+                this.QueryOptions.Add(new ");
+    stringBuilder.Append(queryOptionTypeName);
+    stringBuilder.Append(@"(""$select"", value));
             }
             return this;
         }");
-    
+
     return stringBuilder.ToString();
 }
 
-public string GetExpandExpressionMethod(string requestType, string underlyingType)
+public string GetExpandExpressionMethod(string requestType, string underlyingType, string @namespace)
 {
+    var expressionExtractHelperTypeName = @namespace.GetCoreLibraryType("ExpressionExtractHelper");
+    var queryOptionTypeName = @namespace.GetCoreLibraryType("QueryOption");
 
 	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
 	if (underlyingType.EndsWith("Request"))
@@ -560,24 +578,29 @@ public string GetExpandExpressionMethod(string requestType, string underlyingTyp
                 throw new ArgumentNullException(nameof(expandExpression));
             }
             string error;
-            string value = ExpressionExtractHelper.ExtractMembers(expandExpression, out error);
+            string value = ");
+    stringBuilder.Append(expressionExtractHelperTypeName);
+    stringBuilder.Append(@".ExtractMembers(expandExpression, out error);
             if (value == null)
             {
                 throw new ArgumentException(error, nameof(expandExpression));
             }
             else
             {
-                this.QueryOptions.Add(new QueryOption(""$expand"", value));
+                this.QueryOptions.Add(new ");
+    stringBuilder.Append(queryOptionTypeName);
+    stringBuilder.Append(@"(""$expand"", value));
             }
             return this;
         }");
-    
+
     return stringBuilder.ToString();
 }
 
-public string GetExpandMethod(string requestType)
+public string GetExpandMethod(string requestType, string @namespace)
 {
     var stringBuilder = new StringBuilder();
+    var queryOptionTypeName = @namespace.GetCoreLibraryType("QueryOption");
 
     stringBuilder.Append(
       @"/// <summary>
@@ -587,9 +610,11 @@ public string GetExpandMethod(string requestType)
         /// <returns>The request object to send.</returns>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        public I{0} Expand(string value)", requestType);
-        stringBuilder.Append(@"
+    stringBuilder.Append(@"
         {
-            this.QueryOptions.Add(new QueryOption(""$expand"", value));
+            this.QueryOptions.Add(new ");
+    stringBuilder.Append(queryOptionTypeName);
+    stringBuilder.Append(@"(""$expand"", value));
             return this;
         }");
 
@@ -600,34 +625,38 @@ public string GetExpandMethod(string requestType)
 public string GetEntityExpandMethods(OdcmClass odcmClass)
 {
     string entityName = this.GetEntityNameString(odcmClass);
-    return this.GetExpandMethod(this.GetRequestString(entityName)) +
+    string @namespace = odcmClass.GetNamespaceName();
+    return this.GetExpandMethod(this.GetRequestString(entityName), @namespace) +
     Environment.NewLine + Environment.NewLine + "        " +
-    this.GetExpandExpressionMethod(this.GetRequestString(entityName), entityName);
+    this.GetExpandExpressionMethod(this.GetRequestString(entityName), entityName, @namespace);
 }
 
 public string GetEntitySelectMethods(OdcmClass odcmClass)
 {
     string entityName = this.GetEntityNameString(odcmClass);
-    return this.GetSelectMethod(this.GetRequestString(entityName)) +
+    var @namespace = odcmClass.GetNamespaceName();
+    return this.GetSelectMethod(this.GetRequestString(entityName), @namespace) +
     Environment.NewLine + Environment.NewLine + "        " +
-    this.GetSelectExpressionMethod(this.GetRequestString(entityName), entityName);
+    this.GetSelectExpressionMethod(this.GetRequestString(entityName), @namespace, entityName);
 }
 
 // Entity with references
 public string GetEntityWithReferenceExpandMethods(OdcmClass odcmClass)
 {
 	string entityWithReferenceRequestName = this.GetEntityWithReferenceRequestName(odcmClass);
-    return this.GetExpandMethod(entityWithReferenceRequestName) +
+    var @namespace = odcmClass.GetNamespaceName();
+    return this.GetExpandMethod(entityWithReferenceRequestName, @namespace) +
     Environment.NewLine + Environment.NewLine + "        " +
-    this.GetExpandExpressionMethod(entityWithReferenceRequestName, this.GetEntityNameString(odcmClass));
+    this.GetExpandExpressionMethod(entityWithReferenceRequestName, this.GetEntityNameString(odcmClass), @namespace);
 }
 
 public string GetEntityWithReferenceSelectMethods(OdcmClass odcmClass)
 {
 	string entityWithReferenceRequestName = this.GetEntityWithReferenceRequestName(odcmClass);
-    return this.GetSelectMethod(this.GetEntityWithReferenceRequestName(odcmClass)) +
+    var @namespace = odcmClass.GetNamespaceName();
+    return this.GetSelectMethod(this.GetEntityWithReferenceRequestName(odcmClass), @namespace) +
     Environment.NewLine + Environment.NewLine + "        " +
-    this.GetSelectExpressionMethod(entityWithReferenceRequestName, this.GetEntityNameString(odcmClass));
+    this.GetSelectExpressionMethod(entityWithReferenceRequestName, @namespace, this.GetEntityNameString(odcmClass));
 }
 
 #>

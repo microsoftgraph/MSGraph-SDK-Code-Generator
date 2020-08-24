@@ -4,9 +4,10 @@
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
+var @namespace = this.GetNamespaceName(prop.Class.AsOdcmClass());
 
 #>
-namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;

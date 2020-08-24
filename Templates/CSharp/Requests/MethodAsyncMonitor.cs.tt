@@ -4,6 +4,7 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
+var @namespace = method.Namespace.GetNamespaceName();
 var entityName = method.Class.Name.ToCheckedCase();
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var monitorType = entityName + methodName + "AsyncMonitor";
@@ -11,7 +12,7 @@ var monitorType = entityName + methodName + "AsyncMonitor";
 var isSpecialCollection = method.LongDescriptionContains("specialCollection");
 var isCollection = method.IsCollection || isSpecialCollection;
 
-var returnEntityType = method.ReturnType.Name.ToCheckedCase();
+var returnEntityType = method.ReturnType.GetTypeString(@namespace);
 var returnTypeObject = method.ReturnType.AsOdcmClass();
 var returnType = isCollection ? "I" + entityName + methodName + "CollectionPage" : returnEntityType;
 var serializationType = isCollection ? entityName + methodName + "CollectionResponse" : returnEntityType;
@@ -19,7 +20,7 @@ var hasParameters = method.Parameters != null && method.Parameters.Any();
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;

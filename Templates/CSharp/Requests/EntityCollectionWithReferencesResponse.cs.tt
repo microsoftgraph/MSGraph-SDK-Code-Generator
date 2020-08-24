@@ -4,13 +4,17 @@
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
+var @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
+
+var derivedTypeConverterTypeName = @namespace.GetCoreLibraryType("DerivedTypeConverter");
+
 var entityName = prop.Class.Name.ToCheckedCase();
 var propName = prop.Name.ToCheckedCase();
 var collectionResponse = string.Concat(entityName, propName, "CollectionWithReferencesResponse");
 var collectionPage = string.Concat(entityName, propName, "CollectionWithReferencesPage");
 
 #>
-namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;
@@ -24,7 +28,7 @@ namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
 // We only want to add the derived type converter to the classes at the top of the inheritance hierarchy
 if (prop.Class.Derived != null && prop.Class.Base == null)
 { #>
-    [JsonConverter(typeof(DerivedTypeConverter))]
+    [JsonConverter(typeof(<#=derivedTypeConverterTypeName#>))]
 <# } #>
     public class <#=collectionResponse#>
     {

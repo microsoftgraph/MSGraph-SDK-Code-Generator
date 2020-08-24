@@ -4,19 +4,24 @@
 <#
 
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Projection.Type;
-var innerEntityType = innerEntity is OdcmPrimitiveType ? innerEntity.GetTypeString() : innerEntity.Name.ToCheckedCase();
+var @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
+
+var interfaceConverterTypeName = @namespace.GetCoreLibraryType("InterfaceConverter");
+var iCollectionPageTypeName = @namespace.GetCoreLibraryType("ICollectionPage");
+var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
+
+var innerEntityType = prop.GetTypeString(@namespace);
 if (innerEntityType.EndsWith("Request"))
-	{
-		innerEntityType = String.Concat(innerEntityType, "Object");
-	}
+{
+    innerEntityType = String.Concat(innerEntityType, "Object");
+}
 
 var entityCollectionRequest = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionRequest");
 var entityCollectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
 
 #>
 
-namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
 
@@ -25,8 +30,8 @@ namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.
     /// </summary>
-    [JsonConverter(typeof(InterfaceConverter<<#=entityCollectionPage#>>))]
-    public interface I<#=entityCollectionPage#> : ICollectionPage<<#=innerEntityType#>>
+    [JsonConverter(typeof(<#=interfaceConverterTypeName#><<#=entityCollectionPage#>>))]
+    public interface I<#=entityCollectionPage#> : <#=iCollectionPageTypeName#><<#=innerEntityType#>>
     {
         /// <summary>
         /// Gets the next page <see cref="I<#=entityCollectionRequest#>"/> instance.
@@ -36,6 +41,6 @@ namespace <#=prop.Class.AsOdcmClass().Namespace.GetNamespaceName()#>
         /// <summary>
         /// Initializes the NextPageRequest property.
         /// </summary>
-        void InitializeNextPageRequest(IBaseClient client, string nextPageLinkString);
+        void InitializeNextPageRequest(<#=iBaseClientTypeName#> client, string nextPageLinkString);
     }
 }

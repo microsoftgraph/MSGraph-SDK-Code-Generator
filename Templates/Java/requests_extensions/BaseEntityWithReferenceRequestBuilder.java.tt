@@ -2,29 +2,29 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeWithReferencesRequestBuilder(c);#>
+<#host.TemplateName = c.TypeWithReferencesRequestBuilder();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateClassDef(TypeWithReferencesRequestBuilder(c), "BaseRequestBuilder", ITypeWithReferencesRequestBuilder(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequestBuilder(), "BaseRequestBuilder", c.ITypeWithReferencesRequestBuilder())#>
 
     /**
-     * The request builder for the <#=TypeName(c)#>
+     * The request builder for the <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeWithReferencesRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+    public <#=c.TypeWithReferencesRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
     /**
      * Creates the request
      *
-     * @return the <#=ITypeWithReferencesRequest(c)#> instance
+     * @return the <#=c.ITypeWithReferencesRequest()#> instance
      */
-    public <#=ITypeWithReferencesRequest(c)#> buildRequest() {
+    public <#=c.ITypeWithReferencesRequest()#> buildRequest() {
         return buildRequest(getOptions());
     }
 
@@ -32,14 +32,14 @@
      * Creates the request with specific options instead of the existing options
 	 *
      * @param requestOptions the options for this request
-     * @return the <#=ITypeWithReferencesRequest(c)#> instance
+     * @return the <#=c.ITypeWithReferencesRequest()#> instance
      */
-    public <#=ITypeWithReferencesRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
-        return new <#=TypeWithReferencesRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
+    public <#=c.ITypeWithReferencesRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        return new <#=c.TypeWithReferencesRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public <#=ITypeReferenceRequestBuilder(c)#> reference(){
-        return new <#=TypeReferenceRequestBuilder(c)#>(getRequestUrl() + "/$ref", getClient(), getOptions());
+    public <#=c.ITypeReferenceRequestBuilder()#> reference(){
+        return new <#=c.TypeReferenceRequestBuilder()#>(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
 
 }

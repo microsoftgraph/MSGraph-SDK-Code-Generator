@@ -2,16 +2,16 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeCollectionReferenceRequestBuilder(c);#>
+<#host.TemplateName = c.ITypeCollectionReferenceRequestBuilder();#>
 <#
-    var genericType = "<" + TypeName(c) + ", " + ITypeCollectionReferenceRequestBuilder(c) + ">";
+    var genericType = "<" + c.TypeName() + ", " + c.ITypeCollectionReferenceRequestBuilder() + ">";
 #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateInterfaceDef(ITypeCollectionReferenceRequestBuilder(c), "IRequestBuilder")#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionReferenceRequestBuilder(), "IRequestBuilder")#>
 
-    <#=ITypeCollectionReferenceRequest(c)#> buildRequest();
+    <#=c.ITypeCollectionReferenceRequest()#> buildRequest();
 
-    <#=ITypeCollectionReferenceRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
 }

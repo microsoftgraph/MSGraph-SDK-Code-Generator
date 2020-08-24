@@ -4,9 +4,11 @@
 <#
 var entityContainer = model.EntityContainer;
 var clientName = entityContainer.Name.ToCheckedCase() + "Client";
+
+var @namespace = entityContainer.Namespace.GetNamespaceName();
 #>
 
-namespace <#=entityContainer.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System.Net.Http;
 
@@ -77,13 +79,14 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
         }
         else
         {
-            var requestBuilder = prop.Projection.Type.Name.ToCheckedCase() + "RequestBuilder";
+            var requestBuilder = prop.GetTypeString(@namespace, "{0}RequestBuilder");
+            var iRequestBuilder = prop.GetTypeString(@namespace, "I{0}RequestBuilder");
     #>
 
         /// <summary>
         /// Gets the <#=propName#> request builder.
         /// </summary>
-        public I<#=requestBuilder#> <#=sanitizedPropName#>
+        public <#=iRequestBuilder#> <#=sanitizedPropName#>
         {
             get
             {

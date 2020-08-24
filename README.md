@@ -7,7 +7,6 @@
 Source code writers for [VIPR][vipr-source-repo] utilizing T4 templates. The GraphODataTemplateWriter receives an OdcmModel from VIPR and uses it to fill in a T4 template located within this repository.
 
 Currently the following target languages are supported by this writer:
-- Android
 - CSharp
 - Java
 - Objective-C
@@ -40,7 +39,7 @@ For more information on submodules read [this chapter](http://git-scm.com/book/e
 
 Typewriter is a new solution for generating code files using the GraphODataTemplateWriter and VIPR. It is an executable that is intended to simplify the generation of code files. Build the solution to find the typewriter executable in `\MSGraph-SDK-Code-Generator\src\Typewriter\bin\Release`. The typewriter run options are:
 
-* **-l**, **-language**:  The target language for the generated code files. The values can be: `Android`, `Java`, `ObjC`, `CSharp`, `PHP`, `Python`, `TypeScript`, or `GraphEndpointList`. The default value is `CSharp`. This is not applicable when only generating clean and annotated metadata as specified by the `-generationmode Metadata` option.
+* **-l**, **-language**:  The target language for the generated code files. The values can be: `Java`, `ObjC`, `CSharp`, `PHP`, `Python`, `TypeScript`, or `GraphEndpointList`. The default value is `CSharp`. This is not applicable when only generating clean and annotated metadata as specified by the `-generationmode Metadata` option.
 * **-m**, **-metadata**: The local file path or URL to the target input metadata. The default value is `https://graph.microsoft.com/v1.0/$metadata`. This value is required.
 * **-v**, **-verbosity**: The log verbosity level. The values can be: `Minimal`, `Info`, `Debug`, or `Trace`. The default value is `Minimal`.
 * **-o**, **-output**: Specifies the path to the output folder. The default value is the directory that contains typewriter.exe. The structure and contents of the output directory will be different based on the `-generationmode` and `-language` options.

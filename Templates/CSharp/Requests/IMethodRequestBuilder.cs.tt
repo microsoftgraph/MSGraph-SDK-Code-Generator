@@ -4,12 +4,16 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
+var @namespace = method.Namespace.GetNamespaceName();
+
+var optionTypeName = @namespace.GetCoreLibraryType("Option");
+
 var entityName = method.Class.Name.ToCheckedCase();
 var requestType = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase() + "Request";
 var requestBuilderType = requestType + "Builder";
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;
@@ -25,6 +29,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// </summary>
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
-        I<#=requestType#> Request(IEnumerable<Option> options = null);
+        I<#=requestType#> Request(IEnumerable<<#=optionTypeName#>> options = null);
     }
 }

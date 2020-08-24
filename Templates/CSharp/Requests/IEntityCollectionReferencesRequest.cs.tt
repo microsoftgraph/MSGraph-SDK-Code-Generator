@@ -3,11 +3,13 @@
 <#@ include file="ICollectionRequest.Base.template.tt"#>
 <#
 var prop = host.CurrentType.AsOdcmProperty();
+var @namespace = this.GetNamespaceName(prop.Class.AsOdcmClass());
+
 var collectionRequest = this.GetPropertyCollectionReferencesRequestName(prop);
 
 #>
 
-namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;
@@ -16,6 +18,6 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
 
     <#=this.GetCollectionReferencesInterfaceDefinition(prop)#>
     {
-        <#=GetPostAsyncMethodForReferencesRequest(prop)#>
+        <#=GetPostAsyncMethodForReferencesRequest(prop, @namespace)#>
     }
 }

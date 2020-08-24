@@ -10,7 +10,7 @@ var enums = model.GetEnumTypes();
 foreach(var e in enums)
 {
 #>
-#import "<#=writer.GetPrefix() + e.Name.ToUpperFirstChar()#>.h"
+#import "<#=writer.GetNamespacePrefixForType(e) + e.Name.ToUpperFirstChar()#>.h"
 <#
 }
 
@@ -18,7 +18,7 @@ var complexTypes = model.GetComplexTypes().Where(complexType => !complexType.Lon
 foreach(var c in complexTypes)
 {
 #>
-#import "<#=writer.GetPrefix() + c.Name.ToUpperFirstChar()#>.h"
+#import "<#=writer.GetNamespacePrefixForType(c) + c.Name.ToUpperFirstChar()#>.h"
 <#
 }
 
@@ -26,7 +26,7 @@ var entityTypes = model.GetEntityTypes();
 foreach(var et in entityTypes)
 {	 
 #>
-#import "<#=writer.GetPrefix() + et.Name.ToUpperFirstChar()#>.h"
+#import "<#=writer.GetNamespacePrefixForType(et) + et.Name.ToUpperFirstChar()#>.h"
 <#
 }
 

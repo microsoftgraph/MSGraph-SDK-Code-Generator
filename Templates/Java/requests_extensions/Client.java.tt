@@ -3,18 +3,18 @@
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-import <#=host.CurrentModel.NamespaceName()#>.authentication.*;
-import <#=host.CurrentModel.NamespaceName()#>.logger.*;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.authentication.*;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.logger.*;
 import com.google.gson.JsonObject;
 
-<#=CreateClassDef(ClientType(c), BaseClientType(c), IClientType(c))#>
+<#=TypeHelperJava.CreateClassDef(c.ClientType(host), c.BaseClientType(host), c.IClientType(host))#>
 
     /**
      * Restricted constructor
      */
-    protected <#=ClientType(c)#>() {
+    protected <#=c.ClientType(host)#>() {
     }
 
 	/**

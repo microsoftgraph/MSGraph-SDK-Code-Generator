@@ -2,24 +2,24 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeCollectionRequest(c);#>
+<#host.TemplateName = c.TypeCollectionRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateClassDef(TypeCollectionRequest(c), "BaseCollectionRequest" + CollectionRequestGeneric(c), ITypeCollectionRequest(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric(), c.ITypeCollectionRequest())#>
 
     /**
-     * The request builder for this collection of <#=TypeName(c)#>
+     * The request builder for this collection of <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeCollectionRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=TypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
+    public <#=c.TypeCollectionRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.ITypeCollectionPage()#>.class);
     }
 
-    public void get(final ICallback<<#=ITypeCollectionPage(c)#>> callback) {
+    public void get(final ICallback<<#=c.ITypeCollectionPage()#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -33,23 +33,23 @@
         });
     }
 
-    public <#=ITypeCollectionPage(c)#> get() throws ClientException {
-        final <#=TypeCollectionResponse(c)#> response = send();
+    public <#=c.ITypeCollectionPage()#> get() throws ClientException {
+        final <#=c.TypeCollectionResponse()#> response = send();
         return buildFromResponse(response);
     }
 
-    public void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
+    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
-        new <#=TypeRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+        new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getOptions())
-            .post(new<#=TypeName(c)#>, callback);
+            .post(new<#=c.TypeName()#>, callback);
     }
 
-    public <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
+    public <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
-        return new <#=TypeRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+        return new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getOptions())
-            .post(new<#=TypeName(c)#>);
+            .post(new<#=c.TypeName()#>);
     }
 
 <# if (c.GetFeatures().CanExpand) { #>
@@ -59,9 +59,9 @@
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=ITypeCollectionRequest(c)#> expand(final String value) {
-        addQueryOption(new QueryOption("$expand", value));
-        return (<#=TypeCollectionRequest(c)#>)this;
+    public <#=c.ITypeCollectionRequest()#> expand(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (<#=c.TypeCollectionRequest()#>)this;
     }
 
 <# } #>
@@ -72,9 +72,9 @@
      * @param value the select clause
      * @return the updated request
      */
-    public <#=ITypeCollectionRequest(c)#> select(final String value) {
-        addQueryOption(new QueryOption("$select", value));
-        return (<#=TypeCollectionRequest(c)#>)this;
+    public <#=c.ITypeCollectionRequest()#> select(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
+        return (<#=c.TypeCollectionRequest()#>)this;
     }
 
 <# } #>
@@ -85,22 +85,22 @@
      * @param value the max number of items to return
      * @return the updated request
      */
-    public <#=ITypeCollectionRequest(c)#> top(final int value) {
-        addQueryOption(new QueryOption("$top", value + ""));
-        return (<#=TypeCollectionRequest(c)#>)this;
+    public <#=c.ITypeCollectionRequest()#> top(final int value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
+        return (<#=c.TypeCollectionRequest()#>)this;
     }
 
 <# } #>
-    public <#=ITypeCollectionPage(c)#> buildFromResponse(final <#=BaseTypeCollectionResponse(c)#> response) {
-        final <#=ITypeCollectionRequestBuilder(c)#> builder;
+    public <#=c.ITypeCollectionPage()#> buildFromResponse(final <#=c.BaseTypeCollectionResponse()#> response) {
+        final <#=c.ITypeCollectionRequestBuilder()#> builder;
         if (response.nextLink != null) {
-            builder = new <#=TypeCollectionRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
+            builder = new <#=c.TypeCollectionRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
         } else {
             builder = null;
         }
-        final <#=TypeCollectionPage(c)#> page = new <#=TypeCollectionPage(c)#>(response, builder);
+        final <#=c.TypeCollectionPage()#> page = new <#=c.TypeCollectionPage()#>(response, builder);
         page.setRawObject(response.getSerializer(), response.getRawObject());
         return page;
     }
 }
-<#=PostProcess(TypeCollectionRequest(c))#>
+<#=PostProcess(c.TypeCollectionRequest())#>
