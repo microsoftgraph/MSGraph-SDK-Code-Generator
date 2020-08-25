@@ -12,6 +12,7 @@ import com.google.gson.annotations.SerializedName;
 import com.microsoft.graph.serializer.AdditionalDataManager;
 import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.ISerializer;
+import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
 
 <#=CreateClassDef(TypeCollectionResponse(c), null, "IJsonBackedObject")#>
 

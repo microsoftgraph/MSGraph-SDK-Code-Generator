@@ -19,7 +19,12 @@
 	}
 #>
 
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequestBuilder(c)#>;
+<# if (ShouldIncludeCollectionTypeReference(c)) { #>
+import com.microsoft.graph.models.<#=OdcmMethodReturnNamespaceSection(c as OdcmMethod)#>.<#=OdcmMethodReturnType(c as OdcmMethod)#>;
+<# } #>
 import com.google.gson.JsonObject;
+import com.microsoft.graph.http.IBaseCollectionPage;
 
 <#=CreateInterfaceDef(ITypeCollectionPage(c), "IBaseCollectionPage" + CollectionPageGeneric(c))#>
 <# if (deltaPage) { #>

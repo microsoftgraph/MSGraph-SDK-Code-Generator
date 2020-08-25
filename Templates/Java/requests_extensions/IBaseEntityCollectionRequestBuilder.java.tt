@@ -9,6 +9,41 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
+import com.microsoft.graph.requests.extensions.<#=ITypeRequestBuilder(c)#>;
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequest(c)#>;
+<#
+var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
+if (currentTypeProjection != null) {
+    foreach (var method in currentTypeProjection.MethodsAndOverloads()) {
+        if (!method.IsBoundToCollection) {
+            continue;
+        }
+
+        var parameterList = MethodParametersImports(method);
+        if (parameterList != "") {
+#>
+<#=parameterList#>
+<#
+}
+        if (method.IsCollection) {
+#>
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequestBuilder(method)#>;
+<#
+        } else {
+#>
+import com.microsoft.graph.requests.extensions.<#=ITypeRequestBuilder(method)#>;
+<#
+        }
+    }
+}
+#>
+<# if (ShouldIncludeCollectionTypeReference(c)) { #>
+import com.microsoft.graph.models.extensions.<#=TargetCollectionType(c)#>;
+<# } #>
+import com.microsoft.graph.options.Option;
+import com.microsoft.graph.http.IBaseCollectionPage;
+import com.microsoft.graph.concurrency.ICallback;
+
 <#=CreateInterfaceDef(ITypeCollectionRequestBuilder(c), "IRequestBuilder")#>
 
     <#=ITypeCollectionRequest(c)#> buildRequest();
@@ -18,7 +53,6 @@
     <#=ITypeRequestBuilder(c)#> byId(final String id);
 
 <#
-var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
 if (currentTypeProjection != null)
 {
     foreach (var method in currentTypeProjection.AsOdcmClass().MethodsAndOverloads()) {

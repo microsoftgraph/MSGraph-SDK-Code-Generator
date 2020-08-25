@@ -6,6 +6,9 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
+import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
+import com.microsoft.graph.options.Option;
+
 <#=CreateInterfaceDef(ITypeReferenceRequestBuilder(c), "IRequestBuilder")#>
 
     /**

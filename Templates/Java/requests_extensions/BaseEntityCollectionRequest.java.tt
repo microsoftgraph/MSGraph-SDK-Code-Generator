@@ -6,6 +6,20 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
+import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.options.Option;
+import com.microsoft.graph.options.QueryOption;
+import com.microsoft.graph.core.IBaseClient;
+import com.microsoft.graph.http.BaseCollectionRequest;
+import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.concurrency.IExecutors;
+import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionPage(c)#>;
+import com.microsoft.graph.requests.extensions.<#=TypeCollectionResponse(c)#>;
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequestBuilder(c)#>;
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequest(c)#>;
+import com.microsoft.graph.requests.extensions.<#=TypeCollectionPage(c)#>;
+
 <#=CreateClassDef(TypeCollectionRequest(c), "BaseCollectionRequest" + CollectionRequestGeneric(c), ITypeCollectionRequest(c))#>
 
     /**

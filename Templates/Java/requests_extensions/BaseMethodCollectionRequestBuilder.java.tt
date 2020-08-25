@@ -5,6 +5,27 @@
 <#host.TemplateName = TypeCollectionRequestBuilder(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
+
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequestBuilder(c)#>;
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequest(c)#>;
+import com.microsoft.graph.requests.extensions.<#=TypeCollectionRequest(c)#>;
+<# if (ShouldIncludeCollectionTypeReference(c)) { #>
+import com.microsoft.graph.models.<#=OdcmMethodReturnNamespaceSection(c as OdcmMethod)#>.<#=OdcmMethodReturnType(c as OdcmMethod)#>;
+<# } #>
+<# foreach (var method in c.AsOdcmMethod().WithOverloads()) {
+    var parameterList = MethodParametersImports(method);
+    if (parameterList != "") {
+#>
+<#=parameterList#>
+<#
+    }
+} 
+#>
+import com.microsoft.graph.options.Option;
+import com.microsoft.graph.options.FunctionOption;
+import com.microsoft.graph.core.IBaseClient;
+import com.microsoft.graph.core.<#=RequestBuilderSuperClass(c) #>;
+
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
 <#=CreateClassDef(TypeCollectionRequestBuilder(c), RequestBuilderSuperClass(c), ITypeCollectionRequestBuilder(c))#>
 

@@ -9,6 +9,8 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
+import com.microsoft.graph.options.Option;
+
 <#=CreateInterfaceDef(ITypeCollectionReferenceRequestBuilder(c), "IRequestBuilder")#>
 
     <#=ITypeCollectionReferenceRequest(c)#> buildRequest();

@@ -6,8 +6,14 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequestBuilder(c)#>;
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionWithReferencesPage(c)#>;
+import com.microsoft.graph.requests.extensions.<#=TypeCollectionResponse(c)#>;
+import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.*;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
+import com.microsoft.graph.http.BaseCollectionPage;
 
 <#=CreateClassDef(TypeCollectionWithReferencesPage(c), "BaseCollectionPage" + CollectionPageWithReferencesGeneric(c), ITypeCollectionWithReferencesPage(c))#>
 

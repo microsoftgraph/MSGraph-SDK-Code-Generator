@@ -6,6 +6,10 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDefForBaseEntityCollectionPage(host)#>
 import com.microsoft.graph.http.BaseCollectionPage;
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequestBuilder(c)#>;
+import com.microsoft.graph.requests.extensions.<#=TypeCollectionPage(c)#>;
+import com.microsoft.graph.requests.extensions.<#=TypeCollectionResponse(c)#>;
+import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
 
 <#=CreateClassDef(TypeCollectionPage(c), "BaseCollectionPage" + CollectionPageGeneric(c), ITypeCollectionPage(c))#>
 <#

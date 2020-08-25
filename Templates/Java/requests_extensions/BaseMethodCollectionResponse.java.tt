@@ -8,7 +8,14 @@
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.*;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
+import com.microsoft.graph.serializer.IJsonBackedObject;
+import com.microsoft.graph.serializer.ISerializer;
+import com.microsoft.graph.serializer.AdditionalDataManager;
+<# if (ShouldIncludeCollectionTypeReference(c)) { #>
+import com.microsoft.graph.models.<#=OdcmMethodReturnNamespaceSection(c as OdcmMethod)#>.<#=OdcmMethodReturnType(c as OdcmMethod)#>;
+<# } #>
 
 <#=CreateClassDef(TypeCollectionResponse(c), null, "IJsonBackedObject")#>
 

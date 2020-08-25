@@ -7,6 +7,11 @@
 <#=CreatePackageDef(host)#>
 
 import com.google.gson.JsonObject;
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequestBuilder(c)#>;
+<# if (ShouldIncludeCollectionTypeReference(c)) { #>
+import com.microsoft.graph.models.extensions.<#=TargetCollectionType(c)#>;
+<# } #>
+import com.microsoft.graph.http.IBaseCollectionPage;
 
 <#=CreateInterfaceDef(ITypeCollectionPage(c), "IBaseCollectionPage" + CollectionPageGeneric(c))#>
 }

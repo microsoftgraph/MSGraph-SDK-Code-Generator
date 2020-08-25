@@ -5,7 +5,14 @@
 <#host.TemplateName = TypeBody(c);#>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDefinition(host)#>
-import com.microsoft.graph.models.generated.*;
+<#
+var parameterList = MethodParametersImports(c.AsOdcmMethod());
+if (parameterList != "") {
+#>
+<#=parameterList#>
+<#
+}
+#>
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.JsonObject;
