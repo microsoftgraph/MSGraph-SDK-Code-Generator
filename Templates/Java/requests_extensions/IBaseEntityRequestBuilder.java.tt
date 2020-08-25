@@ -46,7 +46,7 @@ import java.util.EnumSet;
 <#
 if (c.AsOdcmClass() != null)
 {
-    foreach(var prop in c.AsOdcmClass().NavigationProperties())
+    foreach(var prop in c.AsOdcmClass().NavigationProperties(true))
     {
         var propName = prop.Name.ToUpperFirstChar();
 		var sanitizedName = prop.Name.SanitizePropertyName();
@@ -140,7 +140,7 @@ if (c.AsOdcmClass() != null)
 		var c = host.CurrentType;
 		if (c.AsOdcmClass() != null)
 		{
-			foreach(var prop in c.AsOdcmClass().NavigationProperties())
+			foreach(var prop in c.AsOdcmClass().NavigationProperties(true))
 			{
 				if (prop.IsCollection()) {
 					

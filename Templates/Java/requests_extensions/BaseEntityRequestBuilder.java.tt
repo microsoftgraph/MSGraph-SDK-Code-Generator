@@ -39,7 +39,7 @@ import java.util.EnumSet;
      * @return the <#=ITypeRequest(c)#> instance
      */
     public <#=ITypeRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
-        return new <#=TypeRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
+        return new <#=host.CurrentModel.NamespaceName()#>.<#=getPrefixForRequests(TypeRequest(c))#>.<#=TypeRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
     }
 
 <#
@@ -59,7 +59,7 @@ import java.util.EnumSet;
 <#
 if (c.AsOdcmClass() != null)
 {
-    foreach(var prop in c.AsOdcmClass().NavigationProperties())
+    foreach(var prop in c.AsOdcmClass().NavigationProperties(true))
     {
         var propName = prop.Name.ToUpperFirstChar();
 		var sanitizedProperty = propName.SanitizePropertyName().ToLowerFirstChar();
