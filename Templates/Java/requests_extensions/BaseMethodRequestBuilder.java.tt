@@ -11,11 +11,12 @@ import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.options.Option;
 import com.microsoft.graph.options.FunctionOption;
 import com.google.gson.JsonElement;
+import com.microsoft.graph.core.<#=RequestBuilderSuperClass(c) #>;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
 <#=CreateClassDef(TypeRequestBuilder(c), RequestBuilderSuperClass(c), ITypeRequestBuilder(c))#>
 
-<# foreach (var method in c.AsOdcmMethod().WithOverloads()) { #>
+<# foreach (var method in c.AsOdcmMethod().WithDistinctOverloads()) { #>
     /**
      * The request builder for this <#=TypeName(c)#>
      *
