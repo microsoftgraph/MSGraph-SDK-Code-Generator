@@ -4,6 +4,8 @@
 <#@ output extension="\\" #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
+import com.microsoft.graph.requests.extensions.*;
+import com.microsoft.graph.core.IBaseClient;
 
 <#=CreateInterfaceDef(IBaseClientType(c), "IBaseClient")#>
 <#
