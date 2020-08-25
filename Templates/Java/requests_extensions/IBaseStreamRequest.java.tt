@@ -4,9 +4,17 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = ITypeStreamRequest(c);#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=CreatePackageDefForBaseEntityRequestBuilder(host)#>
+import com.microsoft.graph.core.IBaseClient;
+import com.microsoft.graph.http.BaseRequestBuilder;
+import com.microsoft.graph.options.Option;
+import com.microsoft.graph.http.IHttpStreamRequest;
+import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.models.extensions.<#=ClassTypeName(c)#>;
+import java.util.EnumSet;
 
-import java.io.*;
+import java.io.InputStream;
 
 <#=CreateInterfaceDef(ITypeStreamRequest(c), "IHttpStreamRequest")#>
 
