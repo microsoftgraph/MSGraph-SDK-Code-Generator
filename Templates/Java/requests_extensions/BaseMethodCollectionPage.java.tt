@@ -19,8 +19,17 @@
 	}
 #>
 
+import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequestBuilder(c)#>;
+import com.microsoft.graph.requests.extensions.<#=TypeCollectionPage(c)#>;
+import com.microsoft.graph.requests.extensions.<#=TypeCollectionResponse(c)#>;
+<# if (ShouldIncludeCollectionTypeReference(c)) { #>
+import com.microsoft.graph.models.<#=OdcmMethodReturnNamespaceSection(c as OdcmMethod)#>.<#=OdcmMethodReturnType(c as OdcmMethod)#>;
+<# } #>
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.*;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
+import com.microsoft.graph.http.IBaseCollectionPage;
+import com.microsoft.graph.http.BaseCollectionPage;
 
 <#=CreateClassDef(TypeCollectionPage(c), "BaseCollectionPage" + CollectionPageGeneric(c), ITypeCollectionPage(c))#>
 
@@ -33,7 +42,7 @@ import com.google.gson.annotations.*;
 
 <# } #>
     /**
-     * A collection page for <#=TypeName(c)#>.
+     * A collection page for <#=OdcmMethodReturnType(c as OdcmMethod)#>.
      *
      * @param response The serialized <#=TypeCollectionResponse(c)#> from the service
      * @param builder The request builder for the next collection page
