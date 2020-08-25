@@ -372,6 +372,28 @@
         return typeString;
     }
 
+    public string CreatePackageDefForBaseEntityRequest(CustomT4Host host)
+	{
+		var sb = new StringBuilder();
+		sb.Append(CreatePackageDefinition(host));
+		var importFormat = "import {0}.{1}.{2};\n";
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						ITypeRequest(host.CurrentType));
+
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"requests.extensions",
+						TypeRequest(host.CurrentType));
+
+		sb.AppendFormat(importFormat,
+						host.CurrentModel.NamespaceName(),
+						"models.extensions",
+						TypeName(host.CurrentType));
+		return sb.ToString();
+	}
+
     public string CreatePackageDefForBaseEntityRequestBuilder(CustomT4Host host)
 	{
 		var sb = new StringBuilder();
@@ -382,11 +404,6 @@
 						host.CurrentModel.NamespaceName(),
 						"requests.extensions",
 						ITypeRequest(host.CurrentType));
-		sb.Append("\n");
-		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
-						"requests.extensions",
-						TypeRequest(host.CurrentType));
 		sb.Append("\n");
 		var c = host.CurrentType;
 		if (c.AsOdcmClass() != null)
@@ -529,6 +546,27 @@
         }
         return parameterSignatureBuilder.ToString();
 	}
+
+    public string MethodParametersImports(OdcmMethod method) {
+        var parameterSignatureBuilder = new StringBuilder();
+        foreach (var p in method.Parameters)
+        {
+            if(!(p.Type is OdcmPrimitiveType)) {
+                var typeName = ParamType(p);
+                if(typeName.Contains("<")) {
+                    typeName = typeName.Substring(typeName.IndexOf("<")+1).TrimEnd('>');
+                }
+                if(typeName.Contains(".")) {
+                    parameterSignatureBuilder.AppendFormat("import {0};\n", typeName);
+                } else {
+                    var namespacePart = ((p.Type is OdcmEnum) || (p.Type is OdcmComplexClass) || (p.Type is OdcmProjection) || (p.Type is OdcmEntityClass)) ? "models" : "requests";
+                    var namespaceEnd = (p.Type is OdcmEnum) ? "generated" : "extensions";
+                    parameterSignatureBuilder.AppendFormat("import com.microsoft.graph.{0}.{1}.{2};\r\n", namespacePart, namespaceEnd, typeName);
+                }
+            }
+        }
+        return parameterSignatureBuilder.ToString();
+    }
     
     public string MethodParametersSignature(OdcmMethod method) {
         var parameterSignatureBuilder = new StringBuilder();
@@ -561,8 +599,7 @@
         var pageValuesBuilder = new StringBuilder();
         foreach (var param in c.AsOdcmMethod().Parameters)
         {
-            var paramName = param.Name.ToLowerFirstChar();
-            pageValuesBuilder.AppendFormat(", /* {0} */ null", paramName);
+            pageValuesBuilder.AppendFormat(", ({0}) null", ParamType(param));
         }
         return pageValuesBuilder.ToString();
     }
@@ -618,13 +655,25 @@
         return method.ReturnType is OdcmPrimitiveType
             ? method.ReturnType.GetTypeString() : method.ReturnType.Name.ToCheckedCase();
     }
+    public string OdcmMethodReturnNamespaceSection(OdcmMethod method) {
+        return method.ReturnType is OdcmEnum
+            ? "generated" : "extensions";
+    }
+
+    public bool ShouldIncludeCollectionTypeReference(OdcmObject c) {
+        return !(c is OdcmMethod && (c as OdcmMethod).ReturnType is OdcmPrimitiveType);
+    }
+
+    public string TargetCollectionType(OdcmObject c) {
+        if (c is OdcmMethod) {
+            return OdcmMethodReturnType(c as OdcmMethod);
+        } else {
+            return TypeName(c);
+        }
+    }
 
     public string CollectionPageGeneric(OdcmObject c) {
-        if (c is OdcmMethod) {
-            string returnType = OdcmMethodReturnType(c as OdcmMethod);
-            return "<" + returnType + ", " + ITypeCollectionRequestBuilder(c) + ">";
-        }
-        return "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
+        return "<" + TargetCollectionType(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
     }
 
     public string CollectionPageWithReferencesGeneric(OdcmObject c) {
@@ -679,36 +728,28 @@
 		return "requests.extensions";
 	}
 	
-	//Get package prefix using OdcmProperty for model classes
-	public string getPackagePrefix(OdcmProperty property)
+    public string getPackagePrefix(OdcmObject obj)
 	{
-		var propertyType = property.GetTypeString();
-	
-		if(property.Type is OdcmEnum)
-			return "models.generated";
-		
-		return getPrefixForModels(propertyType);	
-	}
-
-	//Get package prefix using OdcmProperty for model classes
-	public string getPackagePrefix(OdcmParameter property)
-	{
-		var propertyType = property.GetTypeString();
-	
-		if(property.Type is OdcmEnum)
-			return "models.generated";
-		
-		return getPrefixForModels(propertyType);	
+        if(obj is OdcmEnum) {
+		    return "models.generated";
+        } else if(obj is OdcmType) {
+		    return getPrefixForModels((obj as OdcmType).GetTypeString());
+        } else if(obj is OdcmParameter) {
+		    return getPackagePrefix((obj as OdcmParameter).Type);
+        } else if(obj is OdcmProperty) {
+		    return getPackagePrefix((obj as OdcmProperty).Type);
+        } else {
+            throw new ArgumentException("obj");
+        }
 	}
 
 	public string CreatePackageDefinition(CustomT4Host host)
 	{
 		var sb = new StringBuilder();
-		var packageFormat = @"package {0}.{1};";
+		var packageFormat = "package {0}.{1};\n";
 		sb.AppendFormat(packageFormat,
 						host.CurrentModel.NamespaceName(),
 						host.TemplateInfo.OutputParentDirectory.Replace("_", "."));
-		sb.Append("\n");
 		return sb.ToString();
 	}
 
@@ -729,23 +770,21 @@
 	{
 		var sb = new StringBuilder();
 		sb.Append(CreatePackageDefinition(host));
-		var importFormat = @"import {0}.{1}.{2};";
+		var importFormat = "import {0}.{1}.{2};\n";
 
 		var returnType = ReturnType(host.CurrentType);
 		if(returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
 		{
 			sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"models.extensions",
+						(host.CurrentType.AsOdcmMethod().ReturnType is OdcmEnum ? "models.generated" : "models.extensions"),
 						ReturnType(host.CurrentType));
-			sb.Append("\n");
 		}
 
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
 						"requests.extensions",
 						ITypeRequest(host.CurrentType));
-		sb.Append("\n");
 		return sb.ToString();
 	}
 
@@ -851,13 +890,12 @@
 	{
 		var sb = new StringBuilder();
 		sb.Append(CreatePackageDefinition(host));
-		var importFormat = @"import {0}.{1}.{2};";
+		var importFormat = "import {0}.{1}.{2};\n";
 
 		sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
-						"models.extensions",
+						(host.CurrentType.AsOdcmMethod().ReturnType is OdcmEnum ? "models.generated" : "models.extensions"),
 						TypeBody(host.CurrentType));
-		sb.Append("\n");
 		var returnType = ReturnType(host.CurrentType);
 		if(returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
 		{
@@ -865,7 +903,6 @@
 						host.CurrentModel.NamespaceName(),
 						"models.extensions",
 						ReturnType(host.CurrentType));
-			sb.Append("\n");
 		}
 
 		if(host.CurrentType.AsOdcmMethod().IsCollection)
@@ -874,13 +911,11 @@
 						host.CurrentModel.NamespaceName(),
 						"requests.extensions",
 						ITypeCollectionRequest(host.CurrentType));
-			sb.Append("\n");
 
 			sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
 						"requests.extensions",
 						TypeCollectionRequest(host.CurrentType));
-			sb.Append("\n");
 		}
 		else
 		{
@@ -888,13 +923,11 @@
 						host.CurrentModel.NamespaceName(),
 						"requests.extensions",
 						ITypeRequest(host.CurrentType));
-			sb.Append("\n");
 
 			sb.AppendFormat(importFormat,
 						host.CurrentModel.NamespaceName(),
 						"requests.extensions",
 						TypeRequest(host.CurrentType));
-			sb.Append("\n");
 		}
 		return sb.ToString();
 	}
@@ -949,11 +982,9 @@
 						host.TemplateInfo.OutputParentDirectory.Replace("_", "."));
 		sb.Append("\n");
 
-		 sb.AppendFormat(@"import {0}.concurrency.*;
-import {0}.core.*;
-import {0}.http.*;
-import {0}.options.*;
-import {0}.serializer.*;
+		 sb.AppendFormat(@"import {0}.serializer.ISerializer;
+import {0}.serializer.IJsonBackedObject;
+import {0}.serializer.AdditionalDataManager;
 import java.util.Arrays;
 import java.util.EnumSet;", host.CurrentModel.NamespaceName());
 
@@ -1064,15 +1095,8 @@ import java.util.EnumSet;", host.CurrentModel.NamespaceName());
     {
         var format = @"package {0}.{1};
 
-import {0}.concurrency.*;
-import {0}.core.*;
-import {0}.models.extensions.*;
-import {0}.models.generated.*;{2}
-import {0}.http.*;
-import {0}.requests.extensions.*;
-import {0}.options.*;
-import {0}.serializer.*;
-
+import com.microsoft.graph.http.IRequestBuilder;
+import com.microsoft.graph.concurrency.ICallback;
 import java.util.Arrays;
 import java.util.EnumSet;";
 

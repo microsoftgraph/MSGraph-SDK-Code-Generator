@@ -229,29 +229,4 @@ classDeclaration += TypeName(c);
 ";
         return string.Format(formatString, TypeName(odcmObject));
     }
-
-	public string CreatePackageDefForBaseEntityRequest(CustomT4Host host)
-	{
-		var sb = new StringBuilder();
-		sb.Append(CreatePackageDefinition(host));
-		var importFormat = @"import {0}.{1}.{2};";
-		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
-						"requests.extensions",
-						ITypeRequest(host.CurrentType));
-		sb.Append("\n");
-
-		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
-						"requests.extensions",
-						TypeRequest(host.CurrentType));
-		sb.Append("\n");
-
-		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
-						"models.extensions",
-						TypeName(host.CurrentType.AsOdcmClass()));
-		sb.Append("\n");
-		return sb.ToString();
-	}
  #>
