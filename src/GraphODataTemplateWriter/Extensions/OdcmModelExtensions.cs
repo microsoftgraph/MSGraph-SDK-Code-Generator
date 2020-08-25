@@ -327,9 +327,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             }
         }
 
-        public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
+        public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass, bool includeBaseProperties = false)
         {
-            return odcmClass.Properties.Where(prop => prop.IsNavigation());
+            return odcmClass.Properties.Where(prop => prop.IsNavigation())
+                                        .Union(includeBaseProperties && odcmClass.Base != null ?
+                                                odcmClass.Base.Properties.Where(x => x.IsNavigation()) :
+                                                new List<OdcmProperty>());
         }
 
         public static bool IsNavigation(this OdcmProperty property)
@@ -488,14 +491,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// Returns a List containing the supplied class' methods plus their overloads
         public static List<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
         {
-            var allMethods = new List<OdcmMethod>();
-            foreach (var method in odcmClass.Methods)
-            {
-                allMethods.AddRange(method.WithOverloads());
-            }
-            return allMethods;
+            return odcmClass.Methods.SelectMany(x => x.WithOverloads()).ToList();
         }
-
     }
 
 }
