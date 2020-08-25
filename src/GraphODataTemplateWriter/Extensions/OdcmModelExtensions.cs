@@ -470,10 +470,19 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// Returns a List containing the supplied method plus its overloads
         public static List<OdcmMethod> WithOverloads(this OdcmMethod odcmMethod)
         {
-            var methods = new List<OdcmMethod>();
-            methods.Add(odcmMethod);
+            var methods = new List<OdcmMethod>
+            {
+                odcmMethod
+            };
             methods.AddRange(odcmMethod.Overloads);
             return methods;
+        }
+        private static readonly OdcmMethodEqualityComparer methodComparer = new OdcmMethodEqualityComparer();
+        public static List<OdcmMethod> WithDistinctOverloads(this OdcmMethod odcmMethod)
+        {
+            var methods = odcmMethod.WithOverloads();
+
+            return methods.Distinct(methodComparer).ToList();
         }
 
         /// Returns a List containing the supplied class' methods plus their overloads
