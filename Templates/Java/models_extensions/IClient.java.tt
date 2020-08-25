@@ -6,6 +6,8 @@
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
 import com.google.gson.JsonObject;
+import com.microsoft.graph.core.IBaseClient;
+import com.microsoft.graph.requests.extensions.CustomRequestBuilder;
 
 <#=CreateInterfaceDef(IClientType(c), IBaseClientType(c))#>
 <# if(host.TemplateName.Equals("IGraphServiceClient")){ #>

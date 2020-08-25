@@ -4,6 +4,10 @@
 <#@ output extension="\\" #>
 <#=writer.WriteHeader()#>
 <#=CreatePackageDef(host)#>
+import com.microsoft.graph.core.IBaseClient;
+import com.microsoft.graph.models.extensions.IGraphServiceClient;
+import com.microsoft.graph.models.extensions.<#=IBaseClientType(c)#>;
+import com.microsoft.graph.core.BaseClient;
 
 <#=CreateClassDef(BaseClientType(c), "BaseClient", IBaseClientType(c))#>
 
@@ -43,7 +47,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @return the request builder for the collection of <#=propertyName#> objects
      */
     public <#=ITypeCollectionRequestBuilder(prop)#> <#=prop.Name#>() {
-        return new <#=TypeCollectionRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);
+        return new <#=TypeCollectionRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
     }
 
     /**
@@ -53,7 +57,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @return the request builder for the <#=propertyName#> object
      */
     public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>(final String id) {
-        return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>/" + id, (<#=IClientType(c)#>)this, null);
+        return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>/" + id, this, null);
     }
 <#
     }
@@ -67,7 +71,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @return the <#=prop.Projection.Type.GetTypeString()#>
      */
     public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>() {
-        return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", (<#=IClientType(c)#>)this, null);
+        return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
     }
 <#
     }
