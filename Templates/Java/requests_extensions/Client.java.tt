@@ -7,7 +7,14 @@
 
 import <#=host.CurrentModel.NamespaceName()#>.authentication.*;
 import <#=host.CurrentModel.NamespaceName()#>.logger.*;
+import com.microsoft.graph.core.ClientException;
 import com.google.gson.JsonObject;
+import com.microsoft.graph.concurrency.IExecutors;
+import com.microsoft.graph.models.extensions.IGraphServiceClient;
+import com.microsoft.graph.http.IHttpProvider;
+import com.microsoft.graph.serializer.ISerializer;
+import com.microsoft.graph.core.IClientConfig;
+import com.microsoft.graph.core.DefaultClientConfig;
 
 <#=CreateClassDef(ClientType(c), BaseClientType(c), IClientType(c))#>
 
@@ -27,7 +34,7 @@ import com.google.gson.JsonObject;
      * @return the instance of this builder
      */
     public <T> CustomRequestBuilder<T> customRequest(final String url, final Class<T> responseType) {
-        return new CustomRequestBuilder<T>(getServiceRoot() + url, (IGraphServiceClient) this, null, responseType);
+        return new CustomRequestBuilder<T>(getServiceRoot() + url, this, null, responseType);
     }
 
     /**
@@ -38,7 +45,7 @@ import com.google.gson.JsonObject;
      * @return the instance of this builder
      */
     public CustomRequestBuilder<JsonObject> customRequest(final String url) {
-        return new CustomRequestBuilder<JsonObject>(getServiceRoot() + url, (IGraphServiceClient) this, null,
+        return new CustomRequestBuilder<JsonObject>(getServiceRoot() + url, this, null,
                 JsonObject.class);
     }
 
