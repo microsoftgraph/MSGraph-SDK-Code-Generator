@@ -4,8 +4,7 @@
 <#@ output extension="\\" #>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.models.extensions.IGraphServiceClient;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.models.extensions.<#=c.IBaseClientType(host)#>;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.BaseClient;
 
 <#=TypeHelperJava.CreateClassDef(c.BaseClientType(host), "BaseClient", c.IBaseClientType(host))#>
