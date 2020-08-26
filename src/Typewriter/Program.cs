@@ -11,11 +11,11 @@ using Vipr.Reader.OData.v4;
 
 namespace Typewriter
 {
-    class Program
+    public class Program
     {
         internal static Logger Logger => LogManager.GetLogger("Typewriter");
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(opts => GenerateSDK(opts))

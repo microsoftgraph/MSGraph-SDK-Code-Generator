@@ -56,10 +56,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeHelpers\Android\CodeWriterAndroid.cs" />
-    <Compile Include="CodeHelpers\Android\CustomImports.cs" />
-    <Compile Include="CodeHelpers\Android\CustomMethods.cs" />
-    <Compile Include="CodeHelpers\Android\CustomOverwrites.cs" />
     <Compile Include="CodeHelpers\CodeWriterBase.cs" />
     <Compile Include="CodeHelpers\CSharp\CodeWriterCSharp.cs" />
     <Compile Include="CodeHelpers\CSharp\TypeHelperCSharp.cs" />
@@ -67,6 +63,8 @@
     <Compile Include="CodeHelpers\Java\CustomOverwrites.cs" />
     <Compile Include="CodeHelpers\Java\TypeHelperJava.cs" />
     <Compile Include="CodeHelpers\TypeScript\CodeWriterTypeScript.cs" />
+    <Compile Include="CodeHelpers\TypeScript\TypeScriptNamespace.cs" />
+    <Compile Include="CodeHelpers\TypeScript\TypeScriptNamespaces.cs" />
     <Compile Include="CodeHelpers\TypeScript\TypeHelperTypeScript.cs" />
     <Compile Include="CodeHelpers\GraphEndpointList\CodeWriterGraphEndpointList.cs" />
     <Compile Include="CodeHelpers\GraphEndpointList\TypeHelperGraphEndpointList.cs" />
@@ -80,7 +78,6 @@
     <Compile Include="OdcmParameterCollectionEqualityComparer.cs" />
     <Compile Include="OdcmParameterEqualityComparer.cs" />
     <Compile Include="OdcmTypeEqualityComparer.cs" />
-    <Compile Include="PathWriters\AndroidPathWriter.cs" />
     <Compile Include="PathWriters\CSharpPathWriter.cs" />
     <Compile Include="PathWriters\TypeScriptPathWriter.cs" />
     <Compile Include="PathWriters\GraphEndpointListPathWriter.cs" />
@@ -88,7 +85,6 @@
     <Compile Include="PathWriters\PythonPathWriter.cs" />
     <Compile Include="TemplateProcessor\CustomT4Host.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="CodeHelpers\Android\TypeHelperAndroid.cs" />
     <Compile Include="CodeHelpers\ObjC\TypeHelperObjC.cs" />
     <Compile Include="Extensions\OdcmModelExtensions.cs" />
     <Compile Include="PathWriters\PathWriterBase.cs" />
@@ -121,9 +117,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include=".config\GraphEndpointListSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\AndroidSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include=".config\ObjCSettings.json">

@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="microsoft.graph" Alias="graph" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="entity" Abstract="true">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="id" Unicode="false" Nullable="false" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="testType" BaseType="graph.entity">
+        <Property Name="propertyAlpha" Type="graph.derivedComplexTypeRequest" />
+      </EntityType>
+      <EnumType Name="enum1">
+        <Member Name="value0" Value="0" />
+        <Member Name="value1" Value="1" />
+      </EnumType>
+      <ComplexType Name="emptyBaseComplexTypeRequest" Abstract="true" />
+      <ComplexType Name="derivedComplexTypeRequest" BaseType="graph.emptyBaseComplexTypeRequest">
+        <Property Name="property1" Type="Edm.String" />
+        <Property Name="property2" Type="Edm.String" />
+        <Property Name="enumProperty" Type="graph.enum1" />
+      </ComplexType>
+      <ComplexType Name="responseObject" />
+      <Action Name="query" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.testType" />
+        <Parameter Name="requests" Type="Collection(graph.derivedComplexTypeRequest)" Nullable="false" />
+        <ReturnType Type="Collection(graph.responseObject)" Nullable="false" />
+      </Action>
+      <EntityType Name="entityType2" BaseType="graph.entity" />
+      <EntityType Name="entityType3" BaseType="graph.entity" />
+      <EntityType Name="testEntity" BaseType="graph.entity">
+        <NavigationProperty Name="testNav" Type="graph.testType" />
+        <NavigationProperty Name="testInvalidNav" Type="graph.entityType2" />
+        <NavigationProperty Name="testExplicitNav" Type="graph.entityType3" />
+      </EntityType>
+      <!--Colliding with endpoint in callRecords namespace-->
+      <EntityType Name="endpoint" BaseType="graph.entity">
+        <Property Name="property1" Type="Edm.Int64" />
+      </EntityType>
+      <EntityType Name="singletonEntity1" BaseType="graph.entity">
+        <NavigationProperty Name="testSingleNav" Type="graph.testType" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="singletonEntity2" BaseType="graph.entity">
+        <NavigationProperty Name="testSingleNav2" Type="graph.entityType3" ContainsTarget="true" />
+      </EntityType>
+      <ComplexType Name="recipient">
+        <Property Name="name" Type="Edm.String" />
+        <Property Name="email" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="emptyComplexType" Abstract="true" />
+      <EntityType Name="timeOffRequest" BaseType="graph.entity">
+        <Property Name="name" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="timeOff" BaseType="graph.entity">
+        <Property Name="name" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="schedule" BaseType="graph.entity">
+        <Property Name="enabled" Type="Edm.Boolean" />
+        <NavigationProperty Name="timesOff" Type="Collection(graph.timeOff)" ContainsTarget="true" />
+        <NavigationProperty Name="timeOffRequests" Type="Collection(graph.timeOffRequest)" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="call" BaseType="graph.entity" OpenType="true">
+        <Property Name="subject" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="cloudCommunications" BaseType="graph.entity">
+        <NavigationProperty Name="calls" Type="Collection(graph.call)" ContainsTarget="true" />
+        <NavigationProperty Name="callRecords" Type="Collection(microsoft.graph.callRecords.callRecord)" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="onenotePage" BaseType="graph.entity">
+        <Property Name="content" Type="Edm.Stream" />
+        <NavigationProperty Name="parentNotebook" Type="graph.notebook" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="plannerGroup" BaseType="graph.entity">
+        <NavigationProperty Name="plans" Type="Collection(graph.plannerPlan)" ContainsTarget="true" />
+      </EntityType>
+      <ComplexType Name="identity" OpenType="true">
+        <Property Name="displayName" Type="Edm.String" />
+        <Property Name="id" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="identitySet" OpenType="true">
+        <Property Name="application" Type="graph.identity" />
+        <Property Name="device" Type="graph.identity" />
+        <Property Name="user" Type="graph.identity" />
+      </ComplexType>
+      <Action Name="forward" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.onenotePage" />
+        <Parameter Name="ToRecipients" Type="Collection(graph.recipient)" Nullable="false" />
+        <Parameter Name="Details" Type="Edm.String" Unicode="false" />
+        <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+      </Action>
+      <Action Name="forward" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.entityType3" />
+        <Parameter Name="ToRecipients" Type="Collection(graph.recipient)" Nullable="false" />
+        <Parameter Name="SingleRecipient" Type="graph.recipient" Nullable="false" />
+        <Parameter Name="MultipleSessions" Type="Collection(microsoft.graph.callRecords.session)" Nullable="false" />
+        <Parameter Name="SingleSession" Type="microsoft.graph.callRecords.session" Nullable="false" />
+        <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+      </Action>
+      <Action Name="forward" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.onenotePage" />
+        <Parameter Name="ToRecipients" Type="Collection(graph.recipient)" Nullable="false" />
+        <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+      </Action>
+      <EntityContainer Name="GraphService">
+        <Singleton Name="singletonProperty1" Type="graph.singletonEntity1" />
+        <Singleton Name="singletonProperty2" Type="graph.singletonEntity2" />
+        <Singleton Name="singletonProperty3" Type="microsoft.graph.callRecords.singletonEntity1" />
+        <EntitySet Name="testTypes" EntityType="graph.entityType3" />
+      </EntityContainer>
+      <Annotations Target="graph.onenotePage/content">
+        <Annotation Term="Org.OData.Core.V1.Description" String="The OneNotePage content.&#xD;&#xA;&#xD;&#xA; Test token string" />
+      </Annotations>
+      <Annotations Target="graph.directoryObject" />
+    </Schema>
+    <!--Intentionally made this microsoft.graph so that while compiling the output,
+    we don't rely on parent namespace fallback in resolving types.
+
+    Example: Option is defined in Core library in Microsoft.Graph namespace. The code will still compile
+    if it is using the plain type name (Option) instead of fully qualified name (Microsoft.Graph.Option).
+    But by changing microsoft.graph.callRecords to microsoft.graph.callRecords, we are breaking that fallback,
+    which allows us to find, with the help of compiler, any types that don't use fully qualified names -->
+    <Schema Namespace="microsoft.graph.callRecords" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="singletonEntity1" BaseType="graph.entity">
+        <NavigationProperty Name="testSingleNav" Type="graph.testType" ContainsTarget="true" />
+      </EntityType>
+      <EnumType Name="callType">
+        <Member Name="unknown" Value="0" />
+        <Member Name="groupCall" Value="1" />
+      </EnumType>
+      <EnumType Name="clientPlatform">
+        <Member Name="unknown" Value="0" />
+        <Member Name="windows" Value="1" />
+      </EnumType>
+      <EnumType Name="failureStage">
+        <Member Name="unknown" Value="0" />
+        <Member Name="callSetup" Value="1" />
+      </EnumType>
+      <EnumType Name="mediaStreamDirection">
+        <Member Name="callerToCallee" Value="0" />
+        <Member Name="calleeToCaller" Value="1" />
+      </EnumType>
+      <EnumType Name="networkConnectionType">
+        <Member Name="unknown" Value="0" />
+        <Member Name="wired" Value="1" />
+      </EnumType>
+      <EnumType Name="productFamily">
+        <Member Name="unknown" Value="0" />
+        <Member Name="teams" Value="1" />
+      </EnumType>
+      <EnumType Name="serviceRole">
+        <Member Name="unknown" Value="0" />
+        <Member Name="customBot" Value="1" />
+      </EnumType>
+      <EnumType Name="userFeedbackRating">
+        <Member Name="notRated" Value="0" />
+        <Member Name="bad" Value="1" />
+      </EnumType>
+      <EnumType Name="wifiBand">
+        <Member Name="unknown" Value="0" />
+        <Member Name="frequency24GHz" Value="1" />
+      </EnumType>
+      <EnumType Name="wifiRadioType">
+        <Member Name="unknown" Value="0" />
+        <Member Name="wifi80211a" Value="1" />
+      </EnumType>
+      <EnumType Name="modality">
+        <Member Name="audio" Value="0" />
+        <Member Name="video" Value="1" />
+      </EnumType>
+      <EntityType Name="callRecord" BaseType="graph.entity">
+        <Property Name="version" Type="Edm.Int64" Nullable="false" />
+        <Property Name="type" Type="microsoft.graph.callRecords.callType" Nullable="false" />
+        <Property Name="modalities" Type="Collection(microsoft.graph.callRecords.modality)" Nullable="false" />
+        <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="startDateTime" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="endDateTime" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="organizer" Type="graph.identitySet" />
+        <Property Name="participants" Type="Collection(graph.identitySet)" />
+        <Property Name="joinWebUrl" Type="Edm.String" />
+        <NavigationProperty Name="sessions" Type="Collection(microsoft.graph.callRecords.session)" ContainsTarget="true" />
+        <NavigationProperty Name="recipients" Type="Collection(graph.entityType2)" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="session" BaseType="graph.entity">
+        <Property Name="modalities" Type="Collection(microsoft.graph.callRecords.modality)" Nullable="false" />
+        <Property Name="startDateTime" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="endDateTime" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="caller" Type="microsoft.graph.callRecords.endpoint" />
+        <Property Name="callee" Type="microsoft.graph.callRecords.endpoint" />
+        <Property Name="failureInfo" Type="microsoft.graph.callRecords.failureInfo" />
+        <NavigationProperty Name="segments" Type="Collection(microsoft.graph.callRecords.segment)" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="segment" BaseType="graph.entity">
+        <Property Name="startDateTime" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="endDateTime" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="caller" Type="microsoft.graph.callRecords.endpoint" />
+        <Property Name="callee" Type="microsoft.graph.callRecords.endpoint" />
+        <Property Name="failureInfo" Type="microsoft.graph.callRecords.failureInfo" />
+        <Property Name="media" Type="Collection(microsoft.graph.callRecords.media)" />
+        <NavigationProperty Name="refTypes" Type="Collection(graph.entityType3)" />
+        <NavigationProperty Name="refType" Type="graph.call" /> <!-- No ContainsTarget -->
+        <NavigationProperty Name="sessionRef" Type="microsoft.graph.callRecords.session" /> <!-- No ContainsTarget -->
+        <NavigationProperty Name="photo" Type="microsoft.graph.callRecords.photo" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="option" BaseType="graph.entity" />
+      <EntityType Name="photo" BaseType="graph.entity" HasStream="true">
+        <Property Name="failureInfo" Type="microsoft.graph.callRecords.failureInfo" />
+        <Property Name="option" Type="microsoft.graph.callRecords.option" />
+      </EntityType>
+      <ComplexType Name="endpoint">
+        <Property Name="userAgent" Type="microsoft.graph.callRecords.userAgent" />
+      </ComplexType>
+      <ComplexType Name="userAgent" Abstract="true">
+        <Property Name="headerValue" Type="Edm.String" />
+        <Property Name="applicationVersion" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="failureInfo">
+        <Property Name="stage" Type="microsoft.graph.callRecords.failureStage" Nullable="false" />
+        <Property Name="reason" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="media">
+        <Property Name="label" Type="Edm.String" />
+        <Property Name="callerNetwork" Type="microsoft.graph.callRecords.networkInfo" />
+        <Property Name="callerDevice" Type="microsoft.graph.callRecords.deviceInfo" />
+        <Property Name="streams" Type="Collection(microsoft.graph.callRecords.mediaStream)" />
+      </ComplexType>
+      <ComplexType Name="networkInfo">
+        <Property Name="connectionType" Type="microsoft.graph.callRecords.networkConnectionType" Nullable="false" />
+        <Property Name="wifiBand" Type="microsoft.graph.callRecords.wifiBand" Nullable="false" />
+        <Property Name="basicServiceSetIdentifier" Type="Edm.String" />
+        <Property Name="wifiRadioType" Type="microsoft.graph.callRecords.wifiRadioType" Nullable="false" />
+        <Property Name="wifiSignalStrength" Type="Edm.Int32" />
+        <Property Name="bandwidthLowEventRatio" Type="Edm.Single" />
+      </ComplexType>
+      <ComplexType Name="deviceInfo">
+        <Property Name="captureDeviceName" Type="Edm.String" />
+        <Property Name="sentSignalLevel" Type="Edm.Int32" />
+        <Property Name="speakerGlitchRate" Type="Edm.Single" />
+      </ComplexType>
+      <ComplexType Name="mediaStream">
+        <Property Name="streamId" Type="Edm.String" />
+        <Property Name="startDateTime" Type="Edm.DateTimeOffset" />
+        <Property Name="streamDirection" Type="microsoft.graph.callRecords.mediaStreamDirection" Nullable="false" />
+        <Property Name="packetUtilization" Type="Edm.Int64" />
+        <Property Name="wasMediaBypassed" Type="Edm.Boolean" />
+        <Property Name="lowVideoProcessingCapabilityRatio" Type="Edm.Single" />
+        <Property Name="averageAudioNetworkJitter" Type="Edm.Duration" />
+      </ComplexType>
+      <ComplexType Name="participantEndpoint" BaseType="microsoft.graph.callRecords.endpoint">
+        <Property Name="identity" Type="graph.identitySet" />
+        <Property Name="feedback" Type="microsoft.graph.callRecords.userFeedback" />
+      </ComplexType>
+      <ComplexType Name="userFeedback">
+        <Property Name="text" Type="Edm.String" />
+        <Property Name="rating" Type="microsoft.graph.callRecords.userFeedbackRating" Nullable="false" />
+        <Property Name="tokens" Type="microsoft.graph.callRecords.feedbackTokenSet" />
+      </ComplexType>
+      <ComplexType Name="feedbackTokenSet" OpenType="true" />
+      <ComplexType Name="serviceEndpoint" BaseType="microsoft.graph.callRecords.endpoint" />
+      <ComplexType Name="clientUserAgent" BaseType="microsoft.graph.callRecords.userAgent">
+        <Property Name="platform" Type="microsoft.graph.callRecords.clientPlatform" Nullable="false" />
+        <Property Name="productFamily" Type="microsoft.graph.callRecords.productFamily" Nullable="false" />
+      </ComplexType>
+      <ComplexType Name="serviceUserAgent" BaseType="microsoft.graph.callRecords.userAgent">
+        <Property Name="role" Type="microsoft.graph.callRecords.serviceRole" Nullable="false" />
+      </ComplexType>
+      <!--action name colliding with actions in microsoft.graph namespace-->
+      <Action Name="forward" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.callRecords.segment" />
+        <Parameter Name="ToRecipients" Type="Collection(graph.recipient)" Nullable="false" />
+        <Parameter Name="SingleRecipient" Type="graph.recipient" Nullable="false" />
+        <Parameter Name="MultipleSessions" Type="Collection(microsoft.graph.callRecords.session)" Nullable="false" />
+        <Parameter Name="SingleSession" Type="microsoft.graph.callRecords.session" Nullable="false" />
+        <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+      </Action>
+      <Action Name="testAction" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.callRecords.segment" />
+        <Parameter Name="value" Type="graph.identitySet" />
+        <ReturnType Type="Collection(microsoft.graph.callRecords.session)" />
+      </Action>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

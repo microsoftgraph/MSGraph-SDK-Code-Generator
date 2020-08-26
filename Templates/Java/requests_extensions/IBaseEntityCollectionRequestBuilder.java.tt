@@ -2,15 +2,15 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeCollectionRequestBuilder(c);#>
+<#host.TemplateName = c.ITypeCollectionRequestBuilder();#>
 <#
-    var genericType = "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
+    var genericType = "<" + c.TypeName() + ", " + c.ITypeCollectionRequestBuilder() + ">";
 #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-import com.microsoft.graph.requests.extensions.<#=ITypeRequestBuilder(c)#>;
-import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequest(c)#>;
+import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeRequestBuilder()#>;
+import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequest()#>;
 <#
 var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
 if (currentTypeProjection != null) {
@@ -18,39 +18,31 @@ if (currentTypeProjection != null) {
         if (!method.IsBoundToCollection) {
             continue;
         }
-
-        var parameterList = MethodParametersImports(method);
-        if (parameterList != "") {
-#>
-<#=parameterList#>
-<#
-}
         if (method.IsCollection) {
 #>
-import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequestBuilder(method)#>;
+import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.ITypeCollectionRequestBuilder()#>;
 <#
         } else {
 #>
-import com.microsoft.graph.requests.extensions.<#=ITypeRequestBuilder(method)#>;
+import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.ITypeRequestBuilder()#>;
 <#
         }
     }
 }
 #>
-<# if (ShouldIncludeCollectionTypeReference(c)) { #>
-import com.microsoft.graph.models.extensions.<#=TargetCollectionType(c)#>;
+<# if (c.ShouldIncludeCollectionTypeReference()) { #>
+import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TargetCollectionType()#>;
 <# } #>
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.http.IBaseCollectionPage;
-import com.microsoft.graph.concurrency.ICallback;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IBaseCollectionPage;
 
-<#=CreateInterfaceDef(ITypeCollectionRequestBuilder(c), "IRequestBuilder")#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionRequestBuilder(), "IRequestBuilder")#>
 
-    <#=ITypeCollectionRequest(c)#> buildRequest();
+    <#=c.ITypeCollectionRequest()#> buildRequest();
 
-    <#=ITypeCollectionRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
 
-    <#=ITypeRequestBuilder(c)#> byId(final String id);
+    <#=c.ITypeRequestBuilder()#> byId(final String id);
 
 <#
 if (currentTypeProjection != null)
@@ -61,7 +53,7 @@ if (currentTypeProjection != null)
             continue;
         }
 
-        var parameterList = MethodParametersSignature(method);
+        var parameterList = method.MethodParametersSignature();
         if (parameterList != "") {
             parameterList = parameterList.Remove(0, 2);
         }
@@ -69,16 +61,16 @@ if (currentTypeProjection != null)
         if (method.IsCollection) {
 #>
 
-    <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>);
+    <#=method.ITypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>);
 <#
 	// Add a method to support delta query by string (opaque deltaLink)
-	if (MethodName(method) == "Delta") {
+	if (method.MethodName() == "Delta") {
 #>
 
-	<#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(final String deltaLink);
+	<#=method.ITypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(final String deltaLink);
 <# } #>
 <#  } else { #>
-    <#=ITypeRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>);
+    <#=method.ITypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>);
 <#
         }
     }

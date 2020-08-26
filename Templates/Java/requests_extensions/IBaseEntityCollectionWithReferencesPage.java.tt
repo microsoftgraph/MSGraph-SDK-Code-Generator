@@ -2,14 +2,14 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeCollectionWithReferencesPage(c);#>
+<#host.TemplateName = c.ITypeCollectionWithReferencesPage();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
 import com.google.gson.JsonObject;
-import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
-import com.microsoft.graph.http.IBaseCollectionPage;
-import com.microsoft.graph.concurrency.ICallback;
+import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IBaseCollectionPage;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
 
-<#=CreateInterfaceDef(ITypeCollectionWithReferencesPage(c), "IBaseCollectionPage" + CollectionPageWithReferencesGeneric(c))#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesPage(), "IBaseCollectionPage" + c.CollectionPageWithReferencesGeneric())#>
 }

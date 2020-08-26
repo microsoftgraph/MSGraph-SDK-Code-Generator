@@ -21,10 +21,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
         {
         }
 
-        public string GetPrefix()
-        {
-            return TypeHelperObjC.Prefix;
-        }
+        public string GetPrefix() => ConfigurationService.Settings.NamespacePrefix;
+
+        public string GetNamespacePrefixForType(OdcmType type) => TypeHelperObjC.GetNamespacePrefixForType(type);
 
         public string GetStaticCodePrefix()
         {
@@ -56,7 +55,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             else
             {
                 baseEntity = entityType.Base == null ? "NSObject"
-                                           : this.GetPrefix() + entityType.Base.Name.Substring(entityType.Base.Name.LastIndexOf(".") + 1);
+                                           : GetNamespacePrefixForType(entityType.Base) + entityType.Base.Name.Substring(entityType.Base.Name.LastIndexOf(".") + 1);
             }
             var interfaceLineBuilder = new StringBuilder();
             // NSObject lives in Foundation/Foundation.h
@@ -64,7 +63,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.ObjC
             interfaceLineBuilder.AppendLine(baseImport);
 
             interfaceLineBuilder.AppendLine().AppendLine().AppendLine(this.GetHeaderDoc(entityType.Name))
-            .AppendFormat("@interface {0}{1} : {2}", this.GetPrefix(), entityType.Name.ToUpperFirstChar(), baseEntity);
+            .AppendFormat("@interface {0}{1} : {2}", GetNamespacePrefixForType(entityType), entityType.Name.ToUpperFirstChar(), baseEntity);
 
             return interfaceLineBuilder.ToString();
         }

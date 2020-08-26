@@ -33,7 +33,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     <#
     foreach (var param in method.Parameters)
     {
-        var paramTypeString = param.Type.GetTypeString();
+        var paramTypeString = param.Type.GetTypeString(method.Namespace.GetNamespaceName());
         
         // Adds support for classes ending in "Request" that have been dismabiguated.
         if (paramTypeString.EndsWith("Request"))

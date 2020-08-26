@@ -3,8 +3,12 @@
 <#@ include file="CollectionRequest.Base.template.tt"#>
 <#
 var prop = host.CurrentType.AsOdcmProperty();
-var innerEntity = prop.Projection.Type;
-var innerEntityType = innerEntity.Name.ToCheckedCase();
+var @namespace = this.GetNamespaceName(prop.Class.AsOdcmClass());
+
+var queryOptionTypeName = @namespace.GetCoreLibraryType("QueryOption");
+var expressionExtractHelperTypeName = @namespace.GetCoreLibraryType("ExpressionExtractHelper");
+
+var innerEntityType = prop.GetTypeString(@namespace);
 if (innerEntityType.EndsWith("Request"))
 {
 	innerEntityType = String.Concat(innerEntityType, "Object");
@@ -15,7 +19,7 @@ var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.To
 var features = host.CurrentType.GetFeatures();
 #>
 
-namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;
@@ -26,7 +30,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
     <#=this.GetCollectionClassDefinition(prop)#>
     {
         <#=GetCollectionRequestConstructor(prop)#>
-        <#=GetPostAsyncMethod(prop)#>
+        <#=GetPostAsyncMethod(prop, @namespace)#>
         /// <summary>
         /// Gets the collection page.
         /// </summary>
@@ -79,7 +83,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> Expand(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$expand", value));
             return this;
         }
 
@@ -95,14 +99,14 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
                 throw new ArgumentNullException(nameof(expandExpression));
             }
             string error;
-            string value = ExpressionExtractHelper.ExtractMembers(expandExpression, out error);
+            string value = <#=expressionExtractHelperTypeName#>.ExtractMembers(expandExpression, out error);
             if (value == null)
             {
                 throw new ArgumentException(error, nameof(expandExpression));
             }
             else
             {
-                this.QueryOptions.Add(new QueryOption("$expand", value));
+                this.QueryOptions.Add(new <#=queryOptionTypeName#>("$expand", value));
             }
             return this;
         }
@@ -116,7 +120,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> Select(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$select", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$select", value));
             return this;
         }
 
@@ -132,14 +136,14 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
                 throw new ArgumentNullException(nameof(selectExpression));
             }
             string error;
-            string value = ExpressionExtractHelper.ExtractMembers(selectExpression, out error);
+            string value = <#=expressionExtractHelperTypeName#>.ExtractMembers(selectExpression, out error);
             if (value == null)
             {
                 throw new ArgumentException(error, nameof(selectExpression));
             }
             else
             {
-                this.QueryOptions.Add(new QueryOption("$select", value));
+                this.QueryOptions.Add(new <#=queryOptionTypeName#>("$select", value));
             }
             return this;
         }
@@ -153,7 +157,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> Top(int value)
         {
-            this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$top", value.ToString()));
             return this;
         }
 
@@ -166,7 +170,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> Filter(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$filter", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$filter", value));
             return this;
         }
 
@@ -179,7 +183,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> Skip(int value)
         {
-            this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$skip", value.ToString()));
             return this;
         }
 
@@ -192,7 +196,7 @@ namespace <#=this.GetNamespaceName(prop.Class.AsOdcmClass())#>
         /// <returns>The request object to send.</returns>
         public I<#=collectionRequest#> OrderBy(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$orderby", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$orderby", value));
             return this;
         }
 <# } #>

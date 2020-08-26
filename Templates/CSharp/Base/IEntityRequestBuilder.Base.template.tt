@@ -18,7 +18,7 @@ public string GetEntityRequestMethod(OdcmClass odcmClass)
 
 public string GetEntityRequestMethodWithOptions(OdcmClass odcmClass)
 {
-    return this.GetRequestMethodWithOptions(this.GetEntityRequestName(odcmClass), odcmClass.Base != null);
+    return this.GetRequestMethodWithOptions(this.GetEntityRequestName(odcmClass), odcmClass.GetNamespaceName(), odcmClass.Base != null);
 }
 
 
@@ -27,7 +27,7 @@ public string GetEntityRequestMethodWithOptions(OdcmClass odcmClass)
 // -------------------------------------------------------------
 public string GetEntityReferenceRequestBuilderInterfaceDefinition(OdcmClass odcmClass)
 {
-    return this.GetInterfaceDefinition(this.GetEntityReferenceRequestBuilderName(odcmClass));
+    return this.GetInterfaceDefinition(this.GetEntityReferenceRequestBuilderName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 public string GetEntityReferenceRequestMethod(OdcmClass odcmClass)
@@ -37,7 +37,7 @@ public string GetEntityReferenceRequestMethod(OdcmClass odcmClass)
 
 public string GetEntityReferenceRequestMethodWithOptions(OdcmClass odcmClass)
 {
-    return this.GetRequestMethodWithOptions(this.GetEntityReferenceRequestName(odcmClass));
+    return this.GetRequestMethodWithOptions(this.GetEntityReferenceRequestName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 public string GetEntityReferenceRequestBuilderProperty(OdcmClass odcmClass)
@@ -64,7 +64,7 @@ public string GetEntityReferenceRequestBuilderProperty(OdcmClass odcmClass)
 // -------------------------------------------------------------
 public string GetEntityWithReferenceRequestBuilderInterfaceDefinition(OdcmClass odcmClass)
 {
-    return this.GetInterfaceDefinition(this.GetEntityWithReferenceRequestBuilderName(odcmClass));
+    return this.GetInterfaceDefinition(this.GetEntityWithReferenceRequestBuilderName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 public string GetEntityWithReferenceRequestMethod(OdcmClass odcmClass)
@@ -74,7 +74,7 @@ public string GetEntityWithReferenceRequestMethod(OdcmClass odcmClass)
 
 public string GetEntityWithReferenceRequestMethodWithOptions(OdcmClass odcmClass)
 {
-    return this.GetRequestMethodWithOptions(this.GetEntityWithReferenceRequestName(odcmClass));
+    return this.GetRequestMethodWithOptions(this.GetEntityWithReferenceRequestName(odcmClass), odcmClass.GetNamespaceName());
 }
 
 
@@ -91,9 +91,9 @@ public string GetRequestBuilderProperty(string propertyName, string requestBuild
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"{0}\"/>.</returns>", requestBuilderTypeName.ClassToInterface());
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        I{0} {1} {{ get; }}", requestBuilderTypeName, propertyName);
+    stringBuilder.AppendFormat("        {0} {1} {{ get; }}", requestBuilderTypeName.ClassToInterface(), propertyName);
     return stringBuilder.ToString();
 }
 

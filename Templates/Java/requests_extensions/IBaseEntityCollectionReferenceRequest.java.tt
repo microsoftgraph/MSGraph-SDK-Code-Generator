@@ -2,29 +2,29 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeCollectionReferenceRequest(c);#>
+<#host.TemplateName = c.ITypeCollectionReferenceRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.http.IHttpRequest;
-import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IHttpRequest;
+import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
 
-<#=CreateInterfaceDef(ITypeCollectionReferenceRequest(c))#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionReferenceRequest())#>
 
-    void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+    void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback);
 
-    <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
+    <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException;
 
 <# if (c.GetFeatures().CanSelect) { #>
-    <#=ITypeCollectionReferenceRequest(c)#> select(final String value);
+    <#=c.ITypeCollectionReferenceRequest()#> select(final String value);
 
 <# } #>
 <# if (c.GetFeatures().CanUseTop) { #>
-    <#=ITypeCollectionReferenceRequest(c)#> top(final int value);
+    <#=c.ITypeCollectionReferenceRequest()#> top(final int value);
 
 <# } #>
 }

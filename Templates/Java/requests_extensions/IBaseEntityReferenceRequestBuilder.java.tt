@@ -2,27 +2,27 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeReferenceRequestBuilder(c);#>
+<#host.TemplateName = c.ITypeReferenceRequestBuilder();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
-import com.microsoft.graph.options.Option;
+import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
 
-<#=CreateInterfaceDef(ITypeReferenceRequestBuilder(c), "IRequestBuilder")#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeReferenceRequestBuilder(), "IRequestBuilder")#>
 
     /**
      * Creates the request
      *
-     * @return the <#=ITypeReferenceRequest(c)#> instance
+     * @return the <#=c.ITypeReferenceRequest()#> instance
      */
-    <#=ITypeReferenceRequest(c)#> buildRequest();
+    <#=c.ITypeReferenceRequest()#> buildRequest();
 
     /**
      * Creates the request with specific options instead of the existing options
      *
      * @param requestOptions the options for this request
-     * @return the <#=ITypeReferenceRequest(c)#> instance
+     * @return the <#=c.ITypeReferenceRequest()#> instance
      */
-    <#=ITypeReferenceRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeReferenceRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
 }

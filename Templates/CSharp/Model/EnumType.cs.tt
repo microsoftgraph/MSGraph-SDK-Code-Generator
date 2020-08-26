@@ -5,6 +5,9 @@
 <#
 var enumT = host.CurrentType.AsOdcmEnum();
 var enumName = enumT.Name.ToCheckedCase();
+var @namespace = enumT.Namespace.GetNamespaceName();
+
+var enumConverterTypeName = @namespace.GetCoreLibraryType("EnumConverter");
 #>
 
 namespace <#=enumT.Namespace.GetNamespaceName()#>
@@ -14,7 +17,7 @@ namespace <#=enumT.Namespace.GetNamespaceName()#>
     /// <summary>
     /// The enum <#=enumName#>.
     /// </summary>
-    [JsonConverter(typeof(EnumConverter))]
+    [JsonConverter(typeof(<#=enumConverterTypeName#>))]
 <#  if (enumT.IsFlags == true)
     {
 #>

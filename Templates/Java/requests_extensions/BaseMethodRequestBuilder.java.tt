@@ -2,57 +2,55 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeRequestBuilder(c);#>
+<#host.TemplateName = c.TypeRequestBuilder();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForBaseMethodRequestBuilder(host)#>
-import com.microsoft.graph.core.BaseActionRequestBuilder;
-import com.microsoft.graph.core.BaseFunctionRequestBuilder;
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.options.FunctionOption;
+<#=host.CreatePackageDefForBaseMethodRequestBuilder()#>
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.BaseActionRequestBuilder;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.BaseFunctionRequestBuilder;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
 import com.google.gson.JsonElement;
-import com.microsoft.graph.core.<#=RequestBuilderSuperClass(c) #>;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.<#=c.GetMethodRequestBuilderSuperClass() #>;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
-<#=CreateClassDef(TypeRequestBuilder(c), RequestBuilderSuperClass(c), ITypeRequestBuilder(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), c.GetMethodRequestBuilderSuperClass(), c.ITypeRequestBuilder())#>
 
 <# foreach (var method in c.AsOdcmMethod().WithDistinctOverloads()) { #>
     /**
-     * The request builder for this <#=TypeName(c)#>
+     * The request builder for this <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
-     * @param requestOptions the options for this request<#=MethodParametersJavadocSignature(method)#>
+     * @param requestOptions the options for this request<#=method.MethodParametersJavadocSignature()#>
      */
-    public <#=TypeRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions<#=MethodParametersSignature(method)#>) {
+    public <#=c.TypeRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions<#=method.MethodParametersSignature()#>) {
         super(requestUrl, client, requestOptions);
 <#     foreach (var p in method.Parameters) { #>
 <#         if (isAction) { #>
-        bodyParams.put("<#=ParamName(p)#>", <#=ParamName(p)#>);
+        bodyParams.put("<#=p.ParamName()#>", <#=p.ParamName()#>);
 <#         } else { #>
-        functionOptions.add(new FunctionOption("<#=ParamName(p)#>", <#=ParamName(p)#>));
+        functionOptions.add(new com.microsoft.graph.options.FunctionOption("<#=p.ParamName()#>", <#=p.ParamName()#>));
 <#         } #>
 <#     } #>
     }
 <# } #>
 
     /**
-     * Creates the <#=ITypeRequest(c)#>
+     * Creates the <#=c.ITypeRequest()#>
      *
-     * @return the <#=ITypeRequest(c)#> instance
+     * @return the <#=c.ITypeRequest()#> instance
      */
-    public <#=ITypeRequest(c)#> buildRequest() {
+    public <#=c.ITypeRequest()#> buildRequest() {
         return buildRequest(getOptions());
     }
 
     /**
-     * Creates the <#=ITypeRequest(c)#> with specific requestOptions instead of the existing requestOptions
+     * Creates the <#=c.ITypeRequest()#> with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for the request
-     * @return the <#=ITypeRequest(c)#> instance
+     * @return the <#=c.ITypeRequest()#> instance
      */
-    public <#=ITypeRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
-        <#=TypeRequest(c)#> request = new <#=TypeRequest(c)#>(
+    public <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        <#=c.TypeRequest()#> request = new <#=c.TypeRequest()#>(
                 getRequestUrl(),
                 getClient(),
                 requestOptions
@@ -60,13 +58,13 @@ import com.microsoft.graph.core.<#=RequestBuilderSuperClass(c) #>;
 
 <# if (isAction) { #>
 <#   foreach (var p in c.AsOdcmMethod().Parameters) { #>
-        if (hasParameter("<#=ParamName(p)#>")) {
-            request.body.<#=ParamName(p)#> = getParameter("<#=ParamName(p)#>");
+        if (hasParameter("<#=p.ParamName()#>")) {
+            request.body.<#=p.ParamName()#> = getParameter("<#=p.ParamName()#>");
         }
 
 <#   } #>
 <# } else { #>
-      for (FunctionOption option : functionOptions) {
+      for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
             request.addFunctionOption(option);
       }
 

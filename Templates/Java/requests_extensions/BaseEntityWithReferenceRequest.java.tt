@@ -2,54 +2,54 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeWithReferencesRequest(c);#>
+<#host.TemplateName = c.TypeWithReferencesRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.http.BaseRequest;
-import com.microsoft.graph.http.HttpMethod;
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.serializer.IJsonBackedObject;
-import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.QueryOption;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequest;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.serializer.IJsonBackedObject;
+import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
-<#=CreateClassDef(TypeWithReferencesRequest(c), "BaseRequest", ITypeWithReferencesRequest(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequest(), "BaseRequest", c.ITypeWithReferencesRequest())#>
 
     /**
-     * The request for the <#=TypeName(c)#>
+     * The request for the <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeWithReferencesRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, java.util.List<? extends Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=ClassTypeName(c)#>.class);
+    public <#=c.TypeWithReferencesRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
-    public void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final IJsonBackedObject payload, final ICallback<<#=TypeName(c)#>> callback) {
+    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload, final ICallback<<#=c.TypeName()#>> callback) {
         send(HttpMethod.POST, callback, payload);
     }
 
-    public <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final IJsonBackedObject payload) throws ClientException {
+    public <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload) throws ClientException {
         IJsonBackedObject response = send(HttpMethod.POST, payload);
         if (response != null){
-            return new<#=TypeName(c)#>;
+            return new<#=c.TypeName()#>;
         }
         return null;
     }
 
-    public void get(final ICallback<<#=TypeName(c)#>> callback) {
+    public void get(final ICallback<<#=c.TypeName()#>> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
-    public <#=TypeName(c)#> get() throws ClientException {
+    public <#=c.TypeName()#> get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
 
-	public void delete(final ICallback<<#=TypeName(c)#>> callback) {
+	public void delete(final ICallback<<#=c.TypeName()#>> callback) {
 		send(HttpMethod.DELETE, callback, null);
 	}
 
@@ -57,12 +57,12 @@ import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
 		send(HttpMethod.DELETE, null);
 	}
 
-	public void patch(final <#=TypeName(c)#> source<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
-		send(HttpMethod.PATCH, callback, source<#=TypeName(c)#>);
+	public void patch(final <#=c.TypeName()#> source<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback) {
+		send(HttpMethod.PATCH, callback, source<#=c.TypeName()#>);
 	}
 
-	public <#=TypeName(c)#> patch(final <#=TypeName(c)#> source<#=TypeName(c)#>) throws ClientException {
-		return send(HttpMethod.PATCH, source<#=TypeName(c)#>);
+	public <#=c.TypeName()#> patch(final <#=c.TypeName()#> source<#=c.TypeName()#>) throws ClientException {
+		return send(HttpMethod.PATCH, source<#=c.TypeName()#>);
 	}
 
 
@@ -73,9 +73,9 @@ import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
      * @param value the select clause
      * @return the updated request
      */
-    public <#=ITypeWithReferencesRequest(c)#> select(final String value) {
-        getQueryOptions().add(new QueryOption("$select", value));
-        return (<#=ITypeWithReferencesRequest(c)#>)this;
+    public <#=c.ITypeWithReferencesRequest()#> select(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
+        return (<#=c.ITypeWithReferencesRequest()#>)this;
     }
 
 <# } #>
@@ -86,9 +86,9 @@ import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=ITypeWithReferencesRequest(c)#> expand(final String value) {
-        getQueryOptions().add(new QueryOption("$expand", value));
-        return (<#=TypeWithReferencesRequest(c)#>)this;
+    public <#=c.ITypeWithReferencesRequest()#> expand(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (<#=c.TypeWithReferencesRequest()#>)this;
     }
 <# } #>
 }

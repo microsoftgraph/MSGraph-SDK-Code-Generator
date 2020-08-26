@@ -7,14 +7,17 @@ public string GetEntityInterfaceDefinition(OdcmClass entity)
 {
     string typeDeclaration = null;
     var className = this.GetEntityRequestBuilderName(entity);
+    var @namespace = entity.GetNamespaceName();
+    var iBaseRequestBuilderTypeName = @namespace.GetCoreLibraryType("IBaseRequestBuilder");
 
     if (entity.Base == null)
     {
-        typeDeclaration = string.Format("I{0} : IBaseRequestBuilder", className);
+        typeDeclaration = string.Format("I{0} : {1}", className, iBaseRequestBuilderTypeName);
     }
     else
     {
-        typeDeclaration = string.Format("I{0} : I{1}RequestBuilder", className, entity.Base.Name.ToCheckedCase());
+        var baseIRequestBuilderTypeName = entity.Base.GetTypeString(@namespace, "I{0}RequestBuilder");
+        typeDeclaration = string.Format("I{0} : {1}", className, baseIRequestBuilderTypeName);
     }
 
     var stringBuilder = new StringBuilder();
@@ -30,8 +33,9 @@ public string GetEntityInterfaceDefinition(OdcmClass entity)
     return stringBuilder.ToString();
 }
 
-public string GetInterfaceDefinition(string interfaceName)
+public string GetInterfaceDefinition(string interfaceName, string @namespace)
 {
+    var iBaseRequestBuilderTypeName = @namespace.GetCoreLibraryType("IBaseRequestBuilder");
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append("/// <summary>");
@@ -40,7 +44,7 @@ public string GetInterfaceDefinition(string interfaceName)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("    /// </summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("    public partial interface I{0} : IBaseRequestBuilder", interfaceName);
+    stringBuilder.AppendFormat("    public partial interface I{0} : {1}", interfaceName, iBaseRequestBuilderTypeName);
 
     return stringBuilder.ToString();
 }
@@ -63,19 +67,20 @@ public string GetRequestMethod(string requestTypeName, bool includeNewKeyword = 
     return stringBuilder.ToString();
 }
 
-public string GetRequestMethodWithOptions(string requestTypeName, bool includeNewKeyword = false)
+public string GetRequestMethodWithOptions(string requestTypeName, string @namespace, bool includeNewKeyword = false)
 {
+    var optionTypeName = @namespace.GetCoreLibraryType("Option");
     var stringBuilder = new StringBuilder();
     stringBuilder.Append(this.GetRequestMethodWithOptionsHeader());
     stringBuilder.Append(Environment.NewLine);
 
     if (includeNewKeyword)
     {
-        stringBuilder.AppendFormat("        new I{0} Request(IEnumerable<Option> options);", requestTypeName);
+        stringBuilder.AppendFormat("        new I{0} Request(IEnumerable<{1}> options);", requestTypeName, optionTypeName);
     }
     else
     {
-        stringBuilder.AppendFormat("        I{0} Request(IEnumerable<Option> options);", requestTypeName);
+        stringBuilder.AppendFormat("        I{0} Request(IEnumerable<{1}> options);", requestTypeName, optionTypeName);
     }
 
     return stringBuilder.ToString();
@@ -115,7 +120,7 @@ public string GetMethodProperties(OdcmClass entity, bool isCollection)
             foreach (var param in requiredParameters)
             {
                 var paramVariableName = param.Name.GetSanitizedParameterName();
-                var paramTypeString = param.Type.GetTypeString();
+                var paramTypeString = param.Type.GetTypeString(entity.GetNamespaceName());
 
                 // Adds support for classes ending in "Request" that have been dismabiguated.
                 if (paramTypeString.EndsWith("Request"))
@@ -193,9 +198,9 @@ public string GetMethodRequestBuilderMethod(
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"I{0}\"/>.</returns>", requestBuilderTypeName);
+    stringBuilder.AppendFormat("        /// <returns>The <see cref=\"{0}\"/>.</returns>", requestBuilderTypeName.ClassToInterface());
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        I{0} {1}({2});", requestBuilderTypeName, methodName, methodParamaterString);
+    stringBuilder.AppendFormat("        {0} {1}({2});", requestBuilderTypeName.ClassToInterface(), methodName, methodParamaterString);
     return stringBuilder.ToString();
 }
 #>

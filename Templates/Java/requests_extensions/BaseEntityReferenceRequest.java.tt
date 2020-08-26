@@ -2,37 +2,37 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeReferenceRequest(c);#>
+<#host.TemplateName = c.TypeReferenceRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.http.BaseRequest;
-import com.microsoft.graph.http.HttpMethod;
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
-import com.microsoft.graph.concurrency.ICallback;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.QueryOption;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequest;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
+import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
 
-<#=CreateClassDef(TypeReferenceRequest(c), "BaseRequest", ITypeReferenceRequest(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequest(), "BaseRequest", c.ITypeReferenceRequest())#>
 
     /**
-     * The request for the <#=TypeName(c)#>
+     * The request for the <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeReferenceRequest(c)#>(String requestUrl, <#=IBaseClientType()#> client, java.util.List<? extends Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=ClassTypeName(c)#>.class);
+    public <#=c.TypeReferenceRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
-    public void delete(final ICallback<<#=TypeName(c)#>> callback) {
+    public void delete(final ICallback<<#=c.TypeName()#>> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
-    public <#=TypeName(c)#> delete() throws ClientException {
+    public <#=c.TypeName()#> delete() throws ClientException {
        return send(HttpMethod.DELETE, null);
     }
 
@@ -43,9 +43,9 @@ import com.microsoft.graph.concurrency.ICallback;
      * @param value the select clause
      * @return the updated request
      */
-    public <#=ITypeReferenceRequest(c)#> select(final String value) {
-        getQueryOptions().add(new QueryOption("$select", value));
-        return (<#=TypeReferenceRequest(c)#>)this;
+    public <#=c.ITypeReferenceRequest()#> select(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
+        return (<#=c.TypeReferenceRequest()#>)this;
     }
 
 <# } #>
@@ -56,31 +56,31 @@ import com.microsoft.graph.concurrency.ICallback;
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=ITypeReferenceRequest(c)#> expand(final String value) {
-        getQueryOptions().add(new QueryOption("$expand", value));
-        return (<#=TypeReferenceRequest(c)#>)this;
+    public <#=c.ITypeReferenceRequest()#> expand(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (<#=c.TypeReferenceRequest()#>)this;
     }
 <# } #>
 <# if (c.GetFeatures().CanUpdate) { #>
     /**
-     * Puts the <#=TypeName(c)#>
+     * Puts the <#=c.TypeName()#>
      *
-     * @param src<#=TypeName(c)#> the <#=TypeName(c)#> reference to PUT
+     * @param src<#=c.TypeName()#> the <#=c.TypeName()#> reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(<#=TypeName(c)#> src<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
-        send(HttpMethod.PUT, callback, src<#=TypeName(c)#>);
+    public void put(<#=c.TypeName()#> src<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback) {
+        send(HttpMethod.PUT, callback, src<#=c.TypeName()#>);
     }
 
     /**
-     * Puts the <#=TypeName(c)#>
+     * Puts the <#=c.TypeName()#>
      *
-     * @param src<#=TypeName(c)#> the <#=TypeName(c)#> reference to PUT
-     * @return the <#=TypeName(c)#>
+     * @param src<#=c.TypeName()#> the <#=c.TypeName()#> reference to PUT
+     * @return the <#=c.TypeName()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    public <#=TypeName(c)#> put(<#=TypeName(c)#> src<#=TypeName(c)#>) throws ClientException {
-        return send(HttpMethod.PUT, src<#=TypeName(c)#>);
+    public <#=c.TypeName()#> put(<#=c.TypeName()#> src<#=c.TypeName()#>) throws ClientException {
+        return send(HttpMethod.PUT, src<#=c.TypeName()#>);
     }
 <# } #>
 }

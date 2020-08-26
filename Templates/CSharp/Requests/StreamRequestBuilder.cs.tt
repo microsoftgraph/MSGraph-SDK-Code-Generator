@@ -9,7 +9,7 @@ string propName = null;
 string propClass = null;
 string propRequest = null;
 string propRequestBuilder = null;
-string namespaceValue = null;
+string @namespace = null;
 
 // If the current type isn't a property it's a content $value stream for a media entity
 if (prop == null)
@@ -19,7 +19,7 @@ if (prop == null)
     propClass = entity.Name.ToCheckedCase();
     propRequest = propClass + "ContentRequest";
     propRequestBuilder = propClass + "ContentRequestBuilder";
-    namespaceValue = entity.Namespace.GetNamespaceName();
+    @namespace = entity.Namespace.GetNamespaceName();
 }
 else
 {
@@ -27,28 +27,32 @@ else
     propClass = prop.Class.Name.ToCheckedCase();
     propRequest = propClass + prop.Name.ToCheckedCase() + "Request";
     propRequestBuilder = propClass + prop.Name.ToCheckedCase() + "RequestBuilder";
-    namespaceValue = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
+    @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 }
+
+var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
+var optionTypeName = @namespace.GetCoreLibraryType("Option");
+var baseRequestBuilderTypeName = @namespace.GetCoreLibraryType("BaseRequestBuilder");
 
 #>
 
-namespace <#=namespaceValue#>
+namespace <#=@namespace#>
 {
     using System.Collections.Generic;
 
     /// <summary>
     /// The type <#=propRequestBuilder#>.
     /// </summary>
-    public partial class <#=propRequestBuilder#> : BaseRequestBuilder, I<#=propRequestBuilder#>
+    public partial class <#=propRequestBuilder#> : <#=baseRequestBuilderTypeName#>, I<#=propRequestBuilder#>
     {
         /// <summary>
         /// Constructs a new <#=propRequestBuilder#>.
         /// </summary>
         /// <param name="requestUrl">The URL for the built request.</param>
-        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="client">The <see cref="<#=iBaseClientTypeName#>"/> for handling requests.</param>
         public <#=propRequestBuilder#>(
             string requestUrl,
-            IBaseClient client)
+            <#=iBaseClientTypeName#> client)
             : base(requestUrl, client)
         {
         }
@@ -58,7 +62,7 @@ namespace <#=namespaceValue#>
         /// </summary>
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
-        public I<#=propRequest#> Request(IEnumerable<Option> options = null)
+        public I<#=propRequest#> Request(IEnumerable<<#=optionTypeName#>> options = null)
         {
             return new <#=propRequest#>(this.RequestUrl, this.Client, options);
         }

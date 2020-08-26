@@ -4,10 +4,11 @@
 <#
 
 var entity = host.CurrentType.AsOdcmClass();
+var @namespace = this.GetNamespaceName(entity);
 
 #>
 
-namespace <#=this.GetNamespaceName(entity)#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace <#=this.GetNamespaceName(entity)#>
         <#=this.GetEntityWithReferenceRequestMethod(entity)#>
 
         <#=this.GetEntityWithReferenceRequestMethodWithOptions(entity)#>
-        
+
         <#=this.GetEntityReferenceRequestBuilderProperty(entity)#>
 
     }

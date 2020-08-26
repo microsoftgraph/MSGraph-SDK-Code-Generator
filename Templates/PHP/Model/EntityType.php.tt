@@ -8,18 +8,13 @@ CodeWriterPHP writer	        = (CodeWriterPHP) host.CodeWriter;
 OdcmClass entity                = host.CurrentType.AsOdcmClass();
 TemplateWriterSettings settings = ConfigurationService.Settings;
 String entityName               = entity.Name.SanitizeEntityName();
-string targetNamespace          = @"Microsoft\Graph\Model";
-String entityBaseName           = "";
-
-if (entity.Base != null)
-	entityBaseName = entity.Base.Name.SanitizeEntityName();
-
-// TemplateWriterSettings.Properties are set at the Typewriter command line. Check the command line 
-// documentation for more information on how the TemplateWriterSettings.Properties is used.
-if (settings.Properties.ContainsKey("php.namespace"))
+String entityCheckedCase        = entity.Name.ToCheckedCase();
+String targetNamespace          = TypeHelperPHP.GetPHPNamespace(entity, settings);
+String entityBaseName           = TypeHelperPHP.GetBaseTypeFullName(entity.Base, targetNamespace, settings);
+if (entityBaseName.Contains("\\"))
 {
-    targetNamespace = settings.Properties["php.namespace"];
-}      
+    entityBaseName = "\\" + entityBaseName;
+}
 
 #>
 <#=writer.WriteHeader(writer.GetDocBlock(entityName.ToCheckedCase()))#>
@@ -27,19 +22,19 @@ namespace <#=targetNamespace#>;
 
 <#=writer.GetClassBlock(entityName.ToCheckedCase().ToString(), "Model")#>
 <#
-if (entity.Name.ToCheckedCase() == "Entity") {
+if (entityCheckedCase == "Entity") {
 #>
-class <#=entity.Name.ToCheckedCase()#> implements \JsonSerializable
+class <#=entityCheckedCase#> implements \JsonSerializable
 <#
 } else {
 #>
-class <#=entityName.ToCheckedCase()#> extends <#=entityBaseName.ToCheckedCase() #>
+class <#=entityName.ToCheckedCase()#> extends <#=entityBaseName#>
 <# 
 }
 #>
 {
 <#
-if (entity.Name.ToCheckedCase() == "Entity") {
+if (entityCheckedCase == "Entity") {
 #>
     /**
     * The array of properties available
@@ -50,7 +45,7 @@ if (entity.Name.ToCheckedCase() == "Entity") {
     protected $_propDict;
     
     /**
-    * Construct a new <#=entity.Name.ToCheckedCase()#>
+    * Construct a new <#=entityCheckedCase#>
     *
     * @param array $propDict A list of properties to set
     */
@@ -72,7 +67,19 @@ if (entity.Name.ToCheckedCase() == "Entity") {
 <#
 }
 foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
-	String propertyName = property.Name.SanitizePropertyName(entityName).ToCamelize();
+    String propertyName = property.Name.SanitizePropertyName(entityName).ToCamelize();
+    var camelCasePropertyName = property.Name.ToCamelize();
+    var propertyTypeString = property.Type.GetTypeString();
+    var propertyNamespace = TypeHelperPHP.GetPHPNamespace(property.Type, settings);
+
+    // Check whether this type is a generated model type or a PHP type
+    var fullPropertyTypeName = propertyTypeString[0] == '\\' || propertyTypeString.IsPHPPrimitiveType()
+                                ? propertyTypeString
+                                : string.Join("\\", propertyNamespace, propertyTypeString.SanitizeEntityName().ToCheckedCase());
+
+    var propertyTypeReference = propertyNamespace == targetNamespace && !propertyTypeString.IsPHPPrimitiveType()
+                                ? propertyTypeString.SanitizeEntityName().ToCheckedCase()
+                                : fullPropertyTypeName;
     if (property.Type.IsComplex()) {
         if (property.IsCollection()) {
 #>
@@ -88,8 +95,8 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
      */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
-        if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
-           return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+        if (array_key_exists("<#=camelCasePropertyName#>", $this->_propDict)) {
+           return $this->_propDict["<#=camelCasePropertyName#>"];
         } else {
             return null;
         }
@@ -102,13 +109,13 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @param <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> $val The <#=propertyName#>
+    * @param <#=propertyTypeReference#> $val The <#=propertyName#>
     *
-    * @return <#=entity.Name.ToCheckedCase()#>
+    * @return <#=entityCheckedCase#>
     */
     public function set<#=propertyName.ToCheckedCase()#>($val)
     {
-		$this->_propDict["<#=property.Name.ToCamelize()#>"] = $val;
+		$this->_propDict["<#=camelCasePropertyName#>"] = $val;
         return $this;
     }
     
@@ -122,26 +129,20 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> The <#=propertyName#>
+    * @return <#=propertyTypeReference#> The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
-        if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
-<# 
-// Check whether this type is a generated model type or a PHP type
-if (property.Type.GetTypeString()[0] == '\\') { #>
-            if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=property.Type.GetTypeString()#>")) {
-<# } else { #>
-            if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=targetNamespace#>\<#=property.Type.GetTypeString()#>")) {
-<# } #>
-                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+        if (array_key_exists("<#=camelCasePropertyName#>", $this->_propDict)) {
+            if (is_a($this->_propDict["<#=camelCasePropertyName#>"], "<#=fullPropertyTypeName#>")) {
+                return $this->_propDict["<#=camelCasePropertyName#>"];
             } else {
-<# if (property.Type.GetTypeString() == "\\GuzzleHttp\\Psr7\\Stream") { #>
-                $this->_propDict["<#=property.Name.ToCamelize()#>"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["<#=property.Name.ToCamelize()#>"]);
-                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+<# if (propertyTypeString == "\\GuzzleHttp\\Psr7\\Stream") { #>
+                $this->_propDict["<#=camelCasePropertyName#>"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["<#=camelCasePropertyName#>"]);
+                return $this->_propDict["<#=camelCasePropertyName#>"];
 <# } else { #>
-                $this->_propDict["<#=property.Name.ToCamelize()#>"] = new <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#>($this->_propDict["<#=property.Name.ToCamelize()#>"]);
-                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+                $this->_propDict["<#=camelCasePropertyName#>"] = new <#=propertyTypeReference#>($this->_propDict["<#=camelCasePropertyName#>"]);
+                return $this->_propDict["<#=camelCasePropertyName#>"];
 <# } #>
             }
         }
@@ -155,18 +156,18 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @param <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> $val The <#=propertyName#>
+    * @param <#=propertyTypeReference#> $val The <#=propertyName#>
     *
-    * @return <#=entity.Name.ToCheckedCase()#>
+    * @return <#=entityCheckedCase#>
     */
     public function set<#=propertyName.ToCheckedCase()#>($val)
     {
-<#  if (property.Type.GetTypeString() == "bool") { #>
-        $this->_propDict["<#=property.Name.ToCamelize()#>"] = boolval($val);
-<#  } else if (property.Type.GetTypeString() == "int") { #>
-        $this->_propDict["<#=property.Name.ToCamelize()#>"] = intval($val);
+<#  if (propertyTypeString == "bool") { #>
+        $this->_propDict["<#=camelCasePropertyName#>"] = boolval($val);
+<#  } else if (propertyTypeString == "int") { #>
+        $this->_propDict["<#=camelCasePropertyName#>"] = intval($val);
 <# } else { #>
-        $this->_propDict["<#=property.Name.ToCamelize()#>"] = $val;
+        $this->_propDict["<#=camelCasePropertyName#>"] = $val;
 <# } #>
         return $this;
     }
@@ -182,19 +183,19 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=property.Type.GetTypeString()#> The <#=propertyName#>
+    * @return <#=propertyTypeReference#> The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
-        if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
+        if (array_key_exists("<#=camelCasePropertyName#>", $this->_propDict)) {
 <#
-            if (property.Type.GetTypeString() == "\\DateTime") {
+            if (propertyTypeString == "\\DateTime") {
 #>
-            return new \DateTime($this->_propDict["<#=property.Name.ToCamelize()#>"]);
+            return new \DateTime($this->_propDict["<#=camelCasePropertyName#>"]);
 <#
             } else {
 #>
-            return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+            return $this->_propDict["<#=camelCasePropertyName#>"];
 <#
             }
 #>
@@ -210,23 +211,23 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @param <#=property.Type.GetTypeString()#> $val The <#=propertyName#>
+    * @param <#=propertyTypeReference#> $val The <#=propertyName#>
     *
-    * @return <#=entity.Name.ToCheckedCase()#>
+    * @return <#=entityCheckedCase#>
     */
     public function set<#=propertyName.ToCheckedCase()#>($val)
     {
 <#
-    if (property.Type.GetTypeString() == "\\DateTime") {
+    if (propertyTypeString == "\\DateTime") {
 #>
-        $this->_propDict["<#=property.Name.ToCamelize()#>"] 
+        $this->_propDict["<#=camelCasePropertyName#>"] 
             = $val->format(\DateTime::ISO8601) . "Z";
 <#
       } else {
 #>
-<#  if (property.Type.GetTypeString() == "bool") { #>
+<#  if (propertyTypeString == "bool") { #>
         $this->_propDict["<#=property.Name#>"] = boolval($val);
-<#  } else if (property.Type.GetTypeString() == "int") { #>
+<#  } else if (propertyTypeString == "int") { #>
         $this->_propDict["<#=property.Name#>"] = intval($val);
 <# } else { #>
         $this->_propDict["<#=property.Name#>"] = $val;
@@ -240,7 +241,7 @@ if (property.Type.GetTypeString()[0] == '\\') { #>
 <#
 		}
 	}
-	if (entity.Name.ToCheckedCase() == "Entity") {
+	if (entityCheckedCase == "Entity") {
 #>
     /**
     * Gets the ODataType

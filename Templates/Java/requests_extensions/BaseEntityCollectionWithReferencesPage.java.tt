@@ -2,28 +2,28 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeCollectionWithReferencesPage(c);#>
+<#host.TemplateName = c.TypeCollectionWithReferencesPage();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-import com.microsoft.graph.requests.extensions.<#=ITypeCollectionRequestBuilder(c)#>;
-import com.microsoft.graph.requests.extensions.<#=ITypeCollectionWithReferencesPage(c)#>;
-import com.microsoft.graph.requests.extensions.<#=TypeCollectionResponse(c)#>;
-import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
+import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequestBuilder()#>;
+import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionWithReferencesPage()#>;
+import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
+import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.Expose;
-import com.microsoft.graph.http.BaseCollectionPage;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionPage;
 
-<#=CreateClassDef(TypeCollectionWithReferencesPage(c), "BaseCollectionPage" + CollectionPageWithReferencesGeneric(c), ITypeCollectionWithReferencesPage(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesPage(), "BaseCollectionPage" + c.CollectionPageWithReferencesGeneric(), c.ITypeCollectionWithReferencesPage())#>
 
     /**
-     * A collection page for <#=TypeName(c)#>
+     * A collection page for <#=c.TypeName()#>
      *
-     * @param response the serialized <#=TypeCollectionResponse(c)#> from the service
+     * @param response the serialized <#=c.TypeCollectionResponse()#> from the service
      * @param builder  the request builder for the next collection page
      */
-    public <#=TypeCollectionWithReferencesPage(c)#>(final <#=TypeCollectionResponse(c)#> response, final <#=ITypeCollectionWithReferencesRequestBuilder(c)#> builder) {
+    public <#=c.TypeCollectionWithReferencesPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.ITypeCollectionWithReferencesRequestBuilder()#> builder) {
         super(response.value, builder);
     }
 }

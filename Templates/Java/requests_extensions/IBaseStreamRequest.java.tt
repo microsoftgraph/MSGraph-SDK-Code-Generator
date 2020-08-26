@@ -2,21 +2,14 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeStreamRequest(c);#>
+<#host.TemplateName = c.ITypeStreamRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForBaseEntityRequestBuilder(host)#>
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.http.BaseRequestBuilder;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.http.IHttpStreamRequest;
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.models.extensions.<#=ClassTypeName(c)#>;
-import java.util.EnumSet;
+<#=host.CreatePackageDef()#>
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IHttpStreamRequest;
 
 import java.io.InputStream;
 
-<#=CreateInterfaceDef(ITypeStreamRequest(c), "IHttpStreamRequest")#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeStreamRequest(), "IHttpStreamRequest")#>
 
     /**
      * Gets the contents of this stream
@@ -39,7 +32,7 @@ import java.io.InputStream;
      * @param fileContents the contents of the stream to upload
      * @param callback the callback to be called after success or failure
      */
-    void put(final byte[] fileContents, final ICallback<<#=ClassTypeName(c)#>> callback);
+    void put(final byte[] fileContents, final ICallback<<#=c.ClassTypeName()#>> callback);
 
     /**
      * Uploads to the stream
@@ -48,5 +41,5 @@ import java.io.InputStream;
      * @return the result of the upload
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    <#=ClassTypeName(c)#> put(final byte[] fileContents) throws ClientException;
+    <#=c.ClassTypeName()#> put(final byte[] fileContents) throws ClientException;
 }

@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
 namespace Typewriter.Test
 {
-    [TestClass]
+    [TestFixture]
     public class Given_a_valid_metadata_file_to_metadata_preprocessor
     {
         public string testMetadata;
@@ -16,7 +16,7 @@ namespace Typewriter.Test
         /// <summary>
         /// Load metadata from file into a string so we can validate MetadataPreprocessor.
         /// </summary>
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             testMetadata = Typewriter.Test.Properties.Resources.dirtyMetadata;
@@ -24,7 +24,7 @@ namespace Typewriter.Test
             MetadataPreprocessor.SetXMetadata(testXMetadata);
         }
 
-        [TestMethod]
+        [Test, RunInApplicationDomain]
         public void It_removes_the_HasStream_attribute()
         {
             var entityToProcess = "onenotePage";
@@ -46,7 +46,7 @@ namespace Typewriter.Test
             Assert.IsFalse(hasStreamAfter, "Expected: The HasStream aatribute is not present. Actual: HasStream is present.");
         }
 
-        [TestMethod]
+        [Test, RunInApplicationDomain]
         public void It_adds_the_ContainsTarget_attribute()
         {
             var navPropTypeToProcess = "plannerPlan";
@@ -72,7 +72,7 @@ namespace Typewriter.Test
             Assert.IsTrue(doesContainTargetAfter, "Expected: ContainsTarget is true. Actual: ContainsTarget is false");
         }
 
-        [TestMethod]
+        [Test, RunInApplicationDomain]
         public void It_removes_capability_annotations()
         {
             bool hasCapabilityAnnotationsBefore = MetadataPreprocessor.GetXMetadata().Descendants()
@@ -89,7 +89,7 @@ namespace Typewriter.Test
             Assert.IsFalse(hasCapabilityAnnotationsAfter, "Expected: false, there should be no elements returned. Actual: there are capability annotations."); // 
         }
 
-        [TestMethod]
+        [Test, RunInApplicationDomain]
         public void It_adds_long_description_to_thumbnail()
         {
             XElement thumbnailComplexTypeBefore = MetadataPreprocessor.GetXMetadata().Descendants()
@@ -118,7 +118,7 @@ namespace Typewriter.Test
         /// <summary>
         /// Tests that we reorder parameters according to an input listof parameters.
         /// </summary>
-        [TestMethod]
+        [Test, RunInApplicationDomain]
         public void It_reorders_parameters_in_an_action()
         {
             /* The element to reorder from the resources/dirtymetadata.xml file.
@@ -175,7 +175,7 @@ namespace Typewriter.Test
         /// <summary>
         /// Tests that we reorder parameters according to an input element name list.
         /// </summary>
-        [TestMethod]
+        [Test, RunInApplicationDomain]
         public void It_reorders_elements_in_a_complextype()
         {
             /* The element to reorder from the resources/dirtymetadata.xml file.
@@ -227,7 +227,7 @@ namespace Typewriter.Test
                           "The element list was not reordered as expected.");
         }
 
-        [TestMethod]
+        [Test, RunInApplicationDomain]
         public void It_does_not_reorder_when_element_list_does_not_match_in_a_complextype()
         {
             /* The element to attempt to reorder from the resources/dirtymetadata.xml file. 

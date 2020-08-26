@@ -2,29 +2,29 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeCollectionWithReferencesRequest(c);#>
+<#host.TemplateName = c.ITypeCollectionWithReferencesRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
 
-<#=CreateInterfaceDef(ITypeCollectionWithReferencesRequest(c))#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesRequest())#>
 
-    void get(final ICallback<<#=ITypeCollectionWithReferencesPage(c)#>> callback);
+    void get(final ICallback<<#=c.ITypeCollectionWithReferencesPage()#>> callback);
 
-    <#=ITypeCollectionWithReferencesPage(c)#> get() throws ClientException;
+    <#=c.ITypeCollectionWithReferencesPage()#> get() throws ClientException;
 
 <# if (c.GetFeatures().CanExpand) { #>
-    <#=ITypeCollectionWithReferencesRequest(c)#> expand(final String value);
+    <#=c.ITypeCollectionWithReferencesRequest()#> expand(final String value);
     
 <# } #>
 <# if (c.GetFeatures().CanSelect) { #>
-    <#=ITypeCollectionWithReferencesRequest(c)#> select(final String value);
+    <#=c.ITypeCollectionWithReferencesRequest()#> select(final String value);
 
 <# } #>
 <# if (c.GetFeatures().CanUseTop) { #>
-    <#=ITypeCollectionWithReferencesRequest(c)#> top(final int value);
+    <#=c.ITypeCollectionWithReferencesRequest()#> top(final int value);
 
 <# } #>
 }

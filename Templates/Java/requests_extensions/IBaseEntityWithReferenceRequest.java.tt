@@ -2,41 +2,41 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeWithReferencesRequest(c);#>
+<#host.TemplateName = c.ITypeWithReferencesRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.http.IHttpRequest;
-import com.microsoft.graph.serializer.IJsonBackedObject;
+import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IHttpRequest;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.serializer.IJsonBackedObject;
 
 
-<#=CreateInterfaceDef(ITypeWithReferencesRequest(c), "IHttpRequest")#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeWithReferencesRequest(), "IHttpRequest")#>
 
-    void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final IJsonBackedObject payload, final ICallback<<#=TypeName(c)#>> callback);
+    void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload, final ICallback<<#=c.TypeName()#>> callback);
 
-    <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final IJsonBackedObject payload) throws ClientException;
+    <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload) throws ClientException;
 
-    void get(final ICallback<<#=TypeName(c)#>> callback);
+    void get(final ICallback<<#=c.TypeName()#>> callback);
 
-    <#=TypeName(c)#> get() throws ClientException;
+    <#=c.TypeName()#> get() throws ClientException;
 
-	void delete(final ICallback<<#=TypeName(c)#>> callback);
+	void delete(final ICallback<<#=c.TypeName()#>> callback);
 
 	void delete() throws ClientException;
 
-	void patch(final <#=TypeName(c)#> source<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+	void patch(final <#=c.TypeName()#> source<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback);
 
-	<#=TypeName(c)#> patch(final <#=TypeName(c)#> source<#=TypeName(c)#>) throws ClientException;
+	<#=c.TypeName()#> patch(final <#=c.TypeName()#> source<#=c.TypeName()#>) throws ClientException;
 
 <# if (c.GetFeatures().CanSelect) { #>
-    <#=ITypeWithReferencesRequest(c)#> select(final String value);
+    <#=c.ITypeWithReferencesRequest()#> select(final String value);
 
 <# } #>
 <# if (c.GetFeatures().CanExpand) { #>
-    <#=ITypeWithReferencesRequest(c)#> expand(final String value);
+    <#=c.ITypeWithReferencesRequest()#> expand(final String value);
 
 <# } #>
 }

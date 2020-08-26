@@ -4,35 +4,35 @@
 <#@ output extension="\\" #>
 <#
     var baseClass = "BaseRequest";
-    var typeRequest = TypeRequest(c);
-    var iTypeRequest = ITypeRequest(c);
-    var baseTypeRequest = TypeRequest(c);
-    var iBaseTypeRequest = ITypeRequest(c);
-    var returnType = ReturnType(c);
+    var typeRequest = c.TypeRequest();
+    var iTypeRequest = c.ITypeRequest();
+    var baseTypeRequest = c.TypeRequest();
+    var iBaseTypeRequest = c.ITypeRequest();
+    var returnType = c.ReturnType();
 
     if (c.AsOdcmMethod().IsCollection)
     {
         baseClass = "BaseCollectionRequest";
-        typeRequest = TypeCollectionRequest(c);
-        iTypeRequest = ITypeCollectionRequest(c);
-        baseTypeRequest = TypeCollectionRequest(c);
-        iBaseTypeRequest = ITypeCollectionRequest(c);
+        typeRequest = c.TypeCollectionRequest();
+        iTypeRequest = c.ITypeCollectionRequest();
+        baseTypeRequest = c.TypeCollectionRequest();
+        iBaseTypeRequest = c.ITypeCollectionRequest();
     }
 #>
 <#host.TemplateName = iBaseTypeRequest;#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForIBaseMethodBodyRequest(host)#>
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.http.BaseCollectionRequest;
-import com.microsoft.graph.http.BaseRequest;
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.http.BaseCollectionRequest;
+<#=host.CreatePackageDefForIBaseMethodBodyRequest()#>
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionRequest;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequest;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionRequest;
 
-<#=CreateInterfaceDef(iBaseTypeRequest)#>
+<#=TypeHelperJava.CreateInterfaceDef(iBaseTypeRequest)#>
 
-    void post(final ICallback<<#=ReturnType(c)#>> callback);
+    void post(final ICallback<<#=c.ReturnType()#>> callback);
 
-    <#=ReturnType(c)#> post() throws ClientException;
+    <#=c.ReturnType()#> post() throws ClientException;
 
 <# if (c.GetFeatures().CanSelect) { #>
     /**

@@ -3,33 +3,33 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeReferenceRequestBuilder(c);#>
+<#host.TemplateName = c.TypeReferenceRequestBuilder();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.http.BaseRequestBuilder;
-import com.microsoft.graph.core.IBaseClient;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequestBuilder;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
 
-<#=CreateClassDef(TypeReferenceRequestBuilder(c), "BaseRequestBuilder", ITypeReferenceRequestBuilder(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequestBuilder(), "BaseRequestBuilder", c.ITypeReferenceRequestBuilder())#>
 
     /**
-     * The request builder for the <#=TypeName(c)#>
+     * The request builder for the <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeReferenceRequestBuilder(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
+    public <#=c.TypeReferenceRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
     /**
      * Creates the request
      *
-     * @return The <#=ITypeReferenceRequest(c)#> instance
+     * @return The <#=c.ITypeReferenceRequest()#> instance
      */
-    public <#=ITypeReferenceRequest(c)#> buildRequest() {
+    public <#=c.ITypeReferenceRequest()#> buildRequest() {
         return buildRequest(getOptions());
     }
 
@@ -37,9 +37,9 @@ import com.microsoft.graph.core.IBaseClient;
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the <#=ITypeReferenceRequest(c)#> instance
+     * @return the <#=c.ITypeReferenceRequest()#> instance
      */
-    public <#=ITypeReferenceRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions) {
-        return new <#=TypeReferenceRequest(c)#>(getRequestUrl(), getClient(), requestOptions);
+    public <#=c.ITypeReferenceRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        return new <#=c.TypeReferenceRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 }

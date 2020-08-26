@@ -4,13 +4,13 @@
 <#
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
-var entityName = this.GetEntityNameString(entity);
+var @namespace = this.GetNamespaceName(entity);
 
 var features = host.CurrentType.GetFeatures();
 
 #>
 
-namespace <#=this.GetNamespaceName(entity)#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;

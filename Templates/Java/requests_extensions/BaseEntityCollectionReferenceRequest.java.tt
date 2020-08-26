@@ -2,35 +2,35 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeCollectionReferenceRequest(c);#>
+<#host.TemplateName = c.TypeCollectionReferenceRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.http.BaseCollectionRequest;
-import com.microsoft.graph.http.ReferenceRequestBody;
-import com.microsoft.graph.models.extensions.<#=TypeName(c)#>;
-import com.microsoft.graph.concurrency.ICallback;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.QueryOption;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionRequest;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.ReferenceRequestBody;
+import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
 
-<#=CreateClassDef(TypeCollectionReferenceRequest(c), "BaseCollectionRequest" + CollectionRequestGeneric(c), ITypeCollectionReferenceRequest(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric(), c.ITypeCollectionReferenceRequest())#>
 
     /**
-     * The request builder for this collection of <#=TypeName(c)#>
+     * The request builder for this collection of <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeCollectionReferenceRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=TypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
+    public <#=c.TypeCollectionReferenceRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.ITypeCollectionPage()#>.class);
     }
 
-    public void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback) {
+    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback) {
 <#
-		var navigationProperty = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType();
+		var navigationProperty = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel);
 		if (navigationProperty != null) {
 
 			//Append the singleton's navigation type to the @odata.id if relevant
@@ -38,21 +38,21 @@ import com.microsoft.graph.concurrency.ICallback;
 			if (navigationProperty.GetType() == typeof(OdcmSingleton)) 
 				implicitNavigationProperty = c.AsOdcmProperty().Name + "/";
 
-            String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType().Name;
+            String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel).Name;
 #>
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
-        final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=TypeName(c)#>.id);
-        new <#=TypeWithReferencesRequestBuilder(c)#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+        final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=c.TypeName()#>.id);
+        new <#=c.TypeWithReferencesRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getOptions())
-            .post(new<#=TypeName(c)#>, body, callback);
+            .post(new<#=c.TypeName()#>, body, callback);
     }
 
-    public <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException {
+    public <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
-        final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=TypeName(c)#>.id);
-        return new <#=TypeWithReferencesRequestBuilder(c)#>(requestUrl,getBaseRequest().getClient(), /* Options */ null)
+        final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=c.TypeName()#>.id);
+        return new <#=c.TypeWithReferencesRequestBuilder()#>(requestUrl,getBaseRequest().getClient(), /* Options */ null)
                 .buildRequest(getBaseRequest().getOptions())
-                .post(new<#=TypeName(c)#>, body);
+                .post(new<#=c.TypeName()#>, body);
     }
 <#     } 
 #>
@@ -63,9 +63,9 @@ import com.microsoft.graph.concurrency.ICallback;
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=ITypeCollectionReferenceRequest(c)#> expand(final String value) {
-        addQueryOption(new QueryOption("$expand", value));
-        return (<#=TypeCollectionReferenceRequest(c)#>)this;
+    public <#=c.ITypeCollectionReferenceRequest()#> expand(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (<#=c.TypeCollectionReferenceRequest()#>)this;
     }
 
 <# } #>
@@ -76,9 +76,9 @@ import com.microsoft.graph.concurrency.ICallback;
      * @param value the select clause
      * @return the updated request
      */
-    public <#=ITypeCollectionReferenceRequest(c)#> select(final String value) {
-        addQueryOption(new QueryOption("$select", value));
-        return (<#=TypeCollectionReferenceRequest(c)#>)this;
+    public <#=c.ITypeCollectionReferenceRequest()#> select(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
+        return (<#=c.TypeCollectionReferenceRequest()#>)this;
     }
 
 <# } #>
@@ -89,9 +89,9 @@ import com.microsoft.graph.concurrency.ICallback;
      * @param value the max number of items to return
      * @return the updated request
      */
-    public <#=ITypeCollectionReferenceRequest(c)#> top(final int value) {
-        addQueryOption(new QueryOption("$top", value + ""));
-        return (<#=TypeCollectionReferenceRequest(c)#>)this;
+    public <#=c.ITypeCollectionReferenceRequest()#> top(final int value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
+        return (<#=c.TypeCollectionReferenceRequest()#>)this;
     }
 <# } #>
 }

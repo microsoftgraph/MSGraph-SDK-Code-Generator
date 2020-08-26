@@ -2,29 +2,27 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeRequest(c);#>
+<#host.TemplateName = c.TypeRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForBaseMethodRequest(host)#>
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.concurrency.IExecutors;
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.http.BaseRequest;
-import com.microsoft.graph.http.HttpMethod;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.options.QueryOption;
+<#=host.CreatePackageDefForBaseMethodRequest()#>
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.IExecutors;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequest;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
 
-<#=CreateClassDef(TypeRequest(c), "BaseRequest", ITypeRequest(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest", c.ITypeRequest())#>
 
     /**
-     * The request for this <#=TypeName(c)#>
+     * The request for this <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=ReturnType(c)#>.class);
+    public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=c.ReturnType()#>.class);
     }
 
 <#
@@ -32,21 +30,21 @@ if (c.AsOdcmMethod().IsAction()) {
     if (c.AsOdcmMethod().ReturnType != null) {
 #>
     /**
-     * Creates the <#=TypeName(c)#>
+     * Creates the <#=c.TypeName()#>
      *
      * @param callback the callback to be called after success or failure
      */
-    public void post(final ICallback<<#=ReturnType(c)#>> callback) {
+    public void post(final ICallback<<#=c.ReturnType()#>> callback) {
         send(HttpMethod.POST, callback, null);
     }
 
     /**
-     * Creates the <#=TypeName(c)#>
+     * Creates the <#=c.TypeName()#>
      *
-     * @return the <#=ReturnType(c)#>
+     * @return the <#=c.ReturnType()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    public <#=ReturnType(c)#> post() throws ClientException {
+    public <#=c.ReturnType()#> post() throws ClientException {
        return send(HttpMethod.POST, null);
     }
 
@@ -59,9 +57,9 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the select clause
      * @return the updated request
      */
-    public <#=ITypeRequest(c)#> select(final String value) {
-        getQueryOptions().add(new QueryOption("$select", value));
-        return (<#=TypeRequest(c)#>)this;
+    public <#=c.ITypeRequest()#> select(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
+        return (<#=c.TypeRequest()#>)this;
     }
 
 <#
@@ -75,9 +73,9 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=ITypeRequest(c)#> expand(final String value) {
-        getQueryOptions().add(new QueryOption("$expand", value));
-        return (<#=TypeRequest(c)#>)this;
+    public <#=c.ITypeRequest()#> expand(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (<#=c.TypeRequest()#>)this;
     }
 
 <#
@@ -92,16 +90,16 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the max number of items to return
      * @return the updated request
      */
-    public <#=ITypeRequest(c)#> top(final int value) {
-        getQueryOptions().add(new QueryOption("$top", value+""));
-        return (<#=TypeRequest(c)#>)this;
+    public <#=c.ITypeRequest()#> top(final int value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
+        return (<#=c.TypeRequest()#>)this;
     }
 <#
         }
     } else {
 #>
     /**
-     * Creates the <#=TypeName(c)#>
+     * Creates the <#=c.TypeName()#>
      *
      * @param callback the callback to be called after success or failure
      */
@@ -121,7 +119,7 @@ if (c.AsOdcmMethod().IsAction()) {
     }
 
     /**
-     * Creates the <#=TypeName(c)#>
+     * Creates the <#=c.TypeName()#>
      *
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
@@ -135,64 +133,64 @@ if (c.AsOdcmMethod().IsAction()) {
         if (c.AsOdcmMethod().IsComposable) {
 #>
     /**
-     * Patches the <#=TypeName(c)#>
-     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> with which to PATCH
+     * Patches the <#=c.TypeName()#>
+     * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> with which to PATCH
      * @param callback the callback to be called after success or failure
      */
-    public void patch(<#=ReturnType(c)#> src<#=ReturnType(c)#>, final ICallback<<#=ReturnType(c)#>> callback) {
-        send(HttpMethod.PATCH, callback, src<#=ReturnType(c)#>);
+    public void patch(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<<#=c.ReturnType()#>> callback) {
+        send(HttpMethod.PATCH, callback, src<#=c.ReturnType()#>);
     }
 
     /**
-     * Patches the <#=TypeName(c)#>
+     * Patches the <#=c.TypeName()#>
      *
-     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> with which to PATCH
-     * @return the <#=ReturnType(c)#>
+     * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> with which to PATCH
+     * @return the <#=c.ReturnType()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-     public <#=ReturnType(c)#> patch(<#=ReturnType(c)#> src<#=ReturnType(c)#>) throws ClientException {
-        return this.send(HttpMethod.PATCH, src<#=ReturnType(c)#>);
+     public <#=c.ReturnType()#> patch(<#=c.ReturnType()#> src<#=c.ReturnType()#>) throws ClientException {
+        return this.send(HttpMethod.PATCH, src<#=c.ReturnType()#>);
     }
 
     /**
-     * Puts the <#=TypeName(c)#>
+     * Puts the <#=c.TypeName()#>
      *
-     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> to PUT
+     * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(<#=ReturnType(c)#> src<#=ReturnType(c)#>, final ICallback<<#=ReturnType(c)#>> callback) {
-        send(HttpMethod.PUT, callback, src<#=ReturnType(c)#>);
+    public void put(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<<#=c.ReturnType()#>> callback) {
+        send(HttpMethod.PUT, callback, src<#=c.ReturnType()#>);
     }
 
     /**
-     * Puts the <#=TypeName(c)#>
+     * Puts the <#=c.TypeName()#>
      *
-     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> to PUT
-     * @return the <#=ReturnType(c)#>
+     * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> to PUT
+     * @return the <#=c.ReturnType()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-     public <#=ReturnType(c)#> put(<#=ReturnType(c)#> src<#=ReturnType(c)#>) throws ClientException {
-        return this.send(HttpMethod.PUT, src<#=ReturnType(c)#>);
+     public <#=c.ReturnType()#> put(<#=c.ReturnType()#> src<#=c.ReturnType()#>) throws ClientException {
+        return this.send(HttpMethod.PUT, src<#=c.ReturnType()#>);
     }
 <#
         }
 #>
     /**
-     * Gets the <#=ReturnType(c)#>
+     * Gets the <#=c.ReturnType()#>
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<<#=ReturnType(c)#>> callback) {
+    public void get(final ICallback<<#=c.ReturnType()#>> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
     /**
-     * Gets the <#=ReturnType(c)#>
+     * Gets the <#=c.ReturnType()#>
      *
-     * @return the <#=ReturnType(c)#>
+     * @return the <#=c.ReturnType()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    public <#=ReturnType(c)#> get() throws ClientException {
+    public <#=c.ReturnType()#> get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
 
@@ -205,9 +203,9 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the select clause
      * @return the updated request
      */
-    public <#=ITypeRequest(c)#> select(final String value) {
-        getQueryOptions().add(new QueryOption("$select", value));
-        return (<#=TypeRequest(c)#>)this;
+    public <#=c.ITypeRequest()#> select(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
+        return (<#=c.TypeRequest()#>)this;
     }
 
 <#
@@ -221,9 +219,9 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=ITypeRequest(c)#> expand(final String value) {
-        getQueryOptions().add(new QueryOption("$expand", value));
-        return (<#=TypeRequest(c)#>)this;
+    public <#=c.ITypeRequest()#> expand(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (<#=c.TypeRequest()#>)this;
     }
 
 <#
@@ -238,9 +236,9 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the max number of items to return
      * @return the updated request
      */
-    public <#=ITypeRequest(c)#> top(final int value) {
-        getQueryOptions().add(new QueryOption("$top", value+""));
-        return (<#=TypeRequest(c)#>)this;
+    public <#=c.ITypeRequest()#> top(final int value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
+        return (<#=c.TypeRequest()#>)this;
     }
 <#
         }

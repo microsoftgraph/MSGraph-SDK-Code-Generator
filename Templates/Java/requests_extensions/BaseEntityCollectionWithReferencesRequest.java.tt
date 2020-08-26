@@ -2,32 +2,32 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeCollectionWithReferencesRequest(c);#>
+<#host.TemplateName = c.TypeCollectionWithReferencesRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.http.BaseCollectionRequest;
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.concurrency.IExecutors;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.QueryOption;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionRequest;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.IExecutors;
 
-<#=CreateClassDef(TypeCollectionWithReferencesRequest(c), "BaseCollectionRequest" + CollectionRequestGeneric(c), ITypeCollectionWithReferencesRequest(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric(), c.ITypeCollectionWithReferencesRequest())#>
 
     /**
-     * The request builder for this collection of <#=TypeName(c)#>
+     * The request builder for this collection of <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeCollectionWithReferencesRequest(c)#>(final String requestUrl, <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=TypeCollectionResponse(c)#>.class, <#=ITypeCollectionPage(c)#>.class);
+    public <#=c.TypeCollectionWithReferencesRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.ITypeCollectionPage()#>.class);
     }
 
-    public void get(final ICallback<<#=ITypeCollectionWithReferencesPage(c)#>> callback) {
+    public void get(final ICallback<<#=c.ITypeCollectionWithReferencesPage()#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -41,40 +41,40 @@ import com.microsoft.graph.concurrency.IExecutors;
         });
     }
 
-    public <#=ITypeCollectionWithReferencesPage(c)#> get() throws ClientException {
-        final <#=TypeCollectionResponse(c)#> response = send();
+    public <#=c.ITypeCollectionWithReferencesPage()#> get() throws ClientException {
+        final <#=c.TypeCollectionResponse()#> response = send();
         return buildFromResponse(response);
     }
 
 <# if (c.GetFeatures().CanExpand) { #>
-    public <#=ITypeCollectionRequest(c)#> expand(final String value) {
-        addQueryOption(new QueryOption("$expand", value));
-        return (<#=TypeCollectionRequest(c)#>)this;
+    public <#=c.ITypeCollectionRequest()#> expand(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (<#=c.TypeCollectionRequest()#>)this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanSelect) { #>
-    public <#=ITypeCollectionRequest(c)#> select(final String value) {
-        addQueryOption(new QueryOption("$select", value));
-        return (<#=TypeCollectionRequest(c)#>)this;
+    public <#=c.ITypeCollectionRequest()#> select(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
+        return (<#=c.TypeCollectionRequest()#>)this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanUseTop) { #>
-    public <#=ITypeCollectionRequest(c)#> top(final int value) {
-        addQueryOption(new QueryOption("$top", value + ""));
-        return (<#=TypeCollectionRequest(c)#>)this;
+    public <#=c.ITypeCollectionRequest()#> top(final int value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
+        return (<#=c.TypeCollectionRequest()#>)this;
     }
 
 <# } #>
-    public <#=ITypeCollectionWithReferencesPage(c)#> buildFromResponse(final <#=TypeCollectionResponse(c)#> response) {
-        final <#=ITypeCollectionRequestBuilder(c)#> builder;
+    public <#=c.ITypeCollectionWithReferencesPage()#> buildFromResponse(final <#=c.TypeCollectionResponse()#> response) {
+        final <#=c.ITypeCollectionRequestBuilder()#> builder;
         if (response.nextLink != null) {
-            builder = new <#=TypeCollectionRequestBuilder(c)#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
+            builder = new <#=c.TypeCollectionRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
         } else {
             builder = null;
         }
-        final <#=TypeCollectionWithReferencesPage(c)#> page = new <#=TypeCollectionWithReferencesPage(c)#>(response, builder);
+        final <#=c.TypeCollectionWithReferencesPage()#> page = new <#=c.TypeCollectionWithReferencesPage()#>(response, builder);
         page.setRawObject(response.getSerializer(), response.getRawObject());
         return page;
     }

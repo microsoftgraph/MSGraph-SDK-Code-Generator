@@ -3,13 +3,12 @@
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.models.extensions.IGraphServiceClient;
-import com.microsoft.graph.models.extensions.<#=IBaseClientType(c)#>;
-import com.microsoft.graph.core.BaseClient;
+<#=host.CreatePackageDef()#>
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.models.extensions.IGraphServiceClient;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.BaseClient;
 
-<#=CreateClassDef(BaseClientType(c), "BaseClient", IBaseClientType(c))#>
+<#=TypeHelperJava.CreateClassDef(c.BaseClientType(host), "BaseClient", c.IBaseClientType(host))#>
 
     /**
      * The default endpoint for the Microsoft Graph Service
@@ -46,8 +45,8 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return the request builder for the collection of <#=propertyName#> objects
      */
-    public <#=ITypeCollectionRequestBuilder(prop)#> <#=prop.Name#>() {
-        return new <#=TypeCollectionRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
+    public <#=prop.ITypeCollectionRequestBuilder()#> <#=prop.Name#>() {
+        return new <#=prop.TypeCollectionRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
     }
 
     /**
@@ -56,8 +55,8 @@ foreach (var prop in model.EntityContainer.Properties)
      * @param id the id of the <#=propertyName#> to retrieve
      * @return the request builder for the <#=propertyName#> object
      */
-    public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>(final String id) {
-        return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>/" + id, this, null);
+    public <#=prop.ITypeRequestBuilder()#> <#=prop.Name#>(final String id) {
+        return new <#=prop.TypeRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>/" + id, this, null);
     }
 <#
     }
@@ -66,12 +65,12 @@ foreach (var prop in model.EntityContainer.Properties)
 #>
 
     /**
-     * Gets the <#=TypeRequestBuilder(c)#>
+     * Gets the <#=c.TypeRequestBuilder()#>
      *
      * @return the <#=prop.Projection.Type.GetTypeString()#>
      */
-    public <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>() {
-        return new <#=TypeRequestBuilder(prop)#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
+    public <#=prop.ITypeRequestBuilder()#> <#=prop.Name#>() {
+        return new <#=prop.TypeRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
     }
 <#
     }

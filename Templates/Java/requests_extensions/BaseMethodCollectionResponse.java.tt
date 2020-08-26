@@ -2,26 +2,26 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeCollectionResponse(c);#>
+<#host.TemplateName = c.TypeCollectionResponse();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.Expose;
-import com.microsoft.graph.serializer.IJsonBackedObject;
-import com.microsoft.graph.serializer.ISerializer;
-import com.microsoft.graph.serializer.AdditionalDataManager;
-<# if (ShouldIncludeCollectionTypeReference(c)) { #>
-import com.microsoft.graph.models.<#=OdcmMethodReturnNamespaceSection(c as OdcmMethod)#>.<#=OdcmMethodReturnType(c as OdcmMethod)#>;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.serializer.IJsonBackedObject;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.serializer.ISerializer;
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.serializer.AdditionalDataManager;
+<# if (c.ShouldIncludeCollectionTypeReference()) { #>
+import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.models.<#=(c as OdcmMethod).OdcmMethodReturnNamespaceSection()#>.<#=(c as OdcmMethod).OdcmMethodReturnType()#>;
 <# } #>
 
-<#=CreateClassDef(TypeCollectionResponse(c), null, "IJsonBackedObject")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "IJsonBackedObject")#>
 
     @SerializedName("value")
     @Expose
-    public java.util.List<<#=OdcmMethodReturnType(c as OdcmMethod)#>> value;
+    public java.util.List<<#=(c as OdcmMethod).OdcmMethodReturnType()#>> value;
 
     @SerializedName("@odata.nextLink")
     @Expose(serialize = false)
@@ -34,9 +34,9 @@ import com.microsoft.graph.models.<#=OdcmMethodReturnNamespaceSection(c as OdcmM
         return additionalDataManager;
     }
 
-<#=CreateRawJsonObject()#>
+<#=TypeHelperJava.CreateRawJsonObject()#>
 <# if ( ! ((c as OdcmMethod).ReturnType is OdcmPrimitiveType) && ! ((c as OdcmMethod).ReturnType is OdcmEnum) ) { #>
-<#=    UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
+<#=    TypeHelperJava.UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
 <# } else { #>
     }
 <# } #>
