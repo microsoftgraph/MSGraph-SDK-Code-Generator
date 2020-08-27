@@ -853,7 +853,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         {
             var sb = new StringBuilder();
             sb.Append(host.CreatePackageDefinition());
-            var importFormat = @"import {0}.{1}.{2};";
+            const string importFormat = @"import {0}.{1}.{2};";
             sb.AppendFormat(importFormat,
                             host.CurrentNamespace(),
                             GetPrefixForRequests(),
@@ -866,11 +866,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                             host.CurrentType.TypeRequest());
             sb.Append("\n");
 
-            foreach (var method in host.CurrentType.AsOdcmMethod().WithOverloads())
-            {
-                sb = ImportClassesOfMethodParameters(method, importFormat, sb);
-            }
+            var imports = host.CurrentType.AsOdcmMethod().WithOverloads().SelectMany(x => ImportClassesOfMethodParameters(x));
+            sb.Append(imports.Any() ? imports.Aggregate((x, y) => $"{x}{Environment.NewLine}{y}"): string.Empty);
             return sb.ToString();
+        }
+
+        public static string ImportClassesOfMethodParametersAsString(OdcmMethod method, string importFormat = "import {0}.{1}.{2};", string importTypeToExclude = null)
+        {
+            var imports = ImportClassesOfMethodParameters(method, importFormat, importTypeToExclude);
+            return imports.Any() ? imports.Aggregate((x, y) => $"{x}{Environment.NewLine}{y}") : string.Empty;
         }
 
         /// <summary>
@@ -878,9 +882,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         /// </summary>
         /// <param name="method">Method whose parameter types will be consumed</param>
         /// <param name="importFormat">import format, e.g. "import {0}.{1}.{2}"</param>
-        /// <param name="sb">StringBuilder object currently in use</param>
-        /// <returns>StringBuilder object with import statements inserted</returns>
-        public static StringBuilder ImportClassesOfMethodParameters(OdcmMethod method, string importFormat, StringBuilder sb, string importTypeToExclude = null)
+        /// <returns>Hashset with import statements to insert</returns>
+        public static HashSet<string> ImportClassesOfMethodParameters(OdcmMethod method, string importFormat = "import {0}.{1}.{2};", string importTypeToExclude = null)
         {
             var importStatements = new HashSet<string>();
             var appendEnumSet = false;
@@ -899,16 +902,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                 }
             }
             if (!(method?.ReturnType == null || method.ReturnType is OdcmPrimitiveType))
-                sb.AppendFormat(importFormat, method.ReturnType.Namespace.Name.AddPrefix(), method.ReturnType.GetPackagePrefix(), method.OdcmMethodReturnType());
-
-            sb.Append(string.Join(string.Empty, importStatements));
+                importStatements.Add(string.Format(importFormat, method.ReturnType.Namespace.Name.AddPrefix(), method.ReturnType.GetPackagePrefix(), method.OdcmMethodReturnType()));
 
             if (appendEnumSet)
             {
-                sb.Append("import java.util.EnumSet;" + Environment.NewLine);
+                importStatements.Add("import java.util.EnumSet;");
             }
 
-            return sb;
+            return importStatements;
         }
 
         public static string CreatePackageDefForIBaseMethodBodyRequest(this CustomT4Host host)
@@ -1184,8 +1185,8 @@ import java.util.EnumSet;";
 
             // determine current namespace and generate method imports if applicable
             string @namespace;
-            var methodImports = new StringBuilder();
-            var importFormat = "import {0}.{1}.{2};" + Environment.NewLine;
+            var methodImports = new HashSet<string>();
+            const string importFormat = "import {0}.{1}.{2};";
             const string graphServiceEntityName = "GraphService";
             const string interfaceTemplatePrefix = "I";
             switch (host.CurrentType)
@@ -1193,20 +1194,20 @@ import java.util.EnumSet;";
                 case OdcmProperty p:
                     @namespace = p.Type.Namespace.Name.AddPrefix();
                     if (p.Class.GetTypeString() != graphServiceEntityName)
-                        methodImports.AppendFormat(importFormat, p.Class.Namespace.Name.AddPrefix(), p.Class.GetPackagePrefix(), p.Class.GetTypeString());
+                        methodImports.Add(string.Format(importFormat, p.Class.Namespace.Name.AddPrefix(), p.Class.GetPackagePrefix(), p.Class.GetTypeString()));
                     if (!(p.Projection.Type is OdcmPrimitiveType))
-                        methodImports.AppendFormat(importFormat, p.Projection.Type.Namespace.Name.AddPrefix(), p.Projection.Type.GetPackagePrefix(), p.Projection.Type.GetTypeString());
-                    p.Projection?.Type?.AsOdcmClass()?.MethodsAndOverloads()?.Distinct()?.ToList()?.ForEach(o => ImportClassesOfMethodParameters(o, importFormat, methodImports));
+                        methodImports.Add(string.Format(importFormat, p.Projection.Type.Namespace.Name.AddPrefix(), p.Projection.Type.GetPackagePrefix(), p.Projection.Type.GetTypeString()));
+                    p.Projection?.Type?.AsOdcmClass()?.MethodsAndOverloads()?.Distinct()?.SelectMany(o => ImportClassesOfMethodParameters(o))?.ToList()?.ForEach(x => methodImports.Add(x));
                     break;
                 case OdcmMethod m:
-                    m.WithDistinctOverloads().ForEach(o => ImportClassesOfMethodParameters(o, importFormat, methodImports));
+                    m.WithDistinctOverloads().SelectMany(o => ImportClassesOfMethodParameters(o))?.ToList()?.ForEach(x => methodImports.Add(x));
                     goto default;
                 case OdcmClass c:
                     if (c.GetTypeString() != graphServiceEntityName)
-                        methodImports.AppendFormat(importFormat, c.Namespace.Name.AddPrefix(), c.GetPackagePrefix(), c.GetTypeString());
+                        methodImports.Add(string.Format(importFormat, c.Namespace.Name.AddPrefix(), c.GetPackagePrefix(), c.GetTypeString()));
 
                     var importTypeToExclude = host.TemplateFile.EndsWith("BaseEntityRequest.java.tt") ? host.TemplateName : string.Empty;
-                    c?.MethodsAndOverloads()?.Distinct()?.ToList()?.ForEach(o => ImportClassesOfMethodParameters(o, importFormat, methodImports, importTypeToExclude));
+                    c?.MethodsAndOverloads()?.Distinct()?.SelectMany(o => ImportClassesOfMethodParameters(o, importTypeToExclude: importTypeToExclude))?.ToList()?.ForEach(x => methodImports.Add(x));
                     c?.NavigationProperties()?.Where(x => x.IsCollection)?.Select(x => x.Projection.Type)?.Distinct()?.ToList()?.ForEach(x =>
                         ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix, true)
                     );
@@ -1224,18 +1225,18 @@ import java.util.EnumSet;";
                 host.TemplateInfo.OutputParentDirectory.Replace("_", "."),
                 host.CurrentModel.GetNamespace().AddPrefix(),
                 fullyQualifiedImport,
-                methodImports.ToString());
+                methodImports.Any() ? methodImports.Aggregate((x, y) => $"{x}{Environment.NewLine}{y}") : string.Empty);
         }
-        private static void ImportRequestBuilderTypes(CustomT4Host host, OdcmType x, StringBuilder methodImports, string importFormat, string interfaceTemplatePrefix, bool includeCollectionTypes)
+        private static void ImportRequestBuilderTypes(CustomT4Host host, OdcmType x, HashSet<string> methodImports, string importFormat, string interfaceTemplatePrefix, bool includeCollectionTypes)
         {
             if (includeCollectionTypes)
-                methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeCollectionRequestBuilder());
-            methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeRequestBuilder());
+                methodImports.Add(string.Format(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeCollectionRequestBuilder()));
+            methodImports.Add(string.Format(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeRequestBuilder()));
             if (!host.TemplateInfo.TemplateName.StartsWith(interfaceTemplatePrefix))
             {
                 if (includeCollectionTypes)
-                    methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeCollectionRequestBuilder());
-                methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeRequestBuilder());
+                    methodImports.Add(string.Format(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeCollectionRequestBuilder()));
+                methodImports.Add(string.Format(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeRequestBuilder()));
             }
         }
         /// <summary>
