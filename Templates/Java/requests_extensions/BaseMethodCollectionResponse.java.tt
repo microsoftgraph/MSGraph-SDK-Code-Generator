@@ -13,9 +13,6 @@ import com.google.gson.annotations.Expose;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.serializer.IJsonBackedObject;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.serializer.ISerializer;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.serializer.AdditionalDataManager;
-<# if (c.ShouldIncludeCollectionTypeReference()) { #>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.models.<#=(c as OdcmMethod).OdcmMethodReturnNamespaceSection()#>.<#=(c as OdcmMethod).OdcmMethodReturnType()#>;
-<# } #>
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "IJsonBackedObject")#>
 

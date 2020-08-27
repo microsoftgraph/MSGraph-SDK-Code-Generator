@@ -6,10 +6,8 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForBaseEntityCollectionPage()#>
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionPage;
-import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequestBuilder()#>;
 import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
 import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
-import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage" + c.CollectionPageGeneric(), c.ITypeCollectionPage())#>
 <#

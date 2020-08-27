@@ -12,11 +12,6 @@ import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
 import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeBody()#>;
 <# } #>
-<# if (c.ShouldIncludeCollectionTypeReference()) { #>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.models.<#=(c as OdcmMethod).OdcmMethodReturnNamespaceSection()#>.<#=(c as OdcmMethod).OdcmMethodReturnType()#>;
-<# } #>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.QueryOption;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;

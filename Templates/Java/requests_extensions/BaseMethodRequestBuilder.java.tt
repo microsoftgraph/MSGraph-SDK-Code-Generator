@@ -9,7 +9,6 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.BaseActionRequestB
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.BaseFunctionRequestBuilder;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
 import com.google.gson.JsonElement;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.<#=c.GetMethodRequestBuilderSuperClass() #>;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
 <#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), c.GetMethodRequestBuilderSuperClass(), c.ITypeRequestBuilder())#>

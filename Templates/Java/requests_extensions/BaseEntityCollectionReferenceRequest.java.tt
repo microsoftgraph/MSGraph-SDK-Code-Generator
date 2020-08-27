@@ -6,14 +6,12 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.QueryOption;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionRequest;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.ReferenceRequestBody;
 import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric(), c.ITypeCollectionReferenceRequest())#>
 

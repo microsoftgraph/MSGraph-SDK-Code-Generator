@@ -8,7 +8,6 @@
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequestBuilder;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
-import java.util.EnumSet;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder", c.ITypeRequestBuilder())#>
 

@@ -6,15 +6,12 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.QueryOption;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequest;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.serializer.IJsonBackedObject;
-import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequest(), "BaseRequest", c.ITypeWithReferencesRequest())#>
 

@@ -22,9 +22,6 @@
 import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequestBuilder()#>;
 import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
 import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
-<# if (c.ShouldIncludeCollectionTypeReference()) { #>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.models.<#=(c as OdcmMethod).OdcmMethodReturnNamespaceSection()#>.<#=(c as OdcmMethod).OdcmMethodReturnType()#>;
-<# } #>
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.Expose;

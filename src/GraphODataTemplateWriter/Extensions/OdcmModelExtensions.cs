@@ -499,9 +499,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         }
 
         /// Returns a List containing the supplied class' methods plus their overloads
-        public static List<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
+        public static IEnumerable<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
         {
-            return odcmClass.Methods.SelectMany(x => x.WithOverloads()).ToList();
+            return odcmClass.Methods.SelectMany(x => x.WithOverloads());
         }
     }
 

@@ -9,7 +9,6 @@
 import com.google.gson.JsonObject;
 import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IBaseCollectionPage;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesPage(), "IBaseCollectionPage" + c.CollectionPageWithReferencesGeneric())#>
 }

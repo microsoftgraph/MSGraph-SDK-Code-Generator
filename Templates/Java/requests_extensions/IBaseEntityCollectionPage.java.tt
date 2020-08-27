@@ -8,9 +8,6 @@
 
 import com.google.gson.JsonObject;
 import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequestBuilder()#>;
-<# if (c.ShouldIncludeCollectionTypeReference()) { #>
-import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TargetCollectionType()#>;
-<# } #>
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IBaseCollectionPage;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionPage(), "IBaseCollectionPage" + c.CollectionPageGeneric())#>

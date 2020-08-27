@@ -713,17 +713,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return method.ReturnType is OdcmPrimitiveType
                 ? method.ReturnType.GetTypeString() : method.ReturnType.Name.ToCheckedCase();
         }
-        public static string OdcmMethodReturnNamespaceSection(this OdcmMethod method)
-        {
-            return method.ReturnType is OdcmEnum
-                ? "generated" : "extensions";
-        }
-
-        public static bool ShouldIncludeCollectionTypeReference(this OdcmObject c)
-        {
-            return !(c is OdcmMethod && (c as OdcmMethod).ReturnType is OdcmPrimitiveType);
-        }
-
         public static string TargetCollectionType(this OdcmObject c)
         {
             return c is OdcmMethod ? OdcmMethodReturnType(c as OdcmMethod) : TypeName(c);
@@ -909,6 +898,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                         importStatements.Add(string.Format(importFormat, p.Type.Namespace.Name.AddPrefix(), p.GetPackagePrefix(), propertyType));
                 }
             }
+            if (!(method?.ReturnType == null || method.ReturnType is OdcmPrimitiveType))
+                sb.AppendFormat(importFormat, method.ReturnType.Namespace.Name.AddPrefix(), method.ReturnType.GetPackagePrefix(), method.OdcmMethodReturnType());
 
             sb.Append(string.Join(string.Empty, importStatements));
 
@@ -1203,33 +1194,25 @@ import java.util.EnumSet;";
                     @namespace = p.Type.Namespace.Name.AddPrefix();
                     if (p.Class.GetTypeString() != graphServiceEntityName)
                         methodImports.AppendFormat(importFormat, p.Class.Namespace.Name.AddPrefix(), p.Class.GetPackagePrefix(), p.Class.GetTypeString());
-                    p.Projection?.Type?.AsOdcmClass()?.MethodsAndOverloads()?.ForEach(o => ImportClassesOfMethodParameters(o, importFormat, methodImports));
+                    if (!(p.Projection.Type is OdcmPrimitiveType))
+                        methodImports.AppendFormat(importFormat, p.Projection.Type.Namespace.Name.AddPrefix(), p.Projection.Type.GetPackagePrefix(), p.Projection.Type.GetTypeString());
+                    p.Projection?.Type?.AsOdcmClass()?.MethodsAndOverloads()?.Distinct()?.ToList()?.ForEach(o => ImportClassesOfMethodParameters(o, importFormat, methodImports));
                     break;
                 case OdcmMethod m:
-                    m.WithOverloads().ForEach(o => ImportClassesOfMethodParameters(o, importFormat, methodImports));
+                    m.WithDistinctOverloads().ForEach(o => ImportClassesOfMethodParameters(o, importFormat, methodImports));
                     goto default;
                 case OdcmClass c:
                     if (c.GetTypeString() != graphServiceEntityName)
                         methodImports.AppendFormat(importFormat, c.Namespace.Name.AddPrefix(), c.GetPackagePrefix(), c.GetTypeString());
 
                     var importTypeToExclude = host.TemplateFile.EndsWith("BaseEntityRequest.java.tt") ? host.TemplateName : string.Empty;
-                    c?.MethodsAndOverloads()?.ForEach(o => ImportClassesOfMethodParameters(o, importFormat, methodImports, importTypeToExclude));
+                    c?.MethodsAndOverloads()?.Distinct()?.ToList()?.ForEach(o => ImportClassesOfMethodParameters(o, importFormat, methodImports, importTypeToExclude));
                     c?.NavigationProperties()?.Where(x => x.IsCollection)?.Select(x => x.Projection.Type)?.Distinct()?.ToList()?.ForEach(x =>
-                        {
-                            methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeCollectionRequestBuilder());
-                            methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeRequestBuilder());
-                            if (!host.TemplateInfo.TemplateName.StartsWith(interfaceTemplatePrefix))
-                            {
-                                methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeCollectionRequestBuilder());
-                                methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeRequestBuilder());
-                            }
-                        });
+                        ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix, true)
+                    );
                     c?.NavigationProperties()?.Where(x => !x.IsCollection)?.Select(x => x.Projection.Type)?.Distinct()?.ToList()?.ForEach(x =>
-                    {
-                        methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeRequestBuilder());
-                        if (!host.TemplateInfo.TemplateName.StartsWith(interfaceTemplatePrefix))
-                            methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeRequestBuilder());
-                    });
+                        ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix, false)
+                    );
                     goto default;
                 default:
                     @namespace = host.CurrentNamespace();
@@ -1243,7 +1226,18 @@ import java.util.EnumSet;";
                 fullyQualifiedImport,
                 methodImports.ToString());
         }
-
+        private static void ImportRequestBuilderTypes(CustomT4Host host, OdcmType x, StringBuilder methodImports, string importFormat, string interfaceTemplatePrefix, bool includeCollectionTypes)
+        {
+            if (includeCollectionTypes)
+                methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeCollectionRequestBuilder());
+            methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeRequestBuilder());
+            if (!host.TemplateInfo.TemplateName.StartsWith(interfaceTemplatePrefix))
+            {
+                if (includeCollectionTypes)
+                    methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeCollectionRequestBuilder());
+                methodImports.AppendFormat(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeRequestBuilder());
+            }
+        }
         /// <summary>
         /// Determines which namespace current type belongs to
         /// </summary>

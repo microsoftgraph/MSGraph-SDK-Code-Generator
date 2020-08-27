@@ -6,9 +6,6 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
-
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesRequest())#>
 
     void get(final ICallback<<#=c.ITypeCollectionWithReferencesPage()#>> callback);

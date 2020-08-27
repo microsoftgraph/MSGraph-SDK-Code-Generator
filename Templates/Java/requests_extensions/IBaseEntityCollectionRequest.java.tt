@@ -6,9 +6,6 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IBaseCollectionPage;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionRequest())#>

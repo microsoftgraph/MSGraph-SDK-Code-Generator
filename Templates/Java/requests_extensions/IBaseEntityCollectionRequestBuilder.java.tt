@@ -30,9 +30,6 @@ import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<
     }
 }
 #>
-<# if (c.ShouldIncludeCollectionTypeReference()) { #>
-import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TargetCollectionType()#>;
-<# } #>
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IBaseCollectionPage;
 

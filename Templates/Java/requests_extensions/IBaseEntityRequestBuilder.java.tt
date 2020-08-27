@@ -5,9 +5,7 @@
 <#host.TemplateName = c.ITypeRequestBuilder();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IRequestBuilder;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
-import java.util.EnumSet;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequestBuilder(), "IRequestBuilder")#>
     /**
