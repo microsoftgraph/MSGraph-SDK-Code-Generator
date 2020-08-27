@@ -32,7 +32,7 @@ public class BaseGraphServiceClient extends BaseClient implements IBaseGraphServ
     /**
      * The default endpoint for the Microsoft Graph Service
      */
-    public static final String DEFAULT_GRAPH_ENDPOINT = "https://graph.microsoft.com/v1.0";
+    public static final String DEFAULT_GRAPH_ENDPOINT = "https://graph.microsoft.com/beta";
 
     /**
      * The current endpoint
