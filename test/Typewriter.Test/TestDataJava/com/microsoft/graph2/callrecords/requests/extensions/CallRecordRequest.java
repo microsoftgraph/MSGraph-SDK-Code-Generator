@@ -3,12 +3,21 @@
 // ------------------------------------------------------------------------------
 
 package com.microsoft.graph2.callrecords.requests.extensions;
-import com.microsoft.graph2.callrecords.requests.extensions.ICallRecordRequest;
-import com.microsoft.graph2.callrecords.requests.extensions.CallRecordRequest;
-import com.microsoft.graph2.callrecords.models.extensions.CallRecord;
 
-import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph2.callrecords.models.extensions.CallRecord;
+import com.microsoft.graph2.callrecords.requests.extensions.ISessionCollectionRequestBuilder;
+import com.microsoft.graph2.callrecords.requests.extensions.ISessionRequestBuilder;
+import com.microsoft.graph2.callrecords.requests.extensions.SessionCollectionRequestBuilder;
+import com.microsoft.graph2.callrecords.requests.extensions.SessionRequestBuilder;
+import com.microsoft.graph.requests.extensions.IEntityType2CollectionRequestBuilder;
+import com.microsoft.graph.requests.extensions.IEntityType2RequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType2CollectionRequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType2RequestBuilder;
+import java.util.Arrays;
+import java.util.EnumSet;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;

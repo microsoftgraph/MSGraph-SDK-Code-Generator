@@ -3,12 +3,26 @@
 // ------------------------------------------------------------------------------
 
 package com.microsoft.graph2.callrecords.requests.extensions;
-import com.microsoft.graph2.callrecords.requests.extensions.ISegmentRequest;
-import com.microsoft.graph2.callrecords.requests.extensions.SegmentRequest;
-import com.microsoft.graph2.callrecords.models.extensions.Segment;
 
-import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph2.callrecords.models.extensions.Segment;
+import com.microsoft.graph.models.extensions.Recipient;
+import com.microsoft.graph2.callrecords.models.extensions.Session;
+import com.microsoft.graph.models.extensions.IdentitySet;
+import com.microsoft.graph.requests.extensions.IEntityType3CollectionRequestBuilder;
+import com.microsoft.graph.requests.extensions.IEntityType3RequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType3CollectionRequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
+import com.microsoft.graph.requests.extensions.ICallRequestBuilder;
+import com.microsoft.graph.requests.extensions.CallRequestBuilder;
+import com.microsoft.graph2.callrecords.requests.extensions.ISessionRequestBuilder;
+import com.microsoft.graph2.callrecords.requests.extensions.SessionRequestBuilder;
+import com.microsoft.graph2.callrecords.requests.extensions.IPhotoRequestBuilder;
+import com.microsoft.graph2.callrecords.requests.extensions.PhotoRequestBuilder;
+import java.util.Arrays;
+import java.util.EnumSet;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;

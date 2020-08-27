@@ -5,6 +5,7 @@
 package com.microsoft.graph2.callrecords.models.extensions;
 
 import com.microsoft.graph.models.extensions.IdentitySet;
+import com.microsoft.graph2.callrecords.models.extensions.Session;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.JsonObject;

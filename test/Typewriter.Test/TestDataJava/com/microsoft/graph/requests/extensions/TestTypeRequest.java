@@ -3,12 +3,15 @@
 // ------------------------------------------------------------------------------
 
 package com.microsoft.graph.requests.extensions;
-import com.microsoft.graph.requests.extensions.ITestTypeRequest;
-import com.microsoft.graph.requests.extensions.TestTypeRequest;
-import com.microsoft.graph.models.extensions.TestType;
 
-import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.models.extensions.TestType;
+import com.microsoft.graph.models.extensions.DerivedComplexTypeRequest;
+import com.microsoft.graph.models.extensions.ResponseObject;
+import java.util.Arrays;
+import java.util.EnumSet;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;
