@@ -111,16 +111,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// <param name="enumType">enum</param>
         private void AddEnum(OdcmEnum enumType)
         {
+            var export = IsMainNamespace ? "export " : string.Empty;
             var enumTypeName = enumType.Name.UpperCaseFirstChar();
             var enumValues = enumType.GetEnumValues();
-            var exportTypeLength = "export type".Length + enumTypeName.Length + enumValues.Length + 3;
+            var exportTypeLength = (export + "type").Length + enumTypeName.Length + enumValues.Length + 3;
             if (exportTypeLength < MaxLineLength)
             {
-                sb.AppendLine($"{NamespaceIndent}export type {enumTypeName} = {enumValues};");
+                sb.AppendLine($"{NamespaceIndent}{export}type {enumTypeName} = {enumValues};");
             }
             else
             {
-                sb.AppendLine($"{NamespaceIndent}export type {enumTypeName} =");
+                sb.AppendLine($"{NamespaceIndent}{export}type {enumTypeName} =");
                 var enums = enumValues.Split('|');
                 sb.Append($"{NamespaceIndent}{TabSpace}| ");
                 sb.Append(string.Join(Environment.NewLine + NamespaceIndent + TabSpace + "| ", enums.Select(@enum => @enum.Trim())));
@@ -141,6 +142,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// <param name="class">entity or complex type</param>
         private void AddEntityOrComplexType(OdcmClass @class)
         {
+            var export = IsMainNamespace ? "export " : string.Empty;
             var propCount = @class.Properties.Count;
             var entityTypeName = @class.Name.UpperCaseFirstChar();
             if (propCount == 0 && entityTypeName[0] == 'I')
@@ -159,7 +161,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             var extendsStatement = @class.Base == null
                 ? string.Empty
                 : $" extends {GetFullyQualifiedTypeScriptTypeName(@class.Base.GetTypeString(), @class.Base.Namespace.GetNamespaceName())}";
-            var exportInterfaceLine = NamespaceIndent + "export interface " + entityTypeName + extendsStatement + " {";
+            var exportInterfaceLine = NamespaceIndent + $"{export}interface " + entityTypeName + extendsStatement + " {";
             if (propCount == 0)
             {
                 sb.AppendLine(exportInterfaceLine + "}");

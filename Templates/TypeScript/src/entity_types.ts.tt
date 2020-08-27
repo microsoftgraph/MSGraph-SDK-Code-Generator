@@ -23,12 +23,9 @@ export as namespace microsoftgraph;
 export type NullableOption<T> = T | null;
 
 <#=typeScriptNamespaces.MainNamespace.ToString()#>
-
 <#
 foreach (var subNamespace in typeScriptNamespaces.SubNamespaces)
 {
-#>
-<#=subNamespace.Value.ToString()#>
-<#
+#><#=subNamespace.Value.ToString()#><#
 }
 #>
