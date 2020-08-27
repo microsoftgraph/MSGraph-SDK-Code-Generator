@@ -754,25 +754,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         }
         public static string GetPackagePrefix(this OdcmObject obj)
         {
-            if (obj is OdcmEnum)
+            switch(obj)
             {
-                return "models.generated";
-            }
-            else if (obj is OdcmType)
-            {
-                return GetPrefixForModels();
-            }
-            else if (obj is OdcmParameter)
-            {
-                return GetPackagePrefix((obj as OdcmParameter).Type);
-            }
-            else if (obj is OdcmProperty)
-            {
-                return GetPackagePrefix((obj as OdcmProperty).Type);
-            }
-            else
-            {
-                throw new ArgumentException("obj");
+                case OdcmEnum e:
+                    return "";
+                case OdcmType t:
+                    return GetPrefixForModels();
+                case OdcmParameter p:
+                    return GetPackagePrefix(p.Type);
+                case OdcmProperty p:
+                    return GetPackagePrefix(p.Type);
+                default:
+                    throw new ArgumentException(nameof(obj));
             }
         }
         public static string CreatePackageDefinition(this CustomT4Host host)
