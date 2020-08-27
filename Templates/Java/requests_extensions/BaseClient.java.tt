@@ -4,8 +4,9 @@
 <#@ output extension="\\" #>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.models.extensions.<#=c.IBaseClientType(host)#>;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.BaseClient;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.models.extensions.<#=c.IBaseClientType(host)#>;
+import <#=importNamespace#>.core.BaseClient;
 
 <#=TypeHelperJava.CreateClassDef(c.BaseClientType(host), "BaseClient", c.IBaseClientType(host))#>
 

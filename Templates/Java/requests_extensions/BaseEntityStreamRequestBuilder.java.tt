@@ -5,8 +5,9 @@
 <#host.TemplateName = c.TypeStreamRequestBuilder();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequestBuilder;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseRequestBuilder;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeStreamRequestBuilder(), "BaseRequestBuilder", c.ITypeStreamRequestBuilder())#>
 
@@ -17,7 +18,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequestBuilder
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeStreamRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
+    public <#=c.TypeStreamRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -36,7 +37,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequestBuilder
      * @param requestOptions the options for this request
      * @return the <#=c.ITypeStreamRequest()#> instance
      */
-    public <#=c.ITypeStreamRequest()#> buildRequest(final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
+    public <#=c.ITypeStreamRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         return new <#=c.TypeStreamRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 <#

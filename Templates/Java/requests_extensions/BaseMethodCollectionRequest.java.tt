@@ -6,16 +6,18 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequestBuilder()#>;
-import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
-import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
-import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeBody()#>;
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeBody()#>;
 <# } #>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.QueryOption;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionRequest;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.IExecutors;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.options.QueryOption;
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseCollectionRequest;
+import <#=importNamespace#>.concurrency.IExecutors;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(),"BaseCollectionRequest" + c.CollectionRequestGeneric(), c.ITypeCollectionRequest())#>
 
@@ -32,7 +34,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.IExecutors;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
+    public <#=c.TypeCollectionRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.ITypeCollectionPage()#>.class);
 <# } else { #>

@@ -22,11 +22,12 @@
 <#host.TemplateName = iBaseTypeRequest;#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForIBaseMethodBodyRequest()#>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionRequest;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequest;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionRequest;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.concurrency.ICallback;
+import <#=importNamespace#>.http.BaseCollectionRequest;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.core.ClientException;
+import <#=importNamespace#>.http.BaseCollectionRequest;
 
 <#=TypeHelperJava.CreateInterfaceDef(iBaseTypeRequest)#>
 

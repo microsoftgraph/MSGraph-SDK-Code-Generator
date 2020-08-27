@@ -7,8 +7,9 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequestBuilder;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.BaseRequestBuilder;
+import <#=importNamespace#>.core.IBaseClient;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequestBuilder(), "BaseRequestBuilder", c.ITypeReferenceRequestBuilder())#>
 
@@ -19,7 +20,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeReferenceRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
+    public <#=c.TypeReferenceRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -38,7 +39,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
      * @param requestOptions the options for this request
      * @return the <#=c.ITypeReferenceRequest()#> instance
      */
-    public <#=c.ITypeReferenceRequest()#> buildRequest(final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
+    public <#=c.ITypeReferenceRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         return new <#=c.TypeReferenceRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 }

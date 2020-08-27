@@ -4,7 +4,8 @@
 <#@ output extension="\\" #>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.core.IBaseClient;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.IBaseClientType(host), "IBaseClient")#>
 <#

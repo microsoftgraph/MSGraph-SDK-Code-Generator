@@ -6,7 +6,9 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeReferenceRequestBuilder(), "IRequestBuilder")#>
 
@@ -23,5 +25,5 @@ import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      * @param requestOptions the options for this request
      * @return the <#=c.ITypeReferenceRequest()#> instance
      */
-    <#=c.ITypeReferenceRequest()#> buildRequest(final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions);
+    <#=c.ITypeReferenceRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 }

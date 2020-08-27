@@ -22,23 +22,24 @@
 <#host.TemplateName = baseTypeRequest;#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForBaseMethodBodyRequest()#>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionRequest;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequest;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.BaseCollectionRequest;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.HttpMethod;
+import <#=importNamespace#>.concurrency.ICallback;
+import <#=importNamespace#>.core.ClientException;
+import <#=importNamespace#>.core.IBaseClient;
 <#
 	if (c.AsOdcmMethod().IsCollection) {
 #>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.IExecutors;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionRequest;
+import <#=importNamespace#>.concurrency.IExecutors;
+import <#=importNamespace#>.http.BaseCollectionRequest;
 <#
 	}
 	else {
 #>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequest;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.HttpMethod;
 <#
 	}
 #>
@@ -53,7 +54,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=baseTypeRequest#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
+    public <#=baseTypeRequest#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=returnType#>.class);
         body = new <#=c.TypeBody()#>();
     }

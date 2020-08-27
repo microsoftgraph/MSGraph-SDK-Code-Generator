@@ -5,7 +5,8 @@
 <#host.TemplateName = c.ITypeStreamRequest();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IHttpStreamRequest;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IHttpStreamRequest;
 
 import java.io.InputStream;
 

@@ -6,10 +6,11 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.QueryOption;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequest;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.options.QueryOption;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.HttpMethod;
+import <#=importNamespace#>.core.IBaseClient;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequest(), "BaseRequest", c.ITypeReferenceRequest())#>
 
@@ -20,7 +21,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeReferenceRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
+    public <#=c.TypeReferenceRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 

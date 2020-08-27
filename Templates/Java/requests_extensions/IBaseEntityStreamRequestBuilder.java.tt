@@ -5,7 +5,9 @@
 <#host.TemplateName = c.ITypeStreamRequestBuilder();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
-import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeStreamRequestBuilder()#>;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeStreamRequestBuilder()#>;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeStreamRequestBuilder(), "IRequestBuilder")#>
 
@@ -22,7 +24,7 @@ import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<
      * @param requestOptions the options for this request
      * @return the <#=c.ITypeStreamRequest()#> instance
      */
-    <#=c.ITypeStreamRequest()#> buildRequest(final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions);
+    <#=c.ITypeStreamRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 <#
 if (c.AsOdcmClass() != null)
 {

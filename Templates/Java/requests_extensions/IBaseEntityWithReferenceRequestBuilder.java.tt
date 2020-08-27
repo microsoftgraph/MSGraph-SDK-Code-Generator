@@ -5,6 +5,7 @@
 <#host.TemplateName = c.ITypeWithReferencesRequestBuilder();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeWithReferencesRequestBuilder(), "IRequestBuilder")#>
@@ -22,7 +23,7 @@
      * @param requestOptions the options for this request
      * @return the <#=c.ITypeWithReferencesRequest()#> instance
      */
-    <#=c.ITypeWithReferencesRequest()#> buildRequest(final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions);
+    <#=c.ITypeWithReferencesRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 
     <#=c.ITypeReferenceRequestBuilder()#> reference();
 

@@ -5,9 +5,10 @@
 <#host.TemplateName = c.ITypeRequest();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForIBaseEntityRequest()#>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IHttpRequest;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.concurrency.ICallback;
+import <#=importNamespace#>.core.ClientException;
+import <#=importNamespace#>.http.IHttpRequest;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequest(), "IHttpRequest")#>
 

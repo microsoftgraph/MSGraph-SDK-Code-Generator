@@ -6,9 +6,11 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IHttpRequest;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.serializer.IJsonBackedObject;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IHttpRequest;
+import <#=importNamespace#>.serializer.IJsonBackedObject;
 
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeWithReferencesRequest(), "IHttpRequest")#>

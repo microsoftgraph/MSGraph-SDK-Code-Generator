@@ -9,12 +9,14 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequest()#>;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequest()#>;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionRequestBuilder(), "IRequestBuilder")#>
 
     <#=c.ITypeCollectionRequest()#> buildRequest();
 
-    <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions);
+    <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 
 }

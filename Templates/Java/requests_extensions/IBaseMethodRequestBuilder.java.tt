@@ -5,7 +5,8 @@
 <#host.TemplateName = c.ITypeRequestBuilder();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefIBaseMethodRequestBuilder()#>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IRequestBuilder;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IRequestBuilder;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequestBuilder(), "IRequestBuilder")#>
 
@@ -22,5 +23,5 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IRequestBuilder;
      * @param requestOptions the options for the request
      * @return the <#=c.ITypeRequest()#> instance
      */
-    <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions);
+    <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 }

@@ -6,11 +6,13 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.QueryOption;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseCollectionRequest;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.ReferenceRequestBody;
-import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.options.QueryOption;
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseCollectionRequest;
+import <#=importNamespace#>.http.ReferenceRequestBody;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric(), c.ITypeCollectionReferenceRequest())#>
 
@@ -21,7 +23,7 @@ import <#=host.CurrentNamespace()#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionReferenceRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
+    public <#=c.TypeCollectionReferenceRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.ITypeCollectionPage()#>.class);
     }
 

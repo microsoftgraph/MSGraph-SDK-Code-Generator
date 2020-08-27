@@ -9,8 +9,9 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeRequestBuilder()#>;
-import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequest()#>;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequest()#>;
 <#
 var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
 if (currentTypeProjection != null) {
@@ -20,23 +21,24 @@ if (currentTypeProjection != null) {
         }
         if (method.IsCollection) {
 #>
-import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.ITypeCollectionRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.ITypeCollectionRequestBuilder()#>;
 <#
         } else {
 #>
-import <#=host.CurrentNamespace()#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.ITypeRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.ITypeRequestBuilder()#>;
 <#
         }
     }
 }
 #>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IBaseCollectionPage;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IBaseCollectionPage;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionRequestBuilder(), "IRequestBuilder")#>
 
     <#=c.ITypeCollectionRequest()#> buildRequest();
 
-    <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions);
+    <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 
     <#=c.ITypeRequestBuilder()#> byId(final String id);
 

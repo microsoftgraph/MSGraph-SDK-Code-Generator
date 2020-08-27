@@ -5,15 +5,16 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.authentication.*;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.logger.*;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.authentication.*;
+import <#=importNamespace#>.logger.*;
 import com.google.gson.JsonObject;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.IExecutors;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.models.extensions.IGraphServiceClient;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.IHttpProvider;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.serializer.ISerializer;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IClientConfig;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.DefaultClientConfig;
+import <#=importNamespace#>.concurrency.IExecutors;
+import <#=importNamespace#>.models.extensions.IGraphServiceClient;
+import <#=importNamespace#>.http.IHttpProvider;
+import <#=importNamespace#>.serializer.ISerializer;
+import <#=importNamespace#>.core.IClientConfig;
+import <#=importNamespace#>.core.DefaultClientConfig;
 
 <#=TypeHelperJava.CreateClassDef(c.ClientType(host), c.BaseClientType(host), c.IClientType(host))#>
 

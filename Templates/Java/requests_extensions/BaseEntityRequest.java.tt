@@ -5,9 +5,10 @@
 <#host.TemplateName = c.TypeRequest();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequest;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.HttpMethod;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest", c.ITypeRequest())#>
 	<# if (c.AsOdcmClass() != null && c.AsOdcmClass().Derived.Any()) { #>
@@ -22,7 +23,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
      */
     public <#=c.TypeRequest()#>(final String requestUrl,
             final <#=TypeHelperJava.IBaseClientType()#> client,
-            final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions,
+            final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions,
             final Class<<# if(!host.TemplateName.Equals("EntityRequest")){ #>? extends <#}#><#=c.ClassTypeName()#>> responseClass) {
         super(requestUrl, client, requestOptions, responseClass);
     }
@@ -35,7 +36,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
+    public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 

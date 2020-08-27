@@ -5,6 +5,7 @@
 <#host.TemplateName = c.ITypeRequestBuilder();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequestBuilder(), "IRequestBuilder")#>
     /**
@@ -20,7 +21,7 @@
      * @param requestOptions the options for this request
      * @return the <#=c.ITypeRequest()#> instance
      */
-    <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions);
+    <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 
 <# if(host.TemplateName.Equals("IThumbnailSetRequestBuilder")){#>
     /**

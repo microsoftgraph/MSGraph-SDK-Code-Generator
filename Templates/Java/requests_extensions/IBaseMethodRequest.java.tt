@@ -5,12 +5,13 @@
 <#host.TemplateName = c.ITypeRequest();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForIBaseMethodRequest()#>
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.ICallback;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.concurrency.IExecutors;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.ClientException;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequest;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.concurrency.ICallback;
+import <#=importNamespace#>.concurrency.IExecutors;
+import <#=importNamespace#>.core.ClientException;
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.HttpMethod;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequest())#>
 
