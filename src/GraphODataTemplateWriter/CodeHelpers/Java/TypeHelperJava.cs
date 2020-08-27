@@ -1197,23 +1197,40 @@ import java.util.EnumSet;";
                         methodImports.Add(string.Format(importFormat, p.Class.Namespace.Name.AddPrefix(), p.Class.GetPackagePrefix(), p.Class.GetTypeString()));
                     if (!(p.Projection.Type is OdcmPrimitiveType))
                         methodImports.Add(string.Format(importFormat, p.Projection.Type.Namespace.Name.AddPrefix(), p.Projection.Type.GetPackagePrefix(), p.Projection.Type.GetTypeString()));
-                    p.Projection?.Type?.AsOdcmClass()?.MethodsAndOverloads()?.Distinct()?.SelectMany(o => ImportClassesOfMethodParameters(o))?.ToList()?.ForEach(x => methodImports.Add(x));
+                    p.Projection?.Type?.AsOdcmClass()?.MethodsAndOverloads()
+                        ?.Distinct()
+                        ?.SelectMany(o => ImportClassesOfMethodParameters(o))
+                        ?.ToList()
+                        ?.ForEach(x => methodImports.Add(x));
                     break;
                 case OdcmMethod m:
-                    m.WithDistinctOverloads().SelectMany(o => ImportClassesOfMethodParameters(o))?.ToList()?.ForEach(x => methodImports.Add(x));
+                    m.WithDistinctOverloads()
+                        .SelectMany(o => ImportClassesOfMethodParameters(o))
+                        ?.ToList()
+                        ?.ForEach(x => methodImports.Add(x));
                     goto default;
                 case OdcmClass c:
                     if (c.GetTypeString() != graphServiceEntityName)
                         methodImports.Add(string.Format(importFormat, c.Namespace.Name.AddPrefix(), c.GetPackagePrefix(), c.GetTypeString()));
 
                     var importTypeToExclude = host.TemplateFile.EndsWith("BaseEntityRequest.java.tt") ? host.TemplateName : string.Empty;
-                    c?.MethodsAndOverloads()?.Distinct()?.SelectMany(o => ImportClassesOfMethodParameters(o, importTypeToExclude: importTypeToExclude))?.ToList()?.ForEach(x => methodImports.Add(x));
-                    c?.NavigationProperties()?.Where(x => x.IsCollection)?.Select(x => x.Projection.Type)?.Distinct()?.ToList()?.ForEach(x =>
-                        ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix, true)
-                    );
-                    c?.NavigationProperties()?.Where(x => !x.IsCollection)?.Select(x => x.Projection.Type)?.Distinct()?.ToList()?.ForEach(x =>
-                        ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix, false)
-                    );
+                    c?.MethodsAndOverloads()
+                        ?.Distinct()
+                        ?.SelectMany(o => ImportClassesOfMethodParameters(o, importTypeToExclude: importTypeToExclude))
+                        ?.ToList()
+                        ?.ForEach(x => methodImports.Add(x));
+                    c?.NavigationProperties()
+                        ?.Where(x => x.IsCollection)?
+                        .Select(x => x.Projection.Type)
+                        ?.Distinct()
+                        ?.ToList()
+                        ?.ForEach(x => ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix, true));
+                    c?.NavigationProperties()
+                        ?.Where(x => !x.IsCollection)
+                        ?.Select(x => x.Projection.Type)
+                        ?.Distinct()
+                        ?.ToList()
+                        ?.ForEach(x => ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix, false));
                     goto default;
                 default:
                     @namespace = host.CurrentNamespace();
