@@ -12,7 +12,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.BaseClient;
     /**
      * The default endpoint for the Microsoft Graph Service
      */
-    public static final String DEFAULT_GRAPH_ENDPOINT = "https://graph.microsoft.com/v1.0";
+    public static final String DEFAULT_GRAPH_ENDPOINT = "<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>";
 
     /**
      * The current endpoint
