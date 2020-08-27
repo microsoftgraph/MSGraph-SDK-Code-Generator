@@ -22,7 +22,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
      */
     public <#=c.TypeRequest()#>(final String requestUrl,
             final <#=TypeHelperJava.IBaseClientType()#> client,
-            final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions,
+            final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions,
             final Class<<# if(!host.TemplateName.Equals("EntityRequest")){ #>? extends <#}#><#=c.ClassTypeName()#>> responseClass) {
         super(requestUrl, client, requestOptions, responseClass);
     }
@@ -35,7 +35,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 

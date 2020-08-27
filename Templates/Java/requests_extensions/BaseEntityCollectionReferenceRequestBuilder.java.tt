@@ -6,7 +6,6 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequestBuilder;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
 
@@ -19,7 +18,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionReferenceRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public <#=c.TypeCollectionReferenceRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -27,7 +26,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
         return buildRequest(getOptions());
     }
 
-    public <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
         return new <#=c.TypeCollectionReferenceRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 }

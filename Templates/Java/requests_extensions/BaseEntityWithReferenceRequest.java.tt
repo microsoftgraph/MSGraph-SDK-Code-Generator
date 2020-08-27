@@ -7,7 +7,6 @@
 <#=host.CreatePackageDef()#>
 
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.QueryOption;
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.BaseRequest;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
 import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.core.IBaseClient;
@@ -22,7 +21,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.serializer.IJsonBackedO
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeWithReferencesRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public <#=c.TypeWithReferencesRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 

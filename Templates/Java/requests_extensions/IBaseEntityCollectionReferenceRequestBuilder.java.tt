@@ -9,11 +9,9 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option;
-
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionReferenceRequestBuilder(), "IRequestBuilder")#>
 
     <#=c.ITypeCollectionReferenceRequest()#> buildRequest();
 
-    <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
+    <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions);
 }

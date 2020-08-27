@@ -53,7 +53,7 @@ import <#=host.CurrentModel.GetNamespace().AddPrefix()#>.http.HttpMethod;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=baseTypeRequest#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public <#=baseTypeRequest#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=host.CurrentModel.GetNamespace().AddPrefix()#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=returnType#>.class);
         body = new <#=c.TypeBody()#>();
     }
