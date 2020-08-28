@@ -9,11 +9,14 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IHttpRequest;
+
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesRequestBuilder(), "IRequestBuilder")#>
 
     <#=c.ITypeCollectionWithReferencesRequest()#> buildRequest();
 
-    <#=c.ITypeCollectionWithReferencesRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
+    <#=c.ITypeCollectionWithReferencesRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 
     <#=c.ITypeWithReferencesRequestBuilder()#> byId(final String id);
 

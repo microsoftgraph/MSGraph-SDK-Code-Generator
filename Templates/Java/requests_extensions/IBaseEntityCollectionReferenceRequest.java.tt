@@ -6,6 +6,11 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IHttpRequest;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionReferenceRequest())#>
 
     void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback);

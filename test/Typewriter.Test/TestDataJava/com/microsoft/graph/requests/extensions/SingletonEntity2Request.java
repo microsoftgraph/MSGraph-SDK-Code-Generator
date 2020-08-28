@@ -3,12 +3,15 @@
 // ------------------------------------------------------------------------------
 
 package com.microsoft.graph.requests.extensions;
-import com.microsoft.graph.requests.extensions.ISingletonEntity2Request;
-import com.microsoft.graph.requests.extensions.SingletonEntity2Request;
-import com.microsoft.graph.models.extensions.SingletonEntity2;
 
-import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.models.extensions.SingletonEntity2;
+import com.microsoft.graph.requests.extensions.IEntityType3RequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
+import java.util.Arrays;
+import java.util.EnumSet;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;

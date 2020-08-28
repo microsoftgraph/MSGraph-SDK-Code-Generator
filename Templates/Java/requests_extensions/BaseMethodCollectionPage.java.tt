@@ -19,8 +19,16 @@
 	}
 #>
 
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.*;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IBaseCollectionPage;
+import <#=importNamespace#>.http.BaseCollectionPage;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage" + c.CollectionPageGeneric(), c.ITypeCollectionPage())#>
 
@@ -33,7 +41,7 @@ import com.google.gson.annotations.*;
 
 <# } #>
     /**
-     * A collection page for <#=c.TypeName()#>.
+     * A collection page for <#=(c as OdcmMethod).OdcmMethodReturnType()#>.
      *
      * @param response The serialized <#=c.TypeCollectionResponse()#> from the service
      * @param builder The request builder for the next collection page

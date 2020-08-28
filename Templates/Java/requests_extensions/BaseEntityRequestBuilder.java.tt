@@ -4,11 +4,11 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = c.TypeRequestBuilder();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForBaseEntityRequestBuilder(host)#>
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.http.BaseRequestBuilder;
-import com.microsoft.graph.options.Option;
-import java.util.EnumSet;
+<#=host.CreatePackageDef()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseRequestBuilder;
+<# var mainNamespace = host.CurrentNamespace(); #>
 
 <#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder", c.ITypeRequestBuilder())#>
 
@@ -19,7 +19,7 @@ import java.util.EnumSet;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public <#=c.TypeRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -38,8 +38,8 @@ import java.util.EnumSet;
      * @param requestOptions the options for this request
      * @return the <#=c.ITypeRequest()#> instance
      */
-    public <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
-        return new <#=c.TypeRequest()#>(getRequestUrl(), getClient(), requestOptions);
+    public <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+        return new <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 
 <#
@@ -59,7 +59,7 @@ import java.util.EnumSet;
 <#
 if (c.AsOdcmClass() != null)
 {
-    foreach(var prop in c.AsOdcmClass().NavigationProperties())
+    foreach(var prop in c.AsOdcmClass().NavigationProperties(true))
     {
         var propName = prop.Name.ToUpperFirstChar();
 		var sanitizedProperty = propName.SanitizePropertyName().ToLowerFirstChar();
@@ -151,135 +151,3 @@ if (c.AsOdcmClass() != null)
 }
 #>
 }
-
-<#+
-	public string CreatePackageDefForBaseEntityRequestBuilder(CustomT4Host host)
-	{
-		var sb = new StringBuilder();
-		sb.Append(host.CreatePackageDefinition());
-
-		var importFormat = @"import {0}.{1}.{2};";
-		sb.AppendFormat(importFormat,
-						host.CurrentNamespace(),
-						"requests.extensions",
-						host.CurrentType.ITypeRequest());
-		sb.Append("\n");
-		sb.AppendFormat(importFormat,
-						host.CurrentNamespace(),
-						"requests.extensions",
-						host.CurrentType.TypeRequest());
-		sb.Append("\n");
-		var c = host.CurrentType;
-		if (c.AsOdcmClass() != null)
-		{
-			foreach(var prop in c.AsOdcmClass().NavigationProperties())
-			{
-				if (prop.IsCollection()) {
-					
-					sb.AppendFormat(importFormat,
-						prop.GetPropertyNamespace(),
-						"requests.extensions",
-						prop.ITypeCollectionRequestBuilder());
-					sb.Append("\n");
-
-					sb.AppendFormat(importFormat,
-						prop.GetPropertyNamespace(),
-						"requests.extensions",
-						prop.TypeCollectionRequestBuilder());
-					sb.Append("\n");
-				}
-				sb.AppendFormat(importFormat,
-						prop.GetPropertyNamespace(),
-						"requests.extensions",
-						prop.ITypeRequestBuilder());
-				sb.Append("\n");
-
-				sb.AppendFormat(importFormat,
-						prop.GetPropertyNamespace(),
-						"requests.extensions",
-						prop.TypeRequestBuilder());
-				sb.Append("\n");
-			}
-
-			foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
-			{
-				var propRequestBuilder = prop.TypeRequestBuilder();
-				sb.AppendFormat(importFormat,
-						prop.GetPropertyNamespace(),
-						"requests.extensions",
-						"I" + propRequestBuilder);
-				sb.Append("\n");
-
-				sb.AppendFormat(importFormat,
-						prop.GetPropertyNamespace(),
-						"requests.extensions",
-						propRequestBuilder);
-				sb.Append("\n");
-			}
-
-			if (c is OdcmMediaClass)
-			{
-				sb.AppendFormat(importFormat,
-						host.CurrentNamespace(),
-						"requests.extensions",
-						host.CurrentType.ITypeStreamRequestBuilder());
-				sb.Append("\n");
-
-				sb.AppendFormat(importFormat,
-						host.CurrentNamespace(),
-						"requests.extensions",
-						host.CurrentType.TypeStreamRequestBuilder());
-				sb.Append("\n");
-			}
-
-			foreach (var method in c.AsOdcmClass().MethodsAndOverloads()) {
-				if (method.IsBoundToCollection) {
-					continue;
-				}
-
-				foreach (var p in method.Parameters)
-				{
-					if(!(p.Type is OdcmPrimitiveType) && p.Type.GetTypeString() != "com.google.gson.JsonElement") {
-						var typeString = p.Type.GetTypeString();
-						if(p.Type.GetTypeString().StartsWith("EnumSet<")){
-							typeString = typeString.Substring(typeString.IndexOf("<") + 1);
-							typeString = typeString.Substring(0, typeString.Length-1);
-						}
-						sb.AppendFormat(importFormat,
-							p.Type.Namespace.Name.AddPrefix(),
-							p.GetPackagePrefix(),
-							typeString);
-						sb.Append("\n");
-					}
-				}
-
-				if (method.IsCollection) {
-					sb.AppendFormat(importFormat,
-						method.Namespace.Name.AddPrefix(),
-						"requests.extensions",
-						method.ITypeCollectionRequestBuilder());
-					sb.Append("\n");
-
-					sb.AppendFormat(importFormat,
-						method.Namespace.Name.AddPrefix(),
-						"requests.extensions",
-						method.TypeCollectionRequestBuilder());
-					sb.Append("\n");
-				} else {
-					sb.AppendFormat(importFormat,
-						method.Namespace.Name.AddPrefix(),
-						"requests.extensions",
-						method.ITypeRequestBuilder());
-					sb.Append("\n");
-
-					sb.AppendFormat(importFormat,
-						method.Namespace.Name.AddPrefix(),
-						"requests.extensions",
-						method.TypeRequestBuilder());
-					sb.Append("\n");
-				}
-			}
-		}
-		return sb.ToString();
-	}
-#>

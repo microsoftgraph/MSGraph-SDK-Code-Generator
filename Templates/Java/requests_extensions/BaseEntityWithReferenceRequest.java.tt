@@ -6,6 +6,13 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.options.QueryOption;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.HttpMethod;
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.serializer.IJsonBackedObject;
+
 <#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequest(), "BaseRequest", c.ITypeWithReferencesRequest())#>
 
     /**
@@ -15,7 +22,7 @@
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeWithReferencesRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public <#=c.TypeWithReferencesRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 

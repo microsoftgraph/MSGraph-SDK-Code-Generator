@@ -71,6 +71,8 @@ namespace Typewriter.Test
                 GenerationMode = GenerationMode.Files,
                 Language = languageStr
             };
+            if (language == TestLanguage.Java)
+                options.EndpointVersion = "v1.0"; // fixes java generation test as the endpoint contains the version and the default options are not applied in this testing mode
 
             if (isPhpBeta)
             {

@@ -5,15 +5,12 @@
 <#host.TemplateName = c.TypeBody();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefinition()#>
-<#
-    var sb = new StringBuilder();
-    sb = TypeHelperJava.ImportClassesOfMethodParameters(c.AsOdcmMethod(), "import {0}.{1}.{2};", sb);
-#>
-<#=sb.ToString()#>
+<#=TypeHelperJava.ImportClassesOfMethodParametersAsString(c.AsOdcmMethod())#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.JsonObject;
-import com.microsoft.graph.serializer.ISerializer;
+import <#=importNamespace#>.serializer.ISerializer;
 import java.util.EnumSet;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeBody())#>

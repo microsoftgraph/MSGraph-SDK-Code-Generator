@@ -5,7 +5,11 @@
 <#host.TemplateName = c.TypeCollectionPage();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForBaseEntityCollectionPage()#>
-import com.microsoft.graph.http.BaseCollectionPage;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.BaseCollectionPage;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage" + c.CollectionPageGeneric(), c.ITypeCollectionPage())#>
 <#

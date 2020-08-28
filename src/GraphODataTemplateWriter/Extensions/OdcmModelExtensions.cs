@@ -149,11 +149,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// <param name="host">The T4Host that orchestrates applying templates to the OdcmModel.</param>
         /// <returns>A boolean value that indicates whether the current type needs to be disambiguated.</returns>
         public static bool DoesCurrentTypeNeedDisambiguation(this CustomT4Host host)
-        {   
+        {
             // At this point this is only applicable to OdcmProperty.
             // Challenging this assumption will require a lot more investigation.
             if (!(host.CurrentType is OdcmProperty))
-                return false; 
+                return false;
 
             // We only support "Request" dismabiguation at this point. Check whether the
             // current type ends in "Request".
@@ -278,7 +278,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 //as an exception so the service has an opportunity to correct this in the metadata
                 throw new Exception("Found no valid EntitySet for the given property.");
 
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 logger.Error("The navigation property \"{0}\" on class \"{1}\" does not specify it is self-contained nor is it defined in an explicit or implicit EntitySet", odcmProperty.Name.ToString(), odcmProperty.Class.FullName.ToString());
                 logger.Error(e);
@@ -325,9 +326,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             }
         }
 
-        public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
+        public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass, bool includeBaseProperties = false)
         {
-            return odcmClass.Properties.Where(prop => prop.IsNavigation());
+            if (includeBaseProperties && odcmClass.Base != null)
+                return odcmClass.Base.NavigationProperties(includeBaseProperties)
+                            .Union(odcmClass.Properties.Where(prop => prop.IsNavigation()));
+            else
+                return odcmClass.Properties.Where(prop => prop.IsNavigation());
         }
 
         public static bool IsNavigation(this OdcmProperty property)
@@ -480,23 +485,26 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// Returns a List containing the supplied method plus its overloads
         public static List<OdcmMethod> WithOverloads(this OdcmMethod odcmMethod)
         {
-            var methods = new List<OdcmMethod>();
-            methods.Add(odcmMethod);
+            var methods = new List<OdcmMethod>
+            {
+                odcmMethod
+            };
             methods.AddRange(odcmMethod.Overloads);
             return methods;
         }
-
-        /// Returns a List containing the supplied class' methods plus their overloads
-        public static List<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
+        private static readonly OdcmMethodEqualityComparer methodComparer = new OdcmMethodEqualityComparer();
+        public static List<OdcmMethod> WithDistinctOverloads(this OdcmMethod odcmMethod)
         {
-            var allMethods = new List<OdcmMethod>();
-            foreach (var method in odcmClass.Methods)
-            {
-                allMethods.AddRange(method.WithOverloads());
-            }
-            return allMethods;
+            var methods = odcmMethod.WithOverloads();
+
+            return methods.Distinct(methodComparer).ToList();
         }
 
+        /// Returns a List containing the supplied class' methods plus their overloads
+        public static IEnumerable<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
+        {
+            return odcmClass.Methods.SelectMany(x => x.WithOverloads());
+        }
     }
 
 }

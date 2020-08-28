@@ -6,6 +6,10 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 import com.google.gson.JsonObject;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.IBaseClientType(host)#>;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.CustomRequestBuilder;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.IClientType(host), c.IBaseClientType(host))#>
 <# if(host.TemplateName.Equals("IGraphServiceClient")){ #>

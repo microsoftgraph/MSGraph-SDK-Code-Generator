@@ -9,9 +9,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.microsoft.graph.serializer.AdditionalDataManager;
-import com.microsoft.graph.serializer.IJsonBackedObject;
-import com.microsoft.graph.serializer.ISerializer;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.serializer.AdditionalDataManager;
+import <#=importNamespace#>.serializer.IJsonBackedObject;
+import <#=importNamespace#>.serializer.ISerializer;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "IJsonBackedObject")#>
 

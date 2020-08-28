@@ -6,6 +6,33 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequest()#>;
+<#
+var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
+if (currentTypeProjection != null) {
+    foreach (var method in currentTypeProjection.MethodsAndOverloads()) {
+        if (!method.IsBoundToCollection) {
+            continue;
+        }
+        if (method.IsCollection) {
+#>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.ITypeCollectionRequestBuilder()#>;
+<#
+        } else {
+#>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.ITypeRequestBuilder()#>;
+<#
+        }
+    }
+}
+#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.BaseRequestBuilder;
+import <#=importNamespace#>.core.IBaseClient;
+
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), "BaseRequestBuilder", c.ITypeCollectionRequestBuilder())#>
 
     /**
@@ -15,7 +42,7 @@
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public <#=c.TypeCollectionRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -23,7 +50,7 @@
         return buildRequest(getOptions());
     }
 
-    public <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         return new <#=c.TypeCollectionRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 
@@ -40,7 +67,6 @@
 <# } #>
 
 <#
-var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
 if (currentTypeProjection != null) {
     foreach (var method in currentTypeProjection.MethodsAndOverloads()) {
 

@@ -4,13 +4,16 @@
 <#@ output extension="\\" #>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.models.extensions.<#=c.IBaseClientType(host)#>;
+import <#=importNamespace#>.core.BaseClient;
 
 <#=TypeHelperJava.CreateClassDef(c.BaseClientType(host), "BaseClient", c.IBaseClientType(host))#>
 
     /**
      * The default endpoint for the Microsoft Graph Service
      */
-    public static final String DEFAULT_GRAPH_ENDPOINT = "https://graph.microsoft.com/v1.0";
+    public static final String DEFAULT_GRAPH_ENDPOINT = "<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>";
 
     /**
      * The current endpoint
@@ -43,7 +46,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @return the request builder for the collection of <#=propertyName#> objects
      */
     public <#=prop.ITypeCollectionRequestBuilder()#> <#=prop.Name#>() {
-        return new <#=prop.TypeCollectionRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>", (<#=c.IClientType(host)#>)this, null);
+        return new <#=prop.TypeCollectionRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
     }
 
     /**
@@ -53,7 +56,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @return the request builder for the <#=propertyName#> object
      */
     public <#=prop.ITypeRequestBuilder()#> <#=prop.Name#>(final String id) {
-        return new <#=prop.TypeRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>/" + id, (<#=c.IClientType(host)#>)this, null);
+        return new <#=prop.TypeRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>/" + id, this, null);
     }
 <#
     }
@@ -67,7 +70,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @return the <#=prop.Projection.Type.GetTypeString()#>
      */
     public <#=prop.ITypeRequestBuilder()#> <#=prop.Name#>() {
-        return new <#=prop.TypeRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>", (<#=c.IClientType(host)#>)this, null);
+        return new <#=prop.TypeRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
     }
 <#
     }

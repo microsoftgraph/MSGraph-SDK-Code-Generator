@@ -4,20 +4,11 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = c.TypeRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForBaseEntityRequest(host)#>
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.http.BaseRequest;
-import com.microsoft.graph.http.HttpMethod;
-<#
-String classDeclaration = "";
-if (c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
-{
-	classDeclaration += "? extends ";
-}
-classDeclaration += c.TypeName();
-#>
+<#=host.CreatePackageDef()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.HttpMethod;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest", c.ITypeRequest())#>
 	<# if (c.AsOdcmClass() != null && c.AsOdcmClass().Derived.Any()) { #>
@@ -32,7 +23,7 @@ classDeclaration += c.TypeName();
      */
     public <#=c.TypeRequest()#>(final String requestUrl,
             final <#=TypeHelperJava.IBaseClientType()#> client,
-            final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions,
+            final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions,
             final Class<<# if(!host.TemplateName.Equals("EntityRequest")){ #>? extends <#}#><#=c.ClassTypeName()#>> responseClass) {
         super(requestUrl, client, requestOptions, responseClass);
     }
@@ -45,7 +36,7 @@ classDeclaration += c.TypeName();
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
@@ -227,29 +218,4 @@ classDeclaration += c.TypeName();
 ";
         return string.Format(formatString, odcmObject.TypeName());
     }
-
-	public string CreatePackageDefForBaseEntityRequest(CustomT4Host host)
-	{
-		var sb = new StringBuilder();
-		sb.Append(host.CreatePackageDefinition());
-		var importFormat = @"import {0}.{1}.{2};";
-		sb.AppendFormat(importFormat,
-						TypeHelperJava.CurrentNamespace(host),
-						"requests.extensions",
-						host.CurrentType.ITypeRequest());
-		sb.Append("\n");
-
-		sb.AppendFormat(importFormat,
-						TypeHelperJava.CurrentNamespace(host),
-						"requests.extensions",
-						host.CurrentType.TypeRequest());
-		sb.Append("\n");
-
-		sb.AppendFormat(importFormat,
-						TypeHelperJava.CurrentNamespace(host),
-						"models.extensions",
-						host.CurrentType.AsOdcmClass().TypeName());
-		sb.Append("\n");
-		return sb.ToString();
-	}
  #>

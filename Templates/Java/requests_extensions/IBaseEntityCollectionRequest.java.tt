@@ -6,6 +6,9 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IBaseCollectionPage;
+
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionRequest())#>
 
     void get(final ICallback<<#=c.ITypeCollectionPage()#>> callback);

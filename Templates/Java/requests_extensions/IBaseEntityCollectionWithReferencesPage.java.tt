@@ -7,6 +7,10 @@
 <#=host.CreatePackageDef()#>
 
 import com.google.gson.JsonObject;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IBaseCollectionPage;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesPage(), "IBaseCollectionPage" + c.CollectionPageWithReferencesGeneric())#>
 }

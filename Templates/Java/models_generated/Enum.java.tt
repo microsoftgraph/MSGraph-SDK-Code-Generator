@@ -11,7 +11,7 @@
 public enum <#= c.Name.ToUpperFirstChar()#>
 {
 <#
-    foreach(var value in c.AsOdcmEnum().Members)
+    foreach(var value in c.AsOdcmEnum().Members.GroupBy(x => x.Name.ToUnderscore().ToUpper()).Select(x => x.First()).ToList())
     {
 #>
     /**

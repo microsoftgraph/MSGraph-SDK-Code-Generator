@@ -74,6 +74,10 @@
     <Compile Include="CodeHelpers\Python\CodeWriterPython.cs" />
     <Compile Include="CodeHelpers\Python\TypeHelperPython.cs" />
     <Compile Include="Extensions\FeatureExtensions.cs" />
+    <Compile Include="OdcmMethodEqualityComparer.cs" />
+    <Compile Include="OdcmParameterCollectionEqualityComparer.cs" />
+    <Compile Include="OdcmParameterEqualityComparer.cs" />
+    <Compile Include="OdcmTypeEqualityComparer.cs" />
     <Compile Include="PathWriters\CSharpPathWriter.cs" />
     <Compile Include="PathWriters\TypeScriptPathWriter.cs" />
     <Compile Include="PathWriters\GraphEndpointListPathWriter.cs" />

@@ -19,7 +19,11 @@
 	}
 #>
 
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequestBuilder()#>;
 import com.google.gson.JsonObject;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IBaseCollectionPage;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionPage(), "IBaseCollectionPage" + c.CollectionPageGeneric())#>
 <# if (deltaPage) { #>

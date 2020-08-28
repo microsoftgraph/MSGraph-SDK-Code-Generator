@@ -5,12 +5,13 @@
 <#host.TemplateName = c.ITypeRequest();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForIBaseMethodRequest()#>
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.concurrency.IExecutors;
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.http.BaseRequest;
-import com.microsoft.graph.http.HttpMethod;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.concurrency.ICallback;
+import <#=importNamespace#>.concurrency.IExecutors;
+import <#=importNamespace#>.core.ClientException;
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.HttpMethod;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequest())#>
 

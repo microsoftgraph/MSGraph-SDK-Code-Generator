@@ -6,6 +6,10 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeReferenceRequestBuilder(), "IRequestBuilder")#>
 
     /**
@@ -21,5 +25,5 @@
      * @param requestOptions the options for this request
      * @return the <#=c.ITypeReferenceRequest()#> instance
      */
-    <#=c.ITypeReferenceRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
+    <#=c.ITypeReferenceRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 }

@@ -5,15 +5,16 @@
 <#host.TemplateName = c.TypeRequestBuilder();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForBaseMethodRequestBuilder()#>
-import com.microsoft.graph.core.BaseActionRequestBuilder;
-import com.microsoft.graph.core.BaseFunctionRequestBuilder;
-import com.microsoft.graph.core.IBaseClient;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.core.BaseActionRequestBuilder;
+import <#=importNamespace#>.core.BaseFunctionRequestBuilder;
+import <#=importNamespace#>.core.IBaseClient;
 import com.google.gson.JsonElement;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
 <#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), c.GetMethodRequestBuilderSuperClass(), c.ITypeRequestBuilder())#>
 
-<# foreach (var method in c.AsOdcmMethod().WithOverloads()) { #>
+<# foreach (var method in c.AsOdcmMethod().WithDistinctOverloads()) { #>
     /**
      * The request builder for this <#=c.TypeName()#>
      *
@@ -21,7 +22,7 @@ import com.google.gson.JsonElement;
      * @param client         the service client
      * @param requestOptions the options for this request<#=method.MethodParametersJavadocSignature()#>
      */
-    public <#=c.TypeRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions<#=method.MethodParametersSignature()#>) {
+    public <#=c.TypeRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#=method.MethodParametersSignature()#>) {
         super(requestUrl, client, requestOptions);
 <#     foreach (var p in method.Parameters) { #>
 <#         if (isAction) { #>
@@ -48,7 +49,7 @@ import com.google.gson.JsonElement;
      * @param requestOptions the options for the request
      * @return the <#=c.ITypeRequest()#> instance
      */
-    public <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         <#=c.TypeRequest()#> request = new <#=c.TypeRequest()#>(
                 getRequestUrl(),
                 getClient(),

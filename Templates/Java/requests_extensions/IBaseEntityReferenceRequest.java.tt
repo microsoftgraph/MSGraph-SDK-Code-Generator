@@ -6,6 +6,12 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IHttpRequest;
+import <#=importNamespace#>.serializer.IJsonBackedObject;
+
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeReferenceRequest(), "IHttpRequest")#>
 
     void delete(final ICallback<<#=c.TypeName()#>> callback);

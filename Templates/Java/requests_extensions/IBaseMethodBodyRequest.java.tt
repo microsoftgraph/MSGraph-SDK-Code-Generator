@@ -22,8 +22,12 @@
 <#host.TemplateName = iBaseTypeRequest;#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForIBaseMethodBodyRequest()#>
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.core.ClientException;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.concurrency.ICallback;
+import <#=importNamespace#>.http.BaseCollectionRequest;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.core.ClientException;
+import <#=importNamespace#>.http.BaseCollectionRequest;
 
 <#=TypeHelperJava.CreateInterfaceDef(iBaseTypeRequest)#>
 

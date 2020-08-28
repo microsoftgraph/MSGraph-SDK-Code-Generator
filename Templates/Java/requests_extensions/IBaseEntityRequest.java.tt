@@ -5,9 +5,10 @@
 <#host.TemplateName = c.ITypeRequest();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForIBaseEntityRequest()#>
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.http.IHttpRequest;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.concurrency.ICallback;
+import <#=importNamespace#>.core.ClientException;
+import <#=importNamespace#>.http.IHttpRequest;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequest(), "IHttpRequest")#>
 
