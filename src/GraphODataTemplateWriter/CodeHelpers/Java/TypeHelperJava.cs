@@ -757,7 +757,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             switch(obj)
             {
                 case OdcmEnum e:
-                    return "";
+                    return "models.generated";
                 case OdcmType t:
                     return GetPrefixForModels();
                 case OdcmParameter p:
