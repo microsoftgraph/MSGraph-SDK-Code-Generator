@@ -49,5 +49,23 @@ import <#=importNamespace#>.http.IBaseCollectionPage;
     <#=c.ITypeCollectionRequest()#> top(final int value);
 
 <# } #>
+<# if (c.GetFeatures().CanSkip) { #>
+    /**
+     * Sets the skip value for the request
+     *
+     * @param value of the number of items to skip
+     * @return the updated request
+     */
+    <#=c.ITypeCollectionRequest()#> skip(final int value);
+
+<# } #>
+    /**
+	 * Sets the skip token value for the request
+	 * 
+	 * @param skipToken value for pagination
+     *
+	 * @return the updated request
+	 */
+	<#=c.ITypeCollectionRequest()#> skipToken(String skipToken);
 }
 <#=PostProcess(c.ITypeCollectionRequest())#>

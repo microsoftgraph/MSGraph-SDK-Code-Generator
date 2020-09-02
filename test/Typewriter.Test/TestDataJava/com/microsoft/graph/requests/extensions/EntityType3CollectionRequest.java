@@ -107,6 +107,27 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
         return (EntityType3CollectionRequest)this;
     }
 
+    /**
+     * Sets the skip value for the request
+     *
+     * @param value of the number of items to skip
+     * @return the updated request
+     */
+    public IEntityType3CollectionRequest skip(final int value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$skip", value + ""));
+        return (EntityType3CollectionRequest)this;
+    }
+
+
+    /**
+     * Add Skip token for pagination
+     * @param skipToken - Token for pagination
+     * @return the updated request
+     */
+    public IEntityType3CollectionRequest skipToken(final String skipToken) {
+    	addQueryOption(new QueryOption("$skiptoken", skipToken));
+        return (IEntityType3CollectionRequest)this;
+    }
     public IEntityType3CollectionPage buildFromResponse(final EntityType3CollectionResponse response) {
         final IEntityType3CollectionRequestBuilder builder;
         if (response.nextLink != null) {
