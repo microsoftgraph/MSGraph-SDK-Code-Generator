@@ -103,6 +103,29 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
     }
 
 <# } #>
+<# if (c.GetFeatures().CanSkip) { #>
+    /**
+     * Sets the skip value for the request
+     *
+     * @param value of the number of items to skip
+     * @return the updated request
+     */
+    public <#=c.ITypeCollectionRequest()#> skip(final int value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$skip", value + ""));
+        return (<#=c.TypeCollectionRequest()#>)this;
+    }
+
+<# } #>
+
+    /**
+     * Add Skip token for pagination
+     * @param skipToken - Token for pagination
+     * @return the updated request
+     */
+    public <#=c.ITypeCollectionRequest()#> skipToken(final String skipToken) {
+    	addQueryOption(new QueryOption("$skiptoken", skipToken));
+        return (<#=c.ITypeCollectionRequest()#>)this;
+    }
     public <#=c.ITypeCollectionPage()#> buildFromResponse(final <#=c.BaseTypeCollectionResponse()#> response) {
         final <#=c.ITypeCollectionRequestBuilder()#> builder;
         if (response.nextLink != null) {
