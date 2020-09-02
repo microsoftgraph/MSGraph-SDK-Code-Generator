@@ -106,6 +106,27 @@ public class EntityType2CollectionRequest extends BaseCollectionRequest<EntityTy
         return (EntityType2CollectionRequest)this;
     }
 
+    /**
+     * Sets the skip value for the request
+     *
+     * @param value of the number of items to skip
+     * @return the updated request
+     */
+    public IEntityType2CollectionRequest skip(final int value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$skip", value + ""));
+        return (EntityType2CollectionRequest)this;
+    }
+
+
+    /**
+     * Add Skip token for pagination
+     * @param skipToken - Token for pagination
+     * @return the updated request
+     */
+    public IEntityType2CollectionRequest skipToken(final String skipToken) {
+    	addQueryOption(new QueryOption("$skiptoken", skipToken));
+        return (IEntityType2CollectionRequest)this;
+    }
     public IEntityType2CollectionPage buildFromResponse(final EntityType2CollectionResponse response) {
         final IEntityType2CollectionRequestBuilder builder;
         if (response.nextLink != null) {
