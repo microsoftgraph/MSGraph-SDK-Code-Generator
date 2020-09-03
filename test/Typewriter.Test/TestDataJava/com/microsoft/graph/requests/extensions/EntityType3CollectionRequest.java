@@ -63,14 +63,14 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
     public void post(final EntityType3 newEntityType3, final ICallback<EntityType3> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new EntityType3RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(newEntityType3, callback);
     }
 
     public EntityType3 post(final EntityType3 newEntityType3) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new EntityType3RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(newEntityType3);
     }
 
