@@ -42,7 +42,7 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=c.TypeName()#>.id);
         new <#=c.TypeWithReferencesRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(new<#=c.TypeName()#>, body, callback);
     }
 
@@ -50,7 +50,7 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=c.TypeName()#>.id);
         return new <#=c.TypeWithReferencesRequestBuilder()#>(requestUrl,getBaseRequest().getClient(), /* Options */ null)
-                .buildRequest(getBaseRequest().getOptions())
+                .buildRequest(getBaseRequest().getHeaders())
                 .post(new<#=c.TypeName()#>, body);
     }
 <#     } 
