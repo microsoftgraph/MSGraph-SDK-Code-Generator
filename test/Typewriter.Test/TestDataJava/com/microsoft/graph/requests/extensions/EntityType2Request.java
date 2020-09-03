@@ -112,6 +112,27 @@ public class EntityType2Request extends BaseRequest implements IEntityType2Reque
     }
 
     /**
+     * Creates a EntityType2 with a new object
+     *
+     * @param newEntityType2 the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final EntityType2 newEntityType2, final ICallback<EntityType2> callback) {
+        send(HttpMethod.PUT, callback, newEntityType2);
+    }
+
+    /**
+     * Creates a EntityType2 with a new object
+     *
+     * @param newEntityType2 the object to create/update
+     * @return the created EntityType2
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public EntityType2 put(final EntityType2 newEntityType2) throws ClientException {
+        return send(HttpMethod.PUT, newEntityType2);
+    }
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause

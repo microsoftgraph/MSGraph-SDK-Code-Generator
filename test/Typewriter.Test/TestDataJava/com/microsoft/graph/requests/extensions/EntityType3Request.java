@@ -114,6 +114,27 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
     }
 
     /**
+     * Creates a EntityType3 with a new object
+     *
+     * @param newEntityType3 the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final EntityType3 newEntityType3, final ICallback<EntityType3> callback) {
+        send(HttpMethod.PUT, callback, newEntityType3);
+    }
+
+    /**
+     * Creates a EntityType3 with a new object
+     *
+     * @param newEntityType3 the object to create/update
+     * @return the created EntityType3
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public EntityType3 put(final EntityType3 newEntityType3) throws ClientException {
+        return send(HttpMethod.PUT, newEntityType3);
+    }
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause

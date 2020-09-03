@@ -80,6 +80,23 @@ public interface IEntityType2Request extends IHttpRequest {
     EntityType2 post(final EntityType2 newEntityType2) throws ClientException;
 
     /**
+     * Posts a EntityType2 with a new object
+     *
+     * @param newEntityType2 the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final EntityType2 newEntityType2, final ICallback<EntityType2> callback);
+
+    /**
+     * Posts a EntityType2 with a new object
+     *
+     * @param newEntityType2 the object to create/update
+     * @return the created EntityType2
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    EntityType2 put(final EntityType2 newEntityType2) throws ClientException;
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause

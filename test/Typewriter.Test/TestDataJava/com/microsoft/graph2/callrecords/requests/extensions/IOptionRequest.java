@@ -80,6 +80,23 @@ public interface IOptionRequest extends IHttpRequest {
     Option post(final Option newOption) throws ClientException;
 
     /**
+     * Posts a Option with a new object
+     *
+     * @param newOption the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final Option newOption, final ICallback<Option> callback);
+
+    /**
+     * Posts a Option with a new object
+     *
+     * @param newOption the object to create/update
+     * @return the created Option
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    Option put(final Option newOption) throws ClientException;
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause

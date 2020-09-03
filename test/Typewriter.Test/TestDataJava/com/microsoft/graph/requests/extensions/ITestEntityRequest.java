@@ -80,6 +80,23 @@ public interface ITestEntityRequest extends IHttpRequest {
     TestEntity post(final TestEntity newTestEntity) throws ClientException;
 
     /**
+     * Posts a TestEntity with a new object
+     *
+     * @param newTestEntity the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final TestEntity newTestEntity, final ICallback<TestEntity> callback);
+
+    /**
+     * Posts a TestEntity with a new object
+     *
+     * @param newTestEntity the object to create/update
+     * @return the created TestEntity
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    TestEntity put(final TestEntity newTestEntity) throws ClientException;
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause

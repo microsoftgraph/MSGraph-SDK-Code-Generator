@@ -114,6 +114,27 @@ public class TestTypeRequest extends BaseRequest implements ITestTypeRequest {
     }
 
     /**
+     * Creates a TestType with a new object
+     *
+     * @param newTestType the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final TestType newTestType, final ICallback<TestType> callback) {
+        send(HttpMethod.PUT, callback, newTestType);
+    }
+
+    /**
+     * Creates a TestType with a new object
+     *
+     * @param newTestType the object to create/update
+     * @return the created TestType
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public TestType put(final TestType newTestType) throws ClientException {
+        return send(HttpMethod.PUT, newTestType);
+    }
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause

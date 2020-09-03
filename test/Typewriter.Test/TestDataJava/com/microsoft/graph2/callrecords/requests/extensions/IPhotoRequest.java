@@ -80,6 +80,23 @@ public interface IPhotoRequest extends IHttpRequest {
     Photo post(final Photo newPhoto) throws ClientException;
 
     /**
+     * Posts a Photo with a new object
+     *
+     * @param newPhoto the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final Photo newPhoto, final ICallback<Photo> callback);
+
+    /**
+     * Posts a Photo with a new object
+     *
+     * @param newPhoto the object to create/update
+     * @return the created Photo
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    Photo put(final Photo newPhoto) throws ClientException;
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause

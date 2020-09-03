@@ -112,6 +112,27 @@ public class OptionRequest extends BaseRequest implements IOptionRequest {
     }
 
     /**
+     * Creates a Option with a new object
+     *
+     * @param newOption the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final Option newOption, final ICallback<Option> callback) {
+        send(HttpMethod.PUT, callback, newOption);
+    }
+
+    /**
+     * Creates a Option with a new object
+     *
+     * @param newOption the object to create/update
+     * @return the created Option
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public Option put(final Option newOption) throws ClientException {
+        return send(HttpMethod.PUT, newOption);
+    }
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause

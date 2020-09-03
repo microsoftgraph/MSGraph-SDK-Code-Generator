@@ -118,6 +118,27 @@ public class TestEntityRequest extends BaseRequest implements ITestEntityRequest
     }
 
     /**
+     * Creates a TestEntity with a new object
+     *
+     * @param newTestEntity the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final TestEntity newTestEntity, final ICallback<TestEntity> callback) {
+        send(HttpMethod.PUT, callback, newTestEntity);
+    }
+
+    /**
+     * Creates a TestEntity with a new object
+     *
+     * @param newTestEntity the object to create/update
+     * @return the created TestEntity
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public TestEntity put(final TestEntity newTestEntity) throws ClientException {
+        return send(HttpMethod.PUT, newTestEntity);
+    }
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause
