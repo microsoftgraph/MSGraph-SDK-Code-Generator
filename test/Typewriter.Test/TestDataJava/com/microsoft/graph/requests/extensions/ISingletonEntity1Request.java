@@ -80,6 +80,23 @@ public interface ISingletonEntity1Request extends IHttpRequest {
     SingletonEntity1 post(final SingletonEntity1 newSingletonEntity1) throws ClientException;
 
     /**
+     * Posts a SingletonEntity1 with a new object
+     *
+     * @param newSingletonEntity1 the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final SingletonEntity1 newSingletonEntity1, final ICallback<SingletonEntity1> callback);
+
+    /**
+     * Posts a SingletonEntity1 with a new object
+     *
+     * @param newSingletonEntity1 the object to create/update
+     * @return the created SingletonEntity1
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    SingletonEntity1 put(final SingletonEntity1 newSingletonEntity1) throws ClientException;
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause

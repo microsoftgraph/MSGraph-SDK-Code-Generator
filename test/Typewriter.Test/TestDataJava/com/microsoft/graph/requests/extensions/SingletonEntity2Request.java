@@ -114,6 +114,27 @@ public class SingletonEntity2Request extends BaseRequest implements ISingletonEn
     }
 
     /**
+     * Creates a SingletonEntity2 with a new object
+     *
+     * @param newSingletonEntity2 the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final SingletonEntity2 newSingletonEntity2, final ICallback<SingletonEntity2> callback) {
+        send(HttpMethod.PUT, callback, newSingletonEntity2);
+    }
+
+    /**
+     * Creates a SingletonEntity2 with a new object
+     *
+     * @param newSingletonEntity2 the object to create/update
+     * @return the created SingletonEntity2
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public SingletonEntity2 put(final SingletonEntity2 newSingletonEntity2) throws ClientException {
+        return send(HttpMethod.PUT, newSingletonEntity2);
+    }
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause
