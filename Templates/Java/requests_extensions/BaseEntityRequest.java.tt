@@ -50,6 +50,7 @@ import <#=importNamespace#>.http.HttpMethod;
 <#=deleteMethods(c)#>
 <#=patchMethods(c)#>
 <#=postMethods(c)#>
+<#=putMethods(c)#>
 <#  }
     else if (!c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
     { #>
@@ -57,6 +58,7 @@ import <#=importNamespace#>.http.HttpMethod;
 <#=deleteMethods(c)#>
 <#=patchMethods(c)#>
 <#=postMethods(c)#>
+<#=putMethods(c)#>
 <#  }
     else if (c.AsOdcmClass().Base == null)
     { #>
@@ -64,6 +66,7 @@ import <#=importNamespace#>.http.HttpMethod;
 <#=deleteMethods(c)#>
 <#=patchMethods(c)#>
 <#=postMethods(c)#>
+<#=putMethods(c)#>
 <#  }
     else
     {
@@ -214,6 +217,34 @@ import <#=importNamespace#>.http.HttpMethod;
      */
     public {0} post(final {0} new{0}) throws ClientException {{
         return send(HttpMethod.POST, new{0});
+    }}
+";
+        return string.Format(formatString, odcmObject.TypeName());
+    }
+
+    public string putMethods(OdcmObject c)
+    {
+        var odcmObject = c.AsOdcmClass();
+        var formatString =
+@"    /**
+     * Creates a {0} with a new object
+     *
+     * @param new{0} the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final {0} new{0}, final ICallback<{0}> callback) {{
+        send(HttpMethod.PUT, callback, new{0});
+    }}
+
+    /**
+     * Creates a {0} with a new object
+     *
+     * @param new{0} the object to create/update
+     * @return the created {0}
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public {0} put(final {0} new{0}) throws ClientException {{
+        return send(HttpMethod.PUT, new{0});
     }}
 ";
         return string.Format(formatString, odcmObject.TypeName());
