@@ -12,11 +12,15 @@ var enumConverterTypeName = @namespace.GetCoreLibraryType("EnumConverter");
 
 namespace <#=enumT.Namespace.GetNamespaceName()#>
 {
+    using System;
     using Newtonsoft.Json;
 
     /// <summary>
     /// The enum <#=enumName#>.
     /// </summary>
+<# if (enumT.Deprecation != null) { #>
+    <#=string.Format("[Obsolete(\"{0}\")]", enumT.Deprecation.Description)#>
+<# } #>
     [JsonConverter(typeof(<#=enumConverterTypeName#>))]
 <#  if (enumT.IsFlags == true)
     {
