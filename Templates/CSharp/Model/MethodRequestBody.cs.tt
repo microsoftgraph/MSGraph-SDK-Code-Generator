@@ -31,13 +31,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     public partial class <#=requestBody#>
     {
     <#
-
-    //HashSet<OdcmParameter> uniqueParameters = new HashSet<OdcmParameter>();
-
-    //var methods = method.WithDistinctOverloads();
-//
-    //var distinctParameters = method.WithDistinctParameters();
-
     foreach (var param in method.WithDistinctParameters())
     {
         var paramTypeString = param.Type.GetTypeString(method.Namespace.GetNamespaceName());
