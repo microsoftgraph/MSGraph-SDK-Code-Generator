@@ -44,12 +44,16 @@ public class Schedule extends Entity implements IJsonBackedObject {
      * The Times Off.
      * 
      */
+    @SerializedName("timesOff")
+    @Expose
     public TimeOffCollectionPage timesOff;
 
     /**
      * The Time Off Requests.
      * 
      */
+    @SerializedName("timeOffRequests")
+    @Expose
     public TimeOffRequestCollectionPage timeOffRequests;
 
 
