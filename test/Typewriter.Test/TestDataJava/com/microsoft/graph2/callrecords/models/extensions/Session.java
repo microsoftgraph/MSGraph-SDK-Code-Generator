@@ -84,6 +84,8 @@ public class Session extends Entity implements IJsonBackedObject {
      * The Segments.
      * 
      */
+    @SerializedName("segments")
+    @Expose
     public SegmentCollectionPage segments;
 
 
