@@ -500,11 +500,30 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return methods.Distinct(methodComparer).ToList();
         }
 
+        private static readonly OdcmParameterEqualityComparer paramComparer = new OdcmParameterEqualityComparer();
+        /// <summary>
+        /// Deduplicates the parameter list for an overloaded method. 
+        /// </summary>
+        /// <param name="odcmMethod">Method with potential overloads and duplicate parameters across overloads.</param>
+        /// <returns>A deduplicated list of OdcmParameter.</returns>
+        public static List<OdcmParameter> WithDistinctParameters(this OdcmMethod odcmMethod)
+        {
+            var distinctMethods = odcmMethod.WithDistinctOverloads();
+
+            var parameters = new List<OdcmParameter>();
+
+            foreach (var method in distinctMethods)
+            {
+                parameters.AddRange(method.Parameters);
+            }
+
+            return parameters.Distinct(paramComparer).ToList();
+        }
+
         /// Returns a List containing the supplied class' methods plus their overloads
         public static IEnumerable<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
         {
             return odcmClass.Methods.SelectMany(x => x.WithOverloads());
         }
     }
-
 }
