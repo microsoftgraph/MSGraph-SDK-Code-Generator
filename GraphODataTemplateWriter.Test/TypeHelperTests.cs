@@ -91,5 +91,65 @@ namespace GraphODataTemplateWriter.Test
 
             Assert.AreEqual(expectedOutputString, sanitizedString, "GetSanitizedLongDescription is not handling escaped CRLF.");
         }
+
+        [TestMethod]
+        public void Namespace_Shouldnt_Contain_Whitespace_For_CSharp()
+        {
+            var testNamespace = new OdcmNamespace("Microsoft.OutlookServices");
+
+            var namespaceName = TypeHelperCSharp.GetNamespaceName(testNamespace);
+
+            Assert.AreEqual(namespaceName, "Microsoft.OutlookServices");
+        }
+
+        [TestMethod]
+        public void Namespace_Should_PascalCase_For_CSharp()
+        {
+            var testNamespace = new OdcmNamespace("microsoft.graph");
+
+            var namespaceName = TypeHelperCSharp.GetNamespaceName(testNamespace);
+
+            Assert.AreEqual(namespaceName, "Microsoft.Graph");
+        }
+
+        [TestMethod]
+        public void PHPMainNamespace_Generated_For_V1()
+        {
+            var testNamespace = "microsoft.graph";
+            const string expectedPHPNamespace = "Microsoft\\Graph";
+
+            var actualPHPNamespace = TypeHelperPHP.GetPHPNamespace(testNamespace);
+            Assert.AreEqual(expectedPHPNamespace, actualPHPNamespace);
+        }
+
+        [TestMethod]
+        public void PHPMainNamespace_Generated_For_Beta()
+        {
+            var testNamespace = "microsoft.graph";
+            const string expectedPHPNamespace = "Beta\\Microsoft\\Graph";
+
+            var actualPHPNamespace = TypeHelperPHP.GetPHPNamespace(testNamespace, "Beta");
+            Assert.AreEqual(expectedPHPNamespace, actualPHPNamespace);
+        }
+
+        [TestMethod]
+        public void PHPSubNamespace_Generated_For_V1()
+        {
+            var testNamespace = "microsoft.graph.callRecords";
+            const string expectedPHPNamespace = "Microsoft\\Graph\\CallRecords";
+
+            var actualPHPNamespace = TypeHelperPHP.GetPHPNamespace(testNamespace);
+            Assert.AreEqual(expectedPHPNamespace, actualPHPNamespace);
+        }
+
+        [TestMethod]
+        public void PHPSubNamespace_Generated_For_Beta()
+        {
+            var testNamespace = "microsoft.graph.callRecords";
+            const string expectedPHPNamespace = "Beta\\Microsoft\\Graph\\CallRecords";
+
+            var actualPHPNamespace = TypeHelperPHP.GetPHPNamespace(testNamespace, "Beta");
+            Assert.AreEqual(expectedPHPNamespace, actualPHPNamespace);
+        }
     }
 }

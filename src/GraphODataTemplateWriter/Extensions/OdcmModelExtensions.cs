@@ -8,6 +8,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
     using NLog;
+    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
 
     public static class OdcmModelExtensions
     {
@@ -18,46 +19,41 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return odcmProperty.IsCollection;
         }
 
-        private static OdcmNamespace GetOdcmNamespace(OdcmModel model)
+        public static IEnumerable<OdcmNamespace> GetOdcmNamespaces(this OdcmModel model)
         {
-            OdcmNamespace namespaceFound;
-            var filtered = model.Namespaces.Where(x => !x.Name.Equals("Edm", StringComparison.InvariantCultureIgnoreCase))
-                                           .ToList();
-            if (filtered.Count() == 1)
+            IEnumerable<OdcmNamespace> namespacesFound;
+            var filtered = model.Namespaces
+                .Where(x => !x.Name.Equals("Edm", StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
+
+            if (filtered.Count < 1)
             {
-                namespaceFound = filtered.Single();
+                namespacesFound = null;
             }
             else
             {
-                namespaceFound =
-                    model.Namespaces.Find(x => String.Equals(x.Name, ConfigurationService.Settings.PrimaryNamespaceName,
-                        StringComparison.InvariantCultureIgnoreCase));
+                namespacesFound = filtered;
             }
 
-            if (namespaceFound == null)
-            {
-                throw new InvalidOperationException("Multiple namespaces defined in metadata and no matches." +
-                                                    "\nPlease check 'PrimaryNamespace' Setting in 'config.json'");
-            }
-            return namespaceFound;
+            return namespacesFound;
         }
 
         public static IEnumerable<OdcmClass> GetComplexTypes(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x is OdcmComplexClass && x.CanonicalName().ToLowerInvariant() != "microsoft.graph.json");
+            var namespaces = GetOdcmNamespaces(model);
+            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmComplexClass && x.CanonicalName().ToLowerInvariant() != "microsoft.graph.json"));
         }
 
         public static IEnumerable<OdcmClass> GetEntityTypes(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x is OdcmEntityClass || x is OdcmMediaClass);
+            var namespaces = GetOdcmNamespaces(model);
+            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmEntityClass || x is OdcmMediaClass));
         }
 
         public static IEnumerable<OdcmClass> GetMediaEntityTypes(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
-            return @namespace.Classes.Where(x => x is OdcmMediaClass);
+            var namespaces = GetOdcmNamespaces(model);
+            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmMediaClass));
         }
 
         public static IEnumerable<OdcmProperty> GetProperties(this OdcmModel model)
@@ -128,13 +124,93 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         public static IEnumerable<OdcmEnum> GetEnumTypes(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
-            return @namespace.Types.OfType<OdcmEnum>();
+            var namespaces = GetOdcmNamespaces(model);
+            return namespaces.SelectMany(@namespace => @namespace.Types.OfType<OdcmEnum>());
         }
 
         public static IEnumerable<OdcmMethod> GetMethods(this OdcmModel model)
         {
             return model.GetEntityTypes().SelectMany(entityType => entityType.Methods);
+        }
+
+        /// <summary>
+        /// This extension method determines whether the current type needs to be disambiguated.
+        /// If the current type needs dismabiguation, we then provide a fully qualified 
+        /// import statement for the model.
+        /// This currently operates only on entities whose name ends in "Request". We do this
+        /// because every entity results in a request object. For example, assume we have the following
+        /// two entities: timeOff and timeOffRequest. The timeOff entity will trigger the generation
+        /// of classes named model.timeOff and request.timeOffRequest. The timeOffRequest entity
+        /// will trigger the generation of a model.timeOffRequest and request.timeOffRequestRequest.
+        /// The request.timeOffRequest and model.timeOffRequest classes will result in a name collision in
+        /// a few files.
+        /// Assumptions: 1) host.CurrentType is an OdcmProperty.
+        /// </summary>
+        /// <param name="host">The T4Host that orchestrates applying templates to the OdcmModel.</param>
+        /// <returns>A boolean value that indicates whether the current type needs to be disambiguated.</returns>
+        public static bool DoesCurrentTypeNeedDisambiguation(this CustomT4Host host)
+        {
+            // At this point this is only applicable to OdcmProperty.
+            // Challenging this assumption will require a lot more investigation.
+            if (!(host.CurrentType is OdcmProperty))
+                return false;
+
+            // We only support "Request" dismabiguation at this point. Check whether the
+            // current type ends in "Request".
+            var requestSuffix = "Request";
+            var currentTypeName = (host.CurrentType as OdcmProperty).Type.Name;
+            int index = currentTypeName.IndexOf(requestSuffix);
+            if (index == -1 || !currentTypeName.EndsWith(requestSuffix))
+                return false; // Doesn't need disambiguation
+
+            // If it does end in "Request", let's capture the base name to check if an entity of that name 
+            // exists in the schema.
+            string entityNameToCheckForCollision = currentTypeName.Remove(index, requestSuffix.Length);
+
+            // Search across namespaces, looking only at EntityType, to determine whether this type requires 
+            // disambiguation. This needs to be supported across namespaces.
+            var classes = host.CurrentModel.Namespaces.SelectMany(n => n.Classes);
+            var shouldDisambiguate = classes.Where(entity => entity.Kind == OdcmClassKind.Entity
+                                                       && entity.Name == entityNameToCheckForCollision).Any();
+
+            return shouldDisambiguate;
+        }
+
+        /// <summary>
+        /// An extension method to get an import statement for the fully qualified name of the current type.
+        /// Assumptions: 1) host.CurrentType is an OdcmProperty. 2) the generated namespace of the current type 
+        /// is in models.generated output namespace (in the generated file, not in the metadata).
+        /// This method should support multiple namespaces.
+        /// This currently (6/2020) applies to the following templates:
+        ///   BaseEntityCollectionRequest.java.tt
+        ///   IBaseEntityCollectionRequest.java.tt
+        ///   IBaseEntityCollectionPage.java.tt
+        /// This currently unintentionally applies to the following templates when the disambiguation condition is met.
+        /// This is not an issue as there is already a wild card import for the namespace that we should address first.
+        ///   IBaseEntityCollectionRequestBuilder.java.tt
+        ///   BaseEntityCollectionRequestBuilder.java.tt
+        /// </summary>
+        /// <param name="host">The T4Host that orchestrates applying templates to the OdcmModel.</param>
+        /// <returns>A string that represents the import statement of the fully qualified name of the current type.</returns>
+        public static string GetFullyQualifiedImportStatementForModel(this CustomT4Host host)
+        {
+            // By default, we don't need to disambiguate the model in the generated code file.
+            // This will be the general case.
+            var importStatement = "";
+
+            // Check whether we need to disambiguate the current type for generation of the model in the code file.
+            var shouldDisambiguate = host.DoesCurrentTypeNeedDisambiguation();
+
+            if (shouldDisambiguate)
+            {
+                // Form the import statement to disambiguate the model in the generated code file.
+                var thisType = (host.CurrentType as OdcmProperty).Projection.Type;
+                var thisNamespace = thisType.Namespace.Name.AddPrefix();
+                var thisTypeName = thisType.Name.ToUpperFirstChar();
+                importStatement = $"\nimport {thisNamespace}.models.extensions.{thisTypeName};";
+            }
+
+            return importStatement;
         }
 
         /// <summary>
@@ -152,21 +228,22 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         ///    the singleton. Generate a reference path to the item (ie "singleton/item/$ref").
         /// 4. If none of the above pertain to the navigation property, it should be treated as a metadata error.
         /// </summary>
-        public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty)
+        public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty, OdcmModel model)
         {
             // Try to find the first collection navigation property for the specified type directly on the service
             // class object. If an entity is used in a reference property a navigation collection
             // on the client for that type is required.
             try
             {
-                var explicitProperty = odcmProperty
-                    .Class
-                    .Namespace
-                    .Classes
-                    .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
-                    .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
-                    .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
-                    .FirstOrDefault();
+                var explicitProperty = GetOdcmNamespaces(model)
+                    .SelectMany(
+                        @namespace =>
+                        @namespace
+                        .Classes
+                        .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                        .SelectMany(service => (service as OdcmServiceClass).NavigationProperties())
+                        .Where(property => property.IsCollection && property.Projection.Type.FullName.Equals(odcmProperty.Projection.Type.FullName))
+                    ).FirstOrDefault();
 
                 if (explicitProperty != null)
                     return explicitProperty;
@@ -174,24 +251,25 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 // Check the singletons for a matching implicit EntitySet
                 else
                 {
-                    var implicitProperty = odcmProperty
-                        .Class
-                        .Namespace
-                        .Classes
-                        .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
-                        .First()
-                        .Properties
-                        .Where(property => property.GetType() == typeof(OdcmSingleton)) //Get the list of singletons defined by the service
-                        .Where(singleton => singleton
-                            .Type
-                            .AsOdcmClass()
+                    var implicitProperty = GetOdcmNamespaces(model)
+                        .SelectMany(
+                            @namespace =>
+                            @namespace
+                            .Classes
+                            .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
+                            .First()
                             .Properties
-                            //Find navigation properties on the singleton that are self-contained (implicit EntitySets) that match the type
-                            //we are searching for
-                            .Where(prop => prop.ContainsTarget == true && prop.Type.Name == odcmProperty.Type.Name)
-                            .FirstOrDefault() != null
-                         )
-                         .FirstOrDefault();
+                            .Where(property => property.GetType() == typeof(OdcmSingleton)) //Get the list of singletons defined by the service
+                            .Where(singleton => singleton
+                                .Type
+                                .AsOdcmClass()
+                                .Properties
+                                //Find navigation properties on the singleton that are self-contained (implicit EntitySets) that match the type
+                                //we are searching for
+                                .Where(prop => prop.ContainsTarget == true && prop.Type.Name == odcmProperty.Type.Name)
+                                .FirstOrDefault() != null
+                             )
+                         ).FirstOrDefault();
 
                     if (implicitProperty != null)
                         return implicitProperty;
@@ -200,7 +278,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 //as an exception so the service has an opportunity to correct this in the metadata
                 throw new Exception("Found no valid EntitySet for the given property.");
 
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 logger.Error("The navigation property \"{0}\" on class \"{1}\" does not specify it is self-contained nor is it defined in an explicit or implicit EntitySet", odcmProperty.Name.ToString(), odcmProperty.Class.FullName.ToString());
                 logger.Error(e);
@@ -247,9 +326,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             }
         }
 
-        public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
+        public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass, bool includeBaseProperties = false)
         {
-            return odcmClass.Properties.Where(prop => prop.IsNavigation());
+            if (includeBaseProperties && odcmClass.Base != null)
+                return odcmClass.Base.NavigationProperties(includeBaseProperties)
+                            .Union(odcmClass.Properties.Where(prop => prop.IsNavigation()));
+            else
+                return odcmClass.Properties.Where(prop => prop.IsNavigation());
         }
 
         public static bool IsNavigation(this OdcmProperty property)
@@ -281,7 +364,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         public static string GetNamespace(this OdcmModel model)
         {
-            var @namespace = GetOdcmNamespace(model);
+            var @namespace = model.Namespaces
+                .Find(x =>
+                    string.Equals(x.Name, ConfigurationService.Settings.PrimaryNamespaceName, StringComparison.InvariantCultureIgnoreCase));
+            @namespace = @namespace ?? GetOdcmNamespaces(model).First();
             return @namespace.Name;
         }
 
@@ -342,20 +428,29 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return false;
         }
 
-        public static string NamespaceName(this OdcmModel model)
+        public static string AddPrefix(this OdcmNamespace @namespace)
+        {
+            return @namespace.ToString().AddPrefix();
+        }
+
+        public static string AddPrefix(this string @namespace)
         {
             if (string.IsNullOrEmpty(ConfigurationService.Settings.NamespaceOverride))
             {
-                var @namespace = GetOdcmNamespace(model).Name;
-                var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace);
-                return name.ToLower();
+                var name = string.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace).ToLower();
+
+                // special case com.edm happens when we reach here from a property and property is an edm type, e.g. Stream.
+                return name == "com.edm" ? "com.microsoft.graph" : name;
             }
             return ConfigurationService.Settings.NamespaceOverride;
         }
 
         public static string ODataPackageNamespace(this OdcmModel model)
         {
-            var @namespace = NamespaceName(model);
+            var @namespace = model.Namespaces
+                .Find(x =>
+                    string.Equals(x.Name, ConfigurationService.Settings.PrimaryNamespaceName, StringComparison.InvariantCultureIgnoreCase));
+            @namespace = @namespace ?? GetOdcmNamespaces(model).First();
             var package = string.Format("{0}.{1}", @namespace, "fetchers");
             return package.ToLower();
         }
@@ -390,23 +485,45 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// Returns a List containing the supplied method plus its overloads
         public static List<OdcmMethod> WithOverloads(this OdcmMethod odcmMethod)
         {
-            var methods = new List<OdcmMethod>();
-            methods.Add(odcmMethod);
+            var methods = new List<OdcmMethod>
+            {
+                odcmMethod
+            };
             methods.AddRange(odcmMethod.Overloads);
             return methods;
         }
-
-        /// Returns a List containing the supplied class' methods plus their overloads
-        public static List<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
+        private static readonly OdcmMethodEqualityComparer methodComparer = new OdcmMethodEqualityComparer();
+        public static List<OdcmMethod> WithDistinctOverloads(this OdcmMethod odcmMethod)
         {
-            var allMethods = new List<OdcmMethod>();
-            foreach (var method in odcmClass.Methods)
-            {
-                allMethods.AddRange(method.WithOverloads());
-            }
-            return allMethods;
+            var methods = odcmMethod.WithOverloads();
+
+            return methods.Distinct(methodComparer).ToList();
         }
 
-    }
+        private static readonly OdcmParameterEqualityComparer paramComparer = new OdcmParameterEqualityComparer();
+        /// <summary>
+        /// Deduplicates the parameter list for an overloaded method. 
+        /// </summary>
+        /// <param name="odcmMethod">Method with potential overloads and duplicate parameters across overloads.</param>
+        /// <returns>A deduplicated list of OdcmParameter.</returns>
+        public static List<OdcmParameter> WithDistinctParameters(this OdcmMethod odcmMethod)
+        {
+            var distinctMethods = odcmMethod.WithDistinctOverloads();
 
+            var parameters = new List<OdcmParameter>();
+
+            foreach (var method in distinctMethods)
+            {
+                parameters.AddRange(method.Parameters);
+            }
+
+            return parameters.Distinct(paramComparer).ToList();
+        }
+
+        /// Returns a List containing the supplied class' methods plus their overloads
+        public static IEnumerable<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
+        {
+            return odcmClass.Methods.SelectMany(x => x.WithOverloads());
+        }
+    }
 }

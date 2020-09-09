@@ -1,4 +1,6 @@
-﻿using CommandLine;
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+
+using CommandLine;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -30,12 +32,20 @@ namespace Typewriter
         /// <summary>
         /// Uses the input metadata and only generates code files for the target platform. It bypasses the cleaning, doc parsing, and adding doc annotations.
         /// </summary>
-        Files
+        Files,
+        /// <summary>
+        /// Uses the input metadata to transform the CSDL with the specified XSLT.
+        /// </summary>
+        Transform,
+        /// <summary>
+        /// Uses the input metadata to transform the CSDL with the specified XSLT and adds documentation annotations.
+        /// </summary>
+        TransformWithDocs
     }
 
     public class Options
     {
-        [Option('l', "language", Default = "CSharp", HelpText = "The target language for the generated code files. The values can be: Android, Java, ObjC, CSharp, PHP, Python, TypeScript, or GraphEndpointList")]
+        [Option('l', "language", Default = "CSharp", HelpText = "The target language for the generated code files. The values can be: Java, ObjC, CSharp, PHP, Python, TypeScript, or GraphEndpointList")]
         public string Language { get; set; }
 
         [Option('m', "metadata", Default = "https://graph.microsoft.com/v1.0/$metadata", HelpText = "Location of metadata.  Local file path or URL")]
@@ -50,10 +60,11 @@ namespace Typewriter
         [Option('d', "docs", Default = ".", HelpText = "Path to the root of the documentation repo folder")]
         public string DocsRoot { get; set; }
 
-        [Option('g', "generationmode", Default = GenerationMode.Full, HelpText = "Specifies the generation mode. The values can be: Full, Metadata, or Files. Full generation mode produces " +
+        [Option('g', "generationmode", Default = GenerationMode.Full, HelpText = "Specifies the generation mode. The values can be: Full, Metadata, Files, Transform, or TransformWithDocs. Full generation mode produces " +
             "the output code files by cleaning the input metadata, parsing the documentation, and adding annotations before generating the output files. Metadata generation mode" +
             "produces an output metadata file by cleaning metadata, documentation parsing, and adding documentation annotations. Files generation mode produces code files from" +
-            "an input metadata and bypasses the cleaning, documentation parsing, and adding documentation annotations.")]
+            "an input metadata and bypasses the cleaning, documentation parsing, and adding documentation annotations. Transform generation mode processes the metadata according to the" +
+            "XSLT provided with the -t option. TransformWithDocs generation mode processes the metadata according to the XSLT and adds documentation annotations.")]
         public GenerationMode GenerationMode { get; set; }
 
         [Option('f', "outputMetadataFileName", Default = "cleanMetadataWithDescriptions", HelpText = "The output metadata filename. Only applicable for GenerationMode.Metadata.")]
@@ -64,7 +75,11 @@ namespace Typewriter
 
         [Option('p', "properties",  HelpText = "A space separated list of properties in the form of 'key:value'. These properties can be accessed in the " +
             "templates from the TemplateWriterSettings object returned by ConfigurationService.Settings. The suggested convention for specifying a key should be " +
-            "the targeted template language name and the property name. For example, php.namespace:Microsoft\\Graph\\Beta\\Model would be a property to be consumed in the PHP templates.")]
+            "the targeted template language name and the property name. For example, php.namespacePrefix:Beta would be a property to be consumed in the PHP templates.")]
         public IEnumerable<string> Properties { get; set; }
+
+        [Option('t', "transform", HelpText = "Specify the URI to the XSLT that will preprocess the metadata. Overrides the" +
+            "cleaning done by embeddeded typewriter.exe rules.")]
+        public string Transform { get; set; }
     }
 }

@@ -8,17 +8,12 @@ CodeWriterPHP writer   = (CodeWriterPHP) host.CodeWriter;
 TemplateWriterSettings settings = ConfigurationService.Settings;
 OdcmClass complex      = (OdcmClass)host.CurrentType;
 String complexName     = complex.Name.SanitizeEntityName();
-string targetNamespace = @"Microsoft\Graph\Model";
-String complexBaseName = "";
-if (complex.Base != null)
-	complexBaseName = complex.Base.Name.SanitizeEntityName();
-
-// TemplateWriterSettings.Properties are set at the Typewriter command line. Check the command line 
-// documentation for more information on how the TemplateWriterSettings.Properties is used.
-if (settings.Properties.ContainsKey("php.namespace"))
+String targetNamespace = TypeHelperPHP.GetPHPNamespace(complex, settings);
+String complexBaseName = TypeHelperPHP.GetBaseTypeFullName(complex.Base, targetNamespace, settings);
+if (complexBaseName.Contains("\\"))
 {
-    targetNamespace = settings.Properties["php.namespace"];
-}      
+    complexBaseName = "\\" + complexBaseName;
+}
 
 #>
 <#=writer.WriteHeader(writer.GetDocBlock(complexName.ToCheckedCase()))#>
@@ -27,11 +22,12 @@ namespace <#=targetNamespace#>;
 <#
 if (complex.Base != null) {
 #>
-class <#=complexName.ToCheckedCase()#> extends <#=complexBaseName.ToCheckedCase()#>
+class <#=complexName.ToCheckedCase()#> extends <#=complexBaseName#>
 <#
 } else {
+    var entityTypeFullName = TypeHelperPHP.GetPHPEntityTypeReference(targetNamespace, settings);
 #>
-class <#=complexName.ToCheckedCase()#> extends Entity
+class <#=complexName.ToCheckedCase()#> extends <#=entityTypeFullName#>
 <#
 }
 #>
@@ -55,6 +51,18 @@ if (complex.IsBaseAbstractAndReferencedAsPropertyType() && !complex.IsAbstract)
 }
 foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString() != "bytes")){
     var propertyName = property.Name.SanitizePropertyName(complexName);
+    var camelCasePropertyName = property.Name.ToCamelize();
+    var propertyTypeString = property.Type.GetTypeString();
+    var propertyNamespace = TypeHelperPHP.GetPHPNamespace(property.Type, settings);
+
+    // Check whether this type is a generated model type or a PHP type
+    var fullPropertyTypeName = propertyTypeString[0] == '\\' || propertyTypeString.IsPHPPrimitiveType()
+                                ? propertyTypeString
+                                : string.Join("\\", propertyNamespace, propertyTypeString.SanitizeEntityName().ToCheckedCase());
+
+    var propertyTypeReference = propertyNamespace == targetNamespace && !propertyTypeString.IsPHPPrimitiveType()
+                                ? propertyTypeString.SanitizeEntityName().ToCheckedCase()
+                                : fullPropertyTypeName;
     if (!property.Type.IsComplex()) {
 #>
     /**
@@ -64,7 +72,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=property.Type.GetTypeString()#> The <#=propertyName#>
+    * @return <#=propertyTypeReference#> The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
@@ -92,7 +100,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @param <#=property.Type.GetTypeString()#> $val The value of the <#=propertyName#>
+    * @param <#=propertyTypeReference#> $val The value of the <#=propertyName#>
     *
     * @return <#=complexName.ToCheckedCase()#>
     */
@@ -123,20 +131,20 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#> The <#=propertyName#>
+    * @return <#=propertyTypeReference#> The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
-            if (is_a($this->_propDict["<#=property.Name.ToCamelize()#>"], "<#=targetNamespace#>\<#=property.Type.GetTypeString()#>")) {
-                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+            if (is_a($this->_propDict["<#=camelCasePropertyName#>"], "<#=fullPropertyTypeName#>")) {
+                return $this->_propDict["<#=camelCasePropertyName#>"];
             } else {
-<# if (property.Type.GetTypeString() == "\\GuzzleHttp\\Psr7\\Stream") { #>
-                $this->_propDict["<#=property.Name.ToCamelize()#>"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["<#=property.Name.ToCamelize()#>"]);
-                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+<# if (propertyTypeString == "\\GuzzleHttp\\Psr7\\Stream") { #>
+                $this->_propDict["<#=camelCasePropertyName#>"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["<#=camelCasePropertyName#>"]);
+                return $this->_propDict["<#=camelCasePropertyName#>"];
 <# } else { #>
-                $this->_propDict["<#=property.Name.ToCamelize()#>"] = new <#=property.Type.GetTypeString().SanitizeEntityName().ToCheckedCase()#>($this->_propDict["<#=property.Name.ToCamelize()#>"]);
-                return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+                $this->_propDict["<#=camelCasePropertyName#>"] = new <#=propertyTypeReference#>($this->_propDict["<#=camelCasePropertyName#>"]);
+                return $this->_propDict["<#=camelCasePropertyName#>"];
 <# } #>
             }
         }
@@ -150,7 +158,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @param <#=property.Type.GetTypeString()#> $val The value to assign to the <#=property.Name#>
+    * @param <#=propertyTypeReference#> $val The value to assign to the <#=property.Name#>
     *
     * @return <#=complexName.ToCheckedCase()#> The <#=complexName.ToCheckedCase()#>
     */

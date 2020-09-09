@@ -4,9 +4,13 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
-var entityName = method.Class.Name.ToCheckedCase();
+var @namespace = method.Namespace.GetNamespaceName();
 
-var returnType = method.ReturnType is OdcmPrimitiveType ? method.ReturnType.GetTypeString() : method.ReturnType.Name.ToCheckedCase();
+var interfaceConverterTypeName = @namespace.GetCoreLibraryType("InterfaceConverter");
+var iCollectionPageTypeName = @namespace.GetCoreLibraryType("ICollectionPage");
+var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
+
+var returnType = method.ReturnType.GetTypeString(@namespace);
 
 var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var entityCollectionRequest = responseNamePrefix + "Request";
@@ -14,15 +18,15 @@ var entityCollectionPage = responseNamePrefix + "CollectionPage";
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using Newtonsoft.Json;
 
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.
     /// </summary>
-    [JsonConverter(typeof(InterfaceConverter<<#=entityCollectionPage#>>))]
-    public interface I<#=entityCollectionPage#> : ICollectionPage<<#=returnType#>>
+    [JsonConverter(typeof(<#=interfaceConverterTypeName#><<#=entityCollectionPage#>>))]
+    public interface I<#=entityCollectionPage#> : <#=iCollectionPageTypeName#><<#=returnType#>>
     {
         /// <summary>
         /// Gets the next page <see cref="I<#=entityCollectionRequest#>"/> instance.
@@ -32,6 +36,6 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Initializes the NextPageRequest property.
         /// </summary>
-        void InitializeNextPageRequest(IBaseClient client, string nextPageLinkString);
+        void InitializeNextPageRequest(<#=iBaseClientTypeName#> client, string nextPageLinkString);
     }
 }

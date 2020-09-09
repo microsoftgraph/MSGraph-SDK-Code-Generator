@@ -7,7 +7,6 @@
 Source code writers for [VIPR][vipr-source-repo] utilizing T4 templates. The GraphODataTemplateWriter receives an OdcmModel from VIPR and uses it to fill in a T4 template located within this repository.
 
 Currently the following target languages are supported by this writer:
-- Android
 - CSharp
 - Java
 - Objective-C
@@ -40,17 +39,30 @@ For more information on submodules read [this chapter](http://git-scm.com/book/e
 
 Typewriter is a new solution for generating code files using the GraphODataTemplateWriter and VIPR. It is an executable that is intended to simplify the generation of code files. Build the solution to find the typewriter executable in `\MSGraph-SDK-Code-Generator\src\Typewriter\bin\Release`. The typewriter run options are:
 
-* **-l**, **-language**:  The target language for the generated code files. The values can be: `Android`, `Java`, `ObjC`, `CSharp`, `PHP`, `Python`, `TypeScript`, or `GraphEndpointList`. The default value is `CSharp`. This is not applicable when only generating clean and annotated metadata as specified by the `-generationmode Metadata` option.
+* **-l**, **-language**:  The target language for the generated code files. The values can be: `Java`, `ObjC`, `CSharp`, `PHP`, `Python`, `TypeScript`, or `GraphEndpointList`. The default value is `CSharp`. This is not applicable when only generating clean and annotated metadata as specified by the `-generationmode Metadata` option.
 * **-m**, **-metadata**: The local file path or URL to the target input metadata. The default value is `https://graph.microsoft.com/v1.0/$metadata`. This value is required.
 * **-v**, **-verbosity**: The log verbosity level. The values can be: `Minimal`, `Info`, `Debug`, or `Trace`. The default value is `Minimal`.
 * **-o**, **-output**: Specifies the path to the output folder. The default value is the directory that contains typewriter.exe. The structure and contents of the output directory will be different based on the `-generationmode` and `-language` options.
-* **-d**, **-docs**: Specifies the path to the local root of the [microsoft-graph-docs](https://github.com/microsoftgraph/microsoft-graph-docs) repo. The default value is the directory that contains typewriter.exe. The documentation is parsed to provide documentation annotations to the metadata which is then used to add doc comments in the generated code files. This option is required when using `-generationmode` values of `Metadata` or `Full`.
-* **-g**, **-generationmode**: Specifies the generation mode. The values can be: `Full`, `Metadata`, or `Files`. `Full` (default) generation mode produces the output code files by cleaning the input metadata, parsing the documentation, and adding annotations before generating the output files. `Metadata` generation mode produces an output metadata file by cleaning metadata, documentation parsing, and adding documentation annotations. `Files` generation mode produces code files from an input metadata and bypasses the cleaning, documentation parsing, and adding documentation annotations.
+* **-d**, **-docs**: Specifies the path to the local root of the [microsoft-graph-docs](https://github.com/microsoftgraph/microsoft-graph-docs) repo. The default value is the directory that contains typewriter.exe. The documentation is parsed to provide documentation annotations to the metadata which is then used to add doc comments in the generated code files. This option is required when using `-generationmode` values of `Metadata`, `Full`, or `TransformWithDocs`.
+* **-g**, **-generationmode**: Specifies the generation mode. The values can be: `Full`, `Metadata`, `Files`, `Transform` or `TransformWithDocs`. `Full` (default) generation mode produces the output code files by cleaning the input metadata, parsing the documentation, and adding annotations before generating the output files. `Metadata` generation mode produces an output metadata file by cleaning metadata, documentation parsing, and adding documentation annotations. `Files` generation mode produces code files from an input metadata and bypasses the cleaning, documentation parsing, and adding documentation annotations. `Transform` generation mode processes the metadata according to the XSLT provided with the -t option. `TransformWithDocs` generation mode processes the metadata according to the XSLT and adds documentation annotations. `Transform` and `TransformWithDocs` require the -t argument to specify the XSLT file.
 * **-f**, **-outputMetadataFileName**: The base output metadata filename. Only applicable for `-generationmode Metadata`. The default value is `cleanMetadataWithDescriptions` which is used with the value of the `-endpointVersion` to generate a metadata file named `cleanMetadataWithDescriptionsv1.0.xml`.
 * **-e**, **-endpointVersion**: The endpoint version used when naming a metadata file. Expected values are `v1.0` and `beta`. Only applicable for `-generationmode Metadata`.
 * **-p**, **-properties**: Specify properties to support generation logic in the T4 templates. Properties must take the form of *key-string:value-string*. Multiple properties can be specified by setting a space in between property. The only property currently supported is the *php.namespace* property to specify the generated model file namespace. This property is optional.
+* **-t**, **-transform**: Specify the URI to the XSLT that will preprocess the metadata. Only applicable for `-generationmode Transform` or `-generationmode TransformWitDocs`.
 
 ### Example typewriter usage
+
+#### Transform metadata with XSLT.
+
+The output `cleanMetadata.xml` will be located in the same directory as typewriter.exe.
+
+`.\typewriter.exe -v Info -m https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/v1.0_metadata.xml -g Transform -t https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/transforms/csdl/preprocess_csdl.xsl`
+
+#### Transform metadata with XSLT and add documentation annotations.
+
+The output `cleanMetadataWithDescriptionsv1.0.xml` will be located in the same directory as typewriter.exe.
+
+`.\typewriter.exe -v Info -m https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/v1.0_metadata.xml -g TransformWithDocs -t https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/transforms/csdl/preprocess_csdl.xsl -d D:\repos\microsoft-graph-docs`
 
 #### Generate TypeScript typings from a CSDL (metadata) file without cleaning or annotating the CSDL.
 
@@ -70,7 +82,26 @@ The output C# code files will go in to the `output` directory.
 
 `.\typewriter.exe -v Info -m D:\v1.0_2018_10_23_source.xml -o output -l CSharp -d D:\repos\microsoft-graph-docs -g Full`
 
+## Use Typewriter to test your beta metadata
 
+We assume that the metadata you are using is based off the beta metadata file.
+
+1. Download the [latest Typewriter release](https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/releases).
+2. Run Typewriter to generate a clean metadata file from your test metadata file. The output file will be `cleanMetadata.xml`.
+
+`.\typewriter.exe -v Info -m <TODO-SET-PATH-TO-YOUR-METADATA> -g Transform -t https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/transforms/csdl/preprocess_csdl.xsl`
+
+<!-- Excludes documentation which would make for an ugly diff. May need to add the doc step for diff purposes. -->
+
+3. Generate .NET code files with Typewriter using the generated `cleanMetadata.xml`.
+
+`.\typewriter.exe -v Info -m D:\cleanMetadata.xml -o outputDirectory -g Files`
+
+4. Clone the Beta .NET SDK https://github.com/microsoftgraph/msgraph-beta-sdk-dotnet.
+5. Replace the files under `src/Microsoft.Graph/Requests/Generated` and `src/Microsoft.Graph/Models/Generated` in the Beta .Net SDK with the generated files.
+6. Build the Beta .Net SDK to validate that the generated files compile.
+
+At this point you should have a valid SDK.
 
 ## Using Vipr with this Writer
 
@@ -113,7 +144,7 @@ Example :
 
 It is important to understand that subprocessors are mapped to methods that query the **OdcmModel** and return a set of OData objects. This mapping is maintained in [TemplateProcess.InitializeSubprocessor()](https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/blob/dev/src/GraphODataTemplateWriter/TemplateProcessor/TemplateProcessor.cs#L54). The language specific mappings exist in the [config directory](https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/tree/dev/src/GraphODataTemplateWriter/.config). Each OData object returned by the subprocessor is applied to the mapped template which results in a code file output per each OData object.
 
-In the above example, the objects in result set of the NavigationCollectionProperty subprocessor will each be applied to the EntityCollectionPage template. Each result will be a code file for each object returned by the NavigationCollectionProperty subprocessor. 
+In the above example, the objects in result set of the NavigationCollectionProperty subprocessor will each be applied to the EntityCollectionPage template. Each result will be a code file for each object returned by the NavigationCollectionProperty subprocessor.
 
 #### SubProcessors
 

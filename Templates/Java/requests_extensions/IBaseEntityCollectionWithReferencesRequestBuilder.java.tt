@@ -2,20 +2,23 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeCollectionWithReferencesRequestBuilder(c);#>
+<#host.TemplateName = c.ITypeCollectionWithReferencesRequestBuilder();#>
 <#
-    var genericType = "<" + TypeName(c) + ", " + ITypeCollectionWithReferencesRequestBuilder(c) + ">";
+    var genericType = "<" + c.TypeName() + ", " + c.ITypeCollectionWithReferencesRequestBuilder() + ">";
 #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateInterfaceDef(ITypeCollectionWithReferencesRequestBuilder(c), "IRequestBuilder")#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IHttpRequest;
 
-    <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest();
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesRequestBuilder(), "IRequestBuilder")#>
 
-    <#=ITypeCollectionWithReferencesRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeCollectionWithReferencesRequest()#> buildRequest();
 
-    <#=ITypeWithReferencesRequestBuilder(c)#> byId(final String id);
+    <#=c.ITypeCollectionWithReferencesRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 
-    <#=ITypeCollectionReferenceRequestBuilder(c)#> references();
+    <#=c.ITypeWithReferencesRequestBuilder()#> byId(final String id);
+
+    <#=c.ITypeCollectionReferenceRequestBuilder()#> references();
 }

@@ -4,7 +4,10 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
+var @namespace = method.Namespace.GetNamespaceName();
 var entityName = method.Class.Name.ToCheckedCase();
+
+var iBaseRequestTypeName = @namespace.GetCoreLibraryType("IBaseRequest");
 
 var isFunction = method.IsFunction;
 var isAction = !isFunction;
@@ -13,7 +16,7 @@ var isComposable = method.IsComposable;
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
-var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString();
+var returnEntityType = method.ReturnType == null ? null : method.ReturnType.GetTypeString(@namespace);
 var returnEntityParameter = string.Empty;
 if (returnEntityType != null) {returnEntityParameter = returnEntityType.ToLower();}
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
@@ -36,7 +39,7 @@ var features = host.CurrentType.GetFeatures();
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;
@@ -47,7 +50,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     /// <summary>
     /// The interface I<#=requestType#>.
     /// </summary>
-    public partial interface I<#=requestType#> : IBaseRequest
+    public partial interface I<#=requestType#> : <#=iBaseRequestTypeName#>
     {
 <#
     if (includeRequestBody)
@@ -116,12 +119,12 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 <#
     }
 #>
-        
+
 <#  } // End POST
 
 #>
 
-<# 
+<#
     if(method.IsFunction) // GET for a OData function.
     {
 #>
@@ -129,7 +132,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// Issues the GET request.
         /// </summary>
         <#=methodReturnType#> GetAsync();
-        
+
         /// <summary>
         /// Issues the GET request.
         /// </summary>
@@ -159,11 +162,11 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 <#
     }
 #>
-  
+
 <#  } // End GET
  #>
 
-<# 
+<#
     if(method.IsFunction && method.IsComposable) // PATCH for a OData function.
     {
 #>
@@ -205,10 +208,10 @@ namespace <#=method.Namespace.GetNamespaceName()#>
 <#
     }
 #>
-          
+
 <#  } // End PATCH for a OData function.
 #>
-<# 
+<#
     if(method.IsFunction && method.IsComposable) // PUT for a OData function.
     {
 #>

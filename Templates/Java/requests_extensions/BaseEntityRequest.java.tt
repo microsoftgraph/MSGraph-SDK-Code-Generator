@@ -2,53 +2,42 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeRequest(c);#>
+<#host.TemplateName = c.TypeRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForBaseEntityRequest(host)#>
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.http.BaseRequest;
-import com.microsoft.graph.http.HttpMethod;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.options.QueryOption;
-<#
-String classDeclaration = "";
-if (c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
-{
-	classDeclaration += "? extends ";
-}
-classDeclaration += TypeName(c);
-#>
+<#=host.CreatePackageDef()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.HttpMethod;
 
-<#=CreateClassDef(TypeRequest(c), "BaseRequest", ITypeRequest(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest", c.ITypeRequest())#>
 	<# if (c.AsOdcmClass() != null && c.AsOdcmClass().Derived.Any()) { #>
 
     /**
-     * The request for the <#=TypeName(c)#>
+     * The request for the <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      * @param responseClass  the class of the response
      */
-    public <#=TypeRequest(c)#>(final String requestUrl,
-            final <#=IBaseClientType()#> client,
-            final java.util.List<? extends Option> requestOptions,
-            final Class<<# if(!host.TemplateName.Equals("EntityRequest")){ #>? extends <#}#><#=ClassTypeName(c)#>> responseClass) {
+    public <#=c.TypeRequest()#>(final String requestUrl,
+            final <#=TypeHelperJava.IBaseClientType()#> client,
+            final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions,
+            final Class<<# if(!host.TemplateName.Equals("EntityRequest")){ #>? extends <#}#><#=c.ClassTypeName()#>> responseClass) {
         super(requestUrl, client, requestOptions, responseClass);
     }
 <# } #>
 
     /**
-     * The request for the <#=TypeName(c)#>
+     * The request for the <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=ClassTypeName(c)#>.class);
+    public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
 <#  if (c.AsOdcmClass().IsAbstract && c.AsOdcmClass().Base == null)
@@ -61,6 +50,7 @@ classDeclaration += TypeName(c);
 <#=deleteMethods(c)#>
 <#=patchMethods(c)#>
 <#=postMethods(c)#>
+<#=putMethods(c)#>
 <#  }
     else if (!c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
     { #>
@@ -68,6 +58,7 @@ classDeclaration += TypeName(c);
 <#=deleteMethods(c)#>
 <#=patchMethods(c)#>
 <#=postMethods(c)#>
+<#=putMethods(c)#>
 <#  }
     else if (c.AsOdcmClass().Base == null)
     { #>
@@ -75,6 +66,7 @@ classDeclaration += TypeName(c);
 <#=deleteMethods(c)#>
 <#=patchMethods(c)#>
 <#=postMethods(c)#>
+<#=putMethods(c)#>
 <#  }
     else
     {
@@ -88,9 +80,9 @@ classDeclaration += TypeName(c);
      * @param value the select clause
      * @return the updated request
      */
-     public <#=ITypeRequest(c)#> select(final String value) {
-         getQueryOptions().add(new QueryOption("$select", value));
-         return (<#=TypeRequest(c)#>)this;
+     public <#=c.ITypeRequest()#> select(final String value) {
+         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
+         return (<#=c.TypeRequest()#>)this;
      }
 
 <# } #>
@@ -101,9 +93,9 @@ classDeclaration += TypeName(c);
      * @param value the expand clause
      * @return the updated request
      */
-     public <#=ITypeRequest(c)#> expand(final String value) {
-         getQueryOptions().add(new QueryOption("$expand", value));
-         return (<#=TypeRequest(c)#>)this;
+     public <#=c.ITypeRequest()#> expand(final String value) {
+         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
+         return (<#=c.TypeRequest()#>)this;
      }
 
 <# } #>
@@ -115,13 +107,13 @@ classDeclaration += TypeName(c);
      * @param value the max number of items to return
      * @return the updated request
      */
-     public <#=ITypeRequest(c)#> top(final int value) {
-         getQueryOptions().add(new QueryOption("$top", value+""));
-         return (<#=TypeRequest(c)#>)this;
+     public <#=c.ITypeRequest()#> top(final int value) {
+         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
+         return (<#=c.TypeRequest()#>)this;
      }
 <# } #>
 }
-<#=PostProcess(TypeRequest(c))#>
+<#=PostProcess(c.TypeRequest())#>
 <#+
     public String deleteMethods(OdcmObject c)
     {
@@ -145,7 +137,7 @@ classDeclaration += TypeName(c);
         send(HttpMethod.DELETE, null);
     }}
 ";
-        return string.Format(formatString, TypeName(odcmObject));
+        return string.Format(formatString, odcmObject.TypeName());
     }
 
     public string getMethods(OdcmObject c)
@@ -171,7 +163,7 @@ classDeclaration += TypeName(c);
        return send(HttpMethod.GET, null);
     }}
 ";
-        return string.Format(formatString, TypeName(odcmObject), odcmObject.Derived.Any() ? TypeName(odcmObject) : string.Empty);
+        return string.Format(formatString, odcmObject.TypeName(), odcmObject.Derived.Any() ? odcmObject.TypeName() : string.Empty);
     }
 
     public string patchMethods(OdcmObject c)
@@ -199,7 +191,7 @@ classDeclaration += TypeName(c);
         return send(HttpMethod.PATCH, source{0});
     }}
 ";
-        return string.Format(formatString, TypeName(odcmObject));
+        return string.Format(formatString, odcmObject.TypeName());
     }
 
     public string postMethods(OdcmObject c)
@@ -227,31 +219,34 @@ classDeclaration += TypeName(c);
         return send(HttpMethod.POST, new{0});
     }}
 ";
-        return string.Format(formatString, TypeName(odcmObject));
+        return string.Format(formatString, odcmObject.TypeName());
     }
 
-	public string CreatePackageDefForBaseEntityRequest(CustomT4Host host)
-	{
-		var sb = new StringBuilder();
-		sb.Append(CreatePackageDefinition(host));
-		var importFormat = @"import {0}.{1}.{2};";
-		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
-						"requests.extensions",
-						ITypeRequest(host.CurrentType));
-		sb.Append("\n");
+    public string putMethods(OdcmObject c)
+    {
+        var odcmObject = c.AsOdcmClass();
+        var formatString =
+@"    /**
+     * Creates a {0} with a new object
+     *
+     * @param new{0} the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final {0} new{0}, final ICallback<{0}> callback) {{
+        send(HttpMethod.PUT, callback, new{0});
+    }}
 
-		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
-						"requests.extensions",
-						TypeRequest(host.CurrentType));
-		sb.Append("\n");
-
-		sb.AppendFormat(importFormat,
-						host.CurrentModel.NamespaceName(),
-						"models.extensions",
-						TypeName(host.CurrentType.AsOdcmClass()));
-		sb.Append("\n");
-		return sb.ToString();
-	}
+    /**
+     * Creates a {0} with a new object
+     *
+     * @param new{0} the object to create/update
+     * @return the created {0}
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public {0} put(final {0} new{0}) throws ClientException {{
+        return send(HttpMethod.PUT, new{0});
+    }}
+";
+        return string.Format(formatString, odcmObject.TypeName());
+    }
  #>

@@ -2,38 +2,37 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeRequest(c);#>
+<#host.TemplateName = c.ITypeRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForIBaseMethodRequest(host)#>
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.concurrency.IExecutors;
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.http.BaseRequest;
-import com.microsoft.graph.http.HttpMethod;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.options.QueryOption;
+<#=host.CreatePackageDefForIBaseMethodRequest()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.concurrency.ICallback;
+import <#=importNamespace#>.concurrency.IExecutors;
+import <#=importNamespace#>.core.ClientException;
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.HttpMethod;
 
-<#=CreateInterfaceDef(ITypeRequest(c))#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequest())#>
 
 <#
 if (c.AsOdcmMethod().IsAction()) {
     if (c.AsOdcmMethod().ReturnType != null) {
 #>
     /**
-     * Creates the <#=TypeName(c)#>
+     * Creates the <#=c.TypeName()#>
      *
      * @param callback the callback to be called after success or failure
      */
-    void post(final ICallback<<#=ReturnType(c)#>> callback);
+    void post(final ICallback<<#=c.ReturnType()#>> callback);
 
     /**
-     * Creates the <#=TypeName(c)#>
+     * Creates the <#=c.TypeName()#>
      *
-     * @return the <#=ReturnType(c)#>
+     * @return the <#=c.ReturnType()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    <#=ReturnType(c)#> post() throws ClientException;
+    <#=c.ReturnType()#> post() throws ClientException;
 
 <#
         if (c.GetFeatures().CanSelect) {
@@ -44,7 +43,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the select clause
      * @return the updated request
      */
-    <#=ITypeRequest(c)#> select(final String value);
+    <#=c.ITypeRequest()#> select(final String value);
 
 <#
         }
@@ -57,7 +56,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the expand clause
      * @return the updated request
      */
-    <#=ITypeRequest(c)#> expand(final String value);
+    <#=c.ITypeRequest()#> expand(final String value);
 
 <#
         }
@@ -72,20 +71,20 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the max number of items to return
      * @return the updated request
      */
-    <#=ITypeRequest(c)#> top(final int value);
+    <#=c.ITypeRequest()#> top(final int value);
 <#
         }
     } else {
 #>
     /**
-     * Creates the <#=TypeName(c)#>
+     * Creates the <#=c.TypeName()#>
      *
      * @param callback the callback to be called after success or failure
      */
     void post(final ICallback<Void> callback);
 
     /**
-     * Creates the <#=TypeName(c)#>
+     * Creates the <#=c.TypeName()#>
      *
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
@@ -98,55 +97,55 @@ if (c.AsOdcmMethod().IsAction()) {
         if (c.AsOdcmMethod().IsComposable) {
 #>
     /**
-     * Patches the <#=TypeName(c)#>
+     * Patches the <#=c.TypeName()#>
      *
-     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> with which to PATCH
+     * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> with which to PATCH
      * @param callback the callback to be called after success or failure
      */
-    void patch(<#=ReturnType(c)#> src<#=ReturnType(c)#>, final ICallback<<#=ReturnType(c)#>> callback);
+    void patch(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<<#=c.ReturnType()#>> callback);
 
     /**
-     * Patches the <#=TypeName(c)#>
+     * Patches the <#=c.TypeName()#>
      *
-     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> with which to PATCH
-     * @return the <#=ReturnType(c)#>
+     * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> with which to PATCH
+     * @return the <#=c.ReturnType()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    <#=ReturnType(c)#> patch(<#=ReturnType(c)#> src<#=ReturnType(c)#>) throws ClientException;
+    <#=c.ReturnType()#> patch(<#=c.ReturnType()#> src<#=c.ReturnType()#>) throws ClientException;
 
     /**
-     * Puts the <#=TypeName(c)#>
+     * Puts the <#=c.TypeName()#>
      *
-     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> to PUT
+     * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> to PUT
      * @param callback the callback to be called after success or failure
      */
-    void put(<#=ReturnType(c)#> src<#=ReturnType(c)#>, final ICallback<<#=ReturnType(c)#>> callback);
+    void put(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<<#=c.ReturnType()#>> callback);
 
     /**
-     * Puts the <#=TypeName(c)#>
+     * Puts the <#=c.TypeName()#>
      *
-     * @param src<#=ReturnType(c)#> the <#=ReturnType(c)#> to PUT
-     * @return the <#=ReturnType(c)#>
+     * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> to PUT
+     * @return the <#=c.ReturnType()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-     <#=ReturnType(c)#> put(<#=ReturnType(c)#> src<#=ReturnType(c)#>) throws ClientException;
+     <#=c.ReturnType()#> put(<#=c.ReturnType()#> src<#=c.ReturnType()#>) throws ClientException;
 <#
         }
 #>
     /**
-     * Gets the <#=ReturnType(c)#>
+     * Gets the <#=c.ReturnType()#>
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<<#=ReturnType(c)#>> callback);
+    void get(final ICallback<<#=c.ReturnType()#>> callback);
 
     /**
-     * Gets the <#=ReturnType(c)#>
+     * Gets the <#=c.ReturnType()#>
      *
-     * @return the <#=ReturnType(c)#>
+     * @return the <#=c.ReturnType()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    <#=ReturnType(c)#> get() throws ClientException;
+    <#=c.ReturnType()#> get() throws ClientException;
 
 <#
         if (c.GetFeatures().CanSelect) {
@@ -157,7 +156,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the select clause
      * @return the updated request
      */
-    <#=ITypeRequest(c)#> select(final String value);
+    <#=c.ITypeRequest()#> select(final String value);
 
 <#
         }
@@ -169,7 +168,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the expand clause
      * @return the updated request
      */
-    <#=ITypeRequest(c)#> expand(final String value);
+    <#=c.ITypeRequest()#> expand(final String value);
 
 <#
         }
@@ -184,7 +183,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the max number of items to return
      * @return the updated request
      */
-    <#=ITypeRequest(c)#> top(final int value);
+    <#=c.ITypeRequest()#> top(final int value);
 <#
         }
     } else {

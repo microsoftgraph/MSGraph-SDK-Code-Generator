@@ -4,10 +4,13 @@
 <#
 var entityContainer = model.EntityContainer;
 var clientName = entityContainer.Name.ToCheckedCase() + "Client";
+
+var @namespace = entityContainer.Namespace.GetNamespaceName();
 #>
 
-namespace <#=entityContainer.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
+    using System.Net.Http;
 
     /// <summary>
     /// The type <#=clientName#>.
@@ -39,6 +42,17 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
             : base(baseUrl, authenticationProvider, httpProvider)
         {
         }
+
+        /// <summary>
+        /// Instantiates a new <#=clientName#>.
+        /// </summary>
+        /// <param name="httpClient">The <see cref="HttpClient"/> to use for making requests to Microsoft Graph. Use the <see cref="GraphClientFactory"/>
+        /// to get a pre-configured HttpClient that is optimized for use with the Microsoft Graph service API. </param>
+        public <#=clientName#>(
+            HttpClient httpClient)
+            : base("<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>", httpClient)
+        {
+        }
     <#
 
     foreach(var prop in model.EntityContainer.Properties)
@@ -65,13 +79,14 @@ namespace <#=entityContainer.Namespace.GetNamespaceName()#>
         }
         else
         {
-            var requestBuilder = prop.Projection.Type.Name.ToCheckedCase() + "RequestBuilder";
+            var requestBuilder = prop.GetTypeString(@namespace, "{0}RequestBuilder");
+            var iRequestBuilder = prop.GetTypeString(@namespace, "I{0}RequestBuilder");
     #>
 
         /// <summary>
         /// Gets the <#=propName#> request builder.
         /// </summary>
-        public I<#=requestBuilder#> <#=sanitizedPropName#>
+        public <#=iRequestBuilder#> <#=sanitizedPropName#>
         {
             get
             {

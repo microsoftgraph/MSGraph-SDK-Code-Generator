@@ -3,8 +3,9 @@
 <#@ include file="SharedCSharp.template.tt"#>
 <#+
 
-public string GetInterfaceDefinition(string interfaceName)
+public string GetInterfaceDefinition(string interfaceName, string @namespace)
 {
+    var iBaseRequestTypeName = @namespace.GetCoreLibraryType("IBaseRequest");
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append("/// <summary>");
@@ -13,7 +14,7 @@ public string GetInterfaceDefinition(string interfaceName)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("    /// </summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("    public partial interface I{0} : IBaseRequest", interfaceName);
+    stringBuilder.AppendFormat("    public partial interface I{0} : {1}", interfaceName, iBaseRequestTypeName);
 
     return stringBuilder.ToString();
 }

@@ -6,48 +6,26 @@
     CodeWriterTypeScript writer = (CodeWriterTypeScript) host.CodeWriter;
 
     var model                   = host.CurrentModel;
-    var entityTypes             = model.GetEntityTypes();
-    var enumTypes               = model.GetEnumTypes();
-    var complexTypes            = model.GetComplexTypes();
+    var typeScriptNamespaces    = model.GetTypeScriptNamespaces();
 #>
-// Type definitions for the Microsoft Graph <VERSION_STRING>
 // Project: https://github.com/microsoftgraph/msgraph-typescript-typings
 // Definitions by: Microsoft Graph Team <https://github.com/microsoftgraph>
+//                 Michael Mainer <https://github.com/MIchaelMainer>
+//                 Peter Ombwa <https://github.com/peombwa>
+//                 Mustafa Zengin <https://github.com/zengin>
+//                 DeVere Dyett <https://github.com/ddyett>
+//                 Nikitha Udaykumar Chettiar <https://github.com/nikithauc>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.1
 
 export as namespace microsoftgraph;
 
-<# foreach(var enumType in enumTypes) { #>
-export type <#= enumType.Name.UpperCaseFirstChar() #> = <#= enumType.GetEnumValues() #>;
-<# } #>
-<#
-  foreach(var entityType in entityTypes)
-    {
-        var methods = entityType.Methods;
-#>
+export type NullableOption<T> = T | null;
 
-export interface <#= entityType.Name.UpperCaseFirstChar() #><# if (entityType.Base != null) { #> extends <#=  entityType.Base.Name.UpperCaseFirstChar() #><# }#> {
-<# foreach(var prop in entityType.Properties.ToList()) { #>
-	<# if (prop.LongDescription != null || prop.Description != null) { #>
-    /** <#=prop.GetSanitizedLongDescription()#> */
-	<# } #>
-	<#=  prop.Name #>?: <#= prop.GetTypeString() #>;
-<# } #>
-}
+<#=typeScriptNamespaces.MainNamespace.ToString()#>
 <#
-    }
-#>
-<#
-  foreach(var complexType in complexTypes)
-  {
-#>
-export interface <#= complexType.Name.UpperCaseFirstChar()#><# if (complexType.Base != null) { #> extends <#=  complexType.Base.Name.UpperCaseFirstChar() #><# }#> {
-<# foreach(var prop in complexType.Properties) { #>
-	<# if (prop.LongDescription != null || prop.Description != null) { #>
-    /** <#=prop.GetSanitizedLongDescription()#> */
-	<# } #>
-	<#= prop.Name #>?: <#= prop.GetTypeString() #>;
-<# } #>
+foreach (var subNamespace in typeScriptNamespaces.SubNamespaces)
+{
+#><#=subNamespace.Value.ToString()#><#
 }
-<# } #>
+#>

@@ -3,9 +3,11 @@
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.core.IBaseClient;
 
-<#=CreateInterfaceDef(IBaseClientType(c), "IBaseClient")#>
+<#=TypeHelperJava.CreateInterfaceDef(c.IBaseClientType(host), "IBaseClient")#>
 <#
 foreach (var prop in model.EntityContainer.Properties)
 {
@@ -19,7 +21,7 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return the request builder for the collection of <#=propertyName#> objects
      */
-    <#=ITypeCollectionRequestBuilder(prop)#> <#=prop.Name#>();
+    <#=prop.ITypeCollectionRequestBuilder()#> <#=prop.Name#>();
 
     /**
      * Gets a single <#=propertyName#>
@@ -27,7 +29,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @param id the id of the <#=propertyName#> to retrieve
      * @return the request builder for the <#=propertyName#> object
      */
-    <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>(final String id);
+    <#=prop.ITypeRequestBuilder()#> <#=prop.Name#>(final String id);
 <#
     }
     else
@@ -35,11 +37,11 @@ foreach (var prop in model.EntityContainer.Properties)
 #>
 
     /**
-     * Gets the <#=TypeRequestBuilder(c)#>
+     * Gets the <#=c.TypeRequestBuilder()#>
      *
      * @return the <#=prop.Projection.Type.GetTypeString()#>
      */
-    <#=ITypeRequestBuilder(prop)#> <#=prop.Name#>();
+    <#=prop.ITypeRequestBuilder()#> <#=prop.Name#>();
 <#
     }
 }

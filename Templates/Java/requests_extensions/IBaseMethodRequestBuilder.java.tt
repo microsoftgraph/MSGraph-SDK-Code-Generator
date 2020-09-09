@@ -2,26 +2,26 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeRequestBuilder(c);#>
+<#host.TemplateName = c.ITypeRequestBuilder();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefIBaseMethodRequestBuilder(host)#>
-import com.microsoft.graph.http.IRequestBuilder;
-import com.microsoft.graph.options.Option;
+<#=host.CreatePackageDefIBaseMethodRequestBuilder()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IRequestBuilder;
 
-<#=CreateInterfaceDef(ITypeRequestBuilder(c), "IRequestBuilder")#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequestBuilder(), "IRequestBuilder")#>
 
     /**
-     * Creates the <#=ITypeRequest(c)#>
+     * Creates the <#=c.ITypeRequest()#>
      *
-     * @return the <#=ITypeRequest(c)#> instance
+     * @return the <#=c.ITypeRequest()#> instance
      */
-    <#=ITypeRequest(c)#> buildRequest();
+    <#=c.ITypeRequest()#> buildRequest();
 
     /**
-     * Creates the <#=ITypeRequest(c)#> with specific options instead of the existing options
+     * Creates the <#=c.ITypeRequest()#> with specific options instead of the existing options
      *
      * @param requestOptions the options for the request
-     * @return the <#=ITypeRequest(c)#> instance
+     * @return the <#=c.ITypeRequest()#> instance
      */
-    <#=ITypeRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 }

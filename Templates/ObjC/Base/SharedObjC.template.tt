@@ -275,7 +275,7 @@ private string GetJsonToObjCExpressionConversionOpenType(OdcmProperty prop)
 {
     string objCIdentifierType = GetObjCTypeIdentifierCollection(prop);
 
-    if(model.GetComplexTypes().Any(complexType => objCIdentifierType.Equals(writer.GetPrefix() + complexType.Name.ToUpperFirstChar())))
+    if(model.GetComplexTypes().Any(complexType => objCIdentifierType.Equals(writer.GetNamespacePrefixForType(complexType) + complexType.Name.ToUpperFirstChar())))
     {
         return String.Format("[[{0} alloc] initWithDictionary:value]", objCIdentifierType);
     }

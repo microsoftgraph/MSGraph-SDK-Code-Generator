@@ -2,24 +2,28 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeReferenceRequestBuilder(c);#>
+<#host.TemplateName = c.ITypeReferenceRequestBuilder();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateInterfaceDef(ITypeReferenceRequestBuilder(c), "IRequestBuilder")#>
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeReferenceRequestBuilder(), "IRequestBuilder")#>
 
     /**
      * Creates the request
      *
-     * @return the <#=ITypeReferenceRequest(c)#> instance
+     * @return the <#=c.ITypeReferenceRequest()#> instance
      */
-    <#=ITypeReferenceRequest(c)#> buildRequest();
+    <#=c.ITypeReferenceRequest()#> buildRequest();
 
     /**
      * Creates the request with specific options instead of the existing options
      *
      * @param requestOptions the options for this request
-     * @return the <#=ITypeReferenceRequest(c)#> instance
+     * @return the <#=c.ITypeReferenceRequest()#> instance
      */
-    <#=ITypeReferenceRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
+    <#=c.ITypeReferenceRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 }

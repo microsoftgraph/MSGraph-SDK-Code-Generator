@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -7,8 +7,9 @@
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
     <AssemblyName>ClassLibrary</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -18,6 +19,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -26,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <RootNamespace>Templates</RootNamespace>
@@ -36,102 +39,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="*\*.tt" />
-    <Content Include="Android\extensions\ChunkedUploadRequest.java.tt" />
-    <Content Include="Android\extensions\ChunkedUploadResult.java.tt" />
-    <Content Include="Android\extensions\Client.java.tt" />
-    <Content Include="Android\extensions\EntityCollectionPage.java.tt" />
-    <Content Include="Android\extensions\EntityCollectionReferenceRequest.java.tt" />
-    <Content Include="Android\extensions\EntityCollectionReferenceRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\EntityCollectionRequest.java.tt" />
-    <Content Include="Android\extensions\EntityCollectionRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\EntityCollectionWithReferencesPage.java.tt" />
-    <Content Include="Android\extensions\EntityCollectionWithReferencesRequest.java.tt" />
-    <Content Include="Android\extensions\EntityCollectionWithReferencesRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\EntityReferenceRequest.java.tt" />
-    <Content Include="Android\extensions\EntityReferenceRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\EntityRequest.java.tt" />
-    <Content Include="Android\extensions\EntityRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\EntityStreamRequest.java.tt" />
-    <Content Include="Android\extensions\EntityStreamRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\EntityWithReferenceRequest.java.tt" />
-    <Content Include="Android\extensions\EntityWithReferenceRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\Enum.java.tt" />
-    <Content Include="Android\extensions\ExtensibleEntity.java.tt" />
-    <Content Include="Android\extensions\IClient.java.tt" />
-    <Content Include="Android\extensions\IEntityCollectionPage.java.tt" />
-    <Content Include="Android\extensions\IEntityCollectionReferenceRequest.java.tt" />
-    <Content Include="Android\extensions\IEntityCollectionReferenceRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\IEntityCollectionRequest.java.tt" />
-    <Content Include="Android\extensions\IEntityCollectionRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\IEntityCollectionWithReferencesPage.java.tt" />
-    <Content Include="Android\extensions\IEntityCollectionWithReferencesRequest.java.tt" />
-    <Content Include="Android\extensions\IEntityCollectionWithReferencesRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\IEntityReferenceRequest.java.tt" />
-    <Content Include="Android\extensions\IEntityReferenceRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\IEntityRequest.java.tt" />
-    <Content Include="Android\extensions\IEntityRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\IEntityStreamRequest.java.tt" />
-    <Content Include="Android\extensions\IEntityStreamRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\IEntityWithReferenceRequest.java.tt" />
-    <Content Include="Android\extensions\IEntityWithReferenceRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\IMethodCollectionRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\MethodBody.java.tt" />
-    <Content Include="Android\extensions\MethodCollectionPage.java.tt" />
-    <Content Include="Android\extensions\MethodCollectionRequest.java.tt" />
-    <Content Include="Android\extensions\MethodCollectionRequestBuilder.java.tt" />
-    <Content Include="Android\extensions\MethodRequest.java.tt" />
-    <Content Include="Android\extensions\MethodRequestBuilder.java.tt" />
-    <Content Include="Android\generated\BaseClient.java.tt" />
-    <Content Include="Android\generated\BaseEntity.java.tt" />
-    <Content Include="Android\generated\BaseEntityCollectionPage.java.tt" />
-    <Content Include="Android\generated\BaseEntityCollectionReferenceRequest.java.tt" />
-    <Content Include="Android\generated\BaseEntityCollectionReferenceRequestBuilder.java.tt" />
-    <Content Include="Android\generated\BaseEntityCollectionRequest.java.tt" />
-    <Content Include="Android\generated\BaseEntityCollectionRequestBuilder.java.tt" />
-    <Content Include="Android\generated\BaseEntityCollectionResponse.java.tt" />
-    <Content Include="Android\generated\BaseEntityCollectionWithReferencesPage.java.tt" />
-    <Content Include="Android\generated\BaseEntityCollectionWithReferencesRequest.java.tt" />
-    <Content Include="Android\generated\BaseEntityCollectionWithReferencesRequestBuilder.java.tt" />
-    <Content Include="Android\generated\BaseEntityReferenceRequest.java.tt" />
-    <Content Include="Android\generated\BaseEntityReferenceRequestBuilder.java.tt" />
-    <Content Include="Android\generated\BaseEntityRequest.java.tt" />
-    <Content Include="Android\generated\BaseEntityRequestBuilder.java.tt" />
-    <Content Include="Android\generated\BaseEntityStreamRequestBuilder.java.tt" />
-    <Content Include="Android\generated\BaseEntityWithReferenceRequest.java.tt" />
-    <Content Include="Android\generated\BaseEntityWithReferenceRequestBuilder.java.tt" />
-    <Content Include="Android\generated\BaseMethodBody.java.tt" />
-    <Content Include="Android\generated\BaseMethodBodyRequest.java.tt" />
-    <Content Include="Android\generated\BaseMethodCollectionPage.java.tt" />
-    <Content Include="Android\generated\BaseMethodCollectionRequest.java.tt" />
-    <Content Include="Android\generated\BaseMethodCollectionRequestBuilder.java.tt" />
-    <Content Include="Android\generated\BaseMethodCollectionResponse.java.tt" />
-    <Content Include="Android\generated\BaseMethodRequest.java.tt" />
-    <Content Include="Android\generated\BaseMethodRequestBuilder.java.tt" />
-    <Content Include="Android\generated\BaseStreamRequest.java.tt" />
-    <Content Include="Android\generated\IBaseClient.java.tt" />
-    <Content Include="Android\generated\IBaseEntityCollectionPage.java.tt" />
-    <Content Include="Android\generated\IBaseEntityCollectionReferenceRequest.java.tt" />
-    <Content Include="Android\generated\IBaseEntityCollectionReferenceRequestBuilder.java.tt" />
-    <Content Include="Android\generated\IBaseEntityCollectionRequest.java.tt" />
-    <Content Include="Android\generated\IBaseEntityCollectionRequestBuilder.java.tt" />
-    <Content Include="Android\generated\IBaseEntityCollectionWithReferencesPage.java.tt" />
-    <Content Include="Android\generated\IBaseEntityCollectionWithReferencesRequest.java.tt" />
-    <Content Include="Android\generated\IBaseEntityCollectionWithReferencesRequestBuilder.java.tt" />
-    <Content Include="Android\generated\IBaseEntityReferenceRequest.java.tt" />
-    <Content Include="Android\generated\IBaseEntityReferenceRequestBuilder.java.tt" />
-    <Content Include="Android\generated\IBaseEntityRequest.java.tt" />
-    <Content Include="Android\generated\IBaseEntityRequestBuilder.java.tt" />
-    <Content Include="Android\generated\IBaseEntityStreamRequestBuilder.java.tt" />
-    <Content Include="Android\generated\IBaseEntityWithReferenceRequest.java.tt" />
-    <Content Include="Android\generated\IBaseEntityWithReferenceRequestBuilder.java.tt" />
-    <Content Include="Android\generated\IBaseMethodBodyRequest.java.tt" />
-    <Content Include="Android\generated\IBaseMethodCollectionPage.java.tt" />
-    <Content Include="Android\generated\IBaseMethodCollectionRequest.java.tt" />
-    <Content Include="Android\generated\IBaseMethodCollectionRequestBuilder.java.tt" />
-    <Content Include="Android\generated\IBaseMethodRequest.java.tt" />
-    <Content Include="Android\generated\IBaseMethodRequestBuilder.java.tt" />
-    <Content Include="Android\generated\IBaseStreamRequest.java.tt" />
+    <Content Include="Java\BaseJavaModel.template.tt" />
     <Content Include="CSharp\Base\CollectionRequest.Base.template.tt" />
     <Content Include="CSharp\Base\CollectionRequestBuilder.Base.template.tt" />
     <Content Include="CSharp\Base\EntityRequest.Base.template.tt" />
@@ -195,99 +103,13 @@
     <Content Include="CSharp\Requests\StreamRequest.cs.tt" />
     <Content Include="CSharp\Requests\StreamRequestBuilder.cs.tt" />
     <Content Include="GraphEndpointList\src\graph_endpoint_list.txt.tt" />
-    <Content Include="Java\models_extensions\ExtensibleEntity.java.tt" />
+    <Content Include="Java\models_extensions\*" />
     <Content Include="Java\models_extensions\IClient.java.tt" />
-    <Content Include="Java\models_extensions\MethodBody.java.tt" />
-    <Content Include="Java\models_generated\BaseEntity.java.tt" />
-    <Content Include="Java\models_generated\BaseMethodBody.java.tt" />
+    <Content Include="Java\models_generated\*" />
     <Content Include="Java\models_generated\Enum.java.tt" />
-    <Content Include="Java\models_generated\IBaseClient.java.tt" />
+    <Content Include="Java\requests_extensions\*" />
     <Content Include="Java\requests_extensions\Client.java.tt" />
-    <Content Include="Java\requests_extensions\EntityCollectionPage.java.tt" />
-    <Content Include="Java\requests_extensions\EntityCollectionReferenceRequest.java.tt" />
-    <Content Include="Java\requests_extensions\EntityCollectionReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\EntityCollectionRequest.java.tt" />
-    <Content Include="Java\requests_extensions\EntityCollectionRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\EntityCollectionWithReferencesPage.java.tt" />
-    <Content Include="Java\requests_extensions\EntityCollectionWithReferencesRequest.java.tt" />
-    <Content Include="Java\requests_extensions\EntityCollectionWithReferencesRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\EntityReferenceRequest.java.tt" />
-    <Content Include="Java\requests_extensions\EntityReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\EntityRequest.java.tt" />
-    <Content Include="Java\requests_extensions\EntityRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\EntityStreamRequest.java.tt" />
-    <Content Include="Java\requests_extensions\EntityStreamRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\EntityWithReferenceRequest.java.tt" />
-    <Content Include="Java\requests_extensions\EntityWithReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityCollectionPage.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityCollectionReferenceRequest.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityCollectionReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityCollectionRequest.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityCollectionRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityCollectionWithReferencesPage.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityCollectionWithReferencesRequest.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityCollectionWithReferencesRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityReferenceRequest.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityRequest.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityStreamRequest.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityStreamRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityWithReferenceRequest.java.tt" />
-    <Content Include="Java\requests_extensions\IEntityWithReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\IMethodCollectionRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\MethodCollectionPage.java.tt" />
-    <Content Include="Java\requests_extensions\MethodCollectionRequest.java.tt" />
-    <Content Include="Java\requests_extensions\MethodCollectionRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\MethodRequest.java.tt" />
-    <Content Include="Java\requests_extensions\MethodRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\BaseClient.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityCollectionPage.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityCollectionReferenceRequest.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityCollectionReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityCollectionRequest.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityCollectionRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityCollectionResponse.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityCollectionWithReferencesPage.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityCollectionWithReferencesRequest.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityCollectionWithReferencesRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityReferenceRequest.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityRequest.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityStreamRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityWithReferenceRequest.java.tt" />
-    <Content Include="Java\requests_generated\BaseEntityWithReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\BaseMethodBodyRequest.java.tt" />
-    <Content Include="Java\requests_generated\BaseMethodCollectionPage.java.tt" />
-    <Content Include="Java\requests_generated\BaseMethodCollectionRequest.java.tt" />
-    <Content Include="Java\requests_generated\BaseMethodCollectionRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\BaseMethodCollectionResponse.java.tt" />
-    <Content Include="Java\requests_generated\BaseMethodRequest.java.tt" />
-    <Content Include="Java\requests_generated\BaseMethodRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\BaseStreamRequest.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityCollectionPage.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityCollectionReferenceRequest.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityCollectionReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityCollectionRequest.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityCollectionRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityCollectionWithReferencesPage.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityCollectionWithReferencesRequest.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityCollectionWithReferencesRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityReferenceRequest.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityRequest.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityStreamRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityWithReferenceRequest.java.tt" />
-    <Content Include="Java\requests_generated\IBaseEntityWithReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\IBaseMethodBodyRequest.java.tt" />
-    <Content Include="Java\requests_generated\IBaseMethodCollectionPage.java.tt" />
-    <Content Include="Java\requests_generated\IBaseMethodCollectionRequest.java.tt" />
-    <Content Include="Java\requests_generated\IBaseMethodCollectionRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\IBaseMethodRequest.java.tt" />
-    <Content Include="Java\requests_generated\IBaseMethodRequestBuilder.java.tt" />
-    <Content Include="Java\requests_generated\IBaseStreamRequest.java.tt" />
+    <Content Include="Java\requests_generated\*" />
     <Content Include="ObjC\Base\SharedObjC.template.tt" />
     <Content Include="ObjC\Models\ComplexType.h.tt" />
     <Content Include="ObjC\Models\ComplexType.m.tt" />

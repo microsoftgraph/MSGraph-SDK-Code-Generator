@@ -2,15 +2,21 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeReferenceRequest(c);#>
+<#host.TemplateName = c.ITypeReferenceRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateInterfaceDef(ITypeReferenceRequest(c), "IHttpRequest")#>
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IHttpRequest;
+import <#=importNamespace#>.serializer.IJsonBackedObject;
 
-    void delete(final ICallback<<#=TypeName(c)#>> callback);
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeReferenceRequest(), "IHttpRequest")#>
 
-    <#=TypeName(c)#> delete() throws ClientException;
+    void delete(final ICallback<<#=c.TypeName()#>> callback);
+
+    <#=c.TypeName()#> delete() throws ClientException;
 
 <# if (c.GetFeatures().CanSelect) { #>
     /**
@@ -19,7 +25,7 @@
      * @param value the select clause
      * @return the updated request
      */
-    <#=ITypeReferenceRequest(c)#> select(final String value);
+    <#=c.ITypeReferenceRequest()#> select(final String value);
 
 <# } #>
 <# if (c.GetFeatures().CanExpand) { #>
@@ -29,25 +35,25 @@
      * @param value the expand clause
      * @return the updated request
      */
-    <#=ITypeReferenceRequest(c)#> expand(final String value);
+    <#=c.ITypeReferenceRequest()#> expand(final String value);
 
 <# } #>
 <# if (c.GetFeatures().CanUpdate) { #>
     /**
-     * Puts the <#=TypeName(c)#>
+     * Puts the <#=c.TypeName()#>
      *
-     * @param src<#=TypeName(c)#> the <#=TypeName(c)#> to PUT
+     * @param src<#=c.TypeName()#> the <#=c.TypeName()#> to PUT
      * @param callback the callback to be called after success or failure
      */
-    void put(<#=TypeName(c)#> src<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+    void put(<#=c.TypeName()#> src<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback);
 
     /**
-     * Puts the <#=TypeName(c)#>
+     * Puts the <#=c.TypeName()#>
      *
-     * @param src<#=TypeName(c)#> the <#=TypeName(c)#> to PUT
-     * @return the <#=TypeName(c)#>
+     * @param src<#=c.TypeName()#> the <#=c.TypeName()#> to PUT
+     * @return the <#=c.TypeName()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    <#=TypeName(c)#> put(<#=TypeName(c)#> src<#=TypeName(c)#>) throws ClientException;
+    <#=c.TypeName()#> put(<#=c.TypeName()#> src<#=c.TypeName()#>) throws ClientException;
 <# } #>
 }

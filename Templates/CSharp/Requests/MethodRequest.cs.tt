@@ -4,6 +4,13 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
+var @namespace = method.Namespace.GetNamespaceName();
+
+var queryOptionTypeName = @namespace.GetCoreLibraryType("QueryOption");
+var baseRequestTypeName = @namespace.GetCoreLibraryType("BaseRequest");
+var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
+var optionTypeName = @namespace.GetCoreLibraryType("Option");
+
 var entityName = method.Class.Name.ToCheckedCase();
 
 var isFunction = method.IsFunction;
@@ -13,12 +20,10 @@ var isComposable = method.IsComposable;
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
-var returnEntityType = method.ReturnType == null ? null : method.ReturnType.Name.GetTypeString();
+var returnEntityType = method.ReturnType == null ? null : method.ReturnType.GetTypeString(@namespace);
 
 var returnEntityParameter = string.Empty;
 if (returnEntityType != null) {returnEntityParameter = returnEntityType.ToLower();}
-
-var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
 
 var isCollection = method.IsCollection;
 
@@ -45,7 +50,7 @@ var features = host.CurrentType.GetFeatures();
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;
@@ -56,15 +61,15 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     /// <summary>
     /// The type <#=requestType#>.
     /// </summary>
-    public partial class <#=requestType#> : BaseRequest, I<#=requestType#>
+    public partial class <#=requestType#> : <#=baseRequestTypeName#>, I<#=requestType#>
     {
         /// <summary>
         /// Constructs a new <#=requestType#>.
         /// </summary>
         public <#=requestType#>(
             string requestUrl,
-            IBaseClient client,
-            IEnumerable<Option> options)
+            <#=iBaseClientTypeName#> client,
+            IEnumerable<<#=optionTypeName#>> options)
             : base(requestUrl, client, options)
         {
 <#
@@ -504,7 +509,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Expand(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$expand", value));
             return this;
         }
 <#
@@ -521,7 +526,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Select(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$select", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$select", value));
             return this;
         }
 <#
@@ -540,7 +545,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Top(int value)
         {
-            this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$top", value.ToString()));
             return this;
         }
 <#
@@ -557,7 +562,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Filter(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$filter", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$filter", value));
             return this;
         }
 <#
@@ -574,7 +579,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> Skip(int value)
         {
-            this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$skip", value.ToString()));
             return this;
         }
 <#
@@ -591,7 +596,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <returns>The request object to send.</returns>
         public I<#=requestType#> OrderBy(string value)
         {
-            this.QueryOptions.Add(new QueryOption("$orderby", value));
+            this.QueryOptions.Add(new <#=queryOptionTypeName#>("$orderby", value));
             return this;
         }
 <#

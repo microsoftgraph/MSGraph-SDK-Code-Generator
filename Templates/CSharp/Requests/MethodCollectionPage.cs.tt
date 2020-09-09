@@ -4,8 +4,12 @@
 <#
 
 var method = host.CurrentType.AsOdcmMethod();
+var @namespace = method.Namespace.GetNamespaceName();
 
-var returnType = method.ReturnType is OdcmPrimitiveType ? method.ReturnType.GetTypeString() : method.ReturnType.Name.ToCheckedCase();
+var collectionPageTypeName = @namespace.GetCoreLibraryType("CollectionPage");
+var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
+
+var returnType = method.ReturnType.GetTypeString(@namespace);
 
 var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var nextRequestType = responseNamePrefix + "Request";
@@ -13,12 +17,12 @@ var entityCollectionPage = responseNamePrefix + "CollectionPage";
 
 #>
 
-namespace <#=method.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     /// <summary>
     /// The type <#=entityCollectionPage#>.
     /// </summary>
-    public partial class <#=entityCollectionPage#> : CollectionPage<<#=returnType#>>, I<#=entityCollectionPage#>
+    public partial class <#=entityCollectionPage#> : <#=collectionPageTypeName#><<#=returnType#>>, I<#=entityCollectionPage#>
     {
         /// <summary>
         /// Gets the next page <see cref="I<#=nextRequestType#>"/> instance.
@@ -28,7 +32,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         /// <summary>
         /// Initializes the NextPageRequest property.
         /// </summary>
-        public void InitializeNextPageRequest(IBaseClient client, string nextPageLinkString)
+        public void InitializeNextPageRequest(<#=iBaseClientTypeName#> client, string nextPageLinkString)
         {
             if (!string.IsNullOrEmpty(nextPageLinkString))
             {

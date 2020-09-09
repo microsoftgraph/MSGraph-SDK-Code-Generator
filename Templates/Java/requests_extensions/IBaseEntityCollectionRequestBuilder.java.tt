@@ -2,23 +2,47 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeCollectionRequestBuilder(c);#>
+<#host.TemplateName = c.ITypeCollectionRequestBuilder();#>
 <#
-    var genericType = "<" + TypeName(c) + ", " + ITypeCollectionRequestBuilder(c) + ">";
+    var genericType = "<" + c.TypeName() + ", " + c.ITypeCollectionRequestBuilder() + ">";
 #>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateInterfaceDef(ITypeCollectionRequestBuilder(c), "IRequestBuilder")#>
-
-    <#=ITypeCollectionRequest(c)#> buildRequest();
-
-    <#=ITypeCollectionRequest(c)#> buildRequest(final java.util.List<? extends Option> requestOptions);
-
-    <#=ITypeRequestBuilder(c)#> byId(final String id);
-
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequest()#>;
 <#
 var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
+if (currentTypeProjection != null) {
+    foreach (var method in currentTypeProjection.MethodsAndOverloads()) {
+        if (!method.IsBoundToCollection) {
+            continue;
+        }
+        if (method.IsCollection) {
+#>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.ITypeCollectionRequestBuilder()#>;
+<#
+        } else {
+#>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.ITypeRequestBuilder()#>;
+<#
+        }
+    }
+}
+#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IBaseCollectionPage;
+
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionRequestBuilder(), "IRequestBuilder")#>
+
+    <#=c.ITypeCollectionRequest()#> buildRequest();
+
+    <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
+
+    <#=c.ITypeRequestBuilder()#> byId(final String id);
+
+<#
 if (currentTypeProjection != null)
 {
     foreach (var method in currentTypeProjection.AsOdcmClass().MethodsAndOverloads()) {
@@ -27,7 +51,7 @@ if (currentTypeProjection != null)
             continue;
         }
 
-        var parameterList = MethodParametersSignature(method);
+        var parameterList = method.MethodParametersSignature();
         if (parameterList != "") {
             parameterList = parameterList.Remove(0, 2);
         }
@@ -35,16 +59,16 @@ if (currentTypeProjection != null)
         if (method.IsCollection) {
 #>
 
-    <#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>);
+    <#=method.ITypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>);
 <#
 	// Add a method to support delta query by string (opaque deltaLink)
-	if (MethodName(method) == "Delta") {
+	if (method.MethodName() == "Delta") {
 #>
 
-	<#=ITypeCollectionRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(final String deltaLink);
+	<#=method.ITypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(final String deltaLink);
 <# } #>
 <#  } else { #>
-    <#=ITypeRequestBuilder(method)#> <#=MethodName(method).ToLowerFirstChar()#>(<#=parameterList#>);
+    <#=method.ITypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>);
 <#
         }
     }

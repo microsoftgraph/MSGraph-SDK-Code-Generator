@@ -2,34 +2,41 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeWithReferencesRequest(c);#>
+<#host.TemplateName = c.ITypeWithReferencesRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateInterfaceDef(ITypeWithReferencesRequest(c), "IHttpRequest")#>
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IHttpRequest;
+import <#=importNamespace#>.serializer.IJsonBackedObject;
 
-    void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final IJsonBackedObject payload, final ICallback<<#=TypeName(c)#>> callback);
 
-    <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final IJsonBackedObject payload) throws ClientException;
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeWithReferencesRequest(), "IHttpRequest")#>
 
-    void get(final ICallback<<#=TypeName(c)#>> callback);
+    void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload, final ICallback<<#=c.TypeName()#>> callback);
 
-    <#=TypeName(c)#> get() throws ClientException;
+    <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload) throws ClientException;
 
-	void delete(final ICallback<<#=TypeName(c)#>> callback);
+    void get(final ICallback<<#=c.TypeName()#>> callback);
+
+    <#=c.TypeName()#> get() throws ClientException;
+
+	void delete(final ICallback<<#=c.TypeName()#>> callback);
 
 	void delete() throws ClientException;
 
-	void patch(final <#=TypeName(c)#> source<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+	void patch(final <#=c.TypeName()#> source<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback);
 
-	<#=TypeName(c)#> patch(final <#=TypeName(c)#> source<#=TypeName(c)#>) throws ClientException;
+	<#=c.TypeName()#> patch(final <#=c.TypeName()#> source<#=c.TypeName()#>) throws ClientException;
 
 <# if (c.GetFeatures().CanSelect) { #>
-    <#=ITypeWithReferencesRequest(c)#> select(final String value);
+    <#=c.ITypeWithReferencesRequest()#> select(final String value);
 
 <# } #>
 <# if (c.GetFeatures().CanExpand) { #>
-    <#=ITypeWithReferencesRequest(c)#> expand(final String value);
+    <#=c.ITypeWithReferencesRequest()#> expand(final String value);
 
 <# } #>
 }

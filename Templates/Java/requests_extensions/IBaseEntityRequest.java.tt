@@ -2,14 +2,15 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeRequest(c);#>
+<#host.TemplateName = c.ITypeRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForIBaseEntityRequest(host)#>
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.http.IHttpRequest;
+<#=host.CreatePackageDefForIBaseEntityRequest()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.concurrency.ICallback;
+import <#=importNamespace#>.core.ClientException;
+import <#=importNamespace#>.http.IHttpRequest;
 
-<#=CreateInterfaceDef(ITypeRequest(c), "IHttpRequest")#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequest(), "IHttpRequest")#>
 
 <#  if (c.AsOdcmClass().IsAbstract && c.AsOdcmClass().Base == null)
     {
@@ -21,6 +22,7 @@ import com.microsoft.graph.http.IHttpRequest;
 <#=deleteMethods(c)#>
 <#=patchMethods(c)#>
 <#=postMethods(c)#>
+<#=putMethods(c)#>
 <#  }
     else if (!c.AsOdcmClass().Derived.Any() && c.AsOdcmClass().Base != null)
     { #>
@@ -28,6 +30,7 @@ import com.microsoft.graph.http.IHttpRequest;
 <#=deleteMethods(c)#>
 <#=patchMethods(c)#>
 <#=postMethods(c)#>
+<#=putMethods(c)#>
 <#  }
     else if (c.AsOdcmClass().Base == null)
     { #>
@@ -35,6 +38,7 @@ import com.microsoft.graph.http.IHttpRequest;
 <#=deleteMethods(c)#>
 <#=patchMethods(c)#>
 <#=postMethods(c)#>
+<#=putMethods(c)#>
 <#  }
     else
     {
@@ -48,7 +52,7 @@ import com.microsoft.graph.http.IHttpRequest;
      * @param value the select clause
      * @return the updated request
      */
-    <#=ITypeRequest(c)#> select(final String value);
+    <#=c.ITypeRequest()#> select(final String value);
 
 <# } #>
 <# if (c.GetFeatures().CanExpand) { #>
@@ -58,7 +62,7 @@ import com.microsoft.graph.http.IHttpRequest;
      * @param value the expand clause
      * @return the updated request
      */
-    <#=ITypeRequest(c)#> expand(final String value);
+    <#=c.ITypeRequest()#> expand(final String value);
 
 <# } #>
 <# if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) { #>
@@ -69,10 +73,10 @@ import com.microsoft.graph.http.IHttpRequest;
      * @param value the max number of items to return
      * @return the updated request
      */
-    <#=ITypeRequest(c)#> top(final int value);
+    <#=c.ITypeRequest()#> top(final int value);
 <# } #>
 }
-<#=PostProcess(ITypeRequest(c))#>
+<#=PostProcess(c.ITypeRequest())#>
 <#+
     public String deleteMethods(OdcmObject c)
     {
@@ -92,7 +96,7 @@ import com.microsoft.graph.http.IHttpRequest;
      */
     void delete() throws ClientException;
 ";
-        return string.Format(formatString, TypeName(odcmObject));
+        return string.Format(formatString, odcmObject.TypeName());
     }
 
     public string getMethods(OdcmObject c)
@@ -114,7 +118,7 @@ import com.microsoft.graph.http.IHttpRequest;
      */
     {0} get() throws ClientException;
 ";
-        return string.Format(formatString, TypeName(odcmObject), odcmObject.Derived.Any() ? TypeName(odcmObject) : string.Empty );
+        return string.Format(formatString, odcmObject.TypeName(), odcmObject.Derived.Any() ? odcmObject.TypeName() : string.Empty );
     }
 
     public string patchMethods(OdcmObject c)
@@ -138,7 +142,7 @@ import com.microsoft.graph.http.IHttpRequest;
      */
     {0} patch(final {0} source{0}) throws ClientException;
 ";
-        return string.Format(formatString, TypeName(odcmObject));
+        return string.Format(formatString, odcmObject.TypeName());
     }
 
     public string postMethods(OdcmObject c)
@@ -162,6 +166,30 @@ import com.microsoft.graph.http.IHttpRequest;
      */
     {0} post(final {0} new{0}) throws ClientException;
 ";
-        return string.Format(formatString, TypeName(odcmObject));
+        return string.Format(formatString, odcmObject.TypeName());
+    }
+
+        public string putMethods(OdcmObject c)
+    {
+        var odcmObject = c.AsOdcmClass();
+        var formatString =
+@"    /**
+     * Posts a {0} with a new object
+     *
+     * @param new{0} the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final {0} new{0}, final ICallback<{0}> callback);
+
+    /**
+     * Posts a {0} with a new object
+     *
+     * @param new{0} the object to create/update
+     * @return the created {0}
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    {0} put(final {0} new{0}) throws ClientException;
+";
+        return string.Format(formatString, odcmObject.TypeName());
     }
  #>

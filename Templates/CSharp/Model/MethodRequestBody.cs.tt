@@ -31,10 +31,15 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     public partial class <#=requestBody#>
     {
     <#
-    foreach (var param in method.Parameters)
+    foreach (var param in method.WithDistinctParameters())
     {
-        var paramTypeString = param.Type.GetTypeString();
-
+        var paramTypeString = param.Type.GetTypeString(method.Namespace.GetNamespaceName());
+        
+        // Adds support for classes ending in "Request" that have been dismabiguated.
+        if (paramTypeString.EndsWith("Request"))
+        {   
+            paramTypeString = String.Concat(paramTypeString, "Object");
+        }
         if (param.IsCollection)
         {
             paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);

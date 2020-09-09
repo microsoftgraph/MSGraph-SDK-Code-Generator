@@ -4,32 +4,36 @@
 <#@ output extension="\\" #>
 <#
     var baseClass = "BaseRequest";
-    var typeRequest = TypeRequest(c);
-    var iTypeRequest = ITypeRequest(c);
-    var baseTypeRequest = TypeRequest(c);
-    var iBaseTypeRequest = ITypeRequest(c);
-    var returnType = ReturnType(c);
+    var typeRequest = c.TypeRequest();
+    var iTypeRequest = c.ITypeRequest();
+    var baseTypeRequest = c.TypeRequest();
+    var iBaseTypeRequest = c.ITypeRequest();
+    var returnType = c.ReturnType();
 
     if (c.AsOdcmMethod().IsCollection)
     {
         baseClass = "BaseCollectionRequest";
-        typeRequest = TypeCollectionRequest(c);
-        iTypeRequest = ITypeCollectionRequest(c);
-        baseTypeRequest = TypeCollectionRequest(c);
-        iBaseTypeRequest = ITypeCollectionRequest(c);
+        typeRequest = c.TypeCollectionRequest();
+        iTypeRequest = c.ITypeCollectionRequest();
+        baseTypeRequest = c.TypeCollectionRequest();
+        iBaseTypeRequest = c.ITypeCollectionRequest();
     }
 #>
 <#host.TemplateName = iBaseTypeRequest;#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDefForIBaseMethodBodyRequest(host)#>
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.core.ClientException;
+<#=host.CreatePackageDefForIBaseMethodBodyRequest()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.concurrency.ICallback;
+import <#=importNamespace#>.http.BaseCollectionRequest;
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.core.ClientException;
+import <#=importNamespace#>.http.BaseCollectionRequest;
 
-<#=CreateInterfaceDef(iBaseTypeRequest)#>
+<#=TypeHelperJava.CreateInterfaceDef(iBaseTypeRequest)#>
 
-    void post(final ICallback<<#=ReturnType(c)#>> callback);
+    void post(final ICallback<<#=c.ReturnType()#>> callback);
 
-    <#=ReturnType(c)#> post() throws ClientException;
+    <#=c.ReturnType()#> post() throws ClientException;
 
 <# if (c.GetFeatures().CanSelect) { #>
     /**

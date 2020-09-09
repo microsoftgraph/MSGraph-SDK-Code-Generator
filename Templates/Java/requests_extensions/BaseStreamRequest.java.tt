@@ -2,23 +2,26 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = TypeStreamRequest(c);#>
+<#host.TemplateName = c.TypeStreamRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseStreamRequest;
 
-import java.io.*;
+import java.io.InputStream;
 
-<#=CreateClassDef(TypeStreamRequest(c), "BaseStreamRequest<" + ClassTypeName(c) + ">", ITypeStreamRequest(c))#>
+<#=TypeHelperJava.CreateClassDef(c.TypeStreamRequest(), "BaseStreamRequest<" + c.ClassTypeName() + ">", c.ITypeStreamRequest())#>
 
     /**
-     * The request for the <#=TypeName(c)#>
+     * The request for the <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=TypeStreamRequest(c)#>(final String requestUrl, final <#=IBaseClientType()#> client, final java.util.List<? extends Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=ClassTypeName(c)#>.class);
+    public <#=c.TypeStreamRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
     /**
@@ -44,9 +47,9 @@ import java.io.*;
      * Uploads to the stream
      *
      * @param fileContents the contents of the stream to upload
-     * @param callback the callback to be called after success or failure
+          * @param callback the callback to be called after success or failure
      */
-    public void put(final byte[] fileContents, final ICallback<<#=ClassTypeName(c)#>> callback) {
+    public void put(final byte[] fileContents, final ICallback<<#=c.ClassTypeName()#>> callback) {
         send(fileContents, callback);
     }
 
@@ -57,7 +60,7 @@ import java.io.*;
      * @return the result of the upload
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    public <#=ClassTypeName(c)#> put(final byte[] fileContents) throws ClientException {
+    public <#=c.ClassTypeName()#> put(final byte[] fileContents) throws ClientException {
         return send(fileContents);
     }
 }

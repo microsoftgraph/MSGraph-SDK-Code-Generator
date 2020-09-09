@@ -2,13 +2,28 @@
 <edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
   <edmx:DataServices>
     <Schema Namespace="microsoft.graph" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-      <EntityType Name="entity">
+      <EntityType Name="entity" Abstract="true">
         <Key>
           <PropertyRef Name="id"/>
         </Key>
         <Property Name="id" Unicode="false" Nullable="false" Type="Edm.String"/>
       </EntityType>
-      <EntityType Name="testType" BaseType="microsoft.graph.entity"></EntityType>
+      
+      <EntityType Name="testType" BaseType="microsoft.graph.entity">
+        <Property Name="propertyAlpha" Type="microsoft.graph.derivedComplexTypeRequest"/>
+      </EntityType>
+      <ComplexType Name="emptyBaseComplexTypeRequest" Abstract="true"/>
+      <ComplexType Name="derivedComplexTypeRequest" BaseType="microsoft.graph.emptyBaseComplexTypeRequest">
+        <Property Name="propName1" Type="Edm.String" />
+        <Property Name="propName2" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="responseObject" />
+      <Action Name="query" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.testType" />
+        <Parameter Name="requests" Type="Collection(microsoft.graph.derivedComplexTypeRequest)" Nullable="false" />
+        <ReturnType Type="Collection(microsoft.graph.responseObject)" Nullable="false" />
+      </Action>
+      
       <EntityType Name="testType2" BaseType="microsoft.graph.entity"></EntityType>
       <EntityType Name="testType3" BaseType="microsoft.graph.entity"></EntityType>
       <EntityType Name="testEntity" BaseType="microsoft.graph.entity">
@@ -29,6 +44,24 @@
         <Property Name="url" Type="Edm.String" />
         <Property Name="width" Type="Edm.Int32" />
       </ComplexType>
+      <ComplexType Name="recipient">
+        <Property Name="name" Type="Edm.String" />
+        <Property Name="email" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="emptyComplexType" Abstract="true"/>
+      
+      <EntityType Name="timeOffRequest" BaseType="microsoft.graph.entity">
+        <Property Name="name" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="timeOff" BaseType="microsoft.graph.entity">
+        <Property Name="name" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="schedule" BaseType="microsoft.graph.entity">
+        <Property Name="enabled" Type="Edm.Boolean" />
+        <NavigationProperty Name="timesOff" Type="Collection(microsoft.graph.timeOff)" ContainsTarget="true" />
+        <NavigationProperty Name="timeOffRequests" Type="Collection(microsoft.graph.timeOffRequest)" ContainsTarget="true" />
+      </EntityType>
+      
       <EntityType Name="onenotePage" HasStream="true" BaseType="microsoft.graph.entity">
         <Property Name="content" Type="Edm.Stream" />
         <NavigationProperty Name="parentNotebook" Type="microsoft.graph.notebook" ContainsTarget="true" />
@@ -36,6 +69,30 @@
       <EntityType Name="plannerGroup" BaseType="microsoft.graph.entity">
         <NavigationProperty Name="plans" Type="Collection(microsoft.graph.plannerPlan)" />
       </EntityType>
+
+      <Action Name="forward" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.onenotePage" />
+        <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
+        <Parameter Name="Details" Type="Edm.String" Unicode="false" />
+        <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+      </Action>
+      <Action Name="forward" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.testType3" />
+        <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
+        <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+      </Action>
+      <Action Name="forward" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.onenotePage" />
+        <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
+        <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+      </Action>
+      <Action Name="forward" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.testType3" />
+        <Parameter Name="ToRecipients" Type="Collection(microsoft.graph.recipient)" Nullable="false" />
+        <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
+        <Parameter Name="TestProperty" Type="Edm.String" Nullable="true"/>
+      </Action>
+
       <EntityContainer Name="GraphService">
         <Singleton Name="testSingleton" Type="microsoft.graph.testSingleton"/>
         <Singleton Name="testSingleton2" Type="microsoft.graph.testSingleton2"/>

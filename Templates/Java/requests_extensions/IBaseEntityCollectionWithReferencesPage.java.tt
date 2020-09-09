@@ -2,11 +2,15 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeCollectionWithReferencesPage(c);#>
+<#host.TemplateName = c.ITypeCollectionWithReferencesPage();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
 import com.google.gson.JsonObject;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IBaseCollectionPage;
 
-<#=CreateInterfaceDef(ITypeCollectionWithReferencesPage(c), "IBaseCollectionPage" + CollectionPageWithReferencesGeneric(c))#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesPage(), "IBaseCollectionPage" + c.CollectionPageWithReferencesGeneric())#>
 }

@@ -49,8 +49,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                                 "* @package   Microsoft.Graph" + this.NewLineCharacter +
                                 "* @copyright © Microsoft Corporation. All rights reserved." + this.NewLineCharacter +
                                 "* @license   https://opensource.org/licenses/MIT MIT License" + this.NewLineCharacter +
-                                "* @version   GIT: 1.4.0" + this.NewLineCharacter +
-                                "* @link      https://graph.microsoft.io/";
+                                "* @link      https://graph.microsoft.com";
         }
 
         public String GetClassBlock(string fileName, string category)
@@ -62,8 +61,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                     "* @package   Microsoft.Graph" + this.NewLineCharacter +
                     "* @copyright © Microsoft Corporation. All rights reserved." + this.NewLineCharacter +
                     "* @license   https://opensource.org/licenses/MIT MIT License" + this.NewLineCharacter +
-                    "* @version   Release: 1.4.0" + this.NewLineCharacter +
-                    "* @link      https://graph.microsoft.io/" + this.NewLineCharacter +
+                    "* @link      https://graph.microsoft.com" + this.NewLineCharacter +
                     "*/";
         }
     }

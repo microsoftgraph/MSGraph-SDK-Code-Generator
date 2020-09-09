@@ -2,22 +2,27 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = ITypeCollectionReferenceRequest(c);#>
+<#host.TemplateName = c.ITypeCollectionReferenceRequest();#>
 <#=writer.WriteHeader()#>
-<#=CreatePackageDef(host)#>
+<#=host.CreatePackageDef()#>
 
-<#=CreateInterfaceDef(ITypeCollectionReferenceRequest(c))#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IHttpRequest;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
-    void post(final <#=TypeName(c)#> new<#=TypeName(c)#>, final ICallback<<#=TypeName(c)#>> callback);
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionReferenceRequest())#>
 
-    <#=TypeName(c)#> post(final <#=TypeName(c)#> new<#=TypeName(c)#>) throws ClientException;
+    void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback);
+
+    <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException;
 
 <# if (c.GetFeatures().CanSelect) { #>
-    <#=ITypeCollectionReferenceRequest(c)#> select(final String value);
+    <#=c.ITypeCollectionReferenceRequest()#> select(final String value);
 
 <# } #>
 <# if (c.GetFeatures().CanUseTop) { #>
-    <#=ITypeCollectionReferenceRequest(c)#> top(final int value);
+    <#=c.ITypeCollectionReferenceRequest()#> top(final int value);
 
 <# } #>
 }

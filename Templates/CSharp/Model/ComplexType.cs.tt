@@ -5,11 +5,37 @@
 
 OdcmClass complex = host.CurrentType.AsOdcmClass();
 var complexTypeName = complex.Name.ToCheckedCase();
+
+var @namespace = complex.Namespace.GetNamespaceName();
+var derivedTypeConverterTypeName = @namespace.GetCoreLibraryType("DerivedTypeConverter");
+
 var typeDeclaration = complexTypeName;
+
+// In the case a complex type name ends with "Request", we will have a collision with the *Request objects
+// when we generate. For example, there is a complex type named SearchRequest and an entity named Search.
+// The SearchRequest complex type results in a SearchResult class in our models collection. The Search entity
+// results in a SearchRequest request object causing conflicts.
+
+if (typeDeclaration.EndsWith("Request"))
+{
+    typeDeclaration = String.Concat(typeDeclaration, "Object");
+}
+
+// Capture the cstor type declaration as the typedeclaration may get appended with a base type. 
+string cstorTypeDeclaration = typeDeclaration;
 
 if (complex.Base != null)
 {
-    typeDeclaration = string.Format("{0} : {1}", typeDeclaration, complex.Base.Name.ToCheckedCase());
+    // Disambiguate the base type declaration for the same reason we did this 
+	// for typeDeclaration.
+	var baseTypeDeclaration = complex.Base.GetTypeString(complex.Namespace.GetNamespaceName());
+
+    if (baseTypeDeclaration.EndsWith("Request"))
+    {
+        baseTypeDeclaration = String.Concat(baseTypeDeclaration, "Object");
+    }
+
+    typeDeclaration = string.Format("{0} : {1}", typeDeclaration, baseTypeDeclaration);
 }
 
 var isMethodResponse = complex.LongDescriptionContains("methodResponse");
@@ -23,12 +49,12 @@ if (complex.Derived != null && complex.Base == null)
 {
     attributeStringBuilder.Append(Environment.NewLine);
     attributeStringBuilder.Append("    ");
-    attributeStringBuilder.Append("[JsonConverter(typeof(DerivedTypeConverter))]");
+    attributeStringBuilder.AppendFormat("[JsonConverter(typeof({0}))]", derivedTypeConverterTypeName);
 }
 
 #>
 
-namespace <#=complex.Namespace.GetNamespaceName()#>
+namespace <#=@namespace#>
 {
     using System;
     using System.Collections.Generic;
@@ -43,15 +69,13 @@ namespace <#=complex.Namespace.GetNamespaceName()#>
     public <#=classType#> <#=typeDeclaration#>
     {
 <#
-// Generate a constructor to initialize the @odata.type property when this type is not abstract and if this 
-// type's base is abstract and the base is referenced as the type of a structural property. We need this
-// to disambiguate the type of the descendant class being sent. 
-if (complex.IsBaseAbstractAndReferencedAsPropertyType() && !complex.IsAbstract)
+// Generate a constructor to initialize the @odata.type property when this type is not abstract.
+if (!complex.IsAbstract)
 {
 #>        /// <summary>
-        /// Initializes a new instance of the <see cref="<#=complexTypeName#>"/> class.
+        /// Initializes a new instance of the <see cref="<#=cstorTypeDeclaration#>"/> class.
         /// </summary>
-        public <#=complexTypeName#>()
+        public <#=cstorTypeDeclaration#>()
         {
             this.ODataType = "<#=complex.FullName#>";
         }
@@ -60,7 +84,8 @@ if (complex.IsBaseAbstractAndReferencedAsPropertyType() && !complex.IsAbstract)
         foreach(var property in complex.Properties)
         {
 
-            var propertyType = property.IsCollection ? string.Format("IEnumerable<{0}>", property.GetTypeString()) : property.GetTypeString();
+            var propertyTypeString = property.GetTypeString(complex.Namespace.GetNamespaceName());
+            var propertyType = property.IsCollection ? string.Format("IEnumerable<{0}>", propertyTypeString) : propertyTypeString;
             var propertyName = isMethodResponse
                 ? property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase()
                 : property.Name.ToCheckedCase().GetSanitizedPropertyName(property);
