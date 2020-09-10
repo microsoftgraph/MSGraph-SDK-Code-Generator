@@ -36,16 +36,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         // constants
         private const int MaxLineLength = 120;
         private const string MainNamespaceName = "Microsoft.Graph";
-        private string TypeScriptMainNamespaceName = "microsoftgraph" + (ConfigurationService.Settings.Properties != null && ConfigurationService.Settings.Properties.ContainsKey("typescript.namespacePostfix") ? ConfigurationService.Settings.Properties["typescript.namespacePostfix"] : string.Empty);
+        private const string TypeScriptMainNamespaceNamePrefix = "microsoftgraph";
         private const string TabSpace = "    ";
 
         /// <summary>
         /// Returns the main or top level namespace
         /// </summary>
         /// <returns></returns>
-        public string GetMainNameSpace()
+        public string GetMainNamespace()
         {
-            return TypeScriptMainNamespaceName;
+            return TypeScriptMainNamespaceNamePrefix + (ConfigurationService.Settings.Properties != null && ConfigurationService.Settings.Properties.ContainsKey("typescript.namespacePostfix") ? ConfigurationService.Settings.Properties["typescript.namespacePostfix"] : string.Empty);
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
             if (@namespace == MainNamespaceName) // types in main namespace e.g. microsoftgraph.Entity
             {
-                return TypeScriptMainNamespaceName + "." + type;
+                return GetMainNamespace() + "." + type;
             }
 
             // names in subnamespaces e.g. microsoftgraph.CallRecords.CallRecord
