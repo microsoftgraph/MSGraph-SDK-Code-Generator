@@ -14,7 +14,7 @@ namespace Typewriter.Test
         [Test, RunInApplicationDomain]
         public void TestBeta()
         {
-            MultipleNamespacesTestRunner.Run(TestLanguage.PHP, isPhpBeta: true);
+            MultipleNamespacesTestRunner.Run(TestLanguage.PHP, isBeta: true);
         }
     }
 }
