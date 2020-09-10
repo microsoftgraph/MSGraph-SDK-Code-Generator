@@ -156,5 +156,16 @@ public class SingletonEntity1Request extends BaseRequest implements ISingletonEn
          return (SingletonEntity1Request)this;
      }
 
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+     public ISingletonEntity1Request filter(final String value) {
+         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
+         return (SingletonEntity1Request)this;
+     }
+
 }
 

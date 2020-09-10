@@ -86,6 +86,17 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
     }
 
     /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public IEntityType3CollectionRequest filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (EntityType3CollectionRequest)this;
+    }
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause
