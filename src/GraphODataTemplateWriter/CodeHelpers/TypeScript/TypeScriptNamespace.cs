@@ -43,7 +43,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// Returns the main or top level namespace
         /// </summary>
         /// <returns></returns>
-        public string GetMainNameSpace() {
+        public string GetMainNameSpace()
+        {
             return TypeScriptMainNamespaceName;
         }
 
