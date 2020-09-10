@@ -73,7 +73,7 @@
     <Content Include="TestDataPHP*\**\*.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestDataTypeScript\**\*.ts">
+    <Content Include="TestDataTypeScript*\**\*.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Metadata\MetadataMultipleNamespaces.xml">
