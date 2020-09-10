@@ -111,12 +111,16 @@ public class CallRecord extends Entity implements IJsonBackedObject {
      * The Sessions.
      * 
      */
+    @SerializedName("sessions")
+    @Expose
     public SessionCollectionPage sessions;
 
     /**
      * The Recipients.
      * 
      */
+    @SerializedName("recipients")
+    @Expose
     public EntityType2CollectionPage recipients;
 
 

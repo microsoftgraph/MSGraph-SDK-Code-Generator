@@ -754,7 +754,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         }
         public static string GetPackagePrefix(this OdcmObject obj)
         {
-            switch(obj)
+            switch (obj)
             {
                 case OdcmEnum e:
                     return "models.generated";
@@ -860,7 +860,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.Append("\n");
 
             var imports = host.CurrentType.AsOdcmMethod().WithOverloads().SelectMany(x => ImportClassesOfMethodParameters(x));
-            sb.Append(imports.Any() ? imports.Aggregate((x, y) => $"{x}{Environment.NewLine}{y}"): string.Empty);
+            sb.Append(imports.Any() ? imports.Aggregate((x, y) => $"{x}{Environment.NewLine}{y}") : string.Empty);
             return sb.ToString();
         }
 
@@ -1463,14 +1463,15 @@ import java.util.EnumSet;";
                 var propertyFormat = format;
                 if (property.IsCollection)
                 {
-                    if (!property.IsNavigation())
+                    if (property.IsNavigation())
                     {
-                        propertyType = "java.util.List<" + property.GetTypeString() + ">";
+                        propertyType = TypeCollectionPage(property);
+                        if (!property.ContainsTarget)
+                            propertyFormat = collectionFormat;
                     }
                     else
                     {
-                        propertyType = TypeCollectionPage(property);
-                        propertyFormat = collectionFormat;
+                        propertyType = "java.util.List<" + property.GetTypeString() + ">";
                     }
                 }
                 else
