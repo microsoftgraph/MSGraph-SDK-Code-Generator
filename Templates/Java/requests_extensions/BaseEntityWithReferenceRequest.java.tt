@@ -88,4 +88,16 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
         return (<#=c.TypeWithReferencesRequest()#>)this;
     }
 <# } #>
+<# if (c.GetFeatures().CanFilter) { #>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public <#=c.ITypeWithReferencesRequest()#> filter(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (<#=c.TypeWithReferencesRequest()#>)this;
+    }
+<# } #>
 }

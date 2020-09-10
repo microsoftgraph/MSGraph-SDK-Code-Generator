@@ -82,6 +82,22 @@ if (c.AsOdcmMethod().IsAction()) {
 <#
         }
 
+                if (c.GetFeatures().CanFilter) {
+#>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public <#=c.ITypeRequest()#> filter(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (<#=c.TypeRequest()#>)this;
+    }
+
+<#
+        }
+
         if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) {
 #>
 
@@ -227,7 +243,21 @@ if (c.AsOdcmMethod().IsAction()) {
 
 <#
         }
+        if (c.GetFeatures().CanFilter) {
+#>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public <#=c.ITypeRequest()#> filter(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (<#=c.TypeRequest()#>)this;
+    }
 
+<#
+        }
         if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) {
 #>
 

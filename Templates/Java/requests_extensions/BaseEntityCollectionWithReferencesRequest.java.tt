@@ -51,6 +51,13 @@ import <#=importNamespace#>.concurrency.IExecutors;
     }
 
 <# } #>
+<# if (c.GetFeatures().CanFilter) { #>
+    public <#=c.ITypeCollectionRequest()#> filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (<#=c.TypeCollectionRequest()#>)this;
+    }
+
+<# } #>
 <# if (c.GetFeatures().CanSelect) { #>
     public <#=c.ITypeCollectionRequest()#> select(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));

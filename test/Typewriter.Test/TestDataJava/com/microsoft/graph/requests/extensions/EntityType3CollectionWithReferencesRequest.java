@@ -61,6 +61,11 @@ public class EntityType3CollectionWithReferencesRequest extends BaseCollectionRe
         return (EntityType3CollectionWithReferencesRequest)this;
     }
 
+    public IEntityType3CollectionWithReferencesRequest filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (EntityType3CollectionWithReferencesRequest)this;
+    }
+
     public IEntityType3CollectionWithReferencesRequest select(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return (EntityType3CollectionWithReferencesRequest)this;

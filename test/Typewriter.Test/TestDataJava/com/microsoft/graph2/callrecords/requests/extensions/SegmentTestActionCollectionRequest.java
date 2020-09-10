@@ -110,4 +110,15 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
         return (ISegmentTestActionCollectionRequest)this;
     }
 
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public ISegmentTestActionCollectionRequest filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (ISegmentTestActionCollectionRequest)this;
+    }
+
 }
