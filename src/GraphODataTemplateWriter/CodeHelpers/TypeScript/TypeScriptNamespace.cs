@@ -45,7 +45,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// <returns></returns>
         public string GetMainNamespace()
         {
-            if (ConfigurationService.Settings.Properties != null && ConfigurationService.Settings.Properties.ContainsKey("typescript.namespacePostfix"))
+            if (ConfigurationService.Settings.Properties?.ContainsKey("typescript.namespacePostfix") == true)
             {
 
                 return TypeScriptMainNamespaceNamePrefix + ConfigurationService.Settings.Properties["typescript.namespacePostfix"];
