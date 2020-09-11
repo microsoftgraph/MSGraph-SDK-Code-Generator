@@ -12,8 +12,9 @@ import <#=importNamespace#>.core.ClientException;
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseRequest;
 import <#=importNamespace#>.http.HttpMethod;
+import <#=importNamespace#>.http.IHttpRequest;
 
-<#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequest())#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequest(), "IHttpRequest")#>
 
 <#
 if (c.AsOdcmMethod().IsAction()) {
