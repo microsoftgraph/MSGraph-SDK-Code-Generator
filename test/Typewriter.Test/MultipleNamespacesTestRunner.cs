@@ -38,13 +38,10 @@ namespace Typewriter.Test
                 switch (testLanguage)
                 {
                     case TestLanguage.CSharp:
-                        return MetadataMultipleNamespacesFile;
                     case TestLanguage.Java:
                         return MetadataMultipleNamespacesFile;
                     case TestLanguage.TypeScript:
-                        return MetadataWithSubNamespacesFile;
                     case TestLanguage.PHP:
-                        return MetadataWithSubNamespacesFile;
                     case TestLanguage.ObjC:
                         return MetadataWithSubNamespacesFile;
                     default:
