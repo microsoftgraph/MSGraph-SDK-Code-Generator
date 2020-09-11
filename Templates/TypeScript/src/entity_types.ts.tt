@@ -18,7 +18,7 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.1
 
-export as namespace <#=typeScriptNamespaces.MainNamespace.GetMainNamespace()#>;
+export as namespace <#=typeScriptNamespaces.MainNamespace.GetMainNameSpace()#>;
 
 export type NullableOption<T> = T | null;
 

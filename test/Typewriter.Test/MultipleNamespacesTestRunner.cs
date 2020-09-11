@@ -76,7 +76,7 @@ namespace Typewriter.Test
 
             if (isBeta)
             {
-                if (TestLanguage.PHP == language)
+                if (TestLanguage.PHP == language) 
                 {
                     options.Properties = new List<string> { "php.namespacePrefix:Beta" };
                 }
