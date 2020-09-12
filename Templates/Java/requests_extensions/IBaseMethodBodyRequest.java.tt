@@ -28,8 +28,9 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
 import <#=importNamespace#>.http.BaseRequest;
 import <#=importNamespace#>.core.ClientException;
 import <#=importNamespace#>.http.BaseCollectionRequest;
+import <#=importNamespace#>.http.IHttpRequest;
 
-<#=TypeHelperJava.CreateInterfaceDef(iBaseTypeRequest)#>
+<#=TypeHelperJava.CreateInterfaceDef(iBaseTypeRequest, "IHttpRequest")#>
 
     void post(final ICallback<<#=c.ReturnType()#>> callback);
 
