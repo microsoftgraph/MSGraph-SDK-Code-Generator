@@ -28,4 +28,5 @@ public interface IOnenotePageForwardRequestBuilder extends IRequestBuilder {
      * @return the IOnenotePageForwardRequest instance
      */
     IOnenotePageForwardRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
+
 }
