@@ -24,7 +24,6 @@ import <#=importNamespace#>.http.IRequestBuilder;
      * @return the <#=c.ITypeRequest()#> instance
      */
     <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
-
 <# 
 var m = c as OdcmMethod;
 if(m != null && m.IsComposable && m.ReturnType != null && m.ReturnType is OdcmClass) {

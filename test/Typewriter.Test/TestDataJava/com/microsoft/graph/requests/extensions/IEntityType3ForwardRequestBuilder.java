@@ -28,5 +28,4 @@ public interface IEntityType3ForwardRequestBuilder extends IRequestBuilder {
      * @return the IEntityType3ForwardRequest instance
      */
     IEntityType3ForwardRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
-
 }

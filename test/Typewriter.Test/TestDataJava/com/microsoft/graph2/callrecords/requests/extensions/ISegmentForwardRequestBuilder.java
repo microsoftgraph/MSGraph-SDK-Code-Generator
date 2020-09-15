@@ -28,5 +28,4 @@ public interface ISegmentForwardRequestBuilder extends IRequestBuilder {
      * @return the ISegmentForwardRequest instance
      */
     ISegmentForwardRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
-
 }
