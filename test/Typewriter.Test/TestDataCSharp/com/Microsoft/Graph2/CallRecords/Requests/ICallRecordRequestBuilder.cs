@@ -43,5 +43,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The <see cref="ICallRecordRecipientsCollectionRequestBuilder"/>.</returns>
         ICallRecordRecipientsCollectionRequestBuilder Recipients { get; }
     
+        
+    
     }
 }
