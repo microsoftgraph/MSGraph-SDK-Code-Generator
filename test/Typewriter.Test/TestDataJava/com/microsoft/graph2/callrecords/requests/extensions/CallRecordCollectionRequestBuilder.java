@@ -15,6 +15,7 @@ import java.util.EnumSet;
 import com.microsoft.graph2.callrecords.requests.extensions.ICallRecordCollectionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.ICallRecordRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.ICallRecordCollectionRequest;
+import com.microsoft.graph2.callrecords.requests.extensions.ICallRecordItemRequestBuilder;
 import com.microsoft.graph.http.BaseRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
 
@@ -49,4 +50,8 @@ public class CallRecordCollectionRequestBuilder extends BaseRequestBuilder imple
     }
 
 
+
+    public ICallRecordItemRequestBuilder item(final String name) {
+        return new CallRecordItemRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph2.callRecords.item"), getClient(), null, name);
+    }
 }
