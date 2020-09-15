@@ -24,4 +24,32 @@ import <#=importNamespace#>.http.IRequestBuilder;
      * @return the <#=c.ITypeRequest()#> instance
      */
     <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
+<# 
+var m = c as OdcmMethod;
+if(m != null && m.IsComposable && m.ReturnType != null && m.ReturnType is OdcmClass) {
+    foreach(var prop in m.ReturnType.AsOdcmClass().NavigationProperties(true))
+    {
+        var propName = prop.Name.ToUpperFirstChar();
+		var sanitizedName = prop.Name.SanitizePropertyName();
+        var propRequestBuilder = prop.TypeRequestBuilder();
+        if (prop.IsCollection()) {
+#>
+
+    <#=prop.ITypeCollectionRequestBuilder()#> <#=sanitizedName.ToLowerFirstChar()#>();
+
+    <#=prop.ITypeRequestBuilder()#> <#=prop.Name#>(final String id);
+<#
+        } else {
+#>
+
+    /**
+     * Gets the request builder for <#=prop.TypeName()#>
+     *
+     * @return the <#=prop.ITypeRequestBuilder()#> instance
+     */
+    <#=prop.ITypeRequestBuilder()#> <#=sanitizedName.ToLowerFirstChar()#>();
+<#
+        }
+    }
+} #>
 }
