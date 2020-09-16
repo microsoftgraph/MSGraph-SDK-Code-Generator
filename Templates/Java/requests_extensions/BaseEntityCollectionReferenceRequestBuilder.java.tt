@@ -9,7 +9,6 @@
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.BaseRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
-import java.util.Arrays;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequestBuilder(), "BaseRequestBuilder", c.ITypeCollectionReferenceRequestBuilder())#>
 
@@ -31,7 +30,7 @@ import java.util.Arrays;
      * @return the IUserRequest instance
      */
     public <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
-        return buildRequest(requestOptions != null && requestOptions.length > 0 ? Arrays.asList(requestOptions) : getOptions());
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

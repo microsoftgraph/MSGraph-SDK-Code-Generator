@@ -8,7 +8,6 @@
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseRequestBuilder;
-import java.util.Arrays;
 <# var mainNamespace = host.CurrentNamespace(); #>
 
 <#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder", c.ITypeRequestBuilder())#>
@@ -31,7 +30,7 @@ import java.util.Arrays;
      * @return the <#=c.ITypeRequest()#> instance
      */
     public <#=c.ITypeRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
-        return buildRequest(requestOptions != null && requestOptions.length > 0 ? Arrays.asList(requestOptions) : getOptions());
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**
