@@ -36,10 +36,11 @@ public class SingletonEntity2RequestBuilder extends BaseRequestBuilder implement
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the ISingletonEntity2Request instance
      */
-    public ISingletonEntity2Request buildRequest() {
-        return buildRequest(getOptions());
+    public ISingletonEntity2Request buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

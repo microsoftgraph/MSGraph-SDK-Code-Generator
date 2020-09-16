@@ -6,7 +6,10 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesRequest())#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IHttpRequest;
+
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesRequest(), "IHttpRequest")#>
 
     void get(final ICallback<<#=c.ITypeCollectionWithReferencesPage()#>> callback);
 

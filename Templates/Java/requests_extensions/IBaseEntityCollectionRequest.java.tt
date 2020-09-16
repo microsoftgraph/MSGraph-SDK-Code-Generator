@@ -8,8 +8,9 @@
 
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.IBaseCollectionPage;
+import <#=importNamespace#>.http.IHttpRequest;
 
-<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionRequest())#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionRequest(), "IHttpRequest")#>
 
     void get(final ICallback<<#=c.ITypeCollectionPage()#>> callback);
 
@@ -27,6 +28,16 @@ import <#=importNamespace#>.http.IBaseCollectionPage;
      * @return the updated request
      */
     <#=c.ITypeCollectionRequest()#> expand(final String value);
+
+<# } #>
+<# if (c.GetFeatures().CanFilter) { #>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    <#=c.ITypeCollectionRequest()#> filter(final String value);
 
 <# } #>
 <# if (c.GetFeatures().CanSelect) { #>

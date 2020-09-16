@@ -34,10 +34,11 @@ public class PhotoRequestBuilder extends BaseRequestBuilder implements IPhotoReq
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the IPhotoRequest instance
      */
-    public IPhotoRequest buildRequest() {
-        return buildRequest(getOptions());
+    public IPhotoRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

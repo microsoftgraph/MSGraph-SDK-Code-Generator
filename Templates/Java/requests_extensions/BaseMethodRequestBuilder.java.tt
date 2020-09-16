@@ -37,10 +37,11 @@ import com.google.gson.JsonElement;
     /**
      * Creates the <#=c.ITypeRequest()#>
      *
+     * @param requestOptions the options for the request
      * @return the <#=c.ITypeRequest()#> instance
      */
-    public <#=c.ITypeRequest()#> buildRequest() {
-        return buildRequest(getOptions());
+    public <#=c.ITypeRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**
@@ -71,4 +72,37 @@ import com.google.gson.JsonElement;
 <# } #>
         return request;
     }
+<# 
+var m = c as OdcmMethod;
+if(m != null && m.IsComposable && m.ReturnType != null && m.ReturnType is OdcmClass) {
+    foreach(var prop in m.ReturnType.AsOdcmClass().NavigationProperties(true))
+    {
+        var propName = prop.Name.ToUpperFirstChar();
+		var sanitizedProperty = propName.SanitizePropertyName().ToLowerFirstChar();
+        var propRequestBuilder = prop.TypeRequestBuilder();
+        if (prop.IsCollection()) {
+#>
+    public <#=prop.ITypeCollectionRequestBuilder()#> <#=sanitizedProperty#>() {
+        return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+
+    public <#=prop.ITypeRequestBuilder()#> <#=sanitizedProperty#>(final String id) {
+        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
+    }
+<#
+        } else {
+#>
+
+    /**
+     * Gets the request builder for <#=prop.TypeName()#>
+     *
+     * @return the <#=prop.ITypeRequestBuilder()#> instance
+     */
+    public <#=prop.ITypeRequestBuilder()#> <#=sanitizedProperty#>() {
+        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+<#
+        }
+    }
+} #>
 }

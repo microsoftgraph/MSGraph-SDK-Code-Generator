@@ -278,6 +278,11 @@
         <Parameter Name="value" Type="graph.identitySet" />
         <ReturnType Type="Collection(microsoft.graph2.callRecords.session)" />
       </Action>
+      <Function Name="item" IsBound="true" IsComposable="true">
+        <Parameter Name="bindparameter" Type="Collection(microsoft.graph2.callRecords.callRecord)" />
+        <Parameter Name="name" Type="Edm.String" Unicode="false" />
+        <ReturnType Type="microsoft.graph2.callRecords.callRecord" />
+      </Function>
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>

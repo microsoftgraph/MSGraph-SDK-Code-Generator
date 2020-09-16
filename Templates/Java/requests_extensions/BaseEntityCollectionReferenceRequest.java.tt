@@ -68,6 +68,19 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
     }
 
 <# } #>
+<# if (c.GetFeatures().CanFilter) { #>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public <#=c.ITypeCollectionReferenceRequest()#> filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (<#=c.TypeCollectionReferenceRequest()#>)this;
+    }
+
+<# } #>
 <# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request

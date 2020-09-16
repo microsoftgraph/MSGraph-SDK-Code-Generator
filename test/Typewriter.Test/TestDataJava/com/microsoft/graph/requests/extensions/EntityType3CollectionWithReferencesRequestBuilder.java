@@ -35,10 +35,22 @@ public class EntityType3CollectionWithReferencesRequestBuilder extends BaseReque
         super(requestUrl, client, requestOptions);
     }
 
-    public IEntityType3CollectionWithReferencesRequest buildRequest() {
-        return buildRequest(getOptions());
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
+    public IEntityType3CollectionWithReferencesRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
     public IEntityType3CollectionWithReferencesRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new EntityType3CollectionWithReferencesRequest(getRequestUrl(), getClient(), requestOptions);
     }

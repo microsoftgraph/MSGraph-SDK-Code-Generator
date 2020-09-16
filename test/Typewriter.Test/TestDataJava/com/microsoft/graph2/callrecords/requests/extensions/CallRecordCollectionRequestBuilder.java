@@ -15,6 +15,7 @@ import java.util.EnumSet;
 import com.microsoft.graph2.callrecords.requests.extensions.ICallRecordCollectionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.ICallRecordRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.ICallRecordCollectionRequest;
+import com.microsoft.graph2.callrecords.requests.extensions.ICallRecordItemRequestBuilder;
 import com.microsoft.graph.http.BaseRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
 
@@ -36,10 +37,22 @@ public class CallRecordCollectionRequestBuilder extends BaseRequestBuilder imple
         super(requestUrl, client, requestOptions);
     }
 
-    public ICallRecordCollectionRequest buildRequest() {
-        return buildRequest(getOptions());
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
+    public ICallRecordCollectionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
     public ICallRecordCollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new CallRecordCollectionRequest(getRequestUrl(), getClient(), requestOptions);
     }
@@ -49,4 +62,8 @@ public class CallRecordCollectionRequestBuilder extends BaseRequestBuilder imple
     }
 
 
+
+    public ICallRecordItemRequestBuilder item(final String name) {
+        return new CallRecordItemRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph2.callRecords.item"), getClient(), null, name);
+    }
 }

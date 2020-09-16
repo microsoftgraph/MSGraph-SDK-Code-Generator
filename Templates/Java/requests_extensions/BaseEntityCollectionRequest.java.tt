@@ -77,6 +77,19 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
     }
 
 <# } #>
+<# if (c.GetFeatures().CanFilter) { #>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public <#=c.ITypeCollectionRequest()#> filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (<#=c.TypeCollectionRequest()#>)this;
+    }
+
+<# } #>
 <# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
