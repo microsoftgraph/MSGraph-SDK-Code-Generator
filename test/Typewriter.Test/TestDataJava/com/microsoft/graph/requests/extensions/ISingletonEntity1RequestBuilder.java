@@ -21,9 +21,10 @@ public interface ISingletonEntity1RequestBuilder extends IRequestBuilder {
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the ISingletonEntity1Request instance
      */
-    ISingletonEntity1Request buildRequest();
+    ISingletonEntity1Request buildRequest(final com.microsoft.graph.options.Option... requestOptions);
 
     /**
      * Creates the request with specific options instead of the existing options

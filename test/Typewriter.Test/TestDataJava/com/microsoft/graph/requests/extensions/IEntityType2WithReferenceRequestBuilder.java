@@ -22,9 +22,10 @@ public interface IEntityType2WithReferenceRequestBuilder extends IRequestBuilder
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the IEntityType2WithReferenceRequest instance
      */
-    IEntityType2WithReferenceRequest buildRequest();
+    IEntityType2WithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions);
 
     /**
      * Creates the request with specific options instead of the existing options

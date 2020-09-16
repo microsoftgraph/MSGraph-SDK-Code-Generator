@@ -17,9 +17,10 @@ public interface ICallRecordItemRequestBuilder extends IRequestBuilder {
     /**
      * Creates the ICallRecordItemRequest
      *
+     * @param requestOptions the options for the request
      * @return the ICallRecordItemRequest instance
      */
-    ICallRecordItemRequest buildRequest();
+    ICallRecordItemRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions);
 
     /**
      * Creates the ICallRecordItemRequest with specific options instead of the existing options

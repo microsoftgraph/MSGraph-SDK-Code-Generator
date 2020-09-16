@@ -21,8 +21,20 @@ import com.microsoft.graph2.callrecords.requests.extensions.ISegmentTestActionCo
  */
 public interface ISegmentTestActionCollectionRequestBuilder extends IRequestBuilder {
 
-    ISegmentTestActionCollectionRequest buildRequest();
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
+    ISegmentTestActionCollectionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions);
 
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
     ISegmentTestActionCollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
 
 }

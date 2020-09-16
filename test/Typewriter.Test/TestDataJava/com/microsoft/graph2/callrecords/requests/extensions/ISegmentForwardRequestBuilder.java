@@ -17,9 +17,10 @@ public interface ISegmentForwardRequestBuilder extends IRequestBuilder {
     /**
      * Creates the ISegmentForwardRequest
      *
+     * @param requestOptions the options for the request
      * @return the ISegmentForwardRequest instance
      */
-    ISegmentForwardRequest buildRequest();
+    ISegmentForwardRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions);
 
     /**
      * Creates the ISegmentForwardRequest with specific options instead of the existing options
