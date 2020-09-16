@@ -10,6 +10,7 @@ import <#=importNamespace#>.core.BaseActionRequestBuilder;
 import <#=importNamespace#>.core.BaseFunctionRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
 import com.google.gson.JsonElement;
+import java.util.Arrays;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
 <#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), c.GetMethodRequestBuilderSuperClass(), c.ITypeRequestBuilder())#>
@@ -37,10 +38,11 @@ import com.google.gson.JsonElement;
     /**
      * Creates the <#=c.ITypeRequest()#>
      *
+     * @param requestOptions the options for the request
      * @return the <#=c.ITypeRequest()#> instance
      */
-    public <#=c.ITypeRequest()#> buildRequest() {
-        return buildRequest(getOptions());
+    public <#=c.ITypeRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(requestOptions != null && requestOptions.length > 0 ? Arrays.asList(requestOptions) : getOptions());
     }
 
     /**

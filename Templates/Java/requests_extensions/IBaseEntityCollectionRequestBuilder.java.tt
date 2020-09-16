@@ -36,8 +36,20 @@ import <#=importNamespace#>.http.IBaseCollectionPage;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionRequestBuilder(), "IRequestBuilder")#>
 
-    <#=c.ITypeCollectionRequest()#> buildRequest();
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
+    <#=c.ITypeCollectionRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions);
 
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
     <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 
     <#=c.ITypeRequestBuilder()#> byId(final String id);

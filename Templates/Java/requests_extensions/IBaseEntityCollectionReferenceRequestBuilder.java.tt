@@ -12,7 +12,19 @@
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionReferenceRequestBuilder(), "IRequestBuilder")#>
 
-    <#=c.ITypeCollectionReferenceRequest()#> buildRequest();
-
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
+    <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions);
+    
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
     <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 }
