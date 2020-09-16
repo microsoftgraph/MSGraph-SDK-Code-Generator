@@ -39,10 +39,11 @@ public class SessionWithReferenceRequestBuilder extends BaseRequestBuilder imple
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the ISessionWithReferenceRequest instance
      */
-    public ISessionWithReferenceRequest buildRequest() {
-        return buildRequest(getOptions());
+    public ISessionWithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

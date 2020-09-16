@@ -43,10 +43,11 @@ public class SegmentForwardRequestBuilder extends BaseActionRequestBuilder imple
     /**
      * Creates the ISegmentForwardRequest
      *
+     * @param requestOptions the options for the request
      * @return the ISegmentForwardRequest instance
      */
-    public ISegmentForwardRequest buildRequest() {
-        return buildRequest(getOptions());
+    public ISegmentForwardRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

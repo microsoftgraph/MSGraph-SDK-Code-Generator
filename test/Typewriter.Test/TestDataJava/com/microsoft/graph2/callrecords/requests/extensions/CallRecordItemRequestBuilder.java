@@ -34,10 +34,11 @@ public class CallRecordItemRequestBuilder extends BaseFunctionRequestBuilder imp
     /**
      * Creates the ICallRecordItemRequest
      *
+     * @param requestOptions the options for the request
      * @return the ICallRecordItemRequest instance
      */
-    public ICallRecordItemRequest buildRequest() {
-        return buildRequest(getOptions());
+    public ICallRecordItemRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

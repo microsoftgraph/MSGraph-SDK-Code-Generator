@@ -27,10 +27,11 @@ import <#=importNamespace#>.core.IBaseClient;
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return The <#=c.ITypeReferenceRequest()#> instance
      */
-    public <#=c.ITypeReferenceRequest()#> buildRequest() {
-        return buildRequest(getOptions());
+    public <#=c.ITypeReferenceRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

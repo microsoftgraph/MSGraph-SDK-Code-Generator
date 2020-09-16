@@ -36,10 +36,11 @@ public class TestTypeRequestBuilder extends BaseRequestBuilder implements ITestT
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the ITestTypeRequest instance
      */
-    public ITestTypeRequest buildRequest() {
-        return buildRequest(getOptions());
+    public ITestTypeRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

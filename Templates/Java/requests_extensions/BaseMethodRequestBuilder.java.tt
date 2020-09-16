@@ -37,10 +37,11 @@ import com.google.gson.JsonElement;
     /**
      * Creates the <#=c.ITypeRequest()#>
      *
+     * @param requestOptions the options for the request
      * @return the <#=c.ITypeRequest()#> instance
      */
-    public <#=c.ITypeRequest()#> buildRequest() {
-        return buildRequest(getOptions());
+    public <#=c.ITypeRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

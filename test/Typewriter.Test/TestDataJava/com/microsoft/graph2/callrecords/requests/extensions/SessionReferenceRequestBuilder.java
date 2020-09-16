@@ -40,10 +40,11 @@ public class SessionReferenceRequestBuilder extends BaseRequestBuilder implement
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return The ISessionReferenceRequest instance
      */
-    public ISessionReferenceRequest buildRequest() {
-        return buildRequest(getOptions());
+    public ISessionReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

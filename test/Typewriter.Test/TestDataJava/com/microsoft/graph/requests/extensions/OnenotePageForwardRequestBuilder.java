@@ -53,10 +53,11 @@ public class OnenotePageForwardRequestBuilder extends BaseActionRequestBuilder i
     /**
      * Creates the IOnenotePageForwardRequest
      *
+     * @param requestOptions the options for the request
      * @return the IOnenotePageForwardRequest instance
      */
-    public IOnenotePageForwardRequest buildRequest() {
-        return buildRequest(getOptions());
+    public IOnenotePageForwardRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

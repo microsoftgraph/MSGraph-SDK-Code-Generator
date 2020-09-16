@@ -26,10 +26,11 @@ import <#=importNamespace#>.http.BaseRequestBuilder;
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the <#=c.ITypeRequest()#> instance
      */
-    public <#=c.ITypeRequest()#> buildRequest() {
-        return buildRequest(getOptions());
+    public <#=c.ITypeRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

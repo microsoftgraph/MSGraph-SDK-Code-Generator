@@ -41,11 +41,23 @@ import <#=importNamespace#>.core.<#=c.GetMethodRequestBuilderSuperClass() #>;
 <# } #>
     }
 <# } #>
-
-    public <#=c.ITypeCollectionRequest()#> buildRequest() {
-        return buildRequest(getOptions());
+    
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
+    public <#=c.ITypeCollectionRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
     public <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         <#= c.TypeCollectionRequest()#> request = new <#=c.TypeCollectionRequest()#>(
                 getRequestUrl(),

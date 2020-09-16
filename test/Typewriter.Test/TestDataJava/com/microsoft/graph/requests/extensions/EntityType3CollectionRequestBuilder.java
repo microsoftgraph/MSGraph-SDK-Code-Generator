@@ -37,10 +37,22 @@ public class EntityType3CollectionRequestBuilder extends BaseRequestBuilder impl
         super(requestUrl, client, requestOptions);
     }
 
-    public IEntityType3CollectionRequest buildRequest() {
-        return buildRequest(getOptions());
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
+    public IEntityType3CollectionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
     public IEntityType3CollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new EntityType3CollectionRequest(getRequestUrl(), getClient(), requestOptions);
     }
