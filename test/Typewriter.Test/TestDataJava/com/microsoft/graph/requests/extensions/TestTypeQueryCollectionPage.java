@@ -35,6 +35,6 @@ public class TestTypeQueryCollectionPage extends BaseCollectionPage<ResponseObje
      * @param builder The request builder for the next collection page
      */
     public TestTypeQueryCollectionPage(final TestTypeQueryCollectionResponse response, final ITestTypeQueryCollectionRequestBuilder builder) {
-       super(response.value, builder);
+       super(response.value, builder, response.additionalDataManager());
     }
 }
