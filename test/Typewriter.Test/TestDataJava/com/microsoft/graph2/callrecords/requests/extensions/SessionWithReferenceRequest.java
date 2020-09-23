@@ -39,7 +39,7 @@ public class SessionWithReferenceRequest extends BaseRequest implements ISession
         super(requestUrl, client, requestOptions, Session.class);
     }
 
-    public void post(final Session newSession, final IJsonBackedObject payload, final ICallback<Session> callback) {
+    public void post(final Session newSession, final IJsonBackedObject payload, final ICallback<? super Session> callback) {
         send(HttpMethod.POST, callback, payload);
     }
 
@@ -51,7 +51,7 @@ public class SessionWithReferenceRequest extends BaseRequest implements ISession
         return null;
     }
 
-    public void get(final ICallback<Session> callback) {
+    public void get(final ICallback<? super Session> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -59,7 +59,7 @@ public class SessionWithReferenceRequest extends BaseRequest implements ISession
        return send(HttpMethod.GET, null);
     }
 
-	public void delete(final ICallback<Session> callback) {
+	public void delete(final ICallback<? super Session> callback) {
 		send(HttpMethod.DELETE, callback, null);
 	}
 
@@ -67,7 +67,7 @@ public class SessionWithReferenceRequest extends BaseRequest implements ISession
 		send(HttpMethod.DELETE, null);
 	}
 
-	public void patch(final Session sourceSession, final ICallback<Session> callback) {
+	public void patch(final Session sourceSession, final ICallback<? super Session> callback) {
 		send(HttpMethod.PATCH, callback, sourceSession);
 	}
 

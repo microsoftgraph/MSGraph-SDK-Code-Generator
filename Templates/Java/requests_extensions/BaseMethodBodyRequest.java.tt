@@ -59,7 +59,7 @@ import <#=importNamespace#>.http.HttpMethod;
         body = new <#=c.TypeBody()#>();
     }
 
-    public void post(final ICallback<<#=returnType#>> callback) {
+    public void post(final ICallback<? super <#=returnType#>> callback) {
         send(HttpMethod.POST, callback, body);
     }
 

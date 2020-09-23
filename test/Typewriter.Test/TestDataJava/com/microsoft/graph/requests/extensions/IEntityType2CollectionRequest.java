@@ -22,11 +22,11 @@ import com.microsoft.graph.http.IHttpRequest;
  */
 public interface IEntityType2CollectionRequest extends IHttpRequest {
 
-    void get(final ICallback<IEntityType2CollectionPage> callback);
+    void get(final ICallback<? super IEntityType2CollectionPage> callback);
 
     IEntityType2CollectionPage get() throws ClientException;
 
-    void post(final EntityType2 newEntityType2, final ICallback<EntityType2> callback);
+    void post(final EntityType2 newEntityType2, final ICallback<? super EntityType2> callback);
 
     EntityType2 post(final EntityType2 newEntityType2) throws ClientException;
 

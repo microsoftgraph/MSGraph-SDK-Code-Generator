@@ -33,7 +33,7 @@ import java.io.InputStream;
      * @param fileContents the contents of the stream to upload
      * @param callback the callback to be called after success or failure
      */
-    void put(final byte[] fileContents, final ICallback<<#=c.ClassTypeName()#>> callback);
+    void put(final byte[] fileContents, final ICallback<? super <#=c.ClassTypeName()#>> callback);
 
     /**
      * Uploads to the stream

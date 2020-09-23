@@ -36,7 +36,7 @@ public class OnenotePageForwardRequest extends BaseRequest implements IOnenotePa
         body = new OnenotePageForwardBody();
     }
 
-    public void post(final ICallback<Void> callback) {
+    public void post(final ICallback<? super Void> callback) {
         send(HttpMethod.POST, callback, body);
     }
 

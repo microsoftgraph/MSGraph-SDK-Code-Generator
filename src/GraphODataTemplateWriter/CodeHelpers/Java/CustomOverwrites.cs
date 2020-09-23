@@ -16,8 +16,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
     {
         public static Dictionary<string, string> OnenotePageCollectionRequest = new Dictionary<string, string>() {
             {
-                "public void post(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback) {",
-                "public void post(final byte[] newOnenotePage, final ICallback<OnenotePage> callback) {"
+                "public void post(final OnenotePage newOnenotePage, final ICallback<? super OnenotePage> callback) {",
+                "public void post(final byte[] newOnenotePage, final ICallback<? super OnenotePage> callback) {"
             },
             {
                 "public OnenotePage post(final OnenotePage newOnenotePage) throws ClientException {",
@@ -28,8 +28,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static Dictionary<string, string> OnenotePageRequest = new Dictionary<string, string>()
         {
             {
-                "public void post(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback) {",
-                "public void post(final byte[] newOnenotePage, final ICallback<OnenotePage> callback) {"
+                "public void post(final OnenotePage newOnenotePage, final ICallback<? super OnenotePage> callback) {",
+                "public void post(final byte[] newOnenotePage, final ICallback<? super OnenotePage> callback) {"
             },
             {
                 "public OnenotePage post(final OnenotePage newOnenotePage) throws ClientException {",
@@ -40,8 +40,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static Dictionary<string, string> IOnenotePageCollectionRequest = new Dictionary<string, string>()
         {
             {
-                "void post(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback);",
-                "void post(final byte[] newOnenotePage, final ICallback<OnenotePage> callback);"
+                "void post(final OnenotePage newOnenotePage, final ICallback<? super OnenotePage> callback);",
+                "void post(final byte[] newOnenotePage, final ICallback<? super OnenotePage> callback);"
             },
             {
                 "OnenotePage post(final OnenotePage newOnenotePage) throws ClientException;",
@@ -52,8 +52,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static Dictionary<string, string> IOnenotePageRequest = new Dictionary<string, string>()
         {
             {
-                "void post(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback);",
-                "void post(final byte[] newOnenotePage, final ICallback<OnenotePage> callback);"
+                "void post(final OnenotePage newOnenotePage, final ICallback<? super OnenotePage> callback);",
+                "void post(final byte[] newOnenotePage, final ICallback<? super OnenotePage> callback);"
             },
             {
                 "OnenotePage post(final OnenotePage newOnenotePage) throws ClientException;",

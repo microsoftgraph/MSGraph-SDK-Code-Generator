@@ -24,7 +24,7 @@ import com.google.gson.annotations.Expose;
  */
 public interface ITestTypeQueryCollectionRequest extends IHttpRequest {
 
-    void post(final ICallback<ITestTypeQueryCollectionPage> callback);
+    void post(final ICallback<? super ITestTypeQueryCollectionPage> callback);
 
     ITestTypeQueryCollectionPage post() throws ClientException;
 

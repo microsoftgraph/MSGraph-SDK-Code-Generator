@@ -38,7 +38,7 @@ public class OnenotePageRequest extends BaseRequest implements IOnenotePageReque
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<OnenotePage> callback) {
+    public void get(final ICallback<? super OnenotePage> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -57,7 +57,7 @@ public class OnenotePageRequest extends BaseRequest implements IOnenotePageReque
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<OnenotePage> callback) {
+    public void delete(final ICallback<? super OnenotePage> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -76,7 +76,7 @@ public class OnenotePageRequest extends BaseRequest implements IOnenotePageReque
      * @param sourceOnenotePage the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final OnenotePage sourceOnenotePage, final ICallback<OnenotePage> callback) {
+    public void patch(final OnenotePage sourceOnenotePage, final ICallback<? super OnenotePage> callback) {
         send(HttpMethod.PATCH, callback, sourceOnenotePage);
     }
 
@@ -97,7 +97,7 @@ public class OnenotePageRequest extends BaseRequest implements IOnenotePageReque
      * @param newOnenotePage the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final byte[] newOnenotePage, final ICallback<OnenotePage> callback) {
+    public void post(final byte[] newOnenotePage, final ICallback<? super OnenotePage> callback) {
         send(HttpMethod.POST, callback, newOnenotePage);
     }
 
@@ -118,7 +118,7 @@ public class OnenotePageRequest extends BaseRequest implements IOnenotePageReque
      * @param newOnenotePage the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final OnenotePage newOnenotePage, final ICallback<OnenotePage> callback) {
+    public void put(final OnenotePage newOnenotePage, final ICallback<? super OnenotePage> callback) {
         send(HttpMethod.PUT, callback, newOnenotePage);
     }
 

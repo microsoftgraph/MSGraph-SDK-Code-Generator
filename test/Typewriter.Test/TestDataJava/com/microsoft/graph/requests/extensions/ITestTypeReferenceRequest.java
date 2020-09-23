@@ -24,7 +24,7 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
  */
 public interface ITestTypeReferenceRequest extends IHttpRequest {
 
-    void delete(final ICallback<TestType> callback);
+    void delete(final ICallback<? super TestType> callback);
 
     TestType delete() throws ClientException;
 
@@ -50,7 +50,7 @@ public interface ITestTypeReferenceRequest extends IHttpRequest {
      * @param srcTestType the TestType to PUT
      * @param callback the callback to be called after success or failure
      */
-    void put(TestType srcTestType, final ICallback<TestType> callback);
+    void put(TestType srcTestType, final ICallback<? super TestType> callback);
 
     /**
      * Puts the TestType

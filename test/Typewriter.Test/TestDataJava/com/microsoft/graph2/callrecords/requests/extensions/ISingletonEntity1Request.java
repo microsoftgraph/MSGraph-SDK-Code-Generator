@@ -21,7 +21,7 @@ public interface ISingletonEntity1Request extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<SingletonEntity1> callback);
+    void get(final ICallback<? super SingletonEntity1> callback);
 
     /**
      * Gets the SingletonEntity1 from the service
@@ -36,7 +36,7 @@ public interface ISingletonEntity1Request extends IHttpRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<SingletonEntity1> callback);
+    void delete(final ICallback<? super SingletonEntity1> callback);
 
     /**
      * Delete this item from the service
@@ -51,7 +51,7 @@ public interface ISingletonEntity1Request extends IHttpRequest {
      * @param sourceSingletonEntity1 the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    void patch(final SingletonEntity1 sourceSingletonEntity1, final ICallback<SingletonEntity1> callback);
+    void patch(final SingletonEntity1 sourceSingletonEntity1, final ICallback<? super SingletonEntity1> callback);
 
     /**
      * Patches this SingletonEntity1 with a source
@@ -68,7 +68,7 @@ public interface ISingletonEntity1Request extends IHttpRequest {
      * @param newSingletonEntity1 the new object to create
      * @param callback the callback to be called after success or failure
      */
-    void post(final SingletonEntity1 newSingletonEntity1, final ICallback<SingletonEntity1> callback);
+    void post(final SingletonEntity1 newSingletonEntity1, final ICallback<? super SingletonEntity1> callback);
 
     /**
      * Posts a SingletonEntity1 with a new object
@@ -85,7 +85,7 @@ public interface ISingletonEntity1Request extends IHttpRequest {
      * @param newSingletonEntity1 the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    void put(final SingletonEntity1 newSingletonEntity1, final ICallback<SingletonEntity1> callback);
+    void put(final SingletonEntity1 newSingletonEntity1, final ICallback<? super SingletonEntity1> callback);
 
     /**
      * Posts a SingletonEntity1 with a new object

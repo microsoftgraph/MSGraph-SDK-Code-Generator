@@ -25,19 +25,19 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
  */
 public interface ISessionWithReferenceRequest extends IHttpRequest {
 
-    void post(final Session newSession, final IJsonBackedObject payload, final ICallback<Session> callback);
+    void post(final Session newSession, final IJsonBackedObject payload, final ICallback<? super Session> callback);
 
     Session post(final Session newSession, final IJsonBackedObject payload) throws ClientException;
 
-    void get(final ICallback<Session> callback);
+    void get(final ICallback<? super Session> callback);
 
     Session get() throws ClientException;
 
-	void delete(final ICallback<Session> callback);
+	void delete(final ICallback<? super Session> callback);
 
 	void delete() throws ClientException;
 
-	void patch(final Session sourceSession, final ICallback<Session> callback);
+	void patch(final Session sourceSession, final ICallback<? super Session> callback);
 
 	Session patch(final Session sourceSession) throws ClientException;
 

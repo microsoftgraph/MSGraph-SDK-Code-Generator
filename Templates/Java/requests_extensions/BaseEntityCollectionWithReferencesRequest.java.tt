@@ -25,7 +25,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.ITypeCollectionPage()#>.class);
     }
 
-    public void get(final ICallback<<#=c.ITypeCollectionWithReferencesPage()#>> callback) {
+    public void get(final ICallback<? super <#=c.ITypeCollectionWithReferencesPage()#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
