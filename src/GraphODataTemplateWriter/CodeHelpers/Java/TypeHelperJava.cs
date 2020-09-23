@@ -1045,7 +1045,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.AppendFormat(@"import {0}.serializer.ISerializer;
 import {0}.serializer.IJsonBackedObject;
 import {0}.serializer.AdditionalDataManager;
-import java.util.Arrays;
 import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
 
             sb.Append("\n");
@@ -1128,18 +1127,6 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
                 {
                     if (property.Type is OdcmPrimitiveType)
                         continue;
-
-                    var propertyType = TypeCollectionResponse(property);
-                    string importstr = String.Format(importFormat,
-                                property.Projection.Type.Namespace.Name.AddPrefix(),
-                                GetPrefixForRequests(),
-                                propertyType);
-                    if (!uniqueStore.ContainsKey(importstr))
-                    {
-                        uniqueStore.Add(importstr, 0);
-                        sb.Append(importstr);
-                        sb.Append("\n");
-                    }
 
                     string propertyValue = TypeCollectionPage(property);
                     string importstr1 = String.Format(importFormat,
@@ -1354,25 +1341,11 @@ import java.util.EnumSet;";
                     sb.AppendFormat(
     @"
         if (json.has(""{0}"")) {{
-            final {1} response = new {1}();
-            if (json.has(""{0}@odata.nextLink"")) {{
-                response.nextLink = json.get(""{0}@odata.nextLink"").getAsString();
-            }}
-
-            final JsonObject[] sourceArray = serializer.deserializeObject(json.get(""{0}"").toString(), JsonObject[].class);
-            final {3}[] array = new {3}[sourceArray.length];
-            for (int i = 0; i < sourceArray.length; i++) {{
-                array[i] = serializer.deserializeObject(sourceArray[i].toString(), {3}.class);
-                array[i].setRawObject(serializer, sourceArray[i]);
-            }}
-            response.value = Arrays.asList(array);
-            {0} = new {2}(response, null);
+            {0} = serializer.deserializeObject(json.get(""{0}"").toString(), {1}.class);
         }}
 ",
                 property.Name.SanitizePropertyName(property),
-                TypeCollectionResponse(property),
-                TypeCollectionPage(property),
-                property.GetTypeString());
+                TypeCollectionPage(property));
                 }
             }
             sb.Append("    }");
