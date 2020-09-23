@@ -6,14 +6,11 @@ package com.microsoft.graph.models.extensions;
 import com.microsoft.graph.serializer.ISerializer;
 import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
-import java.util.Arrays;
 import java.util.EnumSet;
 import com.microsoft.graph.models.extensions.TimeOff;
 import com.microsoft.graph.models.extensions.TimeOffRequest;
 import com.microsoft.graph.models.extensions.Entity;
-import com.microsoft.graph.requests.extensions.TimeOffCollectionResponse;
 import com.microsoft.graph.requests.extensions.TimeOffCollectionPage;
-import com.microsoft.graph.requests.extensions.TimeOffRequestCollectionResponse;
 import com.microsoft.graph.requests.extensions.TimeOffRequestCollectionPage;
 
 
@@ -94,35 +91,11 @@ public class Schedule extends Entity implements IJsonBackedObject {
 
 
         if (json.has("timesOff")) {
-            final TimeOffCollectionResponse response = new TimeOffCollectionResponse();
-            if (json.has("timesOff@odata.nextLink")) {
-                response.nextLink = json.get("timesOff@odata.nextLink").getAsString();
-            }
-
-            final JsonObject[] sourceArray = serializer.deserializeObject(json.get("timesOff").toString(), JsonObject[].class);
-            final TimeOff[] array = new TimeOff[sourceArray.length];
-            for (int i = 0; i < sourceArray.length; i++) {
-                array[i] = serializer.deserializeObject(sourceArray[i].toString(), TimeOff.class);
-                array[i].setRawObject(serializer, sourceArray[i]);
-            }
-            response.value = Arrays.asList(array);
-            timesOff = new TimeOffCollectionPage(response, null);
+            timesOff = serializer.deserializeObject(json.get("timesOff").toString(), TimeOffCollectionPage.class);
         }
 
         if (json.has("timeOffRequests")) {
-            final TimeOffRequestCollectionResponse response = new TimeOffRequestCollectionResponse();
-            if (json.has("timeOffRequests@odata.nextLink")) {
-                response.nextLink = json.get("timeOffRequests@odata.nextLink").getAsString();
-            }
-
-            final JsonObject[] sourceArray = serializer.deserializeObject(json.get("timeOffRequests").toString(), JsonObject[].class);
-            final TimeOffRequest[] array = new TimeOffRequest[sourceArray.length];
-            for (int i = 0; i < sourceArray.length; i++) {
-                array[i] = serializer.deserializeObject(sourceArray[i].toString(), TimeOffRequest.class);
-                array[i].setRawObject(serializer, sourceArray[i]);
-            }
-            response.value = Arrays.asList(array);
-            timeOffRequests = new TimeOffRequestCollectionPage(response, null);
+            timeOffRequests = serializer.deserializeObject(json.get("timeOffRequests").toString(), TimeOffRequestCollectionPage.class);
         }
     }
 }
