@@ -25,19 +25,19 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
  */
 public interface ITestTypeWithReferenceRequest extends IHttpRequest {
 
-    void post(final TestType newTestType, final IJsonBackedObject payload, final ICallback<TestType> callback);
+    void post(final TestType newTestType, final IJsonBackedObject payload, final ICallback<? super TestType> callback);
 
     TestType post(final TestType newTestType, final IJsonBackedObject payload) throws ClientException;
 
-    void get(final ICallback<TestType> callback);
+    void get(final ICallback<? super TestType> callback);
 
     TestType get() throws ClientException;
 
-	void delete(final ICallback<TestType> callback);
+	void delete(final ICallback<? super TestType> callback);
 
 	void delete() throws ClientException;
 
-	void patch(final TestType sourceTestType, final ICallback<TestType> callback);
+	void patch(final TestType sourceTestType, final ICallback<? super TestType> callback);
 
 	TestType patch(final TestType sourceTestType) throws ClientException;
 

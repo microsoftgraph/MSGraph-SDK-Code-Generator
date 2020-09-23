@@ -36,7 +36,7 @@ public class SegmentForwardRequest extends BaseRequest implements ISegmentForwar
         body = new SegmentForwardBody();
     }
 
-    public void post(final ICallback<Void> callback) {
+    public void post(final ICallback<? super Void> callback) {
         send(HttpMethod.POST, callback, body);
     }
 

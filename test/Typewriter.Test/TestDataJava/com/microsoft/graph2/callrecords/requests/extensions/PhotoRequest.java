@@ -37,7 +37,7 @@ public class PhotoRequest extends BaseRequest implements IPhotoRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<Photo> callback) {
+    public void get(final ICallback<? super Photo> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -56,7 +56,7 @@ public class PhotoRequest extends BaseRequest implements IPhotoRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<Photo> callback) {
+    public void delete(final ICallback<? super Photo> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -75,7 +75,7 @@ public class PhotoRequest extends BaseRequest implements IPhotoRequest {
      * @param sourcePhoto the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final Photo sourcePhoto, final ICallback<Photo> callback) {
+    public void patch(final Photo sourcePhoto, final ICallback<? super Photo> callback) {
         send(HttpMethod.PATCH, callback, sourcePhoto);
     }
 
@@ -96,7 +96,7 @@ public class PhotoRequest extends BaseRequest implements IPhotoRequest {
      * @param newPhoto the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final Photo newPhoto, final ICallback<Photo> callback) {
+    public void post(final Photo newPhoto, final ICallback<? super Photo> callback) {
         send(HttpMethod.POST, callback, newPhoto);
     }
 
@@ -117,7 +117,7 @@ public class PhotoRequest extends BaseRequest implements IPhotoRequest {
      * @param newPhoto the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final Photo newPhoto, final ICallback<Photo> callback) {
+    public void put(final Photo newPhoto, final ICallback<? super Photo> callback) {
         send(HttpMethod.PUT, callback, newPhoto);
     }
 

@@ -45,7 +45,7 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
     }
 
 
-    public void post(final ICallback<ISegmentTestActionCollectionPage> callback) {
+    public void post(final ICallback<? super ISegmentTestActionCollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override

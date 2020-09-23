@@ -43,7 +43,7 @@ public class TestEntityRequest extends BaseRequest implements ITestEntityRequest
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<TestEntity> callback) {
+    public void get(final ICallback<? super TestEntity> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -62,7 +62,7 @@ public class TestEntityRequest extends BaseRequest implements ITestEntityRequest
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<TestEntity> callback) {
+    public void delete(final ICallback<? super TestEntity> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -81,7 +81,7 @@ public class TestEntityRequest extends BaseRequest implements ITestEntityRequest
      * @param sourceTestEntity the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final TestEntity sourceTestEntity, final ICallback<TestEntity> callback) {
+    public void patch(final TestEntity sourceTestEntity, final ICallback<? super TestEntity> callback) {
         send(HttpMethod.PATCH, callback, sourceTestEntity);
     }
 
@@ -102,7 +102,7 @@ public class TestEntityRequest extends BaseRequest implements ITestEntityRequest
      * @param newTestEntity the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final TestEntity newTestEntity, final ICallback<TestEntity> callback) {
+    public void post(final TestEntity newTestEntity, final ICallback<? super TestEntity> callback) {
         send(HttpMethod.POST, callback, newTestEntity);
     }
 
@@ -123,7 +123,7 @@ public class TestEntityRequest extends BaseRequest implements ITestEntityRequest
      * @param newTestEntity the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final TestEntity newTestEntity, final ICallback<TestEntity> callback) {
+    public void put(final TestEntity newTestEntity, final ICallback<? super TestEntity> callback) {
         send(HttpMethod.PUT, callback, newTestEntity);
     }
 

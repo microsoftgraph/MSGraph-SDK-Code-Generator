@@ -38,7 +38,7 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionRequest
         super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, IEntityType3CollectionPage.class);
     }
 
-    public void post(final EntityType3 newEntityType3, final ICallback<EntityType3> callback) {
+    public void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/testTypes/" + newEntityType3.id);
         new EntityType3WithReferenceRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)

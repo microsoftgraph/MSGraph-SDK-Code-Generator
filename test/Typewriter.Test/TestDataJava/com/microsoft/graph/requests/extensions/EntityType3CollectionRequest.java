@@ -41,7 +41,7 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
         super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, IEntityType3CollectionPage.class);
     }
 
-    public void get(final ICallback<IEntityType3CollectionPage> callback) {
+    public void get(final ICallback<? super IEntityType3CollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -60,7 +60,7 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
         return buildFromResponse(response);
     }
 
-    public void post(final EntityType3 newEntityType3, final ICallback<EntityType3> callback) {
+    public void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new EntityType3RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())

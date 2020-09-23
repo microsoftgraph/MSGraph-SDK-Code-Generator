@@ -37,7 +37,7 @@ public class TestTypeWithReferenceRequest extends BaseRequest implements ITestTy
         super(requestUrl, client, requestOptions, TestType.class);
     }
 
-    public void post(final TestType newTestType, final IJsonBackedObject payload, final ICallback<TestType> callback) {
+    public void post(final TestType newTestType, final IJsonBackedObject payload, final ICallback<? super TestType> callback) {
         send(HttpMethod.POST, callback, payload);
     }
 
@@ -49,7 +49,7 @@ public class TestTypeWithReferenceRequest extends BaseRequest implements ITestTy
         return null;
     }
 
-    public void get(final ICallback<TestType> callback) {
+    public void get(final ICallback<? super TestType> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -57,7 +57,7 @@ public class TestTypeWithReferenceRequest extends BaseRequest implements ITestTy
        return send(HttpMethod.GET, null);
     }
 
-	public void delete(final ICallback<TestType> callback) {
+	public void delete(final ICallback<? super TestType> callback) {
 		send(HttpMethod.DELETE, callback, null);
 	}
 
@@ -65,7 +65,7 @@ public class TestTypeWithReferenceRequest extends BaseRequest implements ITestTy
 		send(HttpMethod.DELETE, null);
 	}
 
-	public void patch(final TestType sourceTestType, final ICallback<TestType> callback) {
+	public void patch(final TestType sourceTestType, final ICallback<? super TestType> callback) {
 		send(HttpMethod.PATCH, callback, sourceTestType);
 	}
 

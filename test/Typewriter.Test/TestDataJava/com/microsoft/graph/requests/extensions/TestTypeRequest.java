@@ -39,7 +39,7 @@ public class TestTypeRequest extends BaseRequest implements ITestTypeRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<TestType> callback) {
+    public void get(final ICallback<? super TestType> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -58,7 +58,7 @@ public class TestTypeRequest extends BaseRequest implements ITestTypeRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<TestType> callback) {
+    public void delete(final ICallback<? super TestType> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -77,7 +77,7 @@ public class TestTypeRequest extends BaseRequest implements ITestTypeRequest {
      * @param sourceTestType the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final TestType sourceTestType, final ICallback<TestType> callback) {
+    public void patch(final TestType sourceTestType, final ICallback<? super TestType> callback) {
         send(HttpMethod.PATCH, callback, sourceTestType);
     }
 
@@ -98,7 +98,7 @@ public class TestTypeRequest extends BaseRequest implements ITestTypeRequest {
      * @param newTestType the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final TestType newTestType, final ICallback<TestType> callback) {
+    public void post(final TestType newTestType, final ICallback<? super TestType> callback) {
         send(HttpMethod.POST, callback, newTestType);
     }
 
@@ -119,7 +119,7 @@ public class TestTypeRequest extends BaseRequest implements ITestTypeRequest {
      * @param newTestType the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final TestType newTestType, final ICallback<TestType> callback) {
+    public void put(final TestType newTestType, final ICallback<? super TestType> callback) {
         send(HttpMethod.PUT, callback, newTestType);
     }
 

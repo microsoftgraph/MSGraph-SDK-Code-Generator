@@ -37,7 +37,7 @@ public class EntityType3CollectionWithReferencesRequest extends BaseCollectionRe
         super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, IEntityType3CollectionPage.class);
     }
 
-    public void get(final ICallback<IEntityType3CollectionWithReferencesPage> callback) {
+    public void get(final ICallback<? super IEntityType3CollectionWithReferencesPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override

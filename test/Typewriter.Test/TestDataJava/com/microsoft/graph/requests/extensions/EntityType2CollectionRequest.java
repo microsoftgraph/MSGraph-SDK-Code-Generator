@@ -40,7 +40,7 @@ public class EntityType2CollectionRequest extends BaseCollectionRequest<EntityTy
         super(requestUrl, client, requestOptions, EntityType2CollectionResponse.class, IEntityType2CollectionPage.class);
     }
 
-    public void get(final ICallback<IEntityType2CollectionPage> callback) {
+    public void get(final ICallback<? super IEntityType2CollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -59,7 +59,7 @@ public class EntityType2CollectionRequest extends BaseCollectionRequest<EntityTy
         return buildFromResponse(response);
     }
 
-    public void post(final EntityType2 newEntityType2, final ICallback<EntityType2> callback) {
+    public void post(final EntityType2 newEntityType2, final ICallback<? super EntityType2> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new EntityType2RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
