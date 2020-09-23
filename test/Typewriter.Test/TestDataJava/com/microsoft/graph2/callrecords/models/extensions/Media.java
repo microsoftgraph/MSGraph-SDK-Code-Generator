@@ -6,7 +6,6 @@ package com.microsoft.graph2.callrecords.models.extensions;
 import com.microsoft.graph.serializer.ISerializer;
 import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
-import java.util.Arrays;
 import java.util.EnumSet;
 import com.microsoft.graph2.callrecords.models.extensions.NetworkInfo;
 import com.microsoft.graph2.callrecords.models.extensions.DeviceInfo;

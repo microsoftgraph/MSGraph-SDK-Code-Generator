@@ -6,7 +6,6 @@ package com.microsoft.graph2.callrecords.models.extensions;
 import com.microsoft.graph.serializer.ISerializer;
 import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
-import java.util.Arrays;
 import java.util.EnumSet;
 import com.microsoft.graph2.callrecords.models.generated.CallType;
 import com.microsoft.graph2.callrecords.models.generated.Modality;
@@ -14,9 +13,7 @@ import com.microsoft.graph.models.extensions.IdentitySet;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import com.microsoft.graph.models.extensions.EntityType2;
 import com.microsoft.graph.models.extensions.Entity;
-import com.microsoft.graph2.callrecords.requests.extensions.SessionCollectionResponse;
 import com.microsoft.graph2.callrecords.requests.extensions.SessionCollectionPage;
-import com.microsoft.graph.requests.extensions.EntityType2CollectionResponse;
 import com.microsoft.graph.requests.extensions.EntityType2CollectionPage;
 
 
@@ -161,35 +158,11 @@ public class CallRecord extends Entity implements IJsonBackedObject {
 
 
         if (json.has("sessions")) {
-            final SessionCollectionResponse response = new SessionCollectionResponse();
-            if (json.has("sessions@odata.nextLink")) {
-                response.nextLink = json.get("sessions@odata.nextLink").getAsString();
-            }
-
-            final JsonObject[] sourceArray = serializer.deserializeObject(json.get("sessions").toString(), JsonObject[].class);
-            final Session[] array = new Session[sourceArray.length];
-            for (int i = 0; i < sourceArray.length; i++) {
-                array[i] = serializer.deserializeObject(sourceArray[i].toString(), Session.class);
-                array[i].setRawObject(serializer, sourceArray[i]);
-            }
-            response.value = Arrays.asList(array);
-            sessions = new SessionCollectionPage(response, null);
+            sessions = serializer.deserializeObject(json.get("sessions").toString(), SessionCollectionPage.class);
         }
 
         if (json.has("recipients")) {
-            final EntityType2CollectionResponse response = new EntityType2CollectionResponse();
-            if (json.has("recipients@odata.nextLink")) {
-                response.nextLink = json.get("recipients@odata.nextLink").getAsString();
-            }
-
-            final JsonObject[] sourceArray = serializer.deserializeObject(json.get("recipients").toString(), JsonObject[].class);
-            final EntityType2[] array = new EntityType2[sourceArray.length];
-            for (int i = 0; i < sourceArray.length; i++) {
-                array[i] = serializer.deserializeObject(sourceArray[i].toString(), EntityType2.class);
-                array[i].setRawObject(serializer, sourceArray[i]);
-            }
-            response.value = Arrays.asList(array);
-            recipients = new EntityType2CollectionPage(response, null);
+            recipients = serializer.deserializeObject(json.get("recipients").toString(), EntityType2CollectionPage.class);
         }
     }
 }

@@ -6,14 +6,11 @@ package com.microsoft.graph.models.extensions;
 import com.microsoft.graph.serializer.ISerializer;
 import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
-import java.util.Arrays;
 import java.util.EnumSet;
 import com.microsoft.graph.models.extensions.Call;
 import com.microsoft.graph2.callrecords.models.extensions.CallRecord;
 import com.microsoft.graph.models.extensions.Entity;
-import com.microsoft.graph.requests.extensions.CallCollectionResponse;
 import com.microsoft.graph.requests.extensions.CallCollectionPage;
-import com.microsoft.graph2.callrecords.requests.extensions.CallRecordCollectionResponse;
 import com.microsoft.graph2.callrecords.requests.extensions.CallRecordCollectionPage;
 
 
@@ -86,35 +83,11 @@ public class CloudCommunications extends Entity implements IJsonBackedObject {
 
 
         if (json.has("calls")) {
-            final CallCollectionResponse response = new CallCollectionResponse();
-            if (json.has("calls@odata.nextLink")) {
-                response.nextLink = json.get("calls@odata.nextLink").getAsString();
-            }
-
-            final JsonObject[] sourceArray = serializer.deserializeObject(json.get("calls").toString(), JsonObject[].class);
-            final Call[] array = new Call[sourceArray.length];
-            for (int i = 0; i < sourceArray.length; i++) {
-                array[i] = serializer.deserializeObject(sourceArray[i].toString(), Call.class);
-                array[i].setRawObject(serializer, sourceArray[i]);
-            }
-            response.value = Arrays.asList(array);
-            calls = new CallCollectionPage(response, null);
+            calls = serializer.deserializeObject(json.get("calls").toString(), CallCollectionPage.class);
         }
 
         if (json.has("callRecords")) {
-            final CallRecordCollectionResponse response = new CallRecordCollectionResponse();
-            if (json.has("callRecords@odata.nextLink")) {
-                response.nextLink = json.get("callRecords@odata.nextLink").getAsString();
-            }
-
-            final JsonObject[] sourceArray = serializer.deserializeObject(json.get("callRecords").toString(), JsonObject[].class);
-            final CallRecord[] array = new CallRecord[sourceArray.length];
-            for (int i = 0; i < sourceArray.length; i++) {
-                array[i] = serializer.deserializeObject(sourceArray[i].toString(), CallRecord.class);
-                array[i].setRawObject(serializer, sourceArray[i]);
-            }
-            response.value = Arrays.asList(array);
-            callRecords = new CallRecordCollectionPage(response, null);
+            callRecords = serializer.deserializeObject(json.get("callRecords").toString(), CallRecordCollectionPage.class);
         }
     }
 }

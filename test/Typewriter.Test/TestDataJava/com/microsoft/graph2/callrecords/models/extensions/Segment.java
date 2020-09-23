@@ -6,7 +6,6 @@ package com.microsoft.graph2.callrecords.models.extensions;
 import com.microsoft.graph.serializer.ISerializer;
 import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
-import java.util.Arrays;
 import java.util.EnumSet;
 import com.microsoft.graph2.callrecords.models.extensions.Endpoint;
 import com.microsoft.graph2.callrecords.models.extensions.FailureInfo;
@@ -16,7 +15,6 @@ import com.microsoft.graph.models.extensions.Call;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import com.microsoft.graph2.callrecords.models.extensions.Photo;
 import com.microsoft.graph.models.extensions.Entity;
-import com.microsoft.graph.requests.extensions.EntityType3CollectionResponse;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionPage;
 
 
@@ -151,19 +149,7 @@ public class Segment extends Entity implements IJsonBackedObject {
 
 
         if (json.has("refTypes")) {
-            final EntityType3CollectionResponse response = new EntityType3CollectionResponse();
-            if (json.has("refTypes@odata.nextLink")) {
-                response.nextLink = json.get("refTypes@odata.nextLink").getAsString();
-            }
-
-            final JsonObject[] sourceArray = serializer.deserializeObject(json.get("refTypes").toString(), JsonObject[].class);
-            final EntityType3[] array = new EntityType3[sourceArray.length];
-            for (int i = 0; i < sourceArray.length; i++) {
-                array[i] = serializer.deserializeObject(sourceArray[i].toString(), EntityType3.class);
-                array[i].setRawObject(serializer, sourceArray[i]);
-            }
-            response.value = Arrays.asList(array);
-            refTypes = new EntityType3CollectionPage(response, null);
+            refTypes = serializer.deserializeObject(json.get("refTypes").toString(), EntityType3CollectionPage.class);
         }
     }
 }
