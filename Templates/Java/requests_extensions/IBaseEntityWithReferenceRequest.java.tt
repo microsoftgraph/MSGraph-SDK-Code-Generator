@@ -15,19 +15,19 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeWithReferencesRequest(), "IHttpRequest")#>
 
-    void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload, final ICallback<<#=c.TypeName()#>> callback);
+    void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload, final ICallback<? super <#=c.TypeName()#>> callback);
 
     <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload) throws ClientException;
 
-    void get(final ICallback<<#=c.TypeName()#>> callback);
+    void get(final ICallback<? super <#=c.TypeName()#>> callback);
 
     <#=c.TypeName()#> get() throws ClientException;
 
-	void delete(final ICallback<<#=c.TypeName()#>> callback);
+	void delete(final ICallback<? super <#=c.TypeName()#>> callback);
 
 	void delete() throws ClientException;
 
-	void patch(final <#=c.TypeName()#> source<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback);
+	void patch(final <#=c.TypeName()#> source<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback);
 
 	<#=c.TypeName()#> patch(final <#=c.TypeName()#> source<#=c.TypeName()#>) throws ClientException;
 

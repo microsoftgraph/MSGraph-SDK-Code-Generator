@@ -32,7 +32,7 @@ import <#=importNamespace#>.http.IHttpRequest;
 
 <#=TypeHelperJava.CreateInterfaceDef(iBaseTypeRequest, "IHttpRequest")#>
 
-    void post(final ICallback<<#=c.ReturnType()#>> callback);
+    void post(final ICallback<? super <#=c.ReturnType()#>> callback);
 
     <#=c.ReturnType()#> post() throws ClientException;
 

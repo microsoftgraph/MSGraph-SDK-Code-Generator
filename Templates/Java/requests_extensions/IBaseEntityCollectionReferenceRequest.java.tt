@@ -13,7 +13,7 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionReferenceRequest())#>
 
-    void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback);
+    void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback);
 
     <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException;
 

@@ -137,7 +137,7 @@ import <#=importNamespace#>.http.HttpMethod;
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<{0}> callback) {{
+    public void delete(final ICallback<? super {0}> callback) {{
         send(HttpMethod.DELETE, callback, null);
     }}
 
@@ -162,7 +162,7 @@ import <#=importNamespace#>.http.HttpMethod;
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<{0}> callback) {{
+    public void get(final ICallback<? super {0}> callback) {{
         send(HttpMethod.GET, callback, null);
     }}
 
@@ -189,7 +189,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param source{0} the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final {0} source{0}, final ICallback<{0}> callback) {{
+    public void patch(final {0} source{0}, final ICallback<? super {0}> callback) {{
         send(HttpMethod.PATCH, callback, source{0});
     }}
 
@@ -217,7 +217,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param new{0} the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final {0} new{0}, final ICallback<{0}> callback) {{
+    public void post(final {0} new{0}, final ICallback<? super {0}> callback) {{
         send(HttpMethod.POST, callback, new{0});
     }}
 
@@ -245,7 +245,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param new{0} the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final {0} new{0}, final ICallback<{0}> callback) {{
+    public void put(final {0} new{0}, final ICallback<? super {0}> callback) {{
         send(HttpMethod.PUT, callback, new{0});
     }}
 

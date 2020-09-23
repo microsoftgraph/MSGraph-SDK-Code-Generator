@@ -35,7 +35,7 @@ if (c.AsOdcmMethod().IsAction()) {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void post(final ICallback<<#=c.ReturnType()#>> callback) {
+    public void post(final ICallback<? super <#=c.ReturnType()#>> callback) {
         send(HttpMethod.POST, callback, null);
     }
 
@@ -154,7 +154,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> with which to PATCH
      * @param callback the callback to be called after success or failure
      */
-    public void patch(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<<#=c.ReturnType()#>> callback) {
+    public void patch(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<? super <#=c.ReturnType()#>> callback) {
         send(HttpMethod.PATCH, callback, src<#=c.ReturnType()#>);
     }
 
@@ -175,7 +175,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<<#=c.ReturnType()#>> callback) {
+    public void put(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<? super <#=c.ReturnType()#>> callback) {
         send(HttpMethod.PUT, callback, src<#=c.ReturnType()#>);
     }
 
@@ -197,7 +197,7 @@ if (c.AsOdcmMethod().IsAction()) {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<<#=c.ReturnType()#>> callback) {
+    public void get(final ICallback<? super <#=c.ReturnType()#>> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
