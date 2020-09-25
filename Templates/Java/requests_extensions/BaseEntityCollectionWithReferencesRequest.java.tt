@@ -58,6 +58,13 @@ import <#=importNamespace#>.concurrency.IExecutors;
     }
 
 <# } #>
+<# if (c.GetFeatures().CanSort) { #>
+    public <#=c.ITypeCollectionRequest()#> orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
+        return (<#=c.TypeCollectionRequest()#>)this;
+    }
+
+<# } #>
 <# if (c.GetFeatures().CanSelect) { #>
     public <#=c.ITypeCollectionRequest()#> select(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
