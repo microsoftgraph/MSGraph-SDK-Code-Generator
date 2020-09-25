@@ -124,4 +124,15 @@ public class CallRecordItemRequest extends BaseRequest implements ICallRecordIte
         return (CallRecordItemRequest)this;
     }
 
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public ICallRecordItemRequest orderBy(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$orderby", value));
+        return (CallRecordItemRequest)this;
+    }
+
 }

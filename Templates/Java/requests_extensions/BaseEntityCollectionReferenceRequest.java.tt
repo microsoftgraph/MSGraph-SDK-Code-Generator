@@ -81,6 +81,19 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
     }
 
 <# } #>
+<# if (c.GetFeatures().CanSort) { #>
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the sort clause
+     * @return the updated request
+     */
+    public <#=c.ITypeCollectionReferenceRequest()#> orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
+        return (<#=c.TypeCollectionReferenceRequest()#>)this;
+    }
+
+<# } #>
 <# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request

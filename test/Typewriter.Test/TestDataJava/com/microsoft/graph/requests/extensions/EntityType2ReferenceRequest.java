@@ -64,16 +64,6 @@ public class EntityType2ReferenceRequest extends BaseRequest implements IEntityT
         return (EntityType2ReferenceRequest)this;
     }
     /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public IEntityType2ReferenceRequest filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (EntityType2ReferenceRequest)this;
-    }
-    /**
      * Puts the EntityType2
      *
      * @param srcEntityType2 the EntityType2 reference to PUT

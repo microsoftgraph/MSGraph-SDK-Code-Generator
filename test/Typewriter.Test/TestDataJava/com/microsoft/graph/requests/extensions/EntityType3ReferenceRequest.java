@@ -66,16 +66,6 @@ public class EntityType3ReferenceRequest extends BaseRequest implements IEntityT
         return (EntityType3ReferenceRequest)this;
     }
     /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public IEntityType3ReferenceRequest filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (EntityType3ReferenceRequest)this;
-    }
-    /**
      * Puts the EntityType3
      *
      * @param srcEntityType3 the EntityType3 reference to PUT
