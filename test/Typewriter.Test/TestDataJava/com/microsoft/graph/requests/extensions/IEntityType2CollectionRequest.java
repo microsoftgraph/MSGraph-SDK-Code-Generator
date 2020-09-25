@@ -85,5 +85,5 @@ public interface IEntityType2CollectionRequest extends IHttpRequest {
      *
 	 * @return the updated request
 	 */
-	IEntityType2CollectionRequest skipToken(String skipToken);
+	IEntityType2CollectionRequest skipToken(final String skipToken);
 }
