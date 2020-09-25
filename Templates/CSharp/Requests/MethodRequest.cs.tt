@@ -16,28 +16,75 @@ var entityName = method.Class.Name.ToCheckedCase();
 var isFunction = method.IsFunction;
 var isAction = !isFunction;
 var isComposable = method.IsComposable;
+var isCollection = method.IsCollection;
 
 var methodName = method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var requestType = entityName + methodName + "Request";
 
+var returnEntityParameter = string.Empty;
+
+// Represents the return of the SendAsync call within a public GetSync() or PostAsync() call.
+var sendAsyncReturnType = string.Empty;
+
+// Indicates whether the OData method returns an OData primitive (non-collection).
+// Collections of OData primitives is already supported.
+var isPrimitiveReturnType = false;
+
+// Represents the return type of a GetAsync() or PostAsync() call.
 var returnEntityType = method.ReturnType == null ? null : method.ReturnType.GetTypeString(@namespace);
 
-var returnEntityParameter = string.Empty;
-if (returnEntityType != null) {returnEntityParameter = returnEntityType.ToLower();}
+// Set the SendAsync return type and determine whether we are working with an OData primitive.
+if (returnEntityType != null) 
+{
+    returnEntityParameter = returnEntityType.ToLower();
+    if (isCollection)
+    {
+        sendAsyncReturnType = "I" + entityName + methodName + "CollectionPage";
+    }
+    else
+    {
+        // Updates to supported OData primitives need to occur here,
+        // IMethodRequest.cs.tt, Microsoft.Graph.Core, and in
+        // GetMethodRequestPrimitiveReturnTypeString() in SharedCSharp.
+        sendAsyncReturnType = GetMethodRequestPrimitiveReturnTypeString(returnEntityType);
 
-var isCollection = method.IsCollection;
+        // These magic strings represent types in M.G.C.
+        if (sendAsyncReturnType == "ODataMethodStringResponse" ||
+            sendAsyncReturnType == "ODataMethodIntResponse" ||
+            sendAsyncReturnType == "ODataMethodBooleanResponse" ||
+            sendAsyncReturnType == "ODataMethodLongResponse")
+        {
+            isPrimitiveReturnType = true;
+        }
+    }
+}
+else
+{
+    sendAsyncReturnType = returnEntityType;
+}
 
-var sendAsyncReturnType = isCollection
-    ? "I" + entityName + methodName + "CollectionPage"
-    : returnEntityType;
-
-var methodReturnType = sendAsyncReturnType == null
-    ? "System.Threading.Tasks.Task"
-    : "System.Threading.Tasks.Task<" + sendAsyncReturnType + ">";
+// Set the return type of the public GetSync() or PostAsync() call.
+var methodReturnType = string.Empty;
+if (sendAsyncReturnType == null)
+{
+    methodReturnType = "System.Threading.Tasks.Task";
+}
+else
+{
+    if (isCollection)
+    {
+        var collectionPage = "I" + entityName + methodName + "CollectionPage";
+        methodReturnType = "System.Threading.Tasks.Task<" + collectionPage + ">";
+    }
+    else
+    {
+        methodReturnType = "System.Threading.Tasks.Task<" + returnEntityType + ">";
+    }
+}
 
 string methodOverloadReturnType = methodReturnType;
 
-if (isCollection)
+if (isCollection || isPrimitiveReturnType)
 {
     methodReturnType = string.Concat("async ", methodReturnType);
 }
@@ -176,10 +223,17 @@ namespace <#=@namespace#>
             return this.SendStreamRequestAsync(null, cancellationToken, httpCompletionOption);
 <#
     }
-    else if (!string.IsNullOrEmpty(sendAsyncReturnType))
+    else if (!string.IsNullOrEmpty(sendAsyncReturnType) && !isPrimitiveReturnType)
     {
 #>
             return this.SendAsync<<#=sendAsyncReturnType#>>(<#=methodParameter#>, cancellationToken);
+<#
+    }
+    else if (!string.IsNullOrEmpty(sendAsyncReturnType) && isPrimitiveReturnType)
+    {
+#>
+            var response = await this.SendAsync<<#=sendAsyncReturnType#>>(<#=methodParameter#>, cancellationToken);
+            return response.Value;
 <#
     }
     else
@@ -276,10 +330,17 @@ namespace <#=@namespace#>
             return this.SendStreamRequestAsync(null, cancellationToken, httpCompletionOption);
 <#
     }
-    else if (!string.IsNullOrEmpty(sendAsyncReturnType))
+    else if (!string.IsNullOrEmpty(sendAsyncReturnType) && !isPrimitiveReturnType)
     {
 #>
             return this.SendAsync<<#=sendAsyncReturnType#>>(null, cancellationToken);
+<#
+    }
+    else if (!string.IsNullOrEmpty(sendAsyncReturnType) && isPrimitiveReturnType)
+    {
+#>
+            var response = await this.SendAsync<<#=sendAsyncReturnType#>>(null, cancellationToken);
+            return response.Value;
 <#
     }
     else
