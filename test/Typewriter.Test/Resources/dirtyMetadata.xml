@@ -92,6 +92,23 @@
         <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
         <Parameter Name="TestProperty" Type="Edm.String" Nullable="true"/>
       </Action>
+      
+      <Function Name="FunctionMethodWithString" IsBound="true">
+        <Parameter Name="bindparameter" Type="microsoft.graph.testType2" />
+        <ReturnType Type="Edm.String" Unicode="false" />
+      </Function>
+      <Function Name="FunctionMethodWithBoolean" IsBound="true">
+        <Parameter Name="bindparameter" Type="microsoft.graph.testType2" />
+        <ReturnType Type="Edm.Boolean" Nullable="false" />
+      </Function>
+      <Function Name="FunctionMethodWithInt32" IsBound="true">
+        <Parameter Name="bindparameter" Type="microsoft.graph.testType2" />
+        <ReturnType Type="Edm.Int32" Nullable="false" />
+      </Function>
+      <Action Name="FunctionMethodWithInt64" IsBound="true">
+        <Parameter Name="bindingParameter" Type="microsoft.graph.testType3" />
+        <ReturnType Type="Edm.Int64" Nullable="false" />
+      </Action>
 
       <EntityContainer Name="GraphService">
         <Singleton Name="testSingleton" Type="microsoft.graph.testSingleton"/>

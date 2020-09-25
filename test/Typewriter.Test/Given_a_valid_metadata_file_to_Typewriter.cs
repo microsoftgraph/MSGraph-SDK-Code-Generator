@@ -555,5 +555,145 @@ namespace Typewriter.Test
             Assert.IsTrue(hasContainsTargetBeenSet, $"The expected ContainsTarget attribute wasn't set in the transformed cleaned metadata.");
             Assert.IsFalse(hasCapabilityAnnotations, $"The expected capability annotations weren't removed in the transformed cleaned metadata.");
         }
+
+        [Test, RunInApplicationDomain]
+        public void It_creates_function_request_with_OData_string_return_type()
+        {
+            const string outputDirectory = "output";
+
+            Options optionsCSharp = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, optionsCSharp);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\TestType2FunctionMethodWithStringRequest.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            bool hasTestParameter = false;
+            string testParameter = "var response = await this.SendAsync<ODataMethodStringResponse>(null, cancellationToken);";
+
+
+            foreach (var line in lines)
+            {
+                // We only need to check once.
+                if (line.Contains(testParameter))
+                {
+                    hasTestParameter = true;
+                    break;
+                }
+            }
+
+            Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the SendAsync method.");
+        }
+
+        [Test, RunInApplicationDomain]
+        public void It_creates_function_request_with_OData_boolean_return_type()
+        {
+            const string outputDirectory = "output";
+
+            Options optionsCSharp = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, optionsCSharp);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\TestType2FunctionMethodWithBooleanRequest.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            bool hasTestParameter = false;
+            string testParameter = "var response = await this.SendAsync<ODataMethodBooleanResponse>(null, cancellationToken);";
+
+
+            foreach (var line in lines)
+            {
+                // We only need to check once.
+                if (line.Contains(testParameter))
+                {
+                    hasTestParameter = true;
+                    break;
+                }
+            }
+
+            Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the SendAsync method.");
+        }
+
+        [Test, RunInApplicationDomain]
+        public void It_creates_function_request_with_OData_int32_return_type()
+        {
+            const string outputDirectory = "output";
+
+            Options optionsCSharp = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, optionsCSharp);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\TestType2FunctionMethodWithInt32Request.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            bool hasTestParameter = false;
+            string testParameter = "var response = await this.SendAsync<ODataMethodIntResponse>(null, cancellationToken);";
+
+
+            foreach (var line in lines)
+            {
+                // We only need to check once.
+                if (line.Contains(testParameter))
+                {
+                    hasTestParameter = true;
+                    break;
+                }
+            }
+
+            Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the SendAsync method.");
+        }
+
+        [Test, RunInApplicationDomain]
+        public void It_creates_action_request_with_OData_int64_return_type()
+        {
+            const string outputDirectory = "output";
+
+            Options optionsCSharp = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, optionsCSharp);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\TestType2FunctionMethodWithInt64Request.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            bool hasTestParameter = false;
+            string testParameter = "var response = await this.SendAsync<ODataMethodLongResponse>(null, cancellationToken);";
+
+
+            foreach (var line in lines)
+            {
+                // We only need to check once.
+                if (line.Contains(testParameter))
+                {
+                    hasTestParameter = true;
+                    break;
+                }
+            }
+
+            Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the SendAsync method.");
+        }
     }
 }
