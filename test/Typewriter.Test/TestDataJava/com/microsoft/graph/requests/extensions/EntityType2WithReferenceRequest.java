@@ -103,4 +103,14 @@ public class EntityType2WithReferenceRequest extends BaseRequest implements IEnt
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (EntityType2WithReferenceRequest)this;
     }
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public IEntityType2WithReferenceRequest orderBy(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$orderby", value));
+        return (EntityType2WithReferenceRequest)this;
+    }
 }

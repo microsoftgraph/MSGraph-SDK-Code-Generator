@@ -76,6 +76,16 @@ public class TestTypeReferenceRequest extends BaseRequest implements ITestTypeRe
         return (TestTypeReferenceRequest)this;
     }
     /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public ITestTypeReferenceRequest orderBy(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$orderby", value));
+        return (TestTypeReferenceRequest)this;
+    }
+    /**
      * Puts the TestType
      *
      * @param srcTestType the TestType reference to PUT

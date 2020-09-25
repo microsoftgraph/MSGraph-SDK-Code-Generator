@@ -76,6 +76,16 @@ public class EntityType3ReferenceRequest extends BaseRequest implements IEntityT
         return (EntityType3ReferenceRequest)this;
     }
     /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public IEntityType3ReferenceRequest orderBy(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$orderby", value));
+        return (EntityType3ReferenceRequest)this;
+    }
+    /**
      * Puts the EntityType3
      *
      * @param srcEntityType3 the EntityType3 reference to PUT
