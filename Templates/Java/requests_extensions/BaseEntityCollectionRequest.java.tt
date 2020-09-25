@@ -90,6 +90,19 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
     }
 
 <# } #>
+<# if (c.GetFeatures().CanSort) { #>
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public <#=c.ITypeCollectionRequest()#> orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
+        return (<#=c.TypeCollectionRequest()#>)this;
+    }
+
+<# } #>
 <# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request

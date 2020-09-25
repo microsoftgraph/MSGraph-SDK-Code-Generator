@@ -76,6 +76,17 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionRequest
     }
 
     /**
+     * Sets the order by clause for the request
+     *
+     * @param value the sort clause
+     * @return the updated request
+     */
+    public IEntityType3CollectionReferenceRequest orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
+        return (EntityType3CollectionReferenceRequest)this;
+    }
+
+    /**
      * Sets the select clause for the request
      *
      * @param value the select clause

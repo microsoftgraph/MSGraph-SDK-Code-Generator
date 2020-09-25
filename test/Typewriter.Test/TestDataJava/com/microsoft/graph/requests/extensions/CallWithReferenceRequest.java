@@ -93,14 +93,4 @@ public class CallWithReferenceRequest extends BaseRequest implements ICallWithRe
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (CallWithReferenceRequest)this;
     }
-    /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public ICallWithReferenceRequest filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (CallWithReferenceRequest)this;
-    }
 }

@@ -156,16 +156,5 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
          return (EntityType3Request)this;
      }
 
-    /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-     public IEntityType3Request filter(final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-         return (EntityType3Request)this;
-     }
-
 }
 
