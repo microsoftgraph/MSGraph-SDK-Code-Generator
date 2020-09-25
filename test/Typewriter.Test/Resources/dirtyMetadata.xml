@@ -105,7 +105,7 @@
         <Parameter Name="bindparameter" Type="microsoft.graph.testType2" />
         <ReturnType Type="Edm.Int32" Nullable="false" />
       </Function>
-      <Action Name="FunctionMethodWithInt64" IsBound="true">
+      <Action Name="ActionMethodWithInt64" IsBound="true">
         <Parameter Name="bindingParameter" Type="microsoft.graph.testType3" />
         <ReturnType Type="Edm.Int64" Nullable="false" />
       </Action>

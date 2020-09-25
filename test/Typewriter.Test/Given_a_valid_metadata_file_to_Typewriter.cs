@@ -675,7 +675,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, optionsCSharp);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\TestType2FunctionMethodWithInt64Request.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\TestType3ActionMethodWithInt64Request.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
