@@ -68,26 +68,6 @@ public class SessionReferenceRequest extends BaseRequest implements ISessionRefe
         return (SessionReferenceRequest)this;
     }
     /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public ISessionReferenceRequest filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (SessionReferenceRequest)this;
-    }
-    /**
-     * Sets the order by clause for the request
-     *
-     * @param value the order by clause
-     * @return the updated request
-     */
-    public ISessionReferenceRequest orderBy(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$orderby", value));
-        return (SessionReferenceRequest)this;
-    }
-    /**
      * Puts the Session
      *
      * @param srcSession the Session reference to PUT

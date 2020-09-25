@@ -95,24 +95,4 @@ public class TestTypeWithReferenceRequest extends BaseRequest implements ITestTy
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (TestTypeWithReferenceRequest)this;
     }
-    /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public ITestTypeWithReferenceRequest filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (TestTypeWithReferenceRequest)this;
-    }
-    /**
-     * Sets the order by clause for the request
-     *
-     * @param value the order by clause
-     * @return the updated request
-     */
-    public ITestTypeWithReferenceRequest orderBy(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$orderby", value));
-        return (TestTypeWithReferenceRequest)this;
-    }
 }
