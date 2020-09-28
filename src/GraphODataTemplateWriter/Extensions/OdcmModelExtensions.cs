@@ -95,7 +95,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 }
             }
 
-            return referenceEntityTypes;
+            return referenceEntityTypes.Union(referenceEntityTypes.SelectMany(x => x.RecursiveDerived)).Distinct();
         }
 
         public static IEnumerable<OdcmProperty> FilterProperties(IEnumerable<OdcmProperty> properties, string typeName = null, string longDescriptionMatches = null)
@@ -230,6 +230,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// </summary>
         public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty, OdcmModel model)
         {
+            if (odcmProperty == null)
+                return null;
             // Try to find the first collection navigation property for the specified type directly on the service
             // class object. If an entity is used in a reference property a navigation collection
             // on the client for that type is required.
