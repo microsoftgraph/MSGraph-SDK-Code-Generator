@@ -45,44 +45,44 @@ import <#=importNamespace#>.concurrency.IExecutors;
     }
 
 <# if (c.GetFeatures().CanExpand) { #>
-    public <#=c.ITypeCollectionRequest()#> expand(final String value) {
+    public <#=c.ITypeCollectionWithReferencesRequest()#> expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanFilter) { #>
-    public <#=c.ITypeCollectionRequest()#> filter(final String value) {
+    public <#=c.ITypeCollectionWithReferencesRequest()#> filter(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanSort) { #>
-    public <#=c.ITypeCollectionRequest()#> orderBy(final String value) {
+    public <#=c.ITypeCollectionWithReferencesRequest()#> orderBy(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanSelect) { #>
-    public <#=c.ITypeCollectionRequest()#> select(final String value) {
+    public <#=c.ITypeCollectionWithReferencesRequest()#> select(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanUseTop) { #>
-    public <#=c.ITypeCollectionRequest()#> top(final int value) {
+    public <#=c.ITypeCollectionWithReferencesRequest()#> top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        return this;
     }
 
 <# } #>
     public <#=c.ITypeCollectionWithReferencesPage()#> buildFromResponse(final <#=c.TypeCollectionResponse()#> response) {
-        final <#=c.ITypeCollectionRequestBuilder()#> builder;
+        final <#=c.ITypeCollectionWithReferencesRequestBuilder()#> builder;
         if (response.nextLink != null) {
-            builder = new <#=c.TypeCollectionRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
+            builder = new <#=c.TypeCollectionWithReferencesRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
         } else {
             builder = null;
         }
