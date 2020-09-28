@@ -151,4 +151,21 @@ if (c.AsOdcmClass() != null)
     }
 }
 #>
+<#
+if(c is OdcmClass && !c.TypeName().Equals("entity", StringComparison.InvariantCultureIgnoreCase)) {
+    foreach(var derived in (c as OdcmClass).RecursiveDerived.Where(d => d.GetFeatures().CanCast)) {
+#>
+
+    /**
+     * Performs an OData cast on the entity
+     *
+     * @return the entity cast to the <#=derived.TypeName()#> type
+     */
+    public <#=derived.ITypeRequestBuilder()#> castTo<#=derived.TypeName()#>() {
+        return new <#=derived.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=derived.FullName#>"), getClient(), null);
+    }
+<#
+    }
+}
+#>
 }

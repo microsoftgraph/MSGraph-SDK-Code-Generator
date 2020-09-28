@@ -11,7 +11,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeC
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeRequestBuilder()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequest()#>;
 <#
-var currentTypeProjection = c.AsOdcmProperty().Projection.Type.AsOdcmClass();
+var currentTypeProjection = c.AsOdcmProperty() == null ? c as OdcmClass : c.AsOdcmProperty().Projection.Type.AsOdcmClass();
 if (currentTypeProjection != null) {
     foreach (var method in currentTypeProjection.MethodsAndOverloads()) {
         if (!method.IsBoundToCollection) {
@@ -116,6 +116,23 @@ if (currentTypeProjection != null) {
     }
 <#
         }
+    }
+}
+#>
+<#
+if(c is OdcmClass && !c.TypeName().Equals("entity", StringComparison.InvariantCultureIgnoreCase)) {
+    foreach(var derived in (c as OdcmClass).RecursiveDerived.Where(d => d.GetFeatures().CanCast)) {
+#>
+
+    /**
+     * Performs an OData cast on the entity
+     *
+     * @return the entity cast to the <#=derived.TypeName()#> type
+     */
+    public <#=derived.ITypeCollectionRequestBuilder()#> castTo<#=derived.TypeName()#>() {
+        return new <#=derived.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=derived.FullName#>"), getClient(), null);
+    }
+<#
     }
 }
 #>

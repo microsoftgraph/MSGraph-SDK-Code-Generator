@@ -27,5 +27,20 @@
     <#=c.ITypeWithReferencesRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 
     <#=c.ITypeReferenceRequestBuilder()#> reference();
+<#
+if(c is OdcmClass && !c.TypeName().Equals("entity", StringComparison.InvariantCultureIgnoreCase)) {
+    foreach(var derived in (c as OdcmClass).RecursiveDerived.Where(d => d.GetFeatures().CanCast)) {
+#>
+
+    /**
+     * Performs an OData cast on the entity
+     *
+     * @return the entity cast to the <#=derived.TypeName()#> type
+     */
+    <#=derived.ITypeRequestBuilder()#> castTo<#=derived.TypeName()#>();
+<#
+    }
+}
+#>
 
 }

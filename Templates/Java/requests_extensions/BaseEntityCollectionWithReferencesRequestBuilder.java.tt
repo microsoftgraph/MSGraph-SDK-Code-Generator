@@ -50,4 +50,22 @@ import <#=importNamespace#>.core.IBaseClient;
     public <#=c.ITypeCollectionReferenceRequestBuilder()#> references(){
         return new <#=c.TypeCollectionReferenceRequestBuilder()#>(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
+<#
+var property = c as OdcmProperty;
+if(property != null && property.Projection.Type is OdcmClass && !property.Projection.Type.TypeName().Equals("entity", StringComparison.InvariantCultureIgnoreCase)) {
+    foreach(var derived in (property.Projection.Type as OdcmClass).RecursiveDerived.Where(d => d.GetFeatures().CanCast)) {
+#>
+
+    /**
+     * Performs an OData cast on the entity
+     *
+     * @return the entity cast to the <#=derived.TypeName()#> type
+     */
+    public <#=derived.ITypeCollectionRequestBuilder()#> castTo<#=derived.TypeName()#>() {
+        return new <#=derived.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=derived.FullName#>"), getClient(), null);
+    }
+<#
+    }
+}
+#>
 }
