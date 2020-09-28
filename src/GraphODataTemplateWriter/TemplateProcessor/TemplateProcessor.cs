@@ -189,10 +189,20 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         {
             return this.FilterOdcmEnumerable(templateInfo, modelMethod)
                     .Select(property => property as OdcmProperty)
-                    .Select(odcmProperty => this.ProcessTemplate(templateInfo, odcmProperty,
-                                                                    className: odcmProperty.Class.Name,
-                                                                    propertyName: odcmProperty.Name,
-                                                                    propertyType: odcmProperty.Projection.Type.Name));
+                    .SelectMany(odcmProperty =>
+                                        new[] {this.ProcessTemplate(templateInfo, odcmProperty,
+                                            className: odcmProperty.Class.Name,
+                                            propertyName: odcmProperty.Name,
+                                            propertyType: odcmProperty.Projection.Type.Name)}
+                                                .Union(
+                                                    (odcmProperty.Projection.Type as OdcmClass)
+                                                            ?.RecursiveDerived
+                                                            ?.Select(derived => this.ProcessTemplate(templateInfo, derived,
+                                                                                className: odcmProperty.Class.Name,
+                                                                                propertyName: odcmProperty.Name,
+                                                                                propertyType: derived.Name)
+                                                            ) ?? new TextFile[] { })
+                        );
         }
 
         protected virtual IEnumerable<TextFile> ProcessMethods(ITemplateInfo templateInfo, Func<IEnumerable<OdcmMethod>> methods)
@@ -216,8 +226,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<OdcmMethod> CollectionMethods()
         {
-            var methods = this.CurrentModel.GetMethods().Where(method => method.IsCollection && method.ReturnType != null).ToList();
-            return methods;
+            return this.CurrentModel.GetMethods().Where(method => method.IsCollection && method.ReturnType != null);
         }
 
         protected virtual IEnumerable<OdcmProperty> NavigationCollectionProperties()
