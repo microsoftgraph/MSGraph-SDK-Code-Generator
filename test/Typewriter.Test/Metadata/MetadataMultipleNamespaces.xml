@@ -45,10 +45,10 @@
       <EntityType Name="group" BaseType="graph.directoryObject" OpenType="true">
         <NavigationProperty Name="members" Type="Collection(graph.directoryObject)">
           <Annotation Term="Org.OData.Core.V1.Description" String="Users and groups that are members of this Adminsitrative Unit. HTTP Methods: GET (list members), POST (add members), DELETE (remove members)." />
-          <Annotation Term="Org.OData.Core.V1.DerivedTypeConstraint">
+          <Annotation Term="Org.OData.Validation.V1.DerivedTypeConstraint">
             <Collection>
-              <String>graph.user</String>
-              <String>graph.group</String>
+              <String>microsoft.graph.user</String>
+              <String>microsoft.graph.group</String>
             </Collection>
           </Annotation>
         </NavigationProperty>
