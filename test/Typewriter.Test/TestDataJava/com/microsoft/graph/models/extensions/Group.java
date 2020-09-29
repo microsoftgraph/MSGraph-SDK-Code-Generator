@@ -8,11 +8,7 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
 import java.util.EnumSet;
 import com.microsoft.graph.models.extensions.DirectoryObject;
-import com.microsoft.graph.models.extensions.User;
-import com.microsoft.graph.models.extensions.Group;
 import com.microsoft.graph.requests.extensions.DirectoryObjectCollectionPage;
-import com.microsoft.graph.requests.extensions.UserCollectionPage;
-import com.microsoft.graph.requests.extensions.GroupCollectionPage;
 
 
 import com.google.gson.JsonObject;
@@ -32,18 +28,6 @@ public class Group extends DirectoryObject implements IJsonBackedObject {
      * Users and groups that are members of this Adminsitrative Unit. HTTP Methods: GET (list members), POST (add members), DELETE (remove members).
      */
     public DirectoryObjectCollectionPage members;
-
-    /**
-     * The Members As User.
-     * Users and groups that are members of this Adminsitrative Unit. HTTP Methods: GET (list members), POST (add members), DELETE (remove members).
-     */
-    public UserCollectionPage membersAsUser;
-
-    /**
-     * The Members As Group.
-     * Users and groups that are members of this Adminsitrative Unit. HTTP Methods: GET (list members), POST (add members), DELETE (remove members).
-     */
-    public GroupCollectionPage membersAsGroup;
 
 
     /**
@@ -87,14 +71,6 @@ public class Group extends DirectoryObject implements IJsonBackedObject {
 
         if (json.has("members")) {
             members = serializer.deserializeObject(json.get("members").toString(), DirectoryObjectCollectionPage.class);
-        }
-
-        if (json.has("membersAsUser")) {
-            membersAsUser = serializer.deserializeObject(json.get("membersAsUser").toString(), UserCollectionPage.class);
-        }
-
-        if (json.has("membersAsGroup")) {
-            membersAsGroup = serializer.deserializeObject(json.get("membersAsGroup").toString(), GroupCollectionPage.class);
         }
     }
 }
