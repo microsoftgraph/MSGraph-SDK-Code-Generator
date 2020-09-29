@@ -197,6 +197,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                                                 .Union(
                                                     (odcmProperty.Projection.Type as OdcmClass)
                                                             ?.RecursiveDerived()
+                                                            ?.Where(x => x.GetFeatures().CanCast)
                                                             ?.Select(derived => this.ProcessTemplate(templateInfo, derived,
                                                                                 className: odcmProperty.Class.Name,
                                                                                 propertyName: odcmProperty.Name,
