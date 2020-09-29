@@ -12,6 +12,7 @@ import <#=importNamespace#>.http.IHttpRequest;
 import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionReferenceRequest())#>
+
 <#
 		var navigationProperty = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel);
 		if (navigationProperty != null) {
