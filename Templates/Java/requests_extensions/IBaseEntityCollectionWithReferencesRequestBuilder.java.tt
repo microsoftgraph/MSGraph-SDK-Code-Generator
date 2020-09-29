@@ -36,7 +36,7 @@ import <#=importNamespace#>.http.IHttpRequest;
 <#
 var property = c as OdcmProperty;
 if(property != null && property.Projection.Type is OdcmClass && !property.Projection.Type.TypeName().Equals("entity", StringComparison.InvariantCultureIgnoreCase)) {
-    foreach(var derived in (property.Projection.Type as OdcmClass).RecursiveDerived.Where(d => d.GetFeatures().CanCast)) {
+    foreach(var derived in (property.Projection.Type as OdcmClass).RecursiveDerived().Where(d => d.GetFeatures().CanCast)) {
 #>
 
     /**

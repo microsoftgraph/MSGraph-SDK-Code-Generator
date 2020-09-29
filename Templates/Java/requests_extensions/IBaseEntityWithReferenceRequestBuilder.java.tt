@@ -29,7 +29,7 @@
     <#=c.ITypeReferenceRequestBuilder()#> reference();
 <#
 if(c is OdcmClass && !c.TypeName().Equals("entity", StringComparison.InvariantCultureIgnoreCase)) {
-    foreach(var derived in (c as OdcmClass).RecursiveDerived.Where(d => d.GetFeatures().CanCast)) {
+    foreach(var derived in (c as OdcmClass).RecursiveDerived().Where(d => d.GetFeatures().CanCast)) {
 #>
 
     /**

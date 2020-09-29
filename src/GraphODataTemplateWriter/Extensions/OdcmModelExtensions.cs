@@ -95,7 +95,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 }
             }
 
-            return referenceEntityTypes.Union(referenceEntityTypes.SelectMany(x => x.RecursiveDerived)).Distinct();
+            return referenceEntityTypes.Union(referenceEntityTypes.SelectMany(x => x.RecursiveDerived())).Distinct();
         }
 
         public static IEnumerable<OdcmProperty> FilterProperties(IEnumerable<OdcmProperty> properties, string typeName = null, string longDescriptionMatches = null)
@@ -352,6 +352,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         public static bool HasActions(this OdcmClass odcmClass)
         {
             return odcmClass.Methods.Any();
+        }
+
+        public static IEnumerable<OdcmClass> RecursiveDerived(this OdcmClass odcmClass)
+        {
+            if (odcmClass == null)
+                return new OdcmClass[] { };
+            else
+                return odcmClass.Derived.Union(odcmClass.Derived.SelectMany(x => x.RecursiveDerived())).Distinct();
         }
 
         public static IEnumerable<OdcmMethod> Actions(this OdcmClass odcmClass)
