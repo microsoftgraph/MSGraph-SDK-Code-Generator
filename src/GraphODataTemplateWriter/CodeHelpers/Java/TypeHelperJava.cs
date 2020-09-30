@@ -1200,13 +1200,13 @@ import java.util.EnumSet;";
                         ?.ToList()
                         ?.ForEach(x => methodImports.Add(x));
                     c?.NavigationProperties()
-                        ?.Where(x => x.IsCollection)?
+                        ?.Where(x => x.IsCollection && x.ParentPropertyType == null)?
                         .Select(x => x.Projection.Type)
                         ?.Distinct()
                         ?.ToList()
                         ?.ForEach(x => ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix, true));
                     c?.NavigationProperties()
-                        ?.Where(x => !x.IsCollection)
+                        ?.Where(x => !x.IsCollection && x.ParentPropertyType == null)
                         ?.Select(x => x.Projection.Type)
                         ?.Distinct()
                         ?.ToList()
