@@ -77,8 +77,12 @@ else
         methodReturnType = "System.Threading.Tasks.Task<" + collectionPage + ">";
     }
     else
-    {
-        methodReturnType = "System.Threading.Tasks.Task<" + returnEntityType + ">";
+    {   
+        var returnParameter = sendAsyncReturnType == "ODataMethodIntResponse" ||
+                              sendAsyncReturnType == "ODataMethodBooleanResponse" ||
+                              sendAsyncReturnType == "ODataMethodLongResponse" ? returnEntityType + "?"
+                              : returnEntityType;
+        methodReturnType = "System.Threading.Tasks.Task<" + returnParameter + ">";
     }
 }
 
