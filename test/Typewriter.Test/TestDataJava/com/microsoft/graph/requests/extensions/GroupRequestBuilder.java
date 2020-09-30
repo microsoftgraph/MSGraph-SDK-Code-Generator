@@ -12,14 +12,6 @@ import com.microsoft.graph.requests.extensions.IDirectoryObjectCollectionRequest
 import com.microsoft.graph.requests.extensions.IDirectoryObjectRequestBuilder;
 import com.microsoft.graph.requests.extensions.DirectoryObjectCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.DirectoryObjectRequestBuilder;
-import com.microsoft.graph.requests.extensions.IUserCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IUserRequestBuilder;
-import com.microsoft.graph.requests.extensions.UserCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.UserRequestBuilder;
-import com.microsoft.graph.requests.extensions.IGroupCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IGroupRequestBuilder;
-import com.microsoft.graph.requests.extensions.GroupCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.GroupRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import com.microsoft.graph.core.IBaseClient;
@@ -72,17 +64,17 @@ public class GroupRequestBuilder extends BaseRequestBuilder implements IGroupReq
         return new DirectoryObjectWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id, getClient(), null);
     }
     public IUserCollectionWithReferencesRequestBuilder membersAsUser() {
-        return new UserCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + "microsoft.graph.user", getClient(), null);
+        return new UserCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/microsoft.graph.user", getClient(), null);
     }
 
     public IUserWithReferenceRequestBuilder membersAsUser(final String id) {
-        return new UserWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id + "/" + "microsoft.graph.user", getClient(), null);
+        return new UserWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id + "/microsoft.graph.user", getClient(), null);
     }
     public IGroupCollectionWithReferencesRequestBuilder membersAsGroup() {
-        return new GroupCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + "microsoft.graph.group", getClient(), null);
+        return new GroupCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/microsoft.graph.group", getClient(), null);
     }
 
     public IGroupWithReferenceRequestBuilder membersAsGroup(final String id) {
-        return new GroupWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id + "/" + "microsoft.graph.group", getClient(), null);
+        return new GroupWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id + "/microsoft.graph.group", getClient(), null);
     }
 }
