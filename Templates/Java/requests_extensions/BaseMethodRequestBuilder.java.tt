@@ -83,11 +83,11 @@ if(m != null && m.IsComposable && m.ReturnType != null && m.ReturnType is OdcmCl
         if (prop.IsCollection()) {
 #>
     public <#=prop.ITypeCollectionRequestBuilder()#> <#=sanitizedProperty#>() {
-        return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>")<# if(prop.ParentPropertyType != null) { #> + "/" + "<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
+        return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>")<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
     }
 
     public <#=prop.ITypeRequestBuilder()#> <#=sanitizedProperty#>(final String id) {
-        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>") + "/" + id<# if(prop.ParentPropertyType != null) { #> + "/" + "<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
+        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>") + "/" + id<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
     }
 <#
         } else {
