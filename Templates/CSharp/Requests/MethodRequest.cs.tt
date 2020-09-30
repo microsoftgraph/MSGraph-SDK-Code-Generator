@@ -229,7 +229,7 @@ namespace <#=@namespace#>
         {
 #>
             var response = await this.SendAsync<<#=sendAsyncReturnType#>>(<#=methodParameter#>, cancellationToken);
-            return response.Value;            
+            return response.Value;
 <#
         }
         else
@@ -339,7 +339,7 @@ namespace <#=@namespace#>
         {
 #>
             var response = await this.SendAsync<<#=sendAsyncReturnType#>>(null, cancellationToken);
-            return response.Value;            
+            return response.Value;
 <#
         }
         else
