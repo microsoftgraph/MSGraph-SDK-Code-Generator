@@ -27,7 +27,6 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.ITypeCollectionPage()#>.class);
     }
 
-    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback) {
 <#
 		var navigationProperty = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel);
 		if (navigationProperty != null) {
@@ -39,6 +38,7 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
             String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel).Name;
 #>
+    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=c.TypeName()#>.id);
         new <#=c.TypeWithReferencesRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
@@ -77,6 +77,19 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      */
     public <#=c.ITypeCollectionReferenceRequest()#> filter(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (<#=c.TypeCollectionReferenceRequest()#>)this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanSort) { #>
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the sort clause
+     * @return the updated request
+     */
+    public <#=c.ITypeCollectionReferenceRequest()#> orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (<#=c.TypeCollectionReferenceRequest()#>)this;
     }
 

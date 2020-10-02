@@ -38,7 +38,7 @@ public class SessionReferenceRequest extends BaseRequest implements ISessionRefe
         super(requestUrl, client, requestOptions, Session.class);
     }
 
-    public void delete(final ICallback<Session> callback) {
+    public void delete(final ICallback<? super Session> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -68,22 +68,12 @@ public class SessionReferenceRequest extends BaseRequest implements ISessionRefe
         return (SessionReferenceRequest)this;
     }
     /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public ISessionReferenceRequest filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (SessionReferenceRequest)this;
-    }
-    /**
      * Puts the Session
      *
      * @param srcSession the Session reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(Session srcSession, final ICallback<Session> callback) {
+    public void put(Session srcSession, final ICallback<? super Session> callback) {
         send(HttpMethod.PUT, callback, srcSession);
     }
 

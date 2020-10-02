@@ -59,7 +59,7 @@ import <#=importNamespace#>.http.HttpMethod;
         body = new <#=c.TypeBody()#>();
     }
 
-    public void post(final ICallback<<#=returnType#>> callback) {
+    public void post(final ICallback<? super <#=returnType#>> callback) {
         send(HttpMethod.POST, callback, body);
     }
 
@@ -102,19 +102,6 @@ import <#=importNamespace#>.http.HttpMethod;
      */
     public <#=iTypeRequest#> expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (<#=typeRequest#>)this;
-    }
-
-<# } #>
-<# if (c.GetFeatures().CanFilter) { #>
-    /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public <#=iTypeRequest#> filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (<#=typeRequest#>)this;
     }
 

@@ -24,11 +24,11 @@ import com.microsoft.graph.http.IHttpRequest;
  */
 public interface ISegmentCollectionRequest extends IHttpRequest {
 
-    void get(final ICallback<ISegmentCollectionPage> callback);
+    void get(final ICallback<? super ISegmentCollectionPage> callback);
 
     ISegmentCollectionPage get() throws ClientException;
 
-    void post(final Segment newSegment, final ICallback<Segment> callback);
+    void post(final Segment newSegment, final ICallback<? super Segment> callback);
 
     Segment post(final Segment newSegment) throws ClientException;
 
@@ -47,6 +47,14 @@ public interface ISegmentCollectionRequest extends IHttpRequest {
      * @return the updated request
      */
     ISegmentCollectionRequest filter(final String value);
+
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    ISegmentCollectionRequest orderBy(final String value);
 
     /**
      * Sets the select clause for the request
@@ -79,5 +87,5 @@ public interface ISegmentCollectionRequest extends IHttpRequest {
      *
 	 * @return the updated request
 	 */
-	ISegmentCollectionRequest skipToken(String skipToken);
+	ISegmentCollectionRequest skipToken(final String skipToken);
 }

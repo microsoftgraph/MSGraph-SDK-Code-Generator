@@ -35,6 +35,6 @@ public class SegmentTestActionCollectionPage extends BaseCollectionPage<Session,
      * @param builder The request builder for the next collection page
      */
     public SegmentTestActionCollectionPage(final SegmentTestActionCollectionResponse response, final ISegmentTestActionCollectionRequestBuilder builder) {
-       super(response.value, builder);
+       super(response.value, builder, response.additionalDataManager());
     }
 }

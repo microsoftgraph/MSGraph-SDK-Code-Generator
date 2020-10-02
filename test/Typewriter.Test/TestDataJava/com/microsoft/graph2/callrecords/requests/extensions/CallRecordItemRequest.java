@@ -37,7 +37,7 @@ public class CallRecordItemRequest extends BaseRequest implements ICallRecordIte
      * @param srcCallRecord the CallRecord with which to PATCH
      * @param callback the callback to be called after success or failure
      */
-    public void patch(CallRecord srcCallRecord, final ICallback<CallRecord> callback) {
+    public void patch(CallRecord srcCallRecord, final ICallback<? super CallRecord> callback) {
         send(HttpMethod.PATCH, callback, srcCallRecord);
     }
 
@@ -58,7 +58,7 @@ public class CallRecordItemRequest extends BaseRequest implements ICallRecordIte
      * @param srcCallRecord the CallRecord to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(CallRecord srcCallRecord, final ICallback<CallRecord> callback) {
+    public void put(CallRecord srcCallRecord, final ICallback<? super CallRecord> callback) {
         send(HttpMethod.PUT, callback, srcCallRecord);
     }
 
@@ -77,7 +77,7 @@ public class CallRecordItemRequest extends BaseRequest implements ICallRecordIte
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<CallRecord> callback) {
+    public void get(final ICallback<? super CallRecord> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -121,6 +121,17 @@ public class CallRecordItemRequest extends BaseRequest implements ICallRecordIte
      */
     public ICallRecordItemRequest filter(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (CallRecordItemRequest)this;
+    }
+
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public ICallRecordItemRequest orderBy(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (CallRecordItemRequest)this;
     }
 

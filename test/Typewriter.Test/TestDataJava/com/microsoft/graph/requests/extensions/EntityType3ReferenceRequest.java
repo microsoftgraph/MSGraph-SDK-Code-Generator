@@ -36,7 +36,7 @@ public class EntityType3ReferenceRequest extends BaseRequest implements IEntityT
         super(requestUrl, client, requestOptions, EntityType3.class);
     }
 
-    public void delete(final ICallback<EntityType3> callback) {
+    public void delete(final ICallback<? super EntityType3> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -66,22 +66,12 @@ public class EntityType3ReferenceRequest extends BaseRequest implements IEntityT
         return (EntityType3ReferenceRequest)this;
     }
     /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public IEntityType3ReferenceRequest filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (EntityType3ReferenceRequest)this;
-    }
-    /**
      * Puts the EntityType3
      *
      * @param srcEntityType3 the EntityType3 reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(EntityType3 srcEntityType3, final ICallback<EntityType3> callback) {
+    public void put(EntityType3 srcEntityType3, final ICallback<? super EntityType3> callback) {
         send(HttpMethod.PUT, callback, srcEntityType3);
     }
 

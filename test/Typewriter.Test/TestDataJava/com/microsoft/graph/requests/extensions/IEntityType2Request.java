@@ -21,7 +21,7 @@ public interface IEntityType2Request extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<EntityType2> callback);
+    void get(final ICallback<? super EntityType2> callback);
 
     /**
      * Gets the EntityType2 from the service
@@ -36,7 +36,7 @@ public interface IEntityType2Request extends IHttpRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<EntityType2> callback);
+    void delete(final ICallback<? super EntityType2> callback);
 
     /**
      * Delete this item from the service
@@ -51,7 +51,7 @@ public interface IEntityType2Request extends IHttpRequest {
      * @param sourceEntityType2 the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    void patch(final EntityType2 sourceEntityType2, final ICallback<EntityType2> callback);
+    void patch(final EntityType2 sourceEntityType2, final ICallback<? super EntityType2> callback);
 
     /**
      * Patches this EntityType2 with a source
@@ -68,7 +68,7 @@ public interface IEntityType2Request extends IHttpRequest {
      * @param newEntityType2 the new object to create
      * @param callback the callback to be called after success or failure
      */
-    void post(final EntityType2 newEntityType2, final ICallback<EntityType2> callback);
+    void post(final EntityType2 newEntityType2, final ICallback<? super EntityType2> callback);
 
     /**
      * Posts a EntityType2 with a new object
@@ -85,7 +85,7 @@ public interface IEntityType2Request extends IHttpRequest {
      * @param newEntityType2 the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    void put(final EntityType2 newEntityType2, final ICallback<EntityType2> callback);
+    void put(final EntityType2 newEntityType2, final ICallback<? super EntityType2> callback);
 
     /**
      * Posts a EntityType2 with a new object

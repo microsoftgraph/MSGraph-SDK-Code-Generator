@@ -21,7 +21,7 @@ public interface ITestTypeRequest extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<TestType> callback);
+    void get(final ICallback<? super TestType> callback);
 
     /**
      * Gets the TestType from the service
@@ -36,7 +36,7 @@ public interface ITestTypeRequest extends IHttpRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<TestType> callback);
+    void delete(final ICallback<? super TestType> callback);
 
     /**
      * Delete this item from the service
@@ -51,7 +51,7 @@ public interface ITestTypeRequest extends IHttpRequest {
      * @param sourceTestType the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    void patch(final TestType sourceTestType, final ICallback<TestType> callback);
+    void patch(final TestType sourceTestType, final ICallback<? super TestType> callback);
 
     /**
      * Patches this TestType with a source
@@ -68,7 +68,7 @@ public interface ITestTypeRequest extends IHttpRequest {
      * @param newTestType the new object to create
      * @param callback the callback to be called after success or failure
      */
-    void post(final TestType newTestType, final ICallback<TestType> callback);
+    void post(final TestType newTestType, final ICallback<? super TestType> callback);
 
     /**
      * Posts a TestType with a new object
@@ -85,7 +85,7 @@ public interface ITestTypeRequest extends IHttpRequest {
      * @param newTestType the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    void put(final TestType newTestType, final ICallback<TestType> callback);
+    void put(final TestType newTestType, final ICallback<? super TestType> callback);
 
     /**
      * Posts a TestType with a new object

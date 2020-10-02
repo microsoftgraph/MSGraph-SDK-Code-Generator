@@ -36,7 +36,7 @@ public class TestTypeReferenceRequest extends BaseRequest implements ITestTypeRe
         super(requestUrl, client, requestOptions, TestType.class);
     }
 
-    public void delete(final ICallback<TestType> callback) {
+    public void delete(final ICallback<? super TestType> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -66,22 +66,12 @@ public class TestTypeReferenceRequest extends BaseRequest implements ITestTypeRe
         return (TestTypeReferenceRequest)this;
     }
     /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public ITestTypeReferenceRequest filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (TestTypeReferenceRequest)this;
-    }
-    /**
      * Puts the TestType
      *
      * @param srcTestType the TestType reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(TestType srcTestType, final ICallback<TestType> callback) {
+    public void put(TestType srcTestType, final ICallback<? super TestType> callback) {
         send(HttpMethod.PUT, callback, srcTestType);
     }
 

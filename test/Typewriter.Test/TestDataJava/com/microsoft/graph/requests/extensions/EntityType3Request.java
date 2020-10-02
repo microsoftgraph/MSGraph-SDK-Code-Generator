@@ -39,7 +39,7 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<EntityType3> callback) {
+    public void get(final ICallback<? super EntityType3> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -58,7 +58,7 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<EntityType3> callback) {
+    public void delete(final ICallback<? super EntityType3> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -77,7 +77,7 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      * @param sourceEntityType3 the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final EntityType3 sourceEntityType3, final ICallback<EntityType3> callback) {
+    public void patch(final EntityType3 sourceEntityType3, final ICallback<? super EntityType3> callback) {
         send(HttpMethod.PATCH, callback, sourceEntityType3);
     }
 
@@ -98,7 +98,7 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      * @param newEntityType3 the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final EntityType3 newEntityType3, final ICallback<EntityType3> callback) {
+    public void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
         send(HttpMethod.POST, callback, newEntityType3);
     }
 
@@ -119,7 +119,7 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      * @param newEntityType3 the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final EntityType3 newEntityType3, final ICallback<EntityType3> callback) {
+    public void put(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
         send(HttpMethod.PUT, callback, newEntityType3);
     }
 
@@ -153,17 +153,6 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      */
      public IEntityType3Request expand(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-         return (EntityType3Request)this;
-     }
-
-    /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-     public IEntityType3Request filter(final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
          return (EntityType3Request)this;
      }
 

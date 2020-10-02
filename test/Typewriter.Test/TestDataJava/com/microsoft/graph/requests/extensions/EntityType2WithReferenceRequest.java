@@ -35,7 +35,7 @@ public class EntityType2WithReferenceRequest extends BaseRequest implements IEnt
         super(requestUrl, client, requestOptions, EntityType2.class);
     }
 
-    public void post(final EntityType2 newEntityType2, final IJsonBackedObject payload, final ICallback<EntityType2> callback) {
+    public void post(final EntityType2 newEntityType2, final IJsonBackedObject payload, final ICallback<? super EntityType2> callback) {
         send(HttpMethod.POST, callback, payload);
     }
 
@@ -47,7 +47,7 @@ public class EntityType2WithReferenceRequest extends BaseRequest implements IEnt
         return null;
     }
 
-    public void get(final ICallback<EntityType2> callback) {
+    public void get(final ICallback<? super EntityType2> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -55,7 +55,7 @@ public class EntityType2WithReferenceRequest extends BaseRequest implements IEnt
        return send(HttpMethod.GET, null);
     }
 
-	public void delete(final ICallback<EntityType2> callback) {
+	public void delete(final ICallback<? super EntityType2> callback) {
 		send(HttpMethod.DELETE, callback, null);
 	}
 
@@ -63,7 +63,7 @@ public class EntityType2WithReferenceRequest extends BaseRequest implements IEnt
 		send(HttpMethod.DELETE, null);
 	}
 
-	public void patch(final EntityType2 sourceEntityType2, final ICallback<EntityType2> callback) {
+	public void patch(final EntityType2 sourceEntityType2, final ICallback<? super EntityType2> callback) {
 		send(HttpMethod.PATCH, callback, sourceEntityType2);
 	}
 
@@ -91,16 +91,6 @@ public class EntityType2WithReferenceRequest extends BaseRequest implements IEnt
      */
     public IEntityType2WithReferenceRequest expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (EntityType2WithReferenceRequest)this;
-    }
-    /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public IEntityType2WithReferenceRequest filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (EntityType2WithReferenceRequest)this;
     }
 }

@@ -12,11 +12,11 @@ import <#=importNamespace#>.http.IHttpRequest;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionRequest(), "IHttpRequest")#>
 
-    void get(final ICallback<<#=c.ITypeCollectionPage()#>> callback);
+    void get(final ICallback<? super <#=c.ITypeCollectionPage()#>> callback);
 
     <#=c.ITypeCollectionPage()#> get() throws ClientException;
 
-    void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback);
+    void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback);
 
     <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException;
 
@@ -38,6 +38,16 @@ import <#=importNamespace#>.http.IHttpRequest;
      * @return the updated request
      */
     <#=c.ITypeCollectionRequest()#> filter(final String value);
+
+<# } #>
+<# if (c.GetFeatures().CanSort) { #>
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    <#=c.ITypeCollectionRequest()#> orderBy(final String value);
 
 <# } #>
 <# if (c.GetFeatures().CanSelect) { #>
@@ -77,6 +87,6 @@ import <#=importNamespace#>.http.IHttpRequest;
      *
 	 * @return the updated request
 	 */
-	<#=c.ITypeCollectionRequest()#> skipToken(String skipToken);
+	<#=c.ITypeCollectionRequest()#> skipToken(final String skipToken);
 }
 <#=PostProcess(c.ITypeCollectionRequest())#>

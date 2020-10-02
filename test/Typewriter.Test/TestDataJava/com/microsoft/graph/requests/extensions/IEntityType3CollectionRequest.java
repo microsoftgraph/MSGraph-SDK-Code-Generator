@@ -23,11 +23,11 @@ import com.microsoft.graph.http.IHttpRequest;
  */
 public interface IEntityType3CollectionRequest extends IHttpRequest {
 
-    void get(final ICallback<IEntityType3CollectionPage> callback);
+    void get(final ICallback<? super IEntityType3CollectionPage> callback);
 
     IEntityType3CollectionPage get() throws ClientException;
 
-    void post(final EntityType3 newEntityType3, final ICallback<EntityType3> callback);
+    void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback);
 
     EntityType3 post(final EntityType3 newEntityType3) throws ClientException;
 
@@ -46,6 +46,14 @@ public interface IEntityType3CollectionRequest extends IHttpRequest {
      * @return the updated request
      */
     IEntityType3CollectionRequest filter(final String value);
+
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    IEntityType3CollectionRequest orderBy(final String value);
 
     /**
      * Sets the select clause for the request
@@ -78,5 +86,5 @@ public interface IEntityType3CollectionRequest extends IHttpRequest {
      *
 	 * @return the updated request
 	 */
-	IEntityType3CollectionRequest skipToken(String skipToken);
+	IEntityType3CollectionRequest skipToken(final String skipToken);
 }

@@ -24,7 +24,7 @@ import com.google.gson.annotations.Expose;
  */
 public interface ISegmentTestActionCollectionRequest extends IHttpRequest {
 
-    void post(final ICallback<ISegmentTestActionCollectionPage> callback);
+    void post(final ICallback<? super ISegmentTestActionCollectionPage> callback);
 
     ISegmentTestActionCollectionPage post() throws ClientException;
 

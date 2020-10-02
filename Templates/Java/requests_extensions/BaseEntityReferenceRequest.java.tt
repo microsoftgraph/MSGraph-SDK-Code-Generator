@@ -25,7 +25,7 @@ import <#=importNamespace#>.core.IBaseClient;
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
-    public void delete(final ICallback<<#=c.TypeName()#>> callback) {
+    public void delete(final ICallback<? super <#=c.TypeName()#>> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -58,18 +58,6 @@ import <#=importNamespace#>.core.IBaseClient;
         return (<#=c.TypeReferenceRequest()#>)this;
     }
 <# } #>
-<# if (c.GetFeatures().CanFilter) { #>
-    /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public <#=c.ITypeReferenceRequest()#> filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (<#=c.TypeReferenceRequest()#>)this;
-    }
-<# } #>
 <# if (c.GetFeatures().CanUpdate) { #>
     /**
      * Puts the <#=c.TypeName()#>
@@ -77,7 +65,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param src<#=c.TypeName()#> the <#=c.TypeName()#> reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(<#=c.TypeName()#> src<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback) {
+    public void put(<#=c.TypeName()#> src<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
         send(HttpMethod.PUT, callback, src<#=c.TypeName()#>);
     }
 

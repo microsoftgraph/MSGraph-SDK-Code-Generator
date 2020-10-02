@@ -37,7 +37,7 @@ public class EntityType3WithReferenceRequest extends BaseRequest implements IEnt
         super(requestUrl, client, requestOptions, EntityType3.class);
     }
 
-    public void post(final EntityType3 newEntityType3, final IJsonBackedObject payload, final ICallback<EntityType3> callback) {
+    public void post(final EntityType3 newEntityType3, final IJsonBackedObject payload, final ICallback<? super EntityType3> callback) {
         send(HttpMethod.POST, callback, payload);
     }
 
@@ -49,7 +49,7 @@ public class EntityType3WithReferenceRequest extends BaseRequest implements IEnt
         return null;
     }
 
-    public void get(final ICallback<EntityType3> callback) {
+    public void get(final ICallback<? super EntityType3> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -57,7 +57,7 @@ public class EntityType3WithReferenceRequest extends BaseRequest implements IEnt
        return send(HttpMethod.GET, null);
     }
 
-	public void delete(final ICallback<EntityType3> callback) {
+	public void delete(final ICallback<? super EntityType3> callback) {
 		send(HttpMethod.DELETE, callback, null);
 	}
 
@@ -65,7 +65,7 @@ public class EntityType3WithReferenceRequest extends BaseRequest implements IEnt
 		send(HttpMethod.DELETE, null);
 	}
 
-	public void patch(final EntityType3 sourceEntityType3, final ICallback<EntityType3> callback) {
+	public void patch(final EntityType3 sourceEntityType3, final ICallback<? super EntityType3> callback) {
 		send(HttpMethod.PATCH, callback, sourceEntityType3);
 	}
 
@@ -93,16 +93,6 @@ public class EntityType3WithReferenceRequest extends BaseRequest implements IEnt
      */
     public IEntityType3WithReferenceRequest expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (EntityType3WithReferenceRequest)this;
-    }
-    /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public IEntityType3WithReferenceRequest filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (EntityType3WithReferenceRequest)this;
     }
 }

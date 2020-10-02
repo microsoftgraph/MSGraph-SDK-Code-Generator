@@ -27,7 +27,7 @@ public interface ICallRecordItemRequest extends IHttpRequest {
      * @param srcCallRecord the CallRecord with which to PATCH
      * @param callback the callback to be called after success or failure
      */
-    void patch(CallRecord srcCallRecord, final ICallback<CallRecord> callback);
+    void patch(CallRecord srcCallRecord, final ICallback<? super CallRecord> callback);
 
     /**
      * Patches the CallRecordItem
@@ -44,7 +44,7 @@ public interface ICallRecordItemRequest extends IHttpRequest {
      * @param srcCallRecord the CallRecord to PUT
      * @param callback the callback to be called after success or failure
      */
-    void put(CallRecord srcCallRecord, final ICallback<CallRecord> callback);
+    void put(CallRecord srcCallRecord, final ICallback<? super CallRecord> callback);
 
     /**
      * Puts the CallRecordItem
@@ -59,7 +59,7 @@ public interface ICallRecordItemRequest extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<CallRecord> callback);
+    void get(final ICallback<? super CallRecord> callback);
 
     /**
      * Gets the CallRecord

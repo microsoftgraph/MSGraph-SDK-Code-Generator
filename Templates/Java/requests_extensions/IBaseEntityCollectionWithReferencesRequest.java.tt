@@ -11,7 +11,7 @@ import <#=importNamespace#>.http.IHttpRequest;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesRequest(), "IHttpRequest")#>
 
-    void get(final ICallback<<#=c.ITypeCollectionWithReferencesPage()#>> callback);
+    void get(final ICallback<? super <#=c.ITypeCollectionWithReferencesPage()#>> callback);
 
     <#=c.ITypeCollectionWithReferencesPage()#> get() throws ClientException;
 

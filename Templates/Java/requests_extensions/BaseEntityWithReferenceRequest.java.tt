@@ -26,7 +26,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
-    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload, final ICallback<<#=c.TypeName()#>> callback) {
+    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload, final ICallback<? super <#=c.TypeName()#>> callback) {
         send(HttpMethod.POST, callback, payload);
     }
 
@@ -38,7 +38,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
         return null;
     }
 
-    public void get(final ICallback<<#=c.TypeName()#>> callback) {
+    public void get(final ICallback<? super <#=c.TypeName()#>> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -46,7 +46,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
        return send(HttpMethod.GET, null);
     }
 
-	public void delete(final ICallback<<#=c.TypeName()#>> callback) {
+	public void delete(final ICallback<? super <#=c.TypeName()#>> callback) {
 		send(HttpMethod.DELETE, callback, null);
 	}
 
@@ -54,7 +54,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
 		send(HttpMethod.DELETE, null);
 	}
 
-	public void patch(final <#=c.TypeName()#> source<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback) {
+	public void patch(final <#=c.TypeName()#> source<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
 		send(HttpMethod.PATCH, callback, source<#=c.TypeName()#>);
 	}
 
@@ -85,18 +85,6 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      */
     public <#=c.ITypeWithReferencesRequest()#> expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (<#=c.TypeWithReferencesRequest()#>)this;
-    }
-<# } #>
-<# if (c.GetFeatures().CanFilter) { #>
-    /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public <#=c.ITypeWithReferencesRequest()#> filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (<#=c.TypeWithReferencesRequest()#>)this;
     }
 <# } #>

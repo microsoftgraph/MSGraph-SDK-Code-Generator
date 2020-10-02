@@ -22,7 +22,7 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
  */
 public interface ICallReferenceRequest extends IHttpRequest {
 
-    void delete(final ICallback<Call> callback);
+    void delete(final ICallback<? super Call> callback);
 
     Call delete() throws ClientException;
 
@@ -48,7 +48,7 @@ public interface ICallReferenceRequest extends IHttpRequest {
      * @param srcCall the Call to PUT
      * @param callback the callback to be called after success or failure
      */
-    void put(Call srcCall, final ICallback<Call> callback);
+    void put(Call srcCall, final ICallback<? super Call> callback);
 
     /**
      * Puts the Call

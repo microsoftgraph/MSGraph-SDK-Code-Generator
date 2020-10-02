@@ -34,7 +34,7 @@ public class CallReferenceRequest extends BaseRequest implements ICallReferenceR
         super(requestUrl, client, requestOptions, Call.class);
     }
 
-    public void delete(final ICallback<Call> callback) {
+    public void delete(final ICallback<? super Call> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -64,22 +64,12 @@ public class CallReferenceRequest extends BaseRequest implements ICallReferenceR
         return (CallReferenceRequest)this;
     }
     /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    public ICallReferenceRequest filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (CallReferenceRequest)this;
-    }
-    /**
      * Puts the Call
      *
      * @param srcCall the Call reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(Call srcCall, final ICallback<Call> callback) {
+    public void put(Call srcCall, final ICallback<? super Call> callback) {
         send(HttpMethod.PUT, callback, srcCall);
     }
 

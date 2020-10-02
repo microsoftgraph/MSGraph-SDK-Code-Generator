@@ -23,6 +23,6 @@ public class EntityType2CollectionPage extends BaseCollectionPage<EntityType2, I
      * @param builder  the request builder for the next collection page
      */
     public EntityType2CollectionPage(final EntityType2CollectionResponse response, final IEntityType2CollectionRequestBuilder builder) {
-        super(response.value, builder);
+        super(response.value, builder, response.additionalDataManager());
     }
 }
