@@ -18,7 +18,7 @@ import <#=importNamespace#>.http.IHttpRequest;
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IUserRequest instance
+     * @return the <#=c.ITypeCollectionWithReferencesRequest()#> instance
      */
     <#=c.ITypeCollectionWithReferencesRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions);
     
@@ -26,7 +26,7 @@ import <#=importNamespace#>.http.IHttpRequest;
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IUserRequest instance
+     * @return the <#=c.ITypeCollectionWithReferencesRequest()#> instance
      */
     <#=c.ITypeCollectionWithReferencesRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 

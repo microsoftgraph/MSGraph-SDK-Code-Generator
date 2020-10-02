@@ -1051,7 +1051,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
             var importFormat = @"import {0}.{1}.{2};";
             Dictionary<string, int> uniqueStore = new Dictionary<string, int>();
 
-            foreach (var property in properties.Where(p => !p.Projection.Type.Name.Equals("Stream")))
+            foreach (var property in properties.Where(p => !p.Projection.Type.Name.Equals("Stream") && p.ParentPropertyType == null))
             {
                 var propertyType = property.GetTypeString();
                 if (property.Type is OdcmPrimitiveType)
@@ -1123,7 +1123,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
 
             if (properties != null)
             {
-                foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation()))
+                foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation() && p.ParentPropertyType == null))
                 {
                     if (property.Type is OdcmPrimitiveType)
                         continue;
@@ -1200,13 +1200,13 @@ import java.util.EnumSet;";
                         ?.ToList()
                         ?.ForEach(x => methodImports.Add(x));
                     c?.NavigationProperties()
-                        ?.Where(x => x.IsCollection)?
+                        ?.Where(x => x.IsCollection && x.ParentPropertyType == null)?
                         .Select(x => x.Projection.Type)
                         ?.Distinct()
                         ?.ToList()
                         ?.ForEach(x => ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix, true));
                     c?.NavigationProperties()
-                        ?.Where(x => !x.IsCollection)
+                        ?.Where(x => !x.IsCollection && x.ParentPropertyType == null)
                         ?.Select(x => x.Projection.Type)
                         ?.Distinct()
                         ?.ToList()
@@ -1336,7 +1336,7 @@ import java.util.EnumSet;";
             var sb = new StringBuilder();
             if (!isComplexType && properties != null)
             {
-                foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation()))
+                foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation() && p.ParentPropertyType == null))
                 {
                     sb.AppendFormat(
     @"
@@ -1429,7 +1429,7 @@ import java.util.EnumSet;";
 
 ";
 
-            foreach (var property in properties.Where(p => !p.Projection.Type.Name.Equals("Stream")))
+            foreach (var property in properties.Where(p => !p.Projection.Type.Name.Equals("Stream") && p.ParentPropertyType == null))
             {
                 var propertyName = property.Name.ToUpperFirstChar();
                 var propertyType = "";

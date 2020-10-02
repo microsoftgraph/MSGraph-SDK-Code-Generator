@@ -257,10 +257,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                             @namespace
                             .Classes
                             .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
-                            .First()
-                            .Properties
-                            .Where(property => property.GetType() == typeof(OdcmSingleton)) //Get the list of singletons defined by the service
-                            .Where(singleton => singleton
+                            .FirstOrDefault()
+                            ?.Properties
+                            ?.Where(property => property.GetType() == typeof(OdcmSingleton)) //Get the list of singletons defined by the service
+                            ?.Where(singleton => singleton
                                 .Type
                                 .AsOdcmClass()
                                 .Properties
@@ -268,7 +268,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                                 //we are searching for
                                 .Where(prop => prop.ContainsTarget == true && prop.Type.Name == odcmProperty.Type.Name)
                                 .FirstOrDefault() != null
-                             )
+                             ) ?? new OdcmProperty[] { }
                          ).FirstOrDefault();
 
                     if (implicitProperty != null)

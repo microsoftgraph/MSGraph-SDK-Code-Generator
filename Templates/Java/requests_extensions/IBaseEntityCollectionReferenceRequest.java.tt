@@ -13,10 +13,15 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionReferenceRequest())#>
 
+<#
+		var navigationProperty = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel);
+		if (navigationProperty != null) {
+#>
     void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback);
 
     <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException;
 
+<# } #>
 <# if (c.GetFeatures().CanSelect) { #>
     <#=c.ITypeCollectionReferenceRequest()#> select(final String value);
 

@@ -87,6 +87,6 @@ import <#=importNamespace#>.http.IHttpRequest;
      *
 	 * @return the updated request
 	 */
-	<#=c.ITypeCollectionRequest()#> skipToken(String skipToken);
+	<#=c.ITypeCollectionRequest()#> skipToken(final String skipToken);
 }
 <#=PostProcess(c.ITypeCollectionRequest())#>

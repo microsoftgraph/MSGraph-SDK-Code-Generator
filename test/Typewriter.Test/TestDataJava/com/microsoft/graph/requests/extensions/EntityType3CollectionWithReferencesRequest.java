@@ -58,27 +58,27 @@ public class EntityType3CollectionWithReferencesRequest extends BaseCollectionRe
 
     public IEntityType3CollectionWithReferencesRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (EntityType3CollectionWithReferencesRequest)this;
+        return this;
     }
 
     public IEntityType3CollectionWithReferencesRequest filter(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (EntityType3CollectionWithReferencesRequest)this;
+        return this;
     }
 
     public IEntityType3CollectionWithReferencesRequest orderBy(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
-        return (EntityType3CollectionWithReferencesRequest)this;
+        return this;
     }
 
     public IEntityType3CollectionWithReferencesRequest select(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (EntityType3CollectionWithReferencesRequest)this;
+        return this;
     }
 
     public IEntityType3CollectionWithReferencesRequest top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
-        return (EntityType3CollectionWithReferencesRequest)this;
+        return this;
     }
 
     public IEntityType3CollectionWithReferencesPage buildFromResponse(final EntityType3CollectionResponse response) {
