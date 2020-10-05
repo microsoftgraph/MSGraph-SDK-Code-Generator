@@ -11,7 +11,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage" + c.CollectionPageGeneric(), c.ITypeCollectionPage())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage" + c.CollectionPageGeneric())#>
 <#
 String s = c.TypeName();
 #>
@@ -22,7 +22,7 @@ String s = c.TypeName();
      * @param response the serialized <#=c.TypeCollectionResponse()#> from the service
      * @param builder  the request builder for the next collection page
      */
-    public <#=c.TypeCollectionPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.ITypeCollectionRequestBuilder()#> builder) {
+    public <#=c.TypeCollectionPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.TypeCollectionRequestBuilder()#> builder) {
         super(response.value, builder, response.additionalDataManager());
     }
 }

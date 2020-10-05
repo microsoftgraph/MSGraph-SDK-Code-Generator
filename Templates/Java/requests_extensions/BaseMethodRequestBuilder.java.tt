@@ -12,7 +12,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import com.google.gson.JsonElement;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
-<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), c.GetMethodRequestBuilderSuperClass(), c.ITypeRequestBuilder())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), c.GetMethodRequestBuilderSuperClass())#>
 
 <# foreach (var method in c.AsOdcmMethod().WithDistinctOverloads()) { #>
     /**
@@ -35,22 +35,22 @@ import com.google.gson.JsonElement;
 <# } #>
 
     /**
-     * Creates the <#=c.ITypeRequest()#>
+     * Creates the <#=c.TypeRequest()#>
      *
      * @param requestOptions the options for the request
-     * @return the <#=c.ITypeRequest()#> instance
+     * @return the <#=c.TypeRequest()#> instance
      */
-    public <#=c.ITypeRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public <#=c.TypeRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
     /**
-     * Creates the <#=c.ITypeRequest()#> with specific requestOptions instead of the existing requestOptions
+     * Creates the <#=c.TypeRequest()#> with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for the request
-     * @return the <#=c.ITypeRequest()#> instance
+     * @return the <#=c.TypeRequest()#> instance
      */
-    public <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         <#=c.TypeRequest()#> request = new <#=c.TypeRequest()#>(
                 getRequestUrl(),
                 getClient(),
@@ -82,11 +82,11 @@ if(m != null && m.IsComposable && m.ReturnType != null && m.ReturnType is OdcmCl
         var propRequestBuilder = prop.TypeRequestBuilder();
         if (prop.IsCollection()) {
 #>
-    public <#=prop.ITypeCollectionRequestBuilder()#> <#=sanitizedProperty#>() {
+    public <#=prop.TypeCollectionRequestBuilder()#> <#=sanitizedProperty#>() {
         return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>")<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
     }
 
-    public <#=prop.ITypeRequestBuilder()#> <#=sanitizedProperty#>(final String id) {
+    public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>(final String id) {
         return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>") + "/" + id<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
     }
 <#
@@ -96,9 +96,9 @@ if(m != null && m.IsComposable && m.ReturnType != null && m.ReturnType is OdcmCl
     /**
      * Gets the request builder for <#=prop.TypeName()#>
      *
-     * @return the <#=prop.ITypeRequestBuilder()#> instance
+     * @return the <#=prop.TypeRequestBuilder()#> instance
      */
-    public <#=prop.ITypeRequestBuilder()#> <#=sanitizedProperty#>() {
+    public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>() {
         return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 <#

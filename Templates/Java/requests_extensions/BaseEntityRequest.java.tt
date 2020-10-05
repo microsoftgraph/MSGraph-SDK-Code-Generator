@@ -10,7 +10,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseRequest;
 import <#=importNamespace#>.http.HttpMethod;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest", c.ITypeRequest())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest")#>
 	<# if (c.AsOdcmClass() != null && c.AsOdcmClass().Derived.Any()) { #>
 
     /**
@@ -80,7 +80,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param value the select clause
      * @return the updated request
      */
-     public <#=c.ITypeRequest()#> select(final String value) {
+     public <#=c.TypeRequest()#> select(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (<#=c.TypeRequest()#>)this;
      }
@@ -93,7 +93,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param value the expand clause
      * @return the updated request
      */
-     public <#=c.ITypeRequest()#> expand(final String value) {
+     public <#=c.TypeRequest()#> expand(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (<#=c.TypeRequest()#>)this;
      }
@@ -107,7 +107,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param value the max number of items to return
      * @return the updated request
      */
-     public <#=c.ITypeRequest()#> top(final int value) {
+     public <#=c.TypeRequest()#> top(final int value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
          return (<#=c.TypeRequest()#>)this;
      }

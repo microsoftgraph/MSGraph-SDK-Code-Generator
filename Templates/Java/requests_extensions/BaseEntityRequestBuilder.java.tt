@@ -10,7 +10,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseRequestBuilder;
 <# var mainNamespace = host.CurrentNamespace(); #>
 
-<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder", c.ITypeRequestBuilder())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder")#>
 
     /**
      * The request builder for the <#=c.TypeName()#>
@@ -27,9 +27,9 @@ import <#=importNamespace#>.http.BaseRequestBuilder;
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the <#=c.ITypeRequest()#> instance
+     * @return the <#=c.TypeRequest()#> instance
      */
-    public <#=c.ITypeRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public <#=c.TypeRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -37,22 +37,20 @@ import <#=importNamespace#>.http.BaseRequestBuilder;
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the <#=c.ITypeRequest()#> instance
+     * @return the <#=c.TypeRequest()#> instance
      */
-    public <#=c.ITypeRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         return new <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 
 <#
 	if(host.TemplateName.Equals("DriveItemRequestBuilder")){
 #>
-    @Override
-    public IDriveItemRequestBuilder itemWithPath(final String path) {
+    public DriveItemRequestBuilder itemWithPath(final String path) {
         return new DriveItemRequestBuilder(getRequestUrl() + ":/" + path + ":", getClient(), null);
     }
 <# } else if(host.TemplateName.Equals("ThumbnailSetRequestBuilder")){ #>
-    @Override
-    public IThumbnailRequestBuilder getThumbnailSize(final String size) {
+    public ThumbnailRequestBuilder getThumbnailSize(final String size) {
         return new ThumbnailRequestBuilder(getRequestUrlWithAdditionalSegment(size), getClient(), /* options */ null);
     }
 <# } #>
@@ -67,11 +65,11 @@ if (c.AsOdcmClass() != null)
         var propRequestBuilder = prop.TypeRequestBuilder();
         if (prop.IsCollection()) {
 #>
-    public <#=prop.ITypeCollectionRequestBuilder()#> <#=sanitizedProperty#>() {
+    public <#=prop.TypeCollectionRequestBuilder()#> <#=sanitizedProperty#>() {
         return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>")<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
     }
 
-    public <#=prop.ITypeRequestBuilder()#> <#=sanitizedProperty#>(final String id) {
+    public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>(final String id) {
         return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>") + "/" + id<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
     }
 <#
@@ -81,9 +79,9 @@ if (c.AsOdcmClass() != null)
     /**
      * Gets the request builder for <#=prop.TypeName()#>
      *
-     * @return the <#=prop.ITypeRequestBuilder()#> instance
+     * @return the <#=prop.TypeRequestBuilder()#> instance
      */
-    public <#=prop.ITypeRequestBuilder()#> <#=sanitizedProperty#>() {
+    public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>() {
         return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 <#
@@ -103,7 +101,7 @@ if (c.AsOdcmClass() != null)
 		var propRequestBuilder = prop.TypeRequestBuilder();
 #>
 
-    public I<#=propRequestBuilder#> <#=sanitizedName#>() {
+    public <#=propRequestBuilder#> <#=sanitizedName#>() {
         return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 <#
@@ -114,7 +112,7 @@ if (c.AsOdcmClass() != null)
     {
 #>
 
-    public <#=c.ITypeStreamRequestBuilder()#> content() {
+    public <#=c.TypeStreamRequestBuilder()#> content() {
         return new <#=c.TypeStreamRequestBuilder()#>(getRequestUrlWithAdditionalSegment("$value"), getClient(), null);
     }
 <#
@@ -138,12 +136,12 @@ if (c.AsOdcmClass() != null)
         if (method.IsCollection) {
 #>
 
-    public <#=method.ITypeCollectionRequestBuilder()#> <#=sanitizedMethod#>(<#=parameterList#>) {
+    public <#=method.TypeCollectionRequestBuilder()#> <#=sanitizedMethod#>(<#=parameterList#>) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }
 <#      } else { #>
 
-    public <#=method.ITypeRequestBuilder()#> <#=sanitizedMethod#>(<#=parameterList#>) {
+    public <#=method.TypeRequestBuilder()#> <#=sanitizedMethod#>(<#=parameterList#>) {
         return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }
 <#

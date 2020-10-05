@@ -5,18 +5,14 @@
 <#
     var baseClass = "BaseRequest";
     var typeRequest = c.TypeRequest();
-    var iTypeRequest = c.ITypeRequest();
     var baseTypeRequest = c.TypeRequest();
-    var iBaseTypeRequest = c.ITypeRequest();
     var returnType = c.ReturnType();
 
     if (c.AsOdcmMethod().IsCollection)
     {
         baseClass = "BaseCollectionRequest";
         typeRequest = c.TypeCollectionRequest();
-        iTypeRequest = c.ITypeCollectionRequest();
         baseTypeRequest = c.TypeCollectionRequest();
-        iBaseTypeRequest = c.ITypeCollectionRequest();
     }
 #>
 <#host.TemplateName = baseTypeRequest;#>
@@ -36,15 +32,9 @@ import <#=importNamespace#>.concurrency.IExecutors;
 import <#=importNamespace#>.http.BaseCollectionRequest;
 <#
 	}
-	else {
-#>
-import <#=importNamespace#>.http.BaseRequest;
-import <#=importNamespace#>.http.HttpMethod;
-<#
-	}
 #>
 
-<#=TypeHelperJava.CreateClassDef(baseTypeRequest, baseClass, iBaseTypeRequest)#>
+<#=TypeHelperJava.CreateClassDef(baseTypeRequest, baseClass)#>
     protected final <#=c.TypeBody()#> body;
 
     /**
@@ -74,7 +64,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param value the select clause
      * @return the updated request
      */
-    public <#=iTypeRequest#> select(final String value) {
+    public <#=typeRequest#> select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (<#=typeRequest#>)this;
     }
@@ -87,7 +77,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param value the max number of items to return
      * @return the updated request
      */
-    public <#=iTypeRequest#> top(final int value) {
+    public <#=typeRequest#> top(final int value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
         return (<#=typeRequest#>)this;
     }
@@ -100,7 +90,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=iTypeRequest#> expand(final String value) {
+    public <#=typeRequest#> expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (<#=typeRequest#>)this;
     }

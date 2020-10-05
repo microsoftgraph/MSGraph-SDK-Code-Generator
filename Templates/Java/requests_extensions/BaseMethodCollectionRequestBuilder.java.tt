@@ -7,8 +7,7 @@
 <#=host.CreatePackageDef()#>
 
 <# var mainNamespace = host.CurrentNamespace(); #>
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequestBuilder()#>;
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequest()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequest()#>;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.options.FunctionOption;
@@ -16,7 +15,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.core.<#=c.GetMethodRequestBuilderSuperClass() #>;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), c.GetMethodRequestBuilderSuperClass(), c.ITypeCollectionRequestBuilder())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), c.GetMethodRequestBuilderSuperClass())#>
 
 <# foreach (var method in c.AsOdcmMethod().WithOverloads()) { #>
     /**
@@ -48,7 +47,7 @@ import <#=importNamespace#>.core.<#=c.GetMethodRequestBuilderSuperClass() #>;
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public <#=c.ITypeCollectionRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public <#=c.TypeCollectionRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -58,7 +57,7 @@ import <#=importNamespace#>.core.<#=c.GetMethodRequestBuilderSuperClass() #>;
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public <#=c.ITypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         <#= c.TypeCollectionRequest()#> request = new <#=c.TypeCollectionRequest()#>(
                 getRequestUrl(),
                 getClient(),
