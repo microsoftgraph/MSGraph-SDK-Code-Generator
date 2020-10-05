@@ -19,7 +19,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Onenote Page Request Builder.
  */
-public class OnenotePageRequestBuilder extends BaseRequestBuilder implements IOnenotePageRequestBuilder {
+public class OnenotePageRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the OnenotePage
@@ -36,9 +36,9 @@ public class OnenotePageRequestBuilder extends BaseRequestBuilder implements IOn
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IOnenotePageRequest instance
+     * @return the OnenotePageRequest instance
      */
-    public IOnenotePageRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public OnenotePageRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -46,23 +46,23 @@ public class OnenotePageRequestBuilder extends BaseRequestBuilder implements IOn
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the IOnenotePageRequest instance
+     * @return the OnenotePageRequest instance
      */
-    public IOnenotePageRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public OnenotePageRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.OnenotePageRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
 
 
-    public IOnenotePageContentStreamRequestBuilder content() {
+    public OnenotePageContentStreamRequestBuilder content() {
         return new OnenotePageContentStreamRequestBuilder(getRequestUrlWithAdditionalSegment("content"), getClient(), null);
     }
 
-    public IOnenotePageForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final String details, final String comment) {
+    public OnenotePageForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final String details, final String comment) {
         return new OnenotePageForwardRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.forward"), getClient(), null, toRecipients, details, comment);
     }
 
-    public IOnenotePageForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final String comment) {
+    public OnenotePageForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final String comment) {
         return new OnenotePageForwardRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.forward"), getClient(), null, toRecipients, comment);
     }
 }

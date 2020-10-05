@@ -19,7 +19,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Group Collection With References Request Builder.
  */
-public class GroupCollectionWithReferencesRequestBuilder extends BaseRequestBuilder implements IGroupCollectionWithReferencesRequestBuilder {
+public class GroupCollectionWithReferencesRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for this collection of Group
@@ -38,7 +38,7 @@ public class GroupCollectionWithReferencesRequestBuilder extends BaseRequestBuil
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public IGroupCollectionWithReferencesRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public GroupCollectionWithReferencesRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -48,15 +48,15 @@ public class GroupCollectionWithReferencesRequestBuilder extends BaseRequestBuil
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public IGroupCollectionWithReferencesRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public GroupCollectionWithReferencesRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new GroupCollectionWithReferencesRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public IGroupWithReferenceRequestBuilder byId(final String id) {
+    public GroupWithReferenceRequestBuilder byId(final String id) {
         return new GroupWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
     }
 
-    public IGroupCollectionReferenceRequestBuilder references(){
+    public GroupCollectionReferenceRequestBuilder references(){
         return new GroupCollectionReferenceRequestBuilder(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
 }

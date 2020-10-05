@@ -3,7 +3,6 @@
 // ------------------------------------------------------------------------------
 
 package com.microsoft.graph.requests.extensions;
-import com.microsoft.graph.requests.extensions.IEntityType3ForwardRequest;
 import com.microsoft.graph.requests.extensions.EntityType3ForwardRequest;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
@@ -17,7 +16,7 @@ import com.google.gson.JsonElement;
 /**
  * The class for the Entity Type3Forward Request Builder.
  */
-public class EntityType3ForwardRequestBuilder extends BaseActionRequestBuilder implements IEntityType3ForwardRequestBuilder {
+public class EntityType3ForwardRequestBuilder extends BaseActionRequestBuilder {
 
     /**
      * The request builder for this EntityType3Forward
@@ -41,22 +40,22 @@ public class EntityType3ForwardRequestBuilder extends BaseActionRequestBuilder i
     }
 
     /**
-     * Creates the IEntityType3ForwardRequest
+     * Creates the EntityType3ForwardRequest
      *
      * @param requestOptions the options for the request
-     * @return the IEntityType3ForwardRequest instance
+     * @return the EntityType3ForwardRequest instance
      */
-    public IEntityType3ForwardRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public EntityType3ForwardRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
     /**
-     * Creates the IEntityType3ForwardRequest with specific requestOptions instead of the existing requestOptions
+     * Creates the EntityType3ForwardRequest with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for the request
-     * @return the IEntityType3ForwardRequest instance
+     * @return the EntityType3ForwardRequest instance
      */
-    public IEntityType3ForwardRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3ForwardRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         EntityType3ForwardRequest request = new EntityType3ForwardRequest(
                 getRequestUrl(),
                 getClient(),

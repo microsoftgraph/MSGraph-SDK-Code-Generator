@@ -9,8 +9,6 @@ import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
-import com.microsoft.graph2.callrecords.requests.extensions.ISegmentCollectionRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.extensions.ISegmentRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentCollectionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentRequestBuilder;
 import java.util.Arrays;
@@ -24,7 +22,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Session Reference Request Builder.
  */
-public class SessionReferenceRequestBuilder extends BaseRequestBuilder implements ISessionReferenceRequestBuilder {
+public class SessionReferenceRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the Session
@@ -41,9 +39,9 @@ public class SessionReferenceRequestBuilder extends BaseRequestBuilder implement
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return The ISessionReferenceRequest instance
+     * @return The SessionReferenceRequest instance
      */
-    public ISessionReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public SessionReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -51,9 +49,9 @@ public class SessionReferenceRequestBuilder extends BaseRequestBuilder implement
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the ISessionReferenceRequest instance
+     * @return the SessionReferenceRequest instance
      */
-    public ISessionReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SessionReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new SessionReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 }

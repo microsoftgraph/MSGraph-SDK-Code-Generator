@@ -21,7 +21,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the User Reference Request.
  */
-public class UserReferenceRequest extends BaseRequest implements IUserReferenceRequest {
+public class UserReferenceRequest extends BaseRequest {
 
     /**
      * The request for the User
@@ -48,7 +48,7 @@ public class UserReferenceRequest extends BaseRequest implements IUserReferenceR
      * @param value the select clause
      * @return the updated request
      */
-    public IUserReferenceRequest select(final String value) {
+    public UserReferenceRequest select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (UserReferenceRequest)this;
     }
@@ -59,7 +59,7 @@ public class UserReferenceRequest extends BaseRequest implements IUserReferenceR
      * @param value the expand clause
      * @return the updated request
      */
-    public IUserReferenceRequest expand(final String value) {
+    public UserReferenceRequest expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (UserReferenceRequest)this;
     }

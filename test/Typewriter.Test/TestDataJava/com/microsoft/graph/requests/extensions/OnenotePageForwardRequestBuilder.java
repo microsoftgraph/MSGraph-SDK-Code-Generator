@@ -3,7 +3,6 @@
 // ------------------------------------------------------------------------------
 
 package com.microsoft.graph.requests.extensions;
-import com.microsoft.graph.requests.extensions.IOnenotePageForwardRequest;
 import com.microsoft.graph.requests.extensions.OnenotePageForwardRequest;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph.models.extensions.Recipient;
@@ -17,7 +16,7 @@ import com.google.gson.JsonElement;
 /**
  * The class for the Onenote Page Forward Request Builder.
  */
-public class OnenotePageForwardRequestBuilder extends BaseActionRequestBuilder implements IOnenotePageForwardRequestBuilder {
+public class OnenotePageForwardRequestBuilder extends BaseActionRequestBuilder {
 
     /**
      * The request builder for this OnenotePageForward
@@ -51,22 +50,22 @@ public class OnenotePageForwardRequestBuilder extends BaseActionRequestBuilder i
     }
 
     /**
-     * Creates the IOnenotePageForwardRequest
+     * Creates the OnenotePageForwardRequest
      *
      * @param requestOptions the options for the request
-     * @return the IOnenotePageForwardRequest instance
+     * @return the OnenotePageForwardRequest instance
      */
-    public IOnenotePageForwardRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public OnenotePageForwardRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
     /**
-     * Creates the IOnenotePageForwardRequest with specific requestOptions instead of the existing requestOptions
+     * Creates the OnenotePageForwardRequest with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for the request
-     * @return the IOnenotePageForwardRequest instance
+     * @return the OnenotePageForwardRequest instance
      */
-    public IOnenotePageForwardRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public OnenotePageForwardRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         OnenotePageForwardRequest request = new OnenotePageForwardRequest(
                 getRequestUrl(),
                 getClient(),

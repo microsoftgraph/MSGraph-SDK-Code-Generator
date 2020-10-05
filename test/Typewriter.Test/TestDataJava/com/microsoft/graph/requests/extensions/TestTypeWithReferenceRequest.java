@@ -24,7 +24,7 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 /**
  * The class for the Test Type With Reference Request.
  */
-public class TestTypeWithReferenceRequest extends BaseRequest implements ITestTypeWithReferenceRequest {
+public class TestTypeWithReferenceRequest extends BaseRequest {
 
     /**
      * The request for the TestType
@@ -80,9 +80,9 @@ public class TestTypeWithReferenceRequest extends BaseRequest implements ITestTy
      * @param value the select clause
      * @return the updated request
      */
-    public ITestTypeWithReferenceRequest select(final String value) {
+    public TestTypeWithReferenceRequest select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (ITestTypeWithReferenceRequest)this;
+        return (TestTypeWithReferenceRequest)this;
     }
 
     /**
@@ -91,7 +91,7 @@ public class TestTypeWithReferenceRequest extends BaseRequest implements ITestTy
      * @param value the expand clause
      * @return the updated request
      */
-    public ITestTypeWithReferenceRequest expand(final String value) {
+    public TestTypeWithReferenceRequest expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (TestTypeWithReferenceRequest)this;
     }

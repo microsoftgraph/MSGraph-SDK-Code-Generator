@@ -12,8 +12,7 @@ import com.microsoft.graph.models.extensions.ResponseObject;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import com.microsoft.graph.requests.extensions.ITestTypeQueryCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.ITestTypeQueryCollectionRequest;
+import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionRequest;
 import com.microsoft.graph.options.FunctionOption;
 import com.microsoft.graph.core.IBaseClient;
@@ -24,7 +23,7 @@ import com.microsoft.graph.core.BaseActionRequestBuilder;
 /**
  * The class for the Test Type Query Collection Request Builder.
  */
-public class TestTypeQueryCollectionRequestBuilder extends BaseActionRequestBuilder implements ITestTypeQueryCollectionRequestBuilder {
+public class TestTypeQueryCollectionRequestBuilder extends BaseActionRequestBuilder {
 
     /**
      * The request builder for this collection of TestType
@@ -47,7 +46,7 @@ public class TestTypeQueryCollectionRequestBuilder extends BaseActionRequestBuil
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public ITestTypeQueryCollectionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public TestTypeQueryCollectionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -57,7 +56,7 @@ public class TestTypeQueryCollectionRequestBuilder extends BaseActionRequestBuil
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public ITestTypeQueryCollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public TestTypeQueryCollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         TestTypeQueryCollectionRequest request = new TestTypeQueryCollectionRequest(
                 getRequestUrl(),
                 getClient(),

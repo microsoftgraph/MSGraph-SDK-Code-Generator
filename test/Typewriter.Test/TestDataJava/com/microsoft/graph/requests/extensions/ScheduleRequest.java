@@ -8,12 +8,8 @@ import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.Schedule;
-import com.microsoft.graph.requests.extensions.ITimeOffCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.ITimeOffRequestBuilder;
 import com.microsoft.graph.requests.extensions.TimeOffCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.TimeOffRequestBuilder;
-import com.microsoft.graph.requests.extensions.ITimeOffRequestCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.ITimeOffRequestRequestBuilder;
 import com.microsoft.graph.requests.extensions.TimeOffRequestCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.TimeOffRequestRequestBuilder;
 import java.util.Arrays;
@@ -27,7 +23,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Schedule Request.
  */
-public class ScheduleRequest extends BaseRequest implements IScheduleRequest {
+public class ScheduleRequest extends BaseRequest {
 	
     /**
      * The request for the Schedule
@@ -146,7 +142,7 @@ public class ScheduleRequest extends BaseRequest implements IScheduleRequest {
      * @param value the select clause
      * @return the updated request
      */
-     public IScheduleRequest select(final String value) {
+     public ScheduleRequest select(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (ScheduleRequest)this;
      }
@@ -157,7 +153,7 @@ public class ScheduleRequest extends BaseRequest implements IScheduleRequest {
      * @param value the expand clause
      * @return the updated request
      */
-     public IScheduleRequest expand(final String value) {
+     public ScheduleRequest expand(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (ScheduleRequest)this;
      }

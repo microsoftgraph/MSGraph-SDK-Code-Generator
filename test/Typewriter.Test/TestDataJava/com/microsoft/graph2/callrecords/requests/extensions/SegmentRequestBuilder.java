@@ -11,15 +11,10 @@ import com.microsoft.graph2.callrecords.models.extensions.Segment;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import com.microsoft.graph.models.extensions.IdentitySet;
-import com.microsoft.graph.requests.extensions.IEntityType3CollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType3RequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
-import com.microsoft.graph.requests.extensions.ICallRequestBuilder;
 import com.microsoft.graph.requests.extensions.CallRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.extensions.ISessionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.SessionRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.extensions.IPhotoRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.PhotoRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -31,7 +26,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Segment Request Builder.
  */
-public class SegmentRequestBuilder extends BaseRequestBuilder implements ISegmentRequestBuilder {
+public class SegmentRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the Segment
@@ -48,9 +43,9 @@ public class SegmentRequestBuilder extends BaseRequestBuilder implements ISegmen
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the ISegmentRequest instance
+     * @return the SegmentRequest instance
      */
-    public ISegmentRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public SegmentRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -58,53 +53,53 @@ public class SegmentRequestBuilder extends BaseRequestBuilder implements ISegmen
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the ISegmentRequest instance
+     * @return the SegmentRequest instance
      */
-    public ISegmentRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SegmentRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph2.callrecords.requests.extensions.SegmentRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
 
-    public IEntityType3CollectionWithReferencesRequestBuilder refTypes() {
+    public EntityType3CollectionWithReferencesRequestBuilder refTypes() {
         return new EntityType3CollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("refTypes"), getClient(), null);
     }
 
-    public IEntityType3WithReferenceRequestBuilder refTypes(final String id) {
+    public EntityType3WithReferenceRequestBuilder refTypes(final String id) {
         return new EntityType3WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("refTypes") + "/" + id, getClient(), null);
     }
 
     /**
      * Gets the request builder for Call
      *
-     * @return the ICallWithReferenceRequestBuilder instance
+     * @return the CallWithReferenceRequestBuilder instance
      */
-    public ICallWithReferenceRequestBuilder refType() {
+    public CallWithReferenceRequestBuilder refType() {
         return new CallWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("refType"), getClient(), null);
     }
 
     /**
      * Gets the request builder for Session
      *
-     * @return the ISessionWithReferenceRequestBuilder instance
+     * @return the SessionWithReferenceRequestBuilder instance
      */
-    public ISessionWithReferenceRequestBuilder sessionRef() {
+    public SessionWithReferenceRequestBuilder sessionRef() {
         return new SessionWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("sessionRef"), getClient(), null);
     }
 
     /**
      * Gets the request builder for Photo
      *
-     * @return the IPhotoRequestBuilder instance
+     * @return the PhotoRequestBuilder instance
      */
-    public IPhotoRequestBuilder photo() {
+    public PhotoRequestBuilder photo() {
         return new PhotoRequestBuilder(getRequestUrlWithAdditionalSegment("photo"), getClient(), null);
     }
 
-    public ISegmentForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final Recipient singleRecipient, final java.util.List<Session> multipleSessions, final Session singleSession, final String comment) {
+    public SegmentForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final Recipient singleRecipient, final java.util.List<Session> multipleSessions, final Session singleSession, final String comment) {
         return new SegmentForwardRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph2.callRecords.forward"), getClient(), null, toRecipients, singleRecipient, multipleSessions, singleSession, comment);
     }
 
-    public ISegmentTestActionCollectionRequestBuilder testAction(final IdentitySet value) {
+    public SegmentTestActionCollectionRequestBuilder testAction(final IdentitySet value) {
         return new SegmentTestActionCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph2.callRecords.testAction"), getClient(), null, value);
     }
 }

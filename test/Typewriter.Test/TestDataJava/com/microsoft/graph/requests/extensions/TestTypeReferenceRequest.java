@@ -23,7 +23,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Test Type Reference Request.
  */
-public class TestTypeReferenceRequest extends BaseRequest implements ITestTypeReferenceRequest {
+public class TestTypeReferenceRequest extends BaseRequest {
 
     /**
      * The request for the TestType
@@ -50,7 +50,7 @@ public class TestTypeReferenceRequest extends BaseRequest implements ITestTypeRe
      * @param value the select clause
      * @return the updated request
      */
-    public ITestTypeReferenceRequest select(final String value) {
+    public TestTypeReferenceRequest select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (TestTypeReferenceRequest)this;
     }
@@ -61,7 +61,7 @@ public class TestTypeReferenceRequest extends BaseRequest implements ITestTypeRe
      * @param value the expand clause
      * @return the updated request
      */
-    public ITestTypeReferenceRequest expand(final String value) {
+    public TestTypeReferenceRequest expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (TestTypeReferenceRequest)this;
     }

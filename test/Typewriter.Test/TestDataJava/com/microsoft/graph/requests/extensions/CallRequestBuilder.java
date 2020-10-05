@@ -18,7 +18,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Call Request Builder.
  */
-public class CallRequestBuilder extends BaseRequestBuilder implements ICallRequestBuilder {
+public class CallRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the Call
@@ -35,9 +35,9 @@ public class CallRequestBuilder extends BaseRequestBuilder implements ICallReque
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the ICallRequest instance
+     * @return the CallRequest instance
      */
-    public ICallRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public CallRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -45,9 +45,9 @@ public class CallRequestBuilder extends BaseRequestBuilder implements ICallReque
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the ICallRequest instance
+     * @return the CallRequest instance
      */
-    public ICallRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CallRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.CallRequest(getRequestUrl(), getClient(), requestOptions);
     }
 

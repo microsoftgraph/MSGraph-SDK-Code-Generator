@@ -20,7 +20,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the User Reference Request Builder.
  */
-public class UserReferenceRequestBuilder extends BaseRequestBuilder implements IUserReferenceRequestBuilder {
+public class UserReferenceRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the User
@@ -37,9 +37,9 @@ public class UserReferenceRequestBuilder extends BaseRequestBuilder implements I
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return The IUserReferenceRequest instance
+     * @return The UserReferenceRequest instance
      */
-    public IUserReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public UserReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -47,9 +47,9 @@ public class UserReferenceRequestBuilder extends BaseRequestBuilder implements I
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the IUserReferenceRequest instance
+     * @return the UserReferenceRequest instance
      */
-    public IUserReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public UserReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new UserReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 }

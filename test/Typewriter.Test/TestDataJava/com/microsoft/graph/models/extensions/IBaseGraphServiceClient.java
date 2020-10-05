@@ -7,11 +7,11 @@ package com.microsoft.graph.models.extensions;
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.requests.extensions.IEntityType3CollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType3RequestBuilder;
-import com.microsoft.graph.requests.extensions.ISingletonEntity1RequestBuilder;
-import com.microsoft.graph.requests.extensions.ISingletonEntity2RequestBuilder;
-import com.microsoft.graph2.callrecords.requests.extensions.ISingletonEntity1RequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType3CollectionRequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
+import com.microsoft.graph.requests.extensions.SingletonEntity1RequestBuilder;
+import com.microsoft.graph.requests.extensions.SingletonEntity2RequestBuilder;
+import com.microsoft.graph2.callrecords.requests.extensions.SingletonEntity1RequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import com.microsoft.graph.core.IBaseClient;
@@ -28,7 +28,7 @@ public interface IBaseGraphServiceClient extends IBaseClient {
      *
      * @return the request builder for the collection of TestTypes objects
      */
-    IEntityType3CollectionRequestBuilder testTypes();
+    EntityType3CollectionRequestBuilder testTypes();
 
     /**
      * Gets a single TestTypes
@@ -36,27 +36,27 @@ public interface IBaseGraphServiceClient extends IBaseClient {
      * @param id the id of the TestTypes to retrieve
      * @return the request builder for the TestTypes object
      */
-    IEntityType3RequestBuilder testTypes(final String id);
+    EntityType3RequestBuilder testTypes(final String id);
 
     /**
      * Gets the GraphServiceRequestBuilder
      *
      * @return the SingletonEntity1
      */
-    ISingletonEntity1RequestBuilder singletonProperty1();
+    SingletonEntity1RequestBuilder singletonProperty1();
 
     /**
      * Gets the GraphServiceRequestBuilder
      *
      * @return the SingletonEntity2
      */
-    ISingletonEntity2RequestBuilder singletonProperty2();
+    SingletonEntity2RequestBuilder singletonProperty2();
 
     /**
      * Gets the GraphServiceRequestBuilder
      *
      * @return the SingletonEntity1
      */
-    ISingletonEntity1RequestBuilder singletonProperty3();
+    SingletonEntity1RequestBuilder singletonProperty3();
 
 }

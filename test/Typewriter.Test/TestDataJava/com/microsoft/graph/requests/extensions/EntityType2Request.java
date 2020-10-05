@@ -19,7 +19,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Entity Type2Request.
  */
-public class EntityType2Request extends BaseRequest implements IEntityType2Request {
+public class EntityType2Request extends BaseRequest {
 	
     /**
      * The request for the EntityType2
@@ -138,7 +138,7 @@ public class EntityType2Request extends BaseRequest implements IEntityType2Reque
      * @param value the select clause
      * @return the updated request
      */
-     public IEntityType2Request select(final String value) {
+     public EntityType2Request select(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (EntityType2Request)this;
      }
@@ -149,7 +149,7 @@ public class EntityType2Request extends BaseRequest implements IEntityType2Reque
      * @param value the expand clause
      * @return the updated request
      */
-     public IEntityType2Request expand(final String value) {
+     public EntityType2Request expand(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (EntityType2Request)this;
      }

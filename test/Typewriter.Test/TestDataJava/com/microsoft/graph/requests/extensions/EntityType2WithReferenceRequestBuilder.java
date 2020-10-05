@@ -19,7 +19,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Entity Type2With Reference Request Builder.
  */
-public class EntityType2WithReferenceRequestBuilder extends BaseRequestBuilder implements IEntityType2WithReferenceRequestBuilder {
+public class EntityType2WithReferenceRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the EntityType2
@@ -36,9 +36,9 @@ public class EntityType2WithReferenceRequestBuilder extends BaseRequestBuilder i
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IEntityType2WithReferenceRequest instance
+     * @return the EntityType2WithReferenceRequest instance
      */
-    public IEntityType2WithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public EntityType2WithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -46,13 +46,13 @@ public class EntityType2WithReferenceRequestBuilder extends BaseRequestBuilder i
      * Creates the request with specific options instead of the existing options
 	 *
      * @param requestOptions the options for this request
-     * @return the IEntityType2WithReferenceRequest instance
+     * @return the EntityType2WithReferenceRequest instance
      */
-    public IEntityType2WithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType2WithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new EntityType2WithReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public IEntityType2ReferenceRequestBuilder reference(){
+    public EntityType2ReferenceRequestBuilder reference(){
         return new EntityType2ReferenceRequestBuilder(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
 

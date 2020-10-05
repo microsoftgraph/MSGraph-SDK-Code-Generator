@@ -7,15 +7,10 @@ package com.microsoft.graph.requests.extensions;
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.requests.extensions.IEntityType3CollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType3RequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
-import com.microsoft.graph.requests.extensions.ISingletonEntity1RequestBuilder;
 import com.microsoft.graph.requests.extensions.SingletonEntity1RequestBuilder;
-import com.microsoft.graph.requests.extensions.ISingletonEntity2RequestBuilder;
 import com.microsoft.graph.requests.extensions.SingletonEntity2RequestBuilder;
-import com.microsoft.graph2.callrecords.requests.extensions.ISingletonEntity1RequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.SingletonEntity1RequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -57,7 +52,7 @@ public class BaseGraphServiceClient extends BaseClient implements IBaseGraphServ
      *
      * @return the request builder for the collection of TestTypes objects
      */
-    public IEntityType3CollectionRequestBuilder testTypes() {
+    public EntityType3CollectionRequestBuilder testTypes() {
         return new EntityType3CollectionRequestBuilder(getServiceRoot() + "/testTypes", this, null);
     }
 
@@ -67,7 +62,7 @@ public class BaseGraphServiceClient extends BaseClient implements IBaseGraphServ
      * @param id the id of the TestTypes to retrieve
      * @return the request builder for the TestTypes object
      */
-    public IEntityType3RequestBuilder testTypes(final String id) {
+    public EntityType3RequestBuilder testTypes(final String id) {
         return new EntityType3RequestBuilder(getServiceRoot() + "/testTypes/" + id, this, null);
     }
 
@@ -76,7 +71,7 @@ public class BaseGraphServiceClient extends BaseClient implements IBaseGraphServ
      *
      * @return the SingletonEntity1
      */
-    public ISingletonEntity1RequestBuilder singletonProperty1() {
+    public SingletonEntity1RequestBuilder singletonProperty1() {
         return new SingletonEntity1RequestBuilder(getServiceRoot() + "/singletonProperty1", this, null);
     }
 
@@ -85,7 +80,7 @@ public class BaseGraphServiceClient extends BaseClient implements IBaseGraphServ
      *
      * @return the SingletonEntity2
      */
-    public ISingletonEntity2RequestBuilder singletonProperty2() {
+    public SingletonEntity2RequestBuilder singletonProperty2() {
         return new SingletonEntity2RequestBuilder(getServiceRoot() + "/singletonProperty2", this, null);
     }
 
@@ -94,7 +89,7 @@ public class BaseGraphServiceClient extends BaseClient implements IBaseGraphServ
      *
      * @return the SingletonEntity1
      */
-    public ISingletonEntity1RequestBuilder singletonProperty3() {
+    public SingletonEntity1RequestBuilder singletonProperty3() {
         return new SingletonEntity1RequestBuilder(getServiceRoot() + "/singletonProperty3", this, null);
     }
 }

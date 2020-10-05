@@ -18,7 +18,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Photo Stream Request Builder.
  */
-public class PhotoStreamRequestBuilder extends BaseRequestBuilder implements IPhotoStreamRequestBuilder {
+public class PhotoStreamRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the Photo
@@ -35,9 +35,9 @@ public class PhotoStreamRequestBuilder extends BaseRequestBuilder implements IPh
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IPhotoStreamRequest instance
+     * @return the PhotoStreamRequest instance
      */
-    public IPhotoStreamRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public PhotoStreamRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -45,9 +45,9 @@ public class PhotoStreamRequestBuilder extends BaseRequestBuilder implements IPh
      * Creates the request with specific options instead of the existing options
 	 *
      * @param requestOptions the options for this request
-     * @return the IPhotoStreamRequest instance
+     * @return the PhotoStreamRequest instance
      */
-    public IPhotoStreamRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public PhotoStreamRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new PhotoStreamRequest(getRequestUrl(), getClient(), requestOptions);
     }
 

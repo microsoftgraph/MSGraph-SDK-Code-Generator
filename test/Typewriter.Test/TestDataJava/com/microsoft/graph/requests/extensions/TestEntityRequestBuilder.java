@@ -8,11 +8,8 @@ import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.TestEntity;
-import com.microsoft.graph.requests.extensions.ITestTypeRequestBuilder;
 import com.microsoft.graph.requests.extensions.TestTypeRequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType2RequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType2RequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType3RequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -24,7 +21,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Test Entity Request Builder.
  */
-public class TestEntityRequestBuilder extends BaseRequestBuilder implements ITestEntityRequestBuilder {
+public class TestEntityRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the TestEntity
@@ -41,9 +38,9 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder implements ITes
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the ITestEntityRequest instance
+     * @return the TestEntityRequest instance
      */
-    public ITestEntityRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public TestEntityRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -51,9 +48,9 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder implements ITes
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the ITestEntityRequest instance
+     * @return the TestEntityRequest instance
      */
-    public ITestEntityRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public TestEntityRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.TestEntityRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
@@ -62,27 +59,27 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder implements ITes
     /**
      * Gets the request builder for TestType
      *
-     * @return the ITestTypeWithReferenceRequestBuilder instance
+     * @return the TestTypeWithReferenceRequestBuilder instance
      */
-    public ITestTypeWithReferenceRequestBuilder testNav() {
+    public TestTypeWithReferenceRequestBuilder testNav() {
         return new TestTypeWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("testNav"), getClient(), null);
     }
 
     /**
      * Gets the request builder for EntityType2
      *
-     * @return the IEntityType2WithReferenceRequestBuilder instance
+     * @return the EntityType2WithReferenceRequestBuilder instance
      */
-    public IEntityType2WithReferenceRequestBuilder testInvalidNav() {
+    public EntityType2WithReferenceRequestBuilder testInvalidNav() {
         return new EntityType2WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("testInvalidNav"), getClient(), null);
     }
 
     /**
      * Gets the request builder for EntityType3
      *
-     * @return the IEntityType3WithReferenceRequestBuilder instance
+     * @return the EntityType3WithReferenceRequestBuilder instance
      */
-    public IEntityType3WithReferenceRequestBuilder testExplicitNav() {
+    public EntityType3WithReferenceRequestBuilder testExplicitNav() {
         return new EntityType3WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("testExplicitNav"), getClient(), null);
     }
 }

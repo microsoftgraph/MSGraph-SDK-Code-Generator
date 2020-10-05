@@ -14,8 +14,8 @@ import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import com.microsoft.graph.requests.extensions.IEntityType3CollectionWithReferencesRequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType3CollectionWithReferencesPage;
+import com.microsoft.graph.requests.extensions.EntityType3CollectionWithReferencesRequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType3CollectionWithReferencesPage;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionResponse;
 import com.microsoft.graph.models.extensions.EntityType3;
 import com.google.gson.JsonObject;
@@ -28,7 +28,7 @@ import com.microsoft.graph.http.BaseCollectionPage;
 /**
  * The class for the Entity Type3Collection With References Page.
  */
-public class EntityType3CollectionWithReferencesPage extends BaseCollectionPage<EntityType3, IEntityType3CollectionWithReferencesRequestBuilder> implements IEntityType3CollectionWithReferencesPage {
+public class EntityType3CollectionWithReferencesPage extends BaseCollectionPage<EntityType3, EntityType3CollectionWithReferencesRequestBuilder> {
 
     /**
      * A collection page for EntityType3
@@ -36,7 +36,7 @@ public class EntityType3CollectionWithReferencesPage extends BaseCollectionPage<
      * @param response the serialized EntityType3CollectionResponse from the service
      * @param builder  the request builder for the next collection page
      */
-    public EntityType3CollectionWithReferencesPage(final EntityType3CollectionResponse response, final IEntityType3CollectionWithReferencesRequestBuilder builder) {
+    public EntityType3CollectionWithReferencesPage(final EntityType3CollectionResponse response, final EntityType3CollectionWithReferencesRequestBuilder builder) {
         super(response.value, builder, response.additionalDataManager());
     }
 }

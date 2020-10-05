@@ -19,7 +19,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the User With Reference Request Builder.
  */
-public class UserWithReferenceRequestBuilder extends BaseRequestBuilder implements IUserWithReferenceRequestBuilder {
+public class UserWithReferenceRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the User
@@ -36,9 +36,9 @@ public class UserWithReferenceRequestBuilder extends BaseRequestBuilder implemen
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IUserWithReferenceRequest instance
+     * @return the UserWithReferenceRequest instance
      */
-    public IUserWithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public UserWithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -46,13 +46,13 @@ public class UserWithReferenceRequestBuilder extends BaseRequestBuilder implemen
      * Creates the request with specific options instead of the existing options
 	 *
      * @param requestOptions the options for this request
-     * @return the IUserWithReferenceRequest instance
+     * @return the UserWithReferenceRequest instance
      */
-    public IUserWithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public UserWithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new UserWithReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public IUserReferenceRequestBuilder reference(){
+    public UserReferenceRequestBuilder reference(){
         return new UserReferenceRequestBuilder(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
 

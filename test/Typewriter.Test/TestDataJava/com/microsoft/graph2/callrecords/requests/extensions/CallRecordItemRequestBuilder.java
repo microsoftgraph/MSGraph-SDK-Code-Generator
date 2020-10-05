@@ -3,7 +3,6 @@
 // ------------------------------------------------------------------------------
 
 package com.microsoft.graph2.callrecords.requests.extensions;
-import com.microsoft.graph2.callrecords.requests.extensions.ICallRecordItemRequest;
 import com.microsoft.graph2.callrecords.requests.extensions.CallRecordItemRequest;
 import com.microsoft.graph2.callrecords.models.extensions.CallRecord;
 import com.microsoft.graph.core.BaseActionRequestBuilder;
@@ -16,7 +15,7 @@ import com.google.gson.JsonElement;
 /**
  * The class for the Call Record Item Request Builder.
  */
-public class CallRecordItemRequestBuilder extends BaseFunctionRequestBuilder implements ICallRecordItemRequestBuilder {
+public class CallRecordItemRequestBuilder extends BaseFunctionRequestBuilder {
 
     /**
      * The request builder for this CallRecordItem
@@ -32,22 +31,22 @@ public class CallRecordItemRequestBuilder extends BaseFunctionRequestBuilder imp
     }
 
     /**
-     * Creates the ICallRecordItemRequest
+     * Creates the CallRecordItemRequest
      *
      * @param requestOptions the options for the request
-     * @return the ICallRecordItemRequest instance
+     * @return the CallRecordItemRequest instance
      */
-    public ICallRecordItemRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public CallRecordItemRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
     /**
-     * Creates the ICallRecordItemRequest with specific requestOptions instead of the existing requestOptions
+     * Creates the CallRecordItemRequest with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for the request
-     * @return the ICallRecordItemRequest instance
+     * @return the CallRecordItemRequest instance
      */
-    public ICallRecordItemRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CallRecordItemRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         CallRecordItemRequest request = new CallRecordItemRequest(
                 getRequestUrl(),
                 getClient(),
@@ -60,18 +59,18 @@ public class CallRecordItemRequestBuilder extends BaseFunctionRequestBuilder imp
 
         return request;
     }
-    public ISessionCollectionRequestBuilder sessions() {
+    public SessionCollectionRequestBuilder sessions() {
         return new SessionCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions"), getClient(), null);
     }
 
-    public ISessionRequestBuilder sessions(final String id) {
+    public SessionRequestBuilder sessions(final String id) {
         return new SessionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions") + "/" + id, getClient(), null);
     }
-    public IEntityType2CollectionRequestBuilder recipients() {
+    public EntityType2CollectionRequestBuilder recipients() {
         return new EntityType2CollectionRequestBuilder(getRequestUrlWithAdditionalSegment("recipients"), getClient(), null);
     }
 
-    public IEntityType2RequestBuilder recipients(final String id) {
+    public EntityType2RequestBuilder recipients(final String id) {
         return new EntityType2RequestBuilder(getRequestUrlWithAdditionalSegment("recipients") + "/" + id, getClient(), null);
     }
 }

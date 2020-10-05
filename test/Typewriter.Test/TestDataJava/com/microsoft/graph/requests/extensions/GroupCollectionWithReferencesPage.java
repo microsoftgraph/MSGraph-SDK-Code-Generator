@@ -11,8 +11,8 @@ import com.microsoft.graph.models.extensions.Group;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import com.microsoft.graph.requests.extensions.IGroupCollectionWithReferencesRequestBuilder;
-import com.microsoft.graph.requests.extensions.IGroupCollectionWithReferencesPage;
+import com.microsoft.graph.requests.extensions.GroupCollectionWithReferencesRequestBuilder;
+import com.microsoft.graph.requests.extensions.GroupCollectionWithReferencesPage;
 import com.microsoft.graph.requests.extensions.GroupCollectionResponse;
 import com.microsoft.graph.models.extensions.Group;
 import com.google.gson.JsonObject;
@@ -25,7 +25,7 @@ import com.microsoft.graph.http.BaseCollectionPage;
 /**
  * The class for the Group Collection With References Page.
  */
-public class GroupCollectionWithReferencesPage extends BaseCollectionPage<Group, IGroupCollectionWithReferencesRequestBuilder> implements IGroupCollectionWithReferencesPage {
+public class GroupCollectionWithReferencesPage extends BaseCollectionPage<Group, GroupCollectionWithReferencesRequestBuilder> {
 
     /**
      * A collection page for Group
@@ -33,7 +33,7 @@ public class GroupCollectionWithReferencesPage extends BaseCollectionPage<Group,
      * @param response the serialized GroupCollectionResponse from the service
      * @param builder  the request builder for the next collection page
      */
-    public GroupCollectionWithReferencesPage(final GroupCollectionResponse response, final IGroupCollectionWithReferencesRequestBuilder builder) {
+    public GroupCollectionWithReferencesPage(final GroupCollectionResponse response, final GroupCollectionWithReferencesRequestBuilder builder) {
         super(response.value, builder, response.additionalDataManager());
     }
 }

@@ -21,7 +21,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Call Reference Request.
  */
-public class CallReferenceRequest extends BaseRequest implements ICallReferenceRequest {
+public class CallReferenceRequest extends BaseRequest {
 
     /**
      * The request for the Call
@@ -48,7 +48,7 @@ public class CallReferenceRequest extends BaseRequest implements ICallReferenceR
      * @param value the select clause
      * @return the updated request
      */
-    public ICallReferenceRequest select(final String value) {
+    public CallReferenceRequest select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (CallReferenceRequest)this;
     }
@@ -59,7 +59,7 @@ public class CallReferenceRequest extends BaseRequest implements ICallReferenceR
      * @param value the expand clause
      * @return the updated request
      */
-    public ICallReferenceRequest expand(final String value) {
+    public CallReferenceRequest expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (CallReferenceRequest)this;
     }

@@ -4,7 +4,7 @@
 
 package com.microsoft.graph.requests.extensions;
 import com.microsoft.graph.models.extensions.EntityType3;
-import com.microsoft.graph.requests.extensions.IEntityType3CollectionRequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType3CollectionRequestBuilder;
 import com.microsoft.graph.http.BaseCollectionPage;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionPage;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionResponse;
@@ -14,7 +14,7 @@ import com.microsoft.graph.requests.extensions.EntityType3CollectionResponse;
 /**
  * The class for the Entity Type3Collection Page.
  */
-public class EntityType3CollectionPage extends BaseCollectionPage<EntityType3, IEntityType3CollectionRequestBuilder> implements IEntityType3CollectionPage {
+public class EntityType3CollectionPage extends BaseCollectionPage<EntityType3, EntityType3CollectionRequestBuilder> {
 
     /**
      * A collection page for EntityType3
@@ -22,7 +22,7 @@ public class EntityType3CollectionPage extends BaseCollectionPage<EntityType3, I
      * @param response the serialized EntityType3CollectionResponse from the service
      * @param builder  the request builder for the next collection page
      */
-    public EntityType3CollectionPage(final EntityType3CollectionResponse response, final IEntityType3CollectionRequestBuilder builder) {
+    public EntityType3CollectionPage(final EntityType3CollectionResponse response, final EntityType3CollectionRequestBuilder builder) {
         super(response.value, builder, response.additionalDataManager());
     }
 }

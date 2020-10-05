@@ -21,7 +21,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Entity Type3With Reference Request Builder.
  */
-public class EntityType3WithReferenceRequestBuilder extends BaseRequestBuilder implements IEntityType3WithReferenceRequestBuilder {
+public class EntityType3WithReferenceRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the EntityType3
@@ -38,9 +38,9 @@ public class EntityType3WithReferenceRequestBuilder extends BaseRequestBuilder i
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IEntityType3WithReferenceRequest instance
+     * @return the EntityType3WithReferenceRequest instance
      */
-    public IEntityType3WithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public EntityType3WithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -48,13 +48,13 @@ public class EntityType3WithReferenceRequestBuilder extends BaseRequestBuilder i
      * Creates the request with specific options instead of the existing options
 	 *
      * @param requestOptions the options for this request
-     * @return the IEntityType3WithReferenceRequest instance
+     * @return the EntityType3WithReferenceRequest instance
      */
-    public IEntityType3WithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3WithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new EntityType3WithReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public IEntityType3ReferenceRequestBuilder reference(){
+    public EntityType3ReferenceRequestBuilder reference(){
         return new EntityType3ReferenceRequestBuilder(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
 

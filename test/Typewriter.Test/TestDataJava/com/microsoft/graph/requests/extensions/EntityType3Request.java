@@ -21,7 +21,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Entity Type3Request.
  */
-public class EntityType3Request extends BaseRequest implements IEntityType3Request {
+public class EntityType3Request extends BaseRequest {
 	
     /**
      * The request for the EntityType3
@@ -140,7 +140,7 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      * @param value the select clause
      * @return the updated request
      */
-     public IEntityType3Request select(final String value) {
+     public EntityType3Request select(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (EntityType3Request)this;
      }
@@ -151,7 +151,7 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      * @param value the expand clause
      * @return the updated request
      */
-     public IEntityType3Request expand(final String value) {
+     public EntityType3Request expand(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (EntityType3Request)this;
      }

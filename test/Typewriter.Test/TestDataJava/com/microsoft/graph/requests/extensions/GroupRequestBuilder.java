@@ -8,8 +8,6 @@ import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.Group;
-import com.microsoft.graph.requests.extensions.IDirectoryObjectCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IDirectoryObjectRequestBuilder;
 import com.microsoft.graph.requests.extensions.DirectoryObjectCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.DirectoryObjectRequestBuilder;
 import java.util.Arrays;
@@ -22,7 +20,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Group Request Builder.
  */
-public class GroupRequestBuilder extends BaseRequestBuilder implements IGroupRequestBuilder {
+public class GroupRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the Group
@@ -39,9 +37,9 @@ public class GroupRequestBuilder extends BaseRequestBuilder implements IGroupReq
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IGroupRequest instance
+     * @return the GroupRequest instance
      */
-    public IGroupRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public GroupRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -49,32 +47,32 @@ public class GroupRequestBuilder extends BaseRequestBuilder implements IGroupReq
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the IGroupRequest instance
+     * @return the GroupRequest instance
      */
-    public IGroupRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public GroupRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.GroupRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
 
-    public IDirectoryObjectCollectionWithReferencesRequestBuilder members() {
+    public DirectoryObjectCollectionWithReferencesRequestBuilder members() {
         return new DirectoryObjectCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("members"), getClient(), null);
     }
 
-    public IDirectoryObjectWithReferenceRequestBuilder members(final String id) {
+    public DirectoryObjectWithReferenceRequestBuilder members(final String id) {
         return new DirectoryObjectWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id, getClient(), null);
     }
-    public IUserCollectionWithReferencesRequestBuilder membersAsUser() {
+    public UserCollectionWithReferencesRequestBuilder membersAsUser() {
         return new UserCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/microsoft.graph.user", getClient(), null);
     }
 
-    public IUserWithReferenceRequestBuilder membersAsUser(final String id) {
+    public UserWithReferenceRequestBuilder membersAsUser(final String id) {
         return new UserWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id + "/microsoft.graph.user", getClient(), null);
     }
-    public IGroupCollectionWithReferencesRequestBuilder membersAsGroup() {
+    public GroupCollectionWithReferencesRequestBuilder membersAsGroup() {
         return new GroupCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/microsoft.graph.group", getClient(), null);
     }
 
-    public IGroupWithReferenceRequestBuilder membersAsGroup(final String id) {
+    public GroupWithReferenceRequestBuilder membersAsGroup(final String id) {
         return new GroupWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id + "/microsoft.graph.group", getClient(), null);
     }
 }
