@@ -11,15 +11,10 @@ import com.microsoft.graph2.callrecords.models.extensions.Segment;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import com.microsoft.graph.models.extensions.IdentitySet;
-import com.microsoft.graph.requests.extensions.IEntityType3CollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType3RequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
-import com.microsoft.graph.requests.extensions.ICallRequestBuilder;
 import com.microsoft.graph.requests.extensions.CallRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.extensions.ISessionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.SessionRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.extensions.IPhotoRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.PhotoRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -32,7 +27,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Segment Request.
  */
-public class SegmentRequest extends BaseRequest implements ISegmentRequest {
+public class SegmentRequest extends BaseRequest {
 	
     /**
      * The request for the Segment
@@ -151,7 +146,7 @@ public class SegmentRequest extends BaseRequest implements ISegmentRequest {
      * @param value the select clause
      * @return the updated request
      */
-     public ISegmentRequest select(final String value) {
+     public SegmentRequest select(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (SegmentRequest)this;
      }
@@ -162,7 +157,7 @@ public class SegmentRequest extends BaseRequest implements ISegmentRequest {
      * @param value the expand clause
      * @return the updated request
      */
-     public ISegmentRequest expand(final String value) {
+     public SegmentRequest expand(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (SegmentRequest)this;
      }

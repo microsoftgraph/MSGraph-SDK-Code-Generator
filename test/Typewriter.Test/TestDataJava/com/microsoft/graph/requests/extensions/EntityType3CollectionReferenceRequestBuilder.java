@@ -22,7 +22,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Entity Type3Collection Reference Request Builder.
  */
-public class EntityType3CollectionReferenceRequestBuilder extends BaseRequestBuilder implements IEntityType3CollectionReferenceRequestBuilder {
+public class EntityType3CollectionReferenceRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for this collection of Segment
@@ -41,7 +41,7 @@ public class EntityType3CollectionReferenceRequestBuilder extends BaseRequestBui
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public IEntityType3CollectionReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public EntityType3CollectionReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -51,7 +51,7 @@ public class EntityType3CollectionReferenceRequestBuilder extends BaseRequestBui
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public IEntityType3CollectionReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3CollectionReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new EntityType3CollectionReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 }

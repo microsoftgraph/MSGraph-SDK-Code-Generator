@@ -12,7 +12,7 @@ import com.microsoft.graph.models.extensions.ResponseObject;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import com.microsoft.graph.requests.extensions.ITestTypeQueryCollectionRequestBuilder;
+import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionPage;
 import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionResponse;
 import com.google.gson.JsonObject;
@@ -26,7 +26,7 @@ import com.microsoft.graph.http.BaseCollectionPage;
 /**
  * The class for the Test Type Query Collection Page.
  */
-public class TestTypeQueryCollectionPage extends BaseCollectionPage<ResponseObject, ITestTypeQueryCollectionRequestBuilder> implements ITestTypeQueryCollectionPage {
+public class TestTypeQueryCollectionPage extends BaseCollectionPage<ResponseObject, TestTypeQueryCollectionRequestBuilder> {
 
     /**
      * A collection page for ResponseObject.
@@ -34,7 +34,7 @@ public class TestTypeQueryCollectionPage extends BaseCollectionPage<ResponseObje
      * @param response The serialized TestTypeQueryCollectionResponse from the service
      * @param builder The request builder for the next collection page
      */
-    public TestTypeQueryCollectionPage(final TestTypeQueryCollectionResponse response, final ITestTypeQueryCollectionRequestBuilder builder) {
+    public TestTypeQueryCollectionPage(final TestTypeQueryCollectionResponse response, final TestTypeQueryCollectionRequestBuilder builder) {
        super(response.value, builder, response.additionalDataManager());
     }
 }

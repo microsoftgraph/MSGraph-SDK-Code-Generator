@@ -20,7 +20,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Call Reference Request Builder.
  */
-public class CallReferenceRequestBuilder extends BaseRequestBuilder implements ICallReferenceRequestBuilder {
+public class CallReferenceRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the Call
@@ -37,9 +37,9 @@ public class CallReferenceRequestBuilder extends BaseRequestBuilder implements I
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return The ICallReferenceRequest instance
+     * @return The CallReferenceRequest instance
      */
-    public ICallReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public CallReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -47,9 +47,9 @@ public class CallReferenceRequestBuilder extends BaseRequestBuilder implements I
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the ICallReferenceRequest instance
+     * @return the CallReferenceRequest instance
      */
-    public ICallReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CallReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new CallReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 }

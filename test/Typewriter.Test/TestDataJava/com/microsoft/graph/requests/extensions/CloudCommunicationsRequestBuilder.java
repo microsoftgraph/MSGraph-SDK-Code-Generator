@@ -8,12 +8,8 @@ import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.CloudCommunications;
-import com.microsoft.graph.requests.extensions.ICallCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.ICallRequestBuilder;
 import com.microsoft.graph.requests.extensions.CallCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.CallRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.extensions.ICallRecordCollectionRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.extensions.ICallRecordRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.CallRecordCollectionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.CallRecordRequestBuilder;
 import java.util.Arrays;
@@ -26,7 +22,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Cloud Communications Request Builder.
  */
-public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder implements ICloudCommunicationsRequestBuilder {
+public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the CloudCommunications
@@ -43,9 +39,9 @@ public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder implem
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the ICloudCommunicationsRequest instance
+     * @return the CloudCommunicationsRequest instance
      */
-    public ICloudCommunicationsRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public CloudCommunicationsRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -53,25 +49,25 @@ public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder implem
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the ICloudCommunicationsRequest instance
+     * @return the CloudCommunicationsRequest instance
      */
-    public ICloudCommunicationsRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CloudCommunicationsRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.CloudCommunicationsRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
 
-    public ICallCollectionRequestBuilder calls() {
+    public CallCollectionRequestBuilder calls() {
         return new CallCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("calls"), getClient(), null);
     }
 
-    public ICallRequestBuilder calls(final String id) {
+    public CallRequestBuilder calls(final String id) {
         return new CallRequestBuilder(getRequestUrlWithAdditionalSegment("calls") + "/" + id, getClient(), null);
     }
-    public ICallRecordCollectionRequestBuilder callRecords() {
+    public CallRecordCollectionRequestBuilder callRecords() {
         return new CallRecordCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("callRecords"), getClient(), null);
     }
 
-    public ICallRecordRequestBuilder callRecords(final String id) {
+    public CallRecordRequestBuilder callRecords(final String id) {
         return new CallRecordRequestBuilder(getRequestUrlWithAdditionalSegment("callRecords") + "/" + id, getClient(), null);
     }
 }

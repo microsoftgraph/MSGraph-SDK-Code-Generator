@@ -8,7 +8,6 @@ import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.SingletonEntity1;
-import com.microsoft.graph.requests.extensions.ITestTypeRequestBuilder;
 import com.microsoft.graph.requests.extensions.TestTypeRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -21,7 +20,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Singleton Entity1Request.
  */
-public class SingletonEntity1Request extends BaseRequest implements ISingletonEntity1Request {
+public class SingletonEntity1Request extends BaseRequest {
 	
     /**
      * The request for the SingletonEntity1
@@ -140,7 +139,7 @@ public class SingletonEntity1Request extends BaseRequest implements ISingletonEn
      * @param value the select clause
      * @return the updated request
      */
-     public ISingletonEntity1Request select(final String value) {
+     public SingletonEntity1Request select(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (SingletonEntity1Request)this;
      }
@@ -151,7 +150,7 @@ public class SingletonEntity1Request extends BaseRequest implements ISingletonEn
      * @param value the expand clause
      * @return the updated request
      */
-     public ISingletonEntity1Request expand(final String value) {
+     public SingletonEntity1Request expand(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (SingletonEntity1Request)this;
      }

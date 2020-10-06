@@ -22,7 +22,7 @@ import com.microsoft.graph.models.extensions.Group;
 /**
  * The class for the Group Collection Reference Request.
  */
-public class GroupCollectionReferenceRequest extends BaseCollectionRequest<GroupCollectionResponse, IGroupCollectionPage> implements IGroupCollectionReferenceRequest {
+public class GroupCollectionReferenceRequest extends BaseCollectionRequest<GroupCollectionResponse, GroupCollectionPage> {
 
     /**
      * The request builder for this collection of Group
@@ -32,7 +32,7 @@ public class GroupCollectionReferenceRequest extends BaseCollectionRequest<Group
      * @param requestOptions the options for this request
      */
     public GroupCollectionReferenceRequest(final String requestUrl, IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, GroupCollectionResponse.class, IGroupCollectionPage.class);
+        super(requestUrl, client, requestOptions, GroupCollectionResponse.class, GroupCollectionPage.class);
     }
 
     /**
@@ -41,7 +41,7 @@ public class GroupCollectionReferenceRequest extends BaseCollectionRequest<Group
      * @param value the expand clause
      * @return the updated request
      */
-    public IGroupCollectionReferenceRequest expand(final String value) {
+    public GroupCollectionReferenceRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (GroupCollectionReferenceRequest)this;
     }
@@ -52,7 +52,7 @@ public class GroupCollectionReferenceRequest extends BaseCollectionRequest<Group
      * @param value the filter clause
      * @return the updated request
      */
-    public IGroupCollectionReferenceRequest filter(final String value) {
+    public GroupCollectionReferenceRequest filter(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (GroupCollectionReferenceRequest)this;
     }
@@ -63,7 +63,7 @@ public class GroupCollectionReferenceRequest extends BaseCollectionRequest<Group
      * @param value the sort clause
      * @return the updated request
      */
-    public IGroupCollectionReferenceRequest orderBy(final String value) {
+    public GroupCollectionReferenceRequest orderBy(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (GroupCollectionReferenceRequest)this;
     }
@@ -74,7 +74,7 @@ public class GroupCollectionReferenceRequest extends BaseCollectionRequest<Group
      * @param value the select clause
      * @return the updated request
      */
-    public IGroupCollectionReferenceRequest select(final String value) {
+    public GroupCollectionReferenceRequest select(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return (GroupCollectionReferenceRequest)this;
     }
@@ -85,7 +85,7 @@ public class GroupCollectionReferenceRequest extends BaseCollectionRequest<Group
      * @param value the max number of items to return
      * @return the updated request
      */
-    public IGroupCollectionReferenceRequest top(final int value) {
+    public GroupCollectionReferenceRequest top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
         return (GroupCollectionReferenceRequest)this;
     }

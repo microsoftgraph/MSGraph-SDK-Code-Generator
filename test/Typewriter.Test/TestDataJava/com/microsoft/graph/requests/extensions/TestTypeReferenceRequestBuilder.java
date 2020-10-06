@@ -22,7 +22,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Test Type Reference Request Builder.
  */
-public class TestTypeReferenceRequestBuilder extends BaseRequestBuilder implements ITestTypeReferenceRequestBuilder {
+public class TestTypeReferenceRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the TestType
@@ -39,9 +39,9 @@ public class TestTypeReferenceRequestBuilder extends BaseRequestBuilder implemen
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return The ITestTypeReferenceRequest instance
+     * @return The TestTypeReferenceRequest instance
      */
-    public ITestTypeReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public TestTypeReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -49,9 +49,9 @@ public class TestTypeReferenceRequestBuilder extends BaseRequestBuilder implemen
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the ITestTypeReferenceRequest instance
+     * @return the TestTypeReferenceRequest instance
      */
-    public ITestTypeReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public TestTypeReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new TestTypeReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 }

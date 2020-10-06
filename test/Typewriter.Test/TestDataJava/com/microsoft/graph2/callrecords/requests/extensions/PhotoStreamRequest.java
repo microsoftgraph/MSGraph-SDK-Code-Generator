@@ -20,7 +20,7 @@ import java.io.InputStream;
 /**
  * The class for the Photo Stream Request.
  */
-public class PhotoStreamRequest extends BaseStreamRequest<Photo> implements IPhotoStreamRequest {
+public class PhotoStreamRequest extends BaseStreamRequest<Photo> {
 
     /**
      * The request for the Photo

@@ -21,7 +21,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Test Type Request.
  */
-public class TestTypeRequest extends BaseRequest implements ITestTypeRequest {
+public class TestTypeRequest extends BaseRequest {
 	
     /**
      * The request for the TestType
@@ -140,7 +140,7 @@ public class TestTypeRequest extends BaseRequest implements ITestTypeRequest {
      * @param value the select clause
      * @return the updated request
      */
-     public ITestTypeRequest select(final String value) {
+     public TestTypeRequest select(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (TestTypeRequest)this;
      }
@@ -151,7 +151,7 @@ public class TestTypeRequest extends BaseRequest implements ITestTypeRequest {
      * @param value the expand clause
      * @return the updated request
      */
-     public ITestTypeRequest expand(final String value) {
+     public TestTypeRequest expand(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (TestTypeRequest)this;
      }

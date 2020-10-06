@@ -12,9 +12,9 @@ import com.microsoft.graph.models.extensions.EntityType2;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import com.microsoft.graph.requests.extensions.IEntityType2CollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType2RequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType2CollectionRequest;
+import com.microsoft.graph.requests.extensions.EntityType2CollectionRequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType2RequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType2CollectionRequest;
 import com.microsoft.graph.http.BaseRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
 
@@ -23,7 +23,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Entity Type2Collection Request Builder.
  */
-public class EntityType2CollectionRequestBuilder extends BaseRequestBuilder implements IEntityType2CollectionRequestBuilder {
+public class EntityType2CollectionRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for this collection of CallRecord
@@ -42,7 +42,7 @@ public class EntityType2CollectionRequestBuilder extends BaseRequestBuilder impl
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public IEntityType2CollectionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public EntityType2CollectionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -52,11 +52,11 @@ public class EntityType2CollectionRequestBuilder extends BaseRequestBuilder impl
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public IEntityType2CollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType2CollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new EntityType2CollectionRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public IEntityType2RequestBuilder byId(final String id) {
+    public EntityType2RequestBuilder byId(final String id) {
         return new EntityType2RequestBuilder(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
     }
 

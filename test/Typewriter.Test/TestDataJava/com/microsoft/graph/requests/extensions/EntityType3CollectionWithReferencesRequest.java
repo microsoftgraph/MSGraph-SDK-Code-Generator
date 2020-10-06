@@ -24,7 +24,7 @@ import com.microsoft.graph.concurrency.IExecutors;
 /**
  * The class for the Entity Type3Collection With References Request.
  */
-public class EntityType3CollectionWithReferencesRequest extends BaseCollectionRequest<EntityType3CollectionResponse, IEntityType3CollectionPage> implements IEntityType3CollectionWithReferencesRequest {
+public class EntityType3CollectionWithReferencesRequest extends BaseCollectionRequest<EntityType3CollectionResponse, EntityType3CollectionPage> {
 
     /**
      * The request builder for this collection of EntityType3
@@ -34,10 +34,10 @@ public class EntityType3CollectionWithReferencesRequest extends BaseCollectionRe
      * @param requestOptions the options for this request
      */
     public EntityType3CollectionWithReferencesRequest(final String requestUrl, IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, IEntityType3CollectionPage.class);
+        super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, EntityType3CollectionPage.class);
     }
 
-    public void get(final ICallback<? super IEntityType3CollectionWithReferencesPage> callback) {
+    public void get(final ICallback<? super EntityType3CollectionWithReferencesPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -51,38 +51,38 @@ public class EntityType3CollectionWithReferencesRequest extends BaseCollectionRe
         });
     }
 
-    public IEntityType3CollectionWithReferencesPage get() throws ClientException {
+    public EntityType3CollectionWithReferencesPage get() throws ClientException {
         final EntityType3CollectionResponse response = send();
         return buildFromResponse(response);
     }
 
-    public IEntityType3CollectionWithReferencesRequest expand(final String value) {
+    public EntityType3CollectionWithReferencesRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
         return this;
     }
 
-    public IEntityType3CollectionWithReferencesRequest filter(final String value) {
+    public EntityType3CollectionWithReferencesRequest filter(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
         return this;
     }
 
-    public IEntityType3CollectionWithReferencesRequest orderBy(final String value) {
+    public EntityType3CollectionWithReferencesRequest orderBy(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return this;
     }
 
-    public IEntityType3CollectionWithReferencesRequest select(final String value) {
+    public EntityType3CollectionWithReferencesRequest select(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return this;
     }
 
-    public IEntityType3CollectionWithReferencesRequest top(final int value) {
+    public EntityType3CollectionWithReferencesRequest top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
         return this;
     }
 
-    public IEntityType3CollectionWithReferencesPage buildFromResponse(final EntityType3CollectionResponse response) {
-        final IEntityType3CollectionWithReferencesRequestBuilder builder;
+    public EntityType3CollectionWithReferencesPage buildFromResponse(final EntityType3CollectionResponse response) {
+        final EntityType3CollectionWithReferencesRequestBuilder builder;
         if (response.nextLink != null) {
             builder = new EntityType3CollectionWithReferencesRequestBuilder(response.nextLink, getBaseRequest().getClient(), /* options */ null);
         } else {

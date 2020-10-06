@@ -169,19 +169,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
         }
 
-        public static string ITypeName(this OdcmObject c)
-        {
-            return "I" + c.TypeName();
-        }
-
         public static string BaseTypeName(this OdcmObject c)
         {
             return "Base" + c.TypeName();
-        }
-
-        public static string IBaseTypeName(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeName();
         }
 
         public static string TypeStreamRequest(this OdcmObject c)
@@ -193,19 +183,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeName() + "StreamRequest";
         }
 
-        public static string ITypeStreamRequest(this OdcmObject c)
-        {
-            return "I" + c.TypeStreamRequest();
-        }
-
         public static string BaseTypeStreamRequest(this OdcmObject c)
         {
             return "Base" + c.TypeStreamRequest();
-        }
-
-        public static string IBaseTypeStreamRequest(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeStreamRequest();
         }
 
         public static string TypeStreamRequestBuilder(this OdcmObject c)
@@ -213,19 +193,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeStreamRequest() + "Builder";
         }
 
-        public static string ITypeStreamRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.TypeStreamRequestBuilder();
-        }
-
         public static string BaseTypeStreamRequestBuilder(this OdcmObject c)
         {
             return "Base" + c.TypeStreamRequestBuilder();
-        }
-
-        public static string IBaseTypeStreamRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeStreamRequestBuilder();
         }
 
         public static string TypeRequest(this OdcmObject c)
@@ -245,34 +215,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return "Base" + c.TypeRequest();
         }
 
-        public static string ITypeRequest(this OdcmObject c)
-        {
-            return "I" + c.TypeRequest();
-        }
-
-        public static string IBaseTypeRequest(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeRequest();
-        }
-
         public static string TypeRequestBuilder(this OdcmObject c)
         {
             return c.TypeRequest() + "Builder";
         }
 
-        public static string ITypeRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.TypeRequestBuilder();
-        }
-
         public static string BaseTypeRequestBuilder(this OdcmObject c)
         {
             return "Base" + c.TypeRequestBuilder();
-        }
-
-        public static string IBaseTypeRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeRequestBuilder();
         }
 
         public static string TypeWithReferencesRequest(this OdcmObject c)
@@ -283,16 +233,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static string BaseTypeWithReferencesRequest(this OdcmObject c)
         {
             return "Base" + c.TypeWithReferencesRequest();
-        }
-
-        public static string ITypeWithReferencesRequest(this OdcmObject c)
-        {
-            return "I" + c.TypeWithReferencesRequest();
-        }
-
-        public static string IBaseTypeWithReferencesRequest(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeWithReferencesRequest();
         }
 
         public static string TypeWithReferencesRequestBuilder(this OdcmObject c)
@@ -307,11 +247,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 
         public static string BaseTypeWithReferencesRequestBuilder(this OdcmObject c) => $"Base{c.TypeWithReferencesRequestBuilder()}";
 
-        public static string IBaseTypeWithReferencesRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeWithReferencesRequestBuilder();
-        }
-
         public static string TypeReferenceRequest(this OdcmObject c)
         {
             return c.TypeName() + "ReferenceRequest";
@@ -322,24 +257,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return "Base" + c.TypeReferenceRequest();
         }
 
-        public static string ITypeReferenceRequest(this OdcmObject c)
-        {
-            return "I" + c.TypeReferenceRequest();
-        }
-
-        public static string IBaseTypeReferenceRequest(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeReferenceRequest();
-        }
-
         public static string TypeReferenceRequestBuilder(this OdcmObject c)
         {
             return c.TypeReferenceRequest() + "Builder";
-        }
-
-        public static string ITypeReferenceRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.TypeReferenceRequestBuilder();
         }
 
         public static string BaseTypeReferenceRequestBuilder(this OdcmObject c)
@@ -347,19 +267,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return "Base" + c.TypeReferenceRequestBuilder();
         }
 
-        public static string IBaseTypeReferenceRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeReferenceRequestBuilder();
-        }
-
         public static string TypeCollectionPage(this OdcmObject c)
         {
             return c.TypeName() + "CollectionPage";
-        }
-
-        public static string ITypeCollectionPage(this OdcmObject c)
-        {
-            return "I" + c.TypeCollectionPage();
         }
 
         public static string TypeCollectionWithReferencesPage(this OdcmObject c)
@@ -367,29 +277,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return $"{c.TypeName()}CollectionWithReferencesPage";
         }
 
-        public static string ITypeCollectionWithReferencesPage(this OdcmObject c)
-        {
-            return "I" + c.TypeCollectionWithReferencesPage();
-        }
-
         public static string BaseTypeCollectionPage(this OdcmObject c)
         {
             return "Base" + c.TypeCollectionPage();
         }
 
-        public static string IBaseTypeCollectionPage(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeCollectionPage();
-        }
-
         public static string BaseTypeCollectionWithReferencesPage(this OdcmObject c)
         {
             return "Base" + c.TypeCollectionWithReferencesPage();
-        }
-
-        public static string IBaseTypeCollectionWithReferencesPage(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeCollectionWithReferencesPage();
         }
 
         public static string BaseTypeCollectionResponse(this OdcmObject c)
@@ -414,19 +309,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             }
         }
 
-        public static string ITypeCollectionRequest(this OdcmObject c)
-        {
-            return "I" + c.TypeCollectionRequest();
-        }
-
         public static string BaseTypeCollectionRequest(this OdcmObject c)
         {
             return "Base" + c.TypeCollectionRequest();
-        }
-
-        public static string IBaseTypeCollectionRequest(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeCollectionRequest();
         }
 
         public static string TypeCollectionRequestBuilder(this OdcmObject c)
@@ -434,19 +319,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeCollectionRequest() + "Builder";
         }
 
-        public static string ITypeCollectionRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.TypeCollectionRequestBuilder();
-        }
-
         public static string BaseTypeCollectionRequestBuilder(this OdcmObject c)
         {
             return "Base" + c.TypeCollectionRequestBuilder();
-        }
-
-        public static string IBaseTypeCollectionRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeCollectionRequestBuilder();
         }
 
         public static string TypeCollectionWithReferencesRequest(this OdcmObject c)
@@ -454,19 +329,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeName() + "CollectionWithReferencesRequest";
         }
 
-        public static string ITypeCollectionWithReferencesRequest(this OdcmObject c)
-        {
-            return "I" + c.TypeCollectionWithReferencesRequest();
-        }
-
         public static string BaseTypeCollectionWithReferencesRequest(this OdcmObject c)
         {
             return "Base" + c.TypeCollectionWithReferencesRequest();
-        }
-
-        public static string IBaseTypeCollectionWithReferencesRequest(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeCollectionWithReferencesRequest();
         }
 
         public static string TypeCollectionWithReferencesRequestBuilder(this OdcmObject c)
@@ -474,19 +339,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeCollectionWithReferencesRequest() + "Builder";
         }
 
-        public static string ITypeCollectionWithReferencesRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.TypeCollectionWithReferencesRequestBuilder();
-        }
-
         public static string BaseTypeCollectionWithReferencesRequestBuilder(this OdcmObject c)
         {
             return "Base" + c.TypeCollectionWithReferencesRequestBuilder();
-        }
-
-        public static string IBaseTypeCollectionWithReferencesRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeCollectionWithReferencesRequestBuilder();
         }
 
         public static string TypeCollectionReferenceRequest(this OdcmObject c)
@@ -494,19 +349,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeName() + "CollectionReferenceRequest";
         }
 
-        public static string ITypeCollectionReferenceRequest(this OdcmObject c)
-        {
-            return "I" + c.TypeCollectionReferenceRequest();
-        }
-
         public static string BaseTypeCollectionReferenceRequest(this OdcmObject c)
         {
             return "Base" + c.TypeCollectionReferenceRequest();
-        }
-
-        public static string IBaseTypeCollectionReferenceRequest(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeCollectionReferenceRequest();
         }
 
         public static string TypeCollectionReferenceRequestBuilder(this OdcmObject c)
@@ -514,19 +359,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeCollectionReferenceRequest() + "Builder";
         }
 
-        public static string ITypeCollectionReferenceRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.TypeCollectionReferenceRequestBuilder();
-        }
-
         public static string BaseTypeCollectionReferenceRequestBuilder(this OdcmObject c)
         {
             return "Base" + c.TypeCollectionReferenceRequestBuilder();
-        }
-
-        public static string IBaseTypeCollectionReferenceRequestBuilder(this OdcmObject c)
-        {
-            return "I" + c.BaseTypeCollectionReferenceRequestBuilder();
         }
 
         public static string TypeBody(this OdcmObject c)
@@ -720,7 +555,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 
         public static string CollectionPageGeneric(this OdcmObject c)
         {
-            return "<" + c.TargetCollectionType() + ", " + c.ITypeCollectionRequestBuilder() + ">";
+            return "<" + c.TargetCollectionType() + ", " + c.TypeCollectionRequestBuilder() + ">";
         }
 
         public static string CollectionPageWithReferencesGeneric(this OdcmObject c)
@@ -729,16 +564,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             {
                 return "<" + c.ClassTypeName() + ", " + c.ITypeWithReferencesRequestBuilder() + ">";
             }
-            return "<" + c.TypeName() + ", " + c.ITypeCollectionWithReferencesRequestBuilder() + ">";
+            return "<" + c.TypeName() + ", " + c.TypeCollectionWithReferencesRequestBuilder() + ">";
         }
 
         public static string CollectionRequestGeneric(this OdcmObject c)
         {
             if (c is OdcmMethod)
             {
-                return "<" + c.TypeCollectionResponse() + ", " + c.ITypeCollectionPage() + ">";
+                return "<" + c.TypeCollectionResponse() + ", " + c.TypeCollectionPage() + ">";
             }
-            return "<" + c.TypeCollectionResponse() + ", " + c.ITypeCollectionPage() + ">";
+            return "<" + c.TypeCollectionResponse() + ", " + c.TypeCollectionPage() + ">";
         }
 
         //Creating package definition for Enum.java.tt template file
@@ -792,13 +627,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return sb.ToString();
         }
 
-        public static string CreatePackageDefForIBaseMethodRequest(this CustomT4Host host)
+        public static string CreatePackageDefForBaseMethodRequest(this CustomT4Host host)
         {
             var sb = new StringBuilder();
             sb.Append(host.CreatePackageDefinition());
-            var importFormat = @"import {0}.{1}.{2};";
-
             var returnType = host.CurrentType.ReturnType();
+            var importFormat = @"import {0}.{1}.{2};";
             if (returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
             {
                 sb.AppendFormat(importFormat,
@@ -808,32 +642,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                 sb.Append("\n");
             }
 
-            sb.AppendFormat(importFormat,
-                            host.CurrentNamespace(),
-                            GetPrefixForRequests(),
-                            host.CurrentType.ITypeRequest());
-            sb.Append("\n");
-            return sb.ToString();
-        }
-
-        public static string CreatePackageDefForIBaseEntityRequest(this CustomT4Host host)
-        {
-            var sb = new StringBuilder();
-            sb.Append(host.CreatePackageDefinition());
-            var importFormat = @"import {0}.{1}.{2};";
-            sb.AppendFormat(importFormat,
-                            host.CurrentNamespace(),
-                            GetPrefixForModels(),
-                            host.CurrentType.TypeName());
-            sb.Append("\n");
-            return sb.ToString();
-        }
-
-        public static string CreatePackageDefForBaseMethodRequest(this CustomT4Host host)
-        {
-            var sb = new StringBuilder();
-            sb.Append(host.CreatePackageDefForIBaseMethodRequest());
-            var importFormat = @"import {0}.{1}.{2};";
             sb.AppendFormat(importFormat,
                             host.CurrentNamespace(),
                             GetPrefixForRequests(),
@@ -847,12 +655,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             var sb = new StringBuilder();
             sb.Append(host.CreatePackageDefinition());
             const string importFormat = @"import {0}.{1}.{2};";
-            sb.AppendFormat(importFormat,
-                            host.CurrentNamespace(),
-                            GetPrefixForRequests(),
-                            host.CurrentType.ITypeRequest());
-            sb.Append("\n");
-
             sb.AppendFormat(importFormat,
                             host.CurrentNamespace(),
                             GetPrefixForRequests(),
@@ -904,41 +706,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 
             return importStatements;
         }
-
-        public static string CreatePackageDefForIBaseMethodBodyRequest(this CustomT4Host host)
-        {
-            var sb = new StringBuilder();
-            sb.Append(host.CreatePackageDefinition());
-            var importFormat = @"import {0}.{1}.{2};";
-            var returnType = host.CurrentType.ReturnType();
-            if (returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
-            {
-                sb.AppendFormat(importFormat,
-                            host.CurrentNamespace(),
-                            (host.CurrentType.AsOdcmMethod().ReturnType is OdcmEnum ? "models.generated" : GetPrefixForModels()),
-                            returnType);
-                sb.Append("\n");
-            }
-            if (host.CurrentType.AsOdcmMethod().IsCollection)
-            {
-                sb.AppendFormat(importFormat,
-                            host.CurrentNamespace(),
-                            GetPrefixForRequests(),
-                            host.CurrentType.ITypeCollectionRequest());
-                sb.Append("\n");
-            }
-            else
-            {
-                sb.AppendFormat(importFormat,
-                            host.CurrentNamespace(),
-                            GetPrefixForRequests(),
-                            host.CurrentType.ITypeRequest());
-                sb.Append("\n");
-            }
-
-            return sb.ToString();
-        }
-
         public static string CreatePackageDefForBaseMethodBodyRequest(this CustomT4Host host)
         {
             var sb = new StringBuilder();
@@ -965,7 +732,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                 sb.AppendFormat(importFormat,
                             host.CurrentNamespace(),
                             GetPrefixForRequests(),
-                            host.CurrentType.ITypeCollectionRequest());
+                            host.CurrentType.TypeCollectionRequest());
                 sb.Append("\n");
 
                 sb.AppendFormat(importFormat,
@@ -979,31 +746,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                 sb.AppendFormat(importFormat,
                             host.CurrentNamespace(),
                             GetPrefixForRequests(),
-                            host.CurrentType.ITypeRequest());
-                sb.Append("\n");
-
-                sb.AppendFormat(importFormat,
-                            host.CurrentNamespace(),
-                            GetPrefixForRequests(),
                             host.CurrentType.TypeRequest());
                 sb.Append("\n");
             }
             return sb.ToString();
         }
-
-        public static string CreatePackageDefIBaseMethodRequestBuilder(this CustomT4Host host)
-        {
-            var sb = new StringBuilder();
-            sb.Append(host.CreatePackageDefinition());
-            var importFormat = @"import {0}.{1}.{2};";
-            sb.AppendFormat(importFormat,
-                            host.CurrentNamespace(),
-                            GetPrefixForRequests(),
-                            host.CurrentType.ITypeRequest());
-            sb.Append("\n");
-            return sb.ToString();
-        }
-
         public static string CreatePackageDefForBaseEntityCollectionPage(this CustomT4Host host)
         {
             var sb = new StringBuilder();
@@ -1025,7 +772,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.AppendFormat(importFormat,
                             host.CurrentNamespace(),
                             GetPrefixForRequests(),
-                            host.CurrentType.ITypeCollectionRequestBuilder());
+                            host.CurrentType.TypeCollectionRequestBuilder());
 
             return sb.ToString();
         }
@@ -1227,8 +974,8 @@ import java.util.EnumSet;";
         private static void ImportRequestBuilderTypes(CustomT4Host host, OdcmType x, HashSet<string> methodImports, string importFormat, string interfaceTemplatePrefix, bool includeCollectionTypes)
         {
             if (includeCollectionTypes)
-                methodImports.Add(string.Format(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeCollectionRequestBuilder()));
-            methodImports.Add(string.Format(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeRequestBuilder()));
+                methodImports.Add(string.Format(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeCollectionRequestBuilder()));
+            methodImports.Add(string.Format(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeRequestBuilder()));
             if (!host.TemplateInfo.TemplateName.StartsWith(interfaceTemplatePrefix))
             {
                 if (includeCollectionTypes)

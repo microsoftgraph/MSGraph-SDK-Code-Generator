@@ -12,7 +12,7 @@ import com.microsoft.graph.models.extensions.ResponseObject;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import com.microsoft.graph.requests.extensions.ITestTypeQueryCollectionRequestBuilder;
+import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionPage;
 import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionResponse;
 import com.microsoft.graph.models.extensions.TestTypeQueryBody;
@@ -26,7 +26,7 @@ import com.microsoft.graph.concurrency.IExecutors;
 /**
  * The class for the Test Type Query Collection Request.
  */
-public class TestTypeQueryCollectionRequest extends BaseCollectionRequest<TestTypeQueryCollectionResponse, ITestTypeQueryCollectionPage> implements ITestTypeQueryCollectionRequest {
+public class TestTypeQueryCollectionRequest extends BaseCollectionRequest<TestTypeQueryCollectionResponse, TestTypeQueryCollectionPage> {
 
 
     protected final TestTypeQueryBody body;
@@ -40,12 +40,12 @@ public class TestTypeQueryCollectionRequest extends BaseCollectionRequest<TestTy
      * @param requestOptions the options for this request
      */
     public TestTypeQueryCollectionRequest(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, TestTypeQueryCollectionResponse.class, ITestTypeQueryCollectionPage.class);
+        super(requestUrl, client, requestOptions, TestTypeQueryCollectionResponse.class, TestTypeQueryCollectionPage.class);
         body = new TestTypeQueryBody();
     }
 
 
-    public void post(final ICallback<? super ITestTypeQueryCollectionPage> callback) {
+    public void post(final ICallback<? super TestTypeQueryCollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -59,20 +59,20 @@ public class TestTypeQueryCollectionRequest extends BaseCollectionRequest<TestTy
         });
     }
 
-    public ITestTypeQueryCollectionPage post() throws ClientException {
+    public TestTypeQueryCollectionPage post() throws ClientException {
         final TestTypeQueryCollectionResponse response = post(body);
         return buildFromResponse(response);
     }
 
 
-    public ITestTypeQueryCollectionPage buildFromResponse(final TestTypeQueryCollectionResponse response) {
-        final ITestTypeQueryCollectionRequestBuilder builder;
+    public TestTypeQueryCollectionPage buildFromResponse(final TestTypeQueryCollectionResponse response) {
+        final TestTypeQueryCollectionRequestBuilder builder;
         if (response.nextLink != null) {
             builder = new TestTypeQueryCollectionRequestBuilder(response.nextLink, getBaseRequest().getClient(), /* options */ null, (java.util.List<DerivedComplexTypeRequest>) null);
         } else {
             builder = null;
         }
-        final ITestTypeQueryCollectionPage page = new TestTypeQueryCollectionPage(response, builder);
+        final TestTypeQueryCollectionPage page = new TestTypeQueryCollectionPage(response, builder);
         page.setRawObject(response.getSerializer(), response.getRawObject());
         return page;
     }
@@ -83,9 +83,9 @@ public class TestTypeQueryCollectionRequest extends BaseCollectionRequest<TestTy
      * @param value the select clause
      * @return the updated request
      */
-    public ITestTypeQueryCollectionRequest select(final String value) {
+    public TestTypeQueryCollectionRequest select(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (ITestTypeQueryCollectionRequest)this;
+        return (TestTypeQueryCollectionRequest)this;
     }
 
     /**
@@ -94,9 +94,9 @@ public class TestTypeQueryCollectionRequest extends BaseCollectionRequest<TestTy
      * @param value the max number of items to return
      * @return the updated request
      */
-    public ITestTypeQueryCollectionRequest top(final int value) {
+    public TestTypeQueryCollectionRequest top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value+""));
-        return (ITestTypeQueryCollectionRequest)this;
+        return (TestTypeQueryCollectionRequest)this;
     }
 
     /**
@@ -105,9 +105,9 @@ public class TestTypeQueryCollectionRequest extends BaseCollectionRequest<TestTy
      * @param value the expand clause
      * @return the updated request
      */
-    public ITestTypeQueryCollectionRequest expand(final String value) {
+    public TestTypeQueryCollectionRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (ITestTypeQueryCollectionRequest)this;
+        return (TestTypeQueryCollectionRequest)this;
     }
 
     /**
@@ -116,9 +116,9 @@ public class TestTypeQueryCollectionRequest extends BaseCollectionRequest<TestTy
      * @param value the filter clause
      * @return the updated request
      */
-    public ITestTypeQueryCollectionRequest filter(final String value) {
+    public TestTypeQueryCollectionRequest filter(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (ITestTypeQueryCollectionRequest)this;
+        return (TestTypeQueryCollectionRequest)this;
     }
 
     /**
@@ -127,9 +127,9 @@ public class TestTypeQueryCollectionRequest extends BaseCollectionRequest<TestTy
      * @param value the order by clause
      * @return the updated request
      */
-    public ITestTypeQueryCollectionRequest orderBy(final String value) {
+    public TestTypeQueryCollectionRequest orderBy(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
-        return (ITestTypeQueryCollectionRequest)this;
+        return (TestTypeQueryCollectionRequest)this;
     }
 
 }

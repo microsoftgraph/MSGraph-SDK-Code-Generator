@@ -8,8 +8,6 @@ import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.Group;
-import com.microsoft.graph.requests.extensions.IDirectoryObjectCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IDirectoryObjectRequestBuilder;
 import com.microsoft.graph.requests.extensions.DirectoryObjectCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.DirectoryObjectRequestBuilder;
 import java.util.Arrays;
@@ -25,7 +23,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Group Reference Request.
  */
-public class GroupReferenceRequest extends BaseRequest implements IGroupReferenceRequest {
+public class GroupReferenceRequest extends BaseRequest {
 
     /**
      * The request for the Group
@@ -52,7 +50,7 @@ public class GroupReferenceRequest extends BaseRequest implements IGroupReferenc
      * @param value the select clause
      * @return the updated request
      */
-    public IGroupReferenceRequest select(final String value) {
+    public GroupReferenceRequest select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (GroupReferenceRequest)this;
     }
@@ -63,7 +61,7 @@ public class GroupReferenceRequest extends BaseRequest implements IGroupReferenc
      * @param value the expand clause
      * @return the updated request
      */
-    public IGroupReferenceRequest expand(final String value) {
+    public GroupReferenceRequest expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (GroupReferenceRequest)this;
     }

@@ -18,7 +18,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Option Request Builder.
  */
-public class OptionRequestBuilder extends BaseRequestBuilder implements IOptionRequestBuilder {
+public class OptionRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the Option
@@ -35,9 +35,9 @@ public class OptionRequestBuilder extends BaseRequestBuilder implements IOptionR
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IOptionRequest instance
+     * @return the OptionRequest instance
      */
-    public IOptionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public OptionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -45,9 +45,9 @@ public class OptionRequestBuilder extends BaseRequestBuilder implements IOptionR
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the IOptionRequest instance
+     * @return the OptionRequest instance
      */
-    public IOptionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public OptionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph2.callrecords.requests.extensions.OptionRequest(getRequestUrl(), getClient(), requestOptions);
     }
 

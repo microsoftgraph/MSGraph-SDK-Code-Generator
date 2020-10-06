@@ -21,7 +21,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Test Type With Reference Request Builder.
  */
-public class TestTypeWithReferenceRequestBuilder extends BaseRequestBuilder implements ITestTypeWithReferenceRequestBuilder {
+public class TestTypeWithReferenceRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the TestType
@@ -38,9 +38,9 @@ public class TestTypeWithReferenceRequestBuilder extends BaseRequestBuilder impl
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the ITestTypeWithReferenceRequest instance
+     * @return the TestTypeWithReferenceRequest instance
      */
-    public ITestTypeWithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public TestTypeWithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -48,13 +48,13 @@ public class TestTypeWithReferenceRequestBuilder extends BaseRequestBuilder impl
      * Creates the request with specific options instead of the existing options
 	 *
      * @param requestOptions the options for this request
-     * @return the ITestTypeWithReferenceRequest instance
+     * @return the TestTypeWithReferenceRequest instance
      */
-    public ITestTypeWithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public TestTypeWithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new TestTypeWithReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public ITestTypeReferenceRequestBuilder reference(){
+    public TestTypeReferenceRequestBuilder reference(){
         return new TestTypeReferenceRequestBuilder(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
 

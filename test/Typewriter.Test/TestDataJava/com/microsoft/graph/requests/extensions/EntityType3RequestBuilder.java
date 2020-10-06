@@ -20,7 +20,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Entity Type3Request Builder.
  */
-public class EntityType3RequestBuilder extends BaseRequestBuilder implements IEntityType3RequestBuilder {
+public class EntityType3RequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the EntityType3
@@ -37,9 +37,9 @@ public class EntityType3RequestBuilder extends BaseRequestBuilder implements IEn
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IEntityType3Request instance
+     * @return the EntityType3Request instance
      */
-    public IEntityType3Request buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public EntityType3Request buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -47,15 +47,15 @@ public class EntityType3RequestBuilder extends BaseRequestBuilder implements IEn
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the IEntityType3Request instance
+     * @return the EntityType3Request instance
      */
-    public IEntityType3Request buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3Request buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.EntityType3Request(getRequestUrl(), getClient(), requestOptions);
     }
 
 
 
-    public IEntityType3ForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final Recipient singleRecipient, final java.util.List<Session> multipleSessions, final Session singleSession, final String comment) {
+    public EntityType3ForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final Recipient singleRecipient, final java.util.List<Session> multipleSessions, final Session singleSession, final String comment) {
         return new EntityType3ForwardRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.forward"), getClient(), null, toRecipients, singleRecipient, multipleSessions, singleSession, comment);
     }
 }

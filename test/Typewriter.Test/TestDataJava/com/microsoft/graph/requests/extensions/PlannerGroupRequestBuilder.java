@@ -18,7 +18,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Planner Group Request Builder.
  */
-public class PlannerGroupRequestBuilder extends BaseRequestBuilder implements IPlannerGroupRequestBuilder {
+public class PlannerGroupRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the PlannerGroup
@@ -35,9 +35,9 @@ public class PlannerGroupRequestBuilder extends BaseRequestBuilder implements IP
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IPlannerGroupRequest instance
+     * @return the PlannerGroupRequest instance
      */
-    public IPlannerGroupRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public PlannerGroupRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -45,9 +45,9 @@ public class PlannerGroupRequestBuilder extends BaseRequestBuilder implements IP
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the IPlannerGroupRequest instance
+     * @return the PlannerGroupRequest instance
      */
-    public IPlannerGroupRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public PlannerGroupRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.PlannerGroupRequest(getRequestUrl(), getClient(), requestOptions);
     }
 

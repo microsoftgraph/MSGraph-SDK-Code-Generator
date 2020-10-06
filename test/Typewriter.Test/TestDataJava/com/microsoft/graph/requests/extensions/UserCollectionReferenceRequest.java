@@ -23,7 +23,7 @@ import com.microsoft.graph.models.extensions.User;
 /**
  * The class for the User Collection Reference Request.
  */
-public class UserCollectionReferenceRequest extends BaseCollectionRequest<UserCollectionResponse, IUserCollectionPage> implements IUserCollectionReferenceRequest {
+public class UserCollectionReferenceRequest extends BaseCollectionRequest<UserCollectionResponse, UserCollectionPage> {
 
     /**
      * The request builder for this collection of User
@@ -33,7 +33,7 @@ public class UserCollectionReferenceRequest extends BaseCollectionRequest<UserCo
      * @param requestOptions the options for this request
      */
     public UserCollectionReferenceRequest(final String requestUrl, IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, UserCollectionResponse.class, IUserCollectionPage.class);
+        super(requestUrl, client, requestOptions, UserCollectionResponse.class, UserCollectionPage.class);
     }
 
     /**
@@ -42,7 +42,7 @@ public class UserCollectionReferenceRequest extends BaseCollectionRequest<UserCo
      * @param value the expand clause
      * @return the updated request
      */
-    public IUserCollectionReferenceRequest expand(final String value) {
+    public UserCollectionReferenceRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (UserCollectionReferenceRequest)this;
     }
@@ -53,7 +53,7 @@ public class UserCollectionReferenceRequest extends BaseCollectionRequest<UserCo
      * @param value the filter clause
      * @return the updated request
      */
-    public IUserCollectionReferenceRequest filter(final String value) {
+    public UserCollectionReferenceRequest filter(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (UserCollectionReferenceRequest)this;
     }
@@ -64,7 +64,7 @@ public class UserCollectionReferenceRequest extends BaseCollectionRequest<UserCo
      * @param value the sort clause
      * @return the updated request
      */
-    public IUserCollectionReferenceRequest orderBy(final String value) {
+    public UserCollectionReferenceRequest orderBy(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (UserCollectionReferenceRequest)this;
     }
@@ -75,7 +75,7 @@ public class UserCollectionReferenceRequest extends BaseCollectionRequest<UserCo
      * @param value the select clause
      * @return the updated request
      */
-    public IUserCollectionReferenceRequest select(final String value) {
+    public UserCollectionReferenceRequest select(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return (UserCollectionReferenceRequest)this;
     }
@@ -86,7 +86,7 @@ public class UserCollectionReferenceRequest extends BaseCollectionRequest<UserCo
      * @param value the max number of items to return
      * @return the updated request
      */
-    public IUserCollectionReferenceRequest top(final int value) {
+    public UserCollectionReferenceRequest top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
         return (UserCollectionReferenceRequest)this;
     }

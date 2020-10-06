@@ -12,8 +12,7 @@ import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import com.microsoft.graph2.callrecords.requests.extensions.ISegmentTestActionCollectionRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.extensions.ISegmentTestActionCollectionRequest;
+import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionRequest;
 import com.microsoft.graph.options.FunctionOption;
 import com.microsoft.graph.core.IBaseClient;
@@ -24,7 +23,7 @@ import com.microsoft.graph.core.BaseActionRequestBuilder;
 /**
  * The class for the Segment Test Action Collection Request Builder.
  */
-public class SegmentTestActionCollectionRequestBuilder extends BaseActionRequestBuilder implements ISegmentTestActionCollectionRequestBuilder {
+public class SegmentTestActionCollectionRequestBuilder extends BaseActionRequestBuilder {
 
     /**
      * The request builder for this collection of Segment
@@ -47,7 +46,7 @@ public class SegmentTestActionCollectionRequestBuilder extends BaseActionRequest
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public ISegmentTestActionCollectionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public SegmentTestActionCollectionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -57,7 +56,7 @@ public class SegmentTestActionCollectionRequestBuilder extends BaseActionRequest
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public ISegmentTestActionCollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SegmentTestActionCollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         SegmentTestActionCollectionRequest request = new SegmentTestActionCollectionRequest(
                 getRequestUrl(),
                 getClient(),

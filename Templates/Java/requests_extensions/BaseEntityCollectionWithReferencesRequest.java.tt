@@ -12,7 +12,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseCollectionRequest;
 import <#=importNamespace#>.concurrency.IExecutors;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric(), c.ITypeCollectionWithReferencesRequest())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric())#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>
@@ -22,10 +22,10 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param requestOptions the options for this request
      */
     public <#=c.TypeCollectionWithReferencesRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.ITypeCollectionPage()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class);
     }
 
-    public void get(final ICallback<? super <#=c.ITypeCollectionWithReferencesPage()#>> callback) {
+    public void get(final ICallback<? super <#=c.TypeCollectionWithReferencesPage()#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -39,48 +39,48 @@ import <#=importNamespace#>.concurrency.IExecutors;
         });
     }
 
-    public <#=c.ITypeCollectionWithReferencesPage()#> get() throws ClientException {
+    public <#=c.TypeCollectionWithReferencesPage()#> get() throws ClientException {
         final <#=c.TypeCollectionResponse()#> response = send();
         return buildFromResponse(response);
     }
 
 <# if (c.GetFeatures().CanExpand) { #>
-    public <#=c.ITypeCollectionWithReferencesRequest()#> expand(final String value) {
+    public <#=c.TypeCollectionWithReferencesRequest()#> expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanFilter) { #>
-    public <#=c.ITypeCollectionWithReferencesRequest()#> filter(final String value) {
+    public <#=c.TypeCollectionWithReferencesRequest()#> filter(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanSort) { #>
-    public <#=c.ITypeCollectionWithReferencesRequest()#> orderBy(final String value) {
+    public <#=c.TypeCollectionWithReferencesRequest()#> orderBy(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanSelect) { #>
-    public <#=c.ITypeCollectionWithReferencesRequest()#> select(final String value) {
+    public <#=c.TypeCollectionWithReferencesRequest()#> select(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanUseTop) { #>
-    public <#=c.ITypeCollectionWithReferencesRequest()#> top(final int value) {
+    public <#=c.TypeCollectionWithReferencesRequest()#> top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
         return this;
     }
 
 <# } #>
-    public <#=c.ITypeCollectionWithReferencesPage()#> buildFromResponse(final <#=c.TypeCollectionResponse()#> response) {
-        final <#=c.ITypeCollectionWithReferencesRequestBuilder()#> builder;
+    public <#=c.TypeCollectionWithReferencesPage()#> buildFromResponse(final <#=c.TypeCollectionResponse()#> response) {
+        final <#=c.TypeCollectionWithReferencesRequestBuilder()#> builder;
         if (response.nextLink != null) {
             builder = new <#=c.TypeCollectionWithReferencesRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
         } else {

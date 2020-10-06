@@ -3,7 +3,6 @@
 // ------------------------------------------------------------------------------
 
 package com.microsoft.graph2.callrecords.requests.extensions;
-import com.microsoft.graph2.callrecords.requests.extensions.ISegmentForwardRequest;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentForwardRequest;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
@@ -17,7 +16,7 @@ import com.google.gson.JsonElement;
 /**
  * The class for the Segment Forward Request Builder.
  */
-public class SegmentForwardRequestBuilder extends BaseActionRequestBuilder implements ISegmentForwardRequestBuilder {
+public class SegmentForwardRequestBuilder extends BaseActionRequestBuilder {
 
     /**
      * The request builder for this SegmentForward
@@ -41,22 +40,22 @@ public class SegmentForwardRequestBuilder extends BaseActionRequestBuilder imple
     }
 
     /**
-     * Creates the ISegmentForwardRequest
+     * Creates the SegmentForwardRequest
      *
      * @param requestOptions the options for the request
-     * @return the ISegmentForwardRequest instance
+     * @return the SegmentForwardRequest instance
      */
-    public ISegmentForwardRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public SegmentForwardRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
     /**
-     * Creates the ISegmentForwardRequest with specific requestOptions instead of the existing requestOptions
+     * Creates the SegmentForwardRequest with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for the request
-     * @return the ISegmentForwardRequest instance
+     * @return the SegmentForwardRequest instance
      */
-    public ISegmentForwardRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SegmentForwardRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         SegmentForwardRequest request = new SegmentForwardRequest(
                 getRequestUrl(),
                 getClient(),

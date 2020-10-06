@@ -8,12 +8,8 @@ import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph2.callrecords.models.extensions.CallRecord;
-import com.microsoft.graph2.callrecords.requests.extensions.ISessionCollectionRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.extensions.ISessionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.SessionCollectionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.SessionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType2CollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType2RequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType2CollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType2RequestBuilder;
 import java.util.Arrays;
@@ -26,7 +22,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Call Record Request Builder.
  */
-public class CallRecordRequestBuilder extends BaseRequestBuilder implements ICallRecordRequestBuilder {
+public class CallRecordRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the CallRecord
@@ -43,9 +39,9 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder implements ICal
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the ICallRecordRequest instance
+     * @return the CallRecordRequest instance
      */
-    public ICallRecordRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public CallRecordRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -53,25 +49,25 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder implements ICal
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the ICallRecordRequest instance
+     * @return the CallRecordRequest instance
      */
-    public ICallRecordRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CallRecordRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph2.callrecords.requests.extensions.CallRecordRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
 
-    public ISessionCollectionRequestBuilder sessions() {
+    public SessionCollectionRequestBuilder sessions() {
         return new SessionCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions"), getClient(), null);
     }
 
-    public ISessionRequestBuilder sessions(final String id) {
+    public SessionRequestBuilder sessions(final String id) {
         return new SessionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions") + "/" + id, getClient(), null);
     }
-    public IEntityType2CollectionRequestBuilder recipients() {
+    public EntityType2CollectionRequestBuilder recipients() {
         return new EntityType2CollectionRequestBuilder(getRequestUrlWithAdditionalSegment("recipients"), getClient(), null);
     }
 
-    public IEntityType2RequestBuilder recipients(final String id) {
+    public EntityType2RequestBuilder recipients(final String id) {
         return new EntityType2RequestBuilder(getRequestUrlWithAdditionalSegment("recipients") + "/" + id, getClient(), null);
     }
 }

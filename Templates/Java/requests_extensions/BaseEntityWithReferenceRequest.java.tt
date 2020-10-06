@@ -13,7 +13,7 @@ import <#=importNamespace#>.http.HttpMethod;
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.serializer.IJsonBackedObject;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequest(), "BaseRequest", c.ITypeWithReferencesRequest())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequest(), "BaseRequest")#>
 
     /**
      * The request for the <#=c.TypeName()#>
@@ -70,9 +70,9 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      * @param value the select clause
      * @return the updated request
      */
-    public <#=c.ITypeWithReferencesRequest()#> select(final String value) {
+    public <#=c.TypeWithReferencesRequest()#> select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (<#=c.ITypeWithReferencesRequest()#>)this;
+        return (<#=c.TypeWithReferencesRequest()#>)this;
     }
 
 <# } #>
@@ -83,7 +83,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=c.ITypeWithReferencesRequest()#> expand(final String value) {
+    public <#=c.TypeWithReferencesRequest()#> expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (<#=c.TypeWithReferencesRequest()#>)this;
     }

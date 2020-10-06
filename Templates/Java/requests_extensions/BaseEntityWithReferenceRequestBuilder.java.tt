@@ -10,7 +10,7 @@
 import <#=importNamespace#>.http.BaseRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequestBuilder(), "BaseRequestBuilder", c.ITypeWithReferencesRequestBuilder())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequestBuilder(), "BaseRequestBuilder")#>
 
     /**
      * The request builder for the <#=c.TypeName()#>
@@ -27,9 +27,9 @@ import <#=importNamespace#>.core.IBaseClient;
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the <#=c.ITypeWithReferencesRequest()#> instance
+     * @return the <#=c.TypeWithReferencesRequest()#> instance
      */
-    public <#=c.ITypeWithReferencesRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public <#=c.TypeWithReferencesRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -37,13 +37,13 @@ import <#=importNamespace#>.core.IBaseClient;
      * Creates the request with specific options instead of the existing options
 	 *
      * @param requestOptions the options for this request
-     * @return the <#=c.ITypeWithReferencesRequest()#> instance
+     * @return the <#=c.TypeWithReferencesRequest()#> instance
      */
-    public <#=c.ITypeWithReferencesRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeWithReferencesRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         return new <#=c.TypeWithReferencesRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public <#=c.ITypeReferenceRequestBuilder()#> reference(){
+    public <#=c.TypeReferenceRequestBuilder()#> reference(){
         return new <#=c.TypeReferenceRequestBuilder()#>(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
 

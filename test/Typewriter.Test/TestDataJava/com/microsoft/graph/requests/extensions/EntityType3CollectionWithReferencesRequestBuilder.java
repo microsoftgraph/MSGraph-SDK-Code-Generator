@@ -22,7 +22,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Entity Type3Collection With References Request Builder.
  */
-public class EntityType3CollectionWithReferencesRequestBuilder extends BaseRequestBuilder implements IEntityType3CollectionWithReferencesRequestBuilder {
+public class EntityType3CollectionWithReferencesRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for this collection of Segment
@@ -41,7 +41,7 @@ public class EntityType3CollectionWithReferencesRequestBuilder extends BaseReque
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public IEntityType3CollectionWithReferencesRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public EntityType3CollectionWithReferencesRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -51,15 +51,15 @@ public class EntityType3CollectionWithReferencesRequestBuilder extends BaseReque
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public IEntityType3CollectionWithReferencesRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3CollectionWithReferencesRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new EntityType3CollectionWithReferencesRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public IEntityType3WithReferenceRequestBuilder byId(final String id) {
+    public EntityType3WithReferenceRequestBuilder byId(final String id) {
         return new EntityType3WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
     }
 
-    public IEntityType3CollectionReferenceRequestBuilder references(){
+    public EntityType3CollectionReferenceRequestBuilder references(){
         return new EntityType3CollectionReferenceRequestBuilder(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
 }

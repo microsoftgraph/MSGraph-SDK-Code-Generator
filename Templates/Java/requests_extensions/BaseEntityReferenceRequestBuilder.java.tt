@@ -11,7 +11,7 @@
 import <#=importNamespace#>.http.BaseRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequestBuilder(), "BaseRequestBuilder", c.ITypeReferenceRequestBuilder())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequestBuilder(), "BaseRequestBuilder")#>
 
     /**
      * The request builder for the <#=c.TypeName()#>
@@ -28,9 +28,9 @@ import <#=importNamespace#>.core.IBaseClient;
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return The <#=c.ITypeReferenceRequest()#> instance
+     * @return The <#=c.TypeReferenceRequest()#> instance
      */
-    public <#=c.ITypeReferenceRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public <#=c.TypeReferenceRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -38,9 +38,9 @@ import <#=importNamespace#>.core.IBaseClient;
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the <#=c.ITypeReferenceRequest()#> instance
+     * @return the <#=c.TypeReferenceRequest()#> instance
      */
-    public <#=c.ITypeReferenceRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeReferenceRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         return new <#=c.TypeReferenceRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 }

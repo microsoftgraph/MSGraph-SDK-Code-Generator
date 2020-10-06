@@ -12,7 +12,7 @@ import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import com.microsoft.graph2.callrecords.requests.extensions.ISegmentTestActionCollectionRequestBuilder;
+import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionPage;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionResponse;
 import com.google.gson.JsonObject;
@@ -26,7 +26,7 @@ import com.microsoft.graph.http.BaseCollectionPage;
 /**
  * The class for the Segment Test Action Collection Page.
  */
-public class SegmentTestActionCollectionPage extends BaseCollectionPage<Session, ISegmentTestActionCollectionRequestBuilder> implements ISegmentTestActionCollectionPage {
+public class SegmentTestActionCollectionPage extends BaseCollectionPage<Session, SegmentTestActionCollectionRequestBuilder> {
 
     /**
      * A collection page for Session.
@@ -34,7 +34,7 @@ public class SegmentTestActionCollectionPage extends BaseCollectionPage<Session,
      * @param response The serialized SegmentTestActionCollectionResponse from the service
      * @param builder The request builder for the next collection page
      */
-    public SegmentTestActionCollectionPage(final SegmentTestActionCollectionResponse response, final ISegmentTestActionCollectionRequestBuilder builder) {
+    public SegmentTestActionCollectionPage(final SegmentTestActionCollectionResponse response, final SegmentTestActionCollectionRequestBuilder builder) {
        super(response.value, builder, response.additionalDataManager());
     }
 }

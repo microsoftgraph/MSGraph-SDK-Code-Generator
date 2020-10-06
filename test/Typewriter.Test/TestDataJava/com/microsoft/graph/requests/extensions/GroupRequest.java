@@ -8,8 +8,6 @@ import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.Group;
-import com.microsoft.graph.requests.extensions.IDirectoryObjectCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IDirectoryObjectRequestBuilder;
 import com.microsoft.graph.requests.extensions.DirectoryObjectCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.DirectoryObjectRequestBuilder;
 import java.util.Arrays;
@@ -23,7 +21,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Group Request.
  */
-public class GroupRequest extends BaseRequest implements IGroupRequest {
+public class GroupRequest extends BaseRequest {
 	
     /**
      * The request for the Group
@@ -142,7 +140,7 @@ public class GroupRequest extends BaseRequest implements IGroupRequest {
      * @param value the select clause
      * @return the updated request
      */
-     public IGroupRequest select(final String value) {
+     public GroupRequest select(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (GroupRequest)this;
      }
@@ -153,7 +151,7 @@ public class GroupRequest extends BaseRequest implements IGroupRequest {
      * @param value the expand clause
      * @return the updated request
      */
-     public IGroupRequest expand(final String value) {
+     public GroupRequest expand(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (GroupRequest)this;
      }

@@ -20,7 +20,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Entity Type2Reference Request Builder.
  */
-public class EntityType2ReferenceRequestBuilder extends BaseRequestBuilder implements IEntityType2ReferenceRequestBuilder {
+public class EntityType2ReferenceRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the EntityType2
@@ -37,9 +37,9 @@ public class EntityType2ReferenceRequestBuilder extends BaseRequestBuilder imple
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return The IEntityType2ReferenceRequest instance
+     * @return The EntityType2ReferenceRequest instance
      */
-    public IEntityType2ReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public EntityType2ReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -47,9 +47,9 @@ public class EntityType2ReferenceRequestBuilder extends BaseRequestBuilder imple
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the IEntityType2ReferenceRequest instance
+     * @return the EntityType2ReferenceRequest instance
      */
-    public IEntityType2ReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType2ReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new EntityType2ReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 }

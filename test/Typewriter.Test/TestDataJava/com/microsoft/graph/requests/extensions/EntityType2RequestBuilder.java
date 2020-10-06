@@ -18,7 +18,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Entity Type2Request Builder.
  */
-public class EntityType2RequestBuilder extends BaseRequestBuilder implements IEntityType2RequestBuilder {
+public class EntityType2RequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the EntityType2
@@ -35,9 +35,9 @@ public class EntityType2RequestBuilder extends BaseRequestBuilder implements IEn
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IEntityType2Request instance
+     * @return the EntityType2Request instance
      */
-    public IEntityType2Request buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public EntityType2Request buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -45,9 +45,9 @@ public class EntityType2RequestBuilder extends BaseRequestBuilder implements IEn
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the IEntityType2Request instance
+     * @return the EntityType2Request instance
      */
-    public IEntityType2Request buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType2Request buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.EntityType2Request(getRequestUrl(), getClient(), requestOptions);
     }
 

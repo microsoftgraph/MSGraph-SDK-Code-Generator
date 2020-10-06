@@ -19,7 +19,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Directory Object With Reference Request Builder.
  */
-public class DirectoryObjectWithReferenceRequestBuilder extends BaseRequestBuilder implements IDirectoryObjectWithReferenceRequestBuilder {
+public class DirectoryObjectWithReferenceRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the DirectoryObject
@@ -36,9 +36,9 @@ public class DirectoryObjectWithReferenceRequestBuilder extends BaseRequestBuild
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IDirectoryObjectWithReferenceRequest instance
+     * @return the DirectoryObjectWithReferenceRequest instance
      */
-    public IDirectoryObjectWithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public DirectoryObjectWithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -46,13 +46,13 @@ public class DirectoryObjectWithReferenceRequestBuilder extends BaseRequestBuild
      * Creates the request with specific options instead of the existing options
 	 *
      * @param requestOptions the options for this request
-     * @return the IDirectoryObjectWithReferenceRequest instance
+     * @return the DirectoryObjectWithReferenceRequest instance
      */
-    public IDirectoryObjectWithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public DirectoryObjectWithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new DirectoryObjectWithReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public IDirectoryObjectReferenceRequestBuilder reference(){
+    public DirectoryObjectReferenceRequestBuilder reference(){
         return new DirectoryObjectReferenceRequestBuilder(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
 

@@ -8,12 +8,8 @@ import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.Schedule;
-import com.microsoft.graph.requests.extensions.ITimeOffCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.ITimeOffRequestBuilder;
 import com.microsoft.graph.requests.extensions.TimeOffCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.TimeOffRequestBuilder;
-import com.microsoft.graph.requests.extensions.ITimeOffRequestCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.ITimeOffRequestRequestBuilder;
 import com.microsoft.graph.requests.extensions.TimeOffRequestCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.TimeOffRequestRequestBuilder;
 import java.util.Arrays;
@@ -26,7 +22,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Schedule Request Builder.
  */
-public class ScheduleRequestBuilder extends BaseRequestBuilder implements IScheduleRequestBuilder {
+public class ScheduleRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the Schedule
@@ -43,9 +39,9 @@ public class ScheduleRequestBuilder extends BaseRequestBuilder implements ISched
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IScheduleRequest instance
+     * @return the ScheduleRequest instance
      */
-    public IScheduleRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public ScheduleRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -53,25 +49,25 @@ public class ScheduleRequestBuilder extends BaseRequestBuilder implements ISched
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the IScheduleRequest instance
+     * @return the ScheduleRequest instance
      */
-    public IScheduleRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public ScheduleRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.ScheduleRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
 
-    public ITimeOffCollectionRequestBuilder timesOff() {
+    public TimeOffCollectionRequestBuilder timesOff() {
         return new TimeOffCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("timesOff"), getClient(), null);
     }
 
-    public ITimeOffRequestBuilder timesOff(final String id) {
+    public TimeOffRequestBuilder timesOff(final String id) {
         return new TimeOffRequestBuilder(getRequestUrlWithAdditionalSegment("timesOff") + "/" + id, getClient(), null);
     }
-    public ITimeOffRequestCollectionRequestBuilder timeOffRequests() {
+    public TimeOffRequestCollectionRequestBuilder timeOffRequests() {
         return new TimeOffRequestCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("timeOffRequests"), getClient(), null);
     }
 
-    public ITimeOffRequestRequestBuilder timeOffRequests(final String id) {
+    public TimeOffRequestRequestBuilder timeOffRequests(final String id) {
         return new TimeOffRequestRequestBuilder(getRequestUrlWithAdditionalSegment("timeOffRequests") + "/" + id, getClient(), null);
     }
 }

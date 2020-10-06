@@ -12,7 +12,7 @@ import <#=importNamespace#>.http.BaseRequest;
 import <#=importNamespace#>.http.HttpMethod;
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequest(), "BaseRequest", c.ITypeReferenceRequest())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequest(), "BaseRequest")#>
 
     /**
      * The request for the <#=c.TypeName()#>
@@ -40,7 +40,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param value the select clause
      * @return the updated request
      */
-    public <#=c.ITypeReferenceRequest()#> select(final String value) {
+    public <#=c.TypeReferenceRequest()#> select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (<#=c.TypeReferenceRequest()#>)this;
     }
@@ -53,7 +53,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=c.ITypeReferenceRequest()#> expand(final String value) {
+    public <#=c.TypeReferenceRequest()#> expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (<#=c.TypeReferenceRequest()#>)this;
     }

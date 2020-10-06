@@ -19,7 +19,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Photo Request.
  */
-public class PhotoRequest extends BaseRequest implements IPhotoRequest {
+public class PhotoRequest extends BaseRequest {
 	
     /**
      * The request for the Photo
@@ -138,7 +138,7 @@ public class PhotoRequest extends BaseRequest implements IPhotoRequest {
      * @param value the select clause
      * @return the updated request
      */
-     public IPhotoRequest select(final String value) {
+     public PhotoRequest select(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (PhotoRequest)this;
      }
@@ -149,7 +149,7 @@ public class PhotoRequest extends BaseRequest implements IPhotoRequest {
      * @param value the expand clause
      * @return the updated request
      */
-     public IPhotoRequest expand(final String value) {
+     public PhotoRequest expand(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (PhotoRequest)this;
      }

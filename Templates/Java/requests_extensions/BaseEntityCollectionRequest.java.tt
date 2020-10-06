@@ -12,13 +12,12 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseCollectionRequest;
 import <#=importNamespace#>.concurrency.IExecutors;
 <# var mainNamespace = host.CurrentNamespace(); #>
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionPage()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequestBuilder()#>;
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.ITypeCollectionRequest()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequest()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric(), c.ITypeCollectionRequest())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric())#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>
@@ -28,10 +27,10 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param requestOptions the options for this request
      */
     public <#=c.TypeCollectionRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.ITypeCollectionPage()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class);
     }
 
-    public void get(final ICallback<? super <#=c.ITypeCollectionPage()#>> callback) {
+    public void get(final ICallback<? super <#=c.TypeCollectionPage()#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -45,7 +44,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
         });
     }
 
-    public <#=c.ITypeCollectionPage()#> get() throws ClientException {
+    public <#=c.TypeCollectionPage()#> get() throws ClientException {
         final <#=c.TypeCollectionResponse()#> response = send();
         return buildFromResponse(response);
     }
@@ -71,7 +70,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=c.ITypeCollectionRequest()#> expand(final String value) {
+    public <#=c.TypeCollectionRequest()#> expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (<#=c.TypeCollectionRequest()#>)this;
     }
@@ -84,7 +83,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param value the filter clause
      * @return the updated request
      */
-    public <#=c.ITypeCollectionRequest()#> filter(final String value) {
+    public <#=c.TypeCollectionRequest()#> filter(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (<#=c.TypeCollectionRequest()#>)this;
     }
@@ -97,7 +96,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param value the order by clause
      * @return the updated request
      */
-    public <#=c.ITypeCollectionRequest()#> orderBy(final String value) {
+    public <#=c.TypeCollectionRequest()#> orderBy(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (<#=c.TypeCollectionRequest()#>)this;
     }
@@ -110,7 +109,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param value the select clause
      * @return the updated request
      */
-    public <#=c.ITypeCollectionRequest()#> select(final String value) {
+    public <#=c.TypeCollectionRequest()#> select(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return (<#=c.TypeCollectionRequest()#>)this;
     }
@@ -123,7 +122,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param value the max number of items to return
      * @return the updated request
      */
-    public <#=c.ITypeCollectionRequest()#> top(final int value) {
+    public <#=c.TypeCollectionRequest()#> top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
         return (<#=c.TypeCollectionRequest()#>)this;
     }
@@ -136,7 +135,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param value of the number of items to skip
      * @return the updated request
      */
-    public <#=c.ITypeCollectionRequest()#> skip(final int value) {
+    public <#=c.TypeCollectionRequest()#> skip(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$skip", value + ""));
         return (<#=c.TypeCollectionRequest()#>)this;
     }
@@ -148,12 +147,12 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param skipToken - Token for pagination
      * @return the updated request
      */
-    public <#=c.ITypeCollectionRequest()#> skipToken(final String skipToken) {
+    public <#=c.TypeCollectionRequest()#> skipToken(final String skipToken) {
     	addQueryOption(new QueryOption("$skiptoken", skipToken));
-        return (<#=c.ITypeCollectionRequest()#>)this;
+        return (<#=c.TypeCollectionRequest()#>)this;
     }
-    public <#=c.ITypeCollectionPage()#> buildFromResponse(final <#=c.BaseTypeCollectionResponse()#> response) {
-        final <#=c.ITypeCollectionRequestBuilder()#> builder;
+    public <#=c.TypeCollectionPage()#> buildFromResponse(final <#=c.BaseTypeCollectionResponse()#> response) {
+        final <#=c.TypeCollectionRequestBuilder()#> builder;
         if (response.nextLink != null) {
             builder = new <#=c.TypeCollectionRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
         } else {

@@ -24,7 +24,7 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 /**
  * The class for the Entity Type3With Reference Request.
  */
-public class EntityType3WithReferenceRequest extends BaseRequest implements IEntityType3WithReferenceRequest {
+public class EntityType3WithReferenceRequest extends BaseRequest {
 
     /**
      * The request for the EntityType3
@@ -80,9 +80,9 @@ public class EntityType3WithReferenceRequest extends BaseRequest implements IEnt
      * @param value the select clause
      * @return the updated request
      */
-    public IEntityType3WithReferenceRequest select(final String value) {
+    public EntityType3WithReferenceRequest select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (IEntityType3WithReferenceRequest)this;
+        return (EntityType3WithReferenceRequest)this;
     }
 
     /**
@@ -91,7 +91,7 @@ public class EntityType3WithReferenceRequest extends BaseRequest implements IEnt
      * @param value the expand clause
      * @return the updated request
      */
-    public IEntityType3WithReferenceRequest expand(final String value) {
+    public EntityType3WithReferenceRequest expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (EntityType3WithReferenceRequest)this;
     }

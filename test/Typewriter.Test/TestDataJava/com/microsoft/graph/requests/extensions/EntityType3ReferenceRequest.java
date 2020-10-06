@@ -23,7 +23,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Entity Type3Reference Request.
  */
-public class EntityType3ReferenceRequest extends BaseRequest implements IEntityType3ReferenceRequest {
+public class EntityType3ReferenceRequest extends BaseRequest {
 
     /**
      * The request for the EntityType3
@@ -50,7 +50,7 @@ public class EntityType3ReferenceRequest extends BaseRequest implements IEntityT
      * @param value the select clause
      * @return the updated request
      */
-    public IEntityType3ReferenceRequest select(final String value) {
+    public EntityType3ReferenceRequest select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (EntityType3ReferenceRequest)this;
     }
@@ -61,7 +61,7 @@ public class EntityType3ReferenceRequest extends BaseRequest implements IEntityT
      * @param value the expand clause
      * @return the updated request
      */
-    public IEntityType3ReferenceRequest expand(final String value) {
+    public EntityType3ReferenceRequest expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (EntityType3ReferenceRequest)this;
     }

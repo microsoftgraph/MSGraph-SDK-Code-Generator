@@ -8,8 +8,6 @@ import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.Group;
-import com.microsoft.graph.requests.extensions.IDirectoryObjectCollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IDirectoryObjectRequestBuilder;
 import com.microsoft.graph.requests.extensions.DirectoryObjectCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.DirectoryObjectRequestBuilder;
 import java.util.Arrays;
@@ -23,7 +21,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Group With Reference Request Builder.
  */
-public class GroupWithReferenceRequestBuilder extends BaseRequestBuilder implements IGroupWithReferenceRequestBuilder {
+public class GroupWithReferenceRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the Group
@@ -40,9 +38,9 @@ public class GroupWithReferenceRequestBuilder extends BaseRequestBuilder impleme
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IGroupWithReferenceRequest instance
+     * @return the GroupWithReferenceRequest instance
      */
-    public IGroupWithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public GroupWithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -50,13 +48,13 @@ public class GroupWithReferenceRequestBuilder extends BaseRequestBuilder impleme
      * Creates the request with specific options instead of the existing options
 	 *
      * @param requestOptions the options for this request
-     * @return the IGroupWithReferenceRequest instance
+     * @return the GroupWithReferenceRequest instance
      */
-    public IGroupWithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public GroupWithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new GroupWithReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public IGroupReferenceRequestBuilder reference(){
+    public GroupReferenceRequestBuilder reference(){
         return new GroupReferenceRequestBuilder(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
 

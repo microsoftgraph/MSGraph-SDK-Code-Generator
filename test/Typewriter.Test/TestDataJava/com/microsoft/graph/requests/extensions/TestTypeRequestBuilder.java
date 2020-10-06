@@ -20,7 +20,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Test Type Request Builder.
  */
-public class TestTypeRequestBuilder extends BaseRequestBuilder implements ITestTypeRequestBuilder {
+public class TestTypeRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for the TestType
@@ -37,9 +37,9 @@ public class TestTypeRequestBuilder extends BaseRequestBuilder implements ITestT
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the ITestTypeRequest instance
+     * @return the TestTypeRequest instance
      */
-    public ITestTypeRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public TestTypeRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -47,15 +47,15 @@ public class TestTypeRequestBuilder extends BaseRequestBuilder implements ITestT
      * Creates the request with specific requestOptions instead of the existing requestOptions
      *
      * @param requestOptions the options for this request
-     * @return the ITestTypeRequest instance
+     * @return the TestTypeRequest instance
      */
-    public ITestTypeRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public TestTypeRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.TestTypeRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
 
 
-    public ITestTypeQueryCollectionRequestBuilder query(final java.util.List<DerivedComplexTypeRequest> requests) {
+    public TestTypeQueryCollectionRequestBuilder query(final java.util.List<DerivedComplexTypeRequest> requests) {
         return new TestTypeQueryCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.query"), getClient(), null, requests);
     }
 }

@@ -13,9 +13,9 @@ import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import com.microsoft.graph.requests.extensions.IEntityType3CollectionRequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType3RequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType3CollectionRequest;
+import com.microsoft.graph.requests.extensions.EntityType3CollectionRequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
+import com.microsoft.graph.requests.extensions.EntityType3CollectionRequest;
 import com.microsoft.graph.http.BaseRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
 
@@ -24,7 +24,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Entity Type3Collection Request Builder.
  */
-public class EntityType3CollectionRequestBuilder extends BaseRequestBuilder implements IEntityType3CollectionRequestBuilder {
+public class EntityType3CollectionRequestBuilder extends BaseRequestBuilder {
 
     /**
      * The request builder for this collection of EntityType3
@@ -43,7 +43,7 @@ public class EntityType3CollectionRequestBuilder extends BaseRequestBuilder impl
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public IEntityType3CollectionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    public EntityType3CollectionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -53,11 +53,11 @@ public class EntityType3CollectionRequestBuilder extends BaseRequestBuilder impl
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public IEntityType3CollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3CollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new EntityType3CollectionRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public IEntityType3RequestBuilder byId(final String id) {
+    public EntityType3RequestBuilder byId(final String id) {
         return new EntityType3RequestBuilder(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
     }
 

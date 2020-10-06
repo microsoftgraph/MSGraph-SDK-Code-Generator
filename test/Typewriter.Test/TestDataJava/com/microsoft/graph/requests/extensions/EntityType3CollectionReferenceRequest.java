@@ -25,7 +25,7 @@ import com.microsoft.graph.models.extensions.EntityType3;
 /**
  * The class for the Entity Type3Collection Reference Request.
  */
-public class EntityType3CollectionReferenceRequest extends BaseCollectionRequest<EntityType3CollectionResponse, IEntityType3CollectionPage> implements IEntityType3CollectionReferenceRequest {
+public class EntityType3CollectionReferenceRequest extends BaseCollectionRequest<EntityType3CollectionResponse, EntityType3CollectionPage> {
 
     /**
      * The request builder for this collection of EntityType3
@@ -35,7 +35,7 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionRequest
      * @param requestOptions the options for this request
      */
     public EntityType3CollectionReferenceRequest(final String requestUrl, IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, IEntityType3CollectionPage.class);
+        super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, EntityType3CollectionPage.class);
     }
 
     public void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
@@ -59,7 +59,7 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionRequest
      * @param value the expand clause
      * @return the updated request
      */
-    public IEntityType3CollectionReferenceRequest expand(final String value) {
+    public EntityType3CollectionReferenceRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (EntityType3CollectionReferenceRequest)this;
     }
@@ -70,7 +70,7 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionRequest
      * @param value the filter clause
      * @return the updated request
      */
-    public IEntityType3CollectionReferenceRequest filter(final String value) {
+    public EntityType3CollectionReferenceRequest filter(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (EntityType3CollectionReferenceRequest)this;
     }
@@ -81,7 +81,7 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionRequest
      * @param value the sort clause
      * @return the updated request
      */
-    public IEntityType3CollectionReferenceRequest orderBy(final String value) {
+    public EntityType3CollectionReferenceRequest orderBy(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (EntityType3CollectionReferenceRequest)this;
     }
@@ -92,7 +92,7 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionRequest
      * @param value the select clause
      * @return the updated request
      */
-    public IEntityType3CollectionReferenceRequest select(final String value) {
+    public EntityType3CollectionReferenceRequest select(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return (EntityType3CollectionReferenceRequest)this;
     }
@@ -103,7 +103,7 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionRequest
      * @param value the max number of items to return
      * @return the updated request
      */
-    public IEntityType3CollectionReferenceRequest top(final int value) {
+    public EntityType3CollectionReferenceRequest top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
         return (EntityType3CollectionReferenceRequest)this;
     }
