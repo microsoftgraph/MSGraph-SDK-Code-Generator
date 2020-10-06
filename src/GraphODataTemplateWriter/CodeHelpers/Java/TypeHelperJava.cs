@@ -751,20 +751,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             }
             return sb.ToString();
         }
-
-        public static string CreatePackageDefIBaseMethodRequestBuilder(this CustomT4Host host)
-        {
-            var sb = new StringBuilder();
-            sb.Append(host.CreatePackageDefinition());
-            var importFormat = @"import {0}.{1}.{2};";
-            sb.AppendFormat(importFormat,
-                            host.CurrentNamespace(),
-                            GetPrefixForRequests(),
-                            host.CurrentType.TypeRequest());
-            sb.Append("\n");
-            return sb.ToString();
-        }
-
         public static string CreatePackageDefForBaseEntityCollectionPage(this CustomT4Host host)
         {
             var sb = new StringBuilder();
