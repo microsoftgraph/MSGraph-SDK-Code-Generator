@@ -27,8 +27,8 @@ if (returnEntityType != null)
     // GetMethodRequestPrimitiveReturnTypeString() in SharedCSharp.
     var tempReturnType = GetMethodRequestPrimitiveReturnTypeString(returnEntityType);
 
-    // These magic strings represent types in M.G.C. If the return
-    // type is a primitive, then make it nullable.
+    // These magic strings represent types in Microsoft.Graph.Core.
+    // If the return type is a primitive, then make it nullable.
     if (tempReturnType == "ODataMethodIntResponse" ||
         tempReturnType == "ODataMethodBooleanResponse" ||
         tempReturnType == "ODataMethodLongResponse")
