@@ -45,9 +45,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                 case "DateTimeOffset":
                     return "java.util.Calendar";
                 case "Date":
-                    return "com.microsoft.graph.models.extensions.DateOnly";
+                    return "com.microsoft.graph.core.DateOnly";
                 case "TimeOfDay":
-                    return "com.microsoft.graph.models.extensions.TimeOfDay";
+                    return "com.microsoft.graph.core.TimeOfDay";
                 case "Duration":
                     return "javax.xml.datatype.Duration";
                 case "Json":
