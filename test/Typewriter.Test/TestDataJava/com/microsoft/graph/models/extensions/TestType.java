@@ -27,7 +27,7 @@ public class TestType extends Entity implements IJsonBackedObject {
      * The Property Alpha.
      * 
      */
-    @SerializedName("propertyAlpha")
+    @SerializedName(value = "propertyAlpha", alternate = {"PropertyAlpha"})
     @Expose
     public DerivedComplexTypeRequest propertyAlpha;
 

@@ -18,8 +18,27 @@ var requestType = entityName + methodName + "Request";
 
 var returnEntityType = method.ReturnType == null ? null : method.ReturnType.GetTypeString(@namespace);
 var returnEntityParameter = string.Empty;
-if (returnEntityType != null) {returnEntityParameter = returnEntityType.ToLower();}
+if (returnEntityType != null) 
+{
+    returnEntityParameter = returnEntityType.ToLower();
+
+    // Updates to supported OData primitives need to occur here,
+    // IMethodRequest.cs.tt, Microsoft.Graph.Core, and in
+    // GetMethodRequestPrimitiveReturnTypeString() in SharedCSharp.
+    var tempReturnType = GetMethodRequestPrimitiveReturnTypeString(returnEntityType);
+
+    // These magic strings represent types in Microsoft.Graph.Core.
+    // If the return type is a primitive, then make it nullable.
+    if (tempReturnType == "ODataMethodIntResponse" ||
+        tempReturnType == "ODataMethodBooleanResponse" ||
+        tempReturnType == "ODataMethodLongResponse")
+    {
+        returnEntityType = returnEntityType + "?";
+    }
+}
 var returnTypeObject = method.ReturnType == null ? null : method.ReturnType.AsOdcmClass();
+
+
 
 var isCollection = method.IsCollection;
 
@@ -27,9 +46,13 @@ var sendAsyncReturnType = isCollection
     ? "I" + entityName + methodName + "CollectionPage"
     : returnEntityType;
 
+
+
 var methodReturnType = sendAsyncReturnType == null
     ? "System.Threading.Tasks.Task"
     : "System.Threading.Tasks.Task<" + sendAsyncReturnType + ">";
+
+
 
 bool hasParameters = method.Parameters != null && method.Parameters.Any();
 bool includeRequestBody = hasParameters && isAction;

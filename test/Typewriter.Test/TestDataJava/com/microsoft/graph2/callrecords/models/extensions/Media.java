@@ -38,7 +38,7 @@ public class Media implements IJsonBackedObject {
      * The Label.
      * 
      */
-    @SerializedName("label")
+    @SerializedName(value = "label", alternate = {"Label"})
     @Expose
     public String label;
 
@@ -46,7 +46,7 @@ public class Media implements IJsonBackedObject {
      * The Caller Network.
      * 
      */
-    @SerializedName("callerNetwork")
+    @SerializedName(value = "callerNetwork", alternate = {"CallerNetwork"})
     @Expose
     public NetworkInfo callerNetwork;
 
@@ -54,7 +54,7 @@ public class Media implements IJsonBackedObject {
      * The Caller Device.
      * 
      */
-    @SerializedName("callerDevice")
+    @SerializedName(value = "callerDevice", alternate = {"CallerDevice"})
     @Expose
     public DeviceInfo callerDevice;
 
@@ -62,7 +62,7 @@ public class Media implements IJsonBackedObject {
      * The Streams.
      * 
      */
-    @SerializedName("streams")
+    @SerializedName(value = "streams", alternate = {"Streams"})
     @Expose
     public java.util.List<MediaStream> streams;
 

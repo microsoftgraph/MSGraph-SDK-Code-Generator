@@ -1016,9 +1016,9 @@ import java.util.EnumSet;";
      * The {0}.
      * {1}
      */
-    @SerializedName(""{2}"")
+    @SerializedName(value = ""{2}"", alternate = {{""{3}""}})
     @Expose
-    public {3} {4};
+    public {4} {5};
 
 ";
             foreach (var p in parameters)
@@ -1028,6 +1028,7 @@ import java.util.EnumSet;";
                     p.ParamName().SplitCamelCase(),
                     ReplaceInvalidCharacters(p.LongDescription),
                     p.ParamName(),
+                    p.ParamName().ToUpperFirstChar(),
                     p.ParamType(),
                     p.ParamName().SanitizePropertyName(p).ToLowerFirstChar()
                 );
@@ -1160,19 +1161,19 @@ import java.util.EnumSet;";
             var format =
     @"    /**
      * The {0}.
-     * {4}
+     * {1}
      */
-    @SerializedName(""{1}"")
+    @SerializedName(value = ""{2}"", alternate = {{""{3}""}})
     @Expose
-    public {2} {3};
+    public {4} {5};
 
 ";
             var collectionFormat =
     @"    /**
      * The {0}.
-     * {4}
+     * {1}
      */
-    public {2} {3};
+    public {4} {5};
 
 ";
 
@@ -1201,10 +1202,11 @@ import java.util.EnumSet;";
 
                 sb.AppendFormat(propertyFormat,
                     propertyName.SplitCamelCase(),
+                    GetSanitizedDescription(property),
                     property.Name,
+                    propertyName,
                     propertyType,
-                    property.Name.ToLowerFirstChar().SanitizePropertyName(property),
-                    GetSanitizedDescription(property));
+                    property.Name.ToLowerFirstChar().SanitizePropertyName(property));
             }
             return sb.ToString();
         }

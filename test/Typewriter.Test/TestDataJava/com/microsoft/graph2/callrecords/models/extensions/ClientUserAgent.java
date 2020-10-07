@@ -28,7 +28,7 @@ public class ClientUserAgent extends UserAgent implements IJsonBackedObject {
      * The Platform.
      * 
      */
-    @SerializedName("platform")
+    @SerializedName(value = "platform", alternate = {"Platform"})
     @Expose
     public ClientPlatform platform;
 
@@ -36,7 +36,7 @@ public class ClientUserAgent extends UserAgent implements IJsonBackedObject {
      * The Product Family.
      * 
      */
-    @SerializedName("productFamily")
+    @SerializedName(value = "productFamily", alternate = {"ProductFamily"})
     @Expose
     public ProductFamily productFamily;
 
