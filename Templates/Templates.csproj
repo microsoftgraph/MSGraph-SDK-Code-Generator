@@ -104,7 +104,6 @@
     <Content Include="CSharp\Requests\StreamRequestBuilder.cs.tt" />
     <Content Include="GraphEndpointList\src\graph_endpoint_list.txt.tt" />
     <Content Include="Java\models_extensions\*" />
-    <Content Include="Java\models_extensions\IClient.java.tt" />
     <Content Include="Java\models_generated\*" />
     <Content Include="Java\models_generated\Enum.java.tt" />
     <Content Include="Java\requests_extensions\BaseClient.java.tt" />
@@ -132,8 +131,6 @@
     <Content Include="Java\requests_extensions\BaseMethodRequest.java.tt" />
     <Content Include="Java\requests_extensions\BaseMethodRequestBuilder.java.tt" />
     <Content Include="Java\requests_extensions\BaseStreamRequest.java.tt" />
-    <Content Include="Java\requests_extensions\Client.java.tt" />
-    <Content Include="Java\requests_extensions\Client.java.tt" />
     <Content Include="Java\requests_generated\*" />
     <Content Include="ObjC\Base\SharedObjC.template.tt" />
     <Content Include="ObjC\Models\ComplexType.h.tt" />
