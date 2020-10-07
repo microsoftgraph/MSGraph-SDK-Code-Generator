@@ -22,7 +22,7 @@ public class OnenotePageForwardBody {
      * The to Recipients.
      * 
      */
-    @SerializedName("toRecipients")
+    @SerializedName(value = "toRecipients", alternate = {"ToRecipients"})
     @Expose
     public java.util.List<Recipient> toRecipients;
 
@@ -30,7 +30,7 @@ public class OnenotePageForwardBody {
      * The details.
      * 
      */
-    @SerializedName("details")
+    @SerializedName(value = "details", alternate = {"Details"})
     @Expose
     public String details;
 
@@ -38,7 +38,7 @@ public class OnenotePageForwardBody {
      * The comment.
      * 
      */
-    @SerializedName("comment")
+    @SerializedName(value = "comment", alternate = {"Comment"})
     @Expose
     public String comment;
 

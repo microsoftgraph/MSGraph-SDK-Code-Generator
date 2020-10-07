@@ -23,7 +23,7 @@ public class SegmentTestActionBody {
      * The value.
      * 
      */
-    @SerializedName("value")
+    @SerializedName(value = "value", alternate = {"Value"})
     @Expose
     public IdentitySet value;
 

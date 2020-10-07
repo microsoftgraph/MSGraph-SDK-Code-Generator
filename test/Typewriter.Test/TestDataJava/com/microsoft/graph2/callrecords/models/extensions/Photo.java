@@ -28,7 +28,7 @@ public class Photo extends Entity implements IJsonBackedObject {
      * The Failure Info.
      * 
      */
-    @SerializedName("failureInfo")
+    @SerializedName(value = "failureInfo", alternate = {"FailureInfo"})
     @Expose
     public FailureInfo failureInfo;
 
@@ -36,7 +36,7 @@ public class Photo extends Entity implements IJsonBackedObject {
      * The Option.
      * 
      */
-    @SerializedName("option")
+    @SerializedName(value = "option", alternate = {"Option"})
     @Expose
     public Option option;
 

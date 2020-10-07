@@ -35,7 +35,7 @@ public class DeviceInfo implements IJsonBackedObject {
      * The Capture Device Name.
      * 
      */
-    @SerializedName("captureDeviceName")
+    @SerializedName(value = "captureDeviceName", alternate = {"CaptureDeviceName"})
     @Expose
     public String captureDeviceName;
 
@@ -43,7 +43,7 @@ public class DeviceInfo implements IJsonBackedObject {
      * The Sent Signal Level.
      * 
      */
-    @SerializedName("sentSignalLevel")
+    @SerializedName(value = "sentSignalLevel", alternate = {"SentSignalLevel"})
     @Expose
     public Integer sentSignalLevel;
 
@@ -51,7 +51,7 @@ public class DeviceInfo implements IJsonBackedObject {
      * The Speaker Glitch Rate.
      * 
      */
-    @SerializedName("speakerGlitchRate")
+    @SerializedName(value = "speakerGlitchRate", alternate = {"SpeakerGlitchRate"})
     @Expose
     public float speakerGlitchRate;
 

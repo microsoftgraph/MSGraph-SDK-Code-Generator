@@ -28,7 +28,7 @@ public class ParticipantEndpoint extends Endpoint implements IJsonBackedObject {
      * The Identity.
      * 
      */
-    @SerializedName("identity")
+    @SerializedName(value = "identity", alternate = {"Identity"})
     @Expose
     public IdentitySet identity;
 
@@ -36,7 +36,7 @@ public class ParticipantEndpoint extends Endpoint implements IJsonBackedObject {
      * The Feedback.
      * 
      */
-    @SerializedName("feedback")
+    @SerializedName(value = "feedback", alternate = {"Feedback"})
     @Expose
     public UserFeedback feedback;
 

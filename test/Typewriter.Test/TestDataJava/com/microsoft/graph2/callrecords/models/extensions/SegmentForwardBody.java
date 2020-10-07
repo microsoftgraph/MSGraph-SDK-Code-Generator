@@ -23,7 +23,7 @@ public class SegmentForwardBody {
      * The to Recipients.
      * 
      */
-    @SerializedName("toRecipients")
+    @SerializedName(value = "toRecipients", alternate = {"ToRecipients"})
     @Expose
     public java.util.List<Recipient> toRecipients;
 
@@ -31,7 +31,7 @@ public class SegmentForwardBody {
      * The single Recipient.
      * 
      */
-    @SerializedName("singleRecipient")
+    @SerializedName(value = "singleRecipient", alternate = {"SingleRecipient"})
     @Expose
     public Recipient singleRecipient;
 
@@ -39,7 +39,7 @@ public class SegmentForwardBody {
      * The multiple Sessions.
      * 
      */
-    @SerializedName("multipleSessions")
+    @SerializedName(value = "multipleSessions", alternate = {"MultipleSessions"})
     @Expose
     public java.util.List<Session> multipleSessions;
 
@@ -47,7 +47,7 @@ public class SegmentForwardBody {
      * The single Session.
      * 
      */
-    @SerializedName("singleSession")
+    @SerializedName(value = "singleSession", alternate = {"SingleSession"})
     @Expose
     public Session singleSession;
 
@@ -55,7 +55,7 @@ public class SegmentForwardBody {
      * The comment.
      * 
      */
-    @SerializedName("comment")
+    @SerializedName(value = "comment", alternate = {"Comment"})
     @Expose
     public String comment;
 
