@@ -26,7 +26,7 @@ public class Endpoint extends Entity implements IJsonBackedObject {
      * The Property1.
      * 
      */
-    @SerializedName("property1")
+    @SerializedName(value = "property1", alternate = {"Property1"})
     @Expose
     public Long property1;
 

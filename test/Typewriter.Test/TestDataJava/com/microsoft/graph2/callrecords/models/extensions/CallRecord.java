@@ -33,7 +33,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
      * The Version.
      * 
      */
-    @SerializedName("version")
+    @SerializedName(value = "version", alternate = {"Version"})
     @Expose
     public Long version;
 
@@ -41,7 +41,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
      * The Type.
      * 
      */
-    @SerializedName("type")
+    @SerializedName(value = "type", alternate = {"Type"})
     @Expose
     public CallType type;
 
@@ -49,7 +49,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
      * The Modalities.
      * 
      */
-    @SerializedName("modalities")
+    @SerializedName(value = "modalities", alternate = {"Modalities"})
     @Expose
     public java.util.List<Modality> modalities;
 
@@ -57,7 +57,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
      * The Last Modified Date Time.
      * 
      */
-    @SerializedName("lastModifiedDateTime")
+    @SerializedName(value = "lastModifiedDateTime", alternate = {"LastModifiedDateTime"})
     @Expose
     public java.util.Calendar lastModifiedDateTime;
 
@@ -65,7 +65,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
      * The Start Date Time.
      * 
      */
-    @SerializedName("startDateTime")
+    @SerializedName(value = "startDateTime", alternate = {"StartDateTime"})
     @Expose
     public java.util.Calendar startDateTime;
 
@@ -73,7 +73,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
      * The End Date Time.
      * 
      */
-    @SerializedName("endDateTime")
+    @SerializedName(value = "endDateTime", alternate = {"EndDateTime"})
     @Expose
     public java.util.Calendar endDateTime;
 
@@ -81,7 +81,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
      * The Organizer.
      * 
      */
-    @SerializedName("organizer")
+    @SerializedName(value = "organizer", alternate = {"Organizer"})
     @Expose
     public IdentitySet organizer;
 
@@ -89,7 +89,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
      * The Participants.
      * 
      */
-    @SerializedName("participants")
+    @SerializedName(value = "participants", alternate = {"Participants"})
     @Expose
     public java.util.List<IdentitySet> participants;
 
@@ -97,7 +97,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
      * The Join Web Url.
      * 
      */
-    @SerializedName("joinWebUrl")
+    @SerializedName(value = "joinWebUrl", alternate = {"JoinWebUrl"})
     @Expose
     public String joinWebUrl;
 
@@ -105,7 +105,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
      * The Sessions.
      * 
      */
-    @SerializedName("sessions")
+    @SerializedName(value = "sessions", alternate = {"Sessions"})
     @Expose
     public SessionCollectionPage sessions;
 
@@ -113,7 +113,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
      * The Recipients.
      * 
      */
-    @SerializedName("recipients")
+    @SerializedName(value = "recipients", alternate = {"Recipients"})
     @Expose
     public EntityType2CollectionPage recipients;
 

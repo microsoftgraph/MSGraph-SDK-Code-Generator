@@ -36,7 +36,7 @@ public class Endpoint implements IJsonBackedObject {
      * The User Agent.
      * 
      */
-    @SerializedName("userAgent")
+    @SerializedName(value = "userAgent", alternate = {"UserAgent"})
     @Expose
     public UserAgent userAgent;
 

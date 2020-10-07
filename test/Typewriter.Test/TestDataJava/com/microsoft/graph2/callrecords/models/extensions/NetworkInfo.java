@@ -38,7 +38,7 @@ public class NetworkInfo implements IJsonBackedObject {
      * The Connection Type.
      * 
      */
-    @SerializedName("connectionType")
+    @SerializedName(value = "connectionType", alternate = {"ConnectionType"})
     @Expose
     public NetworkConnectionType connectionType;
 
@@ -46,7 +46,7 @@ public class NetworkInfo implements IJsonBackedObject {
      * The Wifi Band.
      * 
      */
-    @SerializedName("wifiBand")
+    @SerializedName(value = "wifiBand", alternate = {"WifiBand"})
     @Expose
     public WifiBand wifiBand;
 
@@ -54,7 +54,7 @@ public class NetworkInfo implements IJsonBackedObject {
      * The Basic Service Set Identifier.
      * 
      */
-    @SerializedName("basicServiceSetIdentifier")
+    @SerializedName(value = "basicServiceSetIdentifier", alternate = {"BasicServiceSetIdentifier"})
     @Expose
     public String basicServiceSetIdentifier;
 
@@ -62,7 +62,7 @@ public class NetworkInfo implements IJsonBackedObject {
      * The Wifi Radio Type.
      * 
      */
-    @SerializedName("wifiRadioType")
+    @SerializedName(value = "wifiRadioType", alternate = {"WifiRadioType"})
     @Expose
     public WifiRadioType wifiRadioType;
 
@@ -70,7 +70,7 @@ public class NetworkInfo implements IJsonBackedObject {
      * The Wifi Signal Strength.
      * 
      */
-    @SerializedName("wifiSignalStrength")
+    @SerializedName(value = "wifiSignalStrength", alternate = {"WifiSignalStrength"})
     @Expose
     public Integer wifiSignalStrength;
 
@@ -78,7 +78,7 @@ public class NetworkInfo implements IJsonBackedObject {
      * The Bandwidth Low Event Ratio.
      * 
      */
-    @SerializedName("bandwidthLowEventRatio")
+    @SerializedName(value = "bandwidthLowEventRatio", alternate = {"BandwidthLowEventRatio"})
     @Expose
     public float bandwidthLowEventRatio;
 

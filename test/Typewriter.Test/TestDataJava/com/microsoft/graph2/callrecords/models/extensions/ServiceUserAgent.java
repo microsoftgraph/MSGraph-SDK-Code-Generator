@@ -27,7 +27,7 @@ public class ServiceUserAgent extends UserAgent implements IJsonBackedObject {
      * The Role.
      * 
      */
-    @SerializedName("role")
+    @SerializedName(value = "role", alternate = {"Role"})
     @Expose
     public ServiceRole role;
 

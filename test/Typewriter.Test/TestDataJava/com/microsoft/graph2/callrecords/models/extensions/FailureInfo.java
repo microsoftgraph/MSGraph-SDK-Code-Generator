@@ -36,7 +36,7 @@ public class FailureInfo implements IJsonBackedObject {
      * The Stage.
      * 
      */
-    @SerializedName("stage")
+    @SerializedName(value = "stage", alternate = {"Stage"})
     @Expose
     public FailureStage stage;
 
@@ -44,7 +44,7 @@ public class FailureInfo implements IJsonBackedObject {
      * The Reason.
      * 
      */
-    @SerializedName("reason")
+    @SerializedName(value = "reason", alternate = {"Reason"})
     @Expose
     public String reason;
 

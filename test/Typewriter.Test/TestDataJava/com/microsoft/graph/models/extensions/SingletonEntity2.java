@@ -27,7 +27,7 @@ public class SingletonEntity2 extends Entity implements IJsonBackedObject {
      * The Test Single Nav2.
      * 
      */
-    @SerializedName("testSingleNav2")
+    @SerializedName(value = "testSingleNav2", alternate = {"TestSingleNav2"})
     @Expose
     public EntityType3 testSingleNav2;
 

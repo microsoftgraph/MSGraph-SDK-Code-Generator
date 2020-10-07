@@ -27,7 +27,7 @@ public class DerivedComplexTypeRequest extends EmptyBaseComplexTypeRequest imple
      * The Property1.
      * 
      */
-    @SerializedName("property1")
+    @SerializedName(value = "property1", alternate = {"Property1"})
     @Expose
     public String property1;
 
@@ -35,7 +35,7 @@ public class DerivedComplexTypeRequest extends EmptyBaseComplexTypeRequest imple
      * The Property2.
      * 
      */
-    @SerializedName("property2")
+    @SerializedName(value = "property2", alternate = {"Property2"})
     @Expose
     public String property2;
 
@@ -43,7 +43,7 @@ public class DerivedComplexTypeRequest extends EmptyBaseComplexTypeRequest imple
      * The Enum Property.
      * 
      */
-    @SerializedName("enumProperty")
+    @SerializedName(value = "enumProperty", alternate = {"EnumProperty"})
     @Expose
     public Enum1 enumProperty;
 
