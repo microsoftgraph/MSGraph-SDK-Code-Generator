@@ -30,7 +30,7 @@ public class Schedule extends Entity implements IJsonBackedObject {
      * The Enabled.
      * 
      */
-    @SerializedName("enabled")
+    @SerializedName(value = "enabled", alternate = {"Enabled"})
     @Expose
     public Boolean enabled;
 
@@ -38,7 +38,7 @@ public class Schedule extends Entity implements IJsonBackedObject {
      * The Times Off.
      * 
      */
-    @SerializedName("timesOff")
+    @SerializedName(value = "timesOff", alternate = {"TimesOff"})
     @Expose
     public TimeOffCollectionPage timesOff;
 
@@ -46,7 +46,7 @@ public class Schedule extends Entity implements IJsonBackedObject {
      * The Time Off Requests.
      * 
      */
-    @SerializedName("timeOffRequests")
+    @SerializedName(value = "timeOffRequests", alternate = {"TimeOffRequests"})
     @Expose
     public TimeOffRequestCollectionPage timeOffRequests;
 

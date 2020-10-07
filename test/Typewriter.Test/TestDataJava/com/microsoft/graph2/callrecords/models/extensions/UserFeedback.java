@@ -37,7 +37,7 @@ public class UserFeedback implements IJsonBackedObject {
      * The Text.
      * 
      */
-    @SerializedName("text")
+    @SerializedName(value = "text", alternate = {"Text"})
     @Expose
     public String text;
 
@@ -45,7 +45,7 @@ public class UserFeedback implements IJsonBackedObject {
      * The Rating.
      * 
      */
-    @SerializedName("rating")
+    @SerializedName(value = "rating", alternate = {"Rating"})
     @Expose
     public UserFeedbackRating rating;
 
@@ -53,7 +53,7 @@ public class UserFeedback implements IJsonBackedObject {
      * The Tokens.
      * 
      */
-    @SerializedName("tokens")
+    @SerializedName(value = "tokens", alternate = {"Tokens"})
     @Expose
     public FeedbackTokenSet tokens;
 

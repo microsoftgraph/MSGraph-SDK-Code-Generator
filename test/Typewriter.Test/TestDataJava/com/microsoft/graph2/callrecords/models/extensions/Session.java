@@ -31,7 +31,7 @@ public class Session extends Entity implements IJsonBackedObject {
      * The Modalities.
      * 
      */
-    @SerializedName("modalities")
+    @SerializedName(value = "modalities", alternate = {"Modalities"})
     @Expose
     public java.util.List<Modality> modalities;
 
@@ -39,7 +39,7 @@ public class Session extends Entity implements IJsonBackedObject {
      * The Start Date Time.
      * 
      */
-    @SerializedName("startDateTime")
+    @SerializedName(value = "startDateTime", alternate = {"StartDateTime"})
     @Expose
     public java.util.Calendar startDateTime;
 
@@ -47,7 +47,7 @@ public class Session extends Entity implements IJsonBackedObject {
      * The End Date Time.
      * 
      */
-    @SerializedName("endDateTime")
+    @SerializedName(value = "endDateTime", alternate = {"EndDateTime"})
     @Expose
     public java.util.Calendar endDateTime;
 
@@ -55,7 +55,7 @@ public class Session extends Entity implements IJsonBackedObject {
      * The Caller.
      * 
      */
-    @SerializedName("caller")
+    @SerializedName(value = "caller", alternate = {"Caller"})
     @Expose
     public Endpoint caller;
 
@@ -63,7 +63,7 @@ public class Session extends Entity implements IJsonBackedObject {
      * The Callee.
      * 
      */
-    @SerializedName("callee")
+    @SerializedName(value = "callee", alternate = {"Callee"})
     @Expose
     public Endpoint callee;
 
@@ -71,7 +71,7 @@ public class Session extends Entity implements IJsonBackedObject {
      * The Failure Info.
      * 
      */
-    @SerializedName("failureInfo")
+    @SerializedName(value = "failureInfo", alternate = {"FailureInfo"})
     @Expose
     public FailureInfo failureInfo;
 
@@ -79,7 +79,7 @@ public class Session extends Entity implements IJsonBackedObject {
      * The Segments.
      * 
      */
-    @SerializedName("segments")
+    @SerializedName(value = "segments", alternate = {"Segments"})
     @Expose
     public SegmentCollectionPage segments;
 

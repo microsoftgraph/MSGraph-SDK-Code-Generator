@@ -29,7 +29,7 @@ public class TestEntity extends Entity implements IJsonBackedObject {
      * The Test Nav.
      * 
      */
-    @SerializedName("testNav")
+    @SerializedName(value = "testNav", alternate = {"TestNav"})
     @Expose
     public TestType testNav;
 
@@ -37,7 +37,7 @@ public class TestEntity extends Entity implements IJsonBackedObject {
      * The Test Invalid Nav.
      * 
      */
-    @SerializedName("testInvalidNav")
+    @SerializedName(value = "testInvalidNav", alternate = {"TestInvalidNav"})
     @Expose
     public EntityType2 testInvalidNav;
 
@@ -45,7 +45,7 @@ public class TestEntity extends Entity implements IJsonBackedObject {
      * The Test Explicit Nav.
      * 
      */
-    @SerializedName("testExplicitNav")
+    @SerializedName(value = "testExplicitNav", alternate = {"TestExplicitNav"})
     @Expose
     public EntityType3 testExplicitNav;
 

@@ -36,7 +36,7 @@ public class MediaStream implements IJsonBackedObject {
      * The Stream Id.
      * 
      */
-    @SerializedName("streamId")
+    @SerializedName(value = "streamId", alternate = {"StreamId"})
     @Expose
     public String streamId;
 
@@ -44,7 +44,7 @@ public class MediaStream implements IJsonBackedObject {
      * The Start Date Time.
      * 
      */
-    @SerializedName("startDateTime")
+    @SerializedName(value = "startDateTime", alternate = {"StartDateTime"})
     @Expose
     public java.util.Calendar startDateTime;
 
@@ -52,7 +52,7 @@ public class MediaStream implements IJsonBackedObject {
      * The Stream Direction.
      * 
      */
-    @SerializedName("streamDirection")
+    @SerializedName(value = "streamDirection", alternate = {"StreamDirection"})
     @Expose
     public MediaStreamDirection streamDirection;
 
@@ -60,7 +60,7 @@ public class MediaStream implements IJsonBackedObject {
      * The Packet Utilization.
      * 
      */
-    @SerializedName("packetUtilization")
+    @SerializedName(value = "packetUtilization", alternate = {"PacketUtilization"})
     @Expose
     public Long packetUtilization;
 
@@ -68,7 +68,7 @@ public class MediaStream implements IJsonBackedObject {
      * The Was Media Bypassed.
      * 
      */
-    @SerializedName("wasMediaBypassed")
+    @SerializedName(value = "wasMediaBypassed", alternate = {"WasMediaBypassed"})
     @Expose
     public Boolean wasMediaBypassed;
 
@@ -76,7 +76,7 @@ public class MediaStream implements IJsonBackedObject {
      * The Low Video Processing Capability Ratio.
      * 
      */
-    @SerializedName("lowVideoProcessingCapabilityRatio")
+    @SerializedName(value = "lowVideoProcessingCapabilityRatio", alternate = {"LowVideoProcessingCapabilityRatio"})
     @Expose
     public float lowVideoProcessingCapabilityRatio;
 
@@ -84,7 +84,7 @@ public class MediaStream implements IJsonBackedObject {
      * The Average Audio Network Jitter.
      * 
      */
-    @SerializedName("averageAudioNetworkJitter")
+    @SerializedName(value = "averageAudioNetworkJitter", alternate = {"AverageAudioNetworkJitter"})
     @Expose
     public javax.xml.datatype.Duration averageAudioNetworkJitter;
 

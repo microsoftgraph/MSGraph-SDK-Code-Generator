@@ -35,7 +35,7 @@ public class UserAgent implements IJsonBackedObject {
      * The Header Value.
      * 
      */
-    @SerializedName("headerValue")
+    @SerializedName(value = "headerValue", alternate = {"HeaderValue"})
     @Expose
     public String headerValue;
 
@@ -43,7 +43,7 @@ public class UserAgent implements IJsonBackedObject {
      * The Application Version.
      * 
      */
-    @SerializedName("applicationVersion")
+    @SerializedName(value = "applicationVersion", alternate = {"ApplicationVersion"})
     @Expose
     public String applicationVersion;
 

@@ -26,7 +26,7 @@ public class Call extends Entity implements IJsonBackedObject {
      * The Subject.
      * 
      */
-    @SerializedName("subject")
+    @SerializedName(value = "subject", alternate = {"Subject"})
     @Expose
     public String subject;
 
