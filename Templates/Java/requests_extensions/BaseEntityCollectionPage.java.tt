@@ -5,16 +5,13 @@
 <#host.TemplateName = c.TypeCollectionPage();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForBaseEntityCollectionPage()#>
-<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.http.BaseCollectionPage;
 <# var mainNamespace = host.CurrentNamespace(); #>
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
+import <#=mainNamespace#>.http.BaseCollectionPage;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
+import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage" + c.CollectionPageGeneric())#>
-<#
-String s = c.TypeName();
-#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage<"+ c.TypeName() + ">")#>
 
     /**
      * A collection page for <#=c.TypeName()#>
@@ -23,6 +20,6 @@ String s = c.TypeName();
      * @param builder  the request builder for the next collection page
      */
     public <#=c.TypeCollectionPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.TypeCollectionRequestBuilder()#> builder) {
-        super(response.value, builder, response.additionalDataManager());
+        super(response, builder);
     }
 }
