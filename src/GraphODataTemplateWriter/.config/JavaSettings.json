@@ -17,8 +17,6 @@
 
           { "Template": "BaseMethodBodyRequest", "SubProcessor": "MethodWithBody",                                                            "Name": "Base<Method>Request" },
 
-          { "Template": "MethodCollectionPage", "SubProcessor": "CollectionMethod",                                                           "Name": "<Method>CollectionPage", "Ignore": "ignorableCollection" },
-          { "Template": "BaseMethodCollectionPage", "SubProcessor": "CollectionMethod",                                                       "Name": "Base<Method>CollectionPage", "Ignore": "ignorableCollection" },
           { "Template": "BaseMethodCollectionRequest", "SubProcessor": "CollectionMethod",                                                    "Name": "Base<Method>CollectionRequest", "Ignore": "ignorableCollection" },
           { "Template": "MethodCollectionRequest", "SubProcessor": "CollectionMethod",                                                        "Name": "IBase<Method>CollectionRequest", "Ignore": "ignorableCollection" },
           { "Template": "BaseMethodCollectionRequestBuilder", "SubProcessor": "CollectionMethod",                                             "Name": "Base<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
@@ -37,11 +35,8 @@
           { "Template": "ExtensibleEntity", "SubProcessor": "ComplexType",                                                                    "Name": "<Class>" },
           { "Template": "BaseEntity", "SubProcessor": "ComplexType",                                                                          "Name": "Base<Class>" },
 
-          { "Template": "EntityCollectionPage", "SubProcessor": "NavigationCollectionProperty",                                               "Name": "<PropertyType>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "EntityCollectionRequest", "SubProcessor": "NavigationCollectionProperty",                                            "Name": "<PropertyType>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty",                                     "Name": "<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-          
-          { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty",                                  "Name": "<PropertyType>CollectionWithReferencesPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           
           { "Template": "EntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty",                        "Name": "<PropertyType>CollectionWithReferencesRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection"  },
           { "Template": "EntityCollectionWithReferencesRequest", "SubProcessor": "CollectionReferenceProperty",                               "Name": "<PropertyType>CollectionWithReferencesRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection"  },
@@ -62,13 +57,10 @@
           { "Template": "BaseEntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                      "Name": "Base<Class>WithReferencesRequestBuilder"},
           { "Template": "BaseEntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                           "Name": "Base<Class>ReferenceRequestBuilder"},
           
-          { "Template": "BaseEntityCollectionPage", "SubProcessor": "NavigationCollectionProperty",                                           "Name": "Base<PropertyType>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "BaseEntityCollectionRequest", "SubProcessor": "NavigationCollectionProperty",                                        "Name": "Base<PropertyType>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "BaseEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty",                                 "Name": "Base<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "BaseEntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty",                                       "Name": "Base<PropertyType>CollectionResponse", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           
-          { "Template": "BaseEntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty",                              "Name": "Base<PropertyType>CollectionWithReferencesPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-
           { "Template": "BaseEntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty",                    "Name": "Base<PropertyType>CollectionWithReferencesRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "BaseEntityCollectionWithReferencesRequest", "SubProcessor": "CollectionReferenceProperty",                           "Name": "Base<PropertyType>CollectionWithReferencesRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "BaseEntityCollectionReferenceRequestBuilder", "SubProcessor": "CollectionReferenceProperty",                         "Name": "Base<PropertyType>CollectionReferenceRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },          

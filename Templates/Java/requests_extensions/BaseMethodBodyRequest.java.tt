@@ -3,14 +3,14 @@
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
 <#
-    var baseClass = "BaseRequest";
     var typeRequest = c.TypeRequest();
     var baseTypeRequest = c.TypeRequest();
     var returnType = c.ReturnType();
+    var baseClass = "BaseRequest<"+returnType+">";
 
     if (c.AsOdcmMethod().IsCollection)
     {
-        baseClass = "BaseCollectionRequest";
+        baseClass = "BaseCollectionRequest<"+c.TypeName()+", "+c.TypeCollectionResponse()+">";
         typeRequest = c.TypeCollectionRequest();
         baseTypeRequest = c.TypeCollectionRequest();
     }
@@ -44,8 +44,13 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
+    @SuppressWarnings("unchecked")
     public <#=baseTypeRequest#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+<# if (c.AsOdcmMethod().IsCollection) { #>
+        super(requestUrl, client, requestOptions, <#=c.TypeName()#>.class, <#=returnType#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=returnType#>>(), null).getClass()));
+<# } else { #>
         super(requestUrl, client, requestOptions, <#=returnType#>.class);
+<# } #>
         body = new <#=c.TypeBody()#>();
     }
 
@@ -66,7 +71,7 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
      */
     public <#=typeRequest#> select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (<#=typeRequest#>)this;
+        return this;
     }
 
 <# } #>
@@ -79,7 +84,7 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
      */
     public <#=typeRequest#> top(final int value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
-        return (<#=typeRequest#>)this;
+        return this;
     }
 
 <# } #>
@@ -92,7 +97,7 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
      */
     public <#=typeRequest#> expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (<#=typeRequest#>)this;
+        return this;
     }
 
 <# } #>

@@ -33,7 +33,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.T
 import <#=importNamespace#>.http.BaseRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), "BaseRequestBuilder")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), "BaseRequestBuilder<"+c.TypeName()+">")#>
 
     /**
      * The request builder for this collection of <#=c.ClassTypeName()#>

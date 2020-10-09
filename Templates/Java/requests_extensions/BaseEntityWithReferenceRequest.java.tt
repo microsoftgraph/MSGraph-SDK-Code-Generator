@@ -8,12 +8,12 @@
 
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.options.QueryOption;
-import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.BaseWithReferenceRequest;
 import <#=importNamespace#>.http.HttpMethod;
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.serializer.IJsonBackedObject;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequest(), "BaseRequest")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequest(), "BaseWithReferenceRequest<"+c.ClassTypeName()+">")#>
 
     /**
      * The request for the <#=c.TypeName()#>
@@ -26,43 +26,6 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
-    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload, final ICallback<? super <#=c.TypeName()#>> callback) {
-        send(HttpMethod.POST, callback, payload);
-    }
-
-    public <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload) throws ClientException {
-        IJsonBackedObject response = send(HttpMethod.POST, payload);
-        if (response != null){
-            return new<#=c.TypeName()#>;
-        }
-        return null;
-    }
-
-    public void get(final ICallback<? super <#=c.TypeName()#>> callback) {
-        send(HttpMethod.GET, callback, null);
-    }
-
-    public <#=c.TypeName()#> get() throws ClientException {
-       return send(HttpMethod.GET, null);
-    }
-
-	public void delete(final ICallback<? super <#=c.TypeName()#>> callback) {
-		send(HttpMethod.DELETE, callback, null);
-	}
-
-	public void delete() throws ClientException {
-		send(HttpMethod.DELETE, null);
-	}
-
-	public void patch(final <#=c.TypeName()#> source<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
-		send(HttpMethod.PATCH, callback, source<#=c.TypeName()#>);
-	}
-
-	public <#=c.TypeName()#> patch(final <#=c.TypeName()#> source<#=c.TypeName()#>) throws ClientException {
-		return send(HttpMethod.PATCH, source<#=c.TypeName()#>);
-	}
-
-
 <# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
@@ -72,7 +35,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      */
     public <#=c.TypeWithReferencesRequest()#> select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (<#=c.TypeWithReferencesRequest()#>)this;
+        return this;
     }
 
 <# } #>
@@ -85,7 +48,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      */
     public <#=c.TypeWithReferencesRequest()#> expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (<#=c.TypeWithReferencesRequest()#>)this;
+        return this;
     }
 <# } #>
 }

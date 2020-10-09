@@ -13,7 +13,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseRequest;
 import <#=importNamespace#>.http.HttpMethod;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest<"+(c.AsOdcmMethod().ReturnType == null ? c.AsOdcmMethod().Class.TypeName() : c.AsOdcmMethod().ReturnType.TypeName())+">")#>
 
     /**
      * The request for this <#=c.TypeName()#>
@@ -23,7 +23,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param requestOptions the options for this request
      */
     public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.ReturnType()#>.class);
+        super(requestUrl, client, requestOptions, <#=(c.AsOdcmMethod().ReturnType == null ? c.AsOdcmMethod().Class.TypeName() : c.AsOdcmMethod().ReturnType.TypeName())#>.class);
     }
 
 <#
@@ -60,7 +60,7 @@ if (c.AsOdcmMethod().IsAction()) {
      */
     public <#=c.TypeRequest()#> select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (<#=c.TypeRequest()#>)this;
+        return this;
     }
 
 <#
@@ -76,7 +76,7 @@ if (c.AsOdcmMethod().IsAction()) {
      */
     public <#=c.TypeRequest()#> expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (<#=c.TypeRequest()#>)this;
+        return this;
     }
 
 <#
@@ -93,7 +93,7 @@ if (c.AsOdcmMethod().IsAction()) {
      */
     public <#=c.TypeRequest()#> top(final int value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
-        return (<#=c.TypeRequest()#>)this;
+        return this;
     }
 <#
         }
@@ -206,7 +206,7 @@ if (c.AsOdcmMethod().IsAction()) {
      */
     public <#=c.TypeRequest()#> select(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (<#=c.TypeRequest()#>)this;
+        return this;
     }
 
 <#
@@ -222,7 +222,7 @@ if (c.AsOdcmMethod().IsAction()) {
      */
     public <#=c.TypeRequest()#> expand(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (<#=c.TypeRequest()#>)this;
+        return this;
     }
 
 <#
@@ -237,7 +237,7 @@ if (c.AsOdcmMethod().IsAction()) {
      */
     public <#=c.TypeRequest()#> filter(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (<#=c.TypeRequest()#>)this;
+        return this;
     }
 
 <#
@@ -252,7 +252,7 @@ if (c.AsOdcmMethod().IsAction()) {
      */
     public <#=c.TypeRequest()#> orderBy(final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$orderby", value));
-        return (<#=c.TypeRequest()#>)this;
+        return this;
     }
 
 <#
@@ -268,7 +268,7 @@ if (c.AsOdcmMethod().IsAction()) {
      */
     public <#=c.TypeRequest()#> top(final int value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
-        return (<#=c.TypeRequest()#>)this;
+        return this;
     }
 <#
         }

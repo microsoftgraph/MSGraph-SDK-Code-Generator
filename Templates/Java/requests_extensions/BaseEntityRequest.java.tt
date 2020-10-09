@@ -10,7 +10,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseRequest;
 import <#=importNamespace#>.http.HttpMethod;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest<"+c.TypeName()+">")#>
 	<# if (c.AsOdcmClass() != null && c.AsOdcmClass().Derived.Any()) { #>
 
     /**
@@ -82,7 +82,7 @@ import <#=importNamespace#>.http.HttpMethod;
      */
      public <#=c.TypeRequest()#> select(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-         return (<#=c.TypeRequest()#>)this;
+         return this;
      }
 
 <# } #>
@@ -95,7 +95,7 @@ import <#=importNamespace#>.http.HttpMethod;
      */
      public <#=c.TypeRequest()#> expand(final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-         return (<#=c.TypeRequest()#>)this;
+         return this;
      }
 
 <# } #>
@@ -109,7 +109,7 @@ import <#=importNamespace#>.http.HttpMethod;
      */
      public <#=c.TypeRequest()#> top(final int value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
-         return (<#=c.TypeRequest()#>)this;
+         return this;
      }
 <# } #>
 }

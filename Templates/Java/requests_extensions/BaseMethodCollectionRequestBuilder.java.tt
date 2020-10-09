@@ -12,7 +12,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.options.FunctionOption;
 import <#=importNamespace#>.core.IBaseClient;
-import <#=importNamespace#>.core.<#=c.GetMethodRequestBuilderSuperClass() #>;
+import <#=importNamespace#>.core.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder") #>;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), c.GetMethodRequestBuilderSuperClass())#>

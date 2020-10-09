@@ -13,8 +13,9 @@ import com.google.gson.annotations.SerializedName;
 import <#=importNamespace#>.serializer.AdditionalDataManager;
 import <#=importNamespace#>.serializer.IJsonBackedObject;
 import <#=importNamespace#>.serializer.ISerializer;
+import <#=importNamespace#>.http.ICollectionResponse;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "IJsonBackedObject")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "ICollectionResponse<"+c.TypeName()+">, IJsonBackedObject")#>
 
     /**
      * The list of <#=c.TypeName()#> within this collection page
@@ -24,11 +25,24 @@ import <#=importNamespace#>.serializer.ISerializer;
     public java.util.List<<#=c.TypeName()#>> value;
 
     /**
+     * The list of <#=c.TypeName()#> within this collection page
+     */
+    @Override
+    public java.util.List<<#=c.TypeName()#>> values() {
+        return value;
+    }
+
+    /**
      * The URL to the next page of this collection, or null
      */
     @SerializedName("@odata.nextLink")
     @Expose(serialize = false)
     public String nextLink;
+
+    @Override
+    public String nextLink() {
+        return nextLink;
+    }
 
     private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
 

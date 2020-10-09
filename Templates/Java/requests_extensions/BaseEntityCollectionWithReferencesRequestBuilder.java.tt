@@ -7,10 +7,11 @@
 <#=host.CreatePackageDef()#>
 
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.http.BaseRequestBuilder;
+import <#=importNamespace#>.http.BaseCollectionWithReferencesRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
+<# var mainNamespace = host.CurrentNamespace(); #>
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequestBuilder(), "BaseRequestBuilder")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequestBuilder(), "BaseCollectionWithReferencesRequestBuilder<"+c.TypeName()+", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionRequest()+", "+c.TypeCollectionWithReferencesRequest()+">")#>
 
     /**
      * The request builder for this collection of <#=c.ClassTypeName()#>
@@ -20,34 +21,6 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param requestOptions the options for this request
      */
     public <#=c.TypeCollectionWithReferencesRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions);
-    }
-
-    /**
-     * Creates the request
-     *
-     * @param requestOptions the options for this request
-     * @return the IUserRequest instance
-     */
-    public <#=c.TypeCollectionWithReferencesRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
-        return buildRequest(getOptions(requestOptions));
-    }
-
-    /**
-     * Creates the request
-     *
-     * @param requestOptions the options for this request
-     * @return the IUserRequest instance
-     */
-    public <#=c.TypeCollectionWithReferencesRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        return new <#=c.TypeCollectionWithReferencesRequest()#>(getRequestUrl(), getClient(), requestOptions);
-    }
-
-    public <#=c.TypeWithReferencesRequestBuilder()#> byId(final String id) {
-        return new <#=c.TypeWithReferencesRequestBuilder()#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
-    }
-
-    public <#=c.TypeCollectionReferenceRequestBuilder()#> references(){
-        return new <#=c.TypeCollectionReferenceRequestBuilder()#>(getRequestUrl() + "/$ref", getClient(), getOptions());
+        super(requestUrl, client, requestOptions, <#=c.TypeWithReferencesRequestBuilder()#>.class, <#=c.TypeCollectionRequest()#>.class, <#=c.TypeCollectionWithReferencesRequest()#>.class);
     }
 }

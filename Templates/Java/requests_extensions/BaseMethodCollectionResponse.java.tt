@@ -14,16 +14,33 @@ import com.google.gson.annotations.Expose;
 import <#=importNamespace#>.serializer.IJsonBackedObject;
 import <#=importNamespace#>.serializer.ISerializer;
 import <#=importNamespace#>.serializer.AdditionalDataManager;
+import <#=importNamespace#>.http.ICollectionResponse;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "IJsonBackedObject")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "ICollectionResponse<"+(c as OdcmMethod).OdcmMethodReturnType()+">, IJsonBackedObject")#>
 
+    /**
+     * The list of <#=(c as OdcmMethod).OdcmMethodReturnType()#> within this collection page
+     */
     @SerializedName("value")
     @Expose
     public java.util.List<<#=(c as OdcmMethod).OdcmMethodReturnType()#>> value;
 
+    /**
+     * The list of <#=(c as OdcmMethod).OdcmMethodReturnType()#> within this collection page
+     */
+    @Override
+    public java.util.List<<#=(c as OdcmMethod).OdcmMethodReturnType()#>> values() {
+        return value;
+    }
+
     @SerializedName("@odata.nextLink")
     @Expose(serialize = false)
     public String nextLink;
+
+    @Override
+    public String nextLink() {
+        return nextLink;
+    }
 
     private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
 

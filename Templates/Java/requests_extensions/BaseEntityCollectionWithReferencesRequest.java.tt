@@ -6,13 +6,16 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseCollectionRequest;
 import <#=importNamespace#>.concurrency.IExecutors;
+import <#=importNamespace#>.http.BaseCollectionPage;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequest(), "BaseCollectionRequest<"+c.TypeName()+", "+c.TypeCollectionResponse()+">")#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>
@@ -21,11 +24,12 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
+    @SuppressWarnings("unchecked")
     public <#=c.TypeCollectionWithReferencesRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeName()#>.class, <#=c.TypeCollectionResponse()#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=c.TypeName()#>>(), null).getClass()));
     }
 
-    public void get(final ICallback<? super <#=c.TypeCollectionWithReferencesPage()#>> callback) {
+    public void get(final ICallback<? super BaseCollectionPage<<#=c.TypeName()#>>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -39,7 +43,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
         });
     }
 
-    public <#=c.TypeCollectionWithReferencesPage()#> get() throws ClientException {
+    public BaseCollectionPage<<#=c.TypeName()#>> get() throws ClientException {
         final <#=c.TypeCollectionResponse()#> response = send();
         return buildFromResponse(response);
     }
@@ -79,14 +83,14 @@ import <#=importNamespace#>.concurrency.IExecutors;
     }
 
 <# } #>
-    public <#=c.TypeCollectionWithReferencesPage()#> buildFromResponse(final <#=c.TypeCollectionResponse()#> response) {
+    public BaseCollectionPage<<#=c.TypeName()#>> buildFromResponse(final <#=c.TypeCollectionResponse()#> response) {
         final <#=c.TypeCollectionWithReferencesRequestBuilder()#> builder;
         if (response.nextLink != null) {
             builder = new <#=c.TypeCollectionWithReferencesRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
         } else {
             builder = null;
         }
-        final <#=c.TypeCollectionWithReferencesPage()#> page = new <#=c.TypeCollectionWithReferencesPage()#>(response, builder);
+        final BaseCollectionPage<<#=c.TypeName()#>> page = new BaseCollectionPage<<#=c.TypeName()#>>(response, builder);
         page.setRawObject(response.getSerializer(), response.getRawObject());
         return page;
     }
