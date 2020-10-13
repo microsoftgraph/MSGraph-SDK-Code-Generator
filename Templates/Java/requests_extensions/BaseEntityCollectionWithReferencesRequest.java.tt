@@ -8,14 +8,21 @@
 
 <# var mainNamespace = host.CurrentNamespace(); #>
 import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeWithReferencesRequest()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeReferenceRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeWithReferencesRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequest()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionWithReferencesRequest()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionWithReferencesRequestBuilder()#>;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.core.IBaseClient;
-import <#=importNamespace#>.http.BaseCollectionRequest;
+import <#=importNamespace#>.http.BaseCollectionWithReferencesRequest;
+import <#=importNamespace#>.http.BaseCollectionWithReferencesRequestBuilder;
 import <#=importNamespace#>.concurrency.IExecutors;
 import <#=importNamespace#>.http.BaseCollectionPage;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequest(), "BaseCollectionRequest<"+c.TypeName()+", "+c.TypeCollectionResponse()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequest(), "BaseCollectionWithReferencesRequest<"+c.TypeName()+", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionRequest()+">")#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>
@@ -26,7 +33,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      */
     @SuppressWarnings("unchecked")
     public <#=c.TypeCollectionWithReferencesRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeName()#>.class, <#=c.TypeCollectionResponse()#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=c.TypeName()#>>(), null).getClass()));
+        super(requestUrl, client, requestOptions, <#=c.TypeName()#>.class, <#=c.TypeCollectionResponse()#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=c.TypeName()#>>(), null).getClass()), <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
     }
 
     public void get(final ICallback<? super BaseCollectionPage<<#=c.TypeName()#>>> callback) {
