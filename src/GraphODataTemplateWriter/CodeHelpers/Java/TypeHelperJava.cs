@@ -122,7 +122,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         {
             return (currentType.AsOdcmMethod().IsFunction ?
                 "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder") +
-                $"<{(currentType.AsOdcmMethod().ReturnType ?? currentType.AsOdcmMethod().Class).TypeName()}>";
+                $"<{(currentType.AsOdcmMethod()?.ReturnType == null ? currentType.AsOdcmMethod().Class.TypeName() : currentType.ReturnType()) ?? "Void"}>";
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         }
         public static string ReturnType(this OdcmObject c)
         {
-            var returnType = c.AsOdcmMethod().ReturnType;
+            var returnType = c.AsOdcmMethod()?.ReturnType;
             if (returnType != null)
             {
                 var returnTypeString = returnType.GetTypeString();

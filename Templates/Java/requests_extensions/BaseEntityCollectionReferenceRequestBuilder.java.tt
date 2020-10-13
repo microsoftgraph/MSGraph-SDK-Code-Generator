@@ -10,10 +10,10 @@
 import <#=importNamespace#>.http.BaseCollectionReferenceRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequestBuilder(), "BaseCollectionReferenceRequestBuilder<"+c.ClassTypeName()+", "+c.TypeCollectionReferenceRequest()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequestBuilder(), "BaseCollectionReferenceRequestBuilder<"+c.TypeName()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionReferenceRequest()+">")#>
 
     /**
-     * The request builder for this collection of <#=c.ClassTypeName()#>
+     * The request builder for this collection of <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client

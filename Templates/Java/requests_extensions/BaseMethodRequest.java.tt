@@ -13,7 +13,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseRequest;
 import <#=importNamespace#>.http.HttpMethod;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest<"+(c.AsOdcmMethod().ReturnType == null ? c.AsOdcmMethod().Class.TypeName() : c.AsOdcmMethod().ReturnType.TypeName())+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest<"+c.ReturnType()+">")#>
 
     /**
      * The request for this <#=c.TypeName()#>
@@ -23,7 +23,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param requestOptions the options for this request
      */
     public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=(c.AsOdcmMethod().ReturnType == null ? c.AsOdcmMethod().Class.TypeName() : c.AsOdcmMethod().ReturnType.TypeName())#>.class);
+        super(requestUrl, client, requestOptions, <#=c.ReturnType()#>.class);
     }
 
 <#
