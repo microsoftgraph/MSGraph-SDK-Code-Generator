@@ -33,7 +33,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      */
     @SuppressWarnings("unchecked")
     public <#=c.TypeCollectionWithReferencesRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeName()#>.class, <#=c.TypeCollectionResponse()#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=c.TypeName()#>>(), null).getClass()), <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=c.TypeName()#>>(), null).getClass()), <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
     }
 
     public void get(final ICallback<? super BaseCollectionPage<<#=c.TypeName()#>>> callback) {

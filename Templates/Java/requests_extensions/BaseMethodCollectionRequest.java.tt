@@ -10,7 +10,7 @@
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 <# if(c.AsOdcmMethod().ReturnType != null && !(c.AsOdcmMethod().ReturnType is OdcmPrimitiveType)) { #>
-import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=(c as OdcmMethod).OdcmMethodReturnType()#>;
+import <#=mainNamespace#>.<#=(c as OdcmMethod).ReturnType.GetPackagePrefix()#>.<#=(c as OdcmMethod).OdcmMethodReturnType()#>;
 <# } #>
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
 import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeBody()#>;
@@ -40,7 +40,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
     @SuppressWarnings("unchecked")
     public <#=c.TypeCollectionRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
-        super(requestUrl, client, requestOptions, <#=(c as OdcmMethod).OdcmMethodReturnType()#>.class, <#=c.TypeCollectionResponse()#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=(c as OdcmMethod).OdcmMethodReturnType()#>>(), null).getClass()));
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=(c as OdcmMethod).OdcmMethodReturnType()#>>(), null).getClass()));
 <# } else { #>
         super(requestUrl, client, requestOptions, null);
 <# } #>

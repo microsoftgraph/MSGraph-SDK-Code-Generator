@@ -12,11 +12,12 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeWi
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeReferenceRequestBuilder()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeWithReferencesRequestBuilder()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequest()#>;
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionWithReferencesRequest()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionWithReferencesRequestBuilder()#>;
 import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseCollectionWithReferencesRequest;
+import <#=importNamespace#>.http.BaseCollectionWithReferencesRequestBuilder;
 import <#=importNamespace#>.http.BaseCollectionRequest;
 import <#=importNamespace#>.http.BaseCollectionPage;
 import <#=importNamespace#>.http.ReferenceRequestBody;
@@ -32,7 +33,7 @@ import <#=importNamespace#>.http.ReferenceRequestBody;
      */
     @SuppressWarnings("unchecked")
     public <#=c.TypeCollectionReferenceRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=mainNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeName()#>.class, <#=c.TypeCollectionResponse()#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=c.TypeName()#>>(), null).getClass()), <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=c.TypeName()#>>(), null).getClass()), <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
     }
 
 <#

@@ -29,7 +29,6 @@ import <#=importNamespace#>.core.IBaseClient;
 	if (c.AsOdcmMethod().IsCollection) {
 #>
 import <#=importNamespace#>.concurrency.IExecutors;
-import <#=importNamespace#>.http.BaseCollectionRequest;
 <#
 	}
 #>
@@ -47,7 +46,7 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
     @SuppressWarnings("unchecked")
     public <#=baseTypeRequest#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
 <# if (c.AsOdcmMethod().IsCollection) { #>
-        super(requestUrl, client, requestOptions, <#=c.TypeName()#>.class, <#=returnType#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=returnType#>>(), null).getClass()));
+        super(requestUrl, client, requestOptions, <#=returnType#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=returnType#>>(), null).getClass()));
 <# } else { #>
         super(requestUrl, client, requestOptions, <#=returnType#>.class);
 <# } #>
