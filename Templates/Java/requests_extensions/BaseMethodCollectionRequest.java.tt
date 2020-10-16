@@ -20,9 +20,8 @@ import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseCollectionRequest;
 import <#=importNamespace#>.concurrency.IExecutors;
-import <#=importNamespace#>.http.BaseCollectionPage;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(),"BaseCollectionRequest<" + (c as OdcmMethod).OdcmMethodReturnType()+", "+c.TypeCollectionResponse()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(),"BaseCollectionRequest<" + (c as OdcmMethod).OdcmMethodReturnType()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">")#>
 
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
 
@@ -40,7 +39,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
     @SuppressWarnings("unchecked")
     public <#=c.TypeCollectionRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=(c as OdcmMethod).OdcmMethodReturnType()#>>(), null).getClass()));
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
 <# } else { #>
         super(requestUrl, client, requestOptions, null);
 <# } #>
@@ -74,40 +73,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
         return buildFromResponse(response);
     }
 
-<# } else { #>
-
-    public void get(final ICallback<? super BaseCollectionPage<<#=(c as OdcmMethod).OdcmMethodReturnType()#>>> callback) {
-        final IExecutors executors = getBaseRequest().getClient().getExecutors();
-        executors.performOnBackground(new Runnable() {
-           @Override
-           public void run() {
-                try {
-                    executors.performOnForeground(get(), callback);
-                } catch (final ClientException e) {
-                    executors.performOnForeground(e, callback);
-                }
-           }
-        });
-    }
-
-    public <#=c.TypeCollectionPage()#> get() throws ClientException {
-        final <#=c.TypeCollectionResponse()#> response = send();
-        return buildFromResponse(response);
-    }
-
 <# } #>
-
-    public BaseCollectionPage<<#=(c as OdcmMethod).OdcmMethodReturnType()#>> buildFromResponse(final <#=c.TypeCollectionResponse()#> response) {
-        final <#=c.TypeCollectionRequestBuilder()#> builder;
-        if (response.nextLink != null) {
-            builder = new <#=c.TypeCollectionRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null<#=c.MethodPageValues()#>);
-        } else {
-            builder = null;
-        }
-        final BaseCollectionPage<<#=(c as OdcmMethod).OdcmMethodReturnType()#>> page = new BaseCollectionPage<<#=(c as OdcmMethod).OdcmMethodReturnType()#>>(response, builder);
-        page.setRawObject(response.getSerializer(), response.getRawObject());
-        return page;
-    }
 
 <# if (c.GetFeatures().CanSelect) { #>
     /**

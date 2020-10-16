@@ -10,7 +10,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
     using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
     using System.Text;
     using System.Linq;
-    using System.Security.Cryptography.X509Certificates;
 
     public static class TypeHelperJava
     {
@@ -123,6 +122,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return (currentType.AsOdcmMethod().IsFunction ?
                 "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder") +
                 $"<{(currentType.AsOdcmMethod()?.ReturnType == null ? currentType.AsOdcmMethod().Class.TypeName() : currentType.ReturnType()) ?? "Void"}>";
+        }
+
+        public static string GetMethodCollectionRequestBuilderSuperClass(this OdcmObject currentType)
+        {
+            var returnTypeIsNull = currentType.AsOdcmMethod()?.ReturnType == null;
+            var typeName = returnTypeIsNull ? currentType.AsOdcmMethod().Class.TypeName() : currentType.ReturnType();
+            var requestBuilderName = currentType.TypeCollectionRequestBuilder();
+            var collectionResponseName = currentType.TypeCollectionResponse();
+            var collectionRequestName = currentType.TypeCollectionRequest();
+            return (currentType.AsOdcmMethod().IsFunction ?
+                "BaseFunctionCollectionRequestBuilder" : "BaseActionCollectionRequestBuilder") +
+                $"<{typeName}, {requestBuilderName}, {collectionResponseName}, {currentType.TypeCollectionPage()}, {collectionRequestName}>";
         }
 
         /// <summary>
@@ -271,7 +282,22 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 
         public static string TypeCollectionPage(this OdcmObject c)
         {
-            return $"BaseCollectionPage<{(c as OdcmMethod)?.OdcmMethodReturnType() ?? c.TypeName()}>";
+            return c.TypeName() + "CollectionPage";
+        }
+
+        public static string TypeCollectionWithReferencesPage(this OdcmObject c)
+        {
+            return $"{c.TypeName()}CollectionWithReferencesPage";
+        }
+
+        public static string BaseTypeCollectionPage(this OdcmObject c)
+        {
+            return "Base" + c.TypeCollectionPage();
+        }
+
+        public static string BaseTypeCollectionWithReferencesPage(this OdcmObject c)
+        {
+            return "Base" + c.TypeCollectionWithReferencesPage();
         }
 
         public static string BaseTypeCollectionResponse(this OdcmObject c)
@@ -540,15 +566,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c is OdcmMethod ? OdcmMethodReturnType(c as OdcmMethod) : TypeName(c);
         }
 
-        public static string CollectionPageWithReferencesGeneric(this OdcmObject c)
-        {
-            if (c is OdcmMethod)
-            {
-                return "<" + c.ClassTypeName() + ", " + c.ITypeWithReferencesRequestBuilder() + ">";
-            }
-            return "<" + c.TypeName() + ", " + c.TypeCollectionWithReferencesRequestBuilder() + ">";
-        }
-
         //Creating package definition for Enum.java.tt template file
         public static string CreatePackageDefForEnum(this CustomT4Host host)
         {
@@ -759,6 +776,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                             host.CurrentNamespace(),
                             GetPrefixForModels(),
                             modelClassName);
+            sb.Append("\n");
+            sb.AppendFormat(importFormat,
+                            host.CurrentNamespace(),
+                            GetPrefixForRequests(),
+                            host.CurrentType.TypeCollectionRequestBuilder());
 
             return sb.ToString();
         }
@@ -859,6 +881,26 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
                 }
             }
 
+            if (properties != null)
+            {
+                foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation() && p.ParentPropertyType == null))
+                {
+                    if (property.Type is OdcmPrimitiveType)
+                        continue;
+
+                    string propertyValue = TypeCollectionPage(property);
+                    string importstr1 = String.Format(importFormat,
+                        property.Projection.Type.Namespace.Name.AddPrefix(),
+                        GetPrefixForRequests(),
+                        propertyValue);
+                    if (!uniqueStore.ContainsKey(importstr1))
+                    {
+                        uniqueStore.Add(importstr1, 0);
+                        sb.Append(importstr1);
+                        sb.Append("\n");
+                    }
+                }
+            }
             return sb.ToString();
         }
 
@@ -1060,13 +1102,11 @@ import java.util.EnumSet;";
                     sb.AppendFormat(
     @"
         if (json.has(""{0}"")) {{
-            {0} = serializer.deserializeObject(json.get(""{0}"").toString(), new {1}(new java.util.ArrayList<{2}>(), null).getClass());
+            {0} = serializer.deserializeObject(json.get(""{0}"").toString(), {1}.class);
         }}
 ",
                 property.Name.SanitizePropertyName(property),
-                TypeCollectionPage(property),
-                property.TypeName()
-                );
+                TypeCollectionPage(property));
                 }
             }
             sb.Append("    }");

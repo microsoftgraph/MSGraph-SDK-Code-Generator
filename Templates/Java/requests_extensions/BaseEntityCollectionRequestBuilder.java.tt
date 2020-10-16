@@ -30,10 +30,10 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.T
 }
 #>
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.http.BaseRequestBuilder;
+import <#=importNamespace#>.http.BaseCollectionRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), "BaseRequestBuilder<"+c.TypeName()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), "BaseCollectionRequestBuilder<"+c.TypeName()+", "+c.TypeRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+", "+c.TypeCollectionRequest()+">")#>
 
     /**
      * The request builder for this collection of <#=c.ClassTypeName()#>
@@ -43,31 +43,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param requestOptions the options for this request
      */
     public <#=c.TypeCollectionRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions);
-    }
-
-    /**
-     * Creates the request
-     *
-     * @param requestOptions the options for this request
-     * @return the IUserRequest instance
-     */
-    public <#=c.TypeCollectionRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
-        return buildRequest(getOptions(requestOptions));
-    }
-
-    /**
-     * Creates the request
-     *
-     * @param requestOptions the options for this request
-     * @return the IUserRequest instance
-     */
-    public <#=c.TypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        return new <#=c.TypeCollectionRequest()#>(getRequestUrl(), getClient(), requestOptions);
-    }
-
-    public <#=c.TypeRequestBuilder()#> byId(final String id) {
-        return new <#=c.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
+        super(requestUrl, client, requestOptions, <#=c.TypeRequestBuilder()#>.class, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequest()#>.class);
     }
 
 <#

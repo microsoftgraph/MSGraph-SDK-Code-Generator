@@ -9,13 +9,14 @@
 <# var mainNamespace = host.CurrentNamespace(); #>
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequest()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.options.FunctionOption;
 import <#=importNamespace#>.core.IBaseClient;
-import <#=importNamespace#>.core.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder") #>;
+import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctionCollectionRequestBuilder" : "BaseActionCollectionRequestBuilder") #>;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), c.GetMethodRequestBuilderSuperClass())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), c.GetMethodCollectionRequestBuilderSuperClass())#>
 
 <# foreach (var method in c.AsOdcmMethod().WithOverloads()) { #>
     /**
@@ -26,7 +27,7 @@ import <#=importNamespace#>.core.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctio
      * @param requestOptions the options for this request<#=method.MethodParametersJavadocSignature()#>
      */
     public <#=c.TypeCollectionRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#=method.MethodParametersSignature()#>) {
-        super(requestUrl, client, requestOptions);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionRequestBuilder()#>.class, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequest()#>.class);
 <# foreach (var p in method.Parameters) { #>
   <# if (isAction) { #>
 	 if(<#=p.ParamName()#>!=null){
@@ -45,24 +46,11 @@ import <#=importNamespace#>.core.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctio
      * Creates the request
      *
      * @param requestOptions the options for this request
-     * @return the IUserRequest instance
+     * @return the <#=c.TypeCollectionRequest()#> instance
      */
-    public <#=c.TypeCollectionRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
-        return buildRequest(getOptions(requestOptions));
-    }
-
-    /**
-     * Creates the request
-     *
-     * @param requestOptions the options for this request
-     * @return the IUserRequest instance
-     */
-    public <#=c.TypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        <#= c.TypeCollectionRequest()#> request = new <#=c.TypeCollectionRequest()#>(
-                getRequestUrl(),
-                getClient(),
-                requestOptions
-        );
+     @Override
+    public <#= c.TypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+        final <#= c.TypeCollectionRequest()#> request = super.buildRequest(requestOptions);
 
 <# if (isAction) { #>
   <# foreach (var p in c.AsOdcmMethod().Parameters) { #>

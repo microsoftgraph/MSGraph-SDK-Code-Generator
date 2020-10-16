@@ -6,7 +6,7 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForBaseMethodRequestBuilder()#>
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.core.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder") #>;
+import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder") #>;
 import <#=importNamespace#>.core.IBaseClient;
 import com.google.gson.JsonElement;
 

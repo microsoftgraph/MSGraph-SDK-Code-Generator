@@ -107,11 +107,13 @@
     <Content Include="Java\models_generated\*" />
     <Content Include="Java\models_generated\Enum.java.tt" />
     <Content Include="Java\requests_extensions\BaseClient.java.tt" />
+    <Content Include="Java\requests_extensions\BaseEntityCollectionPage.java.tt" />
     <Content Include="Java\requests_extensions\BaseEntityCollectionReferenceRequest.java.tt" />
     <Content Include="Java\requests_extensions\BaseEntityCollectionReferenceRequestBuilder.java.tt" />
     <Content Include="Java\requests_extensions\BaseEntityCollectionRequest.java.tt" />
     <Content Include="Java\requests_extensions\BaseEntityCollectionRequestBuilder.java.tt" />
     <Content Include="Java\requests_extensions\BaseEntityCollectionResponse.java.tt" />
+    <Content Include="Java\requests_extensions\BaseEntityCollectionWithReferencesPage.java.tt" />
     <Content Include="Java\requests_extensions\BaseEntityCollectionWithReferencesRequest.java.tt" />
     <Content Include="Java\requests_extensions\BaseEntityCollectionWithReferencesRequestBuilder.java.tt" />
     <Content Include="Java\requests_extensions\BaseEntityReferenceRequest.java.tt" />
@@ -122,6 +124,7 @@
     <Content Include="Java\requests_extensions\BaseEntityWithReferenceRequest.java.tt" />
     <Content Include="Java\requests_extensions\BaseEntityWithReferenceRequestBuilder.java.tt" />
     <Content Include="Java\requests_extensions\BaseMethodBodyRequest.java.tt" />
+    <Content Include="Java\requests_extensions\BaseMethodCollectionPage.java.tt" />
     <Content Include="Java\requests_extensions\BaseMethodCollectionRequest.java.tt" />
     <Content Include="Java\requests_extensions\BaseMethodCollectionRequestBuilder.java.tt" />
     <Content Include="Java\requests_extensions\BaseMethodCollectionResponse.java.tt" />

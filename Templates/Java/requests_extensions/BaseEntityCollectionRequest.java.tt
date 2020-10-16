@@ -10,14 +10,13 @@
 import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseCollectionRequest;
-import <#=importNamespace#>.http.BaseCollectionPage;
 import <#=importNamespace#>.concurrency.IExecutors;
 <# var mainNamespace = host.CurrentNamespace(); #>
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequest()#>;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), "BaseCollectionRequest<"+c.TypeName()+", "+c.TypeCollectionResponse()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), "BaseCollectionRequest<"+c.TypeName()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">")#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>
@@ -28,26 +27,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      */
     @SuppressWarnings("unchecked")
     public <#=c.TypeCollectionRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class,(Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=c.TypeName()#>>(), null).getClass()));
-    }
-
-    public void get(final ICallback<? super <#=c.TypeCollectionPage()#>> callback) {
-        final IExecutors executors = getBaseRequest().getClient().getExecutors();
-        executors.performOnBackground(new Runnable() {
-           @Override
-           public void run() {
-                try {
-                    executors.performOnForeground(get(), callback);
-                } catch (final ClientException e) {
-                    executors.performOnForeground(e, callback);
-                }
-           }
-        });
-    }
-
-    public <#=c.TypeCollectionPage()#> get() throws ClientException {
-        final <#=c.TypeCollectionResponse()#> response = send();
-        return buildFromResponse(response);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
     }
 
     public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
@@ -151,17 +131,6 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
     public <#=c.TypeCollectionRequest()#> skipToken(final String skipToken) {
     	addQueryOption(new QueryOption("$skiptoken", skipToken));
         return this;
-    }
-    public <#=c.TypeCollectionPage()#> buildFromResponse(final <#=c.BaseTypeCollectionResponse()#> response) {
-        final <#=c.TypeCollectionRequestBuilder()#> builder;
-        if (response.nextLink != null) {
-            builder = new <#=c.TypeCollectionRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
-        } else {
-            builder = null;
-        }
-        final <#=c.TypeCollectionPage()#> page = new <#=c.TypeCollectionPage()#>(response, builder);
-        page.setRawObject(response.getSerializer(), response.getRawObject());
-        return page;
     }
 }
 <#=PostProcess(c.TypeCollectionRequest())#>

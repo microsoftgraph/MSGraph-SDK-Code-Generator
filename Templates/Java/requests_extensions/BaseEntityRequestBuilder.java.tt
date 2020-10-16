@@ -10,7 +10,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseRequestBuilder;
 <# var mainNamespace = host.CurrentNamespace(); #>
 
-<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder<"+c.TypeName()+">")#>
 
     /**
      * The request builder for the <#=c.TypeName()#>

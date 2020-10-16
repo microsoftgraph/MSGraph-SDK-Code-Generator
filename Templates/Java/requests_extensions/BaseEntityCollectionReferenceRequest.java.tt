@@ -18,11 +18,9 @@ import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseCollectionWithReferencesRequest;
 import <#=importNamespace#>.http.BaseCollectionWithReferencesRequestBuilder;
-import <#=importNamespace#>.http.BaseCollectionRequest;
-import <#=importNamespace#>.http.BaseCollectionPage;
 import <#=importNamespace#>.http.ReferenceRequestBody;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequest(), "BaseCollectionWithReferencesRequest<" + c.TypeName() + ", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionRequest()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequest(), "BaseCollectionWithReferencesRequest<" + c.TypeName() + ", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+", "+c.TypeCollectionRequest()+">")#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>
@@ -33,7 +31,7 @@ import <#=importNamespace#>.http.ReferenceRequestBody;
      */
     @SuppressWarnings("unchecked")
     public <#=c.TypeCollectionReferenceRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=mainNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, (Class<<#=c.TypeCollectionPage()#>>) (new <#=c.TypeCollectionPage()#>(new java.util.ArrayList<<#=c.TypeName()#>>(), null).getClass()), <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
     }
 
 <#
