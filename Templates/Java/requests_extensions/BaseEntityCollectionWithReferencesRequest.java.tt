@@ -30,7 +30,6 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    @SuppressWarnings("unchecked")
     public <#=c.TypeCollectionWithReferencesRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
     }

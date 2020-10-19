@@ -43,7 +43,6 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    @SuppressWarnings("unchecked")
     public <#=baseTypeRequest#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
 <# if (c.AsOdcmMethod().IsCollection) { #>
         super(requestUrl, client, requestOptions, <#=returnType#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
