@@ -33,7 +33,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @return the updated request
      */
     public <#=c.TypeReferenceRequest()#> select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
+        addSelectOption(value);
         return this;
     }
 
@@ -46,7 +46,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @return the updated request
      */
     public <#=c.TypeReferenceRequest()#> expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
+        addExpandOption(value);
         return this;
     }
 <# } #>

@@ -34,7 +34,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      * @return the updated request
      */
     public <#=c.TypeWithReferencesRequest()#> select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
+        addSelectOption(value);
         return this;
     }
 
@@ -47,7 +47,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      * @return the updated request
      */
     public <#=c.TypeWithReferencesRequest()#> expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
+        addExpandOption(value);
         return this;
     }
 <# } #>

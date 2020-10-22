@@ -59,7 +59,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @return the updated request
      */
     public <#=c.TypeRequest()#> select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
+        addSelectOption(value);
         return this;
     }
 
@@ -75,7 +75,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @return the updated request
      */
     public <#=c.TypeRequest()#> expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
+        addExpandOption(value);
         return this;
     }
 
@@ -92,7 +92,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @return the updated request
      */
     public <#=c.TypeRequest()#> top(final int value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
+        addTopOption(value);
         return this;
     }
 <#
@@ -205,7 +205,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @return the updated request
      */
     public <#=c.TypeRequest()#> select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
+        addSelectOption(value);
         return this;
     }
 
@@ -221,7 +221,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @return the updated request
      */
     public <#=c.TypeRequest()#> expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
+        addExpandOption(value);
         return this;
     }
 
@@ -236,7 +236,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @return the updated request
      */
     public <#=c.TypeRequest()#> filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
+        addFilterOption(value);
         return this;
     }
 
@@ -251,7 +251,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @return the updated request
      */
     public <#=c.TypeRequest()#> orderBy(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$orderby", value));
+        addOrderByOption(value);
         return this;
     }
 
@@ -267,7 +267,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @return the updated request
      */
     public <#=c.TypeRequest()#> top(final int value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
+        addTopOption(value);
         return this;
     }
 <#
