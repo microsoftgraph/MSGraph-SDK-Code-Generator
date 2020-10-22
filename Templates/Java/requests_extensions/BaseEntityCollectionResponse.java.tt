@@ -4,53 +4,10 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = c.TypeCollectionResponse();#>
 <#=writer.WriteHeader()#>
-<#=host.CreatePackageDefForBaseEntityCollectionResponse()#>
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+<#=host.CreatePackageDefForBaseCollectionResponse()#>
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.serializer.AdditionalDataManager;
-import <#=importNamespace#>.serializer.IJsonBackedObject;
-import <#=importNamespace#>.serializer.ISerializer;
-import <#=importNamespace#>.http.ICollectionResponse;
+import <#=importNamespace#>.http.BaseCollectionResponse;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "ICollectionResponse<"+c.TypeName()+">, IJsonBackedObject")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), "BaseCollectionResponse<"+c.TypeName()+">")#>
 
-    /**
-     * The list of <#=c.TypeName()#> within this collection page
-     */
-    @SerializedName("value")
-    @Expose
-    public java.util.List<<#=c.TypeName()#>> value;
-
-    /**
-     * The list of <#=c.TypeName()#> within this collection page
-     */
-    @Override
-    public java.util.List<<#=c.TypeName()#>> values() {
-        return value;
-    }
-
-    /**
-     * The URL to the next page of this collection, or null
-     */
-    @SerializedName("@odata.nextLink")
-    @Expose(serialize = false)
-    public String nextLink;
-
-    @Override
-    public String nextLink() {
-        return nextLink;
-    }
-
-    private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
-
-    @Override
-    public final AdditionalDataManager additionalDataManager() {
-        return additionalDataManager;
-    }
-
-<#=TypeHelperJava.CreateRawJsonObject()#>
-<#=TypeHelperJava.UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
 }

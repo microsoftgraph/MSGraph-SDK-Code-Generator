@@ -4,55 +4,28 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = c.TypeCollectionResponse();#>
 <#=writer.WriteHeader()#>
-<#=host.CreatePackageDef()#>
+<#=host.CreatePackageDefForBaseCollectionResponse()#>
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.annotations.Expose;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.serializer.IJsonBackedObject;
+<# if (((c as OdcmMethod).ReturnType is OdcmPrimitiveType) || ((c as OdcmMethod).ReturnType is OdcmEnum) ) { #>
+import com.google.gson.JsonObject;
 import <#=importNamespace#>.serializer.ISerializer;
-import <#=importNamespace#>.serializer.AdditionalDataManager;
-import <#=importNamespace#>.http.ICollectionResponse;
+<# } #>
+import <#=importNamespace#>.http.BaseCollectionResponse;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "ICollectionResponse<"+(c as OdcmMethod).OdcmMethodReturnType()+">, IJsonBackedObject")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), "BaseCollectionResponse<"+(c as OdcmMethod).OdcmMethodReturnType()+">")#>
 
+<# if (((c as OdcmMethod).ReturnType is OdcmPrimitiveType) || ((c as OdcmMethod).ReturnType is OdcmEnum) ) { #>
     /**
-     * The list of <#=(c as OdcmMethod).OdcmMethodReturnType()#> within this collection page
-     */
-    @SerializedName("value")
-    @Expose
-    public java.util.List<<#=(c as OdcmMethod).OdcmMethodReturnType()#>> value;
-
-    /**
-     * The list of <#=(c as OdcmMethod).OdcmMethodReturnType()#> within this collection page
+     * Sets the raw JSON object
+     *
+     * @param serializer the serializer
+     * @param json the JSON object to set this object to
      */
     @Override
-    public java.util.List<<#=(c as OdcmMethod).OdcmMethodReturnType()#>> values() {
-        return value;
-    }
-
-    @SerializedName("@odata.nextLink")
-    @Expose(serialize = false)
-    public String nextLink;
-
-    @Override
-    public String nextLink() {
-        return nextLink;
-    }
-
-    private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
-
-    @Override
-    public final AdditionalDataManager additionalDataManager() {
-        return additionalDataManager;
-    }
-
-<#=TypeHelperJava.CreateRawJsonObject()#>
-<# if ( ! ((c as OdcmMethod).ReturnType is OdcmPrimitiveType) && ! ((c as OdcmMethod).ReturnType is OdcmEnum) ) { #>
-<#=    TypeHelperJava.UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
-<# } else { #>
+    public void setRawObject(final ISerializer serializer, final JsonObject json) {
+        this.serializer = serializer;
+        rawObject = json;
     }
 <# } #>
 }

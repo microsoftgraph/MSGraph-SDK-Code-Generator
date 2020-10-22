@@ -604,16 +604,19 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return sb.ToString();
         }
 
-        public static string CreatePackageDefForBaseEntityCollectionResponse(this CustomT4Host host)
+        public static string CreatePackageDefForBaseCollectionResponse(this CustomT4Host host)
         {
             var sb = new StringBuilder();
             sb.Append(host.CreatePackageDefinition());
             var importFormat = @"import {0}.{1}.{2};";
-            sb.AppendFormat(importFormat,
+            if (!(host.CurrentType is OdcmMethod) || !((host.CurrentType as OdcmMethod).ReturnType is OdcmPrimitiveType))
+            {
+                sb.AppendFormat(importFormat,
                             host.CurrentNamespace(),
-                            GetPrefixForModels(),
-                            TypeName(host.CurrentType));
-            sb.Append("\n");
+                            (host.CurrentType as OdcmMethod)?.ReturnType is OdcmEnum ? "models.generated" : GetPrefixForModels(),
+                            TypeName((host.CurrentType as OdcmMethod)?.ReturnType ?? host.CurrentType));
+                sb.Append("\n");
+            }
             return sb.ToString();
         }
 
@@ -1112,27 +1115,6 @@ import java.util.EnumSet;";
             sb.Append("    }");
             return sb.ToString();
         }
-
-        public static string UpdateListPropertiesWithinSetRawObject(IEnumerable<string> listProperties)
-        {
-            var sb = new StringBuilder();
-            foreach (var property in listProperties)
-            {
-                sb.AppendFormat(
-    @"
-        if (json.has(""{0}"")) {{
-            final JsonArray array = json.getAsJsonArray(""{0}"");
-            for (int i = 0; i < array.size(); i++) {{
-                {0}.get(i).setRawObject(serializer, (JsonObject) array.get(i));
-            }}
-        }}
-",
-                property);
-            }
-            sb.Append("    }");
-            return sb.ToString();
-        }
-
         public static string CreateExtensiblityMessage()
         {
             return
