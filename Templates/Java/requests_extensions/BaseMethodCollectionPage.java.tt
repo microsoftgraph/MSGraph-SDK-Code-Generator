@@ -30,7 +30,7 @@ import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.Type
 import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
 import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), (deltaPage ? "DeltaCollectionPage" : "BaseCollectionPage")+"<"+ (c.AsOdcmMethod().ReturnType ?? c.AsOdcmMethod().Class).TypeName() + ">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), (deltaPage ? "DeltaCollectionPage" : "BaseCollectionPage")+"<"+ (c.AsOdcmMethod().ReturnType ?? c.AsOdcmMethod().Class).TypeName() + ", "+c.TypeCollectionRequestBuilder()+">")#>
 
     /**
      * A collection page for <#=(c as OdcmMethod).OdcmMethodReturnType()#>.

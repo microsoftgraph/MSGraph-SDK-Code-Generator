@@ -17,7 +17,7 @@ import com.google.gson.annotations.Expose;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.BaseCollectionPage;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesPage(), "BaseCollectionPage<" + c.TypeName()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesPage(), "BaseCollectionPage<" + c.TypeName()+", "+c.TypeCollectionWithReferencesRequestBuilder()+">")#>
 
     /**
      * A collection page for <#=c.TypeName()#>
