@@ -36,35 +36,35 @@ import <#=importNamespace#>.concurrency.IExecutors;
 
 <# if (c.GetFeatures().CanExpand) { #>
     public <#=c.TypeCollectionWithReferencesRequest()#> expand(final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        addExpandOption(value);
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanFilter) { #>
     public <#=c.TypeCollectionWithReferencesRequest()#> filter(final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        addFilterOption(value);
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanSort) { #>
     public <#=c.TypeCollectionWithReferencesRequest()#> orderBy(final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
+        addOrderByOption(value);
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanSelect) { #>
     public <#=c.TypeCollectionWithReferencesRequest()#> select(final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
+        addSelectOption(value);
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanUseTop) { #>
     public <#=c.TypeCollectionWithReferencesRequest()#> top(final int value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
+        addTopOption(value);
         return this;
     }
 
