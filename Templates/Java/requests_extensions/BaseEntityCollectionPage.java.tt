@@ -21,4 +21,14 @@ import <#=importNamespace#>.http.BaseCollectionPage;
     public <#=c.TypeCollectionPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.TypeCollectionRequestBuilder()#> builder) {
         super(response, builder);
     }
+
+    /**
+     * Creates the collection page for <#=c.TypeName()#>
+     *
+     * @param pageContents       the contents of this page
+     * @param nextRequestBuilder the request builder for the next page
+     */
+    public <#=c.TypeCollectionPage()#>(final java.util.List<<#=c.TypeName()#>> pageContents, final <#=c.TypeCollectionRequestBuilder()#> nextRequestBuilder) {
+        super(pageContents, nextRequestBuilder);
+    }
 }

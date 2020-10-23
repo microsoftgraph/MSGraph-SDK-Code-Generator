@@ -41,4 +41,14 @@ import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.Type
     public <#=c.TypeCollectionPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.TypeCollectionRequestBuilder()#> builder) {
        super(response, builder);
     }
+
+	/**
+     * Creates the collection page for <#=c.TypeName()#>
+     *
+     * @param pageContents       the contents of this page
+     * @param nextRequestBuilder the request builder for the next page
+     */
+    public <#=c.TypeCollectionPage()#>(final java.util.List<<#=(c.AsOdcmMethod().ReturnType ?? c.AsOdcmMethod().Class).TypeName()#>> pageContents, final <#=c.TypeCollectionRequestBuilder()#> nextRequestBuilder) {
+        super(pageContents, nextRequestBuilder);
+    }
 }
