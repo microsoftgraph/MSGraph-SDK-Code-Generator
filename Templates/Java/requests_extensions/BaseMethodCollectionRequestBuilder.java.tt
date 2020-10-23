@@ -27,7 +27,7 @@ import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctio
      * @param requestOptions the options for this request<#=method.MethodParametersJavadocSignature()#>
      */
     public <#=c.TypeCollectionRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#=method.MethodParametersSignature()#>) {
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionRequestBuilder()#>.class, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequest()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionRequestBuilder()#>.class, <#=c.TypeCollectionRequest()#>.class);
 <# foreach (var p in method.Parameters) { #>
   <# if (isAction) { #>
 	 if(<#=p.ParamName()#>!=null){

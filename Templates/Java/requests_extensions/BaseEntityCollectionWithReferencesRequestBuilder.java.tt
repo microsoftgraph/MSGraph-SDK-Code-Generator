@@ -21,6 +21,6 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param requestOptions the options for this request
      */
     public <#=c.TypeCollectionWithReferencesRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeReferenceRequestBuilder()#>.class, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionWithReferencesPage()#>.class, <#=c.TypeCollectionWithReferencesRequest()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeReferenceRequestBuilder()#>.class, <#=c.TypeCollectionWithReferencesRequest()#>.class);
     }
 }
