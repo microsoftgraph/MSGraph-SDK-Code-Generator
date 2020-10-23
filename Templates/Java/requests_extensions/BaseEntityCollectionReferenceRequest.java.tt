@@ -20,7 +20,7 @@ import <#=importNamespace#>.http.BaseCollectionWithReferencesRequest;
 import <#=importNamespace#>.http.BaseCollectionWithReferencesRequestBuilder;
 import <#=importNamespace#>.http.ReferenceRequestBody;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequest(), "BaseCollectionWithReferencesRequest<" + c.TypeName() + ", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+", "+c.TypeCollectionRequest()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequest(), "BaseCollectionWithReferencesRequest<" + c.TypeName() + ", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionRequest()+">")#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>
@@ -30,7 +30,7 @@ import <#=importNamespace#>.http.ReferenceRequestBody;
      * @param requestOptions the options for this request
      */
     public <#=c.TypeCollectionReferenceRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionWithReferencesPage()#>.class, <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
     }
 
 <#

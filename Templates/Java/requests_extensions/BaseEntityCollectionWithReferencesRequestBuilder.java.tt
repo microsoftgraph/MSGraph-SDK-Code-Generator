@@ -11,7 +11,7 @@ import <#=importNamespace#>.http.BaseCollectionWithReferencesRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
 <# var mainNamespace = host.CurrentNamespace(); #>
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequestBuilder(), "BaseCollectionWithReferencesRequestBuilder<"+c.TypeName()+", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+", "+c.TypeCollectionRequest()+", "+c.TypeCollectionWithReferencesRequest()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequestBuilder(), "BaseCollectionWithReferencesRequestBuilder<"+c.TypeName()+", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionRequest()+", "+c.TypeCollectionWithReferencesRequest()+">")#>
 
     /**
      * The request builder for this collection of <#=c.ClassTypeName()#>
@@ -21,6 +21,6 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param requestOptions the options for this request
      */
     public <#=c.TypeCollectionWithReferencesRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeReferenceRequestBuilder()#>.class, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionWithReferencesRequest()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeReferenceRequestBuilder()#>.class, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionWithReferencesPage()#>.class, <#=c.TypeCollectionWithReferencesRequest()#>.class);
     }
 }
