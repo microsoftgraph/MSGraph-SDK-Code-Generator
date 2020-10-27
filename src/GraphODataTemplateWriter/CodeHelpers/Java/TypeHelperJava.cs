@@ -1142,7 +1142,7 @@ import java.util.EnumSet;";
         /**
         * Get the description from the LongDescription or Description annotation and then return the sanitized string.
         */
-        private static string GetSanitizedDescription(OdcmProperty property)
+        public static string GetSanitizedDescription(OdcmObject property)
         {
             var description = property.LongDescription ?? property.Description;
 

@@ -29,6 +29,11 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
     }
 
+    /**
+     * Creates a new <#=c.TypeName()#>
+     * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
+     * @param callback the callback to invoke once the object has been created
+     */
     public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
@@ -36,6 +41,11 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
             .post(new<#=c.TypeName()#>, callback);
     }
 
+    /**
+     * Creates a new <#=c.TypeName()#>
+     * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
+     * @return the newly created object
+     */
     public <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)

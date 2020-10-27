@@ -44,6 +44,11 @@ import <#=importNamespace#>.http.ReferenceRequestBody;
 
             String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel).Name;
 #>
+    /**
+     * Creates a new <#=c.TypeName()#>
+     * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
+     * @param callback the callback to invoke once the object has been created
+     */
     public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=c.TypeName()#>.id);
@@ -52,6 +57,11 @@ import <#=importNamespace#>.http.ReferenceRequestBody;
             .post(new<#=c.TypeName()#>, body, callback);
     }
 
+    /**
+     * Creates a new <#=c.TypeName()#>
+     * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
+     * @return the newly created object
+     */
     public <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=c.TypeName()#>.id);

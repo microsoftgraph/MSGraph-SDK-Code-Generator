@@ -34,6 +34,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
 #>
 
 <#=TypeHelperJava.CreateClassDef(baseTypeRequest, baseClass)#>
+    /** The body for the method */
     protected final <#=c.TypeBody()#> body;
 
     /**
@@ -52,10 +53,18 @@ import <#=importNamespace#>.concurrency.IExecutors;
         body = new <#=c.TypeBody()#>();
     }
 
+    /**
+     * Invokes the method and invokes the callback with the result
+     * @param callback callback to be invoked after executing the request
+     */
     public void post(final ICallback<? super <#=returnType#>> callback) {
         send(HttpMethod.POST, callback, body);
     }
 
+    /**
+     * Invokes the method and returns the result
+     * @return result of the method invocation
+     */
     public <#=returnType#> post() throws ClientException {
         return send(HttpMethod.POST, body);
     }

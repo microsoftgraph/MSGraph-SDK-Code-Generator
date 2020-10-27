@@ -25,6 +25,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
 
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
 
+    /** The body for the method */
     protected final <#=c.TypeBody()#> body;
 
 <# } #>
@@ -49,6 +50,10 @@ import <#=importNamespace#>.concurrency.IExecutors;
 
 <# if (c.AsOdcmMethod().IsAction()) { #>
 
+    /**
+     * Invokes the method and calls the callback with the resulting collection of objects
+     * @param callback a callback to be invoked with the resulting collection of objects
+     */
     public void post(final ICallback<? super <#=c.TypeCollectionPage()#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
@@ -63,6 +68,10 @@ import <#=importNamespace#>.concurrency.IExecutors;
         });
     }
 
+    /**
+     * Invokes the method and returns the resulting collection of objects
+     * @return a collection of objects returned by the method
+     */
     public <#=c.TypeCollectionPage()#> post() throws ClientException {
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
         final <#=c.TypeCollectionResponse()#> response = post(body);

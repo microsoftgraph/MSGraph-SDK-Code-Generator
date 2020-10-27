@@ -49,6 +49,10 @@ import <#=importNamespace#>.core.IBaseClient;
 <#
 	if(host.TemplateName.Equals("DriveItemCollectionRequestBuilder")){
 #>
+    /**
+     * Gets a request builder to the AppRoot folder.
+     * @return a request builder to the AppRoot folder
+     */
     public DriveItemRequestBuilder appRoot() {
     	return new DriveItemRequestBuilder(this.getRequestUrlWithAdditionalSegment("approot"), this.getClient(), null);
     }
@@ -71,6 +75,10 @@ if (currentTypeProjection != null) {
         if (method.IsCollection) {
 #>
 
+    /**
+     * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
+     * @return the request builder collection<#=method.MethodParametersJavadocSignature()#>
+     */
     public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }
@@ -79,6 +87,12 @@ if (currentTypeProjection != null) {
 	if (method.MethodName() == "Delta") {
 #>
 
+    /**
+     * Gets the list of newly created, updated or deleted <#= c.TypeName() #>
+     * 
+     * @return a request builder to get the changes
+     * @param deltaLink the link returned by the last delta request
+     */
 	public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(final String deltaLink) {
         return new <#=method.TypeCollectionRequestBuilder()#>(deltaLink, getClient(), null<#=method.MethodParametersValues()#>);
     }
@@ -87,6 +101,10 @@ if (currentTypeProjection != null) {
         } else {
 #>
 
+    /**
+     * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
+     * @return the request builder <#=method.MethodParametersJavadocSignature()#>
+     */
     public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
         return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }

@@ -35,6 +35,12 @@ import <#=importNamespace#>.concurrency.IExecutors;
     }
 
 <# if (c.GetFeatures().CanExpand) { #>
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value the expand clause
+     * @return the updated request
+     */
     public <#=c.TypeCollectionWithReferencesRequest()#> expand(final String value) {
         addExpandOption(value);
         return this;
@@ -42,6 +48,12 @@ import <#=importNamespace#>.concurrency.IExecutors;
 
 <# } #>
 <# if (c.GetFeatures().CanFilter) { #>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
     public <#=c.TypeCollectionWithReferencesRequest()#> filter(final String value) {
         addFilterOption(value);
         return this;
@@ -49,6 +61,12 @@ import <#=importNamespace#>.concurrency.IExecutors;
 
 <# } #>
 <# if (c.GetFeatures().CanSort) { #>
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
     public <#=c.TypeCollectionWithReferencesRequest()#> orderBy(final String value) {
         addOrderByOption(value);
         return this;
@@ -56,6 +74,12 @@ import <#=importNamespace#>.concurrency.IExecutors;
 
 <# } #>
 <# if (c.GetFeatures().CanSelect) { #>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value the select clause
+     * @return the updated request
+     */
     public <#=c.TypeCollectionWithReferencesRequest()#> select(final String value) {
         addSelectOption(value);
         return this;
@@ -63,6 +87,12 @@ import <#=importNamespace#>.concurrency.IExecutors;
 
 <# } #>
 <# if (c.GetFeatures().CanUseTop) { #>
+    /**
+     * Sets the top value for the request
+     *
+     * @param value the max number of items to return
+     * @return the updated request
+     */
     public <#=c.TypeCollectionWithReferencesRequest()#> top(final int value) {
         addTopOption(value);
         return this;
