@@ -253,11 +253,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeWithReferencesRequest() + "Builder";
         }
 
-        public static string ITypeWithReferencesRequestBuilder(this OdcmObject c)
-        {
-            return $"I{c.TypeWithReferencesRequestBuilder()}";
-        }
-
         public static string BaseTypeWithReferencesRequestBuilder(this OdcmObject c) => $"Base{c.TypeWithReferencesRequestBuilder()}";
 
         public static string TypeReferenceRequest(this OdcmObject c)
