@@ -18,52 +18,17 @@ var baseMethodRequestBuilderTypeName = @namespace.GetCoreLibraryType("Base" + me
 var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
 var optionTypeName = @namespace.GetCoreLibraryType("Option");
 
+// Get navigation properties and methods of the return type if the method is composable.
+var composableMethodNavigations = method.IsComposable ? method.GetComposableFunctionReturnTypeNavigations() : null;
+var composableMethodMethods = method.IsComposable ? method.GetComposableFunctionReturnTypeMethods() : null;
+
 // Overloads are determined based on the name of method and the type of the binding parameter.
 // There is no differentiation between an entity, and a collection of the same entities.
 // This may cause issues in the future that would require changes.
 var overloads = new List<OdcmMethod>();
 overloads.Add(method);
 overloads.AddRange(method.Overloads);
-
-var methods = overloads
-    .Select(m =>
-        {
-            var parameters = m.Parameters
-                .Select(p =>
-                    {
-                        var type = p.Type.GetTypeString(@namespace);
-                        var name = p.Name.ToLowerFirstChar();
-                        var parameterName = p.Name.GetSanitizedParameterName();
-                        var propertyName = p.Name.ToCheckedCase();
-
-                        // Adds support for classes ending in "Request" that have been dismabiguated.
-                        if (type.EndsWith("Request"))
-                        {
-                            type = String.Concat(type, "Object");
-                        }
-                        if (p.IsCollection)
-                        {
-                            type = string.Format("IEnumerable<{0}>", type);
-                        }
-                        else if (!p.Type.IsTypeNullable() && p.IsNullable)
-                        {
-                            type += "?";
-                        }
-
-                        return new { Type = type, Name = name, ParameterName = parameterName, PropertyName = propertyName, IsNullable = p.IsNullable };
-                    })
-                .OrderBy(p => p.IsNullable ? 1 : 0);
-
-            var paramStrings = parameters.Select(p => string.Format(",\n            {0} {1}", p.Type, p.ParameterName));
-            var paramComments = parameters.Select(p => string.Format("\n        /// <param name=\"{0}\">A {0} parameter for the OData method call.</param>", p.ParameterName));
-
-            return new
-            {
-                Parameters = parameters,
-                ParametersAsArguments = string.Join("", paramStrings),
-                ParameterComments = string.Join("", paramComments),
-            };
-        });
+var methods = overloads.GetAllMethods(@namespace);
 
 #>
 
