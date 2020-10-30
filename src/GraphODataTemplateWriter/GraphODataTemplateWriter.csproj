@@ -59,6 +59,7 @@
     <Compile Include="CodeHelpers\CodeWriterBase.cs" />
     <Compile Include="CodeHelpers\CSharp\MethodInfo.cs" />
     <Compile Include="CodeHelpers\CSharp\CodeWriterCSharp.cs" />
+    <Compile Include="CodeHelpers\CSharp\ParameterInfo.cs" />
     <Compile Include="CodeHelpers\CSharp\TypeHelperCSharp.cs" />
     <Compile Include="CodeHelpers\Java\CodeWriterJava.cs" />
     <Compile Include="CodeHelpers\Java\CustomOverwrites.cs" />

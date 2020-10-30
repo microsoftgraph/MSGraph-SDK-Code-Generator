@@ -532,13 +532,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// of a composable function. 
         /// </summary>
         /// <param name="odcmMethod">The OdcmMethod to target.</param>
-        /// <returns>A list of navigation properties set on the return type.</returns>
-        public static IEnumerable<OdcmProperty> GetComposableFunctionReturnTypeNavigations(this OdcmMethod odcmMethod)
+        /// <returns>An ordered (by name) list of navigation properties bound 
+        /// to the return type. Can be an empty list.</returns>
+        public static List<OdcmProperty> GetComposableFunctionReturnTypeNavigations(this OdcmMethod odcmMethod)
         {
             if (!odcmMethod.IsComposable)
-                throw new InvalidOperationException("This extension method is intended to only be called on a composable function.");
+                throw new InvalidOperationException("This extension method is intended " +
+                                                    "to only be called on a composable function.");
 
-            return (odcmMethod.ReturnType as OdcmClass).Properties.Where(p => p.IsLink);
+            return (odcmMethod.ReturnType as OdcmClass).Properties
+                                                       .Where(p => p.IsLink)
+                                                       .OrderBy(p => p.Name)
+                                                       .ToList();
         }
 
         /// <summary>
@@ -546,24 +551,29 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// of a composable function. 
         /// </summary>
         /// <param name="odcmMethod">The OdcmMethod to target.</param>
-        /// <returns>A list of methods bound to the return type.</returns>
-        public static IEnumerable<OdcmMethod> GetComposableFunctionReturnTypeMethods(this OdcmMethod odcmMethod)
+        /// <returns>An ordered (by name) list of methods bound to the return 
+        /// type. Can be an empty list.</returns>
+        public static List<OdcmMethod> GetComposableFunctionReturnTypeMethods(this OdcmMethod odcmMethod)
         {
             if (!odcmMethod.IsComposable)
-                throw new InvalidOperationException("This extension method is intended to only be called on a composable function.");
+                throw new InvalidOperationException("This extension method is intended " +
+                                                    "to only be called on a composable function.");
 
-            return (odcmMethod.ReturnType as OdcmClass).Methods;
+            return (odcmMethod.ReturnType as OdcmClass).Methods
+                                                       .OrderBy(m => m.Name)
+                                                       .ToList();
         }
 
         /// <summary>
-        /// Use this method to get the method information for all of the method overloads.
+        /// Use this method to get the method information for all of the methods.
         /// </summary>
-        /// <param name="overloads">A list of OdcmMethods that represents all of the overloads.</param>
-        /// <param name="namespace">The namespace for the method overloads.</param>
-        /// <returns>A list of MethodInfo objects used to construct the request builders.</returns>
-        public static List<MethodInfo> GetAllMethods(this List<OdcmMethod> overloads, string @namespace)
+        /// <param name="methods">A list of OdcmMethods.</param>
+        /// <param name="namespace">The namespace for the methods.</param>
+        /// <returns>An ordered (to minimize diffs caused by reorder in the CSDL) list of 
+        /// MethodInfo objects used to construct the request builders.</returns>
+        public static List<MethodInfo> GetAllMethodsInfo(this List<OdcmMethod> methods, string @namespace)
         {
-            return overloads.Select(m =>
+            return methods.Select(m =>
             {
                 var parameters = m.Parameters
                     .Select(p =>
@@ -591,18 +601,29 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
                         return new ParameterInfo() { Type = type, Name = name, ParameterName = parameterName, PropertyName = propertyName, IsNullable = p.IsNullable };
                     })
-                    .OrderBy(p => p.IsNullable ? 1 : 0);
+                    .OrderBy(p => p.IsNullable ? 1 : 0); // I suspect this could cause a problem if new overloads are added.
 
                 var paramStrings = parameters.Select(p => string.Format(",\n            {0} {1}", p.Type, p.ParameterName));
                 var paramComments = parameters.Select(p => string.Format("\n        /// <param name=\"{0}\">A {0} parameter for the OData method call.</param>", p.ParameterName));
+                var paramArgsForConstructor = parameters.Select(p => string.Format(",\n                {0}", p.ParameterName));
 
+                var entityName = m.Class.Name.ToCheckedCase();
+                var methodName = m.Name.ToCheckedCase();
+                var requestType = entityName + methodName + "Request";
+                var requestBuilderType = requestType + "Builder";
+                
                 return new MethodInfo()
                 {
                     Parameters = parameters,
                     ParametersAsArguments = string.Join("", paramStrings),
+                    ParamArgsForConstructor = string.Join("", paramArgsForConstructor),
                     ParameterComments = string.Join("", paramComments),
+                    RequestBuilderType = requestBuilderType,
+                    MethodName = methodName,
+                    MethodFullName = m.FullName,
+                    MethodParametersAsArguments = paramStrings.Count() == 0 ? "" : string.Join("", paramStrings).Substring(1) 
                 };
-            }).ToList();
+            }).OrderBy(m => m.MethodName).ToList();
         }
     }
 }

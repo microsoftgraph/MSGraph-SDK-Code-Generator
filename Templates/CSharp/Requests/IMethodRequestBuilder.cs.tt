@@ -5,6 +5,8 @@
 
 var method = host.CurrentType.AsOdcmMethod();
 var @namespace = method.Namespace.GetNamespaceName();
+var composableMethodMethods = method.IsComposable ? method.GetComposableFunctionReturnTypeMethods() : new List<OdcmMethod>();
+var composableMethodsInfo = composableMethodMethods.GetAllMethodsInfo(@namespace);
 
 var optionTypeName = @namespace.GetCoreLibraryType("Option");
 
@@ -30,5 +32,21 @@ namespace <#=@namespace#>
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         I<#=requestType#> Request(IEnumerable<<#=optionTypeName#>> options = null);
+<#
+    // Add request builders for every function bound to the return type of this function.
+    if (composableMethodsInfo != null)
+    {
+        foreach (var m in composableMethodsInfo)
+        {
+#>
+        /// <summary>
+        /// Gets the request builder for <#=m.RequestBuilderType#>.
+        /// </summary><#=m.ParameterComments#>
+        /// <returns>The <see cref="I<#=m.RequestBuilderType#>"/>.</returns>
+        public I<#=m.RequestBuilderType#> <#=m.MethodName#>(<#=m.MethodParametersAsArguments#>)
+<#
+        }
+    }
+#>
     }
 }

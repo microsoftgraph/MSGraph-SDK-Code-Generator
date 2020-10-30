@@ -19,8 +19,9 @@ var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
 var optionTypeName = @namespace.GetCoreLibraryType("Option");
 
 // Get navigation properties and methods of the return type if the method is composable.
-var composableMethodNavigations = method.IsComposable ? method.GetComposableFunctionReturnTypeNavigations() : null;
-var composableMethodMethods = method.IsComposable ? method.GetComposableFunctionReturnTypeMethods() : null;
+var composableMethodNavigations = method.IsComposable ? method.GetComposableFunctionReturnTypeNavigations() : new List<OdcmProperty>();
+var composableMethodMethods = method.IsComposable ? method.GetComposableFunctionReturnTypeMethods() : new List<OdcmMethod>();
+var composableMethodsInfo = composableMethodMethods.GetAllMethodsInfo(@namespace);
 
 // Overloads are determined based on the name of method and the type of the binding parameter.
 // There is no differentiation between an entity, and a collection of the same entities.
@@ -28,7 +29,7 @@ var composableMethodMethods = method.IsComposable ? method.GetComposableFunction
 var overloads = new List<OdcmMethod>();
 overloads.Add(method);
 overloads.AddRange(method.Overloads);
-var methods = overloads.GetAllMethods(@namespace);
+var overloadMethodsInfo = overloads.GetAllMethodsInfo(@namespace);
 
 #>
 
@@ -47,7 +48,7 @@ namespace <#=@namespace#>
 // We only want to generate unique method signatures. 
 // We'll use the ParametersAsArguments to define the uniqueness of a method.
 HashSet<string> uniqueMethods = new HashSet<string>();
-foreach (var m in methods)
+foreach (var m in overloadMethodsInfo)
 {
     // Only generate a unique method.
     if (uniqueMethods.Add(m.ParametersAsArguments) == true) 
@@ -92,7 +93,7 @@ foreach (var m in methods)
     {
         HashSet<string> uniqueParameters = new HashSet<string>();
 
-        foreach (var m in methods)
+        foreach (var m in overloadMethodsInfo)
         {
             foreach (var p in m.Parameters)
             {
@@ -113,5 +114,26 @@ foreach (var m in methods)
 #>
             return request;
         }
+<#
+    // Add request builders for every function bound to the return type of this function.
+    if (composableMethodsInfo != null)
+    {
+        foreach (var m in composableMethodsInfo)
+        {
+#>
+        /// <summary>
+        /// Gets the request builder for <#=m.RequestBuilderType#>.
+        /// </summary><#=m.ParameterComments#>
+        /// <returns>The <see cref="I<#=m.RequestBuilderType#>"/>.</returns>
+        public I<#=m.RequestBuilderType#> <#=m.MethodName#>(<#=m.MethodParametersAsArguments#>)
+        {
+            return new <#=m.RequestBuilderType#>(
+                this.AppendSegmentToRequestUrl("<#=m.MethodFullName#>"),
+                this.Client<#=m.ParamArgsForConstructor#>)
+        }
+<#
+        }
+    }
+#>
     }
 }
