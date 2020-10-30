@@ -43,7 +43,7 @@ namespace <#=@namespace#>
         /// Gets the request builder for <#=m.RequestBuilderType#>.
         /// </summary><#=m.ParameterComments#>
         /// <returns>The <see cref="I<#=m.RequestBuilderType#>"/>.</returns>
-        public I<#=m.RequestBuilderType#> <#=m.MethodName#>(<#=m.MethodParametersAsArguments#>)
+        I<#=m.RequestBuilderType#> <#=m.MethodName#>(<#=m.MethodParametersAsArguments#>);
 <#
         }
     }

@@ -129,7 +129,7 @@ foreach (var m in overloadMethodsInfo)
         {
             return new <#=m.RequestBuilderType#>(
                 this.AppendSegmentToRequestUrl("<#=m.MethodFullName#>"),
-                this.Client<#=m.ParamArgsForConstructor#>)
+                this.Client<#=m.ParamArgsForConstructor#>);
         }
 <#
         }
