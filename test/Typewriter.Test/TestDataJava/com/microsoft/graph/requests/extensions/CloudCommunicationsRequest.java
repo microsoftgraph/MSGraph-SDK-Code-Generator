@@ -23,7 +23,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Cloud Communications Request.
  */
-public class CloudCommunicationsRequest extends BaseRequest {
+public class CloudCommunicationsRequest extends BaseRequest<CloudCommunications> {
 	
     /**
      * The request for the CloudCommunications
@@ -143,8 +143,8 @@ public class CloudCommunicationsRequest extends BaseRequest {
      * @return the updated request
      */
      public CloudCommunicationsRequest select(final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-         return (CloudCommunicationsRequest)this;
+         addSelectOption(value);
+         return this;
      }
 
     /**
@@ -154,8 +154,8 @@ public class CloudCommunicationsRequest extends BaseRequest {
      * @return the updated request
      */
      public CloudCommunicationsRequest expand(final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-         return (CloudCommunicationsRequest)this;
+         addExpandOption(value);
+         return this;
      }
 
 }

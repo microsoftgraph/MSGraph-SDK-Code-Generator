@@ -13,8 +13,8 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionPage;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionResponse;
+import com.microsoft.graph2.callrecords.models.extensions.Session;
 import com.microsoft.graph2.callrecords.models.extensions.SegmentTestActionBody;
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.core.IBaseClient;
@@ -26,9 +26,10 @@ import com.microsoft.graph.concurrency.IExecutors;
 /**
  * The class for the Segment Test Action Collection Request.
  */
-public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<SegmentTestActionCollectionResponse, SegmentTestActionCollectionPage> {
+public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Session, SegmentTestActionCollectionResponse, SegmentTestActionCollectionPage> {
 
 
+    /** The body for the method */
     protected final SegmentTestActionBody body;
 
 
@@ -40,11 +41,15 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * @param requestOptions the options for this request
      */
     public SegmentTestActionCollectionRequest(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, SegmentTestActionCollectionResponse.class, SegmentTestActionCollectionPage.class);
+        super(requestUrl, client, requestOptions, SegmentTestActionCollectionResponse.class, SegmentTestActionCollectionPage.class, SegmentTestActionCollectionRequestBuilder.class);
         body = new SegmentTestActionBody();
     }
 
 
+    /**
+     * Invokes the method and calls the callback with the resulting collection of objects
+     * @param callback a callback to be invoked with the resulting collection of objects
+     */
     public void post(final ICallback<? super SegmentTestActionCollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
@@ -59,23 +64,15 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
         });
     }
 
+    /**
+     * Invokes the method and returns the resulting collection of objects
+     * @return a collection of objects returned by the method
+     */
     public SegmentTestActionCollectionPage post() throws ClientException {
         final SegmentTestActionCollectionResponse response = post(body);
         return buildFromResponse(response);
     }
 
-
-    public SegmentTestActionCollectionPage buildFromResponse(final SegmentTestActionCollectionResponse response) {
-        final SegmentTestActionCollectionRequestBuilder builder;
-        if (response.nextLink != null) {
-            builder = new SegmentTestActionCollectionRequestBuilder(response.nextLink, getBaseRequest().getClient(), /* options */ null, (IdentitySet) null);
-        } else {
-            builder = null;
-        }
-        final SegmentTestActionCollectionPage page = new SegmentTestActionCollectionPage(response, builder);
-        page.setRawObject(response.getSerializer(), response.getRawObject());
-        return page;
-    }
 
     /**
      * Sets the select clause for the request
@@ -84,8 +81,8 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * @return the updated request
      */
     public SegmentTestActionCollectionRequest select(final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (SegmentTestActionCollectionRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -95,8 +92,8 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * @return the updated request
      */
     public SegmentTestActionCollectionRequest top(final int value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value+""));
-        return (SegmentTestActionCollectionRequest)this;
+        addTopOption(value);
+        return this;
     }
 
     /**
@@ -106,8 +103,8 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * @return the updated request
      */
     public SegmentTestActionCollectionRequest expand(final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (SegmentTestActionCollectionRequest)this;
+        addExpandOption(value);
+        return this;
     }
 
     /**
@@ -117,8 +114,8 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * @return the updated request
      */
     public SegmentTestActionCollectionRequest filter(final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (SegmentTestActionCollectionRequest)this;
+        addFilterOption(value);
+        return this;
     }
 
     /**
@@ -128,8 +125,8 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * @return the updated request
      */
     public SegmentTestActionCollectionRequest orderBy(final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
-        return (SegmentTestActionCollectionRequest)this;
+        addOrderByOption(value);
+        return this;
     }
 
 }

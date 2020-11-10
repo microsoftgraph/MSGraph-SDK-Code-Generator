@@ -4,10 +4,10 @@
 
 package com.microsoft.graph.requests.extensions;
 import com.microsoft.graph.requests.extensions.OnenotePageForwardRequest;
+import com.microsoft.graph.models.extensions.OnenotePage;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph.models.extensions.Recipient;
-import com.microsoft.graph.core.BaseActionRequestBuilder;
-import com.microsoft.graph.core.BaseFunctionRequestBuilder;
+import com.microsoft.graph.http.BaseActionRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
 import com.google.gson.JsonElement;
 
@@ -16,7 +16,7 @@ import com.google.gson.JsonElement;
 /**
  * The class for the Onenote Page Forward Request Builder.
  */
-public class OnenotePageForwardRequestBuilder extends BaseActionRequestBuilder {
+public class OnenotePageForwardRequestBuilder extends BaseActionRequestBuilder<OnenotePage> {
 
     /**
      * The request builder for this OnenotePageForward

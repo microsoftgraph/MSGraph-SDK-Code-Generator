@@ -5,8 +5,7 @@
 package com.microsoft.graph2.callrecords.requests.extensions;
 import com.microsoft.graph2.callrecords.requests.extensions.CallRecordItemRequest;
 import com.microsoft.graph2.callrecords.models.extensions.CallRecord;
-import com.microsoft.graph.core.BaseActionRequestBuilder;
-import com.microsoft.graph.core.BaseFunctionRequestBuilder;
+import com.microsoft.graph.http.BaseFunctionRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
 import com.google.gson.JsonElement;
 
@@ -15,7 +14,7 @@ import com.google.gson.JsonElement;
 /**
  * The class for the Call Record Item Request Builder.
  */
-public class CallRecordItemRequestBuilder extends BaseFunctionRequestBuilder {
+public class CallRecordItemRequestBuilder extends BaseFunctionRequestBuilder<CallRecord> {
 
     /**
      * The request builder for this CallRecordItem
@@ -59,17 +58,39 @@ public class CallRecordItemRequestBuilder extends BaseFunctionRequestBuilder {
 
         return request;
     }
+    /**
+     *  Gets a request builder for the Session collection
+     *
+     * @return the collection request builder
+     */
     public SessionCollectionRequestBuilder sessions() {
         return new SessionCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions"), getClient(), null);
     }
 
+    /**
+     * Gets a request builder for the Session item
+     *
+     * @return the request builder
+     * @param id the item identifier
+     */
     public SessionRequestBuilder sessions(final String id) {
         return new SessionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions") + "/" + id, getClient(), null);
     }
+    /**
+     *  Gets a request builder for the EntityType2 collection
+     *
+     * @return the collection request builder
+     */
     public EntityType2CollectionRequestBuilder recipients() {
         return new EntityType2CollectionRequestBuilder(getRequestUrlWithAdditionalSegment("recipients"), getClient(), null);
     }
 
+    /**
+     * Gets a request builder for the EntityType2 item
+     *
+     * @return the request builder
+     * @param id the item identifier
+     */
     public EntityType2RequestBuilder recipients(final String id) {
         return new EntityType2RequestBuilder(getRequestUrlWithAdditionalSegment("recipients") + "/" + id, getClient(), null);
     }

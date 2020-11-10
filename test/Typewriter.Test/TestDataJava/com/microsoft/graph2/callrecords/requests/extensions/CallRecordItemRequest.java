@@ -18,7 +18,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Call Record Item Request.
  */
-public class CallRecordItemRequest extends BaseRequest {
+public class CallRecordItemRequest extends BaseRequest<CallRecord> {
 
     /**
      * The request for this CallRecordItem
@@ -97,8 +97,8 @@ public class CallRecordItemRequest extends BaseRequest {
      * @return the updated request
      */
     public CallRecordItemRequest select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (CallRecordItemRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -108,8 +108,8 @@ public class CallRecordItemRequest extends BaseRequest {
      * @return the updated request
      */
     public CallRecordItemRequest expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (CallRecordItemRequest)this;
+        addExpandOption(value);
+        return this;
     }
 
     /**
@@ -119,8 +119,8 @@ public class CallRecordItemRequest extends BaseRequest {
      * @return the updated request
      */
     public CallRecordItemRequest filter(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (CallRecordItemRequest)this;
+        addFilterOption(value);
+        return this;
     }
 
     /**
@@ -130,8 +130,8 @@ public class CallRecordItemRequest extends BaseRequest {
      * @return the updated request
      */
     public CallRecordItemRequest orderBy(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$orderby", value));
-        return (CallRecordItemRequest)this;
+        addOrderByOption(value);
+        return this;
     }
 
 }

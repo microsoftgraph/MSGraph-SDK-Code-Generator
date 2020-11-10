@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.http.BaseRequest;
+import com.microsoft.graph.http.BaseReferenceRequest;
 import com.microsoft.graph.http.HttpMethod;
 import com.microsoft.graph.core.IBaseClient;
 
@@ -21,7 +21,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Entity Type2Reference Request.
  */
-public class EntityType2ReferenceRequest extends BaseRequest {
+public class EntityType2ReferenceRequest extends BaseReferenceRequest<EntityType2> {
 
     /**
      * The request for the EntityType2
@@ -34,14 +34,6 @@ public class EntityType2ReferenceRequest extends BaseRequest {
         super(requestUrl, client, requestOptions, EntityType2.class);
     }
 
-    public void delete(final ICallback<? super EntityType2> callback) {
-        send(HttpMethod.DELETE, callback, null);
-    }
-
-    public EntityType2 delete() throws ClientException {
-       return send(HttpMethod.DELETE, null);
-    }
-
     /**
      * Sets the select clause for the request
      *
@@ -49,8 +41,8 @@ public class EntityType2ReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public EntityType2ReferenceRequest select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (EntityType2ReferenceRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -60,8 +52,8 @@ public class EntityType2ReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public EntityType2ReferenceRequest expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (EntityType2ReferenceRequest)this;
+        addExpandOption(value);
+        return this;
     }
     /**
      * Puts the EntityType2

@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.http.BaseRequest;
+import com.microsoft.graph.http.BaseReferenceRequest;
 import com.microsoft.graph.http.HttpMethod;
 import com.microsoft.graph.core.IBaseClient;
 
@@ -21,7 +21,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Call Reference Request.
  */
-public class CallReferenceRequest extends BaseRequest {
+public class CallReferenceRequest extends BaseReferenceRequest<Call> {
 
     /**
      * The request for the Call
@@ -34,14 +34,6 @@ public class CallReferenceRequest extends BaseRequest {
         super(requestUrl, client, requestOptions, Call.class);
     }
 
-    public void delete(final ICallback<? super Call> callback) {
-        send(HttpMethod.DELETE, callback, null);
-    }
-
-    public Call delete() throws ClientException {
-       return send(HttpMethod.DELETE, null);
-    }
-
     /**
      * Sets the select clause for the request
      *
@@ -49,8 +41,8 @@ public class CallReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public CallReferenceRequest select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (CallReferenceRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -60,8 +52,8 @@ public class CallReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public CallReferenceRequest expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (CallReferenceRequest)this;
+        addExpandOption(value);
+        return this;
     }
     /**
      * Puts the Call

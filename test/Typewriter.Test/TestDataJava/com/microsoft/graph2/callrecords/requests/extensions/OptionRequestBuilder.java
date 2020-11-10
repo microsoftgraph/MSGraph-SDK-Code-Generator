@@ -18,7 +18,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Option Request Builder.
  */
-public class OptionRequestBuilder extends BaseRequestBuilder {
+public class OptionRequestBuilder extends BaseRequestBuilder<Option> {
 
     /**
      * The request builder for the Option

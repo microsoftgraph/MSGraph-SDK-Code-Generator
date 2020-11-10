@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.http.BaseRequest;
+import com.microsoft.graph.http.BaseWithReferenceRequest;
 import com.microsoft.graph.http.HttpMethod;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.serializer.IJsonBackedObject;
@@ -22,7 +22,7 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 /**
  * The class for the Call With Reference Request.
  */
-public class CallWithReferenceRequest extends BaseRequest {
+public class CallWithReferenceRequest extends BaseWithReferenceRequest<Call> {
 
     /**
      * The request for the Call
@@ -35,43 +35,6 @@ public class CallWithReferenceRequest extends BaseRequest {
         super(requestUrl, client, requestOptions, Call.class);
     }
 
-    public void post(final Call newCall, final IJsonBackedObject payload, final ICallback<? super Call> callback) {
-        send(HttpMethod.POST, callback, payload);
-    }
-
-    public Call post(final Call newCall, final IJsonBackedObject payload) throws ClientException {
-        IJsonBackedObject response = send(HttpMethod.POST, payload);
-        if (response != null){
-            return newCall;
-        }
-        return null;
-    }
-
-    public void get(final ICallback<? super Call> callback) {
-        send(HttpMethod.GET, callback, null);
-    }
-
-    public Call get() throws ClientException {
-       return send(HttpMethod.GET, null);
-    }
-
-	public void delete(final ICallback<? super Call> callback) {
-		send(HttpMethod.DELETE, callback, null);
-	}
-
-	public void delete() throws ClientException {
-		send(HttpMethod.DELETE, null);
-	}
-
-	public void patch(final Call sourceCall, final ICallback<? super Call> callback) {
-		send(HttpMethod.PATCH, callback, sourceCall);
-	}
-
-	public Call patch(final Call sourceCall) throws ClientException {
-		return send(HttpMethod.PATCH, sourceCall);
-	}
-
-
     /**
      * Sets the select clause for the request
      *
@@ -79,8 +42,8 @@ public class CallWithReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public CallWithReferenceRequest select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (CallWithReferenceRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -90,7 +53,7 @@ public class CallWithReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public CallWithReferenceRequest expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (CallWithReferenceRequest)this;
+        addExpandOption(value);
+        return this;
     }
 }

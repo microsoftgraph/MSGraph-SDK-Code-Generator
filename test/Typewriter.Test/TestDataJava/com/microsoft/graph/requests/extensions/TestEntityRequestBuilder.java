@@ -21,7 +21,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Test Entity Request Builder.
  */
-public class TestEntityRequestBuilder extends BaseRequestBuilder {
+public class TestEntityRequestBuilder extends BaseRequestBuilder<TestEntity> {
 
     /**
      * The request builder for the TestEntity

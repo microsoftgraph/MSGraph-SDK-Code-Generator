@@ -84,7 +84,7 @@ public class EntityType3ForwardBody {
      *
      * @return the serializer
      */
-    protected ISerializer getSerializer() {
+    public ISerializer getSerializer() {
         return serializer;
     }
 

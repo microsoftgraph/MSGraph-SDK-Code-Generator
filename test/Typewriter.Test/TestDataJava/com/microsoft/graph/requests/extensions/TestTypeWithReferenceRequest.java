@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.http.BaseRequest;
+import com.microsoft.graph.http.BaseWithReferenceRequest;
 import com.microsoft.graph.http.HttpMethod;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.serializer.IJsonBackedObject;
@@ -24,7 +24,7 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 /**
  * The class for the Test Type With Reference Request.
  */
-public class TestTypeWithReferenceRequest extends BaseRequest {
+public class TestTypeWithReferenceRequest extends BaseWithReferenceRequest<TestType> {
 
     /**
      * The request for the TestType
@@ -37,43 +37,6 @@ public class TestTypeWithReferenceRequest extends BaseRequest {
         super(requestUrl, client, requestOptions, TestType.class);
     }
 
-    public void post(final TestType newTestType, final IJsonBackedObject payload, final ICallback<? super TestType> callback) {
-        send(HttpMethod.POST, callback, payload);
-    }
-
-    public TestType post(final TestType newTestType, final IJsonBackedObject payload) throws ClientException {
-        IJsonBackedObject response = send(HttpMethod.POST, payload);
-        if (response != null){
-            return newTestType;
-        }
-        return null;
-    }
-
-    public void get(final ICallback<? super TestType> callback) {
-        send(HttpMethod.GET, callback, null);
-    }
-
-    public TestType get() throws ClientException {
-       return send(HttpMethod.GET, null);
-    }
-
-	public void delete(final ICallback<? super TestType> callback) {
-		send(HttpMethod.DELETE, callback, null);
-	}
-
-	public void delete() throws ClientException {
-		send(HttpMethod.DELETE, null);
-	}
-
-	public void patch(final TestType sourceTestType, final ICallback<? super TestType> callback) {
-		send(HttpMethod.PATCH, callback, sourceTestType);
-	}
-
-	public TestType patch(final TestType sourceTestType) throws ClientException {
-		return send(HttpMethod.PATCH, sourceTestType);
-	}
-
-
     /**
      * Sets the select clause for the request
      *
@@ -81,8 +44,8 @@ public class TestTypeWithReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public TestTypeWithReferenceRequest select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (TestTypeWithReferenceRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -92,7 +55,7 @@ public class TestTypeWithReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public TestTypeWithReferenceRequest expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (TestTypeWithReferenceRequest)this;
+        addExpandOption(value);
+        return this;
     }
 }

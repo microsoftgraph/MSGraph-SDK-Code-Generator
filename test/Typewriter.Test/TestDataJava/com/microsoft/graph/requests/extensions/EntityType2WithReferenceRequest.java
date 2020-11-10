@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.http.BaseRequest;
+import com.microsoft.graph.http.BaseWithReferenceRequest;
 import com.microsoft.graph.http.HttpMethod;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.serializer.IJsonBackedObject;
@@ -22,7 +22,7 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 /**
  * The class for the Entity Type2With Reference Request.
  */
-public class EntityType2WithReferenceRequest extends BaseRequest {
+public class EntityType2WithReferenceRequest extends BaseWithReferenceRequest<EntityType2> {
 
     /**
      * The request for the EntityType2
@@ -35,43 +35,6 @@ public class EntityType2WithReferenceRequest extends BaseRequest {
         super(requestUrl, client, requestOptions, EntityType2.class);
     }
 
-    public void post(final EntityType2 newEntityType2, final IJsonBackedObject payload, final ICallback<? super EntityType2> callback) {
-        send(HttpMethod.POST, callback, payload);
-    }
-
-    public EntityType2 post(final EntityType2 newEntityType2, final IJsonBackedObject payload) throws ClientException {
-        IJsonBackedObject response = send(HttpMethod.POST, payload);
-        if (response != null){
-            return newEntityType2;
-        }
-        return null;
-    }
-
-    public void get(final ICallback<? super EntityType2> callback) {
-        send(HttpMethod.GET, callback, null);
-    }
-
-    public EntityType2 get() throws ClientException {
-       return send(HttpMethod.GET, null);
-    }
-
-	public void delete(final ICallback<? super EntityType2> callback) {
-		send(HttpMethod.DELETE, callback, null);
-	}
-
-	public void delete() throws ClientException {
-		send(HttpMethod.DELETE, null);
-	}
-
-	public void patch(final EntityType2 sourceEntityType2, final ICallback<? super EntityType2> callback) {
-		send(HttpMethod.PATCH, callback, sourceEntityType2);
-	}
-
-	public EntityType2 patch(final EntityType2 sourceEntityType2) throws ClientException {
-		return send(HttpMethod.PATCH, sourceEntityType2);
-	}
-
-
     /**
      * Sets the select clause for the request
      *
@@ -79,8 +42,8 @@ public class EntityType2WithReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public EntityType2WithReferenceRequest select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (EntityType2WithReferenceRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -90,7 +53,7 @@ public class EntityType2WithReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public EntityType2WithReferenceRequest expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (EntityType2WithReferenceRequest)this;
+        addExpandOption(value);
+        return this;
     }
 }

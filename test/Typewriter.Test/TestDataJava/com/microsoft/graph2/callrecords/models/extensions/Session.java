@@ -7,6 +7,7 @@ import com.microsoft.graph.serializer.ISerializer;
 import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
 import java.util.EnumSet;
+import com.microsoft.graph.http.BaseCollectionPage;
 import com.microsoft.graph2.callrecords.models.generated.Modality;
 import com.microsoft.graph2.callrecords.models.extensions.Endpoint;
 import com.microsoft.graph2.callrecords.models.extensions.FailureInfo;
@@ -108,7 +109,8 @@ public class Session extends Entity implements IJsonBackedObject {
      *
      * @return the serializer
      */
-    protected ISerializer getSerializer() {
+	@Override
+    public ISerializer getSerializer() {
         return serializer;
     }
 

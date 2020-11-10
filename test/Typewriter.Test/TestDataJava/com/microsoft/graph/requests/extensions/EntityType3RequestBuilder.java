@@ -20,7 +20,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Entity Type3Request Builder.
  */
-public class EntityType3RequestBuilder extends BaseRequestBuilder {
+public class EntityType3RequestBuilder extends BaseRequestBuilder<EntityType3> {
 
     /**
      * The request builder for the EntityType3
@@ -55,6 +55,15 @@ public class EntityType3RequestBuilder extends BaseRequestBuilder {
 
 
 
+    /**
+     * Gets a builder to execute the method
+     * @return the request builder 
+     * @param toRecipients the toRecipients
+     * @param singleRecipient the singleRecipient
+     * @param multipleSessions the multipleSessions
+     * @param singleSession the singleSession
+     * @param comment the comment
+     */
     public EntityType3ForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final Recipient singleRecipient, final java.util.List<Session> multipleSessions, final Session singleSession, final String comment) {
         return new EntityType3ForwardRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.forward"), getClient(), null, toRecipients, singleRecipient, multipleSessions, singleSession, comment);
     }

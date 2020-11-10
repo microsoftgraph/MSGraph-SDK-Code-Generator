@@ -18,7 +18,8 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Entity Type3Forward Request.
  */
-public class EntityType3ForwardRequest extends BaseRequest {
+public class EntityType3ForwardRequest extends BaseRequest<Void> {
+    /** The body for the method */
     protected final EntityType3ForwardBody body;
 
     /**
@@ -33,10 +34,18 @@ public class EntityType3ForwardRequest extends BaseRequest {
         body = new EntityType3ForwardBody();
     }
 
+    /**
+     * Invokes the method and invokes the callback with the result
+     * @param callback callback to be invoked after executing the request
+     */
     public void post(final ICallback<? super Void> callback) {
         send(HttpMethod.POST, callback, body);
     }
 
+    /**
+     * Invokes the method and returns the result
+     * @return result of the method invocation
+     */
     public Void post() throws ClientException {
         return send(HttpMethod.POST, body);
     }
@@ -48,8 +57,8 @@ public class EntityType3ForwardRequest extends BaseRequest {
      * @return the updated request
      */
     public EntityType3ForwardRequest select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (EntityType3ForwardRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -59,8 +68,8 @@ public class EntityType3ForwardRequest extends BaseRequest {
      * @return the updated request
      */
     public EntityType3ForwardRequest top(final int value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
-        return (EntityType3ForwardRequest)this;
+        addTopOption(value);
+        return this;
     }
 
     /**
@@ -70,8 +79,8 @@ public class EntityType3ForwardRequest extends BaseRequest {
      * @return the updated request
      */
     public EntityType3ForwardRequest expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (EntityType3ForwardRequest)this;
+        addExpandOption(value);
+        return this;
     }
 
 }

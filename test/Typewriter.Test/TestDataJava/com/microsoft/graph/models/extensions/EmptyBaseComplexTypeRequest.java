@@ -20,6 +20,7 @@ import com.google.gson.annotations.Expose;
  */
 public class EmptyBaseComplexTypeRequest implements IJsonBackedObject {
 
+    /** the OData type of the object as returned by the service */
     @SerializedName("@odata.type")
     @Expose
     public String oDataType;
@@ -56,7 +57,8 @@ public class EmptyBaseComplexTypeRequest implements IJsonBackedObject {
      *
      * @return the serializer
      */
-    protected ISerializer getSerializer() {
+	@Override
+    public ISerializer getSerializer() {
         return serializer;
     }
 

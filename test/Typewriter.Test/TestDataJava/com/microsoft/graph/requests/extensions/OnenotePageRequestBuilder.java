@@ -19,7 +19,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Onenote Page Request Builder.
  */
-public class OnenotePageRequestBuilder extends BaseRequestBuilder {
+public class OnenotePageRequestBuilder extends BaseRequestBuilder<OnenotePage> {
 
     /**
      * The request builder for the OnenotePage
@@ -54,14 +54,32 @@ public class OnenotePageRequestBuilder extends BaseRequestBuilder {
 
 
 
+    /**
+     * Gets the request builder for content
+     *
+     * @return the OnenotePageContentStreamRequestBuilder instance
+     */
     public OnenotePageContentStreamRequestBuilder content() {
         return new OnenotePageContentStreamRequestBuilder(getRequestUrlWithAdditionalSegment("content"), getClient(), null);
     }
 
+    /**
+     * Gets a builder to execute the method
+     * @return the request builder 
+     * @param toRecipients the toRecipients
+     * @param details the details
+     * @param comment the comment
+     */
     public OnenotePageForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final String details, final String comment) {
         return new OnenotePageForwardRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.forward"), getClient(), null, toRecipients, details, comment);
     }
 
+    /**
+     * Gets a builder to execute the method
+     * @return the request builder 
+     * @param toRecipients the toRecipients
+     * @param comment the comment
+     */
     public OnenotePageForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final String comment) {
         return new OnenotePageForwardRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.forward"), getClient(), null, toRecipients, comment);
     }

@@ -7,6 +7,7 @@ import com.microsoft.graph.serializer.ISerializer;
 import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
 import java.util.EnumSet;
+import com.microsoft.graph.http.BaseCollectionPage;
 import com.microsoft.graph2.callrecords.models.extensions.NetworkInfo;
 import com.microsoft.graph2.callrecords.models.extensions.DeviceInfo;
 import com.microsoft.graph2.callrecords.models.extensions.MediaStream;
@@ -23,6 +24,7 @@ import com.google.gson.annotations.Expose;
  */
 public class Media implements IJsonBackedObject {
 
+    /** the OData type of the object as returned by the service */
     @SerializedName("@odata.type")
     @Expose
     public String oDataType;
@@ -91,7 +93,8 @@ public class Media implements IJsonBackedObject {
      *
      * @return the serializer
      */
-    protected ISerializer getSerializer() {
+	@Override
+    public ISerializer getSerializer() {
         return serializer;
     }
 

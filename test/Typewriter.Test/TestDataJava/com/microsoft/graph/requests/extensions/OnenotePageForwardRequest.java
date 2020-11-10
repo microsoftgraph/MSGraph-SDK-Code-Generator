@@ -18,7 +18,8 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Onenote Page Forward Request.
  */
-public class OnenotePageForwardRequest extends BaseRequest {
+public class OnenotePageForwardRequest extends BaseRequest<Void> {
+    /** The body for the method */
     protected final OnenotePageForwardBody body;
 
     /**
@@ -33,10 +34,18 @@ public class OnenotePageForwardRequest extends BaseRequest {
         body = new OnenotePageForwardBody();
     }
 
+    /**
+     * Invokes the method and invokes the callback with the result
+     * @param callback callback to be invoked after executing the request
+     */
     public void post(final ICallback<? super Void> callback) {
         send(HttpMethod.POST, callback, body);
     }
 
+    /**
+     * Invokes the method and returns the result
+     * @return result of the method invocation
+     */
     public Void post() throws ClientException {
         return send(HttpMethod.POST, body);
     }
@@ -48,8 +57,8 @@ public class OnenotePageForwardRequest extends BaseRequest {
      * @return the updated request
      */
     public OnenotePageForwardRequest select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (OnenotePageForwardRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -59,8 +68,8 @@ public class OnenotePageForwardRequest extends BaseRequest {
      * @return the updated request
      */
     public OnenotePageForwardRequest top(final int value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
-        return (OnenotePageForwardRequest)this;
+        addTopOption(value);
+        return this;
     }
 
     /**
@@ -70,8 +79,8 @@ public class OnenotePageForwardRequest extends BaseRequest {
      * @return the updated request
      */
     public OnenotePageForwardRequest expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (OnenotePageForwardRequest)this;
+        addExpandOption(value);
+        return this;
     }
 
 }

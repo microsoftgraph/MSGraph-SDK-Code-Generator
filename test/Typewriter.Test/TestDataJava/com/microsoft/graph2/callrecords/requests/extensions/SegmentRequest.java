@@ -27,7 +27,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Segment Request.
  */
-public class SegmentRequest extends BaseRequest {
+public class SegmentRequest extends BaseRequest<Segment> {
 	
     /**
      * The request for the Segment
@@ -147,8 +147,8 @@ public class SegmentRequest extends BaseRequest {
      * @return the updated request
      */
      public SegmentRequest select(final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-         return (SegmentRequest)this;
+         addSelectOption(value);
+         return this;
      }
 
     /**
@@ -158,8 +158,8 @@ public class SegmentRequest extends BaseRequest {
      * @return the updated request
      */
      public SegmentRequest expand(final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-         return (SegmentRequest)this;
+         addExpandOption(value);
+         return this;
      }
 
 }

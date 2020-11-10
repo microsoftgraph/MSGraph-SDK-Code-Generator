@@ -22,7 +22,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Call Record Request Builder.
  */
-public class CallRecordRequestBuilder extends BaseRequestBuilder {
+public class CallRecordRequestBuilder extends BaseRequestBuilder<CallRecord> {
 
     /**
      * The request builder for the CallRecord
@@ -56,17 +56,39 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder {
     }
 
 
+    /**
+     *  Gets a request builder for the Session collection
+     *
+     * @return the collection request builder
+     */
     public SessionCollectionRequestBuilder sessions() {
         return new SessionCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions"), getClient(), null);
     }
 
+    /**
+     * Gets a request builder for the Session item
+     *
+     * @return the request builder
+     * @param id the item identifier
+     */
     public SessionRequestBuilder sessions(final String id) {
         return new SessionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions") + "/" + id, getClient(), null);
     }
+    /**
+     *  Gets a request builder for the EntityType2 collection
+     *
+     * @return the collection request builder
+     */
     public EntityType2CollectionRequestBuilder recipients() {
         return new EntityType2CollectionRequestBuilder(getRequestUrlWithAdditionalSegment("recipients"), getClient(), null);
     }
 
+    /**
+     * Gets a request builder for the EntityType2 item
+     *
+     * @return the request builder
+     * @param id the item identifier
+     */
     public EntityType2RequestBuilder recipients(final String id) {
         return new EntityType2RequestBuilder(getRequestUrlWithAdditionalSegment("recipients") + "/" + id, getClient(), null);
     }

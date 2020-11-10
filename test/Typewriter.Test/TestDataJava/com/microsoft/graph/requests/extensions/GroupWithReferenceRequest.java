@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.http.BaseRequest;
+import com.microsoft.graph.http.BaseWithReferenceRequest;
 import com.microsoft.graph.http.HttpMethod;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.serializer.IJsonBackedObject;
@@ -24,7 +24,7 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 /**
  * The class for the Group With Reference Request.
  */
-public class GroupWithReferenceRequest extends BaseRequest {
+public class GroupWithReferenceRequest extends BaseWithReferenceRequest<Group> {
 
     /**
      * The request for the Group
@@ -37,43 +37,6 @@ public class GroupWithReferenceRequest extends BaseRequest {
         super(requestUrl, client, requestOptions, Group.class);
     }
 
-    public void post(final Group newGroup, final IJsonBackedObject payload, final ICallback<? super Group> callback) {
-        send(HttpMethod.POST, callback, payload);
-    }
-
-    public Group post(final Group newGroup, final IJsonBackedObject payload) throws ClientException {
-        IJsonBackedObject response = send(HttpMethod.POST, payload);
-        if (response != null){
-            return newGroup;
-        }
-        return null;
-    }
-
-    public void get(final ICallback<? super Group> callback) {
-        send(HttpMethod.GET, callback, null);
-    }
-
-    public Group get() throws ClientException {
-       return send(HttpMethod.GET, null);
-    }
-
-	public void delete(final ICallback<? super Group> callback) {
-		send(HttpMethod.DELETE, callback, null);
-	}
-
-	public void delete() throws ClientException {
-		send(HttpMethod.DELETE, null);
-	}
-
-	public void patch(final Group sourceGroup, final ICallback<? super Group> callback) {
-		send(HttpMethod.PATCH, callback, sourceGroup);
-	}
-
-	public Group patch(final Group sourceGroup) throws ClientException {
-		return send(HttpMethod.PATCH, sourceGroup);
-	}
-
-
     /**
      * Sets the select clause for the request
      *
@@ -81,8 +44,8 @@ public class GroupWithReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public GroupWithReferenceRequest select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (GroupWithReferenceRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -92,7 +55,7 @@ public class GroupWithReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public GroupWithReferenceRequest expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (GroupWithReferenceRequest)this;
+        addExpandOption(value);
+        return this;
     }
 }

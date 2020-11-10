@@ -26,7 +26,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Segment Request Builder.
  */
-public class SegmentRequestBuilder extends BaseRequestBuilder {
+public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
 
     /**
      * The request builder for the Segment
@@ -60,10 +60,21 @@ public class SegmentRequestBuilder extends BaseRequestBuilder {
     }
 
 
+    /**
+     *  Gets a request builder for the EntityType3 collection
+     *
+     * @return the collection request builder
+     */
     public EntityType3CollectionWithReferencesRequestBuilder refTypes() {
         return new EntityType3CollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("refTypes"), getClient(), null);
     }
 
+    /**
+     * Gets a request builder for the EntityType3 item
+     *
+     * @return the request builder
+     * @param id the item identifier
+     */
     public EntityType3WithReferenceRequestBuilder refTypes(final String id) {
         return new EntityType3WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("refTypes") + "/" + id, getClient(), null);
     }
@@ -95,10 +106,24 @@ public class SegmentRequestBuilder extends BaseRequestBuilder {
         return new PhotoRequestBuilder(getRequestUrlWithAdditionalSegment("photo"), getClient(), null);
     }
 
+    /**
+     * Gets a builder to execute the method
+     * @return the request builder 
+     * @param toRecipients the toRecipients
+     * @param singleRecipient the singleRecipient
+     * @param multipleSessions the multipleSessions
+     * @param singleSession the singleSession
+     * @param comment the comment
+     */
     public SegmentForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final Recipient singleRecipient, final java.util.List<Session> multipleSessions, final Session singleSession, final String comment) {
         return new SegmentForwardRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph2.callRecords.forward"), getClient(), null, toRecipients, singleRecipient, multipleSessions, singleSession, comment);
     }
 
+    /**
+     * Gets a builder to execute the method
+     * @return the request builder collection
+     * @param value the value
+     */
     public SegmentTestActionCollectionRequestBuilder testAction(final IdentitySet value) {
         return new SegmentTestActionCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph2.callRecords.testAction"), getClient(), null, value);
     }

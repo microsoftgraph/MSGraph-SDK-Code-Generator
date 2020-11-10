@@ -21,7 +21,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Session Request.
  */
-public class SessionRequest extends BaseRequest {
+public class SessionRequest extends BaseRequest<Session> {
 	
     /**
      * The request for the Session
@@ -141,8 +141,8 @@ public class SessionRequest extends BaseRequest {
      * @return the updated request
      */
      public SessionRequest select(final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-         return (SessionRequest)this;
+         addSelectOption(value);
+         return this;
      }
 
     /**
@@ -152,8 +152,8 @@ public class SessionRequest extends BaseRequest {
      * @return the updated request
      */
      public SessionRequest expand(final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-         return (SessionRequest)this;
+         addExpandOption(value);
+         return this;
      }
 
 }

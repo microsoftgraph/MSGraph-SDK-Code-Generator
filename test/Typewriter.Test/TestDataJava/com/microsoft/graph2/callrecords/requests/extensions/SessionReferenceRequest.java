@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.http.BaseRequest;
+import com.microsoft.graph.http.BaseReferenceRequest;
 import com.microsoft.graph.http.HttpMethod;
 import com.microsoft.graph.core.IBaseClient;
 
@@ -23,7 +23,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Session Reference Request.
  */
-public class SessionReferenceRequest extends BaseRequest {
+public class SessionReferenceRequest extends BaseReferenceRequest<Session> {
 
     /**
      * The request for the Session
@@ -36,14 +36,6 @@ public class SessionReferenceRequest extends BaseRequest {
         super(requestUrl, client, requestOptions, Session.class);
     }
 
-    public void delete(final ICallback<? super Session> callback) {
-        send(HttpMethod.DELETE, callback, null);
-    }
-
-    public Session delete() throws ClientException {
-       return send(HttpMethod.DELETE, null);
-    }
-
     /**
      * Sets the select clause for the request
      *
@@ -51,8 +43,8 @@ public class SessionReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public SessionReferenceRequest select(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (SessionReferenceRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -62,8 +54,8 @@ public class SessionReferenceRequest extends BaseRequest {
      * @return the updated request
      */
     public SessionReferenceRequest expand(final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (SessionReferenceRequest)this;
+        addExpandOption(value);
+        return this;
     }
     /**
      * Puts the Session

@@ -18,7 +18,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Entity Type2Request Builder.
  */
-public class EntityType2RequestBuilder extends BaseRequestBuilder {
+public class EntityType2RequestBuilder extends BaseRequestBuilder<EntityType2> {
 
     /**
      * The request builder for the EntityType2

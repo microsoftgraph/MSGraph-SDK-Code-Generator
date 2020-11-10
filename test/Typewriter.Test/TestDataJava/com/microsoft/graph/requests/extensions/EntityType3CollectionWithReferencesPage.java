@@ -39,4 +39,14 @@ public class EntityType3CollectionWithReferencesPage extends BaseCollectionPage<
     public EntityType3CollectionWithReferencesPage(final EntityType3CollectionResponse response, final EntityType3CollectionWithReferencesRequestBuilder builder) {
         super(response.value, builder, response.additionalDataManager());
     }
+
+    /**
+     * Creates the collection page for EntityType3
+     *
+     * @param pageContents       the contents of this page
+     * @param nextRequestBuilder the request builder for the next page
+     */
+    public EntityType3CollectionWithReferencesPage(final java.util.List<EntityType3> pageContents, final EntityType3CollectionWithReferencesRequestBuilder nextRequestBuilder) {
+        super(pageContents, nextRequestBuilder);
+    }
 }

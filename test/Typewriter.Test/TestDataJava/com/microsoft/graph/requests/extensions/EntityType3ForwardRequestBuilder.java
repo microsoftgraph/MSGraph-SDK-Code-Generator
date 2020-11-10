@@ -4,10 +4,10 @@
 
 package com.microsoft.graph.requests.extensions;
 import com.microsoft.graph.requests.extensions.EntityType3ForwardRequest;
+import com.microsoft.graph.models.extensions.EntityType3;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
-import com.microsoft.graph.core.BaseActionRequestBuilder;
-import com.microsoft.graph.core.BaseFunctionRequestBuilder;
+import com.microsoft.graph.http.BaseActionRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
 import com.google.gson.JsonElement;
 
@@ -16,7 +16,7 @@ import com.google.gson.JsonElement;
 /**
  * The class for the Entity Type3Forward Request Builder.
  */
-public class EntityType3ForwardRequestBuilder extends BaseActionRequestBuilder {
+public class EntityType3ForwardRequestBuilder extends BaseActionRequestBuilder<EntityType3> {
 
     /**
      * The request builder for this EntityType3Forward

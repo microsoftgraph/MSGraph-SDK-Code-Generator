@@ -22,7 +22,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Test Entity Request.
  */
-public class TestEntityRequest extends BaseRequest {
+public class TestEntityRequest extends BaseRequest<TestEntity> {
 	
     /**
      * The request for the TestEntity
@@ -142,8 +142,8 @@ public class TestEntityRequest extends BaseRequest {
      * @return the updated request
      */
      public TestEntityRequest select(final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-         return (TestEntityRequest)this;
+         addSelectOption(value);
+         return this;
      }
 
     /**
@@ -153,8 +153,8 @@ public class TestEntityRequest extends BaseRequest {
      * @return the updated request
      */
      public TestEntityRequest expand(final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-         return (TestEntityRequest)this;
+         addExpandOption(value);
+         return this;
      }
 
 }

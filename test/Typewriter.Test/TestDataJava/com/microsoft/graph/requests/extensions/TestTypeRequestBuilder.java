@@ -20,7 +20,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Test Type Request Builder.
  */
-public class TestTypeRequestBuilder extends BaseRequestBuilder {
+public class TestTypeRequestBuilder extends BaseRequestBuilder<TestType> {
 
     /**
      * The request builder for the TestType
@@ -55,6 +55,11 @@ public class TestTypeRequestBuilder extends BaseRequestBuilder {
 
 
 
+    /**
+     * Gets a builder to execute the method
+     * @return the request builder collection
+     * @param requests the requests
+     */
     public TestTypeQueryCollectionRequestBuilder query(final java.util.List<DerivedComplexTypeRequest> requests) {
         return new TestTypeQueryCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.query"), getClient(), null, requests);
     }
