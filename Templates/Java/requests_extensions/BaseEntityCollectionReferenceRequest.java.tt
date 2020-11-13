@@ -23,7 +23,7 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionReferenceRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeCollectionReferenceRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class);
     }
 
@@ -38,7 +38,7 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
             String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel).Name;
 #>
-    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
+    public void post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>, @Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=c.TypeName()#>.id);
         new <#=c.TypeWithReferencesRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
@@ -46,7 +46,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
             .post(new<#=c.TypeName()#>, body, callback);
     }
 
-    public <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException {
+    @Nonnull
+    public <#=c.TypeName()#> post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=c.TypeName()#>.id);
         return new <#=c.TypeWithReferencesRequestBuilder()#>(requestUrl,getBaseRequest().getClient(), /* Options */ null)
@@ -62,7 +63,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=c.TypeCollectionReferenceRequest()#> expand(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionReferenceRequest()#> expand(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (<#=c.TypeCollectionReferenceRequest()#>)this;
     }
@@ -75,7 +77,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      * @param value the filter clause
      * @return the updated request
      */
-    public <#=c.TypeCollectionReferenceRequest()#> filter(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionReferenceRequest()#> filter(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (<#=c.TypeCollectionReferenceRequest()#>)this;
     }
@@ -88,7 +91,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      * @param value the sort clause
      * @return the updated request
      */
-    public <#=c.TypeCollectionReferenceRequest()#> orderBy(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionReferenceRequest()#> orderBy(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (<#=c.TypeCollectionReferenceRequest()#>)this;
     }
@@ -101,7 +105,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      * @param value the select clause
      * @return the updated request
      */
-    public <#=c.TypeCollectionReferenceRequest()#> select(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionReferenceRequest()#> select(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return (<#=c.TypeCollectionReferenceRequest()#>)this;
     }
@@ -114,6 +119,7 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public <#=c.TypeCollectionReferenceRequest()#> top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
         return (<#=c.TypeCollectionReferenceRequest()#>)this;

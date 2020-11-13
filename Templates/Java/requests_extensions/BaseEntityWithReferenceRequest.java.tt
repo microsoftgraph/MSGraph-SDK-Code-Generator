@@ -22,15 +22,16 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeWithReferencesRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeWithReferencesRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
-    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload, final ICallback<? super <#=c.TypeName()#>> callback) {
+    public void post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>, @Nullable final IJsonBackedObject payload, @Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
         send(HttpMethod.POST, callback, payload);
     }
 
-    public <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final IJsonBackedObject payload) throws ClientException {
+    @Nullable
+    public <#=c.TypeName()#> post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>, @Nullable final IJsonBackedObject payload) throws ClientException {
         IJsonBackedObject response = send(HttpMethod.POST, payload);
         if (response != null){
             return new<#=c.TypeName()#>;
@@ -38,15 +39,16 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
         return null;
     }
 
-    public void get(final ICallback<? super <#=c.TypeName()#>> callback) {
+    public void get(@Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
+    @Nullable
     public <#=c.TypeName()#> get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
 
-	public void delete(final ICallback<? super <#=c.TypeName()#>> callback) {
+	public void delete(@Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
 		send(HttpMethod.DELETE, callback, null);
 	}
 
@@ -54,11 +56,12 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
 		send(HttpMethod.DELETE, null);
 	}
 
-	public void patch(final <#=c.TypeName()#> source<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
+	public void patch(@Nonnull final <#=c.TypeName()#> source<#=c.TypeName()#>, @Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
 		send(HttpMethod.PATCH, callback, source<#=c.TypeName()#>);
 	}
 
-	public <#=c.TypeName()#> patch(final <#=c.TypeName()#> source<#=c.TypeName()#>) throws ClientException {
+    @Nullable
+	public <#=c.TypeName()#> patch(@Nonnull final <#=c.TypeName()#> source<#=c.TypeName()#>) throws ClientException {
 		return send(HttpMethod.PATCH, source<#=c.TypeName()#>);
 	}
 
@@ -70,7 +73,8 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      * @param value the select clause
      * @return the updated request
      */
-    public <#=c.TypeWithReferencesRequest()#> select(final String value) {
+    @Nonnull
+    public <#=c.TypeWithReferencesRequest()#> select(@Nonnull final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (<#=c.TypeWithReferencesRequest()#>)this;
     }
@@ -83,7 +87,8 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=c.TypeWithReferencesRequest()#> expand(final String value) {
+    @Nonnull
+    public <#=c.TypeWithReferencesRequest()#> expand(@Nonnull final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (<#=c.TypeWithReferencesRequest()#>)this;
     }

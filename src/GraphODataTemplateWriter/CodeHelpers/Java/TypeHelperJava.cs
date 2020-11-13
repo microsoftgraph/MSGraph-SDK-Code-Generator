@@ -10,6 +10,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
     using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
     using System.Text;
     using System.Linq;
+    using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
 
     public static class TypeHelperJava
     {
@@ -85,6 +86,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return !(t == "Integer" || t == "java.util.UUID" || t == "java.util.Calendar"
                   || t == "byte[]" || t == "String" || "long" == t || "Byte[]" == t
                   || t == "Short" || t == "com.microsoft.graph.model.DateOnly");
+        }
+
+        private static string[] additionalNullableTypes = new[] { "String", "java.util.Calendar", "Integer", "java.util.UUID", "Long", "Double" };
+        public static bool IsNullable(this OdcmParameter property)
+        {
+            return property.IsComplex() || additionalNullableTypes.Contains(property.GetTypeString());
+        }
+
+        public static bool IsNullable(this OdcmProperty property)
+        {
+            return property.IsComplex() || additionalNullableTypes.Contains(property.GetTypeString());
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)
@@ -456,7 +468,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             var parameterSignatureBuilder = new StringBuilder();
             foreach (var p in method.Parameters)
             {
-                parameterSignatureBuilder.AppendFormat(", final {0} {1}", p.ParamType(), p.ParamName());
+                parameterSignatureBuilder.AppendFormat(", {0} final {1} {2}", p.IsNullable() ? "@Nullable" : string.Empty , p.ParamType(), p.ParamName());
             }
             return parameterSignatureBuilder.ToString();
         }
@@ -905,7 +917,9 @@ import {2}.core.ClientException;
 import {2}.concurrency.ICallback;
 {3}{4}
 import java.util.Arrays;
-import java.util.EnumSet;";
+import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;";
 
             // We need this for disambiguation of generated model class/interfaces references.
             string fullyQualifiedImport = host.GetFullyQualifiedImportStatementForModel();
@@ -1017,8 +1031,8 @@ import java.util.EnumSet;";
      * {1}
      */
     @SerializedName(value = ""{2}"", alternate = {{""{3}""}})
-    @Expose
-    public {4} {5};
+    @Expose{4}
+    public {5} {6};
 
 ";
             foreach (var p in parameters)
@@ -1029,6 +1043,7 @@ import java.util.EnumSet;";
                     ReplaceInvalidCharacters(p.LongDescription),
                     p.ParamName(),
                     p.ParamName().ToUpperFirstChar(),
+                    (p.IsNullable() ? "\r\n\t@Nullable" : string.Empty),
                     p.ParamType(),
                     p.ParamName().SanitizePropertyName(p).ToLowerFirstChar()
                 );
@@ -1054,6 +1069,7 @@ import java.util.EnumSet;";
      *
      * @return the raw representation of this class
      */
+    @Nullable
     public JsonObject getRawObject() {
         return rawObject;
     }
@@ -1063,6 +1079,7 @@ import java.util.EnumSet;";
      *
      * @return the serializer
      */
+    @Nullable
     protected ISerializer getSerializer() {
         return serializer;
     }
@@ -1073,7 +1090,7 @@ import java.util.EnumSet;";
      * @param serializer the serializer
      * @param json the JSON object to set this object to
      */
-    public void setRawObject(final ISerializer serializer, final JsonObject json) {
+    public void setRawObject(@Nonnull final ISerializer serializer, @Nonnull final JsonObject json) {
         this.serializer = serializer;
         rawObject = json;
 ";
@@ -1164,16 +1181,16 @@ import java.util.EnumSet;";
      * {1}
      */
     @SerializedName(value = ""{2}"", alternate = {{""{3}""}})
-    @Expose
-    public {4} {5};
+    @Expose{4}
+    public {5} {6};
 
 ";
             var collectionFormat =
     @"    /**
      * The {0}.
      * {1}
-     */
-    public {4} {5};
+     */{4}
+    public {5} {6};
 
 ";
 
@@ -1205,6 +1222,7 @@ import java.util.EnumSet;";
                     GetSanitizedDescription(property),
                     property.Name,
                     propertyName,
+                    (property.IsNullable() ? "\r\n\t@Nullable" : string.Empty),
                     propertyType,
                     property.Name.ToLowerFirstChar().SanitizePropertyName(property));
             }

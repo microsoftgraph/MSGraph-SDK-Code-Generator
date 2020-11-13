@@ -29,7 +29,7 @@ foreach (var prop in model.EntityContainer.Properties)
      * @param id the id of the <#=propertyName#> to retrieve
      * @return the request builder for the <#=propertyName#> object
      */
-    <#=prop.TypeRequestBuilder()#> <#=prop.Name#>(final String id);
+    <#=prop.TypeRequestBuilder()#> <#=prop.Name#>(@Nonnull final String id);
 <#
     }
     else

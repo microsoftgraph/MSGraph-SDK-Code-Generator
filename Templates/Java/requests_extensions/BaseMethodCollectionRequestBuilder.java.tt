@@ -25,7 +25,7 @@ import <#=importNamespace#>.core.<#=c.GetMethodRequestBuilderSuperClass() #>;
      * @param client         the service client
      * @param requestOptions the options for this request<#=method.MethodParametersJavadocSignature()#>
      */
-    public <#=c.TypeCollectionRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#=method.MethodParametersSignature()#>) {
+    public <#=c.TypeCollectionRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#=method.MethodParametersSignature()#>) {
         super(requestUrl, client, requestOptions);
 <# foreach (var p in method.Parameters) { #>
   <# if (isAction) { #>
@@ -47,7 +47,8 @@ import <#=importNamespace#>.core.<#=c.GetMethodRequestBuilderSuperClass() #>;
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public <#=c.TypeCollectionRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> buildRequest(@Nonnull final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -57,7 +58,8 @@ import <#=importNamespace#>.core.<#=c.GetMethodRequestBuilderSuperClass() #>;
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public <#=c.TypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> buildRequest(@Nonnull final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         <#= c.TypeCollectionRequest()#> request = new <#=c.TypeCollectionRequest()#>(
                 getRequestUrl(),
                 getClient(),
