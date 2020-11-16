@@ -11,6 +11,8 @@ import com.microsoft.graph.models.extensions.DerivedComplexTypeRequest;
 import com.microsoft.graph.models.extensions.ResponseObject;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionPage;
@@ -34,7 +36,7 @@ public class TestTypeQueryCollectionPage extends BaseCollectionPage<ResponseObje
      * @param response The serialized TestTypeQueryCollectionResponse from the service
      * @param builder The request builder for the next collection page
      */
-    public TestTypeQueryCollectionPage(final TestTypeQueryCollectionResponse response, final TestTypeQueryCollectionRequestBuilder builder) {
+    public TestTypeQueryCollectionPage(@Nonnull final TestTypeQueryCollectionResponse response, @Nonnull final TestTypeQueryCollectionRequestBuilder builder) {
        super(response.value, builder, response.additionalDataManager());
     }
 }

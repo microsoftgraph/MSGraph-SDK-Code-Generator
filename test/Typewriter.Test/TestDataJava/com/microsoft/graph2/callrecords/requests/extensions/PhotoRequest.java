@@ -10,6 +10,8 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph2.callrecords.models.extensions.Photo;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;
@@ -28,7 +30,7 @@ public class PhotoRequest extends BaseRequest {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public PhotoRequest(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public PhotoRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, Photo.class);
     }
 
@@ -37,7 +39,7 @@ public class PhotoRequest extends BaseRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<? super Photo> callback) {
+    public void get(@Nonnull final ICallback<? super Photo> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -47,6 +49,7 @@ public class PhotoRequest extends BaseRequest {
      * @return the Photo from the request
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
+    @Nullable
     public Photo get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
@@ -56,7 +59,7 @@ public class PhotoRequest extends BaseRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<? super Photo> callback) {
+    public void delete(@Nonnull final ICallback<? super Photo> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -75,7 +78,7 @@ public class PhotoRequest extends BaseRequest {
      * @param sourcePhoto the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final Photo sourcePhoto, final ICallback<? super Photo> callback) {
+    public void patch(@Nonnull final Photo sourcePhoto, @Nonnull final ICallback<? super Photo> callback) {
         send(HttpMethod.PATCH, callback, sourcePhoto);
     }
 
@@ -86,7 +89,8 @@ public class PhotoRequest extends BaseRequest {
      * @return the updated Photo
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public Photo patch(final Photo sourcePhoto) throws ClientException {
+    @Nullable
+    public Photo patch(@Nonnull final Photo sourcePhoto) throws ClientException {
         return send(HttpMethod.PATCH, sourcePhoto);
     }
 
@@ -96,7 +100,7 @@ public class PhotoRequest extends BaseRequest {
      * @param newPhoto the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final Photo newPhoto, final ICallback<? super Photo> callback) {
+    public void post(@Nonnull final Photo newPhoto, @Nonnull final ICallback<? super Photo> callback) {
         send(HttpMethod.POST, callback, newPhoto);
     }
 
@@ -107,7 +111,8 @@ public class PhotoRequest extends BaseRequest {
      * @return the created Photo
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public Photo post(final Photo newPhoto) throws ClientException {
+    @Nullable
+    public Photo post(@Nonnull final Photo newPhoto) throws ClientException {
         return send(HttpMethod.POST, newPhoto);
     }
 
@@ -117,7 +122,7 @@ public class PhotoRequest extends BaseRequest {
      * @param newPhoto the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final Photo newPhoto, final ICallback<? super Photo> callback) {
+    public void put(@Nonnull final Photo newPhoto, @Nonnull final ICallback<? super Photo> callback) {
         send(HttpMethod.PUT, callback, newPhoto);
     }
 
@@ -128,7 +133,8 @@ public class PhotoRequest extends BaseRequest {
      * @return the created Photo
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public Photo put(final Photo newPhoto) throws ClientException {
+    @Nullable
+    public Photo put(@Nonnull final Photo newPhoto) throws ClientException {
         return send(HttpMethod.PUT, newPhoto);
     }
 
@@ -138,7 +144,8 @@ public class PhotoRequest extends BaseRequest {
      * @param value the select clause
      * @return the updated request
      */
-     public PhotoRequest select(final String value) {
+     @Nonnull
+     public PhotoRequest select(@Nonnull final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (PhotoRequest)this;
      }
@@ -149,7 +156,8 @@ public class PhotoRequest extends BaseRequest {
      * @param value the expand clause
      * @return the updated request
      */
-     public PhotoRequest expand(final String value) {
+     @Nonnull
+     public PhotoRequest expand(@Nonnull final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (PhotoRequest)this;
      }

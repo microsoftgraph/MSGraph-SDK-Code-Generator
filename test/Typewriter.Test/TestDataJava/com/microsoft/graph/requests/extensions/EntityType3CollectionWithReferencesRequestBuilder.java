@@ -13,6 +13,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.http.BaseRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
@@ -31,7 +33,7 @@ public class EntityType3CollectionWithReferencesRequestBuilder extends BaseReque
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3CollectionWithReferencesRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3CollectionWithReferencesRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -41,7 +43,8 @@ public class EntityType3CollectionWithReferencesRequestBuilder extends BaseReque
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public EntityType3CollectionWithReferencesRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public EntityType3CollectionWithReferencesRequest buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -51,14 +54,17 @@ public class EntityType3CollectionWithReferencesRequestBuilder extends BaseReque
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public EntityType3CollectionWithReferencesRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Nonnull
+    public EntityType3CollectionWithReferencesRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new EntityType3CollectionWithReferencesRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public EntityType3WithReferenceRequestBuilder byId(final String id) {
+    @Nonnull
+    public EntityType3WithReferenceRequestBuilder byId(@Nonnull final String id) {
         return new EntityType3WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
     }
 
+    @Nonnull
     public EntityType3CollectionReferenceRequestBuilder references(){
         return new EntityType3CollectionReferenceRequestBuilder(getRequestUrl() + "/$ref", getClient(), getOptions());
     }

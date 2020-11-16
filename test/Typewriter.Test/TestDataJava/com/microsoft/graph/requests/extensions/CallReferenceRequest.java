@@ -10,6 +10,8 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.Call;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.http.BaseRequest;
@@ -30,14 +32,15 @@ public class CallReferenceRequest extends BaseRequest {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public CallReferenceRequest(String requestUrl, IBaseClient client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CallReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, Call.class);
     }
 
-    public void delete(final ICallback<? super Call> callback) {
+    public void delete(@Nonnull final ICallback<? super Call> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
+    @Nullable
     public Call delete() throws ClientException {
        return send(HttpMethod.DELETE, null);
     }
@@ -48,7 +51,8 @@ public class CallReferenceRequest extends BaseRequest {
      * @param value the select clause
      * @return the updated request
      */
-    public CallReferenceRequest select(final String value) {
+    @Nonnull
+    public CallReferenceRequest select(@Nonnull final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (CallReferenceRequest)this;
     }
@@ -59,7 +63,8 @@ public class CallReferenceRequest extends BaseRequest {
      * @param value the expand clause
      * @return the updated request
      */
-    public CallReferenceRequest expand(final String value) {
+    @Nonnull
+    public CallReferenceRequest expand(@Nonnull final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (CallReferenceRequest)this;
     }
@@ -69,7 +74,7 @@ public class CallReferenceRequest extends BaseRequest {
      * @param srcCall the Call reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(Call srcCall, final ICallback<? super Call> callback) {
+    public void put(@Nonnull final Call srcCall, @Nonnull final ICallback<? super Call> callback) {
         send(HttpMethod.PUT, callback, srcCall);
     }
 
@@ -80,7 +85,8 @@ public class CallReferenceRequest extends BaseRequest {
      * @return the Call
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    public Call put(Call srcCall) throws ClientException {
+    @Nullable
+    public Call put(@Nonnull final Call srcCall) throws ClientException {
         return send(HttpMethod.PUT, srcCall);
     }
 }

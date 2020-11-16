@@ -11,6 +11,8 @@ import com.microsoft.graph.models.extensions.Group;
 import com.microsoft.graph.models.extensions.DirectoryObject;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.core.IBaseClient;
@@ -32,7 +34,7 @@ public class DirectoryObjectCollectionReferenceRequest extends BaseCollectionReq
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public DirectoryObjectCollectionReferenceRequest(final String requestUrl, IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public DirectoryObjectCollectionReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, DirectoryObjectCollectionResponse.class, DirectoryObjectCollectionPage.class);
     }
 
@@ -42,7 +44,8 @@ public class DirectoryObjectCollectionReferenceRequest extends BaseCollectionReq
      * @param value the expand clause
      * @return the updated request
      */
-    public DirectoryObjectCollectionReferenceRequest expand(final String value) {
+    @Nonnull
+    public DirectoryObjectCollectionReferenceRequest expand(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (DirectoryObjectCollectionReferenceRequest)this;
     }
@@ -53,7 +56,8 @@ public class DirectoryObjectCollectionReferenceRequest extends BaseCollectionReq
      * @param value the filter clause
      * @return the updated request
      */
-    public DirectoryObjectCollectionReferenceRequest filter(final String value) {
+    @Nonnull
+    public DirectoryObjectCollectionReferenceRequest filter(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (DirectoryObjectCollectionReferenceRequest)this;
     }
@@ -64,7 +68,8 @@ public class DirectoryObjectCollectionReferenceRequest extends BaseCollectionReq
      * @param value the sort clause
      * @return the updated request
      */
-    public DirectoryObjectCollectionReferenceRequest orderBy(final String value) {
+    @Nonnull
+    public DirectoryObjectCollectionReferenceRequest orderBy(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (DirectoryObjectCollectionReferenceRequest)this;
     }
@@ -75,7 +80,8 @@ public class DirectoryObjectCollectionReferenceRequest extends BaseCollectionReq
      * @param value the select clause
      * @return the updated request
      */
-    public DirectoryObjectCollectionReferenceRequest select(final String value) {
+    @Nonnull
+    public DirectoryObjectCollectionReferenceRequest select(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return (DirectoryObjectCollectionReferenceRequest)this;
     }
@@ -86,6 +92,7 @@ public class DirectoryObjectCollectionReferenceRequest extends BaseCollectionReq
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public DirectoryObjectCollectionReferenceRequest top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
         return (DirectoryObjectCollectionReferenceRequest)this;

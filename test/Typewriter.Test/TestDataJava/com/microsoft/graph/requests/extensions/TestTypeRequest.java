@@ -12,6 +12,8 @@ import com.microsoft.graph.models.extensions.DerivedComplexTypeRequest;
 import com.microsoft.graph.models.extensions.ResponseObject;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;
@@ -30,7 +32,7 @@ public class TestTypeRequest extends BaseRequest {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public TestTypeRequest(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public TestTypeRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, TestType.class);
     }
 
@@ -39,7 +41,7 @@ public class TestTypeRequest extends BaseRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<? super TestType> callback) {
+    public void get(@Nonnull final ICallback<? super TestType> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -49,6 +51,7 @@ public class TestTypeRequest extends BaseRequest {
      * @return the TestType from the request
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
+    @Nullable
     public TestType get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
@@ -58,7 +61,7 @@ public class TestTypeRequest extends BaseRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<? super TestType> callback) {
+    public void delete(@Nonnull final ICallback<? super TestType> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -77,7 +80,7 @@ public class TestTypeRequest extends BaseRequest {
      * @param sourceTestType the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final TestType sourceTestType, final ICallback<? super TestType> callback) {
+    public void patch(@Nonnull final TestType sourceTestType, @Nonnull final ICallback<? super TestType> callback) {
         send(HttpMethod.PATCH, callback, sourceTestType);
     }
 
@@ -88,7 +91,8 @@ public class TestTypeRequest extends BaseRequest {
      * @return the updated TestType
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public TestType patch(final TestType sourceTestType) throws ClientException {
+    @Nullable
+    public TestType patch(@Nonnull final TestType sourceTestType) throws ClientException {
         return send(HttpMethod.PATCH, sourceTestType);
     }
 
@@ -98,7 +102,7 @@ public class TestTypeRequest extends BaseRequest {
      * @param newTestType the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final TestType newTestType, final ICallback<? super TestType> callback) {
+    public void post(@Nonnull final TestType newTestType, @Nonnull final ICallback<? super TestType> callback) {
         send(HttpMethod.POST, callback, newTestType);
     }
 
@@ -109,7 +113,8 @@ public class TestTypeRequest extends BaseRequest {
      * @return the created TestType
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public TestType post(final TestType newTestType) throws ClientException {
+    @Nullable
+    public TestType post(@Nonnull final TestType newTestType) throws ClientException {
         return send(HttpMethod.POST, newTestType);
     }
 
@@ -119,7 +124,7 @@ public class TestTypeRequest extends BaseRequest {
      * @param newTestType the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final TestType newTestType, final ICallback<? super TestType> callback) {
+    public void put(@Nonnull final TestType newTestType, @Nonnull final ICallback<? super TestType> callback) {
         send(HttpMethod.PUT, callback, newTestType);
     }
 
@@ -130,7 +135,8 @@ public class TestTypeRequest extends BaseRequest {
      * @return the created TestType
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public TestType put(final TestType newTestType) throws ClientException {
+    @Nullable
+    public TestType put(@Nonnull final TestType newTestType) throws ClientException {
         return send(HttpMethod.PUT, newTestType);
     }
 
@@ -140,7 +146,8 @@ public class TestTypeRequest extends BaseRequest {
      * @param value the select clause
      * @return the updated request
      */
-     public TestTypeRequest select(final String value) {
+     @Nonnull
+     public TestTypeRequest select(@Nonnull final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (TestTypeRequest)this;
      }
@@ -151,7 +158,8 @@ public class TestTypeRequest extends BaseRequest {
      * @param value the expand clause
      * @return the updated request
      */
-     public TestTypeRequest expand(final String value) {
+     @Nonnull
+     public TestTypeRequest expand(@Nonnull final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (TestTypeRequest)this;
      }

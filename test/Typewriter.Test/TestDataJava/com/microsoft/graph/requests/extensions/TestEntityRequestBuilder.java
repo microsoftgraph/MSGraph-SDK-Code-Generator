@@ -13,6 +13,8 @@ import com.microsoft.graph.requests.extensions.EntityType2RequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequestBuilder;
 
@@ -30,7 +32,7 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public TestEntityRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public TestEntityRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -40,7 +42,8 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder {
      * @param requestOptions the options for this request
      * @return the TestEntityRequest instance
      */
-    public TestEntityRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public TestEntityRequest buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -50,7 +53,8 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder {
      * @param requestOptions the options for this request
      * @return the TestEntityRequest instance
      */
-    public TestEntityRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Nonnull
+    public TestEntityRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.TestEntityRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
@@ -61,6 +65,7 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder {
      *
      * @return the TestTypeWithReferenceRequestBuilder instance
      */
+    @Nonnull
     public TestTypeWithReferenceRequestBuilder testNav() {
         return new TestTypeWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("testNav"), getClient(), null);
     }
@@ -70,6 +75,7 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder {
      *
      * @return the EntityType2WithReferenceRequestBuilder instance
      */
+    @Nonnull
     public EntityType2WithReferenceRequestBuilder testInvalidNav() {
         return new EntityType2WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("testInvalidNav"), getClient(), null);
     }
@@ -79,6 +85,7 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder {
      *
      * @return the EntityType3WithReferenceRequestBuilder instance
      */
+    @Nonnull
     public EntityType3WithReferenceRequestBuilder testExplicitNav() {
         return new EntityType3WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("testExplicitNav"), getClient(), null);
     }

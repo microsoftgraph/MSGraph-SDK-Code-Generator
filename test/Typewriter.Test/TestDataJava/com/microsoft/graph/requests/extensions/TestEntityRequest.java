@@ -13,6 +13,8 @@ import com.microsoft.graph.requests.extensions.EntityType2RequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;
@@ -31,7 +33,7 @@ public class TestEntityRequest extends BaseRequest {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public TestEntityRequest(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public TestEntityRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, TestEntity.class);
     }
 
@@ -40,7 +42,7 @@ public class TestEntityRequest extends BaseRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<? super TestEntity> callback) {
+    public void get(@Nonnull final ICallback<? super TestEntity> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -50,6 +52,7 @@ public class TestEntityRequest extends BaseRequest {
      * @return the TestEntity from the request
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
+    @Nullable
     public TestEntity get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
@@ -59,7 +62,7 @@ public class TestEntityRequest extends BaseRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<? super TestEntity> callback) {
+    public void delete(@Nonnull final ICallback<? super TestEntity> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -78,7 +81,7 @@ public class TestEntityRequest extends BaseRequest {
      * @param sourceTestEntity the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final TestEntity sourceTestEntity, final ICallback<? super TestEntity> callback) {
+    public void patch(@Nonnull final TestEntity sourceTestEntity, @Nonnull final ICallback<? super TestEntity> callback) {
         send(HttpMethod.PATCH, callback, sourceTestEntity);
     }
 
@@ -89,7 +92,8 @@ public class TestEntityRequest extends BaseRequest {
      * @return the updated TestEntity
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public TestEntity patch(final TestEntity sourceTestEntity) throws ClientException {
+    @Nullable
+    public TestEntity patch(@Nonnull final TestEntity sourceTestEntity) throws ClientException {
         return send(HttpMethod.PATCH, sourceTestEntity);
     }
 
@@ -99,7 +103,7 @@ public class TestEntityRequest extends BaseRequest {
      * @param newTestEntity the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final TestEntity newTestEntity, final ICallback<? super TestEntity> callback) {
+    public void post(@Nonnull final TestEntity newTestEntity, @Nonnull final ICallback<? super TestEntity> callback) {
         send(HttpMethod.POST, callback, newTestEntity);
     }
 
@@ -110,7 +114,8 @@ public class TestEntityRequest extends BaseRequest {
      * @return the created TestEntity
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public TestEntity post(final TestEntity newTestEntity) throws ClientException {
+    @Nullable
+    public TestEntity post(@Nonnull final TestEntity newTestEntity) throws ClientException {
         return send(HttpMethod.POST, newTestEntity);
     }
 
@@ -120,7 +125,7 @@ public class TestEntityRequest extends BaseRequest {
      * @param newTestEntity the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final TestEntity newTestEntity, final ICallback<? super TestEntity> callback) {
+    public void put(@Nonnull final TestEntity newTestEntity, @Nonnull final ICallback<? super TestEntity> callback) {
         send(HttpMethod.PUT, callback, newTestEntity);
     }
 
@@ -131,7 +136,8 @@ public class TestEntityRequest extends BaseRequest {
      * @return the created TestEntity
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public TestEntity put(final TestEntity newTestEntity) throws ClientException {
+    @Nullable
+    public TestEntity put(@Nonnull final TestEntity newTestEntity) throws ClientException {
         return send(HttpMethod.PUT, newTestEntity);
     }
 
@@ -141,7 +147,8 @@ public class TestEntityRequest extends BaseRequest {
      * @param value the select clause
      * @return the updated request
      */
-     public TestEntityRequest select(final String value) {
+     @Nonnull
+     public TestEntityRequest select(@Nonnull final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (TestEntityRequest)this;
      }
@@ -152,7 +159,8 @@ public class TestEntityRequest extends BaseRequest {
      * @param value the expand clause
      * @return the updated request
      */
-     public TestEntityRequest expand(final String value) {
+     @Nonnull
+     public TestEntityRequest expand(@Nonnull final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (TestEntityRequest)this;
      }

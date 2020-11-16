@@ -8,6 +8,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import com.microsoft.graph.serializer.ISerializer;
 import java.util.EnumSet;
@@ -25,6 +27,7 @@ public class SegmentForwardBody {
      */
     @SerializedName(value = "toRecipients", alternate = {"ToRecipients"})
     @Expose
+	@Nullable
     public java.util.List<Recipient> toRecipients;
 
     /**
@@ -33,6 +36,7 @@ public class SegmentForwardBody {
      */
     @SerializedName(value = "singleRecipient", alternate = {"SingleRecipient"})
     @Expose
+	@Nullable
     public Recipient singleRecipient;
 
     /**
@@ -41,6 +45,7 @@ public class SegmentForwardBody {
      */
     @SerializedName(value = "multipleSessions", alternate = {"MultipleSessions"})
     @Expose
+	@Nullable
     public java.util.List<Session> multipleSessions;
 
     /**
@@ -49,6 +54,7 @@ public class SegmentForwardBody {
      */
     @SerializedName(value = "singleSession", alternate = {"SingleSession"})
     @Expose
+	@Nullable
     public Session singleSession;
 
     /**
@@ -57,6 +63,7 @@ public class SegmentForwardBody {
      */
     @SerializedName(value = "comment", alternate = {"Comment"})
     @Expose
+	@Nullable
     public String comment;
 
 
@@ -75,6 +82,7 @@ public class SegmentForwardBody {
      *
      * @return the raw representation of this class
      */
+    @Nullable
     public JsonObject getRawObject() {
         return rawObject;
     }
@@ -84,6 +92,7 @@ public class SegmentForwardBody {
      *
      * @return the serializer
      */
+    @Nullable
     protected ISerializer getSerializer() {
         return serializer;
     }
@@ -94,7 +103,7 @@ public class SegmentForwardBody {
      * @param serializer the serializer
      * @param json the JSON object to set this object to
      */
-    public void setRawObject(final ISerializer serializer, final JsonObject json) {
+    public void setRawObject(@Nonnull final ISerializer serializer, @Nonnull final JsonObject json) {
         this.serializer = serializer;
         rawObject = json;
 

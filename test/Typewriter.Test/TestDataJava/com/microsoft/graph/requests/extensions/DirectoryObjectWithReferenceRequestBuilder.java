@@ -10,6 +10,8 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.DirectoryObject;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.http.BaseRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
@@ -28,7 +30,7 @@ public class DirectoryObjectWithReferenceRequestBuilder extends BaseRequestBuild
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public DirectoryObjectWithReferenceRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public DirectoryObjectWithReferenceRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -38,7 +40,8 @@ public class DirectoryObjectWithReferenceRequestBuilder extends BaseRequestBuild
      * @param requestOptions the options for this request
      * @return the DirectoryObjectWithReferenceRequest instance
      */
-    public DirectoryObjectWithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public DirectoryObjectWithReferenceRequest buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -48,10 +51,12 @@ public class DirectoryObjectWithReferenceRequestBuilder extends BaseRequestBuild
      * @param requestOptions the options for this request
      * @return the DirectoryObjectWithReferenceRequest instance
      */
-    public DirectoryObjectWithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Nonnull
+    public DirectoryObjectWithReferenceRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new DirectoryObjectWithReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
+    @Nonnull
     public DirectoryObjectReferenceRequestBuilder reference(){
         return new DirectoryObjectReferenceRequestBuilder(getRequestUrl() + "/$ref", getClient(), getOptions());
     }
