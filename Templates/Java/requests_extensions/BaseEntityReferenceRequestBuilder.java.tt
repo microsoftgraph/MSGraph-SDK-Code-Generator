@@ -31,7 +31,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @return The <#=c.TypeReferenceRequest()#> instance
      */
     @Nonnull
-    public <#=c.TypeReferenceRequest()#> buildRequest(@Nonnull final com.microsoft.graph.options.Option... requestOptions) {
+    public <#=c.TypeReferenceRequest()#> buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 

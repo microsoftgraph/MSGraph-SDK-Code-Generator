@@ -29,7 +29,7 @@ import <#=importNamespace#>.http.BaseRequestBuilder;
      * @return the <#=c.TypeStreamRequest()#> instance
      */
     @Nonnull
-    public <#=c.TypeStreamRequest()#> buildRequest(@Nonnull final com.microsoft.graph.options.Option... requestOptions) {
+    public <#=c.TypeStreamRequest()#> buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 

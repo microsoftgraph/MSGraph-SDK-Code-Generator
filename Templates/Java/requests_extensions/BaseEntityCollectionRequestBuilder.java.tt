@@ -53,7 +53,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @return the IUserRequest instance
      */
     @Nonnull
-    public <#=c.TypeCollectionRequest()#> buildRequest(@Nonnull final com.microsoft.graph.options.Option... requestOptions) {
+    public <#=c.TypeCollectionRequest()#> buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
