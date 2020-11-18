@@ -14,6 +14,8 @@ import com.microsoft.graph.requests.extensions.EntityType2CollectionRequestBuild
 import com.microsoft.graph.requests.extensions.EntityType2RequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequestBuilder;
 
@@ -31,7 +33,7 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder<CallRecord> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public CallRecordRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CallRecordRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -41,7 +43,8 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder<CallRecord> {
      * @param requestOptions the options for this request
      * @return the CallRecordRequest instance
      */
-    public CallRecordRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public CallRecordRequest buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -51,7 +54,8 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder<CallRecord> {
      * @param requestOptions the options for this request
      * @return the CallRecordRequest instance
      */
-    public CallRecordRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Nonnull
+    public CallRecordRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph2.callrecords.requests.extensions.CallRecordRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
@@ -61,6 +65,7 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder<CallRecord> {
      *
      * @return the collection request builder
      */
+    @Nonnull
     public SessionCollectionRequestBuilder sessions() {
         return new SessionCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions"), getClient(), null);
     }
@@ -71,7 +76,8 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder<CallRecord> {
      * @return the request builder
      * @param id the item identifier
      */
-    public SessionRequestBuilder sessions(final String id) {
+    @Nonnull
+    public SessionRequestBuilder sessions(@Nonnull final String id) {
         return new SessionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions") + "/" + id, getClient(), null);
     }
     /**
@@ -79,6 +85,7 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder<CallRecord> {
      *
      * @return the collection request builder
      */
+    @Nonnull
     public EntityType2CollectionRequestBuilder recipients() {
         return new EntityType2CollectionRequestBuilder(getRequestUrlWithAdditionalSegment("recipients"), getClient(), null);
     }
@@ -89,7 +96,8 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder<CallRecord> {
      * @return the request builder
      * @param id the item identifier
      */
-    public EntityType2RequestBuilder recipients(final String id) {
+    @Nonnull
+    public EntityType2RequestBuilder recipients(@Nonnull final String id) {
         return new EntityType2RequestBuilder(getRequestUrlWithAdditionalSegment("recipients") + "/" + id, getClient(), null);
     }
 }

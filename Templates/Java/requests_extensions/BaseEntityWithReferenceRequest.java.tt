@@ -22,7 +22,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeWithReferencesRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeWithReferencesRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
@@ -33,7 +33,8 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      * @param value the select clause
      * @return the updated request
      */
-    public <#=c.TypeWithReferencesRequest()#> select(final String value) {
+    @Nonnull
+    public <#=c.TypeWithReferencesRequest()#> select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -46,7 +47,8 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=c.TypeWithReferencesRequest()#> expand(final String value) {
+    @Nonnull
+    public <#=c.TypeWithReferencesRequest()#> expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }

@@ -5,6 +5,8 @@
 package com.microsoft.graph.requests.extensions;
 import com.microsoft.graph.models.extensions.EntityType3;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionRequestBuilder;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionResponse;
 import com.microsoft.graph.http.BaseCollectionPage;
 
@@ -21,7 +23,7 @@ public class EntityType3CollectionPage extends BaseCollectionPage<EntityType3, E
      * @param response the serialized EntityType3CollectionResponse from the service
      * @param builder  the request builder for the next collection page
      */
-    public EntityType3CollectionPage(final EntityType3CollectionResponse response, final EntityType3CollectionRequestBuilder builder) {
+    public EntityType3CollectionPage(@Nonnull final EntityType3CollectionResponse response, @Nonnull final EntityType3CollectionRequestBuilder builder) {
         super(response, builder);
     }
 
@@ -31,7 +33,7 @@ public class EntityType3CollectionPage extends BaseCollectionPage<EntityType3, E
      * @param pageContents       the contents of this page
      * @param nextRequestBuilder the request builder for the next page
      */
-    public EntityType3CollectionPage(final java.util.List<EntityType3> pageContents, final EntityType3CollectionRequestBuilder nextRequestBuilder) {
+    public EntityType3CollectionPage(@Nonnull final java.util.List<EntityType3> pageContents, @Nullable final EntityType3CollectionRequestBuilder nextRequestBuilder) {
         super(pageContents, nextRequestBuilder);
     }
 }

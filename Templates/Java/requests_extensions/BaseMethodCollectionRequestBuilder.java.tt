@@ -26,7 +26,7 @@ import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctio
      * @param client         the service client
      * @param requestOptions the options for this request<#=method.MethodParametersJavadocSignature()#>
      */
-    public <#=c.TypeCollectionRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#=method.MethodParametersSignature()#>) {
+    public <#=c.TypeCollectionRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#=method.MethodParametersSignature()#>) {
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionRequestBuilder()#>.class, <#=c.TypeCollectionRequest()#>.class);
 <# foreach (var p in method.Parameters) { #>
   <# if (isAction) { #>
@@ -48,8 +48,9 @@ import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctio
      * @param requestOptions the options for this request
      * @return the <#=c.TypeCollectionRequest()#> instance
      */
-     @Override
-    public <#= c.TypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    @Override
+    @Nonnull
+    public <#= c.TypeCollectionRequest()#> buildRequest(@Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         final <#= c.TypeCollectionRequest()#> request = super.buildRequest(requestOptions);
 
 <# if (isAction) { #>

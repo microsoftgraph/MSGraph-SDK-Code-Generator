@@ -11,6 +11,8 @@ import com.microsoft.graph.models.extensions.IdentitySet;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionRequest;
@@ -34,7 +36,7 @@ public class SegmentTestActionCollectionRequestBuilder extends BaseActionCollect
      * @param requestOptions the options for this request
      * @param value the value
      */
-    public SegmentTestActionCollectionRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, final IdentitySet value) {
+    public SegmentTestActionCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nullable final IdentitySet value) {
         super(requestUrl, client, requestOptions, SegmentTestActionCollectionRequestBuilder.class, SegmentTestActionCollectionRequest.class);
   	 if(value!=null){
 			bodyParams.put("value", value);
@@ -47,8 +49,9 @@ public class SegmentTestActionCollectionRequestBuilder extends BaseActionCollect
      * @param requestOptions the options for this request
      * @return the SegmentTestActionCollectionRequest instance
      */
-     @Override
-    public SegmentTestActionCollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Override
+    @Nonnull
+    public SegmentTestActionCollectionRequest buildRequest(@Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         final SegmentTestActionCollectionRequest request = super.buildRequest(requestOptions);
 
         if (hasParameter("value")) {

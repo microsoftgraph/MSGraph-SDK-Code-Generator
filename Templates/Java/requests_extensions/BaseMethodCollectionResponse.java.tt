@@ -6,6 +6,8 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForBaseCollectionResponse()#>
 
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 <# if (((c as OdcmMethod).ReturnType is OdcmPrimitiveType) || ((c as OdcmMethod).ReturnType is OdcmEnum) ) { #>
 import com.google.gson.JsonObject;
@@ -23,7 +25,7 @@ import <#=importNamespace#>.http.BaseCollectionResponse;
      * @param json the JSON object to set this object to
      */
     @Override
-    public void setRawObject(final ISerializer serializer, final JsonObject json) {
+    public void setRawObject(@Nonnull final ISerializer serializer, @Nonnull final JsonObject json) {
         this.serializer = serializer;
         rawObject = json;
     }

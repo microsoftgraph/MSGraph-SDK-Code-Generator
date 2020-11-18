@@ -12,6 +12,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.core.IBaseClient;
@@ -35,7 +37,7 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3CollectionRequest(final String requestUrl, IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3CollectionRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, EntityType3CollectionPage.class, EntityType3CollectionRequestBuilder.class);
     }
 
@@ -44,7 +46,7 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param newEntityType3 the EntityType3 to create
      * @param callback the callback to invoke once the object has been created
      */
-    public void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
+    public void post(@Nonnull final EntityType3 newEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new EntityType3RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
@@ -56,7 +58,8 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param newEntityType3 the EntityType3 to create
      * @return the newly created object
      */
-    public EntityType3 post(final EntityType3 newEntityType3) throws ClientException {
+    @Nonnull
+    public EntityType3 post(@Nonnull final EntityType3 newEntityType3) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new EntityType3RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
@@ -69,7 +72,8 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param value the expand clause
      * @return the updated request
      */
-    public EntityType3CollectionRequest expand(final String value) {
+    @Nonnull
+    public EntityType3CollectionRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -80,7 +84,8 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param value the filter clause
      * @return the updated request
      */
-    public EntityType3CollectionRequest filter(final String value) {
+    @Nonnull
+    public EntityType3CollectionRequest filter(@Nonnull final String value) {
         addFilterOption(value);
         return this;
     }
@@ -91,7 +96,8 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param value the order by clause
      * @return the updated request
      */
-    public EntityType3CollectionRequest orderBy(final String value) {
+    @Nonnull
+    public EntityType3CollectionRequest orderBy(@Nonnull final String value) {
         addOrderByOption(value);
         return this;
     }
@@ -102,7 +108,8 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param value the select clause
      * @return the updated request
      */
-    public EntityType3CollectionRequest select(final String value) {
+    @Nonnull
+    public EntityType3CollectionRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -113,6 +120,7 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public EntityType3CollectionRequest top(final int value) {
         addTopOption(value);
         return this;
@@ -124,6 +132,7 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param value of the number of items to skip
      * @return the updated request
      */
+    @Nonnull
     public EntityType3CollectionRequest skip(final int value) {
         addSkipOption(value);
         return this;
@@ -135,7 +144,8 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param skipToken - Token for pagination
      * @return the updated request
      */
-    public EntityType3CollectionRequest skipToken(final String skipToken) {
+    @Nonnull
+    public EntityType3CollectionRequest skipToken(@Nonnull final String skipToken) {
     	addSkipTokenOption(skipToken);
         return this;
     }

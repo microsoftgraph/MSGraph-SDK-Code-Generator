@@ -6,6 +6,8 @@ package com.microsoft.graph2.callrecords.requests.extensions;
 import com.microsoft.graph2.callrecords.models.extensions.CallRecord;
 import com.microsoft.graph2.callrecords.requests.extensions.CallRecordItemRequest;
 
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.concurrency.IExecutors;
 import com.microsoft.graph.core.ClientException;
@@ -27,7 +29,7 @@ public class CallRecordItemRequest extends BaseRequest<CallRecord> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public CallRecordItemRequest(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CallRecordItemRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, CallRecord.class);
     }
 
@@ -36,7 +38,7 @@ public class CallRecordItemRequest extends BaseRequest<CallRecord> {
      * @param srcCallRecord the CallRecord with which to PATCH
      * @param callback the callback to be called after success or failure
      */
-    public void patch(CallRecord srcCallRecord, final ICallback<? super CallRecord> callback) {
+    public void patch(@Nonnull CallRecord srcCallRecord, @Nonnull final ICallback<? super CallRecord> callback) {
         send(HttpMethod.PATCH, callback, srcCallRecord);
     }
 
@@ -47,7 +49,8 @@ public class CallRecordItemRequest extends BaseRequest<CallRecord> {
      * @return the CallRecord
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-     public CallRecord patch(CallRecord srcCallRecord) throws ClientException {
+     @Nullable
+     public CallRecord patch(@Nonnull final CallRecord srcCallRecord) throws ClientException {
         return this.send(HttpMethod.PATCH, srcCallRecord);
     }
 
@@ -57,7 +60,7 @@ public class CallRecordItemRequest extends BaseRequest<CallRecord> {
      * @param srcCallRecord the CallRecord to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(CallRecord srcCallRecord, final ICallback<? super CallRecord> callback) {
+    public void put(@Nonnull final CallRecord srcCallRecord, @Nonnull final ICallback<? super CallRecord> callback) {
         send(HttpMethod.PUT, callback, srcCallRecord);
     }
 
@@ -68,7 +71,8 @@ public class CallRecordItemRequest extends BaseRequest<CallRecord> {
      * @return the CallRecord
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-     public CallRecord put(CallRecord srcCallRecord) throws ClientException {
+     @Nullable
+     public CallRecord put(@Nonnull final CallRecord srcCallRecord) throws ClientException {
         return this.send(HttpMethod.PUT, srcCallRecord);
     }
     /**
@@ -76,7 +80,7 @@ public class CallRecordItemRequest extends BaseRequest<CallRecord> {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<? super CallRecord> callback) {
+    public void get(@Nonnull final ICallback<? super CallRecord> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -86,6 +90,7 @@ public class CallRecordItemRequest extends BaseRequest<CallRecord> {
      * @return the CallRecord
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
+    @Nullable
     public CallRecord get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
@@ -96,7 +101,8 @@ public class CallRecordItemRequest extends BaseRequest<CallRecord> {
      * @param value the select clause
      * @return the updated request
      */
-    public CallRecordItemRequest select(final String value) {
+    @Nonnull
+    public CallRecordItemRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -107,7 +113,8 @@ public class CallRecordItemRequest extends BaseRequest<CallRecord> {
      * @param value the expand clause
      * @return the updated request
      */
-    public CallRecordItemRequest expand(final String value) {
+    @Nonnull
+    public CallRecordItemRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -118,7 +125,8 @@ public class CallRecordItemRequest extends BaseRequest<CallRecord> {
      * @param value the filter clause
      * @return the updated request
      */
-    public CallRecordItemRequest filter(final String value) {
+    @Nonnull
+    public CallRecordItemRequest filter(@Nonnull final String value) {
         addFilterOption(value);
         return this;
     }
@@ -129,7 +137,8 @@ public class CallRecordItemRequest extends BaseRequest<CallRecord> {
      * @param value the order by clause
      * @return the updated request
      */
-    public CallRecordItemRequest orderBy(final String value) {
+    @Nonnull
+    public CallRecordItemRequest orderBy(@Nonnull final String value) {
         addOrderByOption(value);
         return this;
     }

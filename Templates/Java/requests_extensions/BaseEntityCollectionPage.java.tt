@@ -5,6 +5,8 @@
 <#host.TemplateName = c.TypeCollectionPage();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForBaseEntityCollectionPage()#>
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 <# var mainNamespace = host.CurrentNamespace(); #>
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
@@ -18,7 +20,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      * @param response the serialized <#=c.TypeCollectionResponse()#> from the service
      * @param builder  the request builder for the next collection page
      */
-    public <#=c.TypeCollectionPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.TypeCollectionRequestBuilder()#> builder) {
+    public <#=c.TypeCollectionPage()#>(@Nonnull final <#=c.TypeCollectionResponse()#> response, @Nonnull final <#=c.TypeCollectionRequestBuilder()#> builder) {
         super(response, builder);
     }
 
@@ -28,7 +30,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      * @param pageContents       the contents of this page
      * @param nextRequestBuilder the request builder for the next page
      */
-    public <#=c.TypeCollectionPage()#>(final java.util.List<<#=c.TypeName()#>> pageContents, final <#=c.TypeCollectionRequestBuilder()#> nextRequestBuilder) {
+    public <#=c.TypeCollectionPage()#>(@Nonnull final java.util.List<<#=c.TypeName()#>> pageContents, @Nullable final <#=c.TypeCollectionRequestBuilder()#> nextRequestBuilder) {
         super(pageContents, nextRequestBuilder);
     }
 }

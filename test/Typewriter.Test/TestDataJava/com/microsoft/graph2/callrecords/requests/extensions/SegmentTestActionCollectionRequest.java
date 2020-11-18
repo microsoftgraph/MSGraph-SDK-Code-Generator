@@ -11,6 +11,8 @@ import com.microsoft.graph.models.extensions.IdentitySet;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionResponse;
@@ -40,7 +42,7 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public SegmentTestActionCollectionRequest(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SegmentTestActionCollectionRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, SegmentTestActionCollectionResponse.class, SegmentTestActionCollectionPage.class, SegmentTestActionCollectionRequestBuilder.class);
         body = new SegmentTestActionBody();
     }
@@ -50,7 +52,7 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * Invokes the method and calls the callback with the resulting collection of objects
      * @param callback a callback to be invoked with the resulting collection of objects
      */
-    public void post(final ICallback<? super SegmentTestActionCollectionPage> callback) {
+    public void post(@Nonnull final ICallback<? super SegmentTestActionCollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -68,6 +70,7 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * Invokes the method and returns the resulting collection of objects
      * @return a collection of objects returned by the method
      */
+    @Nullable
     public SegmentTestActionCollectionPage post() throws ClientException {
         final SegmentTestActionCollectionResponse response = post(body);
         return buildFromResponse(response);
@@ -80,7 +83,8 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * @param value the select clause
      * @return the updated request
      */
-    public SegmentTestActionCollectionRequest select(final String value) {
+    @Nonnull
+    public SegmentTestActionCollectionRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -91,6 +95,7 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public SegmentTestActionCollectionRequest top(final int value) {
         addTopOption(value);
         return this;
@@ -102,7 +107,8 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * @param value the expand clause
      * @return the updated request
      */
-    public SegmentTestActionCollectionRequest expand(final String value) {
+    @Nonnull
+    public SegmentTestActionCollectionRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -113,7 +119,8 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * @param value the filter clause
      * @return the updated request
      */
-    public SegmentTestActionCollectionRequest filter(final String value) {
+    @Nonnull
+    public SegmentTestActionCollectionRequest filter(@Nonnull final String value) {
         addFilterOption(value);
         return this;
     }
@@ -124,7 +131,8 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      * @param value the order by clause
      * @return the updated request
      */
-    public SegmentTestActionCollectionRequest orderBy(final String value) {
+    @Nonnull
+    public SegmentTestActionCollectionRequest orderBy(@Nonnull final String value) {
         addOrderByOption(value);
         return this;
     }

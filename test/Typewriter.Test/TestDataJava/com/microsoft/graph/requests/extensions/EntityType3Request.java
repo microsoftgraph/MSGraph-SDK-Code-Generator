@@ -12,6 +12,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;
@@ -30,7 +32,7 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3Request(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3Request(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType3.class);
     }
 
@@ -39,7 +41,7 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<? super EntityType3> callback) {
+    public void get(@Nonnull final ICallback<? super EntityType3> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -49,6 +51,7 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @return the EntityType3 from the request
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
+    @Nullable
     public EntityType3 get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
@@ -58,7 +61,7 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<? super EntityType3> callback) {
+    public void delete(@Nonnull final ICallback<? super EntityType3> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -77,7 +80,7 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @param sourceEntityType3 the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final EntityType3 sourceEntityType3, final ICallback<? super EntityType3> callback) {
+    public void patch(@Nonnull final EntityType3 sourceEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
         send(HttpMethod.PATCH, callback, sourceEntityType3);
     }
 
@@ -88,7 +91,8 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @return the updated EntityType3
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public EntityType3 patch(final EntityType3 sourceEntityType3) throws ClientException {
+    @Nullable
+    public EntityType3 patch(@Nonnull final EntityType3 sourceEntityType3) throws ClientException {
         return send(HttpMethod.PATCH, sourceEntityType3);
     }
 
@@ -98,7 +102,7 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @param newEntityType3 the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
+    public void post(@Nonnull final EntityType3 newEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
         send(HttpMethod.POST, callback, newEntityType3);
     }
 
@@ -109,7 +113,8 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @return the created EntityType3
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public EntityType3 post(final EntityType3 newEntityType3) throws ClientException {
+    @Nullable
+    public EntityType3 post(@Nonnull final EntityType3 newEntityType3) throws ClientException {
         return send(HttpMethod.POST, newEntityType3);
     }
 
@@ -119,7 +124,7 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @param newEntityType3 the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
+    public void put(@Nonnull final EntityType3 newEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
         send(HttpMethod.PUT, callback, newEntityType3);
     }
 
@@ -130,7 +135,8 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @return the created EntityType3
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public EntityType3 put(final EntityType3 newEntityType3) throws ClientException {
+    @Nullable
+    public EntityType3 put(@Nonnull final EntityType3 newEntityType3) throws ClientException {
         return send(HttpMethod.PUT, newEntityType3);
     }
 
@@ -140,7 +146,8 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @param value the select clause
      * @return the updated request
      */
-     public EntityType3Request select(final String value) {
+     @Nonnull
+     public EntityType3Request select(@Nonnull final String value) {
          addSelectOption(value);
          return this;
      }
@@ -151,7 +158,8 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @param value the expand clause
      * @return the updated request
      */
-     public EntityType3Request expand(final String value) {
+     @Nonnull
+     public EntityType3Request expand(@Nonnull final String value) {
          addExpandOption(value);
          return this;
      }

@@ -12,6 +12,8 @@ import com.microsoft.graph2.callrecords.requests.extensions.SegmentCollectionReq
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.http.BaseWithReferenceRequest;
@@ -33,7 +35,7 @@ public class SessionWithReferenceRequest extends BaseWithReferenceRequest<Sessio
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public SessionWithReferenceRequest(String requestUrl, IBaseClient client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SessionWithReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, Session.class);
     }
 
@@ -43,7 +45,8 @@ public class SessionWithReferenceRequest extends BaseWithReferenceRequest<Sessio
      * @param value the select clause
      * @return the updated request
      */
-    public SessionWithReferenceRequest select(final String value) {
+    @Nonnull
+    public SessionWithReferenceRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -54,7 +57,8 @@ public class SessionWithReferenceRequest extends BaseWithReferenceRequest<Sessio
      * @param value the expand clause
      * @return the updated request
      */
-    public SessionWithReferenceRequest expand(final String value) {
+    @Nonnull
+    public SessionWithReferenceRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }

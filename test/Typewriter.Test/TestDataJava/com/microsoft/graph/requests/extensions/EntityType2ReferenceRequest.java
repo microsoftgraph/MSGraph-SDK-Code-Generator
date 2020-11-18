@@ -10,6 +10,8 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.EntityType2;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.http.BaseReferenceRequest;
@@ -30,7 +32,7 @@ public class EntityType2ReferenceRequest extends BaseReferenceRequest<EntityType
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType2ReferenceRequest(String requestUrl, IBaseClient client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType2ReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType2.class);
     }
 
@@ -40,7 +42,8 @@ public class EntityType2ReferenceRequest extends BaseReferenceRequest<EntityType
      * @param value the select clause
      * @return the updated request
      */
-    public EntityType2ReferenceRequest select(final String value) {
+    @Nonnull
+    public EntityType2ReferenceRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -51,7 +54,8 @@ public class EntityType2ReferenceRequest extends BaseReferenceRequest<EntityType
      * @param value the expand clause
      * @return the updated request
      */
-    public EntityType2ReferenceRequest expand(final String value) {
+    @Nonnull
+    public EntityType2ReferenceRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -61,7 +65,7 @@ public class EntityType2ReferenceRequest extends BaseReferenceRequest<EntityType
      * @param srcEntityType2 the EntityType2 reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(EntityType2 srcEntityType2, final ICallback<? super EntityType2> callback) {
+    public void put(@Nonnull final EntityType2 srcEntityType2, @Nonnull final ICallback<? super EntityType2> callback) {
         send(HttpMethod.PUT, callback, srcEntityType2);
     }
 
@@ -72,7 +76,8 @@ public class EntityType2ReferenceRequest extends BaseReferenceRequest<EntityType
      * @return the EntityType2
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    public EntityType2 put(EntityType2 srcEntityType2) throws ClientException {
+    @Nullable
+    public EntityType2 put(@Nonnull final EntityType2 srcEntityType2) throws ClientException {
         return send(HttpMethod.PUT, srcEntityType2);
     }
 }

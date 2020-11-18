@@ -9,6 +9,8 @@
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import <#=importNamespace#>.serializer.ISerializer;
 import java.util.EnumSet;

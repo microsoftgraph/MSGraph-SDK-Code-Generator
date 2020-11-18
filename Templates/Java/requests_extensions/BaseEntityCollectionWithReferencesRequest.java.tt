@@ -30,7 +30,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionWithReferencesRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeCollectionWithReferencesRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionWithReferencesPage()#>.class, <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
     }
 
@@ -41,7 +41,8 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=c.TypeCollectionWithReferencesRequest()#> expand(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionWithReferencesRequest()#> expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -54,7 +55,8 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param value the filter clause
      * @return the updated request
      */
-    public <#=c.TypeCollectionWithReferencesRequest()#> filter(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionWithReferencesRequest()#> filter(@Nonnull final String value) {
         addFilterOption(value);
         return this;
     }
@@ -67,7 +69,8 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param value the order by clause
      * @return the updated request
      */
-    public <#=c.TypeCollectionWithReferencesRequest()#> orderBy(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionWithReferencesRequest()#> orderBy(@Nonnull final String value) {
         addOrderByOption(value);
         return this;
     }
@@ -80,7 +83,8 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param value the select clause
      * @return the updated request
      */
-    public <#=c.TypeCollectionWithReferencesRequest()#> select(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionWithReferencesRequest()#> select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -93,6 +97,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public <#=c.TypeCollectionWithReferencesRequest()#> top(final int value) {
         addTopOption(value);
         return this;

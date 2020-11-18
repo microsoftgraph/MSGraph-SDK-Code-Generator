@@ -11,6 +11,8 @@ import com.microsoft.graph.models.extensions.SingletonEntity2;
 import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequestBuilder;
 
@@ -28,7 +30,7 @@ public class SingletonEntity2RequestBuilder extends BaseRequestBuilder<Singleton
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public SingletonEntity2RequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SingletonEntity2RequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -38,7 +40,8 @@ public class SingletonEntity2RequestBuilder extends BaseRequestBuilder<Singleton
      * @param requestOptions the options for this request
      * @return the SingletonEntity2Request instance
      */
-    public SingletonEntity2Request buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public SingletonEntity2Request buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -48,7 +51,8 @@ public class SingletonEntity2RequestBuilder extends BaseRequestBuilder<Singleton
      * @param requestOptions the options for this request
      * @return the SingletonEntity2Request instance
      */
-    public SingletonEntity2Request buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Nonnull
+    public SingletonEntity2Request buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.SingletonEntity2Request(getRequestUrl(), getClient(), requestOptions);
     }
 
@@ -59,6 +63,7 @@ public class SingletonEntity2RequestBuilder extends BaseRequestBuilder<Singleton
      *
      * @return the EntityType3RequestBuilder instance
      */
+    @Nonnull
     public EntityType3RequestBuilder testSingleNav2() {
         return new EntityType3RequestBuilder(getRequestUrlWithAdditionalSegment("testSingleNav2"), getClient(), null);
     }

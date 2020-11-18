@@ -12,6 +12,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.http.BaseWithReferenceRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
@@ -30,7 +32,7 @@ public class EntityType3WithReferenceRequestBuilder extends BaseWithReferenceReq
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3WithReferenceRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3WithReferenceRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType3WithReferenceRequest.class, EntityType3ReferenceRequestBuilder.class);
     }
 }

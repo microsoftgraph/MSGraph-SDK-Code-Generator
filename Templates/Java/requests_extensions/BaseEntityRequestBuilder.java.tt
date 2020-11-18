@@ -19,7 +19,7 @@ import <#=importNamespace#>.http.BaseRequestBuilder;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -29,7 +29,8 @@ import <#=importNamespace#>.http.BaseRequestBuilder;
      * @param requestOptions the options for this request
      * @return the <#=c.TypeRequest()#> instance
      */
-    public <#=c.TypeRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public <#=c.TypeRequest()#> buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -39,7 +40,8 @@ import <#=importNamespace#>.http.BaseRequestBuilder;
      * @param requestOptions the options for this request
      * @return the <#=c.TypeRequest()#> instance
      */
-    public <#=c.TypeRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    @Nonnull
+    public <#=c.TypeRequest()#> buildRequest(@Nonnull final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         return new <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 
@@ -51,7 +53,8 @@ import <#=importNamespace#>.http.BaseRequestBuilder;
      * @param path path to the query on the drive
      * @return a request builder to the specified path
      */
-    public DriveItemRequestBuilder itemWithPath(final String path) {
+    @Nonnull
+    public DriveItemRequestBuilder itemWithPath(@Nonnull final String path) {
         return new DriveItemRequestBuilder(getRequestUrl() + ":/" + path + ":", getClient(), null);
     }
 <# } else if(host.TemplateName.Equals("ThumbnailSetRequestBuilder")){ #>
@@ -60,7 +63,8 @@ import <#=importNamespace#>.http.BaseRequestBuilder;
      * @param size the size to get
      * @return a request builder to get the thumbnail of a certain size
      */
-    public ThumbnailRequestBuilder getThumbnailSize(final String size) {
+    @Nonnull
+    public ThumbnailRequestBuilder getThumbnailSize(@Nonnull final String size) {
         return new ThumbnailRequestBuilder(getRequestUrlWithAdditionalSegment(size), getClient(), /* options */ null);
     }
 <# } #>
@@ -80,6 +84,7 @@ if (c.AsOdcmClass() != null)
      *
      * @return the collection request builder
      */
+    @Nonnull
     public <#=prop.TypeCollectionRequestBuilder()#> <#=sanitizedProperty#>() {
         return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>")<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
     }
@@ -90,7 +95,8 @@ if (c.AsOdcmClass() != null)
      * @return the request builder
      * @param id the item identifier
      */
-    public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>(final String id) {
+    @Nonnull
+    public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>(@Nonnull final String id) {
         return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>") + "/" + id<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
     }
 <#
@@ -102,6 +108,7 @@ if (c.AsOdcmClass() != null)
      *
      * @return the <#=prop.TypeRequestBuilder()#> instance
      */
+    @Nonnull
     public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>() {
         return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
@@ -127,6 +134,7 @@ if (c.AsOdcmClass() != null)
      *
      * @return the <#=propRequestBuilder#> instance
      */
+    @Nonnull
     public <#=propRequestBuilder#> <#=sanitizedName#>() {
         return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
@@ -142,6 +150,7 @@ if (c.AsOdcmClass() != null)
      * Gets a request builder to get the binary value of the object
      * @return the stream request builder
      */
+    @Nonnull
     public <#=c.TypeStreamRequestBuilder()#> content() {
         return new <#=c.TypeStreamRequestBuilder()#>(getRequestUrlWithAdditionalSegment("$value"), getClient(), null);
     }
@@ -170,6 +179,7 @@ if (c.AsOdcmClass() != null)
      * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
      * @return the request builder collection<#=method.MethodParametersJavadocSignature()#>
      */
+    @Nonnull
     public <#=method.TypeCollectionRequestBuilder()#> <#=sanitizedMethod#>(<#=parameterList#>) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }
@@ -179,6 +189,7 @@ if (c.AsOdcmClass() != null)
      * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
      * @return the request builder <#=method.MethodParametersJavadocSignature()#>
      */
+    @Nonnull
     public <#=method.TypeRequestBuilder()#> <#=sanitizedMethod#>(<#=parameterList#>) {
         return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }

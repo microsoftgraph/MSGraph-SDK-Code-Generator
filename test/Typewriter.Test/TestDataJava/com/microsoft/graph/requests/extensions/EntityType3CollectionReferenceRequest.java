@@ -13,6 +13,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.requests.extensions.EntityType3WithReferenceRequest;
 import com.microsoft.graph.requests.extensions.EntityType3ReferenceRequestBuilder;
@@ -40,7 +42,7 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionWithRef
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3CollectionReferenceRequest(final String requestUrl, IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3CollectionReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, EntityType3CollectionWithReferencesPage.class, EntityType3CollectionWithReferencesRequestBuilder.class);
     }
 
@@ -49,7 +51,7 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionWithRef
      * @param newEntityType3 the EntityType3 to create
      * @param callback the callback to invoke once the object has been created
      */
-    public void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
+    public void post(@Nonnull final EntityType3 newEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/testTypes/" + newEntityType3.id);
         new EntityType3WithReferenceRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
@@ -62,7 +64,8 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionWithRef
      * @param newEntityType3 the EntityType3 to create
      * @return the newly created object
      */
-    public EntityType3 post(final EntityType3 newEntityType3) throws ClientException {
+    @Nonnull
+    public EntityType3 post(@Nonnull final EntityType3 newEntityType3) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/testTypes/" + newEntityType3.id);
         return new EntityType3WithReferenceRequestBuilder(requestUrl,getBaseRequest().getClient(), /* Options */ null)
@@ -75,7 +78,8 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionWithRef
      * @param value the expand clause
      * @return the updated request
      */
-    public EntityType3CollectionReferenceRequest expand(final String value) {
+    @Nonnull
+    public EntityType3CollectionReferenceRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -86,7 +90,8 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionWithRef
      * @param value the filter clause
      * @return the updated request
      */
-    public EntityType3CollectionReferenceRequest filter(final String value) {
+    @Nonnull
+    public EntityType3CollectionReferenceRequest filter(@Nonnull final String value) {
         addFilterOption(value);
         return this;
     }
@@ -97,7 +102,8 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionWithRef
      * @param value the sort clause
      * @return the updated request
      */
-    public EntityType3CollectionReferenceRequest orderBy(final String value) {
+    @Nonnull
+    public EntityType3CollectionReferenceRequest orderBy(@Nonnull final String value) {
         addOrderByOption(value);
         return this;
     }
@@ -108,7 +114,8 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionWithRef
      * @param value the select clause
      * @return the updated request
      */
-    public EntityType3CollectionReferenceRequest select(final String value) {
+    @Nonnull
+    public EntityType3CollectionReferenceRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -119,6 +126,7 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionWithRef
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public EntityType3CollectionReferenceRequest top(final int value) {
         addTopOption(value);
         return this;

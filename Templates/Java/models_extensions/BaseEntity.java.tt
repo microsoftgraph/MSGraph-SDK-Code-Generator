@@ -9,6 +9,8 @@
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.Expose;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 <# if(((OdcmClass)c).IsOpen && !((OdcmClass)c).Properties.Any()) { #>
 import java.util.HashMap;
 <# } #>
@@ -21,11 +23,13 @@ import java.util.HashMap;
     /** the OData type of the object as returned by the service */
     @SerializedName("@odata.type")
     @Expose
+    @Nullable
     public String oDataType;
 
     private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
 
     @Override
+    @Nonnull
     public final AdditionalDataManager additionalDataManager() {
         return additionalDataManager;
     }

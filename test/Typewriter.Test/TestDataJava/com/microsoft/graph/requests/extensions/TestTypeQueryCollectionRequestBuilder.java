@@ -11,6 +11,8 @@ import com.microsoft.graph.models.extensions.DerivedComplexTypeRequest;
 import com.microsoft.graph.models.extensions.ResponseObject;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionRequest;
@@ -34,7 +36,7 @@ public class TestTypeQueryCollectionRequestBuilder extends BaseActionCollectionR
      * @param requestOptions the options for this request
      * @param requests the requests
      */
-    public TestTypeQueryCollectionRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, final java.util.List<DerivedComplexTypeRequest> requests) {
+    public TestTypeQueryCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nullable final java.util.List<DerivedComplexTypeRequest> requests) {
         super(requestUrl, client, requestOptions, TestTypeQueryCollectionRequestBuilder.class, TestTypeQueryCollectionRequest.class);
   	 if(requests!=null){
 			bodyParams.put("requests", requests);
@@ -47,8 +49,9 @@ public class TestTypeQueryCollectionRequestBuilder extends BaseActionCollectionR
      * @param requestOptions the options for this request
      * @return the TestTypeQueryCollectionRequest instance
      */
-     @Override
-    public TestTypeQueryCollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Override
+    @Nonnull
+    public TestTypeQueryCollectionRequest buildRequest(@Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         final TestTypeQueryCollectionRequest request = super.buildRequest(requestOptions);
 
         if (hasParameter("requests")) {

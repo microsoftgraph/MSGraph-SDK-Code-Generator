@@ -25,7 +25,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
     }
 
@@ -34,7 +34,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
      * @param callback the callback to invoke once the object has been created
      */
-    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
+    public void post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>, @Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
@@ -46,7 +46,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
      * @return the newly created object
      */
-    public <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException {
+    @Nonnull
+    public <#=c.TypeName()#> post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
@@ -60,7 +61,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=c.TypeCollectionRequest()#> expand(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -73,7 +75,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param value the filter clause
      * @return the updated request
      */
-    public <#=c.TypeCollectionRequest()#> filter(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> filter(@Nonnull final String value) {
         addFilterOption(value);
         return this;
     }
@@ -86,7 +89,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param value the order by clause
      * @return the updated request
      */
-    public <#=c.TypeCollectionRequest()#> orderBy(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> orderBy(@Nonnull final String value) {
         addOrderByOption(value);
         return this;
     }
@@ -99,7 +103,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param value the select clause
      * @return the updated request
      */
-    public <#=c.TypeCollectionRequest()#> select(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -112,6 +117,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public <#=c.TypeCollectionRequest()#> top(final int value) {
         addTopOption(value);
         return this;
@@ -125,6 +131,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param value of the number of items to skip
      * @return the updated request
      */
+    @Nonnull
     public <#=c.TypeCollectionRequest()#> skip(final int value) {
         addSkipOption(value);
         return this;
@@ -137,7 +144,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param skipToken - Token for pagination
      * @return the updated request
      */
-    public <#=c.TypeCollectionRequest()#> skipToken(final String skipToken) {
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> skipToken(@Nonnull final String skipToken) {
     	addSkipTokenOption(skipToken);
         return this;
     }

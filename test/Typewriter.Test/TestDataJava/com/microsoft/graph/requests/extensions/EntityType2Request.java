@@ -10,6 +10,8 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.EntityType2;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;
@@ -28,7 +30,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType2Request(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType2Request(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType2.class);
     }
 
@@ -37,7 +39,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<? super EntityType2> callback) {
+    public void get(@Nonnull final ICallback<? super EntityType2> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -47,6 +49,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @return the EntityType2 from the request
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
+    @Nullable
     public EntityType2 get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
@@ -56,7 +59,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<? super EntityType2> callback) {
+    public void delete(@Nonnull final ICallback<? super EntityType2> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -75,7 +78,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @param sourceEntityType2 the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final EntityType2 sourceEntityType2, final ICallback<? super EntityType2> callback) {
+    public void patch(@Nonnull final EntityType2 sourceEntityType2, @Nonnull final ICallback<? super EntityType2> callback) {
         send(HttpMethod.PATCH, callback, sourceEntityType2);
     }
 
@@ -86,7 +89,8 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @return the updated EntityType2
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public EntityType2 patch(final EntityType2 sourceEntityType2) throws ClientException {
+    @Nullable
+    public EntityType2 patch(@Nonnull final EntityType2 sourceEntityType2) throws ClientException {
         return send(HttpMethod.PATCH, sourceEntityType2);
     }
 
@@ -96,7 +100,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @param newEntityType2 the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final EntityType2 newEntityType2, final ICallback<? super EntityType2> callback) {
+    public void post(@Nonnull final EntityType2 newEntityType2, @Nonnull final ICallback<? super EntityType2> callback) {
         send(HttpMethod.POST, callback, newEntityType2);
     }
 
@@ -107,7 +111,8 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @return the created EntityType2
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public EntityType2 post(final EntityType2 newEntityType2) throws ClientException {
+    @Nullable
+    public EntityType2 post(@Nonnull final EntityType2 newEntityType2) throws ClientException {
         return send(HttpMethod.POST, newEntityType2);
     }
 
@@ -117,7 +122,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @param newEntityType2 the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final EntityType2 newEntityType2, final ICallback<? super EntityType2> callback) {
+    public void put(@Nonnull final EntityType2 newEntityType2, @Nonnull final ICallback<? super EntityType2> callback) {
         send(HttpMethod.PUT, callback, newEntityType2);
     }
 
@@ -128,7 +133,8 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @return the created EntityType2
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public EntityType2 put(final EntityType2 newEntityType2) throws ClientException {
+    @Nullable
+    public EntityType2 put(@Nonnull final EntityType2 newEntityType2) throws ClientException {
         return send(HttpMethod.PUT, newEntityType2);
     }
 
@@ -138,7 +144,8 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @param value the select clause
      * @return the updated request
      */
-     public EntityType2Request select(final String value) {
+     @Nonnull
+     public EntityType2Request select(@Nonnull final String value) {
          addSelectOption(value);
          return this;
      }
@@ -149,7 +156,8 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @param value the expand clause
      * @return the updated request
      */
-     public EntityType2Request expand(final String value) {
+     @Nonnull
+     public EntityType2Request expand(@Nonnull final String value) {
          addExpandOption(value);
          return this;
      }

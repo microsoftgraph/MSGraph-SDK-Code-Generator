@@ -12,6 +12,8 @@ import com.microsoft.graph2.callrecords.requests.extensions.SegmentCollectionReq
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.http.BaseReferenceRequest;
@@ -32,7 +34,7 @@ public class SessionReferenceRequest extends BaseReferenceRequest<Session> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public SessionReferenceRequest(String requestUrl, IBaseClient client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SessionReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, Session.class);
     }
 
@@ -42,7 +44,8 @@ public class SessionReferenceRequest extends BaseReferenceRequest<Session> {
      * @param value the select clause
      * @return the updated request
      */
-    public SessionReferenceRequest select(final String value) {
+    @Nonnull
+    public SessionReferenceRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -53,7 +56,8 @@ public class SessionReferenceRequest extends BaseReferenceRequest<Session> {
      * @param value the expand clause
      * @return the updated request
      */
-    public SessionReferenceRequest expand(final String value) {
+    @Nonnull
+    public SessionReferenceRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -63,7 +67,7 @@ public class SessionReferenceRequest extends BaseReferenceRequest<Session> {
      * @param srcSession the Session reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(Session srcSession, final ICallback<? super Session> callback) {
+    public void put(@Nonnull final Session srcSession, @Nonnull final ICallback<? super Session> callback) {
         send(HttpMethod.PUT, callback, srcSession);
     }
 
@@ -74,7 +78,8 @@ public class SessionReferenceRequest extends BaseReferenceRequest<Session> {
      * @return the Session
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    public Session put(Session srcSession) throws ClientException {
+    @Nullable
+    public Session put(@Nonnull final Session srcSession) throws ClientException {
         return send(HttpMethod.PUT, srcSession);
     }
 }

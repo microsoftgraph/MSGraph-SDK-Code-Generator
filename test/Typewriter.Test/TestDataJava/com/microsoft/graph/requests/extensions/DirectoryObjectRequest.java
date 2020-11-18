@@ -10,6 +10,8 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.DirectoryObject;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;
@@ -29,10 +31,10 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @param requestOptions the options for this request
      * @param responseClass  the class of the response
      */
-    public DirectoryObjectRequest(final String requestUrl,
-            final IBaseClient client,
-            final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions,
-            final Class<? extends DirectoryObject> responseClass) {
+    public DirectoryObjectRequest(@Nonnull final String requestUrl,
+            @Nonnull final IBaseClient client,
+            @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions,
+            @Nonnull final Class<? extends DirectoryObject> responseClass) {
         super(requestUrl, client, requestOptions, responseClass);
     }
 
@@ -43,7 +45,7 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public DirectoryObjectRequest(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public DirectoryObjectRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, DirectoryObject.class);
     }
 
@@ -52,7 +54,7 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<? super DirectoryObject> callback) {
+    public void get(@Nonnull final ICallback<? super DirectoryObject> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -62,6 +64,7 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @return the DirectoryObject from the request
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
+    @Nullable
     public DirectoryObject get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
@@ -71,7 +74,7 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<? super DirectoryObject> callback) {
+    public void delete(@Nonnull final ICallback<? super DirectoryObject> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -90,7 +93,7 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @param sourceDirectoryObject the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final DirectoryObject sourceDirectoryObject, final ICallback<? super DirectoryObject> callback) {
+    public void patch(@Nonnull final DirectoryObject sourceDirectoryObject, @Nonnull final ICallback<? super DirectoryObject> callback) {
         send(HttpMethod.PATCH, callback, sourceDirectoryObject);
     }
 
@@ -101,7 +104,8 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @return the updated DirectoryObject
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public DirectoryObject patch(final DirectoryObject sourceDirectoryObject) throws ClientException {
+    @Nullable
+    public DirectoryObject patch(@Nonnull final DirectoryObject sourceDirectoryObject) throws ClientException {
         return send(HttpMethod.PATCH, sourceDirectoryObject);
     }
 
@@ -111,7 +115,7 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @param newDirectoryObject the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final DirectoryObject newDirectoryObject, final ICallback<? super DirectoryObject> callback) {
+    public void post(@Nonnull final DirectoryObject newDirectoryObject, @Nonnull final ICallback<? super DirectoryObject> callback) {
         send(HttpMethod.POST, callback, newDirectoryObject);
     }
 
@@ -122,7 +126,8 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @return the created DirectoryObject
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public DirectoryObject post(final DirectoryObject newDirectoryObject) throws ClientException {
+    @Nullable
+    public DirectoryObject post(@Nonnull final DirectoryObject newDirectoryObject) throws ClientException {
         return send(HttpMethod.POST, newDirectoryObject);
     }
 
@@ -132,7 +137,7 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @param newDirectoryObject the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final DirectoryObject newDirectoryObject, final ICallback<? super DirectoryObject> callback) {
+    public void put(@Nonnull final DirectoryObject newDirectoryObject, @Nonnull final ICallback<? super DirectoryObject> callback) {
         send(HttpMethod.PUT, callback, newDirectoryObject);
     }
 
@@ -143,7 +148,8 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @return the created DirectoryObject
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public DirectoryObject put(final DirectoryObject newDirectoryObject) throws ClientException {
+    @Nullable
+    public DirectoryObject put(@Nonnull final DirectoryObject newDirectoryObject) throws ClientException {
         return send(HttpMethod.PUT, newDirectoryObject);
     }
 
@@ -153,7 +159,8 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @param value the select clause
      * @return the updated request
      */
-     public DirectoryObjectRequest select(final String value) {
+     @Nonnull
+     public DirectoryObjectRequest select(@Nonnull final String value) {
          addSelectOption(value);
          return this;
      }
@@ -164,7 +171,8 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @param value the expand clause
      * @return the updated request
      */
-     public DirectoryObjectRequest expand(final String value) {
+     @Nonnull
+     public DirectoryObjectRequest expand(@Nonnull final String value) {
          addExpandOption(value);
          return this;
      }

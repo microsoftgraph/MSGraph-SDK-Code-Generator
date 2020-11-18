@@ -11,6 +11,8 @@ import com.microsoft.graph.models.extensions.CloudCommunications;
 import com.microsoft.graph2.callrecords.models.extensions.CallRecord;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph2.callrecords.requests.extensions.CallRecordCollectionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.CallRecordRequestBuilder;
@@ -33,7 +35,7 @@ public class CallRecordCollectionRequestBuilder extends BaseCollectionRequestBui
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public CallRecordCollectionRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CallRecordCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, CallRecordRequestBuilder.class, CallRecordCollectionRequest.class);
     }
 
@@ -44,7 +46,8 @@ public class CallRecordCollectionRequestBuilder extends BaseCollectionRequestBui
      * @return the request builder 
      * @param name the name
      */
-    public CallRecordItemRequestBuilder item(final String name) {
+    @Nonnull
+    public CallRecordItemRequestBuilder item(@Nullable final String name) {
         return new CallRecordItemRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph2.callRecords.item"), getClient(), null, name);
     }
 }

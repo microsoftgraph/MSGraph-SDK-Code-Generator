@@ -10,6 +10,8 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.EntityType2;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.http.BaseWithReferenceRequest;
@@ -31,7 +33,7 @@ public class EntityType2WithReferenceRequest extends BaseWithReferenceRequest<En
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType2WithReferenceRequest(String requestUrl, IBaseClient client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType2WithReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType2.class);
     }
 
@@ -41,7 +43,8 @@ public class EntityType2WithReferenceRequest extends BaseWithReferenceRequest<En
      * @param value the select clause
      * @return the updated request
      */
-    public EntityType2WithReferenceRequest select(final String value) {
+    @Nonnull
+    public EntityType2WithReferenceRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -52,7 +55,8 @@ public class EntityType2WithReferenceRequest extends BaseWithReferenceRequest<En
      * @param value the expand clause
      * @return the updated request
      */
-    public EntityType2WithReferenceRequest expand(final String value) {
+    @Nonnull
+    public EntityType2WithReferenceRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }

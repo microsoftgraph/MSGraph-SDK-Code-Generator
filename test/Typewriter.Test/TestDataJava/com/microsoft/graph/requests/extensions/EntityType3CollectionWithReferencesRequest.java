@@ -13,6 +13,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.models.extensions.EntityType3;
 import com.microsoft.graph.requests.extensions.EntityType3WithReferenceRequest;
@@ -41,7 +43,7 @@ public class EntityType3CollectionWithReferencesRequest extends BaseCollectionWi
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3CollectionWithReferencesRequest(final String requestUrl, IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3CollectionWithReferencesRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, EntityType3CollectionWithReferencesPage.class, EntityType3CollectionWithReferencesRequestBuilder.class);
     }
 
@@ -51,7 +53,8 @@ public class EntityType3CollectionWithReferencesRequest extends BaseCollectionWi
      * @param value the expand clause
      * @return the updated request
      */
-    public EntityType3CollectionWithReferencesRequest expand(final String value) {
+    @Nonnull
+    public EntityType3CollectionWithReferencesRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -62,7 +65,8 @@ public class EntityType3CollectionWithReferencesRequest extends BaseCollectionWi
      * @param value the filter clause
      * @return the updated request
      */
-    public EntityType3CollectionWithReferencesRequest filter(final String value) {
+    @Nonnull
+    public EntityType3CollectionWithReferencesRequest filter(@Nonnull final String value) {
         addFilterOption(value);
         return this;
     }
@@ -73,7 +77,8 @@ public class EntityType3CollectionWithReferencesRequest extends BaseCollectionWi
      * @param value the order by clause
      * @return the updated request
      */
-    public EntityType3CollectionWithReferencesRequest orderBy(final String value) {
+    @Nonnull
+    public EntityType3CollectionWithReferencesRequest orderBy(@Nonnull final String value) {
         addOrderByOption(value);
         return this;
     }
@@ -84,7 +89,8 @@ public class EntityType3CollectionWithReferencesRequest extends BaseCollectionWi
      * @param value the select clause
      * @return the updated request
      */
-    public EntityType3CollectionWithReferencesRequest select(final String value) {
+    @Nonnull
+    public EntityType3CollectionWithReferencesRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -95,6 +101,7 @@ public class EntityType3CollectionWithReferencesRequest extends BaseCollectionWi
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public EntityType3CollectionWithReferencesRequest top(final int value) {
         addTopOption(value);
         return this;

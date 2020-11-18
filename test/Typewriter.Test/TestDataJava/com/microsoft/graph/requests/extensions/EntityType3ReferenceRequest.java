@@ -12,6 +12,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.http.BaseReferenceRequest;
@@ -32,7 +34,7 @@ public class EntityType3ReferenceRequest extends BaseReferenceRequest<EntityType
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3ReferenceRequest(String requestUrl, IBaseClient client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3ReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType3.class);
     }
 
@@ -42,7 +44,8 @@ public class EntityType3ReferenceRequest extends BaseReferenceRequest<EntityType
      * @param value the select clause
      * @return the updated request
      */
-    public EntityType3ReferenceRequest select(final String value) {
+    @Nonnull
+    public EntityType3ReferenceRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -53,7 +56,8 @@ public class EntityType3ReferenceRequest extends BaseReferenceRequest<EntityType
      * @param value the expand clause
      * @return the updated request
      */
-    public EntityType3ReferenceRequest expand(final String value) {
+    @Nonnull
+    public EntityType3ReferenceRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -63,7 +67,7 @@ public class EntityType3ReferenceRequest extends BaseReferenceRequest<EntityType
      * @param srcEntityType3 the EntityType3 reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(EntityType3 srcEntityType3, final ICallback<? super EntityType3> callback) {
+    public void put(@Nonnull final EntityType3 srcEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
         send(HttpMethod.PUT, callback, srcEntityType3);
     }
 
@@ -74,7 +78,8 @@ public class EntityType3ReferenceRequest extends BaseReferenceRequest<EntityType
      * @return the EntityType3
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    public EntityType3 put(EntityType3 srcEntityType3) throws ClientException {
+    @Nullable
+    public EntityType3 put(@Nonnull final EntityType3 srcEntityType3) throws ClientException {
         return send(HttpMethod.PUT, srcEntityType3);
     }
 }

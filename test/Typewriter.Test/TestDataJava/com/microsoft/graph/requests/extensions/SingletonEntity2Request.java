@@ -11,6 +11,8 @@ import com.microsoft.graph.models.extensions.SingletonEntity2;
 import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;
@@ -29,7 +31,7 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public SingletonEntity2Request(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SingletonEntity2Request(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, SingletonEntity2.class);
     }
 
@@ -38,7 +40,7 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<? super SingletonEntity2> callback) {
+    public void get(@Nonnull final ICallback<? super SingletonEntity2> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -48,6 +50,7 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @return the SingletonEntity2 from the request
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
+    @Nullable
     public SingletonEntity2 get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
@@ -57,7 +60,7 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<? super SingletonEntity2> callback) {
+    public void delete(@Nonnull final ICallback<? super SingletonEntity2> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -76,7 +79,7 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @param sourceSingletonEntity2 the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final SingletonEntity2 sourceSingletonEntity2, final ICallback<? super SingletonEntity2> callback) {
+    public void patch(@Nonnull final SingletonEntity2 sourceSingletonEntity2, @Nonnull final ICallback<? super SingletonEntity2> callback) {
         send(HttpMethod.PATCH, callback, sourceSingletonEntity2);
     }
 
@@ -87,7 +90,8 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @return the updated SingletonEntity2
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public SingletonEntity2 patch(final SingletonEntity2 sourceSingletonEntity2) throws ClientException {
+    @Nullable
+    public SingletonEntity2 patch(@Nonnull final SingletonEntity2 sourceSingletonEntity2) throws ClientException {
         return send(HttpMethod.PATCH, sourceSingletonEntity2);
     }
 
@@ -97,7 +101,7 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @param newSingletonEntity2 the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final SingletonEntity2 newSingletonEntity2, final ICallback<? super SingletonEntity2> callback) {
+    public void post(@Nonnull final SingletonEntity2 newSingletonEntity2, @Nonnull final ICallback<? super SingletonEntity2> callback) {
         send(HttpMethod.POST, callback, newSingletonEntity2);
     }
 
@@ -108,7 +112,8 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @return the created SingletonEntity2
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public SingletonEntity2 post(final SingletonEntity2 newSingletonEntity2) throws ClientException {
+    @Nullable
+    public SingletonEntity2 post(@Nonnull final SingletonEntity2 newSingletonEntity2) throws ClientException {
         return send(HttpMethod.POST, newSingletonEntity2);
     }
 
@@ -118,7 +123,7 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @param newSingletonEntity2 the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final SingletonEntity2 newSingletonEntity2, final ICallback<? super SingletonEntity2> callback) {
+    public void put(@Nonnull final SingletonEntity2 newSingletonEntity2, @Nonnull final ICallback<? super SingletonEntity2> callback) {
         send(HttpMethod.PUT, callback, newSingletonEntity2);
     }
 
@@ -129,7 +134,8 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @return the created SingletonEntity2
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public SingletonEntity2 put(final SingletonEntity2 newSingletonEntity2) throws ClientException {
+    @Nullable
+    public SingletonEntity2 put(@Nonnull final SingletonEntity2 newSingletonEntity2) throws ClientException {
         return send(HttpMethod.PUT, newSingletonEntity2);
     }
 
@@ -139,7 +145,8 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @param value the select clause
      * @return the updated request
      */
-     public SingletonEntity2Request select(final String value) {
+     @Nonnull
+     public SingletonEntity2Request select(@Nonnull final String value) {
          addSelectOption(value);
          return this;
      }
@@ -150,7 +157,8 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @param value the expand clause
      * @return the updated request
      */
-     public SingletonEntity2Request expand(final String value) {
+     @Nonnull
+     public SingletonEntity2Request expand(@Nonnull final String value) {
          addExpandOption(value);
          return this;
      }

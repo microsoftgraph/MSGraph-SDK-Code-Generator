@@ -5,6 +5,8 @@
 <#host.TemplateName = c.TypeRequest();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForBaseMethodRequest()#>
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.concurrency.ICallback;
 import <#=importNamespace#>.concurrency.IExecutors;
@@ -22,7 +24,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ReturnType()#>.class);
     }
 
@@ -35,7 +37,7 @@ if (c.AsOdcmMethod().IsAction()) {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void post(final ICallback<? super <#=c.ReturnType()#>> callback) {
+    public void post(@Nonnull final ICallback<? super <#=c.ReturnType()#>> callback) {
         send(HttpMethod.POST, callback, null);
     }
 
@@ -45,6 +47,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @return the <#=c.ReturnType()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
+    @Nullable
     public <#=c.ReturnType()#> post() throws ClientException {
        return send(HttpMethod.POST, null);
     }
@@ -58,7 +61,8 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the select clause
      * @return the updated request
      */
-    public <#=c.TypeRequest()#> select(final String value) {
+    @Nonnull
+    public <#=c.TypeRequest()#> select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -74,7 +78,8 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=c.TypeRequest()#> expand(final String value) {
+    @Nonnull
+    public <#=c.TypeRequest()#> expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -91,6 +96,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public <#=c.TypeRequest()#> top(final int value) {
         addTopOption(value);
         return this;
@@ -104,7 +110,7 @@ if (c.AsOdcmMethod().IsAction()) {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void post(final ICallback<Void> callback) {
+    public void post(@Nonnull final ICallback<Void> callback) {
         final IExecutors executors = getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -138,7 +144,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> with which to PATCH
      * @param callback the callback to be called after success or failure
      */
-    public void patch(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<? super <#=c.ReturnType()#>> callback) {
+    public void patch(@Nonnull <#=c.ReturnType()#> src<#=c.ReturnType()#>, @Nonnull final ICallback<? super <#=c.ReturnType()#>> callback) {
         send(HttpMethod.PATCH, callback, src<#=c.ReturnType()#>);
     }
 
@@ -149,7 +155,8 @@ if (c.AsOdcmMethod().IsAction()) {
      * @return the <#=c.ReturnType()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-     public <#=c.ReturnType()#> patch(<#=c.ReturnType()#> src<#=c.ReturnType()#>) throws ClientException {
+     @Nullable
+     public <#=c.ReturnType()#> patch(@Nonnull final <#=c.ReturnType()#> src<#=c.ReturnType()#>) throws ClientException {
         return this.send(HttpMethod.PATCH, src<#=c.ReturnType()#>);
     }
 
@@ -159,7 +166,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<? super <#=c.ReturnType()#>> callback) {
+    public void put(@Nonnull final <#=c.ReturnType()#> src<#=c.ReturnType()#>, @Nonnull final ICallback<? super <#=c.ReturnType()#>> callback) {
         send(HttpMethod.PUT, callback, src<#=c.ReturnType()#>);
     }
 
@@ -170,7 +177,8 @@ if (c.AsOdcmMethod().IsAction()) {
      * @return the <#=c.ReturnType()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-     public <#=c.ReturnType()#> put(<#=c.ReturnType()#> src<#=c.ReturnType()#>) throws ClientException {
+     @Nullable
+     public <#=c.ReturnType()#> put(@Nonnull final <#=c.ReturnType()#> src<#=c.ReturnType()#>) throws ClientException {
         return this.send(HttpMethod.PUT, src<#=c.ReturnType()#>);
     }
 <#
@@ -181,7 +189,7 @@ if (c.AsOdcmMethod().IsAction()) {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<? super <#=c.ReturnType()#>> callback) {
+    public void get(@Nonnull final ICallback<? super <#=c.ReturnType()#>> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -191,6 +199,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @return the <#=c.ReturnType()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
+    @Nullable
     public <#=c.ReturnType()#> get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
@@ -204,7 +213,8 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the select clause
      * @return the updated request
      */
-    public <#=c.TypeRequest()#> select(final String value) {
+    @Nonnull
+    public <#=c.TypeRequest()#> select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -220,7 +230,8 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=c.TypeRequest()#> expand(final String value) {
+    @Nonnull
+    public <#=c.TypeRequest()#> expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -235,7 +246,8 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the filter clause
      * @return the updated request
      */
-    public <#=c.TypeRequest()#> filter(final String value) {
+    @Nonnull
+    public <#=c.TypeRequest()#> filter(@Nonnull final String value) {
         addFilterOption(value);
         return this;
     }
@@ -250,7 +262,8 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the order by clause
      * @return the updated request
      */
-    public <#=c.TypeRequest()#> orderBy(final String value) {
+    @Nonnull
+    public <#=c.TypeRequest()#> orderBy(@Nonnull final String value) {
         addOrderByOption(value);
         return this;
     }
@@ -266,6 +279,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public <#=c.TypeRequest()#> top(final int value) {
         addTopOption(value);
         return this;
@@ -274,7 +288,7 @@ if (c.AsOdcmMethod().IsAction()) {
         }
     } else {
 #>
-    public void get(final ICallback<Void> callback) {
+    public void get(@Nonnull final ICallback<Void> callback) {
         final IExecutors executors = getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override

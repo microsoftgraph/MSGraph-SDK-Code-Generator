@@ -13,6 +13,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.requests.extensions.EntityType3CollectionWithReferencesRequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionWithReferencesPage;
@@ -36,7 +38,7 @@ public class EntityType3CollectionWithReferencesPage extends BaseCollectionPage<
      * @param response the serialized EntityType3CollectionResponse from the service
      * @param builder  the request builder for the next collection page
      */
-    public EntityType3CollectionWithReferencesPage(final EntityType3CollectionResponse response, final EntityType3CollectionWithReferencesRequestBuilder builder) {
+    public EntityType3CollectionWithReferencesPage(@Nonnull final EntityType3CollectionResponse response, @Nonnull  final EntityType3CollectionWithReferencesRequestBuilder builder) {
         super(response.value, builder, response.additionalDataManager());
     }
 

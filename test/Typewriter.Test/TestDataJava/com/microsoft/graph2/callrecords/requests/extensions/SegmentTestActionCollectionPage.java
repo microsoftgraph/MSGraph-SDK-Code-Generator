@@ -11,6 +11,8 @@ import com.microsoft.graph.models.extensions.IdentitySet;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph2.callrecords.http.BaseCollectionPage;
 import com.microsoft.graph.requests.extensions.SegmentTestActionCollectionRequestBuilder;
@@ -30,7 +32,7 @@ public class SegmentTestActionCollectionPage extends BaseCollectionPage<Session,
      * @param response The serialized SegmentTestActionCollectionResponse from the service
      * @param builder The request builder for the next collection page
      */
-    public SegmentTestActionCollectionPage(final SegmentTestActionCollectionResponse response, final SegmentTestActionCollectionRequestBuilder builder) {
+    public SegmentTestActionCollectionPage(@Nonnull final SegmentTestActionCollectionResponse response, @Nonnull final SegmentTestActionCollectionRequestBuilder builder) {
        super(response, builder);
     }
 
@@ -40,7 +42,7 @@ public class SegmentTestActionCollectionPage extends BaseCollectionPage<Session,
      * @param pageContents       the contents of this page
      * @param nextRequestBuilder the request builder for the next page
      */
-    public SegmentTestActionCollectionPage(final java.util.List<Session> pageContents, final SegmentTestActionCollectionRequestBuilder nextRequestBuilder) {
+    public SegmentTestActionCollectionPage(@Nonnull final java.util.List<Session> pageContents, @Nullable final SegmentTestActionCollectionRequestBuilder nextRequestBuilder) {
         super(pageContents, nextRequestBuilder);
     }
 }

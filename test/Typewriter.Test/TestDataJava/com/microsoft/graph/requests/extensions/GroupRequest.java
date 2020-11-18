@@ -12,6 +12,8 @@ import com.microsoft.graph.requests.extensions.DirectoryObjectCollectionRequestB
 import com.microsoft.graph.requests.extensions.DirectoryObjectRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;
@@ -30,7 +32,7 @@ public class GroupRequest extends BaseRequest<Group> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public GroupRequest(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public GroupRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, Group.class);
     }
 
@@ -39,7 +41,7 @@ public class GroupRequest extends BaseRequest<Group> {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<? super Group> callback) {
+    public void get(@Nonnull final ICallback<? super Group> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -49,6 +51,7 @@ public class GroupRequest extends BaseRequest<Group> {
      * @return the Group from the request
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
+    @Nullable
     public Group get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
@@ -58,7 +61,7 @@ public class GroupRequest extends BaseRequest<Group> {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<? super Group> callback) {
+    public void delete(@Nonnull final ICallback<? super Group> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -77,7 +80,7 @@ public class GroupRequest extends BaseRequest<Group> {
      * @param sourceGroup the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final Group sourceGroup, final ICallback<? super Group> callback) {
+    public void patch(@Nonnull final Group sourceGroup, @Nonnull final ICallback<? super Group> callback) {
         send(HttpMethod.PATCH, callback, sourceGroup);
     }
 
@@ -88,7 +91,8 @@ public class GroupRequest extends BaseRequest<Group> {
      * @return the updated Group
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public Group patch(final Group sourceGroup) throws ClientException {
+    @Nullable
+    public Group patch(@Nonnull final Group sourceGroup) throws ClientException {
         return send(HttpMethod.PATCH, sourceGroup);
     }
 
@@ -98,7 +102,7 @@ public class GroupRequest extends BaseRequest<Group> {
      * @param newGroup the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final Group newGroup, final ICallback<? super Group> callback) {
+    public void post(@Nonnull final Group newGroup, @Nonnull final ICallback<? super Group> callback) {
         send(HttpMethod.POST, callback, newGroup);
     }
 
@@ -109,7 +113,8 @@ public class GroupRequest extends BaseRequest<Group> {
      * @return the created Group
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public Group post(final Group newGroup) throws ClientException {
+    @Nullable
+    public Group post(@Nonnull final Group newGroup) throws ClientException {
         return send(HttpMethod.POST, newGroup);
     }
 
@@ -119,7 +124,7 @@ public class GroupRequest extends BaseRequest<Group> {
      * @param newGroup the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final Group newGroup, final ICallback<? super Group> callback) {
+    public void put(@Nonnull final Group newGroup, @Nonnull final ICallback<? super Group> callback) {
         send(HttpMethod.PUT, callback, newGroup);
     }
 
@@ -130,7 +135,8 @@ public class GroupRequest extends BaseRequest<Group> {
      * @return the created Group
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public Group put(final Group newGroup) throws ClientException {
+    @Nullable
+    public Group put(@Nonnull final Group newGroup) throws ClientException {
         return send(HttpMethod.PUT, newGroup);
     }
 
@@ -140,7 +146,8 @@ public class GroupRequest extends BaseRequest<Group> {
      * @param value the select clause
      * @return the updated request
      */
-     public GroupRequest select(final String value) {
+     @Nonnull
+     public GroupRequest select(@Nonnull final String value) {
          addSelectOption(value);
          return this;
      }
@@ -151,7 +158,8 @@ public class GroupRequest extends BaseRequest<Group> {
      * @param value the expand clause
      * @return the updated request
      */
-     public GroupRequest expand(final String value) {
+     @Nonnull
+     public GroupRequest expand(@Nonnull final String value) {
          addExpandOption(value);
          return this;
      }

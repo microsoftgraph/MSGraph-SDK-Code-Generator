@@ -42,7 +42,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeCollectionRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.TypeRequestBuilder()#>.class, <#=c.TypeCollectionRequest()#>.class);
     }
 
@@ -53,6 +53,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * Gets a request builder to the AppRoot folder.
      * @return a request builder to the AppRoot folder
      */
+    @Nonnull
     public DriveItemRequestBuilder appRoot() {
     	return new DriveItemRequestBuilder(this.getRequestUrlWithAdditionalSegment("approot"), this.getClient(), null);
     }
@@ -79,6 +80,7 @@ if (currentTypeProjection != null) {
      * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
      * @return the request builder collection<#=method.MethodParametersJavadocSignature()#>
      */
+    @Nonnull
     public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }
@@ -93,7 +95,8 @@ if (currentTypeProjection != null) {
      * @return a request builder to get the changes
      * @param deltaLink the link returned by the last delta request
      */
-	public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(final String deltaLink) {
+    @Nonnull
+	public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(@Nonnull final String deltaLink) {
         return new <#=method.TypeCollectionRequestBuilder()#>(deltaLink, getClient(), null<#=method.MethodParametersValues()#>);
     }
 <# } #>
@@ -105,6 +108,7 @@ if (currentTypeProjection != null) {
      * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
      * @return the request builder <#=method.MethodParametersJavadocSignature()#>
      */
+    @Nonnull
     public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
         return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }

@@ -11,6 +11,8 @@ import com.microsoft.graph2.callrecords.models.extensions.CallRecord;
 import com.microsoft.graph.models.extensions.EntityType2;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.requests.extensions.EntityType2CollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType2RequestBuilder;
@@ -32,7 +34,7 @@ public class EntityType2CollectionRequestBuilder extends BaseCollectionRequestBu
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType2CollectionRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType2CollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType2RequestBuilder.class, EntityType2CollectionRequest.class);
     }
 

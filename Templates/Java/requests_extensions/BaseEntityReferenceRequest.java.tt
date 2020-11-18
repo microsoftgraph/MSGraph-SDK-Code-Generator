@@ -21,7 +21,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeReferenceRequest()#>(String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeReferenceRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
@@ -32,7 +32,8 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param value the select clause
      * @return the updated request
      */
-    public <#=c.TypeReferenceRequest()#> select(final String value) {
+    @Nonnull
+    public <#=c.TypeReferenceRequest()#> select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -45,7 +46,8 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=c.TypeReferenceRequest()#> expand(final String value) {
+    @Nonnull
+    public <#=c.TypeReferenceRequest()#> expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -57,7 +59,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param src<#=c.TypeName()#> the <#=c.TypeName()#> reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(<#=c.TypeName()#> src<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
+    public void put(@Nonnull final <#=c.TypeName()#> src<#=c.TypeName()#>, @Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
         send(HttpMethod.PUT, callback, src<#=c.TypeName()#>);
     }
 
@@ -68,7 +70,8 @@ import <#=importNamespace#>.core.IBaseClient;
      * @return the <#=c.TypeName()#>
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    public <#=c.TypeName()#> put(<#=c.TypeName()#> src<#=c.TypeName()#>) throws ClientException {
+    @Nullable
+    public <#=c.TypeName()#> put(@Nonnull final <#=c.TypeName()#> src<#=c.TypeName()#>) throws ClientException {
         return send(HttpMethod.PUT, src<#=c.TypeName()#>);
     }
 <# } #>

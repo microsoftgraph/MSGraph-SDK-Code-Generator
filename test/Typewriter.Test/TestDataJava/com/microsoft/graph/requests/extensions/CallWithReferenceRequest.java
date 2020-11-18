@@ -10,6 +10,8 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.Call;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.http.BaseWithReferenceRequest;
@@ -31,7 +33,7 @@ public class CallWithReferenceRequest extends BaseWithReferenceRequest<Call> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public CallWithReferenceRequest(String requestUrl, IBaseClient client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CallWithReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, Call.class);
     }
 
@@ -41,7 +43,8 @@ public class CallWithReferenceRequest extends BaseWithReferenceRequest<Call> {
      * @param value the select clause
      * @return the updated request
      */
-    public CallWithReferenceRequest select(final String value) {
+    @Nonnull
+    public CallWithReferenceRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -52,7 +55,8 @@ public class CallWithReferenceRequest extends BaseWithReferenceRequest<Call> {
      * @param value the expand clause
      * @return the updated request
      */
-    public CallWithReferenceRequest expand(final String value) {
+    @Nonnull
+    public CallWithReferenceRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }

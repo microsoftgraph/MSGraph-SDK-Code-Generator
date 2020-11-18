@@ -18,6 +18,8 @@ import com.microsoft.graph2.callrecords.requests.extensions.SessionRequestBuilde
 import com.microsoft.graph2.callrecords.requests.extensions.PhotoRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequestBuilder;
 
@@ -35,7 +37,7 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public SegmentRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SegmentRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -45,7 +47,8 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      * @param requestOptions the options for this request
      * @return the SegmentRequest instance
      */
-    public SegmentRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public SegmentRequest buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -55,7 +58,8 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      * @param requestOptions the options for this request
      * @return the SegmentRequest instance
      */
-    public SegmentRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Nonnull
+    public SegmentRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph2.callrecords.requests.extensions.SegmentRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
@@ -65,6 +69,7 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      *
      * @return the collection request builder
      */
+    @Nonnull
     public EntityType3CollectionWithReferencesRequestBuilder refTypes() {
         return new EntityType3CollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("refTypes"), getClient(), null);
     }
@@ -75,7 +80,8 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      * @return the request builder
      * @param id the item identifier
      */
-    public EntityType3WithReferenceRequestBuilder refTypes(final String id) {
+    @Nonnull
+    public EntityType3WithReferenceRequestBuilder refTypes(@Nonnull final String id) {
         return new EntityType3WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("refTypes") + "/" + id, getClient(), null);
     }
 
@@ -84,6 +90,7 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      *
      * @return the CallWithReferenceRequestBuilder instance
      */
+    @Nonnull
     public CallWithReferenceRequestBuilder refType() {
         return new CallWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("refType"), getClient(), null);
     }
@@ -93,6 +100,7 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      *
      * @return the SessionWithReferenceRequestBuilder instance
      */
+    @Nonnull
     public SessionWithReferenceRequestBuilder sessionRef() {
         return new SessionWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("sessionRef"), getClient(), null);
     }
@@ -102,6 +110,7 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      *
      * @return the PhotoRequestBuilder instance
      */
+    @Nonnull
     public PhotoRequestBuilder photo() {
         return new PhotoRequestBuilder(getRequestUrlWithAdditionalSegment("photo"), getClient(), null);
     }
@@ -115,7 +124,8 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      * @param singleSession the singleSession
      * @param comment the comment
      */
-    public SegmentForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final Recipient singleRecipient, final java.util.List<Session> multipleSessions, final Session singleSession, final String comment) {
+    @Nonnull
+    public SegmentForwardRequestBuilder forward(@Nullable final java.util.List<Recipient> toRecipients, @Nullable final Recipient singleRecipient, @Nullable final java.util.List<Session> multipleSessions, @Nullable final Session singleSession, @Nullable final String comment) {
         return new SegmentForwardRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph2.callRecords.forward"), getClient(), null, toRecipients, singleRecipient, multipleSessions, singleSession, comment);
     }
 
@@ -124,7 +134,8 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      * @return the request builder collection
      * @param value the value
      */
-    public SegmentTestActionCollectionRequestBuilder testAction(final IdentitySet value) {
+    @Nonnull
+    public SegmentTestActionCollectionRequestBuilder testAction(@Nullable final IdentitySet value) {
         return new SegmentTestActionCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph2.callRecords.testAction"), getClient(), null, value);
     }
 }

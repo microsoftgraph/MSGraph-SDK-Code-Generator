@@ -10,6 +10,8 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.Group;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.requests.extensions.GroupWithReferenceRequest;
 import com.microsoft.graph.requests.extensions.GroupReferenceRequestBuilder;
@@ -37,7 +39,7 @@ public class GroupCollectionReferenceRequest extends BaseCollectionWithReference
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public GroupCollectionReferenceRequest(final String requestUrl, IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public GroupCollectionReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, GroupCollectionResponse.class, GroupCollectionWithReferencesPage.class, GroupCollectionWithReferencesRequestBuilder.class);
     }
 
@@ -47,7 +49,8 @@ public class GroupCollectionReferenceRequest extends BaseCollectionWithReference
      * @param value the expand clause
      * @return the updated request
      */
-    public GroupCollectionReferenceRequest expand(final String value) {
+    @Nonnull
+    public GroupCollectionReferenceRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -58,7 +61,8 @@ public class GroupCollectionReferenceRequest extends BaseCollectionWithReference
      * @param value the filter clause
      * @return the updated request
      */
-    public GroupCollectionReferenceRequest filter(final String value) {
+    @Nonnull
+    public GroupCollectionReferenceRequest filter(@Nonnull final String value) {
         addFilterOption(value);
         return this;
     }
@@ -69,7 +73,8 @@ public class GroupCollectionReferenceRequest extends BaseCollectionWithReference
      * @param value the sort clause
      * @return the updated request
      */
-    public GroupCollectionReferenceRequest orderBy(final String value) {
+    @Nonnull
+    public GroupCollectionReferenceRequest orderBy(@Nonnull final String value) {
         addOrderByOption(value);
         return this;
     }
@@ -80,7 +85,8 @@ public class GroupCollectionReferenceRequest extends BaseCollectionWithReference
      * @param value the select clause
      * @return the updated request
      */
-    public GroupCollectionReferenceRequest select(final String value) {
+    @Nonnull
+    public GroupCollectionReferenceRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -91,6 +97,7 @@ public class GroupCollectionReferenceRequest extends BaseCollectionWithReference
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public GroupCollectionReferenceRequest top(final int value) {
         addTopOption(value);
         return this;

@@ -12,6 +12,8 @@ import com.microsoft.graph.requests.extensions.DirectoryObjectCollectionRequestB
 import com.microsoft.graph.requests.extensions.DirectoryObjectRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequestBuilder;
 
@@ -29,7 +31,7 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public GroupRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public GroupRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -39,7 +41,8 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      * @param requestOptions the options for this request
      * @return the GroupRequest instance
      */
-    public GroupRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public GroupRequest buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -49,7 +52,8 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      * @param requestOptions the options for this request
      * @return the GroupRequest instance
      */
-    public GroupRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Nonnull
+    public GroupRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.GroupRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
@@ -59,6 +63,7 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      *
      * @return the collection request builder
      */
+    @Nonnull
     public DirectoryObjectCollectionWithReferencesRequestBuilder members() {
         return new DirectoryObjectCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("members"), getClient(), null);
     }
@@ -69,7 +74,8 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      * @return the request builder
      * @param id the item identifier
      */
-    public DirectoryObjectWithReferenceRequestBuilder members(final String id) {
+    @Nonnull
+    public DirectoryObjectWithReferenceRequestBuilder members(@Nonnull final String id) {
         return new DirectoryObjectWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id, getClient(), null);
     }
     /**
@@ -77,6 +83,7 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      *
      * @return the collection request builder
      */
+    @Nonnull
     public UserCollectionWithReferencesRequestBuilder membersAsUser() {
         return new UserCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/microsoft.graph.user", getClient(), null);
     }
@@ -87,7 +94,8 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      * @return the request builder
      * @param id the item identifier
      */
-    public UserWithReferenceRequestBuilder membersAsUser(final String id) {
+    @Nonnull
+    public UserWithReferenceRequestBuilder membersAsUser(@Nonnull final String id) {
         return new UserWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id + "/microsoft.graph.user", getClient(), null);
     }
     /**
@@ -95,6 +103,7 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      *
      * @return the collection request builder
      */
+    @Nonnull
     public GroupCollectionWithReferencesRequestBuilder membersAsGroup() {
         return new GroupCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/microsoft.graph.group", getClient(), null);
     }
@@ -105,7 +114,8 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      * @return the request builder
      * @param id the item identifier
      */
-    public GroupWithReferenceRequestBuilder membersAsGroup(final String id) {
+    @Nonnull
+    public GroupWithReferenceRequestBuilder membersAsGroup(@Nonnull final String id) {
         return new GroupWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id + "/microsoft.graph.group", getClient(), null);
     }
 }

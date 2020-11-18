@@ -14,6 +14,8 @@ import com.microsoft.graph2.callrecords.requests.extensions.CallRecordCollection
 import com.microsoft.graph2.callrecords.requests.extensions.CallRecordRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequestBuilder;
 
@@ -31,7 +33,7 @@ public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder<CloudC
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public CloudCommunicationsRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CloudCommunicationsRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -41,7 +43,8 @@ public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder<CloudC
      * @param requestOptions the options for this request
      * @return the CloudCommunicationsRequest instance
      */
-    public CloudCommunicationsRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public CloudCommunicationsRequest buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -51,7 +54,8 @@ public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder<CloudC
      * @param requestOptions the options for this request
      * @return the CloudCommunicationsRequest instance
      */
-    public CloudCommunicationsRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Nonnull
+    public CloudCommunicationsRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.CloudCommunicationsRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
@@ -61,6 +65,7 @@ public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder<CloudC
      *
      * @return the collection request builder
      */
+    @Nonnull
     public CallCollectionRequestBuilder calls() {
         return new CallCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("calls"), getClient(), null);
     }
@@ -71,7 +76,8 @@ public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder<CloudC
      * @return the request builder
      * @param id the item identifier
      */
-    public CallRequestBuilder calls(final String id) {
+    @Nonnull
+    public CallRequestBuilder calls(@Nonnull final String id) {
         return new CallRequestBuilder(getRequestUrlWithAdditionalSegment("calls") + "/" + id, getClient(), null);
     }
     /**
@@ -79,6 +85,7 @@ public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder<CloudC
      *
      * @return the collection request builder
      */
+    @Nonnull
     public CallRecordCollectionRequestBuilder callRecords() {
         return new CallRecordCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("callRecords"), getClient(), null);
     }
@@ -89,7 +96,8 @@ public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder<CloudC
      * @return the request builder
      * @param id the item identifier
      */
-    public CallRecordRequestBuilder callRecords(final String id) {
+    @Nonnull
+    public CallRecordRequestBuilder callRecords(@Nonnull final String id) {
         return new CallRecordRequestBuilder(getRequestUrlWithAdditionalSegment("callRecords") + "/" + id, getClient(), null);
     }
 }

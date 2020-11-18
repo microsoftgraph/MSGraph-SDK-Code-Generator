@@ -5,6 +5,8 @@
 package com.microsoft.graph.requests.extensions;
 import com.microsoft.graph.models.extensions.EntityType2;
 import com.microsoft.graph.requests.extensions.EntityType2CollectionRequestBuilder;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.requests.extensions.EntityType2CollectionResponse;
 import com.microsoft.graph.http.BaseCollectionPage;
 
@@ -21,7 +23,7 @@ public class EntityType2CollectionPage extends BaseCollectionPage<EntityType2, E
      * @param response the serialized EntityType2CollectionResponse from the service
      * @param builder  the request builder for the next collection page
      */
-    public EntityType2CollectionPage(final EntityType2CollectionResponse response, final EntityType2CollectionRequestBuilder builder) {
+    public EntityType2CollectionPage(@Nonnull final EntityType2CollectionResponse response, @Nonnull final EntityType2CollectionRequestBuilder builder) {
         super(response, builder);
     }
 
@@ -31,7 +33,7 @@ public class EntityType2CollectionPage extends BaseCollectionPage<EntityType2, E
      * @param pageContents       the contents of this page
      * @param nextRequestBuilder the request builder for the next page
      */
-    public EntityType2CollectionPage(final java.util.List<EntityType2> pageContents, final EntityType2CollectionRequestBuilder nextRequestBuilder) {
+    public EntityType2CollectionPage(@Nonnull final java.util.List<EntityType2> pageContents, @Nullable final EntityType2CollectionRequestBuilder nextRequestBuilder) {
         super(pageContents, nextRequestBuilder);
     }
 }

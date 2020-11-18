@@ -10,6 +10,8 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.User;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.http.BaseReferenceRequest;
@@ -30,7 +32,7 @@ public class UserReferenceRequest extends BaseReferenceRequest<User> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public UserReferenceRequest(String requestUrl, IBaseClient client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public UserReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, User.class);
     }
 
@@ -40,7 +42,8 @@ public class UserReferenceRequest extends BaseReferenceRequest<User> {
      * @param value the select clause
      * @return the updated request
      */
-    public UserReferenceRequest select(final String value) {
+    @Nonnull
+    public UserReferenceRequest select(@Nonnull final String value) {
         addSelectOption(value);
         return this;
     }
@@ -51,7 +54,8 @@ public class UserReferenceRequest extends BaseReferenceRequest<User> {
      * @param value the expand clause
      * @return the updated request
      */
-    public UserReferenceRequest expand(final String value) {
+    @Nonnull
+    public UserReferenceRequest expand(@Nonnull final String value) {
         addExpandOption(value);
         return this;
     }
@@ -61,7 +65,7 @@ public class UserReferenceRequest extends BaseReferenceRequest<User> {
      * @param srcUser the User reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(User srcUser, final ICallback<? super User> callback) {
+    public void put(@Nonnull final User srcUser, @Nonnull final ICallback<? super User> callback) {
         send(HttpMethod.PUT, callback, srcUser);
     }
 
@@ -72,7 +76,8 @@ public class UserReferenceRequest extends BaseReferenceRequest<User> {
      * @return the User
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    public User put(User srcUser) throws ClientException {
+    @Nullable
+    public User put(@Nonnull final User srcUser) throws ClientException {
         return send(HttpMethod.PUT, srcUser);
     }
 }
