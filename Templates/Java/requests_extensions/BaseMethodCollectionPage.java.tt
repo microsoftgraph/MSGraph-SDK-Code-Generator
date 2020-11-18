@@ -37,6 +37,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      * The opaque link to query delta after the 
      * initial request
      */
+    @Nullable
     public String deltaLink;
 
 <# } #>
@@ -46,7 +47,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      * @param response The serialized <#=c.TypeCollectionResponse()#> from the service
      * @param builder The request builder for the next collection page
      */
-    public <#=c.TypeCollectionPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.TypeCollectionRequestBuilder()#> builder) {
+    public <#=c.TypeCollectionPage()#>(@Nonnull final <#=c.TypeCollectionResponse()#> response, @Nonnull final <#=c.TypeCollectionRequestBuilder()#> builder) {
        super(response.value, builder, response.additionalDataManager());
 <# if (deltaPage) { #>
 
@@ -63,6 +64,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      *
      * @return String The deltaLink URL
      */
+    @Nullable
     public String deltaLink() {
         return deltaLink;
     }

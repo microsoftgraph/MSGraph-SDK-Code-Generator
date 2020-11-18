@@ -25,7 +25,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      * @param response the serialized <#=c.TypeCollectionResponse()#> from the service
      * @param builder  the request builder for the next collection page
      */
-    public <#=c.TypeCollectionWithReferencesPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.TypeCollectionWithReferencesRequestBuilder()#> builder) {
+    public <#=c.TypeCollectionWithReferencesPage()#>(@Nonnull final <#=c.TypeCollectionResponse()#> response, @Nonnull  final <#=c.TypeCollectionWithReferencesRequestBuilder()#> builder) {
         super(response.value, builder, response.additionalDataManager());
     }
 }

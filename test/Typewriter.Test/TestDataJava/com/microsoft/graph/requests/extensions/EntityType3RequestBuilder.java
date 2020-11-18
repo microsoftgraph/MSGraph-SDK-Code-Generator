@@ -12,6 +12,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequestBuilder;
 
@@ -29,7 +31,7 @@ public class EntityType3RequestBuilder extends BaseRequestBuilder {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3RequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3RequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -39,7 +41,8 @@ public class EntityType3RequestBuilder extends BaseRequestBuilder {
      * @param requestOptions the options for this request
      * @return the EntityType3Request instance
      */
-    public EntityType3Request buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public EntityType3Request buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -49,13 +52,15 @@ public class EntityType3RequestBuilder extends BaseRequestBuilder {
      * @param requestOptions the options for this request
      * @return the EntityType3Request instance
      */
-    public EntityType3Request buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Nonnull
+    public EntityType3Request buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.EntityType3Request(getRequestUrl(), getClient(), requestOptions);
     }
 
 
 
-    public EntityType3ForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final Recipient singleRecipient, final java.util.List<Session> multipleSessions, final Session singleSession, final String comment) {
+    @Nonnull
+    public EntityType3ForwardRequestBuilder forward(@Nullable final java.util.List<Recipient> toRecipients, @Nullable final Recipient singleRecipient, @Nullable final java.util.List<Session> multipleSessions, @Nullable final Session singleSession, @Nullable final String comment) {
         return new EntityType3ForwardRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.forward"), getClient(), null, toRecipients, singleRecipient, multipleSessions, singleSession, comment);
     }
 }

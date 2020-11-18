@@ -13,6 +13,8 @@ import com.microsoft.graph.models.extensions.DerivedComplexTypeRequest;
 import com.microsoft.graph.models.extensions.ResponseObject;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.http.BaseRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
@@ -31,7 +33,7 @@ public class TestTypeReferenceRequestBuilder extends BaseRequestBuilder {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public TestTypeReferenceRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public TestTypeReferenceRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -41,7 +43,8 @@ public class TestTypeReferenceRequestBuilder extends BaseRequestBuilder {
      * @param requestOptions the options for this request
      * @return The TestTypeReferenceRequest instance
      */
-    public TestTypeReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public TestTypeReferenceRequest buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -51,7 +54,8 @@ public class TestTypeReferenceRequestBuilder extends BaseRequestBuilder {
      * @param requestOptions the options for this request
      * @return the TestTypeReferenceRequest instance
      */
-    public TestTypeReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Nonnull
+    public TestTypeReferenceRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new TestTypeReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 }

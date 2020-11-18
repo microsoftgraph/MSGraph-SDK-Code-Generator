@@ -12,6 +12,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.core.IBaseClient;
@@ -36,11 +38,11 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3CollectionRequest(final String requestUrl, IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3CollectionRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, EntityType3CollectionPage.class);
     }
 
-    public void get(final ICallback<? super EntityType3CollectionPage> callback) {
+    public void get(@Nonnull final ICallback<? super EntityType3CollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -54,19 +56,21 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
         });
     }
 
+    @Nonnull
     public EntityType3CollectionPage get() throws ClientException {
         final EntityType3CollectionResponse response = send();
         return buildFromResponse(response);
     }
 
-    public void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
+    public void post(@Nonnull final EntityType3 newEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new EntityType3RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
             .post(newEntityType3, callback);
     }
 
-    public EntityType3 post(final EntityType3 newEntityType3) throws ClientException {
+    @Nonnull
+    public EntityType3 post(@Nonnull final EntityType3 newEntityType3) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new EntityType3RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
@@ -79,7 +83,8 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param value the expand clause
      * @return the updated request
      */
-    public EntityType3CollectionRequest expand(final String value) {
+    @Nonnull
+    public EntityType3CollectionRequest expand(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (EntityType3CollectionRequest)this;
     }
@@ -90,7 +95,8 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param value the filter clause
      * @return the updated request
      */
-    public EntityType3CollectionRequest filter(final String value) {
+    @Nonnull
+    public EntityType3CollectionRequest filter(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (EntityType3CollectionRequest)this;
     }
@@ -101,7 +107,8 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param value the order by clause
      * @return the updated request
      */
-    public EntityType3CollectionRequest orderBy(final String value) {
+    @Nonnull
+    public EntityType3CollectionRequest orderBy(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (EntityType3CollectionRequest)this;
     }
@@ -112,7 +119,8 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param value the select clause
      * @return the updated request
      */
-    public EntityType3CollectionRequest select(final String value) {
+    @Nonnull
+    public EntityType3CollectionRequest select(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return (EntityType3CollectionRequest)this;
     }
@@ -123,6 +131,7 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public EntityType3CollectionRequest top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
         return (EntityType3CollectionRequest)this;
@@ -134,6 +143,7 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param value of the number of items to skip
      * @return the updated request
      */
+    @Nonnull
     public EntityType3CollectionRequest skip(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$skip", value + ""));
         return (EntityType3CollectionRequest)this;
@@ -145,11 +155,13 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      * @param skipToken - Token for pagination
      * @return the updated request
      */
-    public EntityType3CollectionRequest skipToken(final String skipToken) {
+    @Nonnull
+    public EntityType3CollectionRequest skipToken(@Nonnull final String skipToken) {
     	addQueryOption(new QueryOption("$skiptoken", skipToken));
         return (EntityType3CollectionRequest)this;
     }
-    public EntityType3CollectionPage buildFromResponse(final EntityType3CollectionResponse response) {
+    @Nonnull
+    public EntityType3CollectionPage buildFromResponse(@Nonnull final EntityType3CollectionResponse response) {
         final EntityType3CollectionRequestBuilder builder;
         if (response.nextLink != null) {
             builder = new EntityType3CollectionRequestBuilder(response.nextLink, getBaseRequest().getClient(), /* options */ null);

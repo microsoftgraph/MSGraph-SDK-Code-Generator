@@ -14,6 +14,8 @@ import com.microsoft.graph.requests.extensions.TimeOffRequestCollectionRequestBu
 import com.microsoft.graph.requests.extensions.TimeOffRequestRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequestBuilder;
 
@@ -31,7 +33,7 @@ public class ScheduleRequestBuilder extends BaseRequestBuilder {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public ScheduleRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public ScheduleRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -41,7 +43,8 @@ public class ScheduleRequestBuilder extends BaseRequestBuilder {
      * @param requestOptions the options for this request
      * @return the ScheduleRequest instance
      */
-    public ScheduleRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public ScheduleRequest buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -51,23 +54,28 @@ public class ScheduleRequestBuilder extends BaseRequestBuilder {
      * @param requestOptions the options for this request
      * @return the ScheduleRequest instance
      */
-    public ScheduleRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Nonnull
+    public ScheduleRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new com.microsoft.graph.requests.extensions.ScheduleRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
 
+    @Nonnull
     public TimeOffCollectionRequestBuilder timesOff() {
         return new TimeOffCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("timesOff"), getClient(), null);
     }
 
-    public TimeOffRequestBuilder timesOff(final String id) {
+    @Nonnull
+    public TimeOffRequestBuilder timesOff(@Nonnull final String id) {
         return new TimeOffRequestBuilder(getRequestUrlWithAdditionalSegment("timesOff") + "/" + id, getClient(), null);
     }
+    @Nonnull
     public TimeOffRequestCollectionRequestBuilder timeOffRequests() {
         return new TimeOffRequestCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("timeOffRequests"), getClient(), null);
     }
 
-    public TimeOffRequestRequestBuilder timeOffRequests(final String id) {
+    @Nonnull
+    public TimeOffRequestRequestBuilder timeOffRequests(@Nonnull final String id) {
         return new TimeOffRequestRequestBuilder(getRequestUrlWithAdditionalSegment("timeOffRequests") + "/" + id, getClient(), null);
     }
 }

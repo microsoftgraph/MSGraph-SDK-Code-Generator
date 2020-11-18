@@ -19,7 +19,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionReferenceRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeCollectionReferenceRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -29,7 +29,8 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public <#=c.TypeCollectionReferenceRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public <#=c.TypeCollectionReferenceRequest()#> buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -39,7 +40,8 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public <#=c.TypeCollectionReferenceRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    @Nonnull
+    public <#=c.TypeCollectionReferenceRequest()#> buildRequest(@Nonnull final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         return new <#=c.TypeCollectionReferenceRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 }

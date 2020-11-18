@@ -18,6 +18,8 @@
 <#host.TemplateName = baseTypeRequest;#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForBaseMethodBodyRequest()#>
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.BaseCollectionRequest;
 import <#=importNamespace#>.http.BaseRequest;
@@ -44,15 +46,16 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=baseTypeRequest#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=baseTypeRequest#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=returnType#>.class);
         body = new <#=c.TypeBody()#>();
     }
 
-    public void post(final ICallback<? super <#=returnType#>> callback) {
+    public void post(@Nonnull final ICallback<? super <#=returnType#>> callback) {
         send(HttpMethod.POST, callback, body);
     }
 
+    @Nullable
     public <#=returnType#> post() throws ClientException {
         return send(HttpMethod.POST, body);
     }
@@ -64,7 +67,8 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
      * @param value the select clause
      * @return the updated request
      */
-    public <#=typeRequest#> select(final String value) {
+    @Nonnull
+    public <#=typeRequest#> select(@Nonnull final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (<#=typeRequest#>)this;
     }
@@ -77,6 +81,7 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public <#=typeRequest#> top(final int value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
         return (<#=typeRequest#>)this;
@@ -90,7 +95,8 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
      * @param value the expand clause
      * @return the updated request
      */
-    public <#=typeRequest#> expand(final String value) {
+    @Nonnull
+    public <#=typeRequest#> expand(@Nonnull final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (<#=typeRequest#>)this;
     }

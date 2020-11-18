@@ -5,6 +5,8 @@
 <#host.TemplateName = c.TypeCollectionPage();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForBaseEntityCollectionPage()#>
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.BaseCollectionPage;
 <# var mainNamespace = host.CurrentNamespace(); #>
@@ -22,7 +24,7 @@ String s = c.TypeName();
      * @param response the serialized <#=c.TypeCollectionResponse()#> from the service
      * @param builder  the request builder for the next collection page
      */
-    public <#=c.TypeCollectionPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.TypeCollectionRequestBuilder()#> builder) {
+    public <#=c.TypeCollectionPage()#>(@Nonnull final <#=c.TypeCollectionResponse()#> response, @Nonnull final <#=c.TypeCollectionRequestBuilder()#> builder) {
         super(response.value, builder, response.additionalDataManager());
     }
 }

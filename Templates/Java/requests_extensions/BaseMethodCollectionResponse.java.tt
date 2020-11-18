@@ -10,6 +10,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.Expose;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.serializer.IJsonBackedObject;
 import <#=importNamespace#>.serializer.ISerializer;
@@ -19,15 +21,18 @@ import <#=importNamespace#>.serializer.AdditionalDataManager;
 
     @SerializedName("value")
     @Expose
+    @Nullable
     public java.util.List<<#=(c as OdcmMethod).OdcmMethodReturnType()#>> value;
 
     @SerializedName("@odata.nextLink")
     @Expose(serialize = false)
+    @Nullable
     public String nextLink;
 
     private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
 
     @Override
+    @Nonnull
     public final AdditionalDataManager additionalDataManager() {
         return additionalDataManager;
     }

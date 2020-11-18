@@ -11,6 +11,8 @@ import com.microsoft.graph.models.extensions.CloudCommunications;
 import com.microsoft.graph.models.extensions.Call;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.core.IBaseClient;
@@ -35,11 +37,11 @@ public class CallCollectionRequest extends BaseCollectionRequest<CallCollectionR
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public CallCollectionRequest(final String requestUrl, IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CallCollectionRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, CallCollectionResponse.class, CallCollectionPage.class);
     }
 
-    public void get(final ICallback<? super CallCollectionPage> callback) {
+    public void get(@Nonnull final ICallback<? super CallCollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -53,19 +55,21 @@ public class CallCollectionRequest extends BaseCollectionRequest<CallCollectionR
         });
     }
 
+    @Nonnull
     public CallCollectionPage get() throws ClientException {
         final CallCollectionResponse response = send();
         return buildFromResponse(response);
     }
 
-    public void post(final Call newCall, final ICallback<? super Call> callback) {
+    public void post(@Nonnull final Call newCall, @Nonnull final ICallback<? super Call> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new CallRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
             .post(newCall, callback);
     }
 
-    public Call post(final Call newCall) throws ClientException {
+    @Nonnull
+    public Call post(@Nonnull final Call newCall) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new CallRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
@@ -78,7 +82,8 @@ public class CallCollectionRequest extends BaseCollectionRequest<CallCollectionR
      * @param value the expand clause
      * @return the updated request
      */
-    public CallCollectionRequest expand(final String value) {
+    @Nonnull
+    public CallCollectionRequest expand(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (CallCollectionRequest)this;
     }
@@ -89,7 +94,8 @@ public class CallCollectionRequest extends BaseCollectionRequest<CallCollectionR
      * @param value the filter clause
      * @return the updated request
      */
-    public CallCollectionRequest filter(final String value) {
+    @Nonnull
+    public CallCollectionRequest filter(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
         return (CallCollectionRequest)this;
     }
@@ -100,7 +106,8 @@ public class CallCollectionRequest extends BaseCollectionRequest<CallCollectionR
      * @param value the order by clause
      * @return the updated request
      */
-    public CallCollectionRequest orderBy(final String value) {
+    @Nonnull
+    public CallCollectionRequest orderBy(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (CallCollectionRequest)this;
     }
@@ -111,7 +118,8 @@ public class CallCollectionRequest extends BaseCollectionRequest<CallCollectionR
      * @param value the select clause
      * @return the updated request
      */
-    public CallCollectionRequest select(final String value) {
+    @Nonnull
+    public CallCollectionRequest select(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return (CallCollectionRequest)this;
     }
@@ -122,6 +130,7 @@ public class CallCollectionRequest extends BaseCollectionRequest<CallCollectionR
      * @param value the max number of items to return
      * @return the updated request
      */
+    @Nonnull
     public CallCollectionRequest top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
         return (CallCollectionRequest)this;
@@ -133,6 +142,7 @@ public class CallCollectionRequest extends BaseCollectionRequest<CallCollectionR
      * @param value of the number of items to skip
      * @return the updated request
      */
+    @Nonnull
     public CallCollectionRequest skip(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$skip", value + ""));
         return (CallCollectionRequest)this;
@@ -144,11 +154,13 @@ public class CallCollectionRequest extends BaseCollectionRequest<CallCollectionR
      * @param skipToken - Token for pagination
      * @return the updated request
      */
-    public CallCollectionRequest skipToken(final String skipToken) {
+    @Nonnull
+    public CallCollectionRequest skipToken(@Nonnull final String skipToken) {
     	addQueryOption(new QueryOption("$skiptoken", skipToken));
         return (CallCollectionRequest)this;
     }
-    public CallCollectionPage buildFromResponse(final CallCollectionResponse response) {
+    @Nonnull
+    public CallCollectionPage buildFromResponse(@Nonnull final CallCollectionResponse response) {
         final CallCollectionRequestBuilder builder;
         if (response.nextLink != null) {
             builder = new CallCollectionRequestBuilder(response.nextLink, getBaseRequest().getClient(), /* options */ null);

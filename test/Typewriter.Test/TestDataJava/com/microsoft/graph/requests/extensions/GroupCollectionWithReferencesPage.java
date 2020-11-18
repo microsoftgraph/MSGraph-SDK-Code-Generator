@@ -10,6 +10,8 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.Group;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.requests.extensions.GroupCollectionWithReferencesRequestBuilder;
 import com.microsoft.graph.requests.extensions.GroupCollectionWithReferencesPage;
@@ -33,7 +35,7 @@ public class GroupCollectionWithReferencesPage extends BaseCollectionPage<Group,
      * @param response the serialized GroupCollectionResponse from the service
      * @param builder  the request builder for the next collection page
      */
-    public GroupCollectionWithReferencesPage(final GroupCollectionResponse response, final GroupCollectionWithReferencesRequestBuilder builder) {
+    public GroupCollectionWithReferencesPage(@Nonnull final GroupCollectionResponse response, @Nonnull  final GroupCollectionWithReferencesRequestBuilder builder) {
         super(response.value, builder, response.additionalDataManager());
     }
 }

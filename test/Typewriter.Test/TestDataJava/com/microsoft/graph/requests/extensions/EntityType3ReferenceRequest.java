@@ -12,6 +12,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.http.BaseRequest;
@@ -32,14 +34,15 @@ public class EntityType3ReferenceRequest extends BaseRequest {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3ReferenceRequest(String requestUrl, IBaseClient client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3ReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType3.class);
     }
 
-    public void delete(final ICallback<? super EntityType3> callback) {
+    public void delete(@Nonnull final ICallback<? super EntityType3> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
+    @Nullable
     public EntityType3 delete() throws ClientException {
        return send(HttpMethod.DELETE, null);
     }
@@ -50,7 +53,8 @@ public class EntityType3ReferenceRequest extends BaseRequest {
      * @param value the select clause
      * @return the updated request
      */
-    public EntityType3ReferenceRequest select(final String value) {
+    @Nonnull
+    public EntityType3ReferenceRequest select(@Nonnull final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (EntityType3ReferenceRequest)this;
     }
@@ -61,7 +65,8 @@ public class EntityType3ReferenceRequest extends BaseRequest {
      * @param value the expand clause
      * @return the updated request
      */
-    public EntityType3ReferenceRequest expand(final String value) {
+    @Nonnull
+    public EntityType3ReferenceRequest expand(@Nonnull final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (EntityType3ReferenceRequest)this;
     }
@@ -71,7 +76,7 @@ public class EntityType3ReferenceRequest extends BaseRequest {
      * @param srcEntityType3 the EntityType3 reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(EntityType3 srcEntityType3, final ICallback<? super EntityType3> callback) {
+    public void put(@Nonnull final EntityType3 srcEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
         send(HttpMethod.PUT, callback, srcEntityType3);
     }
 
@@ -82,7 +87,8 @@ public class EntityType3ReferenceRequest extends BaseRequest {
      * @return the EntityType3
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
-    public EntityType3 put(EntityType3 srcEntityType3) throws ClientException {
+    @Nullable
+    public EntityType3 put(@Nonnull final EntityType3 srcEntityType3) throws ClientException {
         return send(HttpMethod.PUT, srcEntityType3);
     }
 }

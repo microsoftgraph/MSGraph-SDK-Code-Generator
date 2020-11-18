@@ -42,7 +42,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeCollectionRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -52,7 +52,8 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public <#=c.TypeCollectionRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -62,17 +63,20 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param requestOptions the options for this request
      * @return the IUserRequest instance
      */
-    public <#=c.TypeCollectionRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> buildRequest(@Nonnull final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         return new <#=c.TypeCollectionRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 
-    public <#=c.TypeRequestBuilder()#> byId(final String id) {
+    @Nonnull
+    public <#=c.TypeRequestBuilder()#> byId(@Nonnull final String id) {
         return new <#=c.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment(id), getClient(), getOptions());
     }
 
 <#
 	if(host.TemplateName.Equals("DriveItemCollectionRequestBuilder")){
 #>
+    @Nonnull
     public DriveItemRequestBuilder appRoot() {
     	return new DriveItemRequestBuilder(this.getRequestUrlWithAdditionalSegment("approot"), this.getClient(), null);
     }
@@ -95,6 +99,7 @@ if (currentTypeProjection != null) {
         if (method.IsCollection) {
 #>
 
+    @Nonnull
     public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }
@@ -103,7 +108,8 @@ if (currentTypeProjection != null) {
 	if (method.MethodName() == "Delta") {
 #>
 
-	public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(final String deltaLink) {
+    @Nonnull
+	public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(@Nonnull final String deltaLink) {
         return new <#=method.TypeCollectionRequestBuilder()#>(deltaLink, getClient(), null<#=method.MethodParametersValues()#>);
     }
 <# } #>
@@ -111,6 +117,7 @@ if (currentTypeProjection != null) {
         } else {
 #>
 
+    @Nonnull
     public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
         return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
     }

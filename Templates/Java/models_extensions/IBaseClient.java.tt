@@ -21,6 +21,7 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return the request builder for the collection of <#=propertyName#> objects
      */
+    @Nonnull
     <#=prop.TypeCollectionRequestBuilder()#> <#=prop.Name#>();
 
     /**
@@ -29,7 +30,8 @@ foreach (var prop in model.EntityContainer.Properties)
      * @param id the id of the <#=propertyName#> to retrieve
      * @return the request builder for the <#=propertyName#> object
      */
-    <#=prop.TypeRequestBuilder()#> <#=prop.Name#>(final String id);
+    @Nonnull
+    <#=prop.TypeRequestBuilder()#> <#=prop.Name#>(@Nonnull final String id);
 <#
     }
     else
@@ -41,6 +43,7 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @return the <#=prop.Projection.Type.GetTypeString()#>
      */
+    @Nonnull
     <#=prop.TypeRequestBuilder()#> <#=prop.Name#>();
 <#
     }

@@ -10,6 +10,8 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.Call;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.http.BaseRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
@@ -28,7 +30,7 @@ public class CallWithReferenceRequestBuilder extends BaseRequestBuilder {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public CallWithReferenceRequestBuilder(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CallWithReferenceRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -38,7 +40,8 @@ public class CallWithReferenceRequestBuilder extends BaseRequestBuilder {
      * @param requestOptions the options for this request
      * @return the CallWithReferenceRequest instance
      */
-    public CallWithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public CallWithReferenceRequest buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -48,10 +51,12 @@ public class CallWithReferenceRequestBuilder extends BaseRequestBuilder {
      * @param requestOptions the options for this request
      * @return the CallWithReferenceRequest instance
      */
-    public CallWithReferenceRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    @Nonnull
+    public CallWithReferenceRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         return new CallWithReferenceRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
+    @Nonnull
     public CallReferenceRequestBuilder reference(){
         return new CallReferenceRequestBuilder(getRequestUrl() + "/$ref", getClient(), getOptions());
     }

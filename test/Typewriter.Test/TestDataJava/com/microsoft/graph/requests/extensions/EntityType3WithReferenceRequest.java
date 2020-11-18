@@ -12,6 +12,8 @@ import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.http.BaseRequest;
@@ -33,15 +35,16 @@ public class EntityType3WithReferenceRequest extends BaseRequest {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3WithReferenceRequest(String requestUrl, IBaseClient client, java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3WithReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType3.class);
     }
 
-    public void post(final EntityType3 newEntityType3, final IJsonBackedObject payload, final ICallback<? super EntityType3> callback) {
+    public void post(@Nonnull final EntityType3 newEntityType3, @Nullable final IJsonBackedObject payload, @Nonnull final ICallback<? super EntityType3> callback) {
         send(HttpMethod.POST, callback, payload);
     }
 
-    public EntityType3 post(final EntityType3 newEntityType3, final IJsonBackedObject payload) throws ClientException {
+    @Nullable
+    public EntityType3 post(@Nonnull final EntityType3 newEntityType3, @Nullable final IJsonBackedObject payload) throws ClientException {
         IJsonBackedObject response = send(HttpMethod.POST, payload);
         if (response != null){
             return newEntityType3;
@@ -49,15 +52,16 @@ public class EntityType3WithReferenceRequest extends BaseRequest {
         return null;
     }
 
-    public void get(final ICallback<? super EntityType3> callback) {
+    public void get(@Nonnull final ICallback<? super EntityType3> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
+    @Nullable
     public EntityType3 get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
 
-	public void delete(final ICallback<? super EntityType3> callback) {
+	public void delete(@Nonnull final ICallback<? super EntityType3> callback) {
 		send(HttpMethod.DELETE, callback, null);
 	}
 
@@ -65,11 +69,12 @@ public class EntityType3WithReferenceRequest extends BaseRequest {
 		send(HttpMethod.DELETE, null);
 	}
 
-	public void patch(final EntityType3 sourceEntityType3, final ICallback<? super EntityType3> callback) {
+	public void patch(@Nonnull final EntityType3 sourceEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
 		send(HttpMethod.PATCH, callback, sourceEntityType3);
 	}
 
-	public EntityType3 patch(final EntityType3 sourceEntityType3) throws ClientException {
+    @Nullable
+	public EntityType3 patch(@Nonnull final EntityType3 sourceEntityType3) throws ClientException {
 		return send(HttpMethod.PATCH, sourceEntityType3);
 	}
 
@@ -80,7 +85,8 @@ public class EntityType3WithReferenceRequest extends BaseRequest {
      * @param value the select clause
      * @return the updated request
      */
-    public EntityType3WithReferenceRequest select(final String value) {
+    @Nonnull
+    public EntityType3WithReferenceRequest select(@Nonnull final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
         return (EntityType3WithReferenceRequest)this;
     }
@@ -91,7 +97,8 @@ public class EntityType3WithReferenceRequest extends BaseRequest {
      * @param value the expand clause
      * @return the updated request
      */
-    public EntityType3WithReferenceRequest expand(final String value) {
+    @Nonnull
+    public EntityType3WithReferenceRequest expand(@Nonnull final String value) {
         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
         return (EntityType3WithReferenceRequest)this;
     }

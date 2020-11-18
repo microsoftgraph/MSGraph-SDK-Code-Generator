@@ -19,7 +19,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeWithReferencesRequestBuilder()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeWithReferencesRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
@@ -29,7 +29,8 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param requestOptions the options for this request
      * @return the <#=c.TypeWithReferencesRequest()#> instance
      */
-    public <#=c.TypeWithReferencesRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+    @Nonnull
+    public <#=c.TypeWithReferencesRequest()#> buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
         return buildRequest(getOptions(requestOptions));
     }
 
@@ -39,10 +40,12 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param requestOptions the options for this request
      * @return the <#=c.TypeWithReferencesRequest()#> instance
      */
-    public <#=c.TypeWithReferencesRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    @Nonnull
+    public <#=c.TypeWithReferencesRequest()#> buildRequest(@Nonnull final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         return new <#=c.TypeWithReferencesRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }
 
+    @Nonnull
     public <#=c.TypeReferenceRequestBuilder()#> reference(){
         return new <#=c.TypeReferenceRequestBuilder()#>(getRequestUrl() + "/$ref", getClient(), getOptions());
     }

@@ -21,11 +21,11 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionWithReferencesRequest()#>(final String requestUrl, <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeCollectionWithReferencesRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class);
     }
 
-    public void get(final ICallback<? super <#=c.TypeCollectionWithReferencesPage()#>> callback) {
+    public void get(@Nonnull final ICallback<? super <#=c.TypeCollectionWithReferencesPage()#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -39,47 +39,54 @@ import <#=importNamespace#>.concurrency.IExecutors;
         });
     }
 
+    @Nonnull
     public <#=c.TypeCollectionWithReferencesPage()#> get() throws ClientException {
         final <#=c.TypeCollectionResponse()#> response = send();
         return buildFromResponse(response);
     }
 
 <# if (c.GetFeatures().CanExpand) { #>
-    public <#=c.TypeCollectionWithReferencesRequest()#> expand(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionWithReferencesRequest()#> expand(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanFilter) { #>
-    public <#=c.TypeCollectionWithReferencesRequest()#> filter(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionWithReferencesRequest()#> filter(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanSort) { #>
-    public <#=c.TypeCollectionWithReferencesRequest()#> orderBy(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionWithReferencesRequest()#> orderBy(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanSelect) { #>
-    public <#=c.TypeCollectionWithReferencesRequest()#> select(final String value) {
+    @Nonnull
+    public <#=c.TypeCollectionWithReferencesRequest()#> select(@Nonnull final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanUseTop) { #>
+    @Nonnull
     public <#=c.TypeCollectionWithReferencesRequest()#> top(final int value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
         return this;
     }
 
 <# } #>
-    public <#=c.TypeCollectionWithReferencesPage()#> buildFromResponse(final <#=c.TypeCollectionResponse()#> response) {
+    @Nonnull
+    public <#=c.TypeCollectionWithReferencesPage()#> buildFromResponse(@Nonnull final <#=c.TypeCollectionResponse()#> response) {
         final <#=c.TypeCollectionWithReferencesRequestBuilder()#> builder;
         if (response.nextLink != null) {
             builder = new <#=c.TypeCollectionWithReferencesRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);

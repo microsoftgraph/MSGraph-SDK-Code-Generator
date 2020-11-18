@@ -21,10 +21,10 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param requestOptions the options for this request
      * @param responseClass  the class of the response
      */
-    public <#=c.TypeRequest()#>(final String requestUrl,
-            final <#=TypeHelperJava.IBaseClientType()#> client,
-            final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions,
-            final Class<<# if(!host.TemplateName.Equals("EntityRequest")){ #>? extends <#}#><#=c.ClassTypeName()#>> responseClass) {
+    public <#=c.TypeRequest()#>(@Nonnull final String requestUrl,
+            @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client,
+            @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions,
+            @Nonnull final Class<<# if(!host.TemplateName.Equals("EntityRequest")){ #>? extends <#}#><#=c.ClassTypeName()#>> responseClass) {
         super(requestUrl, client, requestOptions, responseClass);
     }
 <# } #>
@@ -36,7 +36,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeRequest()#>(final String requestUrl, final <#=TypeHelperJava.IBaseClientType()#> client, final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
@@ -80,7 +80,8 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param value the select clause
      * @return the updated request
      */
-     public <#=c.TypeRequest()#> select(final String value) {
+     @Nonnull
+     public <#=c.TypeRequest()#> select(@Nonnull final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
          return (<#=c.TypeRequest()#>)this;
      }
@@ -93,7 +94,8 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param value the expand clause
      * @return the updated request
      */
-     public <#=c.TypeRequest()#> expand(final String value) {
+     @Nonnull
+     public <#=c.TypeRequest()#> expand(@Nonnull final String value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
          return (<#=c.TypeRequest()#>)this;
      }
@@ -107,6 +109,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param value the max number of items to return
      * @return the updated request
      */
+     @Nonnull
      public <#=c.TypeRequest()#> top(final int value) {
          getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
          return (<#=c.TypeRequest()#>)this;
@@ -124,7 +127,7 @@ import <#=importNamespace#>.http.HttpMethod;
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<? super {0}> callback) {{
+    public void delete(@Nonnull final ICallback<? super {0}> callback) {{
         send(HttpMethod.DELETE, callback, null);
     }}
 
@@ -149,7 +152,7 @@ import <#=importNamespace#>.http.HttpMethod;
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<? super {0}> callback) {{
+    public void get(@Nonnull final ICallback<? super {0}> callback) {{
         send(HttpMethod.GET, callback, null);
     }}
 
@@ -159,6 +162,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @return the {0} from the request
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
+    @Nullable
     public {0} get() throws ClientException {{
        return send(HttpMethod.GET, null);
     }}
@@ -176,7 +180,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param source{0} the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final {0} source{0}, final ICallback<? super {0}> callback) {{
+    public void patch(@Nonnull final {0} source{0}, @Nonnull final ICallback<? super {0}> callback) {{
         send(HttpMethod.PATCH, callback, source{0});
     }}
 
@@ -187,7 +191,8 @@ import <#=importNamespace#>.http.HttpMethod;
      * @return the updated {0}
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public {0} patch(final {0} source{0}) throws ClientException {{
+    @Nullable
+    public {0} patch(@Nonnull final {0} source{0}) throws ClientException {{
         return send(HttpMethod.PATCH, source{0});
     }}
 ";
@@ -204,7 +209,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param new{0} the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final {0} new{0}, final ICallback<? super {0}> callback) {{
+    public void post(@Nonnull final {0} new{0}, @Nonnull final ICallback<? super {0}> callback) {{
         send(HttpMethod.POST, callback, new{0});
     }}
 
@@ -215,7 +220,8 @@ import <#=importNamespace#>.http.HttpMethod;
      * @return the created {0}
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public {0} post(final {0} new{0}) throws ClientException {{
+    @Nullable
+    public {0} post(@Nonnull final {0} new{0}) throws ClientException {{
         return send(HttpMethod.POST, new{0});
     }}
 ";
@@ -232,7 +238,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param new{0} the object to create/update
      * @param callback the callback to be called after success or failure
      */
-    public void put(final {0} new{0}, final ICallback<? super {0}> callback) {{
+    public void put(@Nonnull final {0} new{0}, @Nonnull final ICallback<? super {0}> callback) {{
         send(HttpMethod.PUT, callback, new{0});
     }}
 
@@ -243,7 +249,8 @@ import <#=importNamespace#>.http.HttpMethod;
      * @return the created {0}
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public {0} put(final {0} new{0}) throws ClientException {{
+    @Nullable
+    public {0} put(@Nonnull final {0} new{0}) throws ClientException {{
         return send(HttpMethod.PUT, new{0});
     }}
 ";
