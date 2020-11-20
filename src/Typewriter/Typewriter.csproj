@@ -72,7 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ApiDoctor.Publishing">
-      <Version>1.0.0-CI-20191014-182007</Version>
+      <Version>1.2.1811.291</Version>
     </PackageReference>
     <PackageReference Include="CommandLineParser">
       <Version>2.2.1</Version>
