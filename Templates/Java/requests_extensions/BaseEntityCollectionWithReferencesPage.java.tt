@@ -25,7 +25,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      * @param response the serialized <#=c.TypeCollectionResponse()#> from the service
      * @param builder  the request builder for the next collection page
      */
-    public <#=c.TypeCollectionWithReferencesPage()#>(@Nonnull final <#=c.TypeCollectionResponse()#> response, @Nonnull  final <#=c.TypeCollectionWithReferencesRequestBuilder()#> builder) {
+    public <#=c.TypeCollectionWithReferencesPage()#>(@Nonnull final <#=c.TypeCollectionResponse()#> response, @Nullable final <#=c.TypeCollectionWithReferencesRequestBuilder()#> builder) {
         super(response.value, builder, response.additionalDataManager());
     }
 
@@ -35,7 +35,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      * @param pageContents       the contents of this page
      * @param nextRequestBuilder the request builder for the next page
      */
-    public <#=c.TypeCollectionWithReferencesPage()#>(final java.util.List<<#=c.TypeName()#>> pageContents, final <#=c.TypeCollectionWithReferencesRequestBuilder()#> nextRequestBuilder) {
+    public <#=c.TypeCollectionWithReferencesPage()#>(@Nonnull final java.util.List<<#=c.TypeName()#>> pageContents, @Nullable final <#=c.TypeCollectionWithReferencesRequestBuilder()#> nextRequestBuilder) {
         super(pageContents, nextRequestBuilder);
     }
 }
