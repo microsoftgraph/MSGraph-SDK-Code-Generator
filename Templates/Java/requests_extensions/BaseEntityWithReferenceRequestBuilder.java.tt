@@ -7,10 +7,10 @@
 <#=host.CreatePackageDef()#>
 
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.http.BaseRequestBuilder;
+import <#=importNamespace#>.http.BaseWithReferenceRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequestBuilder(), "BaseRequestBuilder")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequestBuilder(), "BaseWithReferenceRequestBuilder<"+c.TypeName()+", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+">")#>
 
     /**
      * The request builder for the <#=c.TypeName()#>
@@ -20,34 +20,6 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param requestOptions the options for this request
      */
     public <#=c.TypeWithReferencesRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions);
+        super(requestUrl, client, requestOptions, <#=c.TypeWithReferencesRequest()#>.class, <#=c.TypeReferenceRequestBuilder()#>.class);
     }
-
-    /**
-     * Creates the request
-     *
-     * @param requestOptions the options for this request
-     * @return the <#=c.TypeWithReferencesRequest()#> instance
-     */
-    @Nonnull
-    public <#=c.TypeWithReferencesRequest()#> buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
-        return buildRequest(getOptions(requestOptions));
-    }
-
-    /**
-     * Creates the request with specific options instead of the existing options
-	 *
-     * @param requestOptions the options for this request
-     * @return the <#=c.TypeWithReferencesRequest()#> instance
-     */
-    @Nonnull
-    public <#=c.TypeWithReferencesRequest()#> buildRequest(@Nonnull final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        return new <#=c.TypeWithReferencesRequest()#>(getRequestUrl(), getClient(), requestOptions);
-    }
-
-    @Nonnull
-    public <#=c.TypeReferenceRequestBuilder()#> reference(){
-        return new <#=c.TypeReferenceRequestBuilder()#>(getRequestUrl() + "/$ref", getClient(), getOptions());
-    }
-
 }

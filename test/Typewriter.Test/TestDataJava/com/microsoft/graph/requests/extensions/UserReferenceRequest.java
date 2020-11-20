@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.http.BaseRequest;
+import com.microsoft.graph.http.BaseReferenceRequest;
 import com.microsoft.graph.http.HttpMethod;
 import com.microsoft.graph.core.IBaseClient;
 
@@ -23,7 +23,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the User Reference Request.
  */
-public class UserReferenceRequest extends BaseRequest {
+public class UserReferenceRequest extends BaseReferenceRequest<User> {
 
     /**
      * The request for the User
@@ -36,15 +36,6 @@ public class UserReferenceRequest extends BaseRequest {
         super(requestUrl, client, requestOptions, User.class);
     }
 
-    public void delete(@Nonnull final ICallback<? super User> callback) {
-        send(HttpMethod.DELETE, callback, null);
-    }
-
-    @Nullable
-    public User delete() throws ClientException {
-       return send(HttpMethod.DELETE, null);
-    }
-
     /**
      * Sets the select clause for the request
      *
@@ -53,8 +44,8 @@ public class UserReferenceRequest extends BaseRequest {
      */
     @Nonnull
     public UserReferenceRequest select(@Nonnull final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (UserReferenceRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -65,8 +56,8 @@ public class UserReferenceRequest extends BaseRequest {
      */
     @Nonnull
     public UserReferenceRequest expand(@Nonnull final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (UserReferenceRequest)this;
+        addExpandOption(value);
+        return this;
     }
     /**
      * Puts the User

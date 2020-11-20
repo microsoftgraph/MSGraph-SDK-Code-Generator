@@ -7,14 +7,20 @@
 <#=host.CreatePackageDef()#>
 
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeWithReferencesRequest()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeReferenceRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeWithReferencesRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequest()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionWithReferencesRequestBuilder()#>;
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.core.IBaseClient;
-import <#=importNamespace#>.http.BaseCollectionRequest;
+import <#=importNamespace#>.http.BaseCollectionWithReferencesRequest;
+import <#=importNamespace#>.http.BaseCollectionWithReferencesRequestBuilder;
 import <#=importNamespace#>.http.ReferenceRequestBody;
-<# var mainNamespace = host.CurrentNamespace(); #>
-import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequest(), "BaseCollectionWithReferencesRequest<" + c.TypeName() + ", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionWithReferencesRequest()+">")#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>
@@ -24,7 +30,7 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      * @param requestOptions the options for this request
      */
     public <#=c.TypeCollectionReferenceRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionWithReferencesPage()#>.class, <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
     }
 
 <#
@@ -38,6 +44,11 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
 
             String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel).Name;
 #>
+    /**
+     * Creates a new <#=c.TypeName()#>
+     * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
+     * @param callback the callback to invoke once the object has been created
+     */
     public void post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>, @Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=c.TypeName()#>.id);
@@ -46,6 +57,11 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
             .post(new<#=c.TypeName()#>, body, callback);
     }
 
+    /**
+     * Creates a new <#=c.TypeName()#>
+     * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
+     * @return the newly created object
+     */
     @Nonnull
     public <#=c.TypeName()#> post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
@@ -65,8 +81,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      */
     @Nonnull
     public <#=c.TypeCollectionReferenceRequest()#> expand(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (<#=c.TypeCollectionReferenceRequest()#>)this;
+        addExpandOption(value);
+        return this;
     }
 
 <# } #>
@@ -79,8 +95,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      */
     @Nonnull
     public <#=c.TypeCollectionReferenceRequest()#> filter(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (<#=c.TypeCollectionReferenceRequest()#>)this;
+        addFilterOption(value);
+        return this;
     }
 
 <# } #>
@@ -93,8 +109,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      */
     @Nonnull
     public <#=c.TypeCollectionReferenceRequest()#> orderBy(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
-        return (<#=c.TypeCollectionReferenceRequest()#>)this;
+        addOrderByOption(value);
+        return this;
     }
 
 <# } #>
@@ -107,8 +123,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      */
     @Nonnull
     public <#=c.TypeCollectionReferenceRequest()#> select(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (<#=c.TypeCollectionReferenceRequest()#>)this;
+        addSelectOption(value);
+        return this;
     }
 
 <# } #>
@@ -121,8 +137,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
      */
     @Nonnull
     public <#=c.TypeCollectionReferenceRequest()#> top(final int value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
-        return (<#=c.TypeCollectionReferenceRequest()#>)this;
+        addTopOption(value);
+        return this;
     }
 <# } #>
 }

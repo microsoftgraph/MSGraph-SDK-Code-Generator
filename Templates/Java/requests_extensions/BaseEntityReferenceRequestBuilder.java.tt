@@ -8,10 +8,10 @@
 <#=host.CreatePackageDef()#>
 
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.http.BaseRequestBuilder;
+import <#=importNamespace#>.http.BaseReferenceRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequestBuilder(), "BaseRequestBuilder")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequestBuilder(), "BaseReferenceRequestBuilder<"+c.TypeName()+", "+c.TypeReferenceRequest()+">")#>
 
     /**
      * The request builder for the <#=c.TypeName()#>
@@ -21,28 +21,6 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param requestOptions the options for this request
      */
     public <#=c.TypeReferenceRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions);
-    }
-
-    /**
-     * Creates the request
-     *
-     * @param requestOptions the options for this request
-     * @return The <#=c.TypeReferenceRequest()#> instance
-     */
-    @Nonnull
-    public <#=c.TypeReferenceRequest()#> buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
-        return buildRequest(getOptions(requestOptions));
-    }
-
-    /**
-     * Creates the request with specific requestOptions instead of the existing requestOptions
-     *
-     * @param requestOptions the options for this request
-     * @return the <#=c.TypeReferenceRequest()#> instance
-     */
-    @Nonnull
-    public <#=c.TypeReferenceRequest()#> buildRequest(@Nonnull final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        return new <#=c.TypeReferenceRequest()#>(getRequestUrl(), getClient(), requestOptions);
+        super(requestUrl, client, requestOptions, <#=c.TypeReferenceRequest()#>.class);
     }
 }

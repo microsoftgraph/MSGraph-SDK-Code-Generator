@@ -6,13 +6,22 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeName()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeWithReferencesRequest()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeReferenceRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeWithReferencesRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequest()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionWithReferencesRequest()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionWithReferencesRequestBuilder()#>;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.core.IBaseClient;
-import <#=importNamespace#>.http.BaseCollectionRequest;
+import <#=importNamespace#>.http.BaseCollectionWithReferencesRequest;
+import <#=importNamespace#>.http.BaseCollectionWithReferencesRequestBuilder;
 import <#=importNamespace#>.concurrency.IExecutors;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequest(), "BaseCollectionWithReferencesRequest<"+c.TypeName()+", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionRequest()+">")#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>
@@ -22,79 +31,77 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param requestOptions the options for this request
      */
     public <#=c.TypeCollectionWithReferencesRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class);
-    }
-
-    public void get(@Nonnull final ICallback<? super <#=c.TypeCollectionWithReferencesPage()#>> callback) {
-        final IExecutors executors = getBaseRequest().getClient().getExecutors();
-        executors.performOnBackground(new Runnable() {
-           @Override
-           public void run() {
-                try {
-                    executors.performOnForeground(get(), callback);
-                } catch (final ClientException e) {
-                    executors.performOnForeground(e, callback);
-                }
-           }
-        });
-    }
-
-    @Nonnull
-    public <#=c.TypeCollectionWithReferencesPage()#> get() throws ClientException {
-        final <#=c.TypeCollectionResponse()#> response = send();
-        return buildFromResponse(response);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionWithReferencesPage()#>.class, <#=c.TypeCollectionWithReferencesRequestBuilder()#>.class);
     }
 
 <# if (c.GetFeatures().CanExpand) { #>
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value the expand clause
+     * @return the updated request
+     */
     @Nonnull
     public <#=c.TypeCollectionWithReferencesRequest()#> expand(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        addExpandOption(value);
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanFilter) { #>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
     @Nonnull
     public <#=c.TypeCollectionWithReferencesRequest()#> filter(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        addFilterOption(value);
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanSort) { #>
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
     @Nonnull
     public <#=c.TypeCollectionWithReferencesRequest()#> orderBy(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
+        addOrderByOption(value);
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanSelect) { #>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value the select clause
+     * @return the updated request
+     */
     @Nonnull
     public <#=c.TypeCollectionWithReferencesRequest()#> select(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
+        addSelectOption(value);
         return this;
     }
 
 <# } #>
 <# if (c.GetFeatures().CanUseTop) { #>
+    /**
+     * Sets the top value for the request
+     *
+     * @param value the max number of items to return
+     * @return the updated request
+     */
     @Nonnull
     public <#=c.TypeCollectionWithReferencesRequest()#> top(final int value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
+        addTopOption(value);
         return this;
     }
 
 <# } #>
-    @Nonnull
-    public <#=c.TypeCollectionWithReferencesPage()#> buildFromResponse(@Nonnull final <#=c.TypeCollectionResponse()#> response) {
-        final <#=c.TypeCollectionWithReferencesRequestBuilder()#> builder;
-        if (response.nextLink != null) {
-            builder = new <#=c.TypeCollectionWithReferencesRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
-        } else {
-            builder = null;
-        }
-        final <#=c.TypeCollectionWithReferencesPage()#> page = new <#=c.TypeCollectionWithReferencesPage()#>(response, builder);
-        page.setRawObject(response.getSerializer(), response.getRawObject());
-        return page;
-    }
 }

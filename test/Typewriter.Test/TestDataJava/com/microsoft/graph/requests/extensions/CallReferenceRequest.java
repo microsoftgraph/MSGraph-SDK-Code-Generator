@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.http.BaseRequest;
+import com.microsoft.graph.http.BaseReferenceRequest;
 import com.microsoft.graph.http.HttpMethod;
 import com.microsoft.graph.core.IBaseClient;
 
@@ -23,7 +23,7 @@ import com.microsoft.graph.core.IBaseClient;
 /**
  * The class for the Call Reference Request.
  */
-public class CallReferenceRequest extends BaseRequest {
+public class CallReferenceRequest extends BaseReferenceRequest<Call> {
 
     /**
      * The request for the Call
@@ -36,15 +36,6 @@ public class CallReferenceRequest extends BaseRequest {
         super(requestUrl, client, requestOptions, Call.class);
     }
 
-    public void delete(@Nonnull final ICallback<? super Call> callback) {
-        send(HttpMethod.DELETE, callback, null);
-    }
-
-    @Nullable
-    public Call delete() throws ClientException {
-       return send(HttpMethod.DELETE, null);
-    }
-
     /**
      * Sets the select clause for the request
      *
@@ -53,8 +44,8 @@ public class CallReferenceRequest extends BaseRequest {
      */
     @Nonnull
     public CallReferenceRequest select(@Nonnull final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (CallReferenceRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -65,8 +56,8 @@ public class CallReferenceRequest extends BaseRequest {
      */
     @Nonnull
     public CallReferenceRequest expand(@Nonnull final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (CallReferenceRequest)this;
+        addExpandOption(value);
+        return this;
     }
     /**
      * Puts the Call

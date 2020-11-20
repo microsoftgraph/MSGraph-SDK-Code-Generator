@@ -20,7 +20,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Photo Request Builder.
  */
-public class PhotoRequestBuilder extends BaseRequestBuilder {
+public class PhotoRequestBuilder extends BaseRequestBuilder<Photo> {
 
     /**
      * The request builder for the Photo
@@ -57,6 +57,10 @@ public class PhotoRequestBuilder extends BaseRequestBuilder {
 
 
 
+    /**
+     * Gets a request builder to get the binary value of the object
+     * @return the stream request builder
+     */
     @Nonnull
     public PhotoStreamRequestBuilder content() {
         return new PhotoStreamRequestBuilder(getRequestUrlWithAdditionalSegment("$value"), getClient(), null);

@@ -4,44 +4,10 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = c.TypeCollectionResponse();#>
 <#=writer.WriteHeader()#>
-<#=host.CreatePackageDefForBaseEntityCollectionResponse()#>
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-import javax.annotation.Nullable;
-import javax.annotation.Nonnull;
+<#=host.CreatePackageDefForBaseCollectionResponse()#>
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.serializer.AdditionalDataManager;
-import <#=importNamespace#>.serializer.IJsonBackedObject;
-import <#=importNamespace#>.serializer.ISerializer;
+import <#=importNamespace#>.http.BaseCollectionResponse;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "IJsonBackedObject")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), "BaseCollectionResponse<"+c.TypeName()+">")#>
 
-    /**
-     * The list of <#=c.TypeName()#> within this collection page
-     */
-    @SerializedName("value")
-    @Expose
-    @Nullable
-    public java.util.List<<#=c.TypeName()#>> value;
-
-    /**
-     * The URL to the next page of this collection, or null
-     */
-    @SerializedName("@odata.nextLink")
-    @Expose(serialize = false)
-    @Nullable
-    public String nextLink;
-
-    private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
-
-    @Override
-    @Nonnull
-    public final AdditionalDataManager additionalDataManager() {
-        return additionalDataManager;
-    }
-
-<#=TypeHelperJava.CreateRawJsonObject()#>
-<#=TypeHelperJava.UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
 }

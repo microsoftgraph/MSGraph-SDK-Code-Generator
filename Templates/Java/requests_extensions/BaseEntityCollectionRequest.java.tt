@@ -15,9 +15,8 @@ import <#=importNamespace#>.concurrency.IExecutors;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequest()#>;
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), "BaseCollectionRequest" + c.CollectionRequestGeneric())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), "BaseCollectionRequest<"+c.TypeName()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">")#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>
@@ -27,29 +26,14 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      * @param requestOptions the options for this request
      */
     public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
     }
 
-    public void get(@Nonnull final ICallback<? super <#=c.TypeCollectionPage()#>> callback) {
-        final IExecutors executors = getBaseRequest().getClient().getExecutors();
-        executors.performOnBackground(new Runnable() {
-           @Override
-           public void run() {
-                try {
-                    executors.performOnForeground(get(), callback);
-                } catch (final ClientException e) {
-                    executors.performOnForeground(e, callback);
-                }
-           }
-        });
-    }
-
-    @Nonnull
-    public <#=c.TypeCollectionPage()#> get() throws ClientException {
-        final <#=c.TypeCollectionResponse()#> response = send();
-        return buildFromResponse(response);
-    }
-
+    /**
+     * Creates a new <#=c.TypeName()#>
+     * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
+     * @param callback the callback to invoke once the object has been created
+     */
     public void post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>, @Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
@@ -57,6 +41,11 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
             .post(new<#=c.TypeName()#>, callback);
     }
 
+    /**
+     * Creates a new <#=c.TypeName()#>
+     * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
+     * @return the newly created object
+     */
     @Nonnull
     public <#=c.TypeName()#> post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
@@ -74,8 +63,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      */
     @Nonnull
     public <#=c.TypeCollectionRequest()#> expand(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        addExpandOption(value);
+        return this;
     }
 
 <# } #>
@@ -88,8 +77,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      */
     @Nonnull
     public <#=c.TypeCollectionRequest()#> filter(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        addFilterOption(value);
+        return this;
     }
 
 <# } #>
@@ -102,8 +91,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      */
     @Nonnull
     public <#=c.TypeCollectionRequest()#> orderBy(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        addOrderByOption(value);
+        return this;
     }
 
 <# } #>
@@ -116,8 +105,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      */
     @Nonnull
     public <#=c.TypeCollectionRequest()#> select(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        addSelectOption(value);
+        return this;
     }
 
 <# } #>
@@ -130,8 +119,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      */
     @Nonnull
     public <#=c.TypeCollectionRequest()#> top(final int value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value + ""));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        addTopOption(value);
+        return this;
     }
 
 <# } #>
@@ -144,8 +133,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      */
     @Nonnull
     public <#=c.TypeCollectionRequest()#> skip(final int value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$skip", value + ""));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        addSkipOption(value);
+        return this;
     }
 
 <# } #>
@@ -157,20 +146,8 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      */
     @Nonnull
     public <#=c.TypeCollectionRequest()#> skipToken(@Nonnull final String skipToken) {
-    	addQueryOption(new QueryOption("$skiptoken", skipToken));
-        return (<#=c.TypeCollectionRequest()#>)this;
-    }
-    @Nonnull
-    public <#=c.TypeCollectionPage()#> buildFromResponse(@Nonnull final <#=c.BaseTypeCollectionResponse()#> response) {
-        final <#=c.TypeCollectionRequestBuilder()#> builder;
-        if (response.nextLink != null) {
-            builder = new <#=c.TypeCollectionRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null);
-        } else {
-            builder = null;
-        }
-        final <#=c.TypeCollectionPage()#> page = new <#=c.TypeCollectionPage()#>(response, builder);
-        page.setRawObject(response.getSerializer(), response.getRawObject());
-        return page;
+    	addSkipTokenOption(skipToken);
+        return this;
     }
 }
 <#=PostProcess(c.TypeCollectionRequest())#>

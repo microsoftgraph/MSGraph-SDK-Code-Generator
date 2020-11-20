@@ -21,7 +21,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Singleton Entity1Request Builder.
  */
-public class SingletonEntity1RequestBuilder extends BaseRequestBuilder {
+public class SingletonEntity1RequestBuilder extends BaseRequestBuilder<SingletonEntity1> {
 
     /**
      * The request builder for the SingletonEntity1

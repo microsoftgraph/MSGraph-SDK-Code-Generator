@@ -24,7 +24,7 @@ import com.microsoft.graph.http.BaseRequestBuilder;
 /**
  * The class for the Cloud Communications Request Builder.
  */
-public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder {
+public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder<CloudCommunications> {
 
     /**
      * The request builder for the CloudCommunications
@@ -60,20 +60,42 @@ public class CloudCommunicationsRequestBuilder extends BaseRequestBuilder {
     }
 
 
+    /**
+     *  Gets a request builder for the Call collection
+     *
+     * @return the collection request builder
+     */
     @Nonnull
     public CallCollectionRequestBuilder calls() {
         return new CallCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("calls"), getClient(), null);
     }
 
+    /**
+     * Gets a request builder for the Call item
+     *
+     * @return the request builder
+     * @param id the item identifier
+     */
     @Nonnull
     public CallRequestBuilder calls(@Nonnull final String id) {
         return new CallRequestBuilder(getRequestUrlWithAdditionalSegment("calls") + "/" + id, getClient(), null);
     }
+    /**
+     *  Gets a request builder for the CallRecord collection
+     *
+     * @return the collection request builder
+     */
     @Nonnull
     public CallRecordCollectionRequestBuilder callRecords() {
         return new CallRecordCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("callRecords"), getClient(), null);
     }
 
+    /**
+     * Gets a request builder for the CallRecord item
+     *
+     * @return the request builder
+     * @param id the item identifier
+     */
     @Nonnull
     public CallRecordRequestBuilder callRecords(@Nonnull final String id) {
         return new CallRecordRequestBuilder(getRequestUrlWithAdditionalSegment("callRecords") + "/" + id, getClient(), null);

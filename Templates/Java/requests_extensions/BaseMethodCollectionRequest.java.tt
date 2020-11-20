@@ -8,8 +8,10 @@
 
 <# var mainNamespace = host.CurrentNamespace(); #>
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
+<# if(c.AsOdcmMethod().ReturnType != null && !(c.AsOdcmMethod().ReturnType is OdcmPrimitiveType)) { #>
+import <#=mainNamespace#>.<#=(c as OdcmMethod).ReturnType.GetPackagePrefix()#>.<#=(c as OdcmMethod).OdcmMethodReturnType()#>;
+<# } #>
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
 import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeBody()#>;
 <# } #>
@@ -19,10 +21,11 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseCollectionRequest;
 import <#=importNamespace#>.concurrency.IExecutors;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(),"BaseCollectionRequest" + c.CollectionRequestGeneric())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(),"BaseCollectionRequest<" + (c as OdcmMethod).OdcmMethodReturnType()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">")#>
 
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
 
+    /** The body for the method */
     protected final <#=c.TypeBody()#> body;
 
 <# } #>
@@ -36,7 +39,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
      */
     public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class);
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
 <# } else { #>
         super(requestUrl, client, requestOptions, null);
 <# } #>
@@ -47,6 +50,10 @@ import <#=importNamespace#>.concurrency.IExecutors;
 
 <# if (c.AsOdcmMethod().IsAction()) { #>
 
+    /**
+     * Invokes the method and calls the callback with the resulting collection of objects
+     * @param callback a callback to be invoked with the resulting collection of objects
+     */
     public void post(@Nonnull final ICallback<? super <#=c.TypeCollectionPage()#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
@@ -61,6 +68,10 @@ import <#=importNamespace#>.concurrency.IExecutors;
         });
     }
 
+    /**
+     * Invokes the method and returns the resulting collection of objects
+     * @return a collection of objects returned by the method
+     */
     @Nullable
     public <#=c.TypeCollectionPage()#> post() throws ClientException {
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
@@ -71,42 +82,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
         return buildFromResponse(response);
     }
 
-<# } else { #>
-
-    public void get(@Nonnull final ICallback<? super <#=c.TypeCollectionPage()#>> callback) {
-        final IExecutors executors = getBaseRequest().getClient().getExecutors();
-        executors.performOnBackground(new Runnable() {
-           @Override
-           public void run() {
-                try {
-                    executors.performOnForeground(get(), callback);
-                } catch (final ClientException e) {
-                    executors.performOnForeground(e, callback);
-                }
-           }
-        });
-    }
-
-    @Nullable
-    public <#=c.TypeCollectionPage()#> get() throws ClientException {
-        final <#=c.TypeCollectionResponse()#> response = send();
-        return buildFromResponse(response);
-    }
-
 <# } #>
-
-    @Nonnull
-    public <#=c.TypeCollectionPage()#> buildFromResponse(@Nonnull final <#=c.TypeCollectionResponse()#> response) {
-        final <#=c.TypeCollectionRequestBuilder()#> builder;
-        if (response.nextLink != null) {
-            builder = new <#=c.TypeCollectionRequestBuilder()#>(response.nextLink, getBaseRequest().getClient(), /* options */ null<#=c.MethodPageValues()#>);
-        } else {
-            builder = null;
-        }
-        final <#=c.TypeCollectionPage()#> page = new <#=c.TypeCollectionPage()#>(response, builder);
-        page.setRawObject(response.getSerializer(), response.getRawObject());
-        return page;
-    }
 
 <# if (c.GetFeatures().CanSelect) { #>
     /**
@@ -117,8 +93,8 @@ import <#=importNamespace#>.concurrency.IExecutors;
      */
     @Nonnull
     public <#=c.TypeCollectionRequest()#> select(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        addSelectOption(value);
+        return this;
     }
 
 <# } #>
@@ -131,8 +107,8 @@ import <#=importNamespace#>.concurrency.IExecutors;
      */
     @Nonnull
     public <#=c.TypeCollectionRequest()#> top(final int value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$top", value+""));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        addTopOption(value);
+        return this;
     }
 
 <# } #>
@@ -145,8 +121,8 @@ import <#=importNamespace#>.concurrency.IExecutors;
      */
     @Nonnull
     public <#=c.TypeCollectionRequest()#> expand(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        addExpandOption(value);
+        return this;
     }
 
 <# } #>
@@ -159,8 +135,8 @@ import <#=importNamespace#>.concurrency.IExecutors;
      */
     @Nonnull
     public <#=c.TypeCollectionRequest()#> filter(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        addFilterOption(value);
+        return this;
     }
 
 <# } #>
@@ -173,8 +149,8 @@ import <#=importNamespace#>.concurrency.IExecutors;
      */
     @Nonnull
     public <#=c.TypeCollectionRequest()#> orderBy(@Nonnull final String value) {
-        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
-        return (<#=c.TypeCollectionRequest()#>)this;
+        addOrderByOption(value);
+        return this;
     }
 
 <# } #>

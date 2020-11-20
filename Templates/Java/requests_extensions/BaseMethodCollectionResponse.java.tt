@@ -4,43 +4,30 @@
 <#@ output extension="\\" #>
 <#host.TemplateName = c.TypeCollectionResponse();#>
 <#=writer.WriteHeader()#>
-<#=host.CreatePackageDef()#>
+<#=host.CreatePackageDefForBaseCollectionResponse()#>
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.annotations.Expose;
 import javax.annotation.Nullable;
 import javax.annotation.Nonnull;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.serializer.IJsonBackedObject;
+<# if (((c as OdcmMethod).ReturnType is OdcmPrimitiveType) || ((c as OdcmMethod).ReturnType is OdcmEnum) ) { #>
+import com.google.gson.JsonObject;
 import <#=importNamespace#>.serializer.ISerializer;
-import <#=importNamespace#>.serializer.AdditionalDataManager;
+<# } #>
+import <#=importNamespace#>.http.BaseCollectionResponse;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), null, "IJsonBackedObject")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), "BaseCollectionResponse<"+(c as OdcmMethod).OdcmMethodReturnType()+">")#>
 
-    @SerializedName("value")
-    @Expose
-    @Nullable
-    public java.util.List<<#=(c as OdcmMethod).OdcmMethodReturnType()#>> value;
-
-    @SerializedName("@odata.nextLink")
-    @Expose(serialize = false)
-    @Nullable
-    public String nextLink;
-
-    private transient AdditionalDataManager additionalDataManager = new AdditionalDataManager(this);
-
+<# if (((c as OdcmMethod).ReturnType is OdcmPrimitiveType) || ((c as OdcmMethod).ReturnType is OdcmEnum) ) { #>
+    /**
+     * Sets the raw JSON object
+     *
+     * @param serializer the serializer
+     * @param json the JSON object to set this object to
+     */
     @Override
-    @Nonnull
-    public final AdditionalDataManager additionalDataManager() {
-        return additionalDataManager;
-    }
-
-<#=TypeHelperJava.CreateRawJsonObject()#>
-<# if ( ! ((c as OdcmMethod).ReturnType is OdcmPrimitiveType) && ! ((c as OdcmMethod).ReturnType is OdcmEnum) ) { #>
-<#=    TypeHelperJava.UpdateListPropertiesWithinSetRawObject(new [] { "value" })#>
-<# } else { #>
+    public void setRawObject(@Nonnull final ISerializer serializer, @Nonnull final JsonObject json) {
+        this.serializer = serializer;
+        rawObject = json;
     }
 <# } #>
 }

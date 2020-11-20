@@ -7,16 +7,12 @@
 <#=host.CreatePackageDefForBaseEntityCollectionPage()#>
 import javax.annotation.Nullable;
 import javax.annotation.Nonnull;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.BaseCollectionPage;
-<# var mainNamespace = host.CurrentNamespace(); #>
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage" + c.CollectionPageGeneric())#>
-<#
-String s = c.TypeName();
-#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage<"+ c.TypeName() + ", "+c.TypeCollectionRequestBuilder()+">")#>
 
     /**
      * A collection page for <#=c.TypeName()#>
@@ -25,6 +21,16 @@ String s = c.TypeName();
      * @param builder  the request builder for the next collection page
      */
     public <#=c.TypeCollectionPage()#>(@Nonnull final <#=c.TypeCollectionResponse()#> response, @Nonnull final <#=c.TypeCollectionRequestBuilder()#> builder) {
-        super(response.value, builder, response.additionalDataManager());
+        super(response, builder);
+    }
+
+    /**
+     * Creates the collection page for <#=c.TypeName()#>
+     *
+     * @param pageContents       the contents of this page
+     * @param nextRequestBuilder the request builder for the next page
+     */
+    public <#=c.TypeCollectionPage()#>(@Nonnull final java.util.List<<#=c.TypeName()#>> pageContents, @Nullable final <#=c.TypeCollectionRequestBuilder()#> nextRequestBuilder) {
+        super(pageContents, nextRequestBuilder);
     }
 }

@@ -20,27 +20,18 @@
 #>
 
 <# var mainNamespace = host.CurrentNamespace(); #>
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
-import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.annotations.Expose;
-<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.http.IBaseCollectionPage;
-import <#=importNamespace#>.http.BaseCollectionPage;
-
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage" + c.CollectionPageGeneric())#>
-
 <# if (deltaPage) { #>
-    /**
-     * The opaque link to query delta after the 
-     * initial request
-     */
-    @Nullable
-    public String deltaLink;
-
+import <#=mainNamespace#>.http.DeltaCollectionPage;
+<# } else { #>
+import <#=mainNamespace#>.http.BaseCollectionPage;
 <# } #>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
+import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
+import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
+
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), (deltaPage ? "DeltaCollectionPage" : "BaseCollectionPage")+"<"+ (c.AsOdcmMethod().ReturnType ?? c.AsOdcmMethod().Class).TypeName() + ", "+c.TypeCollectionRequestBuilder()+">")#>
+
     /**
      * A collection page for <#=(c as OdcmMethod).OdcmMethodReturnType()#>.
      *
@@ -48,25 +39,16 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      * @param builder The request builder for the next collection page
      */
     public <#=c.TypeCollectionPage()#>(@Nonnull final <#=c.TypeCollectionResponse()#> response, @Nonnull final <#=c.TypeCollectionRequestBuilder()#> builder) {
-       super(response.value, builder, response.additionalDataManager());
-<# if (deltaPage) { #>
+       super(response, builder);
+    }
 
-        if (response.getRawObject().get("@odata.deltaLink") != null) {
-            deltaLink = response.getRawObject().get("@odata.deltaLink").getAsString();
-        } else {
-            deltaLink = null;
-        }
-<# } #>
-    }
-<# if (deltaPage) { #>
-    /**
-     * The deltaLink to make future delta requests
+	/**
+     * Creates the collection page for <#=c.TypeName()#>
      *
-     * @return String The deltaLink URL
+     * @param pageContents       the contents of this page
+     * @param nextRequestBuilder the request builder for the next page
      */
-    @Nullable
-    public String deltaLink() {
-        return deltaLink;
+    public <#=c.TypeCollectionPage()#>(@Nonnull final java.util.List<<#=(c.AsOdcmMethod().ReturnType ?? c.AsOdcmMethod().Class).TypeName()#>> pageContents, @Nullable final <#=c.TypeCollectionRequestBuilder()#> nextRequestBuilder) {
+        super(pageContents, nextRequestBuilder);
     }
-<# } #>
 }

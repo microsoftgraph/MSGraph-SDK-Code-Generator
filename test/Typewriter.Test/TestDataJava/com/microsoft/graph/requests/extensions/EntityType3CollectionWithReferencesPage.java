@@ -38,7 +38,17 @@ public class EntityType3CollectionWithReferencesPage extends BaseCollectionPage<
      * @param response the serialized EntityType3CollectionResponse from the service
      * @param builder  the request builder for the next collection page
      */
-    public EntityType3CollectionWithReferencesPage(@Nonnull final EntityType3CollectionResponse response, @Nonnull  final EntityType3CollectionWithReferencesRequestBuilder builder) {
+    public EntityType3CollectionWithReferencesPage(@Nonnull final EntityType3CollectionResponse response, @Nullable final EntityType3CollectionWithReferencesRequestBuilder builder) {
         super(response.value, builder, response.additionalDataManager());
+    }
+
+    /**
+     * Creates the collection page for EntityType3
+     *
+     * @param pageContents       the contents of this page
+     * @param nextRequestBuilder the request builder for the next page
+     */
+    public EntityType3CollectionWithReferencesPage(@Nonnull final java.util.List<EntityType3> pageContents, @Nullable final EntityType3CollectionWithReferencesRequestBuilder nextRequestBuilder) {
+        super(pageContents, nextRequestBuilder);
     }
 }

@@ -6,8 +6,7 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefForBaseMethodRequestBuilder()#>
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.core.BaseActionRequestBuilder;
-import <#=importNamespace#>.core.BaseFunctionRequestBuilder;
+import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder") #>;
 import <#=importNamespace#>.core.IBaseClient;
 import com.google.gson.JsonElement;
 import javax.annotation.Nullable;
@@ -86,11 +85,22 @@ if(m != null && m.IsComposable && m.ReturnType != null && m.ReturnType is OdcmCl
         var propRequestBuilder = prop.TypeRequestBuilder();
         if (prop.IsCollection()) {
 #>
+    /**
+     *  Gets a request builder for the <#=prop.TypeName() #> collection
+     *
+     * @return the collection request builder
+     */
     @Nonnull
     public <#=prop.TypeCollectionRequestBuilder()#> <#=sanitizedProperty#>() {
         return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>")<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
     }
 
+    /**
+     * Gets a request builder for the <#=prop.TypeName() #> item
+     *
+     * @return the request builder
+     * @param id the item identifier
+     */
     @Nonnull
     public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>(@Nonnull final String id) {
         return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>") + "/" + id<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);

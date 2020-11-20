@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.http.BaseRequest;
+import com.microsoft.graph.http.BaseWithReferenceRequest;
 import com.microsoft.graph.http.HttpMethod;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.serializer.IJsonBackedObject;
@@ -24,7 +24,7 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 /**
  * The class for the Call With Reference Request.
  */
-public class CallWithReferenceRequest extends BaseRequest {
+public class CallWithReferenceRequest extends BaseWithReferenceRequest<Call> {
 
     /**
      * The request for the Call
@@ -37,46 +37,6 @@ public class CallWithReferenceRequest extends BaseRequest {
         super(requestUrl, client, requestOptions, Call.class);
     }
 
-    public void post(@Nonnull final Call newCall, @Nullable final IJsonBackedObject payload, @Nonnull final ICallback<? super Call> callback) {
-        send(HttpMethod.POST, callback, payload);
-    }
-
-    @Nullable
-    public Call post(@Nonnull final Call newCall, @Nullable final IJsonBackedObject payload) throws ClientException {
-        IJsonBackedObject response = send(HttpMethod.POST, payload);
-        if (response != null){
-            return newCall;
-        }
-        return null;
-    }
-
-    public void get(@Nonnull final ICallback<? super Call> callback) {
-        send(HttpMethod.GET, callback, null);
-    }
-
-    @Nullable
-    public Call get() throws ClientException {
-       return send(HttpMethod.GET, null);
-    }
-
-	public void delete(@Nonnull final ICallback<? super Call> callback) {
-		send(HttpMethod.DELETE, callback, null);
-	}
-
-	public void delete() throws ClientException {
-		send(HttpMethod.DELETE, null);
-	}
-
-	public void patch(@Nonnull final Call sourceCall, @Nonnull final ICallback<? super Call> callback) {
-		send(HttpMethod.PATCH, callback, sourceCall);
-	}
-
-    @Nullable
-	public Call patch(@Nonnull final Call sourceCall) throws ClientException {
-		return send(HttpMethod.PATCH, sourceCall);
-	}
-
-
     /**
      * Sets the select clause for the request
      *
@@ -85,8 +45,8 @@ public class CallWithReferenceRequest extends BaseRequest {
      */
     @Nonnull
     public CallWithReferenceRequest select(@Nonnull final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (CallWithReferenceRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -97,7 +57,7 @@ public class CallWithReferenceRequest extends BaseRequest {
      */
     @Nonnull
     public CallWithReferenceRequest expand(@Nonnull final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (CallWithReferenceRequest)this;
+        addExpandOption(value);
+        return this;
     }
 }

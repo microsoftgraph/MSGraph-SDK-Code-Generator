@@ -3,14 +3,14 @@
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
 <#
-    var baseClass = "BaseRequest";
     var typeRequest = c.TypeRequest();
     var baseTypeRequest = c.TypeRequest();
     var returnType = c.ReturnType();
+    var baseClass = "BaseRequest<"+returnType+">";
 
     if (c.AsOdcmMethod().IsCollection)
     {
-        baseClass = "BaseCollectionRequest";
+        baseClass = "BaseCollectionRequest<"+c.TypeName()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">";
         typeRequest = c.TypeCollectionRequest();
         baseTypeRequest = c.TypeCollectionRequest();
     }
@@ -31,12 +31,12 @@ import <#=importNamespace#>.core.IBaseClient;
 	if (c.AsOdcmMethod().IsCollection) {
 #>
 import <#=importNamespace#>.concurrency.IExecutors;
-import <#=importNamespace#>.http.BaseCollectionRequest;
 <#
 	}
 #>
 
 <#=TypeHelperJava.CreateClassDef(baseTypeRequest, baseClass)#>
+    /** The body for the method */
     protected final <#=c.TypeBody()#> body;
 
     /**
@@ -47,14 +47,26 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
      * @param requestOptions the options for this request
      */
     public <#=baseTypeRequest#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+<# if (c.AsOdcmMethod().IsCollection) { #>
+        super(requestUrl, client, requestOptions, <#=returnType#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
+<# } else { #>
         super(requestUrl, client, requestOptions, <#=returnType#>.class);
+<# } #>
         body = new <#=c.TypeBody()#>();
     }
 
+    /**
+     * Invokes the method and invokes the callback with the result
+     * @param callback callback to be invoked after executing the request
+     */
     public void post(@Nonnull final ICallback<? super <#=returnType#>> callback) {
         send(HttpMethod.POST, callback, body);
     }
 
+    /**
+     * Invokes the method and returns the result
+     * @return result of the method invocation
+     */
     @Nullable
     public <#=returnType#> post() throws ClientException {
         return send(HttpMethod.POST, body);
@@ -69,8 +81,8 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
      */
     @Nonnull
     public <#=typeRequest#> select(@Nonnull final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (<#=typeRequest#>)this;
+        addSelectOption(value);
+        return this;
     }
 
 <# } #>
@@ -83,8 +95,8 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
      */
     @Nonnull
     public <#=typeRequest#> top(final int value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$top", value+""));
-        return (<#=typeRequest#>)this;
+        addTopOption(value);
+        return this;
     }
 
 <# } #>
@@ -97,8 +109,8 @@ import <#=importNamespace#>.http.BaseCollectionRequest;
      */
     @Nonnull
     public <#=typeRequest#> expand(@Nonnull final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (<#=typeRequest#>)this;
+        addExpandOption(value);
+        return this;
     }
 
 <# } #>

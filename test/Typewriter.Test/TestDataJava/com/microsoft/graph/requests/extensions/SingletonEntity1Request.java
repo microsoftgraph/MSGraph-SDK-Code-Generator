@@ -22,7 +22,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Singleton Entity1Request.
  */
-public class SingletonEntity1Request extends BaseRequest {
+public class SingletonEntity1Request extends BaseRequest<SingletonEntity1> {
 	
     /**
      * The request for the SingletonEntity1
@@ -147,8 +147,8 @@ public class SingletonEntity1Request extends BaseRequest {
      */
      @Nonnull
      public SingletonEntity1Request select(@Nonnull final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-         return (SingletonEntity1Request)this;
+         addSelectOption(value);
+         return this;
      }
 
     /**
@@ -159,8 +159,8 @@ public class SingletonEntity1Request extends BaseRequest {
      */
      @Nonnull
      public SingletonEntity1Request expand(@Nonnull final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-         return (SingletonEntity1Request)this;
+         addExpandOption(value);
+         return this;
      }
 
 }

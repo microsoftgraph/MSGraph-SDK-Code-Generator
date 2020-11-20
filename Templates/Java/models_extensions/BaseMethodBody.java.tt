@@ -18,6 +18,6 @@ import java.util.EnumSet;
 <#=TypeHelperJava.CreateClassDef(c.TypeBody())#>
 
 <#=TypeHelperJava.CreateParameterDef(c.AsOdcmMethod().Parameters)#>
-<#=TypeHelperJava.CreateRawJsonObject()#>
+<#=TypeHelperJava.CreateRawJsonObject(false)#>
     }
 }

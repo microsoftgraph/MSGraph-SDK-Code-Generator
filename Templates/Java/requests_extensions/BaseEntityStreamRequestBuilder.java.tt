@@ -8,8 +8,9 @@
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseRequestBuilder;
+import java.io.InputStream;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeStreamRequestBuilder(), "BaseRequestBuilder")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeStreamRequestBuilder(), "BaseRequestBuilder<InputStream>")#>
 
     /**
      * The request builder for the <#=c.TypeName()#>
@@ -51,11 +52,22 @@ if (c.AsOdcmClass() != null)
         var propName = prop.Name.ToUpperFirstChar();
         if (prop.IsCollection()) {
 #>
+    /**
+     *  Gets a request builder for the <#=prop.TypeName() #> collection
+     *
+     * @return the collection request builder
+     */
     @Nonnull
     public <#=prop.TypeCollectionRequestBuilder()#> <#=prop.Name#>() {
         return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>")<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
     }
 
+    /**
+     * Gets a request builder for the <#=prop.TypeName() #> item
+     *
+     * @return the request builder
+     * @param id the item identifier
+     */
     @Nonnull
     public <#=prop.TypeRequestBuilder()#> <#=prop.Name#>(@Nonnull final String id) {
         return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>") + "/" + id<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
@@ -114,6 +126,10 @@ if (c.AsOdcmClass() != null)
 #>
 <#		if (method.IsCollection) { #>
 
+    /**
+     * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
+     * @return the request builder collection<#=method.MethodParametersJavadocSignature()#>
+     */
     @Nonnull
     public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
@@ -121,6 +137,10 @@ if (c.AsOdcmClass() != null)
 
 <# 		} else { #>
 
+    /**
+     * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
+     * @return the request builder <#=method.MethodParametersJavadocSignature()#>
+     */
     @Nonnull
     public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
         return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);

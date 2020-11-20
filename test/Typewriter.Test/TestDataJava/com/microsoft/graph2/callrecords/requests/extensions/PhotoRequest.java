@@ -21,7 +21,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Photo Request.
  */
-public class PhotoRequest extends BaseRequest {
+public class PhotoRequest extends BaseRequest<Photo> {
 	
     /**
      * The request for the Photo
@@ -146,8 +146,8 @@ public class PhotoRequest extends BaseRequest {
      */
      @Nonnull
      public PhotoRequest select(@Nonnull final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-         return (PhotoRequest)this;
+         addSelectOption(value);
+         return this;
      }
 
     /**
@@ -158,8 +158,8 @@ public class PhotoRequest extends BaseRequest {
      */
      @Nonnull
      public PhotoRequest expand(@Nonnull final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-         return (PhotoRequest)this;
+         addExpandOption(value);
+         return this;
      }
 
 }

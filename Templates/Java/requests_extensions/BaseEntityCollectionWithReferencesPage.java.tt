@@ -17,7 +17,7 @@ import com.google.gson.annotations.Expose;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.BaseCollectionPage;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesPage(), "BaseCollectionPage" + c.CollectionPageWithReferencesGeneric())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesPage(), "BaseCollectionPage<" + c.TypeName()+", "+c.TypeCollectionWithReferencesRequestBuilder()+">")#>
 
     /**
      * A collection page for <#=c.TypeName()#>
@@ -25,7 +25,17 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      * @param response the serialized <#=c.TypeCollectionResponse()#> from the service
      * @param builder  the request builder for the next collection page
      */
-    public <#=c.TypeCollectionWithReferencesPage()#>(@Nonnull final <#=c.TypeCollectionResponse()#> response, @Nonnull  final <#=c.TypeCollectionWithReferencesRequestBuilder()#> builder) {
+    public <#=c.TypeCollectionWithReferencesPage()#>(@Nonnull final <#=c.TypeCollectionResponse()#> response, @Nullable final <#=c.TypeCollectionWithReferencesRequestBuilder()#> builder) {
         super(response.value, builder, response.additionalDataManager());
+    }
+
+    /**
+     * Creates the collection page for <#=c.TypeName()#>
+     *
+     * @param pageContents       the contents of this page
+     * @param nextRequestBuilder the request builder for the next page
+     */
+    public <#=c.TypeCollectionWithReferencesPage()#>(@Nonnull final java.util.List<<#=c.TypeName()#>> pageContents, @Nullable final <#=c.TypeCollectionWithReferencesRequestBuilder()#> nextRequestBuilder) {
+        super(pageContents, nextRequestBuilder);
     }
 }

@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
-import com.microsoft.graph.http.BaseRequest;
+import com.microsoft.graph.http.BaseWithReferenceRequest;
 import com.microsoft.graph.http.HttpMethod;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.serializer.IJsonBackedObject;
@@ -26,7 +26,7 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 /**
  * The class for the Session With Reference Request.
  */
-public class SessionWithReferenceRequest extends BaseRequest {
+public class SessionWithReferenceRequest extends BaseWithReferenceRequest<Session> {
 
     /**
      * The request for the Session
@@ -39,46 +39,6 @@ public class SessionWithReferenceRequest extends BaseRequest {
         super(requestUrl, client, requestOptions, Session.class);
     }
 
-    public void post(@Nonnull final Session newSession, @Nullable final IJsonBackedObject payload, @Nonnull final ICallback<? super Session> callback) {
-        send(HttpMethod.POST, callback, payload);
-    }
-
-    @Nullable
-    public Session post(@Nonnull final Session newSession, @Nullable final IJsonBackedObject payload) throws ClientException {
-        IJsonBackedObject response = send(HttpMethod.POST, payload);
-        if (response != null){
-            return newSession;
-        }
-        return null;
-    }
-
-    public void get(@Nonnull final ICallback<? super Session> callback) {
-        send(HttpMethod.GET, callback, null);
-    }
-
-    @Nullable
-    public Session get() throws ClientException {
-       return send(HttpMethod.GET, null);
-    }
-
-	public void delete(@Nonnull final ICallback<? super Session> callback) {
-		send(HttpMethod.DELETE, callback, null);
-	}
-
-	public void delete() throws ClientException {
-		send(HttpMethod.DELETE, null);
-	}
-
-	public void patch(@Nonnull final Session sourceSession, @Nonnull final ICallback<? super Session> callback) {
-		send(HttpMethod.PATCH, callback, sourceSession);
-	}
-
-    @Nullable
-	public Session patch(@Nonnull final Session sourceSession) throws ClientException {
-		return send(HttpMethod.PATCH, sourceSession);
-	}
-
-
     /**
      * Sets the select clause for the request
      *
@@ -87,8 +47,8 @@ public class SessionWithReferenceRequest extends BaseRequest {
      */
     @Nonnull
     public SessionWithReferenceRequest select(@Nonnull final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (SessionWithReferenceRequest)this;
+        addSelectOption(value);
+        return this;
     }
 
     /**
@@ -99,7 +59,7 @@ public class SessionWithReferenceRequest extends BaseRequest {
      */
     @Nonnull
     public SessionWithReferenceRequest expand(@Nonnull final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (SessionWithReferenceRequest)this;
+        addExpandOption(value);
+        return this;
     }
 }

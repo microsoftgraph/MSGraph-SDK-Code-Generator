@@ -8,11 +8,11 @@
 
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.options.QueryOption;
-import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.BaseReferenceRequest;
 import <#=importNamespace#>.http.HttpMethod;
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequest(), "BaseRequest")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequest(), "BaseReferenceRequest<"+c.TypeName()+">")#>
 
     /**
      * The request for the <#=c.TypeName()#>
@@ -25,15 +25,6 @@ import <#=importNamespace#>.core.IBaseClient;
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
-    public void delete(@Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
-        send(HttpMethod.DELETE, callback, null);
-    }
-
-    @Nullable
-    public <#=c.TypeName()#> delete() throws ClientException {
-       return send(HttpMethod.DELETE, null);
-    }
-
 <# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
@@ -43,8 +34,8 @@ import <#=importNamespace#>.core.IBaseClient;
      */
     @Nonnull
     public <#=c.TypeReferenceRequest()#> select(@Nonnull final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-        return (<#=c.TypeReferenceRequest()#>)this;
+        addSelectOption(value);
+        return this;
     }
 
 <# } #>
@@ -57,8 +48,8 @@ import <#=importNamespace#>.core.IBaseClient;
      */
     @Nonnull
     public <#=c.TypeReferenceRequest()#> expand(@Nonnull final String value) {
-        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-        return (<#=c.TypeReferenceRequest()#>)this;
+        addExpandOption(value);
+        return this;
     }
 <# } #>
 <# if (c.GetFeatures().CanUpdate) { #>

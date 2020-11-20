@@ -20,6 +20,7 @@ import java.util.HashMap;
 <#
     if(((OdcmClass)c).Base == null){
 #>
+    /** the OData type of the object as returned by the service */
     @SerializedName("@odata.type")
     @Expose
     @Nullable
