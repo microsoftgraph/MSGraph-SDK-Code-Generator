@@ -17,7 +17,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
     using Vipr.Core.CodeModel;
     using NLog;
     using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
-    using System.Windows.Markup;
     using Microsoft.Graph.ODataTemplateWriter.Settings;
 
     public class TemplateProcessor : ITemplateProcessor

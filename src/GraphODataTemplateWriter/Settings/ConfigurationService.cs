@@ -72,7 +72,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
 
             var targetLanguageTypeName = mainTWS.TargetLanguage + "Settings";
             var targetLanguageAN = new AssemblyName(targetLanguageTypeName);
-            AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(targetLanguageAN, AssemblyBuilderAccess.Run);
+            AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(targetLanguageAN, AssemblyBuilderAccess.Run);
             ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("MainModule");
             TypeBuilder tb = moduleBuilder.DefineType(targetLanguageTypeName
                                 , TypeAttributes.Public
@@ -92,7 +92,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
             ctorIL.Emit(OpCodes.Call, typeof(TemplateWriterSettings).GetMethod("CopyPropertiesFromMainSettings"));
             ctorIL.Emit(OpCodes.Ret);
 
-            Type targetLanguageType = tb.CreateType();
+            Type targetLanguageType = tb.CreateTypeInfo();
 
             //Call the generic GetConfiguration method with our new type.
             return (TemplateWriterSettings)typeof(IConfigurationProvider)
