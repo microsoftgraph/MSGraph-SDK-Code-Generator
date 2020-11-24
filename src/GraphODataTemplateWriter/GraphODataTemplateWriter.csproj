@@ -13,12 +13,6 @@
     <OutputPath>$(ProjectDir)bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include=".config\JavaSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

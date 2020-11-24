@@ -1,21 +1,26 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.IO;
 using System.Reflection;
-using Its.Configuration;
 using Vipr.Core;
 
 namespace Typewriter
 {
-    public class ConfigurationProvider : IConfigurationProvider
+    public class ConfigurationProvider : Vipr.Core.IConfigurationProvider
     {
+        private readonly IConfiguration Configuration;
         public ConfigurationProvider()
         {
-                Settings.SettingsDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ".config");
+            var builder = new ConfigurationBuilder();
+            if (!string.IsNullOrWhiteSpace(Environment.CurrentDirectory))
+                builder.AddXmlFile(Path.Combine(Environment.CurrentDirectory, ".config"), true);
+
+            Configuration = builder.AddEnvironmentVariables().Build();
         }
 
         public T GetConfiguration<T>()
         {
-            return Settings.Get<T>();
+            return Configuration.Get<T>();
         }
         public static void SetConfigurationOn(object target)
         {
