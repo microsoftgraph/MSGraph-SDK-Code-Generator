@@ -5,6 +5,9 @@
 
 var method = host.CurrentType.AsOdcmMethod();
 var @namespace = method.Namespace.GetNamespaceName();
+// Get navigation properties and methods of the return type if the method is composable.
+var composableMethodNavigations = method.IsComposable ? method.GetComposableFunctionReturnTypeNavigations() : new List<OdcmProperty>();
+var composableNavigationsInfo = composableMethodNavigations.GetAllNavigationPropertyInfo();
 var composableMethodMethods = method.IsComposable ? method.GetComposableFunctionReturnTypeMethods() : new List<OdcmMethod>();
 var composableMethodsInfo = composableMethodMethods.GetAllMethodsInfo(@namespace);
 
@@ -24,7 +27,7 @@ namespace <#=@namespace#>
     /// <summary>
     /// The interface I<#=requestBuilderType#>.
     /// </summary>
-    public partial interface I<#=requestBuilderType#>
+    public partial interface I<#=requestBuilderType#> : IBaseRequestBuilder
     {
         /// <summary>
         /// Builds the request.
@@ -44,6 +47,23 @@ namespace <#=@namespace#>
         /// </summary><#=m.ParameterComments#>
         /// <returns>The <see cref="I<#=m.RequestBuilderType#>"/>.</returns>
         I<#=m.RequestBuilderType#> <#=m.MethodName#>(<#=m.MethodParametersAsArguments#>);
+<#
+        }
+    }
+#>
+<#
+    // Add request builders for every navigation property on the return type of this function.
+    if (composableNavigationsInfo != null)
+    {
+        foreach (var n in composableNavigationsInfo)
+        {
+#>
+        /// <summary>
+        /// Gets the request builder for <#=n.Name#>.
+        /// <#=n.Description#>
+        /// </summary>
+        /// <returns>The <see cref="<#=n.ReturnInterfaceRequestBuilderName#>"/>.</returns>
+        <#=n.ReturnInterfaceRequestBuilderName#> <#=n.Name#>  { get; }
 <#
         }
     }

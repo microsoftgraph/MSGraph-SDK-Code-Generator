@@ -625,5 +625,24 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 };
             }).OrderBy(m => m.MethodName).ToList();
         }
+
+        public static List<NavigationPropertyInfo> GetAllNavigationPropertyInfo(this List<OdcmProperty> navProperties)
+        {
+            return navProperties.Select(p =>
+            {
+                var name = p.Name.ToCheckedCase();
+                //var returnClassRequestBuilderName = String.Format("{0}{1}RequestBuilder", p.Class.Name.ToCheckedCase(), name);
+                var returnClassRequestBuilderName = String.Format("{0}RequestBuilder", p.Type.Name.ToCheckedCase());
+                var returnInterfaceRequestBuilderName = String.Format("I{0}", returnClassRequestBuilderName);
+                return new NavigationPropertyInfo()
+                {
+                    ReturnInterfaceRequestBuilderName = returnInterfaceRequestBuilderName,
+                    ReturnClassRequestBuilderName = returnClassRequestBuilderName,
+                    Segment = p.Name,
+                    Name = name,
+                    Description = p.Description
+                };
+            }).OrderBy(n => n.Name).ToList();
+        }
     }
 }

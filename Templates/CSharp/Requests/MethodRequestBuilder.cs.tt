@@ -20,6 +20,7 @@ var optionTypeName = @namespace.GetCoreLibraryType("Option");
 
 // Get navigation properties and methods of the return type if the method is composable.
 var composableMethodNavigations = method.IsComposable ? method.GetComposableFunctionReturnTypeNavigations() : new List<OdcmProperty>();
+var composableNavigationsInfo = composableMethodNavigations.GetAllNavigationPropertyInfo();
 var composableMethodMethods = method.IsComposable ? method.GetComposableFunctionReturnTypeMethods() : new List<OdcmMethod>();
 var composableMethodsInfo = composableMethodMethods.GetAllMethodsInfo(@namespace);
 
@@ -130,6 +131,29 @@ foreach (var m in overloadMethodsInfo)
             return new <#=m.RequestBuilderType#>(
                 this.AppendSegmentToRequestUrl("<#=m.MethodFullName#>"),
                 this.Client<#=m.ParamArgsForConstructor#>);
+        }
+<#
+        }
+    }
+#>
+<#
+    // Add request builders for every navigation property on the return type of this function.
+    if (composableNavigationsInfo != null)
+    {
+        foreach (var n in composableNavigationsInfo)
+        {
+#>
+        /// <summary>
+        /// Gets the request builder for <#=n.Name#>.
+        /// <#=n.Description#>
+        /// </summary>
+        /// <returns>The <see cref="<#=n.ReturnInterfaceRequestBuilderName#>"/>.</returns>
+        public <#=n.ReturnInterfaceRequestBuilderName#> <#=n.Name#>
+        {
+            get
+            {
+                return new <#=n.ReturnClassRequestBuilderName#>(this.AppendSegmentToRequestUrl("<#=n.Segment#>"), this.Client);
+            }
         }
 <#
         }
