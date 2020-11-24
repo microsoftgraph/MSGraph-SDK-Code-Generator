@@ -66,39 +66,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
 
             TemplateWriterSettings.mainSettingsObject = mainTWS;
             
-            //First dynamically create a new class that holds settings for the target language
-            //We store a reference on the default constructor to the mainTWS and then copy
-            //all properties on it.
-
-            var targetLanguageTypeName = mainTWS.TargetLanguage + "Settings";
-            var targetLanguageAN = new AssemblyName(targetLanguageTypeName);
-            AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(targetLanguageAN, AssemblyBuilderAccess.Run);
-            ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("MainModule");
-            TypeBuilder tb = moduleBuilder.DefineType(targetLanguageTypeName
-                                , TypeAttributes.Public
-                                | TypeAttributes.Class
-                                | TypeAttributes.AutoClass
-                                | TypeAttributes.BeforeFieldInit
-                                | TypeAttributes.AutoLayout
-                                , typeof(TemplateWriterSettings));
-
-            ConstructorBuilder ctor = tb.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, Type.EmptyTypes);
-
-            ILGenerator ctorIL = ctor.GetILGenerator();
-
-            ctorIL.Emit(OpCodes.Ldarg_0);
-            ctorIL.Emit(OpCodes.Call, typeof(TemplateWriterSettings).GetConstructor(Type.EmptyTypes));
-            ctorIL.Emit(OpCodes.Ldarg_0);
-            ctorIL.Emit(OpCodes.Call, typeof(TemplateWriterSettings).GetMethod("CopyPropertiesFromMainSettings"));
-            ctorIL.Emit(OpCodes.Ret);
-
-            Type targetLanguageType = tb.CreateTypeInfo();
-
             //Call the generic GetConfiguration method with our new type.
-            return (TemplateWriterSettings)typeof(IConfigurationProvider)
-                                            .GetMethod("GetConfiguration")
-                                            .MakeGenericMethod(targetLanguageType)
-                                            .Invoke(_configurationProvider, new object[] { });
+            return (_configurationProvider
+                .GetType()
+                .GetConstructor(new [] { typeof(string) })
+                .Invoke(new[] { targetLanguage }) as IConfigurationProvider)
+                .GetConfiguration<TemplateWriterSettings>();
 
         }
 

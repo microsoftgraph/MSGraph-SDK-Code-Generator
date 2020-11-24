@@ -1,4 +1,5 @@
 {
+  "TargetLanguage": "ObjC",
   "StaticCodePrefix": "MS",
   "NamespacePrefix": "MSGraph",
   "TemplateMapping": {

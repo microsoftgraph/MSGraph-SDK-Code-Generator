@@ -7,7 +7,7 @@
   "InitializeCollections": "false",
   "AllowShortActions": "false",
   "NamespaceOverride": "",
-  "TemplatesDirectory": "../../../../Templates",
+  "TemplatesDirectory": "../../../../../Templates",
   "DefaultFileCasing": "UpperCamel",
   "CustomFlags": [ "python2" ],
   "DefaultBaseEndpointUrl": "https://graph.microsoft.com/v1.0",

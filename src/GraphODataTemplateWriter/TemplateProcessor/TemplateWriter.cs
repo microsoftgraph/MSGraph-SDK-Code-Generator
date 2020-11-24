@@ -115,7 +115,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             if (Directory.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Templates"))) {
                 this.SetTemplatesDirectory("Templates", true);
             } else {
-                this.SetTemplatesDirectory(ConfigurationService.Settings.TemplatesDirectory);
+                this.SetTemplatesDirectory(ConfigurationService.Settings.TemplatesDirectory, !Path.IsPathRooted(ConfigurationService.Settings.TemplatesDirectory));
             }
             this.TemplateInfoProvider = new TemplateInfoProvider(ConfigurationService.Settings.TemplateConfiguration,
                                                                  Path.Combine(this.TemplatesDirectory, ConfigurationService.Settings.TargetLanguage),
