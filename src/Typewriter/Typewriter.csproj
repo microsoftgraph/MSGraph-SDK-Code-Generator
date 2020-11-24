@@ -5,14 +5,13 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\apidoctor\ApiDoctor.Publishing\ApiDoctor.Publishing.csproj" />
+    <ProjectReference Include="..\..\apidoctor\ApiDoctor.Validation\ApiDoctor.Validation.csproj" />
     <ProjectReference Include="..\..\submodules\vipr\src\Core\Vipr.Core\Vipr.Core.csproj" />
     <ProjectReference Include="..\..\submodules\vipr\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj" />
     <ProjectReference Include="..\GraphODataTemplateWriter\GraphODataTemplateWriter.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ApiDoctor.Publishing">
-      <Version>1.2.1811.291</Version>
-    </PackageReference>
     <PackageReference Include="CommandLineParser">
       <Version>2.8.0</Version>
     </PackageReference>

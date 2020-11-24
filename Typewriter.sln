@@ -3,27 +3,33 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30406.217
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphODataTemplateWriter", "src\GraphODataTemplateWriter\GraphODataTemplateWriter.csproj", "{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphODataTemplateWriter", "src\GraphODataTemplateWriter\GraphODataTemplateWriter.csproj", "{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Templates", "Templates\Templates.csproj", "{5F526973-F69E-4C26-B8AD-612590A17A9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Templates", "Templates\Templates.csproj", "{5F526973-F69E-4C26-B8AD-612590A17A9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphODataTemplateWriter.Test", "GraphODataTemplateWriter.Test\GraphODataTemplateWriter.Test.csproj", "{2256EC8D-FD7E-4A49-B616-70755AFC9F6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphODataTemplateWriter.Test", "GraphODataTemplateWriter.Test\GraphODataTemplateWriter.Test.csproj", "{2256EC8D-FD7E-4A49-B616-70755AFC9F6C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE} = {E6B5202F-4F66-428A-AB92-0AAA11BA81DE}
 		{5F526973-F69E-4C26-B8AD-612590A17A9E} = {5F526973-F69E-4C26-B8AD-612590A17A9E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typewriter", "src\Typewriter\Typewriter.csproj", "{CA08F5D7-AA00-462E-BE5E-E4F54C257FA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typewriter", "src\Typewriter\Typewriter.csproj", "{CA08F5D7-AA00-462E-BE5E-E4F54C257FA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Core", "submodules\vipr\src\Core\Vipr.Core\Vipr.Core.csproj", "{04C24936-006A-4FD8-A872-EE55588C1CBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vipr.Core", "submodules\vipr\src\Core\Vipr.Core\Vipr.Core.csproj", "{04C24936-006A-4FD8-A872-EE55588C1CBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Reader.OData.v4", "submodules\vipr\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj", "{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vipr.Reader.OData.v4", "submodules\vipr\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj", "{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typewriter.Test", "test\Typewriter.Test\Typewriter.Test.csproj", "{4F1B8EF2-EAFD-4DDB-B688-1A134524047B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typewriter.Test", "test\Typewriter.Test\Typewriter.Test.csproj", "{4F1B8EF2-EAFD-4DDB-B688-1A134524047B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr", "submodules\vipr\src\Core\Vipr\Vipr.csproj", "{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vipr", "submodules\vipr\src\Core\Vipr\Vipr.csproj", "{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataReader.v4UnitTests", "submodules\vipr\test\ODataReader.v4UnitTests\ODataReader.v4UnitTests.csproj", "{0FE50B4D-1BB1-4CE5-91EA-D5046F326536}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ODataReader.v4UnitTests", "submodules\vipr\test\ODataReader.v4UnitTests\ODataReader.v4UnitTests.csproj", "{0FE50B4D-1BB1-4CE5-91EA-D5046F326536}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiDoctor.Publishing", "apidoctor\ApiDoctor.Publishing\ApiDoctor.Publishing.csproj", "{7415D4D2-6672-4A0B-AEFD-46AF4789D1A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiDoctor.Validation", "apidoctor\ApiDoctor.Validation\ApiDoctor.Validation.csproj", "{8AF200E5-0D25-4645-9F73-BE7B39B58CA2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarkdownDeep", "apidoctor\OSS\markdowndeep\MarkdownDeep\MarkdownDeep.csproj", "{928726B0-8D55-485A-9925-86C71CEBF4CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +71,18 @@ Global
 		{0FE50B4D-1BB1-4CE5-91EA-D5046F326536}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FE50B4D-1BB1-4CE5-91EA-D5046F326536}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FE50B4D-1BB1-4CE5-91EA-D5046F326536}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7415D4D2-6672-4A0B-AEFD-46AF4789D1A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7415D4D2-6672-4A0B-AEFD-46AF4789D1A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7415D4D2-6672-4A0B-AEFD-46AF4789D1A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7415D4D2-6672-4A0B-AEFD-46AF4789D1A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AF200E5-0D25-4645-9F73-BE7B39B58CA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AF200E5-0D25-4645-9F73-BE7B39B58CA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AF200E5-0D25-4645-9F73-BE7B39B58CA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AF200E5-0D25-4645-9F73-BE7B39B58CA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{928726B0-8D55-485A-9925-86C71CEBF4CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{928726B0-8D55-485A-9925-86C71CEBF4CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{928726B0-8D55-485A-9925-86C71CEBF4CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{928726B0-8D55-485A-9925-86C71CEBF4CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
