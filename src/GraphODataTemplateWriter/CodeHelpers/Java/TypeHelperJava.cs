@@ -56,7 +56,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                 case "Binary":
                     return "byte[]";
                 case "Single":
-                    return "float";
+                    return "Float";
                 case "Decimal":
                     return "java.math.BigDecimal";
                 default:
