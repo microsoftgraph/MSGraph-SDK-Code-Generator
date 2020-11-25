@@ -89,7 +89,7 @@ public class MediaStream implements IJsonBackedObject {
     @SerializedName(value = "lowVideoProcessingCapabilityRatio", alternate = {"LowVideoProcessingCapabilityRatio"})
     @Expose
 	@Nullable
-    public float lowVideoProcessingCapabilityRatio;
+    public Float lowVideoProcessingCapabilityRatio;
 
     /**
      * The Average Audio Network Jitter.

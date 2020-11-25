@@ -61,7 +61,7 @@ public class DeviceInfo implements IJsonBackedObject {
     @SerializedName(value = "speakerGlitchRate", alternate = {"SpeakerGlitchRate"})
     @Expose
 	@Nullable
-    public float speakerGlitchRate;
+    public Float speakerGlitchRate;
 
 
     /**
