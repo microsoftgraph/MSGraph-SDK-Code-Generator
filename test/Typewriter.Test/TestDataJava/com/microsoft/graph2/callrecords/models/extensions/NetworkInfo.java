@@ -91,7 +91,7 @@ public class NetworkInfo implements IJsonBackedObject {
     @SerializedName(value = "bandwidthLowEventRatio", alternate = {"BandwidthLowEventRatio"})
     @Expose
 	@Nullable
-    public float bandwidthLowEventRatio;
+    public Float bandwidthLowEventRatio;
 
 
     /**
