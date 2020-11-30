@@ -42,7 +42,6 @@ var isMethodResponse = complex.LongDescriptionContains("methodResponse");
 var classType = complex.IsAbstract ? "abstract partial class" : "partial class";
 
 var attributeStringBuilder = new StringBuilder();
-attributeStringBuilder.Append("[JsonObject(MemberSerialization = MemberSerialization.OptIn)]");
 
 // We only want to add the derived type converter to the class at the top of the inheritance hierarchy
 if (complex.Derived != null && complex.Base == null)
@@ -59,8 +58,7 @@ namespace <#=@namespace#>
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type <#=complexTypeName#>.
@@ -90,7 +88,7 @@ if (!complex.IsAbstract)
                 ? property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase()
                 : property.Name.ToCheckedCase().GetSanitizedPropertyName(property);
 
-            var attributeDefinition = string.Format("[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = \"{0}\", Required = Newtonsoft.Json.Required.Default)]", property.Name);
+            var attributeDefinition = string.Format("[JsonPropertyName(\"{0}\")]", property.Name);
 
             if (property.IsTypeNullable() || property.IsCollection)
             {
@@ -133,13 +131,13 @@ if (!complex.IsAbstract)
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData(ReadData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
 
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.type", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("@odata.type")]
         public string ODataType { get; set; }
     <#
     }

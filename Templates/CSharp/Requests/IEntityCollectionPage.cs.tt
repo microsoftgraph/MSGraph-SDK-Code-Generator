@@ -24,8 +24,7 @@ var entityCollectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.N
 namespace <#=@namespace#>
 {
     using System;
-
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.

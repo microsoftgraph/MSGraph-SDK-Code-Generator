@@ -12,7 +12,7 @@ var enumConverterTypeName = @namespace.GetCoreLibraryType("EnumConverter");
 
 namespace <#=enumT.Namespace.GetNamespaceName()#>
 {
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The enum <#=enumName#>.

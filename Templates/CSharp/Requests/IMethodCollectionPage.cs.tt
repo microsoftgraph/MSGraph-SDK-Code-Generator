@@ -20,7 +20,7 @@ var entityCollectionPage = responseNamePrefix + "CollectionPage";
 
 namespace <#=@namespace#>
 {
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.

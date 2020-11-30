@@ -17,19 +17,17 @@ var collectionPage = responseNamePrefix + "CollectionPage";
 namespace <#=@namespace#>
 {
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type <#=collectionResponse#>.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class <#=collectionResponse#>
     {
         /// <summary>
         /// Gets or sets the <see cref="I<#=collectionPage#>"/> value.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
+        [JsonPropertyName("value")]
         public I<#=collectionPage#> Value { get; set; }
         <#
         if (isSpecialCollection)
@@ -45,7 +43,7 @@ namespace <#=@namespace#>
         /// <summary>
         /// Gets or sets the <#=propertyName#>.
         /// </summary>
-		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="<#=property.Name#>", Required = Newtonsoft.Json.Required.Default)]
+		[JsonPropertyName("<#=property.Name#>"]
         public <#=propertyType#> <#=propertyName#> { get; set; }
         <#
                 }
@@ -56,7 +54,7 @@ namespace <#=@namespace#>
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData(ReadData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
     }
 }
