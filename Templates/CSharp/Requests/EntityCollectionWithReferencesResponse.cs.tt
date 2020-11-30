@@ -26,7 +26,7 @@ namespace <#=@namespace#>
 // We only want to add the derived type converter to the classes at the top of the inheritance hierarchy
 if (prop.Class.Derived != null && prop.Class.Base == null)
 { #>
-    [JsonConverter(typeof(<#=derivedTypeConverterTypeName#>))]
+    [JsonConverter(typeof(<#=derivedTypeConverterTypeName#><<#=collectionResponse#>>))]
 <# } #>
     public class <#=collectionResponse#>
     {

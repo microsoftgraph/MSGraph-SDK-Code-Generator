@@ -48,7 +48,7 @@ if (complex.Derived != null && complex.Base == null)
 {
     attributeStringBuilder.Append(Environment.NewLine);
     attributeStringBuilder.Append("    ");
-    attributeStringBuilder.AppendFormat("[JsonConverter(typeof({0}))]", derivedTypeConverterTypeName);
+    attributeStringBuilder.AppendFormat("[JsonConverter(typeof({0}<{1}>))]", derivedTypeConverterTypeName, typeDeclaration);
 }
 
 #>
