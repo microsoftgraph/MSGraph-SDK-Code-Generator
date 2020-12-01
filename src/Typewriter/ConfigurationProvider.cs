@@ -9,7 +9,7 @@ namespace Typewriter
     public class ConfigurationProvider : Vipr.Core.IConfigurationProvider
     {
         private readonly IConfiguration Configuration;
-        private const string dotNetCorePathprefix = "../GraphODataTemplateWriter";
+        private const string dotNetCorePathPrefix = "../GraphODataTemplateWriter";
         private const string configFolder = ".config";
         public ConfigurationProvider()
         {
@@ -34,12 +34,12 @@ namespace Typewriter
             Configuration = builder.AddEnvironmentVariables().Build();
         }
         private string GetConfigurationFilePath(string fileName)
-        { //when using dotnet run the Environment.CurrentDirectory is set to csproj directory, not the bin like when runing with Visual Studio
+        { //when using dotnet run, the Environment.CurrentDirectory is set to csproj directory, not the bin like when running with Visual Studio
             var regularPath = Path.Combine(Environment.CurrentDirectory, configFolder, fileName);
             if (File.Exists(regularPath))
                 return regularPath;
             else
-                return Path.Combine(Environment.CurrentDirectory, dotNetCorePathprefix, configFolder, fileName);
+                return Path.Combine(Environment.CurrentDirectory, dotNetCorePathPrefix, configFolder, fileName);
         }
 
         public T GetConfiguration<T>()
