@@ -84,8 +84,8 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      * @return the collection request builder
      */
     @Nonnull
-    public UserCollectionWithReferencesRequestBuilder membersAsUser() {
-        return new UserCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/microsoft.graph.user", getClient(), null);
+    public UserCollectionRequestBuilder membersAsUser() {
+        return new UserCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/microsoft.graph.user", getClient(), null);
     }
 
     /**
@@ -95,8 +95,8 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      * @param id the item identifier
      */
     @Nonnull
-    public UserWithReferenceRequestBuilder membersAsUser(@Nonnull final String id) {
-        return new UserWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id + "/microsoft.graph.user", getClient(), null);
+    public UserRequestBuilder membersAsUser(@Nonnull final String id) {
+        return new UserRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id + "/microsoft.graph.user", getClient(), null);
     }
     /**
      *  Gets a request builder for the Group collection
@@ -104,8 +104,8 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      * @return the collection request builder
      */
     @Nonnull
-    public GroupCollectionWithReferencesRequestBuilder membersAsGroup() {
-        return new GroupCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/microsoft.graph.group", getClient(), null);
+    public GroupCollectionRequestBuilder membersAsGroup() {
+        return new GroupCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/microsoft.graph.group", getClient(), null);
     }
 
     /**
@@ -115,7 +115,7 @@ public class GroupRequestBuilder extends BaseRequestBuilder<Group> {
      * @param id the item identifier
      */
     @Nonnull
-    public GroupWithReferenceRequestBuilder membersAsGroup(@Nonnull final String id) {
-        return new GroupWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id + "/microsoft.graph.group", getClient(), null);
+    public GroupRequestBuilder membersAsGroup(@Nonnull final String id) {
+        return new GroupRequestBuilder(getRequestUrlWithAdditionalSegment("members") + "/" + id + "/microsoft.graph.group", getClient(), null);
     }
 }
