@@ -42,7 +42,6 @@ var attributeStringBuilder = new StringBuilder();
 // We only want to add the derived type converter to the classes at the top of the inheritance hierarchy
 if (entity.Derived != null && entity.Base == null)
 {
-    attributeStringBuilder.Append("    ");
     attributeStringBuilder.AppendFormat("[JsonConverter(typeof({0}<{1}>))]", derivedTypeConverterTypeName, typeDeclaration);
 }
 
