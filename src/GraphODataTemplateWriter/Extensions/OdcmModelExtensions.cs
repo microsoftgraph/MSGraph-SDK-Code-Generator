@@ -9,6 +9,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
     using Vipr.Core.CodeModel;
     using NLog;
     using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
+    using System.Text.RegularExpressions;
 
     public static class OdcmModelExtensions
     {
@@ -340,11 +341,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return property.IsLink;
         }
 
+        private static Regex castOverloadsFilter = new Regex(@"As[A-Z]");
         public static bool IsReference(this OdcmProperty property)
         {
             var propertyClass = property.Class.AsOdcmClass();
 
-            return propertyClass.Kind != OdcmClassKind.Service && property.IsLink && !property.ContainsTarget;
+            return propertyClass.Kind != OdcmClassKind.Service && property.IsLink && !property.ContainsTarget && !castOverloadsFilter.IsMatch(property.Name);
         }
 
         public static bool HasActions(this OdcmClass odcmClass)
