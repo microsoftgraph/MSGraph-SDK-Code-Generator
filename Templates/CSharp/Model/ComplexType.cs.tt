@@ -46,7 +46,6 @@ var attributeStringBuilder = new StringBuilder();
 // We only want to add the derived type converter to the class at the top of the inheritance hierarchy
 if (complex.Derived != null && complex.Base == null)
 {
-    attributeStringBuilder.Append(Environment.NewLine);
     attributeStringBuilder.Append("    ");
     attributeStringBuilder.AppendFormat("[JsonConverter(typeof({0}<{1}>))]", derivedTypeConverterTypeName, typeDeclaration);
 }
