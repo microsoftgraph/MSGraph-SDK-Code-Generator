@@ -12,13 +12,12 @@ namespace Microsoft.Graph
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Test Entity.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    
     public partial class TestEntity : Entity
     {
     
@@ -33,19 +32,19 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets test nav.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "testNav", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("testNav")]
         public TestType TestNav { get; set; }
     
         /// <summary>
         /// Gets or sets test invalid nav.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "testInvalidNav", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("testInvalidNav")]
         public EntityType2 TestInvalidNav { get; set; }
     
         /// <summary>
         /// Gets or sets test explicit nav.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "testExplicitNav", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("testExplicitNav")]
         public EntityType3 TestExplicitNav { get; set; }
     
     }

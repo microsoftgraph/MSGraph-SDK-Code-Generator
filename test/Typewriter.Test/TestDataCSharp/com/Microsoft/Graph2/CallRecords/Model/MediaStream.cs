@@ -12,14 +12,12 @@ namespace Microsoft.Graph2.CallRecords
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type MediaStream.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    [JsonConverter(typeof(Microsoft.Graph.DerivedTypeConverter))]
+    [JsonConverter(typeof(Microsoft.Graph.DerivedTypeConverter<MediaStream>))]
     public partial class MediaStream
     {
         /// <summary>
@@ -33,55 +31,55 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets or sets streamId.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "streamId", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("streamId")]
         public string StreamId { get; set; }
     
         /// <summary>
         /// Gets or sets startDateTime.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "startDateTime", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("startDateTime")]
         public DateTimeOffset? StartDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets streamDirection.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "streamDirection", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("streamDirection")]
         public MediaStreamDirection? StreamDirection { get; set; }
     
         /// <summary>
         /// Gets or sets packetUtilization.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "packetUtilization", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("packetUtilization")]
         public Int64? PacketUtilization { get; set; }
     
         /// <summary>
         /// Gets or sets wasMediaBypassed.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "wasMediaBypassed", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("wasMediaBypassed")]
         public bool? WasMediaBypassed { get; set; }
     
         /// <summary>
         /// Gets or sets lowVideoProcessingCapabilityRatio.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lowVideoProcessingCapabilityRatio", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("lowVideoProcessingCapabilityRatio")]
         public Single? LowVideoProcessingCapabilityRatio { get; set; }
     
         /// <summary>
         /// Gets or sets averageAudioNetworkJitter.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "averageAudioNetworkJitter", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("averageAudioNetworkJitter")]
         public Microsoft.Graph.Duration AverageAudioNetworkJitter { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData(ReadData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
 
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.type", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("@odata.type")]
         public string ODataType { get; set; }
     
     }

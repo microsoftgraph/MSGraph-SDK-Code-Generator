@@ -9,35 +9,34 @@
 
 namespace Microsoft.Graph
 {
-    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type OnenotePageForwardRequestBody.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    
     public partial class OnenotePageForwardRequestBody
     {
     
         /// <summary>
         /// Gets or sets ToRecipients.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "ToRecipients", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("ToRecipients")]
         public IEnumerable<Recipient> ToRecipients { get; set; }
     
         /// <summary>
         /// Gets or sets Details.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Details", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("Details")]
         public string Details { get; set; }
     
         /// <summary>
         /// Gets or sets Comment.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Comment", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("Comment")]
         public string Comment { get; set; }
     
     }

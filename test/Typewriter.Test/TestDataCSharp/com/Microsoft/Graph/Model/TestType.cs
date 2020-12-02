@@ -12,13 +12,12 @@ namespace Microsoft.Graph
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Test Type.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    
     public partial class TestType : Entity
     {
     
@@ -33,7 +32,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets property alpha.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "propertyAlpha", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("propertyAlpha")]
         public DerivedComplexTypeRequestObject PropertyAlpha { get; set; }
     
     }

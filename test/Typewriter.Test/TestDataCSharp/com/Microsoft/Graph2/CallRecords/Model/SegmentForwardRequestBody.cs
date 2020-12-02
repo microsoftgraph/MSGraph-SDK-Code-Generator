@@ -9,47 +9,46 @@
 
 namespace Microsoft.Graph2.CallRecords
 {
-    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type SegmentForwardRequestBody.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    
     public partial class SegmentForwardRequestBody
     {
     
         /// <summary>
         /// Gets or sets ToRecipients.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "ToRecipients", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("ToRecipients")]
         public IEnumerable<Microsoft.Graph.Recipient> ToRecipients { get; set; }
     
         /// <summary>
         /// Gets or sets SingleRecipient.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "SingleRecipient", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("SingleRecipient")]
         public Microsoft.Graph.Recipient SingleRecipient { get; set; }
     
         /// <summary>
         /// Gets or sets MultipleSessions.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "MultipleSessions", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("MultipleSessions")]
         public IEnumerable<Session> MultipleSessions { get; set; }
     
         /// <summary>
         /// Gets or sets SingleSession.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "SingleSession", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("SingleSession")]
         public Session SingleSession { get; set; }
     
         /// <summary>
         /// Gets or sets Comment.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Comment", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("Comment")]
         public string Comment { get; set; }
     
     }

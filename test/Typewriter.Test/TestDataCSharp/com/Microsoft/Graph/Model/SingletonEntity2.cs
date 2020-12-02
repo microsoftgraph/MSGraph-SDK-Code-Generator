@@ -12,13 +12,12 @@ namespace Microsoft.Graph
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Singleton Entity2.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    
     public partial class SingletonEntity2 : Entity
     {
     
@@ -33,7 +32,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets test single nav2.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "testSingleNav2", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("testSingleNav2")]
         public EntityType3 TestSingleNav2 { get; set; }
     
     }

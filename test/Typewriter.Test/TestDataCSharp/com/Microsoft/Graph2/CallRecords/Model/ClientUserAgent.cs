@@ -12,13 +12,12 @@ namespace Microsoft.Graph2.CallRecords
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type ClientUserAgent.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    
     public partial class ClientUserAgent : UserAgent
     {
         /// <summary>
@@ -32,13 +31,13 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets or sets platform.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "platform", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("platform")]
         public ClientPlatform? Platform { get; set; }
     
         /// <summary>
         /// Gets or sets productFamily.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "productFamily", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("productFamily")]
         public ProductFamily? ProductFamily { get; set; }
     
     }

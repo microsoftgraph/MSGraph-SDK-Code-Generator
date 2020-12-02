@@ -12,14 +12,12 @@ namespace Microsoft.Graph2.CallRecords
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type DeviceInfo.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    [JsonConverter(typeof(Microsoft.Graph.DerivedTypeConverter))]
+    [JsonConverter(typeof(Microsoft.Graph.DerivedTypeConverter<DeviceInfo>))]
     public partial class DeviceInfo
     {
         /// <summary>
@@ -33,31 +31,31 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets or sets captureDeviceName.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "captureDeviceName", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("captureDeviceName")]
         public string CaptureDeviceName { get; set; }
     
         /// <summary>
         /// Gets or sets sentSignalLevel.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sentSignalLevel", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("sentSignalLevel")]
         public Int32? SentSignalLevel { get; set; }
     
         /// <summary>
         /// Gets or sets speakerGlitchRate.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "speakerGlitchRate", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("speakerGlitchRate")]
         public Single? SpeakerGlitchRate { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData(ReadData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
 
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.type", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("@odata.type")]
         public string ODataType { get; set; }
     
     }

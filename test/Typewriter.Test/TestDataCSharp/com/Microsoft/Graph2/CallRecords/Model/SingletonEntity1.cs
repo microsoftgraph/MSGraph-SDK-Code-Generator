@@ -12,13 +12,12 @@ namespace Microsoft.Graph2.CallRecords
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Singleton Entity1.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    
     public partial class SingletonEntity1 : Microsoft.Graph.Entity
     {
     
@@ -33,7 +32,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets or sets test single nav.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "testSingleNav", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("testSingleNav")]
         public Microsoft.Graph.TestType TestSingleNav { get; set; }
     
     }
