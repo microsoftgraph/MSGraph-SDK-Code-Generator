@@ -32,7 +32,9 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.T
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.BaseCollectionRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
-
+<# if (c.GetFeatures().CanCount) { #>
+import <#=importNamespace#>.http.PrimitiveRequestBuilder;
+<# } #>
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), "BaseCollectionRequestBuilder<"+c.TypeName()+", "+c.TypeRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+", "+c.TypeCollectionRequest()+">")#>
 
     /**
@@ -117,4 +119,15 @@ if (currentTypeProjection != null) {
     }
 }
 #>
+<# if (c.GetFeatures().CanCount && (currentTypeProjection == null || !currentTypeProjection.MethodsAndOverloads().Any(x => x.MethodName().Equals("Count")))) { #>
+
+    /**
+     * Gets the raw count request for the collection
+     * @return The raw count request for the collection
+     */
+    @Nonnull
+    public PrimitiveRequestBuilder<Long> count() {
+        return new PrimitiveRequestBuilder<Long>(getRequestUrlWithAdditionalSegment("$count"), getClient(), null, Long.class);
+    }
+<# } #>
 }

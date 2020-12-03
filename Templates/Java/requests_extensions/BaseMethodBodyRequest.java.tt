@@ -100,6 +100,29 @@ import <#=importNamespace#>.concurrency.IExecutors;
     }
 
 <# } #>
+<# if (c.GetFeatures().CanCount) { #>
+    /**
+     * Sets the count value for the request
+     *
+     * @param value whether or not to return the count of objects with the request
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=typeRequest#> count(final boolean value) {
+        addCountOption(value);
+        return this;
+    }
+    /**
+     * Sets the count value to true for the request
+     *
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=typeRequest#> count() {
+        addCountOption(true);
+        return this;
+    }
+<# } #>
 <# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
