@@ -7,7 +7,7 @@
     CustomT4Host host          = (CustomT4Host) Host;
     var model                  = host.CurrentModel;
     CodeWriterJava writer      = (CodeWriterJava) host.CodeWriter;
-    bool logTemplateSrc        = false;
+    bool logTemplateSrc        = true;
     var c = host.CurrentType;
 #>
 <# if (logTemplateSrc) { #>
