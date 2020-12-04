@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 {
@@ -11,6 +11,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
     using System.Text;
     using System.Linq;
     using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
+    using System.Text.RegularExpressions;
 
     public static class TypeHelperJava
     {
@@ -157,7 +158,65 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         {
             return templateFile.Substring(templateFile.LastIndexOf("Templates"));
         }
+        private static Regex lastIdReplacer = new Regex(@"\/{id}$");
 
+        /// <summary>
+        /// Gets the canonical path of the entity for reference request
+        /// </summary>
+        /// <param name="c">Current navigation property class</param>
+        /// <param name="m">Current model</param>
+        /// <returns>The canonical version relative path of the entity for reference request</returns>
+        public static string CanonicalPath(this OdcmObject c, OdcmModel m)
+        {
+            var propertyInformation = GetCanonicalNavigationProperties(c, m, true); //singleton type all have ContainsTarget=True to support navigation properties bindings, but they don't actually contain target
+            var shortestCanonicalPath = propertyInformation
+                                        .Select(x => GetNavigationPathFromProperty(x, m))
+                                        .Select(x => new { path = x, slashCount = x.Count(y => y == '/') })
+                                        .OrderBy(x => x.slashCount)
+                                        .Select(x => x.path)
+                                        .FirstOrDefault();
+            return string.IsNullOrEmpty(shortestCanonicalPath) ? string.Empty : lastIdReplacer.Replace(shortestCanonicalPath, string.Empty);
+        }
+        public static bool ShouldIncludeReferenceUpdateMethods(this OdcmObject c, OdcmModel m)
+        {
+            return GetCanonicalNavigationProperties(c, m).Any();
+        }
+        /// <summary>
+        /// Enumerates all navigation properties for a specific type in order to determine the canonical path for reference requests
+        /// </summary>
+        /// <param name="c">Type to find navigation properties for</param>
+        /// <param name="m">Model to find navigation properties from</param>
+        /// <param name="includeContainsTarget">Whether or not to include navigation properties that include target.</param>
+        /// <param name="includeNonCollectionProperties">Whether or not to include navigation properties that return single items.</param>
+        /// <returns>navigation properties for a specific type</returns>
+        private static IEnumerable<OdcmProperty> GetCanonicalNavigationProperties(this OdcmObject c, OdcmModel m, bool includeContainsTarget = false, bool includeNonCollectionProperties = false)
+        {
+            Func<OdcmProperty, bool> propertiesFilter = x => x.IsNavigation() && x.Projection.Type == c && (x.IsCollection || includeNonCollectionProperties) && (x.IsReference() || includeContainsTarget);
+            return m.EntityContainer
+                    .Properties
+                    .OfType<OdcmSingleton>()
+                    .SelectMany(x => x.Projection
+                                      .Type
+                                      .AsOdcmClass()
+                                      .Properties)
+                    .Union(m.EntityContainer.Properties)
+                    .Union(m.Namespaces
+                            .SelectMany(x => x.Classes)
+                            .SelectMany(x => x.Properties))
+                    .Where(propertiesFilter);
+        }
+        private static string GetNavigationPathFromProperty(this OdcmProperty p, OdcmModel m, int currentDepthLevel = 0)
+        {
+            currentDepthLevel++;//some models can have circular references, this is a failsafe
+            if (p == null || currentDepthLevel > 10) return string.Empty;
+            if (p.Class == m.EntityContainer)
+                if(p is OdcmSingleton)
+                    return $"/{p.Name}";
+                else
+                    return $"/{p.Name}/{{id}}";
+            else
+                return GetNavigationPathFromProperty(GetCanonicalNavigationProperties(p.Class, m, true, true).FirstOrDefault(), m, currentDepthLevel) + $"/{p.Name}/{{id}}";
+        }
         public static string TypeName(this OdcmObject c)
         {
             if (c is OdcmMethod)

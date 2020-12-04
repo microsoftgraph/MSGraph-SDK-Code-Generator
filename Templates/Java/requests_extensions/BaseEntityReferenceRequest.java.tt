@@ -11,6 +11,8 @@ import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.http.BaseReferenceRequest;
 import <#=importNamespace#>.http.HttpMethod;
 import <#=importNamespace#>.core.IBaseClient;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonObject;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequest(), "BaseReferenceRequest<"+c.TypeName()+">")#>
 
@@ -52,7 +54,7 @@ import <#=importNamespace#>.core.IBaseClient;
         return this;
     }
 <# } #>
-<# if (c.GetFeatures().CanUpdate) { #>
+<# if (c.GetFeatures().CanUpdate && c.ShouldIncludeReferenceUpdateMethods(host.CurrentModel)) { #>
     /**
      * Puts the <#=c.TypeName()#>
      *
@@ -60,7 +62,9 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param callback the callback to be called after success or failure
      */
     public void put(@Nonnull final <#=c.TypeName()#> src<#=c.TypeName()#>, @Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
-        send(HttpMethod.PUT, callback, src<#=c.TypeName()#>);
+        final JsonObject payload = new JsonObject();
+        payload.add("@odata.id", new JsonPrimitive(this.getClient().getServiceRoot() + "<#=c.CanonicalPath(host.CurrentModel)#>/" + src<#=c.TypeName()#>.id));
+        send(HttpMethod.PUT, callback, payload);
     }
 
     /**
@@ -72,7 +76,9 @@ import <#=importNamespace#>.core.IBaseClient;
      */
     @Nullable
     public <#=c.TypeName()#> put(@Nonnull final <#=c.TypeName()#> src<#=c.TypeName()#>) throws ClientException {
-        return send(HttpMethod.PUT, src<#=c.TypeName()#>);
+        final JsonObject payload = new JsonObject();
+        payload.add("@odata.id", new JsonPrimitive(this.getClient().getServiceRoot() + "<#=c.CanonicalPath(host.CurrentModel)#>/" + src<#=c.TypeName()#>.id));
+        return send(HttpMethod.PUT, payload);
     }
 <# } #>
 }
