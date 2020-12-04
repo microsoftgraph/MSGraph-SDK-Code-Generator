@@ -192,14 +192,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         private static IEnumerable<OdcmProperty> GetCanonicalNavigationProperties(this OdcmObject c, OdcmModel m, bool includeContainsTarget = false, bool includeNonCollectionProperties = false)
         {
             Func<OdcmProperty, bool> propertiesFilter = x => x.IsNavigation() && x.Projection.Type == c && (x.IsCollection || includeNonCollectionProperties) && (x.IsReference() || includeContainsTarget);
-            var entityContainerProperties = m.EntityContainer.Properties.Where(propertiesFilter);
-            var namespaceProperties = m.Namespaces
-                                            .SelectMany(x => x.Classes)
-                                            .SelectMany(x => x.Properties.Where(propertiesFilter));
-            return m.EntityContainer.Properties.OfType<OdcmSingleton>()
-                                        .SelectMany(x => x.Projection.Type.AsOdcmClass().Properties.Where(propertiesFilter))
-                                        .Union(entityContainerProperties.Any() ? entityContainerProperties : new List<OdcmProperty>())
-                                        .Union(namespaceProperties.Any() ? namespaceProperties : new List<OdcmProperty>());
+            return m.EntityContainer
+                    .Properties
+                    .OfType<OdcmSingleton>()
+                    .SelectMany(x => x.Projection
+                                      .Type
+                                      .AsOdcmClass()
+                                      .Properties)
+                    .Union(m.EntityContainer.Properties)
+                    .Union(m.Namespaces
+                            .SelectMany(x => x.Classes)
+                            .SelectMany(x => x.Properties))
+                    .Where(propertiesFilter);
         }
         private static string GetNavigationPathFromProperty(this OdcmProperty p, OdcmModel m, int currentDepthLevel = 0)
         {
