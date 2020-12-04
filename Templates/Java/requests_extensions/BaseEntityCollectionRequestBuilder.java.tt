@@ -32,7 +32,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=method.T
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.BaseCollectionRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
-<# if (c.GetFeatures().CanCount) { #>
+<# if (c.GetFeatures().CanCount && (currentTypeProjection == null || !currentTypeProjection.MethodsAndOverloads().Any(x => x.MethodName().Equals("Count")))) { #>
 import <#=importNamespace#>.http.PrimitiveRequestBuilder;
 <# } #>
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), "BaseCollectionRequestBuilder<"+c.TypeName()+", "+c.TypeRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+", "+c.TypeCollectionRequest()+">")#>
