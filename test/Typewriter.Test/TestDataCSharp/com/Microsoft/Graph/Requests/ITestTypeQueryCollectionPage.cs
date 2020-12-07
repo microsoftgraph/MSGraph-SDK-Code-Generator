@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The interface ITestTypeQueryCollectionPage.
     /// </summary>
-    [JsonConverter(typeof(InterfaceConverter<TestTypeQueryCollectionPage>))]
+    [InterfaceConverter(typeof(InterfaceConverter<TestTypeQueryCollectionPage>))]
     public interface ITestTypeQueryCollectionPage : ICollectionPage<ResponseObject>
     {
         /// <summary>

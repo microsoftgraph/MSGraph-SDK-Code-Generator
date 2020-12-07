@@ -24,7 +24,7 @@ namespace <#=@namespace#>
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.
     /// </summary>
-    [JsonConverter(typeof(<#=interfaceConverterTypeName#><<#=entityCollectionPage#>>))]
+    [InterfaceConverter(typeof(<#=interfaceConverterTypeName#><<#=entityCollectionPage#>>))]
     public interface I<#=entityCollectionPage#> : <#=iCollectionPageTypeName#><<#=innerEntityType#>>
     {
         /// <summary>

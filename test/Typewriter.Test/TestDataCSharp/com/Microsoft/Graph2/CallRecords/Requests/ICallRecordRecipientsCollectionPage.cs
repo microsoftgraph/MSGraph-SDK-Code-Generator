@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace Microsoft.Graph2.CallRecords
     /// <summary>
     /// The interface ICallRecordRecipientsCollectionPage.
     /// </summary>
-    [JsonConverter(typeof(Microsoft.Graph.InterfaceConverter<CallRecordRecipientsCollectionPage>))]
+    [InterfaceConverter(typeof(Microsoft.Graph.InterfaceConverter<CallRecordRecipientsCollectionPage>))]
     public interface ICallRecordRecipientsCollectionPage : Microsoft.Graph.ICollectionPage<Microsoft.Graph.EntityType2>
     {
         /// <summary>

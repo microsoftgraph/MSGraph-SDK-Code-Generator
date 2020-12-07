@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace Microsoft.Graph2.CallRecords
     /// <summary>
     /// The interface ISegmentRefTypesCollectionWithReferencesPage.
     /// </summary>
-    [JsonConverter(typeof(Microsoft.Graph.InterfaceConverter<SegmentRefTypesCollectionWithReferencesPage>))]
+    [InterfaceConverter(typeof(Microsoft.Graph.InterfaceConverter<SegmentRefTypesCollectionWithReferencesPage>))]
     public interface ISegmentRefTypesCollectionWithReferencesPage : Microsoft.Graph.ICollectionPage<Microsoft.Graph.EntityType3>
     {
         /// <summary>

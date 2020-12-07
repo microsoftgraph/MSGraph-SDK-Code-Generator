@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The interface IScheduleTimesOffCollectionPage.
     /// </summary>
-    [JsonConverter(typeof(InterfaceConverter<ScheduleTimesOffCollectionPage>))]
+    [InterfaceConverter(typeof(InterfaceConverter<ScheduleTimesOffCollectionPage>))]
     public interface IScheduleTimesOffCollectionPage : ICollectionPage<TimeOff>
     {
         /// <summary>
