@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 {
@@ -148,7 +148,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 case "date":
                     return "Date";
                 case "json":
-                    return "Newtonsoft.Json.Linq.JToken";
+                    return "System.Text.Json.JsonDocument";
                 default:
                     return type.ToCheckedCase();
             }
