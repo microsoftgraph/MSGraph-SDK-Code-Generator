@@ -10,6 +10,7 @@
 
 namespace Microsoft.Graph2.CallRecords
 {
+    using System;
     using Newtonsoft.Json;
 
     /// <summary>
