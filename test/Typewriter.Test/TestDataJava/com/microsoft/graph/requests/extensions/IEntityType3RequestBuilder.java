@@ -22,9 +22,10 @@ public interface IEntityType3RequestBuilder extends IRequestBuilder {
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the IEntityType3Request instance
      */
-    IEntityType3Request buildRequest();
+    IEntityType3Request buildRequest(final com.microsoft.graph.options.Option... requestOptions);
 
     /**
      * Creates the request with specific options instead of the existing options

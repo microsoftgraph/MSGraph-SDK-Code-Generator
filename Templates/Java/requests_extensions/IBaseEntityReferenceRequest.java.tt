@@ -14,7 +14,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeReferenceRequest(), "IHttpRequest")#>
 
-    void delete(final ICallback<<#=c.TypeName()#>> callback);
+    void delete(final ICallback<? super <#=c.TypeName()#>> callback);
 
     <#=c.TypeName()#> delete() throws ClientException;
 
@@ -45,7 +45,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      * @param src<#=c.TypeName()#> the <#=c.TypeName()#> to PUT
      * @param callback the callback to be called after success or failure
      */
-    void put(<#=c.TypeName()#> src<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback);
+    void put(<#=c.TypeName()#> src<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback);
 
     /**
      * Puts the <#=c.TypeName()#>

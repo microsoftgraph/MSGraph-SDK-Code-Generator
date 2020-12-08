@@ -40,7 +40,7 @@ public class EntityType2CollectionRequest extends BaseCollectionRequest<EntityTy
         super(requestUrl, client, requestOptions, EntityType2CollectionResponse.class, IEntityType2CollectionPage.class);
     }
 
-    public void get(final ICallback<IEntityType2CollectionPage> callback) {
+    public void get(final ICallback<? super IEntityType2CollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -59,17 +59,17 @@ public class EntityType2CollectionRequest extends BaseCollectionRequest<EntityTy
         return buildFromResponse(response);
     }
 
-    public void post(final EntityType2 newEntityType2, final ICallback<EntityType2> callback) {
+    public void post(final EntityType2 newEntityType2, final ICallback<? super EntityType2> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new EntityType2RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(newEntityType2, callback);
     }
 
     public EntityType2 post(final EntityType2 newEntityType2) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new EntityType2RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(newEntityType2);
     }
 
@@ -81,6 +81,28 @@ public class EntityType2CollectionRequest extends BaseCollectionRequest<EntityTy
      */
     public IEntityType2CollectionRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (EntityType2CollectionRequest)this;
+    }
+
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public IEntityType2CollectionRequest filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (EntityType2CollectionRequest)this;
+    }
+
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public IEntityType2CollectionRequest orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (EntityType2CollectionRequest)this;
     }
 

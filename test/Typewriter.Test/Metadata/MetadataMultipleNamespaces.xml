@@ -34,6 +34,25 @@
         <NavigationProperty Name="testInvalidNav" Type="graph.entityType2" />
         <NavigationProperty Name="testExplicitNav" Type="graph.entityType3" />
       </EntityType>
+      <EntityType Name="directoryObject" BaseType="graph.entity" OpenType="true">
+        <Property Name="deletedDateTime" Type="Edm.DateTimeOffset" />
+      </EntityType>
+      <EntityType Name="user" BaseType="graph.directoryObject" OpenType="true">
+        <Property Name="accountEnabled" Type="Edm.Boolean">
+          <Annotation Term="Org.OData.Core.V1.Description" String="true if the account is enabled; otherwise, false. This property is required when a user is created. Supports $filter." />
+        </Property>
+      </EntityType>
+      <EntityType Name="group" BaseType="graph.directoryObject" OpenType="true">
+        <NavigationProperty Name="members" Type="Collection(graph.directoryObject)">
+          <Annotation Term="Org.OData.Core.V1.Description" String="Users and groups that are members of this Adminsitrative Unit. HTTP Methods: GET (list members), POST (add members), DELETE (remove members)." />
+          <Annotation Term="Org.OData.Validation.V1.DerivedTypeConstraint">
+            <Collection>
+              <String>microsoft.graph.user</String>
+              <String>microsoft.graph.group</String>
+            </Collection>
+          </Annotation>
+        </NavigationProperty>
+      </EntityType>
       <!--Colliding with endpoint in callRecords namespace-->
       <EntityType Name="endpoint" BaseType="graph.entity">
         <Property Name="property1" Type="Edm.Int64" />
@@ -278,6 +297,11 @@
         <Parameter Name="value" Type="graph.identitySet" />
         <ReturnType Type="Collection(microsoft.graph2.callRecords.session)" />
       </Action>
+      <Function Name="item" IsBound="true" IsComposable="true">
+        <Parameter Name="bindparameter" Type="Collection(microsoft.graph2.callRecords.callRecord)" />
+        <Parameter Name="name" Type="Edm.String" Unicode="false" />
+        <ReturnType Type="microsoft.graph2.callRecords.callRecord" />
+      </Function>
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>

@@ -134,7 +134,10 @@ namespace Typewriter
             if (String.IsNullOrEmpty(edmxString))
                 throw new ArgumentNullException("edmxString", "The EDMX file string contains no content.");
 
-            var reader = new OdcmReader();
+            var reader = new OdcmReader
+            {
+                AddCastPropertiesForNavigationProperties = targetLanguage.Equals("java", StringComparison.InvariantCultureIgnoreCase)
+            };
             var writer = new TemplateWriter(targetLanguage, properties, endpointVersion);
             writer.SetConfigurationProvider(new ConfigurationProvider());
 

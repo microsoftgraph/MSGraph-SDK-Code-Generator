@@ -754,7 +754,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         }
         public static string GetPackagePrefix(this OdcmObject obj)
         {
-            switch(obj)
+            switch (obj)
             {
                 case OdcmEnum e:
                     return "models.generated";
@@ -860,7 +860,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.Append("\n");
 
             var imports = host.CurrentType.AsOdcmMethod().WithOverloads().SelectMany(x => ImportClassesOfMethodParameters(x));
-            sb.Append(imports.Any() ? imports.Aggregate((x, y) => $"{x}{Environment.NewLine}{y}"): string.Empty);
+            sb.Append(imports.Any() ? imports.Aggregate((x, y) => $"{x}{Environment.NewLine}{y}") : string.Empty);
             return sb.ToString();
         }
 
@@ -1045,14 +1045,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.AppendFormat(@"import {0}.serializer.ISerializer;
 import {0}.serializer.IJsonBackedObject;
 import {0}.serializer.AdditionalDataManager;
-import java.util.Arrays;
 import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
 
             sb.Append("\n");
             var importFormat = @"import {0}.{1}.{2};";
             Dictionary<string, int> uniqueStore = new Dictionary<string, int>();
 
-            foreach (var property in properties.Where(p => !p.Projection.Type.Name.Equals("Stream")))
+            foreach (var property in properties.Where(p => !p.Projection.Type.Name.Equals("Stream") && p.ParentPropertyType == null))
             {
                 var propertyType = property.GetTypeString();
                 if (property.Type is OdcmPrimitiveType)
@@ -1124,22 +1123,10 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
 
             if (properties != null)
             {
-                foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation()))
+                foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation() && p.ParentPropertyType == null))
                 {
                     if (property.Type is OdcmPrimitiveType)
                         continue;
-
-                    var propertyType = TypeCollectionResponse(property);
-                    string importstr = String.Format(importFormat,
-                                property.Projection.Type.Namespace.Name.AddPrefix(),
-                                GetPrefixForRequests(),
-                                propertyType);
-                    if (!uniqueStore.ContainsKey(importstr))
-                    {
-                        uniqueStore.Add(importstr, 0);
-                        sb.Append(importstr);
-                        sb.Append("\n");
-                    }
 
                     string propertyValue = TypeCollectionPage(property);
                     string importstr1 = String.Format(importFormat,
@@ -1213,13 +1200,13 @@ import java.util.EnumSet;";
                         ?.ToList()
                         ?.ForEach(x => methodImports.Add(x));
                     c?.NavigationProperties()
-                        ?.Where(x => x.IsCollection)?
+                        ?.Where(x => x.IsCollection && x.ParentPropertyType == null)?
                         .Select(x => x.Projection.Type)
                         ?.Distinct()
                         ?.ToList()
                         ?.ForEach(x => ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix, true));
                     c?.NavigationProperties()
-                        ?.Where(x => !x.IsCollection)
+                        ?.Where(x => !x.IsCollection && x.ParentPropertyType == null)
                         ?.Select(x => x.Projection.Type)
                         ?.Distinct()
                         ?.ToList()
@@ -1282,9 +1269,9 @@ import java.util.EnumSet;";
      * The {0}.
      * {1}
      */
-    @SerializedName(""{2}"")
+    @SerializedName(value = ""{2}"", alternate = {{""{3}""}})
     @Expose
-    public {3} {4};
+    public {4} {5};
 
 ";
             foreach (var p in parameters)
@@ -1294,6 +1281,7 @@ import java.util.EnumSet;";
                     p.ParamName().SplitCamelCase(),
                     ReplaceInvalidCharacters(p.LongDescription),
                     p.ParamName(),
+                    p.ParamName().ToUpperFirstChar(),
                     p.ParamType(),
                     p.ParamName().SanitizePropertyName(p).ToLowerFirstChar()
                 );
@@ -1349,30 +1337,16 @@ import java.util.EnumSet;";
             var sb = new StringBuilder();
             if (!isComplexType && properties != null)
             {
-                foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation()))
+                foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation() && p.ParentPropertyType == null))
                 {
                     sb.AppendFormat(
     @"
         if (json.has(""{0}"")) {{
-            final {1} response = new {1}();
-            if (json.has(""{0}@odata.nextLink"")) {{
-                response.nextLink = json.get(""{0}@odata.nextLink"").getAsString();
-            }}
-
-            final JsonObject[] sourceArray = serializer.deserializeObject(json.get(""{0}"").toString(), JsonObject[].class);
-            final {3}[] array = new {3}[sourceArray.length];
-            for (int i = 0; i < sourceArray.length; i++) {{
-                array[i] = serializer.deserializeObject(sourceArray[i].toString(), {3}.class);
-                array[i].setRawObject(serializer, sourceArray[i]);
-            }}
-            response.value = Arrays.asList(array);
-            {0} = new {2}(response, null);
+            {0} = serializer.deserializeObject(json.get(""{0}"").toString(), {1}.class);
         }}
 ",
                 property.Name.SanitizePropertyName(property),
-                TypeCollectionResponse(property),
-                TypeCollectionPage(property),
-                property.GetTypeString());
+                TypeCollectionPage(property));
                 }
             }
             sb.Append("    }");
@@ -1440,37 +1414,38 @@ import java.util.EnumSet;";
             var format =
     @"    /**
      * The {0}.
-     * {4}
+     * {1}
      */
-    @SerializedName(""{1}"")
+    @SerializedName(value = ""{2}"", alternate = {{""{3}""}})
     @Expose
-    public {2} {3};
+    public {4} {5};
 
 ";
             var collectionFormat =
     @"    /**
      * The {0}.
-     * {4}
+     * {1}
      */
-    public {2} {3};
+    public {4} {5};
 
 ";
 
-            foreach (var property in properties.Where(p => !p.Projection.Type.Name.Equals("Stream")))
+            foreach (var property in properties.Where(p => !p.Projection.Type.Name.Equals("Stream") && p.ParentPropertyType == null))
             {
                 var propertyName = property.Name.ToUpperFirstChar();
                 var propertyType = "";
                 var propertyFormat = format;
                 if (property.IsCollection)
                 {
-                    if (!property.IsNavigation())
+                    if (property.IsNavigation())
                     {
-                        propertyType = "java.util.List<" + property.GetTypeString() + ">";
+                        propertyType = TypeCollectionPage(property);
+                        if (!property.ContainsTarget)
+                            propertyFormat = collectionFormat;
                     }
                     else
                     {
-                        propertyType = TypeCollectionPage(property);
-                        propertyFormat = collectionFormat;
+                        propertyType = "java.util.List<" + property.GetTypeString() + ">";
                     }
                 }
                 else
@@ -1480,10 +1455,11 @@ import java.util.EnumSet;";
 
                 sb.AppendFormat(propertyFormat,
                     propertyName.SplitCamelCase(),
+                    GetSanitizedDescription(property),
                     property.Name,
+                    propertyName,
                     propertyType,
-                    property.Name.ToLowerFirstChar().SanitizePropertyName(property),
-                    GetSanitizedDescription(property));
+                    property.Name.ToLowerFirstChar().SanitizePropertyName(property));
             }
             return sb.ToString();
         }

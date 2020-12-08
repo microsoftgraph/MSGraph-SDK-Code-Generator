@@ -23,7 +23,7 @@ public class TestTypeQueryBody {
      * The requests.
      * 
      */
-    @SerializedName("requests")
+    @SerializedName(value = "requests", alternate = {"Requests"})
     @Expose
     public java.util.List<DerivedComplexTypeRequest> requests;
 

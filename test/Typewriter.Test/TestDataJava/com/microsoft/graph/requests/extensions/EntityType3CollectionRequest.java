@@ -41,7 +41,7 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
         super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, IEntityType3CollectionPage.class);
     }
 
-    public void get(final ICallback<IEntityType3CollectionPage> callback) {
+    public void get(final ICallback<? super IEntityType3CollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -60,17 +60,17 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
         return buildFromResponse(response);
     }
 
-    public void post(final EntityType3 newEntityType3, final ICallback<EntityType3> callback) {
+    public void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new EntityType3RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(newEntityType3, callback);
     }
 
     public EntityType3 post(final EntityType3 newEntityType3) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new EntityType3RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(newEntityType3);
     }
 
@@ -82,6 +82,28 @@ public class EntityType3CollectionRequest extends BaseCollectionRequest<EntityTy
      */
     public IEntityType3CollectionRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (EntityType3CollectionRequest)this;
+    }
+
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public IEntityType3CollectionRequest filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (EntityType3CollectionRequest)this;
+    }
+
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public IEntityType3CollectionRequest orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (EntityType3CollectionRequest)this;
     }
 

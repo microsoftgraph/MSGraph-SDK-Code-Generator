@@ -25,10 +25,11 @@ import <#=importNamespace#>.http.BaseRequestBuilder;
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the <#=c.ITypeStreamRequest()#> instance
      */
-    public <#=c.ITypeStreamRequest()#> buildRequest() {
-        return buildRequest(getOptions());
+    public <#=c.ITypeStreamRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**
@@ -49,11 +50,11 @@ if (c.AsOdcmClass() != null)
         if (prop.IsCollection()) {
 #>
     public <#=prop.ITypeCollectionRequestBuilder()#> <#=prop.Name#>() {
-        return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+        return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>")<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
     }
 
     public <#=prop.ITypeRequestBuilder()#> <#=prop.Name#>(final String id) {
-        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>") + "/" + id, getClient(), null);
+        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>") + "/" + id<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
     }
 <#
         } else {

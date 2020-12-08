@@ -40,10 +40,11 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder implements ITes
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the ITestEntityRequest instance
      */
-    public ITestEntityRequest buildRequest() {
-        return buildRequest(getOptions());
+    public ITestEntityRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

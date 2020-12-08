@@ -21,7 +21,7 @@ public interface IScheduleRequest extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<Schedule> callback);
+    void get(final ICallback<? super Schedule> callback);
 
     /**
      * Gets the Schedule from the service
@@ -36,7 +36,7 @@ public interface IScheduleRequest extends IHttpRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<Schedule> callback);
+    void delete(final ICallback<? super Schedule> callback);
 
     /**
      * Delete this item from the service
@@ -51,7 +51,7 @@ public interface IScheduleRequest extends IHttpRequest {
      * @param sourceSchedule the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    void patch(final Schedule sourceSchedule, final ICallback<Schedule> callback);
+    void patch(final Schedule sourceSchedule, final ICallback<? super Schedule> callback);
 
     /**
      * Patches this Schedule with a source
@@ -68,7 +68,7 @@ public interface IScheduleRequest extends IHttpRequest {
      * @param newSchedule the new object to create
      * @param callback the callback to be called after success or failure
      */
-    void post(final Schedule newSchedule, final ICallback<Schedule> callback);
+    void post(final Schedule newSchedule, final ICallback<? super Schedule> callback);
 
     /**
      * Posts a Schedule with a new object
@@ -78,6 +78,23 @@ public interface IScheduleRequest extends IHttpRequest {
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     Schedule post(final Schedule newSchedule) throws ClientException;
+
+    /**
+     * Posts a Schedule with a new object
+     *
+     * @param newSchedule the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final Schedule newSchedule, final ICallback<? super Schedule> callback);
+
+    /**
+     * Posts a Schedule with a new object
+     *
+     * @param newSchedule the object to create/update
+     * @return the created Schedule
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    Schedule put(final Schedule newSchedule) throws ClientException;
 
     /**
      * Sets the select clause for the request

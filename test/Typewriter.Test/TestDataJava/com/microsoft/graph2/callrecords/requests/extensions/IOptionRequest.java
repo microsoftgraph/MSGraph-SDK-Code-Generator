@@ -21,7 +21,7 @@ public interface IOptionRequest extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<Option> callback);
+    void get(final ICallback<? super Option> callback);
 
     /**
      * Gets the Option from the service
@@ -36,7 +36,7 @@ public interface IOptionRequest extends IHttpRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<Option> callback);
+    void delete(final ICallback<? super Option> callback);
 
     /**
      * Delete this item from the service
@@ -51,7 +51,7 @@ public interface IOptionRequest extends IHttpRequest {
      * @param sourceOption the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    void patch(final Option sourceOption, final ICallback<Option> callback);
+    void patch(final Option sourceOption, final ICallback<? super Option> callback);
 
     /**
      * Patches this Option with a source
@@ -68,7 +68,7 @@ public interface IOptionRequest extends IHttpRequest {
      * @param newOption the new object to create
      * @param callback the callback to be called after success or failure
      */
-    void post(final Option newOption, final ICallback<Option> callback);
+    void post(final Option newOption, final ICallback<? super Option> callback);
 
     /**
      * Posts a Option with a new object
@@ -78,6 +78,23 @@ public interface IOptionRequest extends IHttpRequest {
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     Option post(final Option newOption) throws ClientException;
+
+    /**
+     * Posts a Option with a new object
+     *
+     * @param newOption the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final Option newOption, final ICallback<? super Option> callback);
+
+    /**
+     * Posts a Option with a new object
+     *
+     * @param newOption the object to create/update
+     * @return the created Option
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    Option put(final Option newOption) throws ClientException;
 
     /**
      * Sets the select clause for the request

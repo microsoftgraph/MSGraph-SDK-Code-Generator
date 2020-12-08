@@ -31,7 +31,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.ITypeCollectionPage()#>.class);
     }
 
-    public void get(final ICallback<<#=c.ITypeCollectionPage()#>> callback) {
+    public void get(final ICallback<? super <#=c.ITypeCollectionPage()#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -50,17 +50,17 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
         return buildFromResponse(response);
     }
 
-    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback) {
+    public void post(final <#=c.TypeName()#> new<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(new<#=c.TypeName()#>, callback);
     }
 
     public <#=c.TypeName()#> post(final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(new<#=c.TypeName()#>);
     }
 
@@ -73,6 +73,32 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
      */
     public <#=c.ITypeCollectionRequest()#> expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (<#=c.TypeCollectionRequest()#>)this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanFilter) { #>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public <#=c.ITypeCollectionRequest()#> filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (<#=c.TypeCollectionRequest()#>)this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanSort) { #>
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public <#=c.ITypeCollectionRequest()#> orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (<#=c.TypeCollectionRequest()#>)this;
     }
 

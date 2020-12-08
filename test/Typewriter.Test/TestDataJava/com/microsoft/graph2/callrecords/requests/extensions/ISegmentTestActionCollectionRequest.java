@@ -11,6 +11,7 @@ import com.microsoft.graph.models.extensions.IdentitySet;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import java.util.Arrays;
 import java.util.EnumSet;
+import com.microsoft.graph.http.IHttpRequest;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
@@ -21,9 +22,9 @@ import com.google.gson.annotations.Expose;
 /**
  * The interface for the Segment Test Action Collection Request.
  */
-public interface ISegmentTestActionCollectionRequest {
+public interface ISegmentTestActionCollectionRequest extends IHttpRequest {
 
-    void post(final ICallback<ISegmentTestActionCollectionPage> callback);
+    void post(final ICallback<? super ISegmentTestActionCollectionPage> callback);
 
     ISegmentTestActionCollectionPage post() throws ClientException;
 

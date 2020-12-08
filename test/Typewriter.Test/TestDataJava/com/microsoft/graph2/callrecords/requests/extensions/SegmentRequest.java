@@ -50,7 +50,7 @@ public class SegmentRequest extends BaseRequest implements ISegmentRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<Segment> callback) {
+    public void get(final ICallback<? super Segment> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -69,7 +69,7 @@ public class SegmentRequest extends BaseRequest implements ISegmentRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<Segment> callback) {
+    public void delete(final ICallback<? super Segment> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -88,7 +88,7 @@ public class SegmentRequest extends BaseRequest implements ISegmentRequest {
      * @param sourceSegment the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final Segment sourceSegment, final ICallback<Segment> callback) {
+    public void patch(final Segment sourceSegment, final ICallback<? super Segment> callback) {
         send(HttpMethod.PATCH, callback, sourceSegment);
     }
 
@@ -109,7 +109,7 @@ public class SegmentRequest extends BaseRequest implements ISegmentRequest {
      * @param newSegment the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final Segment newSegment, final ICallback<Segment> callback) {
+    public void post(final Segment newSegment, final ICallback<? super Segment> callback) {
         send(HttpMethod.POST, callback, newSegment);
     }
 
@@ -122,6 +122,27 @@ public class SegmentRequest extends BaseRequest implements ISegmentRequest {
      */
     public Segment post(final Segment newSegment) throws ClientException {
         return send(HttpMethod.POST, newSegment);
+    }
+
+    /**
+     * Creates a Segment with a new object
+     *
+     * @param newSegment the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final Segment newSegment, final ICallback<? super Segment> callback) {
+        send(HttpMethod.PUT, callback, newSegment);
+    }
+
+    /**
+     * Creates a Segment with a new object
+     *
+     * @param newSegment the object to create/update
+     * @return the created Segment
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public Segment put(final Segment newSegment) throws ClientException {
+        return send(HttpMethod.PUT, newSegment);
     }
 
     /**

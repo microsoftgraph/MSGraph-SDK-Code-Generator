@@ -21,7 +21,7 @@ public interface IEntityType3Request extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<EntityType3> callback);
+    void get(final ICallback<? super EntityType3> callback);
 
     /**
      * Gets the EntityType3 from the service
@@ -36,7 +36,7 @@ public interface IEntityType3Request extends IHttpRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<EntityType3> callback);
+    void delete(final ICallback<? super EntityType3> callback);
 
     /**
      * Delete this item from the service
@@ -51,7 +51,7 @@ public interface IEntityType3Request extends IHttpRequest {
      * @param sourceEntityType3 the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    void patch(final EntityType3 sourceEntityType3, final ICallback<EntityType3> callback);
+    void patch(final EntityType3 sourceEntityType3, final ICallback<? super EntityType3> callback);
 
     /**
      * Patches this EntityType3 with a source
@@ -68,7 +68,7 @@ public interface IEntityType3Request extends IHttpRequest {
      * @param newEntityType3 the new object to create
      * @param callback the callback to be called after success or failure
      */
-    void post(final EntityType3 newEntityType3, final ICallback<EntityType3> callback);
+    void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback);
 
     /**
      * Posts a EntityType3 with a new object
@@ -78,6 +78,23 @@ public interface IEntityType3Request extends IHttpRequest {
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     EntityType3 post(final EntityType3 newEntityType3) throws ClientException;
+
+    /**
+     * Posts a EntityType3 with a new object
+     *
+     * @param newEntityType3 the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback);
+
+    /**
+     * Posts a EntityType3 with a new object
+     *
+     * @param newEntityType3 the object to create/update
+     * @return the created EntityType3
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    EntityType3 put(final EntityType3 newEntityType3) throws ClientException;
 
     /**
      * Sets the select clause for the request

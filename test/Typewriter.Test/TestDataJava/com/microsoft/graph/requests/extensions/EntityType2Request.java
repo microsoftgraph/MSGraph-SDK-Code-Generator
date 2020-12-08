@@ -37,7 +37,7 @@ public class EntityType2Request extends BaseRequest implements IEntityType2Reque
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<EntityType2> callback) {
+    public void get(final ICallback<? super EntityType2> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -56,7 +56,7 @@ public class EntityType2Request extends BaseRequest implements IEntityType2Reque
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<EntityType2> callback) {
+    public void delete(final ICallback<? super EntityType2> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -75,7 +75,7 @@ public class EntityType2Request extends BaseRequest implements IEntityType2Reque
      * @param sourceEntityType2 the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final EntityType2 sourceEntityType2, final ICallback<EntityType2> callback) {
+    public void patch(final EntityType2 sourceEntityType2, final ICallback<? super EntityType2> callback) {
         send(HttpMethod.PATCH, callback, sourceEntityType2);
     }
 
@@ -96,7 +96,7 @@ public class EntityType2Request extends BaseRequest implements IEntityType2Reque
      * @param newEntityType2 the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final EntityType2 newEntityType2, final ICallback<EntityType2> callback) {
+    public void post(final EntityType2 newEntityType2, final ICallback<? super EntityType2> callback) {
         send(HttpMethod.POST, callback, newEntityType2);
     }
 
@@ -109,6 +109,27 @@ public class EntityType2Request extends BaseRequest implements IEntityType2Reque
      */
     public EntityType2 post(final EntityType2 newEntityType2) throws ClientException {
         return send(HttpMethod.POST, newEntityType2);
+    }
+
+    /**
+     * Creates a EntityType2 with a new object
+     *
+     * @param newEntityType2 the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final EntityType2 newEntityType2, final ICallback<? super EntityType2> callback) {
+        send(HttpMethod.PUT, callback, newEntityType2);
+    }
+
+    /**
+     * Creates a EntityType2 with a new object
+     *
+     * @param newEntityType2 the object to create/update
+     * @return the created EntityType2
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public EntityType2 put(final EntityType2 newEntityType2) throws ClientException {
+        return send(HttpMethod.PUT, newEntityType2);
     }
 
     /**

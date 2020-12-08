@@ -45,7 +45,7 @@ public class TestTypeQueryCollectionRequest extends BaseCollectionRequest<TestTy
     }
 
 
-    public void post(final ICallback<ITestTypeQueryCollectionPage> callback) {
+    public void post(final ICallback<? super ITestTypeQueryCollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -107,6 +107,28 @@ public class TestTypeQueryCollectionRequest extends BaseCollectionRequest<TestTy
      */
     public ITestTypeQueryCollectionRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (ITestTypeQueryCollectionRequest)this;
+    }
+
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public ITestTypeQueryCollectionRequest filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (ITestTypeQueryCollectionRequest)this;
+    }
+
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public ITestTypeQueryCollectionRequest orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (ITestTypeQueryCollectionRequest)this;
     }
 

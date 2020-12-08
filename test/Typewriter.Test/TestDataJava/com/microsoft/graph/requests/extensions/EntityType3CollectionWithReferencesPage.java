@@ -37,6 +37,6 @@ public class EntityType3CollectionWithReferencesPage extends BaseCollectionPage<
      * @param builder  the request builder for the next collection page
      */
     public EntityType3CollectionWithReferencesPage(final EntityType3CollectionResponse response, final IEntityType3CollectionWithReferencesRequestBuilder builder) {
-        super(response.value, builder);
+        super(response.value, builder, response.additionalDataManager());
     }
 }

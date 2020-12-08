@@ -37,10 +37,11 @@ public class TestTypeWithReferenceRequestBuilder extends BaseRequestBuilder impl
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the ITestTypeWithReferenceRequest instance
      */
-    public ITestTypeWithReferenceRequest buildRequest() {
-        return buildRequest(getOptions());
+    public ITestTypeWithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

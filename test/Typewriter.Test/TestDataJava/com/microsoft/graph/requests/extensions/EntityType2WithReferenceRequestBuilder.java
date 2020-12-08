@@ -35,10 +35,11 @@ public class EntityType2WithReferenceRequestBuilder extends BaseRequestBuilder i
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the IEntityType2WithReferenceRequest instance
      */
-    public IEntityType2WithReferenceRequest buildRequest() {
-        return buildRequest(getOptions());
+    public IEntityType2WithReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

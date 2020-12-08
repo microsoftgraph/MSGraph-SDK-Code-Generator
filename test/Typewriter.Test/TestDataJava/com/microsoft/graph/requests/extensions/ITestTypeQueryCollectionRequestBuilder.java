@@ -21,8 +21,20 @@ import com.microsoft.graph.requests.extensions.ITestTypeQueryCollectionRequest;
  */
 public interface ITestTypeQueryCollectionRequestBuilder extends IRequestBuilder {
 
-    ITestTypeQueryCollectionRequest buildRequest();
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
+    ITestTypeQueryCollectionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions);
 
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
     ITestTypeQueryCollectionRequest buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
 
 }

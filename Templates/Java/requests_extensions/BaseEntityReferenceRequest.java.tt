@@ -25,7 +25,7 @@ import <#=importNamespace#>.core.IBaseClient;
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 
-    public void delete(final ICallback<<#=c.TypeName()#>> callback) {
+    public void delete(final ICallback<? super <#=c.TypeName()#>> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -65,7 +65,7 @@ import <#=importNamespace#>.core.IBaseClient;
      * @param src<#=c.TypeName()#> the <#=c.TypeName()#> reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(<#=c.TypeName()#> src<#=c.TypeName()#>, final ICallback<<#=c.TypeName()#>> callback) {
+    public void put(<#=c.TypeName()#> src<#=c.TypeName()#>, final ICallback<? super <#=c.TypeName()#>> callback) {
         send(HttpMethod.PUT, callback, src<#=c.TypeName()#>);
     }
 

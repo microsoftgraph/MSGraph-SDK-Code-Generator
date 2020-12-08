@@ -39,7 +39,7 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<EntityType3> callback) {
+    public void get(final ICallback<? super EntityType3> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -58,7 +58,7 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<EntityType3> callback) {
+    public void delete(final ICallback<? super EntityType3> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -77,7 +77,7 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      * @param sourceEntityType3 the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final EntityType3 sourceEntityType3, final ICallback<EntityType3> callback) {
+    public void patch(final EntityType3 sourceEntityType3, final ICallback<? super EntityType3> callback) {
         send(HttpMethod.PATCH, callback, sourceEntityType3);
     }
 
@@ -98,7 +98,7 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      * @param newEntityType3 the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final EntityType3 newEntityType3, final ICallback<EntityType3> callback) {
+    public void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
         send(HttpMethod.POST, callback, newEntityType3);
     }
 
@@ -111,6 +111,27 @@ public class EntityType3Request extends BaseRequest implements IEntityType3Reque
      */
     public EntityType3 post(final EntityType3 newEntityType3) throws ClientException {
         return send(HttpMethod.POST, newEntityType3);
+    }
+
+    /**
+     * Creates a EntityType3 with a new object
+     *
+     * @param newEntityType3 the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback) {
+        send(HttpMethod.PUT, callback, newEntityType3);
+    }
+
+    /**
+     * Creates a EntityType3 with a new object
+     *
+     * @param newEntityType3 the object to create/update
+     * @return the created EntityType3
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public EntityType3 put(final EntityType3 newEntityType3) throws ClientException {
+        return send(HttpMethod.PUT, newEntityType3);
     }
 
     /**

@@ -45,7 +45,7 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
     }
 
 
-    public void post(final ICallback<ISegmentTestActionCollectionPage> callback) {
+    public void post(final ICallback<? super ISegmentTestActionCollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -107,6 +107,28 @@ public class SegmentTestActionCollectionRequest extends BaseCollectionRequest<Se
      */
     public ISegmentTestActionCollectionRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (ISegmentTestActionCollectionRequest)this;
+    }
+
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public ISegmentTestActionCollectionRequest filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (ISegmentTestActionCollectionRequest)this;
+    }
+
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public ISegmentTestActionCollectionRequest orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (ISegmentTestActionCollectionRequest)this;
     }
 

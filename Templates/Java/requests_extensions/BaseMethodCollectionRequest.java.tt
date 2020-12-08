@@ -47,7 +47,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
 
 <# if (c.AsOdcmMethod().IsAction()) { #>
 
-    public void post(final ICallback<<#=c.ITypeCollectionPage()#>> callback) {
+    public void post(final ICallback<? super <#=c.ITypeCollectionPage()#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -72,7 +72,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
 
 <# } else { #>
 
-    public void get(final ICallback<<#=c.ITypeCollectionPage()#>> callback) {
+    public void get(final ICallback<? super <#=c.ITypeCollectionPage()#>> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -140,6 +140,32 @@ import <#=importNamespace#>.concurrency.IExecutors;
      */
     public <#=c.ITypeCollectionRequest()#> expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (<#=c.ITypeCollectionRequest()#>)this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanFilter) { #>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public <#=c.ITypeCollectionRequest()#> filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (<#=c.ITypeCollectionRequest()#>)this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanSort) { #>
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public <#=c.ITypeCollectionRequest()#> orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (<#=c.ITypeCollectionRequest()#>)this;
     }
 

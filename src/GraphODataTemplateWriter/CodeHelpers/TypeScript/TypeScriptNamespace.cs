@@ -1,4 +1,5 @@
 ﻿using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
+using Microsoft.Graph.ODataTemplateWriter.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,8 +36,23 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         // constants
         private const int MaxLineLength = 120;
         private const string MainNamespaceName = "Microsoft.Graph";
-        private const string TypeScriptMainNamespaceName = "microsoftgraph";
+        private const string TypeScriptMainNamespaceNamePrefix = "microsoftgraph";
         private const string TabSpace = "    ";
+
+        /// <summary>
+        /// Returns the main or top level namespace
+        /// </summary>
+        /// <returns></returns>
+        public string GetMainNamespace()
+        {
+            if (ConfigurationService.Settings.Properties?.ContainsKey("typescript.namespacePostfix") == true)
+            {
+
+                return TypeScriptMainNamespaceNamePrefix + ConfigurationService.Settings.Properties["typescript.namespacePostfix"];
+            }
+
+            return TypeScriptMainNamespaceNamePrefix;
+        }
 
         /// <summary>
         /// Groups entity, complex and enum types to be printed
@@ -263,7 +279,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
             if (@namespace == MainNamespaceName) // types in main namespace e.g. microsoftgraph.Entity
             {
-                return TypeScriptMainNamespaceName + "." + type;
+                return GetMainNamespace() + "." + type;
             }
 
             // names in subnamespaces e.g. microsoftgraph.CallRecords.CallRecord

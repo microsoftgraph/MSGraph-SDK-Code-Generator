@@ -14,8 +14,20 @@ import <#=importNamespace#>.http.IHttpRequest;
 
 <#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesRequestBuilder(), "IRequestBuilder")#>
 
-    <#=c.ITypeCollectionWithReferencesRequest()#> buildRequest();
-
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the <#=c.ITypeCollectionWithReferencesRequest()#> instance
+     */
+    <#=c.ITypeCollectionWithReferencesRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions);
+    
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the <#=c.ITypeCollectionWithReferencesRequest()#> instance
+     */
     <#=c.ITypeCollectionWithReferencesRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions);
 
     <#=c.ITypeWithReferencesRequestBuilder()#> byId(final String id);

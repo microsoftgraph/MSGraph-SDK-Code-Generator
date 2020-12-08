@@ -21,7 +21,7 @@ public interface ITimeOffRequest extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<TimeOff> callback);
+    void get(final ICallback<? super TimeOff> callback);
 
     /**
      * Gets the TimeOff from the service
@@ -36,7 +36,7 @@ public interface ITimeOffRequest extends IHttpRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<TimeOff> callback);
+    void delete(final ICallback<? super TimeOff> callback);
 
     /**
      * Delete this item from the service
@@ -51,7 +51,7 @@ public interface ITimeOffRequest extends IHttpRequest {
      * @param sourceTimeOff the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    void patch(final TimeOff sourceTimeOff, final ICallback<TimeOff> callback);
+    void patch(final TimeOff sourceTimeOff, final ICallback<? super TimeOff> callback);
 
     /**
      * Patches this TimeOff with a source
@@ -68,7 +68,7 @@ public interface ITimeOffRequest extends IHttpRequest {
      * @param newTimeOff the new object to create
      * @param callback the callback to be called after success or failure
      */
-    void post(final TimeOff newTimeOff, final ICallback<TimeOff> callback);
+    void post(final TimeOff newTimeOff, final ICallback<? super TimeOff> callback);
 
     /**
      * Posts a TimeOff with a new object
@@ -78,6 +78,23 @@ public interface ITimeOffRequest extends IHttpRequest {
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     TimeOff post(final TimeOff newTimeOff) throws ClientException;
+
+    /**
+     * Posts a TimeOff with a new object
+     *
+     * @param newTimeOff the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final TimeOff newTimeOff, final ICallback<? super TimeOff> callback);
+
+    /**
+     * Posts a TimeOff with a new object
+     *
+     * @param newTimeOff the object to create/update
+     * @return the created TimeOff
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    TimeOff put(final TimeOff newTimeOff) throws ClientException;
 
     /**
      * Sets the select clause for the request

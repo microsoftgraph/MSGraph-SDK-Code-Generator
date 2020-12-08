@@ -17,9 +17,10 @@ public interface IEntityType3ForwardRequestBuilder extends IRequestBuilder {
     /**
      * Creates the IEntityType3ForwardRequest
      *
+     * @param requestOptions the options for the request
      * @return the IEntityType3ForwardRequest instance
      */
-    IEntityType3ForwardRequest buildRequest();
+    IEntityType3ForwardRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions);
 
     /**
      * Creates the IEntityType3ForwardRequest with specific options instead of the existing options

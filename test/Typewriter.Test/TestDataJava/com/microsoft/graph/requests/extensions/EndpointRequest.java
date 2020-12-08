@@ -37,7 +37,7 @@ public class EndpointRequest extends BaseRequest implements IEndpointRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<Endpoint> callback) {
+    public void get(final ICallback<? super Endpoint> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -56,7 +56,7 @@ public class EndpointRequest extends BaseRequest implements IEndpointRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<Endpoint> callback) {
+    public void delete(final ICallback<? super Endpoint> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -75,7 +75,7 @@ public class EndpointRequest extends BaseRequest implements IEndpointRequest {
      * @param sourceEndpoint the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final Endpoint sourceEndpoint, final ICallback<Endpoint> callback) {
+    public void patch(final Endpoint sourceEndpoint, final ICallback<? super Endpoint> callback) {
         send(HttpMethod.PATCH, callback, sourceEndpoint);
     }
 
@@ -96,7 +96,7 @@ public class EndpointRequest extends BaseRequest implements IEndpointRequest {
      * @param newEndpoint the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final Endpoint newEndpoint, final ICallback<Endpoint> callback) {
+    public void post(final Endpoint newEndpoint, final ICallback<? super Endpoint> callback) {
         send(HttpMethod.POST, callback, newEndpoint);
     }
 
@@ -109,6 +109,27 @@ public class EndpointRequest extends BaseRequest implements IEndpointRequest {
      */
     public Endpoint post(final Endpoint newEndpoint) throws ClientException {
         return send(HttpMethod.POST, newEndpoint);
+    }
+
+    /**
+     * Creates a Endpoint with a new object
+     *
+     * @param newEndpoint the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final Endpoint newEndpoint, final ICallback<? super Endpoint> callback) {
+        send(HttpMethod.PUT, callback, newEndpoint);
+    }
+
+    /**
+     * Creates a Endpoint with a new object
+     *
+     * @param newEndpoint the object to create/update
+     * @return the created Endpoint
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public Endpoint put(final Endpoint newEndpoint) throws ClientException {
+        return send(HttpMethod.PUT, newEndpoint);
     }
 
     /**

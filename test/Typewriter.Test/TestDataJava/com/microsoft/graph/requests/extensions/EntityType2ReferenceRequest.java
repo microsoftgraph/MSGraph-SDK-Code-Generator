@@ -34,7 +34,7 @@ public class EntityType2ReferenceRequest extends BaseRequest implements IEntityT
         super(requestUrl, client, requestOptions, EntityType2.class);
     }
 
-    public void delete(final ICallback<EntityType2> callback) {
+    public void delete(final ICallback<? super EntityType2> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -69,7 +69,7 @@ public class EntityType2ReferenceRequest extends BaseRequest implements IEntityT
      * @param srcEntityType2 the EntityType2 reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(EntityType2 srcEntityType2, final ICallback<EntityType2> callback) {
+    public void put(EntityType2 srcEntityType2, final ICallback<? super EntityType2> callback) {
         send(HttpMethod.PUT, callback, srcEntityType2);
     }
 

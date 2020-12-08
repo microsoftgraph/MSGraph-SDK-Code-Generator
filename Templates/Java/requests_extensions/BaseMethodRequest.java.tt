@@ -35,7 +35,7 @@ if (c.AsOdcmMethod().IsAction()) {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void post(final ICallback<<#=c.ReturnType()#>> callback) {
+    public void post(final ICallback<? super <#=c.ReturnType()#>> callback) {
         send(HttpMethod.POST, callback, null);
     }
 
@@ -138,7 +138,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> with which to PATCH
      * @param callback the callback to be called after success or failure
      */
-    public void patch(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<<#=c.ReturnType()#>> callback) {
+    public void patch(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<? super <#=c.ReturnType()#>> callback) {
         send(HttpMethod.PATCH, callback, src<#=c.ReturnType()#>);
     }
 
@@ -159,7 +159,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<<#=c.ReturnType()#>> callback) {
+    public void put(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<? super <#=c.ReturnType()#>> callback) {
         send(HttpMethod.PUT, callback, src<#=c.ReturnType()#>);
     }
 
@@ -181,7 +181,7 @@ if (c.AsOdcmMethod().IsAction()) {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<<#=c.ReturnType()#>> callback) {
+    public void get(final ICallback<? super <#=c.ReturnType()#>> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -227,7 +227,36 @@ if (c.AsOdcmMethod().IsAction()) {
 
 <#
         }
+        if (c.GetFeatures().CanFilter) {
+#>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public <#=c.ITypeRequest()#> filter(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (<#=c.TypeRequest()#>)this;
+    }
 
+<#
+        }
+        if (c.GetFeatures().CanSort) {
+#>
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public <#=c.ITypeRequest()#> orderBy(final String value) {
+        getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$orderby", value));
+        return (<#=c.TypeRequest()#>)this;
+    }
+
+<#
+        }
         if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) {
 #>
 

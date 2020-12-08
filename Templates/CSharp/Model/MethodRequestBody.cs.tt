@@ -31,7 +31,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     public partial class <#=requestBody#>
     {
     <#
-    foreach (var param in method.Parameters)
+    foreach (var param in method.WithDistinctParameters())
     {
         var paramTypeString = param.Type.GetTypeString(method.Namespace.GetNamespaceName());
         

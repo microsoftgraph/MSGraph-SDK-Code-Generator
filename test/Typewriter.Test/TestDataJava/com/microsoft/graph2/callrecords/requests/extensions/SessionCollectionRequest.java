@@ -40,7 +40,7 @@ public class SessionCollectionRequest extends BaseCollectionRequest<SessionColle
         super(requestUrl, client, requestOptions, SessionCollectionResponse.class, ISessionCollectionPage.class);
     }
 
-    public void get(final ICallback<ISessionCollectionPage> callback) {
+    public void get(final ICallback<? super ISessionCollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -59,17 +59,17 @@ public class SessionCollectionRequest extends BaseCollectionRequest<SessionColle
         return buildFromResponse(response);
     }
 
-    public void post(final Session newSession, final ICallback<Session> callback) {
+    public void post(final Session newSession, final ICallback<? super Session> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new SessionRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(newSession, callback);
     }
 
     public Session post(final Session newSession) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new SessionRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(newSession);
     }
 
@@ -81,6 +81,28 @@ public class SessionCollectionRequest extends BaseCollectionRequest<SessionColle
      */
     public ISessionCollectionRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (SessionCollectionRequest)this;
+    }
+
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public ISessionCollectionRequest filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (SessionCollectionRequest)this;
+    }
+
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public ISessionCollectionRequest orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (SessionCollectionRequest)this;
     }
 

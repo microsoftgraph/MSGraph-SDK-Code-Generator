@@ -39,7 +39,7 @@ public class SingletonEntity2Request extends BaseRequest implements ISingletonEn
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<SingletonEntity2> callback) {
+    public void get(final ICallback<? super SingletonEntity2> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -58,7 +58,7 @@ public class SingletonEntity2Request extends BaseRequest implements ISingletonEn
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<SingletonEntity2> callback) {
+    public void delete(final ICallback<? super SingletonEntity2> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -77,7 +77,7 @@ public class SingletonEntity2Request extends BaseRequest implements ISingletonEn
      * @param sourceSingletonEntity2 the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final SingletonEntity2 sourceSingletonEntity2, final ICallback<SingletonEntity2> callback) {
+    public void patch(final SingletonEntity2 sourceSingletonEntity2, final ICallback<? super SingletonEntity2> callback) {
         send(HttpMethod.PATCH, callback, sourceSingletonEntity2);
     }
 
@@ -98,7 +98,7 @@ public class SingletonEntity2Request extends BaseRequest implements ISingletonEn
      * @param newSingletonEntity2 the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final SingletonEntity2 newSingletonEntity2, final ICallback<SingletonEntity2> callback) {
+    public void post(final SingletonEntity2 newSingletonEntity2, final ICallback<? super SingletonEntity2> callback) {
         send(HttpMethod.POST, callback, newSingletonEntity2);
     }
 
@@ -111,6 +111,27 @@ public class SingletonEntity2Request extends BaseRequest implements ISingletonEn
      */
     public SingletonEntity2 post(final SingletonEntity2 newSingletonEntity2) throws ClientException {
         return send(HttpMethod.POST, newSingletonEntity2);
+    }
+
+    /**
+     * Creates a SingletonEntity2 with a new object
+     *
+     * @param newSingletonEntity2 the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final SingletonEntity2 newSingletonEntity2, final ICallback<? super SingletonEntity2> callback) {
+        send(HttpMethod.PUT, callback, newSingletonEntity2);
+    }
+
+    /**
+     * Creates a SingletonEntity2 with a new object
+     *
+     * @param newSingletonEntity2 the object to create/update
+     * @return the created SingletonEntity2
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public SingletonEntity2 put(final SingletonEntity2 newSingletonEntity2) throws ClientException {
+        return send(HttpMethod.PUT, newSingletonEntity2);
     }
 
     /**

@@ -257,10 +257,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                             @namespace
                             .Classes
                             .Where(odcmClass => odcmClass.Kind == OdcmClassKind.Service)
-                            .First()
-                            .Properties
-                            .Where(property => property.GetType() == typeof(OdcmSingleton)) //Get the list of singletons defined by the service
-                            .Where(singleton => singleton
+                            .FirstOrDefault()
+                            ?.Properties
+                            ?.Where(property => property.GetType() == typeof(OdcmSingleton)) //Get the list of singletons defined by the service
+                            ?.Where(singleton => singleton
                                 .Type
                                 .AsOdcmClass()
                                 .Properties
@@ -268,7 +268,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                                 //we are searching for
                                 .Where(prop => prop.ContainsTarget == true && prop.Type.Name == odcmProperty.Type.Name)
                                 .FirstOrDefault() != null
-                             )
+                             ) ?? new OdcmProperty[] { }
                          ).FirstOrDefault();
 
                     if (implicitProperty != null)
@@ -500,11 +500,30 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return methods.Distinct(methodComparer).ToList();
         }
 
+        private static readonly OdcmParameterEqualityComparer paramComparer = new OdcmParameterEqualityComparer();
+        /// <summary>
+        /// Deduplicates the parameter list for an overloaded method. 
+        /// </summary>
+        /// <param name="odcmMethod">Method with potential overloads and duplicate parameters across overloads.</param>
+        /// <returns>A deduplicated list of OdcmParameter.</returns>
+        public static List<OdcmParameter> WithDistinctParameters(this OdcmMethod odcmMethod)
+        {
+            var distinctMethods = odcmMethod.WithDistinctOverloads();
+
+            var parameters = new List<OdcmParameter>();
+
+            foreach (var method in distinctMethods)
+            {
+                parameters.AddRange(method.Parameters);
+            }
+
+            return parameters.Distinct(paramComparer).ToList();
+        }
+
         /// Returns a List containing the supplied class' methods plus their overloads
         public static IEnumerable<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
         {
             return odcmClass.Methods.SelectMany(x => x.WithOverloads());
         }
     }
-
 }

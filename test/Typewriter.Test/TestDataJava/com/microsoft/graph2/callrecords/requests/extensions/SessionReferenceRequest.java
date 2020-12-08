@@ -38,7 +38,7 @@ public class SessionReferenceRequest extends BaseRequest implements ISessionRefe
         super(requestUrl, client, requestOptions, Session.class);
     }
 
-    public void delete(final ICallback<Session> callback) {
+    public void delete(final ICallback<? super Session> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -73,7 +73,7 @@ public class SessionReferenceRequest extends BaseRequest implements ISessionRefe
      * @param srcSession the Session reference to PUT
      * @param callback the callback to be called after success or failure
      */
-    public void put(Session srcSession, final ICallback<Session> callback) {
+    public void put(Session srcSession, final ICallback<? super Session> callback) {
         send(HttpMethod.PUT, callback, srcSession);
     }
 
