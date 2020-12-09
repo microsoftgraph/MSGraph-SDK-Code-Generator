@@ -26,6 +26,6 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      * @param builder  the request builder for the next collection page
      */
     public <#=c.TypeCollectionWithReferencesPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.ITypeCollectionWithReferencesRequestBuilder()#> builder) {
-        super(response.value, builder);
+        super(response.value, builder, response.additionalDataManager());
     }
 }

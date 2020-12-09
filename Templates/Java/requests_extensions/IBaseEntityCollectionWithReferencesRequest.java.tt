@@ -6,9 +6,12 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 
-<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesRequest())#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IHttpRequest;
 
-    void get(final ICallback<<#=c.ITypeCollectionWithReferencesPage()#>> callback);
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionWithReferencesRequest(), "IHttpRequest")#>
+
+    void get(final ICallback<? super <#=c.ITypeCollectionWithReferencesPage()#>> callback);
 
     <#=c.ITypeCollectionWithReferencesPage()#> get() throws ClientException;
 

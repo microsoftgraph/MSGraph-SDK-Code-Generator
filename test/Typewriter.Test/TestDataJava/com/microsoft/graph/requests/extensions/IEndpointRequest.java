@@ -21,7 +21,7 @@ public interface IEndpointRequest extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<Endpoint> callback);
+    void get(final ICallback<? super Endpoint> callback);
 
     /**
      * Gets the Endpoint from the service
@@ -36,7 +36,7 @@ public interface IEndpointRequest extends IHttpRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<Endpoint> callback);
+    void delete(final ICallback<? super Endpoint> callback);
 
     /**
      * Delete this item from the service
@@ -51,7 +51,7 @@ public interface IEndpointRequest extends IHttpRequest {
      * @param sourceEndpoint the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    void patch(final Endpoint sourceEndpoint, final ICallback<Endpoint> callback);
+    void patch(final Endpoint sourceEndpoint, final ICallback<? super Endpoint> callback);
 
     /**
      * Patches this Endpoint with a source
@@ -68,7 +68,7 @@ public interface IEndpointRequest extends IHttpRequest {
      * @param newEndpoint the new object to create
      * @param callback the callback to be called after success or failure
      */
-    void post(final Endpoint newEndpoint, final ICallback<Endpoint> callback);
+    void post(final Endpoint newEndpoint, final ICallback<? super Endpoint> callback);
 
     /**
      * Posts a Endpoint with a new object
@@ -78,6 +78,23 @@ public interface IEndpointRequest extends IHttpRequest {
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     Endpoint post(final Endpoint newEndpoint) throws ClientException;
+
+    /**
+     * Posts a Endpoint with a new object
+     *
+     * @param newEndpoint the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final Endpoint newEndpoint, final ICallback<? super Endpoint> callback);
+
+    /**
+     * Posts a Endpoint with a new object
+     *
+     * @param newEndpoint the object to create/update
+     * @return the created Endpoint
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    Endpoint put(final Endpoint newEndpoint) throws ClientException;
 
     /**
      * Sets the select clause for the request

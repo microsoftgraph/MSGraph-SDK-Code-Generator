@@ -17,9 +17,10 @@ public interface IOnenotePageForwardRequestBuilder extends IRequestBuilder {
     /**
      * Creates the IOnenotePageForwardRequest
      *
+     * @param requestOptions the options for the request
      * @return the IOnenotePageForwardRequest instance
      */
-    IOnenotePageForwardRequest buildRequest();
+    IOnenotePageForwardRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions);
 
     /**
      * Creates the IOnenotePageForwardRequest with specific options instead of the existing options

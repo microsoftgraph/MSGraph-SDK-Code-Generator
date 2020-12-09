@@ -24,7 +24,7 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
  */
 public interface ISessionReferenceRequest extends IHttpRequest {
 
-    void delete(final ICallback<Session> callback);
+    void delete(final ICallback<? super Session> callback);
 
     Session delete() throws ClientException;
 
@@ -50,7 +50,7 @@ public interface ISessionReferenceRequest extends IHttpRequest {
      * @param srcSession the Session to PUT
      * @param callback the callback to be called after success or failure
      */
-    void put(Session srcSession, final ICallback<Session> callback);
+    void put(Session srcSession, final ICallback<? super Session> callback);
 
     /**
      * Puts the Session

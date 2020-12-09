@@ -36,10 +36,11 @@ public class CallReferenceRequestBuilder extends BaseRequestBuilder implements I
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return The ICallReferenceRequest instance
      */
-    public ICallReferenceRequest buildRequest() {
-        return buildRequest(getOptions());
+    public ICallReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

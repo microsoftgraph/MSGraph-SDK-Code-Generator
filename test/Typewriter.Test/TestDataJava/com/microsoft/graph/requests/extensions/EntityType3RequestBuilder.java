@@ -36,10 +36,11 @@ public class EntityType3RequestBuilder extends BaseRequestBuilder implements IEn
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the IEntityType3Request instance
      */
-    public IEntityType3Request buildRequest() {
-        return buildRequest(getOptions());
+    public IEntityType3Request buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

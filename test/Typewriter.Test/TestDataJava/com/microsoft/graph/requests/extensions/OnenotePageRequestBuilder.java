@@ -35,10 +35,11 @@ public class OnenotePageRequestBuilder extends BaseRequestBuilder implements IOn
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the IOnenotePageRequest instance
      */
-    public IOnenotePageRequest buildRequest() {
-        return buildRequest(getOptions());
+    public IOnenotePageRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

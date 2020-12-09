@@ -5,19 +5,21 @@
 <#host.TemplateName = c.ITypeCollectionRequest();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.IHttpRequest;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.Expose;
 
-<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionRequest())#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeCollectionRequest(), "IHttpRequest")#>
 
 <# if (c.AsOdcmMethod().IsAction()) { #>
-    void post(final ICallback<<#=c.ITypeCollectionPage()#>> callback);
+    void post(final ICallback<? super <#=c.ITypeCollectionPage()#>> callback);
 
     <#=c.ITypeCollectionPage()#> post() throws ClientException;
 <# } else { #>
-    void get(final ICallback<<#=c.ITypeCollectionPage()#>> callback);
+    void get(final ICallback<? super <#=c.ITypeCollectionPage()#>> callback);
 
     <#=c.ITypeCollectionPage()#> get() throws ClientException;
 <# } #>

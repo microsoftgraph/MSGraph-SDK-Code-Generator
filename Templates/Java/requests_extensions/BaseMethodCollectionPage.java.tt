@@ -47,7 +47,7 @@ import <#=importNamespace#>.http.BaseCollectionPage;
      * @param builder The request builder for the next collection page
      */
     public <#=c.TypeCollectionPage()#>(final <#=c.TypeCollectionResponse()#> response, final <#=c.ITypeCollectionRequestBuilder()#> builder) {
-       super(response.value, builder);
+       super(response.value, builder, response.additionalDataManager());
 <# if (deltaPage) { #>
 
         if (response.getRawObject().get("@odata.deltaLink") != null) {

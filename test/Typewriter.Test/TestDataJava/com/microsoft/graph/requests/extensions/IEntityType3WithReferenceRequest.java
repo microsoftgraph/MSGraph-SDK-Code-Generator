@@ -25,19 +25,19 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
  */
 public interface IEntityType3WithReferenceRequest extends IHttpRequest {
 
-    void post(final EntityType3 newEntityType3, final IJsonBackedObject payload, final ICallback<EntityType3> callback);
+    void post(final EntityType3 newEntityType3, final IJsonBackedObject payload, final ICallback<? super EntityType3> callback);
 
     EntityType3 post(final EntityType3 newEntityType3, final IJsonBackedObject payload) throws ClientException;
 
-    void get(final ICallback<EntityType3> callback);
+    void get(final ICallback<? super EntityType3> callback);
 
     EntityType3 get() throws ClientException;
 
-	void delete(final ICallback<EntityType3> callback);
+	void delete(final ICallback<? super EntityType3> callback);
 
 	void delete() throws ClientException;
 
-	void patch(final EntityType3 sourceEntityType3, final ICallback<EntityType3> callback);
+	void patch(final EntityType3 sourceEntityType3, final ICallback<? super EntityType3> callback);
 
 	EntityType3 patch(final EntityType3 sourceEntityType3) throws ClientException;
 

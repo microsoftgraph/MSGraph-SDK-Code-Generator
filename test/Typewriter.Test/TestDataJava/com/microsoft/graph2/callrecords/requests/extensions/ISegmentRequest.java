@@ -21,7 +21,7 @@ public interface ISegmentRequest extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<Segment> callback);
+    void get(final ICallback<? super Segment> callback);
 
     /**
      * Gets the Segment from the service
@@ -36,7 +36,7 @@ public interface ISegmentRequest extends IHttpRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<Segment> callback);
+    void delete(final ICallback<? super Segment> callback);
 
     /**
      * Delete this item from the service
@@ -51,7 +51,7 @@ public interface ISegmentRequest extends IHttpRequest {
      * @param sourceSegment the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    void patch(final Segment sourceSegment, final ICallback<Segment> callback);
+    void patch(final Segment sourceSegment, final ICallback<? super Segment> callback);
 
     /**
      * Patches this Segment with a source
@@ -68,7 +68,7 @@ public interface ISegmentRequest extends IHttpRequest {
      * @param newSegment the new object to create
      * @param callback the callback to be called after success or failure
      */
-    void post(final Segment newSegment, final ICallback<Segment> callback);
+    void post(final Segment newSegment, final ICallback<? super Segment> callback);
 
     /**
      * Posts a Segment with a new object
@@ -78,6 +78,23 @@ public interface ISegmentRequest extends IHttpRequest {
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     Segment post(final Segment newSegment) throws ClientException;
+
+    /**
+     * Posts a Segment with a new object
+     *
+     * @param newSegment the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final Segment newSegment, final ICallback<? super Segment> callback);
+
+    /**
+     * Posts a Segment with a new object
+     *
+     * @param newSegment the object to create/update
+     * @return the created Segment
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    Segment put(final Segment newSegment) throws ClientException;
 
     /**
      * Sets the select clause for the request

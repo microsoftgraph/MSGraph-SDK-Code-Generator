@@ -36,7 +36,7 @@ public class EntityType3ForwardRequest extends BaseRequest implements IEntityTyp
         body = new EntityType3ForwardBody();
     }
 
-    public void post(final ICallback<Void> callback) {
+    public void post(final ICallback<? super Void> callback) {
         send(HttpMethod.POST, callback, body);
     }
 

@@ -24,7 +24,7 @@ import com.microsoft.graph.models.extensions.EntityType3;
  */
 public interface IEntityType3CollectionReferenceRequest {
 
-    void post(final EntityType3 newEntityType3, final ICallback<EntityType3> callback);
+    void post(final EntityType3 newEntityType3, final ICallback<? super EntityType3> callback);
 
     EntityType3 post(final EntityType3 newEntityType3) throws ClientException;
 

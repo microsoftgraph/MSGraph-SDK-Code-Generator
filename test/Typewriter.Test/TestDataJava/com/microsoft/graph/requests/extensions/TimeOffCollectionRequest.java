@@ -40,7 +40,7 @@ public class TimeOffCollectionRequest extends BaseCollectionRequest<TimeOffColle
         super(requestUrl, client, requestOptions, TimeOffCollectionResponse.class, ITimeOffCollectionPage.class);
     }
 
-    public void get(final ICallback<ITimeOffCollectionPage> callback) {
+    public void get(final ICallback<? super ITimeOffCollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -59,17 +59,17 @@ public class TimeOffCollectionRequest extends BaseCollectionRequest<TimeOffColle
         return buildFromResponse(response);
     }
 
-    public void post(final TimeOff newTimeOff, final ICallback<TimeOff> callback) {
+    public void post(final TimeOff newTimeOff, final ICallback<? super TimeOff> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new TimeOffRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(newTimeOff, callback);
     }
 
     public TimeOff post(final TimeOff newTimeOff) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new TimeOffRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(newTimeOff);
     }
 
@@ -81,6 +81,28 @@ public class TimeOffCollectionRequest extends BaseCollectionRequest<TimeOffColle
      */
     public ITimeOffCollectionRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (TimeOffCollectionRequest)this;
+    }
+
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public ITimeOffCollectionRequest filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (TimeOffCollectionRequest)this;
+    }
+
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public ITimeOffCollectionRequest orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (TimeOffCollectionRequest)this;
     }
 

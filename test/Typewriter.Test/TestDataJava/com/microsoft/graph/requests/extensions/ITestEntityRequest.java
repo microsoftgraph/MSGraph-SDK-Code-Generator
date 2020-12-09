@@ -21,7 +21,7 @@ public interface ITestEntityRequest extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<TestEntity> callback);
+    void get(final ICallback<? super TestEntity> callback);
 
     /**
      * Gets the TestEntity from the service
@@ -36,7 +36,7 @@ public interface ITestEntityRequest extends IHttpRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<TestEntity> callback);
+    void delete(final ICallback<? super TestEntity> callback);
 
     /**
      * Delete this item from the service
@@ -51,7 +51,7 @@ public interface ITestEntityRequest extends IHttpRequest {
      * @param sourceTestEntity the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    void patch(final TestEntity sourceTestEntity, final ICallback<TestEntity> callback);
+    void patch(final TestEntity sourceTestEntity, final ICallback<? super TestEntity> callback);
 
     /**
      * Patches this TestEntity with a source
@@ -68,7 +68,7 @@ public interface ITestEntityRequest extends IHttpRequest {
      * @param newTestEntity the new object to create
      * @param callback the callback to be called after success or failure
      */
-    void post(final TestEntity newTestEntity, final ICallback<TestEntity> callback);
+    void post(final TestEntity newTestEntity, final ICallback<? super TestEntity> callback);
 
     /**
      * Posts a TestEntity with a new object
@@ -78,6 +78,23 @@ public interface ITestEntityRequest extends IHttpRequest {
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     TestEntity post(final TestEntity newTestEntity) throws ClientException;
+
+    /**
+     * Posts a TestEntity with a new object
+     *
+     * @param newTestEntity the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final TestEntity newTestEntity, final ICallback<? super TestEntity> callback);
+
+    /**
+     * Posts a TestEntity with a new object
+     *
+     * @param newTestEntity the object to create/update
+     * @return the created TestEntity
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    TestEntity put(final TestEntity newTestEntity) throws ClientException;
 
     /**
      * Sets the select clause for the request

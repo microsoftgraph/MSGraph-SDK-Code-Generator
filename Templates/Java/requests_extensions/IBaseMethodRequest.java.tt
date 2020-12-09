@@ -12,8 +12,9 @@ import <#=importNamespace#>.core.ClientException;
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseRequest;
 import <#=importNamespace#>.http.HttpMethod;
+import <#=importNamespace#>.http.IHttpRequest;
 
-<#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequest())#>
+<#=TypeHelperJava.CreateInterfaceDef(c.ITypeRequest(), "IHttpRequest")#>
 
 <#
 if (c.AsOdcmMethod().IsAction()) {
@@ -24,7 +25,7 @@ if (c.AsOdcmMethod().IsAction()) {
      *
      * @param callback the callback to be called after success or failure
      */
-    void post(final ICallback<<#=c.ReturnType()#>> callback);
+    void post(final ICallback<? super <#=c.ReturnType()#>> callback);
 
     /**
      * Creates the <#=c.TypeName()#>
@@ -102,7 +103,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> with which to PATCH
      * @param callback the callback to be called after success or failure
      */
-    void patch(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<<#=c.ReturnType()#>> callback);
+    void patch(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<? super <#=c.ReturnType()#>> callback);
 
     /**
      * Patches the <#=c.TypeName()#>
@@ -119,7 +120,7 @@ if (c.AsOdcmMethod().IsAction()) {
      * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> to PUT
      * @param callback the callback to be called after success or failure
      */
-    void put(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<<#=c.ReturnType()#>> callback);
+    void put(<#=c.ReturnType()#> src<#=c.ReturnType()#>, final ICallback<? super <#=c.ReturnType()#>> callback);
 
     /**
      * Puts the <#=c.TypeName()#>
@@ -137,7 +138,7 @@ if (c.AsOdcmMethod().IsAction()) {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<<#=c.ReturnType()#>> callback);
+    void get(final ICallback<? super <#=c.ReturnType()#>> callback);
 
     /**
      * Gets the <#=c.ReturnType()#>

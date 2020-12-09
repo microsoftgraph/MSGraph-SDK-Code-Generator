@@ -23,10 +23,22 @@ import <#=importNamespace#>.core.IBaseClient;
         super(requestUrl, client, requestOptions);
     }
 
-    public <#=c.ITypeCollectionReferenceRequest()#> buildRequest() {
-        return buildRequest(getOptions());
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
+    public <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the IUserRequest instance
+     */
     public <#=c.ITypeCollectionReferenceRequest()#> buildRequest(final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         return new <#=c.TypeCollectionReferenceRequest()#>(getRequestUrl(), getClient(), requestOptions);
     }

@@ -31,20 +31,17 @@ namespace Typewriter.Test
         // and generation process creates a single file with nested namespaces
         private const string MetadataWithSubNamespacesFile = "MetadataWithSubNamespaces.xml";
 
-        public static void Run(TestLanguage language, bool isPhpBeta = false)
+        public static void Run(TestLanguage language, bool isBeta = false)
         {
             string getMetadataFile(TestLanguage testLanguage)
             {
                 switch (testLanguage)
                 {
                     case TestLanguage.CSharp:
-                        return MetadataMultipleNamespacesFile;
                     case TestLanguage.Java:
                         return MetadataMultipleNamespacesFile;
                     case TestLanguage.TypeScript:
-                        return MetadataWithSubNamespacesFile;
                     case TestLanguage.PHP:
-                        return MetadataWithSubNamespacesFile;
                     case TestLanguage.ObjC:
                         return MetadataWithSubNamespacesFile;
                     default:
@@ -54,7 +51,7 @@ namespace Typewriter.Test
 
             // Arrange
             var languageStr = language.ToString();
-            var directoryPostfix = isPhpBeta ? "PHPBeta" : languageStr;
+            var directoryPostfix = languageStr + (isBeta ? "Beta" : string.Empty);
             var outputDirectoryName = OutputDirectoryPrefix + directoryPostfix;
             var testDataDirectoryName = TestDataDirectoryPrefix + directoryPostfix;
 
@@ -74,9 +71,17 @@ namespace Typewriter.Test
             if (language == TestLanguage.Java)
                 options.EndpointVersion = "v1.0"; // fixes java generation test as the endpoint contains the version and the default options are not applied in this testing mode
 
-            if (isPhpBeta)
+            if (isBeta)
             {
-                options.Properties = new List<string> { "php.namespacePrefix:Beta" };
+                if (TestLanguage.PHP == language)
+                {
+                    options.Properties = new List<string> { "php.namespacePrefix:Beta" };
+                }
+
+                if (TestLanguage.TypeScript == language)
+                {
+                    options.Properties = new List<string> { "typescript.namespacePostfix:beta" };
+                }
             }
 
             // Act

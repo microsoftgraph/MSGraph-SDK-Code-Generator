@@ -40,7 +40,7 @@ public class CallRecordCollectionRequest extends BaseCollectionRequest<CallRecor
         super(requestUrl, client, requestOptions, CallRecordCollectionResponse.class, ICallRecordCollectionPage.class);
     }
 
-    public void get(final ICallback<ICallRecordCollectionPage> callback) {
+    public void get(final ICallback<? super ICallRecordCollectionPage> callback) {
         final IExecutors executors = getBaseRequest().getClient().getExecutors();
         executors.performOnBackground(new Runnable() {
            @Override
@@ -59,17 +59,17 @@ public class CallRecordCollectionRequest extends BaseCollectionRequest<CallRecor
         return buildFromResponse(response);
     }
 
-    public void post(final CallRecord newCallRecord, final ICallback<CallRecord> callback) {
+    public void post(final CallRecord newCallRecord, final ICallback<? super CallRecord> callback) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         new CallRecordRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(newCallRecord, callback);
     }
 
     public CallRecord post(final CallRecord newCallRecord) throws ClientException {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new CallRecordRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
-            .buildRequest(getBaseRequest().getOptions())
+            .buildRequest(getBaseRequest().getHeaders())
             .post(newCallRecord);
     }
 
@@ -81,6 +81,28 @@ public class CallRecordCollectionRequest extends BaseCollectionRequest<CallRecor
      */
     public ICallRecordCollectionRequest expand(final String value) {
         addQueryOption(new com.microsoft.graph.options.QueryOption("$expand", value));
+        return (CallRecordCollectionRequest)this;
+    }
+
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    public ICallRecordCollectionRequest filter(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$filter", value));
+        return (CallRecordCollectionRequest)this;
+    }
+
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    public ICallRecordCollectionRequest orderBy(final String value) {
+        addQueryOption(new com.microsoft.graph.options.QueryOption("$orderby", value));
         return (CallRecordCollectionRequest)this;
     }
 

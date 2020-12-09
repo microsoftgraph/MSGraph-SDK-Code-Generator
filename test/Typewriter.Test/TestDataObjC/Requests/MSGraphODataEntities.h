@@ -70,6 +70,8 @@
 #import "MSGraphCallRecordSessionsCollectionRequest.h"
 #import "MSGraphCallRecordRecipientsCollectionRequestBuilder.h"
 #import "MSGraphCallRecordRecipientsCollectionRequest.h"
+#import "MSGraphCallRecordItemRequestBuilder.h"
+#import "MSGraphCallRecordItemRequest.h"
 #import "MSGraphSessionRequestBuilder.h"
 #import "MSGraphSessionRequest.h"
 #import "MSGraphSessionSegmentsCollectionRequestBuilder.h"

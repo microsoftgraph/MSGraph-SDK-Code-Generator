@@ -34,10 +34,11 @@ public class OptionRequestBuilder extends BaseRequestBuilder implements IOptionR
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return the IOptionRequest instance
      */
-    public IOptionRequest buildRequest() {
-        return buildRequest(getOptions());
+    public IOptionRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

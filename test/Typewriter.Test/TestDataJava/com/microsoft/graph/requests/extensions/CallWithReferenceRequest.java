@@ -35,7 +35,7 @@ public class CallWithReferenceRequest extends BaseRequest implements ICallWithRe
         super(requestUrl, client, requestOptions, Call.class);
     }
 
-    public void post(final Call newCall, final IJsonBackedObject payload, final ICallback<Call> callback) {
+    public void post(final Call newCall, final IJsonBackedObject payload, final ICallback<? super Call> callback) {
         send(HttpMethod.POST, callback, payload);
     }
 
@@ -47,7 +47,7 @@ public class CallWithReferenceRequest extends BaseRequest implements ICallWithRe
         return null;
     }
 
-    public void get(final ICallback<Call> callback) {
+    public void get(final ICallback<? super Call> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -55,7 +55,7 @@ public class CallWithReferenceRequest extends BaseRequest implements ICallWithRe
        return send(HttpMethod.GET, null);
     }
 
-	public void delete(final ICallback<Call> callback) {
+	public void delete(final ICallback<? super Call> callback) {
 		send(HttpMethod.DELETE, callback, null);
 	}
 
@@ -63,7 +63,7 @@ public class CallWithReferenceRequest extends BaseRequest implements ICallWithRe
 		send(HttpMethod.DELETE, null);
 	}
 
-	public void patch(final Call sourceCall, final ICallback<Call> callback) {
+	public void patch(final Call sourceCall, final ICallback<? super Call> callback) {
 		send(HttpMethod.PATCH, callback, sourceCall);
 	}
 

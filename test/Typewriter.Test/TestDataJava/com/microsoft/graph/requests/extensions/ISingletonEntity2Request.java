@@ -21,7 +21,7 @@ public interface ISingletonEntity2Request extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<SingletonEntity2> callback);
+    void get(final ICallback<? super SingletonEntity2> callback);
 
     /**
      * Gets the SingletonEntity2 from the service
@@ -36,7 +36,7 @@ public interface ISingletonEntity2Request extends IHttpRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<SingletonEntity2> callback);
+    void delete(final ICallback<? super SingletonEntity2> callback);
 
     /**
      * Delete this item from the service
@@ -51,7 +51,7 @@ public interface ISingletonEntity2Request extends IHttpRequest {
      * @param sourceSingletonEntity2 the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    void patch(final SingletonEntity2 sourceSingletonEntity2, final ICallback<SingletonEntity2> callback);
+    void patch(final SingletonEntity2 sourceSingletonEntity2, final ICallback<? super SingletonEntity2> callback);
 
     /**
      * Patches this SingletonEntity2 with a source
@@ -68,7 +68,7 @@ public interface ISingletonEntity2Request extends IHttpRequest {
      * @param newSingletonEntity2 the new object to create
      * @param callback the callback to be called after success or failure
      */
-    void post(final SingletonEntity2 newSingletonEntity2, final ICallback<SingletonEntity2> callback);
+    void post(final SingletonEntity2 newSingletonEntity2, final ICallback<? super SingletonEntity2> callback);
 
     /**
      * Posts a SingletonEntity2 with a new object
@@ -78,6 +78,23 @@ public interface ISingletonEntity2Request extends IHttpRequest {
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     SingletonEntity2 post(final SingletonEntity2 newSingletonEntity2) throws ClientException;
+
+    /**
+     * Posts a SingletonEntity2 with a new object
+     *
+     * @param newSingletonEntity2 the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final SingletonEntity2 newSingletonEntity2, final ICallback<? super SingletonEntity2> callback);
+
+    /**
+     * Posts a SingletonEntity2 with a new object
+     *
+     * @param newSingletonEntity2 the object to create/update
+     * @return the created SingletonEntity2
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    SingletonEntity2 put(final SingletonEntity2 newSingletonEntity2) throws ClientException;
 
     /**
      * Sets the select clause for the request

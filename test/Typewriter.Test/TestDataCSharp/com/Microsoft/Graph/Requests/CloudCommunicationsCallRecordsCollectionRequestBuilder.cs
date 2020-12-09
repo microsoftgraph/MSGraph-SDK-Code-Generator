@@ -52,6 +52,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="id">The ID for the CloudCommunicationsMicrosoft.Graph2.CallRecords.CallRecord.</param>
         /// <returns>The <see cref="Microsoft.Graph2.CallRecords.ICallRecordRequestBuilder"/>.</returns>
+        [System.Runtime.CompilerServices.IndexerName("ThisItem")]
         public Microsoft.Graph2.CallRecords.ICallRecordRequestBuilder this[string id]
         {
             get
@@ -60,6 +61,17 @@ namespace Microsoft.Graph
             }
         }
 
-        
+        /// <summary>
+        /// Gets the request builder for CallRecordItem.
+        /// </summary>
+        /// <returns>The <see cref="ICallRecordItemRequestBuilder"/>.</returns>
+        public ICallRecordItemRequestBuilder Item(
+            string name = null)
+        {
+            return new CallRecordItemRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph2.callRecords.item"),
+                this.Client,
+                name);
+        }
     }
 }

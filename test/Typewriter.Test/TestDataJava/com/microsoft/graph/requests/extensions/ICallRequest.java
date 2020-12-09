@@ -21,7 +21,7 @@ public interface ICallRequest extends IHttpRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    void get(final ICallback<Call> callback);
+    void get(final ICallback<? super Call> callback);
 
     /**
      * Gets the Call from the service
@@ -36,7 +36,7 @@ public interface ICallRequest extends IHttpRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    void delete(final ICallback<Call> callback);
+    void delete(final ICallback<? super Call> callback);
 
     /**
      * Delete this item from the service
@@ -51,7 +51,7 @@ public interface ICallRequest extends IHttpRequest {
      * @param sourceCall the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    void patch(final Call sourceCall, final ICallback<Call> callback);
+    void patch(final Call sourceCall, final ICallback<? super Call> callback);
 
     /**
      * Patches this Call with a source
@@ -68,7 +68,7 @@ public interface ICallRequest extends IHttpRequest {
      * @param newCall the new object to create
      * @param callback the callback to be called after success or failure
      */
-    void post(final Call newCall, final ICallback<Call> callback);
+    void post(final Call newCall, final ICallback<? super Call> callback);
 
     /**
      * Posts a Call with a new object
@@ -78,6 +78,23 @@ public interface ICallRequest extends IHttpRequest {
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
     Call post(final Call newCall) throws ClientException;
+
+    /**
+     * Posts a Call with a new object
+     *
+     * @param newCall the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    void put(final Call newCall, final ICallback<? super Call> callback);
+
+    /**
+     * Posts a Call with a new object
+     *
+     * @param newCall the object to create/update
+     * @return the created Call
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    Call put(final Call newCall) throws ClientException;
 
     /**
      * Sets the select clause for the request

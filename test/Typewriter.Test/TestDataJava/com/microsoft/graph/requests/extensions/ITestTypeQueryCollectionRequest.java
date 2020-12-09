@@ -11,6 +11,7 @@ import com.microsoft.graph.models.extensions.DerivedComplexTypeRequest;
 import com.microsoft.graph.models.extensions.ResponseObject;
 import java.util.Arrays;
 import java.util.EnumSet;
+import com.microsoft.graph.http.IHttpRequest;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
@@ -21,9 +22,9 @@ import com.google.gson.annotations.Expose;
 /**
  * The interface for the Test Type Query Collection Request.
  */
-public interface ITestTypeQueryCollectionRequest {
+public interface ITestTypeQueryCollectionRequest extends IHttpRequest {
 
-    void post(final ICallback<ITestTypeQueryCollectionPage> callback);
+    void post(final ICallback<? super ITestTypeQueryCollectionPage> callback);
 
     ITestTypeQueryCollectionPage post() throws ClientException;
 

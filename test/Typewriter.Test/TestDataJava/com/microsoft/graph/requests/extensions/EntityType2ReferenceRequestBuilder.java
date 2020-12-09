@@ -36,10 +36,11 @@ public class EntityType2ReferenceRequestBuilder extends BaseRequestBuilder imple
     /**
      * Creates the request
      *
+     * @param requestOptions the options for this request
      * @return The IEntityType2ReferenceRequest instance
      */
-    public IEntityType2ReferenceRequest buildRequest() {
-        return buildRequest(getOptions());
+    public IEntityType2ReferenceRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

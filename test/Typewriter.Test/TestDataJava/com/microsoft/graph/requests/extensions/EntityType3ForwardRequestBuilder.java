@@ -43,10 +43,11 @@ public class EntityType3ForwardRequestBuilder extends BaseActionRequestBuilder i
     /**
      * Creates the IEntityType3ForwardRequest
      *
+     * @param requestOptions the options for the request
      * @return the IEntityType3ForwardRequest instance
      */
-    public IEntityType3ForwardRequest buildRequest() {
-        return buildRequest(getOptions());
+    public IEntityType3ForwardRequest buildRequest(final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
     }
 
     /**

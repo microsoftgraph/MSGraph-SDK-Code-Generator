@@ -37,7 +37,7 @@ public class OptionRequest extends BaseRequest implements IOptionRequest {
      *
      * @param callback the callback to be called after success or failure
      */
-    public void get(final ICallback<Option> callback) {
+    public void get(final ICallback<? super Option> callback) {
         send(HttpMethod.GET, callback, null);
     }
 
@@ -56,7 +56,7 @@ public class OptionRequest extends BaseRequest implements IOptionRequest {
      *
      * @param callback the callback when the deletion action has completed
      */
-    public void delete(final ICallback<Option> callback) {
+    public void delete(final ICallback<? super Option> callback) {
         send(HttpMethod.DELETE, callback, null);
     }
 
@@ -75,7 +75,7 @@ public class OptionRequest extends BaseRequest implements IOptionRequest {
      * @param sourceOption the source object with updates
      * @param callback the callback to be called after success or failure
      */
-    public void patch(final Option sourceOption, final ICallback<Option> callback) {
+    public void patch(final Option sourceOption, final ICallback<? super Option> callback) {
         send(HttpMethod.PATCH, callback, sourceOption);
     }
 
@@ -96,7 +96,7 @@ public class OptionRequest extends BaseRequest implements IOptionRequest {
      * @param newOption the new object to create
      * @param callback the callback to be called after success or failure
      */
-    public void post(final Option newOption, final ICallback<Option> callback) {
+    public void post(final Option newOption, final ICallback<? super Option> callback) {
         send(HttpMethod.POST, callback, newOption);
     }
 
@@ -109,6 +109,27 @@ public class OptionRequest extends BaseRequest implements IOptionRequest {
      */
     public Option post(final Option newOption) throws ClientException {
         return send(HttpMethod.POST, newOption);
+    }
+
+    /**
+     * Creates a Option with a new object
+     *
+     * @param newOption the object to create/update
+     * @param callback the callback to be called after success or failure
+     */
+    public void put(final Option newOption, final ICallback<? super Option> callback) {
+        send(HttpMethod.PUT, callback, newOption);
+    }
+
+    /**
+     * Creates a Option with a new object
+     *
+     * @param newOption the object to create/update
+     * @return the created Option
+     * @throws ClientException this exception occurs if the request was unable to complete for any reason
+     */
+    public Option put(final Option newOption) throws ClientException {
+        return send(HttpMethod.PUT, newOption);
     }
 
     /**

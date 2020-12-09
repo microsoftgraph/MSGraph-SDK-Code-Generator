@@ -34,8 +34,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="id">The ID for the Microsoft.Graph2.CallRecords.CallRecord.</param>
         /// <returns>The <see cref="Microsoft.Graph2.CallRecords.ICallRecordRequestBuilder"/>.</returns>
+        [System.Runtime.CompilerServices.IndexerName("ThisItem")]
         Microsoft.Graph2.CallRecords.ICallRecordRequestBuilder this[string id] { get; }
 
-        
+        /// <summary>
+        /// Gets the request builder for CallRecordItem.
+        /// </summary>
+        /// <returns>The <see cref="ICallRecordItemRequestBuilder"/>.</returns>
+        ICallRecordItemRequestBuilder Item(
+            string name = null);
     }
 }
