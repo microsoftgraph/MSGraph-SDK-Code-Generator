@@ -45,7 +45,7 @@ var attributeStringBuilder = new StringBuilder();
 
 if (complex.Deprecation != null)
 {
-   attributeStringBuilder.Append(complex.GetDeprecationString()));
+   attributeStringBuilder.Append(complex.GetDeprecationString());
    attributeStringBuilder.Append(Environment.NewLine);
    attributeStringBuilder.Append("    ");
 }
