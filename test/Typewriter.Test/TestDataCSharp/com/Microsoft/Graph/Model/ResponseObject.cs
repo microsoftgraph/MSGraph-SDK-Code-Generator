@@ -18,6 +18,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type ResponseObject.
     /// </summary>
+    [Obsolete("responseObject is deprecated. Please use something else.")]
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class ResponseObject

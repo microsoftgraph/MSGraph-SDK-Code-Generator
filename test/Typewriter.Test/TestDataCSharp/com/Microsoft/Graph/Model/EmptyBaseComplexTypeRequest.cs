@@ -18,6 +18,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type EmptyBaseComplexTypeRequest.
     /// </summary>
+    [Obsolete("emptyBaseComplexTypeRequest is deprecated. Please use emptyBaseComplexTypeRequest2.")]
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public abstract partial class EmptyBaseComplexTypeRequestObject
