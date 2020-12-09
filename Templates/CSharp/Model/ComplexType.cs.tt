@@ -45,7 +45,7 @@ var attributeStringBuilder = new StringBuilder();
 
 if (complex.Deprecation != null)
 {
-   attributeStringBuilder.Append(string.Format("[Obsolete(\"{0}\")]", complex.Deprecation.Description));
+   attributeStringBuilder.Append(complex.GetDeprecationString()));
    attributeStringBuilder.Append(Environment.NewLine);
    attributeStringBuilder.Append("    ");
 }
@@ -102,7 +102,7 @@ if (!complex.IsAbstract)
 
             if (property.Deprecation != null)
             {
-                attributeDefinition = string.Format("[Obsolete(\"{0}\")]" + Environment.NewLine + "        {1}",property.Deprecation.Description, attributeDefinition);
+                attributeDefinition = property.GetDeprecationString() + Environment.NewLine + "        " + attributeDefinition;
             }
 
             if (property.IsTypeNullable() || property.IsCollection)

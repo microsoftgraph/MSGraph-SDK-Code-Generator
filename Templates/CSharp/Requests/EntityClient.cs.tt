@@ -70,7 +70,7 @@ namespace <#=@namespace#>
         /// Gets the <#=propName#> request builder.
         /// </summary>
 <# if (prop.Deprecation != null) { #>
-        <#=string.Format("[Obsolete(\"{0}\")]", prop.Deprecation.Description)#>
+        <#=prop.GetDeprecationString()#>
 <# } #>
         public I<#=collectionRequestBuilder#> <#=sanitizedPropName#>
         {
@@ -91,7 +91,7 @@ namespace <#=@namespace#>
         /// Gets the <#=propName#> request builder.
         /// </summary>
 <# if (prop.Deprecation != null) { #>
-        <#=string.Format("[Obsolete(\"{0}\")]", prop.Deprecation.Description)#>
+        <#=prop.GetDeprecationString()#>
 <# } #>
         public <#=iRequestBuilder#> <#=sanitizedPropName#>
         {

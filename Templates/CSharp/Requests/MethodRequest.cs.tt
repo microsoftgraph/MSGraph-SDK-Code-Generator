@@ -62,7 +62,7 @@ namespace <#=@namespace#>
     /// The type <#=requestType#>.
     /// </summary>
 <# if (method.Deprecation != null) { #>
-    <#=string.Format("[Obsolete(\"{0}\")]", method.Deprecation.Description)#>
+    <#=method.GetDeprecationString()#>
 <# } #>
     public partial class <#=requestType#> : <#=baseRequestTypeName#>, I<#=requestType#>
     {

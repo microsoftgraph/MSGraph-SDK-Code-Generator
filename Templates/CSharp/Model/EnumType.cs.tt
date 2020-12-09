@@ -19,7 +19,7 @@ namespace <#=enumT.Namespace.GetNamespaceName()#>
     /// The enum <#=enumName#>.
     /// </summary>
 <# if (enumT.Deprecation != null) { #>
-    <#=string.Format("[Obsolete(\"{0}\")]", enumT.Deprecation.Description)#>
+    <#=enumT.GetDeprecationString()#>
 <# } #>
     [JsonConverter(typeof(<#=enumConverterTypeName#>))]
 <#  if (enumT.IsFlags == true)
@@ -40,7 +40,7 @@ namespace <#=enumT.Namespace.GetNamespaceName()#>
         /// <#=emumMember.Name.ToUpperFirstChar().SplitCamelCase()#>
         /// </summary>
 <# if (emumMember.Deprecation != null) { #>
-        <#=string.Format("[Obsolete(\"{0}\")]", emumMember.Deprecation.Description)#>
+        <#=emumMember.GetDeprecationString()#>
 <# } #>
         <#=emumMember.Name.ToCheckedCase().GetSanitizedPropertyName()#> = <#=emumMember.Value#>,
 	<#

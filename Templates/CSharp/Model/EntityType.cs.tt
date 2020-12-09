@@ -41,7 +41,7 @@ var attributeStringBuilder = new StringBuilder();
 
 if (entity.Deprecation != null)
 {
-   attributeStringBuilder.Append(string.Format("[Obsolete(\"{0}\")]", entity.Deprecation.Description));
+   attributeStringBuilder.Append(entity.GetDeprecationString());
    attributeStringBuilder.Append(Environment.NewLine);
    attributeStringBuilder.Append("    ");
 }
@@ -121,7 +121,7 @@ namespace <#=@namespace#>
 
             if (property.Deprecation != null)
             {
-                attributeDefinition = string.Format("[Obsolete(\"{0}\")]" + Environment.NewLine + "        {1}",property.Deprecation.Description, attributeDefinition);
+                attributeDefinition = property.GetDeprecationString() + Environment.NewLine + "        " + attributeDefinition;
             }
 
             if (property.IsCollection())
