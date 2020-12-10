@@ -1,8 +1,8 @@
 [submodule "submodules/vipr"]
 	path = submodules/vipr
 	url = https://github.com/microsoft/vipr
-	branch = feature/net-core
+	branch = master
 [submodule "apidoctor"]
 	path = apidoctor
 	url = https://github.com/microsoftgraph/apidoctor.git
-	branch = feature/dotnet-core
+	branch = master
