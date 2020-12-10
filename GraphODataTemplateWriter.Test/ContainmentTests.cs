@@ -62,6 +62,16 @@ namespace GraphODataTemplateWriter.Test
             Assert.AreEqual(singleton.Name, result.Name);
         }
 
+        [TestMethod]
+        public void GetDeprecation()
+        {
+            var type = model.GetEntityTypes().Where(t => t.Name == "entity").First();
+            var prop = type.Properties.Where(p => p.Name == "id").First();
+            Assert.IsNotNull(prop.Deprecation);
+            Assert.IsNotNull(prop.Deprecation.Description);
+            Assert.IsNotNull(prop.Deprecation.Version);
+        }
+
         /// <summary>
         /// Test that null is returned when there is no valid explicit or implicit entity set for a 
         /// given navigation property

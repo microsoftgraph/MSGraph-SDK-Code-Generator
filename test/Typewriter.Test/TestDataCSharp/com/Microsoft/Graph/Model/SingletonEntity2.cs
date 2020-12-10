@@ -33,6 +33,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets test single nav2.
         /// </summary>
+        [Obsolete("entityType3 is deprecated. Please use singletonEntity1.")]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "testSingleNav2", Required = Newtonsoft.Json.Required.Default)]
         public EntityType3 TestSingleNav2 { get; set; }
     

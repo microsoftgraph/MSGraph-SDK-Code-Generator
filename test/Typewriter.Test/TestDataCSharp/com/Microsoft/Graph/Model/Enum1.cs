@@ -10,11 +10,13 @@
 
 namespace Microsoft.Graph
 {
+    using System;
     using Newtonsoft.Json;
 
     /// <summary>
     /// The enum Enum1.
     /// </summary>
+    [Obsolete("enum1 is deprecated. Please use string.")]
     [JsonConverter(typeof(EnumConverter))]
     public enum Enum1
     {

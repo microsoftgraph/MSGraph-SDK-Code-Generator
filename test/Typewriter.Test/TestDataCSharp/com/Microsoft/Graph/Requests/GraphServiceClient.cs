@@ -9,6 +9,7 @@
 
 namespace Microsoft.Graph
 {
+    using System;
     using System.Net.Http;
 
     /// <summary>
@@ -56,6 +57,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the GraphServiceTestTypes request builder.
         /// </summary>
+        [Obsolete("entityType3 is deprecated. Please use singletonEntity1.")]
         public IGraphServiceTestTypesCollectionRequestBuilder TestTypes
         {
             get

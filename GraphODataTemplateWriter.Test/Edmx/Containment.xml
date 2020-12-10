@@ -27,6 +27,19 @@
         <Singleton Name="testSingleton2" Type="graph.testSingleton2"/>
         <EntitySet Name="testTypes" EntityType="graph.testType3"/>
       </EntityContainer>
+      <Annotations Target="graph.entity/id">
+        <Annotation Term="Org.Odata.Core.V1.Revisions">
+          <Collection>
+            <Record>
+              <PropertyValue Property = "Date" Date="2020-03-30"/>
+              <PropertyValue Property = "Version" String="2020-03-30"/>
+              <PropertyValue Property = "Kind" EnumMember="RevisionKind/Deprecated"/>
+              <PropertyValue Property = "Description" String="'id' is deprecated and will be retired on March 30, 2022. That's messed up."/>
+              <PropertyValue Property = "RemovalDate" Date="2022-04-30"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>
