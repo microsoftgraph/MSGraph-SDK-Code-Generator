@@ -69,6 +69,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets or sets ref types.
         /// </summary>
+        [Obsolete("entityType3 is deprecated. Please use singletonEntity1.")]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "refTypes", Required = Newtonsoft.Json.Required.Default)]
         public ISegmentRefTypesCollectionWithReferencesPage RefTypes { get; set; }
     

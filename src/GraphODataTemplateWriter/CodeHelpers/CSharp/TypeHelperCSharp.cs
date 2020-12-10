@@ -9,10 +9,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
     using Vipr.Core.CodeModel;
     using NLog;
     using System.Linq;
+    using System.Runtime.CompilerServices;
 
     public static class TypeHelperCSharp
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        private const string DeprecationString = "[Obsolete(\"{0}\")]";
 
         public const string DefaultReservedPrefix = "@";
         public static ICollection<string> GetReservedNames()
@@ -209,6 +211,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         public static string GetTypeString(this OdcmProperty property, string namespaceContext, string format = null)
         {
             return property.Projection.Type.GetTypeString(namespaceContext, format);
+        }
+
+        public static string GetDeprecationString(this OdcmObject instance)
+        {
+            if (instance.Deprecation != null)
+            {
+                return String.Format(DeprecationString, instance.Deprecation.Description);
+            }
+
+            return String.Empty;
         }
 
         public static bool IsTypeNullable(this OdcmProperty property)

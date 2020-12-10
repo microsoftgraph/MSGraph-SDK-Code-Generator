@@ -42,6 +42,14 @@ var isMethodResponse = complex.LongDescriptionContains("methodResponse");
 var classType = complex.IsAbstract ? "abstract partial class" : "partial class";
 
 var attributeStringBuilder = new StringBuilder();
+
+if (complex.Deprecation != null)
+{
+   attributeStringBuilder.Append(complex.GetDeprecationString());
+   attributeStringBuilder.Append(Environment.NewLine);
+   attributeStringBuilder.Append("    ");
+}
+
 attributeStringBuilder.Append("[JsonObject(MemberSerialization = MemberSerialization.OptIn)]");
 
 // We only want to add the derived type converter to the class at the top of the inheritance hierarchy
@@ -91,6 +99,11 @@ if (!complex.IsAbstract)
                 : property.Name.ToCheckedCase().GetSanitizedPropertyName(property);
 
             var attributeDefinition = string.Format("[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = \"{0}\", Required = Newtonsoft.Json.Required.Default)]", property.Name);
+
+            if (property.Deprecation != null)
+            {
+                attributeDefinition = property.GetDeprecationString() + Environment.NewLine + "        " + attributeDefinition;
+            }
 
             if (property.IsTypeNullable() || property.IsCollection)
             {

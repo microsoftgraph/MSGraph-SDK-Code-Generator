@@ -18,6 +18,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type EntityType3ForwardRequest.
     /// </summary>
+    [Obsolete("entityType3 is deprecated. Please use singletonEntity1.")]
     public partial class EntityType3ForwardRequest : BaseRequest, IEntityType3ForwardRequest
     {
         /// <summary>

@@ -12,11 +12,15 @@ var enumConverterTypeName = @namespace.GetCoreLibraryType("EnumConverter");
 
 namespace <#=enumT.Namespace.GetNamespaceName()#>
 {
+    using System;
     using Newtonsoft.Json;
 
     /// <summary>
     /// The enum <#=enumName#>.
     /// </summary>
+<# if (enumT.Deprecation != null) { #>
+    <#=enumT.GetDeprecationString()#>
+<# } #>
     [JsonConverter(typeof(<#=enumConverterTypeName#>))]
 <#  if (enumT.IsFlags == true)
     {
@@ -35,6 +39,9 @@ namespace <#=enumT.Namespace.GetNamespaceName()#>
         /// <summary>
         /// <#=emumMember.Name.ToUpperFirstChar().SplitCamelCase()#>
         /// </summary>
+<# if (emumMember.Deprecation != null) { #>
+        <#=emumMember.GetDeprecationString()#>
+<# } #>
         <#=emumMember.Name.ToCheckedCase().GetSanitizedPropertyName()#> = <#=emumMember.Value#>,
 	<#
 		}

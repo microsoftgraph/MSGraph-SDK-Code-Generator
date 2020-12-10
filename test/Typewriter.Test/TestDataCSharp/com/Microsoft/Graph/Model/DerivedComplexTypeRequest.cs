@@ -18,6 +18,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DerivedComplexTypeRequest.
     /// </summary>
+    [Obsolete("emptyBaseComplexTypeRequest is deprecated. Please use emptyBaseComplexTypeRequest2.")]
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class DerivedComplexTypeRequestObject : EmptyBaseComplexTypeRequestObject
     {
@@ -44,6 +45,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets enumProperty.
         /// </summary>
+        [Obsolete("enum1 is deprecated. Please use string.")]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "enumProperty", Required = Newtonsoft.Json.Required.Default)]
         public Enum1? EnumProperty { get; set; }
     
