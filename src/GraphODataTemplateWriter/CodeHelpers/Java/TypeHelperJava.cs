@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 {
@@ -121,16 +121,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         {
             return currentType.AsOdcmMethod().IsFunction ?
                 "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder";
-        }
-
-        /// <summary>
-        /// Get the name of the current template being processed
-        /// </summary>
-        /// <param name="templateFile">The full path of the current template</param>
-        /// <returns>The template name, relative to the Templates directory.</returns>
-        public static string TemplateName(this string templateFile)
-        {
-            return templateFile.Substring(templateFile.LastIndexOf("Templates"));
         }
 
         public static string TypeName(this OdcmObject c)
