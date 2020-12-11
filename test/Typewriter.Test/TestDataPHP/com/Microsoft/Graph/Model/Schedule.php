@@ -7,7 +7,7 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
