@@ -16,7 +16,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
     public static class ConfigurationService
     {
         private static IConfigurationProvider _configurationProvider;
-        private static TemplateWriterSettings templateWriterSettings = null;
         private static string targetLanguage = null;
         private static string endpointVersion = null;
         private static Dictionary<string, string> properties = null;
@@ -75,23 +74,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
             return mainTWS;
 
         }
-        public static void ResetSettings()
-        {
-            templateWriterSettings = null;
-        }
-
         public static TemplateWriterSettings Settings
         {
             get
             {
-                if (templateWriterSettings == null || templateWriterSettings.TargetLanguage != ConfigurationService.targetLanguage)
-                {
-                    templateWriterSettings = _configurationProvider != null
-                        ? LoadSettingsForLanguage()
-                        : new TemplateWriterSettings();
-                }
-
-                return templateWriterSettings;
+                return _configurationProvider != null ? LoadSettingsForLanguage() : new TemplateWriterSettings();
             }
         }
     }

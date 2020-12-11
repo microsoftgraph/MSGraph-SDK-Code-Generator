@@ -6,11 +6,6 @@ namespace Typewriter.Test
     [TestFixture]
     public class PHPMultipleNamespacesTests
     {
-        [SetUp]
-        public void Setup()
-        {
-            ConfigurationService.ResetSettings();
-        }
         [Test]
         public void Test()
         {

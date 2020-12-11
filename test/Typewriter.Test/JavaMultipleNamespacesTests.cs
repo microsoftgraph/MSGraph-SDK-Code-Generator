@@ -6,11 +6,6 @@ namespace Typewriter.Test
     [TestFixture]
     public class JavaMultipleNamespacesTests
     {
-        [SetUp]
-        public void Setup()
-        {
-            ConfigurationService.ResetSettings();
-        }
         [Test]
         public void Test()
         {

@@ -23,7 +23,6 @@ namespace Typewriter.Test
         public void Initialize()
         {
             testMetadata = Typewriter.Test.Properties.Resources.dirtyMetadata;
-            ConfigurationService.ResetSettings();
         }
 
         [Test]
@@ -126,7 +125,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Requests{Path.DirectorySeparatorChar}GraphServiceClient.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}GraphServiceClient.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the beta endpoint was set as the default endpoint. Otherwise it uses v1.0.
@@ -415,7 +414,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Requests{Path.DirectorySeparatorChar}TestTypeQueryRequestBuilder.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}TestTypeQueryRequestBuilder.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -450,7 +449,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Requests{Path.DirectorySeparatorChar}TestTypeRequestBuilder.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}TestTypeRequestBuilder.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -485,7 +484,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Requests{Path.DirectorySeparatorChar}ITestTypeRequestBuilder.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}ITestTypeRequestBuilder.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -576,7 +575,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, optionsCSharp);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Requests{Path.DirectorySeparatorChar}" + outputFileName);
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}" + outputFileName);
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);

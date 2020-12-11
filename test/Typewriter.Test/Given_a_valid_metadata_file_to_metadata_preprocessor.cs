@@ -23,7 +23,6 @@ namespace Typewriter.Test
             testMetadata = Typewriter.Test.Properties.Resources.dirtyMetadata;
             testXMetadata = XDocument.Parse(testMetadata);
             MetadataPreprocessor.SetXMetadata(testXMetadata);
-            ConfigurationService.ResetSettings();
         }
 
         [Test]
