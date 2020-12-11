@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Graph.ODataTemplateWriter.Extensions;
@@ -40,7 +41,7 @@ namespace GraphODataTemplateWriter.Test
         {
             string dir = Directory.GetCurrentDirectory();
 
-            string edmx = File.ReadAllText(dir + "\\Edmx\\Containment.xml");
+            string edmx = File.ReadAllText(dir + $"{Path.PathSeparator}Edmx{Path.PathSeparator}Containment.xml");
             OdcmReader reader = new OdcmReader();
 
             model = reader.GenerateOdcmModel(new List<TextFile> { new TextFile("$metadata", edmx) });
