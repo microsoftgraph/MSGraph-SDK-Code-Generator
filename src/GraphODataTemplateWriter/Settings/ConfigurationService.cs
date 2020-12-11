@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.Settings
 {
@@ -67,12 +67,19 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
             TemplateWriterSettings.mainSettingsObject = mainTWS;
             
             //Call the generic GetConfiguration method with our new type.
-            return (_configurationProvider
+            var mergedSettings = (_configurationProvider
                 .GetType()
                 .GetConstructor(new [] { typeof(string) })
                 .Invoke(new[] { targetLanguage }) as IConfigurationProvider)
                 .GetConfiguration<TemplateWriterSettings>();
 
+            mergedSettings.CopyPropertiesFromMainSettings();
+            return mergedSettings;
+
+        }
+        public static void ResetSettings()
+        {
+            templateWriterSettings = null;
         }
 
         public static TemplateWriterSettings Settings

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
+using Microsoft.Graph.ODataTemplateWriter.Settings;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace Typewriter.Test
             testMetadata = Typewriter.Test.Properties.Resources.dirtyMetadata;
             testXMetadata = XDocument.Parse(testMetadata);
             MetadataPreprocessor.SetXMetadata(testXMetadata);
+            ConfigurationService.ResetSettings();
         }
 
         [Test]

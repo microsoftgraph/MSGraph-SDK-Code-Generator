@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Graph.ODataTemplateWriter.Settings;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
 
@@ -22,6 +23,7 @@ namespace Typewriter.Test
         public void Initialize()
         {
             testMetadata = Typewriter.Test.Properties.Resources.dirtyMetadata;
+            ConfigurationService.ResetSettings();
         }
 
         [Test]
