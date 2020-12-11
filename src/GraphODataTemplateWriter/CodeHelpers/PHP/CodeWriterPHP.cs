@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+ï»¿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
 {
@@ -47,7 +47,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                                 "*" + this.NewLineCharacter +
                                 "* @category  Library" + this.NewLineCharacter +
                                 "* @package   Microsoft.Graph" + this.NewLineCharacter +
-                                "* @copyright © Microsoft Corporation. All rights reserved." + this.NewLineCharacter +
+                                "* @copyright (c) Microsoft Corporation. All rights reserved." + this.NewLineCharacter +
                                 "* @license   https://opensource.org/licenses/MIT MIT License" + this.NewLineCharacter +
                                 "* @link      https://graph.microsoft.com";
         }
