@@ -39,7 +39,6 @@ namespace GraphODataTemplateWriter.Test
         public void Initialize()
         {
             string dir = Directory.GetCurrentDirectory();
-            dir = dir.Replace("\\bin\\Debug", "");
 
             string edmx = File.ReadAllText(dir + "\\Edmx\\Containment.xml");
             OdcmReader reader = new OdcmReader();
