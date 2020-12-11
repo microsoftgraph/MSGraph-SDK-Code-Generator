@@ -59,7 +59,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                     "*" + this.NewLineCharacter +
                     "* @category  " + category + this.NewLineCharacter +
                     "* @package   Microsoft.Graph" + this.NewLineCharacter +
-                    "* @copyright © Microsoft Corporation. All rights reserved." + this.NewLineCharacter +
+                    "* @copyright (c) Microsoft Corporation. All rights reserved." + this.NewLineCharacter +
                     "* @license   https://opensource.org/licenses/MIT MIT License" + this.NewLineCharacter +
                     "* @link      https://graph.microsoft.com" + this.NewLineCharacter +
                     "*/";
