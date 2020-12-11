@@ -72,7 +72,13 @@ foreach (var m in overloadMethodsInfo)
             this.SetParameter("<#=p.Name#>", <#=p.ParameterName#>, <#=p.IsNullable.ToString().ToLowerInvariant()#>);
 <#
         }
+        if (method.IsFunction)
+        {
 #>
+            this.SetFunctionParameters();
+<#
+        }
+#>            
         }
 
 <#
