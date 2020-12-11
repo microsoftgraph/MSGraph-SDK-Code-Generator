@@ -640,7 +640,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                     ReturnClassRequestBuilderName = returnClassRequestBuilderName,
                     Segment = p.Name,
                     Name = name,
-                    Description = p.Description
+                    Description = p.Description ?? ""
                 };
             }).OrderBy(n => n.Name).ToList();
         }
