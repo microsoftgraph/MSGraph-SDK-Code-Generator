@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 {
@@ -22,6 +22,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Emit;
     using System.Reflection;
+    using Mono.TextTemplating;
 
     public class TemplateProcessor : ITemplateProcessor
     {
@@ -78,13 +79,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         }
 
         protected OdcmModel CurrentModel { get; set; }
-        protected Microsoft.VisualStudio.TextTemplating.Engine T4Engine { get; set; }
+        protected TemplatingEngine T4Engine { get; set; }
         protected IPathWriter PathWriter { get; set; }
         protected string TemplatesDirectory { get; set; }
 
         public TemplateProcessor(IPathWriter pathWriter, OdcmModel odcmModel, string templatesDirectory)
         {
-            this.T4Engine = new Microsoft.VisualStudio.TextTemplating.Engine();
+            this.T4Engine = new TemplatingEngine();
             this.CurrentModel = odcmModel;
             this.PathWriter = pathWriter;
             this.PathWriter.Model = odcmModel;
