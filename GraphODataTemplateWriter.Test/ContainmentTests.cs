@@ -41,7 +41,7 @@ namespace GraphODataTemplateWriter.Test
         {
             string dir = Directory.GetCurrentDirectory();
 
-            string edmx = File.ReadAllText(dir + $"{Path.PathSeparator}Edmx{Path.PathSeparator}Containment.xml");
+            string edmx = File.ReadAllText(dir + $"{Path.DirectorySeparatorChar}Edmx{Path.DirectorySeparatorChar}Containment.xml");
             OdcmReader reader = new OdcmReader();
 
             model = reader.GenerateOdcmModel(new List<TextFile> { new TextFile("$metadata", edmx) });
