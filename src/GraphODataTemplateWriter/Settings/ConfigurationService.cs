@@ -64,17 +64,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
 
             mainTWS.DefaultBaseEndpointUrl = String.Format("https://graph.microsoft.com/{0}", endpointVersion);
 
-            TemplateWriterSettings.mainSettingsObject = mainTWS;
-            
             //Call the generic GetConfiguration method with our new type.
-            var mergedSettings = (_configurationProvider
+            var languageSettings = (_configurationProvider
                 .GetType()
                 .GetConstructor(new [] { typeof(string) })
                 .Invoke(new[] { targetLanguage }) as IConfigurationProvider)
                 .GetConfiguration<TemplateWriterSettings>();
 
-            mergedSettings.CopyPropertiesFromMainSettings();
-            return mergedSettings;
+            mainTWS.CopyLanguageSettings(languageSettings);
+            return mainTWS;
 
         }
         public static void ResetSettings()
