@@ -24,7 +24,7 @@ namespace Typewriter.Test
             testMetadata = Typewriter.Test.Properties.Resources.dirtyMetadata;
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_a_typings_file()
         {
             const string outputDirectory = "output"; 
@@ -41,7 +41,7 @@ namespace Typewriter.Test
             Assert.IsTrue(fileInfo.Exists, $"Expected {fileInfo.FullName}. File was not found.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_PHP_models_with_a_property()
         {
             const string testNamespace = "Beta";
@@ -77,7 +77,7 @@ namespace Typewriter.Test
         /// <summary>
         /// 
         /// </summary>
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_Java_models_with_disambiguated_import()
         {
             const string outputDirectory = "outputJava";
@@ -109,7 +109,7 @@ namespace Typewriter.Test
             Assert.IsTrue(isExpectedImportStatementFound, $"The expected statement was not found. Expected: {expected}");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_dotNet_client_with_default_beta_baseUrl()
         {
             const string outputDirectory = "output";
@@ -144,7 +144,7 @@ namespace Typewriter.Test
         }
 
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_dotNet_client_with_commented_out_code_comments()
         {
             const string outputDirectory = "output";
@@ -177,7 +177,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We are not correctly handling the \r\n coming from the annotations.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_dotNet_odatatype_initialization_for_complextypes()
         {
             const string outputDirectory = "output";
@@ -215,7 +215,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasCstorString, $"The expected test token cstor string, '{testCstorString}', was not set in the generated test file. We didn't properly generate the cstor code.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_doesnt_generate_odatatype_initialization_for_abstract_complextypes()
         {
             const string outputDirectory = "output";
@@ -248,7 +248,7 @@ namespace Typewriter.Test
         }
 
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_dotNet_odatatype_initialization_for_entitytypes()
         {
             const string outputDirectory = "output";
@@ -279,7 +279,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_doesnt_generate_odatatype_initialization_for_abstract_entitytypes()
         {
             const string outputDirectory = "output";
@@ -316,7 +316,7 @@ namespace Typewriter.Test
             Assert.IsFalse(hasTestODataInitString, $"The unexpected test token string, '{testODataInitString}', was set in the generated test file. We didn't properly generate the cstor code.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_creates_disambiguated_abstract_base_complextype_models()
         {
             const string outputDirectory = "output";
@@ -349,7 +349,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the type declaration code.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_creates_disambiguated_complextype_models()
         {
             const string outputDirectory = "output";
@@ -399,7 +399,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestOdataType, $"The expected test token string, '{testOdataType}', was not set in the generated test file. We didn't properly generate the initialized odata.type code.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_creates_disambiguated_MethodRequestBuilder_parameters()
         {
             const string outputDirectory = "output";
@@ -434,7 +434,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_creates_disambiguated_EntityRequestBuilder_parameters()
         {
             const string outputDirectory = "output";
@@ -469,7 +469,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_creates_disambiguated_IEntityRequestBuilder_parameters()
         {
             const string outputDirectory = "output";
@@ -504,7 +504,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_transforms_metadata()
         {
             const string outputDirectory = "output";
@@ -556,7 +556,7 @@ namespace Typewriter.Test
             Assert.IsFalse(hasCapabilityAnnotations, $"The expected capability annotations weren't removed in the transformed cleaned metadata.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         [TestCase("TestType2FunctionMethodWithStringRequest.cs", "var response = await this.SendAsync<ODataMethodStringResponse>(null, cancellationToken);")]
         [TestCase("TestType2FunctionMethodWithBooleanRequest.cs", "var response = await this.SendAsync<ODataMethodBooleanResponse>(null, cancellationToken);")]
         [TestCase("TestType2FunctionMethodWithInt32Request.cs", "var response = await this.SendAsync<ODataMethodIntResponse>(null, cancellationToken);")]

@@ -24,7 +24,7 @@ namespace Typewriter.Test
             MetadataPreprocessor.SetXMetadata(testXMetadata);
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_removes_the_HasStream_attribute()
         {
             var entityToProcess = "onenotePage";
@@ -46,7 +46,7 @@ namespace Typewriter.Test
             Assert.IsFalse(hasStreamAfter, "Expected: The HasStream aatribute is not present. Actual: HasStream is present.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_adds_the_ContainsTarget_attribute()
         {
             var navPropTypeToProcess = "plannerPlan";
@@ -72,7 +72,7 @@ namespace Typewriter.Test
             Assert.IsTrue(doesContainTargetAfter, "Expected: ContainsTarget is true. Actual: ContainsTarget is false");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_removes_capability_annotations()
         {
             bool hasCapabilityAnnotationsBefore = MetadataPreprocessor.GetXMetadata().Descendants()
@@ -89,7 +89,7 @@ namespace Typewriter.Test
             Assert.IsFalse(hasCapabilityAnnotationsAfter, "Expected: false, there should be no elements returned. Actual: there are capability annotations."); // 
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_adds_long_description_to_thumbnail()
         {
             XElement thumbnailComplexTypeBefore = MetadataPreprocessor.GetXMetadata().Descendants()
@@ -118,7 +118,7 @@ namespace Typewriter.Test
         /// <summary>
         /// Tests that we reorder parameters according to an input listof parameters.
         /// </summary>
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_reorders_parameters_in_an_action()
         {
             /* The element to reorder from the resources/dirtymetadata.xml file.
@@ -175,7 +175,7 @@ namespace Typewriter.Test
         /// <summary>
         /// Tests that we reorder parameters according to an input element name list.
         /// </summary>
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_reorders_elements_in_a_complextype()
         {
             /* The element to reorder from the resources/dirtymetadata.xml file.
@@ -227,7 +227,7 @@ namespace Typewriter.Test
                           "The element list was not reordered as expected.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_does_not_reorder_when_element_list_does_not_match_in_a_complextype()
         {
             /* The element to attempt to reorder from the resources/dirtymetadata.xml file. 

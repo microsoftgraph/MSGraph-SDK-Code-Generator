@@ -5,7 +5,7 @@ namespace Typewriter.Test
     [TestFixture]
     public class ObjCMultipeNamespacesTests
     {
-        [Test, RunInApplicationDomain]
+        [Test]
         public void Test()
         {
             MultipleNamespacesTestRunner.Run(TestLanguage.ObjC);

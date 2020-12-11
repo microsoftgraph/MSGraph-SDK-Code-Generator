@@ -5,13 +5,13 @@ namespace Typewriter.Test
     [TestFixture]
     public class TypeScriptMultipeNamespacesTests
     {
-        [Test, RunInApplicationDomain]
+        [Test]
         public void Test()
         {
             MultipleNamespacesTestRunner.Run(TestLanguage.TypeScript);
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void TestBeta()
         {
             MultipleNamespacesTestRunner.Run(TestLanguage.TypeScript, isBeta: true);
