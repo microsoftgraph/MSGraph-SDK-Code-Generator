@@ -69,7 +69,7 @@ namespace Typewriter.Test
                 Language = languageStr
             };
             if (language == TestLanguage.Java)
-                options.EndpointVersion = "v1.0"; // fixes java generation test as the endpoint contains the version and the default options are not applied in this testing mode
+                options.EndpointVersion = isBeta ? "beta" : "v1.0"; // fixes java generation test as the endpoint contains the version and the default options are not applied in this testing mode
 
             if (isBeta)
             {
