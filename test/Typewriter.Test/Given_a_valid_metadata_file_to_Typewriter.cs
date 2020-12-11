@@ -14,7 +14,7 @@ namespace Typewriter.Test
     {
         public string testMetadata;
         // The second segment is generated from the namespace in the target metadata file.
-        public string generatedOutputUrl = @"\com\microsoft\Graph";
+        public string generatedOutputUrl = @$"{Path.DirectorySeparatorChar}com{Path.DirectorySeparatorChar}microsoft{Path.DirectorySeparatorChar}Graph";
 
         /// <summary>
         /// Load metadata from file into a string so we can validate MetadataPreprocessor.
@@ -39,7 +39,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\src\Microsoft-graph.d.ts");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}Microsoft-graph.d.ts");
             Assert.IsTrue(fileInfo.Exists, $"Expected {fileInfo.FullName}. File was not found.");
         }
 
@@ -59,7 +59,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + @"\com\Beta\Microsoft\Graph\Model\Entity.php");
+            FileInfo fileInfo = new FileInfo(outputDirectory + @$"{Path.DirectorySeparatorChar}com{Path.DirectorySeparatorChar}Beta{Path.DirectorySeparatorChar}Microsoft{Path.DirectorySeparatorChar}Graph{Path.DirectorySeparatorChar}Model{Path.DirectorySeparatorChar}Entity.php");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the namespace applied at the CLI was added to the document.
@@ -93,7 +93,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\requests\extensions\TimeOffRequestCollectionRequest.java");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}extensions{Path.DirectorySeparatorChar}TimeOffRequestCollectionRequest.java");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the namespace applied at the CLI was added to the document.
@@ -126,7 +126,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\GraphServiceClient.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Requests{Path.DirectorySeparatorChar}GraphServiceClient.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the beta endpoint was set as the default endpoint. Otherwise it uses v1.0.
@@ -160,7 +160,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\OnenotePage.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Model{Path.DirectorySeparatorChar}OnenotePage.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the test string is found in the output file. Converting "&#xD;&#xA; Test token string" to "/// Test token string" is what we are testing.
@@ -193,7 +193,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\Thumbnail.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Model{Path.DirectorySeparatorChar}Thumbnail.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -231,7 +231,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\EmptyComplexType.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Model{Path.DirectorySeparatorChar}EmptyComplexType.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -264,7 +264,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\TestType.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Model{Path.DirectorySeparatorChar}TestType.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -295,7 +295,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\Entity.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Model{Path.DirectorySeparatorChar}Entity.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -332,7 +332,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\EmptyBaseComplexTypeRequest.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Model{Path.DirectorySeparatorChar}EmptyBaseComplexTypeRequest.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -365,7 +365,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\DerivedComplexTypeRequest.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Model{Path.DirectorySeparatorChar}DerivedComplexTypeRequest.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -415,7 +415,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\TestTypeQueryRequestBuilder.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Requests{Path.DirectorySeparatorChar}TestTypeQueryRequestBuilder.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -450,7 +450,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\TestTypeRequestBuilder.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Requests{Path.DirectorySeparatorChar}TestTypeRequestBuilder.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -485,7 +485,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\ITestTypeRequestBuilder.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Requests{Path.DirectorySeparatorChar}ITestTypeRequestBuilder.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -521,7 +521,7 @@ namespace Typewriter.Test
 
             Generator.Transform(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + @"\cleanMetadata.xml");
+            FileInfo fileInfo = new FileInfo(outputDirectory + @$"{Path.DirectorySeparatorChar}cleanMetadata.xml");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -576,7 +576,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, optionsCSharp);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\" + outputFileName);
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}Requests{Path.DirectorySeparatorChar}" + outputFileName);
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
