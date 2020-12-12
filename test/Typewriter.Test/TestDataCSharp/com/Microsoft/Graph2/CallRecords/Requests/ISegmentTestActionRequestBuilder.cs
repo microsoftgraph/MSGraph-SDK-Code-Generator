@@ -16,7 +16,7 @@ namespace Microsoft.Graph2.CallRecords
     /// <summary>
     /// The interface ISegmentTestActionRequestBuilder.
     /// </summary>
-    public partial interface ISegmentTestActionRequestBuilder
+    public partial interface ISegmentTestActionRequestBuilder : IBaseRequestBuilder
     {
         /// <summary>
         /// Builds the request.

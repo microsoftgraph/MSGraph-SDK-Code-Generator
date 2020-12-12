@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The interface IEntityType3ForwardRequestBuilder.
     /// </summary>
-    public partial interface IEntityType3ForwardRequestBuilder
+    public partial interface IEntityType3ForwardRequestBuilder : IBaseRequestBuilder
     {
         /// <summary>
         /// Builds the request.
