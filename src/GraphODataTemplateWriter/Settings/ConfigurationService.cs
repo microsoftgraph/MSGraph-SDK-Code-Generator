@@ -4,6 +4,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -74,11 +75,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
             return mainTWS;
 
         }
+        /// <summary>
+        /// Cheap "caching" implementation that compromises bettween performance impact, avoiding flaky unit tests because of a shared app domain and not having to refactor this whole settings implementation
+        /// </summary>
+        private static Dictionary<string, TemplateWriterSettings> cheapSettingsCache = new Dictionary<string, TemplateWriterSettings>();
         public static TemplateWriterSettings Settings
         {
             get
             {
-                return _configurationProvider != null ? LoadSettingsForLanguage() : new TemplateWriterSettings();
+                var settingsCacheKey = $"{targetLanguage}-{endpointVersion}";
+                if (!cheapSettingsCache.ContainsKey(settingsCacheKey))
+                    cheapSettingsCache.Add(settingsCacheKey, _configurationProvider != null ? LoadSettingsForLanguage() : new TemplateWriterSettings());
+                return cheapSettingsCache[settingsCacheKey];
             }
         }
     }
