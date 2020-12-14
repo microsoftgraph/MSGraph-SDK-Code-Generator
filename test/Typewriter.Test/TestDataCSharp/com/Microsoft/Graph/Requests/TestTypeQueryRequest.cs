@@ -18,6 +18,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type TestTypeQueryRequest.
     /// </summary>
+    [Obsolete("responseObject is deprecated. Please use something else.")]
     public partial class TestTypeQueryRequest : BaseRequest, ITestTypeQueryRequest
     {
         /// <summary>

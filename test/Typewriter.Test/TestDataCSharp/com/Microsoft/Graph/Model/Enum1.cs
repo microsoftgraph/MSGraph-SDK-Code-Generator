@@ -16,6 +16,7 @@ namespace Microsoft.Graph
     /// The enum Enum1.
     /// </summary>
     [JsonConverter(typeof(JsonStringEnumConverter))]
+    [Obsolete("enum1 is deprecated. Please use string.")]
     public enum Enum1
     {
     

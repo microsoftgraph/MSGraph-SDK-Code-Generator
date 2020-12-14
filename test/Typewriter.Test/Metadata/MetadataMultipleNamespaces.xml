@@ -12,23 +12,70 @@
         <Property Name="propertyAlpha" Type="graph.derivedComplexTypeRequest" />
       </EntityType>
       <EnumType Name="enum1">
+        <Annotation Term = "Org.OData.Core.V1.Revisions">
+          <Collection>
+            <Record>
+              <PropertyValue Property="Date" Date="2020-10-16"/>
+              <PropertyValue Property="RemovalDate" Date="2021-01-15"/>
+              <PropertyValue Property="Version" String="test"/>
+              <PropertyValue Property = "Kind" EnumMember="Org.OData.Core.V1.RevisionKind/Deprecated"/>
+              <PropertyValue Property = "Description" String="enum1 is deprecated. Please use string."/>
+            </Record>
+          </Collection>
+        </Annotation>
         <Member Name="value0" Value="0" />
         <Member Name="value1" Value="1" />
       </EnumType>
-      <ComplexType Name="emptyBaseComplexTypeRequest" Abstract="true" />
+      <ComplexType Name="emptyBaseComplexTypeRequest" Abstract="true">
+        <Annotation Term = "Org.OData.Core.V1.Revisions">
+          <Collection>
+            <Record>
+              <PropertyValue Property="Date" Date="2020-10-16"/>
+              <PropertyValue Property="RemovalDate" Date="2021-01-15"/>
+              <PropertyValue Property="Version" String="test"/>
+              <PropertyValue Property = "Kind" EnumMember="Org.OData.Core.V1.RevisionKind/Deprecated"/>
+              <PropertyValue Property = "Description" String="emptyBaseComplexTypeRequest is deprecated. Please use emptyBaseComplexTypeRequest2."/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </ComplexType>
       <ComplexType Name="derivedComplexTypeRequest" BaseType="graph.emptyBaseComplexTypeRequest">
         <Property Name="property1" Type="Edm.String" />
         <Property Name="property2" Type="Edm.String" />
         <Property Name="enumProperty" Type="graph.enum1" />
       </ComplexType>
-      <ComplexType Name="responseObject" />
+      <ComplexType Name="responseObject">
+        <Annotation Term = "Org.OData.Core.V1.Revisions">
+          <Collection>
+            <Record>
+              <PropertyValue Property="Date" Date="2020-10-16"/>
+              <PropertyValue Property="RemovalDate" Date="2021-01-15"/>
+              <PropertyValue Property="Version" String="test"/>
+              <PropertyValue Property = "Kind" EnumMember="Org.OData.Core.V1.RevisionKind/Deprecated"/>
+              <PropertyValue Property = "Description" String="responseObject is deprecated. Please use something else."/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </ComplexType>
       <Action Name="query" IsBound="true">
         <Parameter Name="bindingParameter" Type="graph.testType" />
         <Parameter Name="requests" Type="Collection(graph.derivedComplexTypeRequest)" Nullable="false" />
         <ReturnType Type="Collection(graph.responseObject)" Nullable="false" />
       </Action>
       <EntityType Name="entityType2" BaseType="graph.entity" />
-      <EntityType Name="entityType3" BaseType="graph.entity" />
+      <EntityType Name="entityType3" BaseType="graph.entity">
+        <Annotation Term = "Org.OData.Core.V1.Revisions">
+          <Collection>
+            <Record>
+              <PropertyValue Property="Date" Date="2020-10-16"/>
+              <PropertyValue Property="RemovalDate" Date="2021-01-15"/>
+              <PropertyValue Property="Version" String="test"/>
+              <PropertyValue Property = "Kind" EnumMember="Org.OData.Core.V1.RevisionKind/Deprecated"/>
+              <PropertyValue Property = "Description" String="entityType3 is deprecated. Please use singletonEntity1."/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </EntityType>
       <EntityType Name="testEntity" BaseType="graph.entity">
         <NavigationProperty Name="testNav" Type="graph.testType" />
         <NavigationProperty Name="testInvalidNav" Type="graph.entityType2" />

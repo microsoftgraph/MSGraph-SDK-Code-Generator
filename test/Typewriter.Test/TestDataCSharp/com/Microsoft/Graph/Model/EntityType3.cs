@@ -17,7 +17,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Entity Type3.
     /// </summary>
-    
+    [Obsolete("entityType3 is deprecated. Please use singletonEntity1.")]
     public partial class EntityType3 : Entity
     {
     

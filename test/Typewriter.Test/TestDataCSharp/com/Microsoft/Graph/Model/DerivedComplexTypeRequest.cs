@@ -17,7 +17,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DerivedComplexTypeRequest.
     /// </summary>
-    
+    [Obsolete("emptyBaseComplexTypeRequest is deprecated. Please use emptyBaseComplexTypeRequest2.")]
     public partial class DerivedComplexTypeRequestObject : EmptyBaseComplexTypeRequestObject
     {
         /// <summary>
@@ -43,6 +43,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets enumProperty.
         /// </summary>
+        [Obsolete("enum1 is deprecated. Please use string.")]
         [JsonPropertyName("enumProperty")]
         public Enum1? EnumProperty { get; set; }
     

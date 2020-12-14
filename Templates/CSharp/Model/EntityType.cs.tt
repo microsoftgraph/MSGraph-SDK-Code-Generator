@@ -39,6 +39,14 @@ if (entity.Base != null)
 
 var attributeStringBuilder = new StringBuilder();
 
+if (entity.Deprecation != null)
+{
+   attributeStringBuilder.Append(entity.GetDeprecationString());
+   attributeStringBuilder.Append(Environment.NewLine);
+   attributeStringBuilder.Append("    ");
+}
+
+
 // We only want to add the derived type converter to the classes at the top of the inheritance hierarchy
 if (entity.Derived != null && entity.Base == null)
 {
@@ -106,6 +114,11 @@ namespace <#=@namespace#>
             var propertyCollectionPage = property.IsReference() ? string.Concat(entityName, propertyName, "CollectionWithReferencesPage") : string.Concat(entityName, propertyName, "CollectionPage");
 
             var attributeDefinition = string.Format("[JsonPropertyName(\"{0}\")]", property.Name);
+
+            if (property.Deprecation != null)
+            {
+                attributeDefinition = property.GetDeprecationString() + Environment.NewLine + "        " + attributeDefinition;
+            }
 
             if (property.IsCollection())
             {

@@ -44,6 +44,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets test explicit nav.
         /// </summary>
+        [Obsolete("entityType3 is deprecated. Please use singletonEntity1.")]
         [JsonPropertyName("testExplicitNav")]
         public EntityType3 TestExplicitNav { get; set; }
     
