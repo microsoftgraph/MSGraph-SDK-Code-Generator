@@ -42,11 +42,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
                         throw new ArgumentException("A property was set in a unexpected form from the typewriter commandline.", "-p -properties");
                     }
 
-                    propertyDictionary.Add(props[0],props[1]);
+                    propertyDictionary.Add(props[0], props[1]);
                 }
 
                 ConfigurationService.properties = propertyDictionary;
             }
+            else
+                ConfigurationService.properties = null; //important: to avoid subsequent flaky tests due to shared app domain
         }
 
         private static TemplateWriterSettings LoadSettingsForLanguage()
