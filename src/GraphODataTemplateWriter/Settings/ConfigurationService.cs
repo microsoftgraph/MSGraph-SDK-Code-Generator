@@ -83,7 +83,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
         {
             get
             {
-                var settingsCacheKey = $"{targetLanguage}-{endpointVersion}";
+                var settingsCacheKey = $"{targetLanguage}-{endpointVersion}-{(properties?.Any() ?? false ? properties.OrderBy(x => x.Key).Select(x => x.Key + ":" + x.Value).Aggregate((x, y) => x + y) : string.Empty)}";
                 if (!cheapSettingsCache.ContainsKey(settingsCacheKey))
                     cheapSettingsCache.Add(settingsCacheKey, _configurationProvider != null ? LoadSettingsForLanguage() : new TemplateWriterSettings());
                 return cheapSettingsCache[settingsCacheKey];
