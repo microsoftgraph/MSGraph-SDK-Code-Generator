@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -17,8 +17,8 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type ResponseObject.
     /// </summary>
-    [JsonConverter(typeof(DerivedTypeConverter<ResponseObject>))]
     [Obsolete("responseObject is deprecated. Please use something else.")]
+    [JsonConverter(typeof(DerivedTypeConverter<ResponseObject>))]
     public partial class ResponseObject
     {
         /// <summary>

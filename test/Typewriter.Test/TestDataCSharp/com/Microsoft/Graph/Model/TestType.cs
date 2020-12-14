@@ -32,8 +32,8 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets property alpha.
         /// </summary>
-        [JsonPropertyName("propertyAlpha")]
         [Obsolete("emptyBaseComplexTypeRequest is deprecated. Please use emptyBaseComplexTypeRequest2.")]
+        [JsonPropertyName("propertyAlpha")]
         public DerivedComplexTypeRequestObject PropertyAlpha { get; set; }
     
     }
