@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -72,11 +72,19 @@ namespace Microsoft.Graph2.CallRecords
         {
             var baseUrl = this.Client.BaseUrl;
             var objectUri = string.Format(@"{0}/users/{1}", baseUrl, id);
-            var payload = new Newtonsoft.Json.Linq.JObject(
-                            new Newtonsoft.Json.Linq.JProperty("@odata.id", objectUri));
+            var stream = new System.IO.MemoryStream();
+            using (var writer = new System.Text.Json.Utf8JsonWriter(stream))
+            {
+                writer.WriteStartObject();
+                writer.WriteString("@odata.id", objectUri);
+                writer.WriteEndObject();
+                await writer.FlushAsync();
+                await stream.FlushAsync();
+            }
+            var payload = System.Text.Encoding.UTF8.GetString(stream.ToArray());
             this.Method = "PUT";
             this.ContentType = "application/json";
-            await this.SendAsync(payload.ToString(), cancellationToken).ConfigureAwait(false);
+            await this.SendAsync(payload, cancellationToken).ConfigureAwait(false);
         }
     }
 }
