@@ -53,7 +53,8 @@ namespace Typewriter.Test
                 Output = outputDirectory,
                 Language = "PHP",
                 Properties = new List<string>() { $"php.namespacePrefix:{testNamespace}" },
-                GenerationMode = GenerationMode.Files
+                GenerationMode = GenerationMode.Files,
+                EndpointVersion = "beta"
             };
 
             Generator.GenerateFiles(testMetadata, options);
