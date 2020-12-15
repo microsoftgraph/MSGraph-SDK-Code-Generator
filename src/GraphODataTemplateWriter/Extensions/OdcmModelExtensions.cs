@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 {
@@ -548,7 +548,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         /// <summary>
         /// Use this method to get a collection of methods on the return type 
-        /// of a composable function. 
+        /// of a composable function. This will include themethods and overloads.
         /// </summary>
         /// <param name="odcmMethod">The OdcmMethod to target.</param>
         /// <returns>An ordered (by name) list of methods bound to the return 
@@ -559,7 +559,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 throw new InvalidOperationException("This extension method is intended " +
                                                     "to only be called on a composable function.");
 
-            return (odcmMethod.ReturnType as OdcmClass).Methods
+            return odcmMethod.ReturnType.AsOdcmClass().MethodsAndOverloads()
                                                        .OrderBy(m => m.Name)
                                                        .ToList();
         }
