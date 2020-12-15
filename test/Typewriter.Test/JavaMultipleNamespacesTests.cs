@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Graph.ODataTemplateWriter.Settings;
+using NUnit.Framework;
 
 namespace Typewriter.Test
 {
@@ -9,6 +10,11 @@ namespace Typewriter.Test
         public void Test()
         {
             MultipleNamespacesTestRunner.Run(TestLanguage.Java);
+        }
+        [Test]
+        public void TestBeta()
+        {
+            MultipleNamespacesTestRunner.Run(TestLanguage.Java, isBeta: true);
         }
     }
 }

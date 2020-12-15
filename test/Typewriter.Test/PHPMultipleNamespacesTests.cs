@@ -1,17 +1,18 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Graph.ODataTemplateWriter.Settings;
+using NUnit.Framework;
 
 namespace Typewriter.Test
 {
     [TestFixture]
     public class PHPMultipleNamespacesTests
     {
-        [Test, RunInApplicationDomain]
+        [Test]
         public void Test()
         {
             MultipleNamespacesTestRunner.Run(TestLanguage.PHP);
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void TestBeta()
         {
             MultipleNamespacesTestRunner.Run(TestLanguage.PHP, isBeta: true);

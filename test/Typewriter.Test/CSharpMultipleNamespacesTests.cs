@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Graph.ODataTemplateWriter.Settings;
+using NUnit.Framework;
 
 namespace Typewriter.Test
 {

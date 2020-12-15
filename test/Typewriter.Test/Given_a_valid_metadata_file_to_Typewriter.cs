@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Graph.ODataTemplateWriter.Settings;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
 
@@ -13,7 +14,7 @@ namespace Typewriter.Test
     {
         public string testMetadata;
         // The second segment is generated from the namespace in the target metadata file.
-        public string generatedOutputUrl = @"\com\microsoft\Graph";
+        public string generatedOutputUrl = @$"{Path.DirectorySeparatorChar}com{Path.DirectorySeparatorChar}microsoft{Path.DirectorySeparatorChar}graph";
 
         /// <summary>
         /// Load metadata from file into a string so we can validate MetadataPreprocessor.
@@ -24,7 +25,7 @@ namespace Typewriter.Test
             testMetadata = Typewriter.Test.Properties.Resources.dirtyMetadata;
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_a_typings_file()
         {
             const string outputDirectory = "output"; 
@@ -37,11 +38,11 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\src\Microsoft-graph.d.ts");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}Microsoft-graph.d.ts");
             Assert.IsTrue(fileInfo.Exists, $"Expected {fileInfo.FullName}. File was not found.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_PHP_models_with_a_property()
         {
             const string testNamespace = "Beta";
@@ -52,12 +53,13 @@ namespace Typewriter.Test
                 Output = outputDirectory,
                 Language = "PHP",
                 Properties = new List<string>() { $"php.namespacePrefix:{testNamespace}" },
-                GenerationMode = GenerationMode.Files
+                GenerationMode = GenerationMode.Files,
+                EndpointVersion = "beta"
             };
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + @"\com\Beta\Microsoft\Graph\Model\Entity.php");
+            FileInfo fileInfo = new FileInfo(outputDirectory + @$"{Path.DirectorySeparatorChar}com{Path.DirectorySeparatorChar}Beta{Path.DirectorySeparatorChar}Microsoft{Path.DirectorySeparatorChar}Graph{Path.DirectorySeparatorChar}Model{Path.DirectorySeparatorChar}Entity.php");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the namespace applied at the CLI was added to the document.
@@ -77,7 +79,7 @@ namespace Typewriter.Test
         /// <summary>
         /// 
         /// </summary>
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_Java_models_with_disambiguated_import()
         {
             const string outputDirectory = "outputJava";
@@ -91,7 +93,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\requests\extensions\TimeOffRequestCollectionRequest.java");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}extensions{Path.DirectorySeparatorChar}TimeOffRequestCollectionRequest.java");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the namespace applied at the CLI was added to the document.
@@ -109,7 +111,7 @@ namespace Typewriter.Test
             Assert.IsTrue(isExpectedImportStatementFound, $"The expected statement was not found. Expected: {expected}");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_dotNet_client_with_default_beta_baseUrl()
         {
             const string outputDirectory = "output";
@@ -124,7 +126,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\GraphServiceClient.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}GraphServiceClient.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the beta endpoint was set as the default endpoint. Otherwise it uses v1.0.
@@ -144,7 +146,7 @@ namespace Typewriter.Test
         }
 
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_dotNet_client_with_commented_out_code_comments()
         {
             const string outputDirectory = "output";
@@ -158,7 +160,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\OnenotePage.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}OnenotePage.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the test string is found in the output file. Converting "&#xD;&#xA; Test token string" to "/// Test token string" is what we are testing.
@@ -177,7 +179,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We are not correctly handling the \r\n coming from the annotations.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_dotNet_odatatype_initialization_for_complextypes()
         {
             const string outputDirectory = "output";
@@ -191,7 +193,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\Thumbnail.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}Thumbnail.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -215,7 +217,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasCstorString, $"The expected test token cstor string, '{testCstorString}', was not set in the generated test file. We didn't properly generate the cstor code.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_doesnt_generate_odatatype_initialization_for_abstract_complextypes()
         {
             const string outputDirectory = "output";
@@ -229,7 +231,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\EmptyComplexType.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}EmptyComplexType.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -248,7 +250,7 @@ namespace Typewriter.Test
         }
 
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_generates_dotNet_odatatype_initialization_for_entitytypes()
         {
             const string outputDirectory = "output";
@@ -262,7 +264,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\TestType.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}TestType.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -279,7 +281,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_doesnt_generate_odatatype_initialization_for_abstract_entitytypes()
         {
             const string outputDirectory = "output";
@@ -293,7 +295,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\Entity.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}Entity.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -316,7 +318,7 @@ namespace Typewriter.Test
             Assert.IsFalse(hasTestODataInitString, $"The unexpected test token string, '{testODataInitString}', was set in the generated test file. We didn't properly generate the cstor code.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_creates_disambiguated_abstract_base_complextype_models()
         {
             const string outputDirectory = "output";
@@ -330,7 +332,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\EmptyBaseComplexTypeRequest.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}EmptyBaseComplexTypeRequest.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -349,7 +351,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the type declaration code.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_creates_disambiguated_complextype_models()
         {
             const string outputDirectory = "output";
@@ -363,7 +365,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Model\DerivedComplexTypeRequest.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}DerivedComplexTypeRequest.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -399,7 +401,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestOdataType, $"The expected test token string, '{testOdataType}', was not set in the generated test file. We didn't properly generate the initialized odata.type code.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_creates_disambiguated_MethodRequestBuilder_parameters()
         {
             const string outputDirectory = "output";
@@ -413,7 +415,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\TestTypeQueryRequestBuilder.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}TestTypeQueryRequestBuilder.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -434,7 +436,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_creates_disambiguated_EntityRequestBuilder_parameters()
         {
             const string outputDirectory = "output";
@@ -448,7 +450,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\TestTypeRequestBuilder.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}TestTypeRequestBuilder.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -469,7 +471,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_creates_disambiguated_IEntityRequestBuilder_parameters()
         {
             const string outputDirectory = "output";
@@ -483,7 +485,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\ITestTypeRequestBuilder.cs");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}ITestTypeRequestBuilder.cs");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -504,7 +506,7 @@ namespace Typewriter.Test
             Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void It_transforms_metadata()
         {
             const string outputDirectory = "output";
@@ -519,7 +521,7 @@ namespace Typewriter.Test
 
             Generator.Transform(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + @"\cleanMetadata.xml");
+            FileInfo fileInfo = new FileInfo(outputDirectory + @$"{Path.DirectorySeparatorChar}cleanMetadata.xml");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -556,7 +558,7 @@ namespace Typewriter.Test
             Assert.IsFalse(hasCapabilityAnnotations, $"The expected capability annotations weren't removed in the transformed cleaned metadata.");
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         [TestCase("TestType2FunctionMethodWithStringRequest.cs", "var response = await this.SendAsync<ODataMethodStringResponse>(null, cancellationToken);")]
         [TestCase("TestType2FunctionMethodWithBooleanRequest.cs", "var response = await this.SendAsync<ODataMethodBooleanResponse>(null, cancellationToken);")]
         [TestCase("TestType2FunctionMethodWithInt32Request.cs", "var response = await this.SendAsync<ODataMethodIntResponse>(null, cancellationToken);")]
@@ -574,7 +576,7 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, optionsCSharp);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @"\Requests\" + outputFileName);
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}" + outputFileName);
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
