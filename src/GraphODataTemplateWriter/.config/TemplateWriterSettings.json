@@ -7,10 +7,9 @@
   "InitializeCollections": "false",
   "AllowShortActions": "false",
   "NamespaceOverride": "",
-  "TemplatesDirectory": "../../../../Templates",
+  "TemplatesDirectory": "../../../../../Templates",
   "DefaultFileCasing": "UpperCamel",
   "CustomFlags": [ "python2" ],
-  "DefaultBaseEndpointUrl": "https://graph.microsoft.com/v1.0",
   "LicenseHeader": [
     "Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information."
   ],

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Graph.ODataTemplateWriter.Extensions;
@@ -39,9 +40,8 @@ namespace GraphODataTemplateWriter.Test
         public void Initialize()
         {
             string dir = Directory.GetCurrentDirectory();
-            dir = dir.Replace("\\bin\\Debug", "");
 
-            string edmx = File.ReadAllText(dir + "\\Edmx\\Containment.xml");
+            string edmx = File.ReadAllText(dir + $"{Path.DirectorySeparatorChar}Edmx{Path.DirectorySeparatorChar}Containment.xml");
             OdcmReader reader = new OdcmReader();
 
             model = reader.GenerateOdcmModel(new List<TextFile> { new TextFile("$metadata", edmx) });
@@ -60,6 +60,16 @@ namespace GraphODataTemplateWriter.Test
             OdcmProperty result = OdcmModelExtensions.GetServiceCollectionNavigationPropertyForPropertyType(prop, model);
             var singleton = model.GetEntityTypes().Where(t => t.Name == "testSingleton").First();
             Assert.AreEqual(singleton.Name, result.Name);
+        }
+
+        [TestMethod]
+        public void GetDeprecation()
+        {
+            var type = model.GetEntityTypes().Where(t => t.Name == "entity").First();
+            var prop = type.Properties.Where(p => p.Name == "id").First();
+            Assert.IsNotNull(prop.Deprecation);
+            Assert.IsNotNull(prop.Deprecation.Description);
+            Assert.IsNotNull(prop.Deprecation.Version);
         }
 
         /// <summary>

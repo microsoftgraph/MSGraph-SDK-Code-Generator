@@ -30,7 +30,7 @@ namespace Typewriter
             if (string.IsNullOrWhiteSpace(outputDirectoryPath))
                 outputDirectoryPath = Environment.CurrentDirectory;
 
-            var fullFileName = string.Concat(outputDirectoryPath, "\\", fileName);
+            var fullFileName = Path.Combine(outputDirectoryPath, fileName);
 
             File.WriteAllText(fullFileName, metadata);
             Logger.Info($"Metadata written to {fullFileName}");

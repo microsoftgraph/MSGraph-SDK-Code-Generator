@@ -11,7 +11,7 @@
     var c = host.CurrentType;
 #>
 <# if (logTemplateSrc) { #>
-// Template Source: <#= TypeHelperJava.TemplateName(host.TemplateFile) #>
+// Template Source: <#= host.GetTemplateFileName(host.TemplateFile) #>
 <# } #>
 <#+
         /*

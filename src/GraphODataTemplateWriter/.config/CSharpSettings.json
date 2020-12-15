@@ -1,4 +1,5 @@
 {
+  "TargetLanguage": "CSharp",
     "TemplateMapping": {
       "CSharp": [
           { "Template": "EntityType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Matches": "navigable" },

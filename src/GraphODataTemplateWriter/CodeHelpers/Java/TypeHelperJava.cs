@@ -149,15 +149,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                 $"<{typeName}, {requestBuilderName}, {collectionResponseName}, {currentType.TypeCollectionPage()}, {collectionRequestName}>";
         }
 
-        /// <summary>
-        /// Get the name of the current template being processed
-        /// </summary>
-        /// <param name="templateFile">The full path of the current template</param>
-        /// <returns>The template name, relative to the Templates directory.</returns>
-        public static string TemplateName(this string templateFile)
-        {
-            return templateFile.Substring(templateFile.LastIndexOf("Templates"));
-        }
         private static Regex lastIdReplacer = new Regex(@"\/{id}$");
 
         /// <summary>

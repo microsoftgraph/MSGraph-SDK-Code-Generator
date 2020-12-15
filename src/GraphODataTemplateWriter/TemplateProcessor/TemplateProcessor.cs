@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 {
@@ -17,8 +17,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
     using Vipr.Core.CodeModel;
     using NLog;
     using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
-    using System.Windows.Markup;
     using Microsoft.Graph.ODataTemplateWriter.Settings;
+    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.Emit;
+    using System.Reflection;
+    using Mono.TextTemplating;
 
     public class TemplateProcessor : ITemplateProcessor
     {
@@ -75,13 +79,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         }
 
         protected OdcmModel CurrentModel { get; set; }
-        protected Microsoft.VisualStudio.TextTemplating.Engine T4Engine { get; set; }
+        protected TemplatingEngine T4Engine { get; set; }
         protected IPathWriter PathWriter { get; set; }
         protected string TemplatesDirectory { get; set; }
 
         public TemplateProcessor(IPathWriter pathWriter, OdcmModel odcmModel, string templatesDirectory)
         {
-            this.T4Engine = new Microsoft.VisualStudio.TextTemplating.Engine();
+            this.T4Engine = new TemplatingEngine();
             this.CurrentModel = odcmModel;
             this.PathWriter = pathWriter;
             this.PathWriter.Model = odcmModel;
@@ -258,50 +262,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         {
             var templateContent = File.ReadAllText(templateInfo.FullPath);
 
-            string language;
-            string[] references;
             var className = templateInfo.TemplateName.Replace(".", "_");
-            var dummyHost = new CustomT4Host(templateInfo, this.TemplatesDirectory, null, null);
-            var generatedCode = this.T4Engine.PreprocessTemplate(templateContent, dummyHost, className, RuntimeTemplatesNamespace, out language, out references);
+            var assembly = CompileAndLoadTemplateAssembly(templateInfo, templateContent, className);
 
-            var parameters = new CompilerParameters
-            {
-               // OutputAssembly = templateInfo.TemplateName + ".dll",
-                GenerateInMemory = true,
-                GenerateExecutable = false,
-                IncludeDebugInformation = true,
-            };
-
-            var assemblyLocations = AppDomain.CurrentDomain
-                                    .GetAssemblies()
-                                    .Where(a => !a.IsDynamic)
-                                    .Select(a => a.Location);
-            parameters.ReferencedAssemblies.AddRange(assemblyLocations.ToArray());
-            
-            parameters.TreatWarningsAsErrors = false;
-
-            var provider = new CSharpCodeProvider();
-
-            var results = provider.CompileAssemblyFromSource(parameters, generatedCode);
-
-            if (results.Errors.Count > 0)
-            {
-                var realError = false;
-                for (int i = 0; i < results.Errors.Count; i++)
-                {
-                    if (! results.Errors[i].IsWarning) realError = true;
-                    logger.Error((results.Errors[i].IsWarning ? "Warning" : "Error") + "(" + i.ToString() + "): " + results.Errors[i].ToString());
-                    Console.WriteLine( (results.Errors[i].IsWarning?"Warning":"Error") + "(" + i.ToString() + "): " + results.Errors[i].ToString());
-                }
-
-                if (realError)
-                {
-                    File.WriteAllText("__ErrorFile.cs", generatedCode);
-                    throw new InvalidOperationException("Template error.");
-                }
-            }
-
-            var assembly = results.CompiledAssembly;
             var templateClassType = assembly.GetType(RuntimeTemplatesNamespace + "." + className);
 
             dynamic templateClassInstance = Activator.CreateInstance(templateClassType);
@@ -310,8 +273,64 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                 templateClassInstance.Host = host;
                 return templateClassInstance.TransformText();
             };
-
         }
+        private static Dictionary<string, Assembly> cachedAssemblies = new Dictionary<string, Assembly>();
+
+        private Assembly CompileTemplateOrRetrieveFromCache(ITemplateInfo templateInfo, string templateContent, string className)
+        {
+            if (!cachedAssemblies.ContainsKey(className))
+            {
+                var assembly = CompileAndLoadTemplateAssembly(templateInfo, templateContent, className);
+                cachedAssemblies.Add(className, assembly);
+                return assembly;
+            }
+            return cachedAssemblies[className];
+        }
+
+        private Assembly CompileAndLoadTemplateAssembly(ITemplateInfo templateInfo, string templateContent, string className)
+        {
+            var dummyHost = new CustomT4Host(templateInfo, this.TemplatesDirectory, null, null);
+            var generatedCode = this.T4Engine.PreprocessTemplate(templateContent, dummyHost, className, RuntimeTemplatesNamespace, out var language, out var references);
+
+            var syntaxTree = CSharpSyntaxTree.ParseText(generatedCode);
+
+            var refs = new List<PortableExecutableReference>();
+            foreach (var reference in ((string)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")).Split(Path.PathSeparator))
+            {
+                refs.Add(MetadataReference.CreateFromFile(reference));
+            }
+            var compilation = CSharpCompilation.Create($"{templateInfo.TemplateName}.dll",
+                                 syntaxTrees: new[] { syntaxTree },
+                                 references: refs,
+                                 options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+            var messages = new List<string>();
+            using (var ms = new MemoryStream())
+            {
+                EmitResult result = compilation.Emit(ms);
+                if (!result.Success)
+                {
+                    var failures = result.Diagnostics.Where(diagnostic =>
+                         diagnostic.IsWarningAsError ||
+                         diagnostic.Severity == DiagnosticSeverity.Error);
+
+                    foreach (Diagnostic diagnostic in failures.OrderBy(o => o.Location.GetLineSpan().StartLinePosition.Line))
+                    {
+                        messages.Add($"({diagnostic.Location.GetLineSpan().StartLinePosition.Line}) {diagnostic.Id}: {diagnostic.GetMessage()}");
+                    }
+                    throw new InvalidOperationException("Template error.");
+                }
+                else
+                {
+                    ms.Seek(0, SeekOrigin.Begin);
+                    var byteAssembly = ms.ToArray();
+                    var assembly = Assembly.Load(byteAssembly);
+                    messages.Add("Compilation successful");
+                    return assembly;
+                }
+            }
+        }
+
         private TextFile ProcessTemplate(ITemplateInfo templateInfo, OdcmObject odcmObject,
                 string className = "", string propertyName = "", string methodName = "", string propertyType = "")
         {
