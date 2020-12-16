@@ -170,7 +170,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<TextFile> ProcessMethodsWithBody(ITemplateInfo templateInfo)
         {
-            return this.ProcessMethods(templateInfo, this.MethodsWithBody);
+            if (templateInfo.TemplateLanguage == "Java") 
+                return new List<TextFile>();
+            else
+                return this.ProcessMethods(templateInfo, this.MethodsWithBody);
         }
 
         protected virtual IEnumerable<TextFile> ProcessCollectionMethods(ITemplateInfo templateInfo)
