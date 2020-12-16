@@ -14,10 +14,98 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import <#=importNamespace#>.serializer.ISerializer;
 import java.util.EnumSet;
+import java.util.ArrayList;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeBody())#>
-
 <#=TypeHelperJava.CreateParameterDef(c.AsOdcmMethod().Parameters)#>
+<# if(c.AsOdcmMethod().MethodName().Equals("Delta")) { #>
+    /**
+     * The delta link.
+     */
+    @Nullable
+    public String deltaLink;
+<# } #>
+    /**
+     * Instiaciates a new <#=c.TypeBody()#>
+     */
+    public <#=c.TypeBody()#>() {}
+    private <#=c.TypeBody()#>(@Nonnull final <#=c.TypeBodyBuilder()#> builder) {
+<# if(c.AsOdcmMethod().MethodName().Equals("Delta")) { #>
+        this.deltaLink = builder.deltaLink;
+<# } #>
+<# foreach(var parameter in c.AsOdcmMethod().Parameters) {
+var parameterName = parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar();
+#>
+        this.<#=parameterName#> = builder.<#=parameterName#>;
+<# } #>
+    }
+    /**
+     * Gets a new builder for the body
+     * @return a new builder
+     */
+    @Nonnull
+    public static <#=c.TypeBodyBuilder()#> newBuilder() {
+        return new <#=c.TypeBodyBuilder()#>();
+    }
+    /**
+     * Fluent builder for the <#=c.TypeBody()#>
+     */
+    public static final class <#=c.TypeBodyBuilder()#> {
+<# if(c.AsOdcmMethod().MethodName().Equals("Delta")) { #>
+        private String deltaLink;
+        /**
+         * Sets the deltaLink
+         * @param val the value to set it to
+         * @return the current builder object
+         */
+        @Nonnull
+        public <#=c.TypeBodyBuilder()#> withDeltaLink(@Nullable final String val) {
+            this.deltaLink = val;
+            return this;
+        }
+<# } #>
+<# foreach(var parameter in c.AsOdcmMethod().Parameters) { #>
+        private <#=parameter.ParamType()#> <#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#>;
+        /**
+         * Sets the <#=parameter.ParamName().SanitizePropertyName(parameter).ToUpperFirstChar()#>
+         * @param val the value to set it to
+         * @return the current builder object
+         */
+        @Nonnull
+        public <#=c.TypeBodyBuilder()#> with<#=parameter.ParamName().SanitizePropertyName(parameter).ToUpperFirstChar()#>(@Nullable final <#=parameter.ParamType()#> val) {
+            this.<#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#> = val;
+            return this;
+        }
+<# } #>
+        private <#=c.TypeBodyBuilder()#>(){}
+        /**
+         * Buils the resulting body object to be passed to the request
+         * @return the body object to pass to the request
+         */
+        @Nonnull
+        public <#=c.TypeBody()#> build() {
+            return new <#=c.TypeBody()#>(this);
+        }
+    }
+    /**
+     * Gets the functions options from the properties that have been set
+     * @return a list of function options for the request
+     */
+    @Nonnull
+    public java.util.List<com.microsoft.graph.options.FunctionOption> getFunctionOptions() {
+        final ArrayList<com.microsoft.graph.options.FunctionOption> result = new ArrayList<>();
+<# if(c.AsOdcmMethod().MethodName().Equals("Delta")) { #>
+        if(this.deltaLink != null) {
+            result.add(new com.microsoft.graph.options.FunctionOption("deltaLink", deltaLink));
+        }
+<# } #>
+<# foreach(var parameter in c.AsOdcmMethod().Parameters) { #>
+        if(this.<#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#> != null) {
+            result.add(new com.microsoft.graph.options.FunctionOption("<#=parameter.ParamName()#>", <#=parameter.ParamName()#>));
+        }
+<# } #>
+        return result;
+    }
 <#=TypeHelperJava.CreateRawJsonObject(false)#>
     }
 }
