@@ -7,6 +7,7 @@
 
           { "Template": "Enum", "SubProcessor": "EnumType",                                                                                   "Name": "<Class>" },
           { "Template": "BaseMethodBody", "SubProcessor": "NonCollectionMethod",                                                                   "Name": "Base<Method>Body" },
+          { "Template": "BaseMethodBody", "SubProcessor": "CollectionMethod",                                                                   "Name": "Base<Method>Body" },
 
           { "Template": "BaseMethodRequest", "SubProcessor": "NonCollectionMethod",                                                           "Name": "Base<Method>Request" },
 
