@@ -1,4 +1,5 @@
 {
+  "TargetLanguage": "TypeScript",
     "TemplateMapping": {
       "TypeScript": [
           { "Template": "entity_types", "SubProcessor": "Other", "Name": "microsoft-graph.d" }

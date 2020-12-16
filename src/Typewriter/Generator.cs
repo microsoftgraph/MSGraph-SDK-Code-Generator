@@ -82,7 +82,7 @@ namespace Typewriter
             if (string.IsNullOrWhiteSpace(outputDirectoryPath))
                 outputDirectoryPath = Environment.CurrentDirectory;
 
-            var pathToCleanMetadata = string.Concat(outputDirectoryPath, "\\cleanMetadata.xml");
+            var pathToCleanMetadata = Path.Combine(outputDirectoryPath, "cleanMetadata.xml");
 
             using (var reader = new StringReader(csdlContents))
             using (var doc = XmlReader.Create(reader))

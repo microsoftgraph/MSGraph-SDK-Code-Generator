@@ -38,6 +38,14 @@ if (entity.Base != null)
 }
 
 var attributeStringBuilder = new StringBuilder();
+
+if (entity.Deprecation != null)
+{
+   attributeStringBuilder.Append(entity.GetDeprecationString());
+   attributeStringBuilder.Append(Environment.NewLine);
+   attributeStringBuilder.Append("    ");
+}
+
 attributeStringBuilder.Append("[JsonObject(MemberSerialization = MemberSerialization.OptIn)]");
 
 // We only want to add the derived type converter to the classes at the top of the inheritance hierarchy
@@ -110,6 +118,11 @@ namespace <#=@namespace#>
             var propertyCollectionPage = property.IsReference() ? string.Concat(entityName, propertyName, "CollectionWithReferencesPage") : string.Concat(entityName, propertyName, "CollectionPage");
 
             var attributeDefinition = string.Format("[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = \"{0}\", Required = Newtonsoft.Json.Required.Default)]", property.Name);
+
+            if (property.Deprecation != null)
+            {
+                attributeDefinition = property.GetDeprecationString() + Environment.NewLine + "        " + attributeDefinition;
+            }
 
             if (property.IsCollection())
             {

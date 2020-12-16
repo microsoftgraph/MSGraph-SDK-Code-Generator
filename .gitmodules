@@ -2,3 +2,7 @@
 	path = submodules/vipr
 	url = https://github.com/microsoft/vipr
 	branch = master
+[submodule "apidoctor"]
+	path = apidoctor
+	url = https://github.com/microsoftgraph/apidoctor.git
+	branch = master

@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 {
@@ -289,6 +289,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         {
             return AppDomain.CurrentDomain;
             // return AppDomain.CreateDomain("Generation App Domain");
+        }
+
+        /// <summary>
+        /// Get the name of the current template being processed
+        /// </summary>
+        /// <param name="templateFile">The full path of the current template</param>
+        /// <returns>The template name, relative to the Templates directory.</returns>
+        public string GetTemplateFileName(string templateFile)
+        {
+            return templateFile.Substring(templateFile.LastIndexOf(Path.DirectorySeparatorChar) + 1);
         }
     }
 }

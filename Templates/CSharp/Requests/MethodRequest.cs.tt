@@ -112,6 +112,9 @@ namespace <#=@namespace#>
     /// <summary>
     /// The type <#=requestType#>.
     /// </summary>
+<# if (method.Deprecation != null) { #>
+    <#=method.GetDeprecationString()#>
+<# } #>
     public partial class <#=requestType#> : <#=baseRequestTypeName#>, I<#=requestType#>
     {
         /// <summary>
