@@ -35,6 +35,11 @@ import <#=importNamespace#>.core.IBaseClient;
 <# if (c.GetFeatures().CanCount && (currentTypeProjection == null || !currentTypeProjection.MethodsAndOverloads().Any(x => x.MethodName().Equals("Count")))) { #>
 import <#=importNamespace#>.http.PrimitiveRequestBuilder;
 <# } #>
+<#
+foreach (var method in currentTypeProjection.MethodsAndOverloads().Where(x => x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeBody()).Distinct()) {
+#>
+import <#=method#>;
+<# } #>
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), "BaseCollectionRequestBuilder<"+c.TypeName()+", "+c.TypeRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+", "+c.TypeCollectionRequest()+">")#>
 
     /**
@@ -69,37 +74,29 @@ if (currentTypeProjection != null) {
             continue;
         }
 
-        var parameterList = method.MethodParametersSignature();
-
-        if (parameterList != "") {
-            parameterList = parameterList.Remove(0, 2);
-        }
-
         if (method.IsCollection) {
 #>
 
     /**
      * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
-     * @return the request builder collection<#=method.MethodParametersJavadocSignature()#>
+     * @return the request builder collection
+<#if(method.MethodHasParameters()) { #>
+     * @param parameters the parameters for the service method
+<# } #>
      */
     @Nonnull
-    public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
-        return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
+    public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeBody()#> parameters<# } #>) {
+        return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
     }
-<#
-	// Add a method to support delta query by string (opaque deltaLink)
-	if (method.MethodName() == "Delta") {
-#>
-
+<# if(method.MethodName().Equals("Delta")) { #>
     /**
-     * Gets the list of newly created, updated or deleted <#= c.TypeName() #>
-     * 
-     * @return a request builder to get the changes
-     * @param deltaLink the link returned by the last delta request
+     * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
+     * @return the request builder collection
+     * @param parameters the parameters for the service method
      */
     @Nonnull
-	public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(@Nonnull final String deltaLink) {
-        return new <#=method.TypeCollectionRequestBuilder()#>(deltaLink, getClient(), null<#=method.MethodParametersValues()#>);
+    public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(@Nonnull final <#=mainNamespace#>.<#=method.GetPackagePrefix()#>.<#=method.TypeBody()#> parameters) {
+        return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null, parameters);
     }
 <# } #>
 <#
@@ -108,11 +105,14 @@ if (currentTypeProjection != null) {
 
     /**
      * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
-     * @return the request builder <#=method.MethodParametersJavadocSignature()#>
+     * @return the request builder
+<#if(method.MethodHasParameters()) { #>
+     * @param parameters the parameters for the service method
+<# } #>
      */
     @Nonnull
-    public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
-        return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
+    public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeBody()#> parameters<# } #>) {
+        return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
     }
 <#
         }

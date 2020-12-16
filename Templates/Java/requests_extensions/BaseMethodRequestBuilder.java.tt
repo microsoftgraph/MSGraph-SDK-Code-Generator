@@ -7,6 +7,12 @@
 <#=host.CreatePackageDefForBaseMethodRequestBuilder()#>
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder") #>;
+<# var mainNamespace = host.CurrentNamespace(); #>
+<#
+foreach (var method in c.AsOdcmMethod().WithOverloads().Where(x => x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeBody()).Distinct()) {
+#>
+import <#=method#>;
+<# } #>
 import <#=importNamespace#>.core.IBaseClient;
 import com.google.gson.JsonElement;
 import javax.annotation.Nullable;
@@ -15,23 +21,32 @@ import javax.annotation.Nonnull;
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
 <#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), c.GetMethodRequestBuilderSuperClass())#>
 
-<# foreach (var method in c.AsOdcmMethod().WithDistinctOverloads()) { #>
+<#if(c.AsOdcmMethod().MethodHasParameters() && isAction) { #>
+    private <#=c.AsOdcmMethod().TypeBody() #> body;
+<# } #>
+<# foreach(var method in c.AsOdcmMethod().WithOverloadsOfDistinctName()) { #>
     /**
      * The request builder for this <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
-     * @param requestOptions the options for this request<#=method.MethodParametersJavadocSignature()#>
+     * @param requestOptions the options for this request
+<#if(method.MethodHasParameters()) { #>
+     * @param parameters     the parameters for the service method
+<# } #>
      */
-    public <#=c.TypeRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#=method.MethodParametersSignature()#>) {
+    public <#=c.TypeRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(method.MethodHasParameters()) { #>, @Nonnull final <#=method.TypeBody()#> parameters<# } #>) {
         super(requestUrl, client, requestOptions);
-<#     foreach (var p in method.Parameters) { #>
-<#         if (isAction) { #>
-        bodyParams.put("<#=p.ParamName()#>", <#=p.ParamName()#>);
-<#         } else { #>
-        functionOptions.add(new com.microsoft.graph.options.FunctionOption("<#=p.ParamName()#>", <#=p.ParamName()#>));
-<#         } #>
-<#     } #>
+<#if(method.MethodHasParameters()) { #>
+<# if (isAction) { #>
+        this.body = parameters;
+<# } else { #>
+        if(parameters != null) {
+            functionOptions = parameters.getFunctionOptions();
+        }
+<#     }
+    }
+#>
     }
 <# } #>
 
@@ -57,22 +72,21 @@ import javax.annotation.Nonnull;
         <#=c.TypeRequest()#> request = new <#=c.TypeRequest()#>(
                 getRequestUrl(),
                 getClient(),
+<#if(c.AsOdcmMethod().MethodHasParameters() && isAction) { #>
+                requestOptions,
+                this.body
+<# } else { #>
                 requestOptions
+<# } #>
         );
 
-<# if (isAction) { #>
-<#   foreach (var p in c.AsOdcmMethod().Parameters) { #>
-        if (hasParameter("<#=p.ParamName()#>")) {
-            request.body.<#=p.ParamName()#> = getParameter("<#=p.ParamName()#>");
-        }
-
-<#   } #>
-<# } else { #>
-      for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
+<#if(c.AsOdcmMethod().MethodHasParameters()) { #>
+    <# if (!isAction) { #>
+        for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
             request.addFunctionOption(option);
-      }
-
-<# } #>
+        }
+<#      }
+    }#>
         return request;
     }
 <# 
