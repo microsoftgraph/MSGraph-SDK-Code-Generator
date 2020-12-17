@@ -90,43 +90,6 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypeBody
     }
 
 <# } #>
-<# if (c.GetFeatures().CanCount) { #>
-    /**
-     * Sets the count value for the request
-     *
-     * @param value whether or not to return the count of objects with the request
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> count(final boolean value) {
-        addCountOption(value);
-        return this;
-    }
-    /**
-     * Sets the count value to true for the request
-     *
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> count() {
-        addCountOption(true);
-        return this;
-    }
-<# } #>
-<# if (c.GetFeatures().CanUseTop) { #>
-
-    /**
-     * Sets the top value for the request
-     *
-     * @param value the max number of items to return
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> top(final int value) {
-        addTopOption(value);
-        return this;
-    }
-<# } #>
 <# } else { #>
     /**
      * Creates the <#=c.TypeName()#>
@@ -209,90 +172,6 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypeBody
     }
 
 <# } #>
-<# if (c.GetFeatures().CanFilter) { #>
-    /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> filter(@Nonnull final String value) {
-        addFilterOption(value);
-        return this;
-    }
-
-<# } #>
-<# if (c.GetFeatures().CanSort) { #>
-    /**
-     * Sets the order by clause for the request
-     *
-     * @param value the order by clause
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> orderBy(@Nonnull final String value) {
-        addOrderByOption(value);
-        return this;
-    }
-
-<# }#>
-<# if (c.GetFeatures().CanCount) { #>
-    /**
-     * Sets the count value for the request
-     *
-     * @param value whether or not to return the count of objects with the request
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> count(final boolean value) {
-        addCountOption(value);
-        return this;
-    }
-    /**
-     * Sets the count value to true for the request
-     *
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> count() {
-        addCountOption(true);
-        return this;
-    }
-<# } #> 
-<# if (c.GetFeatures().CanUseTop) { #>
-
-    /**
-     * Sets the top value for the request
-     *
-     * @param value the max number of items to return
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> top(final int value) {
-        addTopOption(value);
-        return this;
-    }
-<# } #>
-<#} else { #>
-    public void get(@Nonnull final ICallback<Void> callback) {
-        final IExecutors executors = getClient().getExecutors();
-        executors.performOnBackground(new Runnable() {
-           @Override
-           public void run() {
-                try {
-                    get();
-                    executors.performOnForeground((Void)null, callback);
-                } catch (final ClientException e) {
-                    executors.performOnForeground(e, callback);
-                }
-           }
-        });
-    }
-
-    public void get() throws ClientException {
-        this.send(HttpMethod.GET, null);
-    }
 <#
     }
 }
