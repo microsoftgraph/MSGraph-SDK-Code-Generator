@@ -185,17 +185,6 @@ if (c.AsOdcmClass() != null)
     public <#=method.TypeCollectionRequestBuilder()#> <#=sanitizedMethod#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
     }
-<# if(method.MethodName().Equals("Delta") && !c.Name.Equals("DriveItem", StringComparison.InvariantCultureIgnoreCase)) { // the onedrive team already added an overload for deltatoken when they shouldn't #>
-    /**
-     * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
-     * @return the request builder collection
-     * @param parameters the parameters for the service method
-     */
-    @Nonnull
-    public <#=method.TypeCollectionRequestBuilder()#> <#=sanitizedMethod#>(@Nonnull final <#=mainNamespace#>.<#=method.GetPackagePrefix()#>.<#=method.TypeParameterSet()#> parameters) {
-        return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null, parameters);
-    }
-<# } #>
 <#      } else { #>
 
     /**

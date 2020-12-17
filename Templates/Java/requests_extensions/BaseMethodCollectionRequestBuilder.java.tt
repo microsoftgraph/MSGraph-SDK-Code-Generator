@@ -51,23 +51,6 @@ import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctio
 #>
     }
 <# } #>
-<# if (c.AsOdcmMethod().MethodName().Equals("Delta") && !c.TypeName().Equals("DriveItemDelta", StringComparison.InvariantCultureIgnoreCase)){ // the onedrive team already added an overload for deltatoken when they shouldn't #>
-    /**
-     * The request builder for this collection of <#=c.ClassTypeName()#>
-     *
-     * @param requestUrl     the request URL
-     * @param client         the service client
-     * @param requestOptions the options for this request
-     * @param parameters     the parameters for the service method
-     */
-    public <#=c.TypeCollectionRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions, @Nonnull final <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypeParameterSet()#> parameters) {
-        super(requestUrl, client, requestOptions, <#=c.TypeCollectionRequestBuilder()#>.class, <#=c.TypeCollectionRequest()#>.class);
-        if(parameters != null) {
-            functionOptions = parameters.getFunctionOptions();
-        }
-    }
-<# } #>
-    
     /**
      * Creates the request
      *

@@ -13,27 +13,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import <#=importNamespace#>.serializer.ISerializer;
-import <#=importNamespace#>.http.BaseMethodParameterSetBuilder;
 import java.util.EnumSet;
 import java.util.ArrayList;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeParameterSet())#>
 <#=TypeHelperJava.CreateParameterDef(c.AsOdcmMethod().Parameters)#>
-<# if(c.AsOdcmMethod().MethodName().Equals("Delta")) { #>
-    /**
-     * The delta token.
-     */
-    @Nullable
-    public String deltaToken;
-<# } #>
     /**
      * Instiaciates a new <#=c.TypeParameterSet()#>
      */
     public <#=c.TypeParameterSet()#>() {}
     private <#=c.TypeParameterSet()#>(@Nonnull final <#=c.TypeParameterSetBuilder()#> builder) {
-<# if(c.AsOdcmMethod().MethodName().Equals("Delta")) { #>
-        this.deltaToken = builder.deltaToken;
-<# } #>
 <# foreach(var parameter in c.AsOdcmMethod().Parameters) {
 var parameterName = parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar();
 #>
@@ -51,30 +40,7 @@ var parameterName = parameter.ParamName().SanitizePropertyName(parameter).ToLowe
     /**
      * Fluent builder for the <#=c.TypeParameterSet()#>
      */
-    public static final class <#=c.TypeParameterSetBuilder()#> extends BaseMethodParameterSetBuilder {
-<# if(c.AsOdcmMethod().MethodName().Equals("Delta")) { #>
-        private String deltaToken;
-        /**
-         * Sets the deltaToken
-         * @param val the value to set it to
-         * @return the current builder object
-         */
-        @Nonnull
-        public <#=c.TypeParameterSetBuilder()#> withDeltaToken(@Nullable final String val) {
-            this.deltaToken = val;
-            return this;
-        }
-        /**
-         * Sets the deltaToken from the returned deltalink from the previous request
-         * @param val the value to set it to
-         * @return the current builder object
-         */
-        @Nonnull
-        public <#=c.TypeParameterSetBuilder()#> withDeltaLink(@Nullable final String val) {
-            this.deltaToken = this.getDeltaTokenFromLink(val);
-            return this;
-        }
-<# } #>
+    public static final class <#=c.TypeParameterSetBuilder()#> {
 <# foreach(var parameter in c.AsOdcmMethod().Parameters) { #>
         private <#=parameter.ParamType()#> <#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#>;
         /**
@@ -105,14 +71,6 @@ var parameterName = parameter.ParamName().SanitizePropertyName(parameter).ToLowe
     @Nonnull
     public java.util.List<com.microsoft.graph.options.FunctionOption> getFunctionOptions() {
         final ArrayList<com.microsoft.graph.options.FunctionOption> result = new ArrayList<>();
-<# if(c.AsOdcmMethod().MethodName().Equals("Delta")) { #>
-<#
-var typeName = c.TypeName();
-var isODSPworkload = typeName.Equals("DriveItemDelta") || typeName.Equals("SiteDelta") || typeName.Equals("ListItemDelta") || typeName.Equals("DriveDelta"); // they use token and not $deltaToken #>
-        if(this.deltaToken != null) {
-            result.add(new com.microsoft.graph.options.FunctionOption("<# if(isODSPworkload) {#>token<#} else {#>$deltaToken<#}#>", deltaToken));
-        }
-<# } #>
 <# foreach(var parameter in c.AsOdcmMethod().Parameters) { #>
         if(this.<#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#> != null) {
             result.add(new com.microsoft.graph.options.FunctionOption("<#=parameter.ParamName()#>", <#=parameter.ParamName()#>));
