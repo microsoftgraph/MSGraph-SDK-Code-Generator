@@ -9,6 +9,7 @@ import com.microsoft.graph.models.extensions.EntityType3;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import com.microsoft.graph.http.BaseActionRequestBuilder;
+import com.microsoft.graph.models.extensions.EntityType3ForwardParameterSet;
 import com.microsoft.graph.core.IBaseClient;
 import com.google.gson.JsonElement;
 import javax.annotation.Nullable;
@@ -21,25 +22,18 @@ import javax.annotation.Nonnull;
  */
 public class EntityType3ForwardRequestBuilder extends BaseActionRequestBuilder<EntityType3> {
 
+    private EntityType3ForwardParameterSet body;
     /**
      * The request builder for this EntityType3Forward
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
-     * @param toRecipients the toRecipients
-     * @param singleRecipient the singleRecipient
-     * @param multipleSessions the multipleSessions
-     * @param singleSession the singleSession
-     * @param comment the comment
+     * @param parameters     the parameters for the service method
      */
-    public EntityType3ForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nullable final java.util.List<Recipient> toRecipients, @Nullable final Recipient singleRecipient, @Nullable final java.util.List<Session> multipleSessions, @Nullable final Session singleSession, @Nullable final String comment) {
+    public EntityType3ForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final EntityType3ForwardParameterSet parameters) {
         super(requestUrl, client, requestOptions);
-        bodyParams.put("toRecipients", toRecipients);
-        bodyParams.put("singleRecipient", singleRecipient);
-        bodyParams.put("multipleSessions", multipleSessions);
-        bodyParams.put("singleSession", singleSession);
-        bodyParams.put("comment", comment);
+        this.body = parameters;
     }
 
     /**
@@ -64,29 +58,10 @@ public class EntityType3ForwardRequestBuilder extends BaseActionRequestBuilder<E
         EntityType3ForwardRequest request = new EntityType3ForwardRequest(
                 getRequestUrl(),
                 getClient(),
-                requestOptions
+                requestOptions,
+                this.body
         );
 
-        if (hasParameter("toRecipients")) {
-            request.body.toRecipients = getParameter("toRecipients");
-        }
-
-        if (hasParameter("singleRecipient")) {
-            request.body.singleRecipient = getParameter("singleRecipient");
-        }
-
-        if (hasParameter("multipleSessions")) {
-            request.body.multipleSessions = getParameter("multipleSessions");
-        }
-
-        if (hasParameter("singleSession")) {
-            request.body.singleSession = getParameter("singleSession");
-        }
-
-        if (hasParameter("comment")) {
-            request.body.comment = getParameter("comment");
-        }
-
-        return request;
+            return request;
     }
 }

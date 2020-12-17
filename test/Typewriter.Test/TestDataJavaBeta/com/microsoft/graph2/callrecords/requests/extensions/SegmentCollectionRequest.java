@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.http.BaseCollectionRequest;
+import com.microsoft.graph.http.BaseEntityCollectionRequest;
 import com.microsoft.graph.concurrency.IExecutors;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentCollectionResponse;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentCollectionRequestBuilder;
@@ -30,7 +30,7 @@ import com.microsoft.graph2.callrecords.requests.extensions.SegmentCollectionReq
 /**
  * The class for the Segment Collection Request.
  */
-public class SegmentCollectionRequest extends BaseCollectionRequest<Segment, SegmentCollectionResponse, SegmentCollectionPage> {
+public class SegmentCollectionRequest extends BaseEntityCollectionRequest<Segment, SegmentCollectionResponse, SegmentCollectionPage> {
 
     /**
      * The request builder for this collection of Segment
