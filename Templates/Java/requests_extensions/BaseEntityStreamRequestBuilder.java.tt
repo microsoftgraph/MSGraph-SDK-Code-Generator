@@ -11,7 +11,7 @@ import <#=importNamespace#>.http.BaseRequestBuilder;
 import java.io.InputStream;
 <# var mainNamespace = host.CurrentNamespace(); #>
 <#
-foreach (var method in c.AsOdcmClass().MethodsAndOverloads().Where(x => !x.IsBoundToCollection && x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeBody()).Distinct()) {
+foreach (var method in c.AsOdcmClass().MethodsAndOverloads().Where(x => !x.IsBoundToCollection && x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeParameterSet()).Distinct()) {
 #>
 import <#=method#>;
 <# } #>
@@ -138,7 +138,7 @@ if (c.AsOdcmClass() != null)
      <# } #>
      */
     @Nonnull
-    public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeBody()#> parameters<# } #>) {
+    public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
     }
 
@@ -152,7 +152,7 @@ if (c.AsOdcmClass() != null)
      <# } #>
      */
     @Nonnull
-    public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeBody()#> parameters<# } #>) {
+    public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
     }
 <#

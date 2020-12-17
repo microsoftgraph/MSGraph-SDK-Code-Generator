@@ -10,7 +10,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseRequestBuilder;
 <# var mainNamespace = host.CurrentNamespace(); #>
 <#
-foreach (var method in c.AsOdcmClass().MethodsAndOverloads().Where(x => !x.IsBoundToCollection && x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeBody()).Distinct()) {
+foreach (var method in c.AsOdcmClass().MethodsAndOverloads().Where(x => !x.IsBoundToCollection && x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeParameterSet()).Distinct()) {
 #>
 import <#=method#>;
 <# } #>
@@ -182,17 +182,17 @@ if (c.AsOdcmClass() != null)
 <# } #>
      */
     @Nonnull
-    public <#=method.TypeCollectionRequestBuilder()#> <#=sanitizedMethod#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeBody()#> parameters<# } #>) {
+    public <#=method.TypeCollectionRequestBuilder()#> <#=sanitizedMethod#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
     }
-<# if(method.MethodName().Equals("Delta") && !c.Name.Equals("DriveItem", StringComparison.InvariantCultureIgnoreCase)) { // the onedrive team already added an overload for deltalink when they shouldn't #>
+<# if(method.MethodName().Equals("Delta") && !c.Name.Equals("DriveItem", StringComparison.InvariantCultureIgnoreCase)) { // the onedrive team already added an overload for deltatoken when they shouldn't #>
     /**
      * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
      * @return the request builder collection
      * @param parameters the parameters for the service method
      */
     @Nonnull
-    public <#=method.TypeCollectionRequestBuilder()#> <#=sanitizedMethod#>(@Nonnull final <#=mainNamespace#>.<#=method.GetPackagePrefix()#>.<#=method.TypeBody()#> parameters) {
+    public <#=method.TypeCollectionRequestBuilder()#> <#=sanitizedMethod#>(@Nonnull final <#=mainNamespace#>.<#=method.GetPackagePrefix()#>.<#=method.TypeParameterSet()#> parameters) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null, parameters);
     }
 <# } #>
@@ -206,7 +206,7 @@ if (c.AsOdcmClass() != null)
 <# } #>
      */
     @Nonnull
-    public <#=method.TypeRequestBuilder()#> <#=sanitizedMethod#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeBody()#> parameters<# } #>) {
+    public <#=method.TypeRequestBuilder()#> <#=sanitizedMethod#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
     }
 <#

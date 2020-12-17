@@ -9,7 +9,7 @@
 import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder") #>;
 <# var mainNamespace = host.CurrentNamespace(); #>
 <#
-foreach (var method in c.AsOdcmMethod().WithOverloads().Where(x => x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeBody()).Distinct()) {
+foreach (var method in c.AsOdcmMethod().WithOverloads().Where(x => x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeParameterSet()).Distinct()) {
 #>
 import <#=method#>;
 <# } #>
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 <#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), c.GetMethodRequestBuilderSuperClass())#>
 
 <#if(c.AsOdcmMethod().MethodHasParameters() && isAction) { #>
-    private <#=c.AsOdcmMethod().TypeBody() #> body;
+    private <#=c.AsOdcmMethod().TypeParameterSet() #> body;
 <# } #>
 <# foreach(var method in c.AsOdcmMethod().WithOverloadsOfDistinctName()) { #>
     /**
@@ -35,7 +35,7 @@ import javax.annotation.Nonnull;
      * @param parameters     the parameters for the service method
 <# } #>
      */
-    public <#=c.TypeRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(method.MethodHasParameters()) { #>, @Nonnull final <#=method.TypeBody()#> parameters<# } #>) {
+    public <#=c.TypeRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(method.MethodHasParameters()) { #>, @Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         super(requestUrl, client, requestOptions);
 <#if(method.MethodHasParameters()) { #>
 <# if (isAction) { #>

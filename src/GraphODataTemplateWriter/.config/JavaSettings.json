@@ -6,8 +6,8 @@
           { "Template": "BaseModel", "SubProcessor": "Other", "Type": "Shared" },
 
           { "Template": "Enum", "SubProcessor": "EnumType",                                                                                   "Name": "<Class>" },
-          { "Template": "BaseMethodBody", "SubProcessor": "NonCollectionMethod",                                                                   "Name": "Base<Method>Body" },
-          { "Template": "BaseMethodBody", "SubProcessor": "CollectionMethod",                                                                   "Name": "Base<Method>Body" },
+          { "Template": "BaseMethodParameterSet", "SubProcessor": "NonCollectionMethod",                                                                   "Name": "Base<Method>ParameterSet" },
+          { "Template": "BaseMethodParameterSet", "SubProcessor": "CollectionMethod",                                                                   "Name": "Base<Method>ParameterSet" },
 
           { "Template": "BaseMethodRequest", "SubProcessor": "NonCollectionMethod",                                                           "Name": "Base<Method>Request" },
 

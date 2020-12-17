@@ -36,7 +36,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.PrimitiveRequestBuilder;
 <# } #>
 <#
-foreach (var method in currentTypeProjection.MethodsAndOverloads().Where(x => x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeBody()).Distinct()) {
+foreach (var method in currentTypeProjection.MethodsAndOverloads().Where(x => x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeParameterSet()).Distinct()) {
 #>
 import <#=method#>;
 <# } #>
@@ -85,7 +85,7 @@ if (currentTypeProjection != null) {
 <# } #>
      */
     @Nonnull
-    public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeBody()#> parameters<# } #>) {
+    public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
     }
 <# if(method.MethodName().Equals("Delta")) { #>
@@ -95,7 +95,7 @@ if (currentTypeProjection != null) {
      * @param parameters the parameters for the service method
      */
     @Nonnull
-    public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(@Nonnull final <#=mainNamespace#>.<#=method.GetPackagePrefix()#>.<#=method.TypeBody()#> parameters) {
+    public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(@Nonnull final <#=mainNamespace#>.<#=method.GetPackagePrefix()#>.<#=method.TypeParameterSet()#> parameters) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null, parameters);
     }
 <# } #>
@@ -111,7 +111,7 @@ if (currentTypeProjection != null) {
 <# } #>
      */
     @Nonnull
-    public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeBody()#> parameters<# } #>) {
+    public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
     }
 <#

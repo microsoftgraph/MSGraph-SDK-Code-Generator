@@ -16,7 +16,7 @@ import <#=importNamespace#>.core.ClientException;
 import <#=importNamespace#>.core.IBaseClient;
 <# var mainNamespace = host.CurrentNamespace(); #>
 <#if(c.AsOdcmMethod().MethodHasParameters()) { #>
-import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypeBody()#>;
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypeParameterSet()#>;
 <# } #>
 
 <#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest<"+c.ReturnType()+">")#>
@@ -30,7 +30,7 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypeBody
      * @param parameters     the parameters for the service method
 <# } #>
      */
-    public <#=c.TypeRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>, @Nonnull final <#=c.AsOdcmMethod().TypeBody()#> parameters<# } #>) {
+    public <#=c.TypeRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>, @Nonnull final <#=c.AsOdcmMethod().TypeParameterSet()#> parameters<# } #>) {
         super(requestUrl, client, requestOptions, <#=c.ReturnType()#>.class);
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>
         body = parameters;
@@ -40,7 +40,7 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypeBody
 <# if (c.AsOdcmMethod().IsAction()) { #>
 <# if(c.AsOdcmMethod().MethodHasParameters()) { #>
 	/** The body for the method */
-    protected <#=c.TypeBody()#> body;
+    protected <#=c.TypeParameterSet()#> body;
 <# } #>
 <#  if (c.AsOdcmMethod().ReturnType != null) {
 #>

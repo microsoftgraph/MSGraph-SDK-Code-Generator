@@ -13,7 +13,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
 import <#=mainNamespace#>.<#=(c as OdcmMethod).ReturnType.GetPackagePrefix()#>.<#=(c as OdcmMethod).OdcmMethodReturnType()#>;
 <# } #>
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>
-import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeBody()#>;
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeParameterSet()#>;
 <# } #>
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.options.QueryOption;
@@ -37,7 +37,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>
 
     /** The body for the method */
-    protected <#=c.TypeBody()#> body;
+    protected <#=c.TypeParameterSet()#> body;
 
 <# } #>
 
@@ -51,7 +51,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param parameters the parameters for the service method
 <# } #>
      */
-    public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>, @Nonnull final <#=c.TypeBody()#> parameters<# } #>) {
+    public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>, @Nonnull final <#=c.TypeParameterSet()#> parameters<# } #>) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
 <# } else { #>
@@ -141,6 +141,16 @@ import <#=importNamespace#>.concurrency.IExecutors;
     @Nonnull
     public <#=c.TypeCollectionRequest()#> skip(final int value) {
         addSkipOption(value);
+        return this;
+    }
+    /**
+     * Add Skip token for pagination
+     * @param skipToken - Token for pagination
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> skipToken(@Nonnull final String skipToken) {
+    	addSkipTokenOption(skipToken);
         return this;
     }
 
@@ -281,6 +291,16 @@ import <#=importNamespace#>.concurrency.IExecutors;
     @Nonnull
     public <#=c.TypeCollectionRequest()#> skip(final int value) {
         addSkipOption(value);
+        return this;
+    }
+    /**
+     * Add Skip token for pagination
+     * @param skipToken - Token for pagination
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> skipToken(@Nonnull final String skipToken) {
+    	addSkipTokenOption(skipToken);
         return this;
     }
 

@@ -434,19 +434,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return "Base" + c.TypeCollectionReferenceRequestBuilder();
         }
 
-        public static string TypeBody(this OdcmObject c)
+        public static string TypeParameterSet(this OdcmObject c)
         {
-            return c.TypeName() + "Body";
+            return c.TypeName() + "ParameterSet";
         }
 
-        public static string TypeBodyBuilder(this OdcmObject c)
+        public static string TypeParameterSetBuilder(this OdcmObject c)
         {
-            return c.TypeBody() + "Builder";
-        }
-
-        public static string BaseTypeBody(this OdcmObject c)
-        {
-            return "Base" + c.TypeBody();
+            return c.TypeParameterSet() + "Builder";
         }
 
         /// Returns the name of the service <parameter> with the first char lowercase
@@ -768,7 +763,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.AppendFormat(importFormat,
                             host.CurrentNamespace(),
                             GetPrefixForModels(),
-                            host.CurrentType.TypeBody());
+                            host.CurrentType.TypeParameterSet());
             sb.Append("\n");
             var returnType = host.CurrentType.ReturnType();
             if (returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))
