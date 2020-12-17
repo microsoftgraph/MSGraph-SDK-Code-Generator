@@ -40,6 +40,7 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypePara
 <# if (c.AsOdcmMethod().IsAction()) { #>
 <# if(c.AsOdcmMethod().MethodHasParameters()) { #>
 	/** The body for the method */
+    @Nullable
     protected <#=c.TypeParameterSet()#> body;
 <# } #>
 <#  if (c.AsOdcmMethod().ReturnType != null) {

@@ -22,7 +22,11 @@ import java.util.ArrayList;
      * Instiaciates a new <#=c.TypeParameterSet()#>
      */
     public <#=c.TypeParameterSet()#>() {}
-    private <#=c.TypeParameterSet()#>(@Nonnull final <#=c.TypeParameterSetBuilder()#> builder) {
+    /**
+     * Instiaciates a new <#=c.TypeParameterSet()#>
+     * @param builder builder bearing the parameters to initialize from
+     */
+    protected <#=c.TypeParameterSet()#>(@Nonnull final <#=c.TypeParameterSetBuilder()#> builder) {
 <# foreach(var parameter in c.AsOdcmMethod().Parameters) {
 var parameterName = parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar();
 #>
@@ -42,7 +46,11 @@ var parameterName = parameter.ParamName().SanitizePropertyName(parameter).ToLowe
      */
     public static final class <#=c.TypeParameterSetBuilder()#> {
 <# foreach(var parameter in c.AsOdcmMethod().Parameters) { #>
-        private <#=parameter.ParamType()#> <#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#>;
+        /**
+         * The <#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#> parameter value
+         */
+        @Nullable
+        protected <#=parameter.ParamType()#> <#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#>;
         /**
          * Sets the <#=parameter.ParamName().SanitizePropertyName(parameter).ToUpperFirstChar()#>
          * @param val the value to set it to
@@ -54,7 +62,8 @@ var parameterName = parameter.ParamName().SanitizePropertyName(parameter).ToLowe
             return this;
         }
 <# } #>
-        private <#=c.TypeParameterSetBuilder()#>(){}
+        @Nullable
+        protected <#=c.TypeParameterSetBuilder()#>(){}
         /**
          * Buils the resulting body object to be passed to the request
          * @return the body object to pass to the request

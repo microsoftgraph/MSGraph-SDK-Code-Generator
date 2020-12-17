@@ -41,6 +41,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>
 
     /** The body for the method */
+    @Nullable
     protected <#=c.TypeParameterSet()#> body;
 
 <# } #>
