@@ -91,7 +91,6 @@
     <Content Include="Java\requests_extensions\BaseEntityStreamRequestBuilder.java.tt" />
     <Content Include="Java\requests_extensions\BaseEntityWithReferenceRequest.java.tt" />
     <Content Include="Java\requests_extensions\BaseEntityWithReferenceRequestBuilder.java.tt" />
-    <Content Include="Java\requests_extensions\BaseMethodBodyRequest.java.tt" />
     <Content Include="Java\requests_extensions\BaseMethodCollectionPage.java.tt" />
     <Content Include="Java\requests_extensions\BaseMethodCollectionRequest.java.tt" />
     <Content Include="Java\requests_extensions\BaseMethodCollectionRequestBuilder.java.tt" />
