@@ -6,11 +6,6 @@ pr: none
 
 resources:
  repositories:
-   - repository: MSGraph-SDK-Code-Generator
-     type: github
-     endpoint: microsoftgraph
-     name: microsoftgraph/MSGraph-SDK-Code-Generator
-     ref: dev
    - repository: msgraph-sdk-dotnet
      type: github
      endpoint: microsoftgraph
@@ -88,7 +83,7 @@ steps:
   fetchDepth: 1
   persistCredentials: true
 
-- checkout: MSGraph-SDK-Code-Generator
+- checkout: self
   displayName: checkout generator
   fetchDepth: 1
   submodules: recursive
@@ -129,12 +124,7 @@ steps:
   fetchDepth: 1
   persistCredentials: true
 
-- checkout: self
-  displayName: checkout raptor
-  fetchDepth: 1
-  persistCredentials: true
-
-- template: generation-templates/use-dotnet-sdk.yml
+- template: common-templates/use-dotnet-sdk.yml
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Typewriter'
