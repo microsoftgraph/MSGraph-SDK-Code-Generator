@@ -73,7 +73,10 @@ variables:
   typeScriptBetaBranch: 'pipelinebuild/beta/$(Build.BuildId)'
 
 stages:
+- stage: generation
+
 - stage: stage_beta_metadata
+  dependsOn: generation
   jobs:
   - job: beta_metadata
     steps:
@@ -82,6 +85,7 @@ stages:
         Write-Host "Success!"
 
 - stage: stage_v1_metadata
+  dependsOn: generation
   jobs:
   - job: v1_metadata
     steps:
