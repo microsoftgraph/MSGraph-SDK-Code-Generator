@@ -1,4 +1,11 @@
 steps:
+- template: set-up-for-generation.yml
+
+- checkout: msgraph-sdk-objc-models
+  displayName: checkout objc
+  fetchDepth: 1
+  persistCredentials: true
+
 - pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/run-typewriter.ps1'
   env:
     BuildConfiguration: $(buildConfiguration)

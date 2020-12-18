@@ -1,4 +1,11 @@
 steps:
+- template: set-up-for-generation.yml
+
+- checkout: msgraph-sdk-php
+  displayName: checkout php
+  fetchDepth: 1
+  persistCredentials: true
+
 - pwsh: |
     # Example directories are:
     # src/Model (types in microsoft.graph namespace)
