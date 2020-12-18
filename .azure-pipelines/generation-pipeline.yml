@@ -72,71 +72,116 @@ variables:
   # fatal: cannot lock ref 'refs/heads/beta/pipelinebuild/35157': 'refs/heads/beta' exists; cannot create 'refs/heads/beta/pipelinebuild/35157'
   typeScriptBetaBranch: 'pipelinebuild/beta/$(Build.BuildId)'
 
-steps:
-- pwsh: |
-    git config --global user.email "GraphTooling@service.microsoft.com"
-    git config --global user.name "Microsoft Graph DevX Tooling"
-  displayName: 'Git: set user config'
+jobs:
+- job: preperation
+  steps:
+    - pwsh: |
+        git config --global user.email "GraphTooling@service.microsoft.com"
+        git config --global user.name "Microsoft Graph DevX Tooling"
+      displayName: 'Git: set user config'
 
-- checkout: msgraph-metadata
-  displayName: checkout metadata
-  fetchDepth: 1
-  persistCredentials: true
+    - checkout: msgraph-metadata
+      displayName: checkout metadata
+      fetchDepth: 1
+      persistCredentials: true
 
-- checkout: self
-  displayName: checkout generator
-  fetchDepth: 1
-  submodules: recursive
-  persistCredentials: true
+    - template: common-templates/use-dotnet-sdk.yml
 
-- checkout: msgraph-sdk-dotnet
-  displayName: checkout dotnet
-  fetchDepth: 1
-  persistCredentials: true
+- job: build_typewriter
+  steps:
+  - checkout: self
+    displayName: checkout generator
+    fetchDepth: 1
+    submodules: recursive
+    persistCredentials: true
 
-- checkout: msgraph-beta-sdk-dotnet
-  displayName: checkout beta dotnet
-  fetchDepth: 1
-  persistCredentials: true
+  - task: DotNetCoreCLI@2
+    displayName: 'Build Typewriter'
+    inputs:
+      command: 'build'
+      projects: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/src/Typewriter/Typewriter.csproj'
+      arguments: '--configuration $(buildConfiguration)'
 
-- checkout: msgraph-sdk-php
-  displayName: checkout php
-  fetchDepth: 1
-  persistCredentials: true
+- job: beta_metadata
+  dependsOn: build_typewriter
+  condition: succeeded('build_typewriter')
+  steps:
+  - pwsh: |
+      Write-Error "Error!"
 
-- checkout: msgraph-typescript-typings
-  displayName: checkout typescript
-  fetchDepth: 1
-  persistCredentials: true
+- job: v1_metadata
+  dependsOn: build_typewriter
+  condition: succeeded('build_typewriter')
+  steps:
+    - pwsh: |
+        Write-Host "Success!"
 
-- checkout: msgraph-sdk-objc-models
-  displayName: checkout objc
-  fetchDepth: 1
-  persistCredentials: true
+- job: csharp_v1
+  dependsOn: v1_metadata
+  condition: succeeded('v1_metadata')
+  steps:
+  - checkout: msgraph-sdk-dotnet
+    displayName: checkout dotnet
+    fetchDepth: 1
+    persistCredentials: true
+  - template: generation-templates/dotnet-v1.yml
 
-- checkout: msgraph-sdk-java
-  displayName: checkout java
-  fetchDepth: 1
-  persistCredentials: true
+- job: csharp_beta
+  dependsOn: beta_metadata
+  condition: succeeded('beta_metadata')
+  steps:    
+  - checkout: msgraph-beta-sdk-dotnet
+    displayName: checkout beta dotnet
+    fetchDepth: 1
+    persistCredentials: true
+  - template: generation-templates/dotnet-beta.yml
 
-- checkout: msgraph-beta-sdk-java
-  displayName: checkout beta java
-  fetchDepth: 1
-  persistCredentials: true
+- job: java_v1
+  dependsOn: v1_metadata
+  condition: succeeded('v1_metadata')
+  steps:
+  - checkout: msgraph-sdk-java
+    displayName: checkout java
+    fetchDepth: 1
+    persistCredentials: true
+  - template: generation-templates/java-v1.yml
 
-- template: common-templates/use-dotnet-sdk.yml
+- job: java_beta
+  dependsOn: beta_metadata
+  condition: succeeded('beta_metadata')
+  steps:
+  - checkout: msgraph-beta-sdk-java
+    displayName: checkout beta java
+    fetchDepth: 1
+    persistCredentials: true
+  - template: generation-templates/java-beta.yml
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build Typewriter'
-  inputs:
-    command: 'build'
-    projects: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/src/Typewriter/Typewriter.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+- job: php_v1_beta
+  dependsOn: v1_metadata, beta_metadata
+  condition: succeeded('v1_metadata') or succeeded('beta_metadata')
+  steps:
+  - checkout: msgraph-sdk-php
+    displayName: checkout php
+    fetchDepth: 1
+    persistCredentials: true
+  - template: generation-templates/php.yml
 
-- template: generation-templates/dotnet-v1.yml
-- template: generation-templates/dotnet-beta.yml
-- template: generation-templates/php.yml
-- template: generation-templates/typescript.yml
-- template: generation-templates/objc.yml
-- template: generation-templates/java-v1.yml
-- template: generation-templates/java-beta.yml
+- job: typescript_v1_beta
+  dependsOn: v1_metadata, beta_metadata
+  condition: succeeded('v1_metadata') or succeeded('beta_metadata')
+  steps:
+  - checkout: msgraph-typescript-typings
+    displayName: checkout typescript
+    fetchDepth: 1
+    persistCredentials: true
+  - template: generation-templates/typescript.yml
+
+- job: objc_v1
+  dependsOn: v1_metadata
+  condition: succeeded('v1_metadata')
+  steps:
+  - checkout: msgraph-sdk-objc-models
+    displayName: checkout objc
+    fetchDepth: 1
+    persistCredentials: true
+  - template: generation-templates/objc.yml
