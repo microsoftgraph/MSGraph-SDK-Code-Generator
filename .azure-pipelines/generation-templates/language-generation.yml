@@ -1,9 +1,26 @@
 parameters:
-  - name: languageSpecificSteps
-    type: step
-    default:
-      pwsh: |
-        Write-Error "No language specific step is provided"
+- name: language
+  type: string
+
+- name: version
+  type: string
+
+- name: repoName
+  type: string
+
+- name: branchName
+  type: string
+
+- name: languageSpecificSteps
+  type: step
+  default:
+    pwsh: |
+      Write-Error "No language specific step is provided"
+
+language: ${{ parameters.language }}
+version: ${{ parameters.version }}
+repoName: ${{ parameters.repoName }}
+branchName: ${{ parameters.branchName }}
 
 variables:
   outputPath: 'output$(language)$(version)'

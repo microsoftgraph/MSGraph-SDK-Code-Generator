@@ -104,15 +104,14 @@ stages:
   dependsOn: stage_beta_metadata
   condition: succeeded('stage_beta_metadata')
   jobs:
-  - job: csharp_beta  
-    variables:
-      language: 'CSharp'
-      version: 'beta'
-      repoName: 'msgraph-beta-sdk-dotnet'
-      branchName: $(betaBranch)
+  - job: csharp_beta
     steps:
     - template: generation-templates/language-generation.yml
       parameters:
+        language: 'CSharp'
+        version: 'beta'
+        repoName: 'msgraph-beta-sdk-dotnet'
+        branchName: $(betaBranch)
         languageSpecificSteps:
         - template: dotnet-beta-update-models.yml
         - template: dotnet-beta-validation.yml
