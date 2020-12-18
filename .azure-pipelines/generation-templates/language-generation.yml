@@ -14,8 +14,8 @@ parameters:
 - name: languageSpecificSteps
   type: step
   default:
-    pwsh: |
-      Write-Error "No language specific step is provided"
+    - pwsh: |
+        Write-Error "No language specific step is provided"
 
 steps:
 - template: set-up-for-generation.yml
