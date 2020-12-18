@@ -97,42 +97,56 @@ stages:
     steps:
     - template: generation-templates/dotnet-v1.yml
 
-#- job: csharp_beta
-#  dependsOn: beta_metadata
-#  condition: succeeded('beta_metadata')
-#  steps:    
-#  - template: generation-templates/dotnet-beta.yml
-#
-#- job: java_v1
-#  dependsOn: v1_metadata
-#  condition: succeeded('v1_metadata')
-#  steps:
-#  - template: generation-templates/java-v1.yml
-#
-#- job: java_beta
-#  dependsOn: beta_metadata
-#  condition: succeeded('beta_metadata')
-#  steps:
-#  - template: generation-templates/java-beta.yml
-#
-#- job: php_v1_beta
-#  dependsOn:
-#  - v1_metadata
-#  - beta_metadata
-#  condition: or(succeeded('v1_metadata'),succeeded('beta_metadata'))
-#  steps:
-#  - template: generation-templates/php.yml
-#
-#- job: typescript_v1_beta
-#  dependsOn:
-#  - v1_metadata
-#  - beta_metadata
-#  condition: or(succeeded('v1_metadata'),succeeded('beta_metadata'))
-#  steps:
-#  - template: generation-templates/typescript.yml
-#
-#- job: objc_v1
-#  dependsOn: v1_metadata
-#  condition: succeeded('v1_metadata')
-#  steps:
-#  - template: generation-templates/objc.yml
+- stage: stage_csharp_beta
+  dependsOn: stage_beta_metadata
+  condition: succeeded('stage_beta_metadata')
+  jobs:
+  - job: csharp_beta
+    dependsOn: beta_metadata
+    condition: succeeded('beta_metadata')
+    steps:    
+    - template: generation-templates/dotnet-beta.yml
+
+- stage: stage_java_v1
+  dependsOn: stage_v1_metadata
+  condition: succeeded('stage_v1_metadata')
+  jobs:
+  - job: java_v1
+    steps:
+    - template: generation-templates/java-v1.yml
+
+- stage: stage_java_beta
+  dependsOn: stage_beta_metadata
+  condition: succeeded('stage_beta_metadata')
+  jobs:
+  - job: java_beta
+    steps:
+    - template: generation-templates/java-beta.yml
+
+- stage: stage_php_v1_beta
+  dependsOn:
+  - stage_beta_metadata
+  - stage_v1_metadata
+  condition: or(succeeded('stage_v1_metadata'),succeeded('stage_beta_metadata'))
+  jobs:
+  - job: php_v1_beta
+    steps:
+    - template: generation-templates/php.yml
+
+- stage: stage_typescript_v1_beta
+  dependsOn:
+  - stage_beta_metadata
+  - stage_v1_metadata
+  condition: or(succeeded('stage_v1_metadata'),succeeded('stage_beta_metadata'))
+  jobs:
+  - job: typescript_v1_beta
+    steps:
+    - template: generation-templates/typescript.yml
+
+- stage: stage_objc_v1
+  dependsOn: stage_v1_metadata
+  condition: succeeded('stage_v1_metadata')
+  jobs:
+  - job: objc_v1
+    steps:
+    - template: generation-templates/objc.yml
