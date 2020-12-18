@@ -1,7 +1,7 @@
-﻿using Microsoft.Graph.ODataTemplateWriter.Settings;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Typewriter.Test
 {
@@ -64,6 +64,8 @@ namespace Typewriter.Test
 
             // Check that the namespace applied at the CLI was added to the document.
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            TestContext.Out.WriteLine("Entity.php result");
+            TestContext.Out.Write(lines.Aggregate((x, y) => $"{x}{TestContext.Out.NewLine}{y}"));
             bool isExpectedNamespaceSet = false;
             foreach (var line in lines)
             {
