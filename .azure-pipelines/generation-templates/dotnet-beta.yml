@@ -6,6 +6,12 @@ steps:
   fetchDepth: 1
   persistCredentials: true
 
+- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/create-branch.ps1'
+  displayName: 'Create a branch'
+  env:
+    RepoDirectory: $(Build.SourcesDirectory)/msgraph-beta-sdk-dotnet
+    BranchName: $(betaBranch)
+
 - pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/run-typewriter.ps1'
   env:
     BuildConfiguration: $(buildConfiguration)
@@ -17,12 +23,6 @@ steps:
     Endpoint: 'beta'
   displayName: 'Run Typewriter for CSharp Beta'
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/create-branch.ps1'
-  displayName: 'Create a branch'
-  env:
-    RepoDirectory: $(Build.SourcesDirectory)/msgraph-beta-sdk-dotnet
-    BranchName: $(betaBranch)
-
 - pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/copy-dotnet-models.ps1'
   displayName: 'Update models'
   env:
@@ -30,21 +30,7 @@ steps:
     OutputFullPath: $(typewriterDirectory)/$(outputDotNetBeta)
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-beta-sdk-dotnet/src/Microsoft.Graph/Generated/
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build Microsoft.Graph.Beta.dll'
-  inputs:
-    command: 'build'
-    projects: msgraph-beta-sdk-dotnet/**/*.csproj
-    arguments: '--configuration $(buildConfiguration)'
-
-- pwsh: |
-    $allGeneratedDlls = Get-ChildItem -Include Microsoft.Graph.Beta.dll -Recurse
-    $dotNetFrameworkDll = $allGeneratedDlls | Where-Object { $_.FullName.Contains("net461") } | Select-Object -First 1 # TODO hardcoded .NET version
-    $dllPath = $dotNetFrameworkDll.FullName
-
-    & ./scripts/generateTypeSummary.ps1 -dllPath $dllPath -outputPath $env:BUILD_SOURCESDIRECTORY/msgraph-beta-sdk-dotnet/typeSummary.txt
-  displayName: 'Generate type summary'
-  workingDirectory: '$(Build.SourcesDirectory)/msgraph-beta-sdk-dotnet'
+- template: dotnet-beta-validation.yml
 
 - pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/git-push-files.ps1'
   displayName: 'Git: push generated files'

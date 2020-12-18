@@ -1,0 +1,16 @@
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Build Microsoft.Graph.dll'
+  inputs:
+    command: 'build'
+    projects: msgraph-sdk-dotnet/**/*.csproj
+    arguments: '--configuration $(buildConfiguration)'
+
+- pwsh: |
+    $allGeneratedDlls = Get-ChildItem -Include Microsoft.Graph.dll -Recurse
+    $dotNetFrameworkDll = $allGeneratedDlls | Where-Object { $_.FullName.Contains("net461") } | Select-Object -First 1 # TODO hardcoded .NET version
+    $dllPath = $dotNetFrameworkDll.FullName
+
+    & ./scripts/generateTypeSummary.ps1 -dllPath $dllPath -outputPath $env:BUILD_SOURCESDIRECTORY/msgraph-sdk-dotnet/typeSummary.txt
+  displayName: 'Generate type summary'
+  workingDirectory: '$(Build.SourcesDirectory)/msgraph-sdk-dotnet'

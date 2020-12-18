@@ -23,18 +23,10 @@ steps:
     RepoDirectory: $(Build.SourcesDirectory)/msgraph-beta-sdk-java
     BranchName: $(betaBranch)
 
-- pwsh: | # merge the logic with v1
-    $mainDir = "$env:BUILD_SOURCESDIRECTORY/msgraph-beta-sdk-java/src/main/"
-    $extensionsAndGeneratedDirectories = Get-ChildItem $mainDir -Include extensions,generated -Recurse -Directory
-
-    # this list should be updated if a new hand-crafted extension is added to one of the extensions/ directories
-    $filesThatShouldNotBeDeleted = "UploadSession.java","DateOnly.java","TimeOfDay.java","Multipart.java","ChunkedUploadRequest.java","ChunkedUploadResult.java","CustomRequestBuilder.java"
-    foreach ($directory in $extensionsAndGeneratedDirectories)
-    {
-        Remove-Item $directory.FullName -Recurse -Force -Exclude $filesThatShouldNotBeDeleted
-    }
-    Write-Host "Removed the existing generated files in the repo's main directory: $mainDir" -ForegroundColor Green
+- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/clean-java-files.ps1'
   displayName: 'Remove generated models and requests from the repo'
+  env:
+    MainDirectory: $(Build.SourcesDirectory)/msgraph-beta-sdk-java/src/main
 
 - pwsh : $(Build.SourcesDirectory)/msgraph-beta-sdk-java/Scripts/incrementMinorVersion.ps1
   displayName: 'Increment minor version number'
