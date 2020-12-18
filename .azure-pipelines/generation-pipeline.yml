@@ -158,7 +158,7 @@ jobs:
 
 - job: php_v1_beta
   dependsOn: v1_metadata, beta_metadata
-  condition: succeeded('v1_metadata') or succeeded('beta_metadata')
+  condition: or(succeeded('v1_metadata'),succeeded('beta_metadata'))
   steps:
   - checkout: msgraph-sdk-php
     displayName: checkout php
@@ -168,7 +168,7 @@ jobs:
 
 - job: typescript_v1_beta
   dependsOn: v1_metadata, beta_metadata
-  condition: succeeded('v1_metadata') or succeeded('beta_metadata')
+  condition: or(succeeded('v1_metadata'),succeeded('beta_metadata'))
   steps:
   - checkout: msgraph-typescript-typings
     displayName: checkout typescript
