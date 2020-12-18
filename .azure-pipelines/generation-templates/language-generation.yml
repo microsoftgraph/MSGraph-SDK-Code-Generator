@@ -1,0 +1,42 @@
+parameters:
+  - name: languageSpecificSteps
+    type: step
+    default:
+      pwsh: |
+        Write-Error "No language specific step is provided"
+
+variables:
+  outputPath: 'output$(language)$(version)'
+
+steps:
+- template: set-up-for-generation.yml
+
+- checkout: $(repoName)
+  displayName: 'checkout $(repoName)'
+  fetchDepth: 1
+  persistCredentials: true
+
+- pwsh: '$(scriptsDirectory)/create-branch.ps1'
+  displayName: 'Create a branch in $(repoName)'
+  env:
+    RepoDirectory: $(Build.SourcesDirectory)/$(repoName)
+    BranchName: $(branchName)
+
+- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputPath: $(outputPath)
+    CleanMetadataFile: $(cleanMetadataFile)
+    TypewriterExecutable: $(typewriterExecutable)
+    TypewriterDirectory: $(typewriterDirectory)
+    Language: $(language)
+    Endpoint: $(version)
+  displayName: 'Run Typewriter for $(language) $(version)'
+
+${{ parameters.mySteplist }}
+
+- pwsh: '$(scriptsDirectory)/git-push-files.ps1'
+  displayName: 'Git: push generated files'
+  env:
+    BranchName: $(betaBranch)
+  workingDirectory: '$(Build.SourcesDirectory)/msgraph-beta-sdk-dotnet'

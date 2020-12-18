@@ -64,6 +64,7 @@ variables:
   cleanMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml'
   typewriterDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/src/Typewriter/bin/$(BuildConfiguration)/net5.0'
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
+  scriptsDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts'
 
   v1Branch: 'v1.0/pipelinebuild/$(Build.BuildId)'
   betaBranch: 'beta/pipelinebuild/$(Build.BuildId)'

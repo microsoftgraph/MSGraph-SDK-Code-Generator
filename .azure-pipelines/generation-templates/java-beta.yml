@@ -6,7 +6,7 @@ steps:
   fetchDepth: 1
   persistCredentials: true
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/run-typewriter.ps1'
+- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputPath: $(outputJavaBeta)
@@ -17,29 +17,29 @@ steps:
     Endpoint: 'Beta'
   displayName: 'Run Typewriter for Java Beta'
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/create-branch.ps1'
+- pwsh: '$(scriptsDirectory)/create-branch.ps1'
   displayName: 'Create a branch'
   env:
     RepoDirectory: $(Build.SourcesDirectory)/msgraph-beta-sdk-java
     BranchName: $(betaBranch)
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/clean-java-files.ps1'
+- pwsh: '$(scriptsDirectory)/clean-java-files.ps1'
   displayName: 'Remove generated models and requests from the repo'
   env:
-    MainDirectory: $(Build.SourcesDirectory)/msgraph-beta-sdk-java/src/main
+    MainDirectory: $(Build.SourcesDirectory)/msgraph-beta-sdk-java/src/main/
 
 - pwsh : $(Build.SourcesDirectory)/msgraph-beta-sdk-java/Scripts/incrementMinorVersion.ps1
   displayName: 'Increment minor version number'
   workingDirectory: '$(Build.SourcesDirectory)/msgraph-beta-sdk-java/Scripts'
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/copy-java-models.ps1'
+- pwsh: '$(scriptsDirectory)/copy-java-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(typewriterDirectory)/$(outputJavaBeta)
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-beta-sdk-java/
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/git-push-files.ps1'
+- pwsh: '$(scriptsDirectory)/git-push-files.ps1'
   displayName: 'Git: push generated files'
   env:
     BranchName: $(betaBranch)

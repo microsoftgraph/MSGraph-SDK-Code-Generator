@@ -19,7 +19,7 @@ steps:
   displayName: 'Remove generated files from the repo'
   workingDirectory: $(Build.SourcesDirectory)/msgraph-sdk-php 
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/run-typewriter.ps1'
+- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputPath: $(outputPHPV1)
@@ -29,7 +29,7 @@ steps:
     Language: 'PHP'
   displayName: 'Run Typewriter for PHP V1'
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/run-typewriter.ps1'
+- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputPath: $(outputPHPBeta)
@@ -40,13 +40,13 @@ steps:
     Endpoint: 'beta'
   displayName: 'Run Typewriter for PHP Beta'
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/create-branch.ps1'
+- pwsh: '$(scriptsDirectory)/create-branch.ps1'
   displayName: 'Create a branch'
   env:
     RepoDirectory: $(Build.SourcesDirectory)/msgraph-sdk-php
     BranchName: $(v1Branch)
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/copy-php-models.ps1'
+- pwsh: '$(scriptsDirectory)/copy-php-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
@@ -57,7 +57,7 @@ steps:
 
 # TODO run PHP tests
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/git-push-files.ps1'
+- pwsh: '$(scriptsDirectory)/git-push-files.ps1'
   displayName: 'Git: push generated files'
   env:
     BranchName: $(v1Branch)

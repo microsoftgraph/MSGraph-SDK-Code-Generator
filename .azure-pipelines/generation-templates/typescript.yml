@@ -6,7 +6,7 @@ steps:
   fetchDepth: 1
   persistCredentials: true
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/run-typewriter.ps1'
+- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputPath: $(outputTypeScriptV1)
@@ -16,7 +16,7 @@ steps:
     Language: 'TypeScript'
   displayName: 'Run Typewriter for TypeScript V1'
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/run-typewriter.ps1'
+- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputPath: $(outputTypeScriptBeta)
@@ -28,20 +28,20 @@ steps:
   displayName: 'Run Typewriter for TypeScript Beta'
 
 # copy v1 generated files
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/create-branch.ps1'
+- pwsh: '$(scriptsDirectory)/create-branch.ps1'
   displayName: 'Create a branch'
   env:
     RepoDirectory: $(Build.SourcesDirectory)/msgraph-typescript-typings
     BranchName: $(v1Branch)
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/copy-typescript-models.ps1'
+- pwsh: '$(scriptsDirectory)/copy-typescript-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(typewriterDirectory)/$(outputTypeScriptV1)
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-typescript-typings/
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/git-push-files.ps1'
+- pwsh: '$(scriptsDirectory)/git-push-files.ps1'
   displayName: 'Git: push generated files'
   env:
     BranchName: $(v1Branch)
@@ -55,20 +55,20 @@ steps:
   workingDirectory: '$(Build.SourcesDirectory)/msgraph-typescript-typings'
 
 # copy beta generated files
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/create-branch.ps1'
+- pwsh: '$(scriptsDirectory)/create-branch.ps1'
   displayName: 'Create a branch'
   env:
     RepoDirectory: $(Build.SourcesDirectory)/msgraph-typescript-typings
     BranchName: $(typeScriptBetaBranch)
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/copy-typescript-models.ps1'
+- pwsh: '$(scriptsDirectory)/copy-typescript-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(typewriterDirectory)/$(outputTypeScriptBeta)
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-typescript-typings/
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/git-push-files.ps1'
+- pwsh: '$(scriptsDirectory)/git-push-files.ps1'
   displayName: 'Git: push generated files'
   env:
     BranchName: $(typeScriptBetaBranch)

@@ -1,0 +1,7 @@
+steps:
+- pwsh: '$(scriptsDirectory)/copy-dotnet-models.ps1'
+  displayName: 'Update models'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputFullPath: $(typewriterDirectory)/$(outputPath)
+    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-beta-sdk-dotnet/src/Microsoft.Graph/Generated/

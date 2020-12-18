@@ -6,7 +6,7 @@ steps:
   fetchDepth: 1
   persistCredentials: true
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/run-typewriter.ps1'
+- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputPath: $(outputJavaV1)
@@ -16,13 +16,13 @@ steps:
     Language: 'Java'
   displayName: 'Run Typewriter for Java V1'
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/create-branch.ps1'
+- pwsh: '$(scriptsDirectory)/create-branch.ps1'
   displayName: 'Create a branch'
   env:
     RepoDirectory: $(Build.SourcesDirectory)/msgraph-sdk-java
     BranchName: $(v1Branch)
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/clean-java-files.ps1'
+- pwsh: '$(scriptsDirectory)/clean-java-files.ps1'
   displayName: 'Remove generated models and requests from the repo'
   env:
     MainDirectory: $(Build.SourcesDirectory)/msgraph-sdk-java/src/main/
@@ -31,14 +31,14 @@ steps:
   displayName: 'Increment minor version number'
   workingDirectory: '$(Build.SourcesDirectory)/msgraph-sdk-java/Scripts'
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/copy-java-models.ps1'
+- pwsh: '$(scriptsDirectory)/copy-java-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(typewriterDirectory)/$(outputJavaV1)
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-java/
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/git-push-files.ps1'
+- pwsh: '$(scriptsDirectory)/git-push-files.ps1'
   displayName: 'Git: push generated files'
   env:
     BranchName: $(v1Branch)

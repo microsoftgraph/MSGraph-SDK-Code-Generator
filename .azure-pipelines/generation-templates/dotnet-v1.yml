@@ -6,7 +6,7 @@ steps:
   fetchDepth: 1
   persistCredentials: true
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/run-typewriter.ps1'
+- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputPath: $(outputDotNetV1)
@@ -16,13 +16,13 @@ steps:
     Language: 'CSharp'
   displayName: 'Run Typewriter for CSharp V1'
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/create-branch.ps1'
+- pwsh: '$(scriptsDirectory)/create-branch.ps1'
   displayName: 'Create a branch'
   env:
     RepoDirectory: $(Build.SourcesDirectory)/msgraph-sdk-dotnet
     BranchName: $(v1Branch)
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/copy-dotnet-models.ps1'
+- pwsh: '$(scriptsDirectory)/copy-dotnet-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
@@ -31,7 +31,7 @@ steps:
 
 - template: dotnet-v1-validation.yml
 
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/git-push-files.ps1'
+- pwsh: '$(scriptsDirectory)/git-push-files.ps1'
   displayName: 'Git: push generated files'
   env:
     BranchName: $(v1Branch)
