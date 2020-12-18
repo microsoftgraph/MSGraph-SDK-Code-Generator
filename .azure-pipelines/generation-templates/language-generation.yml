@@ -17,6 +17,12 @@ parameters:
     pwsh: |
       Write-Error "No language specific step is provided"
 
+- name: cleanMetadataFile
+  type: string
+
+variables:
+  outputPath: output${{ parameters.language }}${{ parameters.version }}
+
 steps:
 - template: set-up-for-generation.yml
 
@@ -35,7 +41,7 @@ steps:
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputPath: output${{ parameters.language }}${{ parameters.version }}
-    CleanMetadataFile: $(cleanMetadataFile)
+    CleanMetadataFile: ${{ parameters.cleanMetadataFile }}
     TypewriterExecutable: $(typewriterExecutable)
     TypewriterDirectory: $(typewriterDirectory)
     Language: ${{ parameters.language }}
