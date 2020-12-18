@@ -1,0 +1,47 @@
+steps:
+- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/run-typewriter.ps1'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputPath: $(outputJavaBeta)
+    CleanMetadataFile: $(cleanMetadataFileBeta)
+    TypewriterExecutable: $(typewriterExecutable)
+    TypewriterDirectory: $(typewriterDirectory)
+    Language: 'Java'
+    Endpoint: 'Beta'
+  displayName: 'Run Typewriter for Java Beta'
+
+- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/create-branch.ps1'
+  displayName: 'Create a branch'
+  env:
+    RepoDirectory: $(Build.SourcesDirectory)/msgraph-beta-sdk-java
+    BranchName: $(betaBranch)
+
+- pwsh: | # merge the logic with v1
+    $mainDir = "$env:BUILD_SOURCESDIRECTORY/msgraph-beta-sdk-java/src/main/"
+    $extensionsAndGeneratedDirectories = Get-ChildItem $mainDir -Include extensions,generated -Recurse -Directory
+
+    # this list should be updated if a new hand-crafted extension is added to one of the extensions/ directories
+    $filesThatShouldNotBeDeleted = "UploadSession.java","DateOnly.java","TimeOfDay.java","Multipart.java","ChunkedUploadRequest.java","ChunkedUploadResult.java","CustomRequestBuilder.java"
+    foreach ($directory in $extensionsAndGeneratedDirectories)
+    {
+        Remove-Item $directory.FullName -Recurse -Force -Exclude $filesThatShouldNotBeDeleted
+    }
+    Write-Host "Removed the existing generated files in the repo's main directory: $mainDir" -ForegroundColor Green
+  displayName: 'Remove generated models and requests from the repo'
+
+- pwsh : $(Build.SourcesDirectory)/msgraph-beta-sdk-java/Scripts/incrementMinorVersion.ps1
+  displayName: 'Increment minor version number'
+  workingDirectory: '$(Build.SourcesDirectory)/msgraph-beta-sdk-java/Scripts'
+
+- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/copy-java-models.ps1'
+  displayName: 'Update models'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputFullPath: $(typewriterDirectory)/$(outputJavaBeta)
+    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-beta-sdk-java/
+
+- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/git-push-files.ps1'
+  displayName: 'Git: push generated files'
+  env:
+    BranchName: $(betaBranch)
+  workingDirectory: '$(Build.SourcesDirectory)/msgraph-beta-sdk-java'

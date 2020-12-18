@@ -1,0 +1,45 @@
+steps:
+- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/run-typewriter.ps1'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputPath: $(outputDotNetV1)
+    CleanMetadataFile: $(cleanMetadataFileV1)
+    TypewriterExecutable: $(typewriterExecutable)
+    TypewriterDirectory: $(typewriterDirectory)
+    Language: 'CSharp'
+  displayName: 'Run Typewriter for CSharp V1'
+
+- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/create-branch.ps1'
+  displayName: 'Create a branch'
+  env:
+    RepoDirectory: $(Build.SourcesDirectory)/msgraph-sdk-dotnet
+    BranchName: $(v1Branch)
+
+- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/copy-dotnet-models.ps1'
+  displayName: 'Update models'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputFullPath: $(typewriterDirectory)/$(outputDotNetV1)
+    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-dotnet/src/Microsoft.Graph/Generated/
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Microsoft.Graph.dll'
+  inputs:
+    command: 'build'
+    projects: msgraph-sdk-dotnet/**/*.csproj
+    arguments: '--configuration $(buildConfiguration)'
+
+- pwsh: |
+    $allGeneratedDlls = Get-ChildItem -Include Microsoft.Graph.dll -Recurse
+    $dotNetFrameworkDll = $allGeneratedDlls | Where-Object { $_.FullName.Contains("net461") } | Select-Object -First 1 # TODO hardcoded .NET version
+    $dllPath = $dotNetFrameworkDll.FullName
+
+    & ./scripts/generateTypeSummary.ps1 -dllPath $dllPath -outputPath $env:BUILD_SOURCESDIRECTORY/msgraph-sdk-dotnet/typeSummary.txt
+  displayName: 'Generate type summary'
+  workingDirectory: '$(Build.SourcesDirectory)/msgraph-sdk-dotnet'
+
+- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/git-push-files.ps1'
+  displayName: 'Git: push generated files'
+  env:
+    BranchName: $(v1Branch)
+  workingDirectory: '$(Build.SourcesDirectory)/msgraph-sdk-dotnet'

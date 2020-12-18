@@ -1,0 +1,142 @@
+# Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+# contains an end to end validation pipeline using C# compilation tests for staging beta metadata
+
+trigger: none
+pr: none
+
+resources:
+ repositories:
+   - repository: msgraph-sdk-dotnet
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-sdk-dotnet
+     ref: master
+   - repository: msgraph-beta-sdk-dotnet
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-beta-sdk-dotnet
+     ref: master
+   - repository: msgraph-sdk-php
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-sdk-php
+     ref: dev
+   - repository: msgraph-typescript-typings
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-typescript-typings
+     ref: master
+   - repository: msgraph-sdk-objc-models
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-sdk-objc-models
+     ref: dev
+   - repository: msgraph-sdk-java
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-sdk-java
+     ref: dev
+   - repository: msgraph-beta-sdk-java
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-beta-sdk-java
+     ref: dev
+   - repository: msgraph-metadata
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-metadata
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  outputDotNetV1: 'outputDotNetV1'
+  outputDotNetBeta: 'outputDotNetBeta'
+  outputPHPV1: 'outputPHPV1'
+  outputPHPBeta: 'outputPHPBeta'
+  outputTypeScriptV1: 'outputTypeScriptV1'
+  outputTypeScriptBeta: 'outputTypeScriptBeta'
+  outputObjCV1: 'outputObjCV1'
+  outputJavaV1: 'outputJavaV1'
+  outputJavaBeta: 'outputJavaBeta'
+  cleanMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml'
+  cleanMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml'
+  typewriterDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/src/Typewriter/bin/$(BuildConfiguration)/net5.0'
+  typewriterExecutable: '$(typewriterDirectory)/Typewriter'
+
+  v1Branch: 'v1.0/pipelinebuild/$(Build.BuildId)'
+  betaBranch: 'beta/pipelinebuild/$(Build.BuildId)'
+
+  # branch scheme above causes the following error for TypeScript because beta branch exists
+  # fatal: cannot lock ref 'refs/heads/beta/pipelinebuild/35157': 'refs/heads/beta' exists; cannot create 'refs/heads/beta/pipelinebuild/35157'
+  typeScriptBetaBranch: 'pipelinebuild/beta/$(Build.BuildId)'
+
+steps:
+- pwsh: |
+    git config --global user.email "GraphTooling@service.microsoft.com"
+    git config --global user.name "Microsoft Graph DevX Tooling"
+  displayName: 'Git: set user config'
+
+- checkout: msgraph-metadata
+  displayName: checkout metadata
+  fetchDepth: 1
+  persistCredentials: true
+
+- checkout: self
+  displayName: checkout generator
+  fetchDepth: 1
+  submodules: recursive
+  persistCredentials: true
+
+- checkout: msgraph-sdk-dotnet
+  displayName: checkout dotnet
+  fetchDepth: 1
+  persistCredentials: true
+
+- checkout: msgraph-beta-sdk-dotnet
+  displayName: checkout beta dotnet
+  fetchDepth: 1
+  persistCredentials: true
+
+- checkout: msgraph-sdk-php
+  displayName: checkout php
+  fetchDepth: 1
+  persistCredentials: true
+
+- checkout: msgraph-typescript-typings
+  displayName: checkout typescript
+  fetchDepth: 1
+  persistCredentials: true
+
+- checkout: msgraph-sdk-objc-models
+  displayName: checkout objc
+  fetchDepth: 1
+  persistCredentials: true
+
+- checkout: msgraph-sdk-java
+  displayName: checkout java
+  fetchDepth: 1
+  persistCredentials: true
+
+- checkout: msgraph-beta-sdk-java
+  displayName: checkout beta java
+  fetchDepth: 1
+  persistCredentials: true
+
+- template: common-templates/use-dotnet-sdk.yml
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Typewriter'
+  inputs:
+    command: 'build'
+    projects: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/src/Typewriter/Typewriter.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- template: generation-templates/dotnet-v1.yml
+- template: generation-templates/dotnet-beta.yml
+- template: generation-templates/php.yml
+- template: generation-templates/typescript.yml
+- template: generation-templates/objc.yml
+- template: generation-templates/java-v1.yml
+- template: generation-templates/java-beta.yml
