@@ -49,7 +49,8 @@ steps:
     Endpoint: $(version)
   displayName: 'Run Typewriter for $(language) $(version)'
 
-${{ parameters.languageSpecificSteps }}
+- template: dotnet-beta-update-models.yml
+- template: dotnet-beta-validation.yml
 
 - pwsh: '$(scriptsDirectory)/git-push-files.ps1'
   displayName: 'Git: push generated files'
