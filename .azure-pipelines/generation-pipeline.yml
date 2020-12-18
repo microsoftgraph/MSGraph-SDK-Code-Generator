@@ -73,18 +73,18 @@ variables:
   typeScriptBetaBranch: 'pipelinebuild/beta/$(Build.BuildId)'
 
 stages:
-- stage: stage_beta_metadata
+- stage: stage_v1_metadata
+  dependsOn: [] # remove the implicit dependency to the previous stage
   jobs:
-  - job: beta_metadata
+  - job: v1_metadata
     steps:
     - template: generation-templates/checkout-metadata.yml
     - pwsh: |
         Write-Host "Success!"
 
-- stage: stage_v1_metadata
-  dependsOn: [] # remove the implicit dependency to the previous stage
+- stage: stage_beta_metadata
   jobs:
-  - job: v1_metadata
+  - job: beta_metadata
     steps:
     - template: generation-templates/checkout-metadata.yml
     - pwsh: |
