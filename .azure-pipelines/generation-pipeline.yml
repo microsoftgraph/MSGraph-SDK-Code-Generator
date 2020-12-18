@@ -76,8 +76,9 @@ stages:
 - stage: stage_start # dummy parent task to create v1 and beta tree hierarchies
   jobs:
   - job: start
-    pwsh: |
-      Write-Host "Generation starting..."
+    steps:
+    - pwsh: |
+        Write-Host "Generation starting..."
 
 - stage: stage_beta_metadata
   dependsOn: stage_start
