@@ -72,61 +72,67 @@ variables:
   # fatal: cannot lock ref 'refs/heads/beta/pipelinebuild/35157': 'refs/heads/beta' exists; cannot create 'refs/heads/beta/pipelinebuild/35157'
   typeScriptBetaBranch: 'pipelinebuild/beta/$(Build.BuildId)'
 
-jobs:
-- job: beta_metadata
-  steps:
-  - template: generation-templates/checkout-metadata.yml
-  - pwsh: |
-      Write-Error "Error!"
-
-- job: v1_metadata
-  steps:
+stages:
+- stage: stage_beta_metadata
+  jobs:
+  - job: beta_metadata
+    steps:
     - template: generation-templates/checkout-metadata.yml
     - pwsh: |
         Write-Host "Success!"
 
-- job: csharp_v1
-  dependsOn: v1_metadata
-  condition: succeeded('v1_metadata')
-  steps:
-  - template: generation-templates/dotnet-v1.yml
+- stage: stage_v1_metadata
+  jobs:
+  - job: v1_metadata
+    steps:
+    - template: generation-templates/checkout-metadata.yml
+    - pwsh: |
+        Write-Host "Success!"
 
-- job: csharp_beta
-  dependsOn: beta_metadata
-  condition: succeeded('beta_metadata')
-  steps:    
-  - template: generation-templates/dotnet-beta.yml
+- stage: stage_csharp_v1
+  dependsOn: stage_v1_metadata
+  condition: succeeded('stage_v1_metadata')
+  jobs:
+  - job: csharp_v1
+    steps:
+    - template: generation-templates/dotnet-v1.yml
 
-- job: java_v1
-  dependsOn: v1_metadata
-  condition: succeeded('v1_metadata')
-  steps:
-  - template: generation-templates/java-v1.yml
-
-- job: java_beta
-  dependsOn: beta_metadata
-  condition: succeeded('beta_metadata')
-  steps:
-  - template: generation-templates/java-beta.yml
-
-- job: php_v1_beta
-  dependsOn:
-  - v1_metadata
-  - beta_metadata
-  condition: or(succeeded('v1_metadata'),succeeded('beta_metadata'))
-  steps:
-  - template: generation-templates/php.yml
-
-- job: typescript_v1_beta
-  dependsOn:
-  - v1_metadata
-  - beta_metadata
-  condition: or(succeeded('v1_metadata'),succeeded('beta_metadata'))
-  steps:
-  - template: generation-templates/typescript.yml
-
-- job: objc_v1
-  dependsOn: v1_metadata
-  condition: succeeded('v1_metadata')
-  steps:
-  - template: generation-templates/objc.yml
+#- job: csharp_beta
+#  dependsOn: beta_metadata
+#  condition: succeeded('beta_metadata')
+#  steps:    
+#  - template: generation-templates/dotnet-beta.yml
+#
+#- job: java_v1
+#  dependsOn: v1_metadata
+#  condition: succeeded('v1_metadata')
+#  steps:
+#  - template: generation-templates/java-v1.yml
+#
+#- job: java_beta
+#  dependsOn: beta_metadata
+#  condition: succeeded('beta_metadata')
+#  steps:
+#  - template: generation-templates/java-beta.yml
+#
+#- job: php_v1_beta
+#  dependsOn:
+#  - v1_metadata
+#  - beta_metadata
+#  condition: or(succeeded('v1_metadata'),succeeded('beta_metadata'))
+#  steps:
+#  - template: generation-templates/php.yml
+#
+#- job: typescript_v1_beta
+#  dependsOn:
+#  - v1_metadata
+#  - beta_metadata
+#  condition: or(succeeded('v1_metadata'),succeeded('beta_metadata'))
+#  steps:
+#  - template: generation-templates/typescript.yml
+#
+#- job: objc_v1
+#  dependsOn: v1_metadata
+#  condition: succeeded('v1_metadata')
+#  steps:
+#  - template: generation-templates/objc.yml
