@@ -17,12 +17,11 @@ parameters:
     pwsh: |
       Write-Error "No language specific step is provided"
 
-language: ${{ parameters.language }}
-version: ${{ parameters.version }}
-repoName: ${{ parameters.repoName }}
-branchName: ${{ parameters.branchName }}
-
 variables:
+  language: ${{ parameters.language }}
+  version: ${{ parameters.version }}
+  repoName: ${{ parameters.repoName }}
+  branchName: ${{ parameters.branchName }}
   outputPath: 'output$(language)$(version)'
 
 steps:
