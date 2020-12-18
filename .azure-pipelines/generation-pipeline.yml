@@ -112,9 +112,6 @@ stages:
         version: 'beta'
         repoName: 'msgraph-beta-sdk-dotnet'
         branchName: $(betaBranch)
-        languageSpecificSteps:
-        - template: dotnet-beta-update-models.yml
-        - template: dotnet-beta-validation.yml
 
 - stage: stage_java_v1
   dependsOn: stage_v1_metadata
