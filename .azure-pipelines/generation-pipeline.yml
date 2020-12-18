@@ -73,10 +73,14 @@ variables:
   typeScriptBetaBranch: 'pipelinebuild/beta/$(Build.BuildId)'
 
 stages:
-- stage: generation
+- stage: stage_start # dummy parent task to create v1 and beta tree hierarchies
+  jobs:
+  - job: start
+    pwsh: |
+      Write-Host "Generation starting..."
 
 - stage: stage_beta_metadata
-  dependsOn: generation
+  dependsOn: stage_start
   jobs:
   - job: beta_metadata
     steps:
@@ -85,7 +89,7 @@ stages:
         Write-Host "Success!"
 
 - stage: stage_v1_metadata
-  dependsOn: generation
+  dependsOn: stage_start
   jobs:
   - job: v1_metadata
     steps:
