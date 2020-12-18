@@ -157,7 +157,9 @@ jobs:
   - template: generation-templates/java-beta.yml
 
 - job: php_v1_beta
-  dependsOn: v1_metadata, beta_metadata
+  dependsOn:
+  - v1_metadata
+  - beta_metadata
   condition: or(succeeded('v1_metadata'),succeeded('beta_metadata'))
   steps:
   - checkout: msgraph-sdk-php
@@ -167,7 +169,9 @@ jobs:
   - template: generation-templates/php.yml
 
 - job: typescript_v1_beta
-  dependsOn: v1_metadata, beta_metadata
+  dependsOn:
+  - v1_metadata
+  - beta_metadata
   condition: or(succeeded('v1_metadata'),succeeded('beta_metadata'))
   steps:
   - checkout: msgraph-typescript-typings
