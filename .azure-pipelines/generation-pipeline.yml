@@ -88,6 +88,8 @@ jobs:
     - template: common-templates/use-dotnet-sdk.yml
 
 - job: build_typewriter
+  dependsOn: preperation
+  condition: succeeded('preperation')
   steps:
   - checkout: self
     displayName: checkout generator
