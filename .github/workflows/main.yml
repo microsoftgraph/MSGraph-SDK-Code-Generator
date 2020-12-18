@@ -1,0 +1,37 @@
+name: .NET
+
+on:
+  push:
+    branches: [ master, dev ]
+  pull_request:
+    branches: [ master, dev ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore ./Typewriter.sln
+    - name: Build
+      run: dotnet build ./Typewriter.sln --no-restore
+    - name: Test
+      run: dotnet test ./Typewriter.sln --no-build --verbosity normal
+    - uses: actions/upload-artifact@v2
+      with:
+        name: languages-test-output
+        path: test/Typewriter.Test/bin/Debug/net5.0/OutputDirectory*/**
+    - uses: actions/upload-artifact@v2
+      with:
+        name: unit-test-output
+        path: test/Typewriter.Test/bin/Debug/net5.0/output/
+    - uses: actions/upload-artifact@v2
+      with:
+        name: unit-test-output-java
+        path: test/Typewriter.Test/bin/Debug/net5.0/outputJava/
