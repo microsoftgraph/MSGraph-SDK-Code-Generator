@@ -102,8 +102,6 @@ stages:
   condition: succeeded('stage_beta_metadata')
   jobs:
   - job: csharp_beta
-    dependsOn: beta_metadata
-    condition: succeeded('beta_metadata')
     steps:    
     - template: generation-templates/dotnet-beta.yml
 
