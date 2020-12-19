@@ -58,11 +58,11 @@ parameters:
 
   - name: betaBranchPrefix
     default: beta/pipelinebuild
-    displayName: Beta Branch Prefix
+    displayName: Beta Branch Prefix (should be different than V1)
 
   - name: typeScriptBetaBranchPrefix
     default: pipelinebuild/beta
-    displayName: Typescript Beta Branch Prefix
+    displayName: Typescript Beta Branch Prefix (should be different than V1)
 
 variables:
   buildConfiguration: 'Release'
