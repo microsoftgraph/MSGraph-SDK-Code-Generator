@@ -192,7 +192,7 @@ stages:
       parameters:
         language: 'TypeScript'
         version: ''
-        repoName: 'msgraph-sdk-typescript-typings'
+        repoName: 'msgraph-typescript-typings'
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
         languageSpecificSteps:
@@ -208,7 +208,7 @@ stages:
       parameters:
         language: 'TypeScript'
         version: 'beta'
-        repoName: 'msgraph-sdk-typescript-typings'
+        repoName: 'msgraph-typescript-typings'
         branchName: $(typeScriptBetaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
         languageSpecificSteps:
