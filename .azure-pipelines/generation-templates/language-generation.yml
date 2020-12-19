@@ -46,7 +46,7 @@ steps:
     Endpoint:  ${{ parameters.version }}
   displayName: 'Run Typewriter for ${{ parameters.language }} ${{ parameters.version }}'
 
-${{ parameters.languageSpecificSteps }}
+- ${{ parameters.languageSpecificSteps }}
 
 - pwsh: '$(scriptsDirectory)/git-push-files.ps1'
   displayName: 'Git: push generated files'
