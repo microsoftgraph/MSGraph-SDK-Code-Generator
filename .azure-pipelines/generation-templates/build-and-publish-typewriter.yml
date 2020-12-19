@@ -7,6 +7,10 @@ steps:
   submodules: recursive
   persistCredentials: true
 
+- pwsh: |
+    Get-ChildItem Typewriter.csproj -Recurse | % { Write-Host $_.FullName }
+  workingDirectory: MSGraph-SDK-Code-Generator
+
 - task: DotNetCoreCLI@2
   displayName: 'Build Typewriter'
   inputs:
