@@ -36,6 +36,13 @@ steps:
   fetchDepth: 1
   persistCredentials: true
 
+# need this for the shared scripts (maybe we should move them to msgraph-metadata)
+# no need for recursive, just scripts from the main repo
+- checkout: MSGraph-SDK-Code-Generator
+  displayName: 'checkout generator'
+  fetchDepth: 1
+  persistCredentials: true
+
 - ${{ parameters.optionalPostCheckoutStep }}
 
 - pwsh: '$(scriptsDirectory)/create-branch.ps1'
