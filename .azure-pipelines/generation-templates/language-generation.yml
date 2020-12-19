@@ -38,7 +38,7 @@ steps:
 
 # need this for the shared scripts (maybe we should move them to msgraph-metadata)
 # no need for recursive, just scripts from the main repo
-- checkout: MSGraph-SDK-Code-Generator
+- checkout: self
   displayName: 'checkout generator'
   fetchDepth: 1
   persistCredentials: true
