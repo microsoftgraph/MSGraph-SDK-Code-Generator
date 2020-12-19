@@ -230,7 +230,7 @@ stages:
       parameters:
         language: 'ObjC'
         version: ''
-        repoName: 'msgraph-objc-sdk-models'
+        repoName: 'msgraph-sdk-objc-models'
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
         languageSpecificSteps:
