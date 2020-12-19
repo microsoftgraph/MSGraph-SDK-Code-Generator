@@ -234,4 +234,4 @@ stages:
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
         languageSpecificSteps:
-        - template: generation-templates/obj.yml
+        - template: generation-templates/objc.yml
