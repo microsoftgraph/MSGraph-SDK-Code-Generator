@@ -113,6 +113,8 @@ stages:
         repoName: 'msgraph-beta-sdk-dotnet'
         branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
+        languageSpecificSteps:
+        - template: generation-templates/dotnet-beta-specific-steps.yml
 
 - stage: stage_java_v1
   dependsOn: stage_v1_metadata
