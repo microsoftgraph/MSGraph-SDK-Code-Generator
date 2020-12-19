@@ -85,6 +85,32 @@ stages:
     - pwsh: |
         Write-Host "Success!"
 
+- stage: stage_build_and_publish_typewriter
+  dependsOn: [] # remove the implicit dependency to any previous stage
+  jobs:
+  - job: build_and_publish_typewriter
+    steps:
+    - template: generation-templates/build-and-publish-typewriter.yml
+
+- stage: stage_csharp_v1_2
+  dependsOn: stage_build_and_publish_typewriter
+  condition: succeeded('stage_build_and_publish_typewriter')
+  jobs:
+  - job: csharp_v1
+    steps:
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'CSharp'
+        version: ''
+        repoName: 'msgraph-sdk-dotnet'
+        branchName: $(v1Branch)
+        cleanMetadataFile: $(cleanMetadataFileV1)
+        languageSpecificSteps:
+        - template: generation-templates/dotnet.yml
+          parameters:
+            repoName: msgraph-sdk-dotnet
+            dllName: Microsoft.Graph.dll
+
 - stage: stage_csharp_v1
   dependsOn: stage_v1_metadata
   condition: succeeded('stage_v1_metadata')
