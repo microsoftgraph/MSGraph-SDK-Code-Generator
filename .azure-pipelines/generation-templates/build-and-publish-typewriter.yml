@@ -21,13 +21,6 @@ steps:
     targetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: Copy Typewriter executable
 
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)/Templates'
-    contents: '**/*.tt'
-    targetFolder: '$(Build.ArtifactStagingDirectory)/templates'
-  displayName: Copy templates # https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/374
-
 - task: PublishBuildArtifacts@1
   inputs:
     pathToPublish: '$(Build.ArtifactStagingDirectory)'
