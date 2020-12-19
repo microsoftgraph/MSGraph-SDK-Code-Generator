@@ -51,6 +51,19 @@ resources:
 pool:
   vmImage: 'ubuntu-latest'
 
+parameters:
+  - name: v1BranchPrefix
+    default: v1.0/pipelinebuild
+    displayName: V1 Branch Prefix
+
+  - name: betaBranchPrefix
+    default: beta/pipelinebuild
+    displayName: V1 Branch Prefix
+
+  - name: typeScriptBetaBranchPrefix
+    default: pipelinebuild/beta
+    displayName: Typescript Beta Branch Prefix
+
 variables:
   buildConfiguration: 'Release'
   cleanMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml'
@@ -59,12 +72,12 @@ variables:
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
   scriptsDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts'
 
-  v1Branch: 'v1.0/pipelinebuild/$(Build.BuildId)'
-  betaBranch: 'beta/pipelinebuild/$(Build.BuildId)'
+  v1Branch: ${{ parameters.v1BranchPrefix }}/$(Build.BuildId)
+  betaBranch: ${{ parameters.betaBranchPrefix }}/$(Build.BuildId)
 
   # branch scheme above causes the following error for TypeScript because beta branch exists
   # fatal: cannot lock ref 'refs/heads/beta/pipelinebuild/35157': 'refs/heads/beta' exists; cannot create 'refs/heads/beta/pipelinebuild/35157'
-  typeScriptBetaBranch: 'pipelinebuild/beta/$(Build.BuildId)'
+  typeScriptBetaBranch: ${{ parameters.typeScriptBetaBranchPrefix }}/$(Build.BuildId)
 
 stages:
 - stage: stage_v1_metadata
@@ -93,8 +106,10 @@ stages:
     - template: generation-templates/build-and-publish-typewriter.yml
 
 - stage: stage_csharp_v1
-  dependsOn: stage_build_and_publish_typewriter
-  condition: succeeded('stage_build_and_publish_typewriter')
+  dependsOn:
+  - stage_build_and_publish_typewriter
+  - stage_v1_metadata
+  condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
   jobs:
   - job: csharp_v1
     steps:
@@ -112,8 +127,10 @@ stages:
             dllName: Microsoft.Graph.dll
 
 - stage: stage_csharp_beta
-  dependsOn: stage_beta_metadata
-  condition: succeeded('stage_beta_metadata')
+  dependsOn:
+  - stage_build_and_publish_typewriter
+  - stage_beta_metadata
+  condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
   jobs:
   - job: csharp_beta
     steps:
@@ -131,8 +148,10 @@ stages:
             dllName: Microsoft.Graph.Beta.dll
 
 - stage: stage_java_v1
-  dependsOn: stage_v1_metadata
-  condition: succeeded('stage_v1_metadata')
+  dependsOn:
+    - stage_build_and_publish_typewriter
+    - stage_v1_metadata
+  condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
   jobs:
   - job: java_v1
     steps:
@@ -149,8 +168,10 @@ stages:
             repoName: msgraph-sdk-java
 
 - stage: stage_java_beta
-  dependsOn: stage_beta_metadata
-  condition: succeeded('stage_beta_metadata')
+  dependsOn:
+    - stage_build_and_publish_typewriter
+    - stage_beta_metadata
+  condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
   jobs:
   - job: java_beta
     steps:
@@ -168,8 +189,9 @@ stages:
 
 - stage: stage_php_v1
   dependsOn:
-  - stage_v1_metadata
-  condition: succeeded('stage_v1_metadata')
+    - stage_build_and_publish_typewriter
+    - stage_v1_metadata
+  condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
   jobs:
   - job: php_v1
     steps:
@@ -184,8 +206,10 @@ stages:
         - template: generation-templates/php-v1.yml
 
 - stage: stage_php_beta
-  dependsOn: stage_beta_metadata
-  condition: succeeded('stage_beta_metadata')
+  dependsOn:
+    - stage_build_and_publish_typewriter
+    - stage_beta_metadata
+  condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
   jobs:
   - job: php_beta
     steps:
@@ -200,8 +224,10 @@ stages:
         - template: generation-templates/php-beta.yml
 
 - stage: stage_typescript_v1
-  dependsOn: stage_v1_metadata
-  condition: succeeded('stage_v1_metadata')
+  dependsOn:
+    - stage_build_and_publish_typewriter
+    - stage_v1_metadata
+  condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
   jobs:
   - job: typescript_v1
     steps:
@@ -216,8 +242,10 @@ stages:
         - template: generation-templates/typescript.yml
 
 - stage: stage_typescript_beta
-  dependsOn: stage_beta_metadata
-  condition: succeeded('stage_beta_metadata')
+  dependsOn:
+    - stage_build_and_publish_typewriter
+    - stage_beta_metadata
+  condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
   jobs:
   - job: typescript_beta
     steps:
@@ -238,8 +266,10 @@ stages:
             workingDirectory: '$(Build.SourcesDirectory)/msgraph-typescript-typings'
 
 - stage: stage_objc_v1
-  dependsOn: stage_v1_metadata
-  condition: succeeded('stage_v1_metadata')
+  dependsOn:
+    - stage_build_and_publish_typewriter
+    - stage_v1_metadata
+  condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
   jobs:
   - job: objc_v1
     steps:
