@@ -1,28 +1,4 @@
 steps:
-- template: set-up-for-generation.yml
-
-- checkout: msgraph-beta-sdk-java
-  displayName: checkout beta java
-  fetchDepth: 1
-  persistCredentials: true
-
-- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
-  env:
-    BuildConfiguration: $(buildConfiguration)
-    OutputPath: $(outputJavaBeta)
-    CleanMetadataFile: $(cleanMetadataFileBeta)
-    TypewriterExecutable: $(typewriterExecutable)
-    TypewriterDirectory: $(typewriterDirectory)
-    Language: 'Java'
-    Endpoint: 'Beta'
-  displayName: 'Run Typewriter for Java Beta'
-
-- pwsh: '$(scriptsDirectory)/create-branch.ps1'
-  displayName: 'Create a branch'
-  env:
-    RepoDirectory: $(Build.SourcesDirectory)/msgraph-beta-sdk-java
-    BranchName: $(betaBranch)
-
 - pwsh: '$(scriptsDirectory)/clean-java-files.ps1'
   displayName: 'Remove generated models and requests from the repo'
   env:
@@ -36,11 +12,5 @@ steps:
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
-    OutputFullPath: $(typewriterDirectory)/$(outputJavaBeta)
+    OutputFullPath: $(typewriterDirectory)/output
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-beta-sdk-java/
-
-- pwsh: '$(scriptsDirectory)/git-push-files.ps1'
-  displayName: 'Git: push generated files'
-  env:
-    BranchName: $(betaBranch)
-  workingDirectory: '$(Build.SourcesDirectory)/msgraph-beta-sdk-java'

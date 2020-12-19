@@ -1,4 +1,11 @@
 steps:
+- pwsh: '$(scriptsDirectory)/copy-dotnet-models.ps1'
+  displayName: 'Update models'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputFullPath: $(typewriterDirectory)/output
+    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-dotnet/src/Microsoft.Graph/Generated/
+
 - task: DotNetCoreCLI@2
   displayName: 'Build Microsoft.Graph.dll'
   inputs:

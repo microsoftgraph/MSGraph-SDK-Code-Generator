@@ -1,3 +1,4 @@
+# designed to have a single run (single output directory)
 parameters:
 - name: language
   type: string
@@ -10,6 +11,13 @@ parameters:
 
 - name: branchName
   type: string
+
+- name: optionalPostCheckoutStep
+  type: stepList
+  default:
+  - pwsh: |
+      Write-Host "There is no optional post-checkout step specified! This is expected for majority of scenarios"
+    displayName: 'No optional post-checkout step'
 
 - name: languageSpecificSteps
   type: stepList
@@ -28,6 +36,8 @@ steps:
   fetchDepth: 1
   persistCredentials: true
 
+- ${{ parameters.optionalPostCheckoutStep }}
+
 - pwsh: '$(scriptsDirectory)/create-branch.ps1'
   displayName: 'Create a branch in ${{ parameters.repoName }}'
   env:
@@ -38,7 +48,7 @@ steps:
 - pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
   env:
     BuildConfiguration: $(buildConfiguration)
-    OutputPath: output${{ parameters.language }}${{ parameters.version }}
+    OutputPath: output
     CleanMetadataFile: ${{ parameters.cleanMetadataFile }}
     TypewriterExecutable: $(typewriterExecutable)
     TypewriterDirectory: $(typewriterDirectory)

@@ -4,6 +4,8 @@
 trigger: none
 pr: none
 
+# TODO add schedule
+
 resources:
  repositories:
    - repository: msgraph-sdk-dotnet
@@ -51,15 +53,6 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  outputDotNetV1: 'outputDotNetV1'
-  outputDotNetBeta: 'outputDotNetBeta'
-  outputPHPV1: 'outputPHPV1'
-  outputPHPBeta: 'outputPHPBeta'
-  outputTypeScriptV1: 'outputTypeScriptV1'
-  outputTypeScriptBeta: 'outputTypeScriptBeta'
-  outputObjCV1: 'outputObjCV1'
-  outputJavaV1: 'outputJavaV1'
-  outputJavaBeta: 'outputJavaBeta'
   cleanMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml'
   cleanMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml'
   typewriterDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/src/Typewriter/bin/$(BuildConfiguration)/net5.0'
@@ -98,7 +91,15 @@ stages:
   jobs:
   - job: csharp_v1
     steps:
-    - template: generation-templates/dotnet-v1.yml
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'CSharp'
+        version: ''
+        repoName: 'msgraph-sdk-dotnet'
+        branchName: $(v1Branch)
+        cleanMetadataFile: $(cleanMetadataFileV1)
+        languageSpecificSteps:
+        - template: generation-templates/dotnet-v1-steps.yml
 
 - stage: stage_csharp_beta
   dependsOn: stage_beta_metadata
@@ -114,7 +115,7 @@ stages:
         branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
         languageSpecificSteps:
-        - template: generation-templates/dotnet-beta-specific-steps.yml
+        - template: generation-templates/dotnet-beta-steps.yml
 
 - stage: stage_java_v1
   dependsOn: stage_v1_metadata
@@ -122,7 +123,15 @@ stages:
   jobs:
   - job: java_v1
     steps:
-    - template: generation-templates/java-v1.yml
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'Java'
+        version: ''
+        repoName: 'msgraph-sdk-java'
+        branchName: $(v1Branch)
+        cleanMetadataFile: $(cleanMetadataFileV1)
+        languageSpecificSteps:
+        - template: generation-templates/java-v1-steps.yml
 
 - stage: stage_java_beta
   dependsOn: stage_beta_metadata
@@ -130,27 +139,86 @@ stages:
   jobs:
   - job: java_beta
     steps:
-    - template: generation-templates/java-beta.yml
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'Java'
+        version: 'Beta'
+        repoName: 'msgraph-beta-sdk-java'
+        branchName: $(betaBranch)
+        cleanMetadataFile: $(cleanMetadataFileBeta)
+        languageSpecificSteps:
+        - template: generation-templates/java-beta-steps.yml
 
-- stage: stage_php_v1_beta
+- stage: stage_php_v1
   dependsOn:
-  - stage_beta_metadata
   - stage_v1_metadata
-  condition: or(succeeded('stage_v1_metadata'),succeeded('stage_beta_metadata'))
+  condition: succeeded('stage_v1_metadata')
   jobs:
-  - job: php_v1_beta
+  - job: php_v1
     steps:
-    - template: generation-templates/php.yml
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'PHP'
+        version: ''
+        repoName: 'msgraph-sdk-php'
+        branchName: $(v1Branch)
+        cleanMetadataFile: $(cleanMetadataFileV1)
+        languageSpecificSteps:
+        - template: generation-templates/php-v1-steps.yml
 
-- stage: stage_typescript_v1_beta
-  dependsOn:
-  - stage_beta_metadata
-  - stage_v1_metadata
-  condition: or(succeeded('stage_v1_metadata'),succeeded('stage_beta_metadata'))
+- stage: stage_php_beta
+  dependsOn: stage_beta_metadata
+  condition: succeeded('stage_beta_metadata')
   jobs:
-  - job: typescript_v1_beta
+  - job: php_beta
     steps:
-    - template: generation-templates/typescript.yml
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'PHP'
+        version: 'beta'
+        repoName: 'msgraph-sdk-php'
+        branchName: $(betaBranch)
+        cleanMetadataFile: $(cleanMetadataFileBeta)
+        languageSpecificSteps:
+        - template: generation-templates/php-beta-steps.yml
+
+- stage: stage_typescript_v1
+  dependsOn: stage_v1_metadata
+  condition: succeeded('stage_v1_metadata')
+  jobs:
+  - job: typescript_v1
+    steps:
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'TypeScript'
+        version: ''
+        repoName: 'msgraph-sdk-typescript-typings'
+        branchName: $(v1Branch)
+        cleanMetadataFile: $(cleanMetadataFileV1)
+        languageSpecificSteps:
+        - template: generation-templates/typescript.yml
+
+- stage: stage_typescript_beta
+  dependsOn: stage_beta_metadata
+  condition: succeeded('stage_beta_metadata')
+  jobs:
+  - job: typescript_beta
+    steps:
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'TypeScript'
+        version: 'beta'
+        repoName: 'msgraph-sdk-typescript-typings'
+        branchName: $(typeScriptBetaBranch)
+        cleanMetadataFile: $(cleanMetadataFileBeta)
+        languageSpecificSteps:
+        - template: generation-templates/typescript.yml
+        optionalPostCheckoutStep:
+          - pwsh: |
+              git fetch
+              git checkout beta
+            displayName: 'Switch to beta branch'
+            workingDirectory: '$(Build.SourcesDirectory)/msgraph-typescript-typings'
 
 - stage: stage_objc_v1
   dependsOn: stage_v1_metadata
@@ -158,4 +226,12 @@ stages:
   jobs:
   - job: objc_v1
     steps:
-    - template: generation-templates/objc.yml
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'ObjC'
+        version: ''
+        repoName: 'msgraph-objc-sdk-models'
+        branchName: $(v1Branch)
+        cleanMetadataFile: $(cleanMetadataFileV1)
+        languageSpecificSteps:
+        - template: generation-templates/obj-steps.yml

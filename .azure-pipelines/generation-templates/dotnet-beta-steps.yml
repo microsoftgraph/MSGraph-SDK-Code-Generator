@@ -3,7 +3,7 @@ steps:
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
-    OutputFullPath: $(typewriterDirectory)/output${{ parameters.language }}${{ parameters.version }}
+    OutputFullPath: $(typewriterDirectory)/output
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-beta-sdk-dotnet/src/Microsoft.Graph/Generated/
 
 - task: DotNetCoreCLI@2
