@@ -1,4 +1,6 @@
 steps:
+- template: use-dotnet-sdk.yml
+
 - checkout: self
   displayName: checkout generator
   fetchDepth: 1
