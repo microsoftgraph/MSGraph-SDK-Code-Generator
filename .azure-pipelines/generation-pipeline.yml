@@ -99,7 +99,10 @@ stages:
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
         languageSpecificSteps:
-        - template: generation-templates/dotnet-v1.yml
+        - template: generation-templates/dotnet.yml
+          parameters:
+            repoName: msgraph-sdk-dotnet
+            dllName: Microsoft.Graph.dll
 
 - stage: stage_csharp_beta
   dependsOn: stage_beta_metadata
@@ -115,7 +118,10 @@ stages:
         branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
         languageSpecificSteps:
-        - template: generation-templates/dotnet-beta.yml
+        - template: generation-templates/dotnet.yml
+          parameters:
+            repoName: msgraph-sdk-dotnet
+            dllName: Microsoft.Graph.dll
 
 - stage: stage_java_v1
   dependsOn: stage_v1_metadata

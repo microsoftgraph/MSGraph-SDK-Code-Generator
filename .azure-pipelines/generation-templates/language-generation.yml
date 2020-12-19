@@ -14,10 +14,6 @@ parameters:
 
 - name: optionalPostCheckoutStep
   type: stepList
-  default:
-  - pwsh: |
-      Write-Host "There is no optional post-checkout step specified! This is expected for majority of scenarios"
-    displayName: 'No optional post-checkout step'
 
 - name: languageSpecificSteps
   type: stepList

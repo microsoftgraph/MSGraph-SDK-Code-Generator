@@ -1,18 +1,9 @@
 steps:
-- pwsh: |
-    # removes all models under src/Beta
-    Get-ChildItem ./src/ -Include Beta -Directory -Recurse | Remove-Item -Recurse -Force
-    Write-Host "Removed the existing generated files for Beta in the repo at $($env:REPODIR)." -ForegroundColor Green
-  displayName: 'Remove generated files from the repo'
-  workingDirectory: $(Build.SourcesDirectory)/msgraph-sdk-php 
-
-- pwsh: '$(scriptsDirectory)/copy-php-models.ps1'
+- pwsh: '$(scriptsDirectory)/copy-php-beta-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
-    OutputFullPathV1: $(typewriterDirectory)/output
-    OutputFullPathBeta: $(typewriterDirectory)/output
-    RepoModelsDirV1: $(Build.SourcesDirectory)/msgraph-sdk-php/src/
-    RepoModelsDirBeta: $(Build.SourcesDirectory)/msgraph-sdk-php/src/Beta
+    OutputFullPath: $(typewriterDirectory)/output
+    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-php/src/Beta
 
 # TODO run PHP tests
