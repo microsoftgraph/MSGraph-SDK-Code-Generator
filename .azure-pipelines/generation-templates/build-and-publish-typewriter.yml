@@ -9,18 +9,17 @@ steps:
 
 - pwsh: |
     Get-ChildItem Typewriter.csproj -Recurse | % { Write-Host $_.FullName }
-  workingDirectory: MSGraph-SDK-Code-Generator
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Typewriter'
   inputs:
     command: 'build'
-    projects: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/src/Typewriter/Typewriter.csproj'
+    projects: '$(Build.SourcesDirectory)/src/Typewriter/Typewriter.csproj'
     arguments: '--configuration $(buildConfiguration)'
   
 - task: CopyFiles@2
   inputs:
-    sourceFolder: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/src/Typewriter/bin/$(BuildConfiguration)/net5.0'
+    sourceFolder: '$(Build.SourcesDirectory)/src/Typewriter/bin/$(BuildConfiguration)/net5.0'
     contents: '**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 
