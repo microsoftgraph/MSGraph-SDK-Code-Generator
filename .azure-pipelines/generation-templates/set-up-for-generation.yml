@@ -2,4 +2,4 @@ steps:
 - template: set-user-config.yml
 - template: use-dotnet-sdk.yml
 - template: checkout-metadata.yml
-- template: build-typewriter.yml
+- template: download-typewriter.yml
