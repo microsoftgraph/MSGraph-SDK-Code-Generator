@@ -14,6 +14,10 @@ parameters:
 
 - name: optionalPostCheckoutStep
   type: stepList
+  default: # TODO is there a way to skip this without a dummy default task?
+  - pwsh: |
+      Write-Host "No optional post-checkout step is provided, this is expected in majority of cases" -ForegroundColor Green
+    displayName: Skip optional post-checkout step
 
 - name: languageSpecificSteps
   type: stepList
