@@ -3,6 +3,7 @@
 Write-Host "Running Typewriter..."
 Push-Location -Path $env:TypewriterDirectory
 
+# make the executable file, well, an executable :)
 & chmod +x $env:TypewriterExecutable
 
 if ($env:Endpoint -eq "beta")

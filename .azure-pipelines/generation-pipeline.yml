@@ -80,8 +80,16 @@ variables:
   typeScriptBetaBranch: ${{ parameters.typeScriptBetaBranchPrefix }}/$(Build.BuildId)
 
 stages:
-- stage: stage_v1_metadata
+- stage: stage_build_and_publish_typewriter
   dependsOn: [] # remove the implicit dependency to any previous stage
+  jobs:
+  - job: build_and_publish_typewriter
+    steps:
+    - template: generation-templates/build-and-publish-typewriter.yml
+
+- stage: stage_v1_metadata
+  dependsOn: stage_build_and_publish_typewriter
+  condition: succeeded('stage_build_and_publish_typewriter')
   jobs:
   - job: v1_metadata
     steps:
@@ -90,7 +98,8 @@ stages:
         Write-Host "Success!"
 
 - stage: stage_beta_metadata
-  dependsOn: [] # remove the implicit dependency to any previous stage
+  dependsOn: stage_build_and_publish_typewriter
+  condition: succeeded('stage_build_and_publish_typewriter')
   jobs:
   - job: beta_metadata
     steps:
@@ -98,16 +107,8 @@ stages:
     - pwsh: |
         Write-Host "Success!"
 
-- stage: stage_build_and_publish_typewriter
-  dependsOn: [] # remove the implicit dependency to any previous stage
-  jobs:
-  - job: build_and_publish_typewriter
-    steps:
-    - template: generation-templates/build-and-publish-typewriter.yml
-
 - stage: stage_csharp_v1
   dependsOn:
-  - stage_build_and_publish_typewriter
   - stage_v1_metadata
   condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
   jobs:
@@ -128,7 +129,6 @@ stages:
 
 - stage: stage_csharp_beta
   dependsOn:
-  - stage_build_and_publish_typewriter
   - stage_beta_metadata
   condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
   jobs:
@@ -149,8 +149,7 @@ stages:
 
 - stage: stage_java_v1
   dependsOn:
-    - stage_build_and_publish_typewriter
-    - stage_v1_metadata
+  - stage_v1_metadata
   condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
   jobs:
   - job: java_v1
@@ -169,8 +168,7 @@ stages:
 
 - stage: stage_java_beta
   dependsOn:
-    - stage_build_and_publish_typewriter
-    - stage_beta_metadata
+  - stage_beta_metadata
   condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
   jobs:
   - job: java_beta
@@ -189,8 +187,7 @@ stages:
 
 - stage: stage_php_v1
   dependsOn:
-    - stage_build_and_publish_typewriter
-    - stage_v1_metadata
+  - stage_v1_metadata
   condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
   jobs:
   - job: php_v1
@@ -207,8 +204,7 @@ stages:
 
 - stage: stage_php_beta
   dependsOn:
-    - stage_build_and_publish_typewriter
-    - stage_beta_metadata
+  - stage_beta_metadata
   condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
   jobs:
   - job: php_beta
@@ -225,8 +221,7 @@ stages:
 
 - stage: stage_typescript_v1
   dependsOn:
-    - stage_build_and_publish_typewriter
-    - stage_v1_metadata
+  - stage_v1_metadata
   condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
   jobs:
   - job: typescript_v1
@@ -243,8 +238,7 @@ stages:
 
 - stage: stage_typescript_beta
   dependsOn:
-    - stage_build_and_publish_typewriter
-    - stage_beta_metadata
+  - stage_beta_metadata
   condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
   jobs:
   - job: typescript_beta
@@ -267,8 +261,7 @@ stages:
 
 - stage: stage_objc_v1
   dependsOn:
-    - stage_build_and_publish_typewriter
-    - stage_v1_metadata
+  - stage_v1_metadata
   condition: or(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
   jobs:
   - job: objc_v1

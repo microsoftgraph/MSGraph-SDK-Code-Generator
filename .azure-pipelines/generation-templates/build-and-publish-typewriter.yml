@@ -13,7 +13,7 @@ steps:
     command: 'build'
     projects: '$(Build.SourcesDirectory)/src/Typewriter/Typewriter.csproj'
     arguments: '--configuration $(buildConfiguration)'
-  
+
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)/src/Typewriter/bin/$(BuildConfiguration)/net5.0'
