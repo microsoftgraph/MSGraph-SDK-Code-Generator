@@ -20,9 +20,6 @@ parameters:
 - name: cleanMetadataFile
   type: string
 
-variables:
-  outputPath: output${{ parameters.language }}${{ parameters.version }}
-
 steps:
 - template: set-up-for-generation.yml
 
@@ -52,7 +49,7 @@ steps:
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
-    OutputFullPath: $(typewriterDirectory)/$(outputPath)
+    OutputFullPath: $(typewriterDirectory)/output${{ parameters.language }}${{ parameters.version }}
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-beta-sdk-dotnet/src/Microsoft.Graph/Generated/
 
 - template: dotnet-beta-validation.yml
