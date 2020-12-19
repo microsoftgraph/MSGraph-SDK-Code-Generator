@@ -99,7 +99,7 @@ stages:
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
         languageSpecificSteps:
-        - template: generation-templates/dotnet-v1-steps.yml
+        - template: generation-templates/dotnet-v1.yml
 
 - stage: stage_csharp_beta
   dependsOn: stage_beta_metadata
@@ -115,7 +115,7 @@ stages:
         branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
         languageSpecificSteps:
-        - template: generation-templates/dotnet-beta-steps.yml
+        - template: generation-templates/dotnet-beta.yml
 
 - stage: stage_java_v1
   dependsOn: stage_v1_metadata
@@ -131,7 +131,7 @@ stages:
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
         languageSpecificSteps:
-        - template: generation-templates/java-v1-steps.yml
+        - template: generation-templates/java-v1.yml
 
 - stage: stage_java_beta
   dependsOn: stage_beta_metadata
@@ -147,7 +147,7 @@ stages:
         branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
         languageSpecificSteps:
-        - template: generation-templates/java-beta-steps.yml
+        - template: generation-templates/java-beta.yml
 
 - stage: stage_php_v1
   dependsOn:
@@ -164,7 +164,7 @@ stages:
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
         languageSpecificSteps:
-        - template: generation-templates/php-v1-steps.yml
+        - template: generation-templates/php-v1.yml
 
 - stage: stage_php_beta
   dependsOn: stage_beta_metadata
@@ -180,7 +180,7 @@ stages:
         branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
         languageSpecificSteps:
-        - template: generation-templates/php-beta-steps.yml
+        - template: generation-templates/php-beta.yml
 
 - stage: stage_typescript_v1
   dependsOn: stage_v1_metadata
@@ -234,4 +234,4 @@ stages:
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
         languageSpecificSteps:
-        - template: generation-templates/obj-steps.yml
+        - template: generation-templates/obj.yml
