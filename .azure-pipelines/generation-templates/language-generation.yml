@@ -33,6 +33,7 @@ steps:
   env:
     RepoDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}
     BranchName: ${{ parameters.branchName }}
+  workingDirectory: ${{ parameters.repoName }}
 
 - pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
   env:
@@ -45,17 +46,10 @@ steps:
     Endpoint:  ${{ parameters.version }}
   displayName: 'Run Typewriter for ${{ parameters.language }} ${{ parameters.version }}'
 
-- pwsh: '$(scriptsDirectory)/copy-dotnet-models.ps1'
-  displayName: 'Update models'
-  env:
-    BuildConfiguration: $(buildConfiguration)
-    OutputFullPath: $(typewriterDirectory)/output${{ parameters.language }}${{ parameters.version }}
-    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-beta-sdk-dotnet/src/Microsoft.Graph/Generated/
-
-- template: dotnet-beta-validation.yml
+- ${{ parameters.languageSpecificSteps }}
 
 - pwsh: '$(scriptsDirectory)/git-push-files.ps1'
   displayName: 'Git: push generated files'
   env:
     BranchName: ${{ parameters.branchName }}
-  workingDirectory: '$(Build.SourcesDirectory)/msgraph-beta-sdk-dotnet'
+  workingDirectory: ${{ parameters.repoName }}

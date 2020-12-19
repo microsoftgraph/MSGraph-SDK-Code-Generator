@@ -1,4 +1,11 @@
 steps:
+- pwsh: '$(scriptsDirectory)/copy-dotnet-models.ps1'
+  displayName: 'Update models'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputFullPath: $(typewriterDirectory)/output${{ parameters.language }}${{ parameters.version }}
+    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-beta-sdk-dotnet/src/Microsoft.Graph/Generated/
+
 - task: DotNetCoreCLI@2
   displayName: 'Build Microsoft.Graph.Beta.dll'
   inputs:
