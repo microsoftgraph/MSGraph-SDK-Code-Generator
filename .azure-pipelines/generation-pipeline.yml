@@ -58,7 +58,7 @@ parameters:
 
   - name: betaBranchPrefix
     default: beta/pipelinebuild
-    displayName: V1 Branch Prefix
+    displayName: Beta Branch Prefix
 
   - name: typeScriptBetaBranchPrefix
     default: pipelinebuild/beta
