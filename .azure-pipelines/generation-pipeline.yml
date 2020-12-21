@@ -64,6 +64,11 @@ parameters:
     default: pipelinebuild/beta
     displayName: Typescript Beta Branch Prefix (should be different than V1)
 
+  - name: publishChangesIntoABranch
+    default: true
+    type: boolean
+    displayName: Publish changes into a branch?
+
 variables:
   buildConfiguration: 'Release'
   cleanMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml'
@@ -78,6 +83,10 @@ variables:
   # branch scheme above causes the following error for TypeScript because beta branch exists
   # fatal: cannot lock ref 'refs/heads/beta/pipelinebuild/35157': 'refs/heads/beta' exists; cannot create 'refs/heads/beta/pipelinebuild/35157'
   typeScriptBetaBranch: ${{ parameters.typeScriptBetaBranchPrefix }}/$(Build.BuildId)
+
+  publishChangesIntoABranch: ${{ parameters.publishChangesIntoABranch }}
+
+  phpVersion: 7.2
 
 stages:
 - stage: stage_build_and_publish_typewriter

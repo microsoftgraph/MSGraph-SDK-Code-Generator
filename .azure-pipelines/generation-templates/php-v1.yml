@@ -6,4 +6,4 @@ steps:
     OutputFullPath: $(typewriterDirectory)/output
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-php/src/
 
-# TODO run PHP tests
+- template: php-run-tests.yml
