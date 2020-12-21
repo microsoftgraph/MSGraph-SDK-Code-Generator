@@ -86,6 +86,8 @@ variables:
 
   publishChangesIntoABranch: ${{ parameters.publishChangesIntoABranch }}
 
+  phpVersion: 7.2
+
 stages:
 - stage: stage_build_and_publish_typewriter
   dependsOn: [] # remove the implicit dependency to any previous stage

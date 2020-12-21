@@ -1,4 +1,0 @@
-steps:
-  - pwsh: $(scriptsDirectory)/run-php-tests.ps1
-    displayName: Run PHP tests
-    workingDirectory: msgraph-sdk-php
