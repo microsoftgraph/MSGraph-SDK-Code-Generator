@@ -3,5 +3,5 @@ steps:
   inputs:
     buildType: 'current'
     downloadType: 'single'
-    artifactName: 'drop'
+    artifactName: 'typewriter'
     downloadPath: '$(Build.SourcesDirectory)'
