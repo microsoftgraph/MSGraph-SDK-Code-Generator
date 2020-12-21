@@ -70,6 +70,9 @@ public class TestTypeQueryParameterSet {
             this.requests = val;
             return this;
         }
+        /**
+         * Instanciates a new TestTypeQueryParameterSetBuilder
+         */
         @Nullable
         protected TestTypeQueryParameterSetBuilder(){}
         /**

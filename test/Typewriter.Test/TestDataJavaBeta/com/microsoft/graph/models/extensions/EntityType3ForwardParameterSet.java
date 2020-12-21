@@ -170,6 +170,9 @@ public class EntityType3ForwardParameterSet {
             this.comment = val;
             return this;
         }
+        /**
+         * Instanciates a new EntityType3ForwardParameterSetBuilder
+         */
         @Nullable
         protected EntityType3ForwardParameterSetBuilder(){}
         /**

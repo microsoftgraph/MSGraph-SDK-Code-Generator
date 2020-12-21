@@ -170,6 +170,9 @@ public class SegmentForwardParameterSet {
             this.comment = val;
             return this;
         }
+        /**
+         * Instanciates a new SegmentForwardParameterSetBuilder
+         */
         @Nullable
         protected SegmentForwardParameterSetBuilder(){}
         /**

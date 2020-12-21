@@ -70,6 +70,9 @@ public class SegmentTestActionParameterSet {
             this.value = val;
             return this;
         }
+        /**
+         * Instanciates a new SegmentTestActionParameterSetBuilder
+         */
         @Nullable
         protected SegmentTestActionParameterSetBuilder(){}
         /**

@@ -119,6 +119,9 @@ public class OnenotePageForwardParameterSet {
             this.comment = val;
             return this;
         }
+        /**
+         * Instanciates a new OnenotePageForwardParameterSetBuilder
+         */
         @Nullable
         protected OnenotePageForwardParameterSetBuilder(){}
         /**

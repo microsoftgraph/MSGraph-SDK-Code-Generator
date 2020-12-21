@@ -69,6 +69,9 @@ public class CallRecordItemParameterSet {
             this.name = val;
             return this;
         }
+        /**
+         * Instanciates a new CallRecordItemParameterSetBuilder
+         */
         @Nullable
         protected CallRecordItemParameterSetBuilder(){}
         /**
