@@ -62,6 +62,9 @@ var parameterName = parameter.ParamName().SanitizePropertyName(parameter).ToLowe
             return this;
         }
 <# } #>
+        /**
+         * Instanciates a new <#=c.TypeParameterSetBuilder()#>
+         */
         @Nullable
         protected <#=c.TypeParameterSetBuilder()#>(){}
         /**
