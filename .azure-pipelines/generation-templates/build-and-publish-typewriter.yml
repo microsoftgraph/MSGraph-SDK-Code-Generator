@@ -1,0 +1,27 @@
+steps:
+- template: use-dotnet-sdk.yml
+
+- checkout: self
+  displayName: checkout generator
+  fetchDepth: 1
+  submodules: recursive
+  persistCredentials: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Typewriter'
+  inputs:
+    command: 'build'
+    projects: '$(Build.SourcesDirectory)/src/Typewriter/Typewriter.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)/src/Typewriter/bin/$(BuildConfiguration)/net5.0'
+    contents: '**/*'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: Copy Typewriter executable
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: typewriter

@@ -1,29 +1,7 @@
 steps:
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/run-typewriter.ps1'
-  env:
-    BuildConfiguration: $(buildConfiguration)
-    OutputPath: $(outputObjCV1)
-    CleanMetadataFile: $(cleanMetadataFileV1)
-    TypewriterExecutable: $(typewriterExecutable)
-    TypewriterDirectory: $(typewriterDirectory)
-    Language: 'ObjC'
-  displayName: 'Run Typewriter for ObjC V1'
-
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/create-branch.ps1'
-  displayName: 'Create a branch'
-  env:
-    RepoDirectory: $(Build.SourcesDirectory)/msgraph-sdk-objc-models
-    BranchName: $(v1Branch)
-
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/copy-objc-models.ps1'
+- pwsh: '$(scriptsDirectory)/copy-objc-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
-    OutputFullPath: $(typewriterDirectory)/$(outputObjCV1)
+    OutputFullPath: $(typewriterDirectory)/output
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-objc-models/GeneratedModels/
-
-- pwsh: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts/git-push-files.ps1'
-  displayName: 'Git: push generated files'
-  env:
-    BranchName: $(v1Branch)
-  workingDirectory: '$(Build.SourcesDirectory)/msgraph-sdk-objc-models'

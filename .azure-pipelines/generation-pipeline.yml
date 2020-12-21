@@ -4,6 +4,8 @@
 trigger: none
 pr: none
 
+# TODO add schedule
+
 resources:
  repositories:
    - repository: msgraph-sdk-dotnet
@@ -49,94 +51,227 @@ resources:
 pool:
   vmImage: 'ubuntu-latest'
 
+parameters:
+  - name: v1BranchPrefix
+    default: v1.0/pipelinebuild
+    displayName: V1 Branch Prefix
+
+  - name: betaBranchPrefix
+    default: beta/pipelinebuild
+    displayName: Beta Branch Prefix (should be different than V1)
+
+  - name: typeScriptBetaBranchPrefix
+    default: pipelinebuild/beta
+    displayName: Typescript Beta Branch Prefix (should be different than V1)
+
 variables:
   buildConfiguration: 'Release'
-  outputDotNetV1: 'outputDotNetV1'
-  outputDotNetBeta: 'outputDotNetBeta'
-  outputPHPV1: 'outputPHPV1'
-  outputPHPBeta: 'outputPHPBeta'
-  outputTypeScriptV1: 'outputTypeScriptV1'
-  outputTypeScriptBeta: 'outputTypeScriptBeta'
-  outputObjCV1: 'outputObjCV1'
-  outputJavaV1: 'outputJavaV1'
-  outputJavaBeta: 'outputJavaBeta'
   cleanMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml'
   cleanMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml'
-  typewriterDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/src/Typewriter/bin/$(BuildConfiguration)/net5.0'
+  typewriterDirectory: '$(Build.SourcesDirectory)/typewriter'
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
+  scriptsDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts'
 
-  v1Branch: 'v1.0/pipelinebuild/$(Build.BuildId)'
-  betaBranch: 'beta/pipelinebuild/$(Build.BuildId)'
+  v1Branch: ${{ parameters.v1BranchPrefix }}/$(Build.BuildId)
+  betaBranch: ${{ parameters.betaBranchPrefix }}/$(Build.BuildId)
 
   # branch scheme above causes the following error for TypeScript because beta branch exists
   # fatal: cannot lock ref 'refs/heads/beta/pipelinebuild/35157': 'refs/heads/beta' exists; cannot create 'refs/heads/beta/pipelinebuild/35157'
-  typeScriptBetaBranch: 'pipelinebuild/beta/$(Build.BuildId)'
+  typeScriptBetaBranch: ${{ parameters.typeScriptBetaBranchPrefix }}/$(Build.BuildId)
 
-steps:
-- pwsh: |
-    git config --global user.email "GraphTooling@service.microsoft.com"
-    git config --global user.name "Microsoft Graph DevX Tooling"
-  displayName: 'Git: set user config'
+stages:
+- stage: stage_build_and_publish_typewriter
+  dependsOn: [] # remove the implicit dependency to any previous stage
+  jobs:
+  - job: build_and_publish_typewriter
+    steps:
+    - template: generation-templates/build-and-publish-typewriter.yml
 
-- checkout: msgraph-metadata
-  displayName: checkout metadata
-  fetchDepth: 1
-  persistCredentials: true
+- stage: stage_v1_metadata
+  dependsOn: stage_build_and_publish_typewriter
+  condition: succeeded('stage_build_and_publish_typewriter')
+  jobs:
+  - job: v1_metadata
+    steps:
+    - template: generation-templates/checkout-metadata.yml
+    - pwsh: |
+        Write-Host "Success!"
 
-- checkout: self
-  displayName: checkout generator
-  fetchDepth: 1
-  submodules: recursive
-  persistCredentials: true
+- stage: stage_beta_metadata
+  dependsOn: stage_build_and_publish_typewriter
+  condition: succeeded('stage_build_and_publish_typewriter')
+  jobs:
+  - job: beta_metadata
+    steps:
+    - template: generation-templates/checkout-metadata.yml
+    - pwsh: |
+        Write-Host "Success!"
 
-- checkout: msgraph-sdk-dotnet
-  displayName: checkout dotnet
-  fetchDepth: 1
-  persistCredentials: true
+- stage: stage_csharp_v1
+  dependsOn:
+  - stage_v1_metadata
+  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
+  jobs:
+  - job: csharp_v1
+    steps:
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'CSharp'
+        version: ''
+        repoName: 'msgraph-sdk-dotnet'
+        branchName: $(v1Branch)
+        cleanMetadataFile: $(cleanMetadataFileV1)
+        languageSpecificSteps:
+        - template: generation-templates/dotnet.yml
+          parameters:
+            repoName: msgraph-sdk-dotnet
+            dllName: Microsoft.Graph.dll
 
-- checkout: msgraph-beta-sdk-dotnet
-  displayName: checkout beta dotnet
-  fetchDepth: 1
-  persistCredentials: true
+- stage: stage_csharp_beta
+  dependsOn:
+  - stage_beta_metadata
+  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
+  jobs:
+  - job: csharp_beta
+    steps:
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'CSharp'
+        version: 'beta'
+        repoName: 'msgraph-beta-sdk-dotnet'
+        branchName: $(betaBranch)
+        cleanMetadataFile: $(cleanMetadataFileBeta)
+        languageSpecificSteps:
+        - template: generation-templates/dotnet.yml
+          parameters:
+            repoName: msgraph-beta-sdk-dotnet
+            dllName: Microsoft.Graph.Beta.dll
 
-- checkout: msgraph-sdk-php
-  displayName: checkout php
-  fetchDepth: 1
-  persistCredentials: true
+- stage: stage_java_v1
+  dependsOn:
+  - stage_v1_metadata
+  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
+  jobs:
+  - job: java_v1
+    steps:
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'Java'
+        version: ''
+        repoName: 'msgraph-sdk-java'
+        branchName: $(v1Branch)
+        cleanMetadataFile: $(cleanMetadataFileV1)
+        languageSpecificSteps:
+        - template: generation-templates/java.yml
+          parameters:
+            repoName: msgraph-sdk-java
 
-- checkout: msgraph-typescript-typings
-  displayName: checkout typescript
-  fetchDepth: 1
-  persistCredentials: true
+- stage: stage_java_beta
+  dependsOn:
+  - stage_beta_metadata
+  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
+  jobs:
+  - job: java_beta
+    steps:
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'Java'
+        version: 'Beta'
+        repoName: 'msgraph-beta-sdk-java'
+        branchName: $(betaBranch)
+        cleanMetadataFile: $(cleanMetadataFileBeta)
+        languageSpecificSteps:
+        - template: generation-templates/java.yml
+          parameters:
+            repoName: msgraph-beta-sdk-java
 
-- checkout: msgraph-sdk-objc-models
-  displayName: checkout objc
-  fetchDepth: 1
-  persistCredentials: true
+- stage: stage_php_v1
+  dependsOn:
+  - stage_v1_metadata
+  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
+  jobs:
+  - job: php_v1
+    steps:
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'PHP'
+        version: ''
+        repoName: 'msgraph-sdk-php'
+        branchName: $(v1Branch)
+        cleanMetadataFile: $(cleanMetadataFileV1)
+        languageSpecificSteps:
+        - template: generation-templates/php-v1.yml
 
-- checkout: msgraph-sdk-java
-  displayName: checkout java
-  fetchDepth: 1
-  persistCredentials: true
+- stage: stage_php_beta
+  dependsOn:
+  - stage_beta_metadata
+  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
+  jobs:
+  - job: php_beta
+    steps:
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'PHP'
+        version: 'beta'
+        repoName: 'msgraph-sdk-php'
+        branchName: $(betaBranch)
+        cleanMetadataFile: $(cleanMetadataFileBeta)
+        languageSpecificSteps:
+        - template: generation-templates/php-beta.yml
 
-- checkout: msgraph-beta-sdk-java
-  displayName: checkout beta java
-  fetchDepth: 1
-  persistCredentials: true
+- stage: stage_typescript_v1
+  dependsOn:
+  - stage_v1_metadata
+  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
+  jobs:
+  - job: typescript_v1
+    steps:
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'TypeScript'
+        version: ''
+        repoName: 'msgraph-typescript-typings'
+        branchName: $(v1Branch)
+        cleanMetadataFile: $(cleanMetadataFileV1)
+        languageSpecificSteps:
+        - template: generation-templates/typescript.yml
 
-- template: common-templates/use-dotnet-sdk.yml
+- stage: stage_typescript_beta
+  dependsOn:
+  - stage_beta_metadata
+  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
+  jobs:
+  - job: typescript_beta
+    steps:
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'TypeScript'
+        version: 'beta'
+        repoName: 'msgraph-typescript-typings'
+        branchName: $(typeScriptBetaBranch)
+        cleanMetadataFile: $(cleanMetadataFileBeta)
+        languageSpecificSteps:
+        - template: generation-templates/typescript.yml
+        optionalPostCheckoutStep:
+          - pwsh: |
+              git fetch
+              git checkout beta
+            displayName: 'Switch to beta branch'
+            workingDirectory: '$(Build.SourcesDirectory)/msgraph-typescript-typings'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build Typewriter'
-  inputs:
-    command: 'build'
-    projects: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/src/Typewriter/Typewriter.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-
-- template: generation-templates/dotnet-v1.yml
-- template: generation-templates/dotnet-beta.yml
-- template: generation-templates/php.yml
-- template: generation-templates/typescript.yml
-- template: generation-templates/objc.yml
-- template: generation-templates/java-v1.yml
-- template: generation-templates/java-beta.yml
+- stage: stage_objc_v1
+  dependsOn:
+  - stage_v1_metadata
+  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
+  jobs:
+  - job: objc_v1
+    steps:
+    - template: generation-templates/language-generation.yml
+      parameters:
+        language: 'ObjC'
+        version: ''
+        repoName: 'msgraph-sdk-objc-models'
+        branchName: $(v1Branch)
+        cleanMetadataFile: $(cleanMetadataFileV1)
+        languageSpecificSteps:
+        - template: generation-templates/objc.yml

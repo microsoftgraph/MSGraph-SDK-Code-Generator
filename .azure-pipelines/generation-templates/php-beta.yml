@@ -1,0 +1,9 @@
+steps:
+- pwsh: '$(scriptsDirectory)/copy-php-beta-models.ps1'
+  displayName: 'Update models'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputFullPath: $(typewriterDirectory)/output
+    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-php/src/Beta
+
+# TODO run PHP tests

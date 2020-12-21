@@ -1,7 +1,9 @@
 steps:
-- pwsh: '$(scriptsDirectory)/copy-typescript-models.ps1'
+- pwsh: '$(scriptsDirectory)/copy-php-v1-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(typewriterDirectory)/output
-    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-typescript-typings/
+    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-php/src/
+
+# TODO run PHP tests

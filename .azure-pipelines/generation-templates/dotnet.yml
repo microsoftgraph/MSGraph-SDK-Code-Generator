@@ -1,0 +1,33 @@
+parameters:
+  - name: repoName
+    type: string
+
+  - name: dllName
+    type: string
+
+steps:
+- pwsh: '$(scriptsDirectory)/copy-dotnet-models.ps1'
+  displayName: 'Update models'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputFullPath: $(typewriterDirectory)/output
+    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Graph/Generated/
+
+- task: DotNetCoreCLI@2
+  displayName: Build ${{ parameters.dllName }}
+  inputs:
+    command: 'build'
+    projects: ${{ parameters.repoName }}/**/*.csproj
+    arguments: '--configuration $(buildConfiguration)'
+
+- pwsh: |
+    $allGeneratedDlls = Get-ChildItem -Include $env:dllName -Recurse
+    $dotNetFrameworkDll = $allGeneratedDlls | Where-Object { $_.FullName.Contains("net461") } | Select-Object -First 1 # TODO hardcoded .NET version
+    $dllPath = $dotNetFrameworkDll.FullName
+
+    & ./scripts/generateTypeSummary.ps1 -dllPath $dllPath -outputPath $env:typeSummaryPath
+  displayName: 'Generate type summary'
+  workingDirectory: ${{ parameters.repoName }}
+  env:
+    dllName: ${{ parameters.dllName }}
+    typeSummaryPath: $(Build.SourcesDirectory)/${{ parameters.repoName }}/typeSummary.txt
