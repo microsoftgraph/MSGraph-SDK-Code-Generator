@@ -10,6 +10,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
     using NLog;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Globalization;
+    using Inflector;
 
     public static class TypeHelperCSharp
     {
@@ -298,10 +300,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         {
             return !SimpleTypes.Contains(t);
         }
-
+        private static readonly Inflector inflector = new Inflector(CultureInfo.GetCultureInfo("en-US"));
         public static string GetNamespaceName(this OdcmNamespace namespaceObject)
         {
-            return Inflector.Inflector.Titleize(namespaceObject.Name).Replace(" ", "");
+            return inflector.Titleize(namespaceObject.Name).Replace(" ", "");
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)

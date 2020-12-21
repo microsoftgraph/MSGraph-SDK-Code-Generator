@@ -1,176 +1,65 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}</ProjectGuid>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Graph.ODataTemplateWriter</RootNamespace>
-    <AssemblyName>GraphODataTemplateWriter</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>$(ProjectDir)bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
     <OutputPath>$(ProjectDir)bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Inflector">
-      <HintPath>..\..\packages\Inflector.1.0.0.0\lib\net45\Inflector.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.TextTemplating">
-      <HintPath>..\..\packages\Mono.TextTemplating.2.2.0\lib\net472\Mono.TextTemplating.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NLog.4.7.6\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CodeHelpers\CodeWriterBase.cs" />
-    <Compile Include="CodeHelpers\CSharp\CodeWriterCSharp.cs" />
-    <Compile Include="CodeHelpers\CSharp\TypeHelperCSharp.cs" />
-    <Compile Include="CodeHelpers\Java\CodeWriterJava.cs" />
-    <Compile Include="CodeHelpers\Java\CustomOverwrites.cs" />
-    <Compile Include="CodeHelpers\Java\TypeHelperJava.cs" />
-    <Compile Include="CodeHelpers\TypeScript\CodeWriterTypeScript.cs" />
-    <Compile Include="CodeHelpers\TypeScript\TypeScriptNamespace.cs" />
-    <Compile Include="CodeHelpers\TypeScript\TypeScriptNamespaces.cs" />
-    <Compile Include="CodeHelpers\TypeScript\TypeHelperTypeScript.cs" />
-    <Compile Include="CodeHelpers\GraphEndpointList\CodeWriterGraphEndpointList.cs" />
-    <Compile Include="CodeHelpers\GraphEndpointList\TypeHelperGraphEndpointList.cs" />
-    <Compile Include="CodeHelpers\ObjC\CodeWriterObjC.cs" />
-    <Compile Include="CodeHelpers\PHP\CodeWriterPHP.cs" />
-    <Compile Include="CodeHelpers\PHP\TypeHelperPHP.cs" />
-    <Compile Include="CodeHelpers\Python\CodeWriterPython.cs" />
-    <Compile Include="CodeHelpers\Python\TypeHelperPython.cs" />
-    <Compile Include="Extensions\FeatureExtensions.cs" />
-    <Compile Include="OdcmMethodEqualityComparer.cs" />
-    <Compile Include="OdcmParameterCollectionEqualityComparer.cs" />
-    <Compile Include="OdcmParameterEqualityComparer.cs" />
-    <Compile Include="OdcmTypeEqualityComparer.cs" />
-    <Compile Include="PathWriters\CSharpPathWriter.cs" />
-    <Compile Include="PathWriters\TypeScriptPathWriter.cs" />
-    <Compile Include="PathWriters\GraphEndpointListPathWriter.cs" />
-    <Compile Include="PathWriters\PHPPathWriter.cs" />
-    <Compile Include="PathWriters\PythonPathWriter.cs" />
-    <Compile Include="TemplateProcessor\CustomT4Host.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="CodeHelpers\ObjC\TypeHelperObjC.cs" />
-    <Compile Include="Extensions\OdcmModelExtensions.cs" />
-    <Compile Include="PathWriters\PathWriterBase.cs" />
-    <Compile Include="PathWriters\IPathWriter.cs" />
-    <Compile Include="PathWriters\JavaPathWriter.cs" />
-    <Compile Include="PathWriters\ObjCPathWriter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\ConfigurationService.cs" />
-    <Compile Include="Settings\TemplateWriterSettings.cs" />
-    <Compile Include="TemplateProcessor\Enums\FileNameCasing.cs" />
-    <Compile Include="TemplateProcessor\Enums\SubProcessor.cs" />
-    <Compile Include="TemplateProcessor\Enums\Template.cs" />
-    <Compile Include="TemplateProcessor\ITemplateInfoProvider.cs" />
-    <Compile Include="TemplateProcessor\TemplateHostStats.cs" />
-    <Compile Include="TemplateProcessor\TemplateInfoProvider.cs" />
-    <Compile Include="TemplateProcessor\TemplateProcessor.cs" />
-    <Compile Include="TemplateProcessor\ITemplateProcessor.cs" />
-    <Compile Include="TemplateProcessor\ITemplateInfo.cs" />
-    <Compile Include="TemplateProcessor\TemplateWriter.cs" />
-    <Compile Include="TemplateProcessor\TemplateFileInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".config\JavaSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\CSharpSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\TypeScriptSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\GraphEndpointListSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\ObjCSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\PHPSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\PythonSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\TemplateWriterSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="NLog.xsd">
+    <Content Include=".config\JavaSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include=".config\CSharpSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include=".config\TypeScriptSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include=".config\GraphEndpointListSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include=".config\ObjCSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include=".config\PHPSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include=".config\PythonSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include=".config\TemplateWriterSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Update="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\submodules\vipr\src\Core\Vipr.Core\Vipr.Core.csproj">
-      <Project>{04c24936-006a-4fd8-a872-ee55588c1cbe}</Project>
-      <Name>Vipr.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\submodules\vipr\src\Core\Vipr\Vipr.csproj">
-      <Project>{d9e57059-bad6-483b-985c-c7d1da24ed7f}</Project>
-      <Name>Vipr</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\submodules\vipr\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj">
-      <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>
-      <Name>Vipr.Reader.OData.v4</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\submodules\vipr\src\Core\Vipr.Core\Vipr.Core.csproj" />
+    <ProjectReference Include="..\..\submodules\vipr\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-  </Target>
-  <PropertyGroup Condition=" '$(OS)' != 'Unix' ">
-    <PreBuildEvent>"$(MSBuildBinPath)\msbuild.exe" /m /t:Build /p:Configuration=$(Configuration) "$(ProjectDir)..\..\submodules\vipr\Vipr.sln"</PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
-    <PreBuildEvent>xbuild /t:build /p:Configuration=$(Configuration) "$(ProjectDir)..\..\submodules\vipr\Vipr.sln"</PreBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>-->
-  <Target Name="AfterBuild">
-    <ItemGroup>
-      <VIPR_OUTPUT Include="$(SolutionDir)submodules\vipr\src\Core\Vipr\bin\$(Configuration)\**\*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(VIPR_OUTPUT)" DestinationFolder="$(TargetDir)%(RecursiveDir)" />
-  </Target>
+  <ItemGroup>
+    <PackageReference Include="Inflector.NetStandard" Version="1.2.2" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Mono.TextTemplating">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="NLog.Config">
+      <Version>4.7.6</Version>
+    </PackageReference>
+    <PackageReference Include="System.CodeDom" Version="5.0.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+  </ItemGroup>
 </Project>

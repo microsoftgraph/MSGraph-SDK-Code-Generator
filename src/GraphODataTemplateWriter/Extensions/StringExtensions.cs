@@ -1,9 +1,10 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Text.RegularExpressions;
 
     public static class StringExtensions
@@ -52,24 +53,25 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return Regex.Replace(toSpaces, "[ -~]", " ");
         }
 
+        private static readonly Inflector.Inflector inflector = new Inflector.Inflector(CultureInfo.GetCultureInfo("en-US"));
         public static string ToSingularize(this string input) 
         {
-            return Inflector.Inflector.Singularize(input);
+            return inflector.Singularize(input);
         }
 
         public static string ToCamelize (this string input)
         {
-            return Inflector.Inflector.Camelize(input);
+            return inflector.Camelize(input);
         }
 
         public static string ToPascalize(this string input)
         {
-            return Inflector.Inflector.Pascalize(input);
+            return inflector.Pascalize(input);
         }
 
         public static string ToUnderscore(this string input)
         {
-            return Inflector.Inflector.Underscore(input);
+            return inflector.Underscore(input);
         }
 
         /// <summary>
