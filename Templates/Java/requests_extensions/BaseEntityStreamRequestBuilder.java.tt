@@ -9,6 +9,12 @@
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseRequestBuilder;
 import java.io.InputStream;
+<# var mainNamespace = host.CurrentNamespace(); #>
+<#
+foreach (var method in c.AsOdcmClass().MethodsAndOverloads().Where(x => !x.IsBoundToCollection && x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeParameterSet()).Distinct()) {
+#>
+import <#=method#>;
+<# } #>
 
 <#=TypeHelperJava.CreateClassDef(c.TypeStreamRequestBuilder(), "BaseRequestBuilder<InputStream>")#>
 
@@ -121,29 +127,33 @@ if (c.AsOdcmClass() != null)
 <#
     foreach (var method in c.AsOdcmClass().MethodsAndOverloads())
     {
-        var parameterList = method.MethodParametersSignature();
-        if (parameterList != "") { parameterList = parameterList.Remove(0, 2); }
 #>
 <#		if (method.IsCollection) { #>
 
     /**
      * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
-     * @return the request builder collection<#=method.MethodParametersJavadocSignature()#>
+     * @return the request builder collection
+     <#if(method.MethodHasParameters()) { #>
+     * @param parameters the parameters for the service method
+     <# } #>
      */
     @Nonnull
-    public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
-        return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
+    public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
+        return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
     }
 
 <# 		} else { #>
 
     /**
      * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
-     * @return the request builder <#=method.MethodParametersJavadocSignature()#>
+     * @return the request builder
+     <#if(method.MethodHasParameters()) { #>
+     * @param parameters the parameters for the service method
+     <# } #>
      */
     @Nonnull
-    public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#=parameterList#>) {
-        return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#=method.MethodParametersValues()#>);
+    public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
+        return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
     }
 <#
         }

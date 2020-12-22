@@ -8,53 +8,62 @@
 import javax.annotation.Nullable;
 import javax.annotation.Nonnull;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.BaseRequest;
+import <#=importNamespace#>.http.HttpMethod;
 import <#=importNamespace#>.concurrency.ICallback;
 import <#=importNamespace#>.concurrency.IExecutors;
 import <#=importNamespace#>.core.ClientException;
 import <#=importNamespace#>.core.IBaseClient;
-import <#=importNamespace#>.http.BaseRequest;
-import <#=importNamespace#>.http.HttpMethod;
+<# var mainNamespace = host.CurrentNamespace(); #>
+<#if(c.AsOdcmMethod().MethodHasParameters()) { #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypeParameterSet()#>;
+<# } #>
 
 <#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest<"+c.ReturnType()+">")#>
-
     /**
      * The request for this <#=c.TypeName()#>
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
+<#if(c.AsOdcmMethod().MethodHasParameters() && c.AsOdcmMethod().IsAction()) { #>
+     * @param parameters     the parameters for the service method
+<# } #>
      */
-    public <#=c.TypeRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>, @Nonnull final <#=c.AsOdcmMethod().TypeParameterSet()#> parameters<# } #>) {
         super(requestUrl, client, requestOptions, <#=c.ReturnType()#>.class);
+<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>
+        body = parameters;
+<# } #>
     }
 
-<#
-if (c.AsOdcmMethod().IsAction()) {
-    if (c.AsOdcmMethod().ReturnType != null) {
+<# if (c.AsOdcmMethod().IsAction()) { #>
+<# if(c.AsOdcmMethod().MethodHasParameters()) { #>
+	/** The body for the method */
+    @Nullable
+    protected <#=c.TypeParameterSet()#> body;
+<# } #>
+<#  if (c.AsOdcmMethod().ReturnType != null) {
 #>
     /**
-     * Creates the <#=c.TypeName()#>
-     *
+     * Invokes the method and invokes the callback with the result
      * @param callback the callback to be called after success or failure
      */
     public void post(@Nonnull final ICallback<? super <#=c.ReturnType()#>> callback) {
-        send(HttpMethod.POST, callback, null);
+        send(HttpMethod.POST, callback, <# if(c.AsOdcmMethod().MethodHasParameters()) { #>body<# } else {#>null<# } #>);
     }
 
     /**
-     * Creates the <#=c.TypeName()#>
-     *
-     * @return the <#=c.ReturnType()#>
+     * Invokes the method and returns the result
+     * @return result of the method invocation
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
     @Nullable
     public <#=c.ReturnType()#> post() throws ClientException {
-       return send(HttpMethod.POST, null);
+       return send(HttpMethod.POST, <# if(c.AsOdcmMethod().MethodHasParameters()) { #>body<# } else {#>null<# } #>);
     }
 
-<#
-        if (c.GetFeatures().CanSelect) {
-#>
+<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -67,11 +76,8 @@ if (c.AsOdcmMethod().IsAction()) {
         return this;
     }
 
-<#
-        }
-
-        if (c.GetFeatures().CanExpand) {
-#>
+<# } #>
+<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -84,50 +90,8 @@ if (c.AsOdcmMethod().IsAction()) {
         return this;
     }
 
-<#
-        }
- if (c.GetFeatures().CanCount) { #>
-    /**
-     * Sets the count value for the request
-     *
-     * @param value whether or not to return the count of objects with the request
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> count(final boolean value) {
-        addCountOption(value);
-        return this;
-    }
-    /**
-     * Sets the count value to true for the request
-     *
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> count() {
-        addCountOption(true);
-        return this;
-    }
-<# }
-
-        if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) {
-#>
-
-    /**
-     * Sets the top value for the request
-     *
-     * @param value the max number of items to return
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> top(final int value) {
-        addTopOption(value);
-        return this;
-    }
-<#
-        }
-    } else {
-#>
+<# } #>
+<# } else { #>
     /**
      * Creates the <#=c.TypeName()#>
      *
@@ -154,58 +118,12 @@ if (c.AsOdcmMethod().IsAction()) {
      * @throws ClientException an exception occurs if there was an error while the request was sent
      */
     public void post() throws ClientException {
-        this.send(HttpMethod.POST, null);
+        this.send(HttpMethod.POST, <# if(c.AsOdcmMethod().MethodHasParameters()) { #>body<# } else {#>null<# } #>);
     }
 <#
     }
 } else { // FUNCTIONS
     if (c.AsOdcmMethod().ReturnType != null) {
-        if (c.AsOdcmMethod().IsComposable) {
-#>
-    /**
-     * Patches the <#=c.TypeName()#>
-     * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> with which to PATCH
-     * @param callback the callback to be called after success or failure
-     */
-    public void patch(@Nonnull <#=c.ReturnType()#> src<#=c.ReturnType()#>, @Nonnull final ICallback<? super <#=c.ReturnType()#>> callback) {
-        send(HttpMethod.PATCH, callback, src<#=c.ReturnType()#>);
-    }
-
-    /**
-     * Patches the <#=c.TypeName()#>
-     *
-     * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> with which to PATCH
-     * @return the <#=c.ReturnType()#>
-     * @throws ClientException an exception occurs if there was an error while the request was sent
-     */
-     @Nullable
-     public <#=c.ReturnType()#> patch(@Nonnull final <#=c.ReturnType()#> src<#=c.ReturnType()#>) throws ClientException {
-        return this.send(HttpMethod.PATCH, src<#=c.ReturnType()#>);
-    }
-
-    /**
-     * Puts the <#=c.TypeName()#>
-     *
-     * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> to PUT
-     * @param callback the callback to be called after success or failure
-     */
-    public void put(@Nonnull final <#=c.ReturnType()#> src<#=c.ReturnType()#>, @Nonnull final ICallback<? super <#=c.ReturnType()#>> callback) {
-        send(HttpMethod.PUT, callback, src<#=c.ReturnType()#>);
-    }
-
-    /**
-     * Puts the <#=c.TypeName()#>
-     *
-     * @param src<#=c.ReturnType()#> the <#=c.ReturnType()#> to PUT
-     * @return the <#=c.ReturnType()#>
-     * @throws ClientException an exception occurs if there was an error while the request was sent
-     */
-     @Nullable
-     public <#=c.ReturnType()#> put(@Nonnull final <#=c.ReturnType()#> src<#=c.ReturnType()#>) throws ClientException {
-        return this.send(HttpMethod.PUT, src<#=c.ReturnType()#>);
-    }
-<#
-        }
 #>
     /**
      * Gets the <#=c.ReturnType()#>
@@ -227,9 +145,7 @@ if (c.AsOdcmMethod().IsAction()) {
        return send(HttpMethod.GET, null);
     }
 
-<#
-        if (c.GetFeatures().CanSelect) {
-#>
+<# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
      *
@@ -242,11 +158,8 @@ if (c.AsOdcmMethod().IsAction()) {
         return this;
     }
 
-<#
-        }
-
-        if (c.GetFeatures().CanExpand) {
-#>
+<# } #>
+<# if (c.GetFeatures().CanExpand) { #>
     /**
      * Sets the expand clause for the request
      *
@@ -259,99 +172,7 @@ if (c.AsOdcmMethod().IsAction()) {
         return this;
     }
 
-<#
-        }
-        if (c.GetFeatures().CanFilter) {
-#>
-    /**
-     * Sets the filter clause for the request
-     *
-     * @param value the filter clause
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> filter(@Nonnull final String value) {
-        addFilterOption(value);
-        return this;
-    }
-
-<#
-        }
-        if (c.GetFeatures().CanSort) {
-#>
-    /**
-     * Sets the order by clause for the request
-     *
-     * @param value the order by clause
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> orderBy(@Nonnull final String value) {
-        addOrderByOption(value);
-        return this;
-    }
-
-<#
-        }
-if (c.GetFeatures().CanCount) { #>
-    /**
-     * Sets the count value for the request
-     *
-     * @param value whether or not to return the count of objects with the request
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> count(final boolean value) {
-        addCountOption(value);
-        return this;
-    }
-    /**
-     * Sets the count value to true for the request
-     *
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> count() {
-        addCountOption(true);
-        return this;
-    }
-<# } 
-        if (c.AsOdcmProperty() != null && c.AsOdcmProperty().IsCollection && c.GetFeatures().CanUseTop) {
-#>
-
-    /**
-     * Sets the top value for the request
-     *
-     * @param value the max number of items to return
-     * @return the updated request
-     */
-    @Nonnull
-    public <#=c.TypeRequest()#> top(final int value) {
-        addTopOption(value);
-        return this;
-    }
-<#
-        }
-    } else {
-#>
-    public void get(@Nonnull final ICallback<Void> callback) {
-        final IExecutors executors = getClient().getExecutors();
-        executors.performOnBackground(new Runnable() {
-           @Override
-           public void run() {
-                try {
-                    get();
-                    executors.performOnForeground((Void)null, callback);
-                } catch (final ClientException e) {
-                    executors.performOnForeground(e, callback);
-                }
-           }
-        });
-    }
-
-    public void get() throws ClientException {
-        this.send(HttpMethod.GET, null);
-    }
+<# } #>
 <#
     }
 }

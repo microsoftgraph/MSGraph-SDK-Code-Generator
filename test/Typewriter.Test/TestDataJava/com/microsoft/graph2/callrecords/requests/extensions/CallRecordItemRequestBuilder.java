@@ -7,6 +7,7 @@ package com.microsoft.graph2.callrecords.requests.extensions;
 import com.microsoft.graph2.callrecords.requests.extensions.CallRecordItemRequest;
 import com.microsoft.graph2.callrecords.models.extensions.CallRecord;
 import com.microsoft.graph.http.BaseFunctionRequestBuilder;
+import com.microsoft.graph2.callrecords.models.extensions.CallRecordItemParameterSet;
 import com.microsoft.graph.core.IBaseClient;
 import com.google.gson.JsonElement;
 import javax.annotation.Nullable;
@@ -25,11 +26,13 @@ public class CallRecordItemRequestBuilder extends BaseFunctionRequestBuilder<Cal
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
-     * @param name the name
+     * @param parameters     the parameters for the service method
      */
-    public CallRecordItemRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nullable final String name) {
+    public CallRecordItemRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final CallRecordItemParameterSet parameters) {
         super(requestUrl, client, requestOptions);
-        functionOptions.add(new com.microsoft.graph.options.FunctionOption("name", name));
+        if(parameters != null) {
+            functionOptions = parameters.getFunctionOptions();
+        }
     }
 
     /**
@@ -57,10 +60,9 @@ public class CallRecordItemRequestBuilder extends BaseFunctionRequestBuilder<Cal
                 requestOptions
         );
 
-      for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
+            for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
             request.addFunctionOption(option);
-      }
-
+        }
         return request;
     }
     /**

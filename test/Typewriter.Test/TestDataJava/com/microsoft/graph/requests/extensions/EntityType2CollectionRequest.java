@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.core.IBaseClient;
-import com.microsoft.graph.http.BaseCollectionRequest;
+import com.microsoft.graph.http.BaseEntityCollectionRequest;
 import com.microsoft.graph.concurrency.IExecutors;
 import com.microsoft.graph.requests.extensions.EntityType2CollectionResponse;
 import com.microsoft.graph.requests.extensions.EntityType2CollectionRequestBuilder;
@@ -28,7 +28,7 @@ import com.microsoft.graph.requests.extensions.EntityType2CollectionRequest;
 /**
  * The class for the Entity Type2Collection Request.
  */
-public class EntityType2CollectionRequest extends BaseCollectionRequest<EntityType2, EntityType2CollectionResponse, EntityType2CollectionPage> {
+public class EntityType2CollectionRequest extends BaseEntityCollectionRequest<EntityType2, EntityType2CollectionResponse, EntityType2CollectionPage> {
 
     /**
      * The request builder for this collection of EntityType2

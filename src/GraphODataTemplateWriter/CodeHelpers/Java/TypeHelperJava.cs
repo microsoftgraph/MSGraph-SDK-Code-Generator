@@ -434,14 +434,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return "Base" + c.TypeCollectionReferenceRequestBuilder();
         }
 
-        public static string TypeBody(this OdcmObject c)
+        public static string TypeParameterSet(this OdcmObject c)
         {
-            return c.TypeName() + "Body";
+            return c.TypeName() + "ParameterSet";
         }
 
-        public static string BaseTypeBody(this OdcmObject c)
+        public static string TypeParameterSetBuilder(this OdcmObject c)
         {
-            return "Base" + c.TypeBody();
+            return c.TypeParameterSet() + "Builder";
         }
 
         /// Returns the name of the service <parameter> with the first char lowercase
@@ -504,33 +504,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return "Void";
         }
 
-        public static string MethodParametersJavadocSignature(this OdcmMethod method)
-        {
-            var parameterSignatureBuilder = new StringBuilder();
-            foreach (var p in method.Parameters)
-            {
-                parameterSignatureBuilder.AppendFormat("\r\n     * @param {0} the {0}", p.ParamName());
-            }
-            return parameterSignatureBuilder.ToString();
-        }
-
         /// <summary>
         /// Takes a property object and gets to its type, then returns that types fully qualified namespace: e.g. com.microsoft.graph.callrecords
         /// </summary>
         /// <param name="p">property object</param>
         /// <returns>fully qualified namespace of a property</returns>
         public static string GetPropertyNamespace(this OdcmProperty p) => p.Projection.Type.Namespace.Name.AddPrefix();
-
-        public static string MethodParametersSignature(this OdcmMethod method)
-        {
-            var parameterSignatureBuilder = new StringBuilder();
-            foreach (var p in method.Parameters)
-            {
-                parameterSignatureBuilder.AppendFormat(", {0} final {1} {2}", p.IsNullable() ? "@Nullable" : string.Empty , p.ParamType(), p.ParamName());
-            }
-            return parameterSignatureBuilder.ToString();
-        }
-
+        public static bool MethodHasParameters(this OdcmMethod m) => m?.Parameters?.Any() ?? false;
         public static string MethodParametersValues(this OdcmMethod method)
         {
             var parameterValuesBuilder = new StringBuilder();
@@ -783,7 +763,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             sb.AppendFormat(importFormat,
                             host.CurrentNamespace(),
                             GetPrefixForModels(),
-                            host.CurrentType.TypeBody());
+                            host.CurrentType.TypeParameterSet());
             sb.Append("\n");
             var returnType = host.CurrentType.ReturnType();
             if (returnType != "Void" && !(host.CurrentType.AsOdcmMethod().ReturnType is OdcmPrimitiveType))

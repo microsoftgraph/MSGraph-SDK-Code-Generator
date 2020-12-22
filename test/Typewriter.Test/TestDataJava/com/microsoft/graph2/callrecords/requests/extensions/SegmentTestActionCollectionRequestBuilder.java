@@ -18,6 +18,7 @@ import javax.annotation.Nonnull;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionRequestBuilder;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionRequest;
 import com.microsoft.graph2.callrecords.requests.extensions.SegmentTestActionCollectionResponse;
+import com.microsoft.graph2.callrecords.models.extensions.SegmentTestActionParameterSet;
 import com.microsoft.graph.options.FunctionOption;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseActionCollectionRequestBuilder;
@@ -29,21 +30,19 @@ import com.microsoft.graph.http.BaseActionCollectionRequestBuilder;
  */
 public class SegmentTestActionCollectionRequestBuilder extends BaseActionCollectionRequestBuilder<Session, SegmentTestActionCollectionRequestBuilder, SegmentTestActionCollectionResponse, SegmentTestActionCollectionPage, SegmentTestActionCollectionRequest> {
 
+    private SegmentTestActionParameterSet body;
     /**
      * The request builder for this collection of Segment
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
-     * @param value the value
+     * @param parameters     the parameters for the service method
      */
-    public SegmentTestActionCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nullable final IdentitySet value) {
+    public SegmentTestActionCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final SegmentTestActionParameterSet parameters) {
         super(requestUrl, client, requestOptions, SegmentTestActionCollectionRequestBuilder.class, SegmentTestActionCollectionRequest.class);
-  	 if(value!=null){
-			bodyParams.put("value", value);
-		}
-      }
-    
+        this.body = parameters;
+    }
     /**
      * Creates the request
      *
@@ -54,11 +53,7 @@ public class SegmentTestActionCollectionRequestBuilder extends BaseActionCollect
     @Nonnull
     public SegmentTestActionCollectionRequest buildRequest(@Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         final SegmentTestActionCollectionRequest request = super.buildRequest(requestOptions);
-
-        if (hasParameter("value")) {
-            request.body.value = getParameter("value");
-        }
-  
-        return request;
+            request.body = this.body;
+            return request;
     }
 }

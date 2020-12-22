@@ -9,6 +9,7 @@ import com.microsoft.graph.models.extensions.OnenotePage;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph.http.BaseActionRequestBuilder;
+import com.microsoft.graph.models.extensions.OnenotePageForwardParameterSet;
 import com.microsoft.graph.core.IBaseClient;
 import com.google.gson.JsonElement;
 import javax.annotation.Nullable;
@@ -21,35 +22,18 @@ import javax.annotation.Nonnull;
  */
 public class OnenotePageForwardRequestBuilder extends BaseActionRequestBuilder<OnenotePage> {
 
+    private OnenotePageForwardParameterSet body;
     /**
      * The request builder for this OnenotePageForward
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
-     * @param toRecipients the toRecipients
-     * @param details the details
-     * @param comment the comment
+     * @param parameters     the parameters for the service method
      */
-    public OnenotePageForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nullable final java.util.List<Recipient> toRecipients, @Nullable final String details, @Nullable final String comment) {
+    public OnenotePageForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final OnenotePageForwardParameterSet parameters) {
         super(requestUrl, client, requestOptions);
-        bodyParams.put("toRecipients", toRecipients);
-        bodyParams.put("details", details);
-        bodyParams.put("comment", comment);
-    }
-    /**
-     * The request builder for this OnenotePageForward
-     *
-     * @param requestUrl     the request URL
-     * @param client         the service client
-     * @param requestOptions the options for this request
-     * @param toRecipients the toRecipients
-     * @param comment the comment
-     */
-    public OnenotePageForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nullable final java.util.List<Recipient> toRecipients, @Nullable final String comment) {
-        super(requestUrl, client, requestOptions);
-        bodyParams.put("toRecipients", toRecipients);
-        bodyParams.put("comment", comment);
+        this.body = parameters;
     }
 
     /**
@@ -74,21 +58,10 @@ public class OnenotePageForwardRequestBuilder extends BaseActionRequestBuilder<O
         OnenotePageForwardRequest request = new OnenotePageForwardRequest(
                 getRequestUrl(),
                 getClient(),
-                requestOptions
+                requestOptions,
+                this.body
         );
 
-        if (hasParameter("toRecipients")) {
-            request.body.toRecipients = getParameter("toRecipients");
-        }
-
-        if (hasParameter("details")) {
-            request.body.details = getParameter("details");
-        }
-
-        if (hasParameter("comment")) {
-            request.body.comment = getParameter("comment");
-        }
-
-        return request;
+            return request;
     }
 }

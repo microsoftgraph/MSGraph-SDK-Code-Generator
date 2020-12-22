@@ -6,56 +6,28 @@
           { "Template": "BaseModel", "SubProcessor": "Other", "Type": "Shared" },
 
           { "Template": "Enum", "SubProcessor": "EnumType",                                                                                   "Name": "<Class>" },
+          { "Template": "BaseMethodParameterSet", "SubProcessor": "NonCollectionMethod",                                                                   "Name": "Base<Method>ParameterSet" },
+          { "Template": "BaseMethodParameterSet", "SubProcessor": "CollectionMethod",                                                                   "Name": "Base<Method>ParameterSet" },
 
-          { "Template": "MethodBody", "SubProcessor": "MethodWithBody",                                                                       "Name": "<Method>Body" },
-          { "Template": "BaseMethodBody", "SubProcessor": "MethodWithBody",                                                                   "Name": "Base<Method>Body" },
-
-          { "Template": "MethodRequest", "SubProcessor": "NonCollectionMethod",                                                               "Name": "<Method>Request" },
           { "Template": "BaseMethodRequest", "SubProcessor": "NonCollectionMethod",                                                           "Name": "Base<Method>Request" },
 
-          { "Template": "MethodRequestBuilder", "SubProcessor": "NonCollectionMethod",                                                        "Name": "<Method>RequestBuilder" },
           { "Template": "BaseMethodRequestBuilder", "SubProcessor": "NonCollectionMethod",                                                    "Name": "Base<Method>RequestBuilder" },
 
-          { "Template": "BaseMethodBodyRequest", "SubProcessor": "MethodWithBody",                                                            "Name": "Base<Method>Request" },
-
-          { "Template": "MethodCollectionPage", "SubProcessor": "CollectionMethod",                                                           "Name": "<Method>CollectionPage", "Ignore": "ignorableCollection" },
           { "Template": "BaseMethodCollectionPage", "SubProcessor": "CollectionMethod",                                                       "Name": "Base<Method>CollectionPage", "Ignore": "ignorableCollection" },
           { "Template": "BaseMethodCollectionRequest", "SubProcessor": "CollectionMethod",                                                    "Name": "Base<Method>CollectionRequest", "Ignore": "ignorableCollection" },
-          { "Template": "MethodCollectionRequest", "SubProcessor": "CollectionMethod",                                                        "Name": "IBase<Method>CollectionRequest", "Ignore": "ignorableCollection" },
           { "Template": "BaseMethodCollectionRequestBuilder", "SubProcessor": "CollectionMethod",                                             "Name": "Base<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-          { "Template": "MethodCollectionRequestBuilder", "SubProcessor": "CollectionMethod",                                                 "Name": "<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           { "Template": "BaseMethodCollectionResponse", "SubProcessor": "CollectionMethod",                                                   "Name": "Base<Method>CollectionResponse", "Ignore": "ignorableCollection" },
 
           { "Template": "BaseEntityRequest", "SubProcessor": "EntityType",                                                                    "Name": "Base<Class>Request" },
           { "Template": "BaseEntityRequestBuilder", "SubProcessor": "EntityType",                                                             "Name": "Base<Class>RequestBuilder" },
 
-          { "Template": "ExtensibleEntity", "SubProcessor": "EntityType",                                                                     "Name": "<Class>" },
           { "Template": "BaseEntity", "SubProcessor": "EntityType",                                                                           "Name": "Base<Class>" },
-          { "Template": "EntityRequest", "SubProcessor": "EntityType",                                                                        "Name": "<Class>Request" },
-          { "Template": "EntityRequestBuilder", "SubProcessor": "EntityType",                                                                 "Name": "<Class>RequestBuilder" },
           { "Template": "EntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                          "Name": "<Class>WithReferencesRequestBuilder" },
 
           { "Template": "ExtensibleEntity", "SubProcessor": "ComplexType",                                                                    "Name": "<Class>" },
           { "Template": "BaseEntity", "SubProcessor": "ComplexType",                                                                          "Name": "Base<Class>" },
 
-          { "Template": "EntityCollectionPage", "SubProcessor": "NavigationCollectionProperty",                                               "Name": "<PropertyType>CollectionPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-          { "Template": "EntityCollectionRequest", "SubProcessor": "NavigationCollectionProperty",                                            "Name": "<PropertyType>CollectionRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-          { "Template": "EntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty",                                     "Name": "<PropertyType>CollectionRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
           
-          { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty",                                  "Name": "<PropertyType>CollectionWithReferencesPage", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
-          
-          { "Template": "EntityCollectionWithReferencesRequestBuilder", "SubProcessor": "CollectionReferenceProperty",                        "Name": "<PropertyType>CollectionWithReferencesRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection"  },
-          { "Template": "EntityCollectionWithReferencesRequest", "SubProcessor": "CollectionReferenceProperty",                               "Name": "<PropertyType>CollectionWithReferencesRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection"  },
-          { "Template": "EntityCollectionReferenceRequestBuilder", "SubProcessor": "CollectionReferenceProperty",                             "Name": "<PropertyType>CollectionReferenceRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection"  },
-          { "Template": "EntityCollectionReferenceRequest", "SubProcessor": "CollectionReferenceProperty",                                    "Name": "<PropertyType>CollectionReferenceRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection"  },
-
-          { "Template": "EntityRequest", "SubProcessor": "ComplexType",                                                                       "Name": "<Class>Request", "Matches": "navigable" },
-          { "Template": "EntityReferenceRequest", "SubProcessor": "EntityReferenceType",                                                      "Name": "<Class>ReferenceRequest" },
-          { "Template": "EntityWithReferenceRequest", "SubProcessor": "EntityReferenceType",                                                 "Name": "<Class>WithReferencesRequest" },
-
-          { "Template": "EntityRequestBuilder", "SubProcessor": "ComplexType",                                                                "Name": "<Class>RequestBuilder", "Matches": "navigable" },
-          { "Template": "EntityWithReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                          "Name": "<Class>WithReferencesRequestBuilder"},
-          { "Template": "EntityReferenceRequestBuilder", "SubProcessor": "EntityReferenceType",                                               "Name": "<Class>ReferenceRequestBuilder"},
           { "Template": "BaseEntityRequest", "SubProcessor": "ComplexType",                                                                   "Name": "Base<Class>Request", "Matches": "navigable" },
           { "Template": "BaseEntityRequestBuilder", "SubProcessor": "ComplexType",                                                            "Name": "Base<Class>RequestBuilder", "Matches": "navigable" },
           { "Template": "BaseEntityReferenceRequest", "SubProcessor": "EntityReferenceType",                                                  "Name": "Base<Class>ReferenceRequest" },      
@@ -75,16 +47,12 @@
           { "Template": "BaseEntityCollectionReferenceRequestBuilder", "SubProcessor": "CollectionReferenceProperty",                         "Name": "Base<PropertyType>CollectionReferenceRequestBuilder", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },          
           { "Template": "BaseEntityCollectionReferenceRequest", "SubProcessor": "CollectionReferenceProperty",                                "Name": "Base<PropertyType>CollectionReferenceRequest", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
 
-          { "Template": "EntityRequest", "SubProcessor": "StreamProperty",                                                                    "Name": "<Class><PropertyType>Request"},
-          { "Template": "EntityRequestBuilder", "SubProcessor": "StreamProperty",                                                             "Name": "<Class><PropertyType>RequestBuilder"},
           { "Template": "BaseStreamRequest", "SubProcessor": "StreamProperty",                                                                "Name": "Base<Class><PropertyType>Request"},
           { "Template": "BaseEntityRequestBuilder", "SubProcessor": "StreamProperty",                                                         "Name": "Base<Class><PropertyType>RequestBuilder"},
           { "Template": "BaseEntityStreamRequestBuilder", "SubProcessor": "StreamProperty",                                                  "Name": "Base<Class><Property>StreamRequestBuilder" },
 
-          { "Template": "EntityStreamRequest", "SubProcessor": "MediaEntityType",                                                             "Name": "<Class>StreamRequest" },          
           { "Template": "BaseStreamRequest", "SubProcessor": "MediaEntityType",                                                               "Name": "Base<Class>StreamRequest" },
           { "Template": "BaseEntityStreamRequestBuilder", "SubProcessor": "MediaEntityType",                                                  "Name": "Base<Class>StreamRequestBuilder" },
-          { "Template": "EntityStreamRequestBuilder", "SubProcessor": "MediaEntityType",                                                      "Name": "<Class>StreamRequestBuilder" },
 
           { "Template": "IBaseClient", "SubProcessor": "EntityContainer", "Type": "Client",                                                   "Name": "IBase<Container>Client" },
         {
@@ -92,16 +60,6 @@
           "SubProcessor": "EntityContainer",
           "Type": "Client",
           "Name": "Base<Container>Client"
-        },
-        {
-          "Template": "ChunkedUploadRequest",
-          "SubProcessor": "Other",
-          "Name": "ChunkedUploadRequest"
-        },
-        {
-          "Template": "ChunkedUploadResult",
-          "SubProcessor": "Other",
-          "Name":  "ChunkedUploadResult"
         }
       ]
     }

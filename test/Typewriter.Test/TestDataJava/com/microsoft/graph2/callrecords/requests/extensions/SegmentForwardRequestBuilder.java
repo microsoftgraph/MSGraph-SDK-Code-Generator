@@ -9,6 +9,7 @@ import com.microsoft.graph2.callrecords.models.extensions.Segment;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
 import com.microsoft.graph.http.BaseActionRequestBuilder;
+import com.microsoft.graph2.callrecords.models.extensions.SegmentForwardParameterSet;
 import com.microsoft.graph.core.IBaseClient;
 import com.google.gson.JsonElement;
 import javax.annotation.Nullable;
@@ -21,25 +22,18 @@ import javax.annotation.Nonnull;
  */
 public class SegmentForwardRequestBuilder extends BaseActionRequestBuilder<Segment> {
 
+    private SegmentForwardParameterSet body;
     /**
      * The request builder for this SegmentForward
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
-     * @param toRecipients the toRecipients
-     * @param singleRecipient the singleRecipient
-     * @param multipleSessions the multipleSessions
-     * @param singleSession the singleSession
-     * @param comment the comment
+     * @param parameters     the parameters for the service method
      */
-    public SegmentForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nullable final java.util.List<Recipient> toRecipients, @Nullable final Recipient singleRecipient, @Nullable final java.util.List<Session> multipleSessions, @Nullable final Session singleSession, @Nullable final String comment) {
+    public SegmentForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final SegmentForwardParameterSet parameters) {
         super(requestUrl, client, requestOptions);
-        bodyParams.put("toRecipients", toRecipients);
-        bodyParams.put("singleRecipient", singleRecipient);
-        bodyParams.put("multipleSessions", multipleSessions);
-        bodyParams.put("singleSession", singleSession);
-        bodyParams.put("comment", comment);
+        this.body = parameters;
     }
 
     /**
@@ -64,29 +58,10 @@ public class SegmentForwardRequestBuilder extends BaseActionRequestBuilder<Segme
         SegmentForwardRequest request = new SegmentForwardRequest(
                 getRequestUrl(),
                 getClient(),
-                requestOptions
+                requestOptions,
+                this.body
         );
 
-        if (hasParameter("toRecipients")) {
-            request.body.toRecipients = getParameter("toRecipients");
-        }
-
-        if (hasParameter("singleRecipient")) {
-            request.body.singleRecipient = getParameter("singleRecipient");
-        }
-
-        if (hasParameter("multipleSessions")) {
-            request.body.multipleSessions = getParameter("multipleSessions");
-        }
-
-        if (hasParameter("singleSession")) {
-            request.body.singleSession = getParameter("singleSession");
-        }
-
-        if (hasParameter("comment")) {
-            request.body.comment = getParameter("comment");
-        }
-
-        return request;
+            return request;
     }
 }

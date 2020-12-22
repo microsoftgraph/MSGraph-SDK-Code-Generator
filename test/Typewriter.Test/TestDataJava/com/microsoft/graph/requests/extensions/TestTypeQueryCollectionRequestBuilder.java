@@ -18,6 +18,7 @@ import javax.annotation.Nonnull;
 import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionRequest;
 import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionResponse;
+import com.microsoft.graph.models.extensions.TestTypeQueryParameterSet;
 import com.microsoft.graph.options.FunctionOption;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseActionCollectionRequestBuilder;
@@ -29,21 +30,19 @@ import com.microsoft.graph.http.BaseActionCollectionRequestBuilder;
  */
 public class TestTypeQueryCollectionRequestBuilder extends BaseActionCollectionRequestBuilder<ResponseObject, TestTypeQueryCollectionRequestBuilder, TestTypeQueryCollectionResponse, TestTypeQueryCollectionPage, TestTypeQueryCollectionRequest> {
 
+    private TestTypeQueryParameterSet body;
     /**
      * The request builder for this collection of TestType
      *
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
-     * @param requests the requests
+     * @param parameters     the parameters for the service method
      */
-    public TestTypeQueryCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nullable final java.util.List<DerivedComplexTypeRequest> requests) {
+    public TestTypeQueryCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final TestTypeQueryParameterSet parameters) {
         super(requestUrl, client, requestOptions, TestTypeQueryCollectionRequestBuilder.class, TestTypeQueryCollectionRequest.class);
-  	 if(requests!=null){
-			bodyParams.put("requests", requests);
-		}
-      }
-    
+        this.body = parameters;
+    }
     /**
      * Creates the request
      *
@@ -54,11 +53,7 @@ public class TestTypeQueryCollectionRequestBuilder extends BaseActionCollectionR
     @Nonnull
     public TestTypeQueryCollectionRequest buildRequest(@Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         final TestTypeQueryCollectionRequest request = super.buildRequest(requestOptions);
-
-        if (hasParameter("requests")) {
-            request.body.requests = getParameter("requests");
-        }
-  
-        return request;
+            request.body = this.body;
+            return request;
     }
 }

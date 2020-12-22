@@ -9,14 +9,14 @@
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.core.IBaseClient;
-import <#=importNamespace#>.http.BaseCollectionRequest;
+import <#=importNamespace#>.http.BaseEntityCollectionRequest;
 import <#=importNamespace#>.concurrency.IExecutors;
 <# var mainNamespace = host.CurrentNamespace(); #>
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequest()#>;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), "BaseCollectionRequest<"+c.TypeName()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), "BaseEntityCollectionRequest<"+c.TypeName()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">")#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>

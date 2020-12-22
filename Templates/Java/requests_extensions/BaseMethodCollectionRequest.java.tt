@@ -12,21 +12,37 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
 <# if(c.AsOdcmMethod().ReturnType != null && !(c.AsOdcmMethod().ReturnType is OdcmPrimitiveType)) { #>
 import <#=mainNamespace#>.<#=(c as OdcmMethod).ReturnType.GetPackagePrefix()#>.<#=(c as OdcmMethod).OdcmMethodReturnType()#>;
 <# } #>
-<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
-import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeBody()#>;
+<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>
+import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.TypeParameterSet()#>;
 <# } #>
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.core.IBaseClient;
-import <#=importNamespace#>.http.BaseCollectionRequest;
+<#
+var baseType = "";
+if (c.AsOdcmMethod().IsAction()) {
+    if (c.AsOdcmMethod().ReturnType == null) {
+        baseType = "BaseVoidActionCollectionRequest";
+    } else {
+        baseType = "BaseActionCollectionRequest";
+    }
+} else {
+    if(c.AsOdcmMethod().MethodName().Equals("Delta")) {
+        baseType = "BaseDeltaCollectionRequest";
+    } else {
+        baseType = "BaseFunctionCollectionRequest";
+    }
+} #>
+import <#=importNamespace#>.http.<#=baseType#>;
 import <#=importNamespace#>.concurrency.IExecutors;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(),"BaseCollectionRequest<" + (c as OdcmMethod).OdcmMethodReturnType()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), baseType +"<" + (c as OdcmMethod).OdcmMethodReturnType()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">")#>
 
-<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
+<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>
 
     /** The body for the method */
-    protected final <#=c.TypeBody()#> body;
+    @Nullable
+    protected <#=c.TypeParameterSet()#> body;
 
 <# } #>
 
@@ -36,54 +52,25 @@ import <#=importNamespace#>.concurrency.IExecutors;
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
+<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>
+     * @param parameters the parameters for the service method
+<# } #>
      */
-    public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>, @Nonnull final <#=c.TypeParameterSet()#> parameters<# } #>) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
 <# } else { #>
         super(requestUrl, client, requestOptions, null);
 <# } #>
-<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
-        body = new <#=c.TypeBody()#>();
+<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>
+        body = parameters;
 <# } #>
     }
 
 <# if (c.AsOdcmMethod().IsAction()) { #>
 
-    /**
-     * Invokes the method and calls the callback with the resulting collection of objects
-     * @param callback a callback to be invoked with the resulting collection of objects
-     */
-    public void post(@Nonnull final ICallback<? super <#=c.TypeCollectionPage()#>> callback) {
-        final IExecutors executors = getBaseRequest().getClient().getExecutors();
-        executors.performOnBackground(new Runnable() {
-           @Override
-           public void run() {
-                try {
-                    executors.performOnForeground(post(), callback);
-                } catch (final ClientException e) {
-                    executors.performOnForeground(e, callback);
-                }
-           }
-        });
-    }
-
-    /**
-     * Invokes the method and returns the resulting collection of objects
-     * @return a collection of objects returned by the method
-     */
-    @Nullable
-    public <#=c.TypeCollectionPage()#> post() throws ClientException {
-<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().Parameters.Any()) { #>
-        final <#=c.TypeCollectionResponse()#> response = post(body);
-<# } else { #>
-        final <#=c.TypeCollectionResponse()#> response = super.post(null);
-<# } #>
-        return buildFromResponse(response);
-    }
-
-<# } #>
-
+<#  if (c.AsOdcmMethod().ReturnType != null) {
+#>
 <# if (c.GetFeatures().CanSelect) { #>
     /**
      * Sets the select clause for the request
@@ -98,16 +85,16 @@ import <#=importNamespace#>.concurrency.IExecutors;
     }
 
 <# } #>
-<# if (c.GetFeatures().CanUseTop) { #>
+<# if (c.GetFeatures().CanExpand) { #>
     /**
-     * Sets the top value for the request
+     * Sets the expand clause for the request
      *
-     * @param value the max number of items to return
+     * @param value the expand clause
      * @return the updated request
      */
     @Nonnull
-    public <#=c.TypeCollectionRequest()#> top(final int value) {
-        addTopOption(value);
+    public <#=c.TypeCollectionRequest()#> expand(@Nonnull final String value) {
+        addExpandOption(value);
         return this;
     }
 
@@ -134,6 +121,91 @@ import <#=importNamespace#>.concurrency.IExecutors;
         addCountOption(true);
         return this;
     }
+<# } #>
+<# if (c.GetFeatures().CanUseTop) { #>
+    /**
+     * Sets the top value for the request
+     *
+     * @param value the max number of items to return
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> top(final int value) {
+        addTopOption(value);
+        return this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanSkip) { #>
+    /**
+     * Sets the skip value for the request
+     *
+     * @param value of the number of items to skip
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> skip(final int value) {
+        addSkipOption(value);
+        return this;
+    }
+    /**
+     * Add Skip token for pagination
+     * @param skipToken - Token for pagination
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> skipToken(@Nonnull final String skipToken) {
+    	addSkipTokenOption(skipToken);
+        return this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanFilter) { #>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> filter(@Nonnull final String value) {
+        addFilterOption(value);
+        return this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanSort) { #>
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> orderBy(@Nonnull final String value) {
+        addOrderByOption(value);
+        return this;
+    }
+
+<# } #>
+<#
+    }
+} else { // FUNCTIONS
+    if (c.AsOdcmMethod().ReturnType != null) {
+#>
+<# if (c.GetFeatures().CanSelect) { #>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value the select clause
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> select(@Nonnull final String value) {
+        addSelectOption(value);
+        return this;
+    }
+
 <# } #>
 <# if (c.GetFeatures().CanExpand) { #>
     /**
@@ -176,5 +248,96 @@ import <#=importNamespace#>.concurrency.IExecutors;
         return this;
     }
 
+<# }#>
+<# if (c.GetFeatures().CanCount) { #>
+    /**
+     * Sets the count value for the request
+     *
+     * @param value whether or not to return the count of objects with the request
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> count(final boolean value) {
+        addCountOption(value);
+        return this;
+    }
+    /**
+     * Sets the count value to true for the request
+     *
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> count() {
+        addCountOption(true);
+        return this;
+    }
+<# } #> 
+<# if (c.GetFeatures().CanUseTop) { #>
+
+    /**
+     * Sets the top value for the request
+     *
+     * @param value the max number of items to return
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> top(final int value) {
+        addTopOption(value);
+        return this;
+    }
 <# } #>
+<# if (c.GetFeatures().CanSkip) { #>
+    /**
+     * Sets the skip value for the request
+     *
+     * @param value of the number of items to skip
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> skip(final int value) {
+        addSkipOption(value);
+        return this;
+    }
+    /**
+     * Add Skip token for pagination
+     * @param skipToken - Token for pagination
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> skipToken(@Nonnull final String skipToken) {
+    	addSkipTokenOption(skipToken);
+        return this;
+    }
+
+<# } #>
+<# if(c.AsOdcmMethod().MethodName().Equals("Delta")) {
+var typeName = c.TypeName();
+var isODSPworkload = typeName.Equals("DriveItemDelta") || typeName.Equals("SiteDelta") || typeName.Equals("ListItemDelta") || typeName.Equals("DriveDelta"); // they use token and not $deltaToken
+var tokenKey = isODSPworkload ? "token" : "$deltatoken";
+#>
+    /**
+     * Add Delta token for request
+     * @param deltaToken - Token to resume sync
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> deltaToken(@Nonnull final String deltaToken) {
+    	addDeltaTokenOption(deltaToken, "<#=tokenKey#>");
+        return this;
+    }
+    /**
+     * Parses the Delta token from the Delta Link and adds it for request
+     * @param deltaLink - Delta Link provided by previous response to resume sync
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> deltaLink(@Nonnull final String deltaLink) {
+    	addDeltaTokenOption(getDeltaTokenFromLink(deltaLink), "<#=tokenKey#>");
+        return this;
+    }
+<#}#>
+<#
+    }
+}
+#>
 }
