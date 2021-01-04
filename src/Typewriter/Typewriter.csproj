@@ -9,6 +9,7 @@
     <ProjectReference Include="..\..\apidoctor\ApiDoctor.Validation\ApiDoctor.Validation.csproj" />
     <ProjectReference Include="..\..\submodules\vipr\src\Core\Vipr.Core\Vipr.Core.csproj" />
     <ProjectReference Include="..\..\submodules\vipr\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj" />
+    <ProjectReference Include="..\..\Templates\Templates.csproj" />
     <ProjectReference Include="..\GraphODataTemplateWriter\GraphODataTemplateWriter.csproj" />
   </ItemGroup>
   <ItemGroup>

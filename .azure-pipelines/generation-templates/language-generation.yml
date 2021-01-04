@@ -1,0 +1,73 @@
+# designed to have a single run (single output directory)
+parameters:
+- name: language
+  type: string
+
+- name: version
+  type: string
+
+- name: repoName
+  type: string
+
+- name: branchName
+  type: string
+
+- name: optionalPostCheckoutStep
+  type: stepList
+  default: # TODO is there a way to skip this without a dummy default task?
+  - pwsh: |
+      Write-Host "No optional post-checkout step is provided, this is expected in majority of cases" -ForegroundColor Green
+    displayName: Skip optional post-checkout step
+
+- name: languageSpecificSteps
+  type: stepList
+  default:
+  - pwsh: |
+      Write-Error "No language specific step is provided"
+
+- name: cleanMetadataFile
+  type: string
+
+steps:
+- template: set-up-for-generation.yml
+
+- checkout: ${{ parameters.repoName }}
+  displayName: 'checkout ${{ parameters.repoName }}'
+  fetchDepth: 1
+  persistCredentials: true
+
+# need this for the shared scripts (maybe we should move them to msgraph-metadata)
+# no need for recursive, just scripts from the main repo
+- checkout: self
+  displayName: 'checkout generator'
+  fetchDepth: 1
+  persistCredentials: true
+
+- ${{ parameters.optionalPostCheckoutStep }}
+
+- pwsh: '$(scriptsDirectory)/create-branch.ps1'
+  displayName: 'Create a branch in ${{ parameters.repoName }}'
+  env:
+    RepoDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}
+    BranchName: ${{ parameters.branchName }}
+  workingDirectory: ${{ parameters.repoName }}
+
+- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputPath: output
+    CleanMetadataFile: ${{ parameters.cleanMetadataFile }}
+    TypewriterExecutable: $(typewriterExecutable)
+    TypewriterDirectory: $(typewriterDirectory)
+    Language: ${{ parameters.language }}
+    Endpoint:  ${{ parameters.version }}
+  displayName: 'Run Typewriter for ${{ parameters.language }} ${{ parameters.version }}'
+
+- ${{ parameters.languageSpecificSteps }}
+
+- pwsh: '$(scriptsDirectory)/git-push-files.ps1'
+  displayName: 'Git: push generated files'
+  env:
+    BranchName: ${{ parameters.branchName }}
+    PublishChanges: $(publishChangesIntoABranch)
+  workingDirectory: ${{ parameters.repoName }}

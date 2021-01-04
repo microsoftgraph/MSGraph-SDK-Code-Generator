@@ -1,3 +1,9 @@
+if (!$env:PublishChanges)
+{
+    Write-Host "Not publishing changes as a branch per the run parameter!" -ForegroundColor Green
+    return;
+}
+
 Write-Host "About to add files....." -ForegroundColor Green
 git add . | Write-Host
 if ($env:BUILD_REASON -eq 'Manual') # Skip CI if manually running this pipeline.
