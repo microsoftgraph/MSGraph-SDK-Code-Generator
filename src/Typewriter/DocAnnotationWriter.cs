@@ -114,7 +114,7 @@ namespace Typewriter
 
             try
             {
-                docSet = new DocSet(options.DocsRoot + "\\api-reference\\v1.0\\");
+                docSet = new DocSet(options.DocsRoot);
             }
             catch (System.IO.FileNotFoundException ex)
             {
