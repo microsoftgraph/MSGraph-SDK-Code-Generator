@@ -79,7 +79,6 @@ namespace Microsoft.Graph2.CallRecords
                 writer.WriteString("@odata.id", objectUri);
                 writer.WriteEndObject();
                 await writer.FlushAsync();
-                await stream.FlushAsync();
             }
             var payload = System.Text.Encoding.UTF8.GetString(stream.ToArray());
             this.Method = "PUT";

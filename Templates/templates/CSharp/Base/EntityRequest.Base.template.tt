@@ -169,8 +169,6 @@ public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass)
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(@"                await writer.FlushAsync();");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"                await stream.FlushAsync();");
-    stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(@"            }");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(@"            var payload = System.Text.Encoding.UTF8.GetString(stream.ToArray());");
