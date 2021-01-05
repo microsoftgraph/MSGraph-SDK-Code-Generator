@@ -198,15 +198,15 @@ class MediaStream extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the averageAudioNetworkJitter
     *
-    * @return Microsoft\Graph\Model\Duration The averageAudioNetworkJitter
+    * @return \DateInterval The averageAudioNetworkJitter
     */
     public function getAverageAudioNetworkJitter()
     {
         if (array_key_exists("averageAudioNetworkJitter", $this->_propDict)) {
-            if (is_a($this->_propDict["averageAudioNetworkJitter"], "Microsoft\Graph\Model\Duration")) {
+            if (is_a($this->_propDict["averageAudioNetworkJitter"], "\DateInterval")) {
                 return $this->_propDict["averageAudioNetworkJitter"];
             } else {
-                $this->_propDict["averageAudioNetworkJitter"] = new Microsoft\Graph\Model\Duration($this->_propDict["averageAudioNetworkJitter"]);
+                $this->_propDict["averageAudioNetworkJitter"] = new \DateInterval($this->_propDict["averageAudioNetworkJitter"]);
                 return $this->_propDict["averageAudioNetworkJitter"];
             }
         }
