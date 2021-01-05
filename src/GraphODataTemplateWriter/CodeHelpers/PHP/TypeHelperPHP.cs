@@ -72,6 +72,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                 case "DateTimeOffset":
                 case "Date":
                     return "\\DateTime";
+                case "Duration":
+                    return "\\DateInterval";
                 case "Boolean":
                     return "bool";
                 case "Binary":
