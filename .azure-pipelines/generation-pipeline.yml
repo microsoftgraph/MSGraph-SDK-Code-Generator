@@ -47,6 +47,10 @@ resources:
      type: github
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-metadata
+   - repository: microsoft-graph-docs
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/microsoft-graph-docs
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -64,6 +68,11 @@ parameters:
     default: pipelinebuild/beta
     displayName: Typescript Beta Branch Prefix (should be different than V1)
 
+  - name: skipMetadataCaptureAndClean
+    default: false
+    displayName: Skip metadata capture and clean
+    type: boolean
+
   - name: publishChangesIntoABranch
     default: true
     type: boolean
@@ -73,9 +82,16 @@ variables:
   buildConfiguration: 'Release'
   cleanMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml'
   cleanMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml'
+  cleanMetadataFileV1OutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/'
+  cleanMetadataFileBetaOutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/'
+  rawMetadataFileBeta: 'https://graph.microsoft.com/beta/$metadata'
+  rawMetadataFileV1: 'https://graph.microsoft.com/v1.0/$metadata' # We want to run against the metadata we have captured.
   typewriterDirectory: '$(Build.SourcesDirectory)/typewriter'
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
   scriptsDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts'
+  transformScript: '$(Build.SourcesDirectory)/msgraph-metadata/transforms/csdl/preprocess_csdl.xsl'
+  docsDirectoryV1: '$(Build.SourcesDirectory)/microsoft-graph-docs/api-reference/v1.0'
+  docsDirectoryBeta: '$(Build.SourcesDirectory)/microsoft-graph-docs/api-reference/beta'
 
   v1Branch: ${{ parameters.v1BranchPrefix }}/$(Build.BuildId)
   betaBranch: ${{ parameters.betaBranchPrefix }}/$(Build.BuildId)
@@ -88,6 +104,7 @@ variables:
 
   phpVersion: 7.2
 
+# This stage is the core dependency for all other stages.
 stages:
 - stage: stage_build_and_publish_typewriter
   dependsOn: [] # remove the implicit dependency to any previous stage
@@ -96,30 +113,57 @@ stages:
     steps:
     - template: generation-templates/build-and-publish-typewriter.yml
 
+# Downloads the latest public beta metadata. If there are changes, we checkin
+# the public metadata into microsoftgraph/msgraph-metadata, and then run the
+# metadata through the cleaning and documentation processes before validating
+# the results with generated and built .NET code files as a smoke test.
 - stage: stage_v1_metadata
   dependsOn: stage_build_and_publish_typewriter
-  condition: succeeded('stage_build_and_publish_typewriter')
+  condition: |
+    and(succeeded('stage_build_and_publish_typewriter'),
+        eq( ${{ parameters.skipMetadataCaptureAndClean }}, false))
   jobs:
   - job: v1_metadata
     steps:
-    - template: generation-templates/checkout-metadata.yml
-    - pwsh: |
-        Write-Host "Success!"
+    - template: generation-templates/capture-metadata.yml
+      parameters:
+        endpoint: 'v1.0'
+        inputMetadata: $(rawMetadataFileV1)
+        outputPath: $(cleanMetadataFileV1OutputPath)
+        docsDirectory: $(docsDirectoryV1)
+        repoName: "msgraph-sdk-dotnet"
+        cleanMetadataFile: $(cleanMetadataFileV1)
 
+# Same description as stage_v1_metadata
 - stage: stage_beta_metadata
   dependsOn: stage_build_and_publish_typewriter
-  condition: succeeded('stage_build_and_publish_typewriter')
+  condition: |
+    and(succeeded('stage_build_and_publish_typewriter'),
+        eq( ${{ parameters.skipMetadataCaptureAndClean }}, false))
   jobs:
   - job: beta_metadata
     steps:
-    - template: generation-templates/checkout-metadata.yml
+    - template: generation-templates/capture-metadata.yml
+      parameters:
+        endpoint: 'beta'
+        inputMetadata: $(rawMetadataFileBeta)
+        outputPath: $(cleanMetadataFileBetaOutputPath)
+        docsDirectory: $(docsDirectoryBeta)
+        repoName: "msgraph-beta-sdk-dotnet"
+        cleanMetadataFile: $(cleanMetadataFileBeta)
     - pwsh: |
         Write-Host "Success!"
 
 - stage: stage_csharp_v1
   dependsOn:
+  - stage_build_and_publish_typewriter
   - stage_v1_metadata
-  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
+      in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
+    )
   jobs:
   - job: csharp_v1
     steps:
@@ -138,8 +182,14 @@ stages:
 
 - stage: stage_csharp_beta
   dependsOn:
+  - stage_build_and_publish_typewriter
   - stage_beta_metadata
-  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
+      in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped')
+    )
   jobs:
   - job: csharp_beta
     steps:
@@ -158,8 +208,14 @@ stages:
 
 - stage: stage_java_v1
   dependsOn:
+  - stage_build_and_publish_typewriter
   - stage_v1_metadata
-  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
+      in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
+    )
   jobs:
   - job: java_v1
     steps:
@@ -177,8 +233,14 @@ stages:
 
 - stage: stage_java_beta
   dependsOn:
+  - stage_build_and_publish_typewriter
   - stage_beta_metadata
-  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
+      in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped')
+    )
   jobs:
   - job: java_beta
     steps:
@@ -196,8 +258,14 @@ stages:
 
 - stage: stage_php_v1
   dependsOn:
+  - stage_build_and_publish_typewriter
   - stage_v1_metadata
-  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
+      in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
+    )
   jobs:
   - job: php_v1
     steps:
@@ -213,8 +281,14 @@ stages:
 
 - stage: stage_php_beta
   dependsOn:
+  - stage_build_and_publish_typewriter
   - stage_beta_metadata
-  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
+      in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped')
+    )
   jobs:
   - job: php_beta
     steps:
@@ -230,8 +304,14 @@ stages:
 
 - stage: stage_typescript_v1
   dependsOn:
+  - stage_build_and_publish_typewriter
   - stage_v1_metadata
-  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
+      in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
+    )
   jobs:
   - job: typescript_v1
     steps:
@@ -247,8 +327,14 @@ stages:
 
 - stage: stage_typescript_beta
   dependsOn:
+  - stage_build_and_publish_typewriter
   - stage_beta_metadata
-  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_beta_metadata'))
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
+      in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped')
+    )
   jobs:
   - job: typescript_beta
     steps:
@@ -270,8 +356,14 @@ stages:
 
 - stage: stage_objc_v1
   dependsOn:
+  - stage_build_and_publish_typewriter
   - stage_v1_metadata
-  condition: and(succeeded('stage_build_and_publish_typewriter'),succeeded('stage_v1_metadata'))
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
+      in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
+    )
   jobs:
   - job: objc_v1
     steps:
