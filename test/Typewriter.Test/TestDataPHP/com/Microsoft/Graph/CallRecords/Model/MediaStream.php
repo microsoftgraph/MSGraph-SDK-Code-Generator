@@ -216,7 +216,7 @@ class MediaStream extends \Microsoft\Graph\Model\Entity
     /**
     * Sets the averageAudioNetworkJitter
     *
-    * @param Microsoft\Graph\Model\Duration $val The value to assign to the averageAudioNetworkJitter
+    * @param \DateInterval $val The value to assign to the averageAudioNetworkJitter
     *
     * @return MediaStream The MediaStream
     */
