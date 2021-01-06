@@ -43,5 +43,5 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'run'
-    projects: $(Build.SourcesDirectory)/msgraph-metadata/MetadataParser/MetadataParser.csproj
+    projects: $(Build.SourcesDirectory)/msgraph-metadata/tools/MetadataParser/MetadataParser.csproj
     arguments: ${{ parameters.cleanMetadataFile }}
