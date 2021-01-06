@@ -151,8 +151,6 @@ stages:
         docsDirectory: $(docsDirectoryBeta)
         repoName: "msgraph-beta-sdk-dotnet"
         cleanMetadataFile: $(cleanMetadataFileBeta)
-    - pwsh: |
-        Write-Host "Success!"
 
 - stage: stage_csharp_v1
   dependsOn:
