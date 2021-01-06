@@ -5,7 +5,7 @@
 <#host.TemplateName = c.TypeParameterSet();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDefinition()#>
-<#=TypeHelperJava.ImportClassesOfMethodParametersAsString(c.AsOdcmMethod())#>
+<#=TypeHelperJava.ImportClassesOfMethodParametersAsString(c.AsOdcmMethod(), true)#>
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
