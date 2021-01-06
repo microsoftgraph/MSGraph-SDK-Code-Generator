@@ -521,6 +521,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
             return parameters.Distinct(paramComparer).ToList();
         }
+        /// <summary>
+        /// Deduplicates the parameter list for a set of methods. 
+        /// </summary>
+        /// <param name="odcmMethods">Methods with potential overloads and duplicate parameters across overloads.</param>
+        /// <returns>A deduplicated list of OdcmParameter.</returns>
+        public static List<OdcmParameter> WithDistinctParameters(this IEnumerable<OdcmMethod> odcmMethods)
+        {
+            return odcmMethods.SelectMany(x => x.Parameters).Distinct(paramComparer).ToList();
+        }
 
         /// Returns a List containing the supplied class' methods plus their overloads
         public static IEnumerable<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)

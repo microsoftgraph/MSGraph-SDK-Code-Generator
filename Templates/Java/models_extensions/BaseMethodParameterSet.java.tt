@@ -17,7 +17,8 @@ import java.util.EnumSet;
 import java.util.ArrayList;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeParameterSet())#>
-<#=TypeHelperJava.CreateParameterDef(c.AsOdcmMethod().Parameters)#>
+<# var parameters = c.AsOdcmMethod().WithOverloads().WithDistinctParameters(); #>
+<#=TypeHelperJava.CreateParameterDef(parameters)#>
     /**
      * Instiaciates a new <#=c.TypeParameterSet()#>
      */
@@ -27,7 +28,7 @@ import java.util.ArrayList;
      * @param builder builder bearing the parameters to initialize from
      */
     protected <#=c.TypeParameterSet()#>(@Nonnull final <#=c.TypeParameterSetBuilder()#> builder) {
-<# foreach(var parameter in c.AsOdcmMethod().Parameters) {
+<# foreach(var parameter in parameters) {
 var parameterName = parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar();
 #>
         this.<#=parameterName#> = builder.<#=parameterName#>;
@@ -45,7 +46,7 @@ var parameterName = parameter.ParamName().SanitizePropertyName(parameter).ToLowe
      * Fluent builder for the <#=c.TypeParameterSet()#>
      */
     public static final class <#=c.TypeParameterSetBuilder()#> {
-<# foreach(var parameter in c.AsOdcmMethod().Parameters) { #>
+<# foreach(var parameter in parameters) { #>
         /**
          * The <#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#> parameter value
          */
@@ -83,7 +84,7 @@ var parameterName = parameter.ParamName().SanitizePropertyName(parameter).ToLowe
     @Nonnull
     public java.util.List<com.microsoft.graph.options.FunctionOption> getFunctionOptions() {
         final ArrayList<com.microsoft.graph.options.FunctionOption> result = new ArrayList<>();
-<# foreach(var parameter in c.AsOdcmMethod().Parameters) { #>
+<# foreach(var parameter in parameters) { #>
         if(this.<#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#> != null) {
             result.add(new com.microsoft.graph.options.FunctionOption("<#=parameter.ParamName()#>", <#=parameter.ParamName()#>));
         }
