@@ -55,7 +55,9 @@ public class BaseGraphServiceClient extends BaseClient implements IBaseGraphServ
      * Gets the collection of TestTypes objects
      *
      * @return the request builder for the collection of TestTypes objects
+     * @deprecated entityType3 is deprecated. Please use singletonEntity1.
      */
+    @Deprecated
     @Nonnull
     public EntityType3CollectionRequestBuilder testTypes() {
         return new EntityType3CollectionRequestBuilder(getServiceRoot() + "/testTypes", this, null);
@@ -66,7 +68,9 @@ public class BaseGraphServiceClient extends BaseClient implements IBaseGraphServ
      *
      * @param id the id of the TestTypes to retrieve
      * @return the request builder for the TestTypes object
+     * @deprecated entityType3 is deprecated. Please use singletonEntity1.
      */
+    @Deprecated
     @Nonnull
     public EntityType3RequestBuilder testTypes(@Nonnull final String id) {
         return new EntityType3RequestBuilder(getServiceRoot() + "/testTypes/" + id, this, null);

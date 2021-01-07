@@ -8,7 +8,9 @@ package com.microsoft.graph.models.generated;
 
 /**
  * The Enum Enum1.
+ * @deprecated enum1 is deprecated. Please use string.
 */
+@Deprecated
 public enum Enum1
 {
     /**

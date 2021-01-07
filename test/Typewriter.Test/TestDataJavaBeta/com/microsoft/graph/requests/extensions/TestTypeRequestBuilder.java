@@ -65,7 +65,9 @@ public class TestTypeRequestBuilder extends BaseRequestBuilder<TestType> {
      * Gets a builder to execute the method
      * @return the request builder collection
      * @param parameters the parameters for the service method
+     * @deprecated responseObject is deprecated. Please use something else.
      */
+    @Deprecated
     @Nonnull
     public TestTypeQueryCollectionRequestBuilder query(@Nonnull final TestTypeQueryParameterSet parameters) {
         return new TestTypeQueryCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.query"), getClient(), null, parameters);

@@ -27,7 +27,9 @@ import com.google.gson.JsonObject;
 
 /**
  * The class for the Entity Type3Reference Request.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3ReferenceRequest extends BaseReferenceRequest<EntityType3> {
 
     /**

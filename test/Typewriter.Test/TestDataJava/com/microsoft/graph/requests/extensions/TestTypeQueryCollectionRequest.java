@@ -28,7 +28,9 @@ import com.microsoft.graph.concurrency.IExecutors;
 
 /**
  * The class for the Test Type Query Collection Request.
+ * @deprecated responseObject is deprecated. Please use something else.
  */
+@Deprecated
 public class TestTypeQueryCollectionRequest extends BaseActionCollectionRequest<ResponseObject, TestTypeQueryCollectionResponse, TestTypeQueryCollectionPage> {
 
 

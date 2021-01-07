@@ -23,7 +23,9 @@ import com.microsoft.graph.core.IBaseClient;
 
 /**
  * The class for the Entity Type3With Reference Request Builder.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3WithReferenceRequestBuilder extends BaseWithReferenceRequestBuilder<EntityType3, EntityType3WithReferenceRequest, EntityType3ReferenceRequestBuilder> {
 
     /**

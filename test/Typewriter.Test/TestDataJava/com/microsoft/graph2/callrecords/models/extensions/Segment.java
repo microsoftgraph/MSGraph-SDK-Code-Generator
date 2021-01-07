@@ -91,7 +91,9 @@ public class Segment extends Entity implements IJsonBackedObject {
     /**
      * The Ref Types.
      * 
+     * @deprecated entityType3 is deprecated. Please use singletonEntity1.
      */
+    @Deprecated
 	@Nullable
     public EntityType3CollectionPage refTypes;
 

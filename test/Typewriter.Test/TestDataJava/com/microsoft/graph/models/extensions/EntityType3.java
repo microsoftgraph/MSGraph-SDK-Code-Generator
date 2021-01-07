@@ -21,7 +21,9 @@ import javax.annotation.Nonnull;
 
 /**
  * The class for the Entity Type3.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3 extends Entity implements IJsonBackedObject {
 
 

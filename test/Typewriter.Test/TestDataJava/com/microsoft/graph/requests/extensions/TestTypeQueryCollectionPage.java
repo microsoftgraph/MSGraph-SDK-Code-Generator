@@ -24,7 +24,9 @@ import com.microsoft.graph.requests.extensions.TestTypeQueryCollectionResponse;
 
 /**
  * The class for the Test Type Query Collection Page.
+ * @deprecated responseObject is deprecated. Please use something else.
  */
+@Deprecated
 public class TestTypeQueryCollectionPage extends BaseCollectionPage<ResponseObject, TestTypeQueryCollectionRequestBuilder> {
 
     /**

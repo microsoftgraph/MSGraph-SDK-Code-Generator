@@ -30,7 +30,9 @@ public interface IBaseGraphServiceClient extends IBaseClient {
      * Gets the collection of TestTypes objects
      *
      * @return the request builder for the collection of TestTypes objects
+     * @deprecated entityType3 is deprecated. Please use singletonEntity1.
      */
+    @Deprecated
     @Nonnull
     EntityType3CollectionRequestBuilder testTypes();
 
@@ -39,7 +41,9 @@ public interface IBaseGraphServiceClient extends IBaseClient {
      *
      * @param id the id of the TestTypes to retrieve
      * @return the request builder for the TestTypes object
+     * @deprecated entityType3 is deprecated. Please use singletonEntity1.
      */
+    @Deprecated
     @Nonnull
     EntityType3RequestBuilder testTypes(@Nonnull final String id);
 

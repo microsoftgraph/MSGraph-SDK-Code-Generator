@@ -28,7 +28,9 @@ import com.microsoft.graph.requests.extensions.EntityType3CollectionRequest;
 
 /**
  * The class for the Entity Type3Collection Request.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3CollectionRequest extends BaseEntityCollectionRequest<EntityType3, EntityType3CollectionResponse, EntityType3CollectionPage> {
 
     /**

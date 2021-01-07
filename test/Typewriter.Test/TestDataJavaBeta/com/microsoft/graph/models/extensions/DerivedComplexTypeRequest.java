@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 
 /**
  * The class for the Derived Complex Type Request.
+ * @deprecated emptyBaseComplexTypeRequest is deprecated. Please use emptyBaseComplexTypeRequest2.
  */
+@Deprecated
 public class DerivedComplexTypeRequest extends EmptyBaseComplexTypeRequest implements IJsonBackedObject {
 
 
@@ -47,7 +49,9 @@ public class DerivedComplexTypeRequest extends EmptyBaseComplexTypeRequest imple
     /**
      * The Enum Property.
      * 
+     * @deprecated enum1 is deprecated. Please use string.
      */
+    @Deprecated
     @SerializedName(value = "enumProperty", alternate = {"EnumProperty"})
     @Expose
 	@Nullable

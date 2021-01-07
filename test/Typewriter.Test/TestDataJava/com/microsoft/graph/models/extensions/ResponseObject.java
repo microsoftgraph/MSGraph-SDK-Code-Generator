@@ -20,7 +20,9 @@ import javax.annotation.Nonnull;
 
 /**
  * The class for the Response Object.
+ * @deprecated responseObject is deprecated. Please use something else.
  */
+@Deprecated
 public class ResponseObject implements IJsonBackedObject {
 
     /** the OData type of the object as returned by the service */

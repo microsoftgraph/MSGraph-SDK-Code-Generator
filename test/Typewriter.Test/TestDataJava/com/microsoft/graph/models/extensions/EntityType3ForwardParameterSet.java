@@ -20,7 +20,9 @@ import java.util.ArrayList;
 
 /**
  * The class for the Entity Type3Forward Parameter Set.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3ForwardParameterSet {
     /**
      * The to Recipients.

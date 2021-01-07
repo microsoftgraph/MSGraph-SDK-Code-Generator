@@ -49,7 +49,9 @@ public class TestEntity extends Entity implements IJsonBackedObject {
     /**
      * The Test Explicit Nav.
      * 
+     * @deprecated entityType3 is deprecated. Please use singletonEntity1.
      */
+    @Deprecated
     @SerializedName(value = "testExplicitNav", alternate = {"TestExplicitNav"})
     @Expose
 	@Nullable

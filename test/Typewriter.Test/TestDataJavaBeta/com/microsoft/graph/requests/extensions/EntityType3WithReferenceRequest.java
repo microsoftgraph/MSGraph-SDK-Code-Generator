@@ -26,7 +26,9 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 
 /**
  * The class for the Entity Type3With Reference Request.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3WithReferenceRequest extends BaseWithReferenceRequest<EntityType3> {
 
     /**

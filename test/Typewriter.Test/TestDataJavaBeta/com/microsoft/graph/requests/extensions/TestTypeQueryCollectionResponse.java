@@ -15,7 +15,9 @@ import com.microsoft.graph.http.BaseCollectionResponse;
 
 /**
  * The class for the Test Type Query Collection Response.
+ * @deprecated responseObject is deprecated. Please use something else.
  */
+@Deprecated
 public class TestTypeQueryCollectionResponse extends BaseCollectionResponse<ResponseObject> {
 
 }

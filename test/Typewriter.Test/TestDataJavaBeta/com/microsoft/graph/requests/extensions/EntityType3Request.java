@@ -23,7 +23,9 @@ import com.microsoft.graph.http.HttpMethod;
 
 /**
  * The class for the Entity Type3Request.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3Request extends BaseRequest<EntityType3> {
 	
     /**

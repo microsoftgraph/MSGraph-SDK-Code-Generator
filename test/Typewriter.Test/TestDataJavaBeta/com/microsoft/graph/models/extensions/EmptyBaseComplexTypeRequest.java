@@ -20,7 +20,9 @@ import javax.annotation.Nonnull;
 
 /**
  * The class for the Empty Base Complex Type Request.
+ * @deprecated emptyBaseComplexTypeRequest is deprecated. Please use emptyBaseComplexTypeRequest2.
  */
+@Deprecated
 public class EmptyBaseComplexTypeRequest implements IJsonBackedObject {
 
     /** the OData type of the object as returned by the service */

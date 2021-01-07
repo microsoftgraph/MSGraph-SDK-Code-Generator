@@ -20,7 +20,9 @@ import java.util.ArrayList;
 
 /**
  * The class for the Test Type Query Parameter Set.
+ * @deprecated responseObject is deprecated. Please use something else.
  */
+@Deprecated
 public class TestTypeQueryParameterSet {
     /**
      * The requests.

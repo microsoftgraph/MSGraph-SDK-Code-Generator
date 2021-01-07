@@ -19,7 +19,9 @@ import javax.annotation.Nonnull;
 
 /**
  * The class for the Entity Type3Forward Request Builder.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3ForwardRequestBuilder extends BaseActionRequestBuilder<EntityType3> {
 
     private EntityType3ForwardParameterSet body;
