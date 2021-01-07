@@ -21,12 +21,12 @@ if (typeDeclaration.EndsWith("Request"))
     typeDeclaration = String.Concat(typeDeclaration, "Object");
 }
 
-// Capture the cstor type declaration as the typedeclaration may get appended with a base type. 
+// Capture the cstor type declaration as the typedeclaration may get appended with a base type.
 string cstorTypeDeclaration = typeDeclaration;
 
 if (complex.Base != null)
 {
-    // Disambiguate the base type declaration for the same reason we did this 
+    // Disambiguate the base type declaration for the same reason we did this
 	// for typeDeclaration.
 	var baseTypeDeclaration = complex.Base.GetTypeString(complex.Namespace.GetNamespaceName());
 
@@ -43,7 +43,7 @@ var classType = complex.IsAbstract ? "abstract partial class" : "partial class";
 
 var attributeStringBuilder = new StringBuilder();
 
-if (complex.Deprecation != null)
+if (complex.IsDeprecated)
 {
    attributeStringBuilder.Append(complex.GetDeprecationString());
    attributeStringBuilder.Append(Environment.NewLine);
@@ -100,7 +100,7 @@ if (!complex.IsAbstract)
 
             var attributeDefinition = string.Format("[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = \"{0}\", Required = Newtonsoft.Json.Required.Default)]", property.Name);
 
-            if (property.Deprecation != null)
+            if (property.IsDeprecated)
             {
                 attributeDefinition = property.GetDeprecationString() + Environment.NewLine + "        " + attributeDefinition;
             }
@@ -138,7 +138,7 @@ if (!complex.IsAbstract)
         }
 
     // Only include AdditionalData in the base classes.
-    // Adding odata.type to all complex types with no base class. 
+    // Adding odata.type to all complex types with no base class.
     if (complex.Base == null)
     {
     #>
