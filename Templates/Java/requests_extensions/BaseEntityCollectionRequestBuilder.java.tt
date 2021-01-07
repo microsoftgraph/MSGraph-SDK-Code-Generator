@@ -83,7 +83,13 @@ if (currentTypeProjection != null) {
 <#if(method.MethodHasParameters()) { #>
      * @param parameters the parameters for the service method
 <# } #>
+<# if(method.IsDeprecated) {#>
+     * @deprecated <#= method?.Deprecation?.Description #>
+<# } #>
      */
+<# if(method.IsDeprecated) {#>
+    @Deprecated
+<# } #>
     @Nonnull
     public <#=method.TypeCollectionRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
@@ -98,7 +104,13 @@ if (currentTypeProjection != null) {
 <#if(method.MethodHasParameters()) { #>
      * @param parameters the parameters for the service method
 <# } #>
+<# if(method.IsDeprecated) {#>
+     * @deprecated <#= method?.Deprecation?.Description #>
+<# } #>
      */
+<# if(method.IsDeprecated) {#>
+    @Deprecated
+<# } #>
     @Nonnull
     public <#=method.TypeRequestBuilder()#> <#=method.MethodName().ToLowerFirstChar()#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
