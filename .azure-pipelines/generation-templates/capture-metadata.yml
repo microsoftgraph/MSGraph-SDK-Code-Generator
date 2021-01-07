@@ -69,6 +69,14 @@ steps:
 
 - template: use-dotnet-sdk.yml
 
+# verify that generated metadata is parsable as an Edm model
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'run'
+    projects: $(Build.SourcesDirectory)/msgraph-metadata/tools/MetadataParser/MetadataParser.csproj
+    arguments: ${{ parameters.cleanMetadataFile }}
+  displayName: 'verify whether metadata is parsable as an Edm model
+
 - pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
   env:
     BuildConfiguration: $(buildConfiguration)
