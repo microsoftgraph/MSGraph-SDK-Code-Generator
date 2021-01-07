@@ -714,9 +714,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return sb.ToString();
         }
 
-        public static string ImportClassesOfMethodParametersAsString(OdcmMethod method, string importFormat = "import {0}.{1}.{2};", string importTypeToExclude = null)
+        public static string ImportClassesOfMethodParametersAsString(OdcmMethod method, bool withOverloads = false, string importFormat = "import {0}.{1}.{2};", string importTypeToExclude = null)
         {
-            var imports = ImportClassesOfMethodParameters(method, importFormat, importTypeToExclude);
+            var imports = withOverloads ? 
+                            method.WithOverloads().SelectMany(x => ImportClassesOfMethodParameters(x, importFormat, importTypeToExclude)).Distinct():
+                            ImportClassesOfMethodParameters(method, importFormat, importTypeToExclude);
             return imports.Any() ? imports.Aggregate((x, y) => $"{x}{Environment.NewLine}{y}") : string.Empty;
         }
 
