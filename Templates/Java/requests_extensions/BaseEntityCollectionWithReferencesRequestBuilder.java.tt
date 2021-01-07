@@ -11,7 +11,7 @@ import <#=importNamespace#>.http.BaseCollectionWithReferencesRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
 <# var mainNamespace = host.CurrentNamespace(); #>
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequestBuilder(), "BaseCollectionWithReferencesRequestBuilder<"+c.TypeName()+", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionReferenceRequest()+", "+c.TypeCollectionReferenceRequestBuilder()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequestBuilder(), "BaseCollectionWithReferencesRequestBuilder<"+c.TypeName()+", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionReferenceRequest()+", "+c.TypeCollectionReferenceRequestBuilder()+">", null, c.Deprecation?.Description)#>
 
     /**
      * The request builder for this collection of <#=c.ClassTypeName()#>

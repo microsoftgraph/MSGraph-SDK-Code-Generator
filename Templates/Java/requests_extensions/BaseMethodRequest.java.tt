@@ -19,7 +19,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypeParameterSet()#>;
 <# } #>
 
-<#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest<"+c.ReturnType()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequest(), "BaseRequest<"+c.ReturnType()+">", null, c.Deprecation?.Description)#>
     /**
      * The request for this <#=c.TypeName()#>
      *

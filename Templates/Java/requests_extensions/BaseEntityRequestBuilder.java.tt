@@ -15,7 +15,7 @@ foreach (var method in c.AsOdcmClass().MethodsAndOverloads().Where(x => !x.IsBou
 import <#=method#>;
 <# } #>
 
-<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder<"+c.TypeName()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder<"+c.TypeName()+">", null, c.Deprecation?.Description)#>
 
     /**
      * The request builder for the <#=c.TypeName()#>

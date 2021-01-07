@@ -10,7 +10,7 @@
 import <#=importNamespace#>.http.BaseCollectionReferenceRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequestBuilder(), "BaseCollectionReferenceRequestBuilder<"+c.TypeName()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionReferenceRequest()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequestBuilder(), "BaseCollectionReferenceRequestBuilder<"+c.TypeName()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionReferenceRequest()+">", null, c.Deprecation?.Description)#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>

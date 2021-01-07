@@ -8,6 +8,6 @@
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.BaseCollectionResponse;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), "BaseCollectionResponse<"+c.TypeName()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), "BaseCollectionResponse<"+c.TypeName()+">", null, c.Deprecation?.Description)#>
 
 }

@@ -21,7 +21,7 @@ import <#=importNamespace#>.http.BaseCollectionWithReferencesRequest;
 import <#=importNamespace#>.http.BaseCollectionWithReferencesRequestBuilder;
 import <#=importNamespace#>.concurrency.IExecutors;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequest(), "BaseCollectionWithReferencesRequest<"+c.TypeName()+", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionRequest()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequest(), "BaseCollectionWithReferencesRequest<"+c.TypeName()+", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionRequest()+">", null, c.Deprecation?.Description)#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>

@@ -13,7 +13,7 @@ import <#=importNamespace#>.http.HttpMethod;
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.serializer.IJsonBackedObject;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequest(), "BaseWithReferenceRequest<"+c.ClassTypeName()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeWithReferencesRequest(), "BaseWithReferenceRequest<"+c.ClassTypeName()+">", null, c.Deprecation?.Description)#>
 
     /**
      * The request for the <#=c.TypeName()#>

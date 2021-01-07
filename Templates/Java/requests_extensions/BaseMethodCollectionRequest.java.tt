@@ -36,7 +36,7 @@ if (c.AsOdcmMethod().IsAction()) {
 import <#=importNamespace#>.http.<#=baseType#>;
 import <#=importNamespace#>.concurrency.IExecutors;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), baseType +"<" + (c as OdcmMethod).OdcmMethodReturnType()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), baseType +"<" + (c as OdcmMethod).OdcmMethodReturnType()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">", null, c.Deprecation?.Description)#>
 
 <# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>
 
@@ -271,7 +271,7 @@ import <#=importNamespace#>.concurrency.IExecutors;
         addCountOption(true);
         return this;
     }
-<# } #> 
+<# } #>
 <# if (c.GetFeatures().CanUseTop) { #>
 
     /**

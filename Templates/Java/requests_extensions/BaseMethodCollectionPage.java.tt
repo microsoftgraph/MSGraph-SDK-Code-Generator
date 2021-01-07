@@ -5,11 +5,11 @@
 <#host.TemplateName = c.TypeCollectionPage();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
-<# 
-	/** 
+<#
+	/**
 	* Manual check for deltaLink
-	* This allows for a user to get the delta link URL with which 
-	* to make future delta query calls to the service. Since it is 
+	* This allows for a user to get the delta link URL with which
+	* to make future delta query calls to the service. Since it is
 	* not surfaced in the additionalDataManager, we add it manually
 	* to the object for easy access.
 	*/
@@ -30,7 +30,7 @@ import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.Type
 import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
 import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), (deltaPage ? "DeltaCollectionPage" : "BaseCollectionPage")+"<"+ (c.AsOdcmMethod().ReturnType ?? c.AsOdcmMethod().Class).TypeName() + ", "+c.TypeCollectionRequestBuilder()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), (deltaPage ? "DeltaCollectionPage" : "BaseCollectionPage")+"<"+ (c.AsOdcmMethod().ReturnType ?? c.AsOdcmMethod().Class).TypeName() + ", "+c.TypeCollectionRequestBuilder()+">", null, c.Deprecation?.Description)#>
 
     /**
      * A collection page for <#=(c as OdcmMethod).OdcmMethodReturnType()#>.

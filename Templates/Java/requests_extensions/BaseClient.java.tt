@@ -8,7 +8,7 @@
 import <#=importNamespace#>.models.extensions.<#=c.IBaseClientType(host)#>;
 import <#=importNamespace#>.core.BaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.BaseClientType(host), "BaseClient", c.IBaseClientType(host))#>
+<#=TypeHelperJava.CreateClassDef(c.BaseClientType(host), "BaseClient", c.IBaseClientType(host), c.Deprecation?.Description)#>
 
     /**
      * The default endpoint for the Microsoft Graph Service

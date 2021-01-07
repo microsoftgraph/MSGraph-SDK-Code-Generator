@@ -16,7 +16,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequest()#>;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), "BaseEntityCollectionRequest<"+c.TypeName()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), "BaseEntityCollectionRequest<"+c.TypeName()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">", null, c.Deprecation?.Description)#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>

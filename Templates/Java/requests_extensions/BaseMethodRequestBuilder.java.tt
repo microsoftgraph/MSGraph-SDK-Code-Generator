@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 import javax.annotation.Nonnull;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
-<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), c.GetMethodRequestBuilderSuperClass())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), c.GetMethodRequestBuilderSuperClass(), null, c.Deprecation?.Description)#>
 
 <#if(c.AsOdcmMethod().MethodHasParameters() && isAction) { #>
     private <#=c.AsOdcmMethod().TypeParameterSet() #> body;
@@ -89,7 +89,7 @@ import javax.annotation.Nonnull;
     }#>
         return request;
     }
-<# 
+<#
 var m = c as OdcmMethod;
 if(m != null && m.IsComposable && m.ReturnType != null && m.ReturnType is OdcmClass) {
     foreach(var prop in m.ReturnType.AsOdcmClass().NavigationProperties(true))

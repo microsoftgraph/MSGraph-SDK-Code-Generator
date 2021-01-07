@@ -11,7 +11,7 @@ import <#=importNamespace#>.http.BaseStreamRequest;
 
 import java.io.InputStream;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeStreamRequest(), "BaseStreamRequest<" + c.ClassTypeName() + ">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeStreamRequest(), "BaseStreamRequest<" + c.ClassTypeName() + ">", null, c.Deprecation?.Description)#>
 
     /**
      * The request for the <#=c.TypeName()#>
