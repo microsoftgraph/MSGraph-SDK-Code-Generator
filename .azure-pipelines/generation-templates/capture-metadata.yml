@@ -1,15 +1,15 @@
 # Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 # contains an end to end validation pipeline using C# compilation tests for staging beta metadata
 
-# capture-metadata.yml will result in the capture and cleaning of the metadata 
+# capture-metadata.yml will result in the capture and cleaning of the metadata
 # with the artifacts posted to GitHub.
 
 parameters:
 - name: 'endpoint'
-  type: string 
+  type: string
   default: "v1.0"
 - name: 'inputMetadata'
-  type: string 
+  type: string
   default: $(rawMetadataFileV1)
 - name: 'outputPath'
   type: string
@@ -23,7 +23,7 @@ parameters:
 - name: 'cleanMetadataFile'
   type: string
   default: $(cleanMetadataFileV1)
-  
+
 steps:
 
 # We only need the scripts
@@ -62,11 +62,20 @@ steps:
     DocsDirectory: ${{ parameters.docsDirectory }}
     GenerationMode: 'TransformWithDocs'
     Transform: $(transformScript)
+    endpointVersion: ${{ parameters.endpoint }}
   displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata'
 
 # Use the clean metadata from the last step to generate DotNet files.
 
 - template: use-dotnet-sdk.yml
+
+# verify that generated metadata is parsable as an Edm model
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'run'
+    projects: $(Build.SourcesDirectory)/msgraph-metadata/tools/MetadataParser/MetadataParser.csproj
+    arguments: ${{ parameters.cleanMetadataFile }}
+  displayName: 'verify whether metadata is parsable as an Edm model'
 
 - pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
   env:
