@@ -68,12 +68,12 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="callrecord">The CallRecord object set with the properties to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<CallRecord> PatchAsync(CallRecord callrecord, 
+        public System.Threading.Tasks.Task<CallRecord> PatchAsync(CallRecord callrecord,
             CancellationToken cancellationToken)
         {
             this.Method = "PATCH";
             return this.SendAsync<CallRecord>(callrecord, cancellationToken);
-        }        
+        }
 
         /// <summary>
         /// Issues the PUT request.
@@ -91,12 +91,12 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="callrecord">The CallRecord object to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<CallRecord> PutAsync(CallRecord callrecord, 
+        public System.Threading.Tasks.Task<CallRecord> PutAsync(CallRecord callrecord,
             CancellationToken cancellationToken)
         {
             this.Method = "PUT";
             return this.SendAsync<CallRecord>(callrecord, cancellationToken);
-        }        
+        }
 
         /// <summary>
         /// Adds the specified expand value to the request.
