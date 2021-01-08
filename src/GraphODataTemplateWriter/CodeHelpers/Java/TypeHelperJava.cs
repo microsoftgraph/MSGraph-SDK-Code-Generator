@@ -957,7 +957,6 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
 
 import {2}.http.IRequestBuilder;
 import {2}.core.ClientException;
-import {2}.concurrency.ICallback;
 {3}{4}
 import java.util.Arrays;
 import java.util.EnumSet;

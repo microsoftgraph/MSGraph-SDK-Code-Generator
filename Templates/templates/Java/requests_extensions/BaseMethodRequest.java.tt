@@ -10,8 +10,6 @@ import javax.annotation.Nonnull;
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.BaseRequest;
 import <#=importNamespace#>.http.HttpMethod;
-import <#=importNamespace#>.concurrency.ICallback;
-import <#=importNamespace#>.concurrency.IExecutors;
 import <#=importNamespace#>.core.ClientException;
 import <#=importNamespace#>.core.IBaseClient;
 <# var mainNamespace = host.CurrentNamespace(); #>
@@ -46,11 +44,12 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypePara
 <#  if (c.AsOdcmMethod().ReturnType != null) {
 #>
     /**
-     * Invokes the method and invokes the callback with the result
-     * @param callback the callback to be called after success or failure
+     * Invokes the method and returns a future with the result
+     * @return a future with the result
      */
-    public void post(@Nonnull final ICallback<? super <#=c.ReturnType()#>> callback) {
-        send(HttpMethod.POST, callback, <# if(c.AsOdcmMethod().MethodHasParameters()) { #>body<# } else {#>null<# } #>);
+    @Nonnull
+    public java.util.concurrent.Future<? super <#=c.ReturnType()#>> futurePost() {
+        return futureSend(HttpMethod.POST, <# if(c.AsOdcmMethod().MethodHasParameters()) { #>body<# } else {#>null<# } #>);
     }
 
     /**
@@ -95,21 +94,11 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypePara
     /**
      * Creates the <#=c.TypeName()#>
      *
-     * @param callback the callback to be called after success or failure
+     * @return a future for the operation
      */
-    public void post(@Nonnull final ICallback<Void> callback) {
-        final IExecutors executors = getClient().getExecutors();
-        executors.performOnBackground(new Runnable() {
-           @Override
-           public void run() {
-                try {
-                    post();
-                    executors.performOnForeground((Void)null, callback);
-                } catch (final ClientException e) {
-                    executors.performOnForeground(e, callback);
-                }
-           }
-        });
+    @Nonnull
+    public java.util.concurrent.Future<? super Void> futurePost() {
+        return this.futureSend(HttpMethod.POST, <# if(c.AsOdcmMethod().MethodHasParameters()) { #>body<# } else {#>null<# } #>);
     }
 
     /**
@@ -128,10 +117,11 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypePara
     /**
      * Gets the <#=c.ReturnType()#>
      *
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void get(@Nonnull final ICallback<? super <#=c.ReturnType()#>> callback) {
-        send(HttpMethod.GET, callback, null);
+    @Nonnull
+    public java.util.concurrent.Future<? super <#=c.ReturnType()#>> futureGet() {
+        return futureSend(HttpMethod.GET, null);
     }
 
     /**

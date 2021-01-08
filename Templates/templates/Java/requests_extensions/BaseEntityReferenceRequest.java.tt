@@ -59,12 +59,13 @@ import com.google.gson.JsonObject;
      * Puts the <#=c.TypeName()#>
      *
      * @param src<#=c.TypeName()#> the <#=c.TypeName()#> reference to PUT
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void put(@Nonnull final <#=c.TypeName()#> src<#=c.TypeName()#>, @Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
+    @Nonnull
+    public java.util.concurrent.Future<? super <#=c.TypeName()#>> futurePut(@Nonnull final <#=c.TypeName()#> src<#=c.TypeName()#>) {
         final JsonObject payload = new JsonObject();
         payload.add("@odata.id", new JsonPrimitive(this.getClient().getServiceRoot() + "<#=c.CanonicalPath(host.CurrentModel)#>/" + src<#=c.TypeName()#>.id));
-        send(HttpMethod.PUT, callback, payload);
+        return futureSend(HttpMethod.PUT, payload);
     }
 
     /**

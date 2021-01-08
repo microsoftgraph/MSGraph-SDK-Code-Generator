@@ -19,7 +19,6 @@ import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseCollectionWithReferencesRequest;
 import <#=importNamespace#>.http.BaseCollectionWithReferencesRequestBuilder;
-import <#=importNamespace#>.concurrency.IExecutors;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionWithReferencesRequest(), "BaseCollectionWithReferencesRequest<"+c.TypeName()+", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionRequest()+">", null, c.Deprecation?.Description)#>
 

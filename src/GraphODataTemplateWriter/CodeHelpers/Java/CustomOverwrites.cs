@@ -16,8 +16,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
     {
         public static Dictionary<string, string> OnenotePageCollectionRequest = new Dictionary<string, string>() {
             {
-                "public void post(@Nonnull final OnenotePage newOnenotePage, @Nonnull final ICallback<? super OnenotePage> callback) {",
-                "public void post(@Nonnull final byte[] newOnenotePage, @Nonnull final ICallback<? super OnenotePage> callback) {"
+                "public java.util.concurrent.Future<? super OnenotePage> futurePost(@Nonnull final OnenotePage newOnenotePage) {",
+                "public java.util.concurrent.Future<? super OnenotePage> futurePost(@Nonnull final byte[] newOnenotePage) {"
             },
             {
                 "public OnenotePage post(@Nonnull final OnenotePage newOnenotePage) throws ClientException {",
@@ -28,8 +28,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static Dictionary<string, string> OnenotePageRequest = new Dictionary<string, string>()
         {
             {
-                "public void post(@Nonnull final OnenotePage newOnenotePage, @Nonnull final ICallback<? super OnenotePage> callback) {",
-                "public void post(@Nonnull final byte[] newOnenotePage, @Nonnull final ICallback<? super OnenotePage> callback) {"
+                "public java.util.concurrent.Future<? super OnenotePage> post(@Nonnull final OnenotePage newOnenotePage) {",
+                "public java.util.concurrent.Future<? super OnenotePage> post(@Nonnull final byte[] newOnenotePage) {"
             },
             {
                 "public OnenotePage post(@Nonnull final OnenotePage newOnenotePage) throws ClientException {",
@@ -40,8 +40,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static Dictionary<string, string> IOnenotePageCollectionRequest = new Dictionary<string, string>()
         {
             {
-                "void post(@Nonnull final OnenotePage newOnenotePage, @Nonnull final ICallback<? super OnenotePage> callback);",
-                "void post(@Nonnull final byte[] newOnenotePage, @Nonnull final ICallback<? super OnenotePage> callback);"
+                "java.util.concurrent.Future<? super OnenotePage> post(@Nonnull final OnenotePage newOnenotePage);",
+                "java.util.concurrent.Future<? super OnenotePage> post(@Nonnull final byte[] newOnenotePage);"
             },
             {
                 "OnenotePage post(@Nonnull final OnenotePage newOnenotePage) throws ClientException;",
@@ -52,8 +52,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static Dictionary<string, string> IOnenotePageRequest = new Dictionary<string, string>()
         {
             {
-                "void post(@Nonnull final OnenotePage newOnenotePage, @Nonnull final ICallback<? super OnenotePage> callback);",
-                "void post(@Nonnull final byte[] newOnenotePage, @Nonnull final ICallback<? super OnenotePage> callback);"
+                "java.util.concurrent.Future<? super OnenotePage> post(@Nonnull final OnenotePage newOnenotePage);",
+                "java.util.concurrent.Future<? super OnenotePage> post(@Nonnull final byte[] newOnenotePage);"
             },
             {
                 "OnenotePage post(@Nonnull final OnenotePage newOnenotePage) throws ClientException;",

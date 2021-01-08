@@ -27,10 +27,11 @@ import java.io.InputStream;
     /**
      * Gets the contents of this stream
      *
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void get(@Nonnull final ICallback<InputStream> callback) {
-        send(callback);
+    @Nonnull
+    public java.util.concurrent.Future<? super InputStream> futureGet() {
+        return futureSend();
     }
 
     /**
@@ -48,10 +49,11 @@ import java.io.InputStream;
      * Uploads to the stream
      *
      * @param fileContents the contents of the stream to upload
-          * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void put(@Nonnull final byte[] fileContents, @Nonnull final ICallback<? super <#=c.ClassTypeName()#>> callback) {
-        send(fileContents, callback);
+    @Nonnull
+    public java.util.concurrent.Future<? super <#=c.ClassTypeName()#>> futurePut(@Nonnull final byte[] fileContents) {
+        return futureSend(fileContents);
     }
 
     /**
