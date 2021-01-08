@@ -30,7 +30,9 @@ import com.microsoft.graph.http.BaseCollectionPage;
 
 /**
  * The class for the Entity Type3Collection With References Page.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3CollectionWithReferencesPage extends BaseCollectionPage<EntityType3, EntityType3CollectionWithReferencesRequestBuilder> {
 
     /**

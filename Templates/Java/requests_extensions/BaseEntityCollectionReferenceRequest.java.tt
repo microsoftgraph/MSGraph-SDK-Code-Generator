@@ -20,7 +20,7 @@ import <#=importNamespace#>.http.BaseCollectionWithReferencesRequest;
 import <#=importNamespace#>.http.BaseCollectionWithReferencesRequestBuilder;
 import <#=importNamespace#>.http.ReferenceRequestBody;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequest(), "BaseCollectionWithReferencesRequest<" + c.TypeName() + ", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionWithReferencesRequest()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionReferenceRequest(), "BaseCollectionWithReferencesRequest<" + c.TypeName() + ", "+c.TypeWithReferencesRequest()+", "+c.TypeReferenceRequestBuilder()+", "+c.TypeWithReferencesRequestBuilder()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionWithReferencesPage()+", "+c.TypeCollectionWithReferencesRequest()+">", null, c.Deprecation?.Description)#>
 
     /**
      * The request builder for this collection of <#=c.TypeName()#>
@@ -39,7 +39,7 @@ import <#=importNamespace#>.http.ReferenceRequestBody;
 
 			//Append the singleton's navigation type to the @odata.id if relevant
 			var implicitNavigationProperty = string.Empty;
-			if (navigationProperty.GetType() == typeof(OdcmSingleton)) 
+			if (navigationProperty.GetType() == typeof(OdcmSingleton))
 				implicitNavigationProperty = c.AsOdcmProperty().Name + "/";
 
             String prop = c.AsOdcmProperty().GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel).Name;
@@ -70,7 +70,7 @@ import <#=importNamespace#>.http.ReferenceRequestBody;
                 .buildRequest(getBaseRequest().getHeaders())
                 .post(new<#=c.TypeName()#>, body);
     }
-<#     } 
+<#     }
 #>
 <# if (c.GetFeatures().CanExpand) { #>
     /**

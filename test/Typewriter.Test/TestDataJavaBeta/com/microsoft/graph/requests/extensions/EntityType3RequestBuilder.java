@@ -23,7 +23,9 @@ import com.microsoft.graph.models.extensions.EntityType3ForwardParameterSet;
 
 /**
  * The class for the Entity Type3Request Builder.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3RequestBuilder extends BaseRequestBuilder<EntityType3> {
 
     /**
@@ -65,7 +67,9 @@ public class EntityType3RequestBuilder extends BaseRequestBuilder<EntityType3> {
      * Gets a builder to execute the method
      * @return the request builder
      * @param parameters the parameters for the service method
+     * @deprecated entityType3 is deprecated. Please use singletonEntity1.
      */
+    @Deprecated
     @Nonnull
     public EntityType3ForwardRequestBuilder forward(@Nonnull final EntityType3ForwardParameterSet parameters) {
         return new EntityType3ForwardRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.forward"), getClient(), null, parameters);

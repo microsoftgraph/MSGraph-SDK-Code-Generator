@@ -11,7 +11,7 @@
 import <#=importNamespace#>.http.BaseReferenceRequestBuilder;
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequestBuilder(), "BaseReferenceRequestBuilder<"+c.TypeName()+", "+c.TypeReferenceRequest()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequestBuilder(), "BaseReferenceRequestBuilder<"+c.TypeName()+", "+c.TypeReferenceRequest()+">", null, c.Deprecation?.Description)#>
 
     /**
      * The request builder for the <#=c.TypeName()#>

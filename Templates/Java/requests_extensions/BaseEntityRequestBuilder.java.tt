@@ -15,7 +15,7 @@ foreach (var method in c.AsOdcmClass().MethodsAndOverloads().Where(x => !x.IsBou
 import <#=method#>;
 <# } #>
 
-<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder<"+c.TypeName()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder<"+c.TypeName()+">", null, c.Deprecation?.Description)#>
 
     /**
      * The request builder for the <#=c.TypeName()#>
@@ -180,7 +180,13 @@ if (c.AsOdcmClass() != null)
 <#if(method.MethodHasParameters()) { #>
      * @param parameters the parameters for the service method
 <# } #>
+<# if(method.IsDeprecated) {#>
+     * @deprecated <#= method?.Deprecation?.Description #>
+<# } #>
      */
+<# if(method.IsDeprecated) {#>
+    @Deprecated
+<# } #>
     @Nonnull
     public <#=method.TypeCollectionRequestBuilder()#> <#=sanitizedMethod#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
@@ -193,7 +199,13 @@ if (c.AsOdcmClass() != null)
 <#if(method.MethodHasParameters()) { #>
      * @param parameters the parameters for the service method
 <# } #>
+<# if(method.IsDeprecated) {#>
+     * @deprecated <#= method?.Deprecation?.Description #>
+<# } #>
      */
+<# if(method.IsDeprecated) {#>
+    @Deprecated
+<# } #>
     @Nonnull
     public <#=method.TypeRequestBuilder()#> <#=sanitizedMethod#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);

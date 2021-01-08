@@ -7,7 +7,7 @@
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateInterfaceDef(c.IBaseClientType(host), "IBaseClient")#>
+<#=TypeHelperJava.CreateInterfaceDef(c.IBaseClientType(host), "IBaseClient", null)#>
 <#
 foreach (var prop in model.EntityContainer.Properties)
 {
@@ -20,7 +20,13 @@ foreach (var prop in model.EntityContainer.Properties)
      * Gets the collection of <#=propertyName#> objects
      *
      * @return the request builder for the collection of <#=propertyName#> objects
+<# if(prop.IsDeprecated) {#>
+     * @deprecated <#= prop?.Deprecation?.Description #>
+<# } #>
      */
+<# if(prop.IsDeprecated) {#>
+    @Deprecated
+<# } #>
     @Nonnull
     <#=prop.TypeCollectionRequestBuilder()#> <#=prop.Name#>();
 
@@ -29,7 +35,13 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @param id the id of the <#=propertyName#> to retrieve
      * @return the request builder for the <#=propertyName#> object
+<# if(prop.IsDeprecated) {#>
+     * @deprecated <#= prop?.Deprecation?.Description #>
+<# } #>
      */
+<# if(prop.IsDeprecated) {#>
+    @Deprecated
+<# } #>
     @Nonnull
     <#=prop.TypeRequestBuilder()#> <#=prop.Name#>(@Nonnull final String id);
 <#
@@ -42,7 +54,13 @@ foreach (var prop in model.EntityContainer.Properties)
      * Gets the <#=c.TypeRequestBuilder()#>
      *
      * @return the <#=prop.Projection.Type.GetTypeString()#>
+<# if(prop.IsDeprecated) {#>
+     * @deprecated <#= prop?.Deprecation?.Description #>
+<# } #>
      */
+<# if(prop.IsDeprecated) {#>
+    @Deprecated
+<# } #>
     @Nonnull
     <#=prop.TypeRequestBuilder()#> <#=prop.Name#>();
 <#

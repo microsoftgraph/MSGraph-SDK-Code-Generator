@@ -29,7 +29,9 @@ public class TestType extends Entity implements IJsonBackedObject {
     /**
      * The Property Alpha.
      * 
+     * @deprecated emptyBaseComplexTypeRequest is deprecated. Please use emptyBaseComplexTypeRequest2.
      */
+    @Deprecated
     @SerializedName(value = "propertyAlpha", alternate = {"PropertyAlpha"})
     @Expose
 	@Nullable

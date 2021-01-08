@@ -12,7 +12,7 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.http.BaseCollectionPage;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage<"+ c.TypeName() + ", "+c.TypeCollectionRequestBuilder()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), "BaseCollectionPage<"+ c.TypeName() + ", "+c.TypeCollectionRequestBuilder()+">", null, c.Deprecation?.Description)#>
 
     /**
      * A collection page for <#=c.TypeName()#>

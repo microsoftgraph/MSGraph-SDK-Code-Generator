@@ -16,7 +16,7 @@ import <#=importNamespace#>.serializer.ISerializer;
 import java.util.EnumSet;
 import java.util.ArrayList;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeParameterSet())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeParameterSet(), null, null, c.Deprecation?.Description)#>
 <# var parameters = c.AsOdcmMethod().WithOverloads().WithDistinctParameters(); #>
 <#=TypeHelperJava.CreateParameterDef(parameters)#>
     /**
@@ -49,14 +49,26 @@ var parameterName = parameter.ParamName().SanitizePropertyName(parameter).ToLowe
 <# foreach(var parameter in parameters) { #>
         /**
          * The <#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#> parameter value
+<# if(parameter.IsDeprecated) {#>
+         * @deprecated <#= parameter?.Deprecation?.Description #>
+<# } #>
          */
+<# if(parameter.IsDeprecated) {#>
+        @Deprecated
+<# } #>
         @Nullable
         protected <#=parameter.ParamType()#> <#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#>;
         /**
          * Sets the <#=parameter.ParamName().SanitizePropertyName(parameter).ToUpperFirstChar()#>
          * @param val the value to set it to
          * @return the current builder object
+<# if(parameter.IsDeprecated) {#>
+         * @deprecated <#= parameter?.Deprecation?.Description #>
+<# } #>
          */
+<# if(parameter.IsDeprecated) {#>
+        @Deprecated
+<# } #>
         @Nonnull
         public <#=c.TypeParameterSetBuilder()#> with<#=parameter.ParamName().SanitizePropertyName(parameter).ToUpperFirstChar()#>(@Nullable final <#=parameter.ParamType()#> val) {
             this.<#=parameter.ParamName().SanitizePropertyName(parameter).ToLowerFirstChar()#> = val;

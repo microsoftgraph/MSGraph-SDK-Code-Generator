@@ -21,7 +21,9 @@ import com.microsoft.graph.models.extensions.EntityType3ForwardParameterSet;
 
 /**
  * The class for the Entity Type3Forward Request.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3ForwardRequest extends BaseRequest<Void> {
     /**
      * The request for this EntityType3Forward

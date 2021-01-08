@@ -27,7 +27,9 @@ import com.microsoft.graph.http.BaseActionCollectionRequestBuilder;
 
 /**
  * The class for the Test Type Query Collection Request Builder.
+ * @deprecated responseObject is deprecated. Please use something else.
  */
+@Deprecated
 public class TestTypeQueryCollectionRequestBuilder extends BaseActionCollectionRequestBuilder<ResponseObject, TestTypeQueryCollectionRequestBuilder, TestTypeQueryCollectionResponse, TestTypeQueryCollectionPage, TestTypeQueryCollectionRequest> {
 
     private TestTypeQueryParameterSet body;

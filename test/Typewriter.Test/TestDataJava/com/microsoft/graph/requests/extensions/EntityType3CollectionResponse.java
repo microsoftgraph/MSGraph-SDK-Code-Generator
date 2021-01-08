@@ -12,7 +12,9 @@ import com.microsoft.graph.http.BaseCollectionResponse;
 
 /**
  * The class for the Entity Type3Collection Response.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3CollectionResponse extends BaseCollectionResponse<EntityType3> {
 
 }

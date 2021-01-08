@@ -21,7 +21,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctionCollectionRequestBuilder" : "BaseActionCollectionRequestBuilder") #>;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
-<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), c.GetMethodCollectionRequestBuilderSuperClass())#>
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), c.GetMethodCollectionRequestBuilderSuperClass(), null, c.Deprecation?.Description)#>
 
 <#if(c.AsOdcmMethod().MethodHasParameters() && isAction) { #>
     private <#=c.AsOdcmMethod().TypeParameterSet() #> body;

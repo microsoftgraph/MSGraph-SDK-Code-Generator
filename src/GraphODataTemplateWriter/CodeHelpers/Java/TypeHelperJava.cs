@@ -1071,11 +1071,11 @@ import javax.annotation.Nonnull;";
             var format =
     @"    /**
      * The {0}.
-     * {1}
+     * {1}{2}
      */
-    @SerializedName(value = ""{2}"", alternate = {{""{3}""}})
-    @Expose{4}
-    public {5} {6};
+    @SerializedName(value = ""{3}"", alternate = {{""{4}""}})
+    @Expose{5}{6}
+    public {7} {8};
 
 ";
             foreach (var p in parameters)
@@ -1084,9 +1084,11 @@ import javax.annotation.Nonnull;";
                     format,
                     p.ParamName().SplitCamelCase(),
                     ReplaceInvalidCharacters(p.LongDescription),
+                    (p.IsDeprecated ? $"\r\n     * @deprecated {p.Deprecation?.Description}" : string.Empty),
                     p.ParamName(),
                     p.ParamName().ToUpperFirstChar(),
                     (p.IsNullable() ? "\r\n\t@Nullable" : string.Empty),
+                    (p.IsDeprecated ? "\r\n@Deprecated" : string.Empty),
                     p.ParamType(),
                     p.ParamName().SanitizePropertyName(p).ToLowerFirstChar()
                 );
@@ -1200,19 +1202,19 @@ import javax.annotation.Nonnull;";
             var format =
     @"    /**
      * The {0}.
-     * {1}
-     */
-    @SerializedName(value = ""{2}"", alternate = {{""{3}""}})
-    @Expose{4}
-    public {5} {6};
+     * {1}{2}
+     */{3}
+    @SerializedName(value = ""{4}"", alternate = {{""{5}""}})
+    @Expose{6}
+    public {7} {8};
 
 ";
             var collectionFormat =
     @"    /**
      * The {0}.
-     * {1}
-     */{4}
-    public {5} {6};
+     * {1}{2}
+     */{3}{6}
+    public {7} {8};
 
 ";
 
@@ -1242,6 +1244,8 @@ import javax.annotation.Nonnull;";
                 sb.AppendFormat(propertyFormat,
                     propertyName.SplitCamelCase(),
                     GetSanitizedDescription(property),
+                    property.IsDeprecated ? $"\r\n     * @deprecated {property.Deprecation?.Description}" : string.Empty,
+                    property.IsDeprecated ? "\r\n    @Deprecated" : string.Empty,
                     property.Name,
                     propertyName,
                     (property.IsNullable() ? "\r\n\t@Nullable" : string.Empty),
@@ -1255,17 +1259,17 @@ import javax.annotation.Nonnull;";
         /// name = the name of the class
         /// extends = the class it extends
         /// implements = the interface it extends
-        public static string CreateClassDef(string name, string extends = null, string implements = null)
+        public static string CreateClassDef(string name, string extends, string implements, string deprecationDescription)
         {
-            return CreateClassOrInterface(name, true, extends, implements);
+            return CreateClassOrInterface(name, true, extends, implements, deprecationDescription);
         }
 
-        public static string CreateInterfaceDef(string name, string extends = null)
+        public static string CreateInterfaceDef(string name, string extends, string deprecationDescription)
         {
-            return CreateClassOrInterface(name, false, extends, null);
+            return CreateClassOrInterface(name, false, extends, null, deprecationDescription);
         }
 
-        public static string CreateClassOrInterface(string name, bool isClass = true, string extends = null, string implements = null)
+        public static string CreateClassOrInterface(string name, bool isClass = true, string extends = null, string implements = null, string deprecationDescription = null)
         {
             var extendsStr = string.Empty;
             if (!string.IsNullOrEmpty(extends))
@@ -1282,12 +1286,14 @@ import javax.annotation.Nonnull;";
             var format = @"
 
 /**
- * The {1} for the {0}.
- */
-public {1} {2}{3}{4} {{";
+ * The {1} for the {0}.{2}
+ */{3}
+public {1} {4}{5}{6} {{";
             string declaration = string.Format(format,
                 isClass ? name.SplitCamelCase() : name.SplitCamelCase().Remove(0, 1),
                 isClass ? "class" : "interface",
+                string.IsNullOrEmpty(deprecationDescription) ? string.Empty : $"\r\n * @deprecated {deprecationDescription}",
+                string.IsNullOrEmpty(deprecationDescription) ? string.Empty : "\r\n@Deprecated",
                 name,
                 extendsStr,
                 implementsStr);

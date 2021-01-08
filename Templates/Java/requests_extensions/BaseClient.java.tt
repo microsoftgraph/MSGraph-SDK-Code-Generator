@@ -8,7 +8,7 @@
 import <#=importNamespace#>.models.extensions.<#=c.IBaseClientType(host)#>;
 import <#=importNamespace#>.core.BaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.BaseClientType(host), "BaseClient", c.IBaseClientType(host))#>
+<#=TypeHelperJava.CreateClassDef(c.BaseClientType(host), "BaseClient", c.IBaseClientType(host), c.Deprecation?.Description)#>
 
     /**
      * The default endpoint for the Microsoft Graph Service
@@ -45,7 +45,13 @@ foreach (var prop in model.EntityContainer.Properties)
      * Gets the collection of <#=propertyName#> objects
      *
      * @return the request builder for the collection of <#=propertyName#> objects
+<# if(prop.IsDeprecated) {#>
+     * @deprecated <#= prop?.Deprecation?.Description #>
+<# } #>
      */
+<# if(prop.IsDeprecated) {#>
+    @Deprecated
+<# } #>
     @Nonnull
     public <#=prop.TypeCollectionRequestBuilder()#> <#=prop.Name#>() {
         return new <#=prop.TypeCollectionRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
@@ -56,7 +62,13 @@ foreach (var prop in model.EntityContainer.Properties)
      *
      * @param id the id of the <#=propertyName#> to retrieve
      * @return the request builder for the <#=propertyName#> object
+<# if(prop.IsDeprecated) {#>
+     * @deprecated <#= prop?.Deprecation?.Description #>
+<# } #>
      */
+<# if(prop.IsDeprecated) {#>
+    @Deprecated
+<# } #>
     @Nonnull
     public <#=prop.TypeRequestBuilder()#> <#=prop.Name#>(@Nonnull final String id) {
         return new <#=prop.TypeRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>/" + id, this, null);
@@ -71,7 +83,13 @@ foreach (var prop in model.EntityContainer.Properties)
      * Gets the <#=c.TypeRequestBuilder()#>
      *
      * @return the <#=prop.Projection.Type.GetTypeString()#>
+<# if(prop.IsDeprecated) {#>
+     * @deprecated <#= prop?.Deprecation?.Description #>
+<# } #>
      */
+<# if(prop.IsDeprecated) {#>
+    @Deprecated
+<# } #>
     @Nonnull
     public <#=prop.TypeRequestBuilder()#> <#=prop.Name#>() {
         return new <#=prop.TypeRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>", this, null);

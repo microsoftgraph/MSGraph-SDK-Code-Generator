@@ -7,7 +7,13 @@
 
 /**
  * The Enum <#=c.Name.ToUpperFirstChar().SplitCamelCase()#>.
+<# if(c.IsDeprecated) {#>
+ * @deprecated <#= c?.Deprecation?.Description #>
+<# } #>
 */
+<# if(c.IsDeprecated) {#>
+@Deprecated
+<# } #>
 public enum <#= c.Name.ToUpperFirstChar()#>
 {
 <#
@@ -16,7 +22,13 @@ public enum <#= c.Name.ToUpperFirstChar()#>
 #>
     /**
     * <#= value.Name.SplitCamelCase()#>
+<# if(value.IsDeprecated) {#>
+    * @deprecated <#= value.Deprecation?.Description #>
+<# } #>
     */
+<# if(value.IsDeprecated) {#>
+    @Deprecated
+<# } #>
     <#= value.Name.ToUnderscore().ToUpper() #>,
 <#
     }

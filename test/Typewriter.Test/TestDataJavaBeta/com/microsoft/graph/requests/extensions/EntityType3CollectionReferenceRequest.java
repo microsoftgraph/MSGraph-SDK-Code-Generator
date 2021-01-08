@@ -33,7 +33,9 @@ import com.microsoft.graph.http.ReferenceRequestBody;
 
 /**
  * The class for the Entity Type3Collection Reference Request.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3CollectionReferenceRequest extends BaseCollectionWithReferencesRequest<EntityType3, EntityType3WithReferenceRequest, EntityType3ReferenceRequestBuilder, EntityType3WithReferenceRequestBuilder, EntityType3CollectionResponse, EntityType3CollectionWithReferencesPage, EntityType3CollectionWithReferencesRequest> {
 
     /**

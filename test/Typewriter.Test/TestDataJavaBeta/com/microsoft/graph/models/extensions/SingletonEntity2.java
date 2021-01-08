@@ -29,7 +29,9 @@ public class SingletonEntity2 extends Entity implements IJsonBackedObject {
     /**
      * The Test Single Nav2.
      * 
+     * @deprecated entityType3 is deprecated. Please use singletonEntity1.
      */
+    @Deprecated
     @SerializedName(value = "testSingleNav2", alternate = {"TestSingleNav2"})
     @Expose
 	@Nullable

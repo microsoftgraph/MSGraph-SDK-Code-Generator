@@ -27,7 +27,9 @@ import com.microsoft.graph.models.extensions.EntityType3ForwardParameterSet;
 
 /**
  * The class for the Entity Type3Collection Request Builder.
+ * @deprecated entityType3 is deprecated. Please use singletonEntity1.
  */
+@Deprecated
 public class EntityType3CollectionRequestBuilder extends BaseCollectionRequestBuilder<EntityType3, EntityType3RequestBuilder, EntityType3CollectionResponse, EntityType3CollectionPage, EntityType3CollectionRequest> {
 
     /**

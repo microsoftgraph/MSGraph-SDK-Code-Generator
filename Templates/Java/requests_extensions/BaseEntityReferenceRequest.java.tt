@@ -14,7 +14,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonObject;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequest(), "BaseReferenceRequest<"+c.TypeName()+">")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeReferenceRequest(), "BaseReferenceRequest<"+c.TypeName()+">", null, c.Deprecation?.Description)#>
 
     /**
      * The request for the <#=c.TypeName()#>
