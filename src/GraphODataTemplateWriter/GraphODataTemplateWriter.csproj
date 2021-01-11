@@ -13,110 +13,6 @@
     <OutputPath>$(ProjectDir)bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <Reference Include="Inflector">
-      <HintPath>..\..\packages\Inflector.1.0.0.0\lib\net45\Inflector.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.TextTemplating">
-      <HintPath>..\..\packages\Mono.TextTemplating.2.2.0\lib\net472\Mono.TextTemplating.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NLog.4.7.6\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CodeHelpers\CodeWriterBase.cs" />
-    <Compile Include="CodeHelpers\CSharp\MethodInfo.cs" />
-    <Compile Include="CodeHelpers\CSharp\CodeWriterCSharp.cs" />
-    <Compile Include="CodeHelpers\CSharp\NavigationPropertyInfo.cs" />
-    <Compile Include="CodeHelpers\CSharp\ParameterInfo.cs" />
-    <Compile Include="CodeHelpers\CSharp\TypeHelperCSharp.cs" />
-    <Compile Include="CodeHelpers\Java\CodeWriterJava.cs" />
-    <Compile Include="CodeHelpers\Java\CustomOverwrites.cs" />
-    <Compile Include="CodeHelpers\Java\TypeHelperJava.cs" />
-    <Compile Include="CodeHelpers\TypeScript\CodeWriterTypeScript.cs" />
-    <Compile Include="CodeHelpers\TypeScript\TypeScriptNamespace.cs" />
-    <Compile Include="CodeHelpers\TypeScript\TypeScriptNamespaces.cs" />
-    <Compile Include="CodeHelpers\TypeScript\TypeHelperTypeScript.cs" />
-    <Compile Include="CodeHelpers\GraphEndpointList\CodeWriterGraphEndpointList.cs" />
-    <Compile Include="CodeHelpers\GraphEndpointList\TypeHelperGraphEndpointList.cs" />
-    <Compile Include="CodeHelpers\ObjC\CodeWriterObjC.cs" />
-    <Compile Include="CodeHelpers\PHP\CodeWriterPHP.cs" />
-    <Compile Include="CodeHelpers\PHP\TypeHelperPHP.cs" />
-    <Compile Include="CodeHelpers\Python\CodeWriterPython.cs" />
-    <Compile Include="CodeHelpers\Python\TypeHelperPython.cs" />
-    <Compile Include="Extensions\FeatureExtensions.cs" />
-    <Compile Include="OdcmMethodEqualityComparer.cs" />
-    <Compile Include="OdcmParameterCollectionEqualityComparer.cs" />
-    <Compile Include="OdcmParameterEqualityComparer.cs" />
-    <Compile Include="OdcmTypeEqualityComparer.cs" />
-    <Compile Include="PathWriters\CSharpPathWriter.cs" />
-    <Compile Include="PathWriters\TypeScriptPathWriter.cs" />
-    <Compile Include="PathWriters\GraphEndpointListPathWriter.cs" />
-    <Compile Include="PathWriters\PHPPathWriter.cs" />
-    <Compile Include="PathWriters\PythonPathWriter.cs" />
-    <Compile Include="TemplateProcessor\CustomT4Host.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="CodeHelpers\ObjC\TypeHelperObjC.cs" />
-    <Compile Include="Extensions\OdcmModelExtensions.cs" />
-    <Compile Include="PathWriters\PathWriterBase.cs" />
-    <Compile Include="PathWriters\IPathWriter.cs" />
-    <Compile Include="PathWriters\JavaPathWriter.cs" />
-    <Compile Include="PathWriters\ObjCPathWriter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\ConfigurationService.cs" />
-    <Compile Include="Settings\TemplateWriterSettings.cs" />
-    <Compile Include="TemplateProcessor\Enums\FileNameCasing.cs" />
-    <Compile Include="TemplateProcessor\Enums\SubProcessor.cs" />
-    <Compile Include="TemplateProcessor\Enums\Template.cs" />
-    <Compile Include="TemplateProcessor\ITemplateInfoProvider.cs" />
-    <Compile Include="TemplateProcessor\TemplateHostStats.cs" />
-    <Compile Include="TemplateProcessor\TemplateInfoProvider.cs" />
-    <Compile Include="TemplateProcessor\TemplateProcessor.cs" />
-    <Compile Include="TemplateProcessor\ITemplateProcessor.cs" />
-    <Compile Include="TemplateProcessor\ITemplateInfo.cs" />
-    <Compile Include="TemplateProcessor\TemplateWriter.cs" />
-    <Compile Include="TemplateProcessor\TemplateFileInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".config\JavaSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\CSharpSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\TypeScriptSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\GraphEndpointListSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\ObjCSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\PHPSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\PythonSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include=".config\TemplateWriterSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="NLog.xsd">
-=======
     <Content Include=".config\JavaSettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -142,7 +38,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Update="NLog.xsd">
->>>>>>> dev
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
