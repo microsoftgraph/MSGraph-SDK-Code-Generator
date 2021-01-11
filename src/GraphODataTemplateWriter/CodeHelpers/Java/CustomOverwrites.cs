@@ -28,36 +28,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static Dictionary<string, string> OnenotePageRequest = new Dictionary<string, string>()
         {
             {
-                "public java.util.concurrent.Future<? super OnenotePage> post(@Nonnull final OnenotePage newOnenotePage) {",
-                "public java.util.concurrent.Future<? super OnenotePage> post(@Nonnull final byte[] newOnenotePage) {"
+                "public java.util.concurrent.Future<? super OnenotePage> futurePost(@Nonnull final OnenotePage newOnenotePage) {",
+                "public java.util.concurrent.Future<? super OnenotePage> futurePost(@Nonnull final byte[] newOnenotePage) {"
             },
             {
                 "public OnenotePage post(@Nonnull final OnenotePage newOnenotePage) throws ClientException {",
                 "public OnenotePage post(@Nonnull final byte[] newOnenotePage) throws ClientException {"
-            }
-        };
-
-        public static Dictionary<string, string> IOnenotePageCollectionRequest = new Dictionary<string, string>()
-        {
-            {
-                "java.util.concurrent.Future<? super OnenotePage> post(@Nonnull final OnenotePage newOnenotePage);",
-                "java.util.concurrent.Future<? super OnenotePage> post(@Nonnull final byte[] newOnenotePage);"
-            },
-            {
-                "OnenotePage post(@Nonnull final OnenotePage newOnenotePage) throws ClientException;",
-                "OnenotePage post(@Nonnull final byte[] newOnenotePage) throws ClientException;"
-            }
-        };
-
-        public static Dictionary<string, string> IOnenotePageRequest = new Dictionary<string, string>()
-        {
-            {
-                "java.util.concurrent.Future<? super OnenotePage> post(@Nonnull final OnenotePage newOnenotePage);",
-                "java.util.concurrent.Future<? super OnenotePage> post(@Nonnull final byte[] newOnenotePage);"
-            },
-            {
-                "OnenotePage post(@Nonnull final OnenotePage newOnenotePage) throws ClientException;",
-                "OnenotePage post(@Nonnull final byte[] newOnenotePage) throws ClientException;"
             }
         };
 
