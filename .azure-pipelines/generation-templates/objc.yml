@@ -1,0 +1,7 @@
+steps:
+- pwsh: '$(scriptsDirectory)/copy-objc-models.ps1'
+  displayName: 'Update models'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputFullPath: $(typewriterDirectory)/output
+    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-objc-models/GeneratedModels/

@@ -1,9 +1,10 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.Settings
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -16,7 +17,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
     public static class ConfigurationService
     {
         private static IConfigurationProvider _configurationProvider;
-        private static TemplateWriterSettings templateWriterSettings = null;
         private static string targetLanguage = null;
         private static string endpointVersion = null;
         private static Dictionary<string, string> properties = null;
@@ -42,11 +42,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
                         throw new ArgumentException("A property was set in a unexpected form from the typewriter commandline.", "-p -properties");
                     }
 
-                    propertyDictionary.Add(props[0],props[1]);
+                    propertyDictionary.Add(props[0], props[1]);
                 }
 
                 ConfigurationService.properties = propertyDictionary;
             }
+            else
+                ConfigurationService.properties = null; //important: to avoid subsequent flaky tests due to shared app domain
         }
 
         private static TemplateWriterSettings LoadSettingsForLanguage()
@@ -64,56 +66,29 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
 
             mainTWS.DefaultBaseEndpointUrl = String.Format("https://graph.microsoft.com/{0}", endpointVersion);
 
-            TemplateWriterSettings.mainSettingsObject = mainTWS;
-            
-            //First dynamically create a new class that holds settings for the target language
-            //We store a reference on the default constructor to the mainTWS and then copy
-            //all properties on it.
-
-            var targetLanguageTypeName = mainTWS.TargetLanguage + "Settings";
-            var targetLanguageAN = new AssemblyName(targetLanguageTypeName);
-            AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(targetLanguageAN, AssemblyBuilderAccess.Run);
-            ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("MainModule");
-            TypeBuilder tb = moduleBuilder.DefineType(targetLanguageTypeName
-                                , TypeAttributes.Public
-                                | TypeAttributes.Class
-                                | TypeAttributes.AutoClass
-                                | TypeAttributes.BeforeFieldInit
-                                | TypeAttributes.AutoLayout
-                                , typeof(TemplateWriterSettings));
-
-            ConstructorBuilder ctor = tb.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, Type.EmptyTypes);
-
-            ILGenerator ctorIL = ctor.GetILGenerator();
-
-            ctorIL.Emit(OpCodes.Ldarg_0);
-            ctorIL.Emit(OpCodes.Call, typeof(TemplateWriterSettings).GetConstructor(Type.EmptyTypes));
-            ctorIL.Emit(OpCodes.Ldarg_0);
-            ctorIL.Emit(OpCodes.Call, typeof(TemplateWriterSettings).GetMethod("CopyPropertiesFromMainSettings"));
-            ctorIL.Emit(OpCodes.Ret);
-
-            Type targetLanguageType = tb.CreateType();
-
             //Call the generic GetConfiguration method with our new type.
-            return (TemplateWriterSettings)typeof(IConfigurationProvider)
-                                            .GetMethod("GetConfiguration")
-                                            .MakeGenericMethod(targetLanguageType)
-                                            .Invoke(_configurationProvider, new object[] { });
+            var languageSettings = (_configurationProvider
+                .GetType()
+                .GetConstructor(new [] { typeof(string) })
+                .Invoke(new[] { targetLanguage }) as IConfigurationProvider)
+                .GetConfiguration<TemplateWriterSettings>();
+
+            mainTWS.CopyLanguageSettings(languageSettings);
+            return mainTWS;
 
         }
-
+        /// <summary>
+        /// Simple "caching" implementation that compromises bettween performance impact, avoiding flaky unit tests because of a shared app domain and not having to refactor this whole settings implementation
+        /// </summary>
+        private static Dictionary<string, TemplateWriterSettings> simpleSettingsCache = new Dictionary<string, TemplateWriterSettings>();
         public static TemplateWriterSettings Settings
         {
             get
             {
-                if (templateWriterSettings == null || templateWriterSettings.TargetLanguage != ConfigurationService.targetLanguage)
-                {
-                    templateWriterSettings = _configurationProvider != null
-                        ? LoadSettingsForLanguage()
-                        : new TemplateWriterSettings();
-                }
-
-                return templateWriterSettings;
+                var settingsCacheKey = $"{targetLanguage}-{endpointVersion}-{(properties?.Any() ?? false ? properties.OrderBy(x => x.Key).Select(x => x.Key + ":" + x.Value).Aggregate((x, y) => x + y) : string.Empty)}";
+                if (!simpleSettingsCache.ContainsKey(settingsCacheKey))
+                    simpleSettingsCache.Add(settingsCacheKey, _configurationProvider != null ? LoadSettingsForLanguage() : new TemplateWriterSettings());
+                return simpleSettingsCache[settingsCacheKey];
             }
         }
     }

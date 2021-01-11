@@ -1,0 +1,5 @@
+steps:
+- pwsh: |
+    git config --global user.email "GraphTooling@service.microsoft.com"
+    git config --global user.name "Microsoft Graph DevX Tooling"
+  displayName: 'Git: set user config'

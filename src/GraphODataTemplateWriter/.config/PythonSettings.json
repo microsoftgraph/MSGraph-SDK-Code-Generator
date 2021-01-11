@@ -1,4 +1,5 @@
 {
+  "TargetLanguage": "Python",
     "TemplateMapping": {
       "Python": [
           { "Template": "EntityCollection", "SubProcessor": "CollectionProperty", "Type": "Request", "Name": "<Property>_collection", "Exclude": "nextExpectedRanges;roles", "Ignore": "ignorableCollection" },
