@@ -62,7 +62,7 @@ import com.google.gson.JsonObject;
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super <#=c.TypeName()#>> futurePut(@Nonnull final <#=c.TypeName()#> src<#=c.TypeName()#>) {
+    public java.util.concurrent.Future<<#=c.TypeName()#>> futurePut(@Nonnull final <#=c.TypeName()#> src<#=c.TypeName()#>) {
         final JsonObject payload = new JsonObject();
         payload.add("@odata.id", new JsonPrimitive(this.getClient().getServiceRoot() + "<#=c.CanonicalPath(host.CurrentModel)#>/" + src<#=c.TypeName()#>.id));
         return futureSend(HttpMethod.PUT, payload);
