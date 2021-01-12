@@ -40,7 +40,7 @@ public class OptionRequest extends BaseRequest<Option> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Option> futureGet() {
+    public java.util.concurrent.Future<Option> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -61,7 +61,7 @@ public class OptionRequest extends BaseRequest<Option> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Option> futureDelete() {
+    public java.util.concurrent.Future<Option> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -83,7 +83,7 @@ public class OptionRequest extends BaseRequest<Option> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Option> futurePatch(@Nonnull final Option sourceOption) {
+    public java.util.concurrent.Future<Option> futurePatch(@Nonnull final Option sourceOption) {
         return futureSend(HttpMethod.PATCH, sourceOption);
     }
 
@@ -106,7 +106,7 @@ public class OptionRequest extends BaseRequest<Option> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Option> futurePost(@Nonnull final Option newOption) {
+    public java.util.concurrent.Future<Option> futurePost(@Nonnull final Option newOption) {
         return futureSend(HttpMethod.POST, newOption);
     }
 
@@ -129,7 +129,7 @@ public class OptionRequest extends BaseRequest<Option> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Option> futurePut(@Nonnull final Option newOption) {
+    public java.util.concurrent.Future<Option> futurePut(@Nonnull final Option newOption) {
         return futureSend(HttpMethod.PUT, newOption);
     }
 

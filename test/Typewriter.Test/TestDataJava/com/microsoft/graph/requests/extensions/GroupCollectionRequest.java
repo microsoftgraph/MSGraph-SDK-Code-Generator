@@ -44,7 +44,7 @@ public class GroupCollectionRequest extends BaseEntityCollectionRequest<Group, G
      * @return a future with the created object
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Group> futurePost(@Nonnull final Group newGroup) {
+    public java.util.concurrent.Future<Group> futurePost(@Nonnull final Group newGroup) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new GroupRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())

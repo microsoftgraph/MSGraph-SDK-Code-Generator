@@ -42,7 +42,7 @@ public class GroupRequest extends BaseRequest<Group> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Group> futureGet() {
+    public java.util.concurrent.Future<Group> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -63,7 +63,7 @@ public class GroupRequest extends BaseRequest<Group> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Group> futureDelete() {
+    public java.util.concurrent.Future<Group> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -85,7 +85,7 @@ public class GroupRequest extends BaseRequest<Group> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Group> futurePatch(@Nonnull final Group sourceGroup) {
+    public java.util.concurrent.Future<Group> futurePatch(@Nonnull final Group sourceGroup) {
         return futureSend(HttpMethod.PATCH, sourceGroup);
     }
 
@@ -108,7 +108,7 @@ public class GroupRequest extends BaseRequest<Group> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Group> futurePost(@Nonnull final Group newGroup) {
+    public java.util.concurrent.Future<Group> futurePost(@Nonnull final Group newGroup) {
         return futureSend(HttpMethod.POST, newGroup);
     }
 
@@ -131,7 +131,7 @@ public class GroupRequest extends BaseRequest<Group> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Group> futurePut(@Nonnull final Group newGroup) {
+    public java.util.concurrent.Future<Group> futurePut(@Nonnull final Group newGroup) {
         return futureSend(HttpMethod.PUT, newGroup);
     }
 

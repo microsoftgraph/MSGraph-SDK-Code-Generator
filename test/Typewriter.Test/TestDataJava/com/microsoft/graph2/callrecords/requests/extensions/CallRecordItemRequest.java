@@ -38,7 +38,7 @@ public class CallRecordItemRequest extends BaseRequest<CallRecord> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super CallRecord> futureGet() {
+    public java.util.concurrent.Future<CallRecord> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 

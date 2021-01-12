@@ -43,7 +43,7 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super TestEntity> futureGet() {
+    public java.util.concurrent.Future<TestEntity> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -64,7 +64,7 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super TestEntity> futureDelete() {
+    public java.util.concurrent.Future<TestEntity> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -86,7 +86,7 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super TestEntity> futurePatch(@Nonnull final TestEntity sourceTestEntity) {
+    public java.util.concurrent.Future<TestEntity> futurePatch(@Nonnull final TestEntity sourceTestEntity) {
         return futureSend(HttpMethod.PATCH, sourceTestEntity);
     }
 
@@ -109,7 +109,7 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super TestEntity> futurePost(@Nonnull final TestEntity newTestEntity) {
+    public java.util.concurrent.Future<TestEntity> futurePost(@Nonnull final TestEntity newTestEntity) {
         return futureSend(HttpMethod.POST, newTestEntity);
     }
 
@@ -132,7 +132,7 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super TestEntity> futurePut(@Nonnull final TestEntity newTestEntity) {
+    public java.util.concurrent.Future<TestEntity> futurePut(@Nonnull final TestEntity newTestEntity) {
         return futureSend(HttpMethod.PUT, newTestEntity);
     }
 

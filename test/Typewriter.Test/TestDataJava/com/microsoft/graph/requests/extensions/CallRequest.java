@@ -40,7 +40,7 @@ public class CallRequest extends BaseRequest<Call> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Call> futureGet() {
+    public java.util.concurrent.Future<Call> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -61,7 +61,7 @@ public class CallRequest extends BaseRequest<Call> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Call> futureDelete() {
+    public java.util.concurrent.Future<Call> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -83,7 +83,7 @@ public class CallRequest extends BaseRequest<Call> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Call> futurePatch(@Nonnull final Call sourceCall) {
+    public java.util.concurrent.Future<Call> futurePatch(@Nonnull final Call sourceCall) {
         return futureSend(HttpMethod.PATCH, sourceCall);
     }
 
@@ -106,7 +106,7 @@ public class CallRequest extends BaseRequest<Call> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Call> futurePost(@Nonnull final Call newCall) {
+    public java.util.concurrent.Future<Call> futurePost(@Nonnull final Call newCall) {
         return futureSend(HttpMethod.POST, newCall);
     }
 
@@ -129,7 +129,7 @@ public class CallRequest extends BaseRequest<Call> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Call> futurePut(@Nonnull final Call newCall) {
+    public java.util.concurrent.Future<Call> futurePut(@Nonnull final Call newCall) {
         return futureSend(HttpMethod.PUT, newCall);
     }
 

@@ -45,7 +45,7 @@ public class TimeOffCollectionRequest extends BaseEntityCollectionRequest<TimeOf
      * @return a future with the created object
      */
     @Nonnull
-    public java.util.concurrent.Future<? super TimeOff> futurePost(@Nonnull final TimeOff newTimeOff) {
+    public java.util.concurrent.Future<TimeOff> futurePost(@Nonnull final TimeOff newTimeOff) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new TimeOffRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())

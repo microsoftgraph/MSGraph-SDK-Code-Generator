@@ -48,7 +48,7 @@ public class EntityType3CollectionRequest extends BaseEntityCollectionRequest<En
      * @return a future with the created object
      */
     @Nonnull
-    public java.util.concurrent.Future<? super EntityType3> futurePost(@Nonnull final EntityType3 newEntityType3) {
+    public java.util.concurrent.Future<EntityType3> futurePost(@Nonnull final EntityType3 newEntityType3) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new EntityType3RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())

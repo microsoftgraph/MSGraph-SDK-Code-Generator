@@ -44,7 +44,7 @@ public class ScheduleRequest extends BaseRequest<Schedule> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Schedule> futureGet() {
+    public java.util.concurrent.Future<Schedule> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -65,7 +65,7 @@ public class ScheduleRequest extends BaseRequest<Schedule> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Schedule> futureDelete() {
+    public java.util.concurrent.Future<Schedule> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -87,7 +87,7 @@ public class ScheduleRequest extends BaseRequest<Schedule> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Schedule> futurePatch(@Nonnull final Schedule sourceSchedule) {
+    public java.util.concurrent.Future<Schedule> futurePatch(@Nonnull final Schedule sourceSchedule) {
         return futureSend(HttpMethod.PATCH, sourceSchedule);
     }
 
@@ -110,7 +110,7 @@ public class ScheduleRequest extends BaseRequest<Schedule> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Schedule> futurePost(@Nonnull final Schedule newSchedule) {
+    public java.util.concurrent.Future<Schedule> futurePost(@Nonnull final Schedule newSchedule) {
         return futureSend(HttpMethod.POST, newSchedule);
     }
 
@@ -133,7 +133,7 @@ public class ScheduleRequest extends BaseRequest<Schedule> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<? super Schedule> futurePut(@Nonnull final Schedule newSchedule) {
+    public java.util.concurrent.Future<Schedule> futurePut(@Nonnull final Schedule newSchedule) {
         return futureSend(HttpMethod.PUT, newSchedule);
     }
 
