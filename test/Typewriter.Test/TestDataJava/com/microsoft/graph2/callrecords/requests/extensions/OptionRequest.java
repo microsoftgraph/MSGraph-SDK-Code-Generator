@@ -7,7 +7,6 @@ package com.microsoft.graph2.callrecords.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph2.callrecords.models.extensions.Option;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -38,10 +37,11 @@ public class OptionRequest extends BaseRequest<Option> {
     /**
      * Gets the Option from the service
      *
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void get(@Nonnull final ICallback<? super Option> callback) {
-        send(HttpMethod.GET, callback, null);
+    @Nonnull
+    public java.util.concurrent.Future<? super Option> futureGet() {
+        return futureSend(HttpMethod.GET, null);
     }
 
     /**
@@ -58,29 +58,33 @@ public class OptionRequest extends BaseRequest<Option> {
     /**
      * Delete this item from the service
      *
-     * @param callback the callback when the deletion action has completed
+     * @return a future with the deletion result
      */
-    public void delete(@Nonnull final ICallback<? super Option> callback) {
-        send(HttpMethod.DELETE, callback, null);
+    @Nonnull
+    public java.util.concurrent.Future<? super Option> futureDelete() {
+        return futureSend(HttpMethod.DELETE, null);
     }
 
     /**
      * Delete this item from the service
+     * @return the resulting response if the service returns anything on deletion
      *
      * @throws ClientException if there was an exception during the delete operation
      */
-    public void delete() throws ClientException {
-        send(HttpMethod.DELETE, null);
+    @Nullable
+    public Option delete() throws ClientException {
+        return send(HttpMethod.DELETE, null);
     }
 
     /**
      * Patches this Option with a source
      *
      * @param sourceOption the source object with updates
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void patch(@Nonnull final Option sourceOption, @Nonnull final ICallback<? super Option> callback) {
-        send(HttpMethod.PATCH, callback, sourceOption);
+    @Nonnull
+    public java.util.concurrent.Future<? super Option> futurePatch(@Nonnull final Option sourceOption) {
+        return futureSend(HttpMethod.PATCH, sourceOption);
     }
 
     /**
@@ -99,10 +103,11 @@ public class OptionRequest extends BaseRequest<Option> {
      * Creates a Option with a new object
      *
      * @param newOption the new object to create
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void post(@Nonnull final Option newOption, @Nonnull final ICallback<? super Option> callback) {
-        send(HttpMethod.POST, callback, newOption);
+    @Nonnull
+    public java.util.concurrent.Future<? super Option> futurePost(@Nonnull final Option newOption) {
+        return futureSend(HttpMethod.POST, newOption);
     }
 
     /**
@@ -121,10 +126,11 @@ public class OptionRequest extends BaseRequest<Option> {
      * Creates a Option with a new object
      *
      * @param newOption the object to create/update
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void put(@Nonnull final Option newOption, @Nonnull final ICallback<? super Option> callback) {
-        send(HttpMethod.PUT, callback, newOption);
+    @Nonnull
+    public java.util.concurrent.Future<? super Option> futurePut(@Nonnull final Option newOption) {
+        return futureSend(HttpMethod.PUT, newOption);
     }
 
     /**

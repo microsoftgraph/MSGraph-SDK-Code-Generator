@@ -7,7 +7,6 @@ package com.microsoft.graph.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.EntityType2;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -38,10 +37,11 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
     /**
      * Gets the EntityType2 from the service
      *
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void get(@Nonnull final ICallback<? super EntityType2> callback) {
-        send(HttpMethod.GET, callback, null);
+    @Nonnull
+    public java.util.concurrent.Future<? super EntityType2> futureGet() {
+        return futureSend(HttpMethod.GET, null);
     }
 
     /**
@@ -58,29 +58,33 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
     /**
      * Delete this item from the service
      *
-     * @param callback the callback when the deletion action has completed
+     * @return a future with the deletion result
      */
-    public void delete(@Nonnull final ICallback<? super EntityType2> callback) {
-        send(HttpMethod.DELETE, callback, null);
+    @Nonnull
+    public java.util.concurrent.Future<? super EntityType2> futureDelete() {
+        return futureSend(HttpMethod.DELETE, null);
     }
 
     /**
      * Delete this item from the service
+     * @return the resulting response if the service returns anything on deletion
      *
      * @throws ClientException if there was an exception during the delete operation
      */
-    public void delete() throws ClientException {
-        send(HttpMethod.DELETE, null);
+    @Nullable
+    public EntityType2 delete() throws ClientException {
+        return send(HttpMethod.DELETE, null);
     }
 
     /**
      * Patches this EntityType2 with a source
      *
      * @param sourceEntityType2 the source object with updates
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void patch(@Nonnull final EntityType2 sourceEntityType2, @Nonnull final ICallback<? super EntityType2> callback) {
-        send(HttpMethod.PATCH, callback, sourceEntityType2);
+    @Nonnull
+    public java.util.concurrent.Future<? super EntityType2> futurePatch(@Nonnull final EntityType2 sourceEntityType2) {
+        return futureSend(HttpMethod.PATCH, sourceEntityType2);
     }
 
     /**
@@ -99,10 +103,11 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * Creates a EntityType2 with a new object
      *
      * @param newEntityType2 the new object to create
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void post(@Nonnull final EntityType2 newEntityType2, @Nonnull final ICallback<? super EntityType2> callback) {
-        send(HttpMethod.POST, callback, newEntityType2);
+    @Nonnull
+    public java.util.concurrent.Future<? super EntityType2> futurePost(@Nonnull final EntityType2 newEntityType2) {
+        return futureSend(HttpMethod.POST, newEntityType2);
     }
 
     /**
@@ -121,10 +126,11 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * Creates a EntityType2 with a new object
      *
      * @param newEntityType2 the object to create/update
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void put(@Nonnull final EntityType2 newEntityType2, @Nonnull final ICallback<? super EntityType2> callback) {
-        send(HttpMethod.PUT, callback, newEntityType2);
+    @Nonnull
+    public java.util.concurrent.Future<? super EntityType2> futurePut(@Nonnull final EntityType2 newEntityType2) {
+        return futureSend(HttpMethod.PUT, newEntityType2);
     }
 
     /**

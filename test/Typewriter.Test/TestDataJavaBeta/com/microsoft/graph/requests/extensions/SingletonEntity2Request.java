@@ -7,7 +7,6 @@ package com.microsoft.graph.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.SingletonEntity2;
 import com.microsoft.graph.requests.extensions.EntityType3RequestBuilder;
 import java.util.Arrays;
@@ -39,10 +38,11 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
     /**
      * Gets the SingletonEntity2 from the service
      *
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void get(@Nonnull final ICallback<? super SingletonEntity2> callback) {
-        send(HttpMethod.GET, callback, null);
+    @Nonnull
+    public java.util.concurrent.Future<? super SingletonEntity2> futureGet() {
+        return futureSend(HttpMethod.GET, null);
     }
 
     /**
@@ -59,29 +59,33 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
     /**
      * Delete this item from the service
      *
-     * @param callback the callback when the deletion action has completed
+     * @return a future with the deletion result
      */
-    public void delete(@Nonnull final ICallback<? super SingletonEntity2> callback) {
-        send(HttpMethod.DELETE, callback, null);
+    @Nonnull
+    public java.util.concurrent.Future<? super SingletonEntity2> futureDelete() {
+        return futureSend(HttpMethod.DELETE, null);
     }
 
     /**
      * Delete this item from the service
+     * @return the resulting response if the service returns anything on deletion
      *
      * @throws ClientException if there was an exception during the delete operation
      */
-    public void delete() throws ClientException {
-        send(HttpMethod.DELETE, null);
+    @Nullable
+    public SingletonEntity2 delete() throws ClientException {
+        return send(HttpMethod.DELETE, null);
     }
 
     /**
      * Patches this SingletonEntity2 with a source
      *
      * @param sourceSingletonEntity2 the source object with updates
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void patch(@Nonnull final SingletonEntity2 sourceSingletonEntity2, @Nonnull final ICallback<? super SingletonEntity2> callback) {
-        send(HttpMethod.PATCH, callback, sourceSingletonEntity2);
+    @Nonnull
+    public java.util.concurrent.Future<? super SingletonEntity2> futurePatch(@Nonnull final SingletonEntity2 sourceSingletonEntity2) {
+        return futureSend(HttpMethod.PATCH, sourceSingletonEntity2);
     }
 
     /**
@@ -100,10 +104,11 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * Creates a SingletonEntity2 with a new object
      *
      * @param newSingletonEntity2 the new object to create
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void post(@Nonnull final SingletonEntity2 newSingletonEntity2, @Nonnull final ICallback<? super SingletonEntity2> callback) {
-        send(HttpMethod.POST, callback, newSingletonEntity2);
+    @Nonnull
+    public java.util.concurrent.Future<? super SingletonEntity2> futurePost(@Nonnull final SingletonEntity2 newSingletonEntity2) {
+        return futureSend(HttpMethod.POST, newSingletonEntity2);
     }
 
     /**
@@ -122,10 +127,11 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * Creates a SingletonEntity2 with a new object
      *
      * @param newSingletonEntity2 the object to create/update
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void put(@Nonnull final SingletonEntity2 newSingletonEntity2, @Nonnull final ICallback<? super SingletonEntity2> callback) {
-        send(HttpMethod.PUT, callback, newSingletonEntity2);
+    @Nonnull
+    public java.util.concurrent.Future<? super SingletonEntity2> futurePut(@Nonnull final SingletonEntity2 newSingletonEntity2) {
+        return futureSend(HttpMethod.PUT, newSingletonEntity2);
     }
 
     /**

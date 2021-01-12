@@ -7,7 +7,6 @@ package com.microsoft.graph2.callrecords.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph2.callrecords.models.extensions.Photo;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -38,10 +37,11 @@ public class PhotoRequest extends BaseRequest<Photo> {
     /**
      * Gets the Photo from the service
      *
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void get(@Nonnull final ICallback<? super Photo> callback) {
-        send(HttpMethod.GET, callback, null);
+    @Nonnull
+    public java.util.concurrent.Future<? super Photo> futureGet() {
+        return futureSend(HttpMethod.GET, null);
     }
 
     /**
@@ -58,29 +58,33 @@ public class PhotoRequest extends BaseRequest<Photo> {
     /**
      * Delete this item from the service
      *
-     * @param callback the callback when the deletion action has completed
+     * @return a future with the deletion result
      */
-    public void delete(@Nonnull final ICallback<? super Photo> callback) {
-        send(HttpMethod.DELETE, callback, null);
+    @Nonnull
+    public java.util.concurrent.Future<? super Photo> futureDelete() {
+        return futureSend(HttpMethod.DELETE, null);
     }
 
     /**
      * Delete this item from the service
+     * @return the resulting response if the service returns anything on deletion
      *
      * @throws ClientException if there was an exception during the delete operation
      */
-    public void delete() throws ClientException {
-        send(HttpMethod.DELETE, null);
+    @Nullable
+    public Photo delete() throws ClientException {
+        return send(HttpMethod.DELETE, null);
     }
 
     /**
      * Patches this Photo with a source
      *
      * @param sourcePhoto the source object with updates
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void patch(@Nonnull final Photo sourcePhoto, @Nonnull final ICallback<? super Photo> callback) {
-        send(HttpMethod.PATCH, callback, sourcePhoto);
+    @Nonnull
+    public java.util.concurrent.Future<? super Photo> futurePatch(@Nonnull final Photo sourcePhoto) {
+        return futureSend(HttpMethod.PATCH, sourcePhoto);
     }
 
     /**
@@ -99,10 +103,11 @@ public class PhotoRequest extends BaseRequest<Photo> {
      * Creates a Photo with a new object
      *
      * @param newPhoto the new object to create
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void post(@Nonnull final Photo newPhoto, @Nonnull final ICallback<? super Photo> callback) {
-        send(HttpMethod.POST, callback, newPhoto);
+    @Nonnull
+    public java.util.concurrent.Future<? super Photo> futurePost(@Nonnull final Photo newPhoto) {
+        return futureSend(HttpMethod.POST, newPhoto);
     }
 
     /**
@@ -121,10 +126,11 @@ public class PhotoRequest extends BaseRequest<Photo> {
      * Creates a Photo with a new object
      *
      * @param newPhoto the object to create/update
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void put(@Nonnull final Photo newPhoto, @Nonnull final ICallback<? super Photo> callback) {
-        send(HttpMethod.PUT, callback, newPhoto);
+    @Nonnull
+    public java.util.concurrent.Future<? super Photo> futurePut(@Nonnull final Photo newPhoto) {
+        return futureSend(HttpMethod.PUT, newPhoto);
     }
 
     /**

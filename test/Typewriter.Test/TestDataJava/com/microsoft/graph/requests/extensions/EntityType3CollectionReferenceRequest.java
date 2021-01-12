@@ -7,7 +7,6 @@ package com.microsoft.graph.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph2.callrecords.models.extensions.Segment;
 import com.microsoft.graph.models.extensions.EntityType3;
 import com.microsoft.graph.models.extensions.Recipient;
@@ -52,14 +51,15 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionWithRef
     /**
      * Creates a new EntityType3
      * @param newEntityType3 the EntityType3 to create
-     * @param callback the callback to invoke once the object has been created
+     * @return a future with the created object
      */
-    public void post(@Nonnull final EntityType3 newEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
+    @Nonnull
+    public java.util.concurrent.Future<? super EntityType3> futurePost(@Nonnull final EntityType3 newEntityType3) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/testTypes/" + newEntityType3.id);
-        new EntityType3WithReferenceRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+        return new EntityType3WithReferenceRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
-            .post(newEntityType3, body, callback);
+            .futurePost(newEntityType3, body);
     }
 
     /**

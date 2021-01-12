@@ -7,7 +7,6 @@ package com.microsoft.graph.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.EntityType3;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
@@ -42,10 +41,11 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
     /**
      * Gets the EntityType3 from the service
      *
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void get(@Nonnull final ICallback<? super EntityType3> callback) {
-        send(HttpMethod.GET, callback, null);
+    @Nonnull
+    public java.util.concurrent.Future<? super EntityType3> futureGet() {
+        return futureSend(HttpMethod.GET, null);
     }
 
     /**
@@ -62,29 +62,33 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
     /**
      * Delete this item from the service
      *
-     * @param callback the callback when the deletion action has completed
+     * @return a future with the deletion result
      */
-    public void delete(@Nonnull final ICallback<? super EntityType3> callback) {
-        send(HttpMethod.DELETE, callback, null);
+    @Nonnull
+    public java.util.concurrent.Future<? super EntityType3> futureDelete() {
+        return futureSend(HttpMethod.DELETE, null);
     }
 
     /**
      * Delete this item from the service
+     * @return the resulting response if the service returns anything on deletion
      *
      * @throws ClientException if there was an exception during the delete operation
      */
-    public void delete() throws ClientException {
-        send(HttpMethod.DELETE, null);
+    @Nullable
+    public EntityType3 delete() throws ClientException {
+        return send(HttpMethod.DELETE, null);
     }
 
     /**
      * Patches this EntityType3 with a source
      *
      * @param sourceEntityType3 the source object with updates
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void patch(@Nonnull final EntityType3 sourceEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
-        send(HttpMethod.PATCH, callback, sourceEntityType3);
+    @Nonnull
+    public java.util.concurrent.Future<? super EntityType3> futurePatch(@Nonnull final EntityType3 sourceEntityType3) {
+        return futureSend(HttpMethod.PATCH, sourceEntityType3);
     }
 
     /**
@@ -103,10 +107,11 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * Creates a EntityType3 with a new object
      *
      * @param newEntityType3 the new object to create
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void post(@Nonnull final EntityType3 newEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
-        send(HttpMethod.POST, callback, newEntityType3);
+    @Nonnull
+    public java.util.concurrent.Future<? super EntityType3> futurePost(@Nonnull final EntityType3 newEntityType3) {
+        return futureSend(HttpMethod.POST, newEntityType3);
     }
 
     /**
@@ -125,10 +130,11 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * Creates a EntityType3 with a new object
      *
      * @param newEntityType3 the object to create/update
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void put(@Nonnull final EntityType3 newEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
-        send(HttpMethod.PUT, callback, newEntityType3);
+    @Nonnull
+    public java.util.concurrent.Future<? super EntityType3> futurePut(@Nonnull final EntityType3 newEntityType3) {
+        return futureSend(HttpMethod.PUT, newEntityType3);
     }
 
     /**
