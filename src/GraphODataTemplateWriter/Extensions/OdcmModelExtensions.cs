@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 {
@@ -9,6 +9,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
     using Vipr.Core.CodeModel;
     using NLog;
     using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
+    using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
 
     public static class OdcmModelExtensions
     {
@@ -524,6 +525,124 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         public static IEnumerable<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
         {
             return odcmClass.Methods.SelectMany(x => x.WithOverloads());
+        }
+
+        /// <summary>
+        /// Use this method to get a collection of navigation properties on the return type 
+        /// of a composable function. 
+        /// </summary>
+        /// <param name="odcmMethod">The OdcmMethod to target.</param>
+        /// <returns>An ordered (by name) list of navigation properties bound 
+        /// to the return type. Can be an empty list.</returns>
+        public static List<OdcmProperty> GetComposableFunctionReturnTypeNavigations(this OdcmMethod odcmMethod)
+        {
+            if (!odcmMethod.IsComposable)
+                throw new InvalidOperationException("This extension method is intended " +
+                                                    "to only be called on a composable function.");
+
+            return (odcmMethod.ReturnType as OdcmClass).Properties
+                                                       .Where(p => p.IsLink)
+                                                       .OrderBy(p => p.Name)
+                                                       .ToList();
+        }
+
+        /// <summary>
+        /// Use this method to get a collection of methods on the return type 
+        /// of a composable function. This will include themethods and overloads.
+        /// </summary>
+        /// <param name="odcmMethod">The OdcmMethod to target.</param>
+        /// <returns>An ordered (by name) list of methods bound to the return 
+        /// type. Can be an empty list.</returns>
+        public static List<OdcmMethod> GetComposableFunctionReturnTypeMethods(this OdcmMethod odcmMethod)
+        {
+            if (!odcmMethod.IsComposable)
+                throw new InvalidOperationException("This extension method is intended " +
+                                                    "to only be called on a composable function.");
+
+            return odcmMethod.ReturnType.AsOdcmClass().MethodsAndOverloads()
+                                                       .OrderBy(m => m.Name)
+                                                       .ToList();
+        }
+
+        /// <summary>
+        /// Use this method to get the method information for all of the methods.
+        /// </summary>
+        /// <param name="methods">A list of OdcmMethods.</param>
+        /// <param name="namespace">The namespace for the methods.</param>
+        /// <returns>An ordered (to minimize diffs caused by reorder in the CSDL) list of 
+        /// MethodInfo objects used to construct the request builders.</returns>
+        public static List<MethodInfo> GetAllMethodsInfo(this List<OdcmMethod> methods, string @namespace)
+        {
+            return methods.Select(m =>
+            {
+                var parameters = m.Parameters
+                    .Select(p =>
+                    {
+                        var type = p.Type.GetTypeString(@namespace);
+                        var name = p.Name.ToLowerFirstChar();
+                        var parameterName = p.Name.GetSanitizedParameterName();
+                        var propertyName = p.Name.ToCheckedCase();
+
+                        // Adds support for classes ending in "Request" that have been dismabiguated.
+                        if (type.EndsWith("Request"))
+                        {
+                            type = String.Concat(type, "Object");
+                        }
+
+                        // Adjust the type string
+                        if (p.IsCollection)
+                        {
+                            type = string.Format("IEnumerable<{0}>", type);
+                        }
+                        else if (!p.Type.IsTypeNullable() && p.IsNullable)
+                        {
+                            type += "?";
+                        }
+
+                        return new ParameterInfo() { Type = type, Name = name, ParameterName = parameterName, PropertyName = propertyName, IsNullable = p.IsNullable };
+                    })
+                    .OrderBy(p => p.IsNullable ? 1 : 0); // I suspect this could cause a problem if new overloads are added.
+
+                var paramStrings = parameters.Select(p => string.Format(",\n            {0} {1}", p.Type, p.ParameterName));
+                var paramComments = parameters.Select(p => string.Format("\n        /// <param name=\"{0}\">A {0} parameter for the OData method call.</param>", p.ParameterName));
+                var paramArgsForConstructor = parameters.Select(p => string.Format(",\n                {0}", p.ParameterName));
+
+                var entityName = m.Class.Name.ToCheckedCase();
+                var methodName = m.Name.ToCheckedCase();
+                var requestType = entityName + methodName + "Request";
+                var requestBuilderType = requestType + "Builder";
+                
+                return new MethodInfo()
+                {
+                    Parameters = parameters,
+                    ParametersAsArguments = string.Join("", paramStrings),
+                    ParamArgsForConstructor = string.Join("", paramArgsForConstructor),
+                    ParameterComments = string.Join("", paramComments),
+                    RequestBuilderType = requestBuilderType,
+                    MethodName = methodName,
+                    MethodFullName = m.FullName,
+                    MethodParametersAsArguments = paramStrings.Count() == 0 ? "" : string.Join("", paramStrings).Substring(1) 
+                };
+            }).OrderBy(m => m.MethodName).ToList();
+        }
+
+        public static List<NavigationPropertyInfo> GetAllNavigationPropertyInfo(this List<OdcmProperty> navProperties)
+        {
+            return navProperties.Select(p =>
+            {
+                var name = p.Name.ToCheckedCase();
+                //var returnClassRequestBuilderName = String.Format("{0}{1}RequestBuilder", p.Class.Name.ToCheckedCase(), name);
+                var returnClassRequestBuilderName = String.Format("{0}RequestBuilder", p.Type.Name.ToCheckedCase());
+                var returnInterfaceRequestBuilderName = String.Format("I{0}", returnClassRequestBuilderName);
+                return new NavigationPropertyInfo()
+                {
+                    ReturnInterfaceRequestBuilderName = returnInterfaceRequestBuilderName,
+                    ReturnClassRequestBuilderName = returnClassRequestBuilderName,
+                    Segment = p.Name,
+                    Name = name,
+                    Description = p.Description ?? ""
+                };
+            }).OrderBy(n => n.Name).ToList();
         }
     }
 }

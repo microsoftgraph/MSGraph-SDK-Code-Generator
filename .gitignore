@@ -280,6 +280,10 @@ FakesAssemblies/
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat
 node_modules/
+<<<<<<< HEAD
+bower_components/
+/output
+=======
 
 # Visual Studio 6 build log
 *.plg
@@ -443,3 +447,4 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+>>>>>>> dev
