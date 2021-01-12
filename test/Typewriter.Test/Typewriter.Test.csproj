@@ -50,11 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Typewriter\Typewriter.csproj" />
+    <ProjectReference Include="..\..\Templates\Templates.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
     <PackageReference Include="NUnit">
-      <Version>3.12.0</Version>
+      <Version>3.13.0</Version>
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter">
       <Version>3.17.0</Version>
