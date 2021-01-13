@@ -16,8 +16,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
     {
         public static Dictionary<string, string> OnenotePageCollectionRequest = new Dictionary<string, string>() {
             {
-                "public java.util.concurrent.Future<OnenotePage> futurePost(@Nonnull final OnenotePage newOnenotePage) {",
-                "public java.util.concurrent.Future<OnenotePage> futurePost(@Nonnull final byte[] newOnenotePage) {"
+                "public java.util.concurrent.CompletableFuture<OnenotePage> futurePost(@Nonnull final OnenotePage newOnenotePage) {",
+                "public java.util.concurrent.CompletableFuture<OnenotePage> futurePost(@Nonnull final byte[] newOnenotePage) {"
             },
             {
                 "public OnenotePage post(@Nonnull final OnenotePage newOnenotePage) throws ClientException {",
@@ -28,8 +28,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static Dictionary<string, string> OnenotePageRequest = new Dictionary<string, string>()
         {
             {
-                "public java.util.concurrent.Future<OnenotePage> futurePost(@Nonnull final OnenotePage newOnenotePage) {",
-                "public java.util.concurrent.Future<OnenotePage> futurePost(@Nonnull final byte[] newOnenotePage) {"
+                "public java.util.concurrent.CompletableFuture<OnenotePage> futurePost(@Nonnull final OnenotePage newOnenotePage) {",
+                "public java.util.concurrent.CompletableFuture<OnenotePage> futurePost(@Nonnull final byte[] newOnenotePage) {"
             },
             {
                 "public OnenotePage post(@Nonnull final OnenotePage newOnenotePage) throws ClientException {",

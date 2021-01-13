@@ -151,7 +151,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<{0}> futureDelete() {{
+    public java.util.concurrent.CompletableFuture<{0}> futureDelete() {{
         return futureSend(HttpMethod.DELETE, null);
     }}
 
@@ -179,7 +179,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<{0}> futureGet() {{
+    public java.util.concurrent.CompletableFuture<{0}> futureGet() {{
         return futureSend(HttpMethod.GET, null);
     }}
 
@@ -208,7 +208,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<{0}> futurePatch(@Nonnull final {0} source{0}) {{
+    public java.util.concurrent.CompletableFuture<{0}> futurePatch(@Nonnull final {0} source{0}) {{
         return futureSend(HttpMethod.PATCH, source{0});
     }}
 
@@ -238,7 +238,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<{0}> futurePost(@Nonnull final {0} new{0}) {{
+    public java.util.concurrent.CompletableFuture<{0}> futurePost(@Nonnull final {0} new{0}) {{
         return futureSend(HttpMethod.POST, new{0});
     }}
 
@@ -268,7 +268,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<{0}> futurePut(@Nonnull final {0} new{0}) {{
+    public java.util.concurrent.CompletableFuture<{0}> futurePut(@Nonnull final {0} new{0}) {{
         return futureSend(HttpMethod.PUT, new{0});
     }}
 
