@@ -40,7 +40,7 @@ public class TimeOffRequestRequest extends BaseRequest<TimeOffRequest> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<TimeOffRequest> futureGet() {
+    public java.util.concurrent.CompletableFuture<TimeOffRequest> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -61,7 +61,7 @@ public class TimeOffRequestRequest extends BaseRequest<TimeOffRequest> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<TimeOffRequest> futureDelete() {
+    public java.util.concurrent.CompletableFuture<TimeOffRequest> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -83,7 +83,7 @@ public class TimeOffRequestRequest extends BaseRequest<TimeOffRequest> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<TimeOffRequest> futurePatch(@Nonnull final TimeOffRequest sourceTimeOffRequest) {
+    public java.util.concurrent.CompletableFuture<TimeOffRequest> futurePatch(@Nonnull final TimeOffRequest sourceTimeOffRequest) {
         return futureSend(HttpMethod.PATCH, sourceTimeOffRequest);
     }
 
@@ -106,7 +106,7 @@ public class TimeOffRequestRequest extends BaseRequest<TimeOffRequest> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<TimeOffRequest> futurePost(@Nonnull final TimeOffRequest newTimeOffRequest) {
+    public java.util.concurrent.CompletableFuture<TimeOffRequest> futurePost(@Nonnull final TimeOffRequest newTimeOffRequest) {
         return futureSend(HttpMethod.POST, newTimeOffRequest);
     }
 
@@ -129,7 +129,7 @@ public class TimeOffRequestRequest extends BaseRequest<TimeOffRequest> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<TimeOffRequest> futurePut(@Nonnull final TimeOffRequest newTimeOffRequest) {
+    public java.util.concurrent.CompletableFuture<TimeOffRequest> futurePut(@Nonnull final TimeOffRequest newTimeOffRequest) {
         return futureSend(HttpMethod.PUT, newTimeOffRequest);
     }
 

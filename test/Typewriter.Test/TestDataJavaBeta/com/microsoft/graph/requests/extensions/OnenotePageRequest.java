@@ -41,7 +41,7 @@ public class OnenotePageRequest extends BaseRequest<OnenotePage> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<OnenotePage> futureGet() {
+    public java.util.concurrent.CompletableFuture<OnenotePage> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -62,7 +62,7 @@ public class OnenotePageRequest extends BaseRequest<OnenotePage> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<OnenotePage> futureDelete() {
+    public java.util.concurrent.CompletableFuture<OnenotePage> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -84,7 +84,7 @@ public class OnenotePageRequest extends BaseRequest<OnenotePage> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<OnenotePage> futurePatch(@Nonnull final OnenotePage sourceOnenotePage) {
+    public java.util.concurrent.CompletableFuture<OnenotePage> futurePatch(@Nonnull final OnenotePage sourceOnenotePage) {
         return futureSend(HttpMethod.PATCH, sourceOnenotePage);
     }
 
@@ -107,7 +107,7 @@ public class OnenotePageRequest extends BaseRequest<OnenotePage> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<OnenotePage> futurePost(@Nonnull final byte[] newOnenotePage) {
+    public java.util.concurrent.CompletableFuture<OnenotePage> futurePost(@Nonnull final byte[] newOnenotePage) {
         return futureSend(HttpMethod.POST, newOnenotePage);
     }
 
@@ -130,7 +130,7 @@ public class OnenotePageRequest extends BaseRequest<OnenotePage> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<OnenotePage> futurePut(@Nonnull final OnenotePage newOnenotePage) {
+    public java.util.concurrent.CompletableFuture<OnenotePage> futurePut(@Nonnull final OnenotePage newOnenotePage) {
         return futureSend(HttpMethod.PUT, newOnenotePage);
     }
 

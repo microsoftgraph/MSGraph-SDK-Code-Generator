@@ -42,7 +42,7 @@ public class TestTypeRequest extends BaseRequest<TestType> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<TestType> futureGet() {
+    public java.util.concurrent.CompletableFuture<TestType> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -63,7 +63,7 @@ public class TestTypeRequest extends BaseRequest<TestType> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<TestType> futureDelete() {
+    public java.util.concurrent.CompletableFuture<TestType> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -85,7 +85,7 @@ public class TestTypeRequest extends BaseRequest<TestType> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<TestType> futurePatch(@Nonnull final TestType sourceTestType) {
+    public java.util.concurrent.CompletableFuture<TestType> futurePatch(@Nonnull final TestType sourceTestType) {
         return futureSend(HttpMethod.PATCH, sourceTestType);
     }
 
@@ -108,7 +108,7 @@ public class TestTypeRequest extends BaseRequest<TestType> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<TestType> futurePost(@Nonnull final TestType newTestType) {
+    public java.util.concurrent.CompletableFuture<TestType> futurePost(@Nonnull final TestType newTestType) {
         return futureSend(HttpMethod.POST, newTestType);
     }
 
@@ -131,7 +131,7 @@ public class TestTypeRequest extends BaseRequest<TestType> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<TestType> futurePut(@Nonnull final TestType newTestType) {
+    public java.util.concurrent.CompletableFuture<TestType> futurePut(@Nonnull final TestType newTestType) {
         return futureSend(HttpMethod.PUT, newTestType);
     }
 

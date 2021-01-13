@@ -40,7 +40,7 @@ public class EndpointRequest extends BaseRequest<Endpoint> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Endpoint> futureGet() {
+    public java.util.concurrent.CompletableFuture<Endpoint> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -61,7 +61,7 @@ public class EndpointRequest extends BaseRequest<Endpoint> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<Endpoint> futureDelete() {
+    public java.util.concurrent.CompletableFuture<Endpoint> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -83,7 +83,7 @@ public class EndpointRequest extends BaseRequest<Endpoint> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Endpoint> futurePatch(@Nonnull final Endpoint sourceEndpoint) {
+    public java.util.concurrent.CompletableFuture<Endpoint> futurePatch(@Nonnull final Endpoint sourceEndpoint) {
         return futureSend(HttpMethod.PATCH, sourceEndpoint);
     }
 
@@ -106,7 +106,7 @@ public class EndpointRequest extends BaseRequest<Endpoint> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Endpoint> futurePost(@Nonnull final Endpoint newEndpoint) {
+    public java.util.concurrent.CompletableFuture<Endpoint> futurePost(@Nonnull final Endpoint newEndpoint) {
         return futureSend(HttpMethod.POST, newEndpoint);
     }
 
@@ -129,7 +129,7 @@ public class EndpointRequest extends BaseRequest<Endpoint> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Endpoint> futurePut(@Nonnull final Endpoint newEndpoint) {
+    public java.util.concurrent.CompletableFuture<Endpoint> futurePut(@Nonnull final Endpoint newEndpoint) {
         return futureSend(HttpMethod.PUT, newEndpoint);
     }
 

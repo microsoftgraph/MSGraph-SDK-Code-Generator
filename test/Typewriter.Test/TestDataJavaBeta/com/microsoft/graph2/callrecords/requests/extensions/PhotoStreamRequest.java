@@ -41,7 +41,7 @@ public class PhotoStreamRequest extends BaseStreamRequest<Photo> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<InputStream> futureGet() {
+    public java.util.concurrent.CompletableFuture<InputStream> futureGet() {
         return futureSend();
     }
 
@@ -63,7 +63,7 @@ public class PhotoStreamRequest extends BaseStreamRequest<Photo> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Photo> futurePut(@Nonnull final byte[] fileContents) {
+    public java.util.concurrent.CompletableFuture<Photo> futurePut(@Nonnull final byte[] fileContents) {
         return futureSend(fileContents);
     }
 

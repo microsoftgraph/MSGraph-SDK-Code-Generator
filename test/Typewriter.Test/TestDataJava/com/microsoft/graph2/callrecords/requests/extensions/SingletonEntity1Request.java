@@ -41,7 +41,7 @@ public class SingletonEntity1Request extends BaseRequest<SingletonEntity1> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<SingletonEntity1> futureGet() {
+    public java.util.concurrent.CompletableFuture<SingletonEntity1> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -62,7 +62,7 @@ public class SingletonEntity1Request extends BaseRequest<SingletonEntity1> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<SingletonEntity1> futureDelete() {
+    public java.util.concurrent.CompletableFuture<SingletonEntity1> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -84,7 +84,7 @@ public class SingletonEntity1Request extends BaseRequest<SingletonEntity1> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<SingletonEntity1> futurePatch(@Nonnull final SingletonEntity1 sourceSingletonEntity1) {
+    public java.util.concurrent.CompletableFuture<SingletonEntity1> futurePatch(@Nonnull final SingletonEntity1 sourceSingletonEntity1) {
         return futureSend(HttpMethod.PATCH, sourceSingletonEntity1);
     }
 
@@ -107,7 +107,7 @@ public class SingletonEntity1Request extends BaseRequest<SingletonEntity1> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<SingletonEntity1> futurePost(@Nonnull final SingletonEntity1 newSingletonEntity1) {
+    public java.util.concurrent.CompletableFuture<SingletonEntity1> futurePost(@Nonnull final SingletonEntity1 newSingletonEntity1) {
         return futureSend(HttpMethod.POST, newSingletonEntity1);
     }
 
@@ -130,7 +130,7 @@ public class SingletonEntity1Request extends BaseRequest<SingletonEntity1> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<SingletonEntity1> futurePut(@Nonnull final SingletonEntity1 newSingletonEntity1) {
+    public java.util.concurrent.CompletableFuture<SingletonEntity1> futurePut(@Nonnull final SingletonEntity1 newSingletonEntity1) {
         return futureSend(HttpMethod.PUT, newSingletonEntity1);
     }
 

@@ -40,7 +40,7 @@ public class UserRequest extends BaseRequest<User> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<User> futureGet() {
+    public java.util.concurrent.CompletableFuture<User> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -61,7 +61,7 @@ public class UserRequest extends BaseRequest<User> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<User> futureDelete() {
+    public java.util.concurrent.CompletableFuture<User> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -83,7 +83,7 @@ public class UserRequest extends BaseRequest<User> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<User> futurePatch(@Nonnull final User sourceUser) {
+    public java.util.concurrent.CompletableFuture<User> futurePatch(@Nonnull final User sourceUser) {
         return futureSend(HttpMethod.PATCH, sourceUser);
     }
 
@@ -106,7 +106,7 @@ public class UserRequest extends BaseRequest<User> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<User> futurePost(@Nonnull final User newUser) {
+    public java.util.concurrent.CompletableFuture<User> futurePost(@Nonnull final User newUser) {
         return futureSend(HttpMethod.POST, newUser);
     }
 
@@ -129,7 +129,7 @@ public class UserRequest extends BaseRequest<User> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<User> futurePut(@Nonnull final User newUser) {
+    public java.util.concurrent.CompletableFuture<User> futurePut(@Nonnull final User newUser) {
         return futureSend(HttpMethod.PUT, newUser);
     }
 

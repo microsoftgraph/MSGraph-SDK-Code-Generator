@@ -40,7 +40,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<EntityType2> futureGet() {
+    public java.util.concurrent.CompletableFuture<EntityType2> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -61,7 +61,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<EntityType2> futureDelete() {
+    public java.util.concurrent.CompletableFuture<EntityType2> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -83,7 +83,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<EntityType2> futurePatch(@Nonnull final EntityType2 sourceEntityType2) {
+    public java.util.concurrent.CompletableFuture<EntityType2> futurePatch(@Nonnull final EntityType2 sourceEntityType2) {
         return futureSend(HttpMethod.PATCH, sourceEntityType2);
     }
 
@@ -106,7 +106,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<EntityType2> futurePost(@Nonnull final EntityType2 newEntityType2) {
+    public java.util.concurrent.CompletableFuture<EntityType2> futurePost(@Nonnull final EntityType2 newEntityType2) {
         return futureSend(HttpMethod.POST, newEntityType2);
     }
 
@@ -129,7 +129,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<EntityType2> futurePut(@Nonnull final EntityType2 newEntityType2) {
+    public java.util.concurrent.CompletableFuture<EntityType2> futurePut(@Nonnull final EntityType2 newEntityType2) {
         return futureSend(HttpMethod.PUT, newEntityType2);
     }
 

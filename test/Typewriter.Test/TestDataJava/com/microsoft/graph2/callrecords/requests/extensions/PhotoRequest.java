@@ -40,7 +40,7 @@ public class PhotoRequest extends BaseRequest<Photo> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Photo> futureGet() {
+    public java.util.concurrent.CompletableFuture<Photo> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -61,7 +61,7 @@ public class PhotoRequest extends BaseRequest<Photo> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<Photo> futureDelete() {
+    public java.util.concurrent.CompletableFuture<Photo> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -83,7 +83,7 @@ public class PhotoRequest extends BaseRequest<Photo> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Photo> futurePatch(@Nonnull final Photo sourcePhoto) {
+    public java.util.concurrent.CompletableFuture<Photo> futurePatch(@Nonnull final Photo sourcePhoto) {
         return futureSend(HttpMethod.PATCH, sourcePhoto);
     }
 
@@ -106,7 +106,7 @@ public class PhotoRequest extends BaseRequest<Photo> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Photo> futurePost(@Nonnull final Photo newPhoto) {
+    public java.util.concurrent.CompletableFuture<Photo> futurePost(@Nonnull final Photo newPhoto) {
         return futureSend(HttpMethod.POST, newPhoto);
     }
 
@@ -129,7 +129,7 @@ public class PhotoRequest extends BaseRequest<Photo> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Photo> futurePut(@Nonnull final Photo newPhoto) {
+    public java.util.concurrent.CompletableFuture<Photo> futurePut(@Nonnull final Photo newPhoto) {
         return futureSend(HttpMethod.PUT, newPhoto);
     }
 

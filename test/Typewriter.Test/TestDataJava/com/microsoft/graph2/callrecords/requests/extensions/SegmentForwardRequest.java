@@ -43,7 +43,7 @@ public class SegmentForwardRequest extends BaseRequest<Void> {
      * @return a future for the operation
      */
     @Nonnull
-    public java.util.concurrent.Future<Void> futurePost() {
+    public java.util.concurrent.CompletableFuture<Void> futurePost() {
         return this.futureSend(HttpMethod.POST, body);
     }
 

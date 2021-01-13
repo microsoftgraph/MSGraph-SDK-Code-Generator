@@ -42,7 +42,7 @@ public class SessionRequest extends BaseRequest<Session> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Session> futureGet() {
+    public java.util.concurrent.CompletableFuture<Session> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -63,7 +63,7 @@ public class SessionRequest extends BaseRequest<Session> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<Session> futureDelete() {
+    public java.util.concurrent.CompletableFuture<Session> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -85,7 +85,7 @@ public class SessionRequest extends BaseRequest<Session> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Session> futurePatch(@Nonnull final Session sourceSession) {
+    public java.util.concurrent.CompletableFuture<Session> futurePatch(@Nonnull final Session sourceSession) {
         return futureSend(HttpMethod.PATCH, sourceSession);
     }
 
@@ -108,7 +108,7 @@ public class SessionRequest extends BaseRequest<Session> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Session> futurePost(@Nonnull final Session newSession) {
+    public java.util.concurrent.CompletableFuture<Session> futurePost(@Nonnull final Session newSession) {
         return futureSend(HttpMethod.POST, newSession);
     }
 
@@ -131,7 +131,7 @@ public class SessionRequest extends BaseRequest<Session> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Session> futurePut(@Nonnull final Session newSession) {
+    public java.util.concurrent.CompletableFuture<Session> futurePut(@Nonnull final Session newSession) {
         return futureSend(HttpMethod.PUT, newSession);
     }
 

@@ -45,7 +45,7 @@ public class SessionCollectionRequest extends BaseEntityCollectionRequest<Sessio
      * @return a future with the created object
      */
     @Nonnull
-    public java.util.concurrent.Future<Session> futurePost(@Nonnull final Session newSession) {
+    public java.util.concurrent.CompletableFuture<Session> futurePost(@Nonnull final Session newSession) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new SessionRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())

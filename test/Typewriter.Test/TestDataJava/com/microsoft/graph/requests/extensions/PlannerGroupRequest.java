@@ -40,7 +40,7 @@ public class PlannerGroupRequest extends BaseRequest<PlannerGroup> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<PlannerGroup> futureGet() {
+    public java.util.concurrent.CompletableFuture<PlannerGroup> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -61,7 +61,7 @@ public class PlannerGroupRequest extends BaseRequest<PlannerGroup> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<PlannerGroup> futureDelete() {
+    public java.util.concurrent.CompletableFuture<PlannerGroup> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -83,7 +83,7 @@ public class PlannerGroupRequest extends BaseRequest<PlannerGroup> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<PlannerGroup> futurePatch(@Nonnull final PlannerGroup sourcePlannerGroup) {
+    public java.util.concurrent.CompletableFuture<PlannerGroup> futurePatch(@Nonnull final PlannerGroup sourcePlannerGroup) {
         return futureSend(HttpMethod.PATCH, sourcePlannerGroup);
     }
 
@@ -106,7 +106,7 @@ public class PlannerGroupRequest extends BaseRequest<PlannerGroup> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<PlannerGroup> futurePost(@Nonnull final PlannerGroup newPlannerGroup) {
+    public java.util.concurrent.CompletableFuture<PlannerGroup> futurePost(@Nonnull final PlannerGroup newPlannerGroup) {
         return futureSend(HttpMethod.POST, newPlannerGroup);
     }
 
@@ -129,7 +129,7 @@ public class PlannerGroupRequest extends BaseRequest<PlannerGroup> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<PlannerGroup> futurePut(@Nonnull final PlannerGroup newPlannerGroup) {
+    public java.util.concurrent.CompletableFuture<PlannerGroup> futurePut(@Nonnull final PlannerGroup newPlannerGroup) {
         return futureSend(HttpMethod.PUT, newPlannerGroup);
     }
 

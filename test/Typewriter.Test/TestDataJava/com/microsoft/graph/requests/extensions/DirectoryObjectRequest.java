@@ -55,7 +55,7 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<DirectoryObject> futureGet() {
+    public java.util.concurrent.CompletableFuture<DirectoryObject> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -76,7 +76,7 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<DirectoryObject> futureDelete() {
+    public java.util.concurrent.CompletableFuture<DirectoryObject> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -98,7 +98,7 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<DirectoryObject> futurePatch(@Nonnull final DirectoryObject sourceDirectoryObject) {
+    public java.util.concurrent.CompletableFuture<DirectoryObject> futurePatch(@Nonnull final DirectoryObject sourceDirectoryObject) {
         return futureSend(HttpMethod.PATCH, sourceDirectoryObject);
     }
 
@@ -121,7 +121,7 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<DirectoryObject> futurePost(@Nonnull final DirectoryObject newDirectoryObject) {
+    public java.util.concurrent.CompletableFuture<DirectoryObject> futurePost(@Nonnull final DirectoryObject newDirectoryObject) {
         return futureSend(HttpMethod.POST, newDirectoryObject);
     }
 
@@ -144,7 +144,7 @@ public class DirectoryObjectRequest extends BaseRequest<DirectoryObject> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<DirectoryObject> futurePut(@Nonnull final DirectoryObject newDirectoryObject) {
+    public java.util.concurrent.CompletableFuture<DirectoryObject> futurePut(@Nonnull final DirectoryObject newDirectoryObject) {
         return futureSend(HttpMethod.PUT, newDirectoryObject);
     }
 

@@ -48,7 +48,7 @@ public class SegmentRequest extends BaseRequest<Segment> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Segment> futureGet() {
+    public java.util.concurrent.CompletableFuture<Segment> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -69,7 +69,7 @@ public class SegmentRequest extends BaseRequest<Segment> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<Segment> futureDelete() {
+    public java.util.concurrent.CompletableFuture<Segment> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -91,7 +91,7 @@ public class SegmentRequest extends BaseRequest<Segment> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Segment> futurePatch(@Nonnull final Segment sourceSegment) {
+    public java.util.concurrent.CompletableFuture<Segment> futurePatch(@Nonnull final Segment sourceSegment) {
         return futureSend(HttpMethod.PATCH, sourceSegment);
     }
 
@@ -114,7 +114,7 @@ public class SegmentRequest extends BaseRequest<Segment> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Segment> futurePost(@Nonnull final Segment newSegment) {
+    public java.util.concurrent.CompletableFuture<Segment> futurePost(@Nonnull final Segment newSegment) {
         return futureSend(HttpMethod.POST, newSegment);
     }
 
@@ -137,7 +137,7 @@ public class SegmentRequest extends BaseRequest<Segment> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<Segment> futurePut(@Nonnull final Segment newSegment) {
+    public java.util.concurrent.CompletableFuture<Segment> futurePut(@Nonnull final Segment newSegment) {
         return futureSend(HttpMethod.PUT, newSegment);
     }
 

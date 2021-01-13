@@ -41,7 +41,7 @@ public class OnenotePageContentStreamRequest extends BaseStreamRequest<OnenotePa
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<InputStream> futureGet() {
+    public java.util.concurrent.CompletableFuture<InputStream> futureGet() {
         return futureSend();
     }
 
@@ -63,7 +63,7 @@ public class OnenotePageContentStreamRequest extends BaseStreamRequest<OnenotePa
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<OnenotePage> futurePut(@Nonnull final byte[] fileContents) {
+    public java.util.concurrent.CompletableFuture<OnenotePage> futurePut(@Nonnull final byte[] fileContents) {
         return futureSend(fileContents);
     }
 

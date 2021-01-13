@@ -40,7 +40,7 @@ public class TimeOffRequest extends BaseRequest<TimeOff> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<TimeOff> futureGet() {
+    public java.util.concurrent.CompletableFuture<TimeOff> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -61,7 +61,7 @@ public class TimeOffRequest extends BaseRequest<TimeOff> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<TimeOff> futureDelete() {
+    public java.util.concurrent.CompletableFuture<TimeOff> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -83,7 +83,7 @@ public class TimeOffRequest extends BaseRequest<TimeOff> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<TimeOff> futurePatch(@Nonnull final TimeOff sourceTimeOff) {
+    public java.util.concurrent.CompletableFuture<TimeOff> futurePatch(@Nonnull final TimeOff sourceTimeOff) {
         return futureSend(HttpMethod.PATCH, sourceTimeOff);
     }
 
@@ -106,7 +106,7 @@ public class TimeOffRequest extends BaseRequest<TimeOff> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<TimeOff> futurePost(@Nonnull final TimeOff newTimeOff) {
+    public java.util.concurrent.CompletableFuture<TimeOff> futurePost(@Nonnull final TimeOff newTimeOff) {
         return futureSend(HttpMethod.POST, newTimeOff);
     }
 
@@ -129,7 +129,7 @@ public class TimeOffRequest extends BaseRequest<TimeOff> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<TimeOff> futurePut(@Nonnull final TimeOff newTimeOff) {
+    public java.util.concurrent.CompletableFuture<TimeOff> futurePut(@Nonnull final TimeOff newTimeOff) {
         return futureSend(HttpMethod.PUT, newTimeOff);
     }
 

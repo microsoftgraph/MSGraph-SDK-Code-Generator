@@ -44,7 +44,7 @@ public class CallRecordRequest extends BaseRequest<CallRecord> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<CallRecord> futureGet() {
+    public java.util.concurrent.CompletableFuture<CallRecord> futureGet() {
         return futureSend(HttpMethod.GET, null);
     }
 
@@ -65,7 +65,7 @@ public class CallRecordRequest extends BaseRequest<CallRecord> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.Future<CallRecord> futureDelete() {
+    public java.util.concurrent.CompletableFuture<CallRecord> futureDelete() {
         return futureSend(HttpMethod.DELETE, null);
     }
 
@@ -87,7 +87,7 @@ public class CallRecordRequest extends BaseRequest<CallRecord> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<CallRecord> futurePatch(@Nonnull final CallRecord sourceCallRecord) {
+    public java.util.concurrent.CompletableFuture<CallRecord> futurePatch(@Nonnull final CallRecord sourceCallRecord) {
         return futureSend(HttpMethod.PATCH, sourceCallRecord);
     }
 
@@ -110,7 +110,7 @@ public class CallRecordRequest extends BaseRequest<CallRecord> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<CallRecord> futurePost(@Nonnull final CallRecord newCallRecord) {
+    public java.util.concurrent.CompletableFuture<CallRecord> futurePost(@Nonnull final CallRecord newCallRecord) {
         return futureSend(HttpMethod.POST, newCallRecord);
     }
 
@@ -133,7 +133,7 @@ public class CallRecordRequest extends BaseRequest<CallRecord> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.Future<CallRecord> futurePut(@Nonnull final CallRecord newCallRecord) {
+    public java.util.concurrent.CompletableFuture<CallRecord> futurePut(@Nonnull final CallRecord newCallRecord) {
         return futureSend(HttpMethod.PUT, newCallRecord);
     }
 

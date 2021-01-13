@@ -54,7 +54,7 @@ public class EntityType3CollectionReferenceRequest extends BaseCollectionWithRef
      * @return a future with the created object
      */
     @Nonnull
-    public java.util.concurrent.Future<EntityType3> futurePost(@Nonnull final EntityType3 newEntityType3) {
+    public java.util.concurrent.CompletableFuture<EntityType3> futurePost(@Nonnull final EntityType3 newEntityType3) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/testTypes/" + newEntityType3.id);
         return new EntityType3WithReferenceRequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
