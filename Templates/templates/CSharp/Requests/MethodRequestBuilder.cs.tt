@@ -46,13 +46,13 @@ namespace <#=@namespace#>
     public partial class <#=requestBuilderType#> : <#=baseMethodRequestBuilderTypeName#><I<#=requestType#>>, I<#=requestBuilderType#>
     {
 <#
-// We only want to generate unique method signatures. 
+// We only want to generate unique method signatures.
 // We'll use the ParametersAsArguments to define the uniqueness of a method.
 HashSet<string> uniqueMethods = new HashSet<string>();
 foreach (var m in overloadMethodsInfo)
 {
     // Only generate a unique method.
-    if (uniqueMethods.Add(m.ParametersAsArguments) == true) 
+    if (uniqueMethods.Add(m.ParametersAsArguments) == true)
     {
 #>
         /// <summary>
@@ -103,8 +103,8 @@ foreach (var m in overloadMethodsInfo)
         {
             foreach (var p in m.Parameters)
             {
-                // We only want to add unique parameters to CreateRequest. 
-                if (uniqueParameters.Add(p.Name) == true) 
+                // We only want to add unique parameters to CreateRequest.
+                if (uniqueParameters.Add(p.Name) == true)
                 {
 #>
             if (this.HasParameter("<#=p.Name#>"))
@@ -122,10 +122,8 @@ foreach (var m in overloadMethodsInfo)
         }
 <#
     // Add request builders for every function bound to the return type of this function.
-    if (composableMethodsInfo != null)
+    foreach (var m in composableMethodsInfo.OrEmptyCollectionIfNull())
     {
-        foreach (var m in composableMethodsInfo)
-        {
 #>
         /// <summary>
         /// Gets the request builder for <#=m.RequestBuilderType#>.
@@ -138,15 +136,12 @@ foreach (var m in overloadMethodsInfo)
                 this.Client<#=m.ParamArgsForConstructor#>);
         }
 <#
-        }
     }
 #>
 <#
     // Add request builders for every navigation property on the return type of this function.
-    if (composableNavigationsInfo != null)
+    foreach (var n in composableNavigationsInfo.OrEmptyCollectionIfNull())
     {
-        foreach (var n in composableNavigationsInfo)
-        {
 #>
         /// <summary>
         /// Gets the request builder for <#=n.Name#>.
@@ -161,7 +156,6 @@ foreach (var m in overloadMethodsInfo)
             }
         }
 <#
-        }
     }
 #>
     }

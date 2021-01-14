@@ -37,10 +37,8 @@ namespace <#=@namespace#>
         I<#=requestType#> Request(IEnumerable<<#=optionTypeName#>> options = null);
 <#
     // Add request builders for every function bound to the return type of this function.
-    if (composableMethodsInfo != null)
+    foreach (var m in composableMethodsInfo.OrEmptyCollectionIfNull())
     {
-        foreach (var m in composableMethodsInfo)
-        {
 #>
         /// <summary>
         /// Gets the request builder for <#=m.RequestBuilderType#>.
@@ -48,15 +46,12 @@ namespace <#=@namespace#>
         /// <returns>The <see cref="I<#=m.RequestBuilderType#>"/>.</returns>
         I<#=m.RequestBuilderType#> <#=m.MethodName#>(<#=m.MethodParametersAsArguments#>);
 <#
-        }
     }
 #>
 <#
     // Add request builders for every navigation property on the return type of this function.
-    if (composableNavigationsInfo != null)
+    foreach (var n in composableNavigationsInfo.OrEmptyCollectionIfNull())
     {
-        foreach (var n in composableNavigationsInfo)
-        {
 #>
         /// <summary>
         /// Gets the request builder for <#=n.Name#>.
@@ -65,7 +60,6 @@ namespace <#=@namespace#>
         /// <returns>The <see cref="<#=n.ReturnInterfaceRequestBuilderName#>"/>.</returns>
         <#=n.ReturnInterfaceRequestBuilderName#> <#=n.Name#>  { get; }
 <#
-        }
     }
 #>
     }

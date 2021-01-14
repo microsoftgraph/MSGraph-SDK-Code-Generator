@@ -432,7 +432,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             }
         }
 
-
         /// <summary>
         /// Use this method to get the method information for all of the methods.
         /// Used in *MethodRequestBuilder
