@@ -2,15 +2,13 @@
 
 namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 {
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
+    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
+    using NLog;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
-    using NLog;
-    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
-    using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
-    using Microsoft.Graph.ODataTemplateWriter.CodeHelpers;
 
     public static class OdcmModelExtensions
     {
@@ -549,7 +547,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
         /// <summary>
         /// Use this method to get a collection of methods on the return type 
-        /// of a composable function. This will include themethods and overloads.
+        /// of a composable function. This will include the methods and overloads.
         /// </summary>
         /// <param name="odcmMethod">The OdcmMethod to target.</param>
         /// <returns>An ordered (by name) list of methods bound to the return 

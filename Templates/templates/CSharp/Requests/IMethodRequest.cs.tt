@@ -18,7 +18,7 @@ var requestType = entityName + methodName + "Request";
 
 var returnEntityType = method.ReturnType == null ? null : method.ReturnType.GetTypeString(@namespace);
 var returnEntityParameter = string.Empty;
-if (returnEntityType != null) 
+if (returnEntityType != null)
 {
     returnEntityParameter = returnEntityType.ToLower();
 
@@ -79,7 +79,6 @@ namespace <#=@namespace#>
     if (includeRequestBody)
     {
 #>
-
         /// <summary>
         /// Gets the request body.
         /// </summary>
@@ -103,7 +102,7 @@ namespace <#=@namespace#>
     }
 #>
 
-<# 
+<#
     if(isAction) // POST
     {
 #>
@@ -142,11 +141,8 @@ namespace <#=@namespace#>
 <#
     }
 #>
-
 <#  } // End POST
-
 #>
-
 <#
     if(method.IsFunction) // GET for a OData function.
     {
@@ -185,10 +181,8 @@ namespace <#=@namespace#>
 <#
     }
 #>
-
 <#  } // End GET
- #>
-
+#>
 <#
     if(method.IsFunction && method.IsComposable) // PATCH for a OData function.
     {
@@ -215,7 +209,7 @@ namespace <#=@namespace#>
     }
 #>
         /// <returns>The task to await for async call.</returns>
-        <#=methodReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>, 
+        <#=methodReturnType#> PatchAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>,
 <#
     if (returnsStream)
     {
@@ -260,7 +254,7 @@ namespace <#=@namespace#>
     }
 #>
         /// <returns>The task to await for async call.</returns>
-        <#=methodReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>, 
+        <#=methodReturnType#> PutAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>,
 <#
     if (returnsStream)
     {
@@ -276,7 +270,6 @@ namespace <#=@namespace#>
 <#
     }
 #>
-
 <#  } // End PUT for a OData function.
 #>
 
@@ -287,7 +280,6 @@ namespace <#=@namespace#>
         if (features.CanExpand)
         {
 #>
-
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>

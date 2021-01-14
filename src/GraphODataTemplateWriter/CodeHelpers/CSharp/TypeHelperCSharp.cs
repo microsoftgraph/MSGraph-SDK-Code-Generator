@@ -452,16 +452,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                         var parameterName = p.Name.GetSanitizedParameterName();
                         var propertyName = p.Name.ToCheckedCase();
 
-                    // Adds support for classes ending in "Request" that have been dismabiguated.
-                    if (type.EndsWith("Request"))
+                        // Adds support for classes ending in "Request" that have been dismabiguated.
+                        if (type.EndsWith("Request"))
                         {
                             type = String.Concat(type, "Object");
                         }
 
-                    // Adjust the type string
-                    if (p.IsCollection)
+                        // Adjust the type string
+                        if (p.IsCollection)
                         {
-                            type = string.Format("IEnumerable<{0}>", type);
+                            type = $"IEnumerable<{type}>";
                         }
                         else if (!p.Type.IsTypeNullable() && p.IsNullable)
                         {
