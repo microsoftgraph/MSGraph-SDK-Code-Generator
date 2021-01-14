@@ -45,7 +45,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                 case "Guid":
                     return "java.util.UUID";
                 case "DateTimeOffset":
-                    return "java.util.Calendar";
+                    return "java.time.OffsetDateTime";
                 case "Date":
                     return "com.microsoft.graph.core.DateOnly";
                 case "TimeOfDay":
@@ -84,12 +84,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static bool IsComplex(this OdcmParameter property)
         {
             string t = property.GetTypeString();
-            return !(t == "Integer" || t == "java.util.UUID" || t == "java.util.Calendar"
+            return !(t == "Integer" || t == "java.util.UUID" || t == "java.time.OffsetDateTime"
                   || t == "byte[]" || t == "String" || "long" == t || "Byte[]" == t
                   || t == "Short" || t == "com.microsoft.graph.model.DateOnly");
         }
 
-        private static string[] additionalNullableTypes = new[] { "String", "java.util.Calendar", "Integer", "java.util.UUID", "Long", "Double" };
+        private static string[] additionalNullableTypes = new[] { "String", "java.time.OffsetDateTime", "Integer", "java.util.UUID", "Long", "Double" };
         public static bool IsNullable(this OdcmParameter property)
         {
             return property.IsComplex() || additionalNullableTypes.Contains(property.GetTypeString());
