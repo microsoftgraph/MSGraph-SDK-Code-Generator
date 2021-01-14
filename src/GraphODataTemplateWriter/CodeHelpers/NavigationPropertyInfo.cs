@@ -1,10 +1,22 @@
-﻿namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
+﻿namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers
 {
     /// <summary>
     /// Contains the navigation property information used in method request builders.
     /// </summary>
     public class NavigationPropertyInfo
     {
+        public NavigationPropertyInfo(string returnInterfaceRequestBuilderName, 
+                               string returnClassRequestBuilderName, 
+                               string segment, 
+                               string name, 
+                               string description)
+        {
+            ReturnInterfaceRequestBuilderName = returnInterfaceRequestBuilderName;
+            ReturnClassRequestBuilderName = returnClassRequestBuilderName;
+            Segment = segment;
+            Name = name;
+            Description = description;
+        }
         /// <summary>
         /// Specifies the name of the interface which is the property type.
         /// </summary>
