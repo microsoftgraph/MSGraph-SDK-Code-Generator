@@ -472,25 +472,26 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                     })
                     .OrderBy(p => p.IsNullable ? 1 : 0); // I suspect this could cause a problem if new overloads are added.
 
-                var paramStrings = parameters.Select(p => string.Format(",\n            {0} {1}", p.Type, p.ParameterName));
-                var paramComments = parameters.Select(p => string.Format("\n        /// <param name=\"{0}\">A {0} parameter for the OData method call.</param>", p.ParameterName));
-                var paramArgsForConstructor = parameters.Select(p => string.Format(",\n                {0}", p.ParameterName));
+                var paramStrings = parameters.Select(p => $",\n            {p.Type} {p.ParameterName}");
+                var paramComments = parameters.Select(p => $"\n        /// <param name=\"{p.ParameterName}\">A {p.ParameterName} parameter for the OData method call.</param>");
+                var paramArgsForConstructor = parameters.Select(p => $",\n                {p.ParameterName}");
 
                 var entityName = m.Class.Name.ToCheckedCase();
                 var methodName = m.Name.ToCheckedCase();
                 var requestType = entityName + methodName + "Request";
                 var requestBuilderType = requestType + "Builder";
 
-                return new MethodInfo(
-                    parameters,
-                    string.Join("", paramStrings),
-                    string.Join("", paramArgsForConstructor),
-                    string.Join("", paramComments),
-                    requestBuilderType,
-                    methodName,
-                    m.FullName,
-                    paramStrings.Count() == 0 ? "" : string.Join("", paramStrings).Substring(1)
-                );
+                return new MethodInfo()
+                {
+                    Parameters = parameters,
+                    ParametersAsArguments = string.Join(string.Empty, paramStrings),
+                    ParamArgsForConstructor = string.Join(string.Empty, paramArgsForConstructor),
+                    ParameterComments = string.Join(string.Empty, paramComments),
+                    RequestBuilderType = requestBuilderType,
+                    MethodName = methodName,
+                    MethodFullName = m.FullName,
+                    MethodParametersAsArguments = paramStrings.Count() == 0 ? string.Empty : string.Join(string.Empty, paramStrings).Substring(1)
+                };
             }).OrderBy(m => m.MethodName).ToList();
         }
 
@@ -507,12 +508,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 var returnInterfaceRequestBuilderName = String.Format("I{0}", returnClassRequestBuilderName);
                 var name = p.Name.ToCheckedCase();
                 var segment = p.Name;
-                var description = p.Description ?? "";
-                return new NavigationPropertyInfo(returnInterfaceRequestBuilderName,
-                                                  returnClassRequestBuilderName,
-                                                  segment,
-                                                  name,
-                                                  description);
+                var description = p.Description ?? string.Empty;
+                return new NavigationPropertyInfo()
+                {
+                    ReturnInterfaceRequestBuilderName = returnInterfaceRequestBuilderName,
+                    ReturnClassRequestBuilderName = returnClassRequestBuilderName,
+                    Segment = segment,
+                    Name = name,
+                    Description = description
+                };
             }).OrderBy(n => n.Name).ToList();
         }
     }

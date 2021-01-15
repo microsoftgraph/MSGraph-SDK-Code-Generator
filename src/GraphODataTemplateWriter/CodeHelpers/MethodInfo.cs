@@ -7,25 +7,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers
     /// </summary>
     public class MethodInfo
     {
-        public MethodInfo(IOrderedEnumerable<ParameterInfo> parameters, 
-                          string parametersAsArguments,
-                          string paramArgsForConstructor,
-                          string parameterComments,
-                          string requestBuilderType,
-                          string methodName,
-                          string methodFullName,
-                          string methodParametersAsArguments)
-        {
-            Parameters = parameters;
-            ParametersAsArguments = parametersAsArguments;
-            ParamArgsForConstructor = paramArgsForConstructor;
-            ParameterComments = parameterComments;
-            RequestBuilderType = requestBuilderType;
-            MethodName = methodName;
-            MethodFullName = methodFullName;
-            MethodParametersAsArguments = methodParametersAsArguments;
-        }
-
         /// <summary>
         /// Specifies the list of parameters in the method. Not used in the
         /// creation of request builders for the methods bound to the return 
