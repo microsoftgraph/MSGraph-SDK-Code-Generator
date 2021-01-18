@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 <# } #>
 
-<#=TypeHelperJava.CreateClassDef(c.TypeName(), c.BaseClassName(), "IJsonBackedObject", c.Deprecation?.Description)#>
+<#=TypeHelperJava.CreateClassDef(c.TypeName(), c.BaseClassName(), c.TypeName().Equals("UploadSession") ? "IJsonBackedObject, com.microsoft.graph.concurrency.IUploadSession" : "IJsonBackedObject", c.Deprecation?.Description)#>
 
 <#
     if(((OdcmClass)c).Base == null){
@@ -40,4 +40,26 @@ import java.util.HashMap;
 <#=TypeHelperJava.CreatePropertyDef(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
 <#=TypeHelperJava.CreateRawJsonObject()#>
 <#=TypeHelperJava.UpdatePropertiesWithinSetRawObject(((OdcmClass)c).Properties, c is OdcmComplexClass)#>
+<# if(c.TypeName().Equals("UploadSession")) {#>
+    /**
+     * Gets the Upload Url.
+     * The URL endpoint that accepts PUT requests for byte ranges of the file.
+     * @return the upload Url
+     */
+    @Nullable
+    @Override
+    public String getUploadUrl() {
+        return uploadUrl;
+    }
+    /**
+     * Gets the Next Expected Ranges.
+     * A collection of byte ranges that the server is missing for the file. These ranges are zero indexed and of the format 'start-end' (e.g. '0-26' to indicate the first 27 bytes of the file). When uploading files as Outlook attachments, instead of a collection of ranges, this property always indicates a single value '{start}', the location in the file where the next upload should begin.
+     * @return the Next Expected Ranges.
+     */
+    @Nullable
+    @Override
+    public java.util.List<String> getNextExpectedRanges() {
+        return nextExpectedRanges;
+    }
+<#}#>
 <#=PostProcess(c.TypeName())#>}
