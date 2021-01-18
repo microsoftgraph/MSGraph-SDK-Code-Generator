@@ -8,13 +8,14 @@
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.core.BaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeName() + "Client", c.BaseClientType(), importNamespace + ".models.extensions.I" + c.TypeName() + "Client", c.Deprecation?.Description)#>
+<#=TypeHelperJava.CreateClassDef(c.TypeName() + "Client", c.BaseClientType(), "IBaseClient", c.Deprecation?.Description)#>
     /**
      * Restricted constructor
      */
     protected GraphServiceClient() {
         setServiceRoot("<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>");
     }
+    //TODO lean builder that inherits from the builder in core and overrides the method to return child type
 <#
 foreach (var prop in model.EntityContainer.Properties)
 {
