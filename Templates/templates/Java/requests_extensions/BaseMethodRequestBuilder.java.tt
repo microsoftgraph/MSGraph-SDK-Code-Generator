@@ -35,7 +35,7 @@ import javax.annotation.Nonnull;
      * @param parameters     the parameters for the service method
 <# } #>
      */
-    public <#=c.TypeRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(method.MethodHasParameters()) { #>, @Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
+    public <#=c.TypeRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(method.MethodHasParameters()) { #>, @Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         super(requestUrl, client, requestOptions);
 <#if(method.MethodHasParameters()) { #>
 <# if (isAction) { #>

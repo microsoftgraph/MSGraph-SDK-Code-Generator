@@ -7,7 +7,7 @@
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.core.IBaseClient;
 
-<#=TypeHelperJava.CreateInterfaceDef(c.IBaseClientType(host), "IBaseClient", null)#>
+<#=TypeHelperJava.CreateInterfaceDef("I" + c.TypeName() + "Client", c.IBaseClientType(), null)#>
 <#
 foreach (var prop in model.EntityContainer.Properties)
 {

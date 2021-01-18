@@ -5,33 +5,15 @@
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.models.extensions.<#=c.IBaseClientType(host)#>;
+import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.core.BaseClient;
 
-<#=TypeHelperJava.CreateClassDef(c.BaseClientType(host), "BaseClient", c.IBaseClientType(host), c.Deprecation?.Description)#>
-
+<#=TypeHelperJava.CreateClassDef(c.TypeName() + "Client", c.BaseClientType(), importNamespace + ".models.extensions.I" + c.TypeName() + "Client", c.Deprecation?.Description)#>
     /**
-     * The default endpoint for the Microsoft Graph Service
+     * Restricted constructor
      */
-    public static final String DEFAULT_GRAPH_ENDPOINT = "<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>";
-
-    /**
-     * The current endpoint
-     */
-    private String endpoint;
-
-    @Override
-    @Nonnull
-    public String getServiceRoot() {
-        if (endpoint == null) {
-            endpoint = DEFAULT_GRAPH_ENDPOINT;
-        }
-        return endpoint;
-    }
-
-    @Override
-    public void setServiceRoot(@Nonnull final String value) {
-        endpoint = value;
+    protected GraphServiceClient() {
+        setServiceRoot("<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>");
     }
 <#
 foreach (var prop in model.EntityContainer.Properties)

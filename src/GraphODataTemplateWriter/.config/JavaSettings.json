@@ -54,12 +54,12 @@
           { "Template": "BaseStreamRequest", "SubProcessor": "MediaEntityType",                                                               "Name": "Base<Class>StreamRequest" },
           { "Template": "BaseEntityStreamRequestBuilder", "SubProcessor": "MediaEntityType",                                                  "Name": "Base<Class>StreamRequestBuilder" },
 
-          { "Template": "IBaseClient", "SubProcessor": "EntityContainer", "Type": "Client",                                                   "Name": "IBase<Container>Client" },
+          { "Template": "IBaseClient", "SubProcessor": "EntityContainer", "Type": "Client",                                                   "Name": "I<Container>Client" },
         {
           "Template": "BaseClient",
           "SubProcessor": "EntityContainer",
           "Type": "Client",
-          "Name": "Base<Container>Client"
+          "Name": "<Container>Client"
         }
       ]
     }

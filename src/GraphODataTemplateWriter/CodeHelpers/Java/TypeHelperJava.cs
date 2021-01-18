@@ -558,29 +558,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.Name.ToUpperFirstChar();
         }
 
-        public static string ClientType(this OdcmObject c, CustomT4Host host)
+        public static string BaseClientType(this OdcmObject c)
         {
-            return host.CurrentModel.EntityContainer.Name.ToUpperFirstChar() + "Client";
+            return "BaseClient";
         }
 
-        public static string IClientType(this OdcmObject c, CustomT4Host host)
+        public static string IBaseClientType(this OdcmObject c)
         {
-            return "I" + c.ClientType(host);
-        }
-
-        public static string BaseClientType(this OdcmObject c, CustomT4Host host)
-        {
-            return "Base" + c.ClientType(host);
-        }
-
-        public static string IBaseClientType(this OdcmObject c, CustomT4Host host)
-        {
-            return "I" + c.BaseClientType(host);
-        }
-
-        public static string IBaseClientType()
-        {
-            return "IBaseClient";
+            return "I" + c.BaseClientType();
         }
 
         public static string BaseClassName(this OdcmObject o)

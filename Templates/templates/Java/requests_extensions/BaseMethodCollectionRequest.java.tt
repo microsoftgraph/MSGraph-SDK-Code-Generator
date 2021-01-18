@@ -55,7 +55,7 @@ import <#=importNamespace#>.http.<#=baseType#>;
      * @param parameters the parameters for the service method
 <# } #>
      */
-    public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=TypeHelperJava.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>, @Nonnull final <#=c.TypeParameterSet()#> parameters<# } #>) {
+    public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>, @Nonnull final <#=c.TypeParameterSet()#> parameters<# } #>) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
 <# } else { #>
