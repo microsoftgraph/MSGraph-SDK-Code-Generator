@@ -21,6 +21,15 @@ import okhttp3.OkHttpClient;
         setServiceRoot("<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>");
     }
     /**
+     * Gets the service SDK version if the service SDK is in use, null otherwise
+     * @return the service SDK version if the service SDK is in use, null otherwise
+     */
+    @Override
+    @Nullable
+    public String getServiceSDKVersion() {
+        return <#=importNamespace#>.info.Constants.VERSION_NAME;
+    }
+    /**
      * Gets the builder to start configuring the client
      *
      * @return builder to start configuring the client
