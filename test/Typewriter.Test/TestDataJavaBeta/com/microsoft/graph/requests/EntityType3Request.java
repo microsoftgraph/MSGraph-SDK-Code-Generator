@@ -44,8 +44,8 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<EntityType3> futureGet() {
-        return futureSend(HttpMethod.GET, null);
+    public java.util.concurrent.CompletableFuture<EntityType3> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -65,8 +65,8 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<EntityType3> futureDelete() {
-        return futureSend(HttpMethod.DELETE, null);
+    public java.util.concurrent.CompletableFuture<EntityType3> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
@@ -87,8 +87,8 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<EntityType3> futurePatch(@Nonnull final EntityType3 sourceEntityType3) {
-        return futureSend(HttpMethod.PATCH, sourceEntityType3);
+    public java.util.concurrent.CompletableFuture<EntityType3> patchAsync(@Nonnull final EntityType3 sourceEntityType3) {
+        return sendAsync(HttpMethod.PATCH, sourceEntityType3);
     }
 
     /**
@@ -110,8 +110,8 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<EntityType3> futurePost(@Nonnull final EntityType3 newEntityType3) {
-        return futureSend(HttpMethod.POST, newEntityType3);
+    public java.util.concurrent.CompletableFuture<EntityType3> postAsync(@Nonnull final EntityType3 newEntityType3) {
+        return sendAsync(HttpMethod.POST, newEntityType3);
     }
 
     /**
@@ -133,8 +133,8 @@ public class EntityType3Request extends BaseRequest<EntityType3> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<EntityType3> futurePut(@Nonnull final EntityType3 newEntityType3) {
-        return futureSend(HttpMethod.PUT, newEntityType3);
+    public java.util.concurrent.CompletableFuture<EntityType3> putAsync(@Nonnull final EntityType3 newEntityType3) {
+        return sendAsync(HttpMethod.PUT, newEntityType3);
     }
 
     /**

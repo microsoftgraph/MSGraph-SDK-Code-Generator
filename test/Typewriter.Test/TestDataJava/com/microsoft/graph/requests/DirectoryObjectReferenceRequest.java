@@ -68,10 +68,10 @@ public class DirectoryObjectReferenceRequest extends BaseReferenceRequest<Direct
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<DirectoryObject> futurePut(@Nonnull final DirectoryObject srcDirectoryObject) {
+    public java.util.concurrent.CompletableFuture<DirectoryObject> putAsync(@Nonnull final DirectoryObject srcDirectoryObject) {
         final JsonObject payload = new JsonObject();
         payload.add("@odata.id", new JsonPrimitive(this.getClient().getServiceRoot() + "/membersAsGroup/{id}/membersAsGroup/{id}/membersAsGroup/{id}/membersAsGroup/{id}/membersAsGroup/{id}/membersAsGroup/{id}/membersAsGroup/{id}/membersAsGroup/{id}/membersAsGroup/{id}/members/" + srcDirectoryObject.id));
-        return futureSend(HttpMethod.PUT, payload);
+        return sendAsync(HttpMethod.PUT, payload);
     }
 
     /**

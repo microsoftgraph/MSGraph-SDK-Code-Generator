@@ -41,8 +41,8 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<SingletonEntity2> futureGet() {
-        return futureSend(HttpMethod.GET, null);
+    public java.util.concurrent.CompletableFuture<SingletonEntity2> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -62,8 +62,8 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<SingletonEntity2> futureDelete() {
-        return futureSend(HttpMethod.DELETE, null);
+    public java.util.concurrent.CompletableFuture<SingletonEntity2> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
@@ -84,8 +84,8 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<SingletonEntity2> futurePatch(@Nonnull final SingletonEntity2 sourceSingletonEntity2) {
-        return futureSend(HttpMethod.PATCH, sourceSingletonEntity2);
+    public java.util.concurrent.CompletableFuture<SingletonEntity2> patchAsync(@Nonnull final SingletonEntity2 sourceSingletonEntity2) {
+        return sendAsync(HttpMethod.PATCH, sourceSingletonEntity2);
     }
 
     /**
@@ -107,8 +107,8 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<SingletonEntity2> futurePost(@Nonnull final SingletonEntity2 newSingletonEntity2) {
-        return futureSend(HttpMethod.POST, newSingletonEntity2);
+    public java.util.concurrent.CompletableFuture<SingletonEntity2> postAsync(@Nonnull final SingletonEntity2 newSingletonEntity2) {
+        return sendAsync(HttpMethod.POST, newSingletonEntity2);
     }
 
     /**
@@ -130,8 +130,8 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<SingletonEntity2> futurePut(@Nonnull final SingletonEntity2 newSingletonEntity2) {
-        return futureSend(HttpMethod.PUT, newSingletonEntity2);
+    public java.util.concurrent.CompletableFuture<SingletonEntity2> putAsync(@Nonnull final SingletonEntity2 newSingletonEntity2) {
+        return sendAsync(HttpMethod.PUT, newSingletonEntity2);
     }
 
     /**

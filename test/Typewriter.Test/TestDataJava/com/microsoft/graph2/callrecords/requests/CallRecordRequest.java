@@ -44,8 +44,8 @@ public class CallRecordRequest extends BaseRequest<CallRecord> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<CallRecord> futureGet() {
-        return futureSend(HttpMethod.GET, null);
+    public java.util.concurrent.CompletableFuture<CallRecord> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -65,8 +65,8 @@ public class CallRecordRequest extends BaseRequest<CallRecord> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<CallRecord> futureDelete() {
-        return futureSend(HttpMethod.DELETE, null);
+    public java.util.concurrent.CompletableFuture<CallRecord> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
@@ -87,8 +87,8 @@ public class CallRecordRequest extends BaseRequest<CallRecord> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<CallRecord> futurePatch(@Nonnull final CallRecord sourceCallRecord) {
-        return futureSend(HttpMethod.PATCH, sourceCallRecord);
+    public java.util.concurrent.CompletableFuture<CallRecord> patchAsync(@Nonnull final CallRecord sourceCallRecord) {
+        return sendAsync(HttpMethod.PATCH, sourceCallRecord);
     }
 
     /**
@@ -110,8 +110,8 @@ public class CallRecordRequest extends BaseRequest<CallRecord> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<CallRecord> futurePost(@Nonnull final CallRecord newCallRecord) {
-        return futureSend(HttpMethod.POST, newCallRecord);
+    public java.util.concurrent.CompletableFuture<CallRecord> postAsync(@Nonnull final CallRecord newCallRecord) {
+        return sendAsync(HttpMethod.POST, newCallRecord);
     }
 
     /**
@@ -133,8 +133,8 @@ public class CallRecordRequest extends BaseRequest<CallRecord> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<CallRecord> futurePut(@Nonnull final CallRecord newCallRecord) {
-        return futureSend(HttpMethod.PUT, newCallRecord);
+    public java.util.concurrent.CompletableFuture<CallRecord> putAsync(@Nonnull final CallRecord newCallRecord) {
+        return sendAsync(HttpMethod.PUT, newCallRecord);
     }
 
     /**

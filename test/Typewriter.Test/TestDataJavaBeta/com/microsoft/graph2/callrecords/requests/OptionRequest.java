@@ -40,8 +40,8 @@ public class OptionRequest extends BaseRequest<Option> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Option> futureGet() {
-        return futureSend(HttpMethod.GET, null);
+    public java.util.concurrent.CompletableFuture<Option> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -61,8 +61,8 @@ public class OptionRequest extends BaseRequest<Option> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Option> futureDelete() {
-        return futureSend(HttpMethod.DELETE, null);
+    public java.util.concurrent.CompletableFuture<Option> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
@@ -83,8 +83,8 @@ public class OptionRequest extends BaseRequest<Option> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Option> futurePatch(@Nonnull final Option sourceOption) {
-        return futureSend(HttpMethod.PATCH, sourceOption);
+    public java.util.concurrent.CompletableFuture<Option> patchAsync(@Nonnull final Option sourceOption) {
+        return sendAsync(HttpMethod.PATCH, sourceOption);
     }
 
     /**
@@ -106,8 +106,8 @@ public class OptionRequest extends BaseRequest<Option> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Option> futurePost(@Nonnull final Option newOption) {
-        return futureSend(HttpMethod.POST, newOption);
+    public java.util.concurrent.CompletableFuture<Option> postAsync(@Nonnull final Option newOption) {
+        return sendAsync(HttpMethod.POST, newOption);
     }
 
     /**
@@ -129,8 +129,8 @@ public class OptionRequest extends BaseRequest<Option> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Option> futurePut(@Nonnull final Option newOption) {
-        return futureSend(HttpMethod.PUT, newOption);
+    public java.util.concurrent.CompletableFuture<Option> putAsync(@Nonnull final Option newOption) {
+        return sendAsync(HttpMethod.PUT, newOption);
     }
 
     /**

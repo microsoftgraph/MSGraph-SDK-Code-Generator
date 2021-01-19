@@ -40,8 +40,8 @@ public class PlannerGroupRequest extends BaseRequest<PlannerGroup> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<PlannerGroup> futureGet() {
-        return futureSend(HttpMethod.GET, null);
+    public java.util.concurrent.CompletableFuture<PlannerGroup> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -61,8 +61,8 @@ public class PlannerGroupRequest extends BaseRequest<PlannerGroup> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<PlannerGroup> futureDelete() {
-        return futureSend(HttpMethod.DELETE, null);
+    public java.util.concurrent.CompletableFuture<PlannerGroup> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
@@ -83,8 +83,8 @@ public class PlannerGroupRequest extends BaseRequest<PlannerGroup> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<PlannerGroup> futurePatch(@Nonnull final PlannerGroup sourcePlannerGroup) {
-        return futureSend(HttpMethod.PATCH, sourcePlannerGroup);
+    public java.util.concurrent.CompletableFuture<PlannerGroup> patchAsync(@Nonnull final PlannerGroup sourcePlannerGroup) {
+        return sendAsync(HttpMethod.PATCH, sourcePlannerGroup);
     }
 
     /**
@@ -106,8 +106,8 @@ public class PlannerGroupRequest extends BaseRequest<PlannerGroup> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<PlannerGroup> futurePost(@Nonnull final PlannerGroup newPlannerGroup) {
-        return futureSend(HttpMethod.POST, newPlannerGroup);
+    public java.util.concurrent.CompletableFuture<PlannerGroup> postAsync(@Nonnull final PlannerGroup newPlannerGroup) {
+        return sendAsync(HttpMethod.POST, newPlannerGroup);
     }
 
     /**
@@ -129,8 +129,8 @@ public class PlannerGroupRequest extends BaseRequest<PlannerGroup> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<PlannerGroup> futurePut(@Nonnull final PlannerGroup newPlannerGroup) {
-        return futureSend(HttpMethod.PUT, newPlannerGroup);
+    public java.util.concurrent.CompletableFuture<PlannerGroup> putAsync(@Nonnull final PlannerGroup newPlannerGroup) {
+        return sendAsync(HttpMethod.PUT, newPlannerGroup);
     }
 
     /**
