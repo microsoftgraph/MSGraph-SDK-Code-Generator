@@ -48,8 +48,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypePara
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<<#=c.ReturnType()#>> futurePost() {
-        return futureSend(HttpMethod.POST, <# if(c.AsOdcmMethod().MethodHasParameters()) { #>body<# } else {#>null<# } #>);
+    public java.util.concurrent.CompletableFuture<<#=c.ReturnType()#>> postAsync() {
+        return sendAsync(HttpMethod.POST, <# if(c.AsOdcmMethod().MethodHasParameters()) { #>body<# } else {#>null<# } #>);
     }
 
     /**
@@ -97,8 +97,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypePara
      * @return a future for the operation
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Void> futurePost() {
-        return this.futureSend(HttpMethod.POST, <# if(c.AsOdcmMethod().MethodHasParameters()) { #>body<# } else {#>null<# } #>);
+    public java.util.concurrent.CompletableFuture<Void> postAsync() {
+        return this.sendAsync(HttpMethod.POST, <# if(c.AsOdcmMethod().MethodHasParameters()) { #>body<# } else {#>null<# } #>);
     }
 
     /**
@@ -120,8 +120,8 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypePara
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<<#=c.ReturnType()#>> futureGet() {
-        return futureSend(HttpMethod.GET, null);
+    public java.util.concurrent.CompletableFuture<<#=c.ReturnType()#>> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
