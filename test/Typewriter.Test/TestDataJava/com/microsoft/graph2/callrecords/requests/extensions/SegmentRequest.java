@@ -7,7 +7,6 @@ package com.microsoft.graph2.callrecords.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph2.callrecords.models.extensions.Segment;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
@@ -46,10 +45,11 @@ public class SegmentRequest extends BaseRequest<Segment> {
     /**
      * Gets the Segment from the service
      *
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void get(@Nonnull final ICallback<? super Segment> callback) {
-        send(HttpMethod.GET, callback, null);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<Segment> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -66,29 +66,33 @@ public class SegmentRequest extends BaseRequest<Segment> {
     /**
      * Delete this item from the service
      *
-     * @param callback the callback when the deletion action has completed
+     * @return a future with the deletion result
      */
-    public void delete(@Nonnull final ICallback<? super Segment> callback) {
-        send(HttpMethod.DELETE, callback, null);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<Segment> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
      * Delete this item from the service
+     * @return the resulting response if the service returns anything on deletion
      *
      * @throws ClientException if there was an exception during the delete operation
      */
-    public void delete() throws ClientException {
-        send(HttpMethod.DELETE, null);
+    @Nullable
+    public Segment delete() throws ClientException {
+        return send(HttpMethod.DELETE, null);
     }
 
     /**
      * Patches this Segment with a source
      *
      * @param sourceSegment the source object with updates
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void patch(@Nonnull final Segment sourceSegment, @Nonnull final ICallback<? super Segment> callback) {
-        send(HttpMethod.PATCH, callback, sourceSegment);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<Segment> patchAsync(@Nonnull final Segment sourceSegment) {
+        return sendAsync(HttpMethod.PATCH, sourceSegment);
     }
 
     /**
@@ -107,10 +111,11 @@ public class SegmentRequest extends BaseRequest<Segment> {
      * Creates a Segment with a new object
      *
      * @param newSegment the new object to create
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void post(@Nonnull final Segment newSegment, @Nonnull final ICallback<? super Segment> callback) {
-        send(HttpMethod.POST, callback, newSegment);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<Segment> postAsync(@Nonnull final Segment newSegment) {
+        return sendAsync(HttpMethod.POST, newSegment);
     }
 
     /**
@@ -129,10 +134,11 @@ public class SegmentRequest extends BaseRequest<Segment> {
      * Creates a Segment with a new object
      *
      * @param newSegment the object to create/update
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void put(@Nonnull final Segment newSegment, @Nonnull final ICallback<? super Segment> callback) {
-        send(HttpMethod.PUT, callback, newSegment);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<Segment> putAsync(@Nonnull final Segment newSegment) {
+        return sendAsync(HttpMethod.PUT, newSegment);
     }
 
     /**

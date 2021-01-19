@@ -47,14 +47,15 @@ import <#=importNamespace#>.http.ReferenceRequestBody;
     /**
      * Creates a new <#=c.TypeName()#>
      * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
-     * @param callback the callback to invoke once the object has been created
+     * @return a future with the created object
      */
-    public void post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>, @Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<<#=c.TypeName()#>> postAsync(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=c.TypeName()#>.id);
-        new <#=c.TypeWithReferencesRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+        return new <#=c.TypeWithReferencesRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
-            .post(new<#=c.TypeName()#>, body, callback);
+            .postAsync(new<#=c.TypeName()#>, body);
     }
 
     /**

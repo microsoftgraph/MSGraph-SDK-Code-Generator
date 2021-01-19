@@ -7,7 +7,6 @@ package com.microsoft.graph2.callrecords.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph2.callrecords.models.extensions.SingletonEntity1;
 import com.microsoft.graph.requests.extensions.TestTypeRequestBuilder;
 import java.util.Arrays;

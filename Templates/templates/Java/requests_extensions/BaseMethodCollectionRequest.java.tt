@@ -34,7 +34,6 @@ if (c.AsOdcmMethod().IsAction()) {
     }
 } #>
 import <#=importNamespace#>.http.<#=baseType#>;
-import <#=importNamespace#>.concurrency.IExecutors;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), baseType +"<" + (c as OdcmMethod).OdcmMethodReturnType()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">", null, c.Deprecation?.Description)#>
 

@@ -25,7 +25,7 @@ namespace Typewriter
             this.options = options; // Can change the base access modifier so we could use it. 
         }
 
-        public async Task<string> PublishToStringAsync(IssueLogger issues)
+        public Task<string> PublishToStringAsync(IssueLogger issues)
         {
             string outputFilenameSuffix = "";
 
@@ -34,7 +34,7 @@ namespace Typewriter
             // Step 1: Generate an EntityFramework OM from the documentation and/or template file
             EntityFramework framework = CreateEntityFrameworkFromDocs(issues);
             if (null == framework)
-                return string.Empty;
+                return Task.FromResult(string.Empty);
 
             // Step 1a: Apply an transformations that may be defined in the documentation
             if (!string.IsNullOrEmpty(options.TransformOutput))
@@ -69,7 +69,7 @@ namespace Typewriter
 
             Logger.Info("Finish creating metadata file with documentation annotations.");
 
-            return xmlData;
+            return Task.FromResult(xmlData);
         }
     }
 

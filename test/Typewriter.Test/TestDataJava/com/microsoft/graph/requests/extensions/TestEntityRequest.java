@@ -7,7 +7,6 @@ package com.microsoft.graph.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.TestEntity;
 import com.microsoft.graph.requests.extensions.TestTypeRequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType2RequestBuilder;
@@ -41,10 +40,11 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
     /**
      * Gets the TestEntity from the service
      *
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void get(@Nonnull final ICallback<? super TestEntity> callback) {
-        send(HttpMethod.GET, callback, null);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<TestEntity> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -61,29 +61,33 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
     /**
      * Delete this item from the service
      *
-     * @param callback the callback when the deletion action has completed
+     * @return a future with the deletion result
      */
-    public void delete(@Nonnull final ICallback<? super TestEntity> callback) {
-        send(HttpMethod.DELETE, callback, null);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<TestEntity> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
      * Delete this item from the service
+     * @return the resulting response if the service returns anything on deletion
      *
      * @throws ClientException if there was an exception during the delete operation
      */
-    public void delete() throws ClientException {
-        send(HttpMethod.DELETE, null);
+    @Nullable
+    public TestEntity delete() throws ClientException {
+        return send(HttpMethod.DELETE, null);
     }
 
     /**
      * Patches this TestEntity with a source
      *
      * @param sourceTestEntity the source object with updates
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void patch(@Nonnull final TestEntity sourceTestEntity, @Nonnull final ICallback<? super TestEntity> callback) {
-        send(HttpMethod.PATCH, callback, sourceTestEntity);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<TestEntity> patchAsync(@Nonnull final TestEntity sourceTestEntity) {
+        return sendAsync(HttpMethod.PATCH, sourceTestEntity);
     }
 
     /**
@@ -102,10 +106,11 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
      * Creates a TestEntity with a new object
      *
      * @param newTestEntity the new object to create
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void post(@Nonnull final TestEntity newTestEntity, @Nonnull final ICallback<? super TestEntity> callback) {
-        send(HttpMethod.POST, callback, newTestEntity);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<TestEntity> postAsync(@Nonnull final TestEntity newTestEntity) {
+        return sendAsync(HttpMethod.POST, newTestEntity);
     }
 
     /**
@@ -124,10 +129,11 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
      * Creates a TestEntity with a new object
      *
      * @param newTestEntity the object to create/update
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void put(@Nonnull final TestEntity newTestEntity, @Nonnull final ICallback<? super TestEntity> callback) {
-        send(HttpMethod.PUT, callback, newTestEntity);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<TestEntity> putAsync(@Nonnull final TestEntity newTestEntity) {
+        return sendAsync(HttpMethod.PUT, newTestEntity);
     }
 
     /**

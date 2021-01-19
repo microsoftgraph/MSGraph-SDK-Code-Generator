@@ -7,7 +7,6 @@ package com.microsoft.graph.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph2.callrecords.models.extensions.CallRecord;
 import com.microsoft.graph.models.extensions.EntityType2;
 import java.util.Arrays;
@@ -18,7 +17,6 @@ import javax.annotation.Nonnull;
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseEntityCollectionRequest;
-import com.microsoft.graph.concurrency.IExecutors;
 import com.microsoft.graph.requests.extensions.EntityType2CollectionResponse;
 import com.microsoft.graph.requests.extensions.EntityType2CollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType2CollectionRequest;
@@ -44,13 +42,14 @@ public class EntityType2CollectionRequest extends BaseEntityCollectionRequest<En
     /**
      * Creates a new EntityType2
      * @param newEntityType2 the EntityType2 to create
-     * @param callback the callback to invoke once the object has been created
+     * @return a future with the created object
      */
-    public void post(@Nonnull final EntityType2 newEntityType2, @Nonnull final ICallback<? super EntityType2> callback) {
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<EntityType2> postAsync(@Nonnull final EntityType2 newEntityType2) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
-        new EntityType2RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+        return new EntityType2RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
-            .post(newEntityType2, callback);
+            .postAsync(newEntityType2);
     }
 
     /**

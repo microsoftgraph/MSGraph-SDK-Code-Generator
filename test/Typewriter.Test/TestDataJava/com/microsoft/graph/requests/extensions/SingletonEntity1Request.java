@@ -7,7 +7,6 @@ package com.microsoft.graph.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.SingletonEntity1;
 import com.microsoft.graph.requests.extensions.TestTypeRequestBuilder;
 import java.util.Arrays;
@@ -39,10 +38,11 @@ public class SingletonEntity1Request extends BaseRequest<SingletonEntity1> {
     /**
      * Gets the SingletonEntity1 from the service
      *
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void get(@Nonnull final ICallback<? super SingletonEntity1> callback) {
-        send(HttpMethod.GET, callback, null);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<SingletonEntity1> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -59,29 +59,33 @@ public class SingletonEntity1Request extends BaseRequest<SingletonEntity1> {
     /**
      * Delete this item from the service
      *
-     * @param callback the callback when the deletion action has completed
+     * @return a future with the deletion result
      */
-    public void delete(@Nonnull final ICallback<? super SingletonEntity1> callback) {
-        send(HttpMethod.DELETE, callback, null);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<SingletonEntity1> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
      * Delete this item from the service
+     * @return the resulting response if the service returns anything on deletion
      *
      * @throws ClientException if there was an exception during the delete operation
      */
-    public void delete() throws ClientException {
-        send(HttpMethod.DELETE, null);
+    @Nullable
+    public SingletonEntity1 delete() throws ClientException {
+        return send(HttpMethod.DELETE, null);
     }
 
     /**
      * Patches this SingletonEntity1 with a source
      *
      * @param sourceSingletonEntity1 the source object with updates
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void patch(@Nonnull final SingletonEntity1 sourceSingletonEntity1, @Nonnull final ICallback<? super SingletonEntity1> callback) {
-        send(HttpMethod.PATCH, callback, sourceSingletonEntity1);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<SingletonEntity1> patchAsync(@Nonnull final SingletonEntity1 sourceSingletonEntity1) {
+        return sendAsync(HttpMethod.PATCH, sourceSingletonEntity1);
     }
 
     /**
@@ -100,10 +104,11 @@ public class SingletonEntity1Request extends BaseRequest<SingletonEntity1> {
      * Creates a SingletonEntity1 with a new object
      *
      * @param newSingletonEntity1 the new object to create
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void post(@Nonnull final SingletonEntity1 newSingletonEntity1, @Nonnull final ICallback<? super SingletonEntity1> callback) {
-        send(HttpMethod.POST, callback, newSingletonEntity1);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<SingletonEntity1> postAsync(@Nonnull final SingletonEntity1 newSingletonEntity1) {
+        return sendAsync(HttpMethod.POST, newSingletonEntity1);
     }
 
     /**
@@ -122,10 +127,11 @@ public class SingletonEntity1Request extends BaseRequest<SingletonEntity1> {
      * Creates a SingletonEntity1 with a new object
      *
      * @param newSingletonEntity1 the object to create/update
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void put(@Nonnull final SingletonEntity1 newSingletonEntity1, @Nonnull final ICallback<? super SingletonEntity1> callback) {
-        send(HttpMethod.PUT, callback, newSingletonEntity1);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<SingletonEntity1> putAsync(@Nonnull final SingletonEntity1 newSingletonEntity1) {
+        return sendAsync(HttpMethod.PUT, newSingletonEntity1);
     }
 
     /**

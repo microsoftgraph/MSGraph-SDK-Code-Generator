@@ -7,7 +7,6 @@ package com.microsoft.graph.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.EntityType3;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
@@ -19,7 +18,6 @@ import javax.annotation.Nonnull;
 import com.microsoft.graph.options.QueryOption;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseEntityCollectionRequest;
-import com.microsoft.graph.concurrency.IExecutors;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionResponse;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionRequestBuilder;
 import com.microsoft.graph.requests.extensions.EntityType3CollectionRequest;
@@ -47,13 +45,14 @@ public class EntityType3CollectionRequest extends BaseEntityCollectionRequest<En
     /**
      * Creates a new EntityType3
      * @param newEntityType3 the EntityType3 to create
-     * @param callback the callback to invoke once the object has been created
+     * @return a future with the created object
      */
-    public void post(@Nonnull final EntityType3 newEntityType3, @Nonnull final ICallback<? super EntityType3> callback) {
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<EntityType3> postAsync(@Nonnull final EntityType3 newEntityType3) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
-        new EntityType3RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+        return new EntityType3RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
-            .post(newEntityType3, callback);
+            .postAsync(newEntityType3);
     }
 
     /**

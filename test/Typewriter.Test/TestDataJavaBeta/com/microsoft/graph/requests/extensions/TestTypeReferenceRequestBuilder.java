@@ -8,7 +8,6 @@ package com.microsoft.graph.requests.extensions;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.TestType;
 import com.microsoft.graph.models.extensions.DerivedComplexTypeRequest;
 import com.microsoft.graph.models.extensions.ResponseObject;

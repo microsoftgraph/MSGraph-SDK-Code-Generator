@@ -10,7 +10,6 @@
 import <#=importNamespace#>.options.QueryOption;
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.BaseEntityCollectionRequest;
-import <#=importNamespace#>.concurrency.IExecutors;
 <# var mainNamespace = host.CurrentNamespace(); #>
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
@@ -32,13 +31,14 @@ import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCo
     /**
      * Creates a new <#=c.TypeName()#>
      * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
-     * @param callback the callback to invoke once the object has been created
+     * @return a future with the created object
      */
-    public void post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>, @Nonnull final ICallback<? super <#=c.TypeName()#>> callback) {
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<<#=c.TypeName()#>> postAsync(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
-        new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+        return new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
-            .post(new<#=c.TypeName()#>, callback);
+            .postAsync(new<#=c.TypeName()#>);
     }
 
     /**
