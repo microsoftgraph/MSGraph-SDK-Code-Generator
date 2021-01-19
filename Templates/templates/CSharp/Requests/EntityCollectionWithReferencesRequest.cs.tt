@@ -198,6 +198,6 @@ namespace <#=@namespace#>
             this.QueryOptions.Add(new <#=queryOptionTypeName#>("$orderby", value));
             return this;
         }
-    }
 <# } #>
+    }
 }
