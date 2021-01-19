@@ -68,7 +68,11 @@ namespace <#=@namespace#>
     /// <summary>
     /// The type <#=entityName.SplitCamelCase()#>.
     /// </summary>
+<#
+if (attributeStringBuilder.Length > 0) {
+#>
     <#=attributeStringBuilder.ToString()#>
+<# } #>
     public partial class <#=typeDeclaration#>
     {
     <#

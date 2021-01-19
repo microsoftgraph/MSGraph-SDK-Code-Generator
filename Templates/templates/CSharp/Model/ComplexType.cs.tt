@@ -72,7 +72,11 @@ namespace <#=@namespace#>
     /// <summary>
     /// The type <#=complexTypeName#>.
     /// </summary>
+<#
+if (attributeStringBuilder.Length > 0) {
+#>
     <#=attributeStringBuilder.ToString()#>
+<# } #>
     public <#=classType#> <#=typeDeclaration#>
     {
 <#

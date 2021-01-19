@@ -25,7 +25,11 @@ namespace <#=method.Namespace.GetNamespaceName()#>
     /// <summary>
     /// The type <#=requestBody#>.
     /// </summary>
+<#
+if (attributeStringBuilder.Length > 0) {
+#>
     <#=attributeStringBuilder.ToString()#>
+<# } #>
     public partial class <#=requestBody#>
     {
     <#
