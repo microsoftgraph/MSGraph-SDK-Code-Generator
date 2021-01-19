@@ -72,10 +72,10 @@ public class EntityType3ReferenceRequest extends BaseReferenceRequest<EntityType
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<EntityType3> futurePut(@Nonnull final EntityType3 srcEntityType3) {
+    public java.util.concurrent.CompletableFuture<EntityType3> putAsync(@Nonnull final EntityType3 srcEntityType3) {
         final JsonObject payload = new JsonObject();
         payload.add("@odata.id", new JsonPrimitive(this.getClient().getServiceRoot() + "/testTypes/" + srcEntityType3.id));
-        return futureSend(HttpMethod.PUT, payload);
+        return sendAsync(HttpMethod.PUT, payload);
     }
 
     /**

@@ -50,12 +50,12 @@ import <#=importNamespace#>.http.ReferenceRequestBody;
      * @return a future with the created object
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<<#=c.TypeName()#>> futurePost(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>) {
+    public java.util.concurrent.CompletableFuture<<#=c.TypeName()#>> postAsync(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         final ReferenceRequestBody body = new ReferenceRequestBody(getBaseRequest().getClient().getServiceRoot() + "/<#=prop#>/<#=implicitNavigationProperty#>" + new<#=c.TypeName()#>.id);
         return new <#=c.TypeWithReferencesRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
-            .futurePost(new<#=c.TypeName()#>, body);
+            .postAsync(new<#=c.TypeName()#>, body);
     }
 
     /**

@@ -48,8 +48,8 @@ public class SegmentRequest extends BaseRequest<Segment> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Segment> futureGet() {
-        return futureSend(HttpMethod.GET, null);
+    public java.util.concurrent.CompletableFuture<Segment> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -69,8 +69,8 @@ public class SegmentRequest extends BaseRequest<Segment> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Segment> futureDelete() {
-        return futureSend(HttpMethod.DELETE, null);
+    public java.util.concurrent.CompletableFuture<Segment> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
@@ -91,8 +91,8 @@ public class SegmentRequest extends BaseRequest<Segment> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Segment> futurePatch(@Nonnull final Segment sourceSegment) {
-        return futureSend(HttpMethod.PATCH, sourceSegment);
+    public java.util.concurrent.CompletableFuture<Segment> patchAsync(@Nonnull final Segment sourceSegment) {
+        return sendAsync(HttpMethod.PATCH, sourceSegment);
     }
 
     /**
@@ -114,8 +114,8 @@ public class SegmentRequest extends BaseRequest<Segment> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Segment> futurePost(@Nonnull final Segment newSegment) {
-        return futureSend(HttpMethod.POST, newSegment);
+    public java.util.concurrent.CompletableFuture<Segment> postAsync(@Nonnull final Segment newSegment) {
+        return sendAsync(HttpMethod.POST, newSegment);
     }
 
     /**
@@ -137,8 +137,8 @@ public class SegmentRequest extends BaseRequest<Segment> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Segment> futurePut(@Nonnull final Segment newSegment) {
-        return futureSend(HttpMethod.PUT, newSegment);
+    public java.util.concurrent.CompletableFuture<Segment> putAsync(@Nonnull final Segment newSegment) {
+        return sendAsync(HttpMethod.PUT, newSegment);
     }
 
     /**

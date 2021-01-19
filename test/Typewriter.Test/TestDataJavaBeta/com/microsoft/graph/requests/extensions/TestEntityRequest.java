@@ -43,8 +43,8 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<TestEntity> futureGet() {
-        return futureSend(HttpMethod.GET, null);
+    public java.util.concurrent.CompletableFuture<TestEntity> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -64,8 +64,8 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<TestEntity> futureDelete() {
-        return futureSend(HttpMethod.DELETE, null);
+    public java.util.concurrent.CompletableFuture<TestEntity> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
@@ -86,8 +86,8 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<TestEntity> futurePatch(@Nonnull final TestEntity sourceTestEntity) {
-        return futureSend(HttpMethod.PATCH, sourceTestEntity);
+    public java.util.concurrent.CompletableFuture<TestEntity> patchAsync(@Nonnull final TestEntity sourceTestEntity) {
+        return sendAsync(HttpMethod.PATCH, sourceTestEntity);
     }
 
     /**
@@ -109,8 +109,8 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<TestEntity> futurePost(@Nonnull final TestEntity newTestEntity) {
-        return futureSend(HttpMethod.POST, newTestEntity);
+    public java.util.concurrent.CompletableFuture<TestEntity> postAsync(@Nonnull final TestEntity newTestEntity) {
+        return sendAsync(HttpMethod.POST, newTestEntity);
     }
 
     /**
@@ -132,8 +132,8 @@ public class TestEntityRequest extends BaseRequest<TestEntity> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<TestEntity> futurePut(@Nonnull final TestEntity newTestEntity) {
-        return futureSend(HttpMethod.PUT, newTestEntity);
+    public java.util.concurrent.CompletableFuture<TestEntity> putAsync(@Nonnull final TestEntity newTestEntity) {
+        return sendAsync(HttpMethod.PUT, newTestEntity);
     }
 
     /**

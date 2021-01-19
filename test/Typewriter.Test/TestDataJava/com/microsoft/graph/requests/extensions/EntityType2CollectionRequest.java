@@ -45,11 +45,11 @@ public class EntityType2CollectionRequest extends BaseEntityCollectionRequest<En
      * @return a future with the created object
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<EntityType2> futurePost(@Nonnull final EntityType2 newEntityType2) {
+    public java.util.concurrent.CompletableFuture<EntityType2> postAsync(@Nonnull final EntityType2 newEntityType2) {
         final String requestUrl = getBaseRequest().getRequestUrl().toString();
         return new EntityType2RequestBuilder(requestUrl, getBaseRequest().getClient(), /* Options */ null)
             .buildRequest(getBaseRequest().getHeaders())
-            .futurePost(newEntityType2);
+            .postAsync(newEntityType2);
     }
 
     /**

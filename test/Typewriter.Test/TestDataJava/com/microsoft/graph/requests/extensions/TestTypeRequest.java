@@ -42,8 +42,8 @@ public class TestTypeRequest extends BaseRequest<TestType> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<TestType> futureGet() {
-        return futureSend(HttpMethod.GET, null);
+    public java.util.concurrent.CompletableFuture<TestType> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -63,8 +63,8 @@ public class TestTypeRequest extends BaseRequest<TestType> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<TestType> futureDelete() {
-        return futureSend(HttpMethod.DELETE, null);
+    public java.util.concurrent.CompletableFuture<TestType> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
@@ -85,8 +85,8 @@ public class TestTypeRequest extends BaseRequest<TestType> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<TestType> futurePatch(@Nonnull final TestType sourceTestType) {
-        return futureSend(HttpMethod.PATCH, sourceTestType);
+    public java.util.concurrent.CompletableFuture<TestType> patchAsync(@Nonnull final TestType sourceTestType) {
+        return sendAsync(HttpMethod.PATCH, sourceTestType);
     }
 
     /**
@@ -108,8 +108,8 @@ public class TestTypeRequest extends BaseRequest<TestType> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<TestType> futurePost(@Nonnull final TestType newTestType) {
-        return futureSend(HttpMethod.POST, newTestType);
+    public java.util.concurrent.CompletableFuture<TestType> postAsync(@Nonnull final TestType newTestType) {
+        return sendAsync(HttpMethod.POST, newTestType);
     }
 
     /**
@@ -131,8 +131,8 @@ public class TestTypeRequest extends BaseRequest<TestType> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<TestType> futurePut(@Nonnull final TestType newTestType) {
-        return futureSend(HttpMethod.PUT, newTestType);
+    public java.util.concurrent.CompletableFuture<TestType> putAsync(@Nonnull final TestType newTestType) {
+        return sendAsync(HttpMethod.PUT, newTestType);
     }
 
     /**
