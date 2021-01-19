@@ -7,6 +7,11 @@
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.core.BaseClient;
+import <#=importNamespace#>.http.IHttpProvider;
+import <#=importNamespace#>.httpcore.ICoreAuthenticationProvider;
+import <#=importNamespace#>.logger.ILogger;
+import <#=importNamespace#>.serializer.ISerializer;
+import okhttp3.OkHttpClient;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeName() + "Client", c.BaseClientType(), "IBaseClient", c.Deprecation?.Description)#>
     /**
@@ -24,6 +29,9 @@ import <#=importNamespace#>.core.BaseClient;
     public static Builder<OkHttpClient> builder() {
         return new Builder<>();
     }
+    /**
+     * Builder to help configure the Graph service client
+     */
     public static class Builder<httpClientType> extends BaseClient.Builder<httpClientType> {
         /**
          * Sets the serializer.

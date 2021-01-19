@@ -76,7 +76,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             var typeString = GetTypeString(propertyType);
             if (propertyType.Namespace != OdcmNamespace.Edm && ReservedNames.Value.Contains(typeString))
             {
-                typeString = "com.microsoft.graph.models.extensions." + typeString;
+                typeString = "com.microsoft.graph.models." + typeString;
             }
             return typeString;
         }
@@ -604,7 +604,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             switch (obj)
             {
                 case OdcmEnum e:
-                    return "models.generated";
+                    return "models";
                 case OdcmType t:
                     return GetPrefixForModels();
                 case OdcmParameter p:
@@ -635,7 +635,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             {
                 sb.AppendFormat(importFormat,
                             host.CurrentNamespace(),
-                            (host.CurrentType as OdcmMethod)?.ReturnType is OdcmEnum ? "models.generated" : GetPrefixForModels(),
+                            (host.CurrentType as OdcmMethod)?.ReturnType is OdcmEnum ? "models" : GetPrefixForModels(),
                             TypeName((host.CurrentType as OdcmMethod)?.ReturnType ?? host.CurrentType));
                 sb.Append("\n");
             }
@@ -653,7 +653,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             {
                 sb.AppendFormat(importFormat,
                             host.CurrentNamespace(),
-                            (currentMethod.ReturnType is OdcmEnum ? "models.generated" : GetPrefixForModels()),
+                            (currentMethod.ReturnType is OdcmEnum ? "models" : GetPrefixForModels()),
                             returnType);
                 sb.Append("\n");
             }
@@ -934,7 +934,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
         public static string CreatePackageDef(this CustomT4Host host)
         {
             // {0}: type's namespace with prefix, e.g. com.microsoft.graph.callrecords
-            // {1}: relative path, e.g. "models.extensions" or "models.requests" etc.
+            // {1}: relative path, e.g. "models" or "requests" etc.
             // {2}: main namespace, i.e. microsoft.graph
             // {3}: fully qualified import for disambiguation, e.g. TimeOff vs TimeOffRequest
             // {4}: method parameters fully qualified imports
@@ -1043,10 +1043,10 @@ import javax.annotation.Nonnull;";
         }
 
         //Getting import prefix using property name for model classes
-        public static string GetPrefixForModels() => "models.extensions";
+        public static string GetPrefixForModels() => "models";
 
         //Getting import prefix using property name for Request classes
-        public static string GetPrefixForRequests() => "requests.extensions";
+        public static string GetPrefixForRequests() => "requests";
 
         public static string CreateParameterDef(IEnumerable<OdcmParameter> parameters)
         {

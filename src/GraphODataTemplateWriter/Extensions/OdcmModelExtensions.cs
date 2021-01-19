@@ -208,7 +208,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 var thisType = (host.CurrentType as OdcmProperty).Projection.Type;
                 var thisNamespace = thisType.Namespace.Name.AddPrefix();
                 var thisTypeName = thisType.Name.ToUpperFirstChar();
-                importStatement = $"\nimport {thisNamespace}.models.extensions.{thisTypeName};";
+                importStatement = $"\nimport {thisNamespace}.models.{thisTypeName};";
             }
 
             return importStatement;
