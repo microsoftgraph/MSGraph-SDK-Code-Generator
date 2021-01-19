@@ -16,7 +16,7 @@ namespace Microsoft.Graph2.CallRecords
     /// <summary>
     /// The interface ISegmentForwardRequestBuilder.
     /// </summary>
-    public partial interface ISegmentForwardRequestBuilder
+    public partial interface ISegmentForwardRequestBuilder : IBaseRequestBuilder
     {
         /// <summary>
         /// Builds the request.
