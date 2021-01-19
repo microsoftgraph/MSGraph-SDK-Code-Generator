@@ -40,8 +40,8 @@ public class PhotoRequest extends BaseRequest<Photo> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Photo> futureGet() {
-        return futureSend(HttpMethod.GET, null);
+    public java.util.concurrent.CompletableFuture<Photo> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -61,8 +61,8 @@ public class PhotoRequest extends BaseRequest<Photo> {
      * @return a future with the deletion result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Photo> futureDelete() {
-        return futureSend(HttpMethod.DELETE, null);
+    public java.util.concurrent.CompletableFuture<Photo> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
@@ -83,8 +83,8 @@ public class PhotoRequest extends BaseRequest<Photo> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Photo> futurePatch(@Nonnull final Photo sourcePhoto) {
-        return futureSend(HttpMethod.PATCH, sourcePhoto);
+    public java.util.concurrent.CompletableFuture<Photo> patchAsync(@Nonnull final Photo sourcePhoto) {
+        return sendAsync(HttpMethod.PATCH, sourcePhoto);
     }
 
     /**
@@ -106,8 +106,8 @@ public class PhotoRequest extends BaseRequest<Photo> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Photo> futurePost(@Nonnull final Photo newPhoto) {
-        return futureSend(HttpMethod.POST, newPhoto);
+    public java.util.concurrent.CompletableFuture<Photo> postAsync(@Nonnull final Photo newPhoto) {
+        return sendAsync(HttpMethod.POST, newPhoto);
     }
 
     /**
@@ -129,8 +129,8 @@ public class PhotoRequest extends BaseRequest<Photo> {
      * @return a future with the result
      */
     @Nonnull
-    public java.util.concurrent.CompletableFuture<Photo> futurePut(@Nonnull final Photo newPhoto) {
-        return futureSend(HttpMethod.PUT, newPhoto);
+    public java.util.concurrent.CompletableFuture<Photo> putAsync(@Nonnull final Photo newPhoto) {
+        return sendAsync(HttpMethod.PUT, newPhoto);
     }
 
     /**
