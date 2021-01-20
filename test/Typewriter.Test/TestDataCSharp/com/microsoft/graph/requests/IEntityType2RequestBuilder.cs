@@ -31,5 +31,12 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IEntityType2Request Request(IEnumerable<Option> options);
     
+        /// <summary>
+        /// Gets the request builder for EntityType2ActOnEntityType2.
+        /// </summary>
+        /// <returns>The <see cref="IEntityType2ActOnEntityType2RequestBuilder"/>.</returns>
+        IEntityType2ActOnEntityType2RequestBuilder ActOnEntityType2(
+            string Name);
+    
     }
 }

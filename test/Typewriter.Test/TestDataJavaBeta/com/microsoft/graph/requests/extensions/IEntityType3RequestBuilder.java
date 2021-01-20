@@ -11,6 +11,7 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.EntityType3;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
+import com.microsoft.graph.models.extensions.Endpoint;
 import java.util.Arrays;
 import java.util.EnumSet;
 
@@ -37,5 +38,6 @@ public interface IEntityType3RequestBuilder extends IRequestBuilder {
     IEntityType3Request buildRequest(final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions);
 
     IEntityType3ForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final Recipient singleRecipient, final java.util.List<Session> multipleSessions, final Session singleSession, final String comment);
+    IEntityType3ActOnEntityType3RequestBuilder actOnEntityType3(final java.util.List<String> name);
 
 }

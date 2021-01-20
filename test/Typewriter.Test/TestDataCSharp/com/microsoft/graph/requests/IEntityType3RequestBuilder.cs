@@ -41,6 +41,13 @@ namespace Microsoft.Graph
             IEnumerable<Microsoft.Graph2.CallRecords.Session> MultipleSessions,
             Microsoft.Graph2.CallRecords.Session SingleSession,
             string Comment = null);
+
+        /// <summary>
+        /// Gets the request builder for EntityType3ActOnEntityType3.
+        /// </summary>
+        /// <returns>The <see cref="IEntityType3ActOnEntityType3RequestBuilder"/>.</returns>
+        IEntityType3ActOnEntityType3RequestBuilder ActOnEntityType3(
+            IEnumerable<string> Name);
     
     }
 }

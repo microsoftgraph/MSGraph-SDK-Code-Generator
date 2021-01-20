@@ -20,7 +20,6 @@ namespace Microsoft.Graph2.CallRecords
     /// </summary>
     public partial interface ISegmentForwardRequest : Microsoft.Graph.IBaseRequest
     {
-
         /// <summary>
         /// Gets the request body.
         /// </summary>
@@ -39,10 +38,6 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The task to await for async call.</returns>
         System.Threading.Tasks.Task PostAsync(
             CancellationToken cancellationToken);
-
-
-
-
 
 
         /// <summary>
