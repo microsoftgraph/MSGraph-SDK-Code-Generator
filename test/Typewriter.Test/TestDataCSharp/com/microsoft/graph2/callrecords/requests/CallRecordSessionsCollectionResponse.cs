@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets or sets the <see cref="ICallRecordSessionsCollectionPage"/> value.
         /// </summary>
-		[JsonPropertyName("value")]
+        [JsonPropertyName("value")]
         public ICallRecordSessionsCollectionPage Value { get; set; }
 
         /// <summary>
