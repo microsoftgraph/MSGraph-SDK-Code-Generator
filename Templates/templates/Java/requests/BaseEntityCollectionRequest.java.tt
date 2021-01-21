@@ -1,0 +1,176 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = c.TypeCollectionRequest();#>
+<#=writer.WriteHeader()#>
+<#=host.CreatePackageDef()#>
+
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.options.QueryOption;
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseEntityCollectionRequest;
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequest()#>;
+
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequest(), "BaseEntityCollectionRequest<"+c.TypeName()+", "+c.TypeCollectionResponse()+", "+c.TypeCollectionPage()+">", null, c.Deprecation?.Description)#>
+
+    /**
+     * The request builder for this collection of <#=c.TypeName()#>
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     */
+    public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
+    }
+
+    /**
+     * Creates a new <#=c.TypeName()#>
+     * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
+     * @return a future with the created object
+     */
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<<#=c.TypeName()#>> postAsync(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>) {
+        final String requestUrl = getBaseRequest().getRequestUrl().toString();
+        return new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+            .buildRequest(getBaseRequest().getHeaders())
+            .postAsync(new<#=c.TypeName()#>);
+    }
+
+    /**
+     * Creates a new <#=c.TypeName()#>
+     * @param new<#=c.TypeName()#> the <#=c.TypeName()#> to create
+     * @return the newly created object
+     */
+    @Nonnull
+    public <#=c.TypeName()#> post(@Nonnull final <#=c.TypeName()#> new<#=c.TypeName()#>) throws ClientException {
+        final String requestUrl = getBaseRequest().getRequestUrl().toString();
+        return new <#=c.TypeRequestBuilder()#>(requestUrl, getBaseRequest().getClient(), /* Options */ null)
+            .buildRequest(getBaseRequest().getHeaders())
+            .post(new<#=c.TypeName()#>);
+    }
+
+<# if (c.GetFeatures().CanExpand) { #>
+    /**
+     * Sets the expand clause for the request
+     *
+     * @param value the expand clause
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> expand(@Nonnull final String value) {
+        addExpandOption(value);
+        return this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanFilter) { #>
+    /**
+     * Sets the filter clause for the request
+     *
+     * @param value the filter clause
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> filter(@Nonnull final String value) {
+        addFilterOption(value);
+        return this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanSort) { #>
+    /**
+     * Sets the order by clause for the request
+     *
+     * @param value the order by clause
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> orderBy(@Nonnull final String value) {
+        addOrderByOption(value);
+        return this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanSelect) { #>
+    /**
+     * Sets the select clause for the request
+     *
+     * @param value the select clause
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> select(@Nonnull final String value) {
+        addSelectOption(value);
+        return this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanUseTop) { #>
+    /**
+     * Sets the top value for the request
+     *
+     * @param value the max number of items to return
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> top(final int value) {
+        addTopOption(value);
+        return this;
+    }
+
+<# } #>
+<# if (c.GetFeatures().CanCount) { #>
+    /**
+     * Sets the count value for the request
+     *
+     * @param value whether or not to return the count of objects with the request
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> count(final boolean value) {
+        addCountOption(value);
+        return this;
+    }
+    /**
+     * Sets the count value to true for the request
+     *
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> count() {
+        addCountOption(true);
+        return this;
+    }
+<# } #>
+<# if (c.GetFeatures().CanSkip) { #>
+    /**
+     * Sets the skip value for the request
+     *
+     * @param value of the number of items to skip
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> skip(final int value) {
+        addSkipOption(value);
+        return this;
+    }
+
+<# } #>
+
+    /**
+     * Add Skip token for pagination
+     * @param skipToken - Token for pagination
+     * @return the updated request
+     */
+    @Nonnull
+    public <#=c.TypeCollectionRequest()#> skipToken(@Nonnull final String skipToken) {
+    	addSkipTokenOption(skipToken);
+        return this;
+    }
+}
+<#=PostProcess(c.TypeCollectionRequest())#>

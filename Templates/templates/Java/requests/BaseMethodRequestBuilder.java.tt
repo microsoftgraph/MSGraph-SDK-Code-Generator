@@ -1,0 +1,139 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = c.TypeRequestBuilder();#>
+<#=writer.WriteHeader()#>
+<#=host.CreatePackageDefForBaseMethodRequestBuilder()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctionRequestBuilder" : "BaseActionRequestBuilder") #>;
+<# var mainNamespace = host.CurrentNamespace(); #>
+<#
+foreach (var method in c.AsOdcmMethod().WithOverloads().Where(x => x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeParameterSet()).Distinct()) {
+#>
+import <#=method#>;
+<# } #>
+import <#=importNamespace#>.core.IBaseClient;
+import com.google.gson.JsonElement;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
+
+<# bool isAction = !c.AsOdcmMethod().IsFunction; #>
+<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), c.GetMethodRequestBuilderSuperClass(), null, c.Deprecation?.Description)#>
+
+<#if(c.AsOdcmMethod().MethodHasParameters() && isAction) { #>
+    private <#=c.AsOdcmMethod().TypeParameterSet() #> body;
+<# } #>
+<# foreach(var method in c.AsOdcmMethod().WithOverloadsOfDistinctName()) { #>
+    /**
+     * The request builder for this <#=c.TypeName()#>
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+<#if(method.MethodHasParameters()) { #>
+     * @param parameters     the parameters for the service method
+<# } #>
+     */
+    public <#=c.TypeRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(method.MethodHasParameters()) { #>, @Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
+        super(requestUrl, client, requestOptions);
+<#if(method.MethodHasParameters()) { #>
+<# if (isAction) { #>
+        this.body = parameters;
+<# } else { #>
+        if(parameters != null) {
+            functionOptions = parameters.getFunctionOptions();
+        }
+<#     }
+    }
+#>
+    }
+<# } #>
+
+    /**
+     * Creates the <#=c.TypeRequest()#>
+     *
+     * @param requestOptions the options for the request
+     * @return the <#=c.TypeRequest()#> instance
+     */
+    @Nonnull
+    public <#=c.TypeRequest()#> buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
+    }
+
+    /**
+     * Creates the <#=c.TypeRequest()#> with specific requestOptions instead of the existing requestOptions
+     *
+     * @param requestOptions the options for the request
+     * @return the <#=c.TypeRequest()#> instance
+     */
+    @Nonnull
+    public <#=c.TypeRequest()#> buildRequest(@Nonnull final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+        <#=c.TypeRequest()#> request = new <#=c.TypeRequest()#>(
+                getRequestUrl(),
+                getClient(),
+<#if(c.AsOdcmMethod().MethodHasParameters() && isAction) { #>
+                requestOptions,
+                this.body
+<# } else { #>
+                requestOptions
+<# } #>
+        );
+
+<#if(c.AsOdcmMethod().MethodHasParameters()) { #>
+    <# if (!isAction) { #>
+        for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
+            request.addFunctionOption(option);
+        }
+<#      }
+    }#>
+        return request;
+    }
+<#
+var m = c as OdcmMethod;
+if(m != null && m.IsComposable && m.ReturnType != null && m.ReturnType is OdcmClass) {
+    foreach(var prop in m.ReturnType.AsOdcmClass().NavigationProperties(true))
+    {
+        var propName = prop.Name.ToUpperFirstChar();
+		var sanitizedProperty = propName.SanitizePropertyName().ToLowerFirstChar();
+        var propRequestBuilder = prop.TypeRequestBuilder();
+        if (prop.IsCollection()) {
+#>
+    /**
+     *  Gets a request builder for the <#=prop.TypeName() #> collection
+     *
+     * @return the collection request builder
+     */
+    @Nonnull
+    public <#=prop.TypeCollectionRequestBuilder()#> <#=sanitizedProperty#>() {
+        return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>")<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
+    }
+
+    /**
+     * Gets a request builder for the <#=prop.TypeName() #> item
+     *
+     * @return the request builder
+     * @param id the item identifier
+     */
+    @Nonnull
+    public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>(@Nonnull final String id) {
+        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>") + "/" + id<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
+    }
+<#
+        } else {
+#>
+
+    /**
+     * Gets the request builder for <#=prop.TypeName()#>
+     *
+     * @return the <#=prop.TypeRequestBuilder()#> instance
+     */
+    @Nonnull
+    public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>() {
+        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+<#
+        }
+    }
+} #>
+}

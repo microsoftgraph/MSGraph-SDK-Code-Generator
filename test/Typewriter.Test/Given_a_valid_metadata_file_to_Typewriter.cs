@@ -95,13 +95,13 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}extensions{Path.DirectorySeparatorChar}TimeOffRequestCollectionRequest.java");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}TimeOffRequestCollectionRequest.java");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the namespace applied at the CLI was added to the document.
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool isExpectedImportStatementFound = false;
-            string expected = "import com.microsoft.graph.models.extensions.TimeOffRequest;";
+            string expected = "import com.microsoft.graph.models.TimeOffRequest;";
             foreach (var line in lines)
             {
                 if (line.Contains(expected))
