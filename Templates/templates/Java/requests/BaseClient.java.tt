@@ -8,7 +8,7 @@
 import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.core.BaseClient;
 import <#=importNamespace#>.http.IHttpProvider;
-import <#=importNamespace#>.httpcore.ICoreAuthenticationProvider;
+import <#=importNamespace#>.authentication.IAuthenticationProvider;
 import <#=importNamespace#>.logger.ILogger;
 import <#=importNamespace#>.serializer.ISerializer;
 import okhttp3.OkHttpClient;
@@ -106,7 +106,7 @@ import okhttp3.OkHttpClient;
          */
         @Nonnull
         @Override
-        public Builder<httpClientType> authenticationProvider(@Nonnull final ICoreAuthenticationProvider auth) {
+        public Builder<httpClientType> authenticationProvider(@Nonnull final IAuthenticationProvider auth) {
             super.authenticationProvider(auth);
             return this;
         }
