@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.core.BaseClient;
 import com.microsoft.graph.http.IHttpProvider;
-import com.microsoft.graph.httpcore.ICoreAuthenticationProvider;
+import com.microsoft.graph.authentication.IAuthenticationProvider;
 import com.microsoft.graph.logger.ILogger;
 import com.microsoft.graph.serializer.ISerializer;
 import okhttp3.OkHttpClient;
@@ -122,7 +122,7 @@ public class GraphServiceClient extends BaseClient implements IBaseClient {
          */
         @Nonnull
         @Override
-        public Builder<httpClientType> authenticationProvider(@Nonnull final ICoreAuthenticationProvider auth) {
+        public Builder<httpClientType> authenticationProvider(@Nonnull final IAuthenticationProvider auth) {
             super.authenticationProvider(auth);
             return this;
         }
