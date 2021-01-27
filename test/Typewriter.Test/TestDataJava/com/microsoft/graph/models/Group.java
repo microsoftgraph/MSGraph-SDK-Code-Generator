@@ -45,7 +45,7 @@ public class Group extends DirectoryObject implements IJsonBackedObject {
 
 
         if (json.has("members")) {
-            members = serializer.deserializeObject(json.get("members").toString(), DirectoryObjectCollectionPage.class);
+            members = serializer.deserializeObject(json.get("members"), DirectoryObjectCollectionPage.class);
         }
     }
 }

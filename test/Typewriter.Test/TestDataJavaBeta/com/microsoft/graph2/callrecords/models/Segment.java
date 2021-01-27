@@ -135,7 +135,7 @@ public class Segment extends Entity implements IJsonBackedObject {
 
 
         if (json.has("refTypes")) {
-            refTypes = serializer.deserializeObject(json.get("refTypes").toString(), EntityType3CollectionPage.class);
+            refTypes = serializer.deserializeObject(json.get("refTypes"), EntityType3CollectionPage.class);
         }
     }
 }

@@ -68,11 +68,11 @@ public class Schedule extends Entity implements IJsonBackedObject {
 
 
         if (json.has("timesOff")) {
-            timesOff = serializer.deserializeObject(json.get("timesOff").toString(), TimeOffCollectionPage.class);
+            timesOff = serializer.deserializeObject(json.get("timesOff"), TimeOffCollectionPage.class);
         }
 
         if (json.has("timeOffRequests")) {
-            timeOffRequests = serializer.deserializeObject(json.get("timeOffRequests").toString(), TimeOffRequestCollectionPage.class);
+            timeOffRequests = serializer.deserializeObject(json.get("timeOffRequests"), TimeOffRequestCollectionPage.class);
         }
     }
 }
