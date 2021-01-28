@@ -7,6 +7,7 @@ steps:
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-objc-models/GeneratedModels/
 - pwsh: |
       gem install xcodeproj
+      & chmod +x .\add_generated_models.rb
       ruby .\add_generated_models.rb | Write-Host
   displayName: 'Add new files to project'
   workingDirectory: ${{ parameters.repoName }}
