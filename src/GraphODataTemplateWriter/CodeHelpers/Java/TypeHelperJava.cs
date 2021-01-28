@@ -1103,7 +1103,7 @@ import javax.annotation.Nonnull;";
                     sb.AppendFormat(
     @"
         if (json.has(""{0}"")) {{
-            {0} = serializer.deserializeObject(json.get(""{0}"").toString(), {1}.class);
+            {0} = serializer.deserializeObject(json.get(""{0}""), {1}.class);
         }}
 ",
                 property.Name.SanitizePropertyName(property),

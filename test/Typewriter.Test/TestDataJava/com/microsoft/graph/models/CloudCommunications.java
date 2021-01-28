@@ -59,11 +59,11 @@ public class CloudCommunications extends Entity implements IJsonBackedObject {
 
 
         if (json.has("calls")) {
-            calls = serializer.deserializeObject(json.get("calls").toString(), CallCollectionPage.class);
+            calls = serializer.deserializeObject(json.get("calls"), CallCollectionPage.class);
         }
 
         if (json.has("callRecords")) {
-            callRecords = serializer.deserializeObject(json.get("callRecords").toString(), CallRecordCollectionPage.class);
+            callRecords = serializer.deserializeObject(json.get("callRecords"), CallRecordCollectionPage.class);
         }
     }
 }
