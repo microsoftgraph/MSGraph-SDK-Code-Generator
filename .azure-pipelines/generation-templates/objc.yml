@@ -6,7 +6,8 @@ steps:
     OutputFullPath: $(typewriterDirectory)/output
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-objc-models/GeneratedModels/
 - pwsh: |
-      gem install --local xcodeproj
+      Write-Host "PWD: $pwd"
+      gem install --user-install xcodeproj
       & chmod +x ./add_generated_models.rb
       ruby ./add_generated_models.rb | Write-Host
   displayName: 'Add new files to project'
