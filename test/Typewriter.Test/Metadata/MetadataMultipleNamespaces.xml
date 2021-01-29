@@ -149,6 +149,16 @@
         <Property Name="device" Type="graph.identity" />
         <Property Name="user" Type="graph.identity" />
       </ComplexType>
+      <Function Name="ActOnEntityType2" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.entityType2" />
+        <Parameter Name="Name" Type="Edm.String" Nullable="false" />
+        <ReturnType Type="graph.entityType3" Nullable="false" />
+      </Function>
+      <Function Name="ActOnEntityType3" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.entityType3" />
+        <Parameter Name="Name" Type="Collection(Edm.String)" Nullable="false" />
+        <ReturnType Type="graph.endpoint" Nullable="false" />
+      </Function>
       <Action Name="forward" IsBound="true">
         <Parameter Name="bindingParameter" Type="graph.onenotePage" />
         <Parameter Name="ToRecipients" Type="Collection(graph.recipient)" Nullable="false" />

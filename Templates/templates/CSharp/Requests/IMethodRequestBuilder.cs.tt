@@ -1,0 +1,66 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="SharedCSharp.template.tt"#>
+<#
+
+var method = host.CurrentType.AsOdcmMethod();
+var @namespace = method.Namespace.GetNamespaceName();
+// Get navigation properties and methods of the return type if the method is composable.
+var composableMethodNavigations = method.IsComposable ? method.GetComposableFunctionReturnTypeNavigations() : new List<OdcmProperty>();
+var composableNavigationsInfo = composableMethodNavigations.GetAllNavigationPropertyInfo();
+var composableMethodMethods = method.IsComposable ? method.GetComposableFunctionReturnTypeMethods() : new List<OdcmMethod>();
+var composableMethodsInfo = composableMethodMethods.GetAllMethodsInfo(@namespace);
+
+var optionTypeName = @namespace.GetCoreLibraryType("Option");
+
+var entityName = method.Class.Name.ToCheckedCase();
+var requestType = entityName + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase() + "Request";
+var requestBuilderType = requestType + "Builder";
+#>
+
+namespace <#=@namespace#>
+{
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
+    /// <summary>
+    /// The interface I<#=requestBuilderType#>.
+    /// </summary>
+    public partial interface I<#=requestBuilderType#> : IBaseRequestBuilder
+    {
+        /// <summary>
+        /// Builds the request.
+        /// </summary>
+        /// <param name="options">The query and header options for the request.</param>
+        /// <returns>The built request.</returns>
+        I<#=requestType#> Request(IEnumerable<<#=optionTypeName#>> options = null);
+<#
+    // Add request builders for every function bound to the return type of this function.
+    foreach (var m in composableMethodsInfo.OrEmptyCollectionIfNull())
+    {
+#>
+        /// <summary>
+        /// Gets the request builder for <#=m.RequestBuilderType#>.
+        /// </summary><#=m.ParameterComments#>
+        /// <returns>The <see cref="I<#=m.RequestBuilderType#>"/>.</returns>
+        I<#=m.RequestBuilderType#> <#=m.MethodName#>(<#=m.MethodParametersAsArguments#>);
+<#
+    }
+#>
+<#
+    // Add request builders for every navigation property on the return type of this function.
+    foreach (var n in composableNavigationsInfo.OrEmptyCollectionIfNull())
+    {
+#>
+        /// <summary>
+        /// Gets the request builder for <#=n.Name#>.
+        /// <#=n.Description#>
+        /// </summary>
+        /// <returns>The <see cref="<#=n.ReturnInterfaceRequestBuilderName#>"/>.</returns>
+        <#=n.ReturnInterfaceRequestBuilderName#> <#=n.Name#>  { get; }
+<#
+    }
+#>
+    }
+}

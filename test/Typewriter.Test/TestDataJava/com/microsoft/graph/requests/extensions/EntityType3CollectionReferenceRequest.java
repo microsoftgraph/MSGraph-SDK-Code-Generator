@@ -12,6 +12,7 @@ import com.microsoft.graph2.callrecords.models.extensions.Segment;
 import com.microsoft.graph.models.extensions.EntityType3;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
+import com.microsoft.graph.models.extensions.Endpoint;
 import java.util.Arrays;
 import java.util.EnumSet;
 

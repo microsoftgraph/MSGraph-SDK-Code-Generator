@@ -11,6 +11,7 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.EntityType3;
 import com.microsoft.graph.models.extensions.Recipient;
 import com.microsoft.graph2.callrecords.models.extensions.Session;
+import com.microsoft.graph.models.extensions.Endpoint;
 import java.util.Arrays;
 import java.util.EnumSet;
 import com.microsoft.graph.core.IBaseClient;
@@ -58,5 +59,9 @@ public class EntityType3RequestBuilder extends BaseRequestBuilder implements IEn
 
     public IEntityType3ForwardRequestBuilder forward(final java.util.List<Recipient> toRecipients, final Recipient singleRecipient, final java.util.List<Session> multipleSessions, final Session singleSession, final String comment) {
         return new EntityType3ForwardRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.forward"), getClient(), null, toRecipients, singleRecipient, multipleSessions, singleSession, comment);
+    }
+
+    public IEntityType3ActOnEntityType3RequestBuilder actOnEntityType3(final java.util.List<String> name) {
+        return new EntityType3ActOnEntityType3RequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.ActOnEntityType3"), getClient(), null, name);
     }
 }

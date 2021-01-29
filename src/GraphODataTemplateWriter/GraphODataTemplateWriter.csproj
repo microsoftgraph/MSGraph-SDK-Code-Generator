@@ -49,16 +49,14 @@
     <ProjectReference Include="..\..\submodules\vipr\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Inflector">
-      <Version>1.0.0</Version>
-    </PackageReference>
+    <PackageReference Include="Inflector.NetStandard" Version="1.2.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Mono.TextTemplating">
       <Version>2.2.0</Version>
     </PackageReference>
     <PackageReference Include="NLog.Config">
-      <Version>4.7.6</Version>
+      <Version>4.7.7</Version>
     </PackageReference>
     <PackageReference Include="System.CodeDom" Version="5.0.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />

@@ -50,5 +50,18 @@ namespace Microsoft.Graph
             return new EntityType2Request(this.RequestUrl, this.Client, options);
         }
     
+        /// <summary>
+        /// Gets the request builder for EntityType2ActOnEntityType2.
+        /// </summary>
+        /// <returns>The <see cref="IEntityType2ActOnEntityType2RequestBuilder"/>.</returns>
+        public IEntityType2ActOnEntityType2RequestBuilder ActOnEntityType2(
+            string Name)
+        {
+            return new EntityType2ActOnEntityType2RequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.ActOnEntityType2"),
+                this.Client,
+                Name);
+        }
+    
     }
 }

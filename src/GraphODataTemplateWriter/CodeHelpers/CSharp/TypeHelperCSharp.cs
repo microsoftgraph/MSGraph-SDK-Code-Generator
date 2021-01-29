@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 {
@@ -10,6 +10,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
     using NLog;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Globalization;
+    using Inflector;
 
     public static class TypeHelperCSharp
     {
@@ -298,10 +300,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         {
             return !SimpleTypes.Contains(t);
         }
-
+        private static readonly Inflector inflector = new Inflector(CultureInfo.GetCultureInfo("en-US"));
         public static string GetNamespaceName(this OdcmNamespace namespaceObject)
         {
-            return Inflector.Inflector.Titleize(namespaceObject.Name).Replace(" ", "");
+            return inflector.Titleize(namespaceObject.Name).Replace(" ", "");
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)
@@ -428,6 +430,94 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             {
                 return $"Microsoft.Graph.{type}";
             }
+        }
+
+        /// <summary>
+        /// Use this method to get the method information for all of the methods.
+        /// Used in *MethodRequestBuilder
+        /// </summary>
+        /// <param name="methods">A list of OdcmMethods.</param>
+        /// <param name="namespace">The namespace for the methods.</param>
+        /// <returns>An ordered (to minimize diffs caused by reorder in the CSDL) list of 
+        /// MethodInfo objects used to construct the request builders.</returns>
+        public static List<MethodInfo> GetAllMethodsInfo(this List<OdcmMethod> methods, string @namespace)
+        {
+            return methods.Select(m =>
+            {
+                var parameters = m.Parameters
+                    .Select(p =>
+                    {
+                        var type = p.Type.GetTypeString(@namespace);
+                        var name = p.Name.ToLowerFirstChar();
+                        var parameterName = p.Name.GetSanitizedParameterName();
+                        var propertyName = p.Name.ToCheckedCase();
+
+                        // Adds support for classes ending in "Request" that have been dismabiguated.
+                        if (type.EndsWith("Request"))
+                        {
+                            type = String.Concat(type, "Object");
+                        }
+
+                        // Adjust the type string
+                        if (p.IsCollection)
+                        {
+                            type = $"IEnumerable<{type}>";
+                        }
+                        else if (!p.Type.IsTypeNullable() && p.IsNullable)
+                        {
+                            type += "?";
+                        }
+
+                        return new ParameterInfo(type, name, parameterName, propertyName, p.IsNullable);
+                    })
+                    .OrderBy(p => p.IsNullable ? 1 : 0); // I suspect this could cause a problem if new overloads are added.
+
+                var paramStrings = parameters.Select(p => $",\n            {p.Type} {p.ParameterName}");
+                var paramComments = parameters.Select(p => $"\n        /// <param name=\"{p.ParameterName}\">A {p.ParameterName} parameter for the OData method call.</param>");
+                var paramArgsForConstructor = parameters.Select(p => $",\n                {p.ParameterName}");
+
+                var entityName = m.Class.Name.ToCheckedCase();
+                var methodName = m.Name.ToCheckedCase();
+                var requestType = entityName + methodName + "Request";
+                var requestBuilderType = requestType + "Builder";
+
+                return new MethodInfo()
+                {
+                    Parameters = parameters,
+                    ParametersAsArguments = string.Join(string.Empty, paramStrings),
+                    ParamArgsForConstructor = string.Join(string.Empty, paramArgsForConstructor),
+                    ParameterComments = string.Join(string.Empty, paramComments),
+                    RequestBuilderType = requestBuilderType,
+                    MethodName = methodName,
+                    MethodFullName = m.FullName,
+                    MethodParametersAsArguments = paramStrings.Count() == 0 ? string.Empty : string.Join(string.Empty, paramStrings).Substring(1)
+                };
+            }).OrderBy(m => m.MethodName).ToList();
+        }
+
+        /// <summary>
+        /// Gets the list of navigation property information for CSharp *MethodRequestBuilder.
+        /// </summary>
+        /// <param name="navProperties"></param>
+        /// <returns></returns>
+        public static List<NavigationPropertyInfo> GetAllNavigationPropertyInfo(this List<OdcmProperty> navProperties)
+        {
+            return navProperties.Select(p =>
+            {
+                var returnClassRequestBuilderName = String.Format("{0}RequestBuilder", p.Type.Name.ToCheckedCase());
+                var returnInterfaceRequestBuilderName = String.Format("I{0}", returnClassRequestBuilderName);
+                var name = p.Name.ToCheckedCase();
+                var segment = p.Name;
+                var description = p.Description ?? string.Empty;
+                return new NavigationPropertyInfo()
+                {
+                    ReturnInterfaceRequestBuilderName = returnInterfaceRequestBuilderName,
+                    ReturnClassRequestBuilderName = returnClassRequestBuilderName,
+                    Segment = segment,
+                    Name = name,
+                    Description = description
+                };
+            }).OrderBy(n => n.Name).ToList();
         }
     }
 }

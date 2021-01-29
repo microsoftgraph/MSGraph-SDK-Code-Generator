@@ -1,13 +1,10 @@
 ﻿using CommandLine;
-using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Vipr.Core;
-using Vipr.Reader.OData.v4;
 
 namespace Typewriter
 {
@@ -18,16 +15,17 @@ namespace Typewriter
         public static void Main(string[] args)
         {
             Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(opts => GenerateSDK(opts))
+                .WithParsed(opts => GenerateSDK(opts, args))
                 .WithNotParsed((errs) => HandleError(errs));
         }
 
-        private static void GenerateSDK(Options options)
+        private static void GenerateSDK(Options options, string[] args)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
             SetupLogging(options.Verbosity);
+            Logger.Info($"Typewriter is running with the following arguments: {Environment.NewLine}  {string.Join(' ', args)}");
 
             string csdlContents = MetadataResolver.GetMetadata(options.Metadata);
 

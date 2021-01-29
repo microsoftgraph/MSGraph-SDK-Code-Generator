@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
 {
@@ -188,7 +188,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
 
             pieces.AddRange(@namespace.Split('.').ToList());
 
-            var pascalCasePieces = pieces.Select(piece => piece.Pascalize());
+            var pascalCasePieces = pieces.Select(piece => piece.ToPascalize());
             return string.Join("\\", pascalCasePieces);
         }
 
