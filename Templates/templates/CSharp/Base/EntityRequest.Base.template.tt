@@ -43,7 +43,7 @@ public string GetEntityRequestConstructor(OdcmClass odcmClass)
 // -------------------------------------------------------------
 // Build CRUD methods
 // -------------------------------------------------------------
-public void AppendDeleteAsyncHeader(string deleteTargetString, StringBuilder stringBuilder, bool includeSendParams)
+public void AppendDeleteAsyncHeader(string deleteTargetString, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
     if (includeSendParams)
     {
@@ -52,7 +52,14 @@ public void AppendDeleteAsyncHeader(string deleteTargetString, StringBuilder str
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Deletes the specified {0}.", deleteTargetString);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// Deletes the specified {0} and returns a <see cref=\"GraphResponse\"/> object.", deleteTargetString);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// Deletes the specified {0}.", deleteTargetString);
+    }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
 
@@ -63,10 +70,18 @@ public void AppendDeleteAsyncHeader(string deleteTargetString, StringBuilder str
     }
 
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        /// <returns>The task to await.</returns>");
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.Append("        /// <returns>The task of <see cref=\"GraphResponse\"/> to await.</returns>");
+    }
+    else
+    {
+        stringBuilder.Append("        /// <returns>The task to await.</returns>");
+    }
+    
 }
 
-public string GetDeleteAsyncMethod(string deleteTargetString, string deleteTargetType)
+public string GetDeleteAsyncMethod(string deleteTargetString, string deleteTargetType, bool isGraphResponseMethod)
 {
     var stringBuilder = new StringBuilder();
 
@@ -75,34 +90,61 @@ public string GetDeleteAsyncMethod(string deleteTargetString, string deleteTarge
 		deleteTargetType = String.Concat(deleteTargetType, "Object");
 	}
 
-    this.AppendDeleteAsyncHeader(deleteTargetString, stringBuilder, false);
+    this.AppendDeleteAsyncHeader(deleteTargetString, stringBuilder, false, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        public System.Threading.Tasks.Task DeleteAsync()");
-    stringBuilder.Append(@"
+
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.Append("        public System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync()");
+        stringBuilder.Append(@"
+        {
+            return this.DeleteResponseAsync(CancellationToken.None);
+        }");
+    }
+    else
+    {
+        stringBuilder.Append("        public System.Threading.Tasks.Task DeleteAsync()");
+        stringBuilder.Append(@"
         {
             return this.DeleteAsync(CancellationToken.None);
         }");
+    }
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
 
-    this.AppendDeleteAsyncHeader(deleteTargetString, stringBuilder, true);
+    this.AppendDeleteAsyncHeader(deleteTargetString, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)");
-    stringBuilder.Append(@"
+
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.Append("        public async System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken)");
+        stringBuilder.Append(@"
         {
             this.Method = ""DELETE"";");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            await this.SendAsync<{0}>(null, cancellationToken).ConfigureAwait(false);", deleteTargetType);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("            return await this.SendAsyncWithGraphResponse(null, cancellationToken).ConfigureAwait(false);");
+    }
+    else
+    {
+        stringBuilder.Append("        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)");
+        stringBuilder.Append(@"
+        {
+            this.Method = ""DELETE"";");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            await this.SendAsync<{0}>(null, cancellationToken).ConfigureAwait(false);", deleteTargetType);
+    }
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        }");
 
     return stringBuilder.ToString();
 }
 
-public string GetEntityDeleteAsyncMethod(OdcmClass odcmClass)
+public string GetEntityDeleteAsyncMethod(OdcmClass odcmClass, bool isGraphResponseMethod = false)
 {
     var entityName = this.GetEntityNameString(odcmClass);
-    return this.GetDeleteAsyncMethod(entityName, entityName);
+    return this.GetDeleteAsyncMethod(entityName, entityName, isGraphResponseMethod);
 }
 
 public void AppendPutRefenceAsyncHeader(string putTargetString, StringBuilder stringBuilder, bool includeSendParams)
@@ -483,10 +525,10 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     return stringBuilder.ToString();
 }
 
-public string GetEntityReferenceDeleteAsyncMethod(OdcmClass odcmClass)
+public string GetEntityReferenceDeleteAsyncMethod(OdcmClass odcmClass, bool isGraphResponseMethod = false)
 {
     var entityName = this.GetEntityNameString(odcmClass);
-    return this.GetDeleteAsyncMethod(string.Concat(entityName, " reference"), entityName);
+    return this.GetDeleteAsyncMethod(string.Concat(entityName, " reference"), entityName, isGraphResponseMethod);
 }
 
 

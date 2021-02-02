@@ -31,6 +31,8 @@ namespace <#=@namespace#>
 
 		<#=this.GetEntityDeleteAsyncMethod(entity)#>
 
+		<#=this.GetEntityDeleteAsyncMethod(entity, true)#>
+
 <#
     if (features.CanExpand)
     {

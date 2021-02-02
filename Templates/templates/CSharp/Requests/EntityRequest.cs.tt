@@ -37,6 +37,9 @@ namespace <#=@namespace#>
         Write("        ");
         Write(this.GetEntityDeleteAsyncMethod(entity));
         Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityDeleteAsyncMethod(entity, true));
+        Write("\n\n");
     }
 
     Write("        ");
