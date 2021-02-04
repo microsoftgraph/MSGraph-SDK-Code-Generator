@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -25,13 +25,30 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="endpointToCreate">The Endpoint to create.</param>
         /// <returns>The created Endpoint.</returns>
-        System.Threading.Tasks.Task<Endpoint> CreateAsync(Endpoint endpointToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Endpoint> CreateAsync(Endpoint endpointToCreate);
+
+        /// <summary>
         /// Creates the specified Endpoint using POST.
         /// </summary>
         /// <param name="endpointToCreate">The Endpoint to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Endpoint.</returns>
         System.Threading.Tasks.Task<Endpoint> CreateAsync(Endpoint endpointToCreate, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Creates the specified Endpoint using POST and returns a <see cref="GraphResponse{Endpoint}"/> object.
+        /// </summary>
+        /// <param name="endpointToCreate">The Endpoint to create.</param>
+        /// <returns>The <see cref="GraphResponse{Endpoint}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Endpoint>> CreateResponseAsync(Endpoint endpointToCreate);
+
+        /// <summary>
+        /// Creates the specified Endpoint using POST and returns a <see cref="GraphResponse{Endpoint}"/> object.
+        /// </summary>
+        /// <param name="endpointToCreate">The Endpoint to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Endpoint}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Endpoint>> CreateResponseAsync(Endpoint endpointToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Endpoint.

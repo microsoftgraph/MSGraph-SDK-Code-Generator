@@ -25,13 +25,30 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="entityToCreate">The Entity to create.</param>
         /// <returns>The created Entity.</returns>
-        System.Threading.Tasks.Task<Entity> CreateAsync(Entity entityToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Entity> CreateAsync(Entity entityToCreate);
+
+        /// <summary>
         /// Creates the specified Entity using POST.
         /// </summary>
         /// <param name="entityToCreate">The Entity to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Entity.</returns>
         System.Threading.Tasks.Task<Entity> CreateAsync(Entity entityToCreate, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Creates the specified Entity using POST and returns a <see cref="GraphResponse{Entity}"/> object.
+        /// </summary>
+        /// <param name="entityToCreate">The Entity to create.</param>
+        /// <returns>The <see cref="GraphResponse{Entity}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Entity>> CreateResponseAsync(Entity entityToCreate);
+
+        /// <summary>
+        /// Creates the specified Entity using POST and returns a <see cref="GraphResponse{Entity}"/> object.
+        /// </summary>
+        /// <param name="entityToCreate">The Entity to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Entity}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Entity>> CreateResponseAsync(Entity entityToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Entity.

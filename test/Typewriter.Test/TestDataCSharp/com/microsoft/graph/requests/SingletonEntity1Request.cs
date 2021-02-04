@@ -61,6 +61,29 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Creates the specified SingletonEntity1 using POST and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
+        /// </summary>
+        /// <param name="singletonEntity1ToCreate">The SingletonEntity1 to create.</param>
+        /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> CreateResponseAsync(SingletonEntity1 singletonEntity1ToCreate)
+        {
+            return this.CreateResponseAsync(singletonEntity1ToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified SingletonEntity1 using POST and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
+        /// </summary>
+        /// <param name="singletonEntity1ToCreate">The SingletonEntity1 to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> CreateResponseAsync(SingletonEntity1 singletonEntity1ToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<SingletonEntity1>(singletonEntity1ToCreate, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Deletes the specified SingletonEntity1.
         /// </summary>
         /// <returns>The task to await.</returns>

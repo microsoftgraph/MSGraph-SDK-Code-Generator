@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -38,13 +38,30 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
         /// <returns>The created DirectoryObject.</returns>
-        System.Threading.Tasks.Task<DirectoryObject> CreateAsync(DirectoryObject directoryObjectToCreate);        /// <summary>
+        System.Threading.Tasks.Task<DirectoryObject> CreateAsync(DirectoryObject directoryObjectToCreate);
+
+        /// <summary>
         /// Creates the specified DirectoryObject using POST.
         /// </summary>
         /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created DirectoryObject.</returns>
         System.Threading.Tasks.Task<DirectoryObject> CreateAsync(DirectoryObject directoryObjectToCreate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Creates the specified DirectoryObject using POST and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
+        /// </summary>
+        /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
+        /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> CreateResponseAsync(DirectoryObject directoryObjectToCreate);
+
+        /// <summary>
+        /// Creates the specified DirectoryObject using POST and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
+        /// </summary>
+        /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> CreateResponseAsync(DirectoryObject directoryObjectToCreate, CancellationToken cancellationToken);
 
 		/// <summary>
         /// Updates the specified DirectoryObject using PATCH.

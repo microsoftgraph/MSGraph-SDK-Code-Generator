@@ -61,6 +61,29 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Creates the specified TestEntity using POST and returns a <see cref="GraphResponse{TestEntity}"/> object.
+        /// </summary>
+        /// <param name="testEntityToCreate">The TestEntity to create.</param>
+        /// <returns>The <see cref="GraphResponse{TestEntity}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<TestEntity>> CreateResponseAsync(TestEntity testEntityToCreate)
+        {
+            return this.CreateResponseAsync(testEntityToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified TestEntity using POST and returns a <see cref="GraphResponse{TestEntity}"/> object.
+        /// </summary>
+        /// <param name="testEntityToCreate">The TestEntity to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{TestEntity}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<TestEntity>> CreateResponseAsync(TestEntity testEntityToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<TestEntity>(testEntityToCreate, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Deletes the specified TestEntity.
         /// </summary>
         /// <returns>The task to await.</returns>

@@ -226,7 +226,7 @@ public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass)
     return stringBuilder.ToString();
 }
 
-public void AppendCreateAsyncHeader(string entityName, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams)
+public void AppendCreateAsyncHeader(string entityName, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
     if (includeSendParams)
     {
@@ -235,7 +235,14 @@ public void AppendCreateAsyncHeader(string entityName, string lowerCaseEntityNam
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Creates the specified {0} using POST.", entityName);
+    if (isGraphResponseMethod)
+    {
+            stringBuilder.AppendFormat("        /// Creates the specified {0} using POST and returns a <see cref=\"GraphResponse{{{0}}}\"/> object.", entityName);
+    }
+    else
+    {
+            stringBuilder.AppendFormat("        /// Creates the specified {0} using POST.", entityName);
+    }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
@@ -249,10 +256,17 @@ public void AppendCreateAsyncHeader(string entityName, string lowerCaseEntityNam
     }
 
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", entityName);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// <returns>The <see cref=\"GraphResponse{{{0}}}\"/> object of the request.</returns>", entityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", entityName);
+    }
 }
 
-public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCollectionProperties = true)
+public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCollectionProperties = true, bool isGraphResponseMethod = false)
 {
     var stringBuilder = new StringBuilder();
 
@@ -269,22 +283,46 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
 
 	var lowerCaseEntityName = entityName.ToLowerFirstChar();
 
-    this.AppendCreateAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, false);
+    this.AppendCreateAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, false, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate)", entityName, lowerCaseEntityName);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> CreateResponseAsync({0} {1}ToCreate)", entityName, lowerCaseEntityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate)", entityName, lowerCaseEntityName);
+    }
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            return this.CreateAsync({0}ToCreate, CancellationToken.None);", lowerCaseEntityName);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("            return this.CreateResponseAsync({0}ToCreate, CancellationToken.None);", lowerCaseEntityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("            return this.CreateAsync({0}ToCreate, CancellationToken.None);", lowerCaseEntityName);
+    }
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        }");
 
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
 
-    this.AppendCreateAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, true);
+    this.AppendCreateAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> CreateResponseAsync({0} {1}ToCreate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
+    }
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
     stringBuilder.Append(Environment.NewLine);
@@ -292,16 +330,23 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            this.Method = \"POST\";");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var newEntity = await this.SendAsync<{0}>({1}ToCreate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
-    stringBuilder.Append(Environment.NewLine);
-	if (initializeCollectionProperties) {
-		stringBuilder.Append(
-	@"            this.InitializeCollectionProperties(newEntity);");
-		stringBuilder.Append(Environment.NewLine);
-	}
-	stringBuilder.Append(@"            return newEntity;
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("            return await this.SendAsyncWithGraphResponse<{0}>({1}ToCreate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        }");
+    }
+    else
+    {
+        stringBuilder.AppendFormat("            var newEntity = await this.SendAsync<{0}>({1}ToCreate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
+        stringBuilder.Append(Environment.NewLine);
+        if (initializeCollectionProperties) {
+            stringBuilder.Append(@"            this.InitializeCollectionProperties(newEntity);");
+            stringBuilder.Append(Environment.NewLine);
+        }
+        stringBuilder.Append(@"            return newEntity;
         }");
-
+    }
 
     return stringBuilder.ToString();
 }

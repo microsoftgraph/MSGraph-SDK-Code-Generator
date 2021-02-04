@@ -61,6 +61,29 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Creates the specified CloudCommunications using POST and returns a <see cref="GraphResponse{CloudCommunications}"/> object.
+        /// </summary>
+        /// <param name="cloudCommunicationsToCreate">The CloudCommunications to create.</param>
+        /// <returns>The <see cref="GraphResponse{CloudCommunications}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> CreateResponseAsync(CloudCommunications cloudCommunicationsToCreate)
+        {
+            return this.CreateResponseAsync(cloudCommunicationsToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified CloudCommunications using POST and returns a <see cref="GraphResponse{CloudCommunications}"/> object.
+        /// </summary>
+        /// <param name="cloudCommunicationsToCreate">The CloudCommunications to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{CloudCommunications}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> CreateResponseAsync(CloudCommunications cloudCommunicationsToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<CloudCommunications>(cloudCommunicationsToCreate, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Deletes the specified CloudCommunications.
         /// </summary>
         /// <returns>The task to await.</returns>

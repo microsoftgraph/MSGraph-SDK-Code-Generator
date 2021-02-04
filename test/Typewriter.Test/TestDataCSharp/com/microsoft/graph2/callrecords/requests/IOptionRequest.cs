@@ -25,13 +25,30 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <param name="optionToCreate">The Option to create.</param>
         /// <returns>The created Option.</returns>
-        System.Threading.Tasks.Task<Option> CreateAsync(Option optionToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Option> CreateAsync(Option optionToCreate);
+
+        /// <summary>
         /// Creates the specified Option using POST.
         /// </summary>
         /// <param name="optionToCreate">The Option to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Option.</returns>
         System.Threading.Tasks.Task<Option> CreateAsync(Option optionToCreate, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Creates the specified Option using POST and returns a <see cref="GraphResponse{Option}"/> object.
+        /// </summary>
+        /// <param name="optionToCreate">The Option to create.</param>
+        /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Option>> CreateResponseAsync(Option optionToCreate);
+
+        /// <summary>
+        /// Creates the specified Option using POST and returns a <see cref="GraphResponse{Option}"/> object.
+        /// </summary>
+        /// <param name="optionToCreate">The Option to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Option>> CreateResponseAsync(Option optionToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Option.

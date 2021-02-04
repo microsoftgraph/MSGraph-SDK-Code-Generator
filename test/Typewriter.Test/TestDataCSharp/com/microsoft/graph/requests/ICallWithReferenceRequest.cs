@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -38,13 +38,30 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="callToCreate">The Call to create.</param>
         /// <returns>The created Call.</returns>
-        System.Threading.Tasks.Task<Call> CreateAsync(Call callToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Call> CreateAsync(Call callToCreate);
+
+        /// <summary>
         /// Creates the specified Call using POST.
         /// </summary>
         /// <param name="callToCreate">The Call to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Call.</returns>
         System.Threading.Tasks.Task<Call> CreateAsync(Call callToCreate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Creates the specified Call using POST and returns a <see cref="GraphResponse{Call}"/> object.
+        /// </summary>
+        /// <param name="callToCreate">The Call to create.</param>
+        /// <returns>The <see cref="GraphResponse{Call}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Call>> CreateResponseAsync(Call callToCreate);
+
+        /// <summary>
+        /// Creates the specified Call using POST and returns a <see cref="GraphResponse{Call}"/> object.
+        /// </summary>
+        /// <param name="callToCreate">The Call to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Call}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Call>> CreateResponseAsync(Call callToCreate, CancellationToken cancellationToken);
 
 		/// <summary>
         /// Updates the specified Call using PATCH.

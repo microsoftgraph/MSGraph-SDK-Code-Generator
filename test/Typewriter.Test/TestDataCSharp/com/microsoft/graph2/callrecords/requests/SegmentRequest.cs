@@ -61,6 +61,29 @@ namespace Microsoft.Graph2.CallRecords
         }
 
         /// <summary>
+        /// Creates the specified Segment using POST and returns a <see cref="GraphResponse{Segment}"/> object.
+        /// </summary>
+        /// <param name="segmentToCreate">The Segment to create.</param>
+        /// <returns>The <see cref="GraphResponse{Segment}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<Segment>> CreateResponseAsync(Segment segmentToCreate)
+        {
+            return this.CreateResponseAsync(segmentToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified Segment using POST and returns a <see cref="GraphResponse{Segment}"/> object.
+        /// </summary>
+        /// <param name="segmentToCreate">The Segment to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Segment}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<Segment>> CreateResponseAsync(Segment segmentToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<Segment>(segmentToCreate, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Deletes the specified Segment.
         /// </summary>
         /// <returns>The task to await.</returns>

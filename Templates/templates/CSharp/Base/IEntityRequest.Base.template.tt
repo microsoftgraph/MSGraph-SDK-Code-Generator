@@ -38,7 +38,7 @@ public string GetEntityRequestInterfaceDefinition(OdcmClass odcmClass)
 // -------------------------------------------------------------
 // Build CRUD methods
 // -------------------------------------------------------------
-public void AppendEntityCreateAsyncMethodHeader(string entityName, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams)
+public void AppendEntityCreateAsyncMethodHeader(string entityName, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
 	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
 	if (entityName.EndsWith("Request"))
@@ -53,7 +53,16 @@ public void AppendEntityCreateAsyncMethodHeader(string entityName, string lowerC
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Creates the specified {0} using POST.", entityName);
+
+    if(isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// Creates the specified {0} using POST and returns a <see cref=\"GraphResponse{{{0}}}\"/> object.", entityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// Creates the specified {0} using POST.", entityName);
+    }
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
@@ -66,10 +75,18 @@ public void AppendEntityCreateAsyncMethodHeader(string entityName, string lowerC
     }
 
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", entityName);
+
+    if(isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// <returns>The <see cref=\"GraphResponse{{{0}}}\"/> object of the request.</returns>", entityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", entityName);
+    }
 }
 
-public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
+public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool isGraphResponseMethod = false)
 {
     var stringBuilder = new StringBuilder();
 
@@ -83,13 +100,30 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass)
 
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
 
-    this.AppendEntityCreateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, false);
+    this.AppendEntityCreateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, false, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate);", entityName, lowerCaseEntityName);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<GraphResponse<{0}>> CreateResponseAsync({0} {1}ToCreate);", entityName, lowerCaseEntityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate);", entityName, lowerCaseEntityName);
+    }
 
-    this.AppendEntityCreateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, true);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate, CancellationToken cancellationToken);", entityName, lowerCaseEntityName);
+    stringBuilder.Append(Environment.NewLine);
+    this.AppendEntityCreateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, true, isGraphResponseMethod);
+    stringBuilder.Append(Environment.NewLine);
+
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<GraphResponse<{0}>> CreateResponseAsync({0} {1}ToCreate, CancellationToken cancellationToken);", entityName, lowerCaseEntityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate, CancellationToken cancellationToken);", entityName, lowerCaseEntityName);
+    }
 
     return stringBuilder.ToString();
 }

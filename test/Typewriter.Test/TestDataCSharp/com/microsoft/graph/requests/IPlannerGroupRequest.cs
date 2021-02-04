@@ -25,13 +25,30 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="plannerGroupToCreate">The PlannerGroup to create.</param>
         /// <returns>The created PlannerGroup.</returns>
-        System.Threading.Tasks.Task<PlannerGroup> CreateAsync(PlannerGroup plannerGroupToCreate);        /// <summary>
+        System.Threading.Tasks.Task<PlannerGroup> CreateAsync(PlannerGroup plannerGroupToCreate);
+
+        /// <summary>
         /// Creates the specified PlannerGroup using POST.
         /// </summary>
         /// <param name="plannerGroupToCreate">The PlannerGroup to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created PlannerGroup.</returns>
         System.Threading.Tasks.Task<PlannerGroup> CreateAsync(PlannerGroup plannerGroupToCreate, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Creates the specified PlannerGroup using POST and returns a <see cref="GraphResponse{PlannerGroup}"/> object.
+        /// </summary>
+        /// <param name="plannerGroupToCreate">The PlannerGroup to create.</param>
+        /// <returns>The <see cref="GraphResponse{PlannerGroup}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<PlannerGroup>> CreateResponseAsync(PlannerGroup plannerGroupToCreate);
+
+        /// <summary>
+        /// Creates the specified PlannerGroup using POST and returns a <see cref="GraphResponse{PlannerGroup}"/> object.
+        /// </summary>
+        /// <param name="plannerGroupToCreate">The PlannerGroup to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{PlannerGroup}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<PlannerGroup>> CreateResponseAsync(PlannerGroup plannerGroupToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified PlannerGroup.

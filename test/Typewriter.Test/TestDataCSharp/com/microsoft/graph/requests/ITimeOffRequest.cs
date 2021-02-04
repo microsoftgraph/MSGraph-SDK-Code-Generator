@@ -25,13 +25,30 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="timeOffToCreate">The TimeOff to create.</param>
         /// <returns>The created TimeOff.</returns>
-        System.Threading.Tasks.Task<TimeOff> CreateAsync(TimeOff timeOffToCreate);        /// <summary>
+        System.Threading.Tasks.Task<TimeOff> CreateAsync(TimeOff timeOffToCreate);
+
+        /// <summary>
         /// Creates the specified TimeOff using POST.
         /// </summary>
         /// <param name="timeOffToCreate">The TimeOff to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created TimeOff.</returns>
         System.Threading.Tasks.Task<TimeOff> CreateAsync(TimeOff timeOffToCreate, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Creates the specified TimeOff using POST and returns a <see cref="GraphResponse{TimeOff}"/> object.
+        /// </summary>
+        /// <param name="timeOffToCreate">The TimeOff to create.</param>
+        /// <returns>The <see cref="GraphResponse{TimeOff}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<TimeOff>> CreateResponseAsync(TimeOff timeOffToCreate);
+
+        /// <summary>
+        /// Creates the specified TimeOff using POST and returns a <see cref="GraphResponse{TimeOff}"/> object.
+        /// </summary>
+        /// <param name="timeOffToCreate">The TimeOff to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{TimeOff}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<TimeOff>> CreateResponseAsync(TimeOff timeOffToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified TimeOff.

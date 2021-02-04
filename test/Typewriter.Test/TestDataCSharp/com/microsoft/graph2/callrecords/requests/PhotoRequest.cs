@@ -61,6 +61,29 @@ namespace Microsoft.Graph2.CallRecords
         }
 
         /// <summary>
+        /// Creates the specified Photo using POST and returns a <see cref="GraphResponse{Photo}"/> object.
+        /// </summary>
+        /// <param name="photoToCreate">The Photo to create.</param>
+        /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<Photo>> CreateResponseAsync(Photo photoToCreate)
+        {
+            return this.CreateResponseAsync(photoToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified Photo using POST and returns a <see cref="GraphResponse{Photo}"/> object.
+        /// </summary>
+        /// <param name="photoToCreate">The Photo to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<Photo>> CreateResponseAsync(Photo photoToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<Photo>(photoToCreate, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Deletes the specified Photo.
         /// </summary>
         /// <returns>The task to await.</returns>

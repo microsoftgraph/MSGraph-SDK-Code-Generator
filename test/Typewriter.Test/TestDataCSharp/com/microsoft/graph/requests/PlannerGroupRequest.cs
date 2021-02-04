@@ -61,6 +61,29 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Creates the specified PlannerGroup using POST and returns a <see cref="GraphResponse{PlannerGroup}"/> object.
+        /// </summary>
+        /// <param name="plannerGroupToCreate">The PlannerGroup to create.</param>
+        /// <returns>The <see cref="GraphResponse{PlannerGroup}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<PlannerGroup>> CreateResponseAsync(PlannerGroup plannerGroupToCreate)
+        {
+            return this.CreateResponseAsync(plannerGroupToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified PlannerGroup using POST and returns a <see cref="GraphResponse{PlannerGroup}"/> object.
+        /// </summary>
+        /// <param name="plannerGroupToCreate">The PlannerGroup to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{PlannerGroup}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<PlannerGroup>> CreateResponseAsync(PlannerGroup plannerGroupToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<PlannerGroup>(plannerGroupToCreate, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Deletes the specified PlannerGroup.
         /// </summary>
         /// <returns>The task to await.</returns>

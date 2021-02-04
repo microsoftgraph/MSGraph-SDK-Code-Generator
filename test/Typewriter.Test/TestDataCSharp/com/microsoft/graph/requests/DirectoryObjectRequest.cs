@@ -61,6 +61,29 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Creates the specified DirectoryObject using POST and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
+        /// </summary>
+        /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
+        /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> CreateResponseAsync(DirectoryObject directoryObjectToCreate)
+        {
+            return this.CreateResponseAsync(directoryObjectToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified DirectoryObject using POST and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
+        /// </summary>
+        /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> CreateResponseAsync(DirectoryObject directoryObjectToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<DirectoryObject>(directoryObjectToCreate, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Deletes the specified DirectoryObject.
         /// </summary>
         /// <returns>The task to await.</returns>

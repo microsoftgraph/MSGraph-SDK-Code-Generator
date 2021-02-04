@@ -38,13 +38,30 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="entityType2ToCreate">The EntityType2 to create.</param>
         /// <returns>The created EntityType2.</returns>
-        System.Threading.Tasks.Task<EntityType2> CreateAsync(EntityType2 entityType2ToCreate);        /// <summary>
+        System.Threading.Tasks.Task<EntityType2> CreateAsync(EntityType2 entityType2ToCreate);
+
+        /// <summary>
         /// Creates the specified EntityType2 using POST.
         /// </summary>
         /// <param name="entityType2ToCreate">The EntityType2 to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created EntityType2.</returns>
         System.Threading.Tasks.Task<EntityType2> CreateAsync(EntityType2 entityType2ToCreate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Creates the specified EntityType2 using POST and returns a <see cref="GraphResponse{EntityType2}"/> object.
+        /// </summary>
+        /// <param name="entityType2ToCreate">The EntityType2 to create.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<EntityType2>> CreateResponseAsync(EntityType2 entityType2ToCreate);
+
+        /// <summary>
+        /// Creates the specified EntityType2 using POST and returns a <see cref="GraphResponse{EntityType2}"/> object.
+        /// </summary>
+        /// <param name="entityType2ToCreate">The EntityType2 to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<EntityType2>> CreateResponseAsync(EntityType2 entityType2ToCreate, CancellationToken cancellationToken);
 
 		/// <summary>
         /// Updates the specified EntityType2 using PATCH.

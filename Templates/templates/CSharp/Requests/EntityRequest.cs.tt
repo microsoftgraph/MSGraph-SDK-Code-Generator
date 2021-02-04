@@ -28,7 +28,10 @@ namespace <#=@namespace#>
     if (features.CanCreate)
     {
         Write("        ");
-        Write(this.GetEntityCreateAsyncMethod(entity));
+        Write(this.GetEntityCreateAsyncMethod(entity, true, false));
+        Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityCreateAsyncMethod(entity, true, true));
         Write("\n\n");
     }
 

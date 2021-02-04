@@ -25,13 +25,30 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <param name="photoToCreate">The Photo to create.</param>
         /// <returns>The created Photo.</returns>
-        System.Threading.Tasks.Task<Photo> CreateAsync(Photo photoToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Photo> CreateAsync(Photo photoToCreate);
+
+        /// <summary>
         /// Creates the specified Photo using POST.
         /// </summary>
         /// <param name="photoToCreate">The Photo to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Photo.</returns>
         System.Threading.Tasks.Task<Photo> CreateAsync(Photo photoToCreate, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Creates the specified Photo using POST and returns a <see cref="GraphResponse{Photo}"/> object.
+        /// </summary>
+        /// <param name="photoToCreate">The Photo to create.</param>
+        /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Photo>> CreateResponseAsync(Photo photoToCreate);
+
+        /// <summary>
+        /// Creates the specified Photo using POST and returns a <see cref="GraphResponse{Photo}"/> object.
+        /// </summary>
+        /// <param name="photoToCreate">The Photo to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Photo>> CreateResponseAsync(Photo photoToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Photo.

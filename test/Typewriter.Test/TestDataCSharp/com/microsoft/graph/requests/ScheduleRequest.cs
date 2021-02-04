@@ -61,6 +61,29 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Creates the specified Schedule using POST and returns a <see cref="GraphResponse{Schedule}"/> object.
+        /// </summary>
+        /// <param name="scheduleToCreate">The Schedule to create.</param>
+        /// <returns>The <see cref="GraphResponse{Schedule}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<Schedule>> CreateResponseAsync(Schedule scheduleToCreate)
+        {
+            return this.CreateResponseAsync(scheduleToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified Schedule using POST and returns a <see cref="GraphResponse{Schedule}"/> object.
+        /// </summary>
+        /// <param name="scheduleToCreate">The Schedule to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Schedule}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<Schedule>> CreateResponseAsync(Schedule scheduleToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<Schedule>(scheduleToCreate, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Deletes the specified Schedule.
         /// </summary>
         /// <returns>The task to await.</returns>

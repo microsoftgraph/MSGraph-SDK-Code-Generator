@@ -38,13 +38,30 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="entityType3ToCreate">The EntityType3 to create.</param>
         /// <returns>The created EntityType3.</returns>
-        System.Threading.Tasks.Task<EntityType3> CreateAsync(EntityType3 entityType3ToCreate);        /// <summary>
+        System.Threading.Tasks.Task<EntityType3> CreateAsync(EntityType3 entityType3ToCreate);
+
+        /// <summary>
         /// Creates the specified EntityType3 using POST.
         /// </summary>
         /// <param name="entityType3ToCreate">The EntityType3 to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created EntityType3.</returns>
         System.Threading.Tasks.Task<EntityType3> CreateAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Creates the specified EntityType3 using POST and returns a <see cref="GraphResponse{EntityType3}"/> object.
+        /// </summary>
+        /// <param name="entityType3ToCreate">The EntityType3 to create.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<EntityType3>> CreateResponseAsync(EntityType3 entityType3ToCreate);
+
+        /// <summary>
+        /// Creates the specified EntityType3 using POST and returns a <see cref="GraphResponse{EntityType3}"/> object.
+        /// </summary>
+        /// <param name="entityType3ToCreate">The EntityType3 to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<EntityType3>> CreateResponseAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken);
 
 		/// <summary>
         /// Updates the specified EntityType3 using PATCH.

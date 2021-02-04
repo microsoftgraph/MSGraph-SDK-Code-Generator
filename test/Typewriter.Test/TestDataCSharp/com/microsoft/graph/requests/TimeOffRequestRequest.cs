@@ -61,6 +61,29 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Creates the specified TimeOffRequestObject using POST and returns a <see cref="GraphResponse{TimeOffRequestObject}"/> object.
+        /// </summary>
+        /// <param name="timeOffRequestObjectToCreate">The TimeOffRequestObject to create.</param>
+        /// <returns>The <see cref="GraphResponse{TimeOffRequestObject}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<TimeOffRequestObject>> CreateResponseAsync(TimeOffRequestObject timeOffRequestObjectToCreate)
+        {
+            return this.CreateResponseAsync(timeOffRequestObjectToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified TimeOffRequestObject using POST and returns a <see cref="GraphResponse{TimeOffRequestObject}"/> object.
+        /// </summary>
+        /// <param name="timeOffRequestObjectToCreate">The TimeOffRequestObject to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{TimeOffRequestObject}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<TimeOffRequestObject>> CreateResponseAsync(TimeOffRequestObject timeOffRequestObjectToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<TimeOffRequestObject>(timeOffRequestObjectToCreate, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Deletes the specified TimeOffRequest.
         /// </summary>
         /// <returns>The task to await.</returns>

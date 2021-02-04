@@ -25,13 +25,30 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="scheduleToCreate">The Schedule to create.</param>
         /// <returns>The created Schedule.</returns>
-        System.Threading.Tasks.Task<Schedule> CreateAsync(Schedule scheduleToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Schedule> CreateAsync(Schedule scheduleToCreate);
+
+        /// <summary>
         /// Creates the specified Schedule using POST.
         /// </summary>
         /// <param name="scheduleToCreate">The Schedule to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Schedule.</returns>
         System.Threading.Tasks.Task<Schedule> CreateAsync(Schedule scheduleToCreate, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Creates the specified Schedule using POST and returns a <see cref="GraphResponse{Schedule}"/> object.
+        /// </summary>
+        /// <param name="scheduleToCreate">The Schedule to create.</param>
+        /// <returns>The <see cref="GraphResponse{Schedule}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Schedule>> CreateResponseAsync(Schedule scheduleToCreate);
+
+        /// <summary>
+        /// Creates the specified Schedule using POST and returns a <see cref="GraphResponse{Schedule}"/> object.
+        /// </summary>
+        /// <param name="scheduleToCreate">The Schedule to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Schedule}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Schedule>> CreateResponseAsync(Schedule scheduleToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Schedule.

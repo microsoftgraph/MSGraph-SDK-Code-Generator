@@ -25,13 +25,30 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <param name="segmentToCreate">The Segment to create.</param>
         /// <returns>The created Segment.</returns>
-        System.Threading.Tasks.Task<Segment> CreateAsync(Segment segmentToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Segment> CreateAsync(Segment segmentToCreate);
+
+        /// <summary>
         /// Creates the specified Segment using POST.
         /// </summary>
         /// <param name="segmentToCreate">The Segment to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Segment.</returns>
         System.Threading.Tasks.Task<Segment> CreateAsync(Segment segmentToCreate, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Creates the specified Segment using POST and returns a <see cref="GraphResponse{Segment}"/> object.
+        /// </summary>
+        /// <param name="segmentToCreate">The Segment to create.</param>
+        /// <returns>The <see cref="GraphResponse{Segment}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Segment>> CreateResponseAsync(Segment segmentToCreate);
+
+        /// <summary>
+        /// Creates the specified Segment using POST and returns a <see cref="GraphResponse{Segment}"/> object.
+        /// </summary>
+        /// <param name="segmentToCreate">The Segment to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Segment}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Segment>> CreateResponseAsync(Segment segmentToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Segment.

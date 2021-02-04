@@ -61,6 +61,29 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Creates the specified Call using POST and returns a <see cref="GraphResponse{Call}"/> object.
+        /// </summary>
+        /// <param name="callToCreate">The Call to create.</param>
+        /// <returns>The <see cref="GraphResponse{Call}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<Call>> CreateResponseAsync(Call callToCreate)
+        {
+            return this.CreateResponseAsync(callToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified Call using POST and returns a <see cref="GraphResponse{Call}"/> object.
+        /// </summary>
+        /// <param name="callToCreate">The Call to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Call}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<Call>> CreateResponseAsync(Call callToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<Call>(callToCreate, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Deletes the specified Call.
         /// </summary>
         /// <returns>The task to await.</returns>

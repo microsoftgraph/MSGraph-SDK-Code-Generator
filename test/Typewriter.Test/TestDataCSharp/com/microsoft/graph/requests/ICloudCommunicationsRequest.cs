@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -25,13 +25,30 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cloudCommunicationsToCreate">The CloudCommunications to create.</param>
         /// <returns>The created CloudCommunications.</returns>
-        System.Threading.Tasks.Task<CloudCommunications> CreateAsync(CloudCommunications cloudCommunicationsToCreate);        /// <summary>
+        System.Threading.Tasks.Task<CloudCommunications> CreateAsync(CloudCommunications cloudCommunicationsToCreate);
+
+        /// <summary>
         /// Creates the specified CloudCommunications using POST.
         /// </summary>
         /// <param name="cloudCommunicationsToCreate">The CloudCommunications to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created CloudCommunications.</returns>
         System.Threading.Tasks.Task<CloudCommunications> CreateAsync(CloudCommunications cloudCommunicationsToCreate, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Creates the specified CloudCommunications using POST and returns a <see cref="GraphResponse{CloudCommunications}"/> object.
+        /// </summary>
+        /// <param name="cloudCommunicationsToCreate">The CloudCommunications to create.</param>
+        /// <returns>The <see cref="GraphResponse{CloudCommunications}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> CreateResponseAsync(CloudCommunications cloudCommunicationsToCreate);
+
+        /// <summary>
+        /// Creates the specified CloudCommunications using POST and returns a <see cref="GraphResponse{CloudCommunications}"/> object.
+        /// </summary>
+        /// <param name="cloudCommunicationsToCreate">The CloudCommunications to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{CloudCommunications}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> CreateResponseAsync(CloudCommunications cloudCommunicationsToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified CloudCommunications.

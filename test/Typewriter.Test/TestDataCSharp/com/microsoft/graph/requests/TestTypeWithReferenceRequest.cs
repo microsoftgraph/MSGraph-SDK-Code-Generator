@@ -81,6 +81,29 @@ namespace Microsoft.Graph
         }
 
 		/// <summary>
+        /// Creates the specified TestType using POST and returns a <see cref="GraphResponse{TestType}"/> object.
+        /// </summary>
+        /// <param name="testTypeToCreate">The TestType to create.</param>
+        /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<TestType>> CreateResponseAsync(TestType testTypeToCreate)
+        {
+            return this.CreateResponseAsync(testTypeToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified TestType using POST and returns a <see cref="GraphResponse{TestType}"/> object.
+        /// </summary>
+        /// <param name="testTypeToCreate">The TestType to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<TestType>> CreateResponseAsync(TestType testTypeToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<TestType>(testTypeToCreate, cancellationToken).ConfigureAwait(false);
+        }
+
+		/// <summary>
         /// Updates the specified TestType using PATCH.
         /// </summary>
         /// <param name="testTypeToUpdate">The TestType to update.</param>

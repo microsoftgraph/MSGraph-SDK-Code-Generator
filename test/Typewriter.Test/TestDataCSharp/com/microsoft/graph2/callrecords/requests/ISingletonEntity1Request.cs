@@ -25,13 +25,30 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <param name="singletonEntity1ToCreate">The SingletonEntity1 to create.</param>
         /// <returns>The created SingletonEntity1.</returns>
-        System.Threading.Tasks.Task<SingletonEntity1> CreateAsync(SingletonEntity1 singletonEntity1ToCreate);        /// <summary>
+        System.Threading.Tasks.Task<SingletonEntity1> CreateAsync(SingletonEntity1 singletonEntity1ToCreate);
+
+        /// <summary>
         /// Creates the specified SingletonEntity1 using POST.
         /// </summary>
         /// <param name="singletonEntity1ToCreate">The SingletonEntity1 to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created SingletonEntity1.</returns>
         System.Threading.Tasks.Task<SingletonEntity1> CreateAsync(SingletonEntity1 singletonEntity1ToCreate, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Creates the specified SingletonEntity1 using POST and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
+        /// </summary>
+        /// <param name="singletonEntity1ToCreate">The SingletonEntity1 to create.</param>
+        /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> CreateResponseAsync(SingletonEntity1 singletonEntity1ToCreate);
+
+        /// <summary>
+        /// Creates the specified SingletonEntity1 using POST and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
+        /// </summary>
+        /// <param name="singletonEntity1ToCreate">The SingletonEntity1 to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> CreateResponseAsync(SingletonEntity1 singletonEntity1ToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified SingletonEntity1.

@@ -26,6 +26,9 @@ namespace <#=@namespace#>
         Write("        ");
         Write(this.GetEntityCreateAsyncMethod(entity));
         Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityCreateAsyncMethod(entity,true));
+        Write("\n\n");
     }
 
     if (features.CanDelete)

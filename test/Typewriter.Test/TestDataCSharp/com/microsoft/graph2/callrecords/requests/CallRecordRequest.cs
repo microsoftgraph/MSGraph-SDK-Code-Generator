@@ -61,6 +61,29 @@ namespace Microsoft.Graph2.CallRecords
         }
 
         /// <summary>
+        /// Creates the specified CallRecord using POST and returns a <see cref="GraphResponse{CallRecord}"/> object.
+        /// </summary>
+        /// <param name="callRecordToCreate">The CallRecord to create.</param>
+        /// <returns>The <see cref="GraphResponse{CallRecord}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<CallRecord>> CreateResponseAsync(CallRecord callRecordToCreate)
+        {
+            return this.CreateResponseAsync(callRecordToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified CallRecord using POST and returns a <see cref="GraphResponse{CallRecord}"/> object.
+        /// </summary>
+        /// <param name="callRecordToCreate">The CallRecord to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{CallRecord}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<CallRecord>> CreateResponseAsync(CallRecord callRecordToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<CallRecord>(callRecordToCreate, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Deletes the specified CallRecord.
         /// </summary>
         /// <returns>The task to await.</returns>
