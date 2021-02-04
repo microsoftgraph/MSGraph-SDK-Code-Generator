@@ -6,6 +6,7 @@ using ApiDoctor.Validation.OData.Transformation;
 using NLog;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -89,7 +90,7 @@ namespace Typewriter
 
             var csdlWriterOptions = new CsdlWriterOptions()
             {
-                DocumentationSetPath = options.DocsRoot + "\\api-reference\\v1.0\\",
+                DocumentationSetPath = Path.Join(options.DocsRoot, "api-reference", options.EndpointVersion),
                 Annotations = AnnotationOptions.Properties,
                 SkipMetadataGeneration = true,
                 Formats = MetadataFormat.EdmxInput
