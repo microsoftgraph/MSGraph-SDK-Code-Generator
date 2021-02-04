@@ -115,9 +115,9 @@ namespace Typewriter
 
             try
             {
-                docSet = new DocSet(options.DocsRoot);
+                docSet = new DocSet(Path.Join(options.DocsRoot, "api-reference", options.EndpointVersion));
             }
-            catch (System.IO.FileNotFoundException ex)
+            catch (FileNotFoundException ex)
             {
                 Logger.Error(ex.Message);
                 return null;
