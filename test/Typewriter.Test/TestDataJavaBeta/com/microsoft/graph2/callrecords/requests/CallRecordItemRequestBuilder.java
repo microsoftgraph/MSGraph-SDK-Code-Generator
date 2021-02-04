@@ -54,13 +54,11 @@ public class CallRecordItemRequestBuilder extends BaseFunctionRequestBuilder<Cal
      */
     @Nonnull
     public CallRecordItemRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
-        CallRecordItemRequest request = new CallRecordItemRequest(
+        final CallRecordItemRequest request = new CallRecordItemRequest(
                 getRequestUrl(),
                 getClient(),
-                requestOptions
-        );
-
-            for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
+                requestOptions);
+        for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
             request.addFunctionOption(option);
         }
         return request;

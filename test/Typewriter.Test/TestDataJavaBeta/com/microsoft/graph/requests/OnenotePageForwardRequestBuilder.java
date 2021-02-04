@@ -55,13 +55,11 @@ public class OnenotePageForwardRequestBuilder extends BaseActionRequestBuilder<O
      */
     @Nonnull
     public OnenotePageForwardRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
-        OnenotePageForwardRequest request = new OnenotePageForwardRequest(
+        final OnenotePageForwardRequest request = new OnenotePageForwardRequest(
                 getRequestUrl(),
                 getClient(),
-                requestOptions,
-                this.body
-        );
-
-            return request;
+                requestOptions);
+        request.body = this.body;
+        return request;
     }
 }
