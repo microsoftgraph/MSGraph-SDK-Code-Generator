@@ -41,7 +41,7 @@ import <#=importNamespace#>.http.<#=baseType#>;
 
     /** The body for the method */
     @Nullable
-    protected <#=c.TypeParameterSet()#> body;
+    public <#=c.TypeParameterSet()#> body;
 
 <# } #>
 
@@ -51,18 +51,12 @@ import <#=importNamespace#>.http.<#=baseType#>;
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
-<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>
-     * @param parameters the parameters for the service method
-<# } #>
      */
-    public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>, @Nonnull final <#=c.TypeParameterSet()#> parameters<# } #>) {
+    public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
 <# } else { #>
         super(requestUrl, client, requestOptions, null);
-<# } #>
-<# if (c.AsOdcmMethod().IsAction() && c.AsOdcmMethod().MethodHasParameters()) { #>
-        body = parameters;
 <# } #>
     }
 
