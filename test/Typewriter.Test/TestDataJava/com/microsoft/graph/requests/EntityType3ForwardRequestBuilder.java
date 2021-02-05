@@ -57,13 +57,11 @@ public class EntityType3ForwardRequestBuilder extends BaseActionRequestBuilder<E
      */
     @Nonnull
     public EntityType3ForwardRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
-        EntityType3ForwardRequest request = new EntityType3ForwardRequest(
+        final EntityType3ForwardRequest request = new EntityType3ForwardRequest(
                 getRequestUrl(),
                 getClient(),
-                requestOptions,
-                this.body
-        );
-
-            return request;
+                requestOptions);
+        request.body = this.body;
+        return request;
     }
 }

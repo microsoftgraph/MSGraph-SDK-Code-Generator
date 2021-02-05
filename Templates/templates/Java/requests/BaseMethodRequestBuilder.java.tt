@@ -69,24 +69,19 @@ import javax.annotation.Nonnull;
      */
     @Nonnull
     public <#=c.TypeRequest()#> buildRequest(@Nonnull final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
-        <#=c.TypeRequest()#> request = new <#=c.TypeRequest()#>(
+        final <#=c.TypeRequest()#> request = new <#=c.TypeRequest()#>(
                 getRequestUrl(),
                 getClient(),
-<#if(c.AsOdcmMethod().MethodHasParameters() && isAction) { #>
-                requestOptions,
-                this.body
-<# } else { #>
-                requestOptions
-<# } #>
-        );
-
+                requestOptions);
 <#if(c.AsOdcmMethod().MethodHasParameters()) { #>
-    <# if (!isAction) { #>
+<# if (isAction) { #>
+        request.body = this.body;
+<# } else { #>
         for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
             request.addFunctionOption(option);
         }
-<#      }
-    }#>
+<# } #>
+<# } #>
         return request;
     }
 <#

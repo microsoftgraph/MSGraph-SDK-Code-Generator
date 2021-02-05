@@ -27,16 +27,14 @@ public class SegmentForwardRequest extends BaseRequest<Void> {
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
-     * @param parameters     the parameters for the service method
      */
-    public SegmentForwardRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final SegmentForwardParameterSet parameters) {
+    public SegmentForwardRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, Void.class);
-        body = parameters;
     }
 
 	/** The body for the method */
     @Nullable
-    protected SegmentForwardParameterSet body;
+    public SegmentForwardParameterSet body;
     /**
      * Creates the SegmentForward
      *

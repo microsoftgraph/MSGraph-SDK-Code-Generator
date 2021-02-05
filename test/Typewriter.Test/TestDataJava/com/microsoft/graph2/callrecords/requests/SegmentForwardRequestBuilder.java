@@ -55,13 +55,11 @@ public class SegmentForwardRequestBuilder extends BaseActionRequestBuilder<Segme
      */
     @Nonnull
     public SegmentForwardRequest buildRequest(@Nonnull final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
-        SegmentForwardRequest request = new SegmentForwardRequest(
+        final SegmentForwardRequest request = new SegmentForwardRequest(
                 getRequestUrl(),
                 getClient(),
-                requestOptions,
-                this.body
-        );
-
-            return request;
+                requestOptions);
+        request.body = this.body;
+        return request;
     }
 }
