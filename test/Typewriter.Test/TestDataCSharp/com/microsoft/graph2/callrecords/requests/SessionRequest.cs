@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -195,6 +195,56 @@ namespace Microsoft.Graph2.CallRecords
             var updatedEntity = await this.SendAsync<Session>(sessionToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
             return updatedEntity;
+        }
+
+        /// <summary>
+        /// Updates the specified Session using PATCH and returns a <see cref="GraphResponse{Session}"/> object.
+        /// </summary>
+        /// <param name="sessionToUpdate">The Session to update.</param>
+        /// <returns>The <see cref="GraphResponse{Session}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<Session>> UpdateResponseAsync(Session sessionToUpdate)
+        {
+            return this.UpdateResponseAsync(sessionToUpdate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Updates the specified Session using PATCH and returns a <see cref="GraphResponse{Session}"/> object.
+        /// </summary>
+        /// <param name="sessionToUpdate">The Session to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{Session}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<Session>> UpdateResponseAsync(Session sessionToUpdate, CancellationToken cancellationToken)
+        {
+			if (sessionToUpdate.AdditionalData != null)
+			{
+				if (sessionToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.ResponseHeaders) ||
+					sessionToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.StatusCode))
+				{
+					throw new Microsoft.Graph.ClientException(
+						new Microsoft.Graph.Error
+						{
+							Code = Microsoft.Graph.GeneratedErrorConstants.Codes.NotAllowed,
+							Message = String.Format(Microsoft.Graph.GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, sessionToUpdate.GetType().Name)
+						});
+				}
+			}
+            if (sessionToUpdate.AdditionalData != null)
+            {
+                if (sessionToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.ResponseHeaders) ||
+                    sessionToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.StatusCode))
+                {
+                    throw new Microsoft.Graph.ClientException(
+                        new Microsoft.Graph.Error
+                        {
+                            Code = Microsoft.Graph.GeneratedErrorConstants.Codes.NotAllowed,
+                            Message = String.Format(Microsoft.Graph.GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, sessionToUpdate.GetType().Name)
+                        });
+                }
+            }
+            this.ContentType = "application/json";
+            this.Method = "PATCH";
+            return await this.SendAsyncWithGraphResponse<Session>(sessionToUpdate, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

@@ -50,6 +50,9 @@ namespace <#=@namespace#>
         Write("        ");
         Write(this.GetEntityUpdateAsyncMethod(entity));
         Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityUpdateAsyncMethod(entity, true));
+        Write("\n\n");
     }
 
     if (features.CanExpand)

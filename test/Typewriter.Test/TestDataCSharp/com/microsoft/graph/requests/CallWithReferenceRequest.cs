@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -152,6 +152,56 @@ namespace Microsoft.Graph
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<Call>(callToUpdate, cancellationToken).ConfigureAwait(false);
             return updatedEntity;
+        }
+
+		/// <summary>
+        /// Updates the specified Call using PATCH and returns a <see cref="GraphResponse{Call}"/> object.
+        /// </summary>
+        /// <param name="callToUpdate">The Call to update.</param>
+        /// <returns>The <see cref="GraphResponse{Call}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<Call>> UpdateResponseAsync(Call callToUpdate)
+        {
+            return this.UpdateResponseAsync(callToUpdate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Updates the specified Call using PATCH and returns a <see cref="GraphResponse{Call}"/> object.
+        /// </summary>
+        /// <param name="callToUpdate">The Call to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{Call}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<Call>> UpdateResponseAsync(Call callToUpdate, CancellationToken cancellationToken)
+        {
+			if (callToUpdate.AdditionalData != null)
+			{
+				if (callToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
+					callToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
+				{
+					throw new ClientException(
+						new Error
+						{
+							Code = GeneratedErrorConstants.Codes.NotAllowed,
+							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, callToUpdate.GetType().Name)
+						});
+				}
+			}
+            if (callToUpdate.AdditionalData != null)
+            {
+                if (callToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
+                    callToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
+                {
+                    throw new ClientException(
+                        new Error
+                        {
+                            Code = GeneratedErrorConstants.Codes.NotAllowed,
+                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, callToUpdate.GetType().Name)
+                        });
+                }
+            }
+            this.ContentType = "application/json";
+            this.Method = "PATCH";
+            return await this.SendAsyncWithGraphResponse<Call>(callToUpdate, cancellationToken).ConfigureAwait(false);
         }
 
 		/// <summary>

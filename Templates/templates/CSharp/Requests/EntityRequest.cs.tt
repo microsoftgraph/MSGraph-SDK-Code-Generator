@@ -52,7 +52,10 @@ namespace <#=@namespace#>
     if (features.CanUpdate)
     {
         Write("        ");
-        Write(this.GetEntityUpdateAsyncMethod(entity));
+        Write(this.GetEntityUpdateAsyncMethod(entity, true, false));
+        Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityUpdateAsyncMethod(entity, true, true));
         Write("\n\n");
     }
 

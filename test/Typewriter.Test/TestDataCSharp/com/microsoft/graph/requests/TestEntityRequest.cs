@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -195,6 +195,56 @@ namespace Microsoft.Graph
             var updatedEntity = await this.SendAsync<TestEntity>(testEntityToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
             return updatedEntity;
+        }
+
+        /// <summary>
+        /// Updates the specified TestEntity using PATCH and returns a <see cref="GraphResponse{TestEntity}"/> object.
+        /// </summary>
+        /// <param name="testEntityToUpdate">The TestEntity to update.</param>
+        /// <returns>The <see cref="GraphResponse{TestEntity}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<TestEntity>> UpdateResponseAsync(TestEntity testEntityToUpdate)
+        {
+            return this.UpdateResponseAsync(testEntityToUpdate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Updates the specified TestEntity using PATCH and returns a <see cref="GraphResponse{TestEntity}"/> object.
+        /// </summary>
+        /// <param name="testEntityToUpdate">The TestEntity to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{TestEntity}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<TestEntity>> UpdateResponseAsync(TestEntity testEntityToUpdate, CancellationToken cancellationToken)
+        {
+			if (testEntityToUpdate.AdditionalData != null)
+			{
+				if (testEntityToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
+					testEntityToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
+				{
+					throw new ClientException(
+						new Error
+						{
+							Code = GeneratedErrorConstants.Codes.NotAllowed,
+							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, testEntityToUpdate.GetType().Name)
+						});
+				}
+			}
+            if (testEntityToUpdate.AdditionalData != null)
+            {
+                if (testEntityToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
+                    testEntityToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
+                {
+                    throw new ClientException(
+                        new Error
+                        {
+                            Code = GeneratedErrorConstants.Codes.NotAllowed,
+                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, testEntityToUpdate.GetType().Name)
+                        });
+                }
+            }
+            this.ContentType = "application/json";
+            this.Method = "PATCH";
+            return await this.SendAsyncWithGraphResponse<TestEntity>(testEntityToUpdate, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

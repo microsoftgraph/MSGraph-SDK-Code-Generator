@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -195,6 +195,56 @@ namespace Microsoft.Graph2.CallRecords
             var updatedEntity = await this.SendAsync<Segment>(segmentToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
             return updatedEntity;
+        }
+
+        /// <summary>
+        /// Updates the specified Segment using PATCH and returns a <see cref="GraphResponse{Segment}"/> object.
+        /// </summary>
+        /// <param name="segmentToUpdate">The Segment to update.</param>
+        /// <returns>The <see cref="GraphResponse{Segment}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<Segment>> UpdateResponseAsync(Segment segmentToUpdate)
+        {
+            return this.UpdateResponseAsync(segmentToUpdate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Updates the specified Segment using PATCH and returns a <see cref="GraphResponse{Segment}"/> object.
+        /// </summary>
+        /// <param name="segmentToUpdate">The Segment to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{Segment}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<Segment>> UpdateResponseAsync(Segment segmentToUpdate, CancellationToken cancellationToken)
+        {
+			if (segmentToUpdate.AdditionalData != null)
+			{
+				if (segmentToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.ResponseHeaders) ||
+					segmentToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.StatusCode))
+				{
+					throw new Microsoft.Graph.ClientException(
+						new Microsoft.Graph.Error
+						{
+							Code = Microsoft.Graph.GeneratedErrorConstants.Codes.NotAllowed,
+							Message = String.Format(Microsoft.Graph.GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, segmentToUpdate.GetType().Name)
+						});
+				}
+			}
+            if (segmentToUpdate.AdditionalData != null)
+            {
+                if (segmentToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.ResponseHeaders) ||
+                    segmentToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.StatusCode))
+                {
+                    throw new Microsoft.Graph.ClientException(
+                        new Microsoft.Graph.Error
+                        {
+                            Code = Microsoft.Graph.GeneratedErrorConstants.Codes.NotAllowed,
+                            Message = String.Format(Microsoft.Graph.GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, segmentToUpdate.GetType().Name)
+                        });
+                }
+            }
+            this.ContentType = "application/json";
+            this.Method = "PATCH";
+            return await this.SendAsyncWithGraphResponse<Segment>(segmentToUpdate, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

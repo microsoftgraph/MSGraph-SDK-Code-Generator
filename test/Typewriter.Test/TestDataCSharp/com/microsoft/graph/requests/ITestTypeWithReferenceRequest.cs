@@ -80,6 +80,22 @@ namespace Microsoft.Graph
         System.Threading.Tasks.Task<TestType> UpdateAsync(TestType testTypeToUpdate, CancellationToken cancellationToken);
 
 		/// <summary>
+        /// Updates the specified TestType using PATCH and returns a <see cref="GraphResponse{TestType}"/> object.
+        /// </summary>
+        /// <param name="testTypeToUpdate">The TestType to update.</param>
+        /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<TestType>> UpdateResponseAsync(TestType testTypeToUpdate);
+
+        /// <summary>
+        /// Updates the specified TestType using PATCH and returns a <see cref="GraphResponse{TestType}"/> object.
+        /// </summary>
+        /// <param name="testTypeToUpdate">The TestType to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<TestType>> UpdateResponseAsync(TestType testTypeToUpdate, CancellationToken cancellationToken);
+
+		/// <summary>
         /// Deletes the specified TestType.
         /// </summary>
         /// <returns>The task to await.</returns>

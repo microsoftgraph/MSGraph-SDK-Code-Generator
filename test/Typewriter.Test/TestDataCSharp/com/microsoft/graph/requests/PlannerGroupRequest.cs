@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -195,6 +195,56 @@ namespace Microsoft.Graph
             var updatedEntity = await this.SendAsync<PlannerGroup>(plannerGroupToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
             return updatedEntity;
+        }
+
+        /// <summary>
+        /// Updates the specified PlannerGroup using PATCH and returns a <see cref="GraphResponse{PlannerGroup}"/> object.
+        /// </summary>
+        /// <param name="plannerGroupToUpdate">The PlannerGroup to update.</param>
+        /// <returns>The <see cref="GraphResponse{PlannerGroup}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<PlannerGroup>> UpdateResponseAsync(PlannerGroup plannerGroupToUpdate)
+        {
+            return this.UpdateResponseAsync(plannerGroupToUpdate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Updates the specified PlannerGroup using PATCH and returns a <see cref="GraphResponse{PlannerGroup}"/> object.
+        /// </summary>
+        /// <param name="plannerGroupToUpdate">The PlannerGroup to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{PlannerGroup}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<PlannerGroup>> UpdateResponseAsync(PlannerGroup plannerGroupToUpdate, CancellationToken cancellationToken)
+        {
+			if (plannerGroupToUpdate.AdditionalData != null)
+			{
+				if (plannerGroupToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
+					plannerGroupToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
+				{
+					throw new ClientException(
+						new Error
+						{
+							Code = GeneratedErrorConstants.Codes.NotAllowed,
+							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, plannerGroupToUpdate.GetType().Name)
+						});
+				}
+			}
+            if (plannerGroupToUpdate.AdditionalData != null)
+            {
+                if (plannerGroupToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
+                    plannerGroupToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
+                {
+                    throw new ClientException(
+                        new Error
+                        {
+                            Code = GeneratedErrorConstants.Codes.NotAllowed,
+                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, plannerGroupToUpdate.GetType().Name)
+                        });
+                }
+            }
+            this.ContentType = "application/json";
+            this.Method = "PATCH";
+            return await this.SendAsyncWithGraphResponse<PlannerGroup>(plannerGroupToUpdate, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

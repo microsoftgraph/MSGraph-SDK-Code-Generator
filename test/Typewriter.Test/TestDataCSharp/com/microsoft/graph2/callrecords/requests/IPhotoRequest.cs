@@ -106,6 +106,22 @@ namespace Microsoft.Graph2.CallRecords
         System.Threading.Tasks.Task<Photo> UpdateAsync(Photo photoToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
+        /// Updates the specified Photo using PATCH and returns a <see cref="GraphResponse{Photo}"/> object.
+        /// </summary>
+        /// <param name="photoToUpdate">The Photo to update.</param>
+        /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Photo>> UpdateResponseAsync(Photo photoToUpdate);
+
+        /// <summary>
+        /// Updates the specified Photo using PATCH and returns a <see cref="GraphResponse{Photo}"/> object.
+        /// </summary>
+        /// <param name="photoToUpdate">The Photo to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Photo>> UpdateResponseAsync(Photo photoToUpdate, CancellationToken cancellationToken);
+
+        /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
         /// <param name="value">The expand value.</param>

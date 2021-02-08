@@ -426,7 +426,7 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool initializeCollec
     return stringBuilder.ToString();
 }
 
-public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityName, string @namespace, StringBuilder stringBuilder, bool includeSendParams)
+public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityName, string @namespace, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
     var clientExceptionTypeName = @namespace.GetCoreLibraryType("ClientException");
 
@@ -443,7 +443,15 @@ public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityNam
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Updates the specified {0} using PATCH.", entityName);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// Updates the specified {0} using PATCH and returns a <see cref=\"GraphResponse{{{0}}}\"/> object.", entityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// Updates the specified {0} using PATCH.", entityName);
+    }
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
@@ -458,10 +466,18 @@ public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityNam
 	}
 
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The updated {0}.</returns>", entityName);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// <returns>The <see cref=\"GraphResponse{{{0}}}\"/> object of the request.</returns>", entityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// <returns>The updated {0}.</returns>", entityName);
+    }
+    
 }
 
-public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCollectionProperties = true)
+public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCollectionProperties = true, bool isGraphResponseMethod = false)
 {
     var stringBuilder = new StringBuilder();
     var @namespace = odcmClass.GetNamespaceName();
@@ -483,21 +499,43 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
-    this.AppendUpdateAsyncHeader(entityName, lowerCaseEntityName, @namespace, stringBuilder, false);
+    this.AppendUpdateAsyncHeader(entityName, lowerCaseEntityName, @namespace, stringBuilder, false, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate)", entityName, lowerCaseEntityName);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> UpdateResponseAsync({0} {1}ToUpdate)", entityName, lowerCaseEntityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate)", entityName, lowerCaseEntityName);
+    }
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            return this.UpdateAsync({0}ToUpdate, CancellationToken.None);", lowerCaseEntityName);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("            return this.UpdateResponseAsync({0}ToUpdate, CancellationToken.None);", lowerCaseEntityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("            return this.UpdateAsync({0}ToUpdate, CancellationToken.None);", lowerCaseEntityName);
+    }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        }");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
 
-    this.AppendUpdateAsyncHeader(entityName, lowerCaseEntityName, @namespace, stringBuilder, true);
+    this.AppendUpdateAsyncHeader(entityName, lowerCaseEntityName, @namespace, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> UpdateResponseAsync({0} {1}ToUpdate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
+    }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
 	stringBuilder.Append(Environment.NewLine);
@@ -557,15 +595,24 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            this.Method = \"PATCH\";");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var updatedEntity = await this.SendAsync<{0}>({1}ToUpdate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
-    stringBuilder.Append(Environment.NewLine);
-	if (initializeCollectionProperties) {
-		stringBuilder.Append(
-	@"            this.InitializeCollectionProperties(updatedEntity);");
-	stringBuilder.Append(Environment.NewLine);
-	}
-	stringBuilder.Append(@"            return updatedEntity;
+    if(isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("            return await this.SendAsyncWithGraphResponse<{0}>({1}ToUpdate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        }");
+    }
+    else
+    {
+        stringBuilder.AppendFormat("            var updatedEntity = await this.SendAsync<{0}>({1}ToUpdate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
+        stringBuilder.Append(Environment.NewLine);
+        if (initializeCollectionProperties)
+        {
+            stringBuilder.Append(@"            this.InitializeCollectionProperties(updatedEntity);");
+            stringBuilder.Append(Environment.NewLine);
+        }
+        stringBuilder.Append(@"            return updatedEntity;
         }");
+    }
 
     return stringBuilder.ToString();
 }

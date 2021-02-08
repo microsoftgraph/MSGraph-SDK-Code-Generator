@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -195,6 +195,56 @@ namespace Microsoft.Graph
             var updatedEntity = await this.SendAsync<TimeOffRequestObject>(timeOffRequestObjectToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
             return updatedEntity;
+        }
+
+        /// <summary>
+        /// Updates the specified TimeOffRequestObject using PATCH and returns a <see cref="GraphResponse{TimeOffRequestObject}"/> object.
+        /// </summary>
+        /// <param name="timeOffRequestObjectToUpdate">The TimeOffRequestObject to update.</param>
+        /// <returns>The <see cref="GraphResponse{TimeOffRequestObject}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<TimeOffRequestObject>> UpdateResponseAsync(TimeOffRequestObject timeOffRequestObjectToUpdate)
+        {
+            return this.UpdateResponseAsync(timeOffRequestObjectToUpdate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Updates the specified TimeOffRequestObject using PATCH and returns a <see cref="GraphResponse{TimeOffRequestObject}"/> object.
+        /// </summary>
+        /// <param name="timeOffRequestObjectToUpdate">The TimeOffRequestObject to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{TimeOffRequestObject}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<TimeOffRequestObject>> UpdateResponseAsync(TimeOffRequestObject timeOffRequestObjectToUpdate, CancellationToken cancellationToken)
+        {
+			if (timeOffRequestObjectToUpdate.AdditionalData != null)
+			{
+				if (timeOffRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
+					timeOffRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
+				{
+					throw new ClientException(
+						new Error
+						{
+							Code = GeneratedErrorConstants.Codes.NotAllowed,
+							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, timeOffRequestObjectToUpdate.GetType().Name)
+						});
+				}
+			}
+            if (timeOffRequestObjectToUpdate.AdditionalData != null)
+            {
+                if (timeOffRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
+                    timeOffRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
+                {
+                    throw new ClientException(
+                        new Error
+                        {
+                            Code = GeneratedErrorConstants.Codes.NotAllowed,
+                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, timeOffRequestObjectToUpdate.GetType().Name)
+                        });
+                }
+            }
+            this.ContentType = "application/json";
+            this.Method = "PATCH";
+            return await this.SendAsyncWithGraphResponse<TimeOffRequestObject>(timeOffRequestObjectToUpdate, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

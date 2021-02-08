@@ -106,6 +106,22 @@ namespace Microsoft.Graph
         System.Threading.Tasks.Task<Group> UpdateAsync(Group groupToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
+        /// Updates the specified Group using PATCH and returns a <see cref="GraphResponse{Group}"/> object.
+        /// </summary>
+        /// <param name="groupToUpdate">The Group to update.</param>
+        /// <returns>The <see cref="GraphResponse{Group}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Group>> UpdateResponseAsync(Group groupToUpdate);
+
+        /// <summary>
+        /// Updates the specified Group using PATCH and returns a <see cref="GraphResponse{Group}"/> object.
+        /// </summary>
+        /// <param name="groupToUpdate">The Group to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{Group}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Group>> UpdateResponseAsync(Group groupToUpdate, CancellationToken cancellationToken);
+
+        /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
         /// <param name="value">The expand value.</param>
