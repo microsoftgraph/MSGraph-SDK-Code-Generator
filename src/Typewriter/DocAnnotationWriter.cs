@@ -115,7 +115,7 @@ namespace Typewriter
 
             try
             {
-                docSet = new DocSet(options.DocsRoot);
+                docSet = new DocSet(Path.Join(options.DocsRoot, "api-reference", options.EndpointVersion));
             }
             catch (FileNotFoundException ex)
             {
@@ -123,6 +123,13 @@ namespace Typewriter
                 return null;
             }
 
+            Logger.Info("Parsing documentation files");
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            docSet.ScanDocumentation(string.Empty, issues);
+
+            // Json transformation for empty base types should default to null
+            // but they default to empty string. Clean those up here.
             foreach (var resource in docSet.Resources)
             {
                 if (resource.BaseType == string.Empty)
@@ -131,10 +138,6 @@ namespace Typewriter
                 }
             }
 
-            Logger.Info("Parsing documentation files");
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            docSet.ScanDocumentation(string.Empty, issues);
             stopwatch.Stop();
             Logger.Info($"Took {stopwatch.Elapsed} to parse {docSet.Files.Length} source files.");
 
