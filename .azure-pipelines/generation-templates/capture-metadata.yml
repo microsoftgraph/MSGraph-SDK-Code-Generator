@@ -14,9 +14,6 @@ parameters:
 - name: 'outputPath'
   type: string
   default: $(System.ArtifactsDirectory)
-- name: 'docsDirectory'
-  type: string
-  default: $(docsDirectoryV1)
 - name: 'repoName'
   type: string
   default: "msgraph-sdk-dotnet"
@@ -59,11 +56,24 @@ steps:
     InputMetadataFile: ${{ parameters.inputMetadata }}
     TypewriterExecutable: $(typewriterExecutable)
     TypewriterDirectory: $(typewriterDirectory)
-    DocsDirectory: ${{ parameters.docsDirectory }}
+    DocsDirectory: $(docsDirectory)
     GenerationMode: 'TransformWithDocs'
     Transform: $(transformScript)
     endpointVersion: ${{ parameters.endpoint }}
   displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata'
+
+# publish metadata as an artifact
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: ${{ parameters.outputPath }}
+    contents: '**/*'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: Copy generated metadata
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: '${{ parameters.endpoint }} metadata'
 
 # Use the clean metadata from the last step to generate DotNet files.
 
@@ -113,6 +123,7 @@ steps:
 
   displayName: push clean ${{ parameters.endpoint }} metadata to msgraph-metadata repo
   env:
-    endpointVersion: ${{ parameters.endpoint }}
+    EndpointVersion: ${{ parameters.endpoint }}
+    PublishChanges: $(publishChanges)
   workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'
   enabled: true
