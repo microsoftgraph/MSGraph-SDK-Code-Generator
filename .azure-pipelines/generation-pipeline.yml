@@ -8,7 +8,7 @@ schedules:
   displayName: Tuesday generation (PST 2am, EST 5am, EAT 3pm)
   branches:
     include:
-    - dev
+    - main
   always: true
 
 resources:
