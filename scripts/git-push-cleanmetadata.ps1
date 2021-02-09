@@ -21,5 +21,10 @@ else
 
 Write-Host "Added and commited cleaned $env:EndpointVersion metadata." -ForegroundColor Green
 
+# sync branch before pushing
+# this is especially important while running v1 and beta in parallel
+# and one process goes out of sync because of the other's check-in
+git pull origin master
+
 git push --set-upstream origin master | Write-Host
 Write-Host "Pushed the results of the build $env:BUILD_BUILDID to the master branch." -ForegroundColor Green
