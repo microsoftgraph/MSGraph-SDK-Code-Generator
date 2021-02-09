@@ -95,8 +95,8 @@ variables:
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
   scriptsDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts'
   transformScript: '$(Build.SourcesDirectory)/msgraph-metadata/transforms/csdl/preprocess_csdl.xsl'
-  docsDirectoryV1: '$(Build.SourcesDirectory)/microsoft-graph-docs/api-reference/v1.0'
-  docsDirectoryBeta: '$(Build.SourcesDirectory)/microsoft-graph-docs/api-reference/beta'
+  docsDirectoryV1: '$(Build.SourcesDirectory)/microsoft-graph-docs'
+  docsDirectoryBeta: '$(Build.SourcesDirectory)/microsoft-graph-docs'
 
   v1Branch: ${{ parameters.v1BranchPrefix }}/$(Build.BuildId)
   betaBranch: ${{ parameters.betaBranchPrefix }}/$(Build.BuildId)
