@@ -9,9 +9,9 @@ import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.models.extensions.TestEntity;
-import com.microsoft.graph.requests.extensions.ITestTypeRequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType2RequestBuilder;
-import com.microsoft.graph.requests.extensions.IEntityType3RequestBuilder;
+import com.microsoft.graph.requests.extensions.ITestTypeWithReferenceRequestBuilder;
+import com.microsoft.graph.requests.extensions.IEntityType2WithReferenceRequestBuilder;
+import com.microsoft.graph.requests.extensions.IEntityType3WithReferenceRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
 
