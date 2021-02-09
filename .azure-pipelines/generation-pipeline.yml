@@ -78,10 +78,10 @@ parameters:
     displayName: Skip metadata capture and clean
     type: boolean
 
-  - name: publishChangesIntoABranch
+  - name: publishChanges
     default: true
     type: boolean
-    displayName: Publish changes into a branch?
+    displayName: Publish changes?
 
 variables:
   buildConfiguration: 'Release'
@@ -95,8 +95,7 @@ variables:
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
   scriptsDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts'
   transformScript: '$(Build.SourcesDirectory)/msgraph-metadata/transforms/csdl/preprocess_csdl.xsl'
-  docsDirectoryV1: '$(Build.SourcesDirectory)/microsoft-graph-docs'
-  docsDirectoryBeta: '$(Build.SourcesDirectory)/microsoft-graph-docs'
+  docsDirectory: '$(Build.SourcesDirectory)/microsoft-graph-docs'
 
   v1Branch: ${{ parameters.v1BranchPrefix }}/$(Build.BuildId)
   betaBranch: ${{ parameters.betaBranchPrefix }}/$(Build.BuildId)
@@ -105,7 +104,7 @@ variables:
   # fatal: cannot lock ref 'refs/heads/beta/pipelinebuild/35157': 'refs/heads/beta' exists; cannot create 'refs/heads/beta/pipelinebuild/35157'
   typeScriptBetaBranch: ${{ parameters.typeScriptBetaBranchPrefix }}/$(Build.BuildId)
 
-  publishChangesIntoABranch: ${{ parameters.publishChangesIntoABranch }}
+  publishChanges: ${{ parameters.publishChanges }}
 
   phpVersion: 7.2
 
@@ -135,7 +134,7 @@ stages:
         endpoint: 'v1.0'
         inputMetadata: $(rawMetadataFileV1)
         outputPath: $(cleanMetadataFileV1OutputPath)
-        docsDirectory: $(docsDirectoryV1)
+        docsDirectory: $(docsDirectory)
         repoName: "msgraph-sdk-dotnet"
         cleanMetadataFile: $(cleanMetadataFileV1)
 

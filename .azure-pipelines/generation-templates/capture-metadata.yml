@@ -65,6 +65,7 @@ steps:
     endpointVersion: ${{ parameters.endpoint }}
   displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata'
 
+# publish metadata as an artifact
 - task: CopyFiles@2
   inputs:
     sourceFolder: ${{ parameters.outputPath }}
@@ -125,6 +126,7 @@ steps:
 
   displayName: push clean ${{ parameters.endpoint }} metadata to msgraph-metadata repo
   env:
-    endpointVersion: ${{ parameters.endpoint }}
+    EndpointVersion: ${{ parameters.endpoint }}
+    PublishChanges: $(publishChanges)
   workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'
   enabled: true

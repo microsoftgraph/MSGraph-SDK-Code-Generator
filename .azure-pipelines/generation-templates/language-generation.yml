@@ -69,5 +69,5 @@ steps:
   displayName: 'Git: push generated files'
   env:
     BranchName: ${{ parameters.branchName }}
-    PublishChanges: $(publishChangesIntoABranch)
+    PublishChanges: $(publishChanges)
   workingDirectory: ${{ parameters.repoName }}
