@@ -14,9 +14,6 @@ parameters:
 - name: 'outputPath'
   type: string
   default: $(System.ArtifactsDirectory)
-- name: 'docsDirectory'
-  type: string
-  default: $(docsDirectoryV1)
 - name: 'repoName'
   type: string
   default: "msgraph-sdk-dotnet"
@@ -59,7 +56,7 @@ steps:
     InputMetadataFile: ${{ parameters.inputMetadata }}
     TypewriterExecutable: $(typewriterExecutable)
     TypewriterDirectory: $(typewriterDirectory)
-    DocsDirectory: ${{ parameters.docsDirectory }}
+    DocsDirectory: $(docsDirectory)
     GenerationMode: 'TransformWithDocs'
     Transform: $(transformScript)
     endpointVersion: ${{ parameters.endpoint }}
