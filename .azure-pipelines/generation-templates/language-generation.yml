@@ -70,4 +70,5 @@ steps:
   env:
     BranchName: ${{ parameters.branchName }}
     PublishChanges: $(publishChanges)
+    OverrideSkipCI: $(overrideSkipCI)
   workingDirectory: ${{ parameters.repoName }}
