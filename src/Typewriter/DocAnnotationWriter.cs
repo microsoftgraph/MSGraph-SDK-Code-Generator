@@ -127,6 +127,17 @@ namespace Typewriter
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             docSet.ScanDocumentation(string.Empty, issues);
+
+            // Json transformation for empty base types should default to null
+            // but they default to empty string. Clean those up here.
+            foreach (var resource in docSet.Resources)
+            {
+                if (resource.BaseType == string.Empty)
+                {
+                    resource.BaseType = null;
+                }
+            }
+
             stopwatch.Stop();
             Logger.Info($"Took {stopwatch.Elapsed} to parse {docSet.Files.Length} source files.");
 
