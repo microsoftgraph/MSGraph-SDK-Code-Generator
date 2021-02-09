@@ -123,6 +123,14 @@ namespace Typewriter
                 return null;
             }
 
+            foreach (var resource in docSet.Resources)
+            {
+                if (resource.BaseType == string.Empty)
+                {
+                    resource.BaseType = null;
+                }
+            }
+
             Logger.Info("Parsing documentation files");
             var stopwatch = new Stopwatch();
             stopwatch.Start();
