@@ -5,8 +5,14 @@ if (!$env:PublishChanges)
 }
 
 Write-Host "About to add files....." -ForegroundColor Green
+
+if ($env:OverrideSkipCI)
+{
+    Write-Host "Overriding [skip ci] flag.." -ForegroundColor Yellow
+}
+
 git add . | Write-Host
-if ($env:BUILD_REASON -eq 'Manual') # Skip CI if manually running this pipeline.
+if (!$env:OverrideSkipCI -and ($env:BUILD_REASON -eq 'Manual')) # Skip CI if manually running this pipeline.
 {
     git commit -m "Update generated files with build $env:BUILD_BUILDID [skip ci]" | Write-Host
 }
