@@ -8,7 +8,7 @@ schedules:
   displayName: Tuesday generation (PST 2am, EST 5am, EAT 3pm)
   branches:
     include:
-    - dev
+    - main
   always: true
 
 resources:
@@ -83,6 +83,11 @@ parameters:
     type: boolean
     displayName: Publish changes?
 
+  - name: overrideSkipCI
+    default: false
+    type: boolean
+    displayName: Override [skip ci]? Checking this box will generate the SDK PRs
+
 variables:
   buildConfiguration: 'Release'
   cleanMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml'
@@ -105,6 +110,7 @@ variables:
   typeScriptBetaBranch: ${{ parameters.typeScriptBetaBranchPrefix }}/$(Build.BuildId)
 
   publishChanges: ${{ parameters.publishChanges }}
+  overrideSkipCI: ${{ parameters.overrideSkipCI }}
 
   phpVersion: 7.2
 
