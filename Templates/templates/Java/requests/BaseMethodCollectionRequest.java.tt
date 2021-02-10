@@ -52,7 +52,7 @@ import <#=importNamespace#>.http.<#=baseType#>;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeCollectionRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#><?> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
 <# if (c.AsOdcmMethod().ReturnType != null) { #>
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionResponse()#>.class, <#=c.TypeCollectionPage()#>.class, <#=c.TypeCollectionRequestBuilder() #>.class);
 <# } else { #>

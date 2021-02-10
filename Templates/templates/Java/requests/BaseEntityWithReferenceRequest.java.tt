@@ -22,7 +22,7 @@ import <#=importNamespace#>.serializer.IJsonBackedObject;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeWithReferencesRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeWithReferencesRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#><?> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 

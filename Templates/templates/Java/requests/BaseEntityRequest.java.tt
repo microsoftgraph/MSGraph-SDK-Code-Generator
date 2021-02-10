@@ -22,7 +22,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param responseClass  the class of the response
      */
     public <#=c.TypeRequest()#>(@Nonnull final String requestUrl,
-            @Nonnull final <#=c.IBaseClientType()#> client,
+            @Nonnull final <#=c.IBaseClientType()#><?> client,
             @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions,
             @Nonnull final Class<<# if(!host.TemplateName.Equals("EntityRequest")){ #>? extends <#}#><#=c.ClassTypeName()#>> responseClass) {
         super(requestUrl, client, requestOptions, responseClass);
@@ -36,7 +36,7 @@ import <#=importNamespace#>.http.HttpMethod;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeRequest()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#><?> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, <#=c.ClassTypeName()#>.class);
     }
 

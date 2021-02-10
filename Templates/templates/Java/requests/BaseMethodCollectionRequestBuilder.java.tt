@@ -37,7 +37,7 @@ import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctio
      * @param parameters     the parameters for the service method
 <# } #>
      */
-    public <#=c.TypeCollectionRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(method.MethodHasParameters()) { #>, @Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
+    public <#=c.TypeCollectionRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#><?> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(method.MethodHasParameters()) { #>, @Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionRequestBuilder()#>.class, <#=c.TypeCollectionRequest()#>.class);
 <#if(method.MethodHasParameters()) { #>
 <# if (isAction) { #>
