@@ -31,7 +31,7 @@ public class SingletonEntity2Request extends BaseRequest<SingletonEntity2> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public SingletonEntity2Request(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SingletonEntity2Request(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, SingletonEntity2.class);
     }
 

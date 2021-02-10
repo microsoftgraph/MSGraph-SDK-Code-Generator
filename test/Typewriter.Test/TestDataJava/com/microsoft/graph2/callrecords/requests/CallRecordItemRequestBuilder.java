@@ -26,9 +26,19 @@ public class CallRecordItemRequestBuilder extends BaseFunctionRequestBuilder<Cal
      * @param requestUrl     the request URL
      * @param client         the service client
      * @param requestOptions the options for this request
+     */
+    public CallRecordItemRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
+    }
+    /**
+     * The request builder for this CallRecordItem
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
      * @param parameters     the parameters for the service method
      */
-    public CallRecordItemRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final CallRecordItemParameterSet parameters) {
+    public CallRecordItemRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final CallRecordItemParameterSet parameters) {
         super(requestUrl, client, requestOptions);
         if(parameters != null) {
             functionOptions = parameters.getFunctionOptions();

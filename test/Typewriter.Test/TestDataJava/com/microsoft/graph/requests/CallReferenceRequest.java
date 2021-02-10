@@ -34,7 +34,7 @@ public class CallReferenceRequest extends BaseReferenceRequest<Call> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public CallReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public CallReferenceRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, Call.class);
     }
 

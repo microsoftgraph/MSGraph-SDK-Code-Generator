@@ -42,7 +42,7 @@ public class SegmentTestActionCollectionRequest extends BaseActionCollectionRequ
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public SegmentTestActionCollectionRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SegmentTestActionCollectionRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, SegmentTestActionCollectionResponse.class, SegmentTestActionCollectionPage.class, SegmentTestActionCollectionRequestBuilder.class);
     }
 

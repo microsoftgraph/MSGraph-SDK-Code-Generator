@@ -33,7 +33,7 @@ public class TestTypeReferenceRequestBuilder extends BaseReferenceRequestBuilder
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public TestTypeReferenceRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public TestTypeReferenceRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, TestTypeReferenceRequest.class);
     }
 }

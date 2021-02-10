@@ -38,7 +38,7 @@ public class EntityType3CollectionRequest extends BaseEntityCollectionRequest<En
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3CollectionRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3CollectionRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, EntityType3CollectionPage.class, EntityType3CollectionRequestBuilder.class);
     }
 

@@ -30,7 +30,7 @@ public class SingletonEntity1RequestBuilder extends BaseRequestBuilder<Singleton
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public SingletonEntity1RequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public SingletonEntity1RequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 
