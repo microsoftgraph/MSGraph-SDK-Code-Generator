@@ -2,13 +2,13 @@
 
 namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 {
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
+    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
+    using NLog;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
-    using NLog;
-    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
     using System.Text.RegularExpressions;
 
     public static class OdcmModelExtensions
@@ -548,6 +548,43 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         public static IEnumerable<OdcmMethod> WithOverloadsOfDistinctName(this OdcmMethod m)
         {
             return m?.WithOverloads()?.Distinct(methodNameAndParametersCountComparer) ?? new List<OdcmMethod>();
+        }
+
+        /// <summary>
+        /// Use this method to get a collection of navigation properties on the return type 
+        /// of a composable function. 
+        /// </summary>
+        /// <param name="odcmMethod">The OdcmMethod to target.</param>
+        /// <returns>An ordered (by name) list of navigation properties bound 
+        /// to the return type. Can be an empty list.</returns>
+        public static List<OdcmProperty> GetComposableFunctionReturnTypeNavigations(this OdcmMethod odcmMethod)
+        {
+            if (!odcmMethod.IsComposable)
+                throw new InvalidOperationException("This extension method is intended " +
+                                                    "to only be called on a composable function.");
+
+            return (odcmMethod.ReturnType as OdcmClass).Properties
+                                                       .Where(p => p.IsLink)
+                                                       .OrderBy(p => p.Name)
+                                                       .ToList();
+        }
+
+        /// <summary>
+        /// Use this method to get a collection of methods on the return type 
+        /// of a composable function. This will include the methods and overloads.
+        /// </summary>
+        /// <param name="odcmMethod">The OdcmMethod to target.</param>
+        /// <returns>An ordered (by name) list of methods bound to the return 
+        /// type. Can be an empty list.</returns>
+        public static List<OdcmMethod> GetComposableFunctionReturnTypeMethods(this OdcmMethod odcmMethod)
+        {
+            if (!odcmMethod.IsComposable)
+                throw new InvalidOperationException("This extension method is intended " +
+                                                    "to only be called on a composable function.");
+
+            return odcmMethod.ReturnType.AsOdcmClass().MethodsAndOverloads()
+                                                       .OrderBy(m => m.Name)
+                                                       .ToList();
         }
     }
 }

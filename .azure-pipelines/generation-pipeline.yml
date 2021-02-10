@@ -3,8 +3,13 @@
 
 trigger: none
 pr: none
-
-# TODO add schedule
+schedules:
+- cron: "0 10 * * TUE"
+  displayName: Tuesday generation (PST 2am, EST 5am, EAT 3pm)
+  branches:
+    include:
+    - main
+  always: true
 
 resources:
  repositories:
@@ -73,10 +78,15 @@ parameters:
     displayName: Skip metadata capture and clean
     type: boolean
 
-  - name: publishChangesIntoABranch
+  - name: publishChanges
     default: true
     type: boolean
-    displayName: Publish changes into a branch?
+    displayName: Publish changes?
+
+  - name: overrideSkipCI
+    default: false
+    type: boolean
+    displayName: Override [skip ci]? Checking this box will generate the SDK PRs
 
 variables:
   buildConfiguration: 'Release'
@@ -90,8 +100,7 @@ variables:
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
   scriptsDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts'
   transformScript: '$(Build.SourcesDirectory)/msgraph-metadata/transforms/csdl/preprocess_csdl.xsl'
-  docsDirectoryV1: '$(Build.SourcesDirectory)/microsoft-graph-docs/api-reference/v1.0'
-  docsDirectoryBeta: '$(Build.SourcesDirectory)/microsoft-graph-docs/api-reference/beta'
+  docsDirectory: '$(Build.SourcesDirectory)/microsoft-graph-docs'
 
   v1Branch: ${{ parameters.v1BranchPrefix }}/$(Build.BuildId)
   betaBranch: ${{ parameters.betaBranchPrefix }}/$(Build.BuildId)
@@ -100,7 +109,8 @@ variables:
   # fatal: cannot lock ref 'refs/heads/beta/pipelinebuild/35157': 'refs/heads/beta' exists; cannot create 'refs/heads/beta/pipelinebuild/35157'
   typeScriptBetaBranch: ${{ parameters.typeScriptBetaBranchPrefix }}/$(Build.BuildId)
 
-  publishChangesIntoABranch: ${{ parameters.publishChangesIntoABranch }}
+  publishChanges: ${{ parameters.publishChanges }}
+  overrideSkipCI: ${{ parameters.overrideSkipCI }}
 
   phpVersion: 7.2
 
@@ -130,7 +140,6 @@ stages:
         endpoint: 'v1.0'
         inputMetadata: $(rawMetadataFileV1)
         outputPath: $(cleanMetadataFileV1OutputPath)
-        docsDirectory: $(docsDirectoryV1)
         repoName: "msgraph-sdk-dotnet"
         cleanMetadataFile: $(cleanMetadataFileV1)
 
@@ -148,7 +157,6 @@ stages:
         endpoint: 'beta'
         inputMetadata: $(rawMetadataFileBeta)
         outputPath: $(cleanMetadataFileBetaOutputPath)
-        docsDirectory: $(docsDirectoryBeta)
         repoName: "msgraph-beta-sdk-dotnet"
         cleanMetadataFile: $(cleanMetadataFileBeta)
 

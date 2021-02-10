@@ -4,7 +4,7 @@
 
 Push-Location -Path $env:TypewriterDirectory
 
-# Note: We were only inserting the v1.0 docs. This change will make us insert beta docs into beta code files.
+& chmod +x $env:TypewriterExecutable
 & $env:TypewriterExecutable -v Info -m $env:InputMetadataFile -o $env:OutputPath -g $env:GenerationMode -t $env:Transform -d $env:DocsDirectory -e $env:endpointVersion
 
 Pop-Location
