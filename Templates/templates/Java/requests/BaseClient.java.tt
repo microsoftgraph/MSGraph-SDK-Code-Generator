@@ -14,7 +14,7 @@ import <#=importNamespace#>.serializer.ISerializer;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
-<#=TypeHelperJava.CreateClassDef(c.TypeName() + "Client<NativeRequestType>", c.BaseClientType() + "<NativeRequestType>", "IBaseClient<NativeRequestType>", c.Deprecation?.Description, " * @param <NativeRequestType> type of a request for the native http client")#>
+<#=TypeHelperJava.CreateClassDef(c.TypeName() + "Client<nativeRequestType>", c.BaseClientType() + "<nativeRequestType>", "IBaseClient<nativeRequestType>", c.Deprecation?.Description, " * @param <nativeRequestType> type of a request for the native http client")#>
     /**
      * Restricted constructor
      */
@@ -55,9 +55,9 @@ import okhttp3.Request;
     }
     /**
      * Builder to help configure the Graph service client
-     * @param <NativeRequestType> type of a request for the native http client
+     * @param <nativeRequestType> type of a request for the native http client
      */
-    public static class Builder<httpClientType, NativeRequestType> extends BaseClient.Builder<httpClientType, NativeRequestType> {
+    public static class Builder<httpClientType, nativeRequestType> extends BaseClient.Builder<httpClientType, nativeRequestType> {
         /**
          * Sets the serializer.
          *
@@ -67,7 +67,7 @@ import okhttp3.Request;
          */
         @Nonnull
         @Override
-        public Builder<httpClientType, NativeRequestType> serializer(@Nonnull final ISerializer serializer) {
+        public Builder<httpClientType, nativeRequestType> serializer(@Nonnull final ISerializer serializer) {
             super.serializer(serializer);
             return this;
         }
@@ -81,7 +81,7 @@ import okhttp3.Request;
          */
         @Nonnull
         @Override
-        public Builder<httpClientType, NativeRequestType> httpProvider(@Nonnull final IHttpProvider httpProvider) {
+        public Builder<httpClientType, nativeRequestType> httpProvider(@Nonnull final IHttpProvider httpProvider) {
             super.httpProvider(httpProvider);
             return this;
         }
@@ -95,7 +95,7 @@ import okhttp3.Request;
          */
         @Nonnull
         @Override
-        public Builder<httpClientType, NativeRequestType> logger(@Nonnull final ILogger logger) {
+        public Builder<httpClientType, nativeRequestType> logger(@Nonnull final ILogger logger) {
             super.logger(logger);
             return this;
         }
@@ -109,7 +109,7 @@ import okhttp3.Request;
          */
         @Nonnull
         @Override
-        public Builder<httpClientType, NativeRequestType> httpClient(@Nonnull final httpClientType client) {
+        public Builder<httpClientType, nativeRequestType> httpClient(@Nonnull final httpClientType client) {
             super.httpClient(client);
             return this;
         }
@@ -122,7 +122,7 @@ import okhttp3.Request;
          */
         @Nonnull
         @Override
-        public Builder<httpClientType, NativeRequestType> authenticationProvider(@Nonnull final IAuthenticationProvider auth) {
+        public Builder<httpClientType, nativeRequestType> authenticationProvider(@Nonnull final IAuthenticationProvider auth) {
             super.authenticationProvider(auth);
             return this;
         }
