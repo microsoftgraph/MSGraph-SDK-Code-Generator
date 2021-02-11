@@ -26,6 +26,8 @@ namespace <#=@namespace#>
 <# if (features.CanUpdate) { #>
 
         <#=this.GetEntityReferencePutAsyncMethod(entity)#>
+
+        <#=this.GetEntityReferencePutAsyncMethod(entity,true)#>
 <# } #>
     }
 }

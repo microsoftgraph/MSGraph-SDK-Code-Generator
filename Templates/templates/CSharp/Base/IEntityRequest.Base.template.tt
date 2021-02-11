@@ -21,9 +21,9 @@ public string GetEntityReferenceDeleteAsyncMethod(OdcmClass odcmClass, bool isGr
     return this.GetDeleteAsyncMethod(string.Concat(this.GetEntityNameString(odcmClass), " reference"), isGraphResponseMethod);
 }
 
-public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass)
+public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass, bool isGraphResponseMethod = false)
 {
-    return this.GetPutAsyncMethod(string.Concat(this.GetEntityNameString(odcmClass), " reference"));
+    return this.GetPutAsyncMethod(string.Concat(this.GetEntityNameString(odcmClass), " reference"), isGraphResponseMethod);
 }
 
 // -------------------------------------------------------------
@@ -210,7 +210,7 @@ public string GetDeleteAsyncMethod(string deleteTargetString, bool isGraphRespon
     return stringBuilder.ToString();
 }
 
-public void AppendPutAsyncMethodHeader(string putTargetString, StringBuilder stringBuilder, bool includeSendParams)
+public void AppendPutAsyncMethodHeader(string putTargetString, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
     if (includeSendParams)
     {
@@ -219,7 +219,15 @@ public void AppendPutAsyncMethodHeader(string putTargetString, StringBuilder str
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Puts the specified {0}.", putTargetString);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// Puts the specified {0} and returns a <see cref=\"GraphResponse\"/> object", putTargetString);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// Puts the specified {0}.", putTargetString);
+    }
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
 	stringBuilder.Append(Environment.NewLine);
@@ -231,23 +239,44 @@ public void AppendPutAsyncMethodHeader(string putTargetString, StringBuilder str
     }
 
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        /// <returns>The task to await.</returns>");
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.Append("        /// <returns>The task of <see cref=\"GraphResponse\"/> to await.</returns>");
+    }
+    else
+    {
+        stringBuilder.Append("        /// <returns>The task to await.</returns>");
+    }
 }
 
-public string GetPutAsyncMethod(string putTargetString)
+public string GetPutAsyncMethod(string putTargetString, bool isGraphResponseMethod)
 {
     var stringBuilder = new StringBuilder();
 
-    this.AppendPutAsyncMethodHeader(putTargetString, stringBuilder, false);
+    this.AppendPutAsyncMethodHeader(putTargetString, stringBuilder, false, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        System.Threading.Tasks.Task PutAsync(string id);");
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.Append("        System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(string id);");
+    }
+    else
+    {
+        stringBuilder.Append("        System.Threading.Tasks.Task PutAsync(string id);");
+    }
 
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
 
-    this.AppendPutAsyncMethodHeader(putTargetString, stringBuilder, true);
+    this.AppendPutAsyncMethodHeader(putTargetString, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken);");
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.Append("        System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(string id, CancellationToken cancellationToken);");
+    }
+    else
+    {
+        stringBuilder.Append("        System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken);");
+    }
 
     return stringBuilder.ToString();
 }

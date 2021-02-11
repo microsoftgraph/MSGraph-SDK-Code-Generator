@@ -51,6 +51,24 @@ namespace Microsoft.Graph
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <returns>The object returned by the PUT call.</returns>
         System.Threading.Tasks.Task<T> PutAsync<T>(Stream content, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : OnenotePage;
+
+        /// <summary>
+        /// PUTs the specified stream and returns a <see cref="GraphResponse"/> object.
+        /// </summary>
+        /// <typeparam name="T">The type returned by the PUT call.</typeparam>
+        /// <param name="content">The stream to PUT.</param>
+        /// <returns>The <see cref="GraphResponse"/> object returned by the PUT call.</returns>
+        System.Threading.Tasks.Task<GraphResponse<T>> PutResponseAsync<T>(Stream content) where T : OnenotePage;
+
+        /// <summary>
+        /// PUTs the specified stream and returns a <see cref="GraphResponse"/> object.
+        /// </summary>
+        /// <typeparam name="T">The type returned by the PUT call.</typeparam>
+        /// <param name="content">The stream to PUT.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The <see cref="GraphResponse"/> object returned by the PUT call.</returns>
+        System.Threading.Tasks.Task<GraphResponse<T>> PutResponseAsync<T>(Stream content, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : OnenotePage;
     
     }
 }
