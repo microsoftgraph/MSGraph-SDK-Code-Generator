@@ -30,7 +30,7 @@ public class EntityType2Request extends BaseRequest<EntityType2> {
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType2Request(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType2Request(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType2.class);
     }
 

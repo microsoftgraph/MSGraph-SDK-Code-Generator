@@ -31,6 +31,16 @@ import com.microsoft.graph.http.BaseActionCollectionRequestBuilder;
 @Deprecated
 public class TestTypeQueryCollectionRequestBuilder extends BaseActionCollectionRequestBuilder<ResponseObject, TestTypeQueryCollectionRequestBuilder, TestTypeQueryCollectionResponse, TestTypeQueryCollectionPage, TestTypeQueryCollectionRequest> {
 
+    /**
+     * The request builder for this collection of TestType
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     */
+    public TestTypeQueryCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions, TestTypeQueryCollectionRequestBuilder.class, TestTypeQueryCollectionRequest.class);
+    }
     private TestTypeQueryParameterSet body;
     /**
      * The request builder for this collection of TestType
@@ -40,7 +50,7 @@ public class TestTypeQueryCollectionRequestBuilder extends BaseActionCollectionR
      * @param requestOptions the options for this request
      * @param parameters     the parameters for the service method
      */
-    public TestTypeQueryCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final TestTypeQueryParameterSet parameters) {
+    public TestTypeQueryCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final TestTypeQueryParameterSet parameters) {
         super(requestUrl, client, requestOptions, TestTypeQueryCollectionRequestBuilder.class, TestTypeQueryCollectionRequest.class);
         this.body = parameters;
     }

@@ -25,7 +25,7 @@ import <#=method#>;
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public <#=c.TypeStreamRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+    public <#=c.TypeStreamRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#><?> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions);
     }
 

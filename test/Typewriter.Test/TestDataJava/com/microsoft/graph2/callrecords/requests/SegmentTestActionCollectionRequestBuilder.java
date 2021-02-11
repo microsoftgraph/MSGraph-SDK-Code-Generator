@@ -29,6 +29,16 @@ import com.microsoft.graph.http.BaseActionCollectionRequestBuilder;
  */
 public class SegmentTestActionCollectionRequestBuilder extends BaseActionCollectionRequestBuilder<Session, SegmentTestActionCollectionRequestBuilder, SegmentTestActionCollectionResponse, SegmentTestActionCollectionPage, SegmentTestActionCollectionRequest> {
 
+    /**
+     * The request builder for this collection of Segment
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     */
+    public SegmentTestActionCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions, SegmentTestActionCollectionRequestBuilder.class, SegmentTestActionCollectionRequest.class);
+    }
     private SegmentTestActionParameterSet body;
     /**
      * The request builder for this collection of Segment
@@ -38,7 +48,7 @@ public class SegmentTestActionCollectionRequestBuilder extends BaseActionCollect
      * @param requestOptions the options for this request
      * @param parameters     the parameters for the service method
      */
-    public SegmentTestActionCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final SegmentTestActionParameterSet parameters) {
+    public SegmentTestActionCollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final SegmentTestActionParameterSet parameters) {
         super(requestUrl, client, requestOptions, SegmentTestActionCollectionRequestBuilder.class, SegmentTestActionCollectionRequest.class);
         this.body = parameters;
     }

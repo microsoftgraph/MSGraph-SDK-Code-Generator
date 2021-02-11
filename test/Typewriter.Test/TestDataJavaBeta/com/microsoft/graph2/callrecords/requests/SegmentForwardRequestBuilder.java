@@ -22,6 +22,16 @@ import javax.annotation.Nonnull;
  */
 public class SegmentForwardRequestBuilder extends BaseActionRequestBuilder<Segment> {
 
+    /**
+     * The request builder for this SegmentForward
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     */
+    public SegmentForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
+    }
     private SegmentForwardParameterSet body;
     /**
      * The request builder for this SegmentForward
@@ -31,7 +41,7 @@ public class SegmentForwardRequestBuilder extends BaseActionRequestBuilder<Segme
      * @param requestOptions the options for this request
      * @param parameters     the parameters for the service method
      */
-    public SegmentForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final SegmentForwardParameterSet parameters) {
+    public SegmentForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final SegmentForwardParameterSet parameters) {
         super(requestUrl, client, requestOptions);
         this.body = parameters;
     }

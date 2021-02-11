@@ -24,6 +24,16 @@ import javax.annotation.Nonnull;
 @Deprecated
 public class EntityType3ForwardRequestBuilder extends BaseActionRequestBuilder<EntityType3> {
 
+    /**
+     * The request builder for this EntityType3Forward
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     */
+    public EntityType3ForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
+    }
     private EntityType3ForwardParameterSet body;
     /**
      * The request builder for this EntityType3Forward
@@ -33,7 +43,7 @@ public class EntityType3ForwardRequestBuilder extends BaseActionRequestBuilder<E
      * @param requestOptions the options for this request
      * @param parameters     the parameters for the service method
      */
-    public EntityType3ForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final EntityType3ForwardParameterSet parameters) {
+    public EntityType3ForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final EntityType3ForwardParameterSet parameters) {
         super(requestUrl, client, requestOptions);
         this.body = parameters;
     }

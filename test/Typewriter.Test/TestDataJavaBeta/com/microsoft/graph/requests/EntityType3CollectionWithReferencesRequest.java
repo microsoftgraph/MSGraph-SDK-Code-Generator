@@ -44,7 +44,7 @@ public class EntityType3CollectionWithReferencesRequest extends BaseCollectionWi
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType3CollectionWithReferencesRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType3CollectionWithReferencesRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType3CollectionResponse.class, EntityType3CollectionWithReferencesPage.class, EntityType3CollectionWithReferencesRequestBuilder.class);
     }
 

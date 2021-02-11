@@ -22,6 +22,16 @@ import javax.annotation.Nonnull;
  */
 public class OnenotePageForwardRequestBuilder extends BaseActionRequestBuilder<OnenotePage> {
 
+    /**
+     * The request builder for this OnenotePageForward
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     */
+    public OnenotePageForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
+    }
     private OnenotePageForwardParameterSet body;
     /**
      * The request builder for this OnenotePageForward
@@ -31,7 +41,7 @@ public class OnenotePageForwardRequestBuilder extends BaseActionRequestBuilder<O
      * @param requestOptions the options for this request
      * @param parameters     the parameters for the service method
      */
-    public OnenotePageForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final OnenotePageForwardParameterSet parameters) {
+    public OnenotePageForwardRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions, @Nonnull final OnenotePageForwardParameterSet parameters) {
         super(requestUrl, client, requestOptions);
         this.body = parameters;
     }

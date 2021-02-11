@@ -23,7 +23,19 @@ import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctio
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), c.GetMethodCollectionRequestBuilderSuperClass(), null, c.Deprecation?.Description)#>
 
-<#if(c.AsOdcmMethod().MethodHasParameters() && isAction) { #>
+<#if(c.AsOdcmMethod().WithOverloadsOfDistinctName().All(x => x.MethodHasParameters())) { #>
+    /**
+     * The request builder for this collection of <#=c.ClassTypeName()#>
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     */
+    public <#=c.TypeCollectionRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#><?> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions, <#=c.TypeCollectionRequestBuilder()#>.class, <#=c.TypeCollectionRequest()#>.class);
+    }
+<# } #>
+<#if(c.AsOdcmMethod().WithOverloadsOfDistinctName().Any(x => x.MethodHasParameters()) && isAction) { #>
     private <#=c.AsOdcmMethod().TypeParameterSet() #> body;
 <# } #>
 <# foreach (var method in c.AsOdcmMethod().WithOverloadsOfDistinctName()) { #>
@@ -37,7 +49,7 @@ import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctio
      * @param parameters     the parameters for the service method
 <# } #>
      */
-    public <#=c.TypeCollectionRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(method.MethodHasParameters()) { #>, @Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
+    public <#=c.TypeCollectionRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#><?> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions<#if(method.MethodHasParameters()) { #>, @Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
         super(requestUrl, client, requestOptions, <#=c.TypeCollectionRequestBuilder()#>.class, <#=c.TypeCollectionRequest()#>.class);
 <#if(method.MethodHasParameters()) { #>
 <# if (isAction) { #>

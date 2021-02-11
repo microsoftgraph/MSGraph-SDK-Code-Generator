@@ -34,7 +34,7 @@ public class EntityType2CollectionRequestBuilder extends BaseCollectionRequestBu
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public EntityType2CollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public EntityType2CollectionRequestBuilder(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, EntityType2RequestBuilder.class, EntityType2CollectionRequest.class);
     }
 
