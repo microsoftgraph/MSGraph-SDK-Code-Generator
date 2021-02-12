@@ -102,6 +102,26 @@ namespace Microsoft.Graph2.CallRecords
         }
 
         /// <summary>
+        /// Gets the collection page and returns a <see cref="GraphResponse{CallRecordSessionsCollectionResponse}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{CallRecordSessionsCollectionResponse}"/> object.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<CallRecordSessionsCollectionResponse>> GetResponseAsync()
+        {
+            return this.GetResponseAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the collection page and returns a <see cref="GraphResponse{CallRecordSessionsCollectionResponse}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{CallRecordSessionsCollectionResponse}"/> object.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<CallRecordSessionsCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken)
+        {
+            this.Method = "GET";
+            return await this.SendAsyncWithGraphResponse<CallRecordSessionsCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
         /// <param name="value">The expand value.</param>

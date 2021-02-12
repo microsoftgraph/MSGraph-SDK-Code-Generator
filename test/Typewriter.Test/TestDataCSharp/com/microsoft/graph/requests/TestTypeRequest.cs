@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -143,6 +143,26 @@ namespace Microsoft.Graph
             var retrievedEntity = await this.SendAsync<TestType>(null, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(retrievedEntity);
             return retrievedEntity;
+        }
+
+        /// <summary>
+        /// Gets the specified TestType and returns a <see cref="GraphResponse{TestType}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<TestType>> GetResponseAsync()
+        {
+            return this.GetResponseAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the specified TestType and returns a <see cref="GraphResponse{TestType}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<TestType>> GetResponseAsync(CancellationToken cancellationToken)
+        {
+            this.Method = "GET";
+            return await this.SendAsyncWithGraphResponse<TestType>(null, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

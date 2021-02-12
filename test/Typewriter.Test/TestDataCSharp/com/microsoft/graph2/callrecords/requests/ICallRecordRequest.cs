@@ -90,6 +90,19 @@ namespace Microsoft.Graph2.CallRecords
         System.Threading.Tasks.Task<CallRecord> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Gets the specified CallRecord and returns a <see cref="GraphResponse{CallRecord}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{CallRecord}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<CallRecord>> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the specified CallRecord and returns a <see cref="GraphResponse{CallRecord}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{CallRecord}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<CallRecord>> GetResponseAsync(CancellationToken cancellationToken);
+
+        /// <summary>
         /// Updates the specified CallRecord using PATCH.
         /// </summary>
         /// <param name="callRecordToUpdate">The CallRecord to update.</param>

@@ -90,6 +90,19 @@ namespace Microsoft.Graph2.CallRecords
         System.Threading.Tasks.Task<SingletonEntity1> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Gets the specified SingletonEntity1 and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the specified SingletonEntity1 and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> GetResponseAsync(CancellationToken cancellationToken);
+
+        /// <summary>
         /// Updates the specified SingletonEntity1 using PATCH.
         /// </summary>
         /// <param name="singletonEntity1ToUpdate">The SingletonEntity1 to update.</param>

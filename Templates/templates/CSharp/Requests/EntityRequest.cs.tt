@@ -48,6 +48,9 @@ namespace <#=@namespace#>
     Write("        ");
     Write(this.GetEntityGetAsyncMethod(entity));
     Write("\n\n");
+    Write("        ");
+    Write(this.GetEntityGetAsyncMethod(entity, true, true));
+    Write("\n\n");
 
     if (features.CanUpdate)
     {

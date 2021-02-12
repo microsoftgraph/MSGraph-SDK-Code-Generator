@@ -75,6 +75,26 @@ namespace <#=@namespace#>
             return null;
         }
 
+        /// <summary>
+        /// Gets the collection page and returns a <see cref="GraphResponse{<#=collectionResponse#>}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{<#=collectionResponse#>}"/> object.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<<#=collectionResponse#>>> GetResponseAsync()
+        {
+            return this.GetResponseAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the collection page and returns a <see cref="GraphResponse{<#=collectionResponse#>}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{<#=collectionResponse#>}"/> object.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<<#=collectionResponse#>>> GetResponseAsync(CancellationToken cancellationToken)
+        {
+            this.Method = "GET";
+            return await this.SendAsyncWithGraphResponse<<#=collectionResponse#>>(null, cancellationToken).ConfigureAwait(false);
+        }
+
 <# if (features.CanExpand) { #>
         /// <summary>
         /// Adds the specified expand value to the request.

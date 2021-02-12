@@ -33,6 +33,19 @@ namespace Microsoft.Graph
         /// <returns>The DirectoryObject.</returns>
         System.Threading.Tasks.Task<DirectoryObject> GetAsync(CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Gets the specified DirectoryObject and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the specified DirectoryObject and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> GetResponseAsync(CancellationToken cancellationToken);
+
 		/// <summary>
         /// Creates the specified DirectoryObject using POST.
         /// </summary>

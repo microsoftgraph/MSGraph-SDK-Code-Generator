@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -54,6 +54,26 @@ namespace Microsoft.Graph
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<DirectoryObject>(null, cancellationToken).ConfigureAwait(false);
             return retrievedEntity;
+        }
+
+        /// <summary>
+        /// Gets the specified DirectoryObject and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> GetResponseAsync()
+        {
+            return this.GetResponseAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the specified DirectoryObject and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> GetResponseAsync(CancellationToken cancellationToken)
+        {
+            this.Method = "GET";
+            return await this.SendAsyncWithGraphResponse<DirectoryObject>(null, cancellationToken).ConfigureAwait(false);
         }
 
 		/// <summary>

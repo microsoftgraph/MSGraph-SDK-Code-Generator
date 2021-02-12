@@ -90,6 +90,19 @@ namespace Microsoft.Graph2.CallRecords
         System.Threading.Tasks.Task<Option> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Gets the specified Option and returns a <see cref="GraphResponse{Option}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Option>> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the specified Option and returns a <see cref="GraphResponse{Option}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Option>> GetResponseAsync(CancellationToken cancellationToken);
+
+        /// <summary>
         /// Updates the specified Option using PATCH.
         /// </summary>
         /// <param name="optionToUpdate">The Option to update.</param>

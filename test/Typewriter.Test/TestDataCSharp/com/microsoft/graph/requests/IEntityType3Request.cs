@@ -90,6 +90,19 @@ namespace Microsoft.Graph
         System.Threading.Tasks.Task<EntityType3> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Gets the specified EntityType3 and returns a <see cref="GraphResponse{EntityType3}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the specified EntityType3 and returns a <see cref="GraphResponse{EntityType3}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync(CancellationToken cancellationToken);
+
+        /// <summary>
         /// Updates the specified EntityType3 using PATCH.
         /// </summary>
         /// <param name="entityType3ToUpdate">The EntityType3 to update.</param>

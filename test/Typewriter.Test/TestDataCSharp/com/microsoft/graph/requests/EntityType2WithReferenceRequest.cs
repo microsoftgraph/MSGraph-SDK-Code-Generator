@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -54,6 +54,26 @@ namespace Microsoft.Graph
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<EntityType2>(null, cancellationToken).ConfigureAwait(false);
             return retrievedEntity;
+        }
+
+        /// <summary>
+        /// Gets the specified EntityType2 and returns a <see cref="GraphResponse{EntityType2}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<EntityType2>> GetResponseAsync()
+        {
+            return this.GetResponseAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the specified EntityType2 and returns a <see cref="GraphResponse{EntityType2}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<EntityType2>> GetResponseAsync(CancellationToken cancellationToken)
+        {
+            this.Method = "GET";
+            return await this.SendAsyncWithGraphResponse<EntityType2>(null, cancellationToken).ConfigureAwait(false);
         }
 
 		/// <summary>

@@ -90,6 +90,19 @@ namespace Microsoft.Graph
         System.Threading.Tasks.Task<TimeOff> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Gets the specified TimeOff and returns a <see cref="GraphResponse{TimeOff}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{TimeOff}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<TimeOff>> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the specified TimeOff and returns a <see cref="GraphResponse{TimeOff}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{TimeOff}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<TimeOff>> GetResponseAsync(CancellationToken cancellationToken);
+
+        /// <summary>
         /// Updates the specified TimeOff using PATCH.
         /// </summary>
         /// <param name="timeOffToUpdate">The TimeOff to update.</param>

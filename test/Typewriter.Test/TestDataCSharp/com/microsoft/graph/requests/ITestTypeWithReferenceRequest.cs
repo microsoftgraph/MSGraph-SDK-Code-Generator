@@ -33,6 +33,19 @@ namespace Microsoft.Graph
         /// <returns>The TestType.</returns>
         System.Threading.Tasks.Task<TestType> GetAsync(CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Gets the specified TestType and returns a <see cref="GraphResponse{TestType}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<TestType>> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the specified TestType and returns a <see cref="GraphResponse{TestType}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<TestType>> GetResponseAsync(CancellationToken cancellationToken);
+
 		/// <summary>
         /// Creates the specified TestType using POST.
         /// </summary>

@@ -33,6 +33,20 @@ namespace Microsoft.Graph
         /// <returns>The stream.</returns>
         System.Threading.Tasks.Task<Stream> GetAsync(CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
 
+        /// <summary>
+        /// Gets the <see cref="GraphResponse"/> object of the request.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the <see cref="GraphResponse"/> object of the request.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The <see cref="GraphResponse"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse> GetResponseAsync(CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
+
 
         /// <summary>
         /// PUTs the specified stream.

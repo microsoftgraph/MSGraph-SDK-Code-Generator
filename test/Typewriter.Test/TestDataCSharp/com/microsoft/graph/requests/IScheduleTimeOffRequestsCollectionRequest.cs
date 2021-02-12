@@ -49,6 +49,19 @@ namespace Microsoft.Graph
         System.Threading.Tasks.Task<IScheduleTimeOffRequestsCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Gets the collection page and returns a <see cref="GraphResponse{ScheduleTimeOffRequestsCollectionResponse}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{ScheduleTimeOffRequestsCollectionResponse}"/> object.</returns>
+        System.Threading.Tasks.Task<GraphResponse<ScheduleTimeOffRequestsCollectionResponse>> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the collection page and returns a <see cref="GraphResponse{ScheduleTimeOffRequestsCollectionResponse}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{ScheduleTimeOffRequestsCollectionResponse}"/> object.</returns>
+        System.Threading.Tasks.Task<GraphResponse<ScheduleTimeOffRequestsCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken);
+
+        /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
         /// <param name="value">The expand value.</param>

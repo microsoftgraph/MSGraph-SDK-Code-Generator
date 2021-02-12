@@ -25,6 +25,8 @@ namespace <#=@namespace#>
 
         <#=this.GetEntityGetAsyncMethod(entity, false)#>
 
+        <#=this.GetEntityGetAsyncMethod(entity, false, true)#>
+
 		<#=this.GetEntityCreateAsyncMethod(entity, false, false)#>
 
 		<#=this.GetEntityCreateAsyncMethod(entity, false, true)#>

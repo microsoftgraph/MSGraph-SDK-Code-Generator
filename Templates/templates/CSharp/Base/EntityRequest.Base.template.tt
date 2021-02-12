@@ -393,7 +393,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     return stringBuilder.ToString();
 }
 
-public void AppendGetAsyncHeader(string entityName, StringBuilder stringBuilder, bool includeSendParams)
+public void AppendGetAsyncHeader(string entityName, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
 
 	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
@@ -409,7 +409,16 @@ public void AppendGetAsyncHeader(string entityName, StringBuilder stringBuilder,
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Gets the specified {0}.", entityName);
+
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// Gets the specified {0} and returns a <see cref=\"GraphResponse{{{0}}}\"/> object.", entityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// Gets the specified {0}.", entityName);
+    }
+
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
 
@@ -421,10 +430,18 @@ public void AppendGetAsyncHeader(string entityName, StringBuilder stringBuilder,
     }
 
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The {0}.</returns>", entityName);
+
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// <returns>The <see cref=\"GraphResponse{{{0}}}\"/> object of the request.</returns>", entityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// <returns>The {0}.</returns>", entityName);
+    }
 }
 
-public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool initializeCollectionProperties = true)
+public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool initializeCollectionProperties = true, bool isGraphResponseMethod = false)
 {
     var stringBuilder = new StringBuilder();
 
@@ -436,34 +453,60 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool initializeCollec
 		entityName = String.Concat(entityName, "Object");
 	}
 
-    this.AppendGetAsyncHeader(entityName, stringBuilder, false);
+    this.AppendGetAsyncHeader(entityName, stringBuilder, false, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> GetAsync()", entityName);
-    stringBuilder.Append(@"
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> GetResponseAsync()", entityName);
+        stringBuilder.Append(@"
+        {
+            return this.GetResponseAsync(CancellationToken.None);
+        }");
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> GetAsync()", entityName);
+        stringBuilder.Append(@"
         {
             return this.GetAsync(CancellationToken.None);
         }");
+    }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
 
-    this.AppendGetAsyncHeader(entityName, stringBuilder, true);
+    this.AppendGetAsyncHeader(entityName, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> GetAsync(CancellationToken cancellationToken)", entityName);
-    stringBuilder.Append(@"
+
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> GetResponseAsync(CancellationToken cancellationToken)", entityName);
+        stringBuilder.Append(@"
         {
             this.Method = ""GET"";");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var retrievedEntity = await this.SendAsync<{0}>(null, cancellationToken).ConfigureAwait(false);", entityName);
-
-    if (initializeCollectionProperties)
-    {
-        stringBuilder.Append(@"
-            this.InitializeCollectionProperties(retrievedEntity);");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            return await this.SendAsyncWithGraphResponse<{0}>(null, cancellationToken).ConfigureAwait(false);", entityName);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        }");
     }
+    else
+    {
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> GetAsync(CancellationToken cancellationToken)", entityName);
+        stringBuilder.Append(@"
+        {
+            this.Method = ""GET"";");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            var retrievedEntity = await this.SendAsync<{0}>(null, cancellationToken).ConfigureAwait(false);", entityName);
 
-    stringBuilder.Append(@"
+        if (initializeCollectionProperties)
+        {
+            stringBuilder.Append(@"
+            this.InitializeCollectionProperties(retrievedEntity);");
+        }
+
+        stringBuilder.Append(@"
             return retrievedEntity;
         }");
+    }
 
     return stringBuilder.ToString();
 }

@@ -90,6 +90,19 @@ namespace Microsoft.Graph
         System.Threading.Tasks.Task<CloudCommunications> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Gets the specified CloudCommunications and returns a <see cref="GraphResponse{CloudCommunications}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{CloudCommunications}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the specified CloudCommunications and returns a <see cref="GraphResponse{CloudCommunications}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{CloudCommunications}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> GetResponseAsync(CancellationToken cancellationToken);
+
+        /// <summary>
         /// Updates the specified CloudCommunications using PATCH.
         /// </summary>
         /// <param name="cloudCommunicationsToUpdate">The CloudCommunications to update.</param>

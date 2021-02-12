@@ -286,7 +286,7 @@ public string GetEntityDeleteAsyncMethod(OdcmClass odcmClass, bool isGraphRespon
     return this.GetDeleteAsyncMethod(this.GetEntityNameString(odcmClass), isGraphResponseMethod);
 }
 
-public void AppendGetAsyncMethodHeader(string entityName, StringBuilder stringBuilder, bool includeSendParams)
+public void AppendGetAsyncMethodHeader(string entityName, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
 	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
 	if (entityName.EndsWith("Request"))
@@ -301,7 +301,14 @@ public void AppendGetAsyncMethodHeader(string entityName, StringBuilder stringBu
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Gets the specified {0}.", entityName);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// Gets the specified {0} and returns a <see cref=\"GraphResponse{{{0}}}\"/> object.", entityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// Gets the specified {0}.", entityName);
+    }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
 
@@ -312,10 +319,17 @@ public void AppendGetAsyncMethodHeader(string entityName, StringBuilder stringBu
     }
 
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// <returns>The {0}.</returns>", entityName);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// <returns>The <see cref=\"GraphResponse{{{0}}}\"/> object of the request.</returns>", entityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// <returns>The {0}.</returns>", entityName);
+    }
 }
 
-public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
+public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool isGraphResponseMethod = false)
 {
     var stringBuilder = new StringBuilder();
 
@@ -327,16 +341,33 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass)
 		entityName = String.Concat(entityName, "Object");
 	}
 
-    this.AppendGetAsyncMethodHeader(entityName, stringBuilder, false);
+    this.AppendGetAsyncMethodHeader(entityName, stringBuilder, false, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> GetAsync();", entityName);
+
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<GraphResponse<{0}>> GetResponseAsync();", entityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> GetAsync();", entityName);
+    }
+
 
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
 
-    this.AppendGetAsyncMethodHeader(entityName, stringBuilder, true);
+    this.AppendGetAsyncMethodHeader(entityName, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> GetAsync(CancellationToken cancellationToken);", entityName);
+
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<GraphResponse<{0}>> GetResponseAsync(CancellationToken cancellationToken);", entityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> GetAsync(CancellationToken cancellationToken);", entityName);
+    }
 
     return stringBuilder.ToString();
 }
