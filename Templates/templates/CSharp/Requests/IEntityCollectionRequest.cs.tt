@@ -29,6 +29,8 @@ namespace <#=@namespace#>
     <#=this.GetCollectionInterfaceDefinition(prop)#>
     {
         <#=GetPostAsyncMethod(prop, @namespace)#>
+        <#=GetPostAsyncMethod(prop, @namespace, true)#>
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>

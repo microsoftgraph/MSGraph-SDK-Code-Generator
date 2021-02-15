@@ -57,6 +57,30 @@ namespace Microsoft.Graph
             return this.SendAsync<TimeOff>(timeOff, cancellationToken);
         }
 
+        
+        /// <summary>
+        /// Adds the specified TimeOff to the collection via POST and returns a <see cref="GraphResponse{TimeOff}"/> object of the request.
+        /// </summary>
+        /// <param name="timeOff">The TimeOff to add.</param>
+        /// <returns>The <see cref="GraphResponse{TimeOff}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<TimeOff>> AddResponseAsync(TimeOff timeOff)
+        {
+            return this.AddResponseAsync(timeOff, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds the specified TimeOff to the collection via POST and returns a <see cref="GraphResponse{TimeOff}"/> object of the request.
+        /// </summary>
+        /// <param name="timeOff">The TimeOff to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{TimeOff}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<TimeOff>> AddResponseAsync(TimeOff timeOff, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<TimeOff>(timeOff, cancellationToken).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>

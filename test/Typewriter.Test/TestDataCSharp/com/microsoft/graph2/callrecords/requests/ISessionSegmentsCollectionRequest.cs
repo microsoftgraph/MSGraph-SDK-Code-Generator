@@ -35,6 +35,22 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Segment.</returns>
         System.Threading.Tasks.Task<Segment> AddAsync(Segment segment, CancellationToken cancellationToken);
+        
+        /// <summary>
+        /// Adds the specified Segment to the collection via POST and returns a <see cref="GraphResponse{Segment}"/> object of the request.
+        /// </summary>
+        /// <param name="segment">The Segment to add.</param>
+        /// <returns>The <see cref="GraphResponse{Segment}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Segment>> AddResponseAsync(Segment segment);
+
+        /// <summary>
+        /// Adds the specified Segment to the collection via POST and returns a <see cref="GraphResponse{Segment}"/> object of the request.
+        /// </summary>
+        /// <param name="segment">The Segment to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Segment}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Segment>> AddResponseAsync(Segment segment, CancellationToken cancellationToken);
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>

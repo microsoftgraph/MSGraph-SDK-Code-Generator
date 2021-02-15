@@ -35,6 +35,22 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created TimeOffRequestObject.</returns>
         System.Threading.Tasks.Task<TimeOffRequestObject> AddAsync(TimeOffRequestObject timeOffRequest, CancellationToken cancellationToken);
+        
+        /// <summary>
+        /// Adds the specified TimeOffRequestObject to the collection via POST and returns a <see cref="GraphResponse{TimeOffRequestObject}"/> object of the request.
+        /// </summary>
+        /// <param name="timeOffRequest">The TimeOffRequestObject to add.</param>
+        /// <returns>The <see cref="GraphResponse{TimeOffRequestObject}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<TimeOffRequestObject>> AddResponseAsync(TimeOffRequestObject timeOffRequest);
+
+        /// <summary>
+        /// Adds the specified TimeOffRequestObject to the collection via POST and returns a <see cref="GraphResponse{TimeOffRequestObject}"/> object of the request.
+        /// </summary>
+        /// <param name="timeOffRequest">The TimeOffRequestObject to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{TimeOffRequestObject}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<TimeOffRequestObject>> AddResponseAsync(TimeOffRequestObject timeOffRequest, CancellationToken cancellationToken);
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>

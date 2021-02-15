@@ -57,6 +57,30 @@ namespace Microsoft.Graph
             return this.SendAsync<EntityType3>(entityType3, cancellationToken);
         }
 
+        
+        /// <summary>
+        /// Adds the specified EntityType3 to the collection via POST and returns a <see cref="GraphResponse{EntityType3}"/> object of the request.
+        /// </summary>
+        /// <param name="entityType3">The EntityType3 to add.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<EntityType3>> AddResponseAsync(EntityType3 entityType3)
+        {
+            return this.AddResponseAsync(entityType3, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds the specified EntityType3 to the collection via POST and returns a <see cref="GraphResponse{EntityType3}"/> object of the request.
+        /// </summary>
+        /// <param name="entityType3">The EntityType3 to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> AddResponseAsync(EntityType3 entityType3, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<EntityType3>(entityType3, cancellationToken).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>

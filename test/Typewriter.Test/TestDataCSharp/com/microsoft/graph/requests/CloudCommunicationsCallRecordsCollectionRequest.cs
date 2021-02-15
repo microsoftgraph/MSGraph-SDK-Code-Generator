@@ -57,6 +57,30 @@ namespace Microsoft.Graph
             return this.SendAsync<Microsoft.Graph2.CallRecords.CallRecord>(callRecord, cancellationToken);
         }
 
+        
+        /// <summary>
+        /// Adds the specified Microsoft.Graph2.CallRecords.CallRecord to the collection via POST and returns a <see cref="GraphResponse{Microsoft.Graph2.CallRecords.CallRecord}"/> object of the request.
+        /// </summary>
+        /// <param name="callRecord">The Microsoft.Graph2.CallRecords.CallRecord to add.</param>
+        /// <returns>The <see cref="GraphResponse{Microsoft.Graph2.CallRecords.CallRecord}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<Microsoft.Graph2.CallRecords.CallRecord>> AddResponseAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord)
+        {
+            return this.AddResponseAsync(callRecord, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds the specified Microsoft.Graph2.CallRecords.CallRecord to the collection via POST and returns a <see cref="GraphResponse{Microsoft.Graph2.CallRecords.CallRecord}"/> object of the request.
+        /// </summary>
+        /// <param name="callRecord">The Microsoft.Graph2.CallRecords.CallRecord to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Microsoft.Graph2.CallRecords.CallRecord}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<Microsoft.Graph2.CallRecords.CallRecord>> AddResponseAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<Microsoft.Graph2.CallRecords.CallRecord>(callRecord, cancellationToken).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
