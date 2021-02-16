@@ -86,7 +86,7 @@ namespace Typewriter
 
             using (var reader = new StringReader(csdlContents))
             using (var doc = XmlReader.Create(reader))
-            using (XmlTextWriter writer = new XmlTextWriter(pathToCleanMetadata, Encoding.ASCII))
+            using (XmlTextWriter writer = new XmlTextWriter(pathToCleanMetadata, Encoding.UTF8))
             {
                 writer.Indentation = 2;
                 writer.Formatting = Formatting.Indented;

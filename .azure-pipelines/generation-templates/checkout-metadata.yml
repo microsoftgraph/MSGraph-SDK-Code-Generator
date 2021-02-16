@@ -3,3 +3,4 @@ steps:
   displayName: checkout metadata
   fetchDepth: 1
   persistCredentials: true
+  submodules: recursive

@@ -1190,17 +1190,9 @@ import java.util.EnumSet;";
                         ?.ToList()
                         ?.ForEach(x => methodImports.Add(x));
                     c?.NavigationProperties()
-                        ?.Where(x => x.IsCollection && x.ParentPropertyType == null)?
-                        .Select(x => x.Projection.Type)
                         ?.Distinct()
                         ?.ToList()
-                        ?.ForEach(x => ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix, true));
-                    c?.NavigationProperties()
-                        ?.Where(x => !x.IsCollection && x.ParentPropertyType == null)
-                        ?.Select(x => x.Projection.Type)
-                        ?.Distinct()
-                        ?.ToList()
-                        ?.ForEach(x => ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix, false));
+                        ?.ForEach(x => ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix));
                     goto default;
                 default:
                     @namespace = host.CurrentNamespace();
@@ -1214,16 +1206,18 @@ import java.util.EnumSet;";
                 fullyQualifiedImport,
                 methodImports.Any() ? methodImports.Aggregate((x, y) => $"{x}{Environment.NewLine}{y}") : string.Empty);
         }
-        private static void ImportRequestBuilderTypes(CustomT4Host host, OdcmType x, HashSet<string> methodImports, string importFormat, string interfaceTemplatePrefix, bool includeCollectionTypes)
+        private static void ImportRequestBuilderTypes(CustomT4Host host, OdcmProperty x, HashSet<string> methodImports, string importFormat, string interfaceTemplatePrefix)
         {
+            var projectionTypeNS = x.Projection.Type.Namespace;
+            var includeCollectionTypes = x.IsCollection && x.ParentPropertyType == null;
             if (includeCollectionTypes)
-                methodImports.Add(string.Format(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeCollectionRequestBuilder()));
-            methodImports.Add(string.Format(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeRequestBuilder()));
+                methodImports.Add(string.Format(importFormat, projectionTypeNS.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeCollectionRequestBuilder()));
+            methodImports.Add(string.Format(importFormat, projectionTypeNS.Name.AddPrefix(), GetPrefixForRequests(), x.ITypeRequestBuilder()));
             if (!host.TemplateInfo.TemplateName.StartsWith(interfaceTemplatePrefix))
             {
                 if (includeCollectionTypes)
-                    methodImports.Add(string.Format(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeCollectionRequestBuilder()));
-                methodImports.Add(string.Format(importFormat, x.Namespace.Name.AddPrefix(), GetPrefixForRequests(), x.TypeRequestBuilder()));
+                    methodImports.Add(string.Format(importFormat, projectionTypeNS.Name.AddPrefix(), GetPrefixForRequests(), x.TypeCollectionRequestBuilder()));
+                methodImports.Add(string.Format(importFormat, projectionTypeNS.Name.AddPrefix(), GetPrefixForRequests(), x.TypeRequestBuilder()));
             }
         }
         /// <summary>
