@@ -3,15 +3,13 @@
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 {
     using System;
-    using System.Text;
     using System.Collections.Generic;
-    using Microsoft.Graph.ODataTemplateWriter.Extensions;
-    using Vipr.Core.CodeModel;
-    using NLog;
-    using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Globalization;
+    using System.Linq;
     using Inflector;
+    using Microsoft.Graph.ODataTemplateWriter.Extensions;
+    using NLog;
+    using Vipr.Core.CodeModel;
 
     public static class TypeHelperCSharp
     {
@@ -156,6 +154,23 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 default:
                     return type.ToCheckedCase();
             }
+        }
+
+        /// <summary>
+        /// We use Request postfix to create Request objects in the SDK
+        /// but metadata has type names that end with Request as well. To disambiguate those
+        /// we append Object at the end of the generated type name.
+        /// </summary>
+        /// <param name="typeName">type name that potentially ends with "Request"</param>
+        /// <returns>disambiguated type name. If the type is myRequest, it is converted into myRequestObject</returns>
+        public static string DisambiguateRequestObject(this string typeName)
+        {
+            if (typeName.EndsWith("Request"))
+            {
+                return $"{typeName}Object";
+            }
+
+            return typeName;
         }
 
         public static string GetTypeString(this OdcmType type)
