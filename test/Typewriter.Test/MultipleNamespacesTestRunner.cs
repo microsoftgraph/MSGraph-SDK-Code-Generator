@@ -94,10 +94,11 @@ namespace Typewriter.Test
             var outputDirectoryInfo = new DirectoryInfo(outputDirectory);
             var dataDirectoryInfo = new DirectoryInfo(dataDirectory);
 
-            if (outputDirectoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length != dataDirectoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length)
-            {
-                Assert.Fail("Number of generated files don't match with number of expected files!");
-            }
+            Assert.AreEqual(dataDirectoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length,
+                outputDirectoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length,
+                $@"Number of generated files don't match with number of expected files! Compare these two folders:
+{dataDirectory}
+{outputDirectory}");
 
             // Assert
             var testOutputBuilder = new StringBuilder();
