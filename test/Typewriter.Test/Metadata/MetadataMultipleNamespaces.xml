@@ -178,6 +178,22 @@
         <Annotation Term="Org.OData.Core.V1.Description" String="The OneNotePage content.&#xD;&#xA;&#xD;&#xA; Test token string" />
       </Annotations>
       <Annotations Target="graph.directoryObject" />
+      <!-- begin: RequestObjectDisambiguation for MethodCollectionPage -->
+      <Function Name="filterByCurrentUser" IsBound="true">
+        <Parameter Name="bindingParameter" Type="Collection(graph.unifiedRoleEligibilityRequest)"/>
+        <Parameter Name="on" Type="graph.roleEligibilityRequestFilterByCurrentUserOptions" Nullable="false"/>
+        <ReturnType Type="Collection(graph.unifiedRoleEligibilityRequest)"/>
+      </Function>
+      <EntityType Name="unifiedRoleEligibilityRequest">
+        <Property Name="action" Type="Edm.String"/>
+      </EntityType>
+      <EnumType Name="roleEligibilityRequestFilterByCurrentUserOptions">
+        <Member Name="principal" Value="1"/>
+        <Member Name="createdBy" Value="2"/>
+        <Member Name="approver" Value="3"/>
+        <Member Name="unknownFutureValue" Value="4"/>
+      </EnumType>
+      <!-- end: RequestObjectDisambiguation for MethodCollectionPage -->
     </Schema>
     <!--Intentionally made this microsoft.graph2 so that while compiling the output,
     we don't rely on parent namespace fallback in resolving types.
