@@ -56,6 +56,26 @@ namespace Microsoft.Graph
             return retrievedEntity;
         }
 
+        /// <summary>
+        /// Gets the specified EntityType3 and returns a <see cref="GraphResponse{EntityType3}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync()
+        {
+            return this.GetResponseAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the specified EntityType3 and returns a <see cref="GraphResponse{EntityType3}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync(CancellationToken cancellationToken)
+        {
+            this.Method = "GET";
+            return await this.SendAsyncWithGraphResponse<EntityType3>(null, cancellationToken).ConfigureAwait(false);
+        }
+
 		/// <summary>
         /// Creates the specified EntityType3 using POST.
         /// </summary>
@@ -78,6 +98,29 @@ namespace Microsoft.Graph
             this.Method = "POST";
             var newEntity = await this.SendAsync<EntityType3>(entityType3ToCreate, cancellationToken).ConfigureAwait(false);
             return newEntity;
+        }
+
+		/// <summary>
+        /// Creates the specified EntityType3 using POST and returns a <see cref="GraphResponse{EntityType3}"/> object.
+        /// </summary>
+        /// <param name="entityType3ToCreate">The EntityType3 to create.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<EntityType3>> CreateResponseAsync(EntityType3 entityType3ToCreate)
+        {
+            return this.CreateResponseAsync(entityType3ToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified EntityType3 using POST and returns a <see cref="GraphResponse{EntityType3}"/> object.
+        /// </summary>
+        /// <param name="entityType3ToCreate">The EntityType3 to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> CreateResponseAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return await this.SendAsyncWithGraphResponse<EntityType3>(entityType3ToCreate, cancellationToken).ConfigureAwait(false);
         }
 
 		/// <summary>
@@ -132,6 +175,56 @@ namespace Microsoft.Graph
         }
 
 		/// <summary>
+        /// Updates the specified EntityType3 using PATCH and returns a <see cref="GraphResponse{EntityType3}"/> object.
+        /// </summary>
+        /// <param name="entityType3ToUpdate">The EntityType3 to update.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<EntityType3>> UpdateResponseAsync(EntityType3 entityType3ToUpdate)
+        {
+            return this.UpdateResponseAsync(entityType3ToUpdate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Updates the specified EntityType3 using PATCH and returns a <see cref="GraphResponse{EntityType3}"/> object.
+        /// </summary>
+        /// <param name="entityType3ToUpdate">The EntityType3 to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> UpdateResponseAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken)
+        {
+			if (entityType3ToUpdate.AdditionalData != null)
+			{
+				if (entityType3ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
+					entityType3ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
+				{
+					throw new ClientException(
+						new Error
+						{
+							Code = GeneratedErrorConstants.Codes.NotAllowed,
+							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, entityType3ToUpdate.GetType().Name)
+						});
+				}
+			}
+            if (entityType3ToUpdate.AdditionalData != null)
+            {
+                if (entityType3ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
+                    entityType3ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
+                {
+                    throw new ClientException(
+                        new Error
+                        {
+                            Code = GeneratedErrorConstants.Codes.NotAllowed,
+                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, entityType3ToUpdate.GetType().Name)
+                        });
+                }
+            }
+            this.ContentType = "application/json";
+            this.Method = "PATCH";
+            return await this.SendAsyncWithGraphResponse<EntityType3>(entityType3ToUpdate, cancellationToken).ConfigureAwait(false);
+        }
+
+		/// <summary>
         /// Deletes the specified EntityType3.
         /// </summary>
         /// <returns>The task to await.</returns>
@@ -149,6 +242,26 @@ namespace Microsoft.Graph
         {
             this.Method = "DELETE";
             await this.SendAsync<EntityType3>(null, cancellationToken).ConfigureAwait(false);
+        }
+
+		/// <summary>
+        /// Deletes the specified EntityType3 and returns a <see cref="GraphResponse"/> object.
+        /// </summary>
+        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
+        public System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync()
+        {
+            return this.DeleteResponseAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Deletes the specified EntityType3 and returns a <see cref="GraphResponse"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
+        public async System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken)
+        {
+            this.Method = "DELETE";
+            return await this.SendAsyncWithGraphResponse(null, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

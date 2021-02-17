@@ -63,5 +63,36 @@ namespace Microsoft.Graph2.CallRecords
             return this.SendAsync(requestBody, cancellationToken);
         }
 
+        
+        /// <summary>
+        /// Adds the specified Microsoft.Graph.EntityType3 to the collection via POST and returns a <see cref="GraphResponse{Microsoft.Graph.EntityType3}"/> object of the request.
+        /// </summary>
+        /// <param name="entityType3">The Microsoft.Graph.EntityType3 to add.</param>
+        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
+        public System.Threading.Tasks.Task<GraphResponse> AddResponseAsync(Microsoft.Graph.EntityType3 entityType3)
+        {
+            return this.AddResponseAsync(entityType3, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds the specified Microsoft.Graph.EntityType3 to the collection via POST and returns a <see cref="GraphResponse{Microsoft.Graph.EntityType3}"/> object of the request.
+        /// </summary>
+        /// <param name="entityType3">The Microsoft.Graph.EntityType3 to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
+        public System.Threading.Tasks.Task<GraphResponse> AddResponseAsync(Microsoft.Graph.EntityType3 entityType3, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+
+            if (string.IsNullOrEmpty(entityType3.Id))
+            {
+                throw new Microsoft.Graph.ServiceException(new Microsoft.Graph.Error { Code = "invalidRequest", Message = "ID is required to add a reference." });
+            }
+
+            var requestBody = new Microsoft.Graph.ReferenceRequestBody { ODataId = string.Format("{0}/testTypes/{1}", this.Client.BaseUrl, entityType3.Id) };
+            return this.SendAsyncWithGraphResponse(requestBody, cancellationToken);
+        }
+
     }
 }

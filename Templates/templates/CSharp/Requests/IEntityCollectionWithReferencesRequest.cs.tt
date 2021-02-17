@@ -7,7 +7,7 @@ var @namespace = this.GetNamespaceName(prop.Class.AsOdcmClass());
 var collectionRequest = this.GetPropertyCollectionWithReferencesRequestName(prop);
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionWithReferencesPage");
 var innerEntityType = prop.GetTypeString(@namespace);
-
+var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionWithReferencesResponse");
 var features = host.CurrentType.GetFeatures();
 #>
 
@@ -33,6 +33,19 @@ namespace <#=@namespace#>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
         System.Threading.Tasks.Task<I<#=collectionPage#>> GetAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Gets the collection page and returns a <see cref="GraphResponse{<#=collectionResponse#>}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{<#=collectionResponse#>}"/> object.</returns>
+        System.Threading.Tasks.Task<GraphResponse<<#=collectionResponse#>>> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the collection page and returns a <see cref="GraphResponse{<#=collectionResponse#>}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{<#=collectionResponse#>}"/> object.</returns>
+        System.Threading.Tasks.Task<GraphResponse<<#=collectionResponse#>>> GetResponseAsync(CancellationToken cancellationToken);
 
 <# if (features.CanExpand) { #>
         /// <summary>

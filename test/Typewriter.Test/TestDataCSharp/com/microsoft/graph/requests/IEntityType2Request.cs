@@ -25,13 +25,30 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="entityType2ToCreate">The EntityType2 to create.</param>
         /// <returns>The created EntityType2.</returns>
-        System.Threading.Tasks.Task<EntityType2> CreateAsync(EntityType2 entityType2ToCreate);        /// <summary>
+        System.Threading.Tasks.Task<EntityType2> CreateAsync(EntityType2 entityType2ToCreate);
+
+        /// <summary>
         /// Creates the specified EntityType2 using POST.
         /// </summary>
         /// <param name="entityType2ToCreate">The EntityType2 to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created EntityType2.</returns>
         System.Threading.Tasks.Task<EntityType2> CreateAsync(EntityType2 entityType2ToCreate, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Creates the specified EntityType2 using POST and returns a <see cref="GraphResponse{EntityType2}"/> object.
+        /// </summary>
+        /// <param name="entityType2ToCreate">The EntityType2 to create.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<EntityType2>> CreateResponseAsync(EntityType2 entityType2ToCreate);
+
+        /// <summary>
+        /// Creates the specified EntityType2 using POST and returns a <see cref="GraphResponse{EntityType2}"/> object.
+        /// </summary>
+        /// <param name="entityType2ToCreate">The EntityType2 to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<EntityType2>> CreateResponseAsync(EntityType2 entityType2ToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified EntityType2.
@@ -47,6 +64,19 @@ namespace Microsoft.Graph
         System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Deletes the specified EntityType2 and returns a <see cref="GraphResponse"/> object.
+        /// </summary>
+        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
+        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync();
+
+        /// <summary>
+        /// Deletes the specified EntityType2 and returns a <see cref="GraphResponse"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
+        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken);
+
+        /// <summary>
         /// Gets the specified EntityType2.
         /// </summary>
         /// <returns>The EntityType2.</returns>
@@ -58,6 +88,19 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The EntityType2.</returns>
         System.Threading.Tasks.Task<EntityType2> GetAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Gets the specified EntityType2 and returns a <see cref="GraphResponse{EntityType2}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<EntityType2>> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the specified EntityType2 and returns a <see cref="GraphResponse{EntityType2}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<EntityType2>> GetResponseAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified EntityType2 using PATCH.
@@ -74,6 +117,22 @@ namespace Microsoft.Graph
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated EntityType2.</returns>
         System.Threading.Tasks.Task<EntityType2> UpdateAsync(EntityType2 entityType2ToUpdate, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the specified EntityType2 using PATCH and returns a <see cref="GraphResponse{EntityType2}"/> object.
+        /// </summary>
+        /// <param name="entityType2ToUpdate">The EntityType2 to update.</param>
+        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<EntityType2>> UpdateResponseAsync(EntityType2 entityType2ToUpdate);
+
+        /// <summary>
+        /// Updates the specified EntityType2 using PATCH and returns a <see cref="GraphResponse{EntityType2}"/> object.
+        /// </summary>
+        /// <param name="entityType2ToUpdate">The EntityType2 to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<EntityType2>> UpdateResponseAsync(EntityType2 entityType2ToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

@@ -28,7 +28,10 @@ namespace <#=@namespace#>
     if (features.CanCreate)
     {
         Write("        ");
-        Write(this.GetEntityCreateAsyncMethod(entity));
+        Write(this.GetEntityCreateAsyncMethod(entity, true, false));
+        Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityCreateAsyncMethod(entity, true, true));
         Write("\n\n");
     }
 
@@ -37,16 +40,25 @@ namespace <#=@namespace#>
         Write("        ");
         Write(this.GetEntityDeleteAsyncMethod(entity));
         Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityDeleteAsyncMethod(entity, true));
+        Write("\n\n");
     }
 
     Write("        ");
     Write(this.GetEntityGetAsyncMethod(entity));
     Write("\n\n");
+    Write("        ");
+    Write(this.GetEntityGetAsyncMethod(entity, true, true));
+    Write("\n\n");
 
     if (features.CanUpdate)
     {
         Write("        ");
-        Write(this.GetEntityUpdateAsyncMethod(entity));
+        Write(this.GetEntityUpdateAsyncMethod(entity, true, false));
+        Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityUpdateAsyncMethod(entity, true, true));
         Write("\n\n");
     }
 

@@ -32,5 +32,18 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="entityType3">The Microsoft.Graph.EntityType3 to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         System.Threading.Tasks.Task AddAsync(Microsoft.Graph.EntityType3 entityType3, CancellationToken cancellationToken);
+        
+        /// <summary>
+        /// Adds the specified Microsoft.Graph.EntityType3 to the collection via POST and returns a <see cref="GraphResponse{Microsoft.Graph.EntityType3}"/> object of the request.
+        /// </summary>
+        /// <param name="entityType3">The Microsoft.Graph.EntityType3 to add.</param>
+        System.Threading.Tasks.Task<GraphResponse> AddResponseAsync(Microsoft.Graph.EntityType3 entityType3);
+
+        /// <summary>
+        /// Adds the specified Microsoft.Graph.EntityType3 to the collection via POST and returns a <see cref="GraphResponse{Microsoft.Graph.EntityType3}"/> object of the request.
+        /// </summary>
+        /// <param name="entityType3">The Microsoft.Graph.EntityType3 to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        System.Threading.Tasks.Task<GraphResponse> AddResponseAsync(Microsoft.Graph.EntityType3 entityType3, CancellationToken cancellationToken);
     }
 }

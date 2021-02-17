@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -32,6 +32,19 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
         System.Threading.Tasks.Task<ISegmentRefTypesCollectionWithReferencesPage> GetAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Gets the collection page and returns a <see cref="GraphResponse{SegmentRefTypesCollectionWithReferencesResponse}"/> object.
+        /// </summary>
+        /// <returns>The <see cref="GraphResponse{SegmentRefTypesCollectionWithReferencesResponse}"/> object.</returns>
+        System.Threading.Tasks.Task<GraphResponse<SegmentRefTypesCollectionWithReferencesResponse>> GetResponseAsync();
+
+        /// <summary>
+        /// Gets the collection page and returns a <see cref="GraphResponse{SegmentRefTypesCollectionWithReferencesResponse}"/> object.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{SegmentRefTypesCollectionWithReferencesResponse}"/> object.</returns>
+        System.Threading.Tasks.Task<GraphResponse<SegmentRefTypesCollectionWithReferencesResponse>> GetResponseAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
