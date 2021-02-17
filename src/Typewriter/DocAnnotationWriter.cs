@@ -6,6 +6,7 @@ using ApiDoctor.Validation.OData.Transformation;
 using NLog;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -89,7 +90,7 @@ namespace Typewriter
 
             var csdlWriterOptions = new CsdlWriterOptions()
             {
-                DocumentationSetPath = options.DocsRoot + "\\api-reference\\v1.0\\",
+                DocumentationSetPath = Path.Join(options.DocsRoot, "api-reference", options.EndpointVersion),
                 Annotations = AnnotationOptions.Properties,
                 SkipMetadataGeneration = true,
                 Formats = MetadataFormat.EdmxInput
@@ -116,7 +117,7 @@ namespace Typewriter
             {
                 docSet = new DocSet(options.DocsRoot);
             }
-            catch (System.IO.FileNotFoundException ex)
+            catch (FileNotFoundException ex)
             {
                 Logger.Error(ex.Message);
                 return null;
@@ -126,6 +127,17 @@ namespace Typewriter
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             docSet.ScanDocumentation(string.Empty, issues);
+
+            // Json transformation for empty base types should default to null
+            // but they default to empty string. Clean those up here.
+            foreach (var resource in docSet.Resources)
+            {
+                if (resource.BaseType == string.Empty)
+                {
+                    resource.BaseType = null;
+                }
+            }
+
             stopwatch.Stop();
             Logger.Info($"Took {stopwatch.Elapsed} to parse {docSet.Files.Length} source files.");
 
