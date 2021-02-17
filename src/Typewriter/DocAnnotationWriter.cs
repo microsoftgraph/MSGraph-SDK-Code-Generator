@@ -26,7 +26,7 @@ namespace Typewriter
             this.options = options; // Can change the base access modifier so we could use it. 
         }
 
-        public async Task<string> PublishToStringAsync(IssueLogger issues)
+        public string PublishToString(IssueLogger issues)
         {
             string outputFilenameSuffix = "";
 
@@ -84,7 +84,7 @@ namespace Typewriter
         /// <param name="options">The typewriter input options.</param>
         /// <param name="pathToCleanMetadata">Optional. Contains the path to a clean metadata to use when applying annotations. Overrides Option.Metadata.</param>
         /// <returns>An annotated metadata file.</returns>
-        internal async static Task<string> ApplyAnnotationsToCsdl(Options options, string pathToCleanMetadata = null)
+        internal static string ApplyAnnotationsToCsdl(Options options, string pathToCleanMetadata = null)
         {
             DocSet docs = GetDocSet(options, new IssueLogger());
 
@@ -104,7 +104,7 @@ namespace Typewriter
 
             DocAnnotationWriter docWriter = new DocAnnotationWriter(docs, csdlWriterOptions);
 
-            return await docWriter.PublishToStringAsync(new IssueLogger()); 
+            return docWriter.PublishToString(new IssueLogger());
         }
 
 
