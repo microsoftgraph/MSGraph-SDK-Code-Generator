@@ -80,24 +80,10 @@ namespace Microsoft.Graph
         /// Updates the specified UnifiedRoleEligibilityRequestObject using PATCH.
         /// </summary>
         /// <param name="unifiedRoleEligibilityRequestObjectToUpdate">The UnifiedRoleEligibilityRequestObject to update.</param>
-        /// <returns>The updated UnifiedRoleEligibilityRequestObject.</returns>
-        System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> UpdateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate);
-
-        /// <summary>
-        /// Updates the specified UnifiedRoleEligibilityRequestObject using PATCH.
-        /// </summary>
-        /// <param name="unifiedRoleEligibilityRequestObjectToUpdate">The UnifiedRoleEligibilityRequestObject to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated UnifiedRoleEligibilityRequestObject.</returns>
-        System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> UpdateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Updates the specified UnifiedRoleEligibilityRequestObject using PATCH and returns a <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object.
-        /// </summary>
-        /// <param name="unifiedRoleEligibilityRequestObjectToUpdate">The UnifiedRoleEligibilityRequestObject to update.</param>
-        /// <returns>The <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> UpdateResponseAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate);
+        System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> UpdateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified UnifiedRoleEligibilityRequestObject using PATCH and returns a <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object.
@@ -106,7 +92,7 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> UpdateResponseAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> UpdateResponseAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.

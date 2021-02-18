@@ -131,47 +131,11 @@ namespace Microsoft.Graph
         /// Updates the specified CloudCommunications using PATCH.
         /// </summary>
         /// <param name="cloudCommunicationsToUpdate">The CloudCommunications to update.</param>
-        /// <returns>The updated CloudCommunications.</returns>
-        public System.Threading.Tasks.Task<CloudCommunications> UpdateAsync(CloudCommunications cloudCommunicationsToUpdate)
-        {
-            return this.UpdateAsync(cloudCommunicationsToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified CloudCommunications using PATCH.
-        /// </summary>
-        /// <param name="cloudCommunicationsToUpdate">The CloudCommunications to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated CloudCommunications.</returns>
-        public async System.Threading.Tasks.Task<CloudCommunications> UpdateAsync(CloudCommunications cloudCommunicationsToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CloudCommunications> UpdateAsync(CloudCommunications cloudCommunicationsToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (cloudCommunicationsToUpdate.AdditionalData != null)
-			{
-				if (cloudCommunicationsToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					cloudCommunicationsToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, cloudCommunicationsToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (cloudCommunicationsToUpdate.AdditionalData != null)
-            {
-                if (cloudCommunicationsToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    cloudCommunicationsToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, cloudCommunicationsToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<CloudCommunications>(cloudCommunicationsToUpdate, cancellationToken).ConfigureAwait(false);
@@ -183,47 +147,11 @@ namespace Microsoft.Graph
         /// Updates the specified CloudCommunications using PATCH and returns a <see cref="GraphResponse{CloudCommunications}"/> object.
         /// </summary>
         /// <param name="cloudCommunicationsToUpdate">The CloudCommunications to update.</param>
-        /// <returns>The <see cref="GraphResponse{CloudCommunications}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> UpdateResponseAsync(CloudCommunications cloudCommunicationsToUpdate)
-        {
-            return this.UpdateResponseAsync(cloudCommunicationsToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified CloudCommunications using PATCH and returns a <see cref="GraphResponse{CloudCommunications}"/> object.
-        /// </summary>
-        /// <param name="cloudCommunicationsToUpdate">The CloudCommunications to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{CloudCommunications}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> UpdateResponseAsync(CloudCommunications cloudCommunicationsToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> UpdateResponseAsync(CloudCommunications cloudCommunicationsToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (cloudCommunicationsToUpdate.AdditionalData != null)
-			{
-				if (cloudCommunicationsToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					cloudCommunicationsToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, cloudCommunicationsToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (cloudCommunicationsToUpdate.AdditionalData != null)
-            {
-                if (cloudCommunicationsToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    cloudCommunicationsToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, cloudCommunicationsToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<CloudCommunications>(cloudCommunicationsToUpdate, cancellationToken).ConfigureAwait(false);

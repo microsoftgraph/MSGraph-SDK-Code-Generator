@@ -131,47 +131,11 @@ namespace Microsoft.Graph
         /// Updates the specified UnifiedRoleEligibilityRequestObject using PATCH.
         /// </summary>
         /// <param name="unifiedRoleEligibilityRequestObjectToUpdate">The UnifiedRoleEligibilityRequestObject to update.</param>
-        /// <returns>The updated UnifiedRoleEligibilityRequestObject.</returns>
-        public System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> UpdateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate)
-        {
-            return this.UpdateAsync(unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified UnifiedRoleEligibilityRequestObject using PATCH.
-        /// </summary>
-        /// <param name="unifiedRoleEligibilityRequestObjectToUpdate">The UnifiedRoleEligibilityRequestObject to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated UnifiedRoleEligibilityRequestObject.</returns>
-        public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> UpdateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> UpdateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData != null)
-			{
-				if (unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, unifiedRoleEligibilityRequestObjectToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData != null)
-            {
-                if (unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, unifiedRoleEligibilityRequestObjectToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<UnifiedRoleEligibilityRequestObject>(unifiedRoleEligibilityRequestObjectToUpdate, cancellationToken).ConfigureAwait(false);
@@ -183,47 +147,11 @@ namespace Microsoft.Graph
         /// Updates the specified UnifiedRoleEligibilityRequestObject using PATCH and returns a <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object.
         /// </summary>
         /// <param name="unifiedRoleEligibilityRequestObjectToUpdate">The UnifiedRoleEligibilityRequestObject to update.</param>
-        /// <returns>The <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> UpdateResponseAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate)
-        {
-            return this.UpdateResponseAsync(unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified UnifiedRoleEligibilityRequestObject using PATCH and returns a <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object.
-        /// </summary>
-        /// <param name="unifiedRoleEligibilityRequestObjectToUpdate">The UnifiedRoleEligibilityRequestObject to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> UpdateResponseAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> UpdateResponseAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData != null)
-			{
-				if (unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, unifiedRoleEligibilityRequestObjectToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData != null)
-            {
-                if (unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, unifiedRoleEligibilityRequestObjectToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<UnifiedRoleEligibilityRequestObject>(unifiedRoleEligibilityRequestObjectToUpdate, cancellationToken).ConfigureAwait(false);

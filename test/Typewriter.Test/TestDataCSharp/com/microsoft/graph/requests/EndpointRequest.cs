@@ -131,47 +131,11 @@ namespace Microsoft.Graph
         /// Updates the specified Endpoint using PATCH.
         /// </summary>
         /// <param name="endpointToUpdate">The Endpoint to update.</param>
-        /// <returns>The updated Endpoint.</returns>
-        public System.Threading.Tasks.Task<Endpoint> UpdateAsync(Endpoint endpointToUpdate)
-        {
-            return this.UpdateAsync(endpointToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified Endpoint using PATCH.
-        /// </summary>
-        /// <param name="endpointToUpdate">The Endpoint to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated Endpoint.</returns>
-        public async System.Threading.Tasks.Task<Endpoint> UpdateAsync(Endpoint endpointToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Endpoint> UpdateAsync(Endpoint endpointToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (endpointToUpdate.AdditionalData != null)
-			{
-				if (endpointToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					endpointToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, endpointToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (endpointToUpdate.AdditionalData != null)
-            {
-                if (endpointToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    endpointToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, endpointToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<Endpoint>(endpointToUpdate, cancellationToken).ConfigureAwait(false);
@@ -183,47 +147,11 @@ namespace Microsoft.Graph
         /// Updates the specified Endpoint using PATCH and returns a <see cref="GraphResponse{Endpoint}"/> object.
         /// </summary>
         /// <param name="endpointToUpdate">The Endpoint to update.</param>
-        /// <returns>The <see cref="GraphResponse{Endpoint}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<Endpoint>> UpdateResponseAsync(Endpoint endpointToUpdate)
-        {
-            return this.UpdateResponseAsync(endpointToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified Endpoint using PATCH and returns a <see cref="GraphResponse{Endpoint}"/> object.
-        /// </summary>
-        /// <param name="endpointToUpdate">The Endpoint to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{Endpoint}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<Endpoint>> UpdateResponseAsync(Endpoint endpointToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<Endpoint>> UpdateResponseAsync(Endpoint endpointToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (endpointToUpdate.AdditionalData != null)
-			{
-				if (endpointToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					endpointToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, endpointToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (endpointToUpdate.AdditionalData != null)
-            {
-                if (endpointToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    endpointToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, endpointToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<Endpoint>(endpointToUpdate, cancellationToken).ConfigureAwait(false);

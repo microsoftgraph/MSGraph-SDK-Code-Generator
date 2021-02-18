@@ -131,47 +131,11 @@ namespace Microsoft.Graph2.CallRecords
         /// Updates the specified Photo using PATCH.
         /// </summary>
         /// <param name="photoToUpdate">The Photo to update.</param>
-        /// <returns>The updated Photo.</returns>
-        public System.Threading.Tasks.Task<Photo> UpdateAsync(Photo photoToUpdate)
-        {
-            return this.UpdateAsync(photoToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified Photo using PATCH.
-        /// </summary>
-        /// <param name="photoToUpdate">The Photo to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated Photo.</returns>
-        public async System.Threading.Tasks.Task<Photo> UpdateAsync(Photo photoToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Photo> UpdateAsync(Photo photoToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (photoToUpdate.AdditionalData != null)
-			{
-				if (photoToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.ResponseHeaders) ||
-					photoToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new Microsoft.Graph.ClientException(
-						new Microsoft.Graph.Error
-						{
-							Code = Microsoft.Graph.GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(Microsoft.Graph.GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, photoToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (photoToUpdate.AdditionalData != null)
-            {
-                if (photoToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.ResponseHeaders) ||
-                    photoToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new Microsoft.Graph.ClientException(
-                        new Microsoft.Graph.Error
-                        {
-                            Code = Microsoft.Graph.GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(Microsoft.Graph.GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, photoToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<Photo>(photoToUpdate, cancellationToken).ConfigureAwait(false);
@@ -183,47 +147,11 @@ namespace Microsoft.Graph2.CallRecords
         /// Updates the specified Photo using PATCH and returns a <see cref="GraphResponse{Photo}"/> object.
         /// </summary>
         /// <param name="photoToUpdate">The Photo to update.</param>
-        /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<Photo>> UpdateResponseAsync(Photo photoToUpdate)
-        {
-            return this.UpdateResponseAsync(photoToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified Photo using PATCH and returns a <see cref="GraphResponse{Photo}"/> object.
-        /// </summary>
-        /// <param name="photoToUpdate">The Photo to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<Photo>> UpdateResponseAsync(Photo photoToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<Photo>> UpdateResponseAsync(Photo photoToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (photoToUpdate.AdditionalData != null)
-			{
-				if (photoToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.ResponseHeaders) ||
-					photoToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new Microsoft.Graph.ClientException(
-						new Microsoft.Graph.Error
-						{
-							Code = Microsoft.Graph.GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(Microsoft.Graph.GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, photoToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (photoToUpdate.AdditionalData != null)
-            {
-                if (photoToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.ResponseHeaders) ||
-                    photoToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new Microsoft.Graph.ClientException(
-                        new Microsoft.Graph.Error
-                        {
-                            Code = Microsoft.Graph.GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(Microsoft.Graph.GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, photoToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<Photo>(photoToUpdate, cancellationToken).ConfigureAwait(false);

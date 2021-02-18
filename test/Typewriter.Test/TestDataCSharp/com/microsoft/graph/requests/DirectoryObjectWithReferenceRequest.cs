@@ -107,47 +107,11 @@ namespace Microsoft.Graph
         /// Updates the specified DirectoryObject using PATCH.
         /// </summary>
         /// <param name="directoryObjectToUpdate">The DirectoryObject to update.</param>
-        /// <returns>The updated DirectoryObject.</returns>
-        public System.Threading.Tasks.Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate)
-        {
-            return this.UpdateAsync(directoryObjectToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified DirectoryObject using PATCH.
-        /// </summary>
-        /// <param name="directoryObjectToUpdate">The DirectoryObject to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated DirectoryObject.</returns>
-        public async System.Threading.Tasks.Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (directoryObjectToUpdate.AdditionalData != null)
-			{
-				if (directoryObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					directoryObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, directoryObjectToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (directoryObjectToUpdate.AdditionalData != null)
-            {
-                if (directoryObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    directoryObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, directoryObjectToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<DirectoryObject>(directoryObjectToUpdate, cancellationToken).ConfigureAwait(false);
@@ -158,47 +122,11 @@ namespace Microsoft.Graph
         /// Updates the specified DirectoryObject using PATCH and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
         /// </summary>
         /// <param name="directoryObjectToUpdate">The DirectoryObject to update.</param>
-        /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> UpdateResponseAsync(DirectoryObject directoryObjectToUpdate)
-        {
-            return this.UpdateResponseAsync(directoryObjectToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified DirectoryObject using PATCH and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
-        /// </summary>
-        /// <param name="directoryObjectToUpdate">The DirectoryObject to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> UpdateResponseAsync(DirectoryObject directoryObjectToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> UpdateResponseAsync(DirectoryObject directoryObjectToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (directoryObjectToUpdate.AdditionalData != null)
-			{
-				if (directoryObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					directoryObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, directoryObjectToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (directoryObjectToUpdate.AdditionalData != null)
-            {
-                if (directoryObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    directoryObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, directoryObjectToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<DirectoryObject>(directoryObjectToUpdate, cancellationToken).ConfigureAwait(false);

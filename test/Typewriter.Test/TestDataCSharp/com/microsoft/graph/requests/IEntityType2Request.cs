@@ -80,24 +80,10 @@ namespace Microsoft.Graph
         /// Updates the specified EntityType2 using PATCH.
         /// </summary>
         /// <param name="entityType2ToUpdate">The EntityType2 to update.</param>
-        /// <returns>The updated EntityType2.</returns>
-        System.Threading.Tasks.Task<EntityType2> UpdateAsync(EntityType2 entityType2ToUpdate);
-
-        /// <summary>
-        /// Updates the specified EntityType2 using PATCH.
-        /// </summary>
-        /// <param name="entityType2ToUpdate">The EntityType2 to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated EntityType2.</returns>
-        System.Threading.Tasks.Task<EntityType2> UpdateAsync(EntityType2 entityType2ToUpdate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Updates the specified EntityType2 using PATCH and returns a <see cref="GraphResponse{EntityType2}"/> object.
-        /// </summary>
-        /// <param name="entityType2ToUpdate">The EntityType2 to update.</param>
-        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<EntityType2>> UpdateResponseAsync(EntityType2 entityType2ToUpdate);
+        System.Threading.Tasks.Task<EntityType2> UpdateAsync(EntityType2 entityType2ToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified EntityType2 using PATCH and returns a <see cref="GraphResponse{EntityType2}"/> object.
@@ -106,7 +92,7 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<EntityType2>> UpdateResponseAsync(EntityType2 entityType2ToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<EntityType2>> UpdateResponseAsync(EntityType2 entityType2ToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.

@@ -80,24 +80,10 @@ namespace Microsoft.Graph
         /// Updates the specified Entity using PATCH.
         /// </summary>
         /// <param name="entityToUpdate">The Entity to update.</param>
-        /// <returns>The updated Entity.</returns>
-        System.Threading.Tasks.Task<Entity> UpdateAsync(Entity entityToUpdate);
-
-        /// <summary>
-        /// Updates the specified Entity using PATCH.
-        /// </summary>
-        /// <param name="entityToUpdate">The Entity to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated Entity.</returns>
-        System.Threading.Tasks.Task<Entity> UpdateAsync(Entity entityToUpdate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Updates the specified Entity using PATCH and returns a <see cref="GraphResponse{Entity}"/> object.
-        /// </summary>
-        /// <param name="entityToUpdate">The Entity to update.</param>
-        /// <returns>The <see cref="GraphResponse{Entity}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Entity>> UpdateResponseAsync(Entity entityToUpdate);
+        System.Threading.Tasks.Task<Entity> UpdateAsync(Entity entityToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified Entity using PATCH and returns a <see cref="GraphResponse{Entity}"/> object.
@@ -106,7 +92,7 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{Entity}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Entity>> UpdateResponseAsync(Entity entityToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<Entity>> UpdateResponseAsync(Entity entityToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.

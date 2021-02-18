@@ -131,47 +131,11 @@ namespace Microsoft.Graph
         /// Updates the specified OnenotePage using PATCH.
         /// </summary>
         /// <param name="onenotePageToUpdate">The OnenotePage to update.</param>
-        /// <returns>The updated OnenotePage.</returns>
-        public System.Threading.Tasks.Task<OnenotePage> UpdateAsync(OnenotePage onenotePageToUpdate)
-        {
-            return this.UpdateAsync(onenotePageToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified OnenotePage using PATCH.
-        /// </summary>
-        /// <param name="onenotePageToUpdate">The OnenotePage to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated OnenotePage.</returns>
-        public async System.Threading.Tasks.Task<OnenotePage> UpdateAsync(OnenotePage onenotePageToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<OnenotePage> UpdateAsync(OnenotePage onenotePageToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (onenotePageToUpdate.AdditionalData != null)
-			{
-				if (onenotePageToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					onenotePageToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, onenotePageToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (onenotePageToUpdate.AdditionalData != null)
-            {
-                if (onenotePageToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    onenotePageToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, onenotePageToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<OnenotePage>(onenotePageToUpdate, cancellationToken).ConfigureAwait(false);
@@ -183,47 +147,11 @@ namespace Microsoft.Graph
         /// Updates the specified OnenotePage using PATCH and returns a <see cref="GraphResponse{OnenotePage}"/> object.
         /// </summary>
         /// <param name="onenotePageToUpdate">The OnenotePage to update.</param>
-        /// <returns>The <see cref="GraphResponse{OnenotePage}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<OnenotePage>> UpdateResponseAsync(OnenotePage onenotePageToUpdate)
-        {
-            return this.UpdateResponseAsync(onenotePageToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified OnenotePage using PATCH and returns a <see cref="GraphResponse{OnenotePage}"/> object.
-        /// </summary>
-        /// <param name="onenotePageToUpdate">The OnenotePage to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{OnenotePage}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<OnenotePage>> UpdateResponseAsync(OnenotePage onenotePageToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<OnenotePage>> UpdateResponseAsync(OnenotePage onenotePageToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (onenotePageToUpdate.AdditionalData != null)
-			{
-				if (onenotePageToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					onenotePageToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, onenotePageToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (onenotePageToUpdate.AdditionalData != null)
-            {
-                if (onenotePageToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    onenotePageToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, onenotePageToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<OnenotePage>(onenotePageToUpdate, cancellationToken).ConfigureAwait(false);

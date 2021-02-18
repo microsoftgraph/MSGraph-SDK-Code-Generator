@@ -431,11 +431,6 @@ public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityNam
 		entityName = String.Concat(entityName, "Object");
 	}
 
-    if (includeSendParams)
-    {
-        stringBuilder.AppendFormat("        ");
-    }
-
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
@@ -494,98 +489,19 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
-    this.AppendUpdateAsyncHeader(entityName, lowerCaseEntityName, @namespace, stringBuilder, false, isGraphResponseMethod);
-    stringBuilder.Append(Environment.NewLine);
-    if (isGraphResponseMethod)
-    {
-        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> UpdateResponseAsync({0} {1}ToUpdate)", entityName, lowerCaseEntityName);
-    }
-    else
-    {
-        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate)", entityName, lowerCaseEntityName);
-    }
-
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        {");
-    stringBuilder.Append(Environment.NewLine);
-    if (isGraphResponseMethod)
-    {
-        stringBuilder.AppendFormat("            return this.UpdateResponseAsync({0}ToUpdate, CancellationToken.None);", lowerCaseEntityName);
-    }
-    else
-    {
-        stringBuilder.AppendFormat("            return this.UpdateAsync({0}ToUpdate, CancellationToken.None);", lowerCaseEntityName);
-    }
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        }");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(Environment.NewLine);
-
     this.AppendUpdateAsyncHeader(entityName, lowerCaseEntityName, @namespace, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
     {
-        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> UpdateResponseAsync({0} {1}ToUpdate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> UpdateResponseAsync({0} {1}ToUpdate, CancellationToken cancellationToken = default(CancellationToken))", entityName, lowerCaseEntityName);
     }
     else
     {
-        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> UpdateAsync({0} {1}ToUpdate, CancellationToken cancellationToken = default(CancellationToken))", entityName, lowerCaseEntityName);
     }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
 	stringBuilder.Append(Environment.NewLine);
-	stringBuilder.AppendFormat("			if ({0}ToUpdate.AdditionalData != null)", lowerCaseEntityName);
-	stringBuilder.Append(Environment.NewLine);
-	stringBuilder.Append("			{");
-	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("				if ({0}ToUpdate.AdditionalData.ContainsKey({1}.HttpPropertyNames.ResponseHeaders) ||", lowerCaseEntityName, constantsTypeName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("					{0}ToUpdate.AdditionalData.ContainsKey({1}.HttpPropertyNames.StatusCode))", lowerCaseEntityName, constantsTypeName);
-	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("				{");
-	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("					throw new {0}(", clientExceptionTypeName);
-	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("						new {0}", errorTypeName);
-	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("						{");
-	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("							Code = {0}.Codes.NotAllowed,", generatedErrorConstantsTypeName);
-	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("							Message = String.Format({0}.Messages.ResponseObjectUsedForUpdate, {1}ToUpdate.GetType().Name)", generatedErrorConstantsTypeName, lowerCaseEntityName);
-	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("						});");
-	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("				}");
-	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("			}");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            if ({0}ToUpdate.AdditionalData != null)", lowerCaseEntityName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("            {");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("                if ({0}ToUpdate.AdditionalData.ContainsKey({1}.HttpPropertyNames.ResponseHeaders) ||", lowerCaseEntityName, constantsTypeName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("                    {0}ToUpdate.AdditionalData.ContainsKey({1}.HttpPropertyNames.StatusCode))", lowerCaseEntityName, constantsTypeName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("                {");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("                    throw new {0}(", clientExceptionTypeName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("                        new {0}", errorTypeName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("                        {");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("                            Code = {0}.Codes.NotAllowed,", generatedErrorConstantsTypeName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("                            Message = String.Format({0}.Messages.ResponseObjectUsedForUpdate, {1}ToUpdate.GetType().Name)", generatedErrorConstantsTypeName, lowerCaseEntityName);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("                        });");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("                }");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("            }");
-    stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            this.Method = \"PATCH\";");

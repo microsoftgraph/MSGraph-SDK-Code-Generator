@@ -131,47 +131,11 @@ namespace Microsoft.Graph
         /// Updates the specified SingletonEntity1 using PATCH.
         /// </summary>
         /// <param name="singletonEntity1ToUpdate">The SingletonEntity1 to update.</param>
-        /// <returns>The updated SingletonEntity1.</returns>
-        public System.Threading.Tasks.Task<SingletonEntity1> UpdateAsync(SingletonEntity1 singletonEntity1ToUpdate)
-        {
-            return this.UpdateAsync(singletonEntity1ToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified SingletonEntity1 using PATCH.
-        /// </summary>
-        /// <param name="singletonEntity1ToUpdate">The SingletonEntity1 to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated SingletonEntity1.</returns>
-        public async System.Threading.Tasks.Task<SingletonEntity1> UpdateAsync(SingletonEntity1 singletonEntity1ToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<SingletonEntity1> UpdateAsync(SingletonEntity1 singletonEntity1ToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (singletonEntity1ToUpdate.AdditionalData != null)
-			{
-				if (singletonEntity1ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					singletonEntity1ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, singletonEntity1ToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (singletonEntity1ToUpdate.AdditionalData != null)
-            {
-                if (singletonEntity1ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    singletonEntity1ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, singletonEntity1ToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<SingletonEntity1>(singletonEntity1ToUpdate, cancellationToken).ConfigureAwait(false);
@@ -183,47 +147,11 @@ namespace Microsoft.Graph
         /// Updates the specified SingletonEntity1 using PATCH and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
         /// </summary>
         /// <param name="singletonEntity1ToUpdate">The SingletonEntity1 to update.</param>
-        /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> UpdateResponseAsync(SingletonEntity1 singletonEntity1ToUpdate)
-        {
-            return this.UpdateResponseAsync(singletonEntity1ToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified SingletonEntity1 using PATCH and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
-        /// </summary>
-        /// <param name="singletonEntity1ToUpdate">The SingletonEntity1 to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> UpdateResponseAsync(SingletonEntity1 singletonEntity1ToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> UpdateResponseAsync(SingletonEntity1 singletonEntity1ToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (singletonEntity1ToUpdate.AdditionalData != null)
-			{
-				if (singletonEntity1ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					singletonEntity1ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, singletonEntity1ToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (singletonEntity1ToUpdate.AdditionalData != null)
-            {
-                if (singletonEntity1ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    singletonEntity1ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, singletonEntity1ToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<SingletonEntity1>(singletonEntity1ToUpdate, cancellationToken).ConfigureAwait(false);

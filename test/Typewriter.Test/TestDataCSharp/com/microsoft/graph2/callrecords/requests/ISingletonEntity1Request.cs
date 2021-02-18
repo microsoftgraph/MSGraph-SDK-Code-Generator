@@ -80,24 +80,10 @@ namespace Microsoft.Graph2.CallRecords
         /// Updates the specified SingletonEntity1 using PATCH.
         /// </summary>
         /// <param name="singletonEntity1ToUpdate">The SingletonEntity1 to update.</param>
-        /// <returns>The updated SingletonEntity1.</returns>
-        System.Threading.Tasks.Task<SingletonEntity1> UpdateAsync(SingletonEntity1 singletonEntity1ToUpdate);
-
-        /// <summary>
-        /// Updates the specified SingletonEntity1 using PATCH.
-        /// </summary>
-        /// <param name="singletonEntity1ToUpdate">The SingletonEntity1 to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated SingletonEntity1.</returns>
-        System.Threading.Tasks.Task<SingletonEntity1> UpdateAsync(SingletonEntity1 singletonEntity1ToUpdate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Updates the specified SingletonEntity1 using PATCH and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
-        /// </summary>
-        /// <param name="singletonEntity1ToUpdate">The SingletonEntity1 to update.</param>
-        /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> UpdateResponseAsync(SingletonEntity1 singletonEntity1ToUpdate);
+        System.Threading.Tasks.Task<SingletonEntity1> UpdateAsync(SingletonEntity1 singletonEntity1ToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified SingletonEntity1 using PATCH and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
@@ -106,7 +92,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> UpdateResponseAsync(SingletonEntity1 singletonEntity1ToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> UpdateResponseAsync(SingletonEntity1 singletonEntity1ToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.

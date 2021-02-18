@@ -66,33 +66,19 @@ namespace Microsoft.Graph
         /// Updates the specified EntityType3 using PATCH.
         /// </summary>
         /// <param name="entityType3ToUpdate">The EntityType3 to update.</param>
-        /// <returns>The updated EntityType3.</returns>
-        System.Threading.Tasks.Task<EntityType3> UpdateAsync(EntityType3 entityType3ToUpdate);
-
-        /// <summary>
-        /// Updates the specified EntityType3 using PATCH.
-        /// </summary>
-        /// <param name="entityType3ToUpdate">The EntityType3 to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated EntityType3.</returns>
-        System.Threading.Tasks.Task<EntityType3> UpdateAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<EntityType3> UpdateAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
 		/// <summary>
         /// Updates the specified EntityType3 using PATCH and returns a <see cref="GraphResponse{EntityType3}"/> object.
         /// </summary>
         /// <param name="entityType3ToUpdate">The EntityType3 to update.</param>
-        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<EntityType3>> UpdateResponseAsync(EntityType3 entityType3ToUpdate);
-
-        /// <summary>
-        /// Updates the specified EntityType3 using PATCH and returns a <see cref="GraphResponse{EntityType3}"/> object.
-        /// </summary>
-        /// <param name="entityType3ToUpdate">The EntityType3 to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<EntityType3>> UpdateResponseAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<EntityType3>> UpdateResponseAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
 		/// <summary>
         /// Deletes the specified EntityType3.

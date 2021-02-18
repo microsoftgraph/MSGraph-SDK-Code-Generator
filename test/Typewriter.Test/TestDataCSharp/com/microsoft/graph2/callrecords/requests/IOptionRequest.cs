@@ -80,24 +80,10 @@ namespace Microsoft.Graph2.CallRecords
         /// Updates the specified Option using PATCH.
         /// </summary>
         /// <param name="optionToUpdate">The Option to update.</param>
-        /// <returns>The updated Option.</returns>
-        System.Threading.Tasks.Task<Option> UpdateAsync(Option optionToUpdate);
-
-        /// <summary>
-        /// Updates the specified Option using PATCH.
-        /// </summary>
-        /// <param name="optionToUpdate">The Option to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated Option.</returns>
-        System.Threading.Tasks.Task<Option> UpdateAsync(Option optionToUpdate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Updates the specified Option using PATCH and returns a <see cref="GraphResponse{Option}"/> object.
-        /// </summary>
-        /// <param name="optionToUpdate">The Option to update.</param>
-        /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Option>> UpdateResponseAsync(Option optionToUpdate);
+        System.Threading.Tasks.Task<Option> UpdateAsync(Option optionToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified Option using PATCH and returns a <see cref="GraphResponse{Option}"/> object.
@@ -106,7 +92,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Option>> UpdateResponseAsync(Option optionToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<Option>> UpdateResponseAsync(Option optionToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.

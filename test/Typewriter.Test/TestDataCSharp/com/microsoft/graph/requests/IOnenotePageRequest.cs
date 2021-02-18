@@ -80,24 +80,10 @@ namespace Microsoft.Graph
         /// Updates the specified OnenotePage using PATCH.
         /// </summary>
         /// <param name="onenotePageToUpdate">The OnenotePage to update.</param>
-        /// <returns>The updated OnenotePage.</returns>
-        System.Threading.Tasks.Task<OnenotePage> UpdateAsync(OnenotePage onenotePageToUpdate);
-
-        /// <summary>
-        /// Updates the specified OnenotePage using PATCH.
-        /// </summary>
-        /// <param name="onenotePageToUpdate">The OnenotePage to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated OnenotePage.</returns>
-        System.Threading.Tasks.Task<OnenotePage> UpdateAsync(OnenotePage onenotePageToUpdate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Updates the specified OnenotePage using PATCH and returns a <see cref="GraphResponse{OnenotePage}"/> object.
-        /// </summary>
-        /// <param name="onenotePageToUpdate">The OnenotePage to update.</param>
-        /// <returns>The <see cref="GraphResponse{OnenotePage}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<OnenotePage>> UpdateResponseAsync(OnenotePage onenotePageToUpdate);
+        System.Threading.Tasks.Task<OnenotePage> UpdateAsync(OnenotePage onenotePageToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified OnenotePage using PATCH and returns a <see cref="GraphResponse{OnenotePage}"/> object.
@@ -106,7 +92,7 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{OnenotePage}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<OnenotePage>> UpdateResponseAsync(OnenotePage onenotePageToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<OnenotePage>> UpdateResponseAsync(OnenotePage onenotePageToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.

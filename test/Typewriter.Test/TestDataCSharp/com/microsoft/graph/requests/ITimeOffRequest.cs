@@ -80,24 +80,10 @@ namespace Microsoft.Graph
         /// Updates the specified TimeOff using PATCH.
         /// </summary>
         /// <param name="timeOffToUpdate">The TimeOff to update.</param>
-        /// <returns>The updated TimeOff.</returns>
-        System.Threading.Tasks.Task<TimeOff> UpdateAsync(TimeOff timeOffToUpdate);
-
-        /// <summary>
-        /// Updates the specified TimeOff using PATCH.
-        /// </summary>
-        /// <param name="timeOffToUpdate">The TimeOff to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated TimeOff.</returns>
-        System.Threading.Tasks.Task<TimeOff> UpdateAsync(TimeOff timeOffToUpdate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Updates the specified TimeOff using PATCH and returns a <see cref="GraphResponse{TimeOff}"/> object.
-        /// </summary>
-        /// <param name="timeOffToUpdate">The TimeOff to update.</param>
-        /// <returns>The <see cref="GraphResponse{TimeOff}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<TimeOff>> UpdateResponseAsync(TimeOff timeOffToUpdate);
+        System.Threading.Tasks.Task<TimeOff> UpdateAsync(TimeOff timeOffToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified TimeOff using PATCH and returns a <see cref="GraphResponse{TimeOff}"/> object.
@@ -106,7 +92,7 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{TimeOff}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<TimeOff>> UpdateResponseAsync(TimeOff timeOffToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<TimeOff>> UpdateResponseAsync(TimeOff timeOffToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.

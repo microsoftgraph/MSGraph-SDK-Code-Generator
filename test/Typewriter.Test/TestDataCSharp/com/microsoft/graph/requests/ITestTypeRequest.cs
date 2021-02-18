@@ -80,24 +80,10 @@ namespace Microsoft.Graph
         /// Updates the specified TestType using PATCH.
         /// </summary>
         /// <param name="testTypeToUpdate">The TestType to update.</param>
-        /// <returns>The updated TestType.</returns>
-        System.Threading.Tasks.Task<TestType> UpdateAsync(TestType testTypeToUpdate);
-
-        /// <summary>
-        /// Updates the specified TestType using PATCH.
-        /// </summary>
-        /// <param name="testTypeToUpdate">The TestType to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated TestType.</returns>
-        System.Threading.Tasks.Task<TestType> UpdateAsync(TestType testTypeToUpdate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Updates the specified TestType using PATCH and returns a <see cref="GraphResponse{TestType}"/> object.
-        /// </summary>
-        /// <param name="testTypeToUpdate">The TestType to update.</param>
-        /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<TestType>> UpdateResponseAsync(TestType testTypeToUpdate);
+        System.Threading.Tasks.Task<TestType> UpdateAsync(TestType testTypeToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified TestType using PATCH and returns a <see cref="GraphResponse{TestType}"/> object.
@@ -106,7 +92,7 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<TestType>> UpdateResponseAsync(TestType testTypeToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<TestType>> UpdateResponseAsync(TestType testTypeToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.

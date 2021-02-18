@@ -80,24 +80,10 @@ namespace Microsoft.Graph
         /// Updates the specified CloudCommunications using PATCH.
         /// </summary>
         /// <param name="cloudCommunicationsToUpdate">The CloudCommunications to update.</param>
-        /// <returns>The updated CloudCommunications.</returns>
-        System.Threading.Tasks.Task<CloudCommunications> UpdateAsync(CloudCommunications cloudCommunicationsToUpdate);
-
-        /// <summary>
-        /// Updates the specified CloudCommunications using PATCH.
-        /// </summary>
-        /// <param name="cloudCommunicationsToUpdate">The CloudCommunications to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated CloudCommunications.</returns>
-        System.Threading.Tasks.Task<CloudCommunications> UpdateAsync(CloudCommunications cloudCommunicationsToUpdate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Updates the specified CloudCommunications using PATCH and returns a <see cref="GraphResponse{CloudCommunications}"/> object.
-        /// </summary>
-        /// <param name="cloudCommunicationsToUpdate">The CloudCommunications to update.</param>
-        /// <returns>The <see cref="GraphResponse{CloudCommunications}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> UpdateResponseAsync(CloudCommunications cloudCommunicationsToUpdate);
+        System.Threading.Tasks.Task<CloudCommunications> UpdateAsync(CloudCommunications cloudCommunicationsToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified CloudCommunications using PATCH and returns a <see cref="GraphResponse{CloudCommunications}"/> object.
@@ -106,7 +92,7 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{CloudCommunications}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> UpdateResponseAsync(CloudCommunications cloudCommunicationsToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> UpdateResponseAsync(CloudCommunications cloudCommunicationsToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.

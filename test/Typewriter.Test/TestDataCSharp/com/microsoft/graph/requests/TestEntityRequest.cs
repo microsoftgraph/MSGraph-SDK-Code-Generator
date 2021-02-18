@@ -131,47 +131,11 @@ namespace Microsoft.Graph
         /// Updates the specified TestEntity using PATCH.
         /// </summary>
         /// <param name="testEntityToUpdate">The TestEntity to update.</param>
-        /// <returns>The updated TestEntity.</returns>
-        public System.Threading.Tasks.Task<TestEntity> UpdateAsync(TestEntity testEntityToUpdate)
-        {
-            return this.UpdateAsync(testEntityToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified TestEntity using PATCH.
-        /// </summary>
-        /// <param name="testEntityToUpdate">The TestEntity to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated TestEntity.</returns>
-        public async System.Threading.Tasks.Task<TestEntity> UpdateAsync(TestEntity testEntityToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<TestEntity> UpdateAsync(TestEntity testEntityToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (testEntityToUpdate.AdditionalData != null)
-			{
-				if (testEntityToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					testEntityToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, testEntityToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (testEntityToUpdate.AdditionalData != null)
-            {
-                if (testEntityToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    testEntityToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, testEntityToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<TestEntity>(testEntityToUpdate, cancellationToken).ConfigureAwait(false);
@@ -183,47 +147,11 @@ namespace Microsoft.Graph
         /// Updates the specified TestEntity using PATCH and returns a <see cref="GraphResponse{TestEntity}"/> object.
         /// </summary>
         /// <param name="testEntityToUpdate">The TestEntity to update.</param>
-        /// <returns>The <see cref="GraphResponse{TestEntity}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<TestEntity>> UpdateResponseAsync(TestEntity testEntityToUpdate)
-        {
-            return this.UpdateResponseAsync(testEntityToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified TestEntity using PATCH and returns a <see cref="GraphResponse{TestEntity}"/> object.
-        /// </summary>
-        /// <param name="testEntityToUpdate">The TestEntity to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{TestEntity}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<TestEntity>> UpdateResponseAsync(TestEntity testEntityToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<TestEntity>> UpdateResponseAsync(TestEntity testEntityToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (testEntityToUpdate.AdditionalData != null)
-			{
-				if (testEntityToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					testEntityToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, testEntityToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (testEntityToUpdate.AdditionalData != null)
-            {
-                if (testEntityToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    testEntityToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, testEntityToUpdate.GetType().Name)
-                        });
-                }
-            }
             this.ContentType = "application/json";
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<TestEntity>(testEntityToUpdate, cancellationToken).ConfigureAwait(false);

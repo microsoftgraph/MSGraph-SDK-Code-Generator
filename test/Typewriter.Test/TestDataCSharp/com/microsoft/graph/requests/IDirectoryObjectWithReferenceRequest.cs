@@ -66,33 +66,19 @@ namespace Microsoft.Graph
         /// Updates the specified DirectoryObject using PATCH.
         /// </summary>
         /// <param name="directoryObjectToUpdate">The DirectoryObject to update.</param>
-        /// <returns>The updated DirectoryObject.</returns>
-        System.Threading.Tasks.Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate);
-
-        /// <summary>
-        /// Updates the specified DirectoryObject using PATCH.
-        /// </summary>
-        /// <param name="directoryObjectToUpdate">The DirectoryObject to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated DirectoryObject.</returns>
-        System.Threading.Tasks.Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
 		/// <summary>
         /// Updates the specified DirectoryObject using PATCH and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
         /// </summary>
         /// <param name="directoryObjectToUpdate">The DirectoryObject to update.</param>
-        /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> UpdateResponseAsync(DirectoryObject directoryObjectToUpdate);
-
-        /// <summary>
-        /// Updates the specified DirectoryObject using PATCH and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
-        /// </summary>
-        /// <param name="directoryObjectToUpdate">The DirectoryObject to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> UpdateResponseAsync(DirectoryObject directoryObjectToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> UpdateResponseAsync(DirectoryObject directoryObjectToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
 		/// <summary>
         /// Deletes the specified DirectoryObject.
