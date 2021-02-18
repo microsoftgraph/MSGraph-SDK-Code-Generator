@@ -50,31 +50,17 @@ namespace Microsoft.Graph
         /// Creates the specified DirectoryObject using POST.
         /// </summary>
         /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
-        /// <returns>The created DirectoryObject.</returns>
-        System.Threading.Tasks.Task<DirectoryObject> CreateAsync(DirectoryObject directoryObjectToCreate);
-
-        /// <summary>
-        /// Creates the specified DirectoryObject using POST.
-        /// </summary>
-        /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created DirectoryObject.</returns>
-        System.Threading.Tasks.Task<DirectoryObject> CreateAsync(DirectoryObject directoryObjectToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DirectoryObject> CreateAsync(DirectoryObject directoryObjectToCreate, CancellationToken cancellationToken = default(CancellationToken));
 
 		/// <summary>
         /// Creates the specified DirectoryObject using POST and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
         /// </summary>
         /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
-        /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> CreateResponseAsync(DirectoryObject directoryObjectToCreate);
-
-        /// <summary>
-        /// Creates the specified DirectoryObject using POST and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
-        /// </summary>
-        /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> CreateResponseAsync(DirectoryObject directoryObjectToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> CreateResponseAsync(DirectoryObject directoryObjectToCreate, CancellationToken cancellationToken = default(CancellationToken));
 
 		/// <summary>
         /// Updates the specified DirectoryObject using PATCH.
@@ -111,28 +97,16 @@ namespace Microsoft.Graph
 		/// <summary>
         /// Deletes the specified DirectoryObject.
         /// </summary>
-        /// <returns>The task to await.</returns>
-        System.Threading.Tasks.Task DeleteAsync();
-
-        /// <summary>
-        /// Deletes the specified DirectoryObject.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken));
 
 		/// <summary>
         /// Deletes the specified DirectoryObject and returns a <see cref="GraphResponse"/> object.
         /// </summary>
-        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync();
-
-        /// <summary>
-        /// Deletes the specified DirectoryObject and returns a <see cref="GraphResponse"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.

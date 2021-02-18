@@ -45,11 +45,6 @@ public string GetEntityRequestConstructor(OdcmClass odcmClass)
 // -------------------------------------------------------------
 public void AppendDeleteAsyncHeader(string deleteTargetString, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
-    if (includeSendParams)
-    {
-        stringBuilder.AppendFormat("        ");
-    }
-
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
@@ -90,35 +85,12 @@ public string GetDeleteAsyncMethod(string deleteTargetString, string deleteTarge
 		deleteTargetType = String.Concat(deleteTargetType, "Object");
 	}
 
-    this.AppendDeleteAsyncHeader(deleteTargetString, stringBuilder, false, isGraphResponseMethod);
-    stringBuilder.Append(Environment.NewLine);
-
-    if (isGraphResponseMethod)
-    {
-        stringBuilder.Append("        public System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync()");
-        stringBuilder.Append(@"
-        {
-            return this.DeleteResponseAsync(CancellationToken.None);
-        }");
-    }
-    else
-    {
-        stringBuilder.Append("        public System.Threading.Tasks.Task DeleteAsync()");
-        stringBuilder.Append(@"
-        {
-            return this.DeleteAsync(CancellationToken.None);
-        }");
-    }
-
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(Environment.NewLine);
-
     this.AppendDeleteAsyncHeader(deleteTargetString, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
 
     if (isGraphResponseMethod)
     {
-        stringBuilder.Append("        public async System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken)");
+        stringBuilder.Append("        public async System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default(CancellationToken))");
         stringBuilder.Append(@"
         {
             this.Method = ""DELETE"";");
@@ -127,7 +99,7 @@ public string GetDeleteAsyncMethod(string deleteTargetString, string deleteTarge
     }
     else
     {
-        stringBuilder.Append("        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)");
+        stringBuilder.Append("        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))");
         stringBuilder.Append(@"
         {
             this.Method = ""DELETE"";");
@@ -149,11 +121,6 @@ public string GetEntityDeleteAsyncMethod(OdcmClass odcmClass, bool isGraphRespon
 
 public void AppendPutRefenceAsyncHeader(string putTargetString, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
-    if (includeSendParams)
-    {
-        stringBuilder.AppendFormat("        ");
-    }
-
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
@@ -191,38 +158,16 @@ public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass, bool isGraph
     var entityName = this.GetEntityNameString(odcmClass);
 
     var stringBuilder = new StringBuilder();
-
-    this.AppendPutRefenceAsyncHeader(entityName, stringBuilder, false, isGraphResponseMethod);
-    stringBuilder.Append(Environment.NewLine);
-    if (isGraphResponseMethod)
-    {
-        stringBuilder.Append("        public System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(string id)");
-        stringBuilder.Append(@"
-        {
-            return this.PutResponseAsync(id, CancellationToken.None);
-        }");
-    }
-    else
-    {
-        stringBuilder.Append("        public System.Threading.Tasks.Task PutAsync(string id)");
-        stringBuilder.Append(@"
-        {
-            return this.PutAsync(id, CancellationToken.None);
-        }");
-    }
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(Environment.NewLine);
-
     this.AppendPutRefenceAsyncHeader(entityName, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
 
     if (isGraphResponseMethod)
     {
-        stringBuilder.Append("        public async System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(string id, CancellationToken cancellationToken)");
+        stringBuilder.Append("        public async System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(string id, CancellationToken cancellationToken = default(CancellationToken))");
     }
     else
     {
-        stringBuilder.Append("        public async System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken)");
+        stringBuilder.Append("        public async System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken = default(CancellationToken))");
     }
 
     stringBuilder.Append(@"
@@ -270,11 +215,6 @@ public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass, bool isGraph
 
 public void AppendCreateAsyncHeader(string entityName, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
-    if (includeSendParams)
-    {
-        stringBuilder.AppendFormat("        ");
-    }
-
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
@@ -323,46 +263,16 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
 		entityName = String.Concat(entityName, "Object");
 	}
 
-	var lowerCaseEntityName = entityName.ToLowerFirstChar();
-
-    this.AppendCreateAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, false, isGraphResponseMethod);
-    stringBuilder.Append(Environment.NewLine);
-    if (isGraphResponseMethod)
-    {
-        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> CreateResponseAsync({0} {1}ToCreate)", entityName, lowerCaseEntityName);
-    }
-    else
-    {
-        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate)", entityName, lowerCaseEntityName);
-    }
-
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        {");
-    stringBuilder.Append(Environment.NewLine);
-    if (isGraphResponseMethod)
-    {
-        stringBuilder.AppendFormat("            return this.CreateResponseAsync({0}ToCreate, CancellationToken.None);", lowerCaseEntityName);
-    }
-    else
-    {
-        stringBuilder.AppendFormat("            return this.CreateAsync({0}ToCreate, CancellationToken.None);", lowerCaseEntityName);
-    }
-
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        }");
-
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(Environment.NewLine);
-
+    var lowerCaseEntityName = entityName.ToLowerFirstChar();
     this.AppendCreateAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
     {
-        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> CreateResponseAsync({0} {1}ToCreate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> CreateResponseAsync({0} {1}ToCreate, CancellationToken cancellationToken = default(CancellationToken))", entityName, lowerCaseEntityName);
     }
     else
     {
-        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate, CancellationToken cancellationToken)", entityName, lowerCaseEntityName);
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> CreateAsync({0} {1}ToCreate, CancellationToken cancellationToken = default(CancellationToken))", entityName, lowerCaseEntityName);
     }
 
     stringBuilder.Append(Environment.NewLine);

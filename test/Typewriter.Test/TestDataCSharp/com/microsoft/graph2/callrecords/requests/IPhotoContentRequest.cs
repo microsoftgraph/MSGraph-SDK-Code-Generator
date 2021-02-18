@@ -52,24 +52,10 @@ namespace Microsoft.Graph2.CallRecords
         /// PUTs the specified stream.
         /// </summary>
         /// <param name="content">The stream to PUT.</param>
-        /// <returns>The updated stream.</returns>
-        System.Threading.Tasks.Task<Stream> PutAsync(Stream content);
-
-        /// <summary>
-        /// PUTs the specified stream.
-        /// </summary>
-        /// <param name="content">The stream to PUT.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="Microsoft.Graph.IHttpProvider"/> on send.</param>
         /// <returns>The updated stream.</returns>
-        System.Threading.Tasks.Task<Stream> PutAsync(Stream content, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
-
-        /// <summary>
-        /// PUTs the specified stream and returns a <see cref="GraphResponse"/> object.
-        /// </summary>
-        /// <param name="content">The stream to PUT.</param>
-        /// <returns>The <see cref="GraphResponse"/> object returned by the PUT call.</returns>
-        System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(Stream content);
+        System.Threading.Tasks.Task<Stream> PutAsync(Stream content, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
 
         /// <summary>
         /// PUTs the specified stream and returns a <see cref="GraphResponse"/> object.
@@ -78,7 +64,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="Microsoft.Graph.IHttpProvider"/> on send.</param>
         /// <returns>The <see cref="GraphResponse"/> object returned by the PUT call.</returns>
-        System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(Stream content, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
+        System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(Stream content, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
     
     }
 }

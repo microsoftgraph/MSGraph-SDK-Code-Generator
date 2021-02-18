@@ -80,21 +80,10 @@ namespace Microsoft.Graph
         /// </summary>
         /// <typeparam name="T">The type returned by the PUT call.</typeparam>
         /// <param name="content">The stream to PUT.</param>
-        /// <returns>The object returned by the PUT call.</returns>
-        public System.Threading.Tasks.Task<T> PutAsync<T>(Stream content) where T : OnenotePage
-        {
-            return this.PutAsync<T>(content, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// PUTs the specified stream.
-        /// </summary>
-        /// <typeparam name="T">The type returned by the PUT call.</typeparam>
-        /// <param name="content">The stream to PUT.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <returns>The object returned by the PUT call.</returns>
-        public System.Threading.Tasks.Task<T> PutAsync<T>(Stream content, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : OnenotePage
+        public System.Threading.Tasks.Task<T> PutAsync<T>(Stream content, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : OnenotePage
         {
             this.ContentType = "application/octet-stream";
             this.Method = "PUT";
@@ -106,21 +95,10 @@ namespace Microsoft.Graph
         /// </summary>
         /// <typeparam name="T">The type returned by the PUT call.</typeparam>
         /// <param name="content">The stream to PUT.</param>
-        /// <returns>The <see cref="GraphResponse"/> object returned by the PUT call.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<T>> PutResponseAsync<T>(Stream content) where T : OnenotePage
-        {
-            return this.PutResponseAsync<T>(content, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// PUTs the specified stream and returns a <see cref="GraphResponse"/> object.
-        /// </summary>
-        /// <typeparam name="T">The type returned by the PUT call.</typeparam>
-        /// <param name="content">The stream to PUT.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <returns>The <see cref="GraphResponse"/> object returned by the PUT call.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<T>> PutResponseAsync<T>(Stream content, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : OnenotePage
+        public async System.Threading.Tasks.Task<GraphResponse<T>> PutResponseAsync<T>(Stream content, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : OnenotePage
         {
             this.ContentType = "application/octet-stream";
             this.Method = "PUT";

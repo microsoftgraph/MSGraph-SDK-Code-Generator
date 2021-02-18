@@ -50,31 +50,17 @@ namespace Microsoft.Graph
         /// Creates the specified TestType using POST.
         /// </summary>
         /// <param name="testTypeToCreate">The TestType to create.</param>
-        /// <returns>The created TestType.</returns>
-        System.Threading.Tasks.Task<TestType> CreateAsync(TestType testTypeToCreate);
-
-        /// <summary>
-        /// Creates the specified TestType using POST.
-        /// </summary>
-        /// <param name="testTypeToCreate">The TestType to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created TestType.</returns>
-        System.Threading.Tasks.Task<TestType> CreateAsync(TestType testTypeToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<TestType> CreateAsync(TestType testTypeToCreate, CancellationToken cancellationToken = default(CancellationToken));
 
 		/// <summary>
         /// Creates the specified TestType using POST and returns a <see cref="GraphResponse{TestType}"/> object.
         /// </summary>
         /// <param name="testTypeToCreate">The TestType to create.</param>
-        /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<TestType>> CreateResponseAsync(TestType testTypeToCreate);
-
-        /// <summary>
-        /// Creates the specified TestType using POST and returns a <see cref="GraphResponse{TestType}"/> object.
-        /// </summary>
-        /// <param name="testTypeToCreate">The TestType to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<TestType>> CreateResponseAsync(TestType testTypeToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<TestType>> CreateResponseAsync(TestType testTypeToCreate, CancellationToken cancellationToken = default(CancellationToken));
 
 		/// <summary>
         /// Updates the specified TestType using PATCH.
@@ -111,28 +97,16 @@ namespace Microsoft.Graph
 		/// <summary>
         /// Deletes the specified TestType.
         /// </summary>
-        /// <returns>The task to await.</returns>
-        System.Threading.Tasks.Task DeleteAsync();
-
-        /// <summary>
-        /// Deletes the specified TestType.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken));
 
 		/// <summary>
         /// Deletes the specified TestType and returns a <see cref="GraphResponse"/> object.
         /// </summary>
-        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync();
-
-        /// <summary>
-        /// Deletes the specified TestType and returns a <see cref="GraphResponse"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.
