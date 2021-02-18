@@ -1,3 +1,5 @@
+Write-Host "PublishChanges is set to $env:PublishChanges" -ForegroundColor Green
+
 if (!$env:PublishChanges)
 {
     Write-Host "Not publishing changes as a branch per the run parameter!" -ForegroundColor Green
