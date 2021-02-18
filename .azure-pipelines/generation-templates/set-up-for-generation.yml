@@ -1,6 +1,4 @@
 parameters:
-  - name: version
-    type: string
   - name: cleanMetadataFolder
     type: string
 
