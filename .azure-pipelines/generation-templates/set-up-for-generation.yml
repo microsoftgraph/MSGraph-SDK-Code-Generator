@@ -18,11 +18,7 @@ steps:
 # if capture and clean step is not skipped
 # then download the artifact from capture and clean steps
 # follow the same folder structure as msgraph-metadata repo
-#- pwsh: |
-#    mkdir msgraph-metadata
-#  workingDirectory: $(Build.SourcesDirectory)
-#  condition: eq(variables.skipMetadataCaptureAndClean, false)
-
+# so that metadata reference path is always the same
 - task: DownloadBuildArtifacts@0
   inputs:
     buildType: 'current'
