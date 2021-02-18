@@ -81,21 +81,13 @@ namespace Microsoft.Graph2.CallRecords
             return await this.SendAsyncWithGraphResponse<Microsoft.Graph.EntityType2>(entityType2, cancellationToken).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Gets the collection page.
-        /// </summary>
-        /// <returns>The collection page.</returns>
-        public System.Threading.Tasks.Task<ICallRecordRecipientsCollectionPage> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
 
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async System.Threading.Tasks.Task<ICallRecordRecipientsCollectionPage> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ICallRecordRecipientsCollectionPage> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var response = await this.SendAsync<CallRecordRecipientsCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -128,18 +120,9 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets the collection page and returns a <see cref="GraphResponse{CallRecordRecipientsCollectionResponse}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{CallRecordRecipientsCollectionResponse}"/> object.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<CallRecordRecipientsCollectionResponse>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the collection page and returns a <see cref="GraphResponse{CallRecordRecipientsCollectionResponse}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{CallRecordRecipientsCollectionResponse}"/> object.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<CallRecordRecipientsCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<CallRecordRecipientsCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<CallRecordRecipientsCollectionResponse>(null, cancellationToken).ConfigureAwait(false);

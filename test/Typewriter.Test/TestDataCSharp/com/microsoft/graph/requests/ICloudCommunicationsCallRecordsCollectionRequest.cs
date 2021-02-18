@@ -54,28 +54,16 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the collection page.
         /// </summary>
-        /// <returns>The collection page.</returns>
-        System.Threading.Tasks.Task<ICloudCommunicationsCallRecordsCollectionPage> GetAsync();
-
-        /// <summary>
-        /// Gets the collection page.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        System.Threading.Tasks.Task<ICloudCommunicationsCallRecordsCollectionPage> GetAsync(CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Gets the collection page and returns a <see cref="GraphResponse{CloudCommunicationsCallRecordsCollectionResponse}"/> object.
-        /// </summary>
-        /// <returns>The <see cref="GraphResponse{CloudCommunicationsCallRecordsCollectionResponse}"/> object.</returns>
-        System.Threading.Tasks.Task<GraphResponse<CloudCommunicationsCallRecordsCollectionResponse>> GetResponseAsync();
+        System.Threading.Tasks.Task<ICloudCommunicationsCallRecordsCollectionPage> GetAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the collection page and returns a <see cref="GraphResponse{CloudCommunicationsCallRecordsCollectionResponse}"/> object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{CloudCommunicationsCallRecordsCollectionResponse}"/> object.</returns>
-        System.Threading.Tasks.Task<GraphResponse<CloudCommunicationsCallRecordsCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<CloudCommunicationsCallRecordsCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.

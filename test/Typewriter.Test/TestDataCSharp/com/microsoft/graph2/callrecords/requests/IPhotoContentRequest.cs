@@ -19,11 +19,6 @@ namespace Microsoft.Graph2.CallRecords
     /// </summary>
     public partial interface IPhotoContentRequest : Microsoft.Graph.IBaseRequest
     {
-        /// <summary>
-        /// Gets the stream.
-        /// </summary>
-        /// <returns>The stream.</returns>
-        System.Threading.Tasks.Task<Stream> GetAsync();
 
         /// <summary>
         /// Gets the stream.
@@ -31,13 +26,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="Microsoft.Graph.IHttpProvider"/> on send.</param>
         /// <returns>The stream.</returns>
-        System.Threading.Tasks.Task<Stream> GetAsync(CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
-
-        /// <summary>
-        /// Gets the <see cref="GraphResponse"/> object of the request.
-        /// </summary>
-        /// <returns>The <see cref="GraphResponse"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse> GetResponseAsync();
+        System.Threading.Tasks.Task<Stream> GetAsync(CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
 
         /// <summary>
         /// Gets the <see cref="GraphResponse"/> object of the request.
@@ -45,7 +34,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="Microsoft.Graph.IHttpProvider"/> on send.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse> GetResponseAsync(CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
+        System.Threading.Tasks.Task<GraphResponse> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead);
 
 
         /// <summary>
