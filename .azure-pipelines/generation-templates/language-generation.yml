@@ -28,8 +28,13 @@ parameters:
 - name: cleanMetadataFile
   type: string
 
+- name: cleanMetadataFolder
+  type: string
+
 steps:
 - template: set-up-for-generation.yml
+  parameters:
+    cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
 
 - checkout: ${{ parameters.repoName }}
   displayName: 'checkout ${{ parameters.repoName }}'
