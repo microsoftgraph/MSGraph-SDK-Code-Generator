@@ -27,7 +27,7 @@ steps:
   inputs:
     buildType: 'current'
     downloadType: 'single'
-    artifactName: $(cleanMetadataFolder)
+    artifactName: ${{ parameters.cleanMetadataFolder }}
     downloadPath: '$(Build.SourcesDirectory)/msgraph-metadata'
   condition: eq(variables.skipMetadataCaptureAndClean, false)
   displayName: Downloading metadata from artifacts
