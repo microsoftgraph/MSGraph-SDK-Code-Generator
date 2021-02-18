@@ -20,28 +20,13 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface ICloudCommunicationsCallsCollectionRequest : IBaseRequest
     {
-        
-        /// <summary>
-        /// Adds the specified Call to the collection via POST.
-        /// </summary>
-        /// <param name="call">The Call to add.</param>
-        /// <returns>The created Call.</returns>
-        System.Threading.Tasks.Task<Call> AddAsync(Call call);
-
         /// <summary>
         /// Adds the specified Call to the collection via POST.
         /// </summary>
         /// <param name="call">The Call to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Call.</returns>
-        System.Threading.Tasks.Task<Call> AddAsync(Call call, CancellationToken cancellationToken);
-        
-        /// <summary>
-        /// Adds the specified Call to the collection via POST and returns a <see cref="GraphResponse{Call}"/> object of the request.
-        /// </summary>
-        /// <param name="call">The Call to add.</param>
-        /// <returns>The <see cref="GraphResponse{Call}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Call>> AddResponseAsync(Call call);
+        System.Threading.Tasks.Task<Call> AddAsync(Call call, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified Call to the collection via POST and returns a <see cref="GraphResponse{Call}"/> object of the request.
@@ -49,7 +34,8 @@ namespace Microsoft.Graph
         /// <param name="call">The Call to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{Call}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Call>> AddResponseAsync(Call call, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<Call>> AddResponseAsync(Call call, CancellationToken cancellationToken = default(CancellationToken));
+
 
         /// <summary>
         /// Gets the collection page.

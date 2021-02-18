@@ -20,28 +20,13 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface ICloudCommunicationsCallRecordsCollectionRequest : IBaseRequest
     {
-        
-        /// <summary>
-        /// Adds the specified Microsoft.Graph2.CallRecords.CallRecord to the collection via POST.
-        /// </summary>
-        /// <param name="callRecord">The Microsoft.Graph2.CallRecords.CallRecord to add.</param>
-        /// <returns>The created Microsoft.Graph2.CallRecords.CallRecord.</returns>
-        System.Threading.Tasks.Task<Microsoft.Graph2.CallRecords.CallRecord> AddAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord);
-
         /// <summary>
         /// Adds the specified Microsoft.Graph2.CallRecords.CallRecord to the collection via POST.
         /// </summary>
         /// <param name="callRecord">The Microsoft.Graph2.CallRecords.CallRecord to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Microsoft.Graph2.CallRecords.CallRecord.</returns>
-        System.Threading.Tasks.Task<Microsoft.Graph2.CallRecords.CallRecord> AddAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord, CancellationToken cancellationToken);
-        
-        /// <summary>
-        /// Adds the specified Microsoft.Graph2.CallRecords.CallRecord to the collection via POST and returns a <see cref="GraphResponse{Microsoft.Graph2.CallRecords.CallRecord}"/> object of the request.
-        /// </summary>
-        /// <param name="callRecord">The Microsoft.Graph2.CallRecords.CallRecord to add.</param>
-        /// <returns>The <see cref="GraphResponse{Microsoft.Graph2.CallRecords.CallRecord}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Microsoft.Graph2.CallRecords.CallRecord>> AddResponseAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord);
+        System.Threading.Tasks.Task<Microsoft.Graph2.CallRecords.CallRecord> AddAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified Microsoft.Graph2.CallRecords.CallRecord to the collection via POST and returns a <see cref="GraphResponse{Microsoft.Graph2.CallRecords.CallRecord}"/> object of the request.
@@ -49,7 +34,8 @@ namespace Microsoft.Graph
         /// <param name="callRecord">The Microsoft.Graph2.CallRecords.CallRecord to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{Microsoft.Graph2.CallRecords.CallRecord}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Microsoft.Graph2.CallRecords.CallRecord>> AddResponseAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<Microsoft.Graph2.CallRecords.CallRecord>> AddResponseAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord, CancellationToken cancellationToken = default(CancellationToken));
+
 
         /// <summary>
         /// Gets the collection page.

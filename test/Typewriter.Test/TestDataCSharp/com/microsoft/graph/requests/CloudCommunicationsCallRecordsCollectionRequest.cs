@@ -33,48 +33,26 @@ namespace Microsoft.Graph
             : base(requestUrl, client, options)
         {
         }
-        
-        /// <summary>
-        /// Adds the specified Microsoft.Graph2.CallRecords.CallRecord to the collection via POST.
-        /// </summary>
-        /// <param name="callRecord">The Microsoft.Graph2.CallRecords.CallRecord to add.</param>
-        /// <returns>The created Microsoft.Graph2.CallRecords.CallRecord.</returns>
-        public System.Threading.Tasks.Task<Microsoft.Graph2.CallRecords.CallRecord> AddAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord)
-        {
-            return this.AddAsync(callRecord, CancellationToken.None);
-        }
-
         /// <summary>
         /// Adds the specified Microsoft.Graph2.CallRecords.CallRecord to the collection via POST.
         /// </summary>
         /// <param name="callRecord">The Microsoft.Graph2.CallRecords.CallRecord to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Microsoft.Graph2.CallRecords.CallRecord.</returns>
-        public System.Threading.Tasks.Task<Microsoft.Graph2.CallRecords.CallRecord> AddAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord, CancellationToken cancellationToken)
+        public System.Threading.Tasks.Task<Microsoft.Graph2.CallRecords.CallRecord> AddAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = "application/json";
             this.Method = "POST";
             return this.SendAsync<Microsoft.Graph2.CallRecords.CallRecord>(callRecord, cancellationToken);
         }
 
-        
-        /// <summary>
-        /// Adds the specified Microsoft.Graph2.CallRecords.CallRecord to the collection via POST and returns a <see cref="GraphResponse{Microsoft.Graph2.CallRecords.CallRecord}"/> object of the request.
-        /// </summary>
-        /// <param name="callRecord">The Microsoft.Graph2.CallRecords.CallRecord to add.</param>
-        /// <returns>The <see cref="GraphResponse{Microsoft.Graph2.CallRecords.CallRecord}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<Microsoft.Graph2.CallRecords.CallRecord>> AddResponseAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord)
-        {
-            return this.AddResponseAsync(callRecord, CancellationToken.None);
-        }
-
         /// <summary>
         /// Adds the specified Microsoft.Graph2.CallRecords.CallRecord to the collection via POST and returns a <see cref="GraphResponse{Microsoft.Graph2.CallRecords.CallRecord}"/> object of the request.
         /// </summary>
         /// <param name="callRecord">The Microsoft.Graph2.CallRecords.CallRecord to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{Microsoft.Graph2.CallRecords.CallRecord}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<Microsoft.Graph2.CallRecords.CallRecord>> AddResponseAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<Microsoft.Graph2.CallRecords.CallRecord>> AddResponseAsync(Microsoft.Graph2.CallRecords.CallRecord callRecord, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = "application/json";
             this.Method = "POST";

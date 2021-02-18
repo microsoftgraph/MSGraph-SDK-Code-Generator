@@ -33,48 +33,26 @@ namespace Microsoft.Graph2.CallRecords
             : base(requestUrl, client, options)
         {
         }
-        
-        /// <summary>
-        /// Adds the specified Session to the collection via POST.
-        /// </summary>
-        /// <param name="session">The Session to add.</param>
-        /// <returns>The created Session.</returns>
-        public System.Threading.Tasks.Task<Session> AddAsync(Session session)
-        {
-            return this.AddAsync(session, CancellationToken.None);
-        }
-
         /// <summary>
         /// Adds the specified Session to the collection via POST.
         /// </summary>
         /// <param name="session">The Session to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Session.</returns>
-        public System.Threading.Tasks.Task<Session> AddAsync(Session session, CancellationToken cancellationToken)
+        public System.Threading.Tasks.Task<Session> AddAsync(Session session, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = "application/json";
             this.Method = "POST";
             return this.SendAsync<Session>(session, cancellationToken);
         }
 
-        
-        /// <summary>
-        /// Adds the specified Session to the collection via POST and returns a <see cref="GraphResponse{Session}"/> object of the request.
-        /// </summary>
-        /// <param name="session">The Session to add.</param>
-        /// <returns>The <see cref="GraphResponse{Session}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<Session>> AddResponseAsync(Session session)
-        {
-            return this.AddResponseAsync(session, CancellationToken.None);
-        }
-
         /// <summary>
         /// Adds the specified Session to the collection via POST and returns a <see cref="GraphResponse{Session}"/> object of the request.
         /// </summary>
         /// <param name="session">The Session to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{Session}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<Session>> AddResponseAsync(Session session, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<Session>> AddResponseAsync(Session session, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = "application/json";
             this.Method = "POST";
