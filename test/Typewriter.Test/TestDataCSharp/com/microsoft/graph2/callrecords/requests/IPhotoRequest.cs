@@ -53,28 +53,16 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets the specified Photo.
         /// </summary>
-        /// <returns>The Photo.</returns>
-        System.Threading.Tasks.Task<Photo> GetAsync();
-
-        /// <summary>
-        /// Gets the specified Photo.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Photo.</returns>
-        System.Threading.Tasks.Task<Photo> GetAsync(CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Gets the specified Photo and returns a <see cref="GraphResponse{Photo}"/> object.
-        /// </summary>
-        /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Photo>> GetResponseAsync();
+        System.Threading.Tasks.Task<Photo> GetAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the specified Photo and returns a <see cref="GraphResponse{Photo}"/> object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Photo>> GetResponseAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<Photo>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified Photo using PATCH.

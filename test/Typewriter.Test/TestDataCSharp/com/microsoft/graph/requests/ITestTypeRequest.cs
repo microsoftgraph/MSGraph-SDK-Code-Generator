@@ -53,28 +53,16 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified TestType.
         /// </summary>
-        /// <returns>The TestType.</returns>
-        System.Threading.Tasks.Task<TestType> GetAsync();
-
-        /// <summary>
-        /// Gets the specified TestType.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The TestType.</returns>
-        System.Threading.Tasks.Task<TestType> GetAsync(CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Gets the specified TestType and returns a <see cref="GraphResponse{TestType}"/> object.
-        /// </summary>
-        /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<TestType>> GetResponseAsync();
+        System.Threading.Tasks.Task<TestType> GetAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the specified TestType and returns a <see cref="GraphResponse{TestType}"/> object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{TestType}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<TestType>> GetResponseAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<TestType>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified TestType using PATCH.

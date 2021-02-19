@@ -88,18 +88,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified UnifiedRoleEligibilityRequestObject.
         /// </summary>
-        /// <returns>The UnifiedRoleEligibilityRequestObject.</returns>
-        public System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified UnifiedRoleEligibilityRequestObject.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The UnifiedRoleEligibilityRequestObject.</returns>
-        public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<UnifiedRoleEligibilityRequestObject>(null, cancellationToken).ConfigureAwait(false);
@@ -110,18 +101,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified UnifiedRoleEligibilityRequestObject and returns a <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified UnifiedRoleEligibilityRequestObject and returns a <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<UnifiedRoleEligibilityRequestObject>(null, cancellationToken).ConfigureAwait(false);

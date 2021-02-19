@@ -88,18 +88,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified PlannerGroup.
         /// </summary>
-        /// <returns>The PlannerGroup.</returns>
-        public System.Threading.Tasks.Task<PlannerGroup> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified PlannerGroup.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The PlannerGroup.</returns>
-        public async System.Threading.Tasks.Task<PlannerGroup> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<PlannerGroup> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<PlannerGroup>(null, cancellationToken).ConfigureAwait(false);
@@ -110,18 +101,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified PlannerGroup and returns a <see cref="GraphResponse{PlannerGroup}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{PlannerGroup}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<PlannerGroup>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified PlannerGroup and returns a <see cref="GraphResponse{PlannerGroup}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{PlannerGroup}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<PlannerGroup>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<PlannerGroup>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<PlannerGroup>(null, cancellationToken).ConfigureAwait(false);

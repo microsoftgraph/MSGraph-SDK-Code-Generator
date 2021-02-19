@@ -88,18 +88,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified SingletonEntity1.
         /// </summary>
-        /// <returns>The SingletonEntity1.</returns>
-        public System.Threading.Tasks.Task<SingletonEntity1> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified SingletonEntity1.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The SingletonEntity1.</returns>
-        public async System.Threading.Tasks.Task<SingletonEntity1> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<SingletonEntity1> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<SingletonEntity1>(null, cancellationToken).ConfigureAwait(false);
@@ -110,18 +101,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified SingletonEntity1 and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified SingletonEntity1 and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<SingletonEntity1>(null, cancellationToken).ConfigureAwait(false);

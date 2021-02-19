@@ -88,18 +88,9 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets the specified Photo.
         /// </summary>
-        /// <returns>The Photo.</returns>
-        public System.Threading.Tasks.Task<Photo> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified Photo.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Photo.</returns>
-        public async System.Threading.Tasks.Task<Photo> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Photo> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Photo>(null, cancellationToken).ConfigureAwait(false);
@@ -110,18 +101,9 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets the specified Photo and returns a <see cref="GraphResponse{Photo}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<Photo>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified Photo and returns a <see cref="GraphResponse{Photo}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<Photo>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<Photo>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<Photo>(null, cancellationToken).ConfigureAwait(false);

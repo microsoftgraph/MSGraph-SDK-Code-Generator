@@ -53,28 +53,16 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified EntityType3.
         /// </summary>
-        /// <returns>The EntityType3.</returns>
-        System.Threading.Tasks.Task<EntityType3> GetAsync();
-
-        /// <summary>
-        /// Gets the specified EntityType3.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The EntityType3.</returns>
-        System.Threading.Tasks.Task<EntityType3> GetAsync(CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Gets the specified EntityType3 and returns a <see cref="GraphResponse{EntityType3}"/> object.
-        /// </summary>
-        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync();
+        System.Threading.Tasks.Task<EntityType3> GetAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the specified EntityType3 and returns a <see cref="GraphResponse{EntityType3}"/> object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified EntityType3 using PATCH.

@@ -314,11 +314,6 @@ public void AppendGetAsyncHeader(string entityName, StringBuilder stringBuilder,
 		entityName = String.Concat(entityName, "Object");
 	}
 
-    if (includeSendParams)
-    {
-        stringBuilder.AppendFormat("        ");
-    }
-
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
 
@@ -365,33 +360,12 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool initializeCollec
 		entityName = String.Concat(entityName, "Object");
 	}
 
-    this.AppendGetAsyncHeader(entityName, stringBuilder, false, isGraphResponseMethod);
-    stringBuilder.Append(Environment.NewLine);
-    if (isGraphResponseMethod)
-    {
-        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> GetResponseAsync()", entityName);
-        stringBuilder.Append(@"
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }");
-    }
-    else
-    {
-        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> GetAsync()", entityName);
-        stringBuilder.Append(@"
-        {
-            return this.GetAsync(CancellationToken.None);
-        }");
-    }
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(Environment.NewLine);
-
     this.AppendGetAsyncHeader(entityName, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
 
     if (isGraphResponseMethod)
     {
-        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> GetResponseAsync(CancellationToken cancellationToken)", entityName);
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))", entityName);
         stringBuilder.Append(@"
         {
             this.Method = ""GET"";");
@@ -402,7 +376,7 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool initializeCollec
     }
     else
     {
-        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> GetAsync(CancellationToken cancellationToken)", entityName);
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> GetAsync(CancellationToken cancellationToken = default(CancellationToken))", entityName);
         stringBuilder.Append(@"
         {
             this.Method = ""GET"";");

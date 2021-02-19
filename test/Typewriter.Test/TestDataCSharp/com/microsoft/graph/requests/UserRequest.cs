@@ -88,18 +88,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified User.
         /// </summary>
-        /// <returns>The User.</returns>
-        public System.Threading.Tasks.Task<User> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified User.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The User.</returns>
-        public async System.Threading.Tasks.Task<User> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<User> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<User>(null, cancellationToken).ConfigureAwait(false);
@@ -110,18 +101,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified User and returns a <see cref="GraphResponse{User}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{User}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<User>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified User and returns a <see cref="GraphResponse{User}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{User}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<User>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<User>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<User>(null, cancellationToken).ConfigureAwait(false);

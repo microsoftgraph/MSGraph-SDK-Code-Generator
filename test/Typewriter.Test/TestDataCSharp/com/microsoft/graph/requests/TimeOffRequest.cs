@@ -88,18 +88,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified TimeOff.
         /// </summary>
-        /// <returns>The TimeOff.</returns>
-        public System.Threading.Tasks.Task<TimeOff> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified TimeOff.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The TimeOff.</returns>
-        public async System.Threading.Tasks.Task<TimeOff> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<TimeOff> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<TimeOff>(null, cancellationToken).ConfigureAwait(false);
@@ -110,18 +101,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified TimeOff and returns a <see cref="GraphResponse{TimeOff}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{TimeOff}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<TimeOff>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified TimeOff and returns a <see cref="GraphResponse{TimeOff}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{TimeOff}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<TimeOff>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<TimeOff>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<TimeOff>(null, cancellationToken).ConfigureAwait(false);

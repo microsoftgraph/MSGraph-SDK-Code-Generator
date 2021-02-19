@@ -88,18 +88,9 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets the specified Session.
         /// </summary>
-        /// <returns>The Session.</returns>
-        public System.Threading.Tasks.Task<Session> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified Session.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Session.</returns>
-        public async System.Threading.Tasks.Task<Session> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Session> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Session>(null, cancellationToken).ConfigureAwait(false);
@@ -110,18 +101,9 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets the specified Session and returns a <see cref="GraphResponse{Session}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{Session}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<Session>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified Session and returns a <see cref="GraphResponse{Session}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{Session}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<Session>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<Session>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<Session>(null, cancellationToken).ConfigureAwait(false);

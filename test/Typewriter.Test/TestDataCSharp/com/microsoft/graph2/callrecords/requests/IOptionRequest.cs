@@ -53,28 +53,16 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets the specified Option.
         /// </summary>
-        /// <returns>The Option.</returns>
-        System.Threading.Tasks.Task<Option> GetAsync();
-
-        /// <summary>
-        /// Gets the specified Option.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Option.</returns>
-        System.Threading.Tasks.Task<Option> GetAsync(CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Gets the specified Option and returns a <see cref="GraphResponse{Option}"/> object.
-        /// </summary>
-        /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Option>> GetResponseAsync();
+        System.Threading.Tasks.Task<Option> GetAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the specified Option and returns a <see cref="GraphResponse{Option}"/> object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Option>> GetResponseAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<Option>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified Option using PATCH.

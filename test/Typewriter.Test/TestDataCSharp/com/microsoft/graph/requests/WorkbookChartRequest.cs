@@ -88,18 +88,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified WorkbookChart.
         /// </summary>
-        /// <returns>The WorkbookChart.</returns>
-        public System.Threading.Tasks.Task<WorkbookChart> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified WorkbookChart.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The WorkbookChart.</returns>
-        public async System.Threading.Tasks.Task<WorkbookChart> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<WorkbookChart> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<WorkbookChart>(null, cancellationToken).ConfigureAwait(false);
@@ -110,18 +101,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified WorkbookChart and returns a <see cref="GraphResponse{WorkbookChart}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{WorkbookChart}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<WorkbookChart>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified WorkbookChart and returns a <see cref="GraphResponse{WorkbookChart}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{WorkbookChart}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<WorkbookChart>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<WorkbookChart>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<WorkbookChart>(null, cancellationToken).ConfigureAwait(false);

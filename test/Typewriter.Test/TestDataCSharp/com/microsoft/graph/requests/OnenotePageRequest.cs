@@ -88,18 +88,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified OnenotePage.
         /// </summary>
-        /// <returns>The OnenotePage.</returns>
-        public System.Threading.Tasks.Task<OnenotePage> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified OnenotePage.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The OnenotePage.</returns>
-        public async System.Threading.Tasks.Task<OnenotePage> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<OnenotePage> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<OnenotePage>(null, cancellationToken).ConfigureAwait(false);
@@ -110,18 +101,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified OnenotePage and returns a <see cref="GraphResponse{OnenotePage}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{OnenotePage}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<OnenotePage>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified OnenotePage and returns a <see cref="GraphResponse{OnenotePage}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{OnenotePage}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<OnenotePage>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<OnenotePage>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<OnenotePage>(null, cancellationToken).ConfigureAwait(false);

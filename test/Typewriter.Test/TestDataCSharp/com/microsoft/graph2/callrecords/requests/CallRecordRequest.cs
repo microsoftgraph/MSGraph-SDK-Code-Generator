@@ -88,18 +88,9 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets the specified CallRecord.
         /// </summary>
-        /// <returns>The CallRecord.</returns>
-        public System.Threading.Tasks.Task<CallRecord> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified CallRecord.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The CallRecord.</returns>
-        public async System.Threading.Tasks.Task<CallRecord> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CallRecord> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<CallRecord>(null, cancellationToken).ConfigureAwait(false);
@@ -110,18 +101,9 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets the specified CallRecord and returns a <see cref="GraphResponse{CallRecord}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{CallRecord}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<CallRecord>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified CallRecord and returns a <see cref="GraphResponse{CallRecord}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{CallRecord}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<CallRecord>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<CallRecord>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<CallRecord>(null, cancellationToken).ConfigureAwait(false);

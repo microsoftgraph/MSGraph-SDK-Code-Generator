@@ -88,18 +88,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified CloudCommunications.
         /// </summary>
-        /// <returns>The CloudCommunications.</returns>
-        public System.Threading.Tasks.Task<CloudCommunications> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified CloudCommunications.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The CloudCommunications.</returns>
-        public async System.Threading.Tasks.Task<CloudCommunications> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CloudCommunications> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<CloudCommunications>(null, cancellationToken).ConfigureAwait(false);
@@ -110,18 +101,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified CloudCommunications and returns a <see cref="GraphResponse{CloudCommunications}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{CloudCommunications}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified CloudCommunications and returns a <see cref="GraphResponse{CloudCommunications}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{CloudCommunications}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<CloudCommunications>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<CloudCommunications>(null, cancellationToken).ConfigureAwait(false);

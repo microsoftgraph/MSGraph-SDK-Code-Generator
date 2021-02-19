@@ -38,18 +38,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified EntityType3.
         /// </summary>
-        /// <returns>The EntityType3.</returns>
-        public System.Threading.Tasks.Task<EntityType3> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified EntityType3.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The EntityType3.</returns>
-        public async System.Threading.Tasks.Task<EntityType3> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<EntityType3> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<EntityType3>(null, cancellationToken).ConfigureAwait(false);
@@ -59,18 +50,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified EntityType3 and returns a <see cref="GraphResponse{EntityType3}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified EntityType3 and returns a <see cref="GraphResponse{EntityType3}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<EntityType3>(null, cancellationToken).ConfigureAwait(false);

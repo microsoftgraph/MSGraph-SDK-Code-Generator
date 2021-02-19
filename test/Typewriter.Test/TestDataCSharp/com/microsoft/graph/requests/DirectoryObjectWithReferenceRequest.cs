@@ -38,18 +38,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified DirectoryObject.
         /// </summary>
-        /// <returns>The DirectoryObject.</returns>
-        public System.Threading.Tasks.Task<DirectoryObject> GetAsync()
-        {
-            return this.GetAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified DirectoryObject.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The DirectoryObject.</returns>
-        public async System.Threading.Tasks.Task<DirectoryObject> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DirectoryObject> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<DirectoryObject>(null, cancellationToken).ConfigureAwait(false);
@@ -59,18 +50,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified DirectoryObject and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
         /// </summary>
-        /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> GetResponseAsync()
-        {
-            return this.GetResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Gets the specified DirectoryObject and returns a <see cref="GraphResponse{DirectoryObject}"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{DirectoryObject}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> GetResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<DirectoryObject>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
             return await this.SendAsyncWithGraphResponse<DirectoryObject>(null, cancellationToken).ConfigureAwait(false);

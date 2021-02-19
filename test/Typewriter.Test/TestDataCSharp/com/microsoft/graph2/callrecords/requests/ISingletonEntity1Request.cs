@@ -53,28 +53,16 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets the specified SingletonEntity1.
         /// </summary>
-        /// <returns>The SingletonEntity1.</returns>
-        System.Threading.Tasks.Task<SingletonEntity1> GetAsync();
-
-        /// <summary>
-        /// Gets the specified SingletonEntity1.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The SingletonEntity1.</returns>
-        System.Threading.Tasks.Task<SingletonEntity1> GetAsync(CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Gets the specified SingletonEntity1 and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
-        /// </summary>
-        /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> GetResponseAsync();
+        System.Threading.Tasks.Task<SingletonEntity1> GetAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the specified SingletonEntity1 and returns a <see cref="GraphResponse{SingletonEntity1}"/> object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{SingletonEntity1}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> GetResponseAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<SingletonEntity1>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified SingletonEntity1 using PATCH.
