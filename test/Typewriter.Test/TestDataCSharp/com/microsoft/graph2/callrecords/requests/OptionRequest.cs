@@ -39,21 +39,11 @@ namespace Microsoft.Graph2.CallRecords
         /// Creates the specified Option using POST.
         /// </summary>
         /// <param name="optionToCreate">The Option to create.</param>
-        /// <returns>The created Option.</returns>
-        public System.Threading.Tasks.Task<Option> CreateAsync(Option optionToCreate)
-        {
-            return this.CreateAsync(optionToCreate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Creates the specified Option using POST.
-        /// </summary>
-        /// <param name="optionToCreate">The Option to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Option.</returns>
-        public async System.Threading.Tasks.Task<Option> CreateAsync(Option optionToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Option> CreateAsync(Option optionToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             var newEntity = await this.SendAsync<Option>(optionToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
@@ -64,21 +54,11 @@ namespace Microsoft.Graph2.CallRecords
         /// Creates the specified Option using POST and returns a <see cref="GraphResponse{Option}"/> object.
         /// </summary>
         /// <param name="optionToCreate">The Option to create.</param>
-        /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<Option>> CreateResponseAsync(Option optionToCreate)
-        {
-            return this.CreateResponseAsync(optionToCreate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Creates the specified Option using POST and returns a <see cref="GraphResponse{Option}"/> object.
-        /// </summary>
-        /// <param name="optionToCreate">The Option to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<Option>> CreateResponseAsync(Option optionToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<Option>> CreateResponseAsync(Option optionToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return await this.SendAsyncWithGraphResponse<Option>(optionToCreate, cancellationToken).ConfigureAwait(false);
         }
@@ -86,18 +66,9 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Deletes the specified Option.
         /// </summary>
-        /// <returns>The task to await.</returns>
-        public System.Threading.Tasks.Task DeleteAsync()
-        {
-            return this.DeleteAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Deletes the specified Option.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "DELETE";
             await this.SendAsync<Option>(null, cancellationToken).ConfigureAwait(false);
@@ -106,18 +77,9 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Deletes the specified Option and returns a <see cref="GraphResponse"/> object.
         /// </summary>
-        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        public System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync()
-        {
-            return this.DeleteResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Deletes the specified Option and returns a <see cref="GraphResponse"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "DELETE";
             return await this.SendAsyncWithGraphResponse(null, cancellationToken).ConfigureAwait(false);
@@ -169,48 +131,12 @@ namespace Microsoft.Graph2.CallRecords
         /// Updates the specified Option using PATCH.
         /// </summary>
         /// <param name="optionToUpdate">The Option to update.</param>
-        /// <returns>The updated Option.</returns>
-        public System.Threading.Tasks.Task<Option> UpdateAsync(Option optionToUpdate)
-        {
-            return this.UpdateAsync(optionToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified Option using PATCH.
-        /// </summary>
-        /// <param name="optionToUpdate">The Option to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated Option.</returns>
-        public async System.Threading.Tasks.Task<Option> UpdateAsync(Option optionToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Option> UpdateAsync(Option optionToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (optionToUpdate.AdditionalData != null)
-			{
-				if (optionToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.ResponseHeaders) ||
-					optionToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new Microsoft.Graph.ClientException(
-						new Microsoft.Graph.Error
-						{
-							Code = Microsoft.Graph.GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(Microsoft.Graph.GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, optionToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (optionToUpdate.AdditionalData != null)
-            {
-                if (optionToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.ResponseHeaders) ||
-                    optionToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new Microsoft.Graph.ClientException(
-                        new Microsoft.Graph.Error
-                        {
-                            Code = Microsoft.Graph.GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(Microsoft.Graph.GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, optionToUpdate.GetType().Name)
-                        });
-                }
-            }
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<Option>(optionToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
@@ -221,48 +147,12 @@ namespace Microsoft.Graph2.CallRecords
         /// Updates the specified Option using PATCH and returns a <see cref="GraphResponse{Option}"/> object.
         /// </summary>
         /// <param name="optionToUpdate">The Option to update.</param>
-        /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<Option>> UpdateResponseAsync(Option optionToUpdate)
-        {
-            return this.UpdateResponseAsync(optionToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified Option using PATCH and returns a <see cref="GraphResponse{Option}"/> object.
-        /// </summary>
-        /// <param name="optionToUpdate">The Option to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<Option>> UpdateResponseAsync(Option optionToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<Option>> UpdateResponseAsync(Option optionToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (optionToUpdate.AdditionalData != null)
-			{
-				if (optionToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.ResponseHeaders) ||
-					optionToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new Microsoft.Graph.ClientException(
-						new Microsoft.Graph.Error
-						{
-							Code = Microsoft.Graph.GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(Microsoft.Graph.GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, optionToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (optionToUpdate.AdditionalData != null)
-            {
-                if (optionToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.ResponseHeaders) ||
-                    optionToUpdate.AdditionalData.ContainsKey(Microsoft.Graph.Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new Microsoft.Graph.ClientException(
-                        new Microsoft.Graph.Error
-                        {
-                            Code = Microsoft.Graph.GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(Microsoft.Graph.GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, optionToUpdate.GetType().Name)
-                        });
-                }
-            }
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<Option>(optionToUpdate, cancellationToken).ConfigureAwait(false);
         }

@@ -80,21 +80,11 @@ namespace Microsoft.Graph
         /// Creates the specified EntityType2 using POST.
         /// </summary>
         /// <param name="entityType2ToCreate">The EntityType2 to create.</param>
-        /// <returns>The created EntityType2.</returns>
-        public System.Threading.Tasks.Task<EntityType2> CreateAsync(EntityType2 entityType2ToCreate)
-        {
-            return this.CreateAsync(entityType2ToCreate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Creates the specified EntityType2 using POST.
-        /// </summary>
-        /// <param name="entityType2ToCreate">The EntityType2 to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created EntityType2.</returns>
-        public async System.Threading.Tasks.Task<EntityType2> CreateAsync(EntityType2 entityType2ToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<EntityType2> CreateAsync(EntityType2 entityType2ToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             var newEntity = await this.SendAsync<EntityType2>(entityType2ToCreate, cancellationToken).ConfigureAwait(false);
             return newEntity;
@@ -104,21 +94,11 @@ namespace Microsoft.Graph
         /// Creates the specified EntityType2 using POST and returns a <see cref="GraphResponse{EntityType2}"/> object.
         /// </summary>
         /// <param name="entityType2ToCreate">The EntityType2 to create.</param>
-        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<EntityType2>> CreateResponseAsync(EntityType2 entityType2ToCreate)
-        {
-            return this.CreateResponseAsync(entityType2ToCreate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Creates the specified EntityType2 using POST and returns a <see cref="GraphResponse{EntityType2}"/> object.
-        /// </summary>
-        /// <param name="entityType2ToCreate">The EntityType2 to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<EntityType2>> CreateResponseAsync(EntityType2 entityType2ToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<EntityType2>> CreateResponseAsync(EntityType2 entityType2ToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return await this.SendAsyncWithGraphResponse<EntityType2>(entityType2ToCreate, cancellationToken).ConfigureAwait(false);
         }
@@ -127,48 +107,12 @@ namespace Microsoft.Graph
         /// Updates the specified EntityType2 using PATCH.
         /// </summary>
         /// <param name="entityType2ToUpdate">The EntityType2 to update.</param>
-        /// <returns>The updated EntityType2.</returns>
-        public System.Threading.Tasks.Task<EntityType2> UpdateAsync(EntityType2 entityType2ToUpdate)
-        {
-            return this.UpdateAsync(entityType2ToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified EntityType2 using PATCH.
-        /// </summary>
-        /// <param name="entityType2ToUpdate">The EntityType2 to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated EntityType2.</returns>
-        public async System.Threading.Tasks.Task<EntityType2> UpdateAsync(EntityType2 entityType2ToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<EntityType2> UpdateAsync(EntityType2 entityType2ToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (entityType2ToUpdate.AdditionalData != null)
-			{
-				if (entityType2ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					entityType2ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, entityType2ToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (entityType2ToUpdate.AdditionalData != null)
-            {
-                if (entityType2ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    entityType2ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, entityType2ToUpdate.GetType().Name)
-                        });
-                }
-            }
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<EntityType2>(entityType2ToUpdate, cancellationToken).ConfigureAwait(false);
             return updatedEntity;
@@ -178,48 +122,12 @@ namespace Microsoft.Graph
         /// Updates the specified EntityType2 using PATCH and returns a <see cref="GraphResponse{EntityType2}"/> object.
         /// </summary>
         /// <param name="entityType2ToUpdate">The EntityType2 to update.</param>
-        /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<EntityType2>> UpdateResponseAsync(EntityType2 entityType2ToUpdate)
-        {
-            return this.UpdateResponseAsync(entityType2ToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified EntityType2 using PATCH and returns a <see cref="GraphResponse{EntityType2}"/> object.
-        /// </summary>
-        /// <param name="entityType2ToUpdate">The EntityType2 to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{EntityType2}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<EntityType2>> UpdateResponseAsync(EntityType2 entityType2ToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<EntityType2>> UpdateResponseAsync(EntityType2 entityType2ToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (entityType2ToUpdate.AdditionalData != null)
-			{
-				if (entityType2ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					entityType2ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, entityType2ToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (entityType2ToUpdate.AdditionalData != null)
-            {
-                if (entityType2ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    entityType2ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, entityType2ToUpdate.GetType().Name)
-                        });
-                }
-            }
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<EntityType2>(entityType2ToUpdate, cancellationToken).ConfigureAwait(false);
         }
@@ -227,18 +135,9 @@ namespace Microsoft.Graph
 		/// <summary>
         /// Deletes the specified EntityType2.
         /// </summary>
-        /// <returns>The task to await.</returns>
-        public System.Threading.Tasks.Task DeleteAsync()
-        {
-            return this.DeleteAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Deletes the specified EntityType2.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "DELETE";
             await this.SendAsync<EntityType2>(null, cancellationToken).ConfigureAwait(false);
@@ -247,18 +146,9 @@ namespace Microsoft.Graph
 		/// <summary>
         /// Deletes the specified EntityType2 and returns a <see cref="GraphResponse"/> object.
         /// </summary>
-        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        public System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync()
-        {
-            return this.DeleteResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Deletes the specified EntityType2 and returns a <see cref="GraphResponse"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "DELETE";
             return await this.SendAsyncWithGraphResponse(null, cancellationToken).ConfigureAwait(false);

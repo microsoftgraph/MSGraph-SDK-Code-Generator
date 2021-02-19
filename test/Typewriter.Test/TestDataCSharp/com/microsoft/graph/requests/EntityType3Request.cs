@@ -39,21 +39,11 @@ namespace Microsoft.Graph
         /// Creates the specified EntityType3 using POST.
         /// </summary>
         /// <param name="entityType3ToCreate">The EntityType3 to create.</param>
-        /// <returns>The created EntityType3.</returns>
-        public System.Threading.Tasks.Task<EntityType3> CreateAsync(EntityType3 entityType3ToCreate)
-        {
-            return this.CreateAsync(entityType3ToCreate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Creates the specified EntityType3 using POST.
-        /// </summary>
-        /// <param name="entityType3ToCreate">The EntityType3 to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created EntityType3.</returns>
-        public async System.Threading.Tasks.Task<EntityType3> CreateAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<EntityType3> CreateAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             var newEntity = await this.SendAsync<EntityType3>(entityType3ToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
@@ -64,21 +54,11 @@ namespace Microsoft.Graph
         /// Creates the specified EntityType3 using POST and returns a <see cref="GraphResponse{EntityType3}"/> object.
         /// </summary>
         /// <param name="entityType3ToCreate">The EntityType3 to create.</param>
-        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<EntityType3>> CreateResponseAsync(EntityType3 entityType3ToCreate)
-        {
-            return this.CreateResponseAsync(entityType3ToCreate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Creates the specified EntityType3 using POST and returns a <see cref="GraphResponse{EntityType3}"/> object.
-        /// </summary>
-        /// <param name="entityType3ToCreate">The EntityType3 to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> CreateResponseAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> CreateResponseAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return await this.SendAsyncWithGraphResponse<EntityType3>(entityType3ToCreate, cancellationToken).ConfigureAwait(false);
         }
@@ -86,18 +66,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Deletes the specified EntityType3.
         /// </summary>
-        /// <returns>The task to await.</returns>
-        public System.Threading.Tasks.Task DeleteAsync()
-        {
-            return this.DeleteAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Deletes the specified EntityType3.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "DELETE";
             await this.SendAsync<EntityType3>(null, cancellationToken).ConfigureAwait(false);
@@ -106,18 +77,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Deletes the specified EntityType3 and returns a <see cref="GraphResponse"/> object.
         /// </summary>
-        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        public System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync()
-        {
-            return this.DeleteResponseAsync(CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Deletes the specified EntityType3 and returns a <see cref="GraphResponse"/> object.
-        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "DELETE";
             return await this.SendAsyncWithGraphResponse(null, cancellationToken).ConfigureAwait(false);
@@ -169,48 +131,12 @@ namespace Microsoft.Graph
         /// Updates the specified EntityType3 using PATCH.
         /// </summary>
         /// <param name="entityType3ToUpdate">The EntityType3 to update.</param>
-        /// <returns>The updated EntityType3.</returns>
-        public System.Threading.Tasks.Task<EntityType3> UpdateAsync(EntityType3 entityType3ToUpdate)
-        {
-            return this.UpdateAsync(entityType3ToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified EntityType3 using PATCH.
-        /// </summary>
-        /// <param name="entityType3ToUpdate">The EntityType3 to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated EntityType3.</returns>
-        public async System.Threading.Tasks.Task<EntityType3> UpdateAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<EntityType3> UpdateAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (entityType3ToUpdate.AdditionalData != null)
-			{
-				if (entityType3ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					entityType3ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, entityType3ToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (entityType3ToUpdate.AdditionalData != null)
-            {
-                if (entityType3ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    entityType3ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, entityType3ToUpdate.GetType().Name)
-                        });
-                }
-            }
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<EntityType3>(entityType3ToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
@@ -221,48 +147,12 @@ namespace Microsoft.Graph
         /// Updates the specified EntityType3 using PATCH and returns a <see cref="GraphResponse{EntityType3}"/> object.
         /// </summary>
         /// <param name="entityType3ToUpdate">The EntityType3 to update.</param>
-        /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<EntityType3>> UpdateResponseAsync(EntityType3 entityType3ToUpdate)
-        {
-            return this.UpdateResponseAsync(entityType3ToUpdate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Updates the specified EntityType3 using PATCH and returns a <see cref="GraphResponse{EntityType3}"/> object.
-        /// </summary>
-        /// <param name="entityType3ToUpdate">The EntityType3 to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> UpdateResponseAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> UpdateResponseAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-			if (entityType3ToUpdate.AdditionalData != null)
-			{
-				if (entityType3ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					entityType3ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, entityType3ToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (entityType3ToUpdate.AdditionalData != null)
-            {
-                if (entityType3ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    entityType3ToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, entityType3ToUpdate.GetType().Name)
-                        });
-                }
-            }
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<EntityType3>(entityType3ToUpdate, cancellationToken).ConfigureAwait(false);
         }

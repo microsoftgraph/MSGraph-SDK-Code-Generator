@@ -51,7 +51,7 @@ public string GetCollectionWithReferencesRequestConstructor(OdcmProperty odcmPro
 
 public void AppendMethodHeaderToPostAsyncMethod(string propertyType, string sanitizedPropertyName, StringBuilder stringBuilder, bool includeSendParameters, bool isGraphResponseMethod)
 {
-    stringBuilder.Append("        /// <summary>");
+    stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
     {
@@ -89,58 +89,25 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace, s
         var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
         var stringBuilder = new StringBuilder();
-
-        stringBuilder.Append(Environment.NewLine);
-        this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder, false, isGraphResponseMethod);
-        stringBuilder.Append(Environment.NewLine);
-        if (isGraphResponseMethod)
-        {
-            stringBuilder.AppendFormat("        /// <returns>The <see cref=\"GraphResponse{{{0}}}\"/> object of the request.</returns>", propertyType);
-            stringBuilder.Append(Environment.NewLine);
-            stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> AddResponseAsync({0} {1})", propertyType, sanitizedPropertyName);
-        }
-        else
-        {
-            stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
-            stringBuilder.Append(Environment.NewLine);
-            stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> AddAsync({0} {1})", propertyType, sanitizedPropertyName);
-        }
-        stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append("        {");
-        stringBuilder.Append(Environment.NewLine);
-        if (isGraphResponseMethod)
-        {
-            stringBuilder.AppendFormat("            return this.AddResponseAsync({0}, CancellationToken.None);", sanitizedPropertyName);
-        }
-        else
-        {
-            stringBuilder.AppendFormat("            return this.AddAsync({0}, CancellationToken.None);", sanitizedPropertyName);
-        }
-        stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append("        }");
-
-        stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append(Environment.NewLine);
-
         this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder, true, isGraphResponseMethod);
         stringBuilder.Append(Environment.NewLine);
         if (isGraphResponseMethod)
         {
             stringBuilder.AppendFormat("        /// <returns>The <see cref=\"GraphResponse{{{0}}}\"/> object of the request.</returns>", propertyType);
             stringBuilder.Append(Environment.NewLine);
-            stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> AddResponseAsync({0} {1}, CancellationToken cancellationToken)", propertyType, sanitizedPropertyName);
+            stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken))", propertyType, sanitizedPropertyName);
         }
         else
         {
             stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
             stringBuilder.Append(Environment.NewLine);
-            stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> AddAsync({0} {1}, CancellationToken cancellationToken)", propertyType, sanitizedPropertyName);
+            stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> AddAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken))", propertyType, sanitizedPropertyName);
         }
 
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        {");
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
+        stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("            this.Method = \"POST\";");
 
@@ -196,57 +163,24 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
 	    implicitNavigationProperty = "/" + odcmProperty.GetImplicitPropertyName((OdcmSingleton)serviceNavigationProperty);
 
     var stringBuilder = new StringBuilder();
-
-    stringBuilder.Append(Environment.NewLine);
-    this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder, false, isGraphResponseMethod);
-    stringBuilder.Append(Environment.NewLine);
-    if (isGraphResponseMethod)
-    {
-        stringBuilder.AppendFormat("        /// <returns>The task of <see cref=\"GraphResponse\"/> to await.</returns>", propertyType);
-        stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse> AddResponseAsync({0} {1})", propertyType, sanitizedPropertyName);
-    }
-    else
-    {
-        stringBuilder.AppendFormat("        /// <returns>The task to await.</returns>", propertyType);
-        stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task AddAsync({0} {1})", propertyType, sanitizedPropertyName);
-    }
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        {");
-    stringBuilder.Append(Environment.NewLine);
-    if (isGraphResponseMethod)
-    {
-        stringBuilder.AppendFormat("            return this.AddResponseAsync({0}, CancellationToken.None);", sanitizedPropertyName);
-    }
-    else
-    {
-        stringBuilder.AppendFormat("            return this.AddAsync({0}, CancellationToken.None);", sanitizedPropertyName);
-    }
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("        }");
-
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(Environment.NewLine);
-
     this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
     {
         stringBuilder.AppendFormat("        /// <returns>The task of <see cref=\"GraphResponse\"/> to await.</returns>", propertyType);
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse> AddResponseAsync({0} {1}, CancellationToken cancellationToken)", propertyType, sanitizedPropertyName);
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken))", propertyType, sanitizedPropertyName);
     }
     else
     {
         stringBuilder.AppendFormat("        /// <returns>The task to await.</returns>", propertyType);
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task AddAsync({0} {1}, CancellationToken cancellationToken)", propertyType, sanitizedPropertyName);
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task AddAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken))", propertyType, sanitizedPropertyName);
     }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
+    stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            this.Method = \"POST\";");
     stringBuilder.Append(Environment.NewLine);

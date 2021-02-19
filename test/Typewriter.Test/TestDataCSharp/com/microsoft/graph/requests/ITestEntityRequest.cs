@@ -24,23 +24,9 @@ namespace Microsoft.Graph
         /// Creates the specified TestEntity using POST.
         /// </summary>
         /// <param name="testEntityToCreate">The TestEntity to create.</param>
-        /// <returns>The created TestEntity.</returns>
-        System.Threading.Tasks.Task<TestEntity> CreateAsync(TestEntity testEntityToCreate);
-
-        /// <summary>
-        /// Creates the specified TestEntity using POST.
-        /// </summary>
-        /// <param name="testEntityToCreate">The TestEntity to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created TestEntity.</returns>
-        System.Threading.Tasks.Task<TestEntity> CreateAsync(TestEntity testEntityToCreate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Creates the specified TestEntity using POST and returns a <see cref="GraphResponse{TestEntity}"/> object.
-        /// </summary>
-        /// <param name="testEntityToCreate">The TestEntity to create.</param>
-        /// <returns>The <see cref="GraphResponse{TestEntity}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<TestEntity>> CreateResponseAsync(TestEntity testEntityToCreate);
+        System.Threading.Tasks.Task<TestEntity> CreateAsync(TestEntity testEntityToCreate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Creates the specified TestEntity using POST and returns a <see cref="GraphResponse{TestEntity}"/> object.
@@ -48,33 +34,21 @@ namespace Microsoft.Graph
         /// <param name="testEntityToCreate">The TestEntity to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{TestEntity}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<TestEntity>> CreateResponseAsync(TestEntity testEntityToCreate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Deletes the specified TestEntity.
-        /// </summary>
-        /// <returns>The task to await.</returns>
-        System.Threading.Tasks.Task DeleteAsync();
+        System.Threading.Tasks.Task<GraphResponse<TestEntity>> CreateResponseAsync(TestEntity testEntityToCreate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Deletes the specified TestEntity.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Deletes the specified TestEntity and returns a <see cref="GraphResponse"/> object.
-        /// </summary>
-        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync();
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Deletes the specified TestEntity and returns a <see cref="GraphResponse"/> object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the specified TestEntity.
@@ -106,24 +80,10 @@ namespace Microsoft.Graph
         /// Updates the specified TestEntity using PATCH.
         /// </summary>
         /// <param name="testEntityToUpdate">The TestEntity to update.</param>
-        /// <returns>The updated TestEntity.</returns>
-        System.Threading.Tasks.Task<TestEntity> UpdateAsync(TestEntity testEntityToUpdate);
-
-        /// <summary>
-        /// Updates the specified TestEntity using PATCH.
-        /// </summary>
-        /// <param name="testEntityToUpdate">The TestEntity to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated TestEntity.</returns>
-        System.Threading.Tasks.Task<TestEntity> UpdateAsync(TestEntity testEntityToUpdate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Updates the specified TestEntity using PATCH and returns a <see cref="GraphResponse{TestEntity}"/> object.
-        /// </summary>
-        /// <param name="testEntityToUpdate">The TestEntity to update.</param>
-        /// <returns>The <see cref="GraphResponse{TestEntity}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<TestEntity>> UpdateResponseAsync(TestEntity testEntityToUpdate);
+        System.Threading.Tasks.Task<TestEntity> UpdateAsync(TestEntity testEntityToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified TestEntity using PATCH and returns a <see cref="GraphResponse{TestEntity}"/> object.
@@ -132,7 +92,7 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{TestEntity}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<TestEntity>> UpdateResponseAsync(TestEntity testEntityToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GraphResponse<TestEntity>> UpdateResponseAsync(TestEntity testEntityToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Adds the specified expand value to the request.
