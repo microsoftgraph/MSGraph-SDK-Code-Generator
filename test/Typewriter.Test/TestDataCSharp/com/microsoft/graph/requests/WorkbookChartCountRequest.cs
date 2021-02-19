@@ -16,15 +16,14 @@ namespace Microsoft.Graph
     using System.Threading;
 
     /// <summary>
-    /// The type EntityType2ActOnEntityType2Request.
+    /// The type WorkbookChartCountRequest.
     /// </summary>
-    [Obsolete("entityType3 is deprecated. Please use singletonEntity1.")]
-    public partial class EntityType2ActOnEntityType2Request : BaseRequest, IEntityType2ActOnEntityType2Request
+    public partial class WorkbookChartCountRequest : BaseRequest, IWorkbookChartCountRequest
     {
         /// <summary>
-        /// Constructs a new EntityType2ActOnEntityType2Request.
+        /// Constructs a new WorkbookChartCountRequest.
         /// </summary>
-        public EntityType2ActOnEntityType2Request(
+        public WorkbookChartCountRequest(
             string requestUrl,
             IBaseClient client,
             IEnumerable<Option> options)
@@ -37,11 +36,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<EntityType3> GetAsync(
+        public async System.Threading.Tasks.Task<Int32?> GetAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
-            return this.SendAsync<EntityType3>(null, cancellationToken);
+            var response = await this.SendAsync<ODataMethodIntResponse>(null, cancellationToken);
+            return response.Value;
         }
 
         /// <summary>
@@ -49,10 +49,10 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async System.Threading.Tasks.Task<GraphResponse<ODataMethodIntResponse>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = "GET";
-            return await this.SendAsyncWithGraphResponse<EntityType3>(null, cancellationToken).ConfigureAwait(false);
+            return await this.SendAsyncWithGraphResponse<ODataMethodIntResponse>(null, cancellationToken).ConfigureAwait(false);
         }
 
 
@@ -61,7 +61,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="value">The expand value.</param>
         /// <returns>The request object to send.</returns>
-        public IEntityType2ActOnEntityType2Request Expand(string value)
+        public IWorkbookChartCountRequest Expand(string value)
         {
             this.QueryOptions.Add(new QueryOption("$expand", value));
             return this;
@@ -72,7 +72,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
-        public IEntityType2ActOnEntityType2Request Select(string value)
+        public IWorkbookChartCountRequest Select(string value)
         {
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
