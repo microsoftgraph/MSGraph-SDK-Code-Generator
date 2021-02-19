@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         /// <returns>The created Group.</returns>
         public async System.Threading.Tasks.Task<Group> CreateAsync(Group groupToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             var newEntity = await this.SendAsync<Group>(groupToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
@@ -58,7 +58,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{Group}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<Group>> CreateResponseAsync(Group groupToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return await this.SendAsyncWithGraphResponse<Group>(groupToCreate, cancellationToken).ConfigureAwait(false);
         }
@@ -136,7 +136,7 @@ namespace Microsoft.Graph
         /// <returns>The updated Group.</returns>
         public async System.Threading.Tasks.Task<Group> UpdateAsync(Group groupToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<Group>(groupToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
@@ -152,7 +152,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{Group}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<Group>> UpdateResponseAsync(Group groupToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<Group>(groupToUpdate, cancellationToken).ConfigureAwait(false);
         }

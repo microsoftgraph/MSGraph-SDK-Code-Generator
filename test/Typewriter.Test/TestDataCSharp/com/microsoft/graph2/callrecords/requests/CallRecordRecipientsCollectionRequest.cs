@@ -41,7 +41,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The created Microsoft.Graph.EntityType2.</returns>
         public System.Threading.Tasks.Task<Microsoft.Graph.EntityType2> AddAsync(Microsoft.Graph.EntityType2 entityType2, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return this.SendAsync<Microsoft.Graph.EntityType2>(entityType2, cancellationToken);
         }
@@ -54,7 +54,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The <see cref="GraphResponse{Microsoft.Graph.EntityType2}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<Microsoft.Graph.EntityType2>> AddResponseAsync(Microsoft.Graph.EntityType2 entityType2, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return await this.SendAsyncWithGraphResponse<Microsoft.Graph.EntityType2>(entityType2, cancellationToken).ConfigureAwait(false);
         }

@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         /// <returns>The created TimeOff.</returns>
         public async System.Threading.Tasks.Task<TimeOff> CreateAsync(TimeOff timeOffToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             var newEntity = await this.SendAsync<TimeOff>(timeOffToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
@@ -58,7 +58,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{TimeOff}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<TimeOff>> CreateResponseAsync(TimeOff timeOffToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return await this.SendAsyncWithGraphResponse<TimeOff>(timeOffToCreate, cancellationToken).ConfigureAwait(false);
         }
@@ -136,7 +136,7 @@ namespace Microsoft.Graph
         /// <returns>The updated TimeOff.</returns>
         public async System.Threading.Tasks.Task<TimeOff> UpdateAsync(TimeOff timeOffToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<TimeOff>(timeOffToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
@@ -152,7 +152,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{TimeOff}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<TimeOff>> UpdateResponseAsync(TimeOff timeOffToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<TimeOff>(timeOffToUpdate, cancellationToken).ConfigureAwait(false);
         }

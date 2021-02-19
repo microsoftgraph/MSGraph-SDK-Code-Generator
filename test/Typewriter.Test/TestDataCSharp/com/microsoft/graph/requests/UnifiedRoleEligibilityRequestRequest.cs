@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         /// <returns>The created UnifiedRoleEligibilityRequestObject.</returns>
         public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> CreateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             var newEntity = await this.SendAsync<UnifiedRoleEligibilityRequestObject>(unifiedRoleEligibilityRequestObjectToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
@@ -58,7 +58,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> CreateResponseAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return await this.SendAsyncWithGraphResponse<UnifiedRoleEligibilityRequestObject>(unifiedRoleEligibilityRequestObjectToCreate, cancellationToken).ConfigureAwait(false);
         }
@@ -136,7 +136,7 @@ namespace Microsoft.Graph
         /// <returns>The updated UnifiedRoleEligibilityRequestObject.</returns>
         public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> UpdateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<UnifiedRoleEligibilityRequestObject>(unifiedRoleEligibilityRequestObjectToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
@@ -152,7 +152,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> UpdateResponseAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<UnifiedRoleEligibilityRequestObject>(unifiedRoleEligibilityRequestObjectToUpdate, cancellationToken).ConfigureAwait(false);
         }

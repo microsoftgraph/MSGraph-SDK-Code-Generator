@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         /// <returns>The created SingletonEntity2.</returns>
         public async System.Threading.Tasks.Task<SingletonEntity2> CreateAsync(SingletonEntity2 singletonEntity2ToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             var newEntity = await this.SendAsync<SingletonEntity2>(singletonEntity2ToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
@@ -58,7 +58,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{SingletonEntity2}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<SingletonEntity2>> CreateResponseAsync(SingletonEntity2 singletonEntity2ToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return await this.SendAsyncWithGraphResponse<SingletonEntity2>(singletonEntity2ToCreate, cancellationToken).ConfigureAwait(false);
         }
@@ -136,7 +136,7 @@ namespace Microsoft.Graph
         /// <returns>The updated SingletonEntity2.</returns>
         public async System.Threading.Tasks.Task<SingletonEntity2> UpdateAsync(SingletonEntity2 singletonEntity2ToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<SingletonEntity2>(singletonEntity2ToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
@@ -152,7 +152,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{SingletonEntity2}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<SingletonEntity2>> UpdateResponseAsync(SingletonEntity2 singletonEntity2ToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<SingletonEntity2>(singletonEntity2ToUpdate, cancellationToken).ConfigureAwait(false);
         }

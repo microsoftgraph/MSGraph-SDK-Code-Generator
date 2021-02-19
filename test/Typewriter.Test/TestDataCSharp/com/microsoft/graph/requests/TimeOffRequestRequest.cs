@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         /// <returns>The created TimeOffRequestObject.</returns>
         public async System.Threading.Tasks.Task<TimeOffRequestObject> CreateAsync(TimeOffRequestObject timeOffRequestObjectToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             var newEntity = await this.SendAsync<TimeOffRequestObject>(timeOffRequestObjectToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
@@ -58,7 +58,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{TimeOffRequestObject}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<TimeOffRequestObject>> CreateResponseAsync(TimeOffRequestObject timeOffRequestObjectToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return await this.SendAsyncWithGraphResponse<TimeOffRequestObject>(timeOffRequestObjectToCreate, cancellationToken).ConfigureAwait(false);
         }
@@ -136,7 +136,7 @@ namespace Microsoft.Graph
         /// <returns>The updated TimeOffRequestObject.</returns>
         public async System.Threading.Tasks.Task<TimeOffRequestObject> UpdateAsync(TimeOffRequestObject timeOffRequestObjectToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<TimeOffRequestObject>(timeOffRequestObjectToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
@@ -152,7 +152,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{TimeOffRequestObject}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<TimeOffRequestObject>> UpdateResponseAsync(TimeOffRequestObject timeOffRequestObjectToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<TimeOffRequestObject>(timeOffRequestObjectToUpdate, cancellationToken).ConfigureAwait(false);
         }

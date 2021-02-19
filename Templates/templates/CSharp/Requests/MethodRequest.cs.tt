@@ -107,6 +107,8 @@ var graphResponseReturnType = hasGraphResponseType
     ? "System.Threading.Tasks.Task<GraphResponse<" + sendAsyncReturnTypeForGraphResponse + ">>"
     : "System.Threading.Tasks.Task<GraphResponse>";
 
+var templateWriterHost = (CustomT4Host)Host;
+var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 #>
 
 namespace <#=@namespace#>
@@ -138,7 +140,7 @@ namespace <#=@namespace#>
     if (includeRequestBody)
     {
 #>
-            this.ContentType = "application/json";
+            this.ContentType = <#=templateWriter.JsonContentType#>;
             this.RequestBody = new <#=requestType#>Body();
 <#
     }

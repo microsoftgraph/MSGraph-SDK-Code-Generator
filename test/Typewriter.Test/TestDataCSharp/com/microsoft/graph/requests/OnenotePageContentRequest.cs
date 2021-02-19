@@ -67,7 +67,7 @@ namespace Microsoft.Graph
         /// <returns>The object returned by the PUT call.</returns>
         public System.Threading.Tasks.Task<T> PutAsync<T>(Stream content, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : OnenotePage
         {
-            this.ContentType = "application/octet-stream";
+            this.ContentType = Constants.ContentTypes.StreamContentType;
             this.Method = "PUT";
             return this.SendAsync<T>(content, cancellationToken, completionOption);
         }
@@ -82,7 +82,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse"/> object returned by the PUT call.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<T>> PutResponseAsync<T>(Stream content, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : OnenotePage
         {
-            this.ContentType = "application/octet-stream";
+            this.ContentType = Constants.ContentTypes.StreamContentType;
             this.Method = "PUT";
             return await this.SendAsyncWithGraphResponse<T>(content, cancellationToken, completionOption).ConfigureAwait(false);
         }

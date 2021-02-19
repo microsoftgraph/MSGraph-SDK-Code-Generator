@@ -84,7 +84,7 @@ namespace Microsoft.Graph
         /// <returns>The created EntityType3.</returns>
         public async System.Threading.Tasks.Task<EntityType3> CreateAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             var newEntity = await this.SendAsync<EntityType3>(entityType3ToCreate, cancellationToken).ConfigureAwait(false);
             return newEntity;
@@ -98,7 +98,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> CreateResponseAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return await this.SendAsyncWithGraphResponse<EntityType3>(entityType3ToCreate, cancellationToken).ConfigureAwait(false);
         }
@@ -112,7 +112,7 @@ namespace Microsoft.Graph
         /// <returns>The updated EntityType3.</returns>
         public async System.Threading.Tasks.Task<EntityType3> UpdateAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<EntityType3>(entityType3ToUpdate, cancellationToken).ConfigureAwait(false);
             return updatedEntity;
@@ -127,7 +127,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<EntityType3>> UpdateResponseAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "PATCH";
             return await this.SendAsyncWithGraphResponse<EntityType3>(entityType3ToUpdate, cancellationToken).ConfigureAwait(false);
         }

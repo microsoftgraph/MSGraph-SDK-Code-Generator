@@ -29,7 +29,7 @@ namespace Microsoft.Graph2.CallRecords
             IEnumerable<Microsoft.Graph.Option> options)
             : base(requestUrl, client, options)
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.RequestBody = new SegmentForwardRequestBody();
         }
 

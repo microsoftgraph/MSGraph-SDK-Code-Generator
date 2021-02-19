@@ -66,7 +66,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The updated stream.</returns>
         public System.Threading.Tasks.Task<Stream> PutAsync(Stream content, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            this.ContentType = "application/octet-stream";
+            this.ContentType = Constants.ContentTypes.StreamContentType;
             this.Method = "PUT";
             return this.SendStreamRequestAsync(content, cancellationToken, completionOption);
         }
@@ -80,7 +80,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The <see cref="GraphResponse"/> object returned by the PUT call.</returns>
         public async System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(Stream content, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            this.ContentType = "application/octet-stream";
+            this.ContentType = Constants.ContentTypes.StreamContentType;
             this.Method = "PUT";
             return await this.SendAsyncWithGraphResponse(content, cancellationToken, completionOption);
         }

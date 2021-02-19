@@ -157,6 +157,8 @@ public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass, bool isGraph
 {
     var entityName = this.GetEntityNameString(odcmClass);
 
+    var templateWriterHost = (CustomT4Host)Host;
+    var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
     var stringBuilder = new StringBuilder();
     this.AppendPutRefenceAsyncHeader(entityName, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
@@ -196,7 +198,7 @@ public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass, bool isGraph
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(@"            this.Method = ""PUT"";");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"            this.ContentType = ""application/json"";");
+    stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
     stringBuilder.Append(Environment.NewLine);
 
     if (isGraphResponseMethod)
@@ -278,7 +280,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
+    stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            this.Method = \"POST\";");
     stringBuilder.Append(Environment.NewLine);
@@ -502,7 +504,7 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
 	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
+    stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            this.Method = \"PATCH\";");
     stringBuilder.Append(Environment.NewLine);

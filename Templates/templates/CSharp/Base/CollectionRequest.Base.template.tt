@@ -107,7 +107,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace, s
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        {");
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
+        stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("            this.Method = \"POST\";");
 
@@ -180,7 +180,7 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            this.ContentType = \"{0}\";", templateWriter.jsonContentType);
+    stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            this.Method = \"POST\";");
     stringBuilder.Append(Environment.NewLine);

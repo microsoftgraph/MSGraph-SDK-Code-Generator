@@ -41,7 +41,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The created Session.</returns>
         public System.Threading.Tasks.Task<Session> AddAsync(Session session, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return this.SendAsync<Session>(session, cancellationToken);
         }
@@ -54,7 +54,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The <see cref="GraphResponse{Session}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<Session>> AddResponseAsync(Session session, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return await this.SendAsyncWithGraphResponse<Session>(session, cancellationToken).ConfigureAwait(false);
         }

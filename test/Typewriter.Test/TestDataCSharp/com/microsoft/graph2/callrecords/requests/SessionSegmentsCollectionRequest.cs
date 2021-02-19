@@ -41,7 +41,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The created Segment.</returns>
         public System.Threading.Tasks.Task<Segment> AddAsync(Segment segment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return this.SendAsync<Segment>(segment, cancellationToken);
         }
@@ -54,7 +54,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The <see cref="GraphResponse{Segment}"/> object of the request.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<Segment>> AddResponseAsync(Segment segment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ContentType = "application/json";
+            this.ContentType = Constants.ContentTypes.JsonContentType;
             this.Method = "POST";
             return await this.SendAsyncWithGraphResponse<Segment>(segment, cancellationToken).ConfigureAwait(false);
         }

@@ -37,6 +37,9 @@ if (propClass.EndsWith("Request"))
 {
     propClass = String.Concat(propClass, "Object");
 }
+
+var templateWriterHost = (CustomT4Host)Host;
+var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 #>
 
 namespace <#=@namespace#>
@@ -103,7 +106,7 @@ namespace <#=@namespace#>
         /// <returns>The object returned by the PUT call.</returns>
         public System.Threading.Tasks.Task<T> PutAsync<T>(Stream <#=propName#>, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : <#=propClass#>
         {
-            this.ContentType = "application/octet-stream";
+            this.ContentType = <#=templateWriter.StreamContentType#>;
             this.Method = "PUT";
             return this.SendAsync<T>(<#=propName#>, cancellationToken, completionOption);
         }
@@ -118,7 +121,7 @@ namespace <#=@namespace#>
         /// <returns>The <see cref="GraphResponse"/> object returned by the PUT call.</returns>
         public async System.Threading.Tasks.Task<GraphResponse<T>> PutResponseAsync<T>(Stream <#=propName#>, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : <#=propClass#>
         {
-            this.ContentType = "application/octet-stream";
+            this.ContentType = <#=templateWriter.StreamContentType#>;
             this.Method = "PUT";
             return await this.SendAsyncWithGraphResponse<T>(<#=propName#>, cancellationToken, completionOption).ConfigureAwait(false);
         }
@@ -137,7 +140,7 @@ namespace <#=@namespace#>
         /// <returns>The updated stream.</returns>
         public System.Threading.Tasks.Task<Stream> PutAsync(Stream <#=propName#>, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            this.ContentType = "application/octet-stream";
+            this.ContentType = <#=templateWriter.StreamContentType#>;
             this.Method = "PUT";
             return this.SendStreamRequestAsync(<#=propName#>, cancellationToken, completionOption);
         }
@@ -151,7 +154,7 @@ namespace <#=@namespace#>
         /// <returns>The <see cref="GraphResponse"/> object returned by the PUT call.</returns>
         public async System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(Stream <#=propName#>, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            this.ContentType = "application/octet-stream";
+            this.ContentType = <#=templateWriter.StreamContentType#>;
             this.Method = "PUT";
             return await this.SendAsyncWithGraphResponse(<#=propName#>, cancellationToken, completionOption);
         }
