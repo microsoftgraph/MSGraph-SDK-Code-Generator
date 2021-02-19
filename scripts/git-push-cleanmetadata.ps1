@@ -1,4 +1,4 @@
-if (!$env:PublishChanges)
+if ($env:PublishChanges -eq $False)
 {
     Write-Host "Not publishing changes per the run parameter!" -ForegroundColor Green
     return;

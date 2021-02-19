@@ -1,4 +1,4 @@
-if (!$env:PublishChanges)
+if ($env:PublishChanges -eq $False)
 {
     Write-Host "Not publishing changes as a branch per the run parameter!" -ForegroundColor Green
     return;
@@ -6,13 +6,13 @@ if (!$env:PublishChanges)
 
 Write-Host "About to add files....." -ForegroundColor Green
 
-if ($env:OverrideSkipCI)
+if ($env:OverrideSkipCI -eq $True)
 {
     Write-Host "Overriding [skip ci] flag.." -ForegroundColor Yellow
 }
 
 git add . | Write-Host
-if (!$env:OverrideSkipCI -and ($env:BUILD_REASON -eq 'Manual')) # Skip CI if manually running this pipeline.
+if (($env:OverrideSkipCI -eq $False) -and ($env:BUILD_REASON -eq 'Manual')) # Skip CI if manually running this pipeline.
 {
     git commit -m "Update generated files with build $env:BUILD_BUILDID [skip ci]" | Write-Host
 }

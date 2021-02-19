@@ -1,5 +1,29 @@
+parameters:
+  - name: cleanMetadataFolder
+    type: string
+
 steps:
 - template: set-user-config.yml
 - template: use-dotnet-sdk.yml
-- template: checkout-metadata.yml
 - template: download-typewriter.yml
+
+# checkout metadata repo if capture and clean step is skipped
+- checkout: msgraph-metadata
+  displayName: checkout metadata
+  fetchDepth: 1
+  persistCredentials: true
+  submodules: recursive
+  condition: eq(variables.skipMetadataCaptureAndClean, true)
+
+# if capture and clean step is not skipped
+# then download the artifact from capture and clean steps
+# follow the same folder structure as msgraph-metadata repo
+# so that metadata reference path is always the same
+- task: DownloadBuildArtifacts@0
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: ${{ parameters.cleanMetadataFolder }}
+    downloadPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+  condition: eq(variables.skipMetadataCaptureAndClean, false)
+  displayName: Downloading metadata from artifacts
