@@ -85,24 +85,28 @@ public string GetDeleteAsyncMethod(string deleteTargetString, string deleteTarge
 		deleteTargetType = String.Concat(deleteTargetType, "Object");
 	}
 
+    var templateWriterHost = (CustomT4Host)Host;
+    var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
     this.AppendDeleteAsyncHeader(deleteTargetString, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
 
     if (isGraphResponseMethod)
     {
-        stringBuilder.Append("        public async System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default(CancellationToken))");
-        stringBuilder.Append(@"
-        {
-            this.Method = ""DELETE"";");
+        stringBuilder.Append("        public System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default(CancellationToken))");
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append("            return await this.SendAsyncWithGraphResponse(null, cancellationToken).ConfigureAwait(false);");
+        stringBuilder.Append("        {");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            this.Method = {0};", templateWriter.DeleteMethod);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("            return this.SendAsyncWithGraphResponse(null, cancellationToken);");
     }
     else
     {
         stringBuilder.Append("        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))");
-        stringBuilder.Append(@"
-        {
-            this.Method = ""DELETE"";");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        {");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            this.Method = {0};", templateWriter.DeleteMethod);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("            await this.SendAsync<{0}>(null, cancellationToken).ConfigureAwait(false);", deleteTargetType);
     }
@@ -178,7 +182,9 @@ public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass, bool isGraph
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(@"            var objectUri = string.Format(@""{0}/users/{1}"", baseUrl, id);");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"            var stream = new System.IO.MemoryStream();");
+    stringBuilder.Append(@"            var payload = string.Empty;");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(@"            using (var stream = new System.IO.MemoryStream())");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(@"            using (var writer = new System.Text.Json.Utf8JsonWriter(stream))");
     stringBuilder.Append(Environment.NewLine);
@@ -192,11 +198,11 @@ public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass, bool isGraph
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(@"                await writer.FlushAsync();");
     stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(@"                payload = System.Text.Encoding.UTF8.GetString(stream.ToArray());");
+    stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(@"            }");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"            var payload = System.Text.Encoding.UTF8.GetString(stream.ToArray());");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"            this.Method = ""PUT"";");
+    stringBuilder.AppendFormat("            this.Method = {0};", templateWriter.PutMethod);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
     stringBuilder.Append(Environment.NewLine);
@@ -270,7 +276,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
     {
-        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> CreateResponseAsync({0} {1}ToCreate, CancellationToken cancellationToken = default(CancellationToken))", entityName, lowerCaseEntityName);
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> CreateResponseAsync({0} {1}ToCreate, CancellationToken cancellationToken = default(CancellationToken))", entityName, lowerCaseEntityName);
     }
     else
     {
@@ -282,11 +288,11 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("            this.Method = \"POST\";");
+    stringBuilder.AppendFormat("            this.Method = {0};",templateWriter.PostMethod);
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
     {
-        stringBuilder.AppendFormat("            return await this.SendAsyncWithGraphResponse<{0}>({1}ToCreate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
+        stringBuilder.AppendFormat("            return this.SendAsyncWithGraphResponse<{0}>({1}ToCreate, cancellationToken);", entityName, lowerCaseEntityName);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        }");
     }
@@ -360,26 +366,30 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool initializeCollec
 		entityName = String.Concat(entityName, "Object");
 	}
 
+    var templateWriterHost = (CustomT4Host)Host;
+    var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
     this.AppendGetAsyncHeader(entityName, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
 
     if (isGraphResponseMethod)
     {
-        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))", entityName);
-        stringBuilder.Append(@"
-        {
-            this.Method = ""GET"";");
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))", entityName);
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("            return await this.SendAsyncWithGraphResponse<{0}>(null, cancellationToken).ConfigureAwait(false);", entityName);
+        stringBuilder.Append("        {");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            this.Method = {0};", templateWriter.GetMethod);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            return this.SendAsyncWithGraphResponse<{0}>(null, cancellationToken);", entityName);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        }");
     }
     else
     {
         stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> GetAsync(CancellationToken cancellationToken = default(CancellationToken))", entityName);
-        stringBuilder.Append(@"
-        {
-            this.Method = ""GET"";");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        {");
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            this.Method = {0};", templateWriter.GetMethod);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("            var retrievedEntity = await this.SendAsync<{0}>(null, cancellationToken).ConfigureAwait(false);", entityName);
 
@@ -469,7 +479,7 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
     {
-        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> UpdateResponseAsync({0} {1}ToUpdate, CancellationToken cancellationToken = default(CancellationToken))", entityName, lowerCaseEntityName);
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> UpdateResponseAsync({0} {1}ToUpdate, CancellationToken cancellationToken = default(CancellationToken))", entityName, lowerCaseEntityName);
     }
     else
     {
@@ -480,11 +490,11 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
 	stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("            this.Method = \"PATCH\";");
+    stringBuilder.AppendFormat("            this.Method = {0};",templateWriter.PatchMethod);
     stringBuilder.Append(Environment.NewLine);
     if(isGraphResponseMethod)
     {
-        stringBuilder.AppendFormat("            return await this.SendAsyncWithGraphResponse<{0}>({1}ToUpdate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
+        stringBuilder.AppendFormat("            return this.SendAsyncWithGraphResponse<{0}>({1}ToUpdate, cancellationToken);", entityName, lowerCaseEntityName);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        }");
     }

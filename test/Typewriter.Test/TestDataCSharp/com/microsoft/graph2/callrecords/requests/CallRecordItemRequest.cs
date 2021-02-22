@@ -39,7 +39,7 @@ namespace Microsoft.Graph2.CallRecords
         public System.Threading.Tasks.Task<CallRecord> GetAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "GET";
+            this.Method = Constants.HttpMethods.Get;
             return this.SendAsync<CallRecord>(null, cancellationToken);
         }
 
@@ -48,10 +48,10 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<CallRecord>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<GraphResponse<CallRecord>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "GET";
-            return await this.SendAsyncWithGraphResponse<CallRecord>(null, cancellationToken).ConfigureAwait(false);
+            this.Method = Constants.HttpMethods.Get;
+            return this.SendAsyncWithGraphResponse<CallRecord>(null, cancellationToken);
         }
 
 
@@ -64,7 +64,7 @@ namespace Microsoft.Graph2.CallRecords
         public System.Threading.Tasks.Task<CallRecord> PatchAsync(CallRecord callrecord, 
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "PATCH";
+            this.Method = Constants.HttpMethods.Patch;
             return this.SendAsync<CallRecord>(callrecord, cancellationToken);
         }
 
@@ -74,10 +74,10 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="callrecord">The CallRecord object set with the properties to update.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<CallRecord>> PatchResponseAsync(CallRecord callrecord, CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<GraphResponse<CallRecord>> PatchResponseAsync(CallRecord callrecord, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "PATCH";
-            return await this.SendAsyncWithGraphResponse<CallRecord>(callrecord, cancellationToken).ConfigureAwait(false);
+            this.Method = Constants.HttpMethods.Patch;
+            return this.SendAsyncWithGraphResponse<CallRecord>(callrecord, cancellationToken);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Microsoft.Graph2.CallRecords
         public System.Threading.Tasks.Task<CallRecord> PutAsync(CallRecord callrecord, 
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "PUT";
+            this.Method = Constants.HttpMethods.Put;
             return this.SendAsync<CallRecord>(callrecord, cancellationToken);
         }
 
@@ -99,10 +99,10 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="callrecord">The CallRecord object set with the properties to update.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<CallRecord>> PutResponseAsync(CallRecord callrecord, CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<GraphResponse<CallRecord>> PutResponseAsync(CallRecord callrecord, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "PUT";
-            return await this.SendAsyncWithGraphResponse<CallRecord>(callrecord, cancellationToken).ConfigureAwait(false);
+            this.Method = Constants.HttpMethods.Put;
+            return this.SendAsyncWithGraphResponse<CallRecord>(callrecord, cancellationToken);
         }
 
         /// <summary>

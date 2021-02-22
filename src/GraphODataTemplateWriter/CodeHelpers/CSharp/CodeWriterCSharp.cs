@@ -27,5 +27,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         public string JsonContentType = "Constants.ContentTypes.JsonContentType";
 
         public string StreamContentType = "Constants.ContentTypes.StreamContentType";
+
+        public string GetMethod = "Constants.HttpMethods.Get";
+
+        public string PostMethod = "Constants.HttpMethods.Post";
+
+        public string PatchMethod = "Constants.HttpMethods.Patch";
+
+        public string PutMethod = "Constants.HttpMethods.Put";
+
+        public string DeleteMethod = "Constants.HttpMethods.Delete";
     }
 }

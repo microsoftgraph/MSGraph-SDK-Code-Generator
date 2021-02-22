@@ -193,7 +193,7 @@ namespace <#=@namespace#>
     }
 #>
         {
-            this.Method = "POST";
+            this.Method = <#=templateWriter.PostMethod#>;
 <#
     var methodParameter = includeRequestBody ? "this.RequestBody" : "null";
 
@@ -262,26 +262,26 @@ namespace <#=@namespace#>
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public async <#=graphResponseReturnType#> PostResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public <#=graphResponseReturnType#> PostResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "POST";
+            this.Method = <#=templateWriter.PostMethod#>;
 <#
     if (isCollection)
     {
 #>
-            return await this.SendAsyncWithGraphResponse<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>, cancellationToken).ConfigureAwait(false);
+            return this.SendAsyncWithGraphResponse<<#=entityName#><#=methodName#>CollectionResponse>(<#=methodParameter#>, cancellationToken);
 <#
     }
     else if(hasGraphResponseType)
     {
 #>
-            return await this.SendAsyncWithGraphResponse<<#=sendAsyncReturnType#>>(<#=methodParameter#>, cancellationToken).ConfigureAwait(false);
+            return this.SendAsyncWithGraphResponse<<#=sendAsyncReturnType#>>(<#=methodParameter#>, cancellationToken);
 <#
     }
     else
     {
 #>
-            return await this.SendAsyncWithGraphResponse(<#=methodParameter#>, cancellationToken).ConfigureAwait(false);
+            return this.SendAsyncWithGraphResponse(<#=methodParameter#>, cancellationToken);
 <#
     }
 #>
@@ -324,7 +324,7 @@ namespace <#=@namespace#>
     }
 #>
         {
-            this.Method = "GET";
+            this.Method = <#=templateWriter.GetMethod#>;
 <#
    // var methodParameter = includeRequestBody ? "this.RequestBody" : "null";
 
@@ -393,26 +393,26 @@ namespace <#=@namespace#>
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public async <#=graphResponseReturnType#> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public <#=graphResponseReturnType#> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "GET";
+            this.Method = <#=templateWriter.GetMethod#>;
 <#
     if (isCollection)
     {
 #>
-            return await this.SendAsyncWithGraphResponse<<#=entityName#><#=methodName#>CollectionResponse>(null, cancellationToken).ConfigureAwait(false);
+            return this.SendAsyncWithGraphResponse<<#=entityName#><#=methodName#>CollectionResponse>(null, cancellationToken);
 <#
     }
     else if(hasGraphResponseType)
     {
 #>
-            return await this.SendAsyncWithGraphResponse<<#=sendAsyncReturnType#>>(null, cancellationToken).ConfigureAwait(false);
+            return this.SendAsyncWithGraphResponse<<#=sendAsyncReturnType#>>(null, cancellationToken);
 <#
     }
     else
     {
 #>
-            return await this.SendAsyncWithGraphResponse(null, cancellationToken).ConfigureAwait(false);
+            return this.SendAsyncWithGraphResponse(null, cancellationToken);
 <#
     }
 #>
@@ -456,7 +456,7 @@ namespace <#=@namespace#>
     }
 #>
         {
-            this.Method = "PATCH";
+            this.Method = <#=templateWriter.PatchMethod#>;
 <#
     var methodParameter = includeRequestBody ? "this.RequestBody" : "null";
 
@@ -516,26 +516,26 @@ namespace <#=@namespace#>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="<#=returnEntityParameter.GetSanitizedParameterName()#>">The <#=returnEntityType#> object set with the properties to update.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public async <#=graphResponseReturnType#> PatchResponseAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>, CancellationToken cancellationToken = default(CancellationToken))
+        public <#=graphResponseReturnType#> PatchResponseAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "PATCH";
+            this.Method = <#=templateWriter.PatchMethod#>;
 <#
     if (isCollection)
     {
 #>
-            return await this.SendAsyncWithGraphResponse<<#=entityName#><#=methodName#>CollectionResponse>(<#=returnEntityParameter.GetSanitizedParameterName()#>, cancellationToken).ConfigureAwait(false);
+            return this.SendAsyncWithGraphResponse<<#=entityName#><#=methodName#>CollectionResponse>(<#=returnEntityParameter.GetSanitizedParameterName()#>, cancellationToken);
 <#
     }
     else if(hasGraphResponseType)
     {
 #>
-            return await this.SendAsyncWithGraphResponse<<#=sendAsyncReturnType#>>(<#=returnEntityParameter.GetSanitizedParameterName()#>, cancellationToken).ConfigureAwait(false);
+            return this.SendAsyncWithGraphResponse<<#=sendAsyncReturnType#>>(<#=returnEntityParameter.GetSanitizedParameterName()#>, cancellationToken);
 <#
     }
     else
     {
 #>
-            return await this.SendAsyncWithGraphResponse(<#=returnEntityParameter.GetSanitizedParameterName()#>, cancellationToken).ConfigureAwait(false);
+            return this.SendAsyncWithGraphResponse(<#=returnEntityParameter.GetSanitizedParameterName()#>, cancellationToken);
 <#
     }
 #>
@@ -578,7 +578,7 @@ namespace <#=@namespace#>
     }
 #>
         {
-            this.Method = "PUT";
+            this.Method = <#=templateWriter.PutMethod#>;
 <#
     var methodParameter = includeRequestBody ? "this.RequestBody" : "null";
 
@@ -638,26 +638,26 @@ namespace <#=@namespace#>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="<#=returnEntityParameter.GetSanitizedParameterName()#>">The <#=returnEntityType#> object set with the properties to update.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public async <#=graphResponseReturnType#> PutResponseAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>, CancellationToken cancellationToken = default(CancellationToken))
+        public <#=graphResponseReturnType#> PutResponseAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "PUT";
+            this.Method = <#=templateWriter.PutMethod#>;
 <#
     if (isCollection)
     {
 #>
-            return await this.SendAsyncWithGraphResponse<<#=entityName#><#=methodName#>CollectionResponse>(<#=returnEntityParameter.GetSanitizedParameterName()#>, cancellationToken).ConfigureAwait(false);
+            return this.SendAsyncWithGraphResponse<<#=entityName#><#=methodName#>CollectionResponse>(<#=returnEntityParameter.GetSanitizedParameterName()#>, cancellationToken);
 <#
     }
     else if(hasGraphResponseType)
     {
 #>
-            return await this.SendAsyncWithGraphResponse<<#=sendAsyncReturnType#>>(<#=returnEntityParameter.GetSanitizedParameterName()#>, cancellationToken).ConfigureAwait(false);
+            return this.SendAsyncWithGraphResponse<<#=sendAsyncReturnType#>>(<#=returnEntityParameter.GetSanitizedParameterName()#>, cancellationToken);
 <#
     }
     else
     {
 #>
-            return await this.SendAsyncWithGraphResponse(<#=returnEntityParameter.GetSanitizedParameterName()#>, cancellationToken).ConfigureAwait(false);
+            return this.SendAsyncWithGraphResponse(<#=returnEntityParameter.GetSanitizedParameterName()#>, cancellationToken);
 <#
     }
 #>

@@ -95,7 +95,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace, s
         {
             stringBuilder.AppendFormat("        /// <returns>The <see cref=\"GraphResponse{{{0}}}\"/> object of the request.</returns>", propertyType);
             stringBuilder.Append(Environment.NewLine);
-            stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<GraphResponse<{0}>> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken))", propertyType, sanitizedPropertyName);
+            stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken))", propertyType, sanitizedPropertyName);
         }
         else
         {
@@ -109,7 +109,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace, s
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append("            this.Method = \"POST\";");
+        stringBuilder.AppendFormat("            this.Method = {0};", templateWriter.PostMethod);
 
         var entity = odcmProperty.Projection.Type.AsOdcmClass();
 
@@ -122,7 +122,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace, s
         stringBuilder.Append(Environment.NewLine);
         if (isGraphResponseMethod)
         {
-            stringBuilder.AppendFormat("            return await this.SendAsyncWithGraphResponse<{0}>({1}, cancellationToken).ConfigureAwait(false);", propertyType, sanitizedPropertyName);
+            stringBuilder.AppendFormat("            return this.SendAsyncWithGraphResponse<{0}>({1}, cancellationToken);", propertyType, sanitizedPropertyName);
         }
         else
         {
@@ -182,7 +182,7 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append("            this.Method = \"POST\";");
+    stringBuilder.AppendFormat("            this.Method = {0};", templateWriter.PostMethod);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            if (string.IsNullOrEmpty({0}.Id))", sanitizedPropertyName);

@@ -41,7 +41,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The collection page.</returns>
         public async System.Threading.Tasks.Task<ISegmentRefTypesCollectionWithReferencesPage> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "GET";
+            this.Method = Constants.HttpMethods.Get;
             var response = await this.SendAsync<SegmentRefTypesCollectionWithReferencesResponse>(null, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -74,10 +74,10 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{SegmentRefTypesCollectionWithReferencesResponse}"/> object.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<SegmentRefTypesCollectionWithReferencesResponse>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<GraphResponse<SegmentRefTypesCollectionWithReferencesResponse>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "GET";
-            return await this.SendAsyncWithGraphResponse<SegmentRefTypesCollectionWithReferencesResponse>(null, cancellationToken).ConfigureAwait(false);
+            this.Method = Constants.HttpMethods.Get;
+            return this.SendAsyncWithGraphResponse<SegmentRefTypesCollectionWithReferencesResponse>(null, cancellationToken);
         }
 
         /// <summary>

@@ -16,6 +16,9 @@ var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), propName
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), propName , "CollectionWithReferencesPage");
 
 var features = host.CurrentType.GetFeatures();
+
+var templateWriterHost = (CustomT4Host)Host;
+var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 #>
 
 namespace <#=@namespace#>
@@ -37,7 +40,7 @@ namespace <#=@namespace#>
         /// <returns>The collection page.</returns>
         public async System.Threading.Tasks.Task<I<#=collectionPage#>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "GET";
+            this.Method = <#=templateWriter.GetMethod#>;
             var response = await this.SendAsync<<#=collectionResponse#>>(null, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -70,10 +73,10 @@ namespace <#=@namespace#>
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{<#=collectionResponse#>}"/> object.</returns>
-        public async System.Threading.Tasks.Task<GraphResponse<<#=collectionResponse#>>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<GraphResponse<<#=collectionResponse#>>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = "GET";
-            return await this.SendAsyncWithGraphResponse<<#=collectionResponse#>>(null, cancellationToken).ConfigureAwait(false);
+            this.Method = <#=templateWriter.GetMethod#>;
+            return this.SendAsyncWithGraphResponse<<#=collectionResponse#>>(null, cancellationToken);
         }
 
 <# if (features.CanExpand) { #>
