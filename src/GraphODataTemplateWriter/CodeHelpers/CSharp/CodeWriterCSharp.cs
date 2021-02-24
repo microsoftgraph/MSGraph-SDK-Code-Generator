@@ -34,7 +34,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public string PatchMethod = "CoreConstants.HttpMethods.PATCH.ToString()";
 
-        public string PutMethod = "CoreConstants.HttpMethods..PUT.ToString()";
+        public string PutMethod = "CoreConstants.HttpMethods.PUT.ToString()";
 
         public string DeleteMethod = "CoreConstants.HttpMethods.DELETE.ToString()";
     }

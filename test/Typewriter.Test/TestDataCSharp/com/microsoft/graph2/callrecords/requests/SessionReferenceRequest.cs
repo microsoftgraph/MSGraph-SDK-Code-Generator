@@ -74,7 +74,7 @@ namespace Microsoft.Graph2.CallRecords
                 await writer.FlushAsync();
                 payload = System.Text.Encoding.UTF8.GetString(stream.ToArray());
             }
-            this.Method = CoreConstants.HttpMethods..PUT.ToString();
+            this.Method = CoreConstants.HttpMethods.PUT.ToString();
             this.ContentType = Constants.ContentTypes.JsonContentType;
             await this.SendAsync(payload, cancellationToken).ConfigureAwait(false);
         }
@@ -99,7 +99,7 @@ namespace Microsoft.Graph2.CallRecords
                 await writer.FlushAsync();
                 payload = System.Text.Encoding.UTF8.GetString(stream.ToArray());
             }
-            this.Method = CoreConstants.HttpMethods..PUT.ToString();
+            this.Method = CoreConstants.HttpMethods.PUT.ToString();
             this.ContentType = Constants.ContentTypes.JsonContentType;
             return await this.SendAsyncWithGraphResponse(payload, cancellationToken).ConfigureAwait(false);
         }

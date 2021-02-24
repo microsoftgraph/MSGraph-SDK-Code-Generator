@@ -89,7 +89,7 @@ namespace Microsoft.Graph2.CallRecords
         public System.Threading.Tasks.Task<CallRecord> PutAsync(CallRecord callrecord, 
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = CoreConstants.HttpMethods..PUT.ToString();
+            this.Method = CoreConstants.HttpMethods.PUT.ToString();
             return this.SendAsync<CallRecord>(callrecord, cancellationToken);
         }
 
@@ -101,7 +101,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
         public System.Threading.Tasks.Task<GraphResponse<CallRecord>> PutResponseAsync(CallRecord callrecord, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = CoreConstants.HttpMethods..PUT.ToString();
+            this.Method = CoreConstants.HttpMethods.PUT.ToString();
             return this.SendAsyncWithGraphResponse<CallRecord>(callrecord, cancellationToken);
         }
 

@@ -67,7 +67,7 @@ namespace Microsoft.Graph2.CallRecords
         public System.Threading.Tasks.Task<Stream> PutAsync(Stream content, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             this.ContentType = Constants.ContentTypes.StreamContentType;
-            this.Method = CoreConstants.HttpMethods..PUT.ToString();
+            this.Method = CoreConstants.HttpMethods.PUT.ToString();
             return this.SendStreamRequestAsync(content, cancellationToken, completionOption);
         }
 
@@ -81,7 +81,7 @@ namespace Microsoft.Graph2.CallRecords
         public System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(Stream content, CancellationToken cancellationToken = default(CancellationToken), HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             this.ContentType = Constants.ContentTypes.StreamContentType;
-            this.Method = CoreConstants.HttpMethods..PUT.ToString();
+            this.Method = CoreConstants.HttpMethods.PUT.ToString();
             return this.SendAsyncWithGraphResponse(content, cancellationToken, completionOption);
         }
     
