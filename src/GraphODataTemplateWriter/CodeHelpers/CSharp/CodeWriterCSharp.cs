@@ -28,14 +28,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public string StreamContentType = "Constants.ContentTypes.StreamContentType";
 
-        public string GetMethod = "Constants.HttpMethods.GET.ToString()";
+        public string GetMethod = "CoreConstants.HttpMethods.GET.ToString()";
 
-        public string PostMethod = "Constants.HttpMethods.POST.ToString()";
+        public string PostMethod = "CoreConstants.HttpMethods.POST.ToString()";
 
-        public string PatchMethod = "Constants.HttpMethods.PATCH.ToString()";
+        public string PatchMethod = "CoreConstants.HttpMethods.PATCH.ToString()";
 
-        public string PutMethod = "Constants.HttpMethods.PUT.ToString()";
+        public string PutMethod = "CoreConstants.HttpMethods..PUT.ToString()";
 
-        public string DeleteMethod = "Constants.HttpMethods.DELETE.ToString()";
+        public string DeleteMethod = "CoreConstants.HttpMethods.DELETE.ToString()";
     }
 }

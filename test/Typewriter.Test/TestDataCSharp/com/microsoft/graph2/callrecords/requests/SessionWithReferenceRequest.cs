@@ -42,7 +42,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The Session.</returns>
         public async System.Threading.Tasks.Task<Session> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.GET.ToString();
+            this.Method = CoreConstants.HttpMethods.GET.ToString();
             var retrievedEntity = await this.SendAsync<Session>(null, cancellationToken).ConfigureAwait(false);
             return retrievedEntity;
         }
@@ -54,7 +54,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The <see cref="GraphResponse{Session}"/> object of the request.</returns>
         public System.Threading.Tasks.Task<GraphResponse<Session>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.GET.ToString();
+            this.Method = CoreConstants.HttpMethods.GET.ToString();
             return this.SendAsyncWithGraphResponse<Session>(null, cancellationToken);
         }
 
@@ -67,7 +67,7 @@ namespace Microsoft.Graph2.CallRecords
         public async System.Threading.Tasks.Task<Session> CreateAsync(Session sessionToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = Constants.ContentTypes.JsonContentType;
-            this.Method = Constants.HttpMethods.POST.ToString();
+            this.Method = CoreConstants.HttpMethods.POST.ToString();
             var newEntity = await this.SendAsync<Session>(sessionToCreate, cancellationToken).ConfigureAwait(false);
             return newEntity;
         }
@@ -81,7 +81,7 @@ namespace Microsoft.Graph2.CallRecords
         public System.Threading.Tasks.Task<GraphResponse<Session>> CreateResponseAsync(Session sessionToCreate, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = Constants.ContentTypes.JsonContentType;
-            this.Method = Constants.HttpMethods.POST.ToString();
+            this.Method = CoreConstants.HttpMethods.POST.ToString();
             return this.SendAsyncWithGraphResponse<Session>(sessionToCreate, cancellationToken);
         }
 
@@ -95,7 +95,7 @@ namespace Microsoft.Graph2.CallRecords
         public async System.Threading.Tasks.Task<Session> UpdateAsync(Session sessionToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = Constants.ContentTypes.JsonContentType;
-            this.Method = Constants.HttpMethods.PATCH.ToString();
+            this.Method = CoreConstants.HttpMethods.PATCH.ToString();
             var updatedEntity = await this.SendAsync<Session>(sessionToUpdate, cancellationToken).ConfigureAwait(false);
             return updatedEntity;
         }
@@ -110,7 +110,7 @@ namespace Microsoft.Graph2.CallRecords
         public System.Threading.Tasks.Task<GraphResponse<Session>> UpdateResponseAsync(Session sessionToUpdate, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = Constants.ContentTypes.JsonContentType;
-            this.Method = Constants.HttpMethods.PATCH.ToString();
+            this.Method = CoreConstants.HttpMethods.PATCH.ToString();
             return this.SendAsyncWithGraphResponse<Session>(sessionToUpdate, cancellationToken);
         }
 
@@ -121,7 +121,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The task to await.</returns>
         public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.DELETE.ToString();
+            this.Method = CoreConstants.HttpMethods.DELETE.ToString();
             await this.SendAsync<Session>(null, cancellationToken).ConfigureAwait(false);
         }
 
@@ -132,7 +132,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
         public System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.DELETE.ToString();
+            this.Method = CoreConstants.HttpMethods.DELETE.ToString();
             return this.SendAsyncWithGraphResponse(null, cancellationToken);
         }
 

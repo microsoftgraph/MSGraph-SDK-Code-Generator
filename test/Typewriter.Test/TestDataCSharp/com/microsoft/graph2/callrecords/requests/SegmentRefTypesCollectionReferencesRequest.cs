@@ -41,7 +41,7 @@ namespace Microsoft.Graph2.CallRecords
         public System.Threading.Tasks.Task AddAsync(Microsoft.Graph.EntityType3 entityType3, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = Constants.ContentTypes.JsonContentType;
-            this.Method = Constants.HttpMethods.POST.ToString();
+            this.Method = CoreConstants.HttpMethods.POST.ToString();
 
             if (string.IsNullOrEmpty(entityType3.Id))
             {
@@ -61,7 +61,7 @@ namespace Microsoft.Graph2.CallRecords
         public System.Threading.Tasks.Task<GraphResponse> AddResponseAsync(Microsoft.Graph.EntityType3 entityType3, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = Constants.ContentTypes.JsonContentType;
-            this.Method = Constants.HttpMethods.POST.ToString();
+            this.Method = CoreConstants.HttpMethods.POST.ToString();
 
             if (string.IsNullOrEmpty(entityType3.Id))
             {

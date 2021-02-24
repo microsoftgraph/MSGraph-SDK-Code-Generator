@@ -40,7 +40,7 @@ namespace Microsoft.Graph
         public System.Threading.Tasks.Task<Endpoint> GetAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.GET.ToString();
+            this.Method = CoreConstants.HttpMethods.GET.ToString();
             return this.SendAsync<Endpoint>(null, cancellationToken);
         }
 
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
         public System.Threading.Tasks.Task<GraphResponse<Endpoint>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.GET.ToString();
+            this.Method = CoreConstants.HttpMethods.GET.ToString();
             return this.SendAsyncWithGraphResponse<Endpoint>(null, cancellationToken);
         }
 
