@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<ITestTypeQueryCollectionPage> PostAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.Post;
+            this.Method = Constants.HttpMethods.POST.ToString();
             var response = await this.SendAsync<TestTypeQueryCollectionResponse>(this.RequestBody, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -81,7 +81,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
         public System.Threading.Tasks.Task<GraphResponse<TestTypeQueryCollectionResponse>> PostResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.Post;
+            this.Method = Constants.HttpMethods.POST.ToString();
             return this.SendAsyncWithGraphResponse<TestTypeQueryCollectionResponse>(this.RequestBody, cancellationToken);
         }
 

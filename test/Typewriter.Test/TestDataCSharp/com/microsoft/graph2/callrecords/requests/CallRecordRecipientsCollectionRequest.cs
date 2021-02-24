@@ -42,7 +42,7 @@ namespace Microsoft.Graph2.CallRecords
         public System.Threading.Tasks.Task<Microsoft.Graph.EntityType2> AddAsync(Microsoft.Graph.EntityType2 entityType2, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = Constants.ContentTypes.JsonContentType;
-            this.Method = Constants.HttpMethods.Post;
+            this.Method = Constants.HttpMethods.POST.ToString();
             return this.SendAsync<Microsoft.Graph.EntityType2>(entityType2, cancellationToken);
         }
 
@@ -55,7 +55,7 @@ namespace Microsoft.Graph2.CallRecords
         public System.Threading.Tasks.Task<GraphResponse<Microsoft.Graph.EntityType2>> AddResponseAsync(Microsoft.Graph.EntityType2 entityType2, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = Constants.ContentTypes.JsonContentType;
-            this.Method = Constants.HttpMethods.Post;
+            this.Method = Constants.HttpMethods.POST.ToString();
             return this.SendAsyncWithGraphResponse<Microsoft.Graph.EntityType2>(entityType2, cancellationToken);
         }
 
@@ -67,7 +67,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The collection page.</returns>
         public async System.Threading.Tasks.Task<ICallRecordRecipientsCollectionPage> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.Get;
+            this.Method = Constants.HttpMethods.GET.ToString();
             var response = await this.SendAsync<CallRecordRecipientsCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -102,7 +102,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The <see cref="GraphResponse{CallRecordRecipientsCollectionResponse}"/> object.</returns>
         public System.Threading.Tasks.Task<GraphResponse<CallRecordRecipientsCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.Get;
+            this.Method = Constants.HttpMethods.GET.ToString();
             return this.SendAsyncWithGraphResponse<CallRecordRecipientsCollectionResponse>(null, cancellationToken);
         }
 

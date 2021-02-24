@@ -46,7 +46,7 @@ namespace Microsoft.Graph2.CallRecords
         public async System.Threading.Tasks.Task<ISegmentTestActionCollectionPage> PostAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.Post;
+            this.Method = Constants.HttpMethods.POST.ToString();
             var response = await this.SendAsync<SegmentTestActionCollectionResponse>(this.RequestBody, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -80,7 +80,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
         public System.Threading.Tasks.Task<GraphResponse<SegmentTestActionCollectionResponse>> PostResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.Post;
+            this.Method = Constants.HttpMethods.POST.ToString();
             return this.SendAsyncWithGraphResponse<SegmentTestActionCollectionResponse>(this.RequestBody, cancellationToken);
         }
 

@@ -42,7 +42,7 @@ namespace Microsoft.Graph
         public System.Threading.Tasks.Task<EntityType3> AddAsync(EntityType3 entityType3, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = Constants.ContentTypes.JsonContentType;
-            this.Method = Constants.HttpMethods.Post;
+            this.Method = Constants.HttpMethods.POST.ToString();
             return this.SendAsync<EntityType3>(entityType3, cancellationToken);
         }
 
@@ -55,7 +55,7 @@ namespace Microsoft.Graph
         public System.Threading.Tasks.Task<GraphResponse<EntityType3>> AddResponseAsync(EntityType3 entityType3, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ContentType = Constants.ContentTypes.JsonContentType;
-            this.Method = Constants.HttpMethods.Post;
+            this.Method = Constants.HttpMethods.POST.ToString();
             return this.SendAsyncWithGraphResponse<EntityType3>(entityType3, cancellationToken);
         }
 
@@ -67,7 +67,7 @@ namespace Microsoft.Graph
         /// <returns>The collection page.</returns>
         public async System.Threading.Tasks.Task<IGraphServiceTestTypesCollectionPage> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.Get;
+            this.Method = Constants.HttpMethods.GET.ToString();
             var response = await this.SendAsync<GraphServiceTestTypesCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -102,7 +102,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="GraphResponse{GraphServiceTestTypesCollectionResponse}"/> object.</returns>
         public System.Threading.Tasks.Task<GraphResponse<GraphServiceTestTypesCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = Constants.HttpMethods.Get;
+            this.Method = Constants.HttpMethods.GET.ToString();
             return this.SendAsyncWithGraphResponse<GraphServiceTestTypesCollectionResponse>(null, cancellationToken);
         }
 
