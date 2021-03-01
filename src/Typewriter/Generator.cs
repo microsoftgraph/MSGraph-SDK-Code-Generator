@@ -64,7 +64,7 @@ namespace Typewriter
             string pathToCleanMetadata = FileWriter.WriteMetadata(processedCsdlContents, "cleanMetadata.xml");
 
             // Inject documentation annotations into the CSDL using ApiDoctor and get back the file as a string.
-            return AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata).Result;
+            return AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Typewriter
         {
             var pathToCleanMetadata = Transform(csdlContents, options);
 
-            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata).Result;
+            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata);
             string outputMetadataFilename = options.OutputMetadataFileName ?? "cleanMetadataWithDescriptions";
             string metadataFileName = string.Concat(outputMetadataFilename, options.EndpointVersion, ".xml");
             FileWriter.WriteMetadata(csdlWithDocAnnotations, metadataFileName, options.Output);

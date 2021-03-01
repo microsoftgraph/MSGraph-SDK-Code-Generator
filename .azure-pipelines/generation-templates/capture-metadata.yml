@@ -20,6 +20,8 @@ parameters:
 - name: 'cleanMetadataFile'
   type: string
   default: $(cleanMetadataFileV1)
+- name: 'cleanMetadataFolder'
+  type: string
 
 steps:
 
@@ -73,7 +75,7 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     pathToPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: '${{ parameters.endpoint }} metadata'
+    artifactName: ${{ parameters.cleanMetadataFolder }}
 
 # Use the clean metadata from the last step to generate DotNet files.
 

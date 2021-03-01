@@ -33,6 +33,11 @@ resources:
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-typescript-typings
      ref: master
+   - repository: msgraph-beta-typescript-typings
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-beta-typescript-typings
+     ref: main
    - repository: msgraph-sdk-objc-models
      type: github
      endpoint: microsoftgraph
@@ -69,10 +74,6 @@ parameters:
     default: beta/pipelinebuild
     displayName: Beta Branch Prefix (should be different than V1)
 
-  - name: typeScriptBetaBranchPrefix
-    default: pipelinebuild/beta
-    displayName: Typescript Beta Branch Prefix (should be different than V1)
-
   - name: skipMetadataCaptureAndClean
     default: false
     displayName: Skip metadata capture and clean
@@ -94,6 +95,8 @@ variables:
   cleanMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml'
   cleanMetadataFileV1OutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/'
   cleanMetadataFileBetaOutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/'
+  cleanMetadataFolderBeta: 'clean_beta_metadata'
+  cleanMetadataFolderV1: 'clean_v10_metadata'
   rawMetadataFileBeta: 'https://graph.microsoft.com/beta/$metadata'
   rawMetadataFileV1: 'https://graph.microsoft.com/v1.0/$metadata' # We want to run against the metadata we have captured.
   typewriterDirectory: '$(Build.SourcesDirectory)/typewriter'
@@ -105,12 +108,9 @@ variables:
   v1Branch: ${{ parameters.v1BranchPrefix }}/$(Build.BuildId)
   betaBranch: ${{ parameters.betaBranchPrefix }}/$(Build.BuildId)
 
-  # branch scheme above causes the following error for TypeScript because beta branch exists
-  # fatal: cannot lock ref 'refs/heads/beta/pipelinebuild/35157': 'refs/heads/beta' exists; cannot create 'refs/heads/beta/pipelinebuild/35157'
-  typeScriptBetaBranch: ${{ parameters.typeScriptBetaBranchPrefix }}/$(Build.BuildId)
-
   publishChanges: ${{ parameters.publishChanges }}
   overrideSkipCI: ${{ parameters.overrideSkipCI }}
+  skipMetadataCaptureAndClean: ${{ parameters.skipMetadataCaptureAndClean }}
 
   phpVersion: 7.2
 
@@ -142,6 +142,7 @@ stages:
         outputPath: $(cleanMetadataFileV1OutputPath)
         repoName: "msgraph-sdk-dotnet"
         cleanMetadataFile: $(cleanMetadataFileV1)
+        cleanMetadataFolder: $(cleanMetadataFolderV1)
 
 # Same description as stage_v1_metadata
 - stage: stage_beta_metadata
@@ -159,6 +160,7 @@ stages:
         outputPath: $(cleanMetadataFileBetaOutputPath)
         repoName: "msgraph-beta-sdk-dotnet"
         cleanMetadataFile: $(cleanMetadataFileBeta)
+        cleanMetadataFolder: $(cleanMetadataFolderBeta)
 
 - stage: stage_csharp_v1
   dependsOn:
@@ -180,6 +182,7 @@ stages:
         repoName: 'msgraph-sdk-dotnet'
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
+        cleanMetadataFolder: $(cleanMetadataFolderV1)
         languageSpecificSteps:
         - template: generation-templates/dotnet.yml
           parameters:
@@ -206,6 +209,7 @@ stages:
         repoName: 'msgraph-beta-sdk-dotnet'
         branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
+        cleanMetadataFolder: $(cleanMetadataFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/dotnet.yml
           parameters:
@@ -232,6 +236,7 @@ stages:
         repoName: 'msgraph-sdk-java'
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
+        cleanMetadataFolder: $(cleanMetadataFolderV1)
         languageSpecificSteps:
         - template: generation-templates/java.yml
           parameters:
@@ -257,6 +262,7 @@ stages:
         repoName: 'msgraph-beta-sdk-java'
         branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
+        cleanMetadataFolder: $(cleanMetadataFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/java.yml
           parameters:
@@ -282,6 +288,7 @@ stages:
         repoName: 'msgraph-sdk-php'
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
+        cleanMetadataFolder: $(cleanMetadataFolderV1)
         languageSpecificSteps:
         - template: generation-templates/php-v1.yml
 
@@ -305,6 +312,7 @@ stages:
         repoName: 'msgraph-sdk-php'
         branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
+        cleanMetadataFolder: $(cleanMetadataFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/php-beta.yml
 
@@ -328,6 +336,7 @@ stages:
         repoName: 'msgraph-typescript-typings'
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
+        cleanMetadataFolder: $(cleanMetadataFolderV1)
         languageSpecificSteps:
         - template: generation-templates/typescript.yml
 
@@ -348,17 +357,14 @@ stages:
       parameters:
         language: 'TypeScript'
         version: 'beta'
-        repoName: 'msgraph-typescript-typings'
-        branchName: $(typeScriptBetaBranch)
+        repoName: 'msgraph-beta-typescript-typings'
+        branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
+        cleanMetadataFolder: $(cleanMetadataFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/typescript.yml
-        optionalPostCheckoutStep:
-          - pwsh: |
-              git fetch
-              git checkout beta
-            displayName: 'Switch to beta branch'
-            workingDirectory: '$(Build.SourcesDirectory)/msgraph-typescript-typings'
+          parameters:
+            repoName: 'msgraph-beta-typescript-typings'
 
 - stage: stage_objc_v1
   dependsOn:
@@ -380,5 +386,6 @@ stages:
         repoName: 'msgraph-sdk-objc-models'
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
+        cleanMetadataFolder: $(cleanMetadataFolderV1)
         languageSpecificSteps:
         - template: generation-templates/objc.yml

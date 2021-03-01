@@ -12,13 +12,6 @@ parameters:
 - name: branchName
   type: string
 
-- name: optionalPostCheckoutStep
-  type: stepList
-  default: # TODO is there a way to skip this without a dummy default task?
-  - pwsh: |
-      Write-Host "No optional post-checkout step is provided, this is expected in majority of cases" -ForegroundColor Green
-    displayName: Skip optional post-checkout step
-
 - name: languageSpecificSteps
   type: stepList
   default:
@@ -28,8 +21,13 @@ parameters:
 - name: cleanMetadataFile
   type: string
 
+- name: cleanMetadataFolder
+  type: string
+
 steps:
 - template: set-up-for-generation.yml
+  parameters:
+    cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
 
 - checkout: ${{ parameters.repoName }}
   displayName: 'checkout ${{ parameters.repoName }}'
@@ -42,8 +40,6 @@ steps:
   displayName: 'checkout generator'
   fetchDepth: 1
   persistCredentials: true
-
-- ${{ parameters.optionalPostCheckoutStep }}
 
 - pwsh: '$(scriptsDirectory)/create-branch.ps1'
   displayName: 'Create a branch in ${{ parameters.repoName }}'

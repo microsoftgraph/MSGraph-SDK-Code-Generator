@@ -26,7 +26,7 @@ namespace Typewriter
             this.options = options; // Can change the base access modifier so we could use it. 
         }
 
-        public Task<string> PublishToStringAsync(IssueLogger issues)
+        public string PublishToString(IssueLogger issues)
         {
             string outputFilenameSuffix = "";
 
@@ -35,7 +35,7 @@ namespace Typewriter
             // Step 1: Generate an EntityFramework OM from the documentation and/or template file
             EntityFramework framework = CreateEntityFrameworkFromDocs(issues);
             if (null == framework)
-                return Task.FromResult(string.Empty);
+                return string.Empty;
 
             // Step 1a: Apply an transformations that may be defined in the documentation
             if (!string.IsNullOrEmpty(options.TransformOutput))
@@ -70,7 +70,7 @@ namespace Typewriter
 
             Logger.Info("Finish creating metadata file with documentation annotations.");
 
-            return Task.FromResult(xmlData);
+            return xmlData;
         }
     }
 
@@ -84,7 +84,7 @@ namespace Typewriter
         /// <param name="options">The typewriter input options.</param>
         /// <param name="pathToCleanMetadata">Optional. Contains the path to a clean metadata to use when applying annotations. Overrides Option.Metadata.</param>
         /// <returns>An annotated metadata file.</returns>
-        internal async static Task<string> ApplyAnnotationsToCsdl(Options options, string pathToCleanMetadata = null)
+        internal static string ApplyAnnotationsToCsdl(Options options, string pathToCleanMetadata = null)
         {
             DocSet docs = GetDocSet(options, new IssueLogger());
 
@@ -104,7 +104,7 @@ namespace Typewriter
 
             DocAnnotationWriter docWriter = new DocAnnotationWriter(docs, csdlWriterOptions);
 
-            return await docWriter.PublishToStringAsync(new IssueLogger()); 
+            return docWriter.PublishToString(new IssueLogger());
         }
 
 
