@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 <# } #>
 
-<#=TypeHelperJava.CreateClassDef(c.TypeName(), c.BaseClassName(), c.TypeName().Equals("UploadSession") ? "IJsonBackedObject, com.microsoft.graph.concurrency.IUploadSession" : "IJsonBackedObject", c.Deprecation?.Description)#>
+<#=TypeHelperJava.CreateClassDef(c.TypeName(), c.BaseClassName(), c.TypeName().Equals("UploadSession") ? "IJsonBackedObject, com.microsoft.graph.tasks.IUploadSession" : "IJsonBackedObject", c.Deprecation?.Description)#>
 
 <#
     if(((OdcmClass)c).Base == null){
