@@ -534,7 +534,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// Returns a List containing the supplied class' methods plus their overloads
         public static IEnumerable<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
         {
-            return odcmClass?.Methods?.SelectMany(x => x.WithOverloads()) ?? new List<OdcmMethod>();
+            return odcmClass
+                    ?.Methods
+                    ?.SelectMany(x => x.WithOverloads())
+                    ?.Union(odcmClass?.Base?.MethodsAndOverloads() ?? Enumerable.Empty<OdcmMethod>()) ?? Enumerable.Empty<OdcmMethod>();
         }
         private static readonly OdcmMethodEqualityComparer methodNameAndParametersCountComparer = new OdcmMethodEqualityComparer {
             CompareParameters = false,
@@ -543,11 +546,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         };
         public static IEnumerable<OdcmMethod> MethodsAndOverloadsWithDistinctName(this OdcmClass odcmClass)
         {
-            return odcmClass?.Methods?.SelectMany(x => x.WithOverloads())?.Distinct(methodNameAndParametersCountComparer) ?? new List<OdcmMethod>();
+            return odcmClass
+                    ?.Methods
+                    ?.SelectMany(x => x.WithOverloads())
+                    ?.Union(odcmClass?.Base?.MethodsAndOverloadsWithDistinctName() ?? Enumerable.Empty<OdcmMethod>())
+                    ?.Distinct(methodNameAndParametersCountComparer) ?? Enumerable.Empty<OdcmMethod>();
         }
         public static IEnumerable<OdcmMethod> WithOverloadsOfDistinctName(this OdcmMethod m)
         {
-            return m?.WithOverloads()?.Distinct(methodNameAndParametersCountComparer) ?? new List<OdcmMethod>();
+            return m?.WithOverloads()?.Distinct(methodNameAndParametersCountComparer) ?? Enumerable.Empty<OdcmMethod>();
         }
 
         /// <summary>

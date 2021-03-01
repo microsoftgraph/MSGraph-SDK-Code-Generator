@@ -127,6 +127,9 @@ if (c.AsOdcmClass() != null)
 <#
     foreach (var method in c.AsOdcmClass().MethodsAndOverloads())
     {
+        if (method.IsBoundToCollection) {
+            continue;
+        }
 #>
 <#		if (method.IsCollection) { #>
 
@@ -153,9 +156,9 @@ if (c.AsOdcmClass() != null)
     /**
      * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
      * @return the request builder
-     <#if(method.MethodHasParameters()) { #>
+<#if(method.MethodHasParameters()) { #>
      * @param parameters the parameters for the service method
-     <# } #>
+<# } #>
 <# if(method.IsDeprecated) {#>
      * @deprecated <#= method?.Deprecation?.Description #>
 <# } #>
