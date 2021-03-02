@@ -29,7 +29,7 @@ namespace Microsoft.Graph2.CallRecords
             IEnumerable<Microsoft.Graph.Option> options)
             : base(requestUrl, client, options)
         {
-            this.ContentType = Constants.ContentTypes.JsonContentType;
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
             this.RequestBody = new SegmentTestActionRequestBody();
         }
 
@@ -46,7 +46,7 @@ namespace Microsoft.Graph2.CallRecords
         public async System.Threading.Tasks.Task<ISegmentTestActionCollectionPage> PostAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = CoreConstants.HttpMethods.POST.ToString();
+            this.Method = HttpMethods.POST;
             var response = await this.SendAsync<SegmentTestActionCollectionResponse>(this.RequestBody, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -80,7 +80,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
         public System.Threading.Tasks.Task<GraphResponse<SegmentTestActionCollectionResponse>> PostResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Method = CoreConstants.HttpMethods.POST.ToString();
+            this.Method = HttpMethods.POST;
             return this.SendAsyncWithGraphResponse<SegmentTestActionCollectionResponse>(this.RequestBody, cancellationToken);
         }
 

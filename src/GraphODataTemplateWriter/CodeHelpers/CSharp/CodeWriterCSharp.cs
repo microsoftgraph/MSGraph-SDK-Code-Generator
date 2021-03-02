@@ -24,18 +24,18 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return "//  ";
         }
 
-        public string JsonContentType = "Constants.ContentTypes.JsonContentType";
+        public string JsonContentType = "CoreConstants.MimeTypeNames.Application.Json";
 
-        public string StreamContentType = "Constants.ContentTypes.StreamContentType";
+        public string StreamContentType = "CoreConstants.MimeTypeNames.Application.Stream";
 
-        public string GetMethod = "CoreConstants.HttpMethods.GET.ToString()";
+        public string GetMethod = "HttpMethods.GET";
 
-        public string PostMethod = "CoreConstants.HttpMethods.POST.ToString()";
+        public string PostMethod = "HttpMethods.POST";
 
-        public string PatchMethod = "CoreConstants.HttpMethods.PATCH.ToString()";
+        public string PatchMethod = "HttpMethods.PATCH";
 
-        public string PutMethod = "CoreConstants.HttpMethods.PUT.ToString()";
+        public string PutMethod = "HttpMethods.PUT";
 
-        public string DeleteMethod = "CoreConstants.HttpMethods.DELETE.ToString()";
+        public string DeleteMethod = "HttpMethods.DELETE";
     }
 }
