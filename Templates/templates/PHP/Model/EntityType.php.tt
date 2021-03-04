@@ -22,7 +22,7 @@ namespace <#=targetNamespace#>;
 
 <#=writer.GetClassBlock(entityName.ToCheckedCase().ToString(), "Model")#>
 <#
-if (entityCheckedCase == "Entity") {
+if (String.IsNullOrEmpty(entityBaseName)) {
 #>
 class <#=entityCheckedCase#> implements \JsonSerializable
 <#
