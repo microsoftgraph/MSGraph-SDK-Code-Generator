@@ -41,7 +41,7 @@ class SingletonEntity1 extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the testSingleNav
     *
@@ -54,5 +54,5 @@ class SingletonEntity1 extends Entity
         $this->_propDict["testSingleNav"] = $val;
         return $this;
     }
-    
+
 }

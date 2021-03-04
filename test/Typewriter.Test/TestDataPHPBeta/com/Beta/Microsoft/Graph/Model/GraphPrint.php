@@ -2,7 +2,7 @@
 /**
 * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 * 
-* Endpoint File
+* GraphPrint File
 * PHP version 7
 *
 * @category  Library
@@ -14,7 +14,7 @@
 namespace Beta\Microsoft\Graph\Model;
 
 /**
-* Endpoint class
+* GraphPrint class
 *
 * @category  Model
 * @package   Microsoft.Graph
@@ -22,32 +22,32 @@ namespace Beta\Microsoft\Graph\Model;
 * @license   https://opensource.org/licenses/MIT MIT License
 * @link      https://graph.microsoft.com
 */
-class Endpoint extends Entity
+class Print implements \JsonSerializable
 {
     /**
-    * Gets the property1
+    * Gets the settings
     *
-    * @return int The property1
+    * @return string The settings
     */
-    public function getProperty1()
+    public function getSettings()
     {
-        if (array_key_exists("property1", $this->_propDict)) {
-            return $this->_propDict["property1"];
+        if (array_key_exists("settings", $this->_propDict)) {
+            return $this->_propDict["settings"];
         } else {
             return null;
         }
     }
 
     /**
-    * Sets the property1
+    * Sets the settings
     *
-    * @param int $val The property1
+    * @param string $val The settings
     *
-    * @return Endpoint
+    * @return Print
     */
-    public function setProperty1($val)
+    public function setSettings($val)
     {
-        $this->_propDict["property1"] = intval($val);
+        $this->_propDict["settings"] = $val;
         return $this;
     }
 

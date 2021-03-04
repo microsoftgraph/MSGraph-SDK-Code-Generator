@@ -37,7 +37,7 @@ class Schedule extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the enabled
     *
@@ -50,9 +50,9 @@ class Schedule extends Entity
         $this->_propDict["enabled"] = boolval($val);
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the timesOff
      *
      * @return array The timesOff
@@ -65,8 +65,8 @@ class Schedule extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the timesOff
     *
     * @param TimeOff $val The timesOff
@@ -75,12 +75,12 @@ class Schedule extends Entity
     */
     public function setTimesOff($val)
     {
-		$this->_propDict["timesOff"] = $val;
+        $this->_propDict["timesOff"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the timeOffRequests
      *
      * @return array The timeOffRequests
@@ -93,8 +93,8 @@ class Schedule extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the timeOffRequests
     *
     * @param TimeOffRequest $val The timeOffRequests
@@ -103,8 +103,8 @@ class Schedule extends Entity
     */
     public function setTimeOffRequests($val)
     {
-		$this->_propDict["timeOffRequests"] = $val;
+        $this->_propDict["timeOffRequests"] = $val;
         return $this;
     }
-    
+
 }

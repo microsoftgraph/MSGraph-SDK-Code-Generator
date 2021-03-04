@@ -37,7 +37,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the version
     *
@@ -50,7 +50,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
         $this->_propDict["version"] = intval($val);
         return $this;
     }
-    
+
     /**
     * Gets the type
     *
@@ -68,7 +68,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the type
     *
@@ -81,9 +81,9 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
         $this->_propDict["type"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the modalities
      *
      * @return array The modalities
@@ -96,8 +96,8 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the modalities
     *
     * @param Modality $val The modalities
@@ -106,10 +106,10 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function setModalities($val)
     {
-		$this->_propDict["modalities"] = $val;
+        $this->_propDict["modalities"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the lastModifiedDateTime
     *
@@ -127,7 +127,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the lastModifiedDateTime
     *
@@ -140,7 +140,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
         $this->_propDict["lastModifiedDateTime"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the startDateTime
     *
@@ -158,7 +158,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the startDateTime
     *
@@ -171,7 +171,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
         $this->_propDict["startDateTime"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the endDateTime
     *
@@ -189,7 +189,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the endDateTime
     *
@@ -202,7 +202,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
         $this->_propDict["endDateTime"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the organizer
     *
@@ -220,7 +220,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the organizer
     *
@@ -233,9 +233,9 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
         $this->_propDict["organizer"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the participants
      *
      * @return array The participants
@@ -248,8 +248,8 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the participants
     *
     * @param Beta\Microsoft\Graph\Model\IdentitySet $val The participants
@@ -258,10 +258,10 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function setParticipants($val)
     {
-		$this->_propDict["participants"] = $val;
+        $this->_propDict["participants"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the joinWebUrl
     *
@@ -275,7 +275,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the joinWebUrl
     *
@@ -288,9 +288,9 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
         $this->_propDict["joinWebUrl"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the sessions
      *
      * @return array The sessions
@@ -303,8 +303,8 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the sessions
     *
     * @param Session $val The sessions
@@ -313,12 +313,12 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function setSessions($val)
     {
-		$this->_propDict["sessions"] = $val;
+        $this->_propDict["sessions"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the recipients
      *
      * @return array The recipients
@@ -331,8 +331,8 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the recipients
     *
     * @param Beta\Microsoft\Graph\Model\EntityType2 $val The recipients
@@ -341,8 +341,8 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function setRecipients($val)
     {
-		$this->_propDict["recipients"] = $val;
+        $this->_propDict["recipients"] = $val;
         return $this;
     }
-    
+
 }

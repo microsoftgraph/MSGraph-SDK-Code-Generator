@@ -41,7 +41,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the startDateTime
     *
@@ -54,7 +54,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         $this->_propDict["startDateTime"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the endDateTime
     *
@@ -72,7 +72,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the endDateTime
     *
@@ -85,7 +85,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         $this->_propDict["endDateTime"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the caller
     *
@@ -103,7 +103,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the caller
     *
@@ -116,7 +116,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         $this->_propDict["caller"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the callee
     *
@@ -134,7 +134,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the callee
     *
@@ -147,7 +147,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         $this->_propDict["callee"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the failureInfo
     *
@@ -165,7 +165,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the failureInfo
     *
@@ -178,9 +178,9 @@ class Segment extends \Microsoft\Graph\Model\Entity
         $this->_propDict["failureInfo"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the media
      *
      * @return array The media
@@ -193,8 +193,8 @@ class Segment extends \Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the media
     *
     * @param Media $val The media
@@ -203,12 +203,12 @@ class Segment extends \Microsoft\Graph\Model\Entity
     */
     public function setMedia($val)
     {
-		$this->_propDict["media"] = $val;
+        $this->_propDict["media"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the refTypes
      *
      * @return array The refTypes
@@ -221,8 +221,8 @@ class Segment extends \Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the refTypes
     *
     * @param Microsoft\Graph\Model\EntityType3 $val The refTypes
@@ -231,10 +231,10 @@ class Segment extends \Microsoft\Graph\Model\Entity
     */
     public function setRefTypes($val)
     {
-		$this->_propDict["refTypes"] = $val;
+        $this->_propDict["refTypes"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the refType
     *
@@ -252,7 +252,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the refType
     *
@@ -265,7 +265,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         $this->_propDict["refType"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the sessionRef
     *
@@ -283,7 +283,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the sessionRef
     *
@@ -296,7 +296,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         $this->_propDict["sessionRef"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the photo
     *
@@ -314,7 +314,7 @@ class Segment extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the photo
     *
@@ -327,5 +327,5 @@ class Segment extends \Microsoft\Graph\Model\Entity
         $this->_propDict["photo"] = $val;
         return $this;
     }
-    
+
 }

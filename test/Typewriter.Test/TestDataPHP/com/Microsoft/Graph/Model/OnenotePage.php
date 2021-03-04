@@ -44,7 +44,7 @@ class OnenotePage extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the content
     * The OneNotePage content.
@@ -60,5 +60,5 @@ class OnenotePage extends Entity
         $this->_propDict["content"] = $val;
         return $this;
     }
-    
+
 }

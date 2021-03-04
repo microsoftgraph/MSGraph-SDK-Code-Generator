@@ -31,7 +31,7 @@ class Entity implements \JsonSerializable
     * @var array(string => string)
     */
     protected $_propDict;
-    
+
     /**
     * Construct a new Entity
     *
@@ -39,7 +39,7 @@ class Entity implements \JsonSerializable
     */
     function __construct($propDict = array())
     {
-		$this->_propDict = $propDict;
+        $this->_propDict = $propDict;
     }
 
     /**
@@ -51,7 +51,7 @@ class Entity implements \JsonSerializable
     {
         return $this->_propDict;
     }
-    
+
     /**
     * Gets the id
     *
@@ -65,7 +65,7 @@ class Entity implements \JsonSerializable
             return null;
         }
     }
-    
+
     /**
     * Sets the id
     *
@@ -78,7 +78,7 @@ class Entity implements \JsonSerializable
         $this->_propDict["id"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the ODataType
     *
@@ -88,7 +88,7 @@ class Entity implements \JsonSerializable
     {
         return $this->_propDict["@odata.type"];
     }
-    
+
     /**
     * Sets the ODataType
     *
@@ -101,10 +101,10 @@ class Entity implements \JsonSerializable
         $this->_propDict["@odata.type"] = $val;
         return $this;
     }
-    
+
     /**
     * Serializes the object by property array
-	* Manually serialize DateTime into RFC3339 format
+    * Manually serialize DateTime into RFC3339 format
     *
     * @return array The list of properties
     */
