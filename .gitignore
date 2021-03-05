@@ -110,6 +110,9 @@ ipch/
 *.VC.db
 *.VC.VC.opendb
 
+# Visual Studio launch settings
+**/*launchSettings*
+
 # Visual Studio profiler
 *.psess
 *.vsp
