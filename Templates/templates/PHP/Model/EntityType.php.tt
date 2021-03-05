@@ -24,7 +24,7 @@ namespace <#=targetNamespace#>;
 <#
 if (String.IsNullOrEmpty(entityBaseName)) {
 #>
-class <#=entityCheckedCase#> implements \JsonSerializable
+class <#=entityName.ToCheckedCase()#> implements \JsonSerializable
 <#
 } else {
 #>
@@ -34,7 +34,7 @@ class <#=entityName.ToCheckedCase()#> extends <#=entityBaseName#>
 #>
 {
 <#
-if (entityCheckedCase == "Entity") {
+if (String.IsNullOrEmpty(entityBaseName)) {
 #>
     /**
     * The array of properties available
@@ -241,7 +241,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 <#
         }
     }
-    if (entityCheckedCase == "Entity") {
+    if (String.IsNullOrEmpty(entityBaseName)) {
 #>
     /**
     * Gets the ODataType
