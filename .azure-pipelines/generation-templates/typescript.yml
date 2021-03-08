@@ -1,7 +1,12 @@
+parameters:
+  type: string
+  name: repoName
+  default: msgraph-typescript-typings
+
 steps:
 - pwsh: '$(scriptsDirectory)/copy-typescript-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(typewriterDirectory)/output
-    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-typescript-typings/
+    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/
