@@ -10,13 +10,15 @@ var @namespace = entityContainer.Namespace.GetNamespaceName();
 
 namespace <#=@namespace#>
 {
+    using Azure.Core;
     using System;
     using System.Net.Http;
+    using System.Collections.Generic;
 
     /// <summary>
     /// The type <#=clientName#>.
     /// </summary>
-    public partial class <#=clientName#> : BaseClient, I<#=clientName#>
+    public partial class <#=clientName#> : BaseClient
     {
         /// <summary>
         /// Instantiates a new <#=clientName#>.
@@ -27,6 +29,20 @@ namespace <#=@namespace#>
             IAuthenticationProvider authenticationProvider,
             IHttpProvider httpProvider = null)
             : this("<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>", authenticationProvider, httpProvider)
+        {
+        }
+
+        /// <summary>
+        /// Instantiates a new <#=clientName#> using a <see cref="TokenCredential"/> instance.
+        /// </summary>
+        /// <param name="tokenCredential">The <see cref="TokenCredential"/> to use for authentication</param>
+        /// <param name="scopes">Scopes required to access Microsoft Graph. This defaults to https://graph.microsoft.com/.default when none is set.</param>
+        /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
+        public <#=clientName#>(
+            TokenCredential tokenCredential,
+            IEnumerable<string> scopes = null,
+            IHttpProvider httpProvider = null)
+            : this("<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>", new TokenCredentialAuthProvider(tokenCredential,scopes), httpProvider)
         {
         }
 
