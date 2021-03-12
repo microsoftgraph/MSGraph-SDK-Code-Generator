@@ -19,7 +19,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typewriter.Test", "test\Typewriter.Test\Typewriter.Test.csproj", "{4F1B8EF2-EAFD-4DDB-B688-1A134524047B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE} = {E6B5202F-4F66-428A-AB92-0AAA11BA81DE}
-		{5F526973-F69E-4C26-B8AD-612590A17A9E} = {5F526973-F69E-4C26-B8AD-612590A17A9E}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vipr", "submodules\vipr\src\Core\Vipr\Vipr.csproj", "{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}"
