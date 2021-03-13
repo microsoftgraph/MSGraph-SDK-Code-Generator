@@ -19,6 +19,9 @@ export interface Entity {
 export interface TestType extends Entity {
     propertyAlpha?: NullableOption<DerivedComplexTypeRequest>;
 }
+export interface Print {
+    settings?: NullableOption<string>;
+}
 // tslint:disable-next-line: no-empty-interface
 export interface EntityType2 extends Entity {}
 // tslint:disable-next-line: no-empty-interface
