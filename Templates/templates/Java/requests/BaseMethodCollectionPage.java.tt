@@ -19,16 +19,16 @@
 	}
 #>
 
-<# var mainNamespace = host.CurrentNamespace(); #>
-<# if (deltaPage) { #>
-import <#=mainNamespace#>.http.DeltaCollectionPage;
-<# } else { #>
-import <#=mainNamespace#>.http.BaseCollectionPage;
-<# } #>
 <# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
-import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
-import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
-import <#=importNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
+<# if (deltaPage) { #>
+import <#=importNamespace#>.http.DeltaCollectionPage;
+<# } else { #>
+import <#=importNamespace#>.http.BaseCollectionPage;
+<# } #>
+<# var mainNamespace = host.CurrentNamespace(); #>
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionRequestBuilder()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionPage()#>;
+import <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeCollectionResponse()#>;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionPage(), (deltaPage ? "DeltaCollectionPage" : "BaseCollectionPage")+"<"+ (c.AsOdcmMethod().ReturnType ?? c.AsOdcmMethod().Class).TypeName() + ", "+c.TypeCollectionRequestBuilder()+">", null, c.Deprecation?.Description)#>
 
