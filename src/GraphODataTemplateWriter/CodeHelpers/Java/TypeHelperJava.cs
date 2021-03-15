@@ -1065,7 +1065,7 @@ import javax.annotation.Nonnull;";
                     (p.IsDeprecated ? $"\r\n     * @deprecated {p.Deprecation?.Description}" : string.Empty),
                     p.ParamName(),
                     p.ParamName().ToUpperFirstChar(),
-                    (p.IsNullable() ? "\r\n\t@Nullable" : string.Empty),
+                    (p.IsNullable() ? "\r\n\t@Nullable" : "\r\n\t@Nonnull"),
                     (p.IsDeprecated ? "\r\n@Deprecated" : string.Empty),
                     p.ParamType(),
                     p.ParamName().SanitizePropertyName(p).ToLowerFirstChar()
