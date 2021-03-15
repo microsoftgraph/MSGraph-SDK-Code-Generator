@@ -13,6 +13,8 @@
 #import "MSGraphTestTypeRequest.h"
 #import "MSGraphTestTypeQueryRequestBuilder.h"
 #import "MSGraphTestTypeQueryRequest.h"
+#import "MSGraphPrintRequestBuilder.h"
+#import "MSGraphPrintRequest.h"
 #import "MSGraphEntityType2RequestBuilder.h"
 #import "MSGraphEntityType2Request.h"
 #import "MSGraphEntityType3RequestBuilder.h"
