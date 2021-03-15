@@ -1,0 +1,218 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = c.TypeRequestBuilder();#>
+<#=writer.WriteHeader()#>
+<#=host.CreatePackageDef()#>
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+import <#=importNamespace#>.core.IBaseClient;
+import <#=importNamespace#>.http.BaseRequestBuilder;
+<# var mainNamespace = host.CurrentNamespace(); #>
+<#
+foreach (var method in c.AsOdcmClass().MethodsAndOverloads().Where(x => !x.IsBoundToCollection && x.MethodHasParameters()).Select(x => mainNamespace + "." + c.GetPackagePrefix() + "." + x.TypeParameterSet()).Distinct()) {
+#>
+import <#=method#>;
+<# } #>
+
+<#=TypeHelperJava.CreateClassDef(c.TypeRequestBuilder(), "BaseRequestBuilder<"+c.TypeName()+">", null, c.Deprecation?.Description)#>
+
+    /**
+     * The request builder for the <#=c.TypeName()#>
+     *
+     * @param requestUrl     the request URL
+     * @param client         the service client
+     * @param requestOptions the options for this request
+     */
+    public <#=c.TypeRequestBuilder()#>(@Nonnull final String requestUrl, @Nonnull final <#=c.IBaseClientType()#><?> client, @Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+        super(requestUrl, client, requestOptions);
+    }
+
+    /**
+     * Creates the request
+     *
+     * @param requestOptions the options for this request
+     * @return the <#=c.TypeRequest()#> instance
+     */
+    @Nonnull
+    public <#=c.TypeRequest()#> buildRequest(@Nullable final com.microsoft.graph.options.Option... requestOptions) {
+        return buildRequest(getOptions(requestOptions));
+    }
+
+    /**
+     * Creates the request with specific requestOptions instead of the existing requestOptions
+     *
+     * @param requestOptions the options for this request
+     * @return the <#=c.TypeRequest()#> instance
+     */
+    @Nonnull
+    public <#=c.TypeRequest()#> buildRequest(@Nonnull final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
+        return new <#=mainNamespace#>.<#=TypeHelperJava.GetPrefixForRequests()#>.<#=c.TypeRequest()#>(getRequestUrl(), getClient(), requestOptions);
+    }
+
+<#
+	if(host.TemplateName.Equals("DriveItemRequestBuilder")){
+#>
+    /**
+     * Gets a request builder to the specific path on the drive
+     * @param path path to the query on the drive
+     * @return a request builder to the specified path
+     */
+    @Nonnull
+    public DriveItemRequestBuilder itemWithPath(@Nonnull final String path) {
+        return new DriveItemRequestBuilder(getRequestUrl() + ":/" + path + ":", getClient(), null);
+    }
+<# } else if(host.TemplateName.Equals("ThumbnailSetRequestBuilder")){ #>
+    /**
+     * Gets a request builder to get the thumbnail of a certain size
+     * @param size the size to get
+     * @return a request builder to get the thumbnail of a certain size
+     */
+    @Nonnull
+    public ThumbnailRequestBuilder getThumbnailSize(@Nonnull final String size) {
+        return new ThumbnailRequestBuilder(getRequestUrlWithAdditionalSegment(size), getClient(), /* options */ null);
+    }
+<# } #>
+
+<#
+if (c.AsOdcmClass() != null)
+{
+    foreach(var prop in c.AsOdcmClass().NavigationProperties(true))
+    {
+        var propName = prop.Name.ToUpperFirstChar();
+		var sanitizedProperty = propName.SanitizePropertyName().ToLowerFirstChar();
+        var propRequestBuilder = prop.TypeRequestBuilder();
+        if (prop.IsCollection()) {
+#>
+    /**
+     *  Gets a request builder for the <#=prop.TypeName() #> collection
+     *
+     * @return the collection request builder
+     */
+    @Nonnull
+    public <#=prop.TypeCollectionRequestBuilder()#> <#=sanitizedProperty#>() {
+        return new <#=prop.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>")<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
+    }
+
+    /**
+     * Gets a request builder for the <#=prop.TypeName() #> item
+     *
+     * @return the request builder
+     * @param id the item identifier
+     */
+    @Nonnull
+    public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>(@Nonnull final String id) {
+        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.ParentPropertyType == null ? prop.Name : prop.ParentPropertyType.Name #>") + "/" + id<# if(prop.ParentPropertyType != null) { #> + "/<#=prop.Projection.Type.FullName#>"<# } #>, getClient(), null);
+    }
+<#
+        } else {
+#>
+
+    /**
+     * Gets the request builder for <#=prop.TypeName()#>
+     *
+     * @return the <#=prop.TypeRequestBuilder()#> instance
+     */
+    @Nonnull
+    public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>() {
+        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+<#
+        }
+    }
+#>
+<#
+	foreach (var prop in c.AsOdcmClass().GetProperties(typeName:"Stream"))
+	{
+		var propName = prop.Name.ToCheckedCase();
+		var sanitizedName = propName;
+		if (c is OdcmMediaClass && propName == "Content") {
+			 sanitizedName = prop.Type.GetReservedPrefix().ToCheckedCase() + prop.Name.ToCheckedCase();
+		} else {
+			sanitizedName = propName.SanitizePropertyName().ToLowerFirstChar();
+		}
+		var propRequestBuilder = prop.TypeRequestBuilder();
+#>
+
+    /**
+     * Gets the request builder for <#=sanitizedName#>
+     *
+     * @return the <#=propRequestBuilder#> instance
+     */
+    @Nonnull
+    public <#=propRequestBuilder#> <#=sanitizedName#>() {
+        return new <#=propRequestBuilder#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    }
+<#
+	}
+#>
+<#
+    if (c is OdcmMediaClass)
+    {
+#>
+
+    /**
+     * Gets a request builder to get the binary value of the object
+     * @return the stream request builder
+     */
+    @Nonnull
+    public <#=c.TypeStreamRequestBuilder()#> content() {
+        return new <#=c.TypeStreamRequestBuilder()#>(getRequestUrlWithAdditionalSegment("$value"), getClient(), null);
+    }
+<#
+    }
+#>
+<#
+    foreach (var method in c.AsOdcmClass().MethodsAndOverloadsWithDistinctName()) {
+
+        if (method.IsBoundToCollection) {
+            continue;
+        }
+
+		var sanitizedMethod = method.MethodName().SanitizePropertyName().ToLowerFirstChar();
+
+        if (method.IsCollection) {
+#>
+
+    /**
+     * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
+     * @return the request builder collection
+<#if(method.MethodHasParameters()) { #>
+     * @param parameters the parameters for the service method
+<# } #>
+<# if(method.IsDeprecated) {#>
+     * @deprecated <#= method?.Deprecation?.Description #>
+<# } #>
+     */
+<# if(method.IsDeprecated) {#>
+    @Deprecated
+<# } #>
+    @Nonnull
+    public <#=method.TypeCollectionRequestBuilder()#> <#=sanitizedMethod#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
+        return new <#=method.TypeCollectionRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
+    }
+<#      } else { #>
+
+    /**
+     * <#=TypeHelperJava.GetSanitizedDescription(method) ?? "Gets a builder to execute the method" #>
+     * @return the request builder
+<#if(method.MethodHasParameters()) { #>
+     * @param parameters the parameters for the service method
+<# } #>
+<# if(method.IsDeprecated) {#>
+     * @deprecated <#= method?.Deprecation?.Description #>
+<# } #>
+     */
+<# if(method.IsDeprecated) {#>
+    @Deprecated
+<# } #>
+    @Nonnull
+    public <#=method.TypeRequestBuilder()#> <#=sanitizedMethod#>(<#if(method.MethodHasParameters()) { #>@Nonnull final <#=method.TypeParameterSet()#> parameters<# } #>) {
+        return new <#=method.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=method.MethodFullName()#>"), getClient(), null<#if(method.MethodHasParameters()) { #>, parameters<# } #>);
+    }
+<#
+        }
+    }
+}
+#>
+}

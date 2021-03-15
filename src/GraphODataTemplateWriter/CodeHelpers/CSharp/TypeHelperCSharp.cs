@@ -232,7 +232,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static string GetDeprecationString(this OdcmObject instance)
         {
-            if (instance.Deprecation != null)
+            if (instance.IsDeprecated)
             {
                 return String.Format(DeprecationString, instance.Deprecation.Description);
             }

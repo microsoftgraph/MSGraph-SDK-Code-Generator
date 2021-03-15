@@ -1,0 +1,40 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#=writer.WriteHeader()#>
+<#=host.CreatePackageDefForEnum()#>
+
+/**
+ * The Enum <#=c.Name.ToUpperFirstChar().SplitCamelCase()#>.
+<# if(c.IsDeprecated) {#>
+ * @deprecated <#= c?.Deprecation?.Description #>
+<# } #>
+*/
+<# if(c.IsDeprecated) {#>
+@Deprecated
+<# } #>
+public enum <#= c.Name.ToUpperFirstChar()#>
+{
+<#
+    foreach(var value in c.AsOdcmEnum().Members.GroupBy(x => x.Name.ToUnderscore().ToUpper()).Select(x => x.First()).ToList())
+    {
+#>
+    /**
+    * <#= value.Name.SplitCamelCase()#>
+<# if(value.IsDeprecated) {#>
+    * @deprecated <#= value.Deprecation?.Description #>
+<# } #>
+    */
+<# if(value.IsDeprecated) {#>
+    @Deprecated
+<# } #>
+    <#= value.Name.ToUnderscore().ToUpper() #>,
+<#
+    }
+#>
+    /**
+    * <#= String.Format("For {0} values that were not expected from the service", c.Name.ToUpperFirstChar())#>
+    */
+    UNEXPECTED_VALUE
+}
