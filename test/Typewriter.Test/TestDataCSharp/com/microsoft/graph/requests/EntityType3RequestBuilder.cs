@@ -70,19 +70,6 @@ namespace Microsoft.Graph
                 SingleSession,
                 Comment);
         }
-
-        /// <summary>
-        /// Gets the request builder for EntityType3ActOnEntityType3.
-        /// </summary>
-        /// <returns>The <see cref="IEntityType3ActOnEntityType3RequestBuilder"/>.</returns>
-        public IEntityType3ActOnEntityType3RequestBuilder ActOnEntityType3(
-            IEnumerable<string> Name)
-        {
-            return new EntityType3ActOnEntityType3RequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.ActOnEntityType3"),
-                this.Client,
-                Name);
-        }
     
     }
 }

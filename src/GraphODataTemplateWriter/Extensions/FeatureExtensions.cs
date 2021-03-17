@@ -20,6 +20,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         public bool CanFilter { get { return _projection.BooleanValueOf("Filterable") != false; } }
         public bool CanSkip { get { return _projection.BooleanValueOf("SkipSupported") != false; } }
         public bool CanSort { get { return _projection.BooleanValueOf("Sortable") != false; } }
+        public bool CanCount { get { return _projection.BooleanValueOf("Countable") != false; }
+        }
     }
 
     public static class OdcmTypeFeatureExtensions

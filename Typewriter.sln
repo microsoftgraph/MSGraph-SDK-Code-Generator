@@ -5,12 +5,9 @@ VisualStudioVersion = 16.0.30406.217
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphODataTemplateWriter", "src\GraphODataTemplateWriter\GraphODataTemplateWriter.csproj", "{E6B5202F-4F66-428A-AB92-0AAA11BA81DE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Templates", "Templates\Templates.csproj", "{5F526973-F69E-4C26-B8AD-612590A17A9E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphODataTemplateWriter.Test", "GraphODataTemplateWriter.Test\GraphODataTemplateWriter.Test.csproj", "{2256EC8D-FD7E-4A49-B616-70755AFC9F6C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE} = {E6B5202F-4F66-428A-AB92-0AAA11BA81DE}
-		{5F526973-F69E-4C26-B8AD-612590A17A9E} = {5F526973-F69E-4C26-B8AD-612590A17A9E}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typewriter", "src\Typewriter\Typewriter.csproj", "{CA08F5D7-AA00-462E-BE5E-E4F54C257FA5}"
@@ -20,6 +17,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vipr.Reader.OData.v4", "submodules\vipr\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj", "{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typewriter.Test", "test\Typewriter.Test\Typewriter.Test.csproj", "{4F1B8EF2-EAFD-4DDB-B688-1A134524047B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E6B5202F-4F66-428A-AB92-0AAA11BA81DE} = {E6B5202F-4F66-428A-AB92-0AAA11BA81DE}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vipr", "submodules\vipr\src\Core\Vipr\Vipr.csproj", "{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}"
 EndProject
@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Templates", "Templates\Templates.csproj", "{EADCAD53-C4D8-43D7-AEBE-BED3944D1D4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{928726B0-8D55-485A-9925-86C71CEBF4CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{928726B0-8D55-485A-9925-86C71CEBF4CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{928726B0-8D55-485A-9925-86C71CEBF4CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EADCAD53-C4D8-43D7-AEBE-BED3944D1D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EADCAD53-C4D8-43D7-AEBE-BED3944D1D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EADCAD53-C4D8-43D7-AEBE-BED3944D1D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EADCAD53-C4D8-43D7-AEBE-BED3944D1D4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

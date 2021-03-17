@@ -39,7 +39,7 @@ if (entity.Base != null)
 
 var attributeStringBuilder = new StringBuilder();
 
-if (entity.Deprecation != null)
+if (entity.IsDeprecated)
 {
    attributeStringBuilder.Append(entity.GetDeprecationString());
 }
@@ -109,7 +109,7 @@ if (attributeStringBuilder.Length > 0) {
                     ? propertyTypeString
                     : propertyTypeString + "?";
 
-            // We want to disambiguate structural property return types in case there is a naming 
+            // We want to disambiguate structural property return types in case there is a naming
             // collision with a request builder, like what we had for the Search entity, and the SearchRequest
             // complex type.
             if (propertyType.EndsWith("Request") && property.IsNavigation() == false)
@@ -122,7 +122,7 @@ if (attributeStringBuilder.Length > 0) {
 
             var attributeDefinition = string.Format("[JsonPropertyName(\"{0}\")]", property.Name);
 
-            if (property.Deprecation != null)
+            if (property.IsDeprecated)
             {
                 attributeDefinition = property.GetDeprecationString() + Environment.NewLine + "        " + attributeDefinition;
             }

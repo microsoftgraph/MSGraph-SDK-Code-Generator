@@ -5,6 +5,7 @@
     <RootNamespace>Microsoft.Graph.ODataTemplateWriter</RootNamespace>
     <RestorePackages>true</RestorePackages>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>$(ProjectDir)bin\Debug\</OutputPath>

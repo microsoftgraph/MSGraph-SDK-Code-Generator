@@ -9,6 +9,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
     using System.Collections.Generic;
     using System.Linq;
     using Vipr.Core.CodeModel;
+    using System.Text.RegularExpressions;
 
     public static class OdcmModelExtensions
     {
@@ -207,7 +208,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 var thisType = (host.CurrentType as OdcmProperty).Projection.Type;
                 var thisNamespace = thisType.Namespace.Name.AddPrefix();
                 var thisTypeName = thisType.Name.ToUpperFirstChar();
-                importStatement = $"\nimport {thisNamespace}.models.extensions.{thisTypeName};";
+                importStatement = $"\nimport {thisNamespace}.models.{thisTypeName};";
             }
 
             return importStatement;
@@ -340,11 +341,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return property.IsLink;
         }
 
+        private static Regex castOverloadsFilter = new Regex(@"As[A-Z]");
         public static bool IsReference(this OdcmProperty property)
         {
             var propertyClass = property.Class.AsOdcmClass();
 
-            return propertyClass.Kind != OdcmClassKind.Service && property.IsLink && !property.ContainsTarget;
+            return propertyClass.Kind != OdcmClassKind.Service && property.IsLink && !property.ContainsTarget && !castOverloadsFilter.IsMatch(property.Name);
         }
 
         public static bool HasActions(this OdcmClass odcmClass)
@@ -519,11 +521,40 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
             return parameters.Distinct(paramComparer).ToList();
         }
+        /// <summary>
+        /// Deduplicates the parameter list for a set of methods. 
+        /// </summary>
+        /// <param name="odcmMethods">Methods with potential overloads and duplicate parameters across overloads.</param>
+        /// <returns>A deduplicated list of OdcmParameter.</returns>
+        public static List<OdcmParameter> WithDistinctParameters(this IEnumerable<OdcmMethod> odcmMethods)
+        {
+            return odcmMethods?.SelectMany(x => x.Parameters)?.Distinct(paramComparer)?.ToList();
+        }
 
         /// Returns a List containing the supplied class' methods plus their overloads
         public static IEnumerable<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
         {
-            return odcmClass.Methods.SelectMany(x => x.WithOverloads());
+            return odcmClass
+                    ?.Methods
+                    ?.SelectMany(x => x.WithOverloads())
+                    ?.Union(odcmClass?.Base?.MethodsAndOverloads() ?? Enumerable.Empty<OdcmMethod>()) ?? Enumerable.Empty<OdcmMethod>();
+        }
+        private static readonly OdcmMethodEqualityComparer methodNameAndParametersCountComparer = new OdcmMethodEqualityComparer {
+            CompareParameters = false,
+            CompareParametersCount = false,
+            CompareHasParameters = true,
+        };
+        public static IEnumerable<OdcmMethod> MethodsAndOverloadsWithDistinctName(this OdcmClass odcmClass)
+        {
+            return odcmClass
+                    ?.Methods
+                    ?.SelectMany(x => x.WithOverloads())
+                    ?.Union(odcmClass?.Base?.MethodsAndOverloadsWithDistinctName() ?? Enumerable.Empty<OdcmMethod>())
+                    ?.Distinct(methodNameAndParametersCountComparer) ?? Enumerable.Empty<OdcmMethod>();
+        }
+        public static IEnumerable<OdcmMethod> WithOverloadsOfDistinctName(this OdcmMethod m)
+        {
+            return m?.WithOverloads()?.Distinct(methodNameAndParametersCountComparer) ?? Enumerable.Empty<OdcmMethod>();
         }
 
         /// <summary>
