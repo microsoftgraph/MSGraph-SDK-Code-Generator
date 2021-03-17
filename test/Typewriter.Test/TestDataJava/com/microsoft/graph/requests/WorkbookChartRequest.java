@@ -3,14 +3,15 @@
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-package com.microsoft.graph.requests.extensions;
+package com.microsoft.graph.requests;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.models.extensions.WorkbookChart;
+import com.microsoft.graph.models.WorkbookChart;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequest;
 import com.microsoft.graph.http.HttpMethod;
@@ -20,7 +21,7 @@ import com.microsoft.graph.http.HttpMethod;
 /**
  * The class for the Workbook Chart Request.
  */
-public class WorkbookChartRequest extends BaseRequest implements IWorkbookChartRequest {
+public class WorkbookChartRequest extends BaseRequest<WorkbookChart> {
 	
     /**
      * The request for the WorkbookChart
@@ -29,17 +30,18 @@ public class WorkbookChartRequest extends BaseRequest implements IWorkbookChartR
      * @param client         the service client
      * @param requestOptions the options for this request
      */
-    public WorkbookChartRequest(final String requestUrl, final IBaseClient client, final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
+    public WorkbookChartRequest(@Nonnull final String requestUrl, @Nonnull final IBaseClient<?> client, @Nullable final java.util.List<? extends com.microsoft.graph.options.Option> requestOptions) {
         super(requestUrl, client, requestOptions, WorkbookChart.class);
     }
 
     /**
      * Gets the WorkbookChart from the service
      *
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void get(final ICallback<? super WorkbookChart> callback) {
-        send(HttpMethod.GET, callback, null);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<WorkbookChart> getAsync() {
+        return sendAsync(HttpMethod.GET, null);
     }
 
     /**
@@ -48,6 +50,7 @@ public class WorkbookChartRequest extends BaseRequest implements IWorkbookChartR
      * @return the WorkbookChart from the request
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
+    @Nullable
     public WorkbookChart get() throws ClientException {
        return send(HttpMethod.GET, null);
     }
@@ -55,29 +58,33 @@ public class WorkbookChartRequest extends BaseRequest implements IWorkbookChartR
     /**
      * Delete this item from the service
      *
-     * @param callback the callback when the deletion action has completed
+     * @return a future with the deletion result
      */
-    public void delete(final ICallback<? super WorkbookChart> callback) {
-        send(HttpMethod.DELETE, callback, null);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<WorkbookChart> deleteAsync() {
+        return sendAsync(HttpMethod.DELETE, null);
     }
 
     /**
      * Delete this item from the service
+     * @return the resulting response if the service returns anything on deletion
      *
      * @throws ClientException if there was an exception during the delete operation
      */
-    public void delete() throws ClientException {
-        send(HttpMethod.DELETE, null);
+    @Nullable
+    public WorkbookChart delete() throws ClientException {
+        return send(HttpMethod.DELETE, null);
     }
 
     /**
      * Patches this WorkbookChart with a source
      *
      * @param sourceWorkbookChart the source object with updates
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void patch(final WorkbookChart sourceWorkbookChart, final ICallback<? super WorkbookChart> callback) {
-        send(HttpMethod.PATCH, callback, sourceWorkbookChart);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<WorkbookChart> patchAsync(@Nonnull final WorkbookChart sourceWorkbookChart) {
+        return sendAsync(HttpMethod.PATCH, sourceWorkbookChart);
     }
 
     /**
@@ -87,7 +94,8 @@ public class WorkbookChartRequest extends BaseRequest implements IWorkbookChartR
      * @return the updated WorkbookChart
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public WorkbookChart patch(final WorkbookChart sourceWorkbookChart) throws ClientException {
+    @Nullable
+    public WorkbookChart patch(@Nonnull final WorkbookChart sourceWorkbookChart) throws ClientException {
         return send(HttpMethod.PATCH, sourceWorkbookChart);
     }
 
@@ -95,10 +103,11 @@ public class WorkbookChartRequest extends BaseRequest implements IWorkbookChartR
      * Creates a WorkbookChart with a new object
      *
      * @param newWorkbookChart the new object to create
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void post(final WorkbookChart newWorkbookChart, final ICallback<? super WorkbookChart> callback) {
-        send(HttpMethod.POST, callback, newWorkbookChart);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<WorkbookChart> postAsync(@Nonnull final WorkbookChart newWorkbookChart) {
+        return sendAsync(HttpMethod.POST, newWorkbookChart);
     }
 
     /**
@@ -108,7 +117,8 @@ public class WorkbookChartRequest extends BaseRequest implements IWorkbookChartR
      * @return the created WorkbookChart
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public WorkbookChart post(final WorkbookChart newWorkbookChart) throws ClientException {
+    @Nullable
+    public WorkbookChart post(@Nonnull final WorkbookChart newWorkbookChart) throws ClientException {
         return send(HttpMethod.POST, newWorkbookChart);
     }
 
@@ -116,10 +126,11 @@ public class WorkbookChartRequest extends BaseRequest implements IWorkbookChartR
      * Creates a WorkbookChart with a new object
      *
      * @param newWorkbookChart the object to create/update
-     * @param callback the callback to be called after success or failure
+     * @return a future with the result
      */
-    public void put(final WorkbookChart newWorkbookChart, final ICallback<? super WorkbookChart> callback) {
-        send(HttpMethod.PUT, callback, newWorkbookChart);
+    @Nonnull
+    public java.util.concurrent.CompletableFuture<WorkbookChart> putAsync(@Nonnull final WorkbookChart newWorkbookChart) {
+        return sendAsync(HttpMethod.PUT, newWorkbookChart);
     }
 
     /**
@@ -129,7 +140,8 @@ public class WorkbookChartRequest extends BaseRequest implements IWorkbookChartR
      * @return the created WorkbookChart
      * @throws ClientException this exception occurs if the request was unable to complete for any reason
      */
-    public WorkbookChart put(final WorkbookChart newWorkbookChart) throws ClientException {
+    @Nullable
+    public WorkbookChart put(@Nonnull final WorkbookChart newWorkbookChart) throws ClientException {
         return send(HttpMethod.PUT, newWorkbookChart);
     }
 
@@ -139,9 +151,10 @@ public class WorkbookChartRequest extends BaseRequest implements IWorkbookChartR
      * @param value the select clause
      * @return the updated request
      */
-     public IWorkbookChartRequest select(final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$select", value));
-         return (WorkbookChartRequest)this;
+     @Nonnull
+     public WorkbookChartRequest select(@Nonnull final String value) {
+         addSelectOption(value);
+         return this;
      }
 
     /**
@@ -150,9 +163,10 @@ public class WorkbookChartRequest extends BaseRequest implements IWorkbookChartR
      * @param value the expand clause
      * @return the updated request
      */
-     public IWorkbookChartRequest expand(final String value) {
-         getQueryOptions().add(new com.microsoft.graph.options.QueryOption("$expand", value));
-         return (WorkbookChartRequest)this;
+     @Nonnull
+     public WorkbookChartRequest expand(@Nonnull final String value) {
+         addExpandOption(value);
+         return this;
      }
 
 }

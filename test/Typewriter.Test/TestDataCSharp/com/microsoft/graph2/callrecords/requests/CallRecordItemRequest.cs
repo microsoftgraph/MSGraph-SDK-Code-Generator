@@ -61,7 +61,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="callrecord">The CallRecord object set with the properties to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<CallRecord> PatchAsync(CallRecord callrecord, 
+        public System.Threading.Tasks.Task<CallRecord> PatchAsync(CallRecord callrecord,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = HttpMethods.PATCH;
@@ -86,7 +86,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="callrecord">The CallRecord object to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<CallRecord> PutAsync(CallRecord callrecord, 
+        public System.Threading.Tasks.Task<CallRecord> PutAsync(CallRecord callrecord,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Method = HttpMethods.PUT;
