@@ -59,7 +59,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
     public function getType()
     {
         if (array_key_exists("type", $this->_propDict)) {
-            if (is_a($this->_propDict["type"], "Beta\Microsoft\Graph\CallRecords\Model\CallType")) {
+            if (is_a($this->_propDict["type"], "\Beta\Microsoft\Graph\CallRecords\Model\CallType")) {
                 return $this->_propDict["type"];
             } else {
                 $this->_propDict["type"] = new CallType($this->_propDict["type"]);
@@ -206,15 +206,15 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the organizer
     *
-    * @return Beta\Microsoft\Graph\Model\IdentitySet The organizer
+    * @return \Beta\Microsoft\Graph\Model\IdentitySet The organizer
     */
     public function getOrganizer()
     {
         if (array_key_exists("organizer", $this->_propDict)) {
-            if (is_a($this->_propDict["organizer"], "Beta\Microsoft\Graph\Model\IdentitySet")) {
+            if (is_a($this->_propDict["organizer"], "\Beta\Microsoft\Graph\Model\IdentitySet")) {
                 return $this->_propDict["organizer"];
             } else {
-                $this->_propDict["organizer"] = new Beta\Microsoft\Graph\Model\IdentitySet($this->_propDict["organizer"]);
+                $this->_propDict["organizer"] = new \Beta\Microsoft\Graph\Model\IdentitySet($this->_propDict["organizer"]);
                 return $this->_propDict["organizer"];
             }
         }
@@ -224,7 +224,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Sets the organizer
     *
-    * @param Beta\Microsoft\Graph\Model\IdentitySet $val The organizer
+    * @param \Beta\Microsoft\Graph\Model\IdentitySet $val The organizer
     *
     * @return CallRecord
     */
@@ -252,7 +252,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
     /** 
     * Sets the participants
     *
-    * @param Beta\Microsoft\Graph\Model\IdentitySet $val The participants
+    * @param \Beta\Microsoft\Graph\Model\IdentitySet $val The participants
     *
     * @return CallRecord
     */
@@ -335,7 +335,7 @@ class CallRecord extends \Beta\Microsoft\Graph\Model\Entity
     /** 
     * Sets the recipients
     *
-    * @param Beta\Microsoft\Graph\Model\EntityType2 $val The recipients
+    * @param \Beta\Microsoft\Graph\Model\EntityType2 $val The recipients
     *
     * @return CallRecord
     */
