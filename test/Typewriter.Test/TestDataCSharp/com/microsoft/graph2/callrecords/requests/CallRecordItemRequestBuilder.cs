@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -63,12 +63,12 @@ namespace Microsoft.Graph2.CallRecords
         /// Gets the request builder for Recipients.
         /// 
         /// </summary>
-        /// <returns>The <see cref="IEntityType2RequestBuilder"/>.</returns>
-        public IEntityType2RequestBuilder Recipients
+        /// <returns>The <see cref="Microsoft.Graph.IEntityType2RequestBuilder"/>.</returns>
+        public Microsoft.Graph.IEntityType2RequestBuilder Recipients
         {
             get
             {
-                return new EntityType2RequestBuilder(this.AppendSegmentToRequestUrl("recipients"), this.Client);
+                return new Microsoft.Graph.EntityType2RequestBuilder(this.AppendSegmentToRequestUrl("recipients"), this.Client);
             }
         }
         /// <summary>
