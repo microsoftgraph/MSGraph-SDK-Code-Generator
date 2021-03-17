@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -35,8 +35,8 @@ namespace Microsoft.Graph2.CallRecords
         /// Gets the request builder for Recipients.
         /// 
         /// </summary>
-        /// <returns>The <see cref="IEntityType2RequestBuilder"/>.</returns>
-        IEntityType2RequestBuilder Recipients  { get; }
+        /// <returns>The <see cref="Microsoft.Graph.IEntityType2RequestBuilder"/>.</returns>
+        Microsoft.Graph.IEntityType2RequestBuilder Recipients  { get; }
         /// <summary>
         /// Gets the request builder for Sessions.
         /// 

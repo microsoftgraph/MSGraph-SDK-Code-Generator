@@ -1,0 +1,110 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Launch Java v1 gen",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+			"args": [
+                "-v",
+                "Info",
+                "-m",
+                "C:/sources/github/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml",
+                "-g",
+                "Files",
+                "-l",
+                "Java",
+                "-o",
+                "C:/sources/github/msgraph-sdk-java/src/main/java",
+                "-e",
+                "v1.0"
+            ],
+			"cwd": "${workspaceFolder}/src/Typewriter",
+			"console": "internalConsole",
+			"stopAtEntry": false
+        },
+        {
+			"name": "Launch Java beta gen",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+			"args": [
+                "-v",
+                "Info",
+                "-m",
+                "C:/sources/github/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml",
+                "-g",
+                "Files",
+                "-l",
+                "Java",
+                "-o",
+                "C:/sources/github/msgraph-beta-sdk-java/src/main/java",
+                "-e",
+                "beta"
+            ],
+			"cwd": "${workspaceFolder}/src/Typewriter",
+			"console": "internalConsole",
+			"stopAtEntry": false
+        },
+        {
+			"name": "Launch test data Java v1 gen",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+			"args": [
+                "-v",
+                "Info",
+                "-m",
+                "C:/sources/github/MSGraph-SDK-Code-Generator/test/Typewriter.Test/Metadata/MetadataMultipleNamespaces.xml",
+                "-g",
+                "Files",
+                "-l",
+                "Java",
+                "-o",
+                "C:/sources/github/MSGraph-SDK-Code-Generator/test/Typewriter.Test/TestDataJava",
+                "-e",
+                "v1.0"
+            ],
+			"cwd": "${workspaceFolder}/src/Typewriter",
+			"console": "internalConsole",
+			"stopAtEntry": false
+        },
+        {
+			"name": "Launch test data Java beta gen",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+			"args": [
+                "-v",
+                "Info",
+                "-m",
+                "C:/sources/github/MSGraph-SDK-Code-Generator/test/Typewriter.Test/Metadata/MetadataMultipleNamespaces.xml",
+                "-g",
+                "Files",
+                "-l",
+                "Java",
+                "-o",
+                "C:/sources/github/MSGraph-SDK-Code-Generator/test/Typewriter.Test/TestDataJavaBeta",
+                "-e",
+                "beta"
+            ],
+			"cwd": "${workspaceFolder}/src/Typewriter",
+			"console": "internalConsole",
+			"stopAtEntry": false
+		},
+		{
+			"name": ".NET Core Attach",
+			"type": "coreclr",
+			"request": "attach",
+			"processId": "${command:pickProcess}"
+		}
+	]
+}

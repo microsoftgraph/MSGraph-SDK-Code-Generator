@@ -232,7 +232,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static string GetDeprecationString(this OdcmObject instance)
         {
-            if (instance.Deprecation != null)
+            if (instance.IsDeprecated)
             {
                 return String.Format(DeprecationString, instance.Deprecation.Description);
             }
@@ -517,10 +517,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         /// <returns></returns>
         public static List<NavigationPropertyInfo> GetAllNavigationPropertyInfo(this List<OdcmProperty> navProperties)
         {
+            var classNamespace = navProperties.FirstOrDefault()?.GetClassNamespace();
             return navProperties.Select(p =>
             {
-                var returnClassRequestBuilderName = String.Format("{0}RequestBuilder", p.Type.Name.ToCheckedCase());
-                var returnInterfaceRequestBuilderName = String.Format("I{0}", returnClassRequestBuilderName);
+                var returnClassRequestBuilderName = p.Type.GetTypeString(classNamespace, "{0}RequestBuilder");
+                var returnInterfaceRequestBuilderName = p.Type.GetTypeString(classNamespace, "I{0}RequestBuilder");
                 var name = p.Name.ToCheckedCase();
                 var segment = p.Name;
                 var description = p.Description ?? string.Empty;
