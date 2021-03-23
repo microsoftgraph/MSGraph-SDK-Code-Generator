@@ -58,7 +58,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     // Check whether this type is a generated model type or a PHP type
     var fullPropertyTypeName = propertyTypeString[0] == '\\' || propertyTypeString.IsPHPPrimitiveType()
                                 ? propertyTypeString
-                                : string.Join("\\", propertyNamespace, propertyTypeString.SanitizeEntityName().ToCheckedCase());
+                                : '\\' + string.Join("\\", propertyNamespace, propertyTypeString.SanitizeEntityName().ToCheckedCase());
 
     var propertyTypeReference = propertyNamespace == targetNamespace && !propertyTypeString.IsPHPPrimitiveType()
                                 ? propertyTypeString.SanitizeEntityName().ToCheckedCase()

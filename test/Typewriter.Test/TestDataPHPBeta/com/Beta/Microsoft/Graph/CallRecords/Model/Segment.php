@@ -94,7 +94,7 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     public function getCaller()
     {
         if (array_key_exists("caller", $this->_propDict)) {
-            if (is_a($this->_propDict["caller"], "Beta\Microsoft\Graph\CallRecords\Model\Endpoint")) {
+            if (is_a($this->_propDict["caller"], "\Beta\Microsoft\Graph\CallRecords\Model\Endpoint")) {
                 return $this->_propDict["caller"];
             } else {
                 $this->_propDict["caller"] = new Endpoint($this->_propDict["caller"]);
@@ -125,7 +125,7 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     public function getCallee()
     {
         if (array_key_exists("callee", $this->_propDict)) {
-            if (is_a($this->_propDict["callee"], "Beta\Microsoft\Graph\CallRecords\Model\Endpoint")) {
+            if (is_a($this->_propDict["callee"], "\Beta\Microsoft\Graph\CallRecords\Model\Endpoint")) {
                 return $this->_propDict["callee"];
             } else {
                 $this->_propDict["callee"] = new Endpoint($this->_propDict["callee"]);
@@ -156,7 +156,7 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     public function getFailureInfo()
     {
         if (array_key_exists("failureInfo", $this->_propDict)) {
-            if (is_a($this->_propDict["failureInfo"], "Beta\Microsoft\Graph\CallRecords\Model\FailureInfo")) {
+            if (is_a($this->_propDict["failureInfo"], "\Beta\Microsoft\Graph\CallRecords\Model\FailureInfo")) {
                 return $this->_propDict["failureInfo"];
             } else {
                 $this->_propDict["failureInfo"] = new FailureInfo($this->_propDict["failureInfo"]);
@@ -225,7 +225,7 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     /** 
     * Sets the refTypes
     *
-    * @param Beta\Microsoft\Graph\Model\EntityType3 $val The refTypes
+    * @param \Beta\Microsoft\Graph\Model\EntityType3 $val The refTypes
     *
     * @return Segment
     */
@@ -238,15 +238,15 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the refType
     *
-    * @return Beta\Microsoft\Graph\Model\Call The refType
+    * @return \Beta\Microsoft\Graph\Model\Call The refType
     */
     public function getRefType()
     {
         if (array_key_exists("refType", $this->_propDict)) {
-            if (is_a($this->_propDict["refType"], "Beta\Microsoft\Graph\Model\Call")) {
+            if (is_a($this->_propDict["refType"], "\Beta\Microsoft\Graph\Model\Call")) {
                 return $this->_propDict["refType"];
             } else {
-                $this->_propDict["refType"] = new Beta\Microsoft\Graph\Model\Call($this->_propDict["refType"]);
+                $this->_propDict["refType"] = new \Beta\Microsoft\Graph\Model\Call($this->_propDict["refType"]);
                 return $this->_propDict["refType"];
             }
         }
@@ -256,7 +256,7 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Sets the refType
     *
-    * @param Beta\Microsoft\Graph\Model\Call $val The refType
+    * @param \Beta\Microsoft\Graph\Model\Call $val The refType
     *
     * @return Segment
     */
@@ -274,7 +274,7 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     public function getSessionRef()
     {
         if (array_key_exists("sessionRef", $this->_propDict)) {
-            if (is_a($this->_propDict["sessionRef"], "Beta\Microsoft\Graph\CallRecords\Model\Session")) {
+            if (is_a($this->_propDict["sessionRef"], "\Beta\Microsoft\Graph\CallRecords\Model\Session")) {
                 return $this->_propDict["sessionRef"];
             } else {
                 $this->_propDict["sessionRef"] = new Session($this->_propDict["sessionRef"]);
@@ -305,7 +305,7 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     public function getPhoto()
     {
         if (array_key_exists("photo", $this->_propDict)) {
-            if (is_a($this->_propDict["photo"], "Beta\Microsoft\Graph\CallRecords\Model\Photo")) {
+            if (is_a($this->_propDict["photo"], "\Beta\Microsoft\Graph\CallRecords\Model\Photo")) {
                 return $this->_propDict["photo"];
             } else {
                 $this->_propDict["photo"] = new Photo($this->_propDict["photo"]);

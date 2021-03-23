@@ -32,7 +32,7 @@ class Photo extends \Beta\Microsoft\Graph\Model\Entity
     public function getFailureInfo()
     {
         if (array_key_exists("failureInfo", $this->_propDict)) {
-            if (is_a($this->_propDict["failureInfo"], "Beta\Microsoft\Graph\CallRecords\Model\FailureInfo")) {
+            if (is_a($this->_propDict["failureInfo"], "\Beta\Microsoft\Graph\CallRecords\Model\FailureInfo")) {
                 return $this->_propDict["failureInfo"];
             } else {
                 $this->_propDict["failureInfo"] = new FailureInfo($this->_propDict["failureInfo"]);
@@ -63,7 +63,7 @@ class Photo extends \Beta\Microsoft\Graph\Model\Entity
     public function getOption()
     {
         if (array_key_exists("option", $this->_propDict)) {
-            if (is_a($this->_propDict["option"], "Beta\Microsoft\Graph\CallRecords\Model\Option")) {
+            if (is_a($this->_propDict["option"], "\Beta\Microsoft\Graph\CallRecords\Model\Option")) {
                 return $this->_propDict["option"];
             } else {
                 $this->_propDict["option"] = new Option($this->_propDict["option"]);
