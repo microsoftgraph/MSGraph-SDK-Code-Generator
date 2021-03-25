@@ -27,15 +27,15 @@ class ParticipantEndpoint extends Endpoint
     /**
     * Gets the identity
     *
-    * @return Beta\Microsoft\Graph\Model\IdentitySet The identity
+    * @return \Beta\Microsoft\Graph\Model\IdentitySet The identity
     */
     public function getIdentity()
     {
         if (array_key_exists("identity", $this->_propDict)) {
-            if (is_a($this->_propDict["identity"], "Beta\Microsoft\Graph\Model\IdentitySet")) {
+            if (is_a($this->_propDict["identity"], "\Beta\Microsoft\Graph\Model\IdentitySet")) {
                 return $this->_propDict["identity"];
             } else {
-                $this->_propDict["identity"] = new Beta\Microsoft\Graph\Model\IdentitySet($this->_propDict["identity"]);
+                $this->_propDict["identity"] = new \Beta\Microsoft\Graph\Model\IdentitySet($this->_propDict["identity"]);
                 return $this->_propDict["identity"];
             }
         }
@@ -45,7 +45,7 @@ class ParticipantEndpoint extends Endpoint
     /**
     * Sets the identity
     *
-    * @param Beta\Microsoft\Graph\Model\IdentitySet $val The value to assign to the identity
+    * @param \Beta\Microsoft\Graph\Model\IdentitySet $val The value to assign to the identity
     *
     * @return ParticipantEndpoint The ParticipantEndpoint
     */
@@ -63,7 +63,7 @@ class ParticipantEndpoint extends Endpoint
     public function getFeedback()
     {
         if (array_key_exists("feedback", $this->_propDict)) {
-            if (is_a($this->_propDict["feedback"], "Beta\Microsoft\Graph\CallRecords\Model\UserFeedback")) {
+            if (is_a($this->_propDict["feedback"], "\Beta\Microsoft\Graph\CallRecords\Model\UserFeedback")) {
                 return $this->_propDict["feedback"];
             } else {
                 $this->_propDict["feedback"] = new UserFeedback($this->_propDict["feedback"]);

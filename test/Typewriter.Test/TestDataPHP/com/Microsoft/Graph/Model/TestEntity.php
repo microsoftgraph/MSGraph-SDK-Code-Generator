@@ -32,7 +32,7 @@ class TestEntity extends Entity
     public function getTestNav()
     {
         if (array_key_exists("testNav", $this->_propDict)) {
-            if (is_a($this->_propDict["testNav"], "Microsoft\Graph\Model\TestType")) {
+            if (is_a($this->_propDict["testNav"], "\Microsoft\Graph\Model\TestType")) {
                 return $this->_propDict["testNav"];
             } else {
                 $this->_propDict["testNav"] = new TestType($this->_propDict["testNav"]);
@@ -63,7 +63,7 @@ class TestEntity extends Entity
     public function getTestInvalidNav()
     {
         if (array_key_exists("testInvalidNav", $this->_propDict)) {
-            if (is_a($this->_propDict["testInvalidNav"], "Microsoft\Graph\Model\EntityType2")) {
+            if (is_a($this->_propDict["testInvalidNav"], "\Microsoft\Graph\Model\EntityType2")) {
                 return $this->_propDict["testInvalidNav"];
             } else {
                 $this->_propDict["testInvalidNav"] = new EntityType2($this->_propDict["testInvalidNav"]);
@@ -94,7 +94,7 @@ class TestEntity extends Entity
     public function getTestExplicitNav()
     {
         if (array_key_exists("testExplicitNav", $this->_propDict)) {
-            if (is_a($this->_propDict["testExplicitNav"], "Microsoft\Graph\Model\EntityType3")) {
+            if (is_a($this->_propDict["testExplicitNav"], "\Microsoft\Graph\Model\EntityType3")) {
                 return $this->_propDict["testExplicitNav"];
             } else {
                 $this->_propDict["testExplicitNav"] = new EntityType3($this->_propDict["testExplicitNav"]);

@@ -58,7 +58,7 @@ class Media extends \Microsoft\Graph\Model\Entity
     public function getCallerNetwork()
     {
         if (array_key_exists("callerNetwork", $this->_propDict)) {
-            if (is_a($this->_propDict["callerNetwork"], "Microsoft\Graph\CallRecords\Model\NetworkInfo")) {
+            if (is_a($this->_propDict["callerNetwork"], "\Microsoft\Graph\CallRecords\Model\NetworkInfo")) {
                 return $this->_propDict["callerNetwork"];
             } else {
                 $this->_propDict["callerNetwork"] = new NetworkInfo($this->_propDict["callerNetwork"]);
@@ -89,7 +89,7 @@ class Media extends \Microsoft\Graph\Model\Entity
     public function getCallerDevice()
     {
         if (array_key_exists("callerDevice", $this->_propDict)) {
-            if (is_a($this->_propDict["callerDevice"], "Microsoft\Graph\CallRecords\Model\DeviceInfo")) {
+            if (is_a($this->_propDict["callerDevice"], "\Microsoft\Graph\CallRecords\Model\DeviceInfo")) {
                 return $this->_propDict["callerDevice"];
             } else {
                 $this->_propDict["callerDevice"] = new DeviceInfo($this->_propDict["callerDevice"]);
@@ -120,7 +120,7 @@ class Media extends \Microsoft\Graph\Model\Entity
     public function getStreams()
     {
         if (array_key_exists("streams", $this->_propDict)) {
-            if (is_a($this->_propDict["streams"], "Microsoft\Graph\CallRecords\Model\MediaStream")) {
+            if (is_a($this->_propDict["streams"], "\Microsoft\Graph\CallRecords\Model\MediaStream")) {
                 return $this->_propDict["streams"];
             } else {
                 $this->_propDict["streams"] = new MediaStream($this->_propDict["streams"]);
