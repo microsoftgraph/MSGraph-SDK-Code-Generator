@@ -83,6 +83,22 @@ namespace Microsoft.Graph
         System.Threading.Tasks.Task<GraphResponse<SingletonEntity2>> UpdateResponseAsync(SingletonEntity2 singletonEntity2ToUpdate, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
+        /// Updates the specified SingletonEntity2 using PUT.
+        /// </summary>
+        /// <param name="singletonEntity2ToUpdate">The SingletonEntity2 object to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task<SingletonEntity2> PutAsync(SingletonEntity2 singletonEntity2ToUpdate, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Updates the specified SingletonEntity2 using PUT and returns a <see cref="GraphResponse{SingletonEntity2}"/> object.
+        /// </summary>
+        /// <param name="singletonEntity2ToUpdate">The SingletonEntity2 object to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task of <see cref="GraphResponse{SingletonEntity2}"/> to await.</returns>
+        System.Threading.Tasks.Task<GraphResponse<SingletonEntity2>> PutResponseAsync(SingletonEntity2 singletonEntity2ToUpdate, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
         /// <param name="value">The expand value.</param>

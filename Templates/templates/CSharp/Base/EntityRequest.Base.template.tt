@@ -123,6 +123,93 @@ public string GetEntityDeleteAsyncMethod(OdcmClass odcmClass, bool isGraphRespon
     return this.GetDeleteAsyncMethod(entityName, entityName, isGraphResponseMethod);
 }
 
+public void AppendPutAsyncHeader(string putTargetString, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
+{
+    stringBuilder.Append("/// <summary>");
+    stringBuilder.Append(Environment.NewLine);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// Updates the specified {0} using PUT and returns a <see cref=\"GraphResponse{{{0}}}\"/> object.", putTargetString);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// Updates the specified {0} using PUT.", putTargetString);
+    }
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        /// </summary>");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("        /// <param name=\"{0}ToUpdate\">The {1} object to update.</param>", lowerCaseEntityName, putTargetString);
+
+    if (includeSendParams)
+    {
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
+    }
+
+    stringBuilder.Append(Environment.NewLine);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// <returns>The task to await of <see cref=\"GraphResponse{{{0}}}\"/>.</returns>", putTargetString);
+    }
+    else
+    {
+        stringBuilder.Append("        /// <returns>The task to await.</returns>");
+    }
+}
+
+public string GetEntityPutAsyncMethod(OdcmClass odcmClass,bool initializeCollectionProperties, bool isGraphResponseMethod = false)
+{
+    var stringBuilder = new StringBuilder();
+    var templateWriterHost = (CustomT4Host)Host;
+    var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
+    var entityName = this.GetEntityNameString(odcmClass);
+
+    // Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+    if (entityName.EndsWith("Request"))
+    {
+        entityName = String.Concat(entityName, "Object");
+    }
+
+    var lowerCaseEntityName = entityName.ToLowerFirstChar();
+    this.AppendPutAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, true, isGraphResponseMethod);
+    stringBuilder.Append(Environment.NewLine);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> PutResponseAsync({0} {1}ToUpdate, CancellationToken cancellationToken = default(CancellationToken))", entityName, lowerCaseEntityName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        public async System.Threading.Tasks.Task<{0}> PutAsync({0} {1}ToUpdate, CancellationToken cancellationToken = default(CancellationToken))", entityName, lowerCaseEntityName);
+    }
+
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append("        {");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.AppendFormat("            this.Method = {0};",templateWriter.PutMethod);
+    stringBuilder.Append(Environment.NewLine);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("            return this.SendAsyncWithGraphResponse<{0}>({1}ToUpdate, cancellationToken);", entityName, lowerCaseEntityName);
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.Append("        }");
+    }
+    else
+    {
+        stringBuilder.AppendFormat("            var updatedEntity = await this.SendAsync<{0}>({1}ToUpdate, cancellationToken).ConfigureAwait(false);", entityName, lowerCaseEntityName);
+        stringBuilder.Append(Environment.NewLine);
+        if (initializeCollectionProperties) {
+            stringBuilder.Append(@"            this.InitializeCollectionProperties(updatedEntity);");
+            stringBuilder.Append(Environment.NewLine);
+        }
+        stringBuilder.Append(@"            return updatedEntity;
+        }");
+    }
+
+    return stringBuilder.ToString();
+}
+
 public void AppendPutRefenceAsyncHeader(string putTargetString, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
     stringBuilder.Append("/// <summary>");
