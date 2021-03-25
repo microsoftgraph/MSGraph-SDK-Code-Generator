@@ -693,6 +693,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                             currentMethod.Class.TypeName());
                 sb.Append("\n");
             }
+            if (currentMethod.IsComposable &&
+                currentMethod.ReturnType != null &&
+                currentMethod.ReturnType is OdcmClass returnTypeClass) {
+                    var returnTypeNamespace = returnTypeClass.Namespace.Name.AddPrefix();
+                    returnTypeClass
+                        .NavigationProperties(true)
+                        .Where(x => !x.GetPropertyNamespace().Equals(returnTypeNamespace))
+                        .Select(x => $"import {x.GetPropertyNamespace()}.{GetPrefixForRequests()}.{x.Projection.Type.TypeRequestBuilder()};\n")
+                        .ToList()
+                        .ForEach(x => sb.Append(x));
+                }
 
             var imports = host.CurrentType.AsOdcmMethod().WithOverloads().SelectMany(x => ImportClassesOfMethodParameters(x));
             sb.Append(imports.Any() ? imports.Aggregate((x, y) => $"{x}{Environment.NewLine}{y}") : string.Empty);

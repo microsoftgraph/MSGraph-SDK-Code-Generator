@@ -32,7 +32,7 @@ class SingletonEntity2 extends Entity
     public function getTestSingleNav2()
     {
         if (array_key_exists("testSingleNav2", $this->_propDict)) {
-            if (is_a($this->_propDict["testSingleNav2"], "Microsoft\Graph\Model\EntityType3")) {
+            if (is_a($this->_propDict["testSingleNav2"], "\Microsoft\Graph\Model\EntityType3")) {
                 return $this->_propDict["testSingleNav2"];
             } else {
                 $this->_propDict["testSingleNav2"] = new EntityType3($this->_propDict["testSingleNav2"]);
