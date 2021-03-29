@@ -22,7 +22,7 @@ steps:
 
 - pwsh: |
     $allGeneratedDlls = Get-ChildItem -Include $env:dllName -Recurse
-    $dotNetFrameworkDll = $allGeneratedDlls | Where-Object { $_.FullName.Contains("net461") } | Select-Object -First 1 # TODO hardcoded .NET version
+    $dotNetFrameworkDll = $allGeneratedDlls | Where-Object { $_.FullName.Contains("net462") } | Select-Object -First 1 # TODO hardcoded .NET version
     $dllPath = $dotNetFrameworkDll.FullName
 
     & ./scripts/generateTypeSummary.ps1 -dllPath $dllPath -outputPath $env:typeSummaryPath

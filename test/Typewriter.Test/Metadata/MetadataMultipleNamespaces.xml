@@ -118,6 +118,8 @@
         <Property Name="email" Type="Edm.String" />
       </ComplexType>
       <ComplexType Name="emptyComplexType" Abstract="true" />
+      <ComplexType Name="emptyComplexTypeWithBaseType" BaseType="graph.entity" Abstract="true" />
+      <EntityType Name="emptyEntityTypeWithBaseType" BaseType="graph.entity" Abstract="true" />
       <EntityType Name="timeOffRequest" BaseType="graph.entity">
         <Property Name="name" Type="Edm.String" />
       </EntityType>
