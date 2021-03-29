@@ -58,7 +58,7 @@ if ((complex.Derived != null && complex.Base == null) || complex.IsAbstract)
         attributeStringBuilder.Append(Environment.NewLine);
         attributeStringBuilder.Append("    ");
     }
-    attributeStringBuilder.AppendFormat("[JsonConverter(typeof({0}<{1}>))]", derivedTypeConverterTypeName, typeDeclaration);
+    attributeStringBuilder.AppendFormat("[JsonConverter(typeof({0}<{1}>))]", derivedTypeConverterTypeName, cstorTypeDeclaration);
 }
 
 #>

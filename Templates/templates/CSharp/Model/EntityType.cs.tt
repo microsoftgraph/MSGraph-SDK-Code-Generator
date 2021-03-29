@@ -54,7 +54,7 @@ if ((entity.Derived != null && entity.Base == null) || entity.IsAbstract)
         attributeStringBuilder.Append(Environment.NewLine);
         attributeStringBuilder.Append("    ");
     }
-    attributeStringBuilder.AppendFormat("[JsonConverter(typeof({0}<{1}>))]", derivedTypeConverterTypeName, typeDeclaration);
+    attributeStringBuilder.AppendFormat("[JsonConverter(typeof({0}<{1}>))]", derivedTypeConverterTypeName, cstorTypeDeclaration);
 }
 
 #>
