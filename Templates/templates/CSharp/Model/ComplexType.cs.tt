@@ -50,14 +50,15 @@ if (complex.IsDeprecated)
 
 
 // We only want to add the derived type converter to the class at the top of the inheritance hierarchy
-if (complex.Derived != null && complex.Base == null)
+// and for abstract classes as they will have to be initialized as a derived type
+if ((complex.Derived != null && complex.Base == null) || complex.IsAbstract)
 {
     if(attributeStringBuilder.Length > 0)
     {
         attributeStringBuilder.Append(Environment.NewLine);
         attributeStringBuilder.Append("    ");
     }
-    attributeStringBuilder.AppendFormat("[JsonConverter(typeof({0}<{1}>))]", derivedTypeConverterTypeName, typeDeclaration);
+    attributeStringBuilder.AppendFormat("[JsonConverter(typeof({0}<{1}>))]", derivedTypeConverterTypeName, cstorTypeDeclaration);
 }
 
 #>
