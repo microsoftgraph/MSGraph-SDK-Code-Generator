@@ -140,6 +140,34 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Updates the specified SingletonEntity2 using PUT.
+        /// </summary>
+        /// <param name="singletonEntity2ToUpdate">The SingletonEntity2 object to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        public async System.Threading.Tasks.Task<SingletonEntity2> PutAsync(SingletonEntity2 singletonEntity2ToUpdate, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
+            this.Method = HttpMethods.PUT;
+            var updatedEntity = await this.SendAsync<SingletonEntity2>(singletonEntity2ToUpdate, cancellationToken).ConfigureAwait(false);
+            this.InitializeCollectionProperties(updatedEntity);
+            return updatedEntity;
+        }
+
+        /// <summary>
+        /// Updates the specified SingletonEntity2 using PUT and returns a <see cref="GraphResponse{SingletonEntity2}"/> object.
+        /// </summary>
+        /// <param name="singletonEntity2ToUpdate">The SingletonEntity2 object to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await of <see cref="GraphResponse{SingletonEntity2}"/>.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<SingletonEntity2>> PutResponseAsync(SingletonEntity2 singletonEntity2ToUpdate, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
+            this.Method = HttpMethods.PUT;
+            return this.SendAsyncWithGraphResponse<SingletonEntity2>(singletonEntity2ToUpdate, cancellationToken);
+        }
+
+        /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
         /// <param name="value">The expand value.</param>

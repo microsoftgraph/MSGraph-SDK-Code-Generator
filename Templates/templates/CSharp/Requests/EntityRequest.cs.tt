@@ -60,6 +60,12 @@ namespace <#=@namespace#>
         Write("        ");
         Write(this.GetEntityUpdateAsyncMethod(entity, true, true));
         Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityPutAsyncMethod(entity, true));
+        Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityPutAsyncMethod(entity, true, true));
+        Write("\n\n");
     }
 
     if (features.CanExpand)
