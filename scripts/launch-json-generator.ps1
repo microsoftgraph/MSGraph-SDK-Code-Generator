@@ -23,7 +23,7 @@ foreach($language in $languages)
             "-l",
             $language,
             "-o",
-            "`${workspaceFolder}/Output$language$endpoint",
+            "`${workspaceFolder}/../Output$language$endpoint",
             "-e",
             $endpoint
         )
@@ -53,7 +53,7 @@ foreach($language in $languages)
             preLaunchTask = "build"
             program = "`${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll"
             args = $args
-            cwd = "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0"
+            cwd = "`${workspaceFolder}/src/Typewriter/bin/Debug/net5.0"
 			console = "internalConsole"
 			stopAtEntry = $false
         }

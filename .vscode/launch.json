@@ -1,110 +1,207 @@
 {
-	// Use IntelliSense to learn about possible attributes.
-	// Hover to view descriptions of existing attributes.
-	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-	"version": "0.2.0",
-	"configurations": [
-		{
-			"name": "Launch Java v1 gen",
-			"type": "coreclr",
-			"request": "launch",
-			"preLaunchTask": "build",
-			"program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
-			"args": [
-                "-v",
-                "Info",
-                "-m",
-                "C:/sources/github/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml",
-                "-g",
-                "Files",
-                "-l",
-                "Java",
-                "-o",
-                "C:/sources/github/msgraph-sdk-java/src/main/java",
-                "-e",
-                "v1.0"
-            ],
-			"cwd": "${workspaceFolder}/src/Typewriter",
-			"console": "internalConsole",
-			"stopAtEntry": false
-        },
-        {
-			"name": "Launch Java beta gen",
-			"type": "coreclr",
-			"request": "launch",
-			"preLaunchTask": "build",
-			"program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
-			"args": [
-                "-v",
-                "Info",
-                "-m",
-                "C:/sources/github/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml",
-                "-g",
-                "Files",
-                "-l",
-                "Java",
-                "-o",
-                "C:/sources/github/msgraph-beta-sdk-java/src/main/java",
-                "-e",
-                "beta"
-            ],
-			"cwd": "${workspaceFolder}/src/Typewriter",
-			"console": "internalConsole",
-			"stopAtEntry": false
-        },
-        {
-			"name": "Launch test data Java v1 gen",
-			"type": "coreclr",
-			"request": "launch",
-			"preLaunchTask": "build",
-			"program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
-			"args": [
-                "-v",
-                "Info",
-                "-m",
-                "C:/sources/github/MSGraph-SDK-Code-Generator/test/Typewriter.Test/Metadata/MetadataMultipleNamespaces.xml",
-                "-g",
-                "Files",
-                "-l",
-                "Java",
-                "-o",
-                "C:/sources/github/MSGraph-SDK-Code-Generator/test/Typewriter.Test/TestDataJava",
-                "-e",
-                "v1.0"
-            ],
-			"cwd": "${workspaceFolder}/src/Typewriter",
-			"console": "internalConsole",
-			"stopAtEntry": false
-        },
-        {
-			"name": "Launch test data Java beta gen",
-			"type": "coreclr",
-			"request": "launch",
-			"preLaunchTask": "build",
-			"program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
-			"args": [
-                "-v",
-                "Info",
-                "-m",
-                "C:/sources/github/MSGraph-SDK-Code-Generator/test/Typewriter.Test/Metadata/MetadataMultipleNamespaces.xml",
-                "-g",
-                "Files",
-                "-l",
-                "Java",
-                "-o",
-                "C:/sources/github/MSGraph-SDK-Code-Generator/test/Typewriter.Test/TestDataJavaBeta",
-                "-e",
-                "beta"
-            ],
-			"cwd": "${workspaceFolder}/src/Typewriter",
-			"console": "internalConsole",
-			"stopAtEntry": false
-		},
-		{
-			"name": ".NET Core Attach",
-			"type": "coreclr",
-			"request": "attach",
-			"processId": "${command:pickProcess}"
-		}
-	]
+  "configurations": [
+    {
+      "preLaunchTask": "build",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "type": "coreclr",
+      "args": [
+        "-v",
+        "Info",
+        "-m",
+        "${workspaceFolder}/../msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml",
+        "-g",
+        "Files",
+        "-l",
+        "CSharp",
+        "-o",
+        "${workspaceFolder}/../OutputCSharpbeta",
+        "-e",
+        "beta"
+      ],
+      "name": "Generate CSharp beta",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+      "request": "launch"
+    },
+    {
+      "preLaunchTask": "build",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "type": "coreclr",
+      "args": [
+        "-v",
+        "Info",
+        "-m",
+        "${workspaceFolder}/../msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml",
+        "-g",
+        "Files",
+        "-l",
+        "CSharp",
+        "-o",
+        "${workspaceFolder}/../OutputCSharpv1.0",
+        "-e",
+        "v1.0"
+      ],
+      "name": "Generate CSharp v1.0",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+      "request": "launch"
+    },
+    {
+      "preLaunchTask": "build",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "type": "coreclr",
+      "args": [
+        "-v",
+        "Info",
+        "-m",
+        "${workspaceFolder}/../msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml",
+        "-g",
+        "Files",
+        "-l",
+        "PHP",
+        "-o",
+        "${workspaceFolder}/../OutputPHPbeta",
+        "-e",
+        "beta",
+        "-p",
+        "php.namespacePrefix:Beta"
+      ],
+      "name": "Generate PHP beta",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+      "request": "launch"
+    },
+    {
+      "preLaunchTask": "build",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "type": "coreclr",
+      "args": [
+        "-v",
+        "Info",
+        "-m",
+        "${workspaceFolder}/../msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml",
+        "-g",
+        "Files",
+        "-l",
+        "PHP",
+        "-o",
+        "${workspaceFolder}/../OutputPHPv1.0",
+        "-e",
+        "v1.0"
+      ],
+      "name": "Generate PHP v1.0",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+      "request": "launch"
+    },
+    {
+      "preLaunchTask": "build",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "type": "coreclr",
+      "args": [
+        "-v",
+        "Info",
+        "-m",
+        "${workspaceFolder}/../msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml",
+        "-g",
+        "Files",
+        "-l",
+        "TypeScript",
+        "-o",
+        "${workspaceFolder}/../OutputTypeScriptbeta",
+        "-e",
+        "beta",
+        "-p",
+        "typescript.namespacePostfix:beta"
+      ],
+      "name": "Generate TypeScript beta",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+      "request": "launch"
+    },
+    {
+      "preLaunchTask": "build",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "type": "coreclr",
+      "args": [
+        "-v",
+        "Info",
+        "-m",
+        "${workspaceFolder}/../msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml",
+        "-g",
+        "Files",
+        "-l",
+        "TypeScript",
+        "-o",
+        "${workspaceFolder}/../OutputTypeScriptv1.0",
+        "-e",
+        "v1.0"
+      ],
+      "name": "Generate TypeScript v1.0",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+      "request": "launch"
+    },
+    {
+      "preLaunchTask": "build",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "type": "coreclr",
+      "args": [
+        "-v",
+        "Info",
+        "-m",
+        "${workspaceFolder}/../msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml",
+        "-g",
+        "Files",
+        "-l",
+        "Java",
+        "-o",
+        "${workspaceFolder}/../OutputJavabeta",
+        "-e",
+        "beta"
+      ],
+      "name": "Generate Java beta",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+      "request": "launch"
+    },
+    {
+      "preLaunchTask": "build",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "type": "coreclr",
+      "args": [
+        "-v",
+        "Info",
+        "-m",
+        "${workspaceFolder}/../msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml",
+        "-g",
+        "Files",
+        "-l",
+        "Java",
+        "-o",
+        "${workspaceFolder}/../OutputJavav1.0",
+        "-e",
+        "v1.0"
+      ],
+      "name": "Generate Java v1.0",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+      "request": "launch"
+    },
+    {
+      "processId": "${command:pickProcess}",
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach"
+    }
+  ],
+  "version": "0.2.0"
 }
