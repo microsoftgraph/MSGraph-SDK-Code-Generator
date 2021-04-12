@@ -253,13 +253,14 @@ namespace Microsoft.Graph
 
                     if(scheduleToInitialize.AdditionalData.TryGetValue("timesOff@odata.nextLink", out var nextPageLink))
                     {
-                        var nextPageLinkString = nextPageLink.ToString();
-
-                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        // Ensure it is a non empty JsonElement string
+                        if (nextPageLink is System.Text.Json.JsonElement element
+                            && element.ValueKind == System.Text.Json.JsonValueKind.String
+                            && !string.IsNullOrEmpty(element.ToString()))
                         {
                             scheduleToInitialize.TimesOff.InitializeNextPageRequest(
                                 this.Client,
-                                nextPageLinkString);
+                                element.ToString());
                         }
                     }
                 }
@@ -270,13 +271,14 @@ namespace Microsoft.Graph
 
                     if(scheduleToInitialize.AdditionalData.TryGetValue("timeOffRequests@odata.nextLink", out var nextPageLink))
                     {
-                        var nextPageLinkString = nextPageLink.ToString();
-
-                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        // Ensure it is a non empty JsonElement string
+                        if (nextPageLink is System.Text.Json.JsonElement element
+                            && element.ValueKind == System.Text.Json.JsonValueKind.String
+                            && !string.IsNullOrEmpty(element.ToString()))
                         {
                             scheduleToInitialize.TimeOffRequests.InitializeNextPageRequest(
                                 this.Client,
-                                nextPageLinkString);
+                                element.ToString());
                         }
                     }
                 }

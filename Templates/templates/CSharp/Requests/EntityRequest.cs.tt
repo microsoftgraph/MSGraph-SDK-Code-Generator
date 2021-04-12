@@ -125,13 +125,14 @@ namespace <#=@namespace#>
 
                     if(<#=thisEntity_Name#>ToInitialize.AdditionalData.TryGetValue("<#=propertyName.ToLowerFirstChar()#>@odata.nextLink", out var nextPageLink))
                     {
-                        var nextPageLinkString = nextPageLink.ToString();
-
-                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        // Ensure it is a non empty JsonElement string
+                        if (nextPageLink is System.Text.Json.JsonElement element
+                            && element.ValueKind == System.Text.Json.JsonValueKind.String
+                            && !string.IsNullOrEmpty(element.ToString()))
                         {
                             <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.InitializeNextPageRequest(
                                 this.Client,
-                                nextPageLinkString);
+                                element.ToString());
                         }
                     }
                 }

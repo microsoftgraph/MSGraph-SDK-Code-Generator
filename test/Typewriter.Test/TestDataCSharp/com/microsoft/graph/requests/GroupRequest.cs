@@ -253,13 +253,14 @@ namespace Microsoft.Graph
 
                     if(groupToInitialize.AdditionalData.TryGetValue("members@odata.nextLink", out var nextPageLink))
                     {
-                        var nextPageLinkString = nextPageLink.ToString();
-
-                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        // Ensure it is a non empty JsonElement string
+                        if (nextPageLink is System.Text.Json.JsonElement element
+                            && element.ValueKind == System.Text.Json.JsonValueKind.String
+                            && !string.IsNullOrEmpty(element.ToString()))
                         {
                             groupToInitialize.Members.InitializeNextPageRequest(
                                 this.Client,
-                                nextPageLinkString);
+                                element.ToString());
                         }
                     }
                 }
