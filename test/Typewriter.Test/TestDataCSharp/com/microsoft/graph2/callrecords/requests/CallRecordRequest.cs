@@ -251,15 +251,16 @@ namespace Microsoft.Graph2.CallRecords
                 {
                     callRecordToInitialize.Sessions.AdditionalData = callRecordToInitialize.AdditionalData;
 
-                    object nextPageLink;
-                    callRecordToInitialize.AdditionalData.TryGetValue("sessions@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    if(callRecordToInitialize.AdditionalData.TryGetValue("sessions@odata.nextLink", out var nextPageLink))
                     {
-                        callRecordToInitialize.Sessions.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
+                        var nextPageLinkString = nextPageLink.ToString();
+
+                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        {
+                            callRecordToInitialize.Sessions.InitializeNextPageRequest(
+                                this.Client,
+                                nextPageLinkString);
+                        }
                     }
                 }
 
@@ -267,15 +268,16 @@ namespace Microsoft.Graph2.CallRecords
                 {
                     callRecordToInitialize.Recipients.AdditionalData = callRecordToInitialize.AdditionalData;
 
-                    object nextPageLink;
-                    callRecordToInitialize.AdditionalData.TryGetValue("recipients@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    if(callRecordToInitialize.AdditionalData.TryGetValue("recipients@odata.nextLink", out var nextPageLink))
                     {
-                        callRecordToInitialize.Recipients.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
+                        var nextPageLinkString = nextPageLink.ToString();
+
+                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        {
+                            callRecordToInitialize.Recipients.InitializeNextPageRequest(
+                                this.Client,
+                                nextPageLinkString);
+                        }
                     }
                 }
 

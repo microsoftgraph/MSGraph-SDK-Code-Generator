@@ -251,15 +251,16 @@ namespace Microsoft.Graph
                 {
                     groupToInitialize.Members.AdditionalData = groupToInitialize.AdditionalData;
 
-                    object nextPageLink;
-                    groupToInitialize.AdditionalData.TryGetValue("members@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    if(groupToInitialize.AdditionalData.TryGetValue("members@odata.nextLink", out var nextPageLink))
                     {
-                        groupToInitialize.Members.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
+                        var nextPageLinkString = nextPageLink.ToString();
+
+                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        {
+                            groupToInitialize.Members.InitializeNextPageRequest(
+                                this.Client,
+                                nextPageLinkString);
+                        }
                     }
                 }
 

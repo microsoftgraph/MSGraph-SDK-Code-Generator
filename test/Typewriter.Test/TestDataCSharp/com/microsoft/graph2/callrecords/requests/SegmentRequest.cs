@@ -251,15 +251,16 @@ namespace Microsoft.Graph2.CallRecords
                 {
                     segmentToInitialize.RefTypes.AdditionalData = segmentToInitialize.AdditionalData;
 
-                    object nextPageLink;
-                    segmentToInitialize.AdditionalData.TryGetValue("refTypes@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    if(segmentToInitialize.AdditionalData.TryGetValue("refTypes@odata.nextLink", out var nextPageLink))
                     {
-                        segmentToInitialize.RefTypes.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
+                        var nextPageLinkString = nextPageLink.ToString();
+
+                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        {
+                            segmentToInitialize.RefTypes.InitializeNextPageRequest(
+                                this.Client,
+                                nextPageLinkString);
+                        }
                     }
                 }
 

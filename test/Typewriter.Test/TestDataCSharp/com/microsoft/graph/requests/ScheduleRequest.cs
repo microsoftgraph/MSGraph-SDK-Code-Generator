@@ -251,15 +251,16 @@ namespace Microsoft.Graph
                 {
                     scheduleToInitialize.TimesOff.AdditionalData = scheduleToInitialize.AdditionalData;
 
-                    object nextPageLink;
-                    scheduleToInitialize.AdditionalData.TryGetValue("timesOff@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    if(scheduleToInitialize.AdditionalData.TryGetValue("timesOff@odata.nextLink", out var nextPageLink))
                     {
-                        scheduleToInitialize.TimesOff.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
+                        var nextPageLinkString = nextPageLink.ToString();
+
+                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        {
+                            scheduleToInitialize.TimesOff.InitializeNextPageRequest(
+                                this.Client,
+                                nextPageLinkString);
+                        }
                     }
                 }
 
@@ -267,15 +268,16 @@ namespace Microsoft.Graph
                 {
                     scheduleToInitialize.TimeOffRequests.AdditionalData = scheduleToInitialize.AdditionalData;
 
-                    object nextPageLink;
-                    scheduleToInitialize.AdditionalData.TryGetValue("timeOffRequests@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    if(scheduleToInitialize.AdditionalData.TryGetValue("timeOffRequests@odata.nextLink", out var nextPageLink))
                     {
-                        scheduleToInitialize.TimeOffRequests.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
+                        var nextPageLinkString = nextPageLink.ToString();
+
+                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        {
+                            scheduleToInitialize.TimeOffRequests.InitializeNextPageRequest(
+                                this.Client,
+                                nextPageLinkString);
+                        }
                     }
                 }
 

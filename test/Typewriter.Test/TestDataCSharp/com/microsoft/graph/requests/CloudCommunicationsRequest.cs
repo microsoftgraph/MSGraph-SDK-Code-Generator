@@ -251,15 +251,16 @@ namespace Microsoft.Graph
                 {
                     cloudCommunicationsToInitialize.Calls.AdditionalData = cloudCommunicationsToInitialize.AdditionalData;
 
-                    object nextPageLink;
-                    cloudCommunicationsToInitialize.AdditionalData.TryGetValue("calls@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    if(cloudCommunicationsToInitialize.AdditionalData.TryGetValue("calls@odata.nextLink", out var nextPageLink))
                     {
-                        cloudCommunicationsToInitialize.Calls.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
+                        var nextPageLinkString = nextPageLink.ToString();
+
+                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        {
+                            cloudCommunicationsToInitialize.Calls.InitializeNextPageRequest(
+                                this.Client,
+                                nextPageLinkString);
+                        }
                     }
                 }
 
@@ -267,15 +268,16 @@ namespace Microsoft.Graph
                 {
                     cloudCommunicationsToInitialize.CallRecords.AdditionalData = cloudCommunicationsToInitialize.AdditionalData;
 
-                    object nextPageLink;
-                    cloudCommunicationsToInitialize.AdditionalData.TryGetValue("callRecords@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    if(cloudCommunicationsToInitialize.AdditionalData.TryGetValue("callRecords@odata.nextLink", out var nextPageLink))
                     {
-                        cloudCommunicationsToInitialize.CallRecords.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
+                        var nextPageLinkString = nextPageLink.ToString();
+
+                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        {
+                            cloudCommunicationsToInitialize.CallRecords.InitializeNextPageRequest(
+                                this.Client,
+                                nextPageLinkString);
+                        }
                     }
                 }
 

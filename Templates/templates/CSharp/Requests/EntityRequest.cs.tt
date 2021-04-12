@@ -123,15 +123,16 @@ namespace <#=@namespace#>
                 {
                     <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.AdditionalData = <#=thisEntity_Name#>ToInitialize.AdditionalData;
 
-                    object nextPageLink;
-                    <#=thisEntity_Name#>ToInitialize.AdditionalData.TryGetValue("<#=propertyName.ToLowerFirstChar()#>@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    if(<#=thisEntity_Name#>ToInitialize.AdditionalData.TryGetValue("<#=propertyName.ToLowerFirstChar()#>@odata.nextLink", out var nextPageLink))
                     {
-                        <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
+                        var nextPageLinkString = nextPageLink.ToString();
+
+                        if (nextPageLink.ValueKind == System.Text.Json.JsonValueKind.String && !string.IsNullOrEmpty(nextPageLinkString))
+                        {
+                            <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.InitializeNextPageRequest(
+                                this.Client,
+                                nextPageLinkString);
+                        }
                     }
                 }
 <#
