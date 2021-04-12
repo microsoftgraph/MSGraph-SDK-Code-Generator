@@ -1,6 +1,7 @@
-$obj = @{}
-$obj.version = "0.2.0"
-$obj.configurations = @()
+$obj = [ordered]@{
+    version = "0.2.0"
+    configurations = @()
+}
 
 $languages = "CSharp","PHP","TypeScript","Java"
 $endpoints = "beta","v1.0"
@@ -13,7 +14,7 @@ foreach($language in $languages)
 {
     foreach($endpoint in $endpoints)
     {
-        $args = @(
+        $commandLineArgs = @(
             "-v",
             "Info",
             "-m",
@@ -32,30 +33,30 @@ foreach($language in $languages)
         {
             if ($language -eq "PHP")
             {
-                $args += @(
+                $commandLineArgs += @(
                     "-p",
                     "php.namespacePrefix:Beta"
                 )
             }
             elseif ($language -eq "TypeScript")
             {
-                $args += @(
+                $commandLineArgs += @(
                     "-p",
                     "typescript.namespacePostfix:beta"
                 )
             }
         }
 
-        $configuration = @{
+        $configuration = [ordered]@{
             name = "Generate $language $endpoint"
             type = "coreclr"
             request = "launch"
             preLaunchTask = "build"
             program = "`${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll"
-            args = $args
+            args = $commandLineArgs
             cwd = "`${workspaceFolder}/src/Typewriter/bin/Debug/net5.0"
-			console = "internalConsole"
-			stopAtEntry = $false
+            console = "internalConsole"
+            stopAtEntry = $false
         }
 
         $obj.configurations += $configuration

@@ -1,11 +1,12 @@
 {
+  "version": "0.2.0",
   "configurations": [
     {
-      "preLaunchTask": "build",
-      "stopAtEntry": false,
-      "console": "internalConsole",
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "name": "Generate CSharp beta",
       "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -20,16 +21,16 @@
         "-e",
         "beta"
       ],
-      "name": "Generate CSharp beta",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
-      "request": "launch"
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "console": "internalConsole",
+      "stopAtEntry": false
     },
     {
-      "preLaunchTask": "build",
-      "stopAtEntry": false,
-      "console": "internalConsole",
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "name": "Generate CSharp v1.0",
       "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -44,16 +45,16 @@
         "-e",
         "v1.0"
       ],
-      "name": "Generate CSharp v1.0",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
-      "request": "launch"
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "console": "internalConsole",
+      "stopAtEntry": false
     },
     {
-      "preLaunchTask": "build",
-      "stopAtEntry": false,
-      "console": "internalConsole",
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "name": "Generate PHP beta",
       "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -70,16 +71,16 @@
         "-p",
         "php.namespacePrefix:Beta"
       ],
-      "name": "Generate PHP beta",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
-      "request": "launch"
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "console": "internalConsole",
+      "stopAtEntry": false
     },
     {
-      "preLaunchTask": "build",
-      "stopAtEntry": false,
-      "console": "internalConsole",
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "name": "Generate PHP v1.0",
       "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -94,16 +95,16 @@
         "-e",
         "v1.0"
       ],
-      "name": "Generate PHP v1.0",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
-      "request": "launch"
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "console": "internalConsole",
+      "stopAtEntry": false
     },
     {
-      "preLaunchTask": "build",
-      "stopAtEntry": false,
-      "console": "internalConsole",
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "name": "Generate TypeScript beta",
       "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -120,16 +121,16 @@
         "-p",
         "typescript.namespacePostfix:beta"
       ],
-      "name": "Generate TypeScript beta",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
-      "request": "launch"
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "console": "internalConsole",
+      "stopAtEntry": false
     },
     {
-      "preLaunchTask": "build",
-      "stopAtEntry": false,
-      "console": "internalConsole",
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "name": "Generate TypeScript v1.0",
       "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -144,16 +145,16 @@
         "-e",
         "v1.0"
       ],
-      "name": "Generate TypeScript v1.0",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
-      "request": "launch"
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "console": "internalConsole",
+      "stopAtEntry": false
     },
     {
-      "preLaunchTask": "build",
-      "stopAtEntry": false,
-      "console": "internalConsole",
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "name": "Generate Java beta",
       "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -168,16 +169,16 @@
         "-e",
         "beta"
       ],
-      "name": "Generate Java beta",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
-      "request": "launch"
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "console": "internalConsole",
+      "stopAtEntry": false
     },
     {
-      "preLaunchTask": "build",
-      "stopAtEntry": false,
-      "console": "internalConsole",
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "name": "Generate Java v1.0",
       "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -192,16 +193,15 @@
         "-e",
         "v1.0"
       ],
-      "name": "Generate Java v1.0",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
-      "request": "launch"
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "console": "internalConsole",
+      "stopAtEntry": false
     },
     {
-      "processId": "${command:pickProcess}",
-      "name": ".NET Core Attach",
+      "request": "attach",
       "type": "coreclr",
-      "request": "attach"
+      "processId": "${command:pickProcess}",
+      "name": ".NET Core Attach"
     }
-  ],
-  "version": "0.2.0"
+  ]
 }
