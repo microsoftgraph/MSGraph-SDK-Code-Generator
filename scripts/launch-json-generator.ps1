@@ -3,7 +3,7 @@ $obj = [ordered]@{
     configurations = @()
 }
 
-$languages = "CSharp","PHP","TypeScript","Java"
+$languages = "CSharp","PHP","TypeScript","Java","ObjC"
 $endpoints = "beta","v1.0"
 $metadata = @{
     "beta" = "`${workspaceFolder}/../msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml";

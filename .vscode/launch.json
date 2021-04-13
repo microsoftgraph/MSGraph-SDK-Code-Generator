@@ -198,6 +198,54 @@
       "stopAtEntry": false
     },
     {
+      "name": "Generate ObjC beta",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+      "args": [
+        "-v",
+        "Info",
+        "-m",
+        "${workspaceFolder}/../msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml",
+        "-g",
+        "Files",
+        "-l",
+        "ObjC",
+        "-o",
+        "${workspaceFolder}/../OutputObjCbeta",
+        "-e",
+        "beta"
+      ],
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Generate ObjC v1.0",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+      "args": [
+        "-v",
+        "Info",
+        "-m",
+        "${workspaceFolder}/../msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml",
+        "-g",
+        "Files",
+        "-l",
+        "ObjC",
+        "-o",
+        "${workspaceFolder}/../OutputObjCv1.0",
+        "-e",
+        "v1.0"
+      ],
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    },
+    {
       "request": "attach",
       "type": "coreclr",
       "processId": "${command:pickProcess}",
