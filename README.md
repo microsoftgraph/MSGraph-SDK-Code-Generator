@@ -84,7 +84,7 @@ The output C# code files will go in to the `output` directory.
 
 ## Use/debug Typewriter in VSCode
 - Prerequisite is that `msgraph-metadata` is checked out at the same root folder as `MSGraph-SDK-Code-Generator`.
-- `launch.json` file contains main generation scenarios for each language/endpoint pair. Running Typewriter using one of those generation scenarios (e.g. `Generate CSharp beta`) will output the corresponding models into a folder, which will be a sibling to `MSGraph-SDK-Code-Generator`. The folder will be named as `generation-output-<language>-<endpoint>` e.g. `generation-output-CSharp-beta`.
+- `launch.json` file contains main generation scenarios for each language/endpoint pair. Running Typewriter using one of those generation scenarios (e.g. `Generate CSharp beta`) will output the corresponding models into a folder, which will be a sibling to `MSGraph-SDK-Code-Generator`. The folder will be named as `generator-output-<language>-<endpoint>` e.g. `generator-output-CSharp-beta`.
 
 ## Use Typewriter to test your beta metadata
 
