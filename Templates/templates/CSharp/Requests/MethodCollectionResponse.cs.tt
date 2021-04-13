@@ -12,7 +12,6 @@ var isSpecialCollection = method.LongDescriptionContains("specialCollection");
 var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var collectionResponse = responseNamePrefix + "CollectionResponse";
 var collectionPage = responseNamePrefix + "CollectionPage";
-var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
 #>
 
 namespace <#=@namespace#>
@@ -57,7 +56,5 @@ namespace <#=@namespace#>
         /// </summary>
         [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
-
-        <#=this.GetInitializeCollectionPropertiesMethod(iBaseClientTypeName)#>
     }
 }
