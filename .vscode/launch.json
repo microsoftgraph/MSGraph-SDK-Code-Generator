@@ -65,7 +65,7 @@
         "-l",
         "CSharp",
         "-o",
-        "${workspaceFolder}/test/TestDataCSharp",
+        "${workspaceFolder}/test/Typewriter.Test/TestDataCSharp",
         "-e",
         "v1.0"
       ],
@@ -115,7 +115,7 @@
         "-l",
         "PHP",
         "-o",
-        "${workspaceFolder}/test/TestDataPHPBeta",
+        "${workspaceFolder}/test/Typewriter.Test/TestDataPHPBeta",
         "-e",
         "beta",
         "-p",
@@ -165,7 +165,7 @@
         "-l",
         "PHP",
         "-o",
-        "${workspaceFolder}/test/TestDataPHP",
+        "${workspaceFolder}/test/Typewriter.Test/TestDataPHP",
         "-e",
         "v1.0"
       ],
@@ -215,7 +215,7 @@
         "-l",
         "TypeScript",
         "-o",
-        "${workspaceFolder}/test/TestDataTypeScriptBeta",
+        "${workspaceFolder}/test/Typewriter.Test/TestDataTypeScriptBeta",
         "-e",
         "beta",
         "-p",
@@ -265,7 +265,7 @@
         "-l",
         "TypeScript",
         "-o",
-        "${workspaceFolder}/test/TestDataTypeScript",
+        "${workspaceFolder}/test/Typewriter.Test/TestDataTypeScript",
         "-e",
         "v1.0"
       ],
@@ -313,7 +313,7 @@
         "-l",
         "Java",
         "-o",
-        "${workspaceFolder}/test/TestDataJavaBeta",
+        "${workspaceFolder}/test/Typewriter.Test/TestDataJavaBeta",
         "-e",
         "beta"
       ],
@@ -361,7 +361,7 @@
         "-l",
         "Java",
         "-o",
-        "${workspaceFolder}/test/TestDataJava",
+        "${workspaceFolder}/test/Typewriter.Test/TestDataJava",
         "-e",
         "v1.0"
       ],
@@ -433,7 +433,7 @@
         "-l",
         "ObjC",
         "-o",
-        "${workspaceFolder}/test/TestDataObjC",
+        "${workspaceFolder}/test/Typewriter.Test/TestDataObjC",
         "-e",
         "v1.0"
       ],

@@ -106,7 +106,7 @@ foreach($language in $languages)
                 $postFix = "Beta"
             }
 
-            $testDataCommandLineArgs = createCommandLineArgs $testMetadata[$language] $endpoint $language "`${workspaceFolder}/test/TestData$language$postFix"
+            $testDataCommandLineArgs = createCommandLineArgs $testMetadata[$language] $endpoint $language "`${workspaceFolder}/test/Typewriter.Test/TestData$language$postFix"
             $obj.configurations += createConfiguration "Update Test Data $language $endpoint" $testDataCommandLineArgs
         }
     }
