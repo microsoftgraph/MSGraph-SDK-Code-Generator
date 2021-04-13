@@ -334,5 +334,40 @@ public string GetMethodRequestPrimitiveReturnTypeString(string type)
     }
 }
 
+/// <summary>
+/// Used in EntityCollectionResponse.cs.tt, EntityCollectionWithReferencesResponse and  MethodCollectionResponse.cs.tt
+/// to get the function to initialized the NextPageRequest object in the response of the collection request
+/// and to copy the Additional data to the CollectionPage instance
+/// </summary>
+/// <param name="iBaseClientTypeName"> type of the IBaseClient to use in creating the method</param>
+/// <returns>the string representation of the method</returns>
+public string GetInitializeCollectionPropertiesMethod(string iBaseClientTypeName)
+{
+    return @"/// <summary>
+        /// Initializes the NextPageRequest from the AdditionalData if possible
+        /// and copies the Additional data to the CollectionPage instance
+        /// </summary>
+        " + string.Format("internal void InitializeCollectionProperties({0} client)", iBaseClientTypeName)
+                + @"
+        {
+            if(AdditionalData != null)
+            {
+                if(AdditionalData.TryGetValue(""@odata.nextLink"", out var nextPageLink))
+                {
+                    // Ensure it is a non empty JsonElement string
+                    if (nextPageLink is System.Text.Json.JsonElement element
+                        && element.ValueKind == System.Text.Json.JsonValueKind.String
+                        && !string.IsNullOrEmpty(element.GetString()))
+                    {
+                        Value.InitializeNextPageRequest(
+                            client,
+                            element.GetString());
+                    }
+                }
+                // Copy the additional data collection to the page itself so that information is not lost
+                Value.AdditionalData = AdditionalData;
+            }
+        }";
+}
 
 #>

@@ -60,23 +60,8 @@ namespace <#=@namespace#>
             var response = await this.PollForOperationCompletionAsync(progress, cancellationToken);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
-                if (response.AdditionalData != null)
-                {
-                    response.Value.AdditionalData = response.AdditionalData;
+                response.InitializeCollectionProperties(this.Client);
 
-                    if(response.AdditionalData.TryGetValue("@odata.nextLink", out var nextPageLink))
-                    {
-                        // Ensure it is a non empty JsonElement string
-                        if (nextPageLink is System.Text.Json.JsonElement element
-                            && element.ValueKind == System.Text.Json.JsonValueKind.String
-                            && !string.IsNullOrEmpty(element.GetString()))
-                        {
-                            response.Value.InitializeNextPageRequest(
-                                this.OneDriveClient,
-                                element.GetString());
-                        }
-                    }
-                }
             <#
             if (isSpecialCollection)
             {
