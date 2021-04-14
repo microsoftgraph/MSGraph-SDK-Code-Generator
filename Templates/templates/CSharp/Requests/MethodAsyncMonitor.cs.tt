@@ -58,9 +58,10 @@ namespace <#=@namespace#>
         #>
 
             var response = await this.PollForOperationCompletionAsync(progress, cancellationToken);
-            if (response != null && response.Value != null && response.Value.CurrentPage != null)
+            if (response?.Value?.CurrentPage != null)
             {
-                response.InitializeCollectionProperties(this.Client);
+                response.Value.InitializeNextPageRequest(this.Client, response.NextLink);
+                response.Value.AdditionalData = response.AdditionalData;
 
             <#
             if (isSpecialCollection)
