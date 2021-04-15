@@ -143,7 +143,19 @@ if (attributeStringBuilder.Length > 0) {
         /// </summary>
         <#=attributeDefinition#>
         public I<#=propertyCollectionPage#> <#=propertyName.GetSanitizedPropertyName()#> { get; set; }
+
+<#
+                    if (property.IsComplex())
+                    {
+                        var collectionPropertyName = property.Name.ToCheckedCase().GetSanitizedPropertyName();
+#>
+        /// <summary>
+        /// Gets or sets <#=collectionPropertyName.ToLowerFirstChar()#>NextLink.
+        /// </summary>
+        [JsonPropertyName("<#=collectionPropertyName.ToLowerFirstChar()#>@odata.nextLink")]
+        public string <#=collectionPropertyName#>NextLink { get; set; }
     <#
+                    }
                 }
                 else
                 {

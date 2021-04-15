@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -39,12 +39,24 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonPropertyName("timesOff")]
         public IScheduleTimesOffCollectionPage TimesOff { get; set; }
+
+        /// <summary>
+        /// Gets or sets timesOffNextLink.
+        /// </summary>
+        [JsonPropertyName("timesOff@odata.nextLink")]
+        public string TimesOffNextLink { get; set; }
     
         /// <summary>
         /// Gets or sets time off requests.
         /// </summary>
         [JsonPropertyName("timeOffRequests")]
         public IScheduleTimeOffRequestsCollectionPage TimeOffRequests { get; set; }
+
+        /// <summary>
+        /// Gets or sets timeOffRequestsNextLink.
+        /// </summary>
+        [JsonPropertyName("timeOffRequests@odata.nextLink")]
+        public string TimeOffRequestsNextLink { get; set; }
     
     }
 }

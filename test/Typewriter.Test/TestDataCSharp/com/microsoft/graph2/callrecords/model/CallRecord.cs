@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -87,12 +87,24 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         [JsonPropertyName("sessions")]
         public ICallRecordSessionsCollectionPage Sessions { get; set; }
+
+        /// <summary>
+        /// Gets or sets sessionsNextLink.
+        /// </summary>
+        [JsonPropertyName("sessions@odata.nextLink")]
+        public string SessionsNextLink { get; set; }
     
         /// <summary>
         /// Gets or sets recipients.
         /// </summary>
         [JsonPropertyName("recipients")]
         public ICallRecordRecipientsCollectionPage Recipients { get; set; }
+
+        /// <summary>
+        /// Gets or sets recipientsNextLink.
+        /// </summary>
+        [JsonPropertyName("recipients@odata.nextLink")]
+        public string RecipientsNextLink { get; set; }
     
     }
 }

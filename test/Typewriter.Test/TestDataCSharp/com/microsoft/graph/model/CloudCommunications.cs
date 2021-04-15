@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -33,12 +33,24 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonPropertyName("calls")]
         public ICloudCommunicationsCallsCollectionPage Calls { get; set; }
+
+        /// <summary>
+        /// Gets or sets callsNextLink.
+        /// </summary>
+        [JsonPropertyName("calls@odata.nextLink")]
+        public string CallsNextLink { get; set; }
     
         /// <summary>
         /// Gets or sets call records.
         /// </summary>
         [JsonPropertyName("callRecords")]
         public ICloudCommunicationsCallRecordsCollectionPage CallRecords { get; set; }
+
+        /// <summary>
+        /// Gets or sets callRecordsNextLink.
+        /// </summary>
+        [JsonPropertyName("callRecords@odata.nextLink")]
+        public string CallRecordsNextLink { get; set; }
     
     }
 }

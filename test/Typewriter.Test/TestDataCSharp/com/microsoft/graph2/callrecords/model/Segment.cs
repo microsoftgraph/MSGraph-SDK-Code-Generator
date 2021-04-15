@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -70,6 +70,12 @@ namespace Microsoft.Graph2.CallRecords
         [Obsolete("entityType3 is deprecated. Please use singletonEntity1.")]
         [JsonPropertyName("refTypes")]
         public ISegmentRefTypesCollectionWithReferencesPage RefTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets refTypesNextLink.
+        /// </summary>
+        [JsonPropertyName("refTypes@odata.nextLink")]
+        public string RefTypesNextLink { get; set; }
     
         /// <summary>
         /// Gets or sets ref type.

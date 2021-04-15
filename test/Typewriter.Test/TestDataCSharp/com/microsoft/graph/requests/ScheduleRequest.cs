@@ -244,43 +244,19 @@ namespace Microsoft.Graph
         private void InitializeCollectionProperties(Schedule scheduleToInitialize)
         {
 
-            if (scheduleToInitialize != null && scheduleToInitialize.AdditionalData != null)
+            if (scheduleToInitialize != null)
             {
-
                 if (scheduleToInitialize.TimesOff != null && scheduleToInitialize.TimesOff.CurrentPage != null)
                 {
+                    scheduleToInitialize.TimesOff.InitializeNextPageRequest(this.Client, scheduleToInitialize.TimesOffNextLink);
+                    // Copy the additional data collection to the page itself so that information is not lost
                     scheduleToInitialize.TimesOff.AdditionalData = scheduleToInitialize.AdditionalData;
-
-                    if(scheduleToInitialize.AdditionalData.TryGetValue("timesOff@odata.nextLink", out var nextPageLink))
-                    {
-                        // Ensure it is a non empty JsonElement string
-                        if (nextPageLink is System.Text.Json.JsonElement element
-                            && element.ValueKind == System.Text.Json.JsonValueKind.String
-                            && !string.IsNullOrEmpty(element.GetString()))
-                        {
-                            scheduleToInitialize.TimesOff.InitializeNextPageRequest(
-                                this.Client,
-                                element.GetString());
-                        }
-                    }
                 }
-
                 if (scheduleToInitialize.TimeOffRequests != null && scheduleToInitialize.TimeOffRequests.CurrentPage != null)
                 {
+                    scheduleToInitialize.TimeOffRequests.InitializeNextPageRequest(this.Client, scheduleToInitialize.TimeOffRequestsNextLink);
+                    // Copy the additional data collection to the page itself so that information is not lost
                     scheduleToInitialize.TimeOffRequests.AdditionalData = scheduleToInitialize.AdditionalData;
-
-                    if(scheduleToInitialize.AdditionalData.TryGetValue("timeOffRequests@odata.nextLink", out var nextPageLink))
-                    {
-                        // Ensure it is a non empty JsonElement string
-                        if (nextPageLink is System.Text.Json.JsonElement element
-                            && element.ValueKind == System.Text.Json.JsonValueKind.String
-                            && !string.IsNullOrEmpty(element.GetString()))
-                        {
-                            scheduleToInitialize.TimeOffRequests.InitializeNextPageRequest(
-                                this.Client,
-                                element.GetString());
-                        }
-                    }
                 }
 
             }
