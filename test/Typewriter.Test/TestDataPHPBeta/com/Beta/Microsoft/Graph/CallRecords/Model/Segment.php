@@ -203,7 +203,7 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function setMedia($val)
     {
-		$this->_propDict["media"] = $val;
+        $this->_propDict["media"] = $val;
         return $this;
     }
     
@@ -231,7 +231,7 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function setRefTypes($val)
     {
-		$this->_propDict["refTypes"] = $val;
+        $this->_propDict["refTypes"] = $val;
         return $this;
     }
     

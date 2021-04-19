@@ -48,7 +48,7 @@ class CloudCommunications extends Entity
     */
     public function setCalls($val)
     {
-		$this->_propDict["calls"] = $val;
+        $this->_propDict["calls"] = $val;
         return $this;
     }
     
@@ -76,7 +76,7 @@ class CloudCommunications extends Entity
     */
     public function setCallRecords($val)
     {
-		$this->_propDict["callRecords"] = $val;
+        $this->_propDict["callRecords"] = $val;
         return $this;
     }
     

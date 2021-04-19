@@ -106,7 +106,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     */
     public function setModalities($val)
     {
-		$this->_propDict["modalities"] = $val;
+        $this->_propDict["modalities"] = $val;
         return $this;
     }
     
@@ -258,7 +258,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     */
     public function setParticipants($val)
     {
-		$this->_propDict["participants"] = $val;
+        $this->_propDict["participants"] = $val;
         return $this;
     }
     
@@ -313,7 +313,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     */
     public function setSessions($val)
     {
-		$this->_propDict["sessions"] = $val;
+        $this->_propDict["sessions"] = $val;
         return $this;
     }
     
@@ -341,7 +341,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     */
     public function setRecipients($val)
     {
-		$this->_propDict["recipients"] = $val;
+        $this->_propDict["recipients"] = $val;
         return $this;
     }
     

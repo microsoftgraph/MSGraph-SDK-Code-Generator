@@ -75,7 +75,7 @@ class Schedule extends Entity
     */
     public function setTimesOff($val)
     {
-		$this->_propDict["timesOff"] = $val;
+        $this->_propDict["timesOff"] = $val;
         return $this;
     }
     
@@ -103,7 +103,7 @@ class Schedule extends Entity
     */
     public function setTimeOffRequests($val)
     {
-		$this->_propDict["timeOffRequests"] = $val;
+        $this->_propDict["timeOffRequests"] = $val;
         return $this;
     }
     

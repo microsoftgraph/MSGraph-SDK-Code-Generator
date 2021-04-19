@@ -48,7 +48,7 @@ class Session extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function setModalities($val)
     {
-		$this->_propDict["modalities"] = $val;
+        $this->_propDict["modalities"] = $val;
         return $this;
     }
     
@@ -231,7 +231,7 @@ class Session extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function setSegments($val)
     {
-		$this->_propDict["segments"] = $val;
+        $this->_propDict["segments"] = $val;
         return $this;
     }
     
