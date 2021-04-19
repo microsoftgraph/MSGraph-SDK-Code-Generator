@@ -51,6 +51,9 @@ if (String.IsNullOrEmpty(entityBaseName)) {
     */
     function __construct($propDict = array())
     {
+        if (!is_array($propDict)) {
+           $propDict = array();
+        }
 		$this->_propDict = $propDict;
     }
 
