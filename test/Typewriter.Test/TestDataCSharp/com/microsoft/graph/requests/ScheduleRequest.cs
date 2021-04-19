@@ -244,39 +244,19 @@ namespace Microsoft.Graph
         private void InitializeCollectionProperties(Schedule scheduleToInitialize)
         {
 
-            if (scheduleToInitialize != null && scheduleToInitialize.AdditionalData != null)
+            if (scheduleToInitialize != null)
             {
-
                 if (scheduleToInitialize.TimesOff != null && scheduleToInitialize.TimesOff.CurrentPage != null)
                 {
+                    scheduleToInitialize.TimesOff.InitializeNextPageRequest(this.Client, scheduleToInitialize.TimesOffNextLink);
+                    // Copy the additional data collection to the page itself so that information is not lost
                     scheduleToInitialize.TimesOff.AdditionalData = scheduleToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    scheduleToInitialize.AdditionalData.TryGetValue("timesOff@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        scheduleToInitialize.TimesOff.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
                 }
-
                 if (scheduleToInitialize.TimeOffRequests != null && scheduleToInitialize.TimeOffRequests.CurrentPage != null)
                 {
+                    scheduleToInitialize.TimeOffRequests.InitializeNextPageRequest(this.Client, scheduleToInitialize.TimeOffRequestsNextLink);
+                    // Copy the additional data collection to the page itself so that information is not lost
                     scheduleToInitialize.TimeOffRequests.AdditionalData = scheduleToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    scheduleToInitialize.AdditionalData.TryGetValue("timeOffRequests@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        scheduleToInitialize.TimeOffRequests.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
                 }
 
             }

@@ -108,7 +108,7 @@ namespace <#=@namespace#>
         {
 #>
 
-            if (<#=thisEntity_Name#>ToInitialize != null && <#=thisEntity_Name#>ToInitialize.AdditionalData != null)
+            if (<#=thisEntity_Name#>ToInitialize != null)
             {
 <#
             foreach(var property in navigationCollectionProperties)
@@ -118,21 +118,11 @@ namespace <#=@namespace#>
                 if (property.IsComplex())
                 {
 #>
-
                 if (<#=thisEntity_Name#>ToInitialize.<#=propertyName#> != null && <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.CurrentPage != null)
                 {
+                    <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.InitializeNextPageRequest(this.Client, <#=thisEntity_Name#>ToInitialize.<#=propertyName#>NextLink);
+                    // Copy the additional data collection to the page itself so that information is not lost
                     <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.AdditionalData = <#=thisEntity_Name#>ToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    <#=thisEntity_Name#>ToInitialize.AdditionalData.TryGetValue("<#=propertyName.ToLowerFirstChar()#>@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
                 }
 <#
                 }
