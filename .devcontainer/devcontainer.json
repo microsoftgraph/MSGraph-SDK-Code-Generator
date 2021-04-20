@@ -1,0 +1,6 @@
+{
+    "postCreateCommand": "git submodule update --init --recursive",
+    "extensions": [
+        "ms-dotnettools.csharp"
+    ]
+}
