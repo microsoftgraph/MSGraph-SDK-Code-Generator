@@ -137,7 +137,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     public function get<#=propertyName.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=camelCasePropertyName#>", $this->_propDict)) {
-            if (is_a($this->_propDict["<#=camelCasePropertyName#>"], "<#=fullPropertyTypeName#>")) {
+            if (is_a($this->_propDict["<#=camelCasePropertyName#>"], "<#=fullPropertyTypeName#>") || is_null($this->_propDict["<#=camelCasePropertyName#>"])) {
                 return $this->_propDict["<#=camelCasePropertyName#>"];
             } else {
 <# if (propertyTypeString == "\\GuzzleHttp\\Psr7\\Stream") { #>
@@ -194,6 +194,9 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 <#
             if (propertyTypeString == "\\DateTime") {
 #>
+            if (is_null($this->_propDict["<#=camelCasePropertyName#>"])) {
+                return null;
+            }
             return new \DateTime($this->_propDict["<#=camelCasePropertyName#>"]);
 <#
             } else {
