@@ -27,7 +27,7 @@ class Schedule extends Entity
     /**
     * Gets the enabled
     *
-    * @return bool The enabled
+    * @return bool|null The enabled
     */
     public function getEnabled()
     {
@@ -55,7 +55,7 @@ class Schedule extends Entity
      /** 
      * Gets the timesOff
      *
-     * @return array The timesOff
+     * @return array|null The timesOff
      */
     public function getTimesOff()
     {
@@ -83,7 +83,7 @@ class Schedule extends Entity
      /** 
      * Gets the timeOffRequests
      *
-     * @return array The timeOffRequests
+     * @return array|null The timeOffRequests
      */
     public function getTimeOffRequests()
     {

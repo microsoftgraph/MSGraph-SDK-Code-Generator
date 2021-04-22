@@ -58,7 +58,7 @@ class GraphPrint implements \JsonSerializable
     /**
     * Gets the settings
     *
-    * @return string The settings
+    * @return string|null The settings
     */
     public function getSettings()
     {

@@ -27,7 +27,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the version
     *
-    * @return int The version
+    * @return int|null The version
     */
     public function getVersion()
     {
@@ -54,12 +54,12 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the type
     *
-    * @return CallType The type
+    * @return CallType|null The type
     */
     public function getType()
     {
         if (array_key_exists("type", $this->_propDict)) {
-            if (is_a($this->_propDict["type"], "\Microsoft\Graph\CallRecords\Model\CallType")) {
+            if (is_a($this->_propDict["type"], "\Microsoft\Graph\CallRecords\Model\CallType") || is_null($this->_propDict["type"])) {
                 return $this->_propDict["type"];
             } else {
                 $this->_propDict["type"] = new CallType($this->_propDict["type"]);
@@ -86,7 +86,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
      /** 
      * Gets the modalities
      *
-     * @return array The modalities
+     * @return array|null The modalities
      */
     public function getModalities()
     {
@@ -113,12 +113,12 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the lastModifiedDateTime
     *
-    * @return \DateTime The lastModifiedDateTime
+    * @return \DateTime|null The lastModifiedDateTime
     */
     public function getLastModifiedDateTime()
     {
         if (array_key_exists("lastModifiedDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["lastModifiedDateTime"], "\DateTime")) {
+            if (is_a($this->_propDict["lastModifiedDateTime"], "\DateTime") || is_null($this->_propDict["lastModifiedDateTime"])) {
                 return $this->_propDict["lastModifiedDateTime"];
             } else {
                 $this->_propDict["lastModifiedDateTime"] = new \DateTime($this->_propDict["lastModifiedDateTime"]);
@@ -144,12 +144,12 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the startDateTime
     *
-    * @return \DateTime The startDateTime
+    * @return \DateTime|null The startDateTime
     */
     public function getStartDateTime()
     {
         if (array_key_exists("startDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["startDateTime"], "\DateTime")) {
+            if (is_a($this->_propDict["startDateTime"], "\DateTime") || is_null($this->_propDict["startDateTime"])) {
                 return $this->_propDict["startDateTime"];
             } else {
                 $this->_propDict["startDateTime"] = new \DateTime($this->_propDict["startDateTime"]);
@@ -175,12 +175,12 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the endDateTime
     *
-    * @return \DateTime The endDateTime
+    * @return \DateTime|null The endDateTime
     */
     public function getEndDateTime()
     {
         if (array_key_exists("endDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["endDateTime"], "\DateTime")) {
+            if (is_a($this->_propDict["endDateTime"], "\DateTime") || is_null($this->_propDict["endDateTime"])) {
                 return $this->_propDict["endDateTime"];
             } else {
                 $this->_propDict["endDateTime"] = new \DateTime($this->_propDict["endDateTime"]);
@@ -206,12 +206,12 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the organizer
     *
-    * @return \Microsoft\Graph\Model\IdentitySet The organizer
+    * @return \Microsoft\Graph\Model\IdentitySet|null The organizer
     */
     public function getOrganizer()
     {
         if (array_key_exists("organizer", $this->_propDict)) {
-            if (is_a($this->_propDict["organizer"], "\Microsoft\Graph\Model\IdentitySet")) {
+            if (is_a($this->_propDict["organizer"], "\Microsoft\Graph\Model\IdentitySet") || is_null($this->_propDict["organizer"])) {
                 return $this->_propDict["organizer"];
             } else {
                 $this->_propDict["organizer"] = new \Microsoft\Graph\Model\IdentitySet($this->_propDict["organizer"]);
@@ -238,7 +238,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
      /** 
      * Gets the participants
      *
-     * @return array The participants
+     * @return array|null The participants
      */
     public function getParticipants()
     {
@@ -265,7 +265,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the joinWebUrl
     *
-    * @return string The joinWebUrl
+    * @return string|null The joinWebUrl
     */
     public function getJoinWebUrl()
     {
@@ -293,7 +293,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
      /** 
      * Gets the sessions
      *
-     * @return array The sessions
+     * @return array|null The sessions
      */
     public function getSessions()
     {
@@ -321,7 +321,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
      /** 
      * Gets the recipients
      *
-     * @return array The recipients
+     * @return array|null The recipients
      */
     public function getRecipients()
     {

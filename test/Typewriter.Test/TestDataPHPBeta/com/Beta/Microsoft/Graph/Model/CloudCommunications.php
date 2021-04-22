@@ -28,7 +28,7 @@ class CloudCommunications extends Entity
      /** 
      * Gets the calls
      *
-     * @return array The calls
+     * @return array|null The calls
      */
     public function getCalls()
     {
@@ -56,7 +56,7 @@ class CloudCommunications extends Entity
      /** 
      * Gets the callRecords
      *
-     * @return array The callRecords
+     * @return array|null The callRecords
      */
     public function getCallRecords()
     {

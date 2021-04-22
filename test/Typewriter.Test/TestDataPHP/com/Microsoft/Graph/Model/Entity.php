@@ -58,7 +58,7 @@ class Entity implements \JsonSerializable
     /**
     * Gets the id
     *
-    * @return string The id
+    * @return string|null The id
     */
     public function getId()
     {
