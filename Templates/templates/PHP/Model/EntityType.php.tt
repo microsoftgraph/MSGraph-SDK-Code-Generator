@@ -132,7 +132,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=propertyTypeReference#> The <#=propertyName#>
+    * @return <#=propertyTypeReference#>|null The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
@@ -169,6 +169,8 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
         $this->_propDict["<#=camelCasePropertyName#>"] = boolval($val);
 <#  } else if (propertyTypeString == "int") { #>
         $this->_propDict["<#=camelCasePropertyName#>"] = intval($val);
+<#  } else if (propertyTypeString == "float") { #>
+        $this->_propDict["<#=camelCasePropertyName#>"] = floatval($val);
 <# } else { #>
         $this->_propDict["<#=camelCasePropertyName#>"] = $val;
 <# } #>
@@ -186,11 +188,11 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=propertyTypeReference#> The <#=propertyName#>
+    * @return <#=propertyTypeReference#>|null The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
-        if (array_key_exists("<#=camelCasePropertyName#>", $this->_propDict) || is_null($this->_propDict["<#=camelCasePropertyName#>"])) {
+        if (array_key_exists("<#=camelCasePropertyName#>", $this->_propDict)) {
 <#
             if (propertyTypeString == "\\DateTime") {
 #>
