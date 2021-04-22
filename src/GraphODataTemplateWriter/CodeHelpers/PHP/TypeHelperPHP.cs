@@ -257,7 +257,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             switch (@namespace)
             {
                 case "Microsoft\\Graph\\Model":
-                    return "Entity";
                 case "Beta\\Microsoft\\Graph\\Model":
                     return "Entity";
                 default:
