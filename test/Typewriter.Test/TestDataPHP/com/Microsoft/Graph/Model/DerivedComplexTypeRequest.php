@@ -26,7 +26,7 @@ class DerivedComplexTypeRequest extends EmptyBaseComplexTypeRequest
     /**
     * Gets the property1
     *
-    * @return string The property1
+    * @return string|null The property1
     */
     public function getProperty1()
     {
@@ -52,7 +52,7 @@ class DerivedComplexTypeRequest extends EmptyBaseComplexTypeRequest
     /**
     * Gets the property2
     *
-    * @return string The property2
+    * @return string|null The property2
     */
     public function getProperty2()
     {
@@ -79,12 +79,12 @@ class DerivedComplexTypeRequest extends EmptyBaseComplexTypeRequest
     /**
     * Gets the enumProperty
     *
-    * @return Enum1 The enumProperty
+    * @return Enum1|null The enumProperty
     */
     public function getEnumProperty()
     {
         if (array_key_exists("enumProperty", $this->_propDict)) {
-            if (is_a($this->_propDict["enumProperty"], "\Microsoft\Graph\Model\Enum1")) {
+            if (is_a($this->_propDict["enumProperty"], "\Microsoft\Graph\Model\Enum1") || is_null($this->_propDict["enumProperty"])) {
                 return $this->_propDict["enumProperty"];
             } else {
                 $this->_propDict["enumProperty"] = new Enum1($this->_propDict["enumProperty"]);

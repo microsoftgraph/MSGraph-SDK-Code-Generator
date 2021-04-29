@@ -26,7 +26,7 @@ class DeviceInfo extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the captureDeviceName
     *
-    * @return string The captureDeviceName
+    * @return string|null The captureDeviceName
     */
     public function getCaptureDeviceName()
     {
@@ -52,7 +52,7 @@ class DeviceInfo extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the sentSignalLevel
     *
-    * @return int The sentSignalLevel
+    * @return int|null The sentSignalLevel
     */
     public function getSentSignalLevel()
     {
@@ -75,35 +75,30 @@ class DeviceInfo extends \Beta\Microsoft\Graph\Model\Entity
         $this->_propDict["sentSignalLevel"] = $val;
         return $this;
     }
-
     /**
     * Gets the speakerGlitchRate
     *
-    * @return \Beta\Microsoft\Graph\Model\Single The speakerGlitchRate
+    * @return float|null The speakerGlitchRate
     */
     public function getSpeakerGlitchRate()
     {
         if (array_key_exists("speakerGlitchRate", $this->_propDict)) {
-            if (is_a($this->_propDict["speakerGlitchRate"], "\Beta\Microsoft\Graph\Model\Single")) {
-                return $this->_propDict["speakerGlitchRate"];
-            } else {
-                $this->_propDict["speakerGlitchRate"] = new \Beta\Microsoft\Graph\Model\Single($this->_propDict["speakerGlitchRate"]);
-                return $this->_propDict["speakerGlitchRate"];
-            }
+            return $this->_propDict["speakerGlitchRate"];
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**
     * Sets the speakerGlitchRate
     *
-    * @param \Beta\Microsoft\Graph\Model\Single $val The value to assign to the speakerGlitchRate
+    * @param float $val The value of the speakerGlitchRate
     *
-    * @return DeviceInfo The DeviceInfo
+    * @return DeviceInfo
     */
     public function setSpeakerGlitchRate($val)
     {
         $this->_propDict["speakerGlitchRate"] = $val;
-         return $this;
+        return $this;
     }
 }
