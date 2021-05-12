@@ -26,7 +26,7 @@ class MediaStream extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the streamId
     *
-    * @return string The streamId
+    * @return string|null The streamId
     */
     public function getStreamId()
     {
@@ -53,12 +53,12 @@ class MediaStream extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the startDateTime
     *
-    * @return \DateTime The startDateTime
+    * @return \DateTime|null The startDateTime
     */
     public function getStartDateTime()
     {
         if (array_key_exists("startDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["startDateTime"], "\DateTime")) {
+            if (is_a($this->_propDict["startDateTime"], "\DateTime") || is_null($this->_propDict["startDateTime"])) {
                 return $this->_propDict["startDateTime"];
             } else {
                 $this->_propDict["startDateTime"] = new \DateTime($this->_propDict["startDateTime"]);
@@ -84,12 +84,12 @@ class MediaStream extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the streamDirection
     *
-    * @return MediaStreamDirection The streamDirection
+    * @return MediaStreamDirection|null The streamDirection
     */
     public function getStreamDirection()
     {
         if (array_key_exists("streamDirection", $this->_propDict)) {
-            if (is_a($this->_propDict["streamDirection"], "\Beta\Microsoft\Graph\CallRecords\Model\MediaStreamDirection")) {
+            if (is_a($this->_propDict["streamDirection"], "\Beta\Microsoft\Graph\CallRecords\Model\MediaStreamDirection") || is_null($this->_propDict["streamDirection"])) {
                 return $this->_propDict["streamDirection"];
             } else {
                 $this->_propDict["streamDirection"] = new MediaStreamDirection($this->_propDict["streamDirection"]);
@@ -114,7 +114,7 @@ class MediaStream extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the packetUtilization
     *
-    * @return int The packetUtilization
+    * @return int|null The packetUtilization
     */
     public function getPacketUtilization()
     {
@@ -140,7 +140,7 @@ class MediaStream extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the wasMediaBypassed
     *
-    * @return bool The wasMediaBypassed
+    * @return bool|null The wasMediaBypassed
     */
     public function getWasMediaBypassed()
     {
@@ -163,47 +163,42 @@ class MediaStream extends \Beta\Microsoft\Graph\Model\Entity
         $this->_propDict["wasMediaBypassed"] = $val;
         return $this;
     }
-
     /**
     * Gets the lowVideoProcessingCapabilityRatio
     *
-    * @return \Beta\Microsoft\Graph\Model\Single The lowVideoProcessingCapabilityRatio
+    * @return float|null The lowVideoProcessingCapabilityRatio
     */
     public function getLowVideoProcessingCapabilityRatio()
     {
         if (array_key_exists("lowVideoProcessingCapabilityRatio", $this->_propDict)) {
-            if (is_a($this->_propDict["lowVideoProcessingCapabilityRatio"], "\Beta\Microsoft\Graph\Model\Single")) {
-                return $this->_propDict["lowVideoProcessingCapabilityRatio"];
-            } else {
-                $this->_propDict["lowVideoProcessingCapabilityRatio"] = new \Beta\Microsoft\Graph\Model\Single($this->_propDict["lowVideoProcessingCapabilityRatio"]);
-                return $this->_propDict["lowVideoProcessingCapabilityRatio"];
-            }
+            return $this->_propDict["lowVideoProcessingCapabilityRatio"];
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**
     * Sets the lowVideoProcessingCapabilityRatio
     *
-    * @param \Beta\Microsoft\Graph\Model\Single $val The value to assign to the lowVideoProcessingCapabilityRatio
+    * @param float $val The value of the lowVideoProcessingCapabilityRatio
     *
-    * @return MediaStream The MediaStream
+    * @return MediaStream
     */
     public function setLowVideoProcessingCapabilityRatio($val)
     {
         $this->_propDict["lowVideoProcessingCapabilityRatio"] = $val;
-         return $this;
+        return $this;
     }
 
     /**
     * Gets the averageAudioNetworkJitter
     *
-    * @return \Beta\Microsoft\Graph\Model\Duration The averageAudioNetworkJitter
+    * @return \Beta\Microsoft\Graph\Model\Duration|null The averageAudioNetworkJitter
     */
     public function getAverageAudioNetworkJitter()
     {
         if (array_key_exists("averageAudioNetworkJitter", $this->_propDict)) {
-            if (is_a($this->_propDict["averageAudioNetworkJitter"], "\Beta\Microsoft\Graph\Model\Duration")) {
+            if (is_a($this->_propDict["averageAudioNetworkJitter"], "\Beta\Microsoft\Graph\Model\Duration") || is_null($this->_propDict["averageAudioNetworkJitter"])) {
                 return $this->_propDict["averageAudioNetworkJitter"];
             } else {
                 $this->_propDict["averageAudioNetworkJitter"] = new \Beta\Microsoft\Graph\Model\Duration($this->_propDict["averageAudioNetworkJitter"]);

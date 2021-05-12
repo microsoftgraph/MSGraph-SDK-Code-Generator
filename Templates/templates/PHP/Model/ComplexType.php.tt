@@ -72,19 +72,19 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=propertyTypeReference#> The <#=propertyName#>
+    * @return <#=propertyTypeReference#>|null The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
-        if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
+        if (array_key_exists("<#=camelCasePropertyName#>", $this->_propDict)) {
 <#
-            if (property.Type.GetTypeString() == "\\DateTime") {
+            if (property.Type.GetTypeString() == "\\DateTime"){
 #>
-            return new \DateTime($this->_propDict["<#=property.Name.ToCamelize()#>"]);
+            return new \DateTime($this->_propDict["<#=camelCasePropertyName#>"]);
 <#
             } else {
 #>
-            return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+            return $this->_propDict["<#=camelCasePropertyName#>"];
 <#
             }
 #>
@@ -131,12 +131,12 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=propertyTypeReference#> The <#=propertyName#>
+    * @return <#=propertyTypeReference#>|null The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
-            if (is_a($this->_propDict["<#=camelCasePropertyName#>"], "<#=fullPropertyTypeName#>")) {
+            if (is_a($this->_propDict["<#=camelCasePropertyName#>"], "<#=fullPropertyTypeName#>") || is_null($this->_propDict["<#=camelCasePropertyName#>"])) {
                 return $this->_propDict["<#=camelCasePropertyName#>"];
             } else {
 <# if (propertyTypeString == "\\GuzzleHttp\\Psr7\\Stream") { #>
@@ -168,6 +168,8 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
         $this->_propDict["<#=property.Name#>"] = boolval($val);
 <#  } else if (property.Type.GetTypeString() == "int") { #>
         $this->_propDict["<#=property.Name#>"] = intval($val);
+<#  } else if (property.Type.GetTypeString() == "float") { #>
+        $this->_propDict["<#=property.Name#>"] = floatval($val);
 <# } else { #>
         $this->_propDict["<#=property.Name#>"] = $val;
 <# } #>

@@ -27,7 +27,7 @@ class Endpoint extends Entity
     /**
     * Gets the property1
     *
-    * @return int The property1
+    * @return int|null The property1
     */
     public function getProperty1()
     {

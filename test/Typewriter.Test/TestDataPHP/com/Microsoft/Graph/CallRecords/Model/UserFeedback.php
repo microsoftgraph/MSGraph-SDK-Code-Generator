@@ -26,7 +26,7 @@ class UserFeedback extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the text
     *
-    * @return string The text
+    * @return string|null The text
     */
     public function getText()
     {
@@ -53,12 +53,12 @@ class UserFeedback extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the rating
     *
-    * @return UserFeedbackRating The rating
+    * @return UserFeedbackRating|null The rating
     */
     public function getRating()
     {
         if (array_key_exists("rating", $this->_propDict)) {
-            if (is_a($this->_propDict["rating"], "\Microsoft\Graph\CallRecords\Model\UserFeedbackRating")) {
+            if (is_a($this->_propDict["rating"], "\Microsoft\Graph\CallRecords\Model\UserFeedbackRating") || is_null($this->_propDict["rating"])) {
                 return $this->_propDict["rating"];
             } else {
                 $this->_propDict["rating"] = new UserFeedbackRating($this->_propDict["rating"]);
@@ -84,12 +84,12 @@ class UserFeedback extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the tokens
     *
-    * @return FeedbackTokenSet The tokens
+    * @return FeedbackTokenSet|null The tokens
     */
     public function getTokens()
     {
         if (array_key_exists("tokens", $this->_propDict)) {
-            if (is_a($this->_propDict["tokens"], "\Microsoft\Graph\CallRecords\Model\FeedbackTokenSet")) {
+            if (is_a($this->_propDict["tokens"], "\Microsoft\Graph\CallRecords\Model\FeedbackTokenSet") || is_null($this->_propDict["tokens"])) {
                 return $this->_propDict["tokens"];
             } else {
                 $this->_propDict["tokens"] = new FeedbackTokenSet($this->_propDict["tokens"]);

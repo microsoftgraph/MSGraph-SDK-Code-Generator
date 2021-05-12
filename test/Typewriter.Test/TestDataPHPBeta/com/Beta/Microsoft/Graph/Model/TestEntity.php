@@ -27,12 +27,12 @@ class TestEntity extends Entity
     /**
     * Gets the testNav
     *
-    * @return TestType The testNav
+    * @return TestType|null The testNav
     */
     public function getTestNav()
     {
         if (array_key_exists("testNav", $this->_propDict)) {
-            if (is_a($this->_propDict["testNav"], "\Beta\Microsoft\Graph\Model\TestType")) {
+            if (is_a($this->_propDict["testNav"], "\Beta\Microsoft\Graph\Model\TestType") || is_null($this->_propDict["testNav"])) {
                 return $this->_propDict["testNav"];
             } else {
                 $this->_propDict["testNav"] = new TestType($this->_propDict["testNav"]);
@@ -58,12 +58,12 @@ class TestEntity extends Entity
     /**
     * Gets the testInvalidNav
     *
-    * @return EntityType2 The testInvalidNav
+    * @return EntityType2|null The testInvalidNav
     */
     public function getTestInvalidNav()
     {
         if (array_key_exists("testInvalidNav", $this->_propDict)) {
-            if (is_a($this->_propDict["testInvalidNav"], "\Beta\Microsoft\Graph\Model\EntityType2")) {
+            if (is_a($this->_propDict["testInvalidNav"], "\Beta\Microsoft\Graph\Model\EntityType2") || is_null($this->_propDict["testInvalidNav"])) {
                 return $this->_propDict["testInvalidNav"];
             } else {
                 $this->_propDict["testInvalidNav"] = new EntityType2($this->_propDict["testInvalidNav"]);
@@ -89,12 +89,12 @@ class TestEntity extends Entity
     /**
     * Gets the testExplicitNav
     *
-    * @return EntityType3 The testExplicitNav
+    * @return EntityType3|null The testExplicitNav
     */
     public function getTestExplicitNav()
     {
         if (array_key_exists("testExplicitNav", $this->_propDict)) {
-            if (is_a($this->_propDict["testExplicitNav"], "\Beta\Microsoft\Graph\Model\EntityType3")) {
+            if (is_a($this->_propDict["testExplicitNav"], "\Beta\Microsoft\Graph\Model\EntityType3") || is_null($this->_propDict["testExplicitNav"])) {
                 return $this->_propDict["testExplicitNav"];
             } else {
                 $this->_propDict["testExplicitNav"] = new EntityType3($this->_propDict["testExplicitNav"]);

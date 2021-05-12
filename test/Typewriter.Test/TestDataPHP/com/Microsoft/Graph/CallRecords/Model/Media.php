@@ -26,7 +26,7 @@ class Media extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the label
     *
-    * @return string The label
+    * @return string|null The label
     */
     public function getLabel()
     {
@@ -53,12 +53,12 @@ class Media extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the callerNetwork
     *
-    * @return NetworkInfo The callerNetwork
+    * @return NetworkInfo|null The callerNetwork
     */
     public function getCallerNetwork()
     {
         if (array_key_exists("callerNetwork", $this->_propDict)) {
-            if (is_a($this->_propDict["callerNetwork"], "\Microsoft\Graph\CallRecords\Model\NetworkInfo")) {
+            if (is_a($this->_propDict["callerNetwork"], "\Microsoft\Graph\CallRecords\Model\NetworkInfo") || is_null($this->_propDict["callerNetwork"])) {
                 return $this->_propDict["callerNetwork"];
             } else {
                 $this->_propDict["callerNetwork"] = new NetworkInfo($this->_propDict["callerNetwork"]);
@@ -84,12 +84,12 @@ class Media extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the callerDevice
     *
-    * @return DeviceInfo The callerDevice
+    * @return DeviceInfo|null The callerDevice
     */
     public function getCallerDevice()
     {
         if (array_key_exists("callerDevice", $this->_propDict)) {
-            if (is_a($this->_propDict["callerDevice"], "\Microsoft\Graph\CallRecords\Model\DeviceInfo")) {
+            if (is_a($this->_propDict["callerDevice"], "\Microsoft\Graph\CallRecords\Model\DeviceInfo") || is_null($this->_propDict["callerDevice"])) {
                 return $this->_propDict["callerDevice"];
             } else {
                 $this->_propDict["callerDevice"] = new DeviceInfo($this->_propDict["callerDevice"]);
@@ -115,12 +115,12 @@ class Media extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the streams
     *
-    * @return MediaStream The streams
+    * @return MediaStream|null The streams
     */
     public function getStreams()
     {
         if (array_key_exists("streams", $this->_propDict)) {
-            if (is_a($this->_propDict["streams"], "\Microsoft\Graph\CallRecords\Model\MediaStream")) {
+            if (is_a($this->_propDict["streams"], "\Microsoft\Graph\CallRecords\Model\MediaStream") || is_null($this->_propDict["streams"])) {
                 return $this->_propDict["streams"];
             } else {
                 $this->_propDict["streams"] = new MediaStream($this->_propDict["streams"]);

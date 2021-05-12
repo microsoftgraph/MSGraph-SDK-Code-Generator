@@ -68,6 +68,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                 case "Int64":
                     return "int";
                 case "Double":
+                case "Single":
                     return "float";
                 case "DateTimeOffset":
                 case "Date":
@@ -87,11 +88,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             switch (type)
             {
                 case "string":
-                    return true;
                 case "int":
-                    return true;
                 case "bool":
-                    return true;
                 case "float":
                     return true;
                 default:
@@ -111,6 +109,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                 case "Int64":
                     return "int";
                 case "Double":
+                case "Single":
                     return "float";
                 case "Guid":
                     return "UUID";
@@ -258,7 +257,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             switch (@namespace)
             {
                 case "Microsoft\\Graph\\Model":
-                    return "Entity";
                 case "Beta\\Microsoft\\Graph\\Model":
                     return "Entity";
                 default:
