@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -17,6 +17,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Directory Object.
     /// </summary>
+    [JsonConverter(typeof(DerivedTypeConverter<DirectoryObject>))]
     public partial class DirectoryObject : Entity
     {
     

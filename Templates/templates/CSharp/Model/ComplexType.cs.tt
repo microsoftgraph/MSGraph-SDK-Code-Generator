@@ -49,9 +49,10 @@ if (complex.IsDeprecated)
 }
 
 
-// We only want to add the derived type converter to the class at the top of the inheritance hierarchy
+// We only want to add the derived type converter to the class that has any derived types
 // and for abstract classes as they will have to be initialized as a derived type
-if ((complex.Derived != null && complex.Base == null) || complex.IsAbstract)
+// and for any objects that have an enum property to prevent serialization errors with System.Text.Json when a non existent value is used.
+if (complex.Base == null || complex.Derived.Any() || complex.IsAbstract || complex.HasEnumProperties())
 {
     if(attributeStringBuilder.Length > 0)
     {

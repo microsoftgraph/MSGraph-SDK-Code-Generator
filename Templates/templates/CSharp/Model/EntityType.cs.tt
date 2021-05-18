@@ -45,9 +45,10 @@ if (entity.IsDeprecated)
 }
 
 
-// We only want to add the derived type converter to the classes at the top of the inheritance hierarchy
+// We only want to add the derived type converter to the class that has any derived types
 // and for abstract classes as they will have to be initialized as a derived type
-if ((entity.Derived != null && entity.Base == null) || entity.IsAbstract)
+// and for any objects that have an enum property to prevent serialization errors with System.Text.Json when a non existent value is used.
+if (entity.Base == null || entity.Derived.Any() || entity.IsAbstract || entity.HasEnumProperties())
 {
     if(attributeStringBuilder.Length > 0)
     {

@@ -327,6 +327,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             }
         }
 
+        /// <summary>
+        /// Indicates whether class has any properties that are enums
+        /// </summary>
+        /// <param name="complex">The ComplexType that we want to query whether its base type is the referenced type for any property in any entity.</param>
+        /// <returns></returns>
+        public static bool HasEnumProperties(this OdcmClass complex)
+        {
+            return complex.Properties.Any(property => property.Type.AsOdcmEnum() != null);
+        }
+
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass, bool includeBaseProperties = false)
         {
             if (includeBaseProperties && odcmClass.Base != null)
