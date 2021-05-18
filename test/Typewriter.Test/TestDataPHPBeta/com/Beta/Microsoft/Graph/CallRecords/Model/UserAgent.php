@@ -26,7 +26,7 @@ class UserAgent extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the headerValue
     *
-    * @return string The headerValue
+    * @return string|null The headerValue
     */
     public function getHeaderValue()
     {
@@ -52,7 +52,7 @@ class UserAgent extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the applicationVersion
     *
-    * @return string The applicationVersion
+    * @return string|null The applicationVersion
     */
     public function getApplicationVersion()
     {
