@@ -20,14 +20,14 @@ namespace Microsoft.Graph
     public partial class Group : DirectoryObject
     {
     
-		///<summary>
-		/// The Group constructor
-		///</summary>
+        ///<summary>
+        /// The Group constructor
+        ///</summary>
         public Group()
         {
             this.ODataType = "microsoft.graph.group";
         }
-	
+    
         /// <summary>
         /// Gets or sets members.
         /// Users and groups that are members of this Adminsitrative Unit. HTTP Methods: GET (list members), POST (add members), DELETE (remove members).

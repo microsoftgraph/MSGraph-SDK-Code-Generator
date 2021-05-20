@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -20,14 +20,6 @@ namespace Microsoft.Graph2.CallRecords
     public partial class SingletonEntity1 : Microsoft.Graph.Entity
     {
     
-		///<summary>
-		/// The SingletonEntity1 constructor
-		///</summary>
-        public SingletonEntity1()
-        {
-            this.ODataType = "microsoft.graph2.callRecords.singletonEntity1";
-        }
-	
         /// <summary>
         /// Gets or sets test single nav.
         /// </summary>

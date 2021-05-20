@@ -44,6 +44,9 @@ if (entity.IsDeprecated)
    attributeStringBuilder.Append(entity.GetDeprecationString());
 }
 
+// We'll use this to generate a default OData.type only if the base is abstract or if its base is possibly referenced as a type in a property.
+// Note that we exclude the entity type in this search to avoid setting the type under entity
+var isBaseTypeReferenced = entity.IsBaseTypeReferenced() || (entity.Base != null && entity.Base.Name != "entity" && entity.Base.IsAbstract);
 
 // We only want to add the derived type converter to the class that has any derived types
 // and for abstract classes as they will have to be initialized as a derived type
@@ -82,28 +85,28 @@ if (attributeStringBuilder.Length > 0) {
         {
     #>
 
-		///<summary>
-		/// The internal <#=entityName#> constructor
-		///</summary>
+        ///<summary>
+        /// The internal <#=entityName#> constructor
+        ///</summary>
         protected internal <#=cstorTypeDeclaration#>()
         {
             // Don't allow initialization of abstract entity types
         }
     <#
         }
-		else
-		{
-	#>
+        else if (isBaseTypeReferenced)
+        {
+    #>
 
-		///<summary>
-		/// The <#=entityName#> constructor
-		///</summary>
+        ///<summary>
+        /// The <#=entityName#> constructor
+        ///</summary>
         public <#=cstorTypeDeclaration#>()
         {
             this.ODataType = "<#=entity.FullName#>";
         }
-	<#
-		}
+    <#
+        }
         foreach(var property in entity.Properties)
         {
             var propertyTypeString = property.GetTypeString(entity.Namespace.GetNamespaceName());

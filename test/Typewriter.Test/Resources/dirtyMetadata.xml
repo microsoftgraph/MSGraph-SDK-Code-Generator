@@ -26,6 +26,7 @@
       
       <EntityType Name="testType2" BaseType="microsoft.graph.entity"></EntityType>
       <EntityType Name="testType3" BaseType="microsoft.graph.entity"></EntityType>
+      <EntityType Name="testType4" BaseType="microsoft.graph.testType3"></EntityType>
       <EntityType Name="testEntity" BaseType="microsoft.graph.entity">
         <NavigationProperty Name="testNav" Type="microsoft.graph.testType"/>
         <NavigationProperty Name="testInvalidNav" Type="microsoft.graph.testType2"/>

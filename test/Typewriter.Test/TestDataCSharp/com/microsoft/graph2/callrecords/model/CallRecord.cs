@@ -21,14 +21,6 @@ namespace Microsoft.Graph2.CallRecords
     public partial class CallRecord : Microsoft.Graph.Entity
     {
     
-		///<summary>
-		/// The CallRecord constructor
-		///</summary>
-        public CallRecord()
-        {
-            this.ODataType = "microsoft.graph2.callRecords.callRecord";
-        }
-	
         /// <summary>
         /// Gets or sets version.
         /// </summary>

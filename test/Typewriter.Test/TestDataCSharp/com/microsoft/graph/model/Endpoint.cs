@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -20,14 +20,6 @@ namespace Microsoft.Graph
     public partial class Endpoint : Entity
     {
     
-		///<summary>
-		/// The Endpoint constructor
-		///</summary>
-        public Endpoint()
-        {
-            this.ODataType = "microsoft.graph.endpoint";
-        }
-	
         /// <summary>
         /// Gets or sets property1.
         /// </summary>

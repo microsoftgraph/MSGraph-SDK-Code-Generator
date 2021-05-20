@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -20,14 +20,6 @@ namespace Microsoft.Graph2.CallRecords
     public partial class Photo : Microsoft.Graph.Entity
     {
     
-		///<summary>
-		/// The Photo constructor
-		///</summary>
-        public Photo()
-        {
-            this.ODataType = "microsoft.graph2.callRecords.photo";
-        }
-	
         /// <summary>
         /// Gets or sets failure info.
         /// </summary>

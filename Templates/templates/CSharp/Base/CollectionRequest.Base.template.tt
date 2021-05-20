@@ -111,14 +111,6 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace, s
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.AppendFormat("            this.Method = {0};", templateWriter.PostMethod);
 
-        var entity = odcmProperty.Projection.Type.AsOdcmClass();
-
-        if (entity != null && entity.IsAbstract)
-        {
-            stringBuilder.Append(Environment.NewLine);
-            stringBuilder.AppendFormat("            {0}.ODataType = string.Concat(\"#\", StringHelper.ConvertTypeToLowerCamelCase({0}.GetType().FullName));", sanitizedPropertyName);
-        }
-
         stringBuilder.Append(Environment.NewLine);
         if (isGraphResponseMethod)
         {

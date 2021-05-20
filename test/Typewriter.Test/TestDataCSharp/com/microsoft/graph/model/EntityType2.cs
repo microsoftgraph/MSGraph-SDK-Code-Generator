@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -20,14 +20,6 @@ namespace Microsoft.Graph
     public partial class EntityType2 : Entity
     {
     
-		///<summary>
-		/// The EntityType2 constructor
-		///</summary>
-        public EntityType2()
-        {
-            this.ODataType = "microsoft.graph.entityType2";
-        }
-	
     }
 }
 

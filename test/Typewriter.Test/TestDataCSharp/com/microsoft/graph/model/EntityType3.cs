@@ -21,14 +21,6 @@ namespace Microsoft.Graph
     public partial class EntityType3 : Entity
     {
     
-		///<summary>
-		/// The EntityType3 constructor
-		///</summary>
-        public EntityType3()
-        {
-            this.ODataType = "microsoft.graph.entityType3";
-        }
-	
     }
 }
 
