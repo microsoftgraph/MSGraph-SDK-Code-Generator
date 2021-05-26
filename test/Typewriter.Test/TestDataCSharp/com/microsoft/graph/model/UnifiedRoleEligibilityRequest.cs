@@ -21,14 +21,6 @@ namespace Microsoft.Graph
     public partial class UnifiedRoleEligibilityRequestObject
     {
     
-		///<summary>
-		/// The UnifiedRoleEligibilityRequest constructor
-		///</summary>
-        public UnifiedRoleEligibilityRequestObject()
-        {
-            this.ODataType = "microsoft.graph.unifiedRoleEligibilityRequest";
-        }
-	
         /// <summary>
         /// Gets or sets action.
         /// </summary>

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -20,14 +20,14 @@ namespace Microsoft.Graph
     public partial class User : DirectoryObject
     {
     
-		///<summary>
-		/// The User constructor
-		///</summary>
+        ///<summary>
+        /// The User constructor
+        ///</summary>
         public User()
         {
             this.ODataType = "microsoft.graph.user";
         }
-	
+
         /// <summary>
         /// Gets or sets account enabled.
         /// true if the account is enabled; otherwise, false. This property is required when a user is created. Supports $filter.

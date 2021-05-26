@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -20,14 +20,6 @@ namespace Microsoft.Graph
     public partial class SingletonEntity1 : Entity
     {
     
-		///<summary>
-		/// The SingletonEntity1 constructor
-		///</summary>
-        public SingletonEntity1()
-        {
-            this.ODataType = "microsoft.graph.singletonEntity1";
-        }
-	
         /// <summary>
         /// Gets or sets test single nav.
         /// </summary>

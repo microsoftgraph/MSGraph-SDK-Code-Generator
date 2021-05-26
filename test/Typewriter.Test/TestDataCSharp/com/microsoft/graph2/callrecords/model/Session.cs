@@ -21,14 +21,6 @@ namespace Microsoft.Graph2.CallRecords
     public partial class Session : Microsoft.Graph.Entity
     {
     
-		///<summary>
-		/// The Session constructor
-		///</summary>
-        public Session()
-        {
-            this.ODataType = "microsoft.graph2.callRecords.session";
-        }
-	
         /// <summary>
         /// Gets or sets modalities.
         /// </summary>

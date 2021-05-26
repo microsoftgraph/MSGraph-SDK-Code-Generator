@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -20,14 +20,6 @@ namespace Microsoft.Graph
     public partial class TimeOffRequestObject : Entity
     {
     
-		///<summary>
-		/// The TimeOffRequest constructor
-		///</summary>
-        public TimeOffRequestObject()
-        {
-            this.ODataType = "microsoft.graph.timeOffRequest";
-        }
-	
         /// <summary>
         /// Gets or sets name.
         /// </summary>

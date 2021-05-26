@@ -21,9 +21,9 @@ namespace Microsoft.Graph
     public partial class EmptyEntityTypeWithBaseType : Entity
     {
     
-		///<summary>
-		/// The internal EmptyEntityTypeWithBaseType constructor
-		///</summary>
+        ///<summary>
+        /// The internal EmptyEntityTypeWithBaseType constructor
+        ///</summary>
         protected internal EmptyEntityTypeWithBaseType()
         {
             // Don't allow initialization of abstract entity types

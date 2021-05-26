@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -21,13 +21,6 @@ namespace Microsoft.Graph
     [JsonConverter(typeof(DerivedTypeConverter<ResponseObject>))]
     public partial class ResponseObject
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ResponseObject"/> class.
-        /// </summary>
-        public ResponseObject()
-        {
-            this.ODataType = "microsoft.graph.responseObject";
-        }
 
         /// <summary>
         /// Gets or sets additional data.

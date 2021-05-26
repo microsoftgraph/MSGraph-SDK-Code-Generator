@@ -20,14 +20,6 @@ namespace Microsoft.Graph2.CallRecords
     public partial class Segment : Microsoft.Graph.Entity
     {
     
-		///<summary>
-		/// The Segment constructor
-		///</summary>
-        public Segment()
-        {
-            this.ODataType = "microsoft.graph2.callRecords.segment";
-        }
-	
         /// <summary>
         /// Gets or sets start date time.
         /// </summary>

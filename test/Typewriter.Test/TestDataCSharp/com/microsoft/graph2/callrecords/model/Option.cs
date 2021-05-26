@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -20,14 +20,6 @@ namespace Microsoft.Graph2.CallRecords
     public partial class Option : Microsoft.Graph.Entity
     {
     
-		///<summary>
-		/// The Option constructor
-		///</summary>
-        public Option()
-        {
-            this.ODataType = "microsoft.graph2.callRecords.option";
-        }
-	
     }
 }
 
