@@ -357,17 +357,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                     .Where( m => !m.IsFunction) // only get the Actions
                     .Any(m => m.Parameters
                         .Any( param => param.Type.Name == odcmClass.Base.Name 
-                                  && param.Type.Name != "entity"));
+                                  && !"entity".Equals(param.Type.Name, StringComparison.OrdinalIgnoreCase)));
 
                 var isReferencedInClass = odcmClass.Namespace.Types
-                    .Select(someType => someType)
-                    .Where(someType => someType is OdcmClass)
-                    .Any(someType => ((OdcmClass) someType).Properties
+                    .OfType<OdcmClass>()
+                    .Any(someType => someType.Properties
                         .Any(x => x.Type.Name == odcmClass.Base.Name 
-                                  && x.Type.Name != "entity"));
+                                  && !"entity".Equals(x.Type.Name, StringComparison.OrdinalIgnoreCase)));
 
                 return (isReferencedInAction || isReferencedInClass);
-
             }
         }
 

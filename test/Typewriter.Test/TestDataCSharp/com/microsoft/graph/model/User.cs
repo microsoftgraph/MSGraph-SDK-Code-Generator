@@ -27,7 +27,7 @@ namespace Microsoft.Graph
         {
             this.ODataType = "microsoft.graph.user";
         }
-    
+
         /// <summary>
         /// Gets or sets account enabled.
         /// true if the account is enabled; otherwise, false. This property is required when a user is created. Supports $filter.

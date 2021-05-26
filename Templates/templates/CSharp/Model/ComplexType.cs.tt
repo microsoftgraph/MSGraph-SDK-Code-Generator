@@ -84,11 +84,7 @@ if (attributeStringBuilder.Length > 0) {
     public <#=classType#> <#=typeDeclaration#>
     {
 <#
-        // Do not generate a cstor if this is abstract.
-        if (complex.IsAbstract)
-        {
-        }
-        else if (isBaseTypeReferenced)
+        if (!complex.IsAbstract && isBaseTypeReferenced)
         {
 #>        /// <summary>
         /// Initializes a new instance of the <see cref="<#=cstorTypeDeclaration#>"/> class.

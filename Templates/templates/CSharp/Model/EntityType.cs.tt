@@ -105,7 +105,7 @@ if (attributeStringBuilder.Length > 0) {
         {
             this.ODataType = "<#=entity.FullName#>";
         }
-    <#
+<#
         }
         foreach(var property in entity.Properties)
         {
