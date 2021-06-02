@@ -31,8 +31,9 @@ class NetworkInfo extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function getConnectionType()
     {
-        if (array_key_exists("connectionType", $this->_propDict)) {
-            if (is_a($this->_propDict["connectionType"], "\Beta\Microsoft\Graph\CallRecords\Model\NetworkConnectionType") || is_null($this->_propDict["connectionType"])) {
+        if (array_key_exists("connectionType", $this->_propDict) && !is_null($this->_propDict["connectionType"])) {
+     
+            if (is_a($this->_propDict["connectionType"], "\Beta\Microsoft\Graph\CallRecords\Model\NetworkConnectionType")) {
                 return $this->_propDict["connectionType"];
             } else {
                 $this->_propDict["connectionType"] = new NetworkConnectionType($this->_propDict["connectionType"]);
@@ -62,8 +63,9 @@ class NetworkInfo extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function getWifiBand()
     {
-        if (array_key_exists("wifiBand", $this->_propDict)) {
-            if (is_a($this->_propDict["wifiBand"], "\Beta\Microsoft\Graph\CallRecords\Model\WifiBand") || is_null($this->_propDict["wifiBand"])) {
+        if (array_key_exists("wifiBand", $this->_propDict) && !is_null($this->_propDict["wifiBand"])) {
+     
+            if (is_a($this->_propDict["wifiBand"], "\Beta\Microsoft\Graph\CallRecords\Model\WifiBand")) {
                 return $this->_propDict["wifiBand"];
             } else {
                 $this->_propDict["wifiBand"] = new WifiBand($this->_propDict["wifiBand"]);
@@ -119,8 +121,9 @@ class NetworkInfo extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function getWifiRadioType()
     {
-        if (array_key_exists("wifiRadioType", $this->_propDict)) {
-            if (is_a($this->_propDict["wifiRadioType"], "\Beta\Microsoft\Graph\CallRecords\Model\WifiRadioType") || is_null($this->_propDict["wifiRadioType"])) {
+        if (array_key_exists("wifiRadioType", $this->_propDict) && !is_null($this->_propDict["wifiRadioType"])) {
+     
+            if (is_a($this->_propDict["wifiRadioType"], "\Beta\Microsoft\Graph\CallRecords\Model\WifiRadioType")) {
                 return $this->_propDict["wifiRadioType"];
             } else {
                 $this->_propDict["wifiRadioType"] = new WifiRadioType($this->_propDict["wifiRadioType"]);
