@@ -101,7 +101,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
         if (array_key_exists('<#=camelCasePropertyName#>', $this->_propDict) && !is_null($this->_propDict['<#=camelCasePropertyName#>'])) {
            $<#=camelCasePropertyName#> = [];
            if (count($this->_propDict['<#=camelCasePropertyName#>']) > 0 && is_a($this->_propDict['<#=camelCasePropertyName#>'][0], '<#=propertyTypeReference#>')) {
-              return $this->_propDict;
+              return $this->_propDict['<#=camelCasePropertyName#>'];
            }
            foreach ($this->_propDict['<#=camelCasePropertyName#>'] as $singleValue) {
               $<#=camelCasePropertyName#> []= new <#=propertyTypeReference#>($singleValue);
@@ -119,7 +119,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @param <#=propertyTypeReference#> $val The <#=propertyName#>
+    * @param <#=propertyTypeReference#>[] $val The <#=propertyName#>
     *
     * @return <#=entityName.ToCheckedCase()#>
     */
