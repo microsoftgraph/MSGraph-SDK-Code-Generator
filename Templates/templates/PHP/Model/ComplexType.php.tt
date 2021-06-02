@@ -112,7 +112,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
             if (property.Type.GetTypeString() == "\\DateTime") {
 #>
         $this->_propDict["<#=property.Name.ToCamelize()#>"] 
-            = $val->format(\DateTime::ISO8601) . "Z";
+            = $val->format(\DateTimeInterface::ISO8601) . "Z";
 <#
             } else {
 #>
@@ -133,12 +133,26 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=propertyTypeReference#>|null The <#=propertyName#>
+    * @return <#=propertyTypeReference#><# if (property.IsCollection()){ #>[]<# } #>|null The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
-        if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
-            if (is_a($this->_propDict["<#=camelCasePropertyName#>"], "<#=fullPropertyTypeName#>") || is_null($this->_propDict["<#=camelCasePropertyName#>"])) {
+        if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict) && !is_null($this->_propDict["<#=camelCasePropertyName#>"])) {
+    <# if (property.IsCollection()) { #>   
+            if(count($this->_propDict['<#=camelCasePropertyName#>']) === 0){
+              return $this->_propDict['<#=camelCasePropertyName#>'];
+            }
+            if (is_a($this->_propDict['<#=camelCasePropertyName#>'][0], ' <#=propertyTypeReference#>')) {
+               return $this->_propDict['<#=camelCasePropertyName#>'];
+            }
+            $<#=camelCasePropertyName#> = [];
+            foreach ($this->_propDict['<#=camelCasePropertyName#>'] as $singleValue) {
+               $<#=camelCasePropertyName#> []= new <#=propertyTypeReference#>($singleValue);
+            }
+            $this->_propDict['<#=camelCasePropertyName#>'] = $<#=camelCasePropertyName#>;
+            return $this->_propDict['<#=camelCasePropertyName#>'];
+    <# } else { #> 
+            if (is_a($this->_propDict["<#=camelCasePropertyName#>"], "<#=fullPropertyTypeName#>")) {
                 return $this->_propDict["<#=camelCasePropertyName#>"];
             } else {
 <# if (propertyTypeString == "\\GuzzleHttp\\Psr7\\Stream") { #>
@@ -148,7 +162,8 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
                 $this->_propDict["<#=camelCasePropertyName#>"] = new <#=propertyTypeReference#>($this->_propDict["<#=camelCasePropertyName#>"]);
                 return $this->_propDict["<#=camelCasePropertyName#>"];
 <# } #>
-            }
+            } 
+     <# } #>
         }
         return null;
     }
