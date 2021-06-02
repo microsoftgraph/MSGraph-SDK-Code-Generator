@@ -60,15 +60,15 @@ class Schedule extends Entity
     public function getTimesOff()
     {
         if (array_key_exists('timesOff', $this->_propDict) && !is_null($this->_propDict['timesOff'])) {
-            $timesOff = [];
-            if (count($this->_propDict['timesOff']) > 0 && is_a($this->_propDict['timesOff'][0], 'TimeOff')) {
-                return $this->_propDict['timesOff'];
-            }
-            foreach ($this->_propDict['timesOff'] as $singleValue) {
-                $timesOff []= new TimeOff($singleValue);
-            }
-            $this->_propDict['timesOff'] = $timesOff;
-            return $this->_propDict['timesOff'];
+           $timesOff = [];
+           if (count($this->_propDict['timesOff']) > 0 && is_a($this->_propDict['timesOff'][0], 'TimeOff')) {
+              return $this->_propDict['timesOff'];
+           }
+           foreach ($this->_propDict['timesOff'] as $singleValue) {
+              $timesOff []= new TimeOff($singleValue);
+           }
+           $this->_propDict['timesOff'] = $timesOff;
+           return $this->_propDict['timesOff'];
         }
         return null;
     }
@@ -95,15 +95,15 @@ class Schedule extends Entity
     public function getTimeOffRequests()
     {
         if (array_key_exists('timeOffRequests', $this->_propDict) && !is_null($this->_propDict['timeOffRequests'])) {
-            $timeOffRequests = [];
-            if (count($this->_propDict['timeOffRequests']) > 0 && is_a($this->_propDict['timeOffRequests'][0], 'TimeOffRequest')) {
-                return $this->_propDict['timeOffRequests'];
-            }
-            foreach ($this->_propDict['timeOffRequests'] as $singleValue) {
-                $timeOffRequests []= new TimeOffRequest($singleValue);
-            }
-            $this->_propDict['timeOffRequests'] = $timeOffRequests;
-            return $this->_propDict['timeOffRequests'];
+           $timeOffRequests = [];
+           if (count($this->_propDict['timeOffRequests']) > 0 && is_a($this->_propDict['timeOffRequests'][0], 'TimeOffRequest')) {
+              return $this->_propDict['timeOffRequests'];
+           }
+           foreach ($this->_propDict['timeOffRequests'] as $singleValue) {
+              $timeOffRequests []= new TimeOffRequest($singleValue);
+           }
+           $this->_propDict['timeOffRequests'] = $timeOffRequests;
+           return $this->_propDict['timeOffRequests'];
         }
         return null;
     }

@@ -112,7 +112,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
 =======
            $<#=camelCasePropertyName#> = [];
            if (count($this->_propDict['<#=camelCasePropertyName#>']) > 0 && is_a($this->_propDict['<#=camelCasePropertyName#>'][0], '<#=propertyTypeReference#>')) {
-              return $this->_propDict;
+              return $this->_propDict['<#=camelCasePropertyName#>'];
            }
            foreach ($this->_propDict['<#=camelCasePropertyName#>'] as $singleValue) {
               $<#=camelCasePropertyName#> []= new <#=propertyTypeReference#>($singleValue);

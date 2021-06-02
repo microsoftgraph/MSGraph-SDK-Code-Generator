@@ -33,15 +33,15 @@ class Session extends \Beta\Microsoft\Graph\Model\Entity
     public function getModalities()
     {
         if (array_key_exists('modalities', $this->_propDict) && !is_null($this->_propDict['modalities'])) {
-            $modalities = [];
-            if (count($this->_propDict['modalities']) > 0 && is_a($this->_propDict['modalities'][0], 'Modality')) {
-                return $this->_propDict['modalities'];
-            }
-            foreach ($this->_propDict['modalities'] as $singleValue) {
-                $modalities []= new Modality($singleValue);
-            }
-            $this->_propDict['modalities'] = $modalities;
-            return $this->_propDict['modalities'];
+           $modalities = [];
+           if (count($this->_propDict['modalities']) > 0 && is_a($this->_propDict['modalities'][0], 'Modality')) {
+              return $this->_propDict['modalities'];
+           }
+           foreach ($this->_propDict['modalities'] as $singleValue) {
+              $modalities []= new Modality($singleValue);
+           }
+           $this->_propDict['modalities'] = $modalities;
+           return $this->_propDict['modalities'];
         }
         return null;
     }
@@ -223,15 +223,15 @@ class Session extends \Beta\Microsoft\Graph\Model\Entity
     public function getSegments()
     {
         if (array_key_exists('segments', $this->_propDict) && !is_null($this->_propDict['segments'])) {
-            $segments = [];
-            if (count($this->_propDict['segments']) > 0 && is_a($this->_propDict['segments'][0], 'Segment')) {
-                return $this->_propDict['segments'];
-            }
-            foreach ($this->_propDict['segments'] as $singleValue) {
-                $segments []= new Segment($singleValue);
-            }
-            $this->_propDict['segments'] = $segments;
-            return $this->_propDict['segments'];
+           $segments = [];
+           if (count($this->_propDict['segments']) > 0 && is_a($this->_propDict['segments'][0], 'Segment')) {
+              return $this->_propDict['segments'];
+           }
+           foreach ($this->_propDict['segments'] as $singleValue) {
+              $segments []= new Segment($singleValue);
+           }
+           $this->_propDict['segments'] = $segments;
+           return $this->_propDict['segments'];
         }
         return null;
     }
