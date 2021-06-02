@@ -28,21 +28,28 @@ class CloudCommunications extends Entity
      /** 
      * Gets the calls
      *
-     * @return array|null The calls
+     * @return Call[]|null The calls
      */
     public function getCalls()
     {
-        if (array_key_exists("calls", $this->_propDict)) {
-           return $this->_propDict["calls"];
-        } else {
-            return null;
+        if (array_key_exists('calls', $this->_propDict) && !is_null($this->_propDict['calls'])) {
+           $calls = [];
+           if (count($this->_propDict['calls']) > 0 && is_a($this->_propDict['calls'][0], 'Call')) {
+              return $this->_propDict['calls'];
+           }
+           foreach ($this->_propDict['calls'] as $singleValue) {
+              $calls []= new Call($singleValue);
+           }
+           $this->_propDict['calls'] = $calls;
+           return $this->_propDict['calls'];
         }
+        return null;
     }
     
     /** 
     * Sets the calls
     *
-    * @param Call $val The calls
+    * @param Call[] $val The calls
     *
     * @return CloudCommunications
     */
@@ -56,21 +63,28 @@ class CloudCommunications extends Entity
      /** 
      * Gets the callRecords
      *
-     * @return array|null The callRecords
+     * @return \Beta\Microsoft\Graph\CallRecords\Model\CallRecord[]|null The callRecords
      */
     public function getCallRecords()
     {
-        if (array_key_exists("callRecords", $this->_propDict)) {
-           return $this->_propDict["callRecords"];
-        } else {
-            return null;
+        if (array_key_exists('callRecords', $this->_propDict) && !is_null($this->_propDict['callRecords'])) {
+           $callRecords = [];
+           if (count($this->_propDict['callRecords']) > 0 && is_a($this->_propDict['callRecords'][0], '\Beta\Microsoft\Graph\CallRecords\Model\CallRecord')) {
+              return $this->_propDict['callRecords'];
+           }
+           foreach ($this->_propDict['callRecords'] as $singleValue) {
+              $callRecords []= new \Beta\Microsoft\Graph\CallRecords\Model\CallRecord($singleValue);
+           }
+           $this->_propDict['callRecords'] = $callRecords;
+           return $this->_propDict['callRecords'];
         }
+        return null;
     }
     
     /** 
     * Sets the callRecords
     *
-    * @param \Beta\Microsoft\Graph\CallRecords\Model\CallRecord $val The callRecords
+    * @param \Beta\Microsoft\Graph\CallRecords\Model\CallRecord[] $val The callRecords
     *
     * @return CloudCommunications
     */

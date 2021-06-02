@@ -31,8 +31,8 @@ class SingletonEntity1 extends Entity
     */
     public function getTestSingleNav()
     {
-        if (array_key_exists("testSingleNav", $this->_propDict)) {
-            if (is_a($this->_propDict["testSingleNav"], "\Beta\Microsoft\Graph\Model\TestType") || is_null($this->_propDict["testSingleNav"])) {
+        if (array_key_exists("testSingleNav", $this->_propDict) && !is_null($this->_propDict["testSingleNav"])) {
+            if (is_a($this->_propDict["testSingleNav"], "\Beta\Microsoft\Graph\Model\TestType")) {
                 return $this->_propDict["testSingleNav"];
             } else {
                 $this->_propDict["testSingleNav"] = new TestType($this->_propDict["testSingleNav"]);
