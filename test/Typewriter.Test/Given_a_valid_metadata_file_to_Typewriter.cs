@@ -561,6 +561,43 @@ namespace Typewriter.Test
         }
 
         [Test]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        public void It_transforms_metadata_and_keeps_annotations(bool shouldRemoveCapabilityAnnotation, bool shouldFindCapabilityAnnotation)
+        {
+            const string outputDirectory = "output";
+            const string outputBaseFileName = "cleanMetadata";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                GenerationMode = GenerationMode.Transform,
+                Transform = "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/transforms/csdl/preprocess_csdl.xsl",
+                RemoveAnnotations = shouldRemoveCapabilityAnnotation
+            };
+
+            Generator.Transform(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + @$"{Path.DirectorySeparatorChar}{outputBaseFileName}.xml");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+
+            bool hasCapabilityAnnotations = false; // Expect false
+
+            // Check the document for these values.
+            foreach (var line in lines)
+            {
+                if (line.Contains("Org.OData.Capabilities"))
+                {
+                    hasCapabilityAnnotations = true;
+                }
+            }
+
+            Assert.AreEqual(shouldFindCapabilityAnnotation, hasCapabilityAnnotations, $"Expected to find capability annotations: {shouldFindCapabilityAnnotation}. Actually found capability annotations: {hasCapabilityAnnotations}");
+        }
+
+        [Test]
         [TestCase("TestType2FunctionMethodWithStringRequest.cs", "var response = await this.SendAsync<ODataMethodStringResponse>(null, cancellationToken);")]
         [TestCase("TestType2FunctionMethodWithBooleanRequest.cs", "var response = await this.SendAsync<ODataMethodBooleanResponse>(null, cancellationToken);")]
         [TestCase("TestType2FunctionMethodWithInt32Request.cs", "var response = await this.SendAsync<ODataMethodIntResponse>(null, cancellationToken);")]
