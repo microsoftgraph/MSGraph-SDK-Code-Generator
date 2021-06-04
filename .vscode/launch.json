@@ -463,7 +463,9 @@
         "-o",
         "withCapa",
         "-r",
-        "false"
+        "false",
+        "-f",
+        "cleanMetadataWithDescriptionsAndAnnotations"
       ],
       "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
       "console": "internalConsole",

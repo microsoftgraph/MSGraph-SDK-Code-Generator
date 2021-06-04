@@ -583,16 +583,7 @@ namespace Typewriter.Test
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
 
-            bool hasCapabilityAnnotations = false; // Expect false
-
-            // Check the document for these values.
-            foreach (var line in lines)
-            {
-                if (line.Contains("Org.OData.Capabilities"))
-                {
-                    hasCapabilityAnnotations = true;
-                }
-            }
+            bool hasCapabilityAnnotations = lines.Any(x => x.Contains("Org.OData.Capabilities")); // Expect false
 
             Assert.AreEqual(shouldFindCapabilityAnnotation, hasCapabilityAnnotations, $"Expected to find capability annotations: {shouldFindCapabilityAnnotation}. Actually found capability annotations: {hasCapabilityAnnotations}");
         }

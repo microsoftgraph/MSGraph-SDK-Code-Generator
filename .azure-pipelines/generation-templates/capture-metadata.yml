@@ -65,7 +65,7 @@ steps:
   displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata'
 
   ## Only run if the previous step was successful
-- pwsh: '$(scriptsDirectory)/run-typewriter-clean-metadata-keep-annotations.ps1'
+- pwsh: '$(scriptsDirectory)/run-typewriter-clean-metadata.ps1'
   env:
     OutputPath: ${{ parameters.outputPath }}
     InputMetadataFile: ${{ parameters.inputMetadata }}
