@@ -188,15 +188,15 @@ class Segment extends \Microsoft\Graph\Model\Entity
     public function getMedia()
     {
         if (array_key_exists('media', $this->_propDict) && !is_null($this->_propDict['media'])) {
-           $media = [];
-           if (count($this->_propDict['media']) > 0 && is_a($this->_propDict['media'][0], 'Media')) {
-              return $this->_propDict['media'];
-           }
-           foreach ($this->_propDict['media'] as $singleValue) {
-              $media []= new Media($singleValue);
-           }
-           $this->_propDict['media'] = $media;
-           return $this->_propDict['media'];
+            $media = [];
+            if (count($this->_propDict['media']) > 0 && is_a($this->_propDict['media'][0], 'Media')) {
+                return $this->_propDict['media'];
+            }
+            foreach ($this->_propDict['media'] as $singleValue) {
+                $media []= new Media($singleValue);
+            }
+            $this->_propDict['media'] = $media;
+            return $this->_propDict['media'];
         }
         return null;
     }
@@ -223,15 +223,15 @@ class Segment extends \Microsoft\Graph\Model\Entity
     public function getRefTypes()
     {
         if (array_key_exists('refTypes', $this->_propDict) && !is_null($this->_propDict['refTypes'])) {
-           $refTypes = [];
-           if (count($this->_propDict['refTypes']) > 0 && is_a($this->_propDict['refTypes'][0], '\Microsoft\Graph\Model\EntityType3')) {
-              return $this->_propDict['refTypes'];
-           }
-           foreach ($this->_propDict['refTypes'] as $singleValue) {
-              $refTypes []= new \Microsoft\Graph\Model\EntityType3($singleValue);
-           }
-           $this->_propDict['refTypes'] = $refTypes;
-           return $this->_propDict['refTypes'];
+            $refTypes = [];
+            if (count($this->_propDict['refTypes']) > 0 && is_a($this->_propDict['refTypes'][0], '\Microsoft\Graph\Model\EntityType3')) {
+                return $this->_propDict['refTypes'];
+            }
+            foreach ($this->_propDict['refTypes'] as $singleValue) {
+                $refTypes []= new \Microsoft\Graph\Model\EntityType3($singleValue);
+            }
+            $this->_propDict['refTypes'] = $refTypes;
+            return $this->_propDict['refTypes'];
         }
         return null;
     }
