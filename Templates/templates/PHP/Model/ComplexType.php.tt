@@ -139,10 +139,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict) && !is_null($this->_propDict["<#=camelCasePropertyName#>"])) {
     <# if (property.IsCollection()) { #>   
-            if (count($this->_propDict['<#=camelCasePropertyName#>']) === 0) {
-              return $this->_propDict['<#=camelCasePropertyName#>'];
-            }
-            if (is_a($this->_propDict['<#=camelCasePropertyName#>'][0], ' <#=propertyTypeReference#>')) {
+            if (count($this->_propDict['<#=camelCasePropertyName#>']) > 0 && is_a($this->_propDict['<#=camelCasePropertyName#>'][0], '<#=propertyTypeReference#>')) {
                return $this->_propDict['<#=camelCasePropertyName#>'];
             }
             $<#=camelCasePropertyName#> = [];
