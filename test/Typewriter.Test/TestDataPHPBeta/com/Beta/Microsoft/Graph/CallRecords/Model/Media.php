@@ -123,10 +123,7 @@ class Media extends \Beta\Microsoft\Graph\Model\Entity
     {
         if (array_key_exists("streams", $this->_propDict) && !is_null($this->_propDict["streams"])) {
        
-            if (count($this->_propDict['streams']) === 0) {
-              return $this->_propDict['streams'];
-            }
-            if (is_a($this->_propDict['streams'][0], ' MediaStream')) {
+            if (count($this->_propDict['streams']) > 0 && is_a($this->_propDict['streams'][0], 'MediaStream')) {
                return $this->_propDict['streams'];
             }
             $streams = [];
