@@ -99,7 +99,7 @@ namespace Typewriter
                 if (options.RemoveAnnotations == false)
                 {   
                     XsltArgumentList xsltargs = new();
-                    xsltargs.AddParam("remove-capability-annotations", "", options.RemoveAnnotations.ToString());
+                    xsltargs.AddParam("remove-capability-annotations", string.Empty, options.RemoveAnnotations.ToString());
 
                     // Execute the transformation, keep capability annotations, writes the transformed file.
                     transform.Transform(doc, xsltargs, writer);

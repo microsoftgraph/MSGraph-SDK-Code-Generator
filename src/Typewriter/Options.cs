@@ -82,7 +82,7 @@ namespace Typewriter
             "cleaning done by embeddeded typewriter.exe rules.")]
         public string Transform { get; set; }
 
-        [Option('r', "removeannotations", Default = (bool)true, HelpText = "Specify whether to keep source CSDL capability annotations. Only applicable when using generationMode Transform or TransformWithDocs.")]
+        [Option('r', "removeannotations", Default = (bool)true, HelpText = "Specifies whether to remove source CSDL capability annotations. Only applicable when using generationMode Transform or TransformWithDocs.")]
         public bool? RemoveAnnotations { get; set; }
     }
 }
