@@ -442,6 +442,36 @@
       "stopAtEntry": false
     },
     {
+      "name": "v1.0 - transform - keep capability annotations",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0/Typewriter.dll",
+      "args": [
+        "-v",
+        "Info",
+        "-m",
+        "https://graph.microsoft.com/v1.0/$metadata",
+        "-g",
+        "TransformWithDocs",
+        "-d",
+        "${workspaceFolder}/../microsoft-graph-docs",
+        "-e",
+        "v1.0",
+        "-t",
+        "${workspaceFolder}/../msgraph-metadata/transforms/csdl/preprocess_csdl.xsl",
+        "-o",
+        "withCapa",
+        "-r",
+        "false",
+        "-f",
+        "cleanMetadataWithDescriptionsAndAnnotations"
+      ],
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net5.0",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    },
+    {
       "request": "attach",
       "type": "coreclr",
       "processId": "${command:pickProcess}",

@@ -49,6 +49,7 @@ Typewriter is a new solution for generating code files using the GraphODataTempl
 * **-e**, **-endpointVersion**: The endpoint version used when naming a metadata file. Expected values are `v1.0` and `beta`. Only applicable for `-generationmode Metadata`.
 * **-p**, **-properties**: Specify properties to support generation logic in the T4 templates. Properties must take the form of *key-string:value-string*. Multiple properties can be specified by setting a space in between property. The only property currently supported is the *php.namespace* property to specify the generated model file namespace. This property is optional.
 * **-t**, **-transform**: Specify the URI to the XSLT that will preprocess the metadata. Only applicable for `-generationmode Transform` or `-generationmode TransformWitDocs`.
+* **-r**, **-removeannotations**: Specifies whether to remove capability annotations from the metadata. The default value is `true`. Only applicable for `-generationmode Transform` or `-generationmode TransformWithDocs`.
 
 ### Example typewriter usage
 
