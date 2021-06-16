@@ -76,7 +76,7 @@ namespace Microsoft.Graph
         /// Gets the GraphServiceTestTypes request builder.
         /// </summary>
         [Obsolete("entityType3 is deprecated. Please use singletonEntity1.")]
-        public IGraphServiceTestTypesCollectionRequestBuilder TestTypes
+        public virtual IGraphServiceTestTypesCollectionRequestBuilder TestTypes
         {
             get
             {
@@ -87,7 +87,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the GraphServiceSingletonProperty1 request builder.
         /// </summary>
-        public ISingletonEntity1RequestBuilder SingletonProperty1
+        public virtual ISingletonEntity1RequestBuilder SingletonProperty1
         {
             get
             {
@@ -98,7 +98,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the GraphServiceSingletonProperty2 request builder.
         /// </summary>
-        public ISingletonEntity2RequestBuilder SingletonProperty2
+        public virtual ISingletonEntity2RequestBuilder SingletonProperty2
         {
             get
             {
@@ -109,7 +109,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the GraphServiceSingletonProperty3 request builder.
         /// </summary>
-        public Microsoft.Graph2.CallRecords.ISingletonEntity1RequestBuilder SingletonProperty3
+        public virtual Microsoft.Graph2.CallRecords.ISingletonEntity1RequestBuilder SingletonProperty3
         {
             get
             {

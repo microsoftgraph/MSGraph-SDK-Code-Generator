@@ -90,7 +90,7 @@ namespace <#=@namespace#>
 <# if (prop.IsDeprecated) { #>
         <#=prop.GetDeprecationString()#>
 <# } #>
-        public I<#=collectionRequestBuilder#> <#=sanitizedPropName#>
+        public virtual I<#=collectionRequestBuilder#> <#=sanitizedPropName#>
         {
             get
             {
@@ -111,7 +111,7 @@ namespace <#=@namespace#>
 <# if (prop.IsDeprecated) { #>
         <#=prop.GetDeprecationString()#>
 <# } #>
-        public <#=iRequestBuilder#> <#=sanitizedPropName#>
+        public virtual <#=iRequestBuilder#> <#=sanitizedPropName#>
         {
             get
             {
