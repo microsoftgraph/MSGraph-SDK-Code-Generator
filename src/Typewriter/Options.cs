@@ -51,7 +51,7 @@ namespace Typewriter
         [Option('m', "metadata", Default = "https://graph.microsoft.com/v1.0/$metadata", HelpText = "Location of metadata.  Local file path or URL")]
         public string Metadata { get; set; }
 
-        [Option('v', "verbosity", Default= VerbosityLevel.Minimal, HelpText = "Log verbosity level")]
+        [Option('v', "verbosity", Default = VerbosityLevel.Minimal, HelpText = "Log verbosity level")]
         public VerbosityLevel Verbosity { get; set; }
 
         [Option('o', "output", Default= ".", HelpText = "Path to output folder")]
@@ -81,5 +81,8 @@ namespace Typewriter
         [Option('t', "transform", HelpText = "Specify the URI to the XSLT that will preprocess the metadata. Overrides the" +
             "cleaning done by embeddeded typewriter.exe rules.")]
         public string Transform { get; set; }
+
+        [Option('r', "removeannotations", Default = (bool)true, HelpText = "Specifies whether to remove source CSDL capability annotations. Only applicable when using generationMode Transform or TransformWithDocs.")]
+        public bool? RemoveAnnotations { get; set; }
     }
 }
