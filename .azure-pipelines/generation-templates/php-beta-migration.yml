@@ -4,6 +4,6 @@ steps:
     env:
       BuildConfiguration: $(buildConfiguration)
       OutputFullPath: $(typewriterDirectory)/output
-      RepoModelsDir: $(Build.SourcesDirectory)/msgraph-beta-sdk-php/src/Beta
+      RepoModelsDir: $(Build.SourcesDirectory)/msgraph-beta-sdk-php/src/
 
   - template: php-run-tests-beta.yml
