@@ -1,5 +1,7 @@
-# removes all models under src/Beta
-Remove-Item $env:RepoModelsDir -Recurse -Force
+# Removes all models under src/ excluding all .php files in the root directory
+# including GraphConstants.php
+
+Get-ChildItem $env:RepoModelsDir -Exclude *.php | Remove-Item -Force -Recurse
 Write-Host "Removed the existing generated files for Beta in the repo at $($env:RepoModelsDir)." -ForegroundColor Green
 
 $betaGeneratedFiles = Join-Path $env:OutputFullPath "/com/Beta/Microsoft/Graph/*"
