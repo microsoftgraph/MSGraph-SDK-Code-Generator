@@ -1,5 +1,5 @@
 steps:
-  - pwsh: '$(scriptsDirectory)/copy-php-beta-models.ps1'
+  - pwsh: '$(scriptsDirectory)/copy-php-beta-migration-models.ps1'
     displayName: 'Update models'
     env:
       BuildConfiguration: $(buildConfiguration)
