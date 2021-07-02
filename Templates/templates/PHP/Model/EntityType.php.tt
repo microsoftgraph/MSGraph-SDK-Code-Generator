@@ -40,12 +40,12 @@ if (String.IsNullOrEmpty(entityBaseName)) {
     * The array of properties available
     * to the model
     *
-    * @var array(string => string)
+    * @var array $_propDict
     */
     protected $_propDict;
     
     /**
-    * Construct a new <#=entityCheckedCase#>
+    * Construct a new <#=entityName.ToCheckedCase()#>
     *
     * @param array $propDict A list of properties to set
     */
@@ -114,7 +114,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     *
     * @param <#=propertyTypeReference#> $val The <#=propertyName#>
     *
-    * @return <#=entityCheckedCase#>
+    * @return <#=entityName.ToCheckedCase()#>
     */
     public function set<#=propertyName.ToCheckedCase()#>($val)
     {
@@ -161,7 +161,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     *
     * @param <#=propertyTypeReference#> $val The <#=propertyName#>
     *
-    * @return <#=entityCheckedCase#>
+    * @return <#=entityName.ToCheckedCase()#>
     */
     public function set<#=propertyName.ToCheckedCase()#>($val)
     {
@@ -218,7 +218,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     *
     * @param <#=propertyTypeReference#> $val The <#=propertyName#>
     *
-    * @return <#=entityCheckedCase#>
+    * @return <#=entityName.ToCheckedCase()#>
     */
     public function set<#=propertyName.ToCheckedCase()#>($val)
     {
@@ -263,9 +263,9 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     /**
     * Sets the ODataType
     *
-    * @param string The ODataType
+    * @param string $val The ODataType
     *
-    * @return Entity
+    * @return <#=entityName.ToCheckedCase()#>
     */
     public function setODataType($val)
     {

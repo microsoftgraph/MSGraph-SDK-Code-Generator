@@ -16,9 +16,4 @@ import <#=importNamespace#>.serializer.ISerializer;
 import <#=importNamespace#>.http.BaseCollectionResponse;
 
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), "BaseCollectionResponse<"+(c as OdcmMethod).OdcmMethodReturnType()+">", null, c.Deprecation?.Description)#>
-
-<# if (((c as OdcmMethod).ReturnType is OdcmPrimitiveType) || ((c as OdcmMethod).ReturnType is OdcmEnum) ) { #>
-<#=TypeHelperJava.CreateRawJsonObject()#>
-    }
-<# } #>
 }

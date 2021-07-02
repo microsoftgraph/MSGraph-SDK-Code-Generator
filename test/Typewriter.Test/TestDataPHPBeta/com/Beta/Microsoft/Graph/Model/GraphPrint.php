@@ -28,12 +28,12 @@ class GraphPrint implements \JsonSerializable
     * The array of properties available
     * to the model
     *
-    * @var array(string => string)
+    * @var array $_propDict
     */
     protected $_propDict;
     
     /**
-    * Construct a new Print
+    * Construct a new GraphPrint
     *
     * @param array $propDict A list of properties to set
     */
@@ -74,7 +74,7 @@ class GraphPrint implements \JsonSerializable
     *
     * @param string $val The settings
     *
-    * @return Print
+    * @return GraphPrint
     */
     public function setSettings($val)
     {
@@ -95,9 +95,9 @@ class GraphPrint implements \JsonSerializable
     /**
     * Sets the ODataType
     *
-    * @param string The ODataType
+    * @param string $val The ODataType
     *
-    * @return Entity
+    * @return GraphPrint
     */
     public function setODataType($val)
     {

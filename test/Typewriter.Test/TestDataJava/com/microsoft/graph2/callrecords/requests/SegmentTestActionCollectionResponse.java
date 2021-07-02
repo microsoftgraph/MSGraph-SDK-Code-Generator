@@ -17,5 +17,4 @@ import com.microsoft.graph.http.BaseCollectionResponse;
  * The class for the Segment Test Action Collection Response.
  */
 public class SegmentTestActionCollectionResponse extends BaseCollectionResponse<Session> {
-
 }
