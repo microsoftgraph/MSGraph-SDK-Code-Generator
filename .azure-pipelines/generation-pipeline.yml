@@ -116,7 +116,6 @@ variables:
   publishChanges: ${{ parameters.publishChanges }}
   overrideSkipCI: ${{ parameters.overrideSkipCI }}
   skipMetadataCaptureAndClean: ${{ parameters.skipMetadataCaptureAndClean }}
-
   phpVersion: 7.2
 
 # This stage is the core dependency for all other stages.
@@ -320,6 +319,11 @@ stages:
         cleanMetadataFolder: $(cleanMetadataFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/php-beta.yml
+          parameters:
+             phpBetaGenerationDirectory: $(Build.SourcesDirectory)/msgraph-sdk-php/src/Beta/
+             repoName: 'msgraph-sdk-php'
+             migration: false
+             pathToCopy: '/com/Beta/*'
 
 - stage: stage_php_beta_migration
   dependsOn:
@@ -343,7 +347,12 @@ stages:
             cleanMetadataFile: $(cleanMetadataFileBeta)
             cleanMetadataFolder: $(cleanMetadataFolderBeta)
             languageSpecificSteps:
-              - template: generation-templates/php-beta-migration.yml
+              - template: generation-templates/php-beta.yml
+                parameters:
+                  phpBetaGenerationDirectory: $(Build.SourcesDirectory)/msgraph-beta-sdk-php/src/
+                  repoName: 'msgraph-beta-sdk-php'
+                  migration: true
+                  pathToCopy: '/com/Beta/Microsoft/Graph/*'
 
 - stage: stage_typescript_v1
   dependsOn:

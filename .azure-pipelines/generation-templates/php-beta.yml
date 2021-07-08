@@ -2,8 +2,13 @@ steps:
 - pwsh: '$(scriptsDirectory)/copy-php-beta-models.ps1'
   displayName: 'Update models'
   env:
+#     Migration variable - This was used during migration of the beta models to the new repo.
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(typewriterDirectory)/output
-    RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-php/src/Beta
+    Migration: ${{ parameters.migration }}
+    RepoModelsDir: ${{ parameters.phpBetaGenerationDirectory }}
+    PathToCopy: ${{ parameters.pathToCopy }}
 
 - template: php-run-tests.yml
+  parameters:
+    repoName: ${{ parameters.repoName }}

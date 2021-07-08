@@ -1,9 +1,0 @@
-steps:
-  - pwsh: '$(scriptsDirectory)/copy-php-beta-migration-models.ps1'
-    displayName: 'Update models'
-    env:
-      BuildConfiguration: $(buildConfiguration)
-      OutputFullPath: $(typewriterDirectory)/output
-      RepoModelsDir: $(Build.SourcesDirectory)/msgraph-beta-sdk-php/src/
-
-  - template: php-run-tests-beta.yml
