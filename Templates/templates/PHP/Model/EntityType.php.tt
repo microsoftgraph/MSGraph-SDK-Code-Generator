@@ -253,7 +253,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     /**
     * Gets the ODataType
     *
-    * @return string The ODataType
+    * @return string|null The ODataType
     */
     public function getODataType()
     {
