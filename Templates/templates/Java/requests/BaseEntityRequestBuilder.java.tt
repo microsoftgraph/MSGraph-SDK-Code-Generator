@@ -133,7 +133,7 @@ if (c.AsOdcmClass() != null)
 	{
 		var propName = prop.Name.ToCheckedCase();
 		var sanitizedName = propName;
-		if (c is OdcmMediaClass && propName == "Content") {
+		if (c.AsOdcmClass().IsStreamedEntity() && propName == "Content") {
 			 sanitizedName = prop.Type.GetReservedPrefix().ToCheckedCase() + prop.Name.ToCheckedCase();
 		} else {
 			sanitizedName = propName.SanitizePropertyName().ToLowerFirstChar();
@@ -154,7 +154,7 @@ if (c.AsOdcmClass() != null)
 	}
 #>
 <#
-    if (c is OdcmMediaClass)
+    if (c.AsOdcmClass().IsStreamedEntity())
     {
 #>
 
