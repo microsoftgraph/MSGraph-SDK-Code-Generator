@@ -58,8 +58,8 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     */
     public function getType()
     {
-        if (array_key_exists("type", $this->_propDict)) {
-            if (is_a($this->_propDict["type"], "\Microsoft\Graph\CallRecords\Model\CallType") || is_null($this->_propDict["type"])) {
+        if (array_key_exists("type", $this->_propDict) && !is_null($this->_propDict["type"])) {
+            if (is_a($this->_propDict["type"], "\Microsoft\Graph\CallRecords\Model\CallType")) {
                 return $this->_propDict["type"];
             } else {
                 $this->_propDict["type"] = new CallType($this->_propDict["type"]);
@@ -86,21 +86,28 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
      /** 
      * Gets the modalities
      *
-     * @return array|null The modalities
+     * @return Modality[]|null The modalities
      */
     public function getModalities()
     {
-        if (array_key_exists("modalities", $this->_propDict)) {
-           return $this->_propDict["modalities"];
-        } else {
-            return null;
+        if (array_key_exists('modalities', $this->_propDict) && !is_null($this->_propDict['modalities'])) {
+            $modalities = [];
+            if (count($this->_propDict['modalities']) > 0 && is_a($this->_propDict['modalities'][0], 'Modality')) {
+                return $this->_propDict['modalities'];
+            }
+            foreach ($this->_propDict['modalities'] as $singleValue) {
+                $modalities []= new Modality($singleValue);
+            }
+            $this->_propDict['modalities'] = $modalities;
+            return $this->_propDict['modalities'];
         }
+        return null;
     }
     
     /** 
     * Sets the modalities
     *
-    * @param Modality $val The modalities
+    * @param Modality[] $val The modalities
     *
     * @return CallRecord
     */
@@ -117,8 +124,8 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     */
     public function getLastModifiedDateTime()
     {
-        if (array_key_exists("lastModifiedDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["lastModifiedDateTime"], "\DateTime") || is_null($this->_propDict["lastModifiedDateTime"])) {
+        if (array_key_exists("lastModifiedDateTime", $this->_propDict) && !is_null($this->_propDict["lastModifiedDateTime"])) {
+            if (is_a($this->_propDict["lastModifiedDateTime"], "\DateTime")) {
                 return $this->_propDict["lastModifiedDateTime"];
             } else {
                 $this->_propDict["lastModifiedDateTime"] = new \DateTime($this->_propDict["lastModifiedDateTime"]);
@@ -148,8 +155,8 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     */
     public function getStartDateTime()
     {
-        if (array_key_exists("startDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["startDateTime"], "\DateTime") || is_null($this->_propDict["startDateTime"])) {
+        if (array_key_exists("startDateTime", $this->_propDict) && !is_null($this->_propDict["startDateTime"])) {
+            if (is_a($this->_propDict["startDateTime"], "\DateTime")) {
                 return $this->_propDict["startDateTime"];
             } else {
                 $this->_propDict["startDateTime"] = new \DateTime($this->_propDict["startDateTime"]);
@@ -179,8 +186,8 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     */
     public function getEndDateTime()
     {
-        if (array_key_exists("endDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["endDateTime"], "\DateTime") || is_null($this->_propDict["endDateTime"])) {
+        if (array_key_exists("endDateTime", $this->_propDict) && !is_null($this->_propDict["endDateTime"])) {
+            if (is_a($this->_propDict["endDateTime"], "\DateTime")) {
                 return $this->_propDict["endDateTime"];
             } else {
                 $this->_propDict["endDateTime"] = new \DateTime($this->_propDict["endDateTime"]);
@@ -210,8 +217,8 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
     */
     public function getOrganizer()
     {
-        if (array_key_exists("organizer", $this->_propDict)) {
-            if (is_a($this->_propDict["organizer"], "\Microsoft\Graph\Model\IdentitySet") || is_null($this->_propDict["organizer"])) {
+        if (array_key_exists("organizer", $this->_propDict) && !is_null($this->_propDict["organizer"])) {
+            if (is_a($this->_propDict["organizer"], "\Microsoft\Graph\Model\IdentitySet")) {
                 return $this->_propDict["organizer"];
             } else {
                 $this->_propDict["organizer"] = new \Microsoft\Graph\Model\IdentitySet($this->_propDict["organizer"]);
@@ -238,21 +245,28 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
      /** 
      * Gets the participants
      *
-     * @return array|null The participants
+     * @return \Microsoft\Graph\Model\IdentitySet[]|null The participants
      */
     public function getParticipants()
     {
-        if (array_key_exists("participants", $this->_propDict)) {
-           return $this->_propDict["participants"];
-        } else {
-            return null;
+        if (array_key_exists('participants', $this->_propDict) && !is_null($this->_propDict['participants'])) {
+            $participants = [];
+            if (count($this->_propDict['participants']) > 0 && is_a($this->_propDict['participants'][0], '\Microsoft\Graph\Model\IdentitySet')) {
+                return $this->_propDict['participants'];
+            }
+            foreach ($this->_propDict['participants'] as $singleValue) {
+                $participants []= new \Microsoft\Graph\Model\IdentitySet($singleValue);
+            }
+            $this->_propDict['participants'] = $participants;
+            return $this->_propDict['participants'];
         }
+        return null;
     }
     
     /** 
     * Sets the participants
     *
-    * @param \Microsoft\Graph\Model\IdentitySet $val The participants
+    * @param \Microsoft\Graph\Model\IdentitySet[] $val The participants
     *
     * @return CallRecord
     */
@@ -293,21 +307,28 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
      /** 
      * Gets the sessions
      *
-     * @return array|null The sessions
+     * @return Session[]|null The sessions
      */
     public function getSessions()
     {
-        if (array_key_exists("sessions", $this->_propDict)) {
-           return $this->_propDict["sessions"];
-        } else {
-            return null;
+        if (array_key_exists('sessions', $this->_propDict) && !is_null($this->_propDict['sessions'])) {
+            $sessions = [];
+            if (count($this->_propDict['sessions']) > 0 && is_a($this->_propDict['sessions'][0], 'Session')) {
+                return $this->_propDict['sessions'];
+            }
+            foreach ($this->_propDict['sessions'] as $singleValue) {
+                $sessions []= new Session($singleValue);
+            }
+            $this->_propDict['sessions'] = $sessions;
+            return $this->_propDict['sessions'];
         }
+        return null;
     }
     
     /** 
     * Sets the sessions
     *
-    * @param Session $val The sessions
+    * @param Session[] $val The sessions
     *
     * @return CallRecord
     */
@@ -321,21 +342,28 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
      /** 
      * Gets the recipients
      *
-     * @return array|null The recipients
+     * @return \Microsoft\Graph\Model\EntityType2[]|null The recipients
      */
     public function getRecipients()
     {
-        if (array_key_exists("recipients", $this->_propDict)) {
-           return $this->_propDict["recipients"];
-        } else {
-            return null;
+        if (array_key_exists('recipients', $this->_propDict) && !is_null($this->_propDict['recipients'])) {
+            $recipients = [];
+            if (count($this->_propDict['recipients']) > 0 && is_a($this->_propDict['recipients'][0], '\Microsoft\Graph\Model\EntityType2')) {
+                return $this->_propDict['recipients'];
+            }
+            foreach ($this->_propDict['recipients'] as $singleValue) {
+                $recipients []= new \Microsoft\Graph\Model\EntityType2($singleValue);
+            }
+            $this->_propDict['recipients'] = $recipients;
+            return $this->_propDict['recipients'];
         }
+        return null;
     }
     
     /** 
     * Sets the recipients
     *
-    * @param \Microsoft\Graph\Model\EntityType2 $val The recipients
+    * @param \Microsoft\Graph\Model\EntityType2[] $val The recipients
     *
     * @return CallRecord
     */

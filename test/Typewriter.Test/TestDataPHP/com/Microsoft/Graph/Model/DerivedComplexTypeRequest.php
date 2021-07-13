@@ -83,8 +83,9 @@ class DerivedComplexTypeRequest extends EmptyBaseComplexTypeRequest
     */
     public function getEnumProperty()
     {
-        if (array_key_exists("enumProperty", $this->_propDict)) {
-            if (is_a($this->_propDict["enumProperty"], "\Microsoft\Graph\Model\Enum1") || is_null($this->_propDict["enumProperty"])) {
+        if (array_key_exists("enumProperty", $this->_propDict) && !is_null($this->_propDict["enumProperty"])) {
+     
+            if (is_a($this->_propDict["enumProperty"], "\Microsoft\Graph\Model\Enum1")) {
                 return $this->_propDict["enumProperty"];
             } else {
                 $this->_propDict["enumProperty"] = new Enum1($this->_propDict["enumProperty"]);

@@ -57,8 +57,9 @@ class MediaStream extends \Microsoft\Graph\Model\Entity
     */
     public function getStartDateTime()
     {
-        if (array_key_exists("startDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["startDateTime"], "\DateTime") || is_null($this->_propDict["startDateTime"])) {
+        if (array_key_exists("startDateTime", $this->_propDict) && !is_null($this->_propDict["startDateTime"])) {
+     
+            if (is_a($this->_propDict["startDateTime"], "\DateTime")) {
                 return $this->_propDict["startDateTime"];
             } else {
                 $this->_propDict["startDateTime"] = new \DateTime($this->_propDict["startDateTime"]);
@@ -88,8 +89,9 @@ class MediaStream extends \Microsoft\Graph\Model\Entity
     */
     public function getStreamDirection()
     {
-        if (array_key_exists("streamDirection", $this->_propDict)) {
-            if (is_a($this->_propDict["streamDirection"], "\Microsoft\Graph\CallRecords\Model\MediaStreamDirection") || is_null($this->_propDict["streamDirection"])) {
+        if (array_key_exists("streamDirection", $this->_propDict) && !is_null($this->_propDict["streamDirection"])) {
+     
+            if (is_a($this->_propDict["streamDirection"], "\Microsoft\Graph\CallRecords\Model\MediaStreamDirection")) {
                 return $this->_propDict["streamDirection"];
             } else {
                 $this->_propDict["streamDirection"] = new MediaStreamDirection($this->_propDict["streamDirection"]);
@@ -197,8 +199,9 @@ class MediaStream extends \Microsoft\Graph\Model\Entity
     */
     public function getAverageAudioNetworkJitter()
     {
-        if (array_key_exists("averageAudioNetworkJitter", $this->_propDict)) {
-            if (is_a($this->_propDict["averageAudioNetworkJitter"], "\Microsoft\Graph\Model\Duration") || is_null($this->_propDict["averageAudioNetworkJitter"])) {
+        if (array_key_exists("averageAudioNetworkJitter", $this->_propDict) && !is_null($this->_propDict["averageAudioNetworkJitter"])) {
+     
+            if (is_a($this->_propDict["averageAudioNetworkJitter"], "\Microsoft\Graph\Model\Duration")) {
                 return $this->_propDict["averageAudioNetworkJitter"];
             } else {
                 $this->_propDict["averageAudioNetworkJitter"] = new \Microsoft\Graph\Model\Duration($this->_propDict["averageAudioNetworkJitter"]);

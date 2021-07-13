@@ -31,8 +31,8 @@ class Photo extends \Microsoft\Graph\Model\Entity
     */
     public function getFailureInfo()
     {
-        if (array_key_exists("failureInfo", $this->_propDict)) {
-            if (is_a($this->_propDict["failureInfo"], "\Microsoft\Graph\CallRecords\Model\FailureInfo") || is_null($this->_propDict["failureInfo"])) {
+        if (array_key_exists("failureInfo", $this->_propDict) && !is_null($this->_propDict["failureInfo"])) {
+            if (is_a($this->_propDict["failureInfo"], "\Microsoft\Graph\CallRecords\Model\FailureInfo")) {
                 return $this->_propDict["failureInfo"];
             } else {
                 $this->_propDict["failureInfo"] = new FailureInfo($this->_propDict["failureInfo"]);
@@ -62,8 +62,8 @@ class Photo extends \Microsoft\Graph\Model\Entity
     */
     public function getOption()
     {
-        if (array_key_exists("option", $this->_propDict)) {
-            if (is_a($this->_propDict["option"], "\Microsoft\Graph\CallRecords\Model\Option") || is_null($this->_propDict["option"])) {
+        if (array_key_exists("option", $this->_propDict) && !is_null($this->_propDict["option"])) {
+            if (is_a($this->_propDict["option"], "\Microsoft\Graph\CallRecords\Model\Option")) {
                 return $this->_propDict["option"];
             } else {
                 $this->_propDict["option"] = new Option($this->_propDict["option"]);

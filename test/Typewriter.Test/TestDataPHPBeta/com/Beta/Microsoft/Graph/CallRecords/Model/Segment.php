@@ -31,8 +31,8 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function getStartDateTime()
     {
-        if (array_key_exists("startDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["startDateTime"], "\DateTime") || is_null($this->_propDict["startDateTime"])) {
+        if (array_key_exists("startDateTime", $this->_propDict) && !is_null($this->_propDict["startDateTime"])) {
+            if (is_a($this->_propDict["startDateTime"], "\DateTime")) {
                 return $this->_propDict["startDateTime"];
             } else {
                 $this->_propDict["startDateTime"] = new \DateTime($this->_propDict["startDateTime"]);
@@ -62,8 +62,8 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function getEndDateTime()
     {
-        if (array_key_exists("endDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["endDateTime"], "\DateTime") || is_null($this->_propDict["endDateTime"])) {
+        if (array_key_exists("endDateTime", $this->_propDict) && !is_null($this->_propDict["endDateTime"])) {
+            if (is_a($this->_propDict["endDateTime"], "\DateTime")) {
                 return $this->_propDict["endDateTime"];
             } else {
                 $this->_propDict["endDateTime"] = new \DateTime($this->_propDict["endDateTime"]);
@@ -93,8 +93,8 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function getCaller()
     {
-        if (array_key_exists("caller", $this->_propDict)) {
-            if (is_a($this->_propDict["caller"], "\Beta\Microsoft\Graph\CallRecords\Model\Endpoint") || is_null($this->_propDict["caller"])) {
+        if (array_key_exists("caller", $this->_propDict) && !is_null($this->_propDict["caller"])) {
+            if (is_a($this->_propDict["caller"], "\Beta\Microsoft\Graph\CallRecords\Model\Endpoint")) {
                 return $this->_propDict["caller"];
             } else {
                 $this->_propDict["caller"] = new Endpoint($this->_propDict["caller"]);
@@ -124,8 +124,8 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function getCallee()
     {
-        if (array_key_exists("callee", $this->_propDict)) {
-            if (is_a($this->_propDict["callee"], "\Beta\Microsoft\Graph\CallRecords\Model\Endpoint") || is_null($this->_propDict["callee"])) {
+        if (array_key_exists("callee", $this->_propDict) && !is_null($this->_propDict["callee"])) {
+            if (is_a($this->_propDict["callee"], "\Beta\Microsoft\Graph\CallRecords\Model\Endpoint")) {
                 return $this->_propDict["callee"];
             } else {
                 $this->_propDict["callee"] = new Endpoint($this->_propDict["callee"]);
@@ -155,8 +155,8 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function getFailureInfo()
     {
-        if (array_key_exists("failureInfo", $this->_propDict)) {
-            if (is_a($this->_propDict["failureInfo"], "\Beta\Microsoft\Graph\CallRecords\Model\FailureInfo") || is_null($this->_propDict["failureInfo"])) {
+        if (array_key_exists("failureInfo", $this->_propDict) && !is_null($this->_propDict["failureInfo"])) {
+            if (is_a($this->_propDict["failureInfo"], "\Beta\Microsoft\Graph\CallRecords\Model\FailureInfo")) {
                 return $this->_propDict["failureInfo"];
             } else {
                 $this->_propDict["failureInfo"] = new FailureInfo($this->_propDict["failureInfo"]);
@@ -183,21 +183,28 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
      /** 
      * Gets the media
      *
-     * @return array|null The media
+     * @return Media[]|null The media
      */
     public function getMedia()
     {
-        if (array_key_exists("media", $this->_propDict)) {
-           return $this->_propDict["media"];
-        } else {
-            return null;
+        if (array_key_exists('media', $this->_propDict) && !is_null($this->_propDict['media'])) {
+            $media = [];
+            if (count($this->_propDict['media']) > 0 && is_a($this->_propDict['media'][0], 'Media')) {
+                return $this->_propDict['media'];
+            }
+            foreach ($this->_propDict['media'] as $singleValue) {
+                $media []= new Media($singleValue);
+            }
+            $this->_propDict['media'] = $media;
+            return $this->_propDict['media'];
         }
+        return null;
     }
     
     /** 
     * Sets the media
     *
-    * @param Media $val The media
+    * @param Media[] $val The media
     *
     * @return Segment
     */
@@ -211,21 +218,28 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
      /** 
      * Gets the refTypes
      *
-     * @return array|null The refTypes
+     * @return \Beta\Microsoft\Graph\Model\EntityType3[]|null The refTypes
      */
     public function getRefTypes()
     {
-        if (array_key_exists("refTypes", $this->_propDict)) {
-           return $this->_propDict["refTypes"];
-        } else {
-            return null;
+        if (array_key_exists('refTypes', $this->_propDict) && !is_null($this->_propDict['refTypes'])) {
+            $refTypes = [];
+            if (count($this->_propDict['refTypes']) > 0 && is_a($this->_propDict['refTypes'][0], '\Beta\Microsoft\Graph\Model\EntityType3')) {
+                return $this->_propDict['refTypes'];
+            }
+            foreach ($this->_propDict['refTypes'] as $singleValue) {
+                $refTypes []= new \Beta\Microsoft\Graph\Model\EntityType3($singleValue);
+            }
+            $this->_propDict['refTypes'] = $refTypes;
+            return $this->_propDict['refTypes'];
         }
+        return null;
     }
     
     /** 
     * Sets the refTypes
     *
-    * @param \Beta\Microsoft\Graph\Model\EntityType3 $val The refTypes
+    * @param \Beta\Microsoft\Graph\Model\EntityType3[] $val The refTypes
     *
     * @return Segment
     */
@@ -242,8 +256,8 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function getRefType()
     {
-        if (array_key_exists("refType", $this->_propDict)) {
-            if (is_a($this->_propDict["refType"], "\Beta\Microsoft\Graph\Model\Call") || is_null($this->_propDict["refType"])) {
+        if (array_key_exists("refType", $this->_propDict) && !is_null($this->_propDict["refType"])) {
+            if (is_a($this->_propDict["refType"], "\Beta\Microsoft\Graph\Model\Call")) {
                 return $this->_propDict["refType"];
             } else {
                 $this->_propDict["refType"] = new \Beta\Microsoft\Graph\Model\Call($this->_propDict["refType"]);
@@ -273,8 +287,8 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function getSessionRef()
     {
-        if (array_key_exists("sessionRef", $this->_propDict)) {
-            if (is_a($this->_propDict["sessionRef"], "\Beta\Microsoft\Graph\CallRecords\Model\Session") || is_null($this->_propDict["sessionRef"])) {
+        if (array_key_exists("sessionRef", $this->_propDict) && !is_null($this->_propDict["sessionRef"])) {
+            if (is_a($this->_propDict["sessionRef"], "\Beta\Microsoft\Graph\CallRecords\Model\Session")) {
                 return $this->_propDict["sessionRef"];
             } else {
                 $this->_propDict["sessionRef"] = new Session($this->_propDict["sessionRef"]);
@@ -304,8 +318,8 @@ class Segment extends \Beta\Microsoft\Graph\Model\Entity
     */
     public function getPhoto()
     {
-        if (array_key_exists("photo", $this->_propDict)) {
-            if (is_a($this->_propDict["photo"], "\Beta\Microsoft\Graph\CallRecords\Model\Photo") || is_null($this->_propDict["photo"])) {
+        if (array_key_exists("photo", $this->_propDict) && !is_null($this->_propDict["photo"])) {
+            if (is_a($this->_propDict["photo"], "\Beta\Microsoft\Graph\CallRecords\Model\Photo")) {
                 return $this->_propDict["photo"];
             } else {
                 $this->_propDict["photo"] = new Photo($this->_propDict["photo"]);
