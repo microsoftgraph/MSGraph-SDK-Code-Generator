@@ -28,7 +28,10 @@ namespace <#=@namespace#>
     if (features.CanCreate)
     {
         Write("        ");
-        Write(this.GetEntityCreateAsyncMethod(entity));
+        Write(this.GetEntityCreateAsyncMethod(entity, true, false));
+        Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityCreateAsyncMethod(entity, true, true));
         Write("\n\n");
     }
 
@@ -37,16 +40,31 @@ namespace <#=@namespace#>
         Write("        ");
         Write(this.GetEntityDeleteAsyncMethod(entity));
         Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityDeleteAsyncMethod(entity, true));
+        Write("\n\n");
     }
 
     Write("        ");
     Write(this.GetEntityGetAsyncMethod(entity));
     Write("\n\n");
+    Write("        ");
+    Write(this.GetEntityGetAsyncMethod(entity, true, true));
+    Write("\n\n");
 
     if (features.CanUpdate)
     {
         Write("        ");
-        Write(this.GetEntityUpdateAsyncMethod(entity));
+        Write(this.GetEntityUpdateAsyncMethod(entity, true, false));
+        Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityUpdateAsyncMethod(entity, true, true));
+        Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityPutAsyncMethod(entity, true));
+        Write("\n\n");
+        Write("        ");
+        Write(this.GetEntityPutAsyncMethod(entity, true, true));
         Write("\n\n");
     }
 
@@ -90,7 +108,7 @@ namespace <#=@namespace#>
         {
 #>
 
-            if (<#=thisEntity_Name#>ToInitialize != null && <#=thisEntity_Name#>ToInitialize.AdditionalData != null)
+            if (<#=thisEntity_Name#>ToInitialize != null)
             {
 <#
             foreach(var property in navigationCollectionProperties)
@@ -100,21 +118,11 @@ namespace <#=@namespace#>
                 if (property.IsComplex())
                 {
 #>
-
                 if (<#=thisEntity_Name#>ToInitialize.<#=propertyName#> != null && <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.CurrentPage != null)
                 {
+                    <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.InitializeNextPageRequest(this.Client, <#=thisEntity_Name#>ToInitialize.<#=propertyName#>NextLink);
+                    // Copy the additional data collection to the page itself so that information is not lost
                     <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.AdditionalData = <#=thisEntity_Name#>ToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    <#=thisEntity_Name#>ToInitialize.AdditionalData.TryGetValue("<#=propertyName.ToLowerFirstChar()#>@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        <#=thisEntity_Name#>ToInitialize.<#=propertyName#>.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
                 }
 <#
                 }

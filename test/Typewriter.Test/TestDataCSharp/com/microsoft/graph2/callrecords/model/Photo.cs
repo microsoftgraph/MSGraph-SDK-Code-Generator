@@ -12,34 +12,24 @@ namespace Microsoft.Graph2.CallRecords
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Photo.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Photo : Microsoft.Graph.Entity
     {
     
-		///<summary>
-		/// The Photo constructor
-		///</summary>
-        public Photo()
-        {
-            this.ODataType = "microsoft.graph2.callRecords.photo";
-        }
-	
         /// <summary>
         /// Gets or sets failure info.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "failureInfo", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("failureInfo")]
         public FailureInfo FailureInfo { get; set; }
     
         /// <summary>
         /// Gets or sets option.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "option", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("option")]
         public Option Option { get; set; }
     
     }

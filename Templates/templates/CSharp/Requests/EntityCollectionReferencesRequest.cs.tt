@@ -20,5 +20,6 @@ namespace <#=@namespace#>
     {
         <#=GetCollectionReferencesRequestConstructor(prop)#>
         <#=GetPostAsyncMethodForReferencesRequest(prop, @namespace)#>
+        <#=GetPostAsyncMethodForReferencesRequest(prop, @namespace, true)#>
     }
 }

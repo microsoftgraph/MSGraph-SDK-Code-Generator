@@ -12,35 +12,37 @@ namespace Microsoft.Graph
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Cloud Communications.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class CloudCommunications : Entity
     {
     
-		///<summary>
-		/// The CloudCommunications constructor
-		///</summary>
-        public CloudCommunications()
-        {
-            this.ODataType = "microsoft.graph.cloudCommunications";
-        }
-	
         /// <summary>
         /// Gets or sets calls.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "calls", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("calls")]
         public ICloudCommunicationsCallsCollectionPage Calls { get; set; }
+
+        /// <summary>
+        /// Gets or sets callsNextLink.
+        /// </summary>
+        [JsonPropertyName("calls@odata.nextLink")]
+        public string CallsNextLink { get; set; }
     
         /// <summary>
         /// Gets or sets call records.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "callRecords", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("callRecords")]
         public ICloudCommunicationsCallRecordsCollectionPage CallRecords { get; set; }
+
+        /// <summary>
+        /// Gets or sets callRecordsNextLink.
+        /// </summary>
+        [JsonPropertyName("callRecords@odata.nextLink")]
+        public string CallRecordsNextLink { get; set; }
     
     }
 }

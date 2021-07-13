@@ -12,25 +12,15 @@ namespace Microsoft.Graph
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Entity Type3.
     /// </summary>
     [Obsolete("entityType3 is deprecated. Please use singletonEntity1.")]
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class EntityType3 : Entity
     {
     
-		///<summary>
-		/// The EntityType3 constructor
-		///</summary>
-        public EntityType3()
-        {
-            this.ODataType = "microsoft.graph.entityType3";
-        }
-	
     }
 }
 

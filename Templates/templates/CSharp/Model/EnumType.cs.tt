@@ -7,13 +7,11 @@ var enumT = host.CurrentType.AsOdcmEnum();
 var enumName = enumT.Name.ToCheckedCase();
 var @namespace = enumT.Namespace.GetNamespaceName();
 
-var enumConverterTypeName = @namespace.GetCoreLibraryType("EnumConverter");
 #>
 
 namespace <#=enumT.Namespace.GetNamespaceName()#>
 {
-    using System;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The enum <#=enumName#>.
@@ -21,7 +19,7 @@ namespace <#=enumT.Namespace.GetNamespaceName()#>
 <# if (enumT.IsDeprecated) { #>
     <#=enumT.GetDeprecationString()#>
 <# } #>
-    [JsonConverter(typeof(<#=enumConverterTypeName#>))]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
 <#  if (enumT.IsFlags == true)
     {
 #>

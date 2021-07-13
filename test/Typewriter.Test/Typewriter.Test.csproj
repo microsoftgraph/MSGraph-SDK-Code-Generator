@@ -40,7 +40,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\dirtyMetadata.xml" />
+    <Content Include="Resources\dirtyMetadata.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">

@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -9,12 +9,12 @@
 
 namespace Microsoft.Graph2.CallRecords
 {
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The interface ISegmentTestActionCollectionPage.
     /// </summary>
-    [JsonConverter(typeof(Microsoft.Graph.InterfaceConverter<SegmentTestActionCollectionPage>))]
+    [InterfaceConverter(typeof(Microsoft.Graph.InterfaceConverter<SegmentTestActionCollectionPage>))]
     public interface ISegmentTestActionCollectionPage : Microsoft.Graph.ICollectionPage<Session>
     {
         /// <summary>

@@ -182,7 +182,7 @@ namespace Typewriter.Test
         }
 
         [Test]
-        public void It_generates_dotNet_odatatype_initialization_for_complextypes()
+        public void It_does_not_generates_dotNet_odata_type_initialization_for_complex_types_with_no_inheritance()
         {
             const string outputDirectory = "output";
 
@@ -215,8 +215,8 @@ namespace Typewriter.Test
                 }
             }
 
-            Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the setter code in the cstor.");
-            Assert.IsTrue(hasCstorString, $"The expected test token cstor string, '{testCstorString}', was not set in the generated test file. We didn't properly generate the cstor code.");
+            Assert.IsFalse(hasTestString, $"The expected test token string, '{testString}', was set in the generated test file. We didn't properly generate the setter code in the cstor.");
+            Assert.IsFalse(hasCstorString, $"The expected test token cstor string, '{testCstorString}', was set in the generated test file. We didn't properly generate the cstor code.");
         }
 
         [Test]
@@ -253,7 +253,7 @@ namespace Typewriter.Test
 
 
         [Test]
-        public void It_generates_dotNet_odatatype_initialization_for_entitytypes()
+        public void It_doesnt_generate_dotNet_odatatype_initialization_for_entitytypes()
         {
             const string outputDirectory = "output";
 
@@ -280,7 +280,38 @@ namespace Typewriter.Test
                     break;
                 }
             }
-            Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
+            Assert.False(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
+        }
+
+        [Test]
+        public void It_generates_dotNet_odatatype_initialization_for_entitytypes_with_base_referenced()
+        {
+            const string outputDirectory = "output";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}TestType4.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            bool hasTestString = false;
+            string testString = "this.ODataType = \"microsoft.graph.testType4\";";
+            foreach (var line in lines)
+            {
+                if (line.Contains(testString))
+                {
+                    hasTestString = true;
+                    break;
+                }
+            }
+            Assert.True(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
         }
 
         [Test]

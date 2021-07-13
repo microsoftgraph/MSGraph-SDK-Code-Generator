@@ -150,7 +150,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 case "date":
                     return "Date";
                 case "json":
-                    return "Newtonsoft.Json.Linq.JToken";
+                    return "System.Text.Json.JsonDocument";
                 default:
                     return type.ToCheckedCase();
             }
