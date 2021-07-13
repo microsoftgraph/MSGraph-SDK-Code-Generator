@@ -295,6 +295,8 @@ stages:
         cleanMetadataFolder: $(cleanMetadataFolderV1)
         languageSpecificSteps:
         - template: generation-templates/php-v1.yml
+          parameters:
+             repoName: 'msgraph-sdk-php'
 
 - stage: stage_php_beta
   dependsOn:
