@@ -50,11 +50,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             var namespaces = GetOdcmNamespaces(model);
             return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmEntityClass || x is OdcmMediaClass));
         }
-
+        public static bool IsStreamedEntity(this OdcmClass odcmClass) {
+            if(odcmClass is OdcmMediaClass) return true;
+            else if (odcmClass?.Base == null) return false;
+            else return IsStreamedEntity(odcmClass.Base);
+        }
         public static IEnumerable<OdcmClass> GetMediaEntityTypes(this OdcmModel model)
         {
             var namespaces = GetOdcmNamespaces(model);
-            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmMediaClass));
+            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x.IsStreamedEntity()));
         }
 
         public static IEnumerable<OdcmProperty> GetProperties(this OdcmModel model)

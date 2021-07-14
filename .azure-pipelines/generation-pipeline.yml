@@ -28,6 +28,11 @@ resources:
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-sdk-php
      ref: dev
+   - repository: msgraph-beta-sdk-php
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-beta-sdk-php
+     ref: main
    - repository: msgraph-typescript-typings
      type: github
      endpoint: microsoftgraph
@@ -111,7 +116,6 @@ variables:
   publishChanges: ${{ parameters.publishChanges }}
   overrideSkipCI: ${{ parameters.overrideSkipCI }}
   skipMetadataCaptureAndClean: ${{ parameters.skipMetadataCaptureAndClean }}
-
   phpVersion: 7.2
 
 # This stage is the core dependency for all other stages.
@@ -291,6 +295,8 @@ stages:
         cleanMetadataFolder: $(cleanMetadataFolderV1)
         languageSpecificSteps:
         - template: generation-templates/php-v1.yml
+          parameters:
+             repoName: 'msgraph-sdk-php'
 
 - stage: stage_php_beta
   dependsOn:
@@ -315,6 +321,40 @@ stages:
         cleanMetadataFolder: $(cleanMetadataFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/php-beta.yml
+          parameters:
+             phpBetaGenerationDirectory: $(Build.SourcesDirectory)/msgraph-sdk-php/src/Beta/
+             repoName: 'msgraph-sdk-php'
+             migration: false
+             pathToCopy: '/com/Beta/*'
+
+- stage: stage_php_beta_migration
+  dependsOn:
+    - stage_build_and_publish_typewriter
+    - stage_beta_metadata
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
+      in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped')
+    )
+  jobs:
+    - job: php_beta_migration
+      steps:
+        - template: generation-templates/language-generation.yml
+          parameters:
+            language: 'PHP'
+            version: 'beta'
+            repoName: 'msgraph-beta-sdk-php'
+            branchName: $(betaBranch)
+            cleanMetadataFile: $(cleanMetadataFileBeta)
+            cleanMetadataFolder: $(cleanMetadataFolderBeta)
+            languageSpecificSteps:
+              - template: generation-templates/php-beta.yml
+                parameters:
+                  phpBetaGenerationDirectory: $(Build.SourcesDirectory)/msgraph-beta-sdk-php/src/
+                  repoName: 'msgraph-beta-sdk-php'
+                  migration: true
+                  pathToCopy: '/com/Beta/Microsoft/Graph/*'
 
 - stage: stage_typescript_v1
   dependsOn:
@@ -339,9 +379,9 @@ stages:
         cleanMetadataFolder: $(cleanMetadataFolderV1)
         languageSpecificSteps:
         - template: generation-templates/typescript.yml
-          parameters: 
+          parameters:
             repoName: 'msgraph-typescript-typings'
-            
+
 - stage: stage_typescript_beta
   dependsOn:
   - stage_build_and_publish_typewriter
