@@ -256,51 +256,37 @@ public string GetEntityReferencePutAsyncMethod(OdcmClass odcmClass, bool isGraph
 
     if (isGraphResponseMethod)
     {
-        stringBuilder.Append("        public async System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(string id, CancellationToken cancellationToken = default)");
+        stringBuilder.Append("        public System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(string id, CancellationToken cancellationToken = default)");
     }
     else
     {
-        stringBuilder.Append("        public async System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken = default)");
+        stringBuilder.Append("        public System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken = default)");
     }
 
     stringBuilder.Append(@"
-        {
-            var baseUrl = this.Client.BaseUrl;");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"            var objectUri = string.Format(@""{0}/users/{1}"", baseUrl, id);");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"            var payload = string.Empty;");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"            using (var stream = new System.IO.MemoryStream())");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"            using (var writer = new System.Text.Json.Utf8JsonWriter(stream))");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"            {");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"                writer.WriteStartObject();");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"                writer.WriteString(""@odata.id"", objectUri);");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"                writer.WriteEndObject();");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"                await writer.FlushAsync();");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"                payload = System.Text.Encoding.UTF8.GetString(stream.ToArray());");
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(@"            }");
+        {");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            this.Method = {0};", templateWriter.PutMethod);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("            this.ContentType = {0};", templateWriter.JsonContentType);
     stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(@"            var referenceRequestBody = new ReferenceRequestBody()");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(@"            {");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(@"                ODataId = string.Format(@""{0}/users/{1}"", this.Client.BaseUrl, id)");
+    stringBuilder.Append(Environment.NewLine);
+    stringBuilder.Append(@"            };");
+    stringBuilder.Append(Environment.NewLine);
+
 
     if (isGraphResponseMethod)
     {
-        stringBuilder.AppendFormat("            return await this.SendAsyncWithGraphResponse(payload, cancellationToken).ConfigureAwait(false);");
+        stringBuilder.AppendFormat("            return this.SendAsyncWithGraphResponse(referenceRequestBody, cancellationToken);");
     }
     else
     {
-        stringBuilder.AppendFormat("            await this.SendAsync(payload, cancellationToken).ConfigureAwait(false);");
+        stringBuilder.AppendFormat("            return this.SendAsync(referenceRequestBody, cancellationToken);");
     }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        }");
