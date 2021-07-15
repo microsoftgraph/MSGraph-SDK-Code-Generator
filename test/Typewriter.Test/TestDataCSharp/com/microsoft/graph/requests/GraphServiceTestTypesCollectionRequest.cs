@@ -39,7 +39,7 @@ namespace Microsoft.Graph
         /// <param name="entityType3">The EntityType3 to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created EntityType3.</returns>
-        public System.Threading.Tasks.Task<EntityType3> AddAsync(EntityType3 entityType3, CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<EntityType3> AddAsync(EntityType3 entityType3, CancellationToken cancellationToken = default)
         {
             this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
             this.Method = HttpMethods.POST;
@@ -52,7 +52,7 @@ namespace Microsoft.Graph
         /// <param name="entityType3">The EntityType3 to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<EntityType3>> AddResponseAsync(EntityType3 entityType3, CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<GraphResponse<EntityType3>> AddResponseAsync(EntityType3 entityType3, CancellationToken cancellationToken = default)
         {
             this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
             this.Method = HttpMethods.POST;
@@ -65,7 +65,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async System.Threading.Tasks.Task<IGraphServiceTestTypesCollectionPage> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async System.Threading.Tasks.Task<IGraphServiceTestTypesCollectionPage> GetAsync(CancellationToken cancellationToken = default)
         {
             this.Method = HttpMethods.GET;
             var response = await this.SendAsync<GraphServiceTestTypesCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -85,7 +85,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{GraphServiceTestTypesCollectionResponse}"/> object.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<GraphServiceTestTypesCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<GraphResponse<GraphServiceTestTypesCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken = default)
         {
             this.Method = HttpMethods.GET;
             return this.SendAsyncWithGraphResponse<GraphServiceTestTypesCollectionResponse>(null, cancellationToken);

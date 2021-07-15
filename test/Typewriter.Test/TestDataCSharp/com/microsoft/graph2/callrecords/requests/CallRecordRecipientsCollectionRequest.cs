@@ -39,7 +39,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="entityType2">The Microsoft.Graph.EntityType2 to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Microsoft.Graph.EntityType2.</returns>
-        public System.Threading.Tasks.Task<Microsoft.Graph.EntityType2> AddAsync(Microsoft.Graph.EntityType2 entityType2, CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<Microsoft.Graph.EntityType2> AddAsync(Microsoft.Graph.EntityType2 entityType2, CancellationToken cancellationToken = default)
         {
             this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
             this.Method = HttpMethods.POST;
@@ -52,7 +52,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="entityType2">The Microsoft.Graph.EntityType2 to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{Microsoft.Graph.EntityType2}"/> object of the request.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<Microsoft.Graph.EntityType2>> AddResponseAsync(Microsoft.Graph.EntityType2 entityType2, CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<GraphResponse<Microsoft.Graph.EntityType2>> AddResponseAsync(Microsoft.Graph.EntityType2 entityType2, CancellationToken cancellationToken = default)
         {
             this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
             this.Method = HttpMethods.POST;
@@ -65,7 +65,7 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async System.Threading.Tasks.Task<ICallRecordRecipientsCollectionPage> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async System.Threading.Tasks.Task<ICallRecordRecipientsCollectionPage> GetAsync(CancellationToken cancellationToken = default)
         {
             this.Method = HttpMethods.GET;
             var response = await this.SendAsync<CallRecordRecipientsCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -85,7 +85,7 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{CallRecordRecipientsCollectionResponse}"/> object.</returns>
-        public System.Threading.Tasks.Task<GraphResponse<CallRecordRecipientsCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<GraphResponse<CallRecordRecipientsCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken = default)
         {
             this.Method = HttpMethods.GET;
             return this.SendAsyncWithGraphResponse<CallRecordRecipientsCollectionResponse>(null, cancellationToken);

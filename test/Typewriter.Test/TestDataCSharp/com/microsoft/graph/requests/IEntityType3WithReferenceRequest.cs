@@ -25,14 +25,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The EntityType3.</returns>
-        System.Threading.Tasks.Task<EntityType3> GetAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<EntityType3> GetAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the specified EntityType3 and returns a <see cref="GraphResponse{EntityType3}"/> object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<GraphResponse<EntityType3>> GetResponseAsync(CancellationToken cancellationToken = default);
 
 		/// <summary>
         /// Creates the specified EntityType3 using POST.
@@ -40,7 +40,7 @@ namespace Microsoft.Graph
         /// <param name="entityType3ToCreate">The EntityType3 to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created EntityType3.</returns>
-        System.Threading.Tasks.Task<EntityType3> CreateAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<EntityType3> CreateAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken = default);
 
 		/// <summary>
         /// Creates the specified EntityType3 using POST and returns a <see cref="GraphResponse{EntityType3}"/> object.
@@ -48,7 +48,7 @@ namespace Microsoft.Graph
         /// <param name="entityType3ToCreate">The EntityType3 to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<EntityType3>> CreateResponseAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<GraphResponse<EntityType3>> CreateResponseAsync(EntityType3 entityType3ToCreate, CancellationToken cancellationToken = default);
 
 		/// <summary>
         /// Updates the specified EntityType3 using PATCH.
@@ -57,7 +57,7 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated EntityType3.</returns>
-        System.Threading.Tasks.Task<EntityType3> UpdateAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<EntityType3> UpdateAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken = default);
 
 		/// <summary>
         /// Updates the specified EntityType3 using PATCH and returns a <see cref="GraphResponse{EntityType3}"/> object.
@@ -66,21 +66,21 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<EntityType3>> UpdateResponseAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<GraphResponse<EntityType3>> UpdateResponseAsync(EntityType3 entityType3ToUpdate, CancellationToken cancellationToken = default);
 
 		/// <summary>
         /// Deletes the specified EntityType3.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default);
 
 		/// <summary>
         /// Deletes the specified EntityType3 and returns a <see cref="GraphResponse"/> object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Adds the specified expand value to the request.

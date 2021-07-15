@@ -26,7 +26,7 @@ namespace Microsoft.Graph
         /// <param name="entityType3">The EntityType3 to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created EntityType3.</returns>
-        System.Threading.Tasks.Task<EntityType3> AddAsync(EntityType3 entityType3, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<EntityType3> AddAsync(EntityType3 entityType3, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Adds the specified EntityType3 to the collection via POST and returns a <see cref="GraphResponse{EntityType3}"/> object of the request.
@@ -34,7 +34,7 @@ namespace Microsoft.Graph
         /// <param name="entityType3">The EntityType3 to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{EntityType3}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<EntityType3>> AddResponseAsync(EntityType3 entityType3, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<GraphResponse<EntityType3>> AddResponseAsync(EntityType3 entityType3, CancellationToken cancellationToken = default);
 
 
         /// <summary>
@@ -42,14 +42,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        System.Threading.Tasks.Task<IGraphServiceTestTypesCollectionPage> GetAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<IGraphServiceTestTypesCollectionPage> GetAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the collection page and returns a <see cref="GraphResponse{GraphServiceTestTypesCollectionResponse}"/> object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{GraphServiceTestTypesCollectionResponse}"/> object.</returns>
-        System.Threading.Tasks.Task<GraphResponse<GraphServiceTestTypesCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<GraphResponse<GraphServiceTestTypesCollectionResponse>> GetResponseAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Adds the specified expand value to the request.

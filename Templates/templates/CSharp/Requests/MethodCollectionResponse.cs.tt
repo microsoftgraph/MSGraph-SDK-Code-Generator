@@ -43,7 +43,7 @@ namespace <#=@namespace#>
         /// <summary>
         /// Gets or sets the <#=propertyName#>.
         /// </summary>
-		[JsonPropertyName("<#=property.Name#>"]
+        [JsonPropertyName("<#=property.Name#>"]
         public <#=propertyType#> <#=propertyName#> { get; set; }
         <#
                 }

@@ -181,14 +181,14 @@ namespace <#=@namespace#>
     if (returnsStream)
     {
 #>
-            CancellationToken cancellationToken = default(CancellationToken),
+            CancellationToken cancellationToken = default,
             HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)
 <#
     }
     else
     {
 #>
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
 <#
     }
 #>
@@ -248,7 +248,7 @@ namespace <#=@namespace#>
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public <#=graphResponseReturnType#> PostResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public <#=graphResponseReturnType#> PostResponseAsync(CancellationToken cancellationToken = default)
         {
             this.Method = <#=templateWriter.PostMethod#>;
 <#
@@ -298,14 +298,14 @@ namespace <#=@namespace#>
     if (returnsStream)
     {
 #>
-            CancellationToken cancellationToken = default(CancellationToken),
+            CancellationToken cancellationToken = default,
             HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)
 <#
     }
     else
     {
 #>
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
 <#
     }
 #>
@@ -365,7 +365,7 @@ namespace <#=@namespace#>
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public <#=graphResponseReturnType#> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public <#=graphResponseReturnType#> GetResponseAsync(CancellationToken cancellationToken = default)
         {
             this.Method = <#=templateWriter.GetMethod#>;
 <#
@@ -416,14 +416,14 @@ namespace <#=@namespace#>
     if (returnsStream)
     {
 #>
-            CancellationToken cancellationToken = default(CancellationToken),
+            CancellationToken cancellationToken = default,
             HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)
 <#
     }
     else
     {
 #>
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
 <#
     }
 #>
@@ -474,7 +474,7 @@ namespace <#=@namespace#>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="<#=returnEntityParameter.GetSanitizedParameterName()#>">The <#=returnEntityType#> object set with the properties to update.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public <#=graphResponseReturnType#> PatchResponseAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>, CancellationToken cancellationToken = default(CancellationToken))
+        public <#=graphResponseReturnType#> PatchResponseAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>, CancellationToken cancellationToken = default)
         {
             this.Method = <#=templateWriter.PatchMethod#>;
 <#
@@ -524,14 +524,14 @@ namespace <#=@namespace#>
     if (returnsStream)
     {
 #>
-            CancellationToken cancellationToken = default(CancellationToken),
+            CancellationToken cancellationToken = default,
             HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)
 <#
     }
     else
     {
 #>
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
 <#
     }
 #>
@@ -582,7 +582,7 @@ namespace <#=@namespace#>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="<#=returnEntityParameter.GetSanitizedParameterName()#>">The <#=returnEntityType#> object set with the properties to update.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public <#=graphResponseReturnType#> PutResponseAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>, CancellationToken cancellationToken = default(CancellationToken))
+        public <#=graphResponseReturnType#> PutResponseAsync(<#=returnEntityType#> <#=returnEntityParameter.GetSanitizedParameterName()#>, CancellationToken cancellationToken = default)
         {
             this.Method = <#=templateWriter.PutMethod#>;
 <#

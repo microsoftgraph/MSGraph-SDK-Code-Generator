@@ -37,7 +37,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
         public System.Threading.Tasks.Task<CallRecord> GetAsync(
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             this.Method = HttpMethods.GET;
             return this.SendAsync<CallRecord>(null, cancellationToken);
@@ -48,7 +48,7 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public System.Threading.Tasks.Task<GraphResponse<CallRecord>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<GraphResponse<CallRecord>> GetResponseAsync(CancellationToken cancellationToken = default)
         {
             this.Method = HttpMethods.GET;
             return this.SendAsyncWithGraphResponse<CallRecord>(null, cancellationToken);
@@ -62,7 +62,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
         public System.Threading.Tasks.Task<CallRecord> PatchAsync(CallRecord callrecord,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             this.Method = HttpMethods.PATCH;
             return this.SendAsync<CallRecord>(callrecord, cancellationToken);
@@ -74,7 +74,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="callrecord">The CallRecord object set with the properties to update.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public System.Threading.Tasks.Task<GraphResponse<CallRecord>> PatchResponseAsync(CallRecord callrecord, CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<GraphResponse<CallRecord>> PatchResponseAsync(CallRecord callrecord, CancellationToken cancellationToken = default)
         {
             this.Method = HttpMethods.PATCH;
             return this.SendAsyncWithGraphResponse<CallRecord>(callrecord, cancellationToken);
@@ -87,7 +87,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
         public System.Threading.Tasks.Task<CallRecord> PutAsync(CallRecord callrecord,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             this.Method = HttpMethods.PUT;
             return this.SendAsync<CallRecord>(callrecord, cancellationToken);
@@ -99,7 +99,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="callrecord">The CallRecord object set with the properties to update.</param>
         /// <returns>The <see cref="GraphResponse"/> object of the request</returns>
-        public System.Threading.Tasks.Task<GraphResponse<CallRecord>> PutResponseAsync(CallRecord callrecord, CancellationToken cancellationToken = default(CancellationToken))
+        public System.Threading.Tasks.Task<GraphResponse<CallRecord>> PutResponseAsync(CallRecord callrecord, CancellationToken cancellationToken = default)
         {
             this.Method = HttpMethods.PUT;
             return this.SendAsyncWithGraphResponse<CallRecord>(callrecord, cancellationToken);
