@@ -33,7 +33,7 @@ if (prop.Class.Derived != null && prop.Class.Base == null)
         /// <summary>
         /// Gets or sets the <see cref="I<#=collectionPage#>"/> value.
         /// </summary>
-		[JsonPropertyName("value")]
+        [JsonPropertyName("value")]
         public I<#=collectionPage#> Value { get; set; }
 
         /// <summary>

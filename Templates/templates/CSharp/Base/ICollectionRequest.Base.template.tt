@@ -75,13 +75,13 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace, b
         {
             stringBuilder.AppendFormat("        /// <returns>The <see cref=\"GraphResponse{{{0}}}\"/> object of the request.</returns>", propertyType);
             stringBuilder.Append(Environment.NewLine);
-            stringBuilder.AppendFormat("        System.Threading.Tasks.Task<GraphResponse<{0}>> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken));", propertyType, sanitizedPropertyName);
+            stringBuilder.AppendFormat("        System.Threading.Tasks.Task<GraphResponse<{0}>> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default);", propertyType, sanitizedPropertyName);
         }
         else
         {
             stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
             stringBuilder.Append(Environment.NewLine);
-            stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> AddAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken));", propertyType, sanitizedPropertyName);
+            stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> AddAsync({0} {1}, CancellationToken cancellationToken = default);", propertyType, sanitizedPropertyName);
         }
         stringBuilder.Append(Environment.NewLine);
         return stringBuilder.ToString();
@@ -108,11 +108,11 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
     {
-        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<GraphResponse> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken));", propertyType, sanitizedPropertyName);
+        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<GraphResponse> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default);", propertyType, sanitizedPropertyName);
     }
     else
     {
-        stringBuilder.AppendFormat("        System.Threading.Tasks.Task AddAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken));", propertyType, sanitizedPropertyName);
+        stringBuilder.AppendFormat("        System.Threading.Tasks.Task AddAsync({0} {1}, CancellationToken cancellationToken = default);", propertyType, sanitizedPropertyName);
     }
     stringBuilder.Append(Environment.NewLine);
     return stringBuilder.ToString();

@@ -360,13 +360,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                     .SelectMany(c => c.Methods)  
                     .Where( m => !m.IsFunction) // only get the Actions
                     .Any(m => m.Parameters
-                        .Any( param => param.Type.Name == odcmClass.Base.Name 
+                        .Any( param => param.Type.Name.Equals(odcmClass.Base.Name, StringComparison.OrdinalIgnoreCase) 
                                   && !"entity".Equals(param.Type.Name, StringComparison.OrdinalIgnoreCase)));
 
                 var isReferencedInClass = odcmClass.Namespace.Types
                     .OfType<OdcmClass>()
                     .Any(someType => someType.Properties
-                        .Any(x => x.Type.Name == odcmClass.Base.Name 
+                        .Any(x => x.Type.Name.Equals(odcmClass.Base.Name, StringComparison.OrdinalIgnoreCase)
                                   && !"entity".Equals(x.Type.Name, StringComparison.OrdinalIgnoreCase)));
 
                 return (isReferencedInAction || isReferencedInClass);
@@ -383,16 +383,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// <returns>A value of true indicates that the base type is referenced; other, false.</returns>
         public static bool IsBaseTypeReferenced(this OdcmClass entityOrComplexType)
         {
-            if (entityOrComplexType.Base != null)
-            {
-                if (entityOrComplexType.IsBaseReferencedAsPropertyType())
-                {
-                    return true;
-                }
-                // recursively check the base hierarchy
-                return entityOrComplexType.Base.IsBaseTypeReferenced();
-            }
-            return false;
+            return entityOrComplexType.IsBaseReferencedAsPropertyType() || (entityOrComplexType.Base?.IsBaseTypeReferenced() ?? false);
         }
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass, bool includeBaseProperties = false)

@@ -19,7 +19,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <summary>
         /// Gets or sets the <see cref="ISegmentRefTypesCollectionWithReferencesPage"/> value.
         /// </summary>
-		[JsonPropertyName("value")]
+        [JsonPropertyName("value")]
         public ISegmentRefTypesCollectionWithReferencesPage Value { get; set; }
 
         /// <summary>

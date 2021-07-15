@@ -95,13 +95,13 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace, s
         {
             stringBuilder.AppendFormat("        /// <returns>The <see cref=\"GraphResponse{{{0}}}\"/> object of the request.</returns>", propertyType);
             stringBuilder.Append(Environment.NewLine);
-            stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken))", propertyType, sanitizedPropertyName);
+            stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse<{0}>> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default)", propertyType, sanitizedPropertyName);
         }
         else
         {
             stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
             stringBuilder.Append(Environment.NewLine);
-            stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> AddAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken))", propertyType, sanitizedPropertyName);
+            stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<{0}> AddAsync({0} {1}, CancellationToken cancellationToken = default)", propertyType, sanitizedPropertyName);
         }
 
         stringBuilder.Append(Environment.NewLine);
@@ -161,13 +161,13 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     {
         stringBuilder.AppendFormat("        /// <returns>The task of <see cref=\"GraphResponse\"/> to await.</returns>", propertyType);
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken))", propertyType, sanitizedPropertyName);
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task<GraphResponse> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default)", propertyType, sanitizedPropertyName);
     }
     else
     {
         stringBuilder.AppendFormat("        /// <returns>The task to await.</returns>", propertyType);
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task AddAsync({0} {1}, CancellationToken cancellationToken = default(CancellationToken))", propertyType, sanitizedPropertyName);
+        stringBuilder.AppendFormat("        public System.Threading.Tasks.Task AddAsync({0} {1}, CancellationToken cancellationToken = default)", propertyType, sanitizedPropertyName);
     }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        {");

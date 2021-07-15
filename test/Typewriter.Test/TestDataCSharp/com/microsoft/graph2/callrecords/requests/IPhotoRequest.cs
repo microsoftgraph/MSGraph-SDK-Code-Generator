@@ -26,7 +26,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="photoToCreate">The Photo to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Photo.</returns>
-        System.Threading.Tasks.Task<Photo> CreateAsync(Photo photoToCreate, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<Photo> CreateAsync(Photo photoToCreate, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Creates the specified Photo using POST and returns a <see cref="GraphResponse{Photo}"/> object.
@@ -34,35 +34,35 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="photoToCreate">The Photo to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Photo>> CreateResponseAsync(Photo photoToCreate, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<GraphResponse<Photo>> CreateResponseAsync(Photo photoToCreate, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deletes the specified Photo.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deletes the specified Photo and returns a <see cref="GraphResponse"/> object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
-        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the specified Photo.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Photo.</returns>
-        System.Threading.Tasks.Task<Photo> GetAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<Photo> GetAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the specified Photo and returns a <see cref="GraphResponse{Photo}"/> object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Photo>> GetResponseAsync(CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<GraphResponse<Photo>> GetResponseAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Updates the specified Photo using PATCH.
@@ -71,7 +71,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated Photo.</returns>
-        System.Threading.Tasks.Task<Photo> UpdateAsync(Photo photoToUpdate, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<Photo> UpdateAsync(Photo photoToUpdate, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Updates the specified Photo using PATCH and returns a <see cref="GraphResponse{Photo}"/> object.
@@ -80,7 +80,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The <see cref="GraphResponse{Photo}"/> object of the request.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Photo>> UpdateResponseAsync(Photo photoToUpdate, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<GraphResponse<Photo>> UpdateResponseAsync(Photo photoToUpdate, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Updates the specified Photo using PUT.
@@ -88,7 +88,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="photoToUpdate">The Photo object to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        System.Threading.Tasks.Task<Photo> PutAsync(Photo photoToUpdate, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<Photo> PutAsync(Photo photoToUpdate, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Updates the specified Photo using PUT and returns a <see cref="GraphResponse{Photo}"/> object.
@@ -96,7 +96,7 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="photoToUpdate">The Photo object to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task of <see cref="GraphResponse{Photo}"/> to await.</returns>
-        System.Threading.Tasks.Task<GraphResponse<Photo>> PutResponseAsync(Photo photoToUpdate, CancellationToken cancellationToken = default(CancellationToken));
+        System.Threading.Tasks.Task<GraphResponse<Photo>> PutResponseAsync(Photo photoToUpdate, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Adds the specified expand value to the request.
