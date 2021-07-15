@@ -7,3 +7,5 @@ steps:
     RepoModelsDir: $(Build.SourcesDirectory)/msgraph-sdk-php/src/
 
 - template: php-run-tests.yml
+  parameters:
+    repoName: ${{ parameters.repoName }}

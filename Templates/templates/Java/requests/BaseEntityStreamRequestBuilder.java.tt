@@ -111,7 +111,7 @@ if (c.AsOdcmClass() != null)
 #>
 
 <#
-    foreach (var prop in c.AsOdcmClass().Properties.Where(x => x.Projection.Type is OdcmMediaClass))
+    foreach (var prop in c.AsOdcmClass().Properties.Where(x => x.Projection.Type.AsOdcmClass().IsStreamedEntity()))
     {
         var propName = prop.Name.ToCheckedCase();
 #>
