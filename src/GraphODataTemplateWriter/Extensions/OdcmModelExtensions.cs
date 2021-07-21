@@ -331,6 +331,61 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             }
         }
 
+        /// <summary>
+        /// Indicates whether class has any properties that are enums
+        /// </summary>
+        /// <param name="complex">The ComplexType that we want to query whether its base type is the referenced type for any property in any entity.</param>
+        /// <returns></returns>
+        public static bool HasEnumProperties(this OdcmClass complex)
+        {
+            return complex.Properties.Any(property => property.Type.AsOdcmEnum() != null);
+        }
+
+        /// <summary>
+        /// Indicates whether the entity's base type is referenced as the type of another property.
+        /// TODO: remove filters on "entity" once we have annotation support.
+        /// </summary>
+        /// <param name="odcmClass">The OdcmClass to inspect.</param>
+        /// <returns>A value of true indicates that OdcmClass's base type is referenced as the type
+        /// of another property in a different entity or complex type.</returns>
+        public static bool IsBaseReferencedAsPropertyType(this OdcmClass odcmClass)
+        {
+            if (odcmClass.Base == null)
+            {
+                return false;
+            }
+            else
+            {
+                var isReferencedInAction = odcmClass.Namespace.Classes
+                    .SelectMany(c => c.Methods)  
+                    .Where( m => !m.IsFunction) // only get the Actions
+                    .Any(m => m.Parameters
+                        .Any( param => param.Type.Name.Equals(odcmClass.Base.Name, StringComparison.OrdinalIgnoreCase) 
+                                  && !"entity".Equals(param.Type.Name, StringComparison.OrdinalIgnoreCase)));
+
+                var isReferencedInClass = odcmClass.Namespace.Types
+                    .OfType<OdcmClass>()
+                    .Any(someType => someType.Properties
+                        .Any(x => x.Type.Name.Equals(odcmClass.Base.Name, StringComparison.OrdinalIgnoreCase)
+                                  && !"entity".Equals(x.Type.Name, StringComparison.OrdinalIgnoreCase)));
+
+                return (isReferencedInAction || isReferencedInClass);
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether any type in the entity's or complexType's base type chain is referenced 
+        /// by any property in any other entity or complex type. This method recursively inspects
+        /// the base type chain for any instance of the base type that is referenced by any other 
+        /// type.
+        /// </summary>
+        /// <param name="entityOrComplexType">The OdcmClass to inspect.</param>
+        /// <returns>A value of true indicates that the base type is referenced; other, false.</returns>
+        public static bool IsBaseTypeReferenced(this OdcmClass entityOrComplexType)
+        {
+            return entityOrComplexType.IsBaseReferencedAsPropertyType() || (entityOrComplexType.Base?.IsBaseTypeReferenced() ?? false);
+        }
+
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass, bool includeBaseProperties = false)
         {
             if (includeBaseProperties && odcmClass.Base != null)

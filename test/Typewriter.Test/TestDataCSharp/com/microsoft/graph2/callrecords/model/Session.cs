@@ -12,65 +12,62 @@ namespace Microsoft.Graph2.CallRecords
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Session.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    [JsonConverter(typeof(Microsoft.Graph.DerivedTypeConverter<Session>))]
     public partial class Session : Microsoft.Graph.Entity
     {
     
-		///<summary>
-		/// The Session constructor
-		///</summary>
-        public Session()
-        {
-            this.ODataType = "microsoft.graph2.callRecords.session";
-        }
-	
         /// <summary>
         /// Gets or sets modalities.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "modalities", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("modalities")]
         public IEnumerable<Modality> Modalities { get; set; }
     
         /// <summary>
         /// Gets or sets start date time.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "startDateTime", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("startDateTime")]
         public DateTimeOffset? StartDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets end date time.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "endDateTime", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("endDateTime")]
         public DateTimeOffset? EndDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets caller.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "caller", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("caller")]
         public Endpoint Caller { get; set; }
     
         /// <summary>
         /// Gets or sets callee.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "callee", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("callee")]
         public Endpoint Callee { get; set; }
     
         /// <summary>
         /// Gets or sets failure info.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "failureInfo", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("failureInfo")]
         public FailureInfo FailureInfo { get; set; }
     
         /// <summary>
         /// Gets or sets segments.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "segments", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("segments")]
         public ISessionSegmentsCollectionPage Segments { get; set; }
+
+        /// <summary>
+        /// Gets or sets segmentsNextLink.
+        /// </summary>
+        [JsonPropertyName("segments@odata.nextLink")]
+        public string SegmentsNextLink { get; set; }
     
     }
 }

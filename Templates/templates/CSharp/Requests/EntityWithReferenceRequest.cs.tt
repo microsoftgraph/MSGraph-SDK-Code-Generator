@@ -25,11 +25,19 @@ namespace <#=@namespace#>
 
         <#=this.GetEntityGetAsyncMethod(entity, false)#>
 
-		<#=this.GetEntityCreateAsyncMethod(entity, false)#>
+        <#=this.GetEntityGetAsyncMethod(entity, false, true)#>
 
-		<#=this.GetEntityUpdateAsyncMethod(entity, false)#>
+		<#=this.GetEntityCreateAsyncMethod(entity, false, false)#>
+
+		<#=this.GetEntityCreateAsyncMethod(entity, false, true)#>
+
+		<#=this.GetEntityUpdateAsyncMethod(entity, false, false)#>
+
+		<#=this.GetEntityUpdateAsyncMethod(entity, false, true)#>
 
 		<#=this.GetEntityDeleteAsyncMethod(entity)#>
+
+		<#=this.GetEntityDeleteAsyncMethod(entity, true)#>
 
 <#
     if (features.CanExpand)

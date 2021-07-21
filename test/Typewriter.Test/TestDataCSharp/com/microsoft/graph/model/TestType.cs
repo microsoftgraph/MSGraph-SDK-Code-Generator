@@ -12,29 +12,19 @@ namespace Microsoft.Graph
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Test Type.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class TestType : Entity
     {
     
-		///<summary>
-		/// The TestType constructor
-		///</summary>
-        public TestType()
-        {
-            this.ODataType = "microsoft.graph.testType";
-        }
-	
         /// <summary>
         /// Gets or sets property alpha.
         /// </summary>
         [Obsolete("emptyBaseComplexTypeRequest is deprecated. Please use emptyBaseComplexTypeRequest2.")]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "propertyAlpha", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("propertyAlpha")]
         public DerivedComplexTypeRequestObject PropertyAlpha { get; set; }
     
     }

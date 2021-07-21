@@ -24,47 +24,45 @@ namespace Microsoft.Graph2.CallRecords
         /// Creates the specified Option using POST.
         /// </summary>
         /// <param name="optionToCreate">The Option to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Option.</returns>
-        System.Threading.Tasks.Task<Option> CreateAsync(Option optionToCreate);        /// <summary>
-        /// Creates the specified Option using POST.
+        System.Threading.Tasks.Task<Option> CreateAsync(Option optionToCreate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Creates the specified Option using POST and returns a <see cref="GraphResponse{Option}"/> object.
         /// </summary>
         /// <param name="optionToCreate">The Option to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>The created Option.</returns>
-        System.Threading.Tasks.Task<Option> CreateAsync(Option optionToCreate, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Deletes the specified Option.
-        /// </summary>
-        /// <returns>The task to await.</returns>
-        System.Threading.Tasks.Task DeleteAsync();
+        /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Option>> CreateResponseAsync(Option optionToCreate, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deletes the specified Option.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Gets the specified Option.
+        /// Deletes the specified Option and returns a <see cref="GraphResponse"/> object.
         /// </summary>
-        /// <returns>The Option.</returns>
-        System.Threading.Tasks.Task<Option> GetAsync();
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
+        System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the specified Option.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Option.</returns>
-        System.Threading.Tasks.Task<Option> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Option> GetAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Updates the specified Option using PATCH.
+        /// Gets the specified Option and returns a <see cref="GraphResponse{Option}"/> object.
         /// </summary>
-        /// <param name="optionToUpdate">The Option to update.</param>
-        /// <returns>The updated Option.</returns>
-        System.Threading.Tasks.Task<Option> UpdateAsync(Option optionToUpdate);
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Option>> GetResponseAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Updates the specified Option using PATCH.
@@ -73,7 +71,32 @@ namespace Microsoft.Graph2.CallRecords
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated Option.</returns>
-        System.Threading.Tasks.Task<Option> UpdateAsync(Option optionToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Option> UpdateAsync(Option optionToUpdate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Updates the specified Option using PATCH and returns a <see cref="GraphResponse{Option}"/> object.
+        /// </summary>
+        /// <param name="optionToUpdate">The Option to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="Microsoft.Graph.ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{Option}"/> object of the request.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Option>> UpdateResponseAsync(Option optionToUpdate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Updates the specified Option using PUT.
+        /// </summary>
+        /// <param name="optionToUpdate">The Option object to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task<Option> PutAsync(Option optionToUpdate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Updates the specified Option using PUT and returns a <see cref="GraphResponse{Option}"/> object.
+        /// </summary>
+        /// <param name="optionToUpdate">The Option object to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task of <see cref="GraphResponse{Option}"/> to await.</returns>
+        System.Threading.Tasks.Task<GraphResponse<Option>> PutResponseAsync(Option optionToUpdate, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Adds the specified expand value to the request.
