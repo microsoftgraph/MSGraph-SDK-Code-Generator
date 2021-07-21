@@ -12,29 +12,27 @@ namespace Microsoft.Graph
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type User.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class User : DirectoryObject
     {
     
-		///<summary>
-		/// The User constructor
-		///</summary>
+        ///<summary>
+        /// The User constructor
+        ///</summary>
         public User()
         {
             this.ODataType = "microsoft.graph.user";
         }
-	
+
         /// <summary>
         /// Gets or sets account enabled.
         /// true if the account is enabled; otherwise, false. This property is required when a user is created. Supports $filter.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "accountEnabled", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("accountEnabled")]
         public bool? AccountEnabled { get; set; }
     
     }

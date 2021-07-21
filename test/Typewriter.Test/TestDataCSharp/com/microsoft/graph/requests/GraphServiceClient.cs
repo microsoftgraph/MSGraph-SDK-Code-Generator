@@ -9,13 +9,15 @@
 
 namespace Microsoft.Graph
 {
+    using Azure.Core;
     using System;
     using System.Net.Http;
+    using System.Collections.Generic;
 
     /// <summary>
     /// The type GraphServiceClient.
     /// </summary>
-    public partial class GraphServiceClient : BaseClient, IGraphServiceClient
+    public partial class GraphServiceClient : BaseClient
     {
         /// <summary>
         /// Instantiates a new GraphServiceClient.
@@ -26,6 +28,20 @@ namespace Microsoft.Graph
             IAuthenticationProvider authenticationProvider,
             IHttpProvider httpProvider = null)
             : this("https://graph.microsoft.com/v1.0", authenticationProvider, httpProvider)
+        {
+        }
+
+        /// <summary>
+        /// Instantiates a new GraphServiceClient using a <see cref="TokenCredential"/> instance.
+        /// </summary>
+        /// <param name="tokenCredential">The <see cref="TokenCredential"/> to use for authentication</param>
+        /// <param name="scopes">Scopes required to access Microsoft Graph. This defaults to https://graph.microsoft.com/.default when none is set.</param>
+        /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
+        public GraphServiceClient(
+            TokenCredential tokenCredential,
+            IEnumerable<string> scopes = null,
+            IHttpProvider httpProvider = null)
+            : this("https://graph.microsoft.com/v1.0", new TokenCredentialAuthProvider(tokenCredential,scopes), httpProvider)
         {
         }
 
@@ -48,9 +64,11 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="httpClient">The <see cref="HttpClient"/> to use for making requests to Microsoft Graph. Use the <see cref="GraphClientFactory"/>
         /// to get a pre-configured HttpClient that is optimized for use with the Microsoft Graph service API. </param>
+        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0".</param>
         public GraphServiceClient(
-            HttpClient httpClient)
-            : base("https://graph.microsoft.com/v1.0", httpClient)
+            HttpClient httpClient,
+            string baseUrl = "https://graph.microsoft.com/v1.0")
+            : base(baseUrl, httpClient)
         {
         }
     
@@ -58,7 +76,7 @@ namespace Microsoft.Graph
         /// Gets the GraphServiceTestTypes request builder.
         /// </summary>
         [Obsolete("entityType3 is deprecated. Please use singletonEntity1.")]
-        public IGraphServiceTestTypesCollectionRequestBuilder TestTypes
+        public virtual IGraphServiceTestTypesCollectionRequestBuilder TestTypes
         {
             get
             {
@@ -69,7 +87,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the GraphServiceSingletonProperty1 request builder.
         /// </summary>
-        public ISingletonEntity1RequestBuilder SingletonProperty1
+        public virtual ISingletonEntity1RequestBuilder SingletonProperty1
         {
             get
             {
@@ -80,7 +98,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the GraphServiceSingletonProperty2 request builder.
         /// </summary>
-        public ISingletonEntity2RequestBuilder SingletonProperty2
+        public virtual ISingletonEntity2RequestBuilder SingletonProperty2
         {
             get
             {
@@ -91,7 +109,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the GraphServiceSingletonProperty3 request builder.
         /// </summary>
-        public Microsoft.Graph2.CallRecords.ISingletonEntity1RequestBuilder SingletonProperty3
+        public virtual Microsoft.Graph2.CallRecords.ISingletonEntity1RequestBuilder SingletonProperty3
         {
             get
             {

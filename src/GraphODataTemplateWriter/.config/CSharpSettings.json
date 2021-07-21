@@ -3,7 +3,6 @@
     "TemplateMapping": {
       "CSharp": [
           { "Template": "EntityType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Matches": "navigable" },
-          { "Template": "IEntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "I<Container>Client" },
           { "Template": "IEntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>Request" },
           { "Template": "IEntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "I<Class>Request", "Matches": "navigable" },
           { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>Request", "Matches": "navigable" },

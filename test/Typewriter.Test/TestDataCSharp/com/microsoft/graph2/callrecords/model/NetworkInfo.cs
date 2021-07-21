@@ -12,70 +12,61 @@ namespace Microsoft.Graph2.CallRecords
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type NetworkInfo.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    [JsonConverter(typeof(Microsoft.Graph.DerivedTypeConverter))]
+    [JsonConverter(typeof(Microsoft.Graph.DerivedTypeConverter<NetworkInfo>))]
     public partial class NetworkInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NetworkInfo"/> class.
-        /// </summary>
-        public NetworkInfo()
-        {
-            this.ODataType = "microsoft.graph2.callRecords.networkInfo";
-        }
 
         /// <summary>
         /// Gets or sets connectionType.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "connectionType", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("connectionType")]
         public NetworkConnectionType? ConnectionType { get; set; }
     
         /// <summary>
         /// Gets or sets wifiBand.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "wifiBand", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("wifiBand")]
         public WifiBand? WifiBand { get; set; }
     
         /// <summary>
         /// Gets or sets basicServiceSetIdentifier.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "basicServiceSetIdentifier", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("basicServiceSetIdentifier")]
         public string BasicServiceSetIdentifier { get; set; }
     
         /// <summary>
         /// Gets or sets wifiRadioType.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "wifiRadioType", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("wifiRadioType")]
         public WifiRadioType? WifiRadioType { get; set; }
     
         /// <summary>
         /// Gets or sets wifiSignalStrength.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "wifiSignalStrength", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("wifiSignalStrength")]
         public Int32? WifiSignalStrength { get; set; }
     
         /// <summary>
         /// Gets or sets bandwidthLowEventRatio.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "bandwidthLowEventRatio", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("bandwidthLowEventRatio")]
         public Single? BandwidthLowEventRatio { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData(ReadData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
 
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.type", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("@odata.type")]
         public string ODataType { get; set; }
     
     }

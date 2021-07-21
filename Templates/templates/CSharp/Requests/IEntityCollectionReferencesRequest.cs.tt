@@ -19,5 +19,6 @@ namespace <#=@namespace#>
     <#=this.GetCollectionReferencesInterfaceDefinition(prop)#>
     {
         <#=GetPostAsyncMethodForReferencesRequest(prop, @namespace)#>
+        <#=GetPostAsyncMethodForReferencesRequest(prop, @namespace, true)#>
     }
 }

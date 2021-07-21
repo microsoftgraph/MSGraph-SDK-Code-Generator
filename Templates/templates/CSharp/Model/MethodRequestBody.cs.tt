@@ -13,21 +13,23 @@ var requestBody = entityName + method.Name.Substring(method.Name.IndexOf('.') + 
 // System.Diagnostics.Debug.Assert(!method.Overloads.Any(), "Overload actions are not allowed in OData services");
 
 var attributeStringBuilder = new StringBuilder();
-attributeStringBuilder.Append("[JsonObject(MemberSerialization = MemberSerialization.OptIn)]");
 #>
 
 namespace <#=method.Namespace.GetNamespaceName()#>
 {
-    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type <#=requestBody#>.
     /// </summary>
+<#
+if (attributeStringBuilder.Length > 0) {
+#>
     <#=attributeStringBuilder.ToString()#>
+<# } #>
     public partial class <#=requestBody#>
     {
     <#
@@ -50,7 +52,7 @@ namespace <#=method.Namespace.GetNamespaceName()#>
         }
 
         var paramName = param.Name.ToCheckedCase().GetSanitizedPropertyName();
-		var attributeDefinition = string.Format("[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = \"{0}\", Required = Newtonsoft.Json.Required.Default)]", param.Name);
+		var attributeDefinition = string.Format("[JsonPropertyName(\"{0}\")]", param.Name);
     #>
 
         /// <summary>

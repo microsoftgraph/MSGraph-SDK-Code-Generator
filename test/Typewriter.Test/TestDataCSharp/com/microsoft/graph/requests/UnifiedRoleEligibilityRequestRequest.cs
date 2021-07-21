@@ -39,34 +39,28 @@ namespace Microsoft.Graph
         /// Creates the specified UnifiedRoleEligibilityRequestObject using POST.
         /// </summary>
         /// <param name="unifiedRoleEligibilityRequestObjectToCreate">The UnifiedRoleEligibilityRequestObject to create.</param>
-        /// <returns>The created UnifiedRoleEligibilityRequestObject.</returns>
-        public System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> CreateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToCreate)
-        {
-            return this.CreateAsync(unifiedRoleEligibilityRequestObjectToCreate, CancellationToken.None);
-        }
-
-        /// <summary>
-        /// Creates the specified UnifiedRoleEligibilityRequestObject using POST.
-        /// </summary>
-        /// <param name="unifiedRoleEligibilityRequestObjectToCreate">The UnifiedRoleEligibilityRequestObject to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created UnifiedRoleEligibilityRequestObject.</returns>
-        public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> CreateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> CreateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToCreate, CancellationToken cancellationToken = default)
         {
-            this.ContentType = "application/json";
-            this.Method = "POST";
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
+            this.Method = HttpMethods.POST;
             var newEntity = await this.SendAsync<UnifiedRoleEligibilityRequestObject>(unifiedRoleEligibilityRequestObjectToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
         }
 
         /// <summary>
-        /// Deletes the specified UnifiedRoleEligibilityRequest.
+        /// Creates the specified UnifiedRoleEligibilityRequestObject using POST and returns a <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object.
         /// </summary>
-        /// <returns>The task to await.</returns>
-        public System.Threading.Tasks.Task DeleteAsync()
+        /// <param name="unifiedRoleEligibilityRequestObjectToCreate">The UnifiedRoleEligibilityRequestObject to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> CreateResponseAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToCreate, CancellationToken cancellationToken = default)
         {
-            return this.DeleteAsync(CancellationToken.None);
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
+            this.Method = HttpMethods.POST;
+            return this.SendAsyncWithGraphResponse<UnifiedRoleEligibilityRequestObject>(unifiedRoleEligibilityRequestObjectToCreate, cancellationToken);
         }
 
         /// <summary>
@@ -74,19 +68,21 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken = default)
         {
-            this.Method = "DELETE";
+            this.Method = HttpMethods.DELETE;
             await this.SendAsync<UnifiedRoleEligibilityRequestObject>(null, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Gets the specified UnifiedRoleEligibilityRequestObject.
+        /// Deletes the specified UnifiedRoleEligibilityRequest and returns a <see cref="GraphResponse"/> object.
         /// </summary>
-        /// <returns>The UnifiedRoleEligibilityRequestObject.</returns>
-        public System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> GetAsync()
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task of <see cref="GraphResponse"/> to await.</returns>
+        public System.Threading.Tasks.Task<GraphResponse> DeleteResponseAsync(CancellationToken cancellationToken = default)
         {
-            return this.GetAsync(CancellationToken.None);
+            this.Method = HttpMethods.DELETE;
+            return this.SendAsyncWithGraphResponse(null, cancellationToken);
         }
 
         /// <summary>
@@ -94,22 +90,23 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The UnifiedRoleEligibilityRequestObject.</returns>
-        public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> GetAsync(CancellationToken cancellationToken = default)
         {
-            this.Method = "GET";
+            this.Method = HttpMethods.GET;
             var retrievedEntity = await this.SendAsync<UnifiedRoleEligibilityRequestObject>(null, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(retrievedEntity);
             return retrievedEntity;
         }
 
         /// <summary>
-        /// Updates the specified UnifiedRoleEligibilityRequestObject using PATCH.
+        /// Gets the specified UnifiedRoleEligibilityRequestObject and returns a <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object.
         /// </summary>
-        /// <param name="unifiedRoleEligibilityRequestObjectToUpdate">The UnifiedRoleEligibilityRequestObject to update.</param>
-        /// <returns>The updated UnifiedRoleEligibilityRequestObject.</returns>
-        public System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> UpdateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate)
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> GetResponseAsync(CancellationToken cancellationToken = default)
         {
-            return this.UpdateAsync(unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken.None);
+            this.Method = HttpMethods.GET;
+            return this.SendAsyncWithGraphResponse<UnifiedRoleEligibilityRequestObject>(null, cancellationToken);
         }
 
         /// <summary>
@@ -119,39 +116,55 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
         /// <returns>The updated UnifiedRoleEligibilityRequestObject.</returns>
-        public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> UpdateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> UpdateAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken = default)
         {
-			if (unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData != null)
-			{
-				if (unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-					unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-				{
-					throw new ClientException(
-						new Error
-						{
-							Code = GeneratedErrorConstants.Codes.NotAllowed,
-							Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, unifiedRoleEligibilityRequestObjectToUpdate.GetType().Name)
-						});
-				}
-			}
-            if (unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData != null)
-            {
-                if (unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.ResponseHeaders) ||
-                    unifiedRoleEligibilityRequestObjectToUpdate.AdditionalData.ContainsKey(Constants.HttpPropertyNames.StatusCode))
-                {
-                    throw new ClientException(
-                        new Error
-                        {
-                            Code = GeneratedErrorConstants.Codes.NotAllowed,
-                            Message = String.Format(GeneratedErrorConstants.Messages.ResponseObjectUsedForUpdate, unifiedRoleEligibilityRequestObjectToUpdate.GetType().Name)
-                        });
-                }
-            }
-            this.ContentType = "application/json";
-            this.Method = "PATCH";
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
+            this.Method = HttpMethods.PATCH;
             var updatedEntity = await this.SendAsync<UnifiedRoleEligibilityRequestObject>(unifiedRoleEligibilityRequestObjectToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
             return updatedEntity;
+        }
+
+        /// <summary>
+        /// Updates the specified UnifiedRoleEligibilityRequestObject using PATCH and returns a <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object.
+        /// </summary>
+        /// <param name="unifiedRoleEligibilityRequestObjectToUpdate">The UnifiedRoleEligibilityRequestObject to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <exception cref="ClientException">Thrown when an object returned in a response is used for updating an object in Microsoft Graph.</exception>
+        /// <returns>The <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object of the request.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> UpdateResponseAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken = default)
+        {
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
+            this.Method = HttpMethods.PATCH;
+            return this.SendAsyncWithGraphResponse<UnifiedRoleEligibilityRequestObject>(unifiedRoleEligibilityRequestObjectToUpdate, cancellationToken);
+        }
+
+        /// <summary>
+        /// Updates the specified UnifiedRoleEligibilityRequestObject using PUT.
+        /// </summary>
+        /// <param name="unifiedRoleEligibilityRequestObjectToUpdate">The UnifiedRoleEligibilityRequestObject object to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        public async System.Threading.Tasks.Task<UnifiedRoleEligibilityRequestObject> PutAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken = default)
+        {
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
+            this.Method = HttpMethods.PUT;
+            var updatedEntity = await this.SendAsync<UnifiedRoleEligibilityRequestObject>(unifiedRoleEligibilityRequestObjectToUpdate, cancellationToken).ConfigureAwait(false);
+            this.InitializeCollectionProperties(updatedEntity);
+            return updatedEntity;
+        }
+
+        /// <summary>
+        /// Updates the specified UnifiedRoleEligibilityRequestObject using PUT and returns a <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/> object.
+        /// </summary>
+        /// <param name="unifiedRoleEligibilityRequestObjectToUpdate">The UnifiedRoleEligibilityRequestObject object to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await of <see cref="GraphResponse{UnifiedRoleEligibilityRequestObject}"/>.</returns>
+        public System.Threading.Tasks.Task<GraphResponse<UnifiedRoleEligibilityRequestObject>> PutResponseAsync(UnifiedRoleEligibilityRequestObject unifiedRoleEligibilityRequestObjectToUpdate, CancellationToken cancellationToken = default)
+        {
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
+            this.Method = HttpMethods.PUT;
+            return this.SendAsyncWithGraphResponse<UnifiedRoleEligibilityRequestObject>(unifiedRoleEligibilityRequestObjectToUpdate, cancellationToken);
         }
 
         /// <summary>
