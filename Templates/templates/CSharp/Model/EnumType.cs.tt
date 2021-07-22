@@ -11,6 +11,9 @@ var @namespace = enumT.Namespace.GetNamespaceName();
 
 namespace <#=enumT.Namespace.GetNamespaceName()#>
 {
+<# if (enumT.IsDeprecated) { #>
+    using System;
+<# } #>
     using System.Text.Json.Serialization;
 
     /// <summary>
