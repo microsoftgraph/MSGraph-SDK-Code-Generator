@@ -142,7 +142,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
                 return $this->_propDict["<#=camelCasePropertyName#>"];
             } else {
 <# if (propertyTypeString == "\\GuzzleHttp\\Psr7\\Stream") { #>
-                $this->_propDict["<#=camelCasePropertyName#>"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["<#=camelCasePropertyName#>"]);
+                $this->_propDict["<#=camelCasePropertyName#>"] = \GuzzleHttp\Psr7\Utils::streamFor($this->_propDict["<#=camelCasePropertyName#>"]);
                 return $this->_propDict["<#=camelCasePropertyName#>"];
 <# } else { #>
                 $this->_propDict["<#=camelCasePropertyName#>"] = new <#=propertyTypeReference#>($this->_propDict["<#=camelCasePropertyName#>"]);
