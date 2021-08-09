@@ -67,6 +67,7 @@ namespace Microsoft.Graph2.CallRecords
         /// Gets or sets segmentsNextLink.
         /// </summary>
         [JsonPropertyName("segments@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
         public string SegmentsNextLink { get; set; }
     
     }
