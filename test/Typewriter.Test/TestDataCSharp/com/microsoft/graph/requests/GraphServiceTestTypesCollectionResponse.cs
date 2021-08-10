@@ -14,7 +14,6 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type GraphServiceTestTypesCollectionResponse.
     /// </summary>
-    [JsonConverter(typeof(DerivedTypeConverter<GraphServiceTestTypesCollectionResponse>))]
     public class GraphServiceTestTypesCollectionResponse
     {
         /// <summary>
