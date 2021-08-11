@@ -85,6 +85,7 @@ namespace Microsoft.Graph2.CallRecords
         /// Gets or sets sessionsNextLink.
         /// </summary>
         [JsonPropertyName("sessions@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
         public string SessionsNextLink { get; set; }
     
         /// <summary>
@@ -97,6 +98,7 @@ namespace Microsoft.Graph2.CallRecords
         /// Gets or sets recipientsNextLink.
         /// </summary>
         [JsonPropertyName("recipients@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
         public string RecipientsNextLink { get; set; }
     
     }

@@ -30,6 +30,7 @@ namespace Microsoft.Graph
         /// Gets or sets callsNextLink.
         /// </summary>
         [JsonPropertyName("calls@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
         public string CallsNextLink { get; set; }
     
         /// <summary>
@@ -42,6 +43,7 @@ namespace Microsoft.Graph
         /// Gets or sets callRecordsNextLink.
         /// </summary>
         [JsonPropertyName("callRecords@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
         public string CallRecordsNextLink { get; set; }
     
     }

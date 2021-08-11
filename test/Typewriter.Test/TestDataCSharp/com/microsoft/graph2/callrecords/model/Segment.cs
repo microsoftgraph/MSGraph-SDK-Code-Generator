@@ -67,6 +67,7 @@ namespace Microsoft.Graph2.CallRecords
         /// Gets or sets refTypesNextLink.
         /// </summary>
         [JsonPropertyName("refTypes@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
         public string RefTypesNextLink { get; set; }
     
         /// <summary>

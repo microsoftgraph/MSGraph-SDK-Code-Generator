@@ -22,12 +22,6 @@ namespace <#=@namespace#>
     /// <summary>
     /// The type <#=collectionResponse#>.
     /// </summary>
-<# 
-// We only want to add the derived type converter to the classes at the top of the inheritance hierarchy
-if (prop.Class.Derived != null && prop.Class.Base == null)
-{ #>
-    [JsonConverter(typeof(<#=derivedTypeConverterTypeName#><<#=collectionResponse#>>))]
-<# } #>
     public class <#=collectionResponse#>
     {
         /// <summary>
@@ -40,6 +34,7 @@ if (prop.Class.Derived != null && prop.Class.Base == null)
         /// Gets or sets the nextLink string value.
         /// </summary>
         [JsonPropertyName("@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
         public string NextLink { get; set; }
 
         /// <summary>
