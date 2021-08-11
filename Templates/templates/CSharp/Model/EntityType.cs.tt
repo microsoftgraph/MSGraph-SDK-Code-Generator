@@ -157,6 +157,7 @@ if (attributeStringBuilder.Length > 0) {
         /// Gets or sets <#=collectionPropertyName.ToLowerFirstChar()#>NextLink.
         /// </summary>
         [JsonPropertyName("<#=collectionPropertyName.ToLowerFirstChar()#>@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
         public string <#=collectionPropertyName#>NextLink { get; set; }
     <#
                     }

@@ -36,6 +36,7 @@ namespace Microsoft.Graph
         /// Gets or sets timesOffNextLink.
         /// </summary>
         [JsonPropertyName("timesOff@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
         public string TimesOffNextLink { get; set; }
     
         /// <summary>
@@ -48,6 +49,7 @@ namespace Microsoft.Graph
         /// Gets or sets timeOffRequestsNextLink.
         /// </summary>
         [JsonPropertyName("timeOffRequests@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
         public string TimeOffRequestsNextLink { get; set; }
     
     }
