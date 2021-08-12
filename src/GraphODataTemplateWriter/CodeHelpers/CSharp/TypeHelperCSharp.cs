@@ -208,7 +208,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             }
 
             if (string.Equals(typesNamespace, namespaceContext, StringComparison.OrdinalIgnoreCase)
-                || typesNamespace == "Edm")
+                || typesNamespace == "Edm"
+                || type.Name == "Json")
             {
                 return plainTypeString;
             }
