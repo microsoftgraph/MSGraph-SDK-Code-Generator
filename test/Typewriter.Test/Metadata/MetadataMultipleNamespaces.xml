@@ -39,6 +39,7 @@
           </Collection>
         </Annotation>
       </ComplexType>
+      <ComplexType Name="Json"/>
       <ComplexType Name="derivedComplexTypeRequest" BaseType="graph.emptyBaseComplexTypeRequest">
         <Property Name="property1" Type="Edm.String" />
         <Property Name="property2" Type="Edm.String" />
@@ -361,6 +362,11 @@
       </ComplexType>
       <ComplexType Name="serviceUserAgent" BaseType="microsoft.graph2.callRecords.userAgent">
         <Property Name="role" Type="microsoft.graph2.callRecords.serviceRole" Nullable="false" />
+      </ComplexType>
+      <ComplexType Name="displayTemplate">
+          <Property Name="id" Type="Edm.String" Nullable="false"/>
+          <Property Name="layout" Type="graph.Json" Nullable="false"/>
+          <Property Name="priority" Type="Edm.Int32" Nullable="false"/>
       </ComplexType>
       <!--action name colliding with actions in microsoft.graph namespace-->
       <Action Name="forward" IsBound="true">
