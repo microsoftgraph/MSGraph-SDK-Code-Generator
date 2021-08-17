@@ -275,7 +275,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 
         public static string TypeRequest(this OdcmObject c)
         {
-            if (c is OdcmProperty && c.AsOdcmProperty().IsReference())
+            if (c is OdcmProperty p && p.IsReference())
             {
                 return c.TypeWithReferencesRequest();
             }
@@ -369,7 +369,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 
         public static string TypeCollectionRequest(this OdcmObject c)
         {
-            if (c is OdcmProperty && c.AsOdcmProperty().IsReference())
+            if (c is OdcmProperty p && p.IsReference())
             {
                 return c.TypeCollectionWithReferencesRequest();
             }
@@ -699,8 +699,13 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                     var returnTypeNamespace = returnTypeClass.Namespace.Name.AddPrefix();
                     returnTypeClass
                         .NavigationProperties(true)
-                        .Where(x => !x.GetPropertyNamespace().Equals(returnTypeNamespace))
-                        .Select(x => $"import {x.GetPropertyNamespace()}.{GetPrefixForRequests()}.{x.Projection.Type.TypeRequestBuilder()};\n")
+                        .Select(x => new Tuple<string, string>(x.GetPropertyNamespace(), 
+                                                                x.IsCollection ? 
+                                                                    x.Projection.Type.TypeCollectionRequestBuilder() :
+                                                                    x.Projection.Type.TypeRequestBuilder()))
+                        .Where(x => !x.Item1.Equals(returnTypeNamespace))
+                        .Select(x => $"import {x.Item1}.{GetPrefixForRequests()}.{x.Item2};\n")
+                        .Distinct()
                         .ToList()
                         .ForEach(x => sb.Append(x));
                 }
