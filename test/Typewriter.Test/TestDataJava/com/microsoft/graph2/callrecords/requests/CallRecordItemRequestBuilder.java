@@ -5,7 +5,7 @@
 
 package com.microsoft.graph2.callrecords.requests;
 import com.microsoft.graph2.callrecords.requests.CallRecordItemRequest;
-import com.microsoft.graph.requests.EntityType2RequestBuilder;
+import com.microsoft.graph.requests.EntityType2CollectionRequestBuilder;
 import com.microsoft.graph2.callrecords.models.CallRecord;
 import com.microsoft.graph.http.BaseFunctionRequestBuilder;
 import com.microsoft.graph2.callrecords.models.CallRecordItemParameterSet;
