@@ -57,7 +57,7 @@
       <Version>2.2.1</Version>
     </PackageReference>
     <PackageReference Include="NLog.Config">
-      <Version>4.7.10</Version>
+      <Version>4.7.11</Version>
     </PackageReference>
     <PackageReference Include="System.CodeDom" Version="5.0.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
