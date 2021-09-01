@@ -97,6 +97,7 @@ else {
     Exit
 }
 
+git pull origin $env:targetBranch --recurse-submodules # sync changes in case someone else pushed to the same branch.
 git add $metadataFileName | Write-Host
 git commit -m "Updated $metadataFileName" | Write-Host
 git push origin $env:targetBranch | Write-Host
