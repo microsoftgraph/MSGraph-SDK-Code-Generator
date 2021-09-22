@@ -57,8 +57,9 @@ class Media extends \Microsoft\Graph\Model\Entity
     */
     public function getCallerNetwork()
     {
-        if (array_key_exists("callerNetwork", $this->_propDict)) {
-            if (is_a($this->_propDict["callerNetwork"], "\Microsoft\Graph\CallRecords\Model\NetworkInfo") || is_null($this->_propDict["callerNetwork"])) {
+        if (array_key_exists("callerNetwork", $this->_propDict) && !is_null($this->_propDict["callerNetwork"])) {
+     
+            if (is_a($this->_propDict["callerNetwork"], "\Microsoft\Graph\CallRecords\Model\NetworkInfo")) {
                 return $this->_propDict["callerNetwork"];
             } else {
                 $this->_propDict["callerNetwork"] = new NetworkInfo($this->_propDict["callerNetwork"]);
@@ -88,8 +89,9 @@ class Media extends \Microsoft\Graph\Model\Entity
     */
     public function getCallerDevice()
     {
-        if (array_key_exists("callerDevice", $this->_propDict)) {
-            if (is_a($this->_propDict["callerDevice"], "\Microsoft\Graph\CallRecords\Model\DeviceInfo") || is_null($this->_propDict["callerDevice"])) {
+        if (array_key_exists("callerDevice", $this->_propDict) && !is_null($this->_propDict["callerDevice"])) {
+     
+            if (is_a($this->_propDict["callerDevice"], "\Microsoft\Graph\CallRecords\Model\DeviceInfo")) {
                 return $this->_propDict["callerDevice"];
             } else {
                 $this->_propDict["callerDevice"] = new DeviceInfo($this->_propDict["callerDevice"]);
@@ -115,25 +117,29 @@ class Media extends \Microsoft\Graph\Model\Entity
     /**
     * Gets the streams
     *
-    * @return MediaStream|null The streams
+    * @return MediaStream[]|null The streams
     */
     public function getStreams()
     {
-        if (array_key_exists("streams", $this->_propDict)) {
-            if (is_a($this->_propDict["streams"], "\Microsoft\Graph\CallRecords\Model\MediaStream") || is_null($this->_propDict["streams"])) {
-                return $this->_propDict["streams"];
-            } else {
-                $this->_propDict["streams"] = new MediaStream($this->_propDict["streams"]);
-                return $this->_propDict["streams"];
+        if (array_key_exists("streams", $this->_propDict) && !is_null($this->_propDict["streams"])) {
+       
+            if (count($this->_propDict['streams']) > 0 && is_a($this->_propDict['streams'][0], 'MediaStream')) {
+               return $this->_propDict['streams'];
             }
-        }
+            $streams = [];
+            foreach ($this->_propDict['streams'] as $singleValue) {
+               $streams []= new MediaStream($singleValue);
+            }
+            $this->_propDict['streams'] = $streams;
+            return $this->_propDict['streams'];
+            }
         return null;
     }
 
     /**
     * Sets the streams
     *
-    * @param MediaStream $val The value to assign to the streams
+    * @param MediaStream[] $val The value to assign to the streams
     *
     * @return Media The Media
     */
