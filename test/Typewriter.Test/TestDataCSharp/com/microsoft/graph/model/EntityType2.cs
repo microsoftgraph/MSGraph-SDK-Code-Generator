@@ -12,24 +12,14 @@ namespace Microsoft.Graph
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Entity Type2.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class EntityType2 : Entity
     {
     
-		///<summary>
-		/// The EntityType2 constructor
-		///</summary>
-        public EntityType2()
-        {
-            this.ODataType = "microsoft.graph.entityType2";
-        }
-	
     }
 }
 

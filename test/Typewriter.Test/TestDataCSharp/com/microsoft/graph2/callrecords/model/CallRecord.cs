@@ -12,89 +12,94 @@ namespace Microsoft.Graph2.CallRecords
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Call Record.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    [JsonConverter(typeof(Microsoft.Graph.DerivedTypeConverter<CallRecord>))]
     public partial class CallRecord : Microsoft.Graph.Entity
     {
     
-		///<summary>
-		/// The CallRecord constructor
-		///</summary>
-        public CallRecord()
-        {
-            this.ODataType = "microsoft.graph2.callRecords.callRecord";
-        }
-	
         /// <summary>
         /// Gets or sets version.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "version", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("version")]
         public Int64? Version { get; set; }
     
         /// <summary>
         /// Gets or sets type.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("type")]
         public CallType? Type { get; set; }
     
         /// <summary>
         /// Gets or sets modalities.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "modalities", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("modalities")]
         public IEnumerable<Modality> Modalities { get; set; }
     
         /// <summary>
         /// Gets or sets last modified date time.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedDateTime", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("lastModifiedDateTime")]
         public DateTimeOffset? LastModifiedDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets start date time.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "startDateTime", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("startDateTime")]
         public DateTimeOffset? StartDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets end date time.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "endDateTime", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("endDateTime")]
         public DateTimeOffset? EndDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets organizer.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "organizer", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("organizer")]
         public Microsoft.Graph.IdentitySet Organizer { get; set; }
     
         /// <summary>
         /// Gets or sets participants.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "participants", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("participants")]
         public IEnumerable<Microsoft.Graph.IdentitySet> Participants { get; set; }
     
         /// <summary>
         /// Gets or sets join web url.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "joinWebUrl", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("joinWebUrl")]
         public string JoinWebUrl { get; set; }
     
         /// <summary>
         /// Gets or sets sessions.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sessions", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("sessions")]
         public ICallRecordSessionsCollectionPage Sessions { get; set; }
+
+        /// <summary>
+        /// Gets or sets sessionsNextLink.
+        /// </summary>
+        [JsonPropertyName("sessions@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
+        public string SessionsNextLink { get; set; }
     
         /// <summary>
         /// Gets or sets recipients.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "recipients", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("recipients")]
         public ICallRecordRecipientsCollectionPage Recipients { get; set; }
+
+        /// <summary>
+        /// Gets or sets recipientsNextLink.
+        /// </summary>
+        [JsonPropertyName("recipients@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
+        public string RecipientsNextLink { get; set; }
     
     }
 }

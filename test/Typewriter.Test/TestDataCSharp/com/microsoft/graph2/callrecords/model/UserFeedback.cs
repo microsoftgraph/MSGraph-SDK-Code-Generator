@@ -12,52 +12,43 @@ namespace Microsoft.Graph2.CallRecords
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type UserFeedback.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    [JsonConverter(typeof(Microsoft.Graph.DerivedTypeConverter))]
+    [JsonConverter(typeof(Microsoft.Graph.DerivedTypeConverter<UserFeedback>))]
     public partial class UserFeedback
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserFeedback"/> class.
-        /// </summary>
-        public UserFeedback()
-        {
-            this.ODataType = "microsoft.graph2.callRecords.userFeedback";
-        }
 
         /// <summary>
         /// Gets or sets text.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "text", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("text")]
         public string Text { get; set; }
     
         /// <summary>
         /// Gets or sets rating.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "rating", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("rating")]
         public UserFeedbackRating? Rating { get; set; }
     
         /// <summary>
         /// Gets or sets tokens.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "tokens", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("tokens")]
         public FeedbackTokenSet Tokens { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData(ReadData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
 
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.type", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("@odata.type")]
         public string ODataType { get; set; }
     
     }

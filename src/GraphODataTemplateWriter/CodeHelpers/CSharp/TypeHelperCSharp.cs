@@ -150,7 +150,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 case "date":
                     return "Date";
                 case "json":
-                    return "Newtonsoft.Json.Linq.JToken";
+                    return "System.Text.Json.JsonDocument";
                 default:
                     return type.ToCheckedCase();
             }
@@ -208,7 +208,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             }
 
             if (string.Equals(typesNamespace, namespaceContext, StringComparison.OrdinalIgnoreCase)
-                || typesNamespace == "Edm")
+                || typesNamespace == "Edm"
+                || type.Name == "Json")
             {
                 return plainTypeString;
             }

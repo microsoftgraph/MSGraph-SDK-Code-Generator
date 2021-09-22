@@ -33,18 +33,25 @@ public string GetCollectionWithReferencesInterfaceDefinition(OdcmProperty odcmPr
 // -------------------------------------------------------------
 // Build CRUD methods
 // -------------------------------------------------------------
-public void AppendMethodHeaderToPostAsyncMethod(string propertyType, string sanitizedPropertyName, StringBuilder stringBuilder)
+public void AppendMethodHeaderToPostAsyncMethod(string propertyType, string sanitizedPropertyName, StringBuilder stringBuilder, bool isGraphResponseMethod)
 {
-    stringBuilder.Append("        /// <summary>");
+    stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        /// Adds the specified {0} to the collection via POST.", propertyType);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        /// Adds the specified {0} to the collection via POST and returns a <see cref=\"GraphResponse{{{0}}}\"/> object of the request.", propertyType);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        /// Adds the specified {0} to the collection via POST.", propertyType);
+    }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        /// </summary>");
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.AppendFormat("        /// <param name=\"{0}\">The {1} to add.</param>", sanitizedPropertyName, propertyType);
 }
 
-public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace)
+public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace, bool isGraphResponseMethod = false)
 {
     if (!odcmProperty.LongDescriptionContains("readonly"))
     {
@@ -60,32 +67,29 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace)
         var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
         var stringBuilder = new StringBuilder();
-
-        stringBuilder.Append(Environment.NewLine);
-        this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
-        stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
-        stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> AddAsync({0} {1});", propertyType, sanitizedPropertyName);
-
-        stringBuilder.Append(Environment.NewLine);
-        stringBuilder.Append(Environment.NewLine);
-
-        this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
+        this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder, isGraphResponseMethod);
         stringBuilder.Append(Environment.NewLine);
         stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
+        if (isGraphResponseMethod)
+        {
+            stringBuilder.AppendFormat("        /// <returns>The <see cref=\"GraphResponse{{{0}}}\"/> object of the request.</returns>", propertyType);
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.AppendFormat("        System.Threading.Tasks.Task<GraphResponse<{0}>> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default);", propertyType, sanitizedPropertyName);
+        }
+        else
+        {
+            stringBuilder.AppendFormat("        /// <returns>The created {0}.</returns>", propertyType);
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> AddAsync({0} {1}, CancellationToken cancellationToken = default);", propertyType, sanitizedPropertyName);
+        }
         stringBuilder.Append(Environment.NewLine);
-        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<{0}> AddAsync({0} {1}, CancellationToken cancellationToken);", propertyType, sanitizedPropertyName);
-
         return stringBuilder.ToString();
     }
-
     return string.Empty;
 }
 
-public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, string @namespace)
+public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, string @namespace, bool isGraphResponseMethod = false)
 {
     var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
     var propertyType = this.GetPropertyTypeName(odcmProperty, @namespace);
@@ -98,21 +102,19 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
         return string.Empty;
 
     var stringBuilder = new StringBuilder();
-
-	stringBuilder.Append(Environment.NewLine);
-	this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
+    this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        System.Threading.Tasks.Task AddAsync({0} {1});", propertyType, sanitizedPropertyName);
-
+    stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
     stringBuilder.Append(Environment.NewLine);
+    if (isGraphResponseMethod)
+    {
+        stringBuilder.AppendFormat("        System.Threading.Tasks.Task<GraphResponse> AddResponseAsync({0} {1}, CancellationToken cancellationToken = default);", propertyType, sanitizedPropertyName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("        System.Threading.Tasks.Task AddAsync({0} {1}, CancellationToken cancellationToken = default);", propertyType, sanitizedPropertyName);
+    }
     stringBuilder.Append(Environment.NewLine);
-
-    this.AppendMethodHeaderToPostAsyncMethod(propertyType, sanitizedPropertyName, stringBuilder);
-    stringBuilder.Append(Environment.NewLine);
-	stringBuilder.Append("        /// <param name=\"cancellationToken\">The <see cref=\"CancellationToken\"/> for the request.</param>");
-	stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("        System.Threading.Tasks.Task AddAsync({0} {1}, CancellationToken cancellationToken);", propertyType, sanitizedPropertyName);
-
     return stringBuilder.ToString();
 }
 

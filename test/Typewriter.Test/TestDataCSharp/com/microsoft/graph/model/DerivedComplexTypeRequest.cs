@@ -12,14 +12,13 @@ namespace Microsoft.Graph
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type DerivedComplexTypeRequest.
     /// </summary>
     [Obsolete("emptyBaseComplexTypeRequest is deprecated. Please use emptyBaseComplexTypeRequest2.")]
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    [JsonConverter(typeof(DerivedTypeConverter<DerivedComplexTypeRequestObject>))]
     public partial class DerivedComplexTypeRequestObject : EmptyBaseComplexTypeRequestObject
     {
         /// <summary>
@@ -33,20 +32,20 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets property1.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "property1", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("property1")]
         public string Property1 { get; set; }
     
         /// <summary>
         /// Gets or sets property2.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "property2", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("property2")]
         public string Property2 { get; set; }
     
         /// <summary>
         /// Gets or sets enumProperty.
         /// </summary>
         [Obsolete("enum1 is deprecated. Please use string.")]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "enumProperty", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("enumProperty")]
         public Enum1? EnumProperty { get; set; }
     
     }

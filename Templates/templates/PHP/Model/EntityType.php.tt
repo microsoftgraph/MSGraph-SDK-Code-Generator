@@ -148,7 +148,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
                 return $this->_propDict["<#=camelCasePropertyName#>"];
             } else {
 <# if (propertyTypeString == "\\GuzzleHttp\\Psr7\\Stream") { #>
-                $this->_propDict["<#=camelCasePropertyName#>"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["<#=camelCasePropertyName#>"]);
+                $this->_propDict["<#=camelCasePropertyName#>"] = \GuzzleHttp\Psr7\Utils::streamFor($this->_propDict["<#=camelCasePropertyName#>"]);
                 return $this->_propDict["<#=camelCasePropertyName#>"];
 <# } else { #>
                 $this->_propDict["<#=camelCasePropertyName#>"] = new <#=propertyTypeReference#>($this->_propDict["<#=camelCasePropertyName#>"]);
@@ -260,11 +260,14 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     /**
     * Gets the ODataType
     *
-    * @return string The ODataType
+    * @return string|null The ODataType
     */
     public function getODataType()
     {
-        return $this->_propDict["@odata.type"];
+        if (array_key_exists('@odata.type', $this->_propDict)) {
+            return $this->_propDict["@odata.type"];
+        }
+        return null;
     }
     
     /**

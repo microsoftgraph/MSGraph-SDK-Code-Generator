@@ -14,4 +14,4 @@ steps:
       composer install --no-interaction --prefer-dist
       ./vendor/bin/phpunit --exclude-group functional
     displayName: Run PHP tests
-    workingDirectory: msgraph-sdk-php
+    workingDirectory: ${{ parameters.repoName }}

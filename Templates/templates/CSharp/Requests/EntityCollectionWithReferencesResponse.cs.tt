@@ -17,31 +17,30 @@ var collectionPage = string.Concat(entityName, propName, "CollectionWithReferenc
 namespace <#=@namespace#>
 {
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type <#=collectionResponse#>.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-<# 
-// We only want to add the derived type converter to the classes at the top of the inheritance hierarchy
-if (prop.Class.Derived != null && prop.Class.Base == null)
-{ #>
-    [JsonConverter(typeof(<#=derivedTypeConverterTypeName#>))]
-<# } #>
     public class <#=collectionResponse#>
     {
         /// <summary>
         /// Gets or sets the <see cref="I<#=collectionPage#>"/> value.
         /// </summary>
-		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("value")]
         public I<#=collectionPage#> Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets the nextLink string value.
+        /// </summary>
+        [JsonPropertyName("@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
+        public string NextLink { get; set; }
 
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData(ReadData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
     }
 }

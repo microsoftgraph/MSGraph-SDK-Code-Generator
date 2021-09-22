@@ -96,11 +96,22 @@ namespace Typewriter
                 settings.EnableScript = true;
                 transform.Load(options.Transform, settings, null);
 
-                // Execute the transformation, writes the transformed file.
-                transform.Transform(doc, writer);
-            }
+                if (options.RemoveAnnotations == false)
+                {   
+                    XsltArgumentList xsltargs = new();
+                    xsltargs.AddParam("remove-capability-annotations", string.Empty, options.RemoveAnnotations.ToString());
 
-            Logger.Info($"Transformed metadata written to {pathToCleanMetadata}");
+                    // Execute the transformation, keep capability annotations, writes the transformed file.
+                    transform.Transform(doc, xsltargs, writer);
+                    Logger.Info($"Transformed metadata with capability annotations written to {pathToCleanMetadata}");
+                }
+                else
+                {
+                    // Execute the transformation, writes the transformed file.
+                    transform.Transform(doc, writer);
+                    Logger.Info($"Transformed metadata written to {pathToCleanMetadata}");
+                }
+            }
 
             return pathToCleanMetadata;
         }

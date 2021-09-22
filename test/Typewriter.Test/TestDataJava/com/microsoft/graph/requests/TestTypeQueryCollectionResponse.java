@@ -19,5 +19,4 @@ import com.microsoft.graph.http.BaseCollectionResponse;
  */
 @Deprecated
 public class TestTypeQueryCollectionResponse extends BaseCollectionResponse<ResponseObject> {
-
 }
