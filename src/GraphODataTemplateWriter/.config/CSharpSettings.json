@@ -3,7 +3,6 @@
     "TemplateMapping": {
       "CSharp": [
           { "Template": "EntityType", "SubProcessor": "ComplexType", "Type": "Model", "Name": "<Class>", "Matches": "navigable" },
-          { "Template": "IEntityClient", "SubProcessor": "EntityContainer", "Type": "Client", "Name": "I<Container>Client" },
           { "Template": "IEntityRequest", "SubProcessor": "EntityType", "Type": "Request", "Name": "I<Class>Request" },
           { "Template": "IEntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "I<Class>Request", "Matches": "navigable" },
           { "Template": "EntityRequest", "SubProcessor": "ComplexType", "Type": "Request", "Name": "<Class>Request", "Matches": "navigable" },
@@ -42,19 +41,7 @@
           
           { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Class><Property>CollectionRequestBuilder" },  
           { "Template": "EntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionResponse" },
-          
-          { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesPage" },
-          { "Template": "IEntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesPage" },
 
-          { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Class><Property>CollectionRequestBuilder" },  
-          { "Template": "EntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionResponse" },
-          { "Template": "EntityCollectionWithReferencesResponse", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesResponse" },
-
-          { "Template": "EntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesPage" },
-          { "Template": "IEntityCollectionWithReferencesPage", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "I<Class><Property>CollectionWithReferencesPage" },
-
-          { "Template": "IEntityCollectionRequestBuilder", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "I<Class><Property>CollectionRequestBuilder" },  
-          { "Template": "EntityCollectionResponse", "SubProcessor": "NavigationCollectionProperty", "Type": "Request", "Name": "<Class><Property>CollectionResponse" },
           { "Template": "EntityCollectionWithReferencesResponse", "SubProcessor": "CollectionReferenceProperty", "Type": "Request", "Name": "<Class><Property>CollectionWithReferencesResponse" },
           
           { "Template": "StreamRequest", "SubProcessor": "MediaEntityType", "Type": "Request", "Name": "<Class>ContentRequest" },

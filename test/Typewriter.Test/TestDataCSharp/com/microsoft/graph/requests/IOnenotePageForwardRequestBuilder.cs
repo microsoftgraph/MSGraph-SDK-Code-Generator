@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The interface IOnenotePageForwardRequestBuilder.
     /// </summary>
-    public partial interface IOnenotePageForwardRequestBuilder
+    public partial interface IOnenotePageForwardRequestBuilder : IBaseRequestBuilder
     {
         /// <summary>
         /// Builds the request.

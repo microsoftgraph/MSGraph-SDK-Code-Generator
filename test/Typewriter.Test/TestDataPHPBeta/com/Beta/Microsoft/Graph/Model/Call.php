@@ -27,7 +27,7 @@ class Call extends Entity
     /**
     * Gets the subject
     *
-    * @return string The subject
+    * @return string|null The subject
     */
     public function getSubject()
     {

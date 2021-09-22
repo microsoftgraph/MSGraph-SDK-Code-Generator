@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The interface ITestTypeQueryRequestBuilder.
     /// </summary>
-    public partial interface ITestTypeQueryRequestBuilder
+    public partial interface ITestTypeQueryRequestBuilder : IBaseRequestBuilder
     {
         /// <summary>
         /// Builds the request.

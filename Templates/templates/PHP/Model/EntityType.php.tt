@@ -22,9 +22,9 @@ namespace <#=targetNamespace#>;
 
 <#=writer.GetClassBlock(entityName.ToCheckedCase().ToString(), "Model")#>
 <#
-if (entityCheckedCase == "Entity") {
+if (String.IsNullOrEmpty(entityBaseName)) {
 #>
-class <#=entityCheckedCase#> implements \JsonSerializable
+class <#=entityName.ToCheckedCase()#> implements \JsonSerializable
 <#
 } else {
 #>
@@ -34,24 +34,27 @@ class <#=entityName.ToCheckedCase()#> extends <#=entityBaseName#>
 #>
 {
 <#
-if (entityCheckedCase == "Entity") {
+if (String.IsNullOrEmpty(entityBaseName)) {
 #>
     /**
     * The array of properties available
     * to the model
     *
-    * @var array(string => string)
+    * @var array $_propDict
     */
     protected $_propDict;
     
     /**
-    * Construct a new <#=entityCheckedCase#>
+    * Construct a new <#=entityName.ToCheckedCase()#>
     *
     * @param array $propDict A list of properties to set
     */
     function __construct($propDict = array())
     {
-		$this->_propDict = $propDict;
+        if (!is_array($propDict)) {
+           $propDict = array();
+        }
+        $this->_propDict = $propDict;
     }
 
     /**
@@ -75,7 +78,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     // Check whether this type is a generated model type or a PHP type
     var fullPropertyTypeName = propertyTypeString[0] == '\\' || propertyTypeString.IsPHPPrimitiveType()
                                 ? propertyTypeString
-                                : string.Join("\\", propertyNamespace, propertyTypeString.SanitizeEntityName().ToCheckedCase());
+                                : '\\' + string.Join("\\", propertyNamespace, propertyTypeString.SanitizeEntityName().ToCheckedCase());
 
     var propertyTypeReference = propertyNamespace == targetNamespace && !propertyTypeString.IsPHPPrimitiveType()
                                 ? propertyTypeString.SanitizeEntityName().ToCheckedCase()
@@ -91,7 +94,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
      *
-     * @return array The <#=propertyName#>
+     * @return array|null The <#=propertyName#>
      */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
@@ -111,11 +114,11 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     *
     * @param <#=propertyTypeReference#> $val The <#=propertyName#>
     *
-    * @return <#=entityCheckedCase#>
+    * @return <#=entityName.ToCheckedCase()#>
     */
     public function set<#=propertyName.ToCheckedCase()#>($val)
     {
-		$this->_propDict["<#=camelCasePropertyName#>"] = $val;
+        $this->_propDict["<#=camelCasePropertyName#>"] = $val;
         return $this;
     }
     
@@ -129,16 +132,16 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=propertyTypeReference#> The <#=propertyName#>
+    * @return <#=propertyTypeReference#>|null The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=camelCasePropertyName#>", $this->_propDict)) {
-            if (is_a($this->_propDict["<#=camelCasePropertyName#>"], "<#=fullPropertyTypeName#>")) {
+            if (is_a($this->_propDict["<#=camelCasePropertyName#>"], "<#=fullPropertyTypeName#>") || is_null($this->_propDict["<#=camelCasePropertyName#>"])) {
                 return $this->_propDict["<#=camelCasePropertyName#>"];
             } else {
 <# if (propertyTypeString == "\\GuzzleHttp\\Psr7\\Stream") { #>
-                $this->_propDict["<#=camelCasePropertyName#>"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["<#=camelCasePropertyName#>"]);
+                $this->_propDict["<#=camelCasePropertyName#>"] = \GuzzleHttp\Psr7\Utils::streamFor($this->_propDict["<#=camelCasePropertyName#>"]);
                 return $this->_propDict["<#=camelCasePropertyName#>"];
 <# } else { #>
                 $this->_propDict["<#=camelCasePropertyName#>"] = new <#=propertyTypeReference#>($this->_propDict["<#=camelCasePropertyName#>"]);
@@ -158,7 +161,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     *
     * @param <#=propertyTypeReference#> $val The <#=propertyName#>
     *
-    * @return <#=entityCheckedCase#>
+    * @return <#=entityName.ToCheckedCase()#>
     */
     public function set<#=propertyName.ToCheckedCase()#>($val)
     {
@@ -166,6 +169,8 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
         $this->_propDict["<#=camelCasePropertyName#>"] = boolval($val);
 <#  } else if (propertyTypeString == "int") { #>
         $this->_propDict["<#=camelCasePropertyName#>"] = intval($val);
+<#  } else if (propertyTypeString == "float") { #>
+        $this->_propDict["<#=camelCasePropertyName#>"] = floatval($val);
 <# } else { #>
         $this->_propDict["<#=camelCasePropertyName#>"] = $val;
 <# } #>
@@ -183,7 +188,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=propertyTypeReference#> The <#=propertyName#>
+    * @return <#=propertyTypeReference#>|null The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
@@ -213,7 +218,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     *
     * @param <#=propertyTypeReference#> $val The <#=propertyName#>
     *
-    * @return <#=entityCheckedCase#>
+    * @return <#=entityName.ToCheckedCase()#>
     */
     public function set<#=propertyName.ToCheckedCase()#>($val)
     {
@@ -229,6 +234,8 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
         $this->_propDict["<#=property.Name#>"] = boolval($val);
 <#  } else if (propertyTypeString == "int") { #>
         $this->_propDict["<#=property.Name#>"] = intval($val);
+<# } else if (propertyTypeString == "float") { #>
+        $this->_propDict["<#=property.Name#>"] = floatval($val);
 <# } else { #>
         $this->_propDict["<#=property.Name#>"] = $val;
 <# } #>
@@ -239,26 +246,29 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     }
     
 <#
-		}
-	}
-	if (entityCheckedCase == "Entity") {
+        }
+    }
+    if (String.IsNullOrEmpty(entityBaseName)) {
 #>
     /**
     * Gets the ODataType
     *
-    * @return string The ODataType
+    * @return string|null The ODataType
     */
     public function getODataType()
     {
-        return $this->_propDict["@odata.type"];
+        if (array_key_exists('@odata.type', $this->_propDict)) {
+            return $this->_propDict["@odata.type"];
+        }
+        return null;
     }
     
     /**
     * Sets the ODataType
     *
-    * @param string The ODataType
+    * @param string $val The ODataType
     *
-    * @return Entity
+    * @return <#=entityName.ToCheckedCase()#>
     */
     public function setODataType($val)
     {
@@ -268,7 +278,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     
     /**
     * Serializes the object by property array
-	* Manually serialize DateTime into RFC3339 format
+    * Manually serialize DateTime into RFC3339 format
     *
     * @return array The list of properties
     */
@@ -285,6 +295,6 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
         return $serializableProperties;
     }
 <#
-	}
+    }
 #>
 }

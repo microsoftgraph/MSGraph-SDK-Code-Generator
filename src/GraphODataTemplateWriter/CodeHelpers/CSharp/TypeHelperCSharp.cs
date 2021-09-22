@@ -3,15 +3,13 @@
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 {
     using System;
-    using System.Text;
     using System.Collections.Generic;
-    using Microsoft.Graph.ODataTemplateWriter.Extensions;
-    using Vipr.Core.CodeModel;
-    using NLog;
-    using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Globalization;
+    using System.Linq;
     using Inflector;
+    using Microsoft.Graph.ODataTemplateWriter.Extensions;
+    using NLog;
+    using Vipr.Core.CodeModel;
 
     public static class TypeHelperCSharp
     {
@@ -152,10 +150,27 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 case "date":
                     return "Date";
                 case "json":
-                    return "Newtonsoft.Json.Linq.JToken";
+                    return "System.Text.Json.JsonDocument";
                 default:
                     return type.ToCheckedCase();
             }
+        }
+
+        /// <summary>
+        /// We use Request postfix to create Request objects in the SDK
+        /// but metadata has type names that end with Request as well. To disambiguate those
+        /// we append Object at the end of the generated type name.
+        /// </summary>
+        /// <param name="typeName">type name that potentially ends with "Request"</param>
+        /// <returns>disambiguated type name. If the type is myRequest, it is converted into myRequestObject</returns>
+        public static string DisambiguateRequestObject(this string typeName)
+        {
+            if (typeName.EndsWith("Request"))
+            {
+                return $"{typeName}Object";
+            }
+
+            return typeName;
         }
 
         public static string GetTypeString(this OdcmType type)
@@ -193,7 +208,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             }
 
             if (string.Equals(typesNamespace, namespaceContext, StringComparison.OrdinalIgnoreCase)
-                || typesNamespace == "Edm")
+                || typesNamespace == "Edm"
+                || type.Name == "Json")
             {
                 return plainTypeString;
             }
@@ -217,7 +233,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static string GetDeprecationString(this OdcmObject instance)
         {
-            if (instance.Deprecation != null)
+            if (instance.IsDeprecated)
             {
                 return String.Format(DeprecationString, instance.Deprecation.Description);
             }
@@ -430,6 +446,95 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             {
                 return $"Microsoft.Graph.{type}";
             }
+        }
+
+        /// <summary>
+        /// Use this method to get the method information for all of the methods.
+        /// Used in *MethodRequestBuilder
+        /// </summary>
+        /// <param name="methods">A list of OdcmMethods.</param>
+        /// <param name="namespace">The namespace for the methods.</param>
+        /// <returns>An ordered (to minimize diffs caused by reorder in the CSDL) list of 
+        /// MethodInfo objects used to construct the request builders.</returns>
+        public static List<MethodInfo> GetAllMethodsInfo(this List<OdcmMethod> methods, string @namespace)
+        {
+            return methods.Select(m =>
+            {
+                var parameters = m.Parameters
+                    .Select(p =>
+                    {
+                        var type = p.Type.GetTypeString(@namespace);
+                        var name = p.Name.ToLowerFirstChar();
+                        var parameterName = p.Name.GetSanitizedParameterName();
+                        var propertyName = p.Name.ToCheckedCase();
+
+                        // Adds support for classes ending in "Request" that have been dismabiguated.
+                        if (type.EndsWith("Request"))
+                        {
+                            type = String.Concat(type, "Object");
+                        }
+
+                        // Adjust the type string
+                        if (p.IsCollection)
+                        {
+                            type = $"IEnumerable<{type}>";
+                        }
+                        else if (!p.Type.IsTypeNullable() && p.IsNullable)
+                        {
+                            type += "?";
+                        }
+
+                        return new ParameterInfo(type, name, parameterName, propertyName, p.IsNullable);
+                    })
+                    .OrderBy(p => p.IsNullable ? 1 : 0); // I suspect this could cause a problem if new overloads are added.
+
+                var paramStrings = parameters.Select(p => $",\n            {p.Type} {p.ParameterName}");
+                var paramComments = parameters.Select(p => $"\n        /// <param name=\"{p.ParameterName}\">A {p.ParameterName} parameter for the OData method call.</param>");
+                var paramArgsForConstructor = parameters.Select(p => $",\n                {p.ParameterName}");
+
+                var entityName = m.Class.Name.ToCheckedCase();
+                var methodName = m.Name.ToCheckedCase();
+                var requestType = entityName + methodName + "Request";
+                var requestBuilderType = requestType + "Builder";
+
+                return new MethodInfo()
+                {
+                    Parameters = parameters,
+                    ParametersAsArguments = string.Join(string.Empty, paramStrings),
+                    ParamArgsForConstructor = string.Join(string.Empty, paramArgsForConstructor),
+                    ParameterComments = string.Join(string.Empty, paramComments),
+                    RequestBuilderType = requestBuilderType,
+                    MethodName = methodName,
+                    MethodFullName = m.FullName,
+                    MethodParametersAsArguments = paramStrings.Count() == 0 ? string.Empty : string.Join(string.Empty, paramStrings).Substring(1)
+                };
+            }).OrderBy(m => m.MethodName).ToList();
+        }
+
+        /// <summary>
+        /// Gets the list of navigation property information for CSharp *MethodRequestBuilder.
+        /// </summary>
+        /// <param name="navProperties"></param>
+        /// <returns></returns>
+        public static List<NavigationPropertyInfo> GetAllNavigationPropertyInfo(this List<OdcmProperty> navProperties)
+        {
+            var classNamespace = navProperties.FirstOrDefault()?.GetClassNamespace();
+            return navProperties.Select(p =>
+            {
+                var returnClassRequestBuilderName = p.Type.GetTypeString(classNamespace, "{0}RequestBuilder");
+                var returnInterfaceRequestBuilderName = p.Type.GetTypeString(classNamespace, "I{0}RequestBuilder");
+                var name = p.Name.ToCheckedCase();
+                var segment = p.Name;
+                var description = p.Description ?? string.Empty;
+                return new NavigationPropertyInfo()
+                {
+                    ReturnInterfaceRequestBuilderName = returnInterfaceRequestBuilderName,
+                    ReturnClassRequestBuilderName = returnClassRequestBuilderName,
+                    Segment = segment,
+                    Name = name,
+                    Description = description
+                };
+            }).OrderBy(n => n.Name).ToList();
         }
     }
 }

@@ -27,18 +27,18 @@ class <#=enumT.Name.ToUpperFirstChar()#> extends Enum
     foreach(var value in enumT.Members)
     {
         
-		var needsPrefix = TypeHelperPHP.ReservedNames.Contains(value.Name.ToUnderscore());
+        var needsPrefix = TypeHelperPHP.ReservedNames.Contains(value.Name.ToUnderscore());
 
-		if (needsPrefix)
-		{
+        if (needsPrefix)
+        {
 #>
     const <#=TypeHelperPHP.ReservedPrefix.ToUpper() #><#=value.Name.ToUnderscore().ToUpper()#> = "<#= value.Name.ToCamelize()#>";
 <#
-		} else {
+        } else {
 #>
     const <#= value.Name.ToUnderscorePHPEnum().ToUpper()#> = "<#= value.Name.ToCamelize()#>";
 <#		}
-	count++;
+    count++;
     }
 #>
 }

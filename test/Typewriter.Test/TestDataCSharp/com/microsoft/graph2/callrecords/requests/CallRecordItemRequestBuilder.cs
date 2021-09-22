@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -31,6 +31,7 @@ namespace Microsoft.Graph2.CallRecords
             : base(requestUrl, client)
         {
             this.SetParameter("name", name, true);
+            this.SetFunctionParameters();
         }
 
         /// <summary>
@@ -44,6 +45,43 @@ namespace Microsoft.Graph2.CallRecords
             var request = new CallRecordItemRequest(functionUrl, this.Client, options);
 
             return request;
+        }
+        /// <summary>
+        /// Gets the request builder for CallRecordItemRequestBuilder.
+        /// </summary>
+        /// <param name="name">A name parameter for the OData method call.</param>
+        /// <returns>The <see cref="ICallRecordItemRequestBuilder"/>.</returns>
+        public ICallRecordItemRequestBuilder Item(
+            string name)
+        {
+            return new CallRecordItemRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph2.callRecords.item"),
+                this.Client,
+                name);
+        }
+        /// <summary>
+        /// Gets the request builder for Recipients.
+        /// 
+        /// </summary>
+        /// <returns>The <see cref="Microsoft.Graph.IEntityType2RequestBuilder"/>.</returns>
+        public Microsoft.Graph.IEntityType2RequestBuilder Recipients
+        {
+            get
+            {
+                return new Microsoft.Graph.EntityType2RequestBuilder(this.AppendSegmentToRequestUrl("recipients"), this.Client);
+            }
+        }
+        /// <summary>
+        /// Gets the request builder for Sessions.
+        /// 
+        /// </summary>
+        /// <returns>The <see cref="ISessionRequestBuilder"/>.</returns>
+        public ISessionRequestBuilder Sessions
+        {
+            get
+            {
+                return new SessionRequestBuilder(this.AppendSegmentToRequestUrl("sessions"), this.Client);
+            }
         }
     }
 }

@@ -39,6 +39,7 @@
           </Collection>
         </Annotation>
       </ComplexType>
+      <ComplexType Name="Json"/>
       <ComplexType Name="derivedComplexTypeRequest" BaseType="graph.emptyBaseComplexTypeRequest">
         <Property Name="property1" Type="Edm.String" />
         <Property Name="property2" Type="Edm.String" />
@@ -62,6 +63,9 @@
         <Parameter Name="requests" Type="Collection(graph.derivedComplexTypeRequest)" Nullable="false" />
         <ReturnType Type="Collection(graph.responseObject)" Nullable="false" />
       </Action>
+      <EntityType Name="print">
+        <Property Name="settings" Type="Edm.String" />
+      </EntityType>
       <EntityType Name="entityType2" BaseType="graph.entity" />
       <EntityType Name="entityType3" BaseType="graph.entity">
         <Annotation Term = "Org.OData.Core.V1.Revisions">
@@ -115,6 +119,8 @@
         <Property Name="email" Type="Edm.String" />
       </ComplexType>
       <ComplexType Name="emptyComplexType" Abstract="true" />
+      <ComplexType Name="emptyComplexTypeWithBaseType" BaseType="graph.entity" Abstract="true" />
+      <EntityType Name="emptyEntityTypeWithBaseType" BaseType="graph.entity" Abstract="true" />
       <EntityType Name="timeOffRequest" BaseType="graph.entity">
         <Property Name="name" Type="Edm.String" />
       </EntityType>
@@ -139,6 +145,13 @@
       </EntityType>
       <EntityType Name="plannerGroup" BaseType="graph.entity">
         <NavigationProperty Name="plans" Type="Collection(graph.plannerPlan)" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="workbookChart" BaseType="graph.entity">
+          <Property Name="height" Type="Edm.Double" Nullable="false"/>
+          <Property Name="left" Type="Edm.Double" Nullable="false"/>
+          <Property Name="name" Type="Edm.String"/>
+          <Property Name="top" Type="Edm.Double" Nullable="false"/>
+          <Property Name="width" Type="Edm.Double" Nullable="false"/>
       </EntityType>
       <ComplexType Name="identity" OpenType="true">
         <Property Name="displayName" Type="Edm.String" />
@@ -168,6 +181,10 @@
         <Parameter Name="ToRecipients" Type="Collection(graph.recipient)" Nullable="false" />
         <Parameter Name="Comment" Type="Edm.String" Unicode="false" />
       </Action>
+      <Function Name="count" IsBound="true">
+          <Parameter Name="bindparameter" Type="Collection(graph.workbookChart)"/>
+          <ReturnType Type="Edm.Int32" Nullable="false"/>
+      </Function>
       <EntityContainer Name="GraphService">
         <Singleton Name="singletonProperty1" Type="graph.singletonEntity1" />
         <Singleton Name="singletonProperty2" Type="graph.singletonEntity2" />
@@ -178,6 +195,22 @@
         <Annotation Term="Org.OData.Core.V1.Description" String="The OneNotePage content.&#xD;&#xA;&#xD;&#xA; Test token string" />
       </Annotations>
       <Annotations Target="graph.directoryObject" />
+      <!-- begin: RequestObjectDisambiguation for MethodCollectionPage -->
+      <Function Name="filterByCurrentUser" IsBound="true">
+        <Parameter Name="bindingParameter" Type="Collection(graph.unifiedRoleEligibilityRequest)"/>
+        <Parameter Name="on" Type="graph.roleEligibilityRequestFilterByCurrentUserOptions" Nullable="false"/>
+        <ReturnType Type="Collection(graph.unifiedRoleEligibilityRequest)"/>
+      </Function>
+      <EntityType Name="unifiedRoleEligibilityRequest">
+        <Property Name="action" Type="Edm.String"/>
+      </EntityType>
+      <EnumType Name="roleEligibilityRequestFilterByCurrentUserOptions">
+        <Member Name="principal" Value="1"/>
+        <Member Name="createdBy" Value="2"/>
+        <Member Name="approver" Value="3"/>
+        <Member Name="unknownFutureValue" Value="4"/>
+      </EnumType>
+      <!-- end: RequestObjectDisambiguation for MethodCollectionPage -->
     </Schema>
     <!--Intentionally made this microsoft.graph2 so that while compiling the output,
     we don't rely on parent namespace fallback in resolving types.
@@ -329,6 +362,11 @@
       </ComplexType>
       <ComplexType Name="serviceUserAgent" BaseType="microsoft.graph2.callRecords.userAgent">
         <Property Name="role" Type="microsoft.graph2.callRecords.serviceRole" Nullable="false" />
+      </ComplexType>
+      <ComplexType Name="displayTemplate">
+          <Property Name="id" Type="Edm.String" Nullable="false"/>
+          <Property Name="layout" Type="graph.Json" Nullable="false"/>
+          <Property Name="priority" Type="Edm.Int32" Nullable="false"/>
       </ComplexType>
       <!--action name colliding with actions in microsoft.graph namespace-->
       <Action Name="forward" IsBound="true">

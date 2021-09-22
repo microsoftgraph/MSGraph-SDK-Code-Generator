@@ -12,83 +12,80 @@ namespace Microsoft.Graph2.CallRecords
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Segment.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Segment : Microsoft.Graph.Entity
     {
     
-		///<summary>
-		/// The Segment constructor
-		///</summary>
-        public Segment()
-        {
-            this.ODataType = "microsoft.graph2.callRecords.segment";
-        }
-	
         /// <summary>
         /// Gets or sets start date time.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "startDateTime", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("startDateTime")]
         public DateTimeOffset? StartDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets end date time.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "endDateTime", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("endDateTime")]
         public DateTimeOffset? EndDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets caller.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "caller", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("caller")]
         public Endpoint Caller { get; set; }
     
         /// <summary>
         /// Gets or sets callee.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "callee", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("callee")]
         public Endpoint Callee { get; set; }
     
         /// <summary>
         /// Gets or sets failure info.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "failureInfo", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("failureInfo")]
         public FailureInfo FailureInfo { get; set; }
     
         /// <summary>
         /// Gets or sets media.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "media", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("media")]
         public IEnumerable<Media> Media { get; set; }
     
         /// <summary>
         /// Gets or sets ref types.
         /// </summary>
         [Obsolete("entityType3 is deprecated. Please use singletonEntity1.")]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "refTypes", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("refTypes")]
         public ISegmentRefTypesCollectionWithReferencesPage RefTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets refTypesNextLink.
+        /// </summary>
+        [JsonPropertyName("refTypes@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
+        public string RefTypesNextLink { get; set; }
     
         /// <summary>
         /// Gets or sets ref type.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "refType", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("refType")]
         public Microsoft.Graph.Call RefType { get; set; }
     
         /// <summary>
         /// Gets or sets session ref.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sessionRef", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("sessionRef")]
         public Session SessionRef { get; set; }
     
         /// <summary>
         /// Gets or sets photo.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "photo", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("photo")]
         public Photo Photo { get; set; }
     
     }

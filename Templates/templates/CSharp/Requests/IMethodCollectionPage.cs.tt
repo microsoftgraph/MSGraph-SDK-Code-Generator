@@ -10,7 +10,7 @@ var interfaceConverterTypeName = @namespace.GetCoreLibraryType("InterfaceConvert
 var iCollectionPageTypeName = @namespace.GetCoreLibraryType("ICollectionPage");
 var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
 
-var returnType = method.ReturnType.GetTypeString(@namespace);
+var returnType = method.ReturnType.GetTypeString(@namespace).DisambiguateRequestObject();
 
 var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var entityCollectionRequest = responseNamePrefix + "Request";
@@ -20,12 +20,12 @@ var entityCollectionPage = responseNamePrefix + "CollectionPage";
 
 namespace <#=@namespace#>
 {
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The interface I<#=entityCollectionPage#>.
     /// </summary>
-    [JsonConverter(typeof(<#=interfaceConverterTypeName#><<#=entityCollectionPage#>>))]
+    [InterfaceConverter(typeof(<#=interfaceConverterTypeName#><<#=entityCollectionPage#>>))]
     public interface I<#=entityCollectionPage#> : <#=iCollectionPageTypeName#><<#=returnType#>>
     {
         /// <summary>

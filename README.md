@@ -49,6 +49,7 @@ Typewriter is a new solution for generating code files using the GraphODataTempl
 * **-e**, **-endpointVersion**: The endpoint version used when naming a metadata file. Expected values are `v1.0` and `beta`. Only applicable for `-generationmode Metadata`.
 * **-p**, **-properties**: Specify properties to support generation logic in the T4 templates. Properties must take the form of *key-string:value-string*. Multiple properties can be specified by setting a space in between property. The only property currently supported is the *php.namespace* property to specify the generated model file namespace. This property is optional.
 * **-t**, **-transform**: Specify the URI to the XSLT that will preprocess the metadata. Only applicable for `-generationmode Transform` or `-generationmode TransformWitDocs`.
+* **-r**, **-removeannotations**: Specifies whether to remove capability annotations from the metadata. The default value is `true`. Only applicable for `-generationmode Transform` or `-generationmode TransformWithDocs`.
 
 ### Example typewriter usage
 
@@ -81,6 +82,10 @@ The output metadata file will go in to the `output2` directory. The output metad
 The output C# code files will go in to the `output` directory.
 
 `.\typewriter.exe -v Info -m D:\v1.0_2018_10_23_source.xml -o output -l CSharp -d D:\repos\microsoft-graph-docs -g Full`
+
+## Use/debug Typewriter in VSCode
+- Prerequisite is that `msgraph-metadata` is checked out at the same root folder as `MSGraph-SDK-Code-Generator`.
+- `launch.json` file contains main generation scenarios for each language/endpoint pair. Running Typewriter using one of those generation scenarios (e.g. `Generate CSharp beta`) will output the corresponding models into a folder, which will be a sibling to `MSGraph-SDK-Code-Generator`. The folder will be named as `generator-output-<language>-<endpoint>` e.g. `generator-output-CSharp-beta`.
 
 ## Use Typewriter to test your beta metadata
 

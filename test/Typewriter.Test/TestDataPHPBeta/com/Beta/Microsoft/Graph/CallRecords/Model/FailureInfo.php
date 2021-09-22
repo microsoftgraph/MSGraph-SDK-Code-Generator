@@ -27,12 +27,12 @@ class FailureInfo extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the stage
     *
-    * @return FailureStage The stage
+    * @return FailureStage|null The stage
     */
     public function getStage()
     {
         if (array_key_exists("stage", $this->_propDict)) {
-            if (is_a($this->_propDict["stage"], "Beta\Microsoft\Graph\CallRecords\Model\FailureStage")) {
+            if (is_a($this->_propDict["stage"], "\Beta\Microsoft\Graph\CallRecords\Model\FailureStage") || is_null($this->_propDict["stage"])) {
                 return $this->_propDict["stage"];
             } else {
                 $this->_propDict["stage"] = new FailureStage($this->_propDict["stage"]);
@@ -57,7 +57,7 @@ class FailureInfo extends \Beta\Microsoft\Graph\Model\Entity
     /**
     * Gets the reason
     *
-    * @return string The reason
+    * @return string|null The reason
     */
     public function getReason()
     {

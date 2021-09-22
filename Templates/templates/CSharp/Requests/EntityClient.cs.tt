@@ -10,13 +10,15 @@ var @namespace = entityContainer.Namespace.GetNamespaceName();
 
 namespace <#=@namespace#>
 {
+    using Azure.Core;
     using System;
     using System.Net.Http;
+    using System.Collections.Generic;
 
     /// <summary>
     /// The type <#=clientName#>.
     /// </summary>
-    public partial class <#=clientName#> : BaseClient, I<#=clientName#>
+    public partial class <#=clientName#> : BaseClient
     {
         /// <summary>
         /// Instantiates a new <#=clientName#>.
@@ -27,6 +29,20 @@ namespace <#=@namespace#>
             IAuthenticationProvider authenticationProvider,
             IHttpProvider httpProvider = null)
             : this("<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>", authenticationProvider, httpProvider)
+        {
+        }
+
+        /// <summary>
+        /// Instantiates a new <#=clientName#> using a <see cref="TokenCredential"/> instance.
+        /// </summary>
+        /// <param name="tokenCredential">The <see cref="TokenCredential"/> to use for authentication</param>
+        /// <param name="scopes">Scopes required to access Microsoft Graph. This defaults to https://graph.microsoft.com/.default when none is set.</param>
+        /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
+        public <#=clientName#>(
+            TokenCredential tokenCredential,
+            IEnumerable<string> scopes = null,
+            IHttpProvider httpProvider = null)
+            : this("<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>", new TokenCredentialAuthProvider(tokenCredential,scopes), httpProvider)
         {
         }
 
@@ -49,9 +65,11 @@ namespace <#=@namespace#>
         /// </summary>
         /// <param name="httpClient">The <see cref="HttpClient"/> to use for making requests to Microsoft Graph. Use the <see cref="GraphClientFactory"/>
         /// to get a pre-configured HttpClient that is optimized for use with the Microsoft Graph service API. </param>
+        /// <param name="baseUrl">The base service URL. For example, "<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>".</param>
         public <#=clientName#>(
-            HttpClient httpClient)
-            : base("<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>", httpClient)
+            HttpClient httpClient,
+            string baseUrl = "<#=ConfigurationService.Settings.DefaultBaseEndpointUrl#>")
+            : base(baseUrl, httpClient)
         {
         }
     <#
@@ -69,10 +87,10 @@ namespace <#=@namespace#>
         /// <summary>
         /// Gets the <#=propName#> request builder.
         /// </summary>
-<# if (prop.Deprecation != null) { #>
+<# if (prop.IsDeprecated) { #>
         <#=prop.GetDeprecationString()#>
 <# } #>
-        public I<#=collectionRequestBuilder#> <#=sanitizedPropName#>
+        public virtual I<#=collectionRequestBuilder#> <#=sanitizedPropName#>
         {
             get
             {
@@ -90,10 +108,10 @@ namespace <#=@namespace#>
         /// <summary>
         /// Gets the <#=propName#> request builder.
         /// </summary>
-<# if (prop.Deprecation != null) { #>
+<# if (prop.IsDeprecated) { #>
         <#=prop.GetDeprecationString()#>
 <# } #>
-        public <#=iRequestBuilder#> <#=sanitizedPropName#>
+        public virtual <#=iRequestBuilder#> <#=sanitizedPropName#>
         {
             get
             {

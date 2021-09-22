@@ -12,31 +12,21 @@ namespace Microsoft.Graph
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Onenote Page.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class OnenotePage : Entity
     {
     
-		///<summary>
-		/// The OnenotePage constructor
-		///</summary>
-        public OnenotePage()
-        {
-            this.ODataType = "microsoft.graph.onenotePage";
-        }
-	
         /// <summary>
         /// Gets or sets content.
         /// The OneNotePage content.
 ///
 /// Test token string
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "content", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("content")]
         public Stream Content { get; set; }
     
     }

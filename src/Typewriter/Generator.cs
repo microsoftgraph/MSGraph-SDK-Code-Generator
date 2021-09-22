@@ -64,7 +64,7 @@ namespace Typewriter
             string pathToCleanMetadata = FileWriter.WriteMetadata(processedCsdlContents, "cleanMetadata.xml");
 
             // Inject documentation annotations into the CSDL using ApiDoctor and get back the file as a string.
-            return AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata).Result;
+            return AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Typewriter
 
             using (var reader = new StringReader(csdlContents))
             using (var doc = XmlReader.Create(reader))
-            using (XmlTextWriter writer = new XmlTextWriter(pathToCleanMetadata, Encoding.ASCII))
+            using (XmlTextWriter writer = new XmlTextWriter(pathToCleanMetadata, Encoding.UTF8))
             {
                 writer.Indentation = 2;
                 writer.Formatting = Formatting.Indented;
@@ -96,11 +96,22 @@ namespace Typewriter
                 settings.EnableScript = true;
                 transform.Load(options.Transform, settings, null);
 
-                // Execute the transformation, writes the transformed file.
-                transform.Transform(doc, writer);
-            }
+                if (options.RemoveAnnotations == false)
+                {   
+                    XsltArgumentList xsltargs = new();
+                    xsltargs.AddParam("remove-capability-annotations", string.Empty, options.RemoveAnnotations.ToString());
 
-            Logger.Info($"Transformed metadata written to {pathToCleanMetadata}");
+                    // Execute the transformation, keep capability annotations, writes the transformed file.
+                    transform.Transform(doc, xsltargs, writer);
+                    Logger.Info($"Transformed metadata with capability annotations written to {pathToCleanMetadata}");
+                }
+                else
+                {
+                    // Execute the transformation, writes the transformed file.
+                    transform.Transform(doc, writer);
+                    Logger.Info($"Transformed metadata written to {pathToCleanMetadata}");
+                }
+            }
 
             return pathToCleanMetadata;
         }
@@ -115,7 +126,7 @@ namespace Typewriter
         {
             var pathToCleanMetadata = Transform(csdlContents, options);
 
-            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata).Result;
+            string csdlWithDocAnnotations = AnnotationHelper.ApplyAnnotationsToCsdl(options, pathToCleanMetadata);
             string outputMetadataFilename = options.OutputMetadataFileName ?? "cleanMetadataWithDescriptions";
             string metadataFileName = string.Concat(outputMetadataFilename, options.EndpointVersion, ".xml");
             FileWriter.WriteMetadata(csdlWithDocAnnotations, metadataFileName, options.Output);

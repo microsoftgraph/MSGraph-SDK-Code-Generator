@@ -91,6 +91,15 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(csdlContents, options);
 
+            var outputDirectoryInfo = new DirectoryInfo(outputDirectory);
+            var dataDirectoryInfo = new DirectoryInfo(dataDirectory);
+
+            Assert.AreEqual(dataDirectoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length,
+                outputDirectoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length,
+                $@"Number of generated files don't match with number of expected files! Compare these two folders:
+{dataDirectory}
+{outputDirectory}");
+
             // Assert
             var testOutputBuilder = new StringBuilder();
             var errorCounter = 0;

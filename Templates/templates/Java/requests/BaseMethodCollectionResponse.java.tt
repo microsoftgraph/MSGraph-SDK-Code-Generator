@@ -1,0 +1,19 @@
+<# // Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information. #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ include file="BaseJavaModel.template.tt"#>
+<#@ output extension="\\" #>
+<#host.TemplateName = c.TypeCollectionResponse();#>
+<#=writer.WriteHeader()#>
+<#=host.CreatePackageDefForBaseCollectionResponse()#>
+
+import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
+<# var importNamespace = host.CurrentModel.GetNamespace().AddPrefix(); #>
+<# if (((c as OdcmMethod).ReturnType is OdcmPrimitiveType) || ((c as OdcmMethod).ReturnType is OdcmEnum) ) { #>
+import com.google.gson.JsonObject;
+import <#=importNamespace#>.serializer.ISerializer;
+<# } #>
+import <#=importNamespace#>.http.BaseCollectionResponse;
+
+<#=TypeHelperJava.CreateClassDef(c.TypeCollectionResponse(), "BaseCollectionResponse<"+(c as OdcmMethod).OdcmMethodReturnType()+">", null, c.Deprecation?.Description)#>
+}

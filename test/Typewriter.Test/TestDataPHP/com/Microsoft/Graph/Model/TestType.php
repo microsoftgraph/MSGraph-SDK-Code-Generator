@@ -27,12 +27,12 @@ class TestType extends Entity
     /**
     * Gets the propertyAlpha
     *
-    * @return DerivedComplexTypeRequest The propertyAlpha
+    * @return DerivedComplexTypeRequest|null The propertyAlpha
     */
     public function getPropertyAlpha()
     {
         if (array_key_exists("propertyAlpha", $this->_propDict)) {
-            if (is_a($this->_propDict["propertyAlpha"], "Microsoft\Graph\Model\DerivedComplexTypeRequest")) {
+            if (is_a($this->_propDict["propertyAlpha"], "\Microsoft\Graph\Model\DerivedComplexTypeRequest") || is_null($this->_propDict["propertyAlpha"])) {
                 return $this->_propDict["propertyAlpha"];
             } else {
                 $this->_propDict["propertyAlpha"] = new DerivedComplexTypeRequest($this->_propDict["propertyAlpha"]);

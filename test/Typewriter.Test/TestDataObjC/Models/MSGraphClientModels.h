@@ -39,6 +39,7 @@
 #import "MSGraphCallRecordsServiceUserAgent.h"
 #import "MSGraphEntity.h"
 #import "MSGraphTestType.h"
+#import "MSGraphPrint.h"
 #import "MSGraphEntityType2.h"
 #import "MSGraphEntityType3.h"
 #import "MSGraphTestEntity.h"

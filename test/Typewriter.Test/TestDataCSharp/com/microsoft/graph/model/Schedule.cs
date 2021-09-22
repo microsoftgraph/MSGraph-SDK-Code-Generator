@@ -12,41 +12,45 @@ namespace Microsoft.Graph
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type Schedule.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Schedule : Entity
     {
     
-		///<summary>
-		/// The Schedule constructor
-		///</summary>
-        public Schedule()
-        {
-            this.ODataType = "microsoft.graph.schedule";
-        }
-	
         /// <summary>
         /// Gets or sets enabled.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "enabled", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("enabled")]
         public bool? Enabled { get; set; }
     
         /// <summary>
         /// Gets or sets times off.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "timesOff", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("timesOff")]
         public IScheduleTimesOffCollectionPage TimesOff { get; set; }
+
+        /// <summary>
+        /// Gets or sets timesOffNextLink.
+        /// </summary>
+        [JsonPropertyName("timesOff@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
+        public string TimesOffNextLink { get; set; }
     
         /// <summary>
         /// Gets or sets time off requests.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "timeOffRequests", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("timeOffRequests")]
         public IScheduleTimeOffRequestsCollectionPage TimeOffRequests { get; set; }
+
+        /// <summary>
+        /// Gets or sets timeOffRequestsNextLink.
+        /// </summary>
+        [JsonPropertyName("timeOffRequests@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
+        public string TimeOffRequestsNextLink { get; set; }
     
     }
 }

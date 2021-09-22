@@ -95,13 +95,13 @@ namespace Typewriter.Test
 
             Generator.GenerateFiles(testMetadata, options);
 
-            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}extensions{Path.DirectorySeparatorChar}TimeOffRequestCollectionRequest.java");
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}TimeOffRequestCollectionRequest.java");
             Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the namespace applied at the CLI was added to the document.
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool isExpectedImportStatementFound = false;
-            string expected = "import com.microsoft.graph.models.extensions.TimeOffRequest;";
+            string expected = "import com.microsoft.graph.models.TimeOffRequest;";
             foreach (var line in lines)
             {
                 if (line.Contains(expected))
@@ -182,7 +182,7 @@ namespace Typewriter.Test
         }
 
         [Test]
-        public void It_generates_dotNet_odatatype_initialization_for_complextypes()
+        public void It_does_not_generates_dotNet_odata_type_initialization_for_complex_types_with_no_inheritance()
         {
             const string outputDirectory = "output";
 
@@ -215,8 +215,8 @@ namespace Typewriter.Test
                 }
             }
 
-            Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the setter code in the cstor.");
-            Assert.IsTrue(hasCstorString, $"The expected test token cstor string, '{testCstorString}', was not set in the generated test file. We didn't properly generate the cstor code.");
+            Assert.IsFalse(hasTestString, $"The expected test token string, '{testString}', was set in the generated test file. We didn't properly generate the setter code in the cstor.");
+            Assert.IsFalse(hasCstorString, $"The expected test token cstor string, '{testCstorString}', was set in the generated test file. We didn't properly generate the cstor code.");
         }
 
         [Test]
@@ -253,7 +253,7 @@ namespace Typewriter.Test
 
 
         [Test]
-        public void It_generates_dotNet_odatatype_initialization_for_entitytypes()
+        public void It_doesnt_generate_dotNet_odatatype_initialization_for_entitytypes()
         {
             const string outputDirectory = "output";
 
@@ -280,7 +280,38 @@ namespace Typewriter.Test
                     break;
                 }
             }
-            Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
+            Assert.False(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
+        }
+
+        [Test]
+        public void It_generates_dotNet_odatatype_initialization_for_entitytypes_with_base_referenced()
+        {
+            const string outputDirectory = "output";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                Language = "CSharp",
+                GenerationMode = GenerationMode.Files
+            };
+
+            Generator.GenerateFiles(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}TestType4.cs");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+            bool hasTestString = false;
+            string testString = "this.ODataType = \"microsoft.graph.testType4\";";
+            foreach (var line in lines)
+            {
+                if (line.Contains(testString))
+                {
+                    hasTestString = true;
+                    break;
+                }
+            }
+            Assert.True(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
         }
 
         [Test]
@@ -531,7 +562,6 @@ namespace Typewriter.Test
             bool hasThumbnailAnnotationBeenAdded = false; // Expect true
             bool hasHasStreamAttribute = false; // Expect false
             bool hasContainsTargetBeenSet = false; // Expect true
-            bool hasCapabilityAnnotations = false; // Expect false
 
             // Check the document for these values.
             foreach (var line in lines)
@@ -548,16 +578,40 @@ namespace Typewriter.Test
                 {
                     hasContainsTargetBeenSet = true;
                 }
-                if (line.Contains("Org.OData.Capabilities"))
-                {
-                    hasCapabilityAnnotations = true;
-                }
             }
 
             Assert.IsTrue(hasThumbnailAnnotationBeenAdded, $"The expected LongDescription annotation wasn't set in the transformed cleaned metadata.");
             Assert.IsFalse(hasHasStreamAttribute, $"The HasStream attribute was't removed from the metadata.");
             Assert.IsTrue(hasContainsTargetBeenSet, $"The expected ContainsTarget attribute wasn't set in the transformed cleaned metadata.");
-            Assert.IsFalse(hasCapabilityAnnotations, $"The expected capability annotations weren't removed in the transformed cleaned metadata.");
+        }
+
+        [Test]
+        [Ignore("Current xslt transform adds global capability annotations")]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        public void It_transforms_metadata_and_keeps_annotations(bool shouldRemoveCapabilityAnnotation, bool shouldFindCapabilityAnnotation)
+        {
+            const string outputDirectory = "output";
+            const string outputBaseFileName = "cleanMetadata";
+
+            Options options = new Options()
+            {
+                Output = outputDirectory,
+                GenerationMode = GenerationMode.Transform,
+                Transform = "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/transforms/csdl/preprocess_csdl.xsl",
+                RemoveAnnotations = shouldRemoveCapabilityAnnotation
+            };
+
+            Generator.Transform(testMetadata, options);
+
+            FileInfo fileInfo = new FileInfo(outputDirectory + @$"{Path.DirectorySeparatorChar}{outputBaseFileName}.xml");
+            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+
+            IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
+
+            bool hasCapabilityAnnotations = lines.Any(x => x.Contains("Org.OData.Capabilities")); // Expect false
+
+            Assert.AreEqual(shouldFindCapabilityAnnotation, hasCapabilityAnnotations, $"Expected to find capability annotations: {shouldFindCapabilityAnnotation}. Actually found capability annotations: {hasCapabilityAnnotations}");
         }
 
         [Test]

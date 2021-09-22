@@ -22,10 +22,14 @@ namespace <#=@namespace#>
 <# if (features.CanDelete) { #>
 
         <#=this.GetEntityReferenceDeleteAsyncMethod(entity)#>
+
+        <#=this.GetEntityReferenceDeleteAsyncMethod(entity, true)#>
 <# } #>
 <# if (features.CanUpdate) { #>
 
         <#=this.GetEntityReferencePutAsyncMethod(entity)#>
+
+        <#=this.GetEntityReferencePutAsyncMethod(entity, true)#>
 <# } #>
     }
 }

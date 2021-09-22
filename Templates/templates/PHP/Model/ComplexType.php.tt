@@ -41,9 +41,11 @@ if (complex.IsBaseAbstractAndReferencedAsPropertyType() && !complex.IsAbstract)
 #>    /**
     * Set the @odata.type since this type is immediately descended from an abstract
     * type that is referenced as the type in an entity.
+    * @param array $propDict The property dictionary
     */
-    public function __construct()
+    public function __construct($propDict = array())
     {
+        parent::__construct($propDict);
         $this->setODataType("#<#=complex.FullName#>");
     }
 
@@ -58,7 +60,7 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     // Check whether this type is a generated model type or a PHP type
     var fullPropertyTypeName = propertyTypeString[0] == '\\' || propertyTypeString.IsPHPPrimitiveType()
                                 ? propertyTypeString
-                                : string.Join("\\", propertyNamespace, propertyTypeString.SanitizeEntityName().ToCheckedCase());
+                                : '\\' + string.Join("\\", propertyNamespace, propertyTypeString.SanitizeEntityName().ToCheckedCase());
 
     var propertyTypeReference = propertyNamespace == targetNamespace && !propertyTypeString.IsPHPPrimitiveType()
                                 ? propertyTypeString.SanitizeEntityName().ToCheckedCase()
@@ -72,19 +74,19 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=propertyTypeReference#> The <#=propertyName#>
+    * @return <#=propertyTypeReference#>|null The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
-        if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
+        if (array_key_exists("<#=camelCasePropertyName#>", $this->_propDict)) {
 <#
-            if (property.Type.GetTypeString() == "\\DateTime") {
+            if (property.Type.GetTypeString() == "\\DateTime"){
 #>
-            return new \DateTime($this->_propDict["<#=property.Name.ToCamelize()#>"]);
+            return new \DateTime($this->_propDict["<#=camelCasePropertyName#>"]);
 <#
             } else {
 #>
-            return $this->_propDict["<#=property.Name.ToCamelize()#>"];
+            return $this->_propDict["<#=camelCasePropertyName#>"];
 <#
             }
 #>
@@ -131,16 +133,16 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=propertyTypeReference#> The <#=propertyName#>
+    * @return <#=propertyTypeReference#>|null The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
         if (array_key_exists("<#=property.Name.ToCamelize()#>", $this->_propDict)) {
-            if (is_a($this->_propDict["<#=camelCasePropertyName#>"], "<#=fullPropertyTypeName#>")) {
+            if (is_a($this->_propDict["<#=camelCasePropertyName#>"], "<#=fullPropertyTypeName#>") || is_null($this->_propDict["<#=camelCasePropertyName#>"])) {
                 return $this->_propDict["<#=camelCasePropertyName#>"];
             } else {
 <# if (propertyTypeString == "\\GuzzleHttp\\Psr7\\Stream") { #>
-                $this->_propDict["<#=camelCasePropertyName#>"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["<#=camelCasePropertyName#>"]);
+                $this->_propDict["<#=camelCasePropertyName#>"] = \GuzzleHttp\Psr7\Utils::streamFor($this->_propDict["<#=camelCasePropertyName#>"]);
                 return $this->_propDict["<#=camelCasePropertyName#>"];
 <# } else { #>
                 $this->_propDict["<#=camelCasePropertyName#>"] = new <#=propertyTypeReference#>($this->_propDict["<#=camelCasePropertyName#>"]);
@@ -168,6 +170,8 @@ foreach(var property in complex.Properties.Where(prop => prop.Type.GetTypeString
         $this->_propDict["<#=property.Name#>"] = boolval($val);
 <#  } else if (property.Type.GetTypeString() == "int") { #>
         $this->_propDict["<#=property.Name#>"] = intval($val);
+<#  } else if (property.Type.GetTypeString() == "float") { #>
+        $this->_propDict["<#=property.Name#>"] = floatval($val);
 <# } else { #>
         $this->_propDict["<#=property.Name#>"] = $val;
 <# } #>

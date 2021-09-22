@@ -1,14 +1,15 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 {
+    using Microsoft.Graph.ODataTemplateWriter.Settings;
+    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
+    using NLog;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Vipr.Core.CodeModel;
-    using NLog;
-    using Microsoft.Graph.ODataTemplateWriter.TemplateProcessor;
+    using System.Text.RegularExpressions;
 
     public static class OdcmModelExtensions
     {
@@ -49,11 +50,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             var namespaces = GetOdcmNamespaces(model);
             return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmEntityClass || x is OdcmMediaClass));
         }
-
+        public static bool IsStreamedEntity(this OdcmClass odcmClass) {
+            if(odcmClass is OdcmMediaClass) return true;
+            else if (odcmClass?.Base == null) return false;
+            else return IsStreamedEntity(odcmClass.Base);
+        }
         public static IEnumerable<OdcmClass> GetMediaEntityTypes(this OdcmModel model)
         {
             var namespaces = GetOdcmNamespaces(model);
-            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x is OdcmMediaClass));
+            return namespaces.SelectMany(@namespace => @namespace.Classes.Where(x => x.IsStreamedEntity()));
         }
 
         public static IEnumerable<OdcmProperty> GetProperties(this OdcmModel model)
@@ -207,7 +212,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 var thisType = (host.CurrentType as OdcmProperty).Projection.Type;
                 var thisNamespace = thisType.Namespace.Name.AddPrefix();
                 var thisTypeName = thisType.Name.ToUpperFirstChar();
-                importStatement = $"\nimport {thisNamespace}.models.extensions.{thisTypeName};";
+                importStatement = $"\nimport {thisNamespace}.models.{thisTypeName};";
             }
 
             return importStatement;
@@ -326,6 +331,61 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             }
         }
 
+        /// <summary>
+        /// Indicates whether class has any properties that are enums
+        /// </summary>
+        /// <param name="complex">The ComplexType that we want to query whether its base type is the referenced type for any property in any entity.</param>
+        /// <returns></returns>
+        public static bool HasEnumProperties(this OdcmClass complex)
+        {
+            return complex.Properties.Any(property => property.Type.AsOdcmEnum() != null);
+        }
+
+        /// <summary>
+        /// Indicates whether the entity's base type is referenced as the type of another property.
+        /// TODO: remove filters on "entity" once we have annotation support.
+        /// </summary>
+        /// <param name="odcmClass">The OdcmClass to inspect.</param>
+        /// <returns>A value of true indicates that OdcmClass's base type is referenced as the type
+        /// of another property in a different entity or complex type.</returns>
+        public static bool IsBaseReferencedAsPropertyType(this OdcmClass odcmClass)
+        {
+            if (odcmClass.Base == null)
+            {
+                return false;
+            }
+            else
+            {
+                var isReferencedInAction = odcmClass.Namespace.Classes
+                    .SelectMany(c => c.Methods)  
+                    .Where( m => !m.IsFunction) // only get the Actions
+                    .Any(m => m.Parameters
+                        .Any( param => param.Type.Name.Equals(odcmClass.Base.Name, StringComparison.OrdinalIgnoreCase) 
+                                  && !"entity".Equals(param.Type.Name, StringComparison.OrdinalIgnoreCase)));
+
+                var isReferencedInClass = odcmClass.Namespace.Types
+                    .OfType<OdcmClass>()
+                    .Any(someType => someType.Properties
+                        .Any(x => x.Type.Name.Equals(odcmClass.Base.Name, StringComparison.OrdinalIgnoreCase)
+                                  && !"entity".Equals(x.Type.Name, StringComparison.OrdinalIgnoreCase)));
+
+                return (isReferencedInAction || isReferencedInClass);
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether any type in the entity's or complexType's base type chain is referenced 
+        /// by any property in any other entity or complex type. This method recursively inspects
+        /// the base type chain for any instance of the base type that is referenced by any other 
+        /// type.
+        /// </summary>
+        /// <param name="entityOrComplexType">The OdcmClass to inspect.</param>
+        /// <returns>A value of true indicates that the base type is referenced; other, false.</returns>
+        public static bool IsBaseTypeReferenced(this OdcmClass entityOrComplexType)
+        {
+            return entityOrComplexType.IsBaseReferencedAsPropertyType() || (entityOrComplexType.Base?.IsBaseTypeReferenced() ?? false);
+        }
+
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass, bool includeBaseProperties = false)
         {
             if (includeBaseProperties && odcmClass.Base != null)
@@ -340,11 +400,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return property.IsLink;
         }
 
+        private static Regex castOverloadsFilter = new Regex(@"As[A-Z]");
         public static bool IsReference(this OdcmProperty property)
         {
             var propertyClass = property.Class.AsOdcmClass();
 
-            return propertyClass.Kind != OdcmClassKind.Service && property.IsLink && !property.ContainsTarget;
+            return propertyClass.Kind != OdcmClassKind.Service && property.IsLink && !property.ContainsTarget && !castOverloadsFilter.IsMatch(property.Name);
         }
 
         public static bool HasActions(this OdcmClass odcmClass)
@@ -519,11 +580,77 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 
             return parameters.Distinct(paramComparer).ToList();
         }
+        /// <summary>
+        /// Deduplicates the parameter list for a set of methods. 
+        /// </summary>
+        /// <param name="odcmMethods">Methods with potential overloads and duplicate parameters across overloads.</param>
+        /// <returns>A deduplicated list of OdcmParameter.</returns>
+        public static List<OdcmParameter> WithDistinctParameters(this IEnumerable<OdcmMethod> odcmMethods)
+        {
+            return odcmMethods?.SelectMany(x => x.Parameters)?.Distinct(paramComparer)?.ToList();
+        }
 
         /// Returns a List containing the supplied class' methods plus their overloads
         public static IEnumerable<OdcmMethod> MethodsAndOverloads(this OdcmClass odcmClass)
         {
-            return odcmClass.Methods.SelectMany(x => x.WithOverloads());
+            return odcmClass
+                    ?.Methods
+                    ?.SelectMany(x => x.WithOverloads())
+                    ?.Union(odcmClass?.Base?.MethodsAndOverloads() ?? Enumerable.Empty<OdcmMethod>()) ?? Enumerable.Empty<OdcmMethod>();
+        }
+        private static readonly OdcmMethodEqualityComparer methodNameAndParametersCountComparer = new OdcmMethodEqualityComparer {
+            CompareParameters = false,
+            CompareParametersCount = false,
+            CompareHasParameters = true,
+        };
+        public static IEnumerable<OdcmMethod> MethodsAndOverloadsWithDistinctName(this OdcmClass odcmClass)
+        {
+            return odcmClass
+                    ?.Methods
+                    ?.SelectMany(x => x.WithOverloads())
+                    ?.Union(odcmClass?.Base?.MethodsAndOverloadsWithDistinctName() ?? Enumerable.Empty<OdcmMethod>())
+                    ?.Distinct(methodNameAndParametersCountComparer) ?? Enumerable.Empty<OdcmMethod>();
+        }
+        public static IEnumerable<OdcmMethod> WithOverloadsOfDistinctName(this OdcmMethod m)
+        {
+            return m?.WithOverloads()?.Distinct(methodNameAndParametersCountComparer) ?? Enumerable.Empty<OdcmMethod>();
+        }
+
+        /// <summary>
+        /// Use this method to get a collection of navigation properties on the return type 
+        /// of a composable function. 
+        /// </summary>
+        /// <param name="odcmMethod">The OdcmMethod to target.</param>
+        /// <returns>An ordered (by name) list of navigation properties bound 
+        /// to the return type. Can be an empty list.</returns>
+        public static List<OdcmProperty> GetComposableFunctionReturnTypeNavigations(this OdcmMethod odcmMethod)
+        {
+            if (!odcmMethod.IsComposable)
+                throw new InvalidOperationException("This extension method is intended " +
+                                                    "to only be called on a composable function.");
+
+            return (odcmMethod.ReturnType as OdcmClass).Properties
+                                                       .Where(p => p.IsLink)
+                                                       .OrderBy(p => p.Name)
+                                                       .ToList();
+        }
+
+        /// <summary>
+        /// Use this method to get a collection of methods on the return type 
+        /// of a composable function. This will include the methods and overloads.
+        /// </summary>
+        /// <param name="odcmMethod">The OdcmMethod to target.</param>
+        /// <returns>An ordered (by name) list of methods bound to the return 
+        /// type. Can be an empty list.</returns>
+        public static List<OdcmMethod> GetComposableFunctionReturnTypeMethods(this OdcmMethod odcmMethod)
+        {
+            if (!odcmMethod.IsComposable)
+                throw new InvalidOperationException("This extension method is intended " +
+                                                    "to only be called on a composable function.");
+
+            return odcmMethod.ReturnType.AsOdcmClass().MethodsAndOverloads()
+                                                       .OrderBy(m => m.Name)
+                                                       .ToList();
         }
     }
 }
