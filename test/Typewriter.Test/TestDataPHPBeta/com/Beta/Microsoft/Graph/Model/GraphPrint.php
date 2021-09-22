@@ -128,7 +128,7 @@ class GraphPrint implements \JsonSerializable
                    foreach ($values as $propertyValue) {
                        $values []= $propertyValue->format(\DateTimeInterface::RFC3339);
                    }
-                } else if(count > 0 && is_a($val[0], '\Microsoft\Graph\Core\Enum')) {
+                } else if(count($val) > 0 && is_a($val[0], '\Microsoft\Graph\Core\Enum')) {
                     foreach ($values as $propertyValue) {
                        $values []= $propertyValue->value();
                    }
