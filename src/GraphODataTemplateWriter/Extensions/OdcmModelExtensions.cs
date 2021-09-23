@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 {
@@ -268,7 +268,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                             ?.Where(singleton => singleton
                                 .Type
                                 .AsOdcmClass()
-                                .Properties
+                                ?.Properties
                                 //Find navigation properties on the singleton that are self-contained (implicit EntitySets) that match the type
                                 //we are searching for
                                 .Where(prop => prop.ContainsTarget == true && prop.Type.Name == odcmProperty.Type.Name)
@@ -290,6 +290,85 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 logger.Error(e);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// This method takes a specific property and determines whether its could be referenced in the navigation property of another type.
+        /// The navigation property must also come from chain where the containTarget=true from the root Service class to prove that we can reference it.
+        /// Ideally we should call this function if GetServiceCollectionNavigationPropertyForPropertyType returns null
+        /// </summary>
+        /// <param name="odcmProperty">The property to check</param>
+        /// <param name="model">The model to use</param>
+        /// <returns></returns>
+        public static bool IsPropertyChainedToContainedServiceNavigationProperty(this OdcmProperty odcmProperty, OdcmModel model)
+        {
+            // keep track of the types we've traversed to avoid circular references
+            var navigatedTypes = new HashSet<string>();
+            var matchingRootProperty = GetOdcmNamespaces(model)
+                .SelectMany(
+                    @namespace =>
+                        @namespace
+                            .Classes
+                            .FirstOrDefault(odcmClass => odcmClass.Kind == OdcmClassKind.Service)           // find the root service class
+                            ?.Properties
+                            ?.Where(serviceProperty => serviceProperty.GetType() == typeof(OdcmSingleton))  // find the singleton properties
+                            ?.Where(singleton =>
+                                        singleton.
+                                                Type.AsOdcmClass()
+                                                ?.Properties
+                                                ?.Where(property => property.ContainsTarget) // find singleton type properties that are self contained 
+                                                ?.Any(property => property.IsPropertyTypeChainedContainedNavigationProperty( //  keep following the containsTarget=True to find if we can use a reference
+                                                                                odcmProperty,
+                                                                                navigatedTypes,
+                                                                                property.IsCollection
+                                                                                    ? $"{singleton.Name}/{property.Name}/{{id}}"
+                                                                                    : $"{singleton.Name}/{property.Name}")
+                                                ) ?? false
+                            ) ?? Array.Empty<OdcmProperty>()
+                    ).FirstOrDefault();
+
+            return matchingRootProperty != null;
+        }
+
+        /// <summary>
+        /// This method takes in a property and looks through to see if the given testProperty could be contained in it through its contained navigation properties or
+        /// its nested contained navigation properties.
+        /// </summary>
+        /// <param name="odcmRootProperty">The property to start the search from</param>
+        /// <param name="testProperty">The property to find in the from the root type</param>
+        /// <param name="navigatedTypes">The types already navigated to prevent circular references</param>
+        /// <param name="route">The route followed to get here</param>
+        /// <returns></returns>
+        private static bool IsPropertyTypeChainedContainedNavigationProperty(this OdcmProperty odcmRootProperty, OdcmProperty testProperty, HashSet<string> navigatedTypes, string route)
+        {
+            // check if the property already matches the type.
+            if (odcmRootProperty.Type.FullName.Equals(testProperty.Type.FullName))
+            {
+                logger.Info("Property \"{0}\" matches self contained navigation property \"{1}\" of type \"{2}\"", testProperty.Name, odcmRootProperty.Name, odcmRootProperty.Type.FullName);
+                logger.Info("Route from service class is: {0}",route);
+                return true;
+            }
+
+            // check if the base class is referenced instead.
+            if (odcmRootProperty.Type.FullName.Equals(testProperty.BaseClass()?.FullName))
+            {
+                logger.Info("Property \"{0}\" matches self contained navigation property \"{1}\" of Base type \"{2}\"", testProperty.Name, odcmRootProperty.Name, testProperty.BaseClass()?.FullName);
+                logger.Info("Route from service class is: {0}",route);
+                return true;
+            }
+
+            // its not this type so lets add it to the exclusion list
+            navigatedTypes.Add(odcmRootProperty.Type.FullName);
+
+            // The current type does not match. So, we get the list of contained nav properties from the given type and recursively subject it to the same test
+            var matchingProperty = odcmRootProperty.Type.AsOdcmClass()?
+                                        .Properties
+                                        .Where(prop => prop.ContainsTarget)// the nave properties with containsTarget
+                                        .Where(prop => !navigatedTypes.Contains(prop.Type.FullName)) // prevent any cycle business
+                                        .FirstOrDefault(prop => prop.IsPropertyTypeChainedContainedNavigationProperty(testProperty, navigatedTypes, prop.IsCollection ? $"{route}/{prop.Name}/{{id}}" : $"{route}/{prop.Name}")
+            );
+
+            return matchingProperty != null;
         }
 
         public static string GetImplicitPropertyName(this OdcmProperty property, OdcmSingleton singleton)

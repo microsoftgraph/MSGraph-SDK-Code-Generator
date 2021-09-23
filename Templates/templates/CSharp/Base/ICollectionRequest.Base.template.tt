@@ -98,7 +98,12 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
     var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel);
-    if (serviceNavigationProperty == null)
+    if (serviceNavigationProperty == null && odcmProperty.IsPropertyChainedToContainedServiceNavigationProperty(((CustomT4Host)Host).CurrentModel))
+    {
+        propertyType = @namespace.GetCoreLibraryType("ReferenceRequestBody");
+        sanitizedPropertyName = String.Concat(sanitizedPropertyName, "Reference");
+    }
+    else if(serviceNavigationProperty == null)
         return string.Empty;
 
     var stringBuilder = new StringBuilder();
