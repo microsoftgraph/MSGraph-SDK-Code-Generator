@@ -231,7 +231,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// 3. If a navigation property does not have a defined EntitySet but there is a Singleton which has 
         ///    a self-contained reference to the given type, we can make a relationship to the implied EntitySet of 
         ///    the singleton. Generate a reference path to the item (ie "singleton/item/$ref").
-        /// 4. If none of the above pertain to the navigation property, it should be treated as a metadata error.
+        /// 4. If none of the above pertain. Try to call <see cref="IsPropertyChainedToContainedServiceNavigationProperty"/> to ascertain if this is a metadata error as
+        ///    the relationship could be more than one level deep. (The nav property we are looking for could be a navigation property of another navigation property :) ).
+        /// 5. If none of the above pertain to the navigation property, it should be treated as a metadata error.
         /// </summary>
         public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty, OdcmModel model)
         {
@@ -345,7 +347,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             if (odcmRootProperty.Type.FullName.Equals(testProperty.Type.FullName))
             {
                 logger.Info("Property \"{0}\" matches self contained navigation property \"{1}\" of type \"{2}\"", testProperty.Name, odcmRootProperty.Name, odcmRootProperty.Type.FullName);
-                logger.Info("Route from service class is: {0}",route);
+                logger.Info("Possible route from service class is: {0}{1}{1}",route,Environment.NewLine);
                 return true;
             }
 
@@ -353,7 +355,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             if (odcmRootProperty.Type.FullName.Equals(testProperty.BaseClass()?.FullName))
             {
                 logger.Info("Property \"{0}\" matches self contained navigation property \"{1}\" of Base type \"{2}\"", testProperty.Name, odcmRootProperty.Name, testProperty.BaseClass()?.FullName);
-                logger.Info("Route from service class is: {0}",route);
+                logger.Info("Possible route from service class is: {0}{1}{1}", route, Environment.NewLine);
                 return true;
             }
 
