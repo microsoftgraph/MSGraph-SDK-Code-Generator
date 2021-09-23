@@ -327,35 +327,6 @@ stages:
              migration: false
              pathToCopy: '/com/Beta/*'
 
-- stage: stage_php_beta_migration
-  dependsOn:
-    - stage_build_and_publish_typewriter
-    - stage_beta_metadata
-  condition: |
-    and
-    (
-      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
-      in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped')
-    )
-  jobs:
-    - job: php_beta_migration
-      steps:
-        - template: generation-templates/language-generation.yml
-          parameters:
-            language: 'PHP'
-            version: 'beta'
-            repoName: 'msgraph-beta-sdk-php'
-            branchName: $(betaBranch)
-            cleanMetadataFile: $(cleanMetadataFileBeta)
-            cleanMetadataFolder: $(cleanMetadataFolderBeta)
-            languageSpecificSteps:
-              - template: generation-templates/php-beta.yml
-                parameters:
-                  phpBetaGenerationDirectory: $(Build.SourcesDirectory)/msgraph-beta-sdk-php/src/
-                  repoName: 'msgraph-beta-sdk-php'
-                  migration: true
-                  pathToCopy: '/com/Beta/Microsoft/Graph/*'
-
 - stage: stage_typescript_v1
   dependsOn:
   - stage_build_and_publish_typewriter
