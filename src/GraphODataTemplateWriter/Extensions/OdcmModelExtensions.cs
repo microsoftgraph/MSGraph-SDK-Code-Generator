@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.Extensions
 {
@@ -352,9 +352,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             }
 
             // check if the base class is referenced instead.
-            if (odcmRootProperty.Type.FullName.Equals(testProperty.BaseClass()?.FullName))
+            if (odcmRootProperty.AsOdcmClass()?.IsAncestorOfType(testProperty.AsOdcmClass() ?? null) ?? false)
             {
-                logger.Info("Property \"{0}\" matches self contained navigation property \"{1}\" of Base type \"{2}\"", testProperty.Name, odcmRootProperty.Name, testProperty.BaseClass()?.FullName);
+                logger.Info("Property \"{0}\" of type \"{1}\" matches self contained navigation property \"{2}\" of Base type \"{3}\"", testProperty.Name, testProperty.Type.FullName, odcmRootProperty.Name, odcmRootProperty.Type.FullName);
                 logger.Info("Possible route from service class is: {0}{1}{1}", route, Environment.NewLine);
                 return true;
             }
@@ -371,6 +371,24 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             );
 
             return matchingProperty != null;
+        }
+
+        /// <summary>
+        /// This method tries to determine if a certain class is an ancestor of the other class.
+        /// </summary>
+        /// <param name="odcmClass"></param>
+        /// <param name="testClass"></param>
+        /// <returns></returns>
+        private static bool IsAncestorOfType(this OdcmClass odcmClass, OdcmClass testClass)
+        {
+            if (testClass?.Base == null || testClass == null)
+            {
+                return false; // no base type. end of the road
+            }
+
+            // check if the base is a match. Otherwise keep going up by trying the test class' base
+            return odcmClass.FullName.Equals(testClass.Base.FullName, StringComparison.OrdinalIgnoreCase) ||
+                   odcmClass.IsAncestorOfType(testClass.Base);
         }
 
         public static string GetImplicitPropertyName(this OdcmProperty property, OdcmSingleton singleton)
