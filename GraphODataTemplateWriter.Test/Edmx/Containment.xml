@@ -11,16 +11,25 @@
       <EntityType Name="testType"></EntityType>
       <EntityType Name="testType2"></EntityType>
       <EntityType Name="testType3"></EntityType>
+      <EntityType Name="testType4">
+        <NavigationProperty Name="containedNestedTestNav" Type="graph.testType5" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="testType5">
+        <NavigationProperty Name="oneLevelContainedNestedTestNav" Type="graph.testType6" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="testType6"></EntityType>
       <EntityType Name="testEntity">
         <NavigationProperty Name="testNav" Type="graph.testType"/>
         <NavigationProperty Name="testInvalidNav" Type="graph.testType2"/>
         <NavigationProperty Name="testExplicitNav" Type="graph.testType3"/>
+        <NavigationProperty Name="testChainedNav" Type="graph.testType6"/>
       </EntityType>
       <EntityType Name="testSingleton">
         <NavigationProperty Name="testSingleNav" Type="graph.testType" ContainsTarget="true" />
       </EntityType>
       <EntityType Name="testSingleton2">
         <NavigationProperty Name="testSingleNav2" Type="graph.testType3" ContainsTarget="true" />
+        <NavigationProperty Name="testSingleNav3" Type="graph.testType4" ContainsTarget="true" />
       </EntityType>
       <EntityContainer Name="GraphService">
         <Singleton Name="testSingleton" Type="graph.testSingleton"/>
