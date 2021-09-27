@@ -62,6 +62,22 @@ namespace GraphODataTemplateWriter.Test
             Assert.AreEqual(singleton.Name, result.Name);
         }
 
+        /// <summary>
+        /// Test an implicit entity set is found for a given navigation property without 
+        /// containment or an explicit entity set but exists nested in a singleton navigation property chain
+        /// </summary>
+        [DataTestMethod]
+        [DataRow("testChainedNav", true)] // we can navigate to the type using /GraphService/testSingleton2/testSingleNav3/containedNestedTestNav/oneLevelContainedNestedTestNav
+        [DataRow("testNav", true)] // we can navigate to the type using /GraphService/testSingleton/testSingleNav/
+        [DataRow("testInvalidNav", false)] // we cant navigate to this by following a chain of contained nav properties from the root service object
+        public void TestIsPropertyChainedToContainedServiceNavigationPropertyt(string propertyName, bool expectedResult)
+        {
+            var type = model.GetEntityTypes().First(t => t.Name == "testEntity");
+            var prop = type.Properties.First(p => p.Name == propertyName);
+            bool result = prop.IsPropertyChainedToContainedServiceNavigationProperty(model);
+            Assert.AreEqual(expectedResult, result);
+        }
+
         [TestMethod]
         public void GetDeprecation()
         {

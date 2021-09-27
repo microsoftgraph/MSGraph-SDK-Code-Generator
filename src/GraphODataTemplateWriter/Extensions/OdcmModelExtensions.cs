@@ -231,7 +231,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// 3. If a navigation property does not have a defined EntitySet but there is a Singleton which has 
         ///    a self-contained reference to the given type, we can make a relationship to the implied EntitySet of 
         ///    the singleton. Generate a reference path to the item (ie "singleton/item/$ref").
-        /// 4. If none of the above pertain to the navigation property, it should be treated as a metadata error.
+        /// 4. If none of the above pertain. Try to call <see cref="IsPropertyChainedToContainedServiceNavigationProperty"/> to ascertain if this is a metadata error as
+        ///    the relationship could be more than one level deep. (The nav property we are looking for could be a navigation property of another navigation property :) ).
+        /// 5. If none of the above pertain to the navigation property, it should be treated as a metadata error.
         /// </summary>
         public static OdcmProperty GetServiceCollectionNavigationPropertyForPropertyType(this OdcmProperty odcmProperty, OdcmModel model)
         {
@@ -268,7 +270,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                             ?.Where(singleton => singleton
                                 .Type
                                 .AsOdcmClass()
-                                .Properties
+                                ?.Properties
                                 //Find navigation properties on the singleton that are self-contained (implicit EntitySets) that match the type
                                 //we are searching for
                                 .Where(prop => prop.ContainsTarget == true && prop.Type.Name == odcmProperty.Type.Name)
@@ -290,6 +292,103 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 logger.Error(e);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// This method takes a specific property and determines whether its could be referenced in the navigation property of another type.
+        /// The navigation property must also come from chain where the containTarget=true from the root Service class to prove that we can reference it.
+        /// Ideally we should call this function if GetServiceCollectionNavigationPropertyForPropertyType returns null
+        /// </summary>
+        /// <param name="odcmProperty">The property to check</param>
+        /// <param name="model">The model to use</param>
+        /// <returns></returns>
+        public static bool IsPropertyChainedToContainedServiceNavigationProperty(this OdcmProperty odcmProperty, OdcmModel model)
+        {
+            // keep track of the types we've traversed to avoid circular references
+            var navigatedTypes = new HashSet<string>();
+            var matchingRootProperty = GetOdcmNamespaces(model)
+                .SelectMany(
+                    @namespace =>
+                        @namespace
+                            .Classes
+                            .FirstOrDefault(odcmClass => odcmClass.Kind == OdcmClassKind.Service)           // find the root service class
+                            ?.Properties
+                            ?.Where(serviceProperty => serviceProperty.GetType() == typeof(OdcmSingleton))  // find the singleton properties
+                            ?.Where(singleton =>
+                                        singleton.
+                                                Type.AsOdcmClass()
+                                                ?.Properties
+                                                ?.Where(property => property.ContainsTarget) // find singleton type properties that are self contained 
+                                                ?.Any(property => property.IsPropertyTypeChainedContainedNavigationProperty( //  keep following the containsTarget=True to find if we can use a reference
+                                                                                odcmProperty,
+                                                                                navigatedTypes,
+                                                                                property.IsCollection
+                                                                                    ? $"{singleton.Name}/{property.Name}/{{id}}"
+                                                                                    : $"{singleton.Name}/{property.Name}")
+                                                ) ?? false
+                            ) ?? Array.Empty<OdcmProperty>()
+                    ).FirstOrDefault();
+
+            return matchingRootProperty != null;
+        }
+
+        /// <summary>
+        /// This method takes in a property and looks through to see if the given testProperty could be contained in it through its contained navigation properties or
+        /// its nested contained navigation properties.
+        /// </summary>
+        /// <param name="odcmRootProperty">The property to start the search from</param>
+        /// <param name="testProperty">The property to find in the from the root type</param>
+        /// <param name="navigatedTypes">The types already navigated to prevent circular references</param>
+        /// <param name="route">The route followed to get here</param>
+        /// <returns></returns>
+        private static bool IsPropertyTypeChainedContainedNavigationProperty(this OdcmProperty odcmRootProperty, OdcmProperty testProperty, HashSet<string> navigatedTypes, string route)
+        {
+            // check if the property already matches the type.
+            if (odcmRootProperty.Type.FullName.Equals(testProperty.Type.FullName, StringComparison.OrdinalIgnoreCase))
+            {
+                logger.Info("Property \"{0}\" matches self contained navigation property \"{1}\" of type \"{2}\"", testProperty.Name, odcmRootProperty.Name, odcmRootProperty.Type.FullName);
+                logger.Info("Possible route from service class is: {0}{1}{1}",route,Environment.NewLine);
+                return true;
+            }
+
+            // check if the base class is referenced instead.
+            if (odcmRootProperty.AsOdcmClass()?.IsAncestorOfType(testProperty.AsOdcmClass() ?? null) ?? false)
+            {
+                logger.Info("Property \"{0}\" of type \"{1}\" matches self contained navigation property \"{2}\" of Base type \"{3}\"", testProperty.Name, testProperty.Type.FullName, odcmRootProperty.Name, odcmRootProperty.Type.FullName);
+                logger.Info("Possible route from service class is: {0}{1}{1}", route, Environment.NewLine);
+                return true;
+            }
+
+            // its not this type so lets add it to the exclusion list
+            navigatedTypes.Add(odcmRootProperty.Type.FullName);
+
+            // The current type does not match. So, we get the list of contained nav properties from the given type and recursively subject it to the same test
+            var matchingProperty = odcmRootProperty.Type.AsOdcmClass()?
+                                        .Properties
+                                        .Where(prop => prop.ContainsTarget)// the nave properties with containsTarget
+                                        .Where(prop => !navigatedTypes.Contains(prop.Type.FullName)) // prevent any cycle business
+                                        .FirstOrDefault(prop => prop.IsPropertyTypeChainedContainedNavigationProperty(testProperty, navigatedTypes, prop.IsCollection ? $"{route}/{prop.Name}/{{id}}" : $"{route}/{prop.Name}")
+            );
+
+            return matchingProperty != null;
+        }
+
+        /// <summary>
+        /// This method tries to determine if a certain class is an ancestor of the other class.
+        /// </summary>
+        /// <param name="odcmClass"></param>
+        /// <param name="testClass"></param>
+        /// <returns></returns>
+        private static bool IsAncestorOfType(this OdcmClass odcmClass, OdcmClass testClass)
+        {
+            if (testClass?.Base == null || testClass == null)
+            {
+                return false; // no base type. end of the road
+            }
+
+            // check if the base is a match. Otherwise keep going up by trying the test class' base
+            return odcmClass.FullName.Equals(testClass.Base.FullName, StringComparison.OrdinalIgnoreCase) ||
+                   odcmClass.IsAncestorOfType(testClass.Base);
         }
 
         public static string GetImplicitPropertyName(this OdcmProperty property, OdcmSingleton singleton)

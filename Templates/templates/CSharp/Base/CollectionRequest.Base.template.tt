@@ -141,17 +141,24 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
 
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
+    var useCustomReferenceRequestBody = false;
 
     var serviceNavigationProperty = odcmProperty.GetServiceCollectionNavigationPropertyForPropertyType(((CustomT4Host)Host).CurrentModel);
-	if (serviceNavigationProperty == null)
-		return string.Empty;
+    if (serviceNavigationProperty == null && odcmProperty.IsPropertyChainedToContainedServiceNavigationProperty(((CustomT4Host)Host).CurrentModel))
+    {
+        useCustomReferenceRequestBody = true;
+        propertyType = referenceRequestBodyTypeName;
+        sanitizedPropertyName = String.Concat(sanitizedPropertyName, "Reference");
+    }
+    else if(serviceNavigationProperty == null)
+        return string.Empty;
 
 	var implicitNavigationProperty = string.Empty;
 
 	// If the odcmProperty is a part of Singleton, then we need to determine whether there is a
 	// NavigationPropertyBinding generation hint. If there is, then we need to use it for
 	// creating the URL of a reference entity in a POST body.
-	if (serviceNavigationProperty.GetType() == typeof(OdcmSingleton))
+	if (serviceNavigationProperty?.GetType() == typeof(OdcmSingleton))
 	    implicitNavigationProperty = "/" + odcmProperty.GetImplicitPropertyName((OdcmSingleton)serviceNavigationProperty);
 
     var stringBuilder = new StringBuilder();
@@ -177,7 +184,14 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     stringBuilder.AppendFormat("            this.Method = {0};", templateWriter.PostMethod);
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            if (string.IsNullOrEmpty({0}.Id))", sanitizedPropertyName);
+    if(useCustomReferenceRequestBody)
+    {
+        stringBuilder.AppendFormat("            if (string.IsNullOrEmpty({0}.ODataId))", sanitizedPropertyName);
+    }
+    else
+    {
+        stringBuilder.AppendFormat("            if (string.IsNullOrEmpty({0}.Id))", sanitizedPropertyName);
+    }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            {");
     stringBuilder.Append(Environment.NewLine);
@@ -185,16 +199,21 @@ public string GetPostAsyncMethodForReferencesRequest(OdcmProperty odcmProperty, 
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("            }");
     stringBuilder.Append(Environment.NewLine);
-    stringBuilder.Append(Environment.NewLine);
-    stringBuilder.AppendFormat("            var requestBody = new {0} {{ ODataId = string.Format(\"{{0}}/{1}{2}/{{1}}\", this.Client.BaseUrl, {3}.Id) }};", referenceRequestBodyTypeName, serviceNavigationProperty.Name, implicitNavigationProperty, sanitizedPropertyName);
+    var sendVariable = sanitizedPropertyName;
+    if(!useCustomReferenceRequestBody)
+    {
+        stringBuilder.Append(Environment.NewLine);
+        stringBuilder.AppendFormat("            var requestBody = new {0} {{ ODataId = string.Format(\"{{0}}/{1}{2}/{{1}}\", this.Client.BaseUrl, {3}.Id) }};", referenceRequestBodyTypeName, serviceNavigationProperty?.Name, implicitNavigationProperty, sanitizedPropertyName);
+        sendVariable = "requestBody";
+    }
     stringBuilder.Append(Environment.NewLine);
     if (isGraphResponseMethod)
     {
-        stringBuilder.AppendFormat("            return this.SendAsyncWithGraphResponse(requestBody, cancellationToken);");
+        stringBuilder.AppendFormat("            return this.SendAsyncWithGraphResponse({0}, cancellationToken);",sendVariable);
     }
     else
     {
-        stringBuilder.AppendFormat("            return this.SendAsync(requestBody, cancellationToken);");
+        stringBuilder.AppendFormat("            return this.SendAsync({0}, cancellationToken);",sendVariable);
     }
     stringBuilder.Append(Environment.NewLine);
     stringBuilder.Append("        }");
