@@ -344,7 +344,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         private static bool IsPropertyTypeChainedContainedNavigationProperty(this OdcmProperty odcmRootProperty, OdcmProperty testProperty, HashSet<string> navigatedTypes, string route)
         {
             // check if the property already matches the type.
-            if (odcmRootProperty.Type.FullName.Equals(testProperty.Type.FullName))
+            if (odcmRootProperty.Type.FullName.Equals(testProperty.Type.FullName, StringComparison.OrdinalIgnoreCase))
             {
                 logger.Info("Property \"{0}\" matches self contained navigation property \"{1}\" of type \"{2}\"", testProperty.Name, odcmRootProperty.Name, odcmRootProperty.Type.FullName);
                 logger.Info("Possible route from service class is: {0}{1}{1}",route,Environment.NewLine);
