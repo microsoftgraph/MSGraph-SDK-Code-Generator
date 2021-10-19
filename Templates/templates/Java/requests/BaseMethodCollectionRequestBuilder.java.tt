@@ -79,11 +79,11 @@ import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctio
     <# if (isAction) { #>
         request.body = this.body;
     <# } else { #>
-      if(functionOptions != null) {    
-        for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
+    if(functionOptions != null) {    
+            for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
                 request.addFunctionOption(option);
+            }
         }
-      }
 <#      }
     }#>
         return request;
