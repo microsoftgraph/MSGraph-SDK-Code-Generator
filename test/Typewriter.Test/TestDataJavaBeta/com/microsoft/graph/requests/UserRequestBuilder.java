@@ -56,6 +56,8 @@ public class UserRequestBuilder extends BaseRequestBuilder<User> {
         return new com.microsoft.graph.requests.UserRequest(getRequestUrl(), getClient(), requestOptions);
     }
 
+
+
     /**
      * Gets a builder to execute the method
      * @return the request builder collection
