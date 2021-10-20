@@ -201,6 +201,15 @@
         <Parameter Name="on" Type="graph.roleEligibilityRequestFilterByCurrentUserOptions" Nullable="false"/>
         <ReturnType Type="Collection(graph.unifiedRoleEligibilityRequest)"/>
       </Function>
+      <Function Name="delta" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.user"/>
+        <ReturnType Type="Collection(graph.user)"/>
+      </Function>
+      <Function Name="delta" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.user"/>
+        <Parameter Name="token" Type="Edm.String" Unicode="false"/>
+        <ReturnType Type="Collection(graph.user)"/>
+      </Function>
       <EntityType Name="unifiedRoleEligibilityRequest">
         <Property Name="action" Type="Edm.String"/>
       </EntityType>
