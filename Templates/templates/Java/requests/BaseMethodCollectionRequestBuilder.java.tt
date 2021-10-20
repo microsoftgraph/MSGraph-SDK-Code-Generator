@@ -21,6 +21,7 @@ import <#=importNamespace#>.core.IBaseClient;
 import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctionCollectionRequestBuilder" : "BaseActionCollectionRequestBuilder") #>;
 
 <# bool isAction = !c.AsOdcmMethod().IsFunction; #>
+<# bool addParameters = false; #>
 <#=TypeHelperJava.CreateClassDef(c.TypeCollectionRequestBuilder(), c.GetMethodCollectionRequestBuilderSuperClass(), null, c.Deprecation?.Description)#>
 
 <#if(c.AsOdcmMethod().WithOverloadsOfDistinctName().All(x => x.MethodHasParameters())) { #>
@@ -46,6 +47,7 @@ import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctio
      * @param client         the service client
      * @param requestOptions the options for this request
 <#if(method.MethodHasParameters()) { #>
+<#addParameters = true;#>
      * @param parameters     the parameters for the service method
 <# } #>
      */
@@ -73,13 +75,15 @@ import <#=importNamespace#>.http.<#= (c.AsOdcmMethod().IsFunction ? "BaseFunctio
     @Nonnull
     public <#= c.TypeCollectionRequest()#> buildRequest(@Nullable final java.util.List<? extends <#=importNamespace#>.options.Option> requestOptions) {
         final <#= c.TypeCollectionRequest()#> request = super.buildRequest(requestOptions);
-<#if(c.AsOdcmMethod().MethodHasParameters()) { #>
+<#if(addParameters) { #>
     <# if (isAction) { #>
         request.body = this.body;
     <# } else { #>
-      for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
-            request.addFunctionOption(option);
-      }
+    if(functionOptions != null) {    
+            for (com.microsoft.graph.options.FunctionOption option : functionOptions) {
+                request.addFunctionOption(option);
+            }
+        }
 <#      }
     }#>
         return request;

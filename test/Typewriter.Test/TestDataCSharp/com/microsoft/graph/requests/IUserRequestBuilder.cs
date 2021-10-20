@@ -31,5 +31,18 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IUserRequest Request(IEnumerable<Option> options);
     
+        /// <summary>
+        /// Gets the request builder for UserDelta.
+        /// </summary>
+        /// <returns>The <see cref="IUserDeltaRequestBuilder"/>.</returns>
+        IUserDeltaRequestBuilder Delta();
+
+        /// <summary>
+        /// Gets the request builder for UserDelta.
+        /// </summary>
+        /// <returns>The <see cref="IUserDeltaRequestBuilder"/>.</returns>
+        IUserDeltaRequestBuilder Delta(
+            string token = null);
+    
     }
 }
