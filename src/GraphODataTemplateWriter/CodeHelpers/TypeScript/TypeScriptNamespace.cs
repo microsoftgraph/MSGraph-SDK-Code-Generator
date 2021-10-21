@@ -16,7 +16,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// <summary>
         /// Namespace name, e.g. Microsoft.Graph.CallRecords
         /// </summary>
-        public string NamespaceName { get; }
+        public string NamespaceName
+        {
+            get;
+        }
 
         public bool IsMainNamespace => NamespaceName == MainNamespaceName;
         private string NamespaceIndent => IsMainNamespace ? string.Empty : TabSpace;
@@ -272,19 +275,33 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// <returns>fully qualified or plain type name</returns>
         private string GetFullyQualifiedTypeScriptTypeName(string type, string @namespace)
         {
-            if (@namespace == this.NamespaceName || @namespace == "Edm")
+            if (isPrimitiveTypeScriptType(type) || @namespace == this.NamespaceName || @namespace == "Edm")
             {
                 return type;
             }
 
             if (@namespace == MainNamespaceName) // types in main namespace e.g. microsoftgraph.Entity
             {
-                return GetMainNamespace() + "." + type;
+                var s = GetMainNamespace();
+                return s + "." + type;
             }
 
             // names in subnamespaces e.g. microsoftgraph.CallRecords.CallRecord
             // we use CallRecords.CallRecord in this case as that is sufficient
             return @namespace.Replace(MainNamespaceName + ".", string.Empty) + "." + type;
         }
+
+
+        private bool isPrimitiveTypeScriptType(string type)
+        {
+            {
+                string[] primitiveTypes = { "number", "string", "boolean", "any", "unknown" };
+                HashSet<string> typeScriptPrimitiveTypes = new HashSet<string>(primitiveTypes);
+
+
+                return typeScriptPrimitiveTypes.Contains(type);
+            }
+        }
+
     }
 }
