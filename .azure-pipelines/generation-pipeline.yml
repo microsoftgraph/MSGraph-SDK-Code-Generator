@@ -32,7 +32,7 @@ resources:
      type: github
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-beta-sdk-php
-     ref: main
+     ref: dev
    - repository: msgraph-typescript-typings
      type: github
      endpoint: microsoftgraph
