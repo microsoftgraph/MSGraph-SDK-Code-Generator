@@ -7,10 +7,10 @@
 
     var model                   = host.CurrentModel;
     var typeScriptNamespaces    = model.GetTypeScriptNamespaces();
-    var mainNameSpace           = typeScriptNamespaces.MainNamespace.GetMainNamespace();
+    var mainNamespace           = typeScriptNamespaces.MainNamespace.GetMainNamespace();
 #>
 <#
-if (mainNameSpace == "microsoftgraphbeta")
+if (mainNamespace == "microsoftgraphbeta")
 {
 #>
 // Project: https://github.com/microsoftgraph/msgraph-beta-typescript-typings
@@ -29,7 +29,7 @@ if (mainNameSpace == "microsoftgraphbeta")
 //                 DeVere Dyett <https://github.com/ddyett>
 //                 Nikitha Udaykumar Chettiar <https://github.com/nikithauc>
 <#
-if (mainNameSpace != "microsoftgraphbeta")
+if (mainNamespace != "microsoftgraphbeta")
 {
 #>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -38,7 +38,7 @@ if (mainNameSpace != "microsoftgraphbeta")
 #>
 // TypeScript Version: 2.1
 
-export as namespace <#=mainNameSpace#>;
+export as namespace <#=mainNamespace#>;
 
 export type NullableOption<T> = T | null;
 
