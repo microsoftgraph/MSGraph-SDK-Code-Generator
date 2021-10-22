@@ -16,7 +16,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// <summary>
         /// Namespace name, e.g. Microsoft.Graph.CallRecords
         /// </summary>
-        public string NamespaceName { get; }
+        public string NamespaceName
+        {
+            get;
+        }
 
         public bool IsMainNamespace => NamespaceName == MainNamespaceName;
         private string NamespaceIndent => IsMainNamespace ? string.Empty : TabSpace;
@@ -272,7 +275,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// <returns>fully qualified or plain type name</returns>
         private string GetFullyQualifiedTypeScriptTypeName(string type, string @namespace)
         {
-            if (@namespace == this.NamespaceName || @namespace == "Edm")
+            /* First criteria checks if the first char of the type is in lower case.
+             * suggesting it is a predefined TS type.
+             */
+
+            if (char.IsLower(type[0]) || @namespace == this.NamespaceName || @namespace == "Edm")
             {
                 return type;
             }

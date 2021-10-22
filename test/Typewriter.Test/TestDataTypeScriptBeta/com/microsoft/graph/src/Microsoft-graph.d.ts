@@ -206,4 +206,9 @@ export namespace CallRecords {
     interface ServiceUserAgent extends UserAgent {
         role?: ServiceRole;
     }
+    interface DisplayTemplate {
+        id?: string;
+        layout?: any;
+        priority?: number;
+    }
 }
