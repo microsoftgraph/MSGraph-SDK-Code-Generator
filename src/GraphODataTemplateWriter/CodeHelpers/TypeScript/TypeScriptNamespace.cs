@@ -275,9 +275,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// <returns>fully qualified or plain type name</returns>
         private string GetFullyQualifiedTypeScriptTypeName(string type, string @namespace)
         {
-            var firstChar = type[0];
-            var isTypeScriptPreDefinedType = firstChar <= 'z' && firstChar >= 'a';
-            if (isTypeScriptPreDefinedType || @namespace == this.NamespaceName || @namespace == "Edm")
+            /* First criteria checks if the first char of the type is in lower case.
+             * suggesting it is a predefined TS type.
+             */
+
+            if (char.IsLower(type[0]) || @namespace == this.NamespaceName || @namespace == "Edm")
             {
                 return type;
             }
