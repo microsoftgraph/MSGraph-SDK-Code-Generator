@@ -275,7 +275,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         /// <returns>fully qualified or plain type name</returns>
         private string GetFullyQualifiedTypeScriptTypeName(string type, string @namespace)
         {
-            if (isPrimitiveTypeScriptType(type) || @namespace == this.NamespaceName || @namespace == "Edm")
+            var firstChar = type[0];
+            var isTypeScriptPreDefinedType = firstChar <= 'z' && firstChar >= 'a';
+            if (isTypeScriptPreDefinedType || @namespace == this.NamespaceName || @namespace == "Edm")
             {
                 return type;
             }
@@ -290,18 +292,5 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             // we use CallRecords.CallRecord in this case as that is sufficient
             return @namespace.Replace(MainNamespaceName + ".", string.Empty) + "." + type;
         }
-
-
-        private bool isPrimitiveTypeScriptType(string type)
-        {
-            {
-                string[] primitiveTypes = { "number", "string", "boolean", "any", "unknown" };
-                HashSet<string> typeScriptPrimitiveTypes = new HashSet<string>(primitiveTypes);
-
-
-                return typeScriptPrimitiveTypes.Contains(type);
-            }
-        }
-
     }
 }
