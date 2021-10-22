@@ -284,8 +284,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
             if (@namespace == MainNamespaceName) // types in main namespace e.g. microsoftgraph.Entity
             {
-                var s = GetMainNamespace();
-                return s + "." + type;
+                return GetMainNamespace() + "." + type;
             }
 
             // names in subnamespaces e.g. microsoftgraph.CallRecords.CallRecord
