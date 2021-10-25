@@ -78,7 +78,7 @@ resources:
      name: microsoftgraph/microsoft-graph-docs
    - repository: kiota
      type: github
-     endpoint: microsoft
+     endpoint: microsoftkiota
      name: microsoft/kiota
 
 pool:
