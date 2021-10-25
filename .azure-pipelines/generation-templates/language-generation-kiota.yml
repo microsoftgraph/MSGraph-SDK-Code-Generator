@@ -57,7 +57,7 @@ steps:
     BranchName: ${{ parameters.branchName }}
   workingDirectory: ${{ parameters.repoName }}
 
-- bash: '$(kiotaDirectory)/kiota --openapi ${{paramters.openAPIDescription}} --language ${{ parameters.language }} -o $(kiotaDirectory)/output -n ${{ parameters.targetNamespace }} -c ${{ parameters.targetClassName }}'
+- bash: '$(kiotaDirectory)/kiota --openapi ${{parameters.openAPIDescription}} --language ${{ parameters.language }} -o $(kiotaDirectory)/output -n ${{ parameters.targetNamespace }} -c ${{ parameters.targetClassName }}'
   displayName: 'Run Kiota for ${{ parameters.language }} ${{ parameters.version }}'
 
 - ${{ parameters.languageSpecificSteps }}
