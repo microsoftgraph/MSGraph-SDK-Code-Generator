@@ -268,6 +268,9 @@ stages:
         repoName: 'msgraph-sdk-go'
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanOpenAPIFileV1)
+        openAPIDescription: $(cleanOpenAPIFileV1)
+        targetClassName: "GraphServiceClient"
+        targetNamespace: "github.com/microsoftgraph/msgraph-sdk-go/"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/go.yml
