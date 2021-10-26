@@ -5,3 +5,5 @@ steps:
     downloadType: 'single'
     artifactName: 'kiota'
     downloadPath: '$(Build.SourcesDirectory)'
+
+- bash: chmod +x $(Build.SourcesDirectory)/kiota/kiota
