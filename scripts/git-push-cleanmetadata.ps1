@@ -6,8 +6,7 @@ if ($env:PublishChanges -eq $False)
 
 Write-Host "About to add clean $env:EndpointVersion metadata file....."
 
-git pull origin master --rebase
-
+git fetch origin master
 # checkout master to move from detached HEAD mode
 git switch master
 
