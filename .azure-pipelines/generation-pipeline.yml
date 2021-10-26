@@ -194,6 +194,18 @@ stages:
         cleanMetadataFile: $(cleanMetadataFileBeta)
         cleanMetadataFolder: $(cleanMetadataFolderBeta)
 
+- stage: stage_v1_openapi
+  dependsOn: stage_v1_metadata
+  condition: in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
+  jobs:
+  - job: v1_openapi
+    steps:
+    - template: generation-templates/capture-openapi.yml
+      parameters:
+        endpoint: 'v1.0'
+        outputPath: $(cleanOpenAPIFileV1)
+        cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+
 - stage: stage_csharp_v1
   dependsOn:
   - stage_build_and_publish_typewriter
@@ -251,12 +263,12 @@ stages:
 - stage: stage_go_v1
   dependsOn:
   - stage_build_and_publish_kiota
-  - stage_v1_metadata
+  - stage_v1_openapi
   condition: |
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
+      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
     )
   jobs:
   - job: go_v1

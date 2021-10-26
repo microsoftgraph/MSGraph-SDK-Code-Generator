@@ -1,0 +1,51 @@
+# Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+# contains an end to end validation pipeline using C# compilation tests for staging beta metadata
+
+# capture-metadata.yml will result in the capture and cleaning of the metadata
+# with the artifacts posted to GitHub.
+
+parameters:
+- name: 'endpoint'
+  type: string
+  default: "v1.0"
+- name: 'outputPath'
+  type: string
+  default: $(System.ArtifactsDirectory)
+- name: 'cleanMetadataFolder'
+  type: string
+steps:
+
+# We only need the scripts
+- checkout: self
+  displayName: checkout generator
+  fetchDepth: 1
+  persistCredentials: true
+
+- template: checkout-metadata.yml
+- template: set-user-config.yml
+
+- pwsh: '$(Build.SourcesDirectory)/msgraph-metadata/scripts/GenerateOpenApi.ps1 -endpointVersion ${{ parameters.endpoint }}'
+  displayName: 'update ${{ parameters.endpoint }} open API description'
+
+# publish metadata as an artifact
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: ${{ parameters.outputPath }}
+    contents: '**/*'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: Copy generated metadata
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: ${{ parameters.cleanMetadataFolder }}
+
+# Checkin clean metadata into metadata repo or make it an artifact.
+- pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
+
+  displayName: push clean ${{ parameters.endpoint }} metadata to msgraph-metadata repo
+  env:
+    EndpointVersion: ${{ parameters.endpoint }}
+    PublishChanges: $(publishChanges)
+  workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'
+  enabled: true
