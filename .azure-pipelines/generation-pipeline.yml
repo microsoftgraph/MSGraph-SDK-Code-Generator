@@ -293,8 +293,6 @@ stages:
         version: ''
         repoName: 'msgraph-sdk-go'
         branchName: $(v1Branch)
-        cleanMetadataFile: $(cleanOpenAPIFileV1)
-        openAPIDescription: $(cleanOpenAPIFileV1)
         targetClassName: "GraphServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-go/"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
@@ -322,8 +320,6 @@ stages:
         version: 'beta'
         repoName: 'msgraph-beta-sdk-go'
         branchName: $(betaBranch)
-        cleanMetadataFile: $(cleanOpenAPIFileBeta)
-        openAPIDescription: $(cleanOpenAPIFileBeta)
         targetClassName: "GraphServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-beta-sdk-go/"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)

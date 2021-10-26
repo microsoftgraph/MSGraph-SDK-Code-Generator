@@ -1,8 +1,5 @@
 # designed to have a single run (single output directory)
 parameters:
-- name: openAPIDescription
-  type: string
-
 - name: targetNamespace
   type: string
 
@@ -26,9 +23,6 @@ parameters:
   default:
   - pwsh: |
       Write-Error "No language specific step is provided"
-
-- name: cleanMetadataFile
-  type: string
 
 - name: cleanMetadataFolder
   type: string
@@ -59,7 +53,7 @@ steps:
     BranchName: ${{ parameters.branchName }}
   workingDirectory: ${{ parameters.repoName }}
 
-- bash: '$(kiotaDirectory)/kiota --openapi ${{parameters.openAPIDescription}} --language ${{ parameters.language }} -o $(kiotaDirectory)/output -n ${{ parameters.targetNamespace }} -c ${{ parameters.targetClassName }}'
+- bash: '$(kiotaDirectory)/kiota --openapi $(Build.SourcesDirectory)/msgraph-metadata/${{ parameters.cleanMetadataFolder }}/openapi.yaml --language ${{ parameters.language }} -o $(kiotaDirectory)/output -n ${{ parameters.targetNamespace }} -c ${{ parameters.targetClassName }}'
   displayName: 'Run Kiota for ${{ parameters.language }} ${{ parameters.version }}'
 
 - ${{ parameters.languageSpecificSteps }}
