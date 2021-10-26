@@ -6,8 +6,10 @@ if ($env:PublishChanges -eq $False)
 
 Write-Host "About to add clean $env:EndpointVersion metadata file....."
 
+git pull origin master --rebase
+
 # checkout master to move from detached HEAD mode
-git checkout master
+git switch master
 
 git add . | Write-Host
 if ($env:BUILD_REASON -eq 'Manual') # Skip CI if manually running this pipeline.
@@ -24,7 +26,7 @@ Write-Host "Added and commited cleaned $env:EndpointVersion metadata." -Foregrou
 # sync branch before pushing
 # this is especially important while running v1 and beta in parallel
 # and one process goes out of sync because of the other's check-in
-git pull origin master
+git pull origin master --rebase
 
 git push --set-upstream origin master | Write-Host
 Write-Host "Pushed the results of the build $env:BUILD_BUILDID to the master branch." -ForegroundColor Green
