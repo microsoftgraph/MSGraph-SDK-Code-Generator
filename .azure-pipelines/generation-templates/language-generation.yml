@@ -29,7 +29,7 @@ steps:
   parameters:
     cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
     downloadSteps:
-    - template: generation-templates/download-typewriter.yml
+    - template: download-typewriter.yml
 
 - checkout: ${{ parameters.repoName }}
   displayName: 'checkout ${{ parameters.repoName }}'

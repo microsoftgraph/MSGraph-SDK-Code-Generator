@@ -38,7 +38,7 @@ steps:
   parameters:
     cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
     downloadSteps:
-    - template: generation-templates/download-kiota.yml
+    - template: download-kiota.yml
 
 - checkout: ${{ parameters.repoName }}
   displayName: 'checkout ${{ parameters.repoName }}'
