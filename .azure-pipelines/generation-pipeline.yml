@@ -114,6 +114,8 @@ variables:
   cleanMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml'
   cleanOpenAPIFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/v1.0/openapi.yml'
   cleanOpenAPIFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/beta/openapi.yml'
+  cleanOpenAPIFileV1OutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/v1.0/'
+  cleanOpenAPIFileBetaOutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/beta/'
   cleanMetadataFileV1OutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/'
   cleanMetadataFileBetaOutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/'
   cleanMetadataFolderBeta: 'clean_beta_metadata'
@@ -203,7 +205,7 @@ stages:
     - template: generation-templates/capture-openapi.yml
       parameters:
         endpoint: 'v1.0'
-        outputPath: $(cleanOpenAPIFileV1)
+        outputPath: $(cleanOpenAPIFileV1OutputPath)
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
 
 - stage: stage_csharp_v1
