@@ -28,6 +28,8 @@ steps:
 - template: set-up-for-generation.yml
   parameters:
     cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
+    downloadSteps:
+    - template: generation-templates/download-typewriter.yml
 
 - checkout: ${{ parameters.repoName }}
   displayName: 'checkout ${{ parameters.repoName }}'
