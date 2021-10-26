@@ -5,6 +5,11 @@ steps:
   displayName: checkout kiota
   fetchDepth: 1
 
+# TODO: remove this once the dotnet libraries are on the public feed
+- pwsh: Get-ChildItem -Recurse -File -Filter nuget.config | % {rm $_.FullName -Verbose }
+  displayName: Delete all the custom nuget.config files to avoid triggering compliance analysis
+  workingDirectory: $(Build.SourcesDirectory)/kiota
+
 - task: DotNetCoreCLI@2
   displayName: 'Build Kiota'
   inputs:
