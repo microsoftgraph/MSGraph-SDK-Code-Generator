@@ -26,6 +26,7 @@ steps:
 
 - pwsh: '$(Build.SourcesDirectory)/msgraph-metadata/scripts/GenerateOpenApi.ps1 -endpointVersion ${{ parameters.endpoint }}'
   displayName: 'update ${{ parameters.endpoint }} open API description'
+  workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
 # publish metadata as an artifact
 - task: CopyFiles@2
