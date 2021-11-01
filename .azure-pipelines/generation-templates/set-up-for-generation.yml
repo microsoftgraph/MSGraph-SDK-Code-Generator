@@ -1,11 +1,16 @@
 parameters:
   - name: cleanMetadataFolder
     type: string
+  - name: downloadSteps
+    type: stepList
+    default:
+    - pwsh: |
+        Write-Error "No download step is provided"
 
 steps:
 - template: set-user-config.yml
 - template: use-dotnet-sdk.yml
-- template: download-typewriter.yml
+- ${{ parameters.downloadSteps }}
 
 # checkout metadata repo if capture and clean step is skipped
 - checkout: msgraph-metadata

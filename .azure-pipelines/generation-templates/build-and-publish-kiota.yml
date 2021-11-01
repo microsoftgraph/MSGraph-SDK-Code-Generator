@@ -1,0 +1,25 @@
+steps:
+- template: use-dotnet-sdk.yml
+
+- checkout: kiota
+  displayName: checkout kiota
+  fetchDepth: 1
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Kiota'
+  inputs:
+    command: 'build'
+    projects: '$(Build.SourcesDirectory)/src/kiota/kiota.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)/src/kiota/bin/$(BuildConfiguration)/net5.0'
+    contents: '**/*'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: Copy Kiota executable
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: kiota

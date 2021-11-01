@@ -1,5 +1,11 @@
 # designed to have a single run (single output directory)
 parameters:
+- name: targetNamespace
+  type: string
+
+- name: targetClassName
+  type: string
+
 - name: language
   type: string
 
@@ -18,9 +24,6 @@ parameters:
   - pwsh: |
       Write-Error "No language specific step is provided"
 
-- name: cleanMetadataFile
-  type: string
-
 - name: cleanMetadataFolder
   type: string
 
@@ -29,7 +32,7 @@ steps:
   parameters:
     cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
     downloadSteps:
-    - template: download-typewriter.yml
+    - template: download-kiota.yml
 
 - checkout: ${{ parameters.repoName }}
   displayName: 'checkout ${{ parameters.repoName }}'
@@ -50,16 +53,8 @@ steps:
     BranchName: ${{ parameters.branchName }}
   workingDirectory: ${{ parameters.repoName }}
 
-- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
-  env:
-    BuildConfiguration: $(buildConfiguration)
-    OutputPath: output
-    CleanMetadataFile: ${{ parameters.cleanMetadataFile }}
-    TypewriterExecutable: $(typewriterExecutable)
-    TypewriterDirectory: $(typewriterDirectory)
-    Language: ${{ parameters.language }}
-    Endpoint:  ${{ parameters.version }}
-  displayName: 'Run Typewriter for ${{ parameters.language }} ${{ parameters.version }}'
+- bash: '$(kiotaDirectory)/kiota --openapi $(Build.SourcesDirectory)/msgraph-metadata/${{ parameters.cleanMetadataFolder }}/openapi.yaml --language ${{ parameters.language }} -o $(kiotaDirectory)/output -n ${{ parameters.targetNamespace }} -c ${{ parameters.targetClassName }}'
+  displayName: 'Run Kiota for ${{ parameters.language }} ${{ parameters.version }}'
 
 - ${{ parameters.languageSpecificSteps }}
 
