@@ -1,0 +1,20 @@
+parameters:
+  - name: repoName
+    type: string
+
+steps:
+- pwsh: '$(scriptsDirectory)/clean-go-files.ps1'
+  displayName: 'Remove generated models and requests from the repo'
+  env:
+    MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/
+
+- pwsh : $(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts/incrementMinorVersion.ps1
+  displayName: 'Increment minor version number'
+  workingDirectory: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts'
+
+- pwsh: '$(scriptsDirectory)/copy-go-models.ps1'
+  displayName: 'Update models'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputFullPath: $(kiotaDirectory)/output/*
+    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/

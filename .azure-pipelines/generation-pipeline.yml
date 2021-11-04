@@ -58,6 +58,16 @@ resources:
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-beta-sdk-java
      ref: dev
+   - repository: msgraph-sdk-go
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-sdk-go
+     ref: main
+   - repository: msgraph-beta-sdk-go
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-beta-sdk-go
+     ref: main
    - repository: msgraph-metadata
      type: github
      endpoint: microsoftgraph
@@ -66,6 +76,10 @@ resources:
      type: github
      endpoint: microsoftgraph
      name: microsoftgraph/microsoft-graph-docs
+   - repository: kiota
+     type: github
+     endpoint: microsoftkiota
+     name: microsoft/kiota
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -98,13 +112,20 @@ variables:
   buildConfiguration: 'Release'
   cleanMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml'
   cleanMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml'
+  cleanOpenAPIFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/v1.0/openapi.yml'
+  cleanOpenAPIFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/beta/openapi.yml'
+  cleanOpenAPIFileV1OutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/v1.0/'
+  cleanOpenAPIFileBetaOutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/beta/'
   cleanMetadataFileV1OutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/'
   cleanMetadataFileBetaOutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/'
   cleanMetadataFolderBeta: 'clean_beta_metadata'
   cleanMetadataFolderV1: 'clean_v10_metadata'
+  cleanOpenAPIFolderBeta: 'clean_beta_openapi'
+  cleanOpenAPIFolderV1: 'clean_v10_openapi'
   rawMetadataFileBeta: 'https://graph.microsoft.com/beta/$metadata'
   rawMetadataFileV1: 'https://graph.microsoft.com/v1.0/$metadata' # We want to run against the metadata we have captured.
   typewriterDirectory: '$(Build.SourcesDirectory)/typewriter'
+  kiotaDirectory: '$(Build.SourcesDirectory)/kiota'
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
   scriptsDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts'
   transformScript: '$(Build.SourcesDirectory)/msgraph-metadata/transforms/csdl/preprocess_csdl.xsl'
@@ -127,6 +148,13 @@ stages:
     steps:
     - template: generation-templates/build-and-publish-typewriter.yml
 
+- stage: stage_build_and_publish_kiota
+  dependsOn: [] # remove the implicit dependency to any previous stage
+  jobs:
+  - job: build_and_publish_kiota
+    steps:
+    - template: generation-templates/build-and-publish-kiota.yml
+
 # Downloads the latest public beta metadata. If there are changes, we checkin
 # the public metadata into microsoftgraph/msgraph-metadata, and then run the
 # metadata through the cleaning and documentation processes before validating
@@ -135,6 +163,7 @@ stages:
   dependsOn: stage_build_and_publish_typewriter
   condition: |
     and(succeeded('stage_build_and_publish_typewriter'),
+        succeeded('stage_build_and_publish_kiota'),
         eq( ${{ parameters.skipMetadataCaptureAndClean }}, false))
   jobs:
   - job: v1_metadata
@@ -153,6 +182,7 @@ stages:
   dependsOn: stage_build_and_publish_typewriter
   condition: |
     and(succeeded('stage_build_and_publish_typewriter'),
+        succeeded('stage_build_and_publish_kiota'),
         eq( ${{ parameters.skipMetadataCaptureAndClean }}, false))
   jobs:
   - job: beta_metadata
@@ -165,6 +195,30 @@ stages:
         repoName: "msgraph-beta-sdk-dotnet"
         cleanMetadataFile: $(cleanMetadataFileBeta)
         cleanMetadataFolder: $(cleanMetadataFolderBeta)
+
+- stage: stage_v1_openapi
+  dependsOn: stage_v1_metadata
+  condition: in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
+  jobs:
+  - job: v1_openapi
+    steps:
+    - template: generation-templates/capture-openapi.yml
+      parameters:
+        endpoint: 'v1.0'
+        outputPath: $(cleanOpenAPIFileV1OutputPath)
+        cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+
+- stage: stage_beta_openapi
+  dependsOn: stage_beta_metadata
+  condition: in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped')
+  jobs:
+  - job: beta_openapi
+    steps:
+    - template: generation-templates/capture-openapi.yml
+      parameters:
+        endpoint: 'beta'
+        outputPath: $(cleanOpenAPIFileBetaOutputPath)
+        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
 
 - stage: stage_csharp_v1
   dependsOn:
@@ -219,6 +273,60 @@ stages:
           parameters:
             repoName: msgraph-beta-sdk-dotnet
             dllName: Microsoft.Graph.Beta.dll
+
+- stage: stage_go_v1
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_v1_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+    )
+  jobs:
+  - job: go_v1
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'go'
+        version: ''
+        repoName: 'msgraph-sdk-go'
+        branchName: $(v1Branch)
+        targetClassName: "GraphServiceClient"
+        targetNamespace: "github.com/microsoftgraph/msgraph-sdk-go/"
+        cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+        languageSpecificSteps:
+        - template: generation-templates/go.yml
+          parameters:
+            repoName: msgraph-sdk-go
+
+- stage: stage_go_beta
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_beta_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+    )
+  jobs:
+  - job: go_beta
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'go'
+        version: 'beta'
+        repoName: 'msgraph-beta-sdk-go'
+        branchName: $(betaBranch)
+        targetClassName: "GraphServiceClient"
+        targetNamespace: "github.com/microsoftgraph/msgraph-beta-sdk-go/"
+        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        languageSpecificSteps:
+        - template: generation-templates/go.yml
+          parameters:
+            repoName: msgraph-beta-sdk-go
 
 - stage: stage_java_v1
   dependsOn:
