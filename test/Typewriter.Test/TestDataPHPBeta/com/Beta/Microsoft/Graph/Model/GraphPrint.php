@@ -134,6 +134,8 @@ class GraphPrint implements \JsonSerializable
                    }
                 }
                 $serializableProperties[$property] = $values;
+            } else if (is_a($val, "\Entity")) {
+                $serializableProperties[$property] = $val->jsonSerialize();
             }
         }
         return $serializableProperties;

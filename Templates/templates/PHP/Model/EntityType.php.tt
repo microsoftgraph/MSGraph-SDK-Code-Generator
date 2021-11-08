@@ -309,6 +309,8 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
                    }
                 }
                 $serializableProperties[$property] = $values;
+            } else if (is_a($val, "\Entity")) {
+                $serializableProperties[$property] = $val->jsonSerialize();
             }
         }
         return $serializableProperties;
