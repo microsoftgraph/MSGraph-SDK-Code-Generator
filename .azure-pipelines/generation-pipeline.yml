@@ -160,7 +160,9 @@ stages:
 # metadata through the cleaning and documentation processes before validating
 # the results with generated and built .NET code files as a smoke test.
 - stage: stage_v1_metadata
-  dependsOn: stage_build_and_publish_typewriter
+  dependsOn:
+    - stage_build_and_publish_typewriter
+    - stage_build_and_publish_kiota
   condition: |
     and(succeeded('stage_build_and_publish_typewriter'),
         succeeded('stage_build_and_publish_kiota'),
@@ -179,7 +181,9 @@ stages:
 
 # Same description as stage_v1_metadata
 - stage: stage_beta_metadata
-  dependsOn: stage_build_and_publish_typewriter
+  dependsOn:
+    - stage_build_and_publish_typewriter
+    - stage_build_and_publish_kiota
   condition: |
     and(succeeded('stage_build_and_publish_typewriter'),
         succeeded('stage_build_and_publish_kiota'),
