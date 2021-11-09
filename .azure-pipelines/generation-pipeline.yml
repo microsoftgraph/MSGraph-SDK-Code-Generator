@@ -163,7 +163,6 @@ stages:
   dependsOn: stage_build_and_publish_typewriter
   condition: |
     and(succeeded('stage_build_and_publish_typewriter'),
-        succeeded('stage_build_and_publish_kiota'),
         eq( ${{ parameters.skipMetadataCaptureAndClean }}, false))
   jobs:
   - job: v1_metadata
@@ -182,7 +181,6 @@ stages:
   dependsOn: stage_build_and_publish_typewriter
   condition: |
     and(succeeded('stage_build_and_publish_typewriter'),
-        succeeded('stage_build_and_publish_kiota'),
         eq( ${{ parameters.skipMetadataCaptureAndClean }}, false))
   jobs:
   - job: beta_metadata
