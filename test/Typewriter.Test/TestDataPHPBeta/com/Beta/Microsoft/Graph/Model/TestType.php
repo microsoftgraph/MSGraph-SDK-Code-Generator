@@ -41,7 +41,7 @@ class TestType extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the propertyAlpha
     *
@@ -54,5 +54,5 @@ class TestType extends Entity
         $this->_propDict["propertyAlpha"] = $val;
         return $this;
     }
-    
+
 }

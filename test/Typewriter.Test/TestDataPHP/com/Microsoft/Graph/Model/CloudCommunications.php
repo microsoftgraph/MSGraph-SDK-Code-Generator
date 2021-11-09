@@ -25,7 +25,7 @@ namespace Microsoft\Graph\Model;
 class CloudCommunications extends Entity
 {
 
-     /** 
+     /**
      * Gets the calls
      *
      * @return Call[]|null The calls
@@ -45,8 +45,8 @@ class CloudCommunications extends Entity
         }
         return null;
     }
-    
-    /** 
+
+    /**
     * Sets the calls
     *
     * @param Call[] $val The calls
@@ -58,9 +58,9 @@ class CloudCommunications extends Entity
         $this->_propDict["calls"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the callRecords
      *
      * @return \Microsoft\Graph\CallRecords\Model\CallRecord[]|null The callRecords
@@ -80,8 +80,8 @@ class CloudCommunications extends Entity
         }
         return null;
     }
-    
-    /** 
+
+    /**
     * Sets the callRecords
     *
     * @param \Microsoft\Graph\CallRecords\Model\CallRecord[] $val The callRecords
@@ -93,5 +93,5 @@ class CloudCommunications extends Entity
         $this->_propDict["callRecords"] = $val;
         return $this;
     }
-    
+
 }

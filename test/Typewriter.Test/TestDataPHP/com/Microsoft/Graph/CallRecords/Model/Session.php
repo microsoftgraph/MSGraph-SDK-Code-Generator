@@ -25,7 +25,7 @@ namespace Microsoft\Graph\CallRecords\Model;
 class Session extends \Microsoft\Graph\Model\Entity
 {
 
-     /** 
+     /**
      * Gets the modalities
      *
      * @return Modality[]|null The modalities
@@ -45,8 +45,8 @@ class Session extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
-    /** 
+
+    /**
     * Sets the modalities
     *
     * @param Modality[] $val The modalities
@@ -58,7 +58,7 @@ class Session extends \Microsoft\Graph\Model\Entity
         $this->_propDict["modalities"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the startDateTime
     *
@@ -76,7 +76,7 @@ class Session extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the startDateTime
     *
@@ -89,7 +89,7 @@ class Session extends \Microsoft\Graph\Model\Entity
         $this->_propDict["startDateTime"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the endDateTime
     *
@@ -107,7 +107,7 @@ class Session extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the endDateTime
     *
@@ -120,7 +120,7 @@ class Session extends \Microsoft\Graph\Model\Entity
         $this->_propDict["endDateTime"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the caller
     *
@@ -138,7 +138,7 @@ class Session extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the caller
     *
@@ -151,7 +151,7 @@ class Session extends \Microsoft\Graph\Model\Entity
         $this->_propDict["caller"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the callee
     *
@@ -169,7 +169,7 @@ class Session extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the callee
     *
@@ -182,7 +182,7 @@ class Session extends \Microsoft\Graph\Model\Entity
         $this->_propDict["callee"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the failureInfo
     *
@@ -200,7 +200,7 @@ class Session extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the failureInfo
     *
@@ -213,9 +213,9 @@ class Session extends \Microsoft\Graph\Model\Entity
         $this->_propDict["failureInfo"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the segments
      *
      * @return Segment[]|null The segments
@@ -235,8 +235,8 @@ class Session extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
-    /** 
+
+    /**
     * Sets the segments
     *
     * @param Segment[] $val The segments
@@ -248,5 +248,5 @@ class Session extends \Microsoft\Graph\Model\Entity
         $this->_propDict["segments"] = $val;
         return $this;
     }
-    
+
 }
