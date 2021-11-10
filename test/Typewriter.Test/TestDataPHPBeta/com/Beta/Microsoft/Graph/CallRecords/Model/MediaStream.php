@@ -201,7 +201,7 @@ class MediaStream extends \Beta\Microsoft\Graph\Model\Entity
     {
         if (array_key_exists("averageAudioNetworkJitter", $this->_propDict) && !is_null($this->_propDict["averageAudioNetworkJitter"])) {
      
-            if (is_a($this->_propDict["averageAudioNetworkJitter"], "\Beta\Microsoft\Graph\Model\Duration")) {
+            if (is_a($this->_propDict["averageAudioNetworkJitter"], "\DateInterval")) {
                 return $this->_propDict["averageAudioNetworkJitter"];
             } else {
                 $this->_propDict["averageAudioNetworkJitter"] = new \DateInterval($this->_propDict["averageAudioNetworkJitter"]);

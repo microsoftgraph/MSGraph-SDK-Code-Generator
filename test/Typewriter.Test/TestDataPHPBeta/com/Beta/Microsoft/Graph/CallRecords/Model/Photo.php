@@ -41,7 +41,7 @@ class Photo extends \Beta\Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the failureInfo
     *
@@ -54,7 +54,7 @@ class Photo extends \Beta\Microsoft\Graph\Model\Entity
         $this->_propDict["failureInfo"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the option
     *
@@ -72,7 +72,7 @@ class Photo extends \Beta\Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the option
     *
@@ -85,5 +85,5 @@ class Photo extends \Beta\Microsoft\Graph\Model\Entity
         $this->_propDict["option"] = $val;
         return $this;
     }
-    
+
 }

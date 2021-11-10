@@ -37,7 +37,7 @@ class Call extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the subject
     *
@@ -50,5 +50,5 @@ class Call extends Entity
         $this->_propDict["subject"] = $val;
         return $this;
     }
-    
+
 }
