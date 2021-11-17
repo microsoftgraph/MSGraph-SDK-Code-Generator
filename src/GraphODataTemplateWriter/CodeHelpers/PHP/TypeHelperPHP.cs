@@ -67,11 +67,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                 case "Int32":
                 case "Int64":
                     return "int";
+                case "Decimal":
                 case "Double":
                 case "Single":
                     return "float";
                 case "DateTimeOffset":
-                case "Date":
+                case "DateTime":
                     return "\\DateTime";
                 case "Duration":
                     return "\\DateInterval";
@@ -80,6 +81,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                 case "Binary":
                 case "Stream":
                     return "\\GuzzleHttp\\Psr7\\Stream";
+                case "Date" or "TimeOfDay" or "Byte":
+                    return $"\\Microsoft\\Graph\\Core\\Models\\{@type.Name}";
                 default:
                     return @type.Name.ToUpperFirstChar();
             }
@@ -266,7 +269,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                     {
                         return $"\\{settings.Properties["php.namespacePrefix"]}\\Microsoft\\Graph\\Model\\Entity";
                     }
-
                     return "\\Microsoft\\Graph\\Model\\Entity";
             }
         }
