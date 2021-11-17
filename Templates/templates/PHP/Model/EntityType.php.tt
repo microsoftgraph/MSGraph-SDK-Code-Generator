@@ -60,7 +60,7 @@ if (String.IsNullOrEmpty(entityBaseName)) {
     /**
     * Gets the property dictionary of the <#=entity.Name.ToUpperFirstChar()#>
     *
-    * @return array The list of properties
+    * @return array<string,mixed> The list of properties
     */
     public function getProperties()
     {
