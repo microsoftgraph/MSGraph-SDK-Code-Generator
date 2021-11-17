@@ -37,7 +37,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the version
     *
@@ -50,7 +50,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         $this->_propDict["version"] = intval($val);
         return $this;
     }
-    
+
     /**
     * Gets the type
     *
@@ -68,7 +68,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the type
     *
@@ -81,9 +81,9 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         $this->_propDict["type"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the modalities
      *
      * @return array|null The modalities
@@ -96,11 +96,11 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the modalities
     *
-    * @param Modality $val The modalities
+    * @param Modality[] $val The modalities
     *
     * @return CallRecord
     */
@@ -109,7 +109,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         $this->_propDict["modalities"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the lastModifiedDateTime
     *
@@ -127,7 +127,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the lastModifiedDateTime
     *
@@ -140,7 +140,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         $this->_propDict["lastModifiedDateTime"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the startDateTime
     *
@@ -158,7 +158,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the startDateTime
     *
@@ -171,7 +171,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         $this->_propDict["startDateTime"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the endDateTime
     *
@@ -189,7 +189,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the endDateTime
     *
@@ -202,7 +202,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         $this->_propDict["endDateTime"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the organizer
     *
@@ -220,7 +220,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the organizer
     *
@@ -233,9 +233,9 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         $this->_propDict["organizer"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the participants
      *
      * @return array|null The participants
@@ -248,11 +248,11 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the participants
     *
-    * @param \Microsoft\Graph\Model\IdentitySet $val The participants
+    * @param \Microsoft\Graph\Model\IdentitySet[] $val The participants
     *
     * @return CallRecord
     */
@@ -261,7 +261,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         $this->_propDict["participants"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the joinWebUrl
     *
@@ -275,7 +275,7 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the joinWebUrl
     *
@@ -288,9 +288,9 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         $this->_propDict["joinWebUrl"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the sessions
      *
      * @return array|null The sessions
@@ -303,11 +303,11 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the sessions
     *
-    * @param Session $val The sessions
+    * @param Session[] $val The sessions
     *
     * @return CallRecord
     */
@@ -316,9 +316,9 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         $this->_propDict["sessions"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the recipients
      *
      * @return array|null The recipients
@@ -331,11 +331,11 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the recipients
     *
-    * @param \Microsoft\Graph\Model\EntityType2 $val The recipients
+    * @param \Microsoft\Graph\Model\EntityType2[] $val The recipients
     *
     * @return CallRecord
     */
@@ -344,5 +344,5 @@ class CallRecord extends \Microsoft\Graph\Model\Entity
         $this->_propDict["recipients"] = $val;
         return $this;
     }
-    
+
 }
