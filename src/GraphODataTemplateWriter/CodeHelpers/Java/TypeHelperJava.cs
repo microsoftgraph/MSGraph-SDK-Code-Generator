@@ -61,6 +61,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                 case "Decimal":
                     return "java.math.BigDecimal";
                 default:
+                    if(@type.Name.EndsWith("Collection", StringComparison.OrdinalIgnoreCase)){
+                        return @type.Name.ToUpperFirstChar()+"Object";
+                    }
                     return @type.Name.ToUpperFirstChar();
             }
         }
@@ -210,23 +213,32 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         }
         public static string TypeName(this OdcmObject c)
         {
+            string name = "";
             if (c is OdcmMethod)
             {
-                return ((OdcmMethod)c).Class.Name.ToUpperFirstChar() + c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
+                name = ((OdcmMethod)c).Class.Name.ToUpperFirstChar() + c.Name.Substring(c.Name.IndexOf(".") + 1).ToUpperFirstChar();
             }
             else if (c is OdcmProperty && c.AsOdcmProperty().IsCollection)
             {
-                return c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
+                name = c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
             }
             else if (c is OdcmProperty && c.AsOdcmProperty().Projection.Type is OdcmPrimitiveType)
             {
-                return c.ClassTypeName() + c.Name.SanitizePropertyName(c).ToUpperFirstChar() + c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
+                name = c.ClassTypeName() + c.Name.SanitizePropertyName(c).ToUpperFirstChar() + c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
             }
             else if (c is OdcmProperty)
             {
-                return c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
+                name = c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
             }
-            return c.Name.ToUpperFirstChar();
+            else
+            {
+                name = c.Name.ToUpperFirstChar();
+            }
+            if(name.EndsWith("Collection", StringComparison.OrdinalIgnoreCase))
+            {
+                name = name+"Object";
+            }
+            return name;
         }
 
         public static string MethodName(this OdcmObject c)
@@ -543,19 +555,27 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 
         public static string ClassTypeName(this OdcmObject c)
         {
+            string name = "";
             if (c is OdcmMethod)
             {
-                return c.AsOdcmMethod().Class.Name.ToUpperFirstChar();
+                name = c.AsOdcmMethod().Class.Name.ToUpperFirstChar();
             }
             else if (c is OdcmProperty && c.AsOdcmProperty().Class is OdcmServiceClass)
             {
-                return c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
+                name = c.AsOdcmProperty().Projection.Type.Name.ToUpperFirstChar();
             }
             else if (c is OdcmProperty)
             {
-                return c.AsOdcmProperty().Class.Name.ToUpperFirstChar();
+                name = c.AsOdcmProperty().Class.Name.ToUpperFirstChar();
             }
-            return c.Name.ToUpperFirstChar();
+            else{
+                name = c.Name.ToUpperFirstChar();
+            }
+            if(name.EndsWith("Collection", StringComparison.OrdinalIgnoreCase))
+            {
+                name = name+"Object";
+            }
+            return name;
         }
 
         public static string BaseClientType(this OdcmObject c)
