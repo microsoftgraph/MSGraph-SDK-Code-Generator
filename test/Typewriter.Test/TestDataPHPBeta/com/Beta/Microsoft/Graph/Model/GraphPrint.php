@@ -31,7 +31,7 @@ class GraphPrint implements \JsonSerializable
     * @var array $_propDict
     */
     protected $_propDict;
-    
+
     /**
     * Construct a new GraphPrint
     *
@@ -54,7 +54,7 @@ class GraphPrint implements \JsonSerializable
     {
         return $this->_propDict;
     }
-    
+
     /**
     * Gets the settings
     *
@@ -68,7 +68,7 @@ class GraphPrint implements \JsonSerializable
             return null;
         }
     }
-    
+
     /**
     * Sets the settings
     *
@@ -81,7 +81,7 @@ class GraphPrint implements \JsonSerializable
         $this->_propDict["settings"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the ODataType
     *
@@ -94,7 +94,7 @@ class GraphPrint implements \JsonSerializable
         }
         return null;
     }
-    
+
     /**
     * Sets the ODataType
     *
@@ -107,7 +107,7 @@ class GraphPrint implements \JsonSerializable
         $this->_propDict["@odata.type"] = $val;
         return $this;
     }
-    
+
     /**
     * Serializes the object by property array
     * Manually serialize DateTime into RFC3339 format

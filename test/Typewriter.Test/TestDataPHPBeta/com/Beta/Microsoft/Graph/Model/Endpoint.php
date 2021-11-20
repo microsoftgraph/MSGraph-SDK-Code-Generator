@@ -37,7 +37,7 @@ class Endpoint extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the property1
     *
@@ -50,5 +50,5 @@ class Endpoint extends Entity
         $this->_propDict["property1"] = intval($val);
         return $this;
     }
-    
+
 }
