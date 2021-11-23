@@ -4,5 +4,5 @@
 	branch = master
 [submodule "apidoctor"]
 	path = apidoctor
-	url = https://github.com/microsoftgraph/apidoctor.git
+	url = https://github.com/OneDrive/apidoctor.git
 	branch = master

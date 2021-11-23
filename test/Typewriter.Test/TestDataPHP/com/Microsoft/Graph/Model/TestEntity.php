@@ -41,7 +41,7 @@ class TestEntity extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the testNav
     *
@@ -54,7 +54,7 @@ class TestEntity extends Entity
         $this->_propDict["testNav"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the testInvalidNav
     *
@@ -72,7 +72,7 @@ class TestEntity extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the testInvalidNav
     *
@@ -85,7 +85,7 @@ class TestEntity extends Entity
         $this->_propDict["testInvalidNav"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the testExplicitNav
     *
@@ -103,7 +103,7 @@ class TestEntity extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the testExplicitNav
     *
@@ -116,5 +116,5 @@ class TestEntity extends Entity
         $this->_propDict["testExplicitNav"] = $val;
         return $this;
     }
-    
+
 }
