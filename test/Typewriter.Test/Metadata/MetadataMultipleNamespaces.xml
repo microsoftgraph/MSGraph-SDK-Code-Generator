@@ -397,5 +397,26 @@
         <ReturnType Type="microsoft.graph2.callRecords.callRecord" />
       </Function>
     </Schema>
+
+    <Schema Namespace="microsoft.graph.managedTenants" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="managedTenant" BaseType="graph.entity">
+        <NavigationProperty Name="managementTemplateCollections" Type="Collection(microsoft.graph.managedTenants.managementTemplateCollection)" ContainsTarget="true" />
+        <NavigationProperty Name="managementTemplates" Type="Collection(microsoft.graph.managedTenants.managementTemplate)" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="managementTemplateCollection" BaseType="graph.entity">
+        <Property Name="description" Type="Edm.String" />
+        <Property Name="displayName" Type="Edm.String" />
+        <NavigationProperty Name="managementTemplates" Type="Collection(microsoft.graph.managedTenants.managementTemplate)" />
+      </EntityType>
+      <EntityType Name="managementTemplate" BaseType="graph.entity">
+        <Property Name="category" Type="microsoft.graph.managedTenants.managementCategory" />
+        <Property Name="description" Type="Edm.String" />
+        <Property Name="displayName" Type="Edm.String" />
+        <Property Name="parameters" Type="Collection(microsoft.graph.managedTenants.templateParameter)" />
+        <Property Name="version" Type="Edm.Int32" />
+        <Property Name="workloadActions" Type="Collection(microsoft.graph.managedTenants.workloadAction)" />
+        <NavigationProperty Name="managementTemplateCollections" Type="Collection(microsoft.graph.managedTenants.managementTemplateCollection)" />
+      </EntityType>  
+    </Schema>
   </edmx:DataServices>
 </edmx:Edmx>
