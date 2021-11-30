@@ -80,6 +80,16 @@ resources:
      type: github
      endpoint: microsoftkiota
      name: microsoft/kiota
+   - repository: msgraph-cli
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-cli
+     ref: main
+   - repository: msgraph-beta-cli
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-beta-cli
+     ref: main
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -508,3 +518,57 @@ stages:
         cleanMetadataFolder: $(cleanMetadataFolderV1)
         languageSpecificSteps:
         - template: generation-templates/objc.yml
+
+- stage: stage_cli_v1
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_v1_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+    )
+  jobs:
+  - job: cli_v1
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'shell'
+        version: ''
+        repoName: 'msgraph-cli'
+        branchName: $(v1Branch)
+        targetClassName: "GraphServiceClient"
+        targetNamespace: "github.com/microsoftgraph/msgraph-cli/"
+        cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+        languageSpecificSteps:
+        - template: generation-templates/shell.yml
+          parameters:
+            repoName: msgraph-cli
+
+- stage: stage_cli_beta
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_beta_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+    )
+  jobs:
+  - job: cli_beta
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'shell'
+        version: 'beta'
+        repoName: 'msgraph-beta-cli'
+        branchName: $(betaBranch)
+        targetClassName: "GraphServiceClient"
+        targetNamespace: "github.com/microsoftgraph/msgraph-beta-cli/"
+        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        languageSpecificSteps:
+        - template: generation-templates/shell.yml
+          parameters:
+            repoName: msgraph-beta-cli
