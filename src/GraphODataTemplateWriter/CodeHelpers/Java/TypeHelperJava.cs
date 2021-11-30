@@ -61,7 +61,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
                 case "Decimal":
                     return "java.math.BigDecimal";
                 default:
-                    if(@type.Name.EndsWith("Collection", StringComparison.OrdinalIgnoreCase)){
+                    if(@type.Name.EndsWith("TemplateCollection", StringComparison.OrdinalIgnoreCase)){
                         return @type.Name.ToUpperFirstChar()+"Object";
                     }
                     return @type.Name.ToUpperFirstChar();
@@ -234,7 +234,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             {
                 name = c.Name.ToUpperFirstChar();
             }
-            if(name.EndsWith("Collection", StringComparison.OrdinalIgnoreCase))
+            if(name.EndsWith("TemplateCollection", StringComparison.OrdinalIgnoreCase))
             {
                 name = name+"Object";
             }
@@ -571,7 +571,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             else{
                 name = c.Name.ToUpperFirstChar();
             }
-            if(name.EndsWith("Collection", StringComparison.OrdinalIgnoreCase))
+            if(name.EndsWith("TemplateCollection", StringComparison.OrdinalIgnoreCase))
             {
                 name = name+"Object";
             }
