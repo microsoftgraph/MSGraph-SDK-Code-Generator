@@ -490,27 +490,28 @@ stages:
           parameters:
             repoName: 'msgraph-beta-typescript-typings'
 
-- stage: stage_typescript_sdk_beta
+- stage: stage_typescript_sdk_v1
   dependsOn:
   - stage_build_and_publish_kiota
-  - stage_beta_openapi
+  - stage_v1_openapi
   condition: |
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
     )
   jobs:
-  - job: typescript_sdk_beta
+  - job: typescript_sdk_v1
     steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
         language: 'typescript'
-        version: 'beta'
+        version: ''
         repoName: 'msgraph-sdk-typescript'
-        branchName: $(betaBranch)
+        branchName: $(v1Branch)
+        targetClassName: "GraphServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-typescript/"
-        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/typescript-sdk.yml
           parameters:

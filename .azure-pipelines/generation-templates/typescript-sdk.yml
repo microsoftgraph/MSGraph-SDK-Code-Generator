@@ -6,18 +6,18 @@ steps:
 - pwsh: '$(scriptsDirectory)/clean-typescript-files.ps1'
   displayName: 'Remove generated models and requests from the repo'
   env:
-    MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/
-
-- pwsh : $(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts/incrementMinorVersion.ps1
-  displayName: 'Increment minor version number'
-  workingDirectory: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts'
+    MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/
 
 - pwsh: '$(scriptsDirectory)/copy-typescript-sdk-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(kiotaDirectory)/output/*
-    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/
+    RepoModelsDir: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/src/'
+
+- checkout: kiota
+  displayName: checkout kiota
+  fetchDepth: 1
 
 - pwsh: '$(scriptsDirectory)/package-typescript-kiota-dependecies.ps1'
   displayName: 'Package kiota typescript dependecies'
