@@ -72,7 +72,7 @@ resources:
      type: github
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-sdk-typescript
-     ref: main
+     ref: dev
    - repository: msgraph-metadata
      type: github
      endpoint: microsoftgraph
