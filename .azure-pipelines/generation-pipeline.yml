@@ -68,6 +68,11 @@ resources:
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-beta-sdk-go
      ref: main
+   - repository: msgraph-sdk-typescript
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-sdk-typescript
+     ref: dev
    - repository: msgraph-metadata
      type: github
      endpoint: microsoftgraph
@@ -484,6 +489,33 @@ stages:
         - template: generation-templates/typescript.yml
           parameters:
             repoName: 'msgraph-beta-typescript-typings'
+
+- stage: stage_typescript_sdk_v1
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_v1_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+    )
+  jobs:
+  - job: typescript_sdk_v1
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'typescript'
+        version: ''
+        repoName: 'msgraph-sdk-typescript'
+        branchName: $(v1Branch)
+        targetClassName: "GraphServiceClient"
+        targetNamespace: "github.com/microsoftgraph/msgraph-sdk-typescript/"
+        cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+        languageSpecificSteps:
+        - template: generation-templates/typescript-sdk.yml
+          parameters:
+            repoName: msgraph-sdk-typescript
 
 - stage: stage_objc_v1
   dependsOn:
