@@ -30,10 +30,7 @@ else
 var iBaseRequestTypeName = @namespace.GetCoreLibraryType("IBaseRequest");
 var iHttpProviderTypeName = @namespace.GetCoreLibraryType("IHttpProvider");
 
-if (propClass.EndsWith("Request"))
-{
-    propClass = String.Concat(propClass, "Object");
-}
+propClass = propClass.DisambiguateTypeName();
 #>
 
 namespace <#=@namespace#>

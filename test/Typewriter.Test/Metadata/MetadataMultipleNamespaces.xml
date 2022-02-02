@@ -66,7 +66,9 @@
       <EntityType Name="print">
         <Property Name="settings" Type="Edm.String" />
       </EntityType>
-      <EntityType Name="entityType2" BaseType="graph.entity" />
+    <EntityType Name="entityType2" BaseType="graph.entity">
+        <Property Name="alertClassification" Type="microsoft.graph.security.alertClassification" />
+    </EntityType>
       <EntityType Name="entityType3" BaseType="graph.entity">
         <Annotation Term = "Org.OData.Core.V1.Revisions">
           <Collection>
@@ -417,6 +419,15 @@
         <Property Name="workloadActions" Type="Collection(microsoft.graph.managedTenants.workloadAction)" />
         <NavigationProperty Name="managementTemplateCollections" Type="Collection(microsoft.graph.managedTenants.managementTemplateCollection)" />
       </EntityType>  
+    </Schema>
+    <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="microsoft.graph.security">
+        <EnumType Name="alertClassification" UnderlyingType="Edm.Byte">
+            <Member Name="unknown" Value="0"/>
+            <Member Name="falsePositive" Value="10"/>
+            <Member Name="truePositive" Value="20"/>
+            <Member Name="informationalExpectedActivity" Value="30"/>
+            <Member Name="unknownFutureValue" Value="39"/>
+        </EnumType>
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>

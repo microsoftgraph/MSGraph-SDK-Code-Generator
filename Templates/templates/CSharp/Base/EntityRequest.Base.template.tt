@@ -80,10 +80,7 @@ public string GetDeleteAsyncMethod(string deleteTargetString, string deleteTarge
 {
     var stringBuilder = new StringBuilder();
 
-	if (deleteTargetType.EndsWith("Request"))
-	{
-		deleteTargetType = String.Concat(deleteTargetType, "Object");
-	}
+    deleteTargetType = deleteTargetType.DisambiguateTypeName();
 
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
@@ -162,13 +159,7 @@ public string GetEntityPutAsyncMethod(OdcmClass odcmClass,bool initializeCollect
     var stringBuilder = new StringBuilder();
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
-    var entityName = this.GetEntityNameString(odcmClass);
-
-    // Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-    if (entityName.EndsWith("Request"))
-    {
-        entityName = String.Concat(entityName, "Object");
-    }
+    var entityName = this.GetEntityNameString(odcmClass).DisambiguateTypeName();
 
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
     this.AppendPutAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, true, isGraphResponseMethod);
@@ -336,13 +327,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
 
-    var entityName = this.GetEntityNameString(odcmClass);
-
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (entityName.EndsWith("Request"))
-	{
-		entityName = String.Concat(entityName, "Object");
-	}
+    var entityName = this.GetEntityNameString(odcmClass).DisambiguateTypeName();
 
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
     this.AppendCreateAsyncHeader(entityName, lowerCaseEntityName, stringBuilder, true, isGraphResponseMethod);
@@ -387,11 +372,8 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool initializeCol
 public void AppendGetAsyncHeader(string entityName, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
 
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (entityName.EndsWith("Request"))
-	{
-		entityName = String.Concat(entityName, "Object");
-	}
+    // Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+    entityName = entityName.DisambiguateTypeName();
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
@@ -431,13 +413,7 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool initializeCollec
 {
     var stringBuilder = new StringBuilder();
 
-    var entityName = this.GetEntityNameString(odcmClass);
-
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (entityName.EndsWith("Request"))
-	{
-		entityName = String.Concat(entityName, "Object");
-	}
+    var entityName = this.GetEntityNameString(odcmClass).DisambiguateTypeName();
 
     var templateWriterHost = (CustomT4Host)Host;
     var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;
@@ -484,11 +460,8 @@ public void AppendUpdateAsyncHeader(string entityName, string lowerCaseEntityNam
 {
     var clientExceptionTypeName = @namespace.GetCoreLibraryType("ClientException");
 
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (entityName.EndsWith("Request"))
-	{
-		entityName = String.Concat(entityName, "Object");
-	}
+    // Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+    entityName = entityName.DisambiguateTypeName();
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
@@ -535,13 +508,7 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool initializeCol
     var generatedErrorConstantsTypeName = @namespace.GetCoreLibraryType("GeneratedErrorConstants");
     var constantsTypeName = @namespace.GetCoreLibraryType("Constants");
 
-    var entityName = this.GetEntityNameString(odcmClass);
-
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (entityName.EndsWith("Request"))
-	{
-		entityName = String.Concat(entityName, "Object");
-	}
+    var entityName = this.GetEntityNameString(odcmClass).DisambiguateTypeName();
 
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
 
@@ -626,11 +593,8 @@ public string GetSelectExpressionMethod(string requestType, string @namespace, s
     var expressionExtractHelperTypeName = @namespace.GetCoreLibraryType("ExpressionExtractHelper");
     var queryOptionTypeName = @namespace.GetCoreLibraryType("QueryOption");
 
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (underlyingType.EndsWith("Request"))
-	{
-		underlyingType = String.Concat(underlyingType, "Object");
-	}
+    // Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+    underlyingType = underlyingType.DisambiguateTypeName();
 
     var stringBuilder = new StringBuilder();
 
@@ -673,11 +637,8 @@ public string GetExpandExpressionMethod(string requestType, string underlyingTyp
     var expressionExtractHelperTypeName = @namespace.GetCoreLibraryType("ExpressionExtractHelper");
     var queryOptionTypeName = @namespace.GetCoreLibraryType("QueryOption");
 
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (underlyingType.EndsWith("Request"))
-	{
-		underlyingType = String.Concat(underlyingType, "Object");
-	}
+    // Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+    underlyingType = underlyingType.DisambiguateTypeName();
 
     var stringBuilder = new StringBuilder();
 

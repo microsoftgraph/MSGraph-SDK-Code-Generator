@@ -5,12 +5,7 @@
 var prop = host.CurrentType.AsOdcmProperty();
 var @namespace = this.GetNamespaceName(prop.Class.AsOdcmClass());
 
-var innerEntityType = prop.GetTypeString(@namespace);
-if (innerEntityType.EndsWith("Request"))
-{
-	innerEntityType = String.Concat(innerEntityType, "Object");
-}
-
+var innerEntityType = prop.GetTypeString(@namespace).DisambiguateTypeName();
 var collectionRequest = this.GetPropertyCollectionRequestName(prop);
 var collectionResponse = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionResponse");
 var collectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");

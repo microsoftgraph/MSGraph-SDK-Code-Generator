@@ -17,8 +17,15 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Entity Type2.
     /// </summary>
+    [JsonConverter(typeof(DerivedTypeConverter<EntityType2>))]
     public partial class EntityType2 : Entity
     {
+    
+        /// <summary>
+        /// Gets or sets alert classification.
+        /// </summary>
+        [JsonPropertyName("alertClassification")]
+        public Microsoft.Graph.SecurityNameSpace.AlertClassification? AlertClassification { get; set; }
     
     }
 }

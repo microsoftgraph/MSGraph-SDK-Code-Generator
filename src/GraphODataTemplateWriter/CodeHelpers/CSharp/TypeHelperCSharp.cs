@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 {
@@ -115,7 +115,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         {
             return new HashSet<string>(StringComparer.Ordinal)
             {
-                "Required"
+                "Required",
+                "Task"
+            };
+        }
+
+        public static ICollection<string> GetReservedNameSpaces()
+        {
+            return new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "Microsoft.Graph.Security"
             };
         }
 
@@ -157,15 +166,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         }
 
         /// <summary>
-        /// We use Request postfix to create Request objects in the SDK
+        /// We use Request suffix to create Request objects in the SDK
         /// but metadata has type names that end with Request as well. To disambiguate those
         /// we append Object at the end of the generated type name.
+        /// Also, rename special models that may cause collisions with dotnet system types
         /// </summary>
         /// <param name="typeName">type name that potentially ends with "Request"</param>
         /// <returns>disambiguated type name. If the type is myRequest, it is converted into myRequestObject</returns>
-        public static string DisambiguateRequestObject(this string typeName)
+        public static string DisambiguateTypeName(this string typeName)
         {
-            if (typeName.EndsWith("Request"))
+            if (typeName.EndsWith("Request") || GetReservedModelNames().Contains(typeName))
             {
                 return $"{typeName}Object";
             }
@@ -319,7 +329,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         private static readonly Inflector inflector = new Inflector(CultureInfo.GetCultureInfo("en-US"));
         public static string GetNamespaceName(this OdcmNamespace namespaceObject)
         {
-            return inflector.Titleize(namespaceObject.Name).Replace(" ", "");
+            var nameSpaceName = GetReservedNameSpaces().Contains(namespaceObject.Name) ? $"{namespaceObject.Name}NameSpace" : namespaceObject.Name;
+            return inflector.Titleize(nameSpaceName).Replace(" ", "");
         }
 
         public static string GetToLowerFirstCharName(this OdcmProperty property)
@@ -402,12 +413,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 
         public static string GetSanitizedClassName(this string className, OdcmClass odcmClass)
         {
-            var entityName = className.ToCheckedCase();
-            if (entityName.EndsWith("Request"))
-            {
-                entityName = String.Concat(entityName, "Object");
-            }
-            return entityName;
+            return className.ToCheckedCase().DisambiguateTypeName();
         }
 
         public static string GetSanitizedParameterName(this string parameter, string prefix = null)
@@ -463,16 +469,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
                 var parameters = m.Parameters
                     .Select(p =>
                     {
-                        var type = p.Type.GetTypeString(@namespace);
+                        // Adds support for classes ending in "Request" that have been dismabiguated.
+                        var type = p.Type.GetTypeString(@namespace).DisambiguateTypeName();
                         var name = p.Name.ToLowerFirstChar();
                         var parameterName = p.Name.GetSanitizedParameterName();
                         var propertyName = p.Name.ToCheckedCase();
-
-                        // Adds support for classes ending in "Request" that have been dismabiguated.
-                        if (type.EndsWith("Request"))
-                        {
-                            type = String.Concat(type, "Object");
-                        }
 
                         // Adjust the type string
                         if (p.IsCollection)

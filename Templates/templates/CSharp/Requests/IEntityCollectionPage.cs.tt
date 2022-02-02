@@ -10,12 +10,7 @@ var interfaceConverterTypeName = @namespace.GetCoreLibraryType("InterfaceConvert
 var iCollectionPageTypeName = @namespace.GetCoreLibraryType("ICollectionPage");
 var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
 
-var innerEntityType = prop.GetTypeString(@namespace);
-if (innerEntityType.EndsWith("Request"))
-{
-    innerEntityType = String.Concat(innerEntityType, "Object");
-}
-
+var innerEntityType = prop.GetTypeString(@namespace).DisambiguateTypeName();
 var entityCollectionRequest = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionRequest");
 var entityCollectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
 
