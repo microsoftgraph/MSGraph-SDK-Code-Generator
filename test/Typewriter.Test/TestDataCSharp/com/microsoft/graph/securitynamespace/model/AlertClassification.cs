@@ -8,7 +8,7 @@
 // Template Source: EnumType.cs.tt
 
 
-namespace Microsoft.Graph.SecurityNameSpace
+namespace Microsoft.Graph.SecurityNamespace
 {
     using System.Text.Json.Serialization;
 

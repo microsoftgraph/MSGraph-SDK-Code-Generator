@@ -25,7 +25,7 @@ namespace Microsoft.Graph
         /// Gets or sets alert classification.
         /// </summary>
         [JsonPropertyName("alertClassification")]
-        public Microsoft.Graph.SecurityNameSpace.AlertClassification? AlertClassification { get; set; }
+        public Microsoft.Graph.SecurityNamespace.AlertClassification? AlertClassification { get; set; }
     
     }
 }

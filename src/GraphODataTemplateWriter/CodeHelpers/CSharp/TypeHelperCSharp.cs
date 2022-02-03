@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
 {
@@ -329,7 +329,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
         private static readonly Inflector inflector = new Inflector(CultureInfo.GetCultureInfo("en-US"));
         public static string GetNamespaceName(this OdcmNamespace namespaceObject)
         {
-            var nameSpaceName = GetReservedNameSpaces().Contains(namespaceObject.Name) ? $"{namespaceObject.Name}NameSpace" : namespaceObject.Name;
+            var nameSpaceName = GetReservedNameSpaces().Contains(namespaceObject.Name) ? $"{namespaceObject.Name}Namespace" : namespaceObject.Name;
             return inflector.Titleize(nameSpaceName).Replace(" ", "");
         }
 
