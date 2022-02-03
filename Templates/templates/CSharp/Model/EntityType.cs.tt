@@ -9,30 +9,19 @@ var entityName = entity.Name.ToCheckedCase();
 var @namespace = entity.Namespace.GetNamespaceName();
 var derivedTypeConverterTypeName = @namespace.GetCoreLibraryType("DerivedTypeConverter");
 
-var typeDeclaration = entityName;
-
-
 // In the case a entity type name ends with "Request", we will have a collision with the Request objects
 // when we generate. For example, there are entities named EventMessage and EventMessageRequest. Those entities
 // lead to the generation of an EventMessageRequest and EventMessageRequestRequest request objects in the same
 // namespace as the entities. We add 'Object' to the end of the name to disambiguate the entity.
 // This change needs to sync with changes for the *Request templates.
 
-if (typeDeclaration.EndsWith("Request"))
-{
-    typeDeclaration = String.Concat(typeDeclaration, "Object");
-}
+var typeDeclaration = entityName.DisambiguateTypeName();
 
 string cstorTypeDeclaration = typeDeclaration;
 
 if (entity.Base != null)
 {
-    var baseTypeDeclaration = entity.Base.GetTypeString(entity.Namespace.GetNamespaceName());
-
-    if (baseTypeDeclaration.EndsWith("Request"))
-    {
-        baseTypeDeclaration = String.Concat(baseTypeDeclaration, "Object");
-    }
+    var baseTypeDeclaration = entity.Base.GetTypeString(entity.Namespace.GetNamespaceName()).DisambiguateTypeName();
 
     typeDeclaration = string.Format("{0} : {1}", typeDeclaration, baseTypeDeclaration);
 }

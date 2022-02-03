@@ -40,11 +40,8 @@ public string GetEntityRequestInterfaceDefinition(OdcmClass odcmClass)
 // -------------------------------------------------------------
 public void AppendEntityCreateAsyncMethodHeader(string entityName, string lowerCaseEntityName, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (entityName.EndsWith("Request"))
-	{
-		entityName = String.Concat(entityName, "Object");
-	}
+    // Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+    entityName = entityName.DisambiguateTypeName();
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
@@ -85,13 +82,7 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool isGraphRespon
 {
     var stringBuilder = new StringBuilder();
 
-    var entityName = this.GetEntityNameString(odcmClass);
-
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (entityName.EndsWith("Request"))
-	{
-		entityName = String.Concat(entityName, "Object");
-	}
+    var entityName = this.GetEntityNameString(odcmClass).DisambiguateTypeName();
 
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
     this.AppendEntityCreateAsyncMethodHeader(entityName, lowerCaseEntityName, stringBuilder, true, isGraphResponseMethod);
@@ -111,11 +102,8 @@ public string GetEntityCreateAsyncMethod(OdcmClass odcmClass, bool isGraphRespon
 
 public void AppendDeleteAsyncMethodHeader(string deleteTargetString, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (deleteTargetString.EndsWith("Request"))
-	{
-		deleteTargetString = String.Concat(deleteTargetString, "Object");
-	}
+    // Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+    deleteTargetString = deleteTargetString.DisambiguateTypeName();
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
@@ -150,11 +138,8 @@ public void AppendDeleteAsyncMethodHeader(string deleteTargetString, StringBuild
 
 public string GetDeleteAsyncMethod(string deleteTargetString, bool isGraphResponseMethod)
 {
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (deleteTargetString.EndsWith("Request"))
-	{
-		deleteTargetString = String.Concat(deleteTargetString, "Object");
-	}
+    // Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+    deleteTargetString = deleteTargetString.DisambiguateTypeName();
 
     var stringBuilder = new StringBuilder();
     this.AppendDeleteAsyncMethodHeader(deleteTargetString, stringBuilder, true, isGraphResponseMethod);
@@ -259,13 +244,7 @@ public void AppendPutAsyncMethodHeader(string putTargetString, string lowerCaseE
 public string GetEntityPutAsyncMethod(OdcmClass odcmClass, bool isGraphResponseMethod = false)
 {
     var stringBuilder = new StringBuilder();
-    var entityName = this.GetEntityNameString(odcmClass);
-
-    // Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-    if (entityName.EndsWith("Request"))
-    {
-        entityName = String.Concat(entityName, "Object");
-    }
+    var entityName = this.GetEntityNameString(odcmClass).DisambiguateTypeName();
 
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
     this.AppendPutAsyncMethodHeader(entityName, lowerCaseEntityName,stringBuilder, true, isGraphResponseMethod);
@@ -289,11 +268,8 @@ public string GetEntityDeleteAsyncMethod(OdcmClass odcmClass, bool isGraphRespon
 
 public void AppendGetAsyncMethodHeader(string entityName, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (entityName.EndsWith("Request"))
-	{
-		entityName = String.Concat(entityName, "Object");
-	}
+    // Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
+    entityName = entityName.DisambiguateTypeName();
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
@@ -329,13 +305,7 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool isGraphResponseM
 {
     var stringBuilder = new StringBuilder();
 
-    var entityName = this.GetEntityNameString(odcmClass);
-
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (entityName.EndsWith("Request"))
-	{
-		entityName = String.Concat(entityName, "Object");
-	}
+    var entityName = this.GetEntityNameString(odcmClass).DisambiguateTypeName();
 
     this.AppendGetAsyncMethodHeader(entityName, stringBuilder, true, isGraphResponseMethod);
     stringBuilder.Append(Environment.NewLine);
@@ -355,11 +325,7 @@ public string GetEntityGetAsyncMethod(OdcmClass odcmClass, bool isGraphResponseM
 public void AppendUpdateAsyncMethodHeader(string entityName, string lowerCaseEntityName, string @namespace, StringBuilder stringBuilder, bool includeSendParams, bool isGraphResponseMethod)
 {
     var clientExceptionTypeName = @namespace.GetCoreLibraryType("ClientException");
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (entityName.EndsWith("Request"))
-	{
-		entityName = String.Concat(entityName, "Object");
-	}
+    entityName = entityName.DisambiguateTypeName();
 
     stringBuilder.Append("/// <summary>");
     stringBuilder.Append(Environment.NewLine);
@@ -399,13 +365,7 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool isGraphRespon
 {
     var stringBuilder = new StringBuilder();
 
-    var entityName = this.GetEntityNameString(odcmClass);
-
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (entityName.EndsWith("Request"))
-	{
-		entityName = String.Concat(entityName, "Object");
-	}
+    var entityName = this.GetEntityNameString(odcmClass).DisambiguateTypeName();
 
     var lowerCaseEntityName = entityName.ToLowerFirstChar();
     this.AppendUpdateAsyncMethodHeader(entityName, lowerCaseEntityName, odcmClass.GetNamespaceName(), stringBuilder, true, isGraphResponseMethod);
@@ -429,13 +389,7 @@ public string GetEntityUpdateAsyncMethod(OdcmClass odcmClass, bool isGraphRespon
 
 public string GetExpandExpressionMethod(string requestType, string underlyingType)
 {
-
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (underlyingType.EndsWith("Request"))
-	{
-		underlyingType = String.Concat(underlyingType, "Object");
-	}
-
+    underlyingType = underlyingType.DisambiguateTypeName();
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append(
@@ -468,13 +422,7 @@ public string GetExpandMethod(string entityRequest)
 
 public string GetSelectExpressionMethod(string requestType, string underlyingType)
 {
-
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (underlyingType.EndsWith("Request"))
-	{
-		underlyingType = String.Concat(underlyingType, "Object");
-	}
-
+    underlyingType = underlyingType.DisambiguateTypeName();
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append(

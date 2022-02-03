@@ -5,7 +5,7 @@
 
 OdcmClass entity = host.CurrentType.AsOdcmClass();
 var @namespace = this.GetNamespaceName(entity);
-var entityName = this.GetEntityNameString(entity);
+var entityName = this.GetEntityNameString(entity).DisambiguateTypeName();
 
 var features = host.CurrentType.GetFeatures();
 
@@ -84,15 +84,7 @@ namespace <#=@namespace#>
 
 	// This change supports the scenario where we have an entity based model whose name ends with "Request".
 	// This will disambiguate with Request objects that are created for models.
-	var thisEntity_Name = entity.Name;
-
-	// Special case for when an entity name ends with "Request". Associated with the change in EntityType.cs.tt
-	if (entityName.EndsWith("Request"))
-	{
-		thisEntity_Name = String.Concat(entity.Name, "Object");
-		entityName = String.Concat(entityName, "Object");
-	}
-
+	var thisEntity_Name = entity.Name.DisambiguateTypeName();
 
 #>
         /// <summary>

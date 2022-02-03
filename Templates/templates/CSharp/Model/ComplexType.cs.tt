@@ -9,17 +9,11 @@ var complexTypeName = complex.Name.ToCheckedCase();
 var @namespace = complex.Namespace.GetNamespaceName();
 var derivedTypeConverterTypeName = @namespace.GetCoreLibraryType("DerivedTypeConverter");
 
-var typeDeclaration = complexTypeName;
-
 // In the case a complex type name ends with "Request", we will have a collision with the *Request objects
 // when we generate. For example, there is a complex type named SearchRequest and an entity named Search.
 // The SearchRequest complex type results in a SearchResult class in our models collection. The Search entity
 // results in a SearchRequest request object causing conflicts.
-
-if (typeDeclaration.EndsWith("Request"))
-{
-    typeDeclaration = String.Concat(typeDeclaration, "Object");
-}
+var typeDeclaration = complexTypeName.DisambiguateTypeName();
 
 // Capture the cstor type declaration as the typedeclaration may get appended with a base type.
 string cstorTypeDeclaration = typeDeclaration;
@@ -27,13 +21,8 @@ string cstorTypeDeclaration = typeDeclaration;
 if (complex.Base != null)
 {
     // Disambiguate the base type declaration for the same reason we did this
-	// for typeDeclaration.
-	var baseTypeDeclaration = complex.Base.GetTypeString(complex.Namespace.GetNamespaceName());
-
-    if (baseTypeDeclaration.EndsWith("Request"))
-    {
-        baseTypeDeclaration = String.Concat(baseTypeDeclaration, "Object");
-    }
+    // for typeDeclaration.
+    var baseTypeDeclaration = complex.Base.GetTypeString(complex.Namespace.GetNamespaceName()).DisambiguateTypeName();
 
     typeDeclaration = string.Format("{0} : {1}", typeDeclaration, baseTypeDeclaration);
 }
