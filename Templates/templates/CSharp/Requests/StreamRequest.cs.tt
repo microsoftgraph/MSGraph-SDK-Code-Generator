@@ -33,10 +33,7 @@ var optionTypeName = @namespace.GetCoreLibraryType("Option");
 var baseRequestTypeName = @namespace.GetCoreLibraryType("BaseRequest");
 var iHttpProviderTypeName = @namespace.GetCoreLibraryType("IHttpProvider");
 
-if (propClass.EndsWith("Request"))
-{
-    propClass = String.Concat(propClass, "Object");
-}
+propClass = propClass.DisambiguateTypeName();
 
 var templateWriterHost = (CustomT4Host)Host;
 var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;

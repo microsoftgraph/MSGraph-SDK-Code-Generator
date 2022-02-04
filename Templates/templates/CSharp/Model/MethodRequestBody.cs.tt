@@ -35,13 +35,8 @@ if (attributeStringBuilder.Length > 0) {
     <#
     foreach (var param in method.WithDistinctParameters())
     {
-        var paramTypeString = param.Type.GetTypeString(method.Namespace.GetNamespaceName());
-        
-        // Adds support for classes ending in "Request" that have been dismabiguated.
-        if (paramTypeString.EndsWith("Request"))
-        {   
-            paramTypeString = String.Concat(paramTypeString, "Object");
-        }
+        var paramTypeString = param.Type.GetTypeString(method.Namespace.GetNamespaceName()).DisambiguateTypeName();
+
         if (param.IsCollection)
         {
             paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);

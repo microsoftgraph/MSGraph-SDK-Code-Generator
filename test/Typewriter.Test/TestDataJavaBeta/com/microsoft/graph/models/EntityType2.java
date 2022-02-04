@@ -8,6 +8,7 @@ import com.microsoft.graph.serializer.ISerializer;
 import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
 import java.util.EnumSet;
+import com.microsoft.graph.security.models.AlertClassification;
 import com.microsoft.graph.models.Entity;
 
 
@@ -24,6 +25,15 @@ import javax.annotation.Nonnull;
  */
 public class EntityType2 extends Entity implements IJsonBackedObject {
 
+
+    /**
+     * The Alert Classification.
+     * 
+     */
+    @SerializedName(value = "alertClassification", alternate = {"AlertClassification"})
+    @Expose
+	@Nullable
+    public AlertClassification alertClassification;
 
 
     /**

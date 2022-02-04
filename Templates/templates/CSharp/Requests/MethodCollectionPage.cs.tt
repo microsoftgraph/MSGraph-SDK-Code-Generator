@@ -9,7 +9,7 @@ var @namespace = method.Namespace.GetNamespaceName();
 var collectionPageTypeName = @namespace.GetCoreLibraryType("CollectionPage");
 var iBaseClientTypeName = @namespace.GetCoreLibraryType("IBaseClient");
 
-var returnType = method.ReturnType.GetTypeString(@namespace).DisambiguateRequestObject();
+var returnType = method.ReturnType.GetTypeString(@namespace).DisambiguateTypeName();
 
 var responseNamePrefix = method.Class.Name.ToCheckedCase() + method.Name.Substring(method.Name.IndexOf('.') + 1).ToCheckedCase();
 var nextRequestType = responseNamePrefix + "Request";

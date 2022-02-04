@@ -78,12 +78,7 @@ public string GetPostAsyncMethod(OdcmProperty odcmProperty, string @namespace, s
     if (!odcmProperty.LongDescriptionContains("readonly"))
     {
         var sanitizedPropertyName = odcmProperty.Projection.Type.Name.GetSanitizedPropertyName(odcmProperty.Name);
-        var propertyType = this.GetPropertyTypeName(odcmProperty, @namespace);
-
-		if (propertyType.EndsWith("Request"))
-		{
-			propertyType = String.Concat(propertyType, "Object");
-		}
+        var propertyType = this.GetPropertyTypeName(odcmProperty, @namespace).DisambiguateTypeName();
 
         var templateWriterHost = (CustomT4Host)Host;
         var templateWriter = (CodeWriterCSharp)templateWriterHost.CodeWriter;

@@ -9,13 +9,9 @@ var @namespace = prop.Class.AsOdcmClass().Namespace.GetNamespaceName();
 var collectionPageTypeName = @namespace.GetCoreLibraryType("CollectionPage");
 
 var innerEntity = prop.Projection.Type;
-var innerEntityType = innerEntity.GetTypeString(@namespace);
+var innerEntityType = innerEntity.GetTypeString(@namespace).DisambiguateTypeName();
 var entityCollectionRequest = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionRequest");
 var entityCollectionPage = string.Concat(prop.Class.Name.ToCheckedCase(), prop.Name.ToCheckedCase(), "CollectionPage");
-if (innerEntityType.EndsWith("Request"))
-{
-    innerEntityType = String.Concat(innerEntityType, "Object");
-}
 #>
 
 namespace <#=@namespace#>
