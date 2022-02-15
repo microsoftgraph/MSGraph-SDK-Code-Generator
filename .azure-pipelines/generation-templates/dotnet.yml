@@ -7,11 +7,11 @@ parameters:
 
 steps:
 - pwsh: '$(scriptsDirectory)/copy-dotnet-models.ps1'
-  displayName: 'Update models'
+  displayName: 'Update .NET models - ${{ parameters.repoName }}'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(typewriterDirectory)/output
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Graph/Generated/
 
-- pwsh: dotnet build ${{ parameters.repoName }}/**/*.csproj --configuration $(buildConfiguration)
-  displayName: Build ${{ parameters.dllName }}
+- pwsh: dotnet build ${{ parameters.repoName }}/src/Microsoft.Graph/Microsoft.Graph.csproj --configuration $(buildConfiguration)
+  displayName: smoke test - build dll for ${{ parameters.dllName }}

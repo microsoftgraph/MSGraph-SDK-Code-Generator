@@ -116,16 +116,10 @@ steps:
   fetchDepth: 1
   persistCredentials: true
 
-- pwsh: '$(scriptsDirectory)/copy-dotnet-models.ps1'
-  displayName: update ${{ parameters.endpoint }} .NET models
-  env:
-    BuildConfiguration: $(buildConfiguration)
-    OutputFullPath: $(typewriterDirectory)/output
-    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Graph/Generated/
-
-# Smoke test that the generated files build for .NET
-- pwsh: dotnet build ${{ parameters.repoName }}/**/*.csproj --configuration $(buildConfiguration)
-  displayName: smoke test - build dll for ${{ parameters.endpoint }}
+- template: dotnet.yml
+  parameters:
+    repoName: msgraph-sdk-dotnet
+    dllName: Microsoft.Graph.dll
 
 # Checkin clean metadata into metadata repo or make it an artifact.
 - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
