@@ -5,7 +5,7 @@ steps:
   displayName: checkout kiota
   fetchDepth: 1
 
-- pwsh: dotnet build --project $(Build.SourcesDirectory)/src/kiota/kiota.csproj --configuration $(buildConfiguration)
+- pwsh: dotnet build $(Build.SourcesDirectory)/src/kiota/kiota.csproj --configuration $(buildConfiguration)
   displayName: 'Build Kiota'
 
 - task: CopyFiles@2

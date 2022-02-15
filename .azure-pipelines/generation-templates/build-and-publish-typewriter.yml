@@ -7,7 +7,7 @@ steps:
   submodules: recursive
   persistCredentials: true
 
-- pwsh: dotnet build --project $(Build.SourcesDirectory)/src/Typewriter/Typewriter.csproj --configuration $(buildConfiguration)
+- pwsh: dotnet build $(Build.SourcesDirectory)/src/Typewriter/Typewriter.csproj --configuration $(buildConfiguration)
   displayName: 'Build Typewriter'
 
 - task: CopyFiles@2

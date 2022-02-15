@@ -13,5 +13,5 @@ steps:
     OutputFullPath: $(typewriterDirectory)/output
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Graph/Generated/
 
-- pwsh: dotnet build --project ${{ parameters.repoName }}/**/*.csproj --configuration $(buildConfiguration)
+- pwsh: dotnet build ${{ parameters.repoName }}/**/*.csproj --configuration $(buildConfiguration)
   displayName: Build ${{ parameters.dllName }}

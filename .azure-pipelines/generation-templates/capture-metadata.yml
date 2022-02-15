@@ -124,7 +124,7 @@ steps:
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Graph/Generated/
 
 # Smoke test that the generated files build for .NET
-- pwsh: dotnet build --project ${{ parameters.repoName }}/**/*.csproj --configuration $(buildConfiguration)
+- pwsh: dotnet build ${{ parameters.repoName }}/**/*.csproj --configuration $(buildConfiguration)
   displayName: smoke test - build dll for ${{ parameters.endpoint }}
 
 # Checkin clean metadata into metadata repo or make it an artifact.
