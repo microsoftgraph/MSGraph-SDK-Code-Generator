@@ -13,9 +13,5 @@ steps:
     OutputFullPath: $(typewriterDirectory)/output
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Graph/Generated/
 
-- task: DotNetCoreCLI@2
+- pwsh: dotnet build --project ${{ parameters.repoName }}/**/*.csproj --configuration $(buildConfiguration)
   displayName: Build ${{ parameters.dllName }}
-  inputs:
-    command: 'build'
-    projects: ${{ parameters.repoName }}/**/*.csproj
-    arguments: '--configuration $(buildConfiguration)'
