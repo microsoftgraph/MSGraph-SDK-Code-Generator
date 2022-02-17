@@ -121,7 +121,7 @@ steps:
 
 - template: dotnet.yml
   parameters:
-    repoName: msgraph-sdk-dotnet
+    repoName: ${{ parameters.repoName }}
     dllName: Microsoft.Graph.dll
 
 # Checkin clean metadata into metadata repo or make it an artifact.
