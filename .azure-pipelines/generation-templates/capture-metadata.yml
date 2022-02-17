@@ -22,6 +22,9 @@ parameters:
   default: $(cleanMetadataFileV1)
 - name: 'cleanMetadataFolder'
   type: string
+- name: 'cleanMetadataFileWithAnnotations'
+  type: string
+  default: $(cleanMetadataFileWithAnnotationsV1)
 
 steps:
 
@@ -97,7 +100,7 @@ steps:
 - template: use-dotnet-sdk.yml
 
 # verify that generated metadata is parsable as an Edm model
-- pwsh: dotnet run --project $(Build.SourcesDirectory)/msgraph-metadata/tools/MetadataParser/MetadataParser.csproj -- ${{ parameters.cleanMetadataFile }}
+- pwsh: dotnet run --project $(Build.SourcesDirectory)/msgraph-metadata/tools/MetadataParser/MetadataParser.csproj -- ${{ parameters.cleanMetadataFileWithAnnotations }}
   displayName: 'verify whether metadata is parsable as an Edm model'
 
 - pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
@@ -118,7 +121,7 @@ steps:
 
 - template: dotnet.yml
   parameters:
-    repoName: msgraph-sdk-dotnet
+    repoName: ${{ parameters.repoName }}
     dllName: Microsoft.Graph.dll
 
 # Checkin clean metadata into metadata repo or make it an artifact.
