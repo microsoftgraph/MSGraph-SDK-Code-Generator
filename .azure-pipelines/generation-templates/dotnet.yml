@@ -13,5 +13,5 @@ steps:
     OutputFullPath: $(typewriterDirectory)/output
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Graph/Generated/
 
-- pwsh: dotnet build ${{ parameters.repoName }}/src/Microsoft.Graph/Microsoft.Graph.csproj --configuration $(buildConfiguration)
+- pwsh: dotnet build ${{ parameters.repoName }}/src/Microsoft.Graph/ --configuration $(buildConfiguration)
   displayName: smoke test - build dll for ${{ parameters.dllName }}
