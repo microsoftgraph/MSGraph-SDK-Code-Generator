@@ -27,6 +27,10 @@ parameters:
 - name: cleanMetadataFolder
   type: string
 
+- name: baseBranchName
+  type: string
+  default: ''
+
 steps:
 - template: set-up-for-generation.yml
   parameters:
@@ -45,6 +49,14 @@ steps:
   displayName: 'checkout generator'
   fetchDepth: 1
   persistCredentials: true
+
+- pwsh: '$(scriptsDirectory)/checkout-custom-base-branch.ps1'
+  displayName: 'Checking out custom base branch ${{ parameters.baseBranchName }}'
+  env:
+    RepoDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}
+    BranchName: ${{ parameters.baseBranchName }}
+  workingDirectory: ${{ parameters.repoName }}
+  condition: ne( '${{ parameters.baseBranchName }}' , '')
 
 - pwsh: '$(scriptsDirectory)/create-branch.ps1'
   displayName: 'Create a branch in ${{ parameters.repoName }}'
