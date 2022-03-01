@@ -96,7 +96,7 @@ steps:
     RemoveAnnotations: 'false'
     AddInnerErrorDescription: 'true'
     OutputMetadataFileName: 'cleanMetadataWithDescriptionsAndAnnotationsAndErrors'
-  displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata and keep capability annotations'
+  displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata and keep capability annotations and include error information'
 
 # publish metadata as an artifact
 - task: CopyFiles@2
