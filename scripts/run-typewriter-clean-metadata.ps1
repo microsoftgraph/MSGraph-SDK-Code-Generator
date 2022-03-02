@@ -22,6 +22,6 @@ if($additionalFlags -ne "")
     $additionalFlags += " -f $env:OutputMetadataFileName"
 }
 
-Invoke-Expression "$env:TypewriterExecutable -v Info -m $env:InputMetadataFile -o $env:OutputPath -g $env:GenerationMode -t $env:Transform -d $env:DocsDirectory -e $env:endpointVersion"
+Invoke-Expression "$env:TypewriterExecutable -v Info -m $env:InputMetadataFile -o $env:OutputPath -g $env:GenerationMode -t $env:Transform -d $env:DocsDirectory -e $env:endpointVersion$additionalFlags"
 
 Pop-Location
