@@ -23,7 +23,7 @@ steps:
 
 - template: checkout-metadata.yml
 - template: set-user-config.yml
-- template: use-dotnet-sdk-yml
+- template: use-dotnet-sdk.yml
 
 - pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi --prerelease
   displayName: install hidi

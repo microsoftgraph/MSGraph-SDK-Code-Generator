@@ -7,13 +7,23 @@ Push-Location -Path $env:TypewriterDirectory
 
 & chmod +x $env:TypewriterExecutable
 
+$additionalFlags = ""
 if (Test-Path env:RemoveAnnotations) # Use the XSLT with a flag to remove capability annotations, and add documentation annotations to the metadata.
 {
-    & $env:TypewriterExecutable -v Info -m $env:InputMetadataFile -o $env:OutputPath -g $env:GenerationMode -t $env:Transform -d $env:DocsDirectory -e $env:endpointVersion -r $env:RemoveAnnotations -f $env:OutputMetadataFileName
+    $additionalFlags += " -r $env:RemoveAnnotations"
 }
-else # Use the XSLT with default transform values and add documentation annotations to the metadata.
+if(Test-Path env:AddInnerErrorDescription)
 {
-    & $env:TypewriterExecutable -v Info -m $env:InputMetadataFile -o $env:OutputPath -g $env:GenerationMode -t $env:Transform -d $env:DocsDirectory -e $env:endpointVersion
+    $additionalFlags += " -a $env:AddInnerErrorDescription"
 }
+
+if($additionalFlags -ne "")
+{
+    $additionalFlags += " -f $env:OutputMetadataFileName"
+}
+
+$metadataFile = $env:InputMetadataFile -replace "\$", "```$" # To avoid considering $metadata as a variable in invoke expression
+
+Invoke-Expression "$env:TypewriterExecutable -v Info -m $metadataFile -o $env:OutputPath -g $env:GenerationMode -t $env:Transform -d $env:DocsDirectory -e $env:endpointVersion$additionalFlags"
 
 Pop-Location
