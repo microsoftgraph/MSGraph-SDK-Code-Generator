@@ -23,6 +23,10 @@ steps:
 
 - template: checkout-metadata.yml
 - template: set-user-config.yml
+- template: use-dotnet-sdk-yml
+
+- pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi --prerelease
+  displayName: install hidi
 
 - pwsh: '$(Build.SourcesDirectory)/msgraph-metadata/scripts/GenerateOpenApi.ps1 -endpointVersion ${{ parameters.endpoint }}'
   displayName: 'update ${{ parameters.endpoint }} open API description'
