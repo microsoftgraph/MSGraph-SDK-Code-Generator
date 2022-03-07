@@ -22,6 +22,8 @@ if($additionalFlags -ne "")
     $additionalFlags += " -f $env:OutputMetadataFileName"
 }
 
-& $env:TypewriterExecutable -v Info -m $env:InputMetadataFile -o $env:OutputPath -g $env:GenerationMode -t $env:Transform -d $env:DocsDirectory -e $env:endpointVersion$additionalFlags
+$metadataFile = $env:InputMetadataFile -replace "\$", "```$" # To avoid considering $metadata as a variable in invoke expression
+
+Invoke-Expression "$env:TypewriterExecutable -v Info -m $metadataFile -o $env:OutputPath -g $env:GenerationMode -t $env:Transform -d $env:DocsDirectory -e $env:endpointVersion$additionalFlags"
 
 Pop-Location
