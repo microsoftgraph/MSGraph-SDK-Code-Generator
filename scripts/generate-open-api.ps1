@@ -35,9 +35,9 @@ if(Test-Path $outputFile)
 try {
     Invoke-Expression "hidi transform --csdl ""$inputFile"" --output ""$outputFile"" --version OpenApi3_0 --loglevel Information --format yaml"
     # temporary fix for the server url https://github.com/microsoftgraph/msgraph-metadata/issues/124
-    $content = get-content .\openapi\v1.0\openapi.yaml
+    $content = get-content $outputFile
     $updatedContent = $content -replace "http://localhost", "https://graph.microsoft.com/$endpointVersion"
-    Set-Content .\openapi\v1.0\openapi.yaml $updatedContent
+    Set-Content $outputFile $updatedContent
     if(Test-Path $oldOutputFile)
     {
         Write-Verbose "Removing existing old output file"
