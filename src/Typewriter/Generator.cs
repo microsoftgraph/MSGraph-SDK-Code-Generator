@@ -96,24 +96,35 @@ namespace Typewriter
                 settings.EnableScript = true;
                 transform.Load(options.Transform, settings, null);
 
-                if (options.RemoveAnnotations == false)
-                {   
-                    XsltArgumentList xsltargs = new();
-                    xsltargs.AddParam("remove-capability-annotations", string.Empty, options.RemoveAnnotations.ToString());
+                XsltArgumentList xsltargs = new();
+                var xsltArgsCount = 0;
 
-                    // Execute the transformation, keep capability annotations, writes the transformed file.
+                AddXsltArgument(xsltargs, "remove-capability-annotations", options.RemoveAnnotations, ref xsltArgsCount);
+                AddXsltArgument(xsltargs, "add-innererror-description", options.AddInnerErrorDescription, ref xsltArgsCount);
+                
+                if(xsltArgsCount > 0)
+                {
                     transform.Transform(doc, xsltargs, writer);
-                    Logger.Info($"Transformed metadata with capability annotations written to {pathToCleanMetadata}");
+                    Logger.Info($"Transformed metadata with {xsltArgsCount} settings written to {pathToCleanMetadata}");
                 }
                 else
                 {
-                    // Execute the transformation, writes the transformed file.
                     transform.Transform(doc, writer);
-                    Logger.Info($"Transformed metadata written to {pathToCleanMetadata}");
+                    Logger.Info($"Transformed metadata with no settings written to {pathToCleanMetadata}");
                 }
             }
 
             return pathToCleanMetadata;
+        }
+
+        private static void AddXsltArgument(XsltArgumentList xsltargs, string settingName, bool? settingValue, ref int argsCount)
+        {
+            if(settingValue.HasValue)
+            {
+                xsltargs.AddParam(settingName, string.Empty, settingValue.Value.ToString());
+                Logger.Info($"Adding setting {settingName} with value {settingValue.Value}");
+                argsCount++;
+            }
         }
 
         /// <summary>

@@ -82,6 +82,22 @@ steps:
     OutputMetadataFileName: 'cleanMetadataWithDescriptionsAndAnnotations'
   displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata and keep capability annotations'
 
+  ## Only run if the previous step was successful
+- pwsh: '$(scriptsDirectory)/run-typewriter-clean-metadata.ps1'
+  env:
+    OutputPath: ${{ parameters.outputPath }}
+    InputMetadataFile: ${{ parameters.inputMetadata }}
+    TypewriterExecutable: $(typewriterExecutable)
+    TypewriterDirectory: $(typewriterDirectory)
+    DocsDirectory: $(docsDirectory)
+    GenerationMode: 'TransformWithDocs'
+    Transform: $(transformScript)
+    endpointVersion: ${{ parameters.endpoint }}
+    RemoveAnnotations: 'false'
+    AddInnerErrorDescription: 'true'
+    OutputMetadataFileName: 'cleanMetadataWithDescriptionsAndAnnotationsAndErrors'
+  displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata and keep capability annotations and include error information'
+
 # publish metadata as an artifact
 - task: CopyFiles@2
   inputs:

@@ -587,9 +587,11 @@ namespace Typewriter.Test
 
         [Test]
         [Ignore("Current xslt transform adds global capability annotations")]
-        [TestCase(true, false)]
-        [TestCase(false, true)]
-        public void It_transforms_metadata_and_keeps_annotations(bool shouldRemoveCapabilityAnnotation, bool shouldFindCapabilityAnnotation)
+        [TestCase(true, false, false)]
+        [TestCase(false, true, false)]
+        [TestCase(true, false, true)]
+        [TestCase(false, true, true)]
+        public void It_transforms_metadata_and_keeps_annotations_and_includes_errors(bool shouldRemoveCapabilityAnnotation, bool shouldFindCapabilityAnnotation, bool addinnererrordescription)
         {
             const string outputDirectory = "output";
             const string outputBaseFileName = "cleanMetadata";
@@ -599,7 +601,8 @@ namespace Typewriter.Test
                 Output = outputDirectory,
                 GenerationMode = GenerationMode.Transform,
                 Transform = "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/transforms/csdl/preprocess_csdl.xsl",
-                RemoveAnnotations = shouldRemoveCapabilityAnnotation
+                RemoveAnnotations = shouldRemoveCapabilityAnnotation,
+                AddInnerErrorDescription = addinnererrordescription,
             };
 
             Generator.Transform(testMetadata, options);
