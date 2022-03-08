@@ -1,6 +1,7 @@
 #<#
 #.Synopsis
 #   Generate OpenAPI description from clean CSDL.
+#   Note: this script assumes it's running at the root of the msgraph-metadata repo.
 #
 #.Description
 #   This script is intended to be run from the root of the msgraph-metadata repo in an Azure Pipeline.
@@ -11,10 +12,10 @@
 
 param([parameter(Mandatory = $true)][String]$endpointVersion)
 
-$outputFile = Join-Path $PSScriptRoot ".." "openapi" $endpointVersion "openapi.yaml"
+$outputFile = Join-Path "./" "openapi" $endpointVersion "openapi.yaml"
 $oldOutputFile = "$outputFile.old"
 $cleanVersion = $endpointVersion.Replace(".", "")
-$inputFile = Join-Path $PSScriptRoot ".." "clean_$($cleanVersion)_metadata" "cleanMetadataWithDescriptionsAndAnnotationsAndErrors$endpointVersion.xml"
+$inputFile = Join-Path "./" "clean_$($cleanVersion)_metadata" "cleanMetadataWithDescriptionsAndAnnotationsAndErrors$endpointVersion.xml"
 
 Write-Verbose "Generating OpenAPI description from $inputFile"
 Write-Verbose "Output file: $outputFile"
