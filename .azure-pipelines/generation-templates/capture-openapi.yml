@@ -28,7 +28,13 @@ steps:
 - pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi --prerelease
   displayName: install hidi
 
-- pwsh: '$(Build.SourcesDirectory)/msgraph-metadata/scripts/GenerateOpenApi.ps1 -endpointVersion ${{ parameters.endpoint }}'
+- pwsh: |
+    git fetch origin master
+    git switch master
+  displayName: ensure the generation happens from master latest
+  workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
+
+- pwsh: '$(scriptsDirectory)/generate-open-api.ps1 -endpointVersion ${{ parameters.endpoint }}'
   displayName: 'update ${{ parameters.endpoint }} open API description'
   workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
