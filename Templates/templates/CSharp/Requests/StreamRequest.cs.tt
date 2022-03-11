@@ -103,7 +103,7 @@ namespace <#=@namespace#>
         /// <returns>The object returned by the PUT call.</returns>
         public System.Threading.Tasks.Task<T> PutAsync<T>(Stream <#=propName#>, CancellationToken cancellationToken = default, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : <#=propClass#>
         {
-            this.ContentType = <#=templateWriter.StreamContentType#>;
+            this.ContentType ??= <#=templateWriter.StreamContentType#>;
             this.Method = <#=templateWriter.PutMethod#>;
             return this.SendAsync<T>(<#=propName#>, cancellationToken, completionOption);
         }
@@ -118,7 +118,7 @@ namespace <#=@namespace#>
         /// <returns>The <see cref="GraphResponse"/> object returned by the PUT call.</returns>
         public System.Threading.Tasks.Task<GraphResponse<T>> PutResponseAsync<T>(Stream <#=propName#>, CancellationToken cancellationToken = default, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead) where T : <#=propClass#>
         {
-            this.ContentType = <#=templateWriter.StreamContentType#>;
+            this.ContentType ??= <#=templateWriter.StreamContentType#>;
             this.Method = <#=templateWriter.PutMethod#>;
             return this.SendAsyncWithGraphResponse<T>(<#=propName#>, cancellationToken, completionOption);
         }
@@ -137,7 +137,7 @@ namespace <#=@namespace#>
         /// <returns>The updated stream.</returns>
         public System.Threading.Tasks.Task<Stream> PutAsync(Stream <#=propName#>, CancellationToken cancellationToken = default, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            this.ContentType = <#=templateWriter.StreamContentType#>;
+            this.ContentType ??= <#=templateWriter.StreamContentType#>;
             this.Method = <#=templateWriter.PutMethod#>;
             return this.SendStreamRequestAsync(<#=propName#>, cancellationToken, completionOption);
         }
@@ -151,7 +151,7 @@ namespace <#=@namespace#>
         /// <returns>The <see cref="GraphResponse"/> object returned by the PUT call.</returns>
         public System.Threading.Tasks.Task<GraphResponse> PutResponseAsync(Stream <#=propName#>, CancellationToken cancellationToken = default, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            this.ContentType = <#=templateWriter.StreamContentType#>;
+            this.ContentType ??= <#=templateWriter.StreamContentType#>;
             this.Method = <#=templateWriter.PutMethod#>;
             return this.SendAsyncWithGraphResponse(<#=propName#>, cancellationToken, completionOption);
         }
