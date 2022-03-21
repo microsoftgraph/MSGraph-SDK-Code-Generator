@@ -301,7 +301,7 @@ stages:
         repoName: 'msgraph-sdk-dotnet'
         baseBranchName : 'feature/5.0'
         branchName: 'kiota/$(v1Branch)'
-        targetClassName: "GraphServiceClient"
+        targetClassName: "BaseGraphServiceClient"
         targetNamespace: "MicrosoftGraphSdk"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
@@ -329,7 +329,7 @@ stages:
         repoName: 'msgraph-beta-sdk-dotnet'
         baseBranchName : 'feature/5.0'
         branchName: 'kiota/$(betaBranch)'
-        targetClassName: "GraphServiceClient"
+        targetClassName: "BaseGraphServiceClient"
         targetNamespace: "MicrosoftGraphSdk"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
