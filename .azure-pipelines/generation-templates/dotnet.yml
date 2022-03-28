@@ -7,15 +7,11 @@ parameters:
 
 steps:
 - pwsh: '$(scriptsDirectory)/copy-dotnet-models.ps1'
-  displayName: 'Update models'
+  displayName: 'Update .NET models - ${{ parameters.repoName }}'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(typewriterDirectory)/output
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Graph/Generated/
 
-- task: DotNetCoreCLI@2
-  displayName: Build ${{ parameters.dllName }}
-  inputs:
-    command: 'build'
-    projects: ${{ parameters.repoName }}/**/*.csproj
-    arguments: '--configuration $(buildConfiguration)'
+- pwsh: dotnet build ${{ parameters.repoName }}/src/Microsoft.Graph/ --configuration $(buildConfiguration)
+  displayName: smoke test - build dll for ${{ parameters.dllName }}

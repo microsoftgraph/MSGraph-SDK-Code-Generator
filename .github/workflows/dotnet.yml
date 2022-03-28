@@ -12,11 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2.4.0
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1.9.0
+      uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
@@ -30,16 +30,16 @@ jobs:
       if: ${{ failure() }}
       with:
         name: languages-test-output
-        path: 'test/Typewriter.Test/bin/Debug/net5.0/OutputDirectory*/**'
+        path: 'test/Typewriter.Test/bin/Debug/net6.0/OutputDirectory*/**'
     - name: Upload unit test output on failure
       uses: actions/upload-artifact@v2
       if: ${{ failure() }}
       with:
         name: unit-test-output
-        path: test/Typewriter.Test/bin/Debug/net5.0/output/
+        path: test/Typewriter.Test/bin/Debug/net6.0/output/
     - name: Upload unit test java output on failure
       uses: actions/upload-artifact@v2
       if: ${{ failure() }}
       with:
         name: unit-test-output-java
-        path: test/Typewriter.Test/bin/Debug/net5.0/outputJava/
+        path: test/Typewriter.Test/bin/Debug/net6.0/outputJava/

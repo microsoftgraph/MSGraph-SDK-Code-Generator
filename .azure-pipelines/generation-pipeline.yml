@@ -117,6 +117,8 @@ variables:
   buildConfiguration: 'Release'
   cleanMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml'
   cleanMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml'
+  cleanMetadataFileWithAnnotationsV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsAndAnnotationsv1.0.xml'
+  cleanMetadataFileWithAnnotationsBeta: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsAndAnnotationsbeta.xml'
   cleanOpenAPIFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/v1.0/openapi.yml'
   cleanOpenAPIFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/beta/openapi.yml'
   cleanOpenAPIFileV1OutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/v1.0/'
@@ -180,6 +182,7 @@ stages:
         repoName: "msgraph-sdk-dotnet"
         cleanMetadataFile: $(cleanMetadataFileV1)
         cleanMetadataFolder: $(cleanMetadataFolderV1)
+        cleanMetadataFileWithAnnotations: $(cleanMetadataFileWithAnnotationsV1)
 
 # Same description as stage_v1_metadata
 - stage: stage_beta_metadata
@@ -198,6 +201,7 @@ stages:
         repoName: "msgraph-beta-sdk-dotnet"
         cleanMetadataFile: $(cleanMetadataFileBeta)
         cleanMetadataFolder: $(cleanMetadataFolderBeta)
+        cleanMetadataFileWithAnnotations: $(cleanMetadataFileWithAnnotationsBeta)
 
 - stage: stage_v1_openapi
   dependsOn: stage_v1_metadata
@@ -276,6 +280,62 @@ stages:
           parameters:
             repoName: msgraph-beta-sdk-dotnet
             dllName: Microsoft.Graph.Beta.dll
+
+- stage: stage_csharp_v1_kiota
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_v1_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+    )
+  jobs:
+  - job: csharp_v1_kiota
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'csharp'
+        version: ''
+        repoName: 'msgraph-sdk-dotnet'
+        baseBranchName : 'feature/5.0'
+        branchName: 'kiota/$(v1Branch)'
+        targetClassName: "BaseGraphServiceClient"
+        targetNamespace: "MicrosoftGraphSdk"
+        cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+        languageSpecificSteps:
+        - template: generation-templates/dotnet-kiota.yml
+          parameters:
+            repoName: msgraph-sdk-dotnet
+
+- stage: stage_csharp_beta_kiota
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_beta_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+    )
+  jobs:
+  - job: csharp_beta_kiota
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'csharp'
+        version: 'beta'
+        repoName: 'msgraph-beta-sdk-dotnet'
+        baseBranchName : 'feature/5.0'
+        branchName: 'kiota/$(betaBranch)'
+        targetClassName: "BaseGraphServiceClient"
+        targetNamespace: "MicrosoftGraphSdk"
+        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        languageSpecificSteps:
+        - template: generation-templates/dotnet-kiota.yml
+          parameters:
+            repoName: msgraph-beta-sdk-dotnet
 
 - stage: stage_go_v1
   dependsOn:

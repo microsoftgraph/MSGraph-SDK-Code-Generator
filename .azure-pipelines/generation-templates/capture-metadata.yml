@@ -22,6 +22,9 @@ parameters:
   default: $(cleanMetadataFileV1)
 - name: 'cleanMetadataFolder'
   type: string
+- name: 'cleanMetadataFileWithAnnotations'
+  type: string
+  default: $(cleanMetadataFileWithAnnotationsV1)
 
 steps:
 
@@ -79,6 +82,22 @@ steps:
     OutputMetadataFileName: 'cleanMetadataWithDescriptionsAndAnnotations'
   displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata and keep capability annotations'
 
+  ## Only run if the previous step was successful
+- pwsh: '$(scriptsDirectory)/run-typewriter-clean-metadata.ps1'
+  env:
+    OutputPath: ${{ parameters.outputPath }}
+    InputMetadataFile: ${{ parameters.inputMetadata }}
+    TypewriterExecutable: $(typewriterExecutable)
+    TypewriterDirectory: $(typewriterDirectory)
+    DocsDirectory: $(docsDirectory)
+    GenerationMode: 'TransformWithDocs'
+    Transform: $(transformScript)
+    endpointVersion: ${{ parameters.endpoint }}
+    RemoveAnnotations: 'false'
+    AddInnerErrorDescription: 'true'
+    OutputMetadataFileName: 'cleanMetadataWithDescriptionsAndAnnotationsAndErrors'
+  displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata and keep capability annotations and include error information'
+
 # publish metadata as an artifact
 - task: CopyFiles@2
   inputs:
@@ -97,11 +116,7 @@ steps:
 - template: use-dotnet-sdk.yml
 
 # verify that generated metadata is parsable as an Edm model
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'run'
-    projects: $(Build.SourcesDirectory)/msgraph-metadata/tools/MetadataParser/MetadataParser.csproj
-    arguments: ${{ parameters.cleanMetadataFile }}
+- pwsh: dotnet run --project $(Build.SourcesDirectory)/msgraph-metadata/tools/MetadataParser/MetadataParser.csproj -- ${{ parameters.cleanMetadataFileWithAnnotations }}
   displayName: 'verify whether metadata is parsable as an Edm model'
 
 - pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
@@ -120,20 +135,10 @@ steps:
   fetchDepth: 1
   persistCredentials: true
 
-- pwsh: '$(scriptsDirectory)/copy-dotnet-models.ps1'
-  displayName: update ${{ parameters.endpoint }} .NET models
-  env:
-    BuildConfiguration: $(buildConfiguration)
-    OutputFullPath: $(typewriterDirectory)/output
-    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Graph/Generated/
-
-# Smoke test that the generated files build for .NET
-- task: DotNetCoreCLI@2
-  displayName: smoke test - build dll for ${{ parameters.endpoint }}
-  inputs:
-    command: 'build'
-    projects: ${{ parameters.repoName }}/**/*.csproj
-    arguments: '--configuration $(buildConfiguration)'
+- template: dotnet.yml
+  parameters:
+    repoName: ${{ parameters.repoName }}
+    dllName: Microsoft.Graph.dll
 
 # Checkin clean metadata into metadata repo or make it an artifact.
 - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'

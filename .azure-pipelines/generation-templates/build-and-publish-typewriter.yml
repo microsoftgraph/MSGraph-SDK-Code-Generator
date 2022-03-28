@@ -7,16 +7,12 @@ steps:
   submodules: recursive
   persistCredentials: true
 
-- task: DotNetCoreCLI@2
+- pwsh: dotnet build $(Build.SourcesDirectory)/src/Typewriter/Typewriter.csproj --configuration $(buildConfiguration)
   displayName: 'Build Typewriter'
-  inputs:
-    command: 'build'
-    projects: '$(Build.SourcesDirectory)/src/Typewriter/Typewriter.csproj'
-    arguments: '--configuration $(buildConfiguration)'
 
 - task: CopyFiles@2
   inputs:
-    sourceFolder: '$(Build.SourcesDirectory)/src/Typewriter/bin/$(BuildConfiguration)/net5.0'
+    sourceFolder: '$(Build.SourcesDirectory)/src/Typewriter/bin/$(BuildConfiguration)/net6.0'
     contents: '**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: Copy Typewriter executable

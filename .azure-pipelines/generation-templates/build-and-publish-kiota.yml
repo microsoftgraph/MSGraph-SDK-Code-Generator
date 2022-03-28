@@ -5,12 +5,8 @@ steps:
   displayName: checkout kiota
   fetchDepth: 1
 
-- task: DotNetCoreCLI@2
+- pwsh: dotnet build $(Build.SourcesDirectory)/src/kiota/kiota.csproj --configuration $(buildConfiguration)
   displayName: 'Build Kiota'
-  inputs:
-    command: 'build'
-    projects: '$(Build.SourcesDirectory)/src/kiota/kiota.csproj'
-    arguments: '--configuration $(buildConfiguration)'
 
 - task: CopyFiles@2
   inputs:

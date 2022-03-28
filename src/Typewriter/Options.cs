@@ -84,5 +84,7 @@ namespace Typewriter
 
         [Option('r', "removeannotations", Default = (bool)true, HelpText = "Specifies whether to remove source CSDL capability annotations. Only applicable when using generationMode Transform or TransformWithDocs.")]
         public bool? RemoveAnnotations { get; set; }
+        [Option('a', "addinnererrordescription", Default = (bool)false, HelpText = "Specifies whether to add inner error description in the CSDL. Only applicable when using generationMode Transform or TransformWithDocs.")]
+        public bool? AddInnerErrorDescription { get; set; }
     }
 }
