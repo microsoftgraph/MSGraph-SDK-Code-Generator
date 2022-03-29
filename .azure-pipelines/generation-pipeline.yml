@@ -519,6 +519,7 @@ stages:
             branchName: $(betaBranch)
             targetClassName: "GraphServiceClient"
             targetNamespace: "Microsoft\\Graph\\Beta"
+            baseBranchName: "feat/3.0"
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             languageSpecificSteps:
               - template: generation-templates/php-beta-kiota.yml

@@ -3,14 +3,9 @@ parameters:
     type: string
 
 steps:
-- pwsh: '$(scriptsDirectory)/clean-beta-php-kiota-files.ps1'
-  displayName: 'Remove generated models and requests from the repo'
-  env:
-    MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/
-
 - pwsh: '$(scriptsDirectory)/copy-beta-php-kiota.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(kiotaDirectory)/output/*
-    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/
+    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Generated/
