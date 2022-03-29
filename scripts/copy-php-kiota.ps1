@@ -6,4 +6,4 @@ Write-Host "Removed the existing generated files in the repo." -ForegroundColor 
 
 # copy new models
 Move-Item $env:OutputFullPath $env:RepoModelsDir
-Write-Host "Moved the models from $modelsDirectory into the local repo." -ForegroundColor Green
+Write-Host "Moved the models from $env:OutputFullPath into the local repo." -ForegroundColor Green

@@ -3,7 +3,7 @@ parameters:
     type: string
 
 steps:
-- pwsh: '$(scriptsDirectory)/copy-beta-php-kiota.ps1'
+- pwsh: '$(scriptsDirectory)/copy-php-kiota.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
