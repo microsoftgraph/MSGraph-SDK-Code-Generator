@@ -10,11 +10,7 @@ steps:
     OutputFullPath: $(kiotaDirectory)/output/*
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Graph/Generated/
 
-- task: NuGetAuthenticate@0
-  inputs:
-    nuGetServiceConnections: 'ReadKiotaGithubPackages,ReadGithubPackages'
-
-- pwsh: 'dotnet restore --configfile Nuget.Config'
+- pwsh: 'dotnet restore'
   displayName: Restore dependencies for ${{ parameters.repoName }}
   workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}
 
