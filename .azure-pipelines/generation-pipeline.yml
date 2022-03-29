@@ -546,8 +546,8 @@ stages:
             branchName: 'kiota/$(v1Branch)'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph'
-            baseBranchName: "feat/3.0"
-            cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+            baseBranchName: 'feat/3.0'
+            cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
                 parameters:
