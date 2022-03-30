@@ -516,10 +516,10 @@ stages:
             language: 'php'
             version: 'beta'
             repoName: 'msgraph-beta-sdk-php'
-            branchName: $(betaBranch)
+            branchName: 'kiota/$(betaBranch)'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Beta\\Generated'
-            baseBranchName: "feat/3.0"
+            baseBranchName: 'feat/3.0'
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
