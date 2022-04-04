@@ -302,7 +302,7 @@ stages:
         baseBranchName : 'feature/5.0'
         branchName: 'kiota/$(v1Branch)'
         targetClassName: "BaseGraphServiceClient"
-        targetNamespace: "MicrosoftGraphSdk"
+        targetNamespace: "Microsoft.Graph"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/dotnet-kiota.yml
@@ -330,7 +330,7 @@ stages:
         baseBranchName : 'feature/5.0'
         branchName: 'kiota/$(betaBranch)'
         targetClassName: "BaseGraphServiceClient"
-        targetNamespace: "MicrosoftGraphSdk"
+        targetNamespace: "Microsoft.Graph"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/dotnet-kiota.yml
