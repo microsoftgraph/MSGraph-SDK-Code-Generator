@@ -302,7 +302,7 @@ stages:
         baseBranchName : 'feature/5.0'
         branchName: 'kiota/$(v1Branch)'
         targetClassName: "BaseGraphServiceClient"
-        targetNamespace: "MicrosoftGraphSdk"
+        targetNamespace: "Microsoft.Graph"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/dotnet-kiota.yml
@@ -330,7 +330,7 @@ stages:
         baseBranchName : 'feature/5.0'
         branchName: 'kiota/$(betaBranch)'
         targetClassName: "BaseGraphServiceClient"
-        targetNamespace: "MicrosoftGraphSdk"
+        targetNamespace: "Microsoft.Graph.Beta"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/dotnet-kiota.yml
@@ -498,6 +498,60 @@ stages:
              migration: false
              pathToCopy: '/com/Beta/*'
 
+- stage: stage_php_beta_kiota
+  dependsOn:
+    - stage_build_and_publish_kiota
+    - stage_beta_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+    )
+  jobs:
+    - job: php_beta_kiota
+      steps:
+        - template: generation-templates/language-generation-kiota.yml
+          parameters:
+            language: 'php'
+            version: 'beta'
+            repoName: 'msgraph-beta-sdk-php'
+            branchName: 'kiota/$(betaBranch)'
+            targetClassName: "BaseGraphClient"
+            targetNamespace: 'Microsoft\\Graph\\Beta\\Generated'
+            baseBranchName: 'feat/3.0'
+            cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+            languageSpecificSteps:
+              - template: generation-templates/php-kiota.yml
+                parameters:
+                  repoName: msgraph-beta-sdk-php
+- stage: stage_php_v1_kiota
+  dependsOn:
+    - stage_build_and_publish_kiota
+    - stage_v1_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+    )
+  jobs:
+    - job: php_v1_kiota
+      steps:
+        - template: generation-templates/language-generation-kiota.yml
+          parameters:
+            language: 'php'
+            version: ''
+            repoName: 'msgraph-sdk-php'
+            branchName: 'kiota/$(v1Branch)'
+            targetClassName: "BaseGraphClient"
+            targetNamespace: 'Microsoft\\Graph\\Generated'
+            baseBranchName: 'feat/3.0'
+            cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+            languageSpecificSteps:
+              - template: generation-templates/php-kiota.yml
+                parameters:
+                  repoName: msgraph-sdk-php
 - stage: stage_typescript_v1
   dependsOn:
   - stage_build_and_publish_typewriter
