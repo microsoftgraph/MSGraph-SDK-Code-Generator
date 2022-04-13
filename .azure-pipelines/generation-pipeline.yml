@@ -303,6 +303,7 @@ stages:
         branchName: 'kiota/$(v1Branch)'
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "Microsoft.Graph"
+        customArguments: "-b" # Enable the backing store
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/dotnet-kiota.yml
@@ -331,6 +332,7 @@ stages:
         branchName: 'kiota/$(betaBranch)'
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "Microsoft.Graph.Beta"
+        customArguments: "-b" # Enable the backing store
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/dotnet-kiota.yml
