@@ -1,4 +1,4 @@
-$directories = Get-ChildItem -Path $env:MainDirectory  -Directory 
+$directories = Get-ChildItem -Path $env:MainDirectory  -Directory -Exclude @("graphclient")
 foreach ($directory in $directories) {
 	Remove-Item -Path $directory.FullName -Recurse -Force -Verbose
 }
