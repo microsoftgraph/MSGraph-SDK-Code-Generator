@@ -472,14 +472,14 @@ stages:
             repoName: msgraph-sdk-java
 
 - stage: stage_java_beta_kiota
-  dependsOn: 
+  dependsOn:
   - stage_build_and_publish_kiota
-  - stage_v1_openapi
+  - stage_beta_openapi
   condition: |
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
     )
   jobs: 
   - job: java_beta_kiota

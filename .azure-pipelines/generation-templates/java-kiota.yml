@@ -3,9 +3,14 @@ parameters:
   type: string
 
 steps:
+- pwsh: '$(scriptsDirectory)/clean-java-files-kiota.ps1'
+  displayName: 'Remove generated models and requests from the repo'
+  env:
+    MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/
+    
 - pwsh: '$(scriptsDirectory)/copy-java-models-kiota.ps1'
   displayName: 'Remove old models and update with new models'
   env: 
     BuildConfiguration: $(buildConfiguration) 
     OutputFullPath: $(kiotaDirectory)/output/*
-    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/
+    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/java/com/microsoft/
