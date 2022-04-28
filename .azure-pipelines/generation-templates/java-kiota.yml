@@ -1,0 +1,10 @@
+parameters: 
+- name: repoName 
+  type: string
+
+- pwsh: '$(scriptsDirectory)/copy-java-models-kiota.ps1'
+  displayName: 'Remove old models and update with new models'
+  env: 
+    BuildConfiguration: $(buildConfiguration) 
+    OutputFullPath: $(kiotaDirectory)/output/*
+    RepoModelsDir: RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/

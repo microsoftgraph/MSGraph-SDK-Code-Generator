@@ -443,6 +443,62 @@ stages:
           parameters:
             repoName: msgraph-beta-sdk-java
 
+- stage: stage_java_v1_kiota
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_v1_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+    )
+  jobs: 
+  - job: java_v1_kiota
+    steps: 
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'java'
+        version: ''
+        repoName: 'msgraph-sdk-java'
+        baseBranchName: 'feature/6.0'
+        branchName: 'kiota/$(v1Branch)'
+        targetClassName: "BaseGraphServiceClient"
+        targetNamespace: "Microsoft.Graph"
+        cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+        languageSpecificSteps:
+        - template: generation-templates/java-kiota.yml
+          parameters: 
+            repoName: msgraph-sdk-java
+
+- stage: stage_java_beta_kiota
+  dependsOn: 
+  - stage_build_and_publish_kiota
+  - stage_v1_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+    )
+  jobs: 
+  - job: java_beta_kiota
+    steps: 
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'java'
+        version: 'beta'
+        repoName: 'msgraph-beta-sdk-java'
+        baseBranchName: 'feature/6.0'
+        branchName: 'kiota/$(betaBranch)'
+        targetClassName: "BaseGraphServiceClient"
+        targetNamespace: "Microsoft.Graph"
+        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        languageSpecificSteps:
+        - template: generation-templates/java-kiota.yml
+          parameters:
+            repoName: msgraph-beta-sdk-java
+
 - stage: stage_php_v1
   dependsOn:
   - stage_build_and_publish_typewriter
