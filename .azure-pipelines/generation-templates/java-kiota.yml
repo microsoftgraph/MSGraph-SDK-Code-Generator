@@ -2,6 +2,7 @@ parameters:
 - name: repoName 
   type: string
 
+steps:
 - pwsh: '$(scriptsDirectory)/copy-java-models-kiota.ps1'
   displayName: 'Remove old models and update with new models'
   env: 
