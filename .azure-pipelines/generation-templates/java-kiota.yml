@@ -8,4 +8,4 @@ steps:
   env: 
     BuildConfiguration: $(buildConfiguration) 
     OutputFullPath: $(kiotaDirectory)/output/*
-    RepoModelsDir: RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/
+    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/
