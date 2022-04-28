@@ -13,4 +13,4 @@ steps:
   env: 
     BuildConfiguration: $(buildConfiguration) 
     OutputFullPath: $(kiotaDirectory)/output/*
-    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/java/com/microsoft/
+    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/java/com/
