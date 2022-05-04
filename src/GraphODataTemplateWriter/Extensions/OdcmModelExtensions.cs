@@ -92,7 +92,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             var referenceEntityTypes = new List<OdcmClass>();
             foreach (var referencePropertyType in referencePropertyTypes)
             {
-                var entityType = entityTypes.FirstOrDefault(entity => entity.Name == referencePropertyType.Name);
+                // use the FullName to match the types as there could be multiple types of the same name but in different namespaces
+                // e.g microsoft.graph.group and microsoft.graph.termstore.group
+                var entityType = entityTypes.FirstOrDefault(entity => entity.FullName == referencePropertyType.FullName);
 
                 if (entityType != null)
                 {
