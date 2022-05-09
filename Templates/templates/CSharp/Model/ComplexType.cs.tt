@@ -28,7 +28,6 @@ if (complex.Base != null)
 }
 
 var isMethodResponse = complex.LongDescriptionContains("methodResponse");
-var classType = complex.IsAbstract ? "abstract partial class" : "partial class";
 
 var attributeStringBuilder = new StringBuilder();
 
@@ -70,10 +69,23 @@ if (attributeStringBuilder.Length > 0) {
 #>
     <#=attributeStringBuilder.ToString()#>
 <# } #>
-    public <#=classType#> <#=typeDeclaration#>
+    public partial class <#=typeDeclaration#>
     {
 <#
-        if (!complex.IsAbstract && isBaseTypeReferenced)
+        if (complex.IsAbstract)
+        {
+    #>
+
+        ///<summary>
+        /// The internal <#=complexTypeName#> constructor
+        ///</summary>
+        protected internal <#=cstorTypeDeclaration#>()
+        {
+            // Don't allow initialization of abstract complex types
+        }
+<#
+        }
+        else if (isBaseTypeReferenced)
         {
 #>        /// <summary>
         /// Initializes a new instance of the <see cref="<#=cstorTypeDeclaration#>"/> class.
