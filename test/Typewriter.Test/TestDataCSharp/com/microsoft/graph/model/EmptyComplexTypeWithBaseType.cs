@@ -18,8 +18,16 @@ namespace Microsoft.Graph
     /// The type EmptyComplexTypeWithBaseType.
     /// </summary>
     [JsonConverter(typeof(DerivedTypeConverter<EmptyComplexTypeWithBaseType>))]
-    public abstract partial class EmptyComplexTypeWithBaseType : Entity
+    public partial class EmptyComplexTypeWithBaseType : Entity
     {
+
+        ///<summary>
+        /// The internal EmptyComplexTypeWithBaseType constructor
+        ///</summary>
+        protected internal EmptyComplexTypeWithBaseType()
+        {
+            // Don't allow initialization of abstract complex types
+        }
 
     }
 }

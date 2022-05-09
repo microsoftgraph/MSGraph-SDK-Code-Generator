@@ -370,14 +370,20 @@ namespace Typewriter.Test
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool hasTestString = false;
-            string testString = "public abstract partial class EmptyBaseComplexTypeRequestObject";
+            string testString = "public partial class EmptyBaseComplexTypeRequestObject";
+            string constructorString = "protected internal EmptyBaseComplexTypeRequestObject";
 
             foreach (var line in lines)
             {
                 if (line.Contains(testString))
                 {
                     hasTestString = true;
-                    break;
+                    continue;
+                }
+                if (line.Contains(constructorString))
+                {
+                    hasTestString = true;
+                    continue;
                 }
             }
 

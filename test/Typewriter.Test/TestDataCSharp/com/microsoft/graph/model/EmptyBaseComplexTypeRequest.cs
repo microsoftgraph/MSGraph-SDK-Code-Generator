@@ -19,8 +19,16 @@ namespace Microsoft.Graph
     /// </summary>
     [Obsolete("emptyBaseComplexTypeRequest is deprecated. Please use emptyBaseComplexTypeRequest2.")]
     [JsonConverter(typeof(DerivedTypeConverter<EmptyBaseComplexTypeRequestObject>))]
-    public abstract partial class EmptyBaseComplexTypeRequestObject
+    public partial class EmptyBaseComplexTypeRequestObject
     {
+
+        ///<summary>
+        /// The internal EmptyBaseComplexTypeRequest constructor
+        ///</summary>
+        protected internal EmptyBaseComplexTypeRequestObject()
+        {
+            // Don't allow initialization of abstract complex types
+        }
 
         /// <summary>
         /// Gets or sets additional data.
