@@ -295,5 +295,14 @@
                 <ReturnType Type="microsoft.graph.callRecords.callRecord" />
             </Function>
         </Schema>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="microsoft.graph.security">
+            <EnumType Name="alertClassification" UnderlyingType="Edm.Byte">
+                <Member Name="unknown" Value="0"/>
+                <Member Name="falsePositive" Value="10"/>
+                <Member Name="truePositive" Value="20"/>
+                <Member Name="informationalExpectedActivity" Value="30"/>
+                <Member Name="unknownFutureValue" Value="39"/>
+            </EnumType>
+        </Schema>
     </edmx:DataServices>
 </edmx:Edmx>
