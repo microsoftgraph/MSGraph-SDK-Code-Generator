@@ -30,6 +30,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
             }
         }
 
+        private static readonly HashSet<string> ReservedNamespaces =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "Microsoft.Graph.Security"
+            };
+
         private static readonly ICollection<string> SimpleTypes =
             new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
@@ -209,7 +215,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
                 namespacePrefix = settings.Properties["php.namespacePrefix"];
             }
 
-            var @namespace = currentType.Namespace.Name;
+            var @namespace = ReservedNamespaces.Contains(currentType.Namespace.Name) ? $"{currentType.Namespace.Name}Namespace" : currentType.Namespace.Name;
             if (@namespace.Equals("edm", StringComparison.OrdinalIgnoreCase))
             {
                 // for edm types that we generate for (e.g. TimeOfDay)
