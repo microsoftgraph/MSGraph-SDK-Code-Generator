@@ -17,6 +17,7 @@
 #import "MSGraphCallRecordsWifiBand.h"
 #import "MSGraphCallRecordsWifiRadioType.h"
 #import "MSGraphCallRecordsModality.h"
+#import "MSGraphSecurityAlertClassification.h"
 #import "MSGraphEmptyBaseComplexTypeRequest.h"
 #import "MSGraphDerivedComplexTypeRequest.h"
 #import "MSGraphResponseObject.h"

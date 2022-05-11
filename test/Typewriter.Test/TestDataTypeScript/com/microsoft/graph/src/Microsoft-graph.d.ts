@@ -213,3 +213,11 @@ export namespace CallRecords {
         priority?: number;
     }
 }
+export namespace SecurityNamespace {
+    type AlertClassification =
+        | "unknown"
+        | "falsePositive"
+        | "truePositive"
+        | "informationalExpectedActivity"
+        | "unknownFutureValue";
+}
