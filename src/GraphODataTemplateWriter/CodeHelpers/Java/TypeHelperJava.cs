@@ -996,7 +996,7 @@ import javax.annotation.Nonnull;";
             switch (host.CurrentType)
             {
                 case OdcmProperty p:
-                    @namespace = p.GetTypeString().EndsWith("Stream", StringComparison.OrdinalIgnoreCase) ? host.CurrentNamespace() : p.Type.Namespace.Name.AddPrefix();
+                    @namespace = p.GetTypeString().Contains("Stream", StringComparison.OrdinalIgnoreCase) ? p.Class.Namespace.Name.AddPrefix() : p.Type.Namespace.Name.AddPrefix();
                     if (p.Class.GetTypeString() != graphServiceEntityName)
                         methodImports.Add(string.Format(importFormat, p.Class.Namespace.Name.AddPrefix(), p.Class.GetPackagePrefix(), p.Class.GetTypeString()));
                     if (!(p.Projection.Type is OdcmPrimitiveType))
