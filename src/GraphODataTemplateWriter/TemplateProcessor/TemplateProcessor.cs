@@ -384,7 +384,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                         @namespace = p.Type.Namespace.Name;
                         if (@namespace == "Edm")
                         {
-                            @namespace = "Microsoft.Graph";
+                            if (p.Type.Name.Equals("Stream", StringComparison.OrdinalIgnoreCase))
+                            {
+                                @namespace = p.Class.Namespace.Name;
+                            }
+                            else
+                            {
+                                @namespace = "Microsoft.Graph";
+                            }
                         }
                     }
                     else
