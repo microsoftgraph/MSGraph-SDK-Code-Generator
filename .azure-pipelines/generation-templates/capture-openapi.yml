@@ -25,7 +25,7 @@ steps:
 - template: set-user-config.yml
 - template: use-dotnet-sdk.yml
 
-- pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi --prerelease
+- pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi --version 1.0.0-preview1
   displayName: install hidi
 
 - pwsh: |
