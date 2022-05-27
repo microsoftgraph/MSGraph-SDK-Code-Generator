@@ -6,10 +6,10 @@ steps:
 - pwsh: '$(scriptsDirectory)/clean-java-files-kiota.ps1'
   displayName: 'Remove generated models and requests from the repo'
   env:
-    MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/
-    
+    MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/java/com/microsoft/
+
 - pwsh: '$(scriptsDirectory)/copy-java-models-kiota.ps1'
-  displayName: 'Remove old models and update with new models'
+  displayName: 'Update with new models'
   env: 
     BuildConfiguration: $(buildConfiguration) 
     OutputFullPath: $(kiotaDirectory)/output/*
