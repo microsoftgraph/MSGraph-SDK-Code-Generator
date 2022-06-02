@@ -36,7 +36,7 @@ parameters:
   default: ''
 
 steps:
-- template: set-up-for-generation.yml
+- template: set-up-for-generation-kiota.yml
   parameters:
     cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
     downloadSteps:
