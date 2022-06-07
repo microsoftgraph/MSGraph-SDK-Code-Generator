@@ -1,0 +1,22 @@
+parameters:
+  - name: cleanMetadataFolder
+    type: string
+  - name: downloadSteps
+    type: stepList
+    default:
+    - pwsh: |
+        Write-Error "No download step is provided"
+
+steps:
+- template: set-user-config.yml
+- template: use-dotnet-sdk.yml
+- ${{ parameters.downloadSteps }}
+
+#Download the openAPI artifacts
+- task: DownloadBuildArtifacts@0
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: ${{ parameters.cleanMetadataFolder }}
+    downloadPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+  displayName: Downloading metadata from artifacts
