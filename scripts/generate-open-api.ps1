@@ -34,7 +34,7 @@ if(Test-Path $outputFile)
 }
 
 try {
-    Invoke-Expression "hidi transform --csdl ""$inputFile"" --output ""$outputFile"" --version OpenApi3_0 --loglevel Information --format yaml"
+    Invoke-Expression "hidi transform --csdl ""$inputFile"" --output ""$outputFile"" --version OpenApi3_0 --log-level Information --format yaml"
     # temporary fix for the server url https://github.com/microsoftgraph/msgraph-metadata/issues/124
     $content = get-content $outputFile
     $updatedContent = $content -replace "http://localhost", "https://graph.microsoft.com/$endpointVersion"
