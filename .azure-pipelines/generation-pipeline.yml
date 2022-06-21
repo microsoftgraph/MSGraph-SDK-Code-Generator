@@ -455,9 +455,9 @@ stages:
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
       eq(dependencies.stage_v1_openapi.result, 'Succeeded')
     )
-  jobs: 
+  jobs:
   - job: java_v1_kiota
-    steps: 
+    steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
         language: 'java'
@@ -470,7 +470,7 @@ stages:
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/java-kiota.yml
-          parameters: 
+          parameters:
             repoName: msgraph-sdk-java
 
 - stage: stage_java_beta_kiota
@@ -483,9 +483,9 @@ stages:
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
       eq(dependencies.stage_beta_openapi.result, 'Succeeded')
     )
-  jobs: 
+  jobs:
   - job: java_beta_kiota
-    steps: 
+    steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
         language: 'java'
@@ -577,7 +577,7 @@ stages:
             branchName: 'kiota/$(betaBranch)'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Beta\\Generated'
-            baseBranchName: 'feat/3.0'
+            baseBranchName: 'feat/kiota-preview'
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
@@ -604,7 +604,7 @@ stages:
             branchName: 'kiota/$(v1Branch)'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Generated'
-            baseBranchName: 'feat/3.0'
+            baseBranchName: 'feat/kiota-preview'
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
