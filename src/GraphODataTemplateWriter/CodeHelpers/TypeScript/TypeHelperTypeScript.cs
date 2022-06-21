@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 {
@@ -13,7 +13,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
         // enum value string, ex: "low" | "normal" | "high"
         public static String GetEnumValues(this OdcmEnum _enum) {
-            return _enum.Members.Select(m => "\"" + m.Name + "\"").Aggregate((cur, next) =>  cur + " | " + next);
+            return _enum?.Members?.Select(m => "\"" + m.Name + "\"").Aggregate((cur, next) =>  cur + " | " + next);
         }
 
         public static string GetTypeString(this OdcmProperty prop)

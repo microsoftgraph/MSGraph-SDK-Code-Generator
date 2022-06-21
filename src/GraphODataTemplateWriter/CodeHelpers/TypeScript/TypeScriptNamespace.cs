@@ -133,10 +133,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             var export = IsMainNamespace ? "export " : string.Empty;
             var enumTypeName = enumType.Name.UpperCaseFirstChar();
             var enumValues = enumType.GetEnumValues();
-            var exportTypeLength = (export + "type").Length + enumTypeName.Length + enumValues.Length + 3;
+            var exportTypeLength = (export + "type").Length + enumTypeName.Length + enumValues?.Length + 3;
             if (exportTypeLength < MaxLineLength)
             {
-                sb.AppendLine($"{NamespaceIndent}{export}type {enumTypeName} = {enumValues};");
+                sb.AppendLine($"{NamespaceIndent}{export}type {enumTypeName} = {(String.IsNullOrWhiteSpace(enumValues)? String.Empty : enumValues)};");
             }
             else
             {
