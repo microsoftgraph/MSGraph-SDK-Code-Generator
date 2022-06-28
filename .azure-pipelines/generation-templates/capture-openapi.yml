@@ -51,6 +51,11 @@ steps:
     pathToPublish: '$(Build.ArtifactStagingDirectory)'
     artifactName: ${{ parameters.cleanMetadataFolder }}
 
+- pwsh: |
+    ./scripts/run-openapi-validation.ps1 -repoDirectory (Get-Location).Path
+  displayName: ensure that OpenAPI docs can be parsed
+  workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
+
 # Checkin clean metadata into metadata repo or make it an artifact.
 - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
 
