@@ -111,11 +111,12 @@ namespace Typewriter
         private static DocSet GetDocSet(Options options, IssueLogger issues)
         {
             Logger.Info("Opening documentation from {0}", options.DocsRoot);
-            DocSet docSet = null;
+            DocSet docSet;
 
             try
             {
-                docSet = new DocSet(options.DocsRoot);
+                string sourceFolderPath = Path.Join(options.DocsRoot, "api-reference", options.EndpointVersion);
+                docSet = new DocSet(sourceFolderPath);
             }
             catch (FileNotFoundException ex)
             {
