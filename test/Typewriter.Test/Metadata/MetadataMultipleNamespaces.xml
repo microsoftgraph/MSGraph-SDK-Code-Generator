@@ -148,6 +148,17 @@
       <EntityType Name="plannerGroup" BaseType="graph.entity">
         <NavigationProperty Name="plans" Type="Collection(graph.plannerPlan)" ContainsTarget="true" />
       </EntityType>
+      <EntityType Name="security" BaseType="graph.entity">
+        <Property Name="providerStatus" Type="Collection(graph.securityProviderStatus)" />
+        <NavigationProperty Name="alerts_v2" Type="Collection(microsoft.graph.security.alert)" ContainsTarget="true" />
+        <NavigationProperty Name="alerts" Type="Collection(graph.alert)" ContainsTarget="true" />
+      </EntityType>
+            <EntityType Name="alert" BaseType="graph.entity" OpenType="true">
+        <Property Name="activityGroupName" Type="Edm.String" />
+        <Property Name="assignedTo" Type="Edm.String" />
+        <Property Name="azureSubscriptionId" Type="Edm.String" />
+        <Property Name="azureTenantId" Type="Edm.String" Nullable="false" />
+      </EntityType>
       <EntityType Name="workbookChart" BaseType="graph.entity">
           <Property Name="height" Type="Edm.Double" Nullable="false"/>
           <Property Name="left" Type="Edm.Double" Nullable="false"/>
@@ -429,5 +440,13 @@
             <Member Name="unknownFutureValue" Value="39"/>
         </EnumType>
     </Schema>
+    <Schema Namespace="microsoft.graph.security" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="alert" BaseType="graph.entity">
+        <Property Name="actorDisplayName" Type="Edm.String" />
+        <Property Name="alertWebUrl" Type="Edm.String" />
+      </EntityType>
+    </Schema>
+
+
   </edmx:DataServices>
 </edmx:Edmx>

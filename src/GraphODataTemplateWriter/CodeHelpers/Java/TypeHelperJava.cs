@@ -351,7 +351,15 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
 
         public static string TypeCollectionPage(this OdcmObject c)
         {
-            return c.TypeName() + "CollectionPage";
+            //if(c.Type.Namespace.Name.AddPrefix())
+            //if(c is OdcmProperty){
+              //  string type = ((OdcmProperty)c).Projection.Type.Namespace.Name;;
+                //if(!type.Equals("microsoft.graph", StringComparison.OrdinalIgnoreCase)){
+                  //  return String.Format("{0}.{1}.{2}CollectionPage",c.Projection.Type.Namespace.Name.AddPrefix(), c.GetPackagePrefix(), c.TypeName());
+                //}
+            //}  
+            //return c.TypeName() + "CollectionPage";
+            return ((String)OdcmObject.MakeCanonicalName(c.TypeName(), c.Projection.Type.Namespace))+"CollectionPage";
         }
 
         public static string TypeCollectionWithReferencesPage(this OdcmObject c)
