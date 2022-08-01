@@ -153,7 +153,7 @@
         <NavigationProperty Name="alerts_v2" Type="Collection(microsoft.graph.security.alert)" ContainsTarget="true" />
         <NavigationProperty Name="alerts" Type="Collection(graph.alert)" ContainsTarget="true" />
       </EntityType>
-            <EntityType Name="alert" BaseType="graph.entity" OpenType="true">
+      <EntityType Name="alert" BaseType="graph.entity" OpenType="true">
         <Property Name="activityGroupName" Type="Edm.String" />
         <Property Name="assignedTo" Type="Edm.String" />
         <Property Name="azureSubscriptionId" Type="Edm.String" />
@@ -431,22 +431,18 @@
         <NavigationProperty Name="managementTemplateCollections" Type="Collection(microsoft.graph.managedTenants.managementTemplateCollection)" />
       </EntityType>  
     </Schema>
-    <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="microsoft.graph.security">
-        <EnumType Name="alertClassification" UnderlyingType="Edm.Byte">
-            <Member Name="unknown" Value="0"/>
-            <Member Name="falsePositive" Value="10"/>
-            <Member Name="truePositive" Value="20"/>
-            <Member Name="informationalExpectedActivity" Value="30"/>
-            <Member Name="unknownFutureValue" Value="39"/>
-        </EnumType>
-    </Schema>
     <Schema Namespace="microsoft.graph.security" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EnumType Name="alertClassification" UnderlyingType="Edm.Byte">
+        <Member Name="unknown" Value="0"/>
+        <Member Name="falsePositive" Value="10"/>
+        <Member Name="truePositive" Value="20"/>
+        <Member Name="informationalExpectedActivity" Value="30"/>
+        <Member Name="unknownFutureValue" Value="39"/>
+      </EnumType>
       <EntityType Name="alert" BaseType="graph.entity">
         <Property Name="actorDisplayName" Type="Edm.String" />
         <Property Name="alertWebUrl" Type="Edm.String" />
       </EntityType>
     </Schema>
-
-
   </edmx:DataServices>
 </edmx:Edmx>
