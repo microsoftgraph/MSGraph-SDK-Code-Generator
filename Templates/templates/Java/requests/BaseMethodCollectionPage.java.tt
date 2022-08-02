@@ -2,7 +2,7 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ include file="BaseJavaModel.template.tt"#>
 <#@ output extension="\\" #>
-<#host.TemplateName = c.TypeCollectionPage();#>
+<#host.TemplateName = c.TypeCollectionPageSimple();#>
 <#=writer.WriteHeader()#>
 <#=host.CreatePackageDef()#>
 <#
