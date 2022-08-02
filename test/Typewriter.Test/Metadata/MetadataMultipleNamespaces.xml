@@ -443,6 +443,20 @@
         <Property Name="actorDisplayName" Type="Edm.String" />
         <Property Name="alertWebUrl" Type="Edm.String" />
       </EntityType>
+      <ComplexType Name="huntingQueryResults">
+        <Property Name="results" Type="Collection(microsoft.graph.security.huntingRowResult)" />
+        <Property Name="schema" Type="Collection(microsoft.graph.security.singlePropertySchema)" />
+      </ComplexType>
+      <ComplexType Name="huntingRowResult" OpenType="true" />
+      <ComplexType Name="singlePropertySchema">
+        <Property Name="name" Type="Edm.String" />
+        <Property Name="type" Type="Edm.String" />
+      </ComplexType>    
+      <Action Name="runHuntingQuery" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.security" />
+        <Parameter Name="query" Type="Edm.String" Unicode="false" />
+        <ReturnType Type="microsoft.graph.security.huntingQueryResults" />
+      </Action>  
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>

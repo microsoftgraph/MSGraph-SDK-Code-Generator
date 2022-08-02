@@ -666,7 +666,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             {
                 sb.AppendFormat(importFormat,
                             host.CurrentNamespace(),
-                            (host.CurrentType as OdcmMethod)?.ReturnType is OdcmEnum ? "models" : GetPrefixForModels(),
+                            GetPrefixForModels(),
                             TypeName((host.CurrentType as OdcmMethod)?.ReturnType ?? host.CurrentType));
                 sb.Append("\n");
             }
@@ -683,8 +683,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             if (returnType != "Void" && !(currentMethod.ReturnType is OdcmPrimitiveType))
             {
                 sb.AppendFormat(importFormat,
-                            host.CurrentNamespace(),
-                            (currentMethod.ReturnType is OdcmEnum ? "models" : GetPrefixForModels()),
+                            currentMethod.ReturnType.Namespace.Name.AddPrefix(),
+                            GetPrefixForModels(),
                             returnType);
                 sb.Append("\n");
             }
