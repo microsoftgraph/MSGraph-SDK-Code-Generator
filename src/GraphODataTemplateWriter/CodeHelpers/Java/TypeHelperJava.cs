@@ -962,7 +962,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
                     if (property.Type is OdcmPrimitiveType)
                         continue;
 
-                    string propertyValue = TypeCollectionPage(property);
+                    string propertyValue = TypeCollectionPageSimple(property);
                     string importstr1 = String.Format(importFormat,
                         property.Projection.Type.Namespace.Name.AddPrefix(),
                         GetPrefixForRequests(),
