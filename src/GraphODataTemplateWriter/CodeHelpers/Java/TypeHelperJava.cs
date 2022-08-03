@@ -321,17 +321,17 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         }
 
 
-        public static string TypeCollectionPage(this OdcmObject c)
+        public static string TypeCollectionPageFullyQualified(this OdcmObject c)
         {
             if(c is OdcmProperty) {
                 string nSpace = GetPropertyNamespace((OdcmProperty)c);
                 if(!nSpace.Equals("com.microsoft.graph", StringComparison.OrdinalIgnoreCase)){
-                    return String.Format("{0}.requests.{1}",GetPropertyNamespace((OdcmProperty)c), c.TypeCollectionPageSimple());
+                    return String.Format("{0}.requests.{1}",GetPropertyNamespace((OdcmProperty)c), c.TypeCollectionPage());
                 }
             }  
-            return c.TypeCollectionPageSimple();
+            return c.TypeCollectionPage();
         }
-        public static string TypeCollectionPageSimple(this OdcmObject c)
+        public static string TypeCollectionPage(this OdcmObject c)
         {
             return c.TypeName() + "CollectionPage";
         }
@@ -896,7 +896,7 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
                     if (property.Type is OdcmPrimitiveType)
                         continue;
 
-                    string propertyValue = TypeCollectionPageSimple(property);
+                    string propertyValue = TypeCollectionPage(property);
                     string importstr1 = String.Format(importFormat,
                         property.Projection.Type.Namespace.Name.AddPrefix(),
                         GetPrefixForRequests(),
@@ -1082,7 +1082,7 @@ import javax.annotation.Nonnull;";
         }}
 ",
                 property.Name.SanitizePropertyName(property),
-                TypeCollectionPage(property));
+                TypeCollectionPageFullyQualified(property));
                 }
             }
             sb.Append("    }");
@@ -1154,7 +1154,7 @@ import javax.annotation.Nonnull;";
                 {
                     if (property.IsNavigation())
                     {
-                        propertyType = TypeCollectionPage(property);
+                        propertyType = TypeCollectionPageFullyQualified(property);
                         if (!property.ContainsTarget)
                             propertyFormat = collectionFormat;
                     }
