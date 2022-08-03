@@ -270,19 +270,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeName() + "StreamRequest";
         }
 
-        public static string BaseTypeStreamRequest(this OdcmObject c)
-        {
-            return "Base" + c.TypeStreamRequest();
-        }
-
         public static string TypeStreamRequestBuilder(this OdcmObject c)
         {
             return c.TypeStreamRequest() + "Builder";
-        }
-
-        public static string BaseTypeStreamRequestBuilder(this OdcmObject c)
-        {
-            return "Base" + c.TypeStreamRequestBuilder();
         }
 
         public static string TypeRequest(this OdcmObject c)
@@ -297,19 +287,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             }
         }
 
-        public static string BaseTypeRequest(this OdcmObject c)
-        {
-            return "Base" + c.TypeRequest();
-        }
-
         public static string TypeRequestBuilder(this OdcmObject c)
         {
             return c.TypeRequest() + "Builder";
-        }
-
-        public static string BaseTypeRequestBuilder(this OdcmObject c)
-        {
-            return "Base" + c.TypeRequestBuilder();
         }
 
         public static string TypeWithReferencesRequest(this OdcmObject c)
@@ -317,26 +297,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeName() + "WithReferenceRequest";
         }
 
-        public static string BaseTypeWithReferencesRequest(this OdcmObject c)
-        {
-            return "Base" + c.TypeWithReferencesRequest();
-        }
-
         public static string TypeWithReferencesRequestBuilder(this OdcmObject c)
         {
             return c.TypeWithReferencesRequest() + "Builder";
         }
 
-        public static string BaseTypeWithReferencesRequestBuilder(this OdcmObject c) => $"Base{c.TypeWithReferencesRequestBuilder()}";
-
         public static string TypeReferenceRequest(this OdcmObject c)
         {
             return c.TypeName() + "ReferenceRequest";
-        }
-
-        public static string BaseTypeReferenceRequest(this OdcmObject c)
-        {
-            return "Base" + c.TypeReferenceRequest();
         }
 
         public static string TypeReferenceRequestBuilder(this OdcmObject c)
@@ -344,16 +312,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeReferenceRequest() + "Builder";
         }
 
-        public static string BaseTypeReferenceRequestBuilder(this OdcmObject c)
-        {
-            return "Base" + c.TypeReferenceRequestBuilder();
-        }
-
         public static string TypeCollectionPage(this OdcmObject c)
         {
             if(c is OdcmProperty) {
                 string nSpace = GetPropertyNamespace((OdcmProperty)c);
-                //((OdcmProperty)c).Projection.Type.Namespace.Name;;
                 if(!nSpace.Equals("com.microsoft.graph", StringComparison.OrdinalIgnoreCase)){
                     return String.Format("{0}.requests.{1}CollectionPage",GetPropertyNamespace((OdcmProperty)c), c.TypeName());
                 }
@@ -368,21 +330,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static string TypeCollectionWithReferencesPage(this OdcmObject c)
         {
             return $"{c.TypeName()}CollectionWithReferencesPage";
-        }
-
-        public static string BaseTypeCollectionPage(this OdcmObject c)
-        {
-            return "Base" + c.TypeCollectionPage();
-        }
-
-        public static string BaseTypeCollectionWithReferencesPage(this OdcmObject c)
-        {
-            return "Base" + c.TypeCollectionWithReferencesPage();
-        }
-
-        public static string BaseTypeCollectionResponse(this OdcmObject c)
-        {
-            return c.TypeCollectionResponse();
         }
 
         public static string TypeCollectionResponse(this OdcmObject c)
@@ -402,19 +349,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             }
         }
 
-        public static string BaseTypeCollectionRequest(this OdcmObject c)
-        {
-            return "Base" + c.TypeCollectionRequest();
-        }
-
         public static string TypeCollectionRequestBuilder(this OdcmObject c)
         {
             return c.TypeCollectionRequest() + "Builder";
-        }
-
-        public static string BaseTypeCollectionRequestBuilder(this OdcmObject c)
-        {
-            return "Base" + c.TypeCollectionRequestBuilder();
         }
 
         public static string TypeCollectionWithReferencesRequest(this OdcmObject c)
@@ -422,19 +359,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeName() + "CollectionWithReferencesRequest";
         }
 
-        public static string BaseTypeCollectionWithReferencesRequest(this OdcmObject c)
-        {
-            return "Base" + c.TypeCollectionWithReferencesRequest();
-        }
-
         public static string TypeCollectionWithReferencesRequestBuilder(this OdcmObject c)
         {
             return c.TypeCollectionWithReferencesRequest() + "Builder";
-        }
-
-        public static string BaseTypeCollectionWithReferencesRequestBuilder(this OdcmObject c)
-        {
-            return "Base" + c.TypeCollectionWithReferencesRequestBuilder();
         }
 
         public static string TypeCollectionReferenceRequest(this OdcmObject c)
@@ -442,19 +369,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeName() + "CollectionReferenceRequest";
         }
 
-        public static string BaseTypeCollectionReferenceRequest(this OdcmObject c)
-        {
-            return "Base" + c.TypeCollectionReferenceRequest();
-        }
-
         public static string TypeCollectionReferenceRequestBuilder(this OdcmObject c)
         {
             return c.TypeCollectionReferenceRequest() + "Builder";
-        }
-
-        public static string BaseTypeCollectionReferenceRequestBuilder(this OdcmObject c)
-        {
-            return "Base" + c.TypeCollectionReferenceRequestBuilder();
         }
 
         public static string TypeParameterSet(this OdcmObject c)
