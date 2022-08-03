@@ -292,6 +292,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeRequest() + "Builder";
         }
 
+        public static string TypeRequestBuilderFullyQualified(this OdcmObject c)
+        {
+            if(c is OdcmProperty) {
+                return String.Format("{0}.requests.{1}",GetPropertyNamespace((OdcmProperty)c), c.TypeRequestBuilder());
+            }
+            return c.TypeRequestBuilder();
+        }
+
         public static string TypeWithReferencesRequest(this OdcmObject c)
         {
             return c.TypeName() + "WithReferenceRequest";
@@ -312,15 +320,16 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
             return c.TypeReferenceRequest() + "Builder";
         }
 
+
         public static string TypeCollectionPage(this OdcmObject c)
         {
             if(c is OdcmProperty) {
                 string nSpace = GetPropertyNamespace((OdcmProperty)c);
                 if(!nSpace.Equals("com.microsoft.graph", StringComparison.OrdinalIgnoreCase)){
-                    return String.Format("{0}.requests.{1}CollectionPage",GetPropertyNamespace((OdcmProperty)c), c.TypeName());
+                    return String.Format("{0}.requests.{1}",GetPropertyNamespace((OdcmProperty)c), c.TypeCollectionPageSimple());
                 }
             }  
-            return c.TypeName() + "CollectionPage";
+            return c.TypeCollectionPageSimple();
         }
         public static string TypeCollectionPageSimple(this OdcmObject c)
         {
@@ -352,6 +361,14 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static string TypeCollectionRequestBuilder(this OdcmObject c)
         {
             return c.TypeCollectionRequest() + "Builder";
+        }
+
+        public static string TypeCollectionRequestBuilderFullyQualified(this OdcmObject c)
+        {
+            if(c is OdcmProperty) {
+                    return String.Format("{0}.requests.{1}",GetPropertyNamespace((OdcmProperty)c), c.TypeCollectionRequestBuilder());
+            }  
+            return c.TypeCollectionRequestBuilder();
         }
 
         public static string TypeCollectionWithReferencesRequest(this OdcmObject c)
