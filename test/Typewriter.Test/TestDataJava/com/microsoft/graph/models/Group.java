@@ -32,7 +32,7 @@ public class Group extends DirectoryObject implements IJsonBackedObject {
      * Users and groups that are members of this Adminsitrative Unit. HTTP Methods: GET (list members), POST (add members), DELETE (remove members).
      */
 	@Nullable
-    public DirectoryObjectCollectionPage members;
+    public com.microsoft.graph.requests.DirectoryObjectCollectionPage members;
 
 
     /**
@@ -45,7 +45,7 @@ public class Group extends DirectoryObject implements IJsonBackedObject {
 
 
         if (json.has("members")) {
-            members = serializer.deserializeObject(json.get("members"), DirectoryObjectCollectionPage.class);
+            members = serializer.deserializeObject(json.get("members"), com.microsoft.graph.requests.DirectoryObjectCollectionPage.class);
         }
     }
 }

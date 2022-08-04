@@ -8,9 +8,6 @@ package com.microsoft.graph.requests;
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.models.TestEntity;
-import com.microsoft.graph.requests.TestTypeWithReferenceRequestBuilder;
-import com.microsoft.graph.requests.EntityType2WithReferenceRequestBuilder;
-import com.microsoft.graph.requests.EntityType3WithReferenceRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
@@ -66,8 +63,8 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder<TestEntity> {
      * @return the TestTypeWithReferenceRequestBuilder instance
      */
     @Nonnull
-    public TestTypeWithReferenceRequestBuilder testNav() {
-        return new TestTypeWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("testNav"), getClient(), null);
+    public com.microsoft.graph.requests.TestTypeWithReferenceRequestBuilder testNav() {
+        return new com.microsoft.graph.requests.TestTypeWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("testNav"), getClient(), null);
     }
 
     /**
@@ -76,8 +73,8 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder<TestEntity> {
      * @return the EntityType2WithReferenceRequestBuilder instance
      */
     @Nonnull
-    public EntityType2WithReferenceRequestBuilder testInvalidNav() {
-        return new EntityType2WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("testInvalidNav"), getClient(), null);
+    public com.microsoft.graph.requests.EntityType2WithReferenceRequestBuilder testInvalidNav() {
+        return new com.microsoft.graph.requests.EntityType2WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("testInvalidNav"), getClient(), null);
     }
 
     /**
@@ -86,7 +83,7 @@ public class TestEntityRequestBuilder extends BaseRequestBuilder<TestEntity> {
      * @return the EntityType3WithReferenceRequestBuilder instance
      */
     @Nonnull
-    public EntityType3WithReferenceRequestBuilder testExplicitNav() {
-        return new EntityType3WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("testExplicitNav"), getClient(), null);
+    public com.microsoft.graph.requests.EntityType3WithReferenceRequestBuilder testExplicitNav() {
+        return new com.microsoft.graph.requests.EntityType3WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("testExplicitNav"), getClient(), null);
     }
 }

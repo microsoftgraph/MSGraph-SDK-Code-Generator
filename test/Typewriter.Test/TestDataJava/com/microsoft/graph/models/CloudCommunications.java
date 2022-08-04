@@ -9,8 +9,6 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
 import java.util.EnumSet;
 import com.microsoft.graph.http.BaseCollectionPage;
-import com.microsoft.graph.models.Call;
-import com.microsoft.graph2.callrecords.models.CallRecord;
 import com.microsoft.graph.models.Entity;
 import com.microsoft.graph.requests.CallCollectionPage;
 import com.microsoft.graph2.callrecords.requests.CallRecordCollectionPage;
@@ -37,7 +35,7 @@ public class CloudCommunications extends Entity implements IJsonBackedObject {
     @SerializedName(value = "calls", alternate = {"Calls"})
     @Expose
 	@Nullable
-    public CallCollectionPage calls;
+    public com.microsoft.graph.requests.CallCollectionPage calls;
 
     /**
      * The Call Records.
@@ -46,7 +44,7 @@ public class CloudCommunications extends Entity implements IJsonBackedObject {
     @SerializedName(value = "callRecords", alternate = {"CallRecords"})
     @Expose
 	@Nullable
-    public CallRecordCollectionPage callRecords;
+    public com.microsoft.graph2.callrecords.requests.CallRecordCollectionPage callRecords;
 
 
     /**
@@ -59,11 +57,11 @@ public class CloudCommunications extends Entity implements IJsonBackedObject {
 
 
         if (json.has("calls")) {
-            calls = serializer.deserializeObject(json.get("calls"), CallCollectionPage.class);
+            calls = serializer.deserializeObject(json.get("calls"), com.microsoft.graph.requests.CallCollectionPage.class);
         }
 
         if (json.has("callRecords")) {
-            callRecords = serializer.deserializeObject(json.get("callRecords"), CallRecordCollectionPage.class);
+            callRecords = serializer.deserializeObject(json.get("callRecords"), com.microsoft.graph2.callrecords.requests.CallRecordCollectionPage.class);
         }
     }
 }

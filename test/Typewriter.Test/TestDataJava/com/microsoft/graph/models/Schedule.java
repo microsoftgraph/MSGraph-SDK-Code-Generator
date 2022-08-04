@@ -9,8 +9,6 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
 import java.util.EnumSet;
 import com.microsoft.graph.http.BaseCollectionPage;
-import com.microsoft.graph.models.TimeOff;
-import com.microsoft.graph.models.TimeOffRequest;
 import com.microsoft.graph.models.Entity;
 import com.microsoft.graph.requests.TimeOffCollectionPage;
 import com.microsoft.graph.requests.TimeOffRequestCollectionPage;
@@ -46,7 +44,7 @@ public class Schedule extends Entity implements IJsonBackedObject {
     @SerializedName(value = "timesOff", alternate = {"TimesOff"})
     @Expose
 	@Nullable
-    public TimeOffCollectionPage timesOff;
+    public com.microsoft.graph.requests.TimeOffCollectionPage timesOff;
 
     /**
      * The Time Off Requests.
@@ -55,7 +53,7 @@ public class Schedule extends Entity implements IJsonBackedObject {
     @SerializedName(value = "timeOffRequests", alternate = {"TimeOffRequests"})
     @Expose
 	@Nullable
-    public TimeOffRequestCollectionPage timeOffRequests;
+    public com.microsoft.graph.requests.TimeOffRequestCollectionPage timeOffRequests;
 
 
     /**
@@ -68,11 +66,11 @@ public class Schedule extends Entity implements IJsonBackedObject {
 
 
         if (json.has("timesOff")) {
-            timesOff = serializer.deserializeObject(json.get("timesOff"), TimeOffCollectionPage.class);
+            timesOff = serializer.deserializeObject(json.get("timesOff"), com.microsoft.graph.requests.TimeOffCollectionPage.class);
         }
 
         if (json.has("timeOffRequests")) {
-            timeOffRequests = serializer.deserializeObject(json.get("timeOffRequests"), TimeOffRequestCollectionPage.class);
+            timeOffRequests = serializer.deserializeObject(json.get("timeOffRequests"), com.microsoft.graph.requests.TimeOffRequestCollectionPage.class);
         }
     }
 }
