@@ -899,7 +899,9 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
                 {
                     collidedProperties.Add(rawTypeName);
                 }
-                allProperties.Add(rawTypeName);
+                else {
+                    allProperties.Add(rawTypeName);
+                }
             }
 
             if (properties != null)
