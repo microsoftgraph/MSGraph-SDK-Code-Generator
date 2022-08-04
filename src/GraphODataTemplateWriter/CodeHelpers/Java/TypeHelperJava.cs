@@ -324,10 +324,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.Java
         public static string TypeCollectionPageFullyQualified(this OdcmObject c)
         {
             if(c is OdcmProperty) {
-                string nSpace = GetPropertyNamespace((OdcmProperty)c);
-                if(!nSpace.Equals("com.microsoft.graph", StringComparison.OrdinalIgnoreCase)){
-                    return String.Format("{0}.requests.{1}",GetPropertyNamespace((OdcmProperty)c), c.TypeCollectionPage());
-                }
+                return String.Format("{0}.requests.{1}",GetPropertyNamespace((OdcmProperty)c), c.TypeCollectionPage());
             }  
             return c.TypeCollectionPage();
         }
@@ -822,6 +819,10 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
             foreach (var property in properties.Where(p => !p.Projection.Type.Name.Equals("Stream") && p.ParentPropertyType == null))
             {
                 var propertyType = property.GetTypeString();
+                if( property.IsCollection() && property.IsNavigation())
+                {
+                    continue;
+                }
                 if (property.Type is OdcmPrimitiveType)
                     continue;
 
@@ -889,10 +890,28 @@ import java.util.EnumSet;", host.CurrentModel.GetNamespace().AddPrefix());
                 }
             }
 
+            var collidedProperties = new HashSet<string>();
+            var allProperties = new HashSet<string>();
+            foreach(var property in properties)
+            {
+                var rawTypeName = property.Projection.Type.Name;
+                if (allProperties.Contains(rawTypeName))
+                {
+                    collidedProperties.Add(rawTypeName);
+                }
+                allProperties.Add(rawTypeName);
+            }
+
             if (properties != null)
             {
                 foreach (var property in properties.Where(p => p.IsCollection() && p.IsNavigation() && p.ParentPropertyType == null))
                 {
+                    var rawTypeName = property.Projection.Type.Name;
+                    if (collidedProperties.Contains(rawTypeName))
+                    {
+                        continue;
+                    }
+
                     if (property.Type is OdcmPrimitiveType)
                         continue;
 
@@ -968,10 +987,6 @@ import javax.annotation.Nonnull;";
                         ?.SelectMany(o => ImportClassesOfMethodParameters(o, importTypeToExclude: importTypeToExclude))
                         ?.ToList()
                         ?.ForEach(x => methodImports.Add(x));
-                    c?.NavigationProperties()
-                        ?.Distinct()
-                        ?.ToList()
-                        ?.ForEach(x => ImportRequestBuilderTypes(host, x, methodImports, importFormat, interfaceTemplatePrefix));
                     goto default;
                 default:
                     @namespace = host.CurrentNamespace();

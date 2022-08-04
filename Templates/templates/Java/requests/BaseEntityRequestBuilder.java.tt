@@ -121,8 +121,8 @@ if (c.AsOdcmClass() != null)
      * @return the <#=prop.TypeRequestBuilder()#> instance
      */
     @Nonnull
-    public <#=prop.TypeRequestBuilder()#> <#=sanitizedProperty#>() {
-        return new <#=prop.TypeRequestBuilder()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
+    public <#=prop.TypeRequestBuilderFullyQualified()#> <#=sanitizedProperty#>() {
+        return new <#=prop.TypeRequestBuilderFullyQualified()#>(getRequestUrlWithAdditionalSegment("<#=prop.Name#>"), getClient(), null);
     }
 <#
         }
