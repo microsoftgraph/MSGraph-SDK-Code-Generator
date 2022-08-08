@@ -8,7 +8,6 @@ package com.microsoft.graph2.callrecords.requests;
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph2.callrecords.models.SingletonEntity1;
-import com.microsoft.graph.requests.TestTypeRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import javax.annotation.Nullable;

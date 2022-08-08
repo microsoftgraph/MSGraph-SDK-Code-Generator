@@ -12,7 +12,6 @@ import com.microsoft.graph.http.BaseCollectionPage;
 import com.microsoft.graph2.callrecords.models.Endpoint;
 import com.microsoft.graph2.callrecords.models.FailureInfo;
 import com.microsoft.graph2.callrecords.models.Media;
-import com.microsoft.graph.models.EntityType3;
 import com.microsoft.graph.models.Call;
 import com.microsoft.graph2.callrecords.models.Session;
 import com.microsoft.graph2.callrecords.models.Photo;
@@ -95,7 +94,7 @@ public class Segment extends Entity implements IJsonBackedObject {
      */
     @Deprecated
 	@Nullable
-    public EntityType3CollectionPage refTypes;
+    public com.microsoft.graph.requests.EntityType3CollectionPage refTypes;
 
     /**
      * The Ref Type.
@@ -135,7 +134,7 @@ public class Segment extends Entity implements IJsonBackedObject {
 
 
         if (json.has("refTypes")) {
-            refTypes = serializer.deserializeObject(json.get("refTypes"), EntityType3CollectionPage.class);
+            refTypes = serializer.deserializeObject(json.get("refTypes"), com.microsoft.graph.requests.EntityType3CollectionPage.class);
         }
     }
 }

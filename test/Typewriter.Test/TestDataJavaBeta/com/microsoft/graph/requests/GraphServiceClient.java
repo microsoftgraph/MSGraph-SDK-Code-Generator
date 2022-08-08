@@ -7,11 +7,7 @@ package com.microsoft.graph.requests;
 
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.requests.EntityType3CollectionRequestBuilder;
-import com.microsoft.graph.requests.EntityType3RequestBuilder;
-import com.microsoft.graph.requests.SingletonEntity1RequestBuilder;
-import com.microsoft.graph.requests.SingletonEntity2RequestBuilder;
-import com.microsoft.graph2.callrecords.requests.SingletonEntity1RequestBuilder;
+
 import java.util.Arrays;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
@@ -189,8 +185,8 @@ public class GraphServiceClient<nativeRequestType> extends BaseClient<nativeRequ
      * @return the SingletonEntity1
      */
     @Nonnull
-    public SingletonEntity1RequestBuilder singletonProperty1() {
-        return new SingletonEntity1RequestBuilder(getServiceRoot() + "/singletonProperty1", this, null);
+    public com.microsoft.graph.requests.SingletonEntity1RequestBuilder singletonProperty1() {
+        return new com.microsoft.graph.requests.SingletonEntity1RequestBuilder(getServiceRoot() + "/singletonProperty1", this, null);
     }
 
     /**
@@ -199,8 +195,8 @@ public class GraphServiceClient<nativeRequestType> extends BaseClient<nativeRequ
      * @return the SingletonEntity2
      */
     @Nonnull
-    public SingletonEntity2RequestBuilder singletonProperty2() {
-        return new SingletonEntity2RequestBuilder(getServiceRoot() + "/singletonProperty2", this, null);
+    public com.microsoft.graph.requests.SingletonEntity2RequestBuilder singletonProperty2() {
+        return new com.microsoft.graph.requests.SingletonEntity2RequestBuilder(getServiceRoot() + "/singletonProperty2", this, null);
     }
 
     /**
@@ -209,7 +205,7 @@ public class GraphServiceClient<nativeRequestType> extends BaseClient<nativeRequ
      * @return the SingletonEntity1
      */
     @Nonnull
-    public SingletonEntity1RequestBuilder singletonProperty3() {
-        return new SingletonEntity1RequestBuilder(getServiceRoot() + "/singletonProperty3", this, null);
+    public com.microsoft.graph2.callrecords.requests.SingletonEntity1RequestBuilder singletonProperty3() {
+        return new com.microsoft.graph2.callrecords.requests.SingletonEntity1RequestBuilder(getServiceRoot() + "/singletonProperty3", this, null);
     }
 }

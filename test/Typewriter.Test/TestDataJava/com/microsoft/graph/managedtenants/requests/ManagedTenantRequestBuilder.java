@@ -8,10 +8,6 @@ package com.microsoft.graph.managedtenants.requests;
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.managedtenants.models.ManagedTenant;
-import com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionObjectCollectionRequestBuilder;
-import com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionObjectRequestBuilder;
-import com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionRequestBuilder;
-import com.microsoft.graph.managedtenants.requests.ManagementTemplateRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
@@ -66,8 +62,8 @@ public class ManagedTenantRequestBuilder extends BaseRequestBuilder<ManagedTenan
      * @return the collection request builder
      */
     @Nonnull
-    public ManagementTemplateCollectionObjectCollectionRequestBuilder managementTemplateCollections() {
-        return new ManagementTemplateCollectionObjectCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("managementTemplateCollections"), getClient(), null);
+    public com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionObjectCollectionRequestBuilder managementTemplateCollections() {
+        return new com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionObjectCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("managementTemplateCollections"), getClient(), null);
     }
 
     /**
@@ -77,8 +73,8 @@ public class ManagedTenantRequestBuilder extends BaseRequestBuilder<ManagedTenan
      * @param id the item identifier
      */
     @Nonnull
-    public ManagementTemplateCollectionObjectRequestBuilder managementTemplateCollections(@Nonnull final String id) {
-        return new ManagementTemplateCollectionObjectRequestBuilder(getRequestUrlWithAdditionalSegment("managementTemplateCollections") + "/" + id, getClient(), null);
+    public com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionObjectRequestBuilder managementTemplateCollections(@Nonnull final String id) {
+        return new com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionObjectRequestBuilder(getRequestUrlWithAdditionalSegment("managementTemplateCollections") + "/" + id, getClient(), null);
     }
     /**
      *  Gets a request builder for the ManagementTemplate collection
@@ -86,8 +82,8 @@ public class ManagedTenantRequestBuilder extends BaseRequestBuilder<ManagedTenan
      * @return the collection request builder
      */
     @Nonnull
-    public ManagementTemplateCollectionRequestBuilder managementTemplates() {
-        return new ManagementTemplateCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("managementTemplates"), getClient(), null);
+    public com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionRequestBuilder managementTemplates() {
+        return new com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("managementTemplates"), getClient(), null);
     }
 
     /**
@@ -97,7 +93,7 @@ public class ManagedTenantRequestBuilder extends BaseRequestBuilder<ManagedTenan
      * @param id the item identifier
      */
     @Nonnull
-    public ManagementTemplateRequestBuilder managementTemplates(@Nonnull final String id) {
-        return new ManagementTemplateRequestBuilder(getRequestUrlWithAdditionalSegment("managementTemplates") + "/" + id, getClient(), null);
+    public com.microsoft.graph.managedtenants.requests.ManagementTemplateRequestBuilder managementTemplates(@Nonnull final String id) {
+        return new com.microsoft.graph.managedtenants.requests.ManagementTemplateRequestBuilder(getRequestUrlWithAdditionalSegment("managementTemplates") + "/" + id, getClient(), null);
     }
 }
