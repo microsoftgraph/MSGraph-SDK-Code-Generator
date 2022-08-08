@@ -9,7 +9,6 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
 import java.util.EnumSet;
 import com.microsoft.graph.http.BaseCollectionPage;
-import com.microsoft.graph.managedtenants.models.ManagementTemplate;
 import com.microsoft.graph.models.Entity;
 import com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionPage;
 
@@ -51,7 +50,7 @@ public class ManagementTemplateCollectionObject extends Entity implements IJsonB
      * 
      */
 	@Nullable
-    public ManagementTemplateCollectionPage managementTemplates;
+    public com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionPage managementTemplates;
 
 
     /**
@@ -64,7 +63,7 @@ public class ManagementTemplateCollectionObject extends Entity implements IJsonB
 
 
         if (json.has("managementTemplates")) {
-            managementTemplates = serializer.deserializeObject(json.get("managementTemplates"), ManagementTemplateCollectionPage.class);
+            managementTemplates = serializer.deserializeObject(json.get("managementTemplates"), com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionPage.class);
         }
     }
 }

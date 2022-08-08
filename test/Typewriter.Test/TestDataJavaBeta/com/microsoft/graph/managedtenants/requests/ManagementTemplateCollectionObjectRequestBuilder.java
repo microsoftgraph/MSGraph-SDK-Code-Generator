@@ -8,8 +8,6 @@ package com.microsoft.graph.managedtenants.requests;
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.managedtenants.models.ManagementTemplateCollectionObject;
-import com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionWithReferencesRequestBuilder;
-import com.microsoft.graph.managedtenants.requests.ManagementTemplateWithReferenceRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
@@ -64,8 +62,8 @@ public class ManagementTemplateCollectionObjectRequestBuilder extends BaseReques
      * @return the collection request builder
      */
     @Nonnull
-    public ManagementTemplateCollectionWithReferencesRequestBuilder managementTemplates() {
-        return new ManagementTemplateCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("managementTemplates"), getClient(), null);
+    public com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionWithReferencesRequestBuilder managementTemplates() {
+        return new com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("managementTemplates"), getClient(), null);
     }
 
     /**
@@ -75,7 +73,7 @@ public class ManagementTemplateCollectionObjectRequestBuilder extends BaseReques
      * @param id the item identifier
      */
     @Nonnull
-    public ManagementTemplateWithReferenceRequestBuilder managementTemplates(@Nonnull final String id) {
-        return new ManagementTemplateWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("managementTemplates") + "/" + id, getClient(), null);
+    public com.microsoft.graph.managedtenants.requests.ManagementTemplateWithReferenceRequestBuilder managementTemplates(@Nonnull final String id) {
+        return new com.microsoft.graph.managedtenants.requests.ManagementTemplateWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("managementTemplates") + "/" + id, getClient(), null);
     }
 }

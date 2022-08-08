@@ -11,11 +11,6 @@ import com.microsoft.graph2.callrecords.models.Segment;
 import com.microsoft.graph.models.Recipient;
 import com.microsoft.graph2.callrecords.models.Session;
 import com.microsoft.graph.models.IdentitySet;
-import com.microsoft.graph.requests.EntityType3CollectionWithReferencesRequestBuilder;
-import com.microsoft.graph.requests.EntityType3WithReferenceRequestBuilder;
-import com.microsoft.graph.requests.CallWithReferenceRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.SessionWithReferenceRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.PhotoRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
@@ -72,8 +67,8 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      * @return the collection request builder
      */
     @Nonnull
-    public EntityType3CollectionWithReferencesRequestBuilder refTypes() {
-        return new EntityType3CollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("refTypes"), getClient(), null);
+    public com.microsoft.graph.requests.EntityType3CollectionWithReferencesRequestBuilder refTypes() {
+        return new com.microsoft.graph.requests.EntityType3CollectionWithReferencesRequestBuilder(getRequestUrlWithAdditionalSegment("refTypes"), getClient(), null);
     }
 
     /**
@@ -83,8 +78,8 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      * @param id the item identifier
      */
     @Nonnull
-    public EntityType3WithReferenceRequestBuilder refTypes(@Nonnull final String id) {
-        return new EntityType3WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("refTypes") + "/" + id, getClient(), null);
+    public com.microsoft.graph.requests.EntityType3WithReferenceRequestBuilder refTypes(@Nonnull final String id) {
+        return new com.microsoft.graph.requests.EntityType3WithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("refTypes") + "/" + id, getClient(), null);
     }
 
     /**
@@ -93,8 +88,8 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      * @return the CallWithReferenceRequestBuilder instance
      */
     @Nonnull
-    public CallWithReferenceRequestBuilder refType() {
-        return new CallWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("refType"), getClient(), null);
+    public com.microsoft.graph.requests.CallWithReferenceRequestBuilder refType() {
+        return new com.microsoft.graph.requests.CallWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("refType"), getClient(), null);
     }
 
     /**
@@ -103,8 +98,8 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      * @return the SessionWithReferenceRequestBuilder instance
      */
     @Nonnull
-    public SessionWithReferenceRequestBuilder sessionRef() {
-        return new SessionWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("sessionRef"), getClient(), null);
+    public com.microsoft.graph2.callrecords.requests.SessionWithReferenceRequestBuilder sessionRef() {
+        return new com.microsoft.graph2.callrecords.requests.SessionWithReferenceRequestBuilder(getRequestUrlWithAdditionalSegment("sessionRef"), getClient(), null);
     }
 
     /**
@@ -113,8 +108,8 @@ public class SegmentRequestBuilder extends BaseRequestBuilder<Segment> {
      * @return the PhotoRequestBuilder instance
      */
     @Nonnull
-    public PhotoRequestBuilder photo() {
-        return new PhotoRequestBuilder(getRequestUrlWithAdditionalSegment("photo"), getClient(), null);
+    public com.microsoft.graph2.callrecords.requests.PhotoRequestBuilder photo() {
+        return new com.microsoft.graph2.callrecords.requests.PhotoRequestBuilder(getRequestUrlWithAdditionalSegment("photo"), getClient(), null);
     }
 
     /**

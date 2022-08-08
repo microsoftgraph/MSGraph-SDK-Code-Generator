@@ -12,8 +12,6 @@ import com.microsoft.graph.http.BaseCollectionPage;
 import com.microsoft.graph2.callrecords.models.CallType;
 import com.microsoft.graph2.callrecords.models.Modality;
 import com.microsoft.graph.models.IdentitySet;
-import com.microsoft.graph2.callrecords.models.Session;
-import com.microsoft.graph.models.EntityType2;
 import com.microsoft.graph.models.Entity;
 import com.microsoft.graph2.callrecords.requests.SessionCollectionPage;
 import com.microsoft.graph.requests.EntityType2CollectionPage;
@@ -121,7 +119,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
     @SerializedName(value = "sessions", alternate = {"Sessions"})
     @Expose
 	@Nullable
-    public SessionCollectionPage sessions;
+    public com.microsoft.graph2.callrecords.requests.SessionCollectionPage sessions;
 
     /**
      * The Recipients.
@@ -130,7 +128,7 @@ public class CallRecord extends Entity implements IJsonBackedObject {
     @SerializedName(value = "recipients", alternate = {"Recipients"})
     @Expose
 	@Nullable
-    public EntityType2CollectionPage recipients;
+    public com.microsoft.graph.requests.EntityType2CollectionPage recipients;
 
 
     /**
@@ -143,11 +141,11 @@ public class CallRecord extends Entity implements IJsonBackedObject {
 
 
         if (json.has("sessions")) {
-            sessions = serializer.deserializeObject(json.get("sessions"), SessionCollectionPage.class);
+            sessions = serializer.deserializeObject(json.get("sessions"), com.microsoft.graph2.callrecords.requests.SessionCollectionPage.class);
         }
 
         if (json.has("recipients")) {
-            recipients = serializer.deserializeObject(json.get("recipients"), EntityType2CollectionPage.class);
+            recipients = serializer.deserializeObject(json.get("recipients"), com.microsoft.graph.requests.EntityType2CollectionPage.class);
         }
     }
 }

@@ -8,10 +8,6 @@ package com.microsoft.graph2.callrecords.requests;
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph2.callrecords.models.CallRecord;
-import com.microsoft.graph2.callrecords.requests.SessionCollectionRequestBuilder;
-import com.microsoft.graph2.callrecords.requests.SessionRequestBuilder;
-import com.microsoft.graph.requests.EntityType2CollectionRequestBuilder;
-import com.microsoft.graph.requests.EntityType2RequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
@@ -66,8 +62,8 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder<CallRecord> {
      * @return the collection request builder
      */
     @Nonnull
-    public SessionCollectionRequestBuilder sessions() {
-        return new SessionCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions"), getClient(), null);
+    public com.microsoft.graph2.callrecords.requests.SessionCollectionRequestBuilder sessions() {
+        return new com.microsoft.graph2.callrecords.requests.SessionCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions"), getClient(), null);
     }
 
     /**
@@ -77,8 +73,8 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder<CallRecord> {
      * @param id the item identifier
      */
     @Nonnull
-    public SessionRequestBuilder sessions(@Nonnull final String id) {
-        return new SessionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions") + "/" + id, getClient(), null);
+    public com.microsoft.graph2.callrecords.requests.SessionRequestBuilder sessions(@Nonnull final String id) {
+        return new com.microsoft.graph2.callrecords.requests.SessionRequestBuilder(getRequestUrlWithAdditionalSegment("sessions") + "/" + id, getClient(), null);
     }
     /**
      *  Gets a request builder for the EntityType2 collection
@@ -86,8 +82,8 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder<CallRecord> {
      * @return the collection request builder
      */
     @Nonnull
-    public EntityType2CollectionRequestBuilder recipients() {
-        return new EntityType2CollectionRequestBuilder(getRequestUrlWithAdditionalSegment("recipients"), getClient(), null);
+    public com.microsoft.graph.requests.EntityType2CollectionRequestBuilder recipients() {
+        return new com.microsoft.graph.requests.EntityType2CollectionRequestBuilder(getRequestUrlWithAdditionalSegment("recipients"), getClient(), null);
     }
 
     /**
@@ -97,7 +93,7 @@ public class CallRecordRequestBuilder extends BaseRequestBuilder<CallRecord> {
      * @param id the item identifier
      */
     @Nonnull
-    public EntityType2RequestBuilder recipients(@Nonnull final String id) {
-        return new EntityType2RequestBuilder(getRequestUrlWithAdditionalSegment("recipients") + "/" + id, getClient(), null);
+    public com.microsoft.graph.requests.EntityType2RequestBuilder recipients(@Nonnull final String id) {
+        return new com.microsoft.graph.requests.EntityType2RequestBuilder(getRequestUrlWithAdditionalSegment("recipients") + "/" + id, getClient(), null);
     }
 }
