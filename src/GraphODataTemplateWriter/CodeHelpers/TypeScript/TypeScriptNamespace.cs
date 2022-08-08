@@ -1,5 +1,6 @@
 ﻿using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
 using Microsoft.Graph.ODataTemplateWriter.Settings;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
     /// </summary>
     public class TypeScriptNamespace
     {
+        internal static Logger Logger => LogManager.GetLogger("Typewriter");
         /// <summary>
         /// Namespace name, e.g. Microsoft.Graph.CallRecords
         /// </summary>
@@ -73,6 +75,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 switch (type)
                 {
                     case OdcmEntityClass e:
+
                         Entities.Add(e);
                         break;
                     case OdcmComplexClass c:
@@ -82,6 +85,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                         }
                         break;
                     case OdcmEnum e:
+                        if (e.Members != null || !e.Members.Any()) 
+                        {
+                            Logger.Info("Empty enum encountered");
+                        }
                         Enums.Add(e);
                         break;
                     default:
