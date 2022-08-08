@@ -33,7 +33,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 case "Double":
                 case "Single":
                 case "Binary": // let binary: number = 0b1010;
-                    typeStr = "number";
+                    typeStr = "string";
                     break;
                 case "Guid":
                 case "Duration":
