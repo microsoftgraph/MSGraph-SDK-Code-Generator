@@ -245,6 +245,7 @@
       <EntityType Name="singletonEntity1" BaseType="graph.entity">
         <NavigationProperty Name="testSingleNav" Type="graph.testType" ContainsTarget="true" />
       </EntityType>
+      <EnumType Name="EmptyEnum"/>
       <EnumType Name="callType">
         <Member Name="unknown" Value="0" />
         <Member Name="groupCall" Value="1" />
