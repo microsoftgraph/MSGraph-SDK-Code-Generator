@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 {
@@ -32,6 +32,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 case "Int64":
                 case "Double":
                 case "Single":
+                    typeStr = "number";
+                    break;
                 case "Binary": // let binary: number = 0b1010;
                     typeStr = "string";
                     break;
