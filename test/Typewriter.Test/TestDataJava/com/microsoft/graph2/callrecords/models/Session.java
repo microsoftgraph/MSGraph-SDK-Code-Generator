@@ -12,7 +12,6 @@ import com.microsoft.graph.http.BaseCollectionPage;
 import com.microsoft.graph2.callrecords.models.Modality;
 import com.microsoft.graph2.callrecords.models.Endpoint;
 import com.microsoft.graph2.callrecords.models.FailureInfo;
-import com.microsoft.graph2.callrecords.models.Segment;
 import com.microsoft.graph.models.Entity;
 import com.microsoft.graph2.callrecords.requests.SegmentCollectionPage;
 
@@ -92,7 +91,7 @@ public class Session extends Entity implements IJsonBackedObject {
     @SerializedName(value = "segments", alternate = {"Segments"})
     @Expose
 	@Nullable
-    public SegmentCollectionPage segments;
+    public com.microsoft.graph2.callrecords.requests.SegmentCollectionPage segments;
 
 
     /**
@@ -105,7 +104,7 @@ public class Session extends Entity implements IJsonBackedObject {
 
 
         if (json.has("segments")) {
-            segments = serializer.deserializeObject(json.get("segments"), SegmentCollectionPage.class);
+            segments = serializer.deserializeObject(json.get("segments"), com.microsoft.graph2.callrecords.requests.SegmentCollectionPage.class);
         }
     }
 }

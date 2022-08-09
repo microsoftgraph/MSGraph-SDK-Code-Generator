@@ -1,5 +1,6 @@
 ﻿using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
 using Microsoft.Graph.ODataTemplateWriter.Settings;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
     /// </summary>
     public class TypeScriptNamespace
     {
+        internal static Logger Logger => LogManager.GetLogger("Typewriter");
         /// <summary>
         /// Namespace name, e.g. Microsoft.Graph.CallRecords
         /// </summary>
@@ -73,6 +75,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 switch (type)
                 {
                     case OdcmEntityClass e:
+
                         Entities.Add(e);
                         break;
                     case OdcmComplexClass c:
@@ -82,6 +85,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                         }
                         break;
                     case OdcmEnum e:
+                        if (e.Members != null || !e.Members.Any()) 
+                        {
+                            Logger.Info("Empty enum encountered"+ e?.Name);
+                        }
                         Enums.Add(e);
                         break;
                     default:
@@ -133,10 +140,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
             var export = IsMainNamespace ? "export " : string.Empty;
             var enumTypeName = enumType.Name.UpperCaseFirstChar();
             var enumValues = enumType.GetEnumValues();
-            var exportTypeLength = (export + "type").Length + enumTypeName.Length + enumValues.Length + 3;
+            var exportTypeLength = (export + "type").Length + enumTypeName.Length + enumValues?.Length + 3;
             if (exportTypeLength < MaxLineLength)
             {
-                sb.AppendLine($"{NamespaceIndent}{export}type {enumTypeName} = {enumValues};");
+                sb.AppendLine($"{NamespaceIndent}{export}type {enumTypeName} = {(String.IsNullOrWhiteSpace(enumValues)? String.Empty : enumValues)};");
             }
             else
             {

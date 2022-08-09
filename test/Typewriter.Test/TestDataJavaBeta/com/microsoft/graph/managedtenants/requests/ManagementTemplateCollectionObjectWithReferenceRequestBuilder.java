@@ -8,8 +8,6 @@ package com.microsoft.graph.managedtenants.requests;
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.managedtenants.models.ManagementTemplateCollectionObject;
-import com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionWithReferencesRequestBuilder;
-import com.microsoft.graph.managedtenants.requests.ManagementTemplateWithReferenceRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import javax.annotation.Nullable;

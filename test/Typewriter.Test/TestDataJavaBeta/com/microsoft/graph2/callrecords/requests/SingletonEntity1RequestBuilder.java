@@ -8,7 +8,6 @@ package com.microsoft.graph2.callrecords.requests;
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph2.callrecords.models.SingletonEntity1;
-import com.microsoft.graph.requests.TestTypeRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
@@ -64,7 +63,7 @@ public class SingletonEntity1RequestBuilder extends BaseRequestBuilder<Singleton
      * @return the TestTypeRequestBuilder instance
      */
     @Nonnull
-    public TestTypeRequestBuilder testSingleNav() {
-        return new TestTypeRequestBuilder(getRequestUrlWithAdditionalSegment("testSingleNav"), getClient(), null);
+    public com.microsoft.graph.requests.TestTypeRequestBuilder testSingleNav() {
+        return new com.microsoft.graph.requests.TestTypeRequestBuilder(getRequestUrlWithAdditionalSegment("testSingleNav"), getClient(), null);
     }
 }

@@ -148,6 +148,17 @@
       <EntityType Name="plannerGroup" BaseType="graph.entity">
         <NavigationProperty Name="plans" Type="Collection(graph.plannerPlan)" ContainsTarget="true" />
       </EntityType>
+      <EntityType Name="security" BaseType="graph.entity">
+        <Property Name="providerStatus" Type="Collection(graph.securityProviderStatus)" />
+        <NavigationProperty Name="alerts_v2" Type="Collection(microsoft.graph.security.alert)" ContainsTarget="true" />
+        <NavigationProperty Name="alerts" Type="Collection(graph.alert)" ContainsTarget="true" />
+      </EntityType>
+      <EntityType Name="alert" BaseType="graph.entity" OpenType="true">
+        <Property Name="activityGroupName" Type="Edm.String" />
+        <Property Name="assignedTo" Type="Edm.String" />
+        <Property Name="azureSubscriptionId" Type="Edm.String" />
+        <Property Name="azureTenantId" Type="Edm.String" Nullable="false" />
+      </EntityType>
       <EntityType Name="workbookChart" BaseType="graph.entity">
           <Property Name="height" Type="Edm.Double" Nullable="false"/>
           <Property Name="left" Type="Edm.Double" Nullable="false"/>
@@ -234,6 +245,7 @@
       <EntityType Name="singletonEntity1" BaseType="graph.entity">
         <NavigationProperty Name="testSingleNav" Type="graph.testType" ContainsTarget="true" />
       </EntityType>
+      <EnumType Name="EmptyEnum"/>
       <EnumType Name="callType">
         <Member Name="unknown" Value="0" />
         <Member Name="groupCall" Value="1" />
@@ -420,14 +432,32 @@
         <NavigationProperty Name="managementTemplateCollections" Type="Collection(microsoft.graph.managedTenants.managementTemplateCollection)" />
       </EntityType>  
     </Schema>
-    <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="microsoft.graph.security">
-        <EnumType Name="alertClassification" UnderlyingType="Edm.Byte">
-            <Member Name="unknown" Value="0"/>
-            <Member Name="falsePositive" Value="10"/>
-            <Member Name="truePositive" Value="20"/>
-            <Member Name="informationalExpectedActivity" Value="30"/>
-            <Member Name="unknownFutureValue" Value="39"/>
-        </EnumType>
+    <Schema Namespace="microsoft.graph.security" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EnumType Name="alertClassification" UnderlyingType="Edm.Byte">
+        <Member Name="unknown" Value="0"/>
+        <Member Name="falsePositive" Value="10"/>
+        <Member Name="truePositive" Value="20"/>
+        <Member Name="informationalExpectedActivity" Value="30"/>
+        <Member Name="unknownFutureValue" Value="39"/>
+      </EnumType>
+      <EntityType Name="alert" BaseType="graph.entity">
+        <Property Name="actorDisplayName" Type="Edm.String" />
+        <Property Name="alertWebUrl" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="huntingQueryResults">
+        <Property Name="results" Type="Collection(microsoft.graph.security.huntingRowResult)" />
+        <Property Name="schema" Type="Collection(microsoft.graph.security.singlePropertySchema)" />
+      </ComplexType>
+      <ComplexType Name="huntingRowResult" OpenType="true" />
+      <ComplexType Name="singlePropertySchema">
+        <Property Name="name" Type="Edm.String" />
+        <Property Name="type" Type="Edm.String" />
+      </ComplexType>    
+      <Action Name="runHuntingQuery" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.security" />
+        <Parameter Name="query" Type="Edm.String" Unicode="false" />
+        <ReturnType Type="microsoft.graph.security.huntingQueryResults" />
+      </Action>  
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>

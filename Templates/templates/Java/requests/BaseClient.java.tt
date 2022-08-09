@@ -198,8 +198,8 @@ foreach (var prop in model.EntityContainer.Properties)
     @Deprecated
 <# } #>
     @Nonnull
-    public <#=prop.TypeRequestBuilder()#> <#=prop.Name#>() {
-        return new <#=prop.TypeRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
+    public <#=prop.TypeRequestBuilderFullyQualified()#> <#=prop.Name#>() {
+        return new <#=prop.TypeRequestBuilderFullyQualified()#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
     }
 <#
     }

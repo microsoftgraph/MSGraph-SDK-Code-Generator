@@ -9,8 +9,6 @@ import com.microsoft.graph.serializer.IJsonBackedObject;
 import com.microsoft.graph.serializer.AdditionalDataManager;
 import java.util.EnumSet;
 import com.microsoft.graph.http.BaseCollectionPage;
-import com.microsoft.graph.managedtenants.models.ManagementTemplateCollectionObject;
-import com.microsoft.graph.managedtenants.models.ManagementTemplate;
 import com.microsoft.graph.models.Entity;
 import com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionObjectCollectionPage;
 import com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionPage;
@@ -37,7 +35,7 @@ public class ManagedTenant extends Entity implements IJsonBackedObject {
     @SerializedName(value = "managementTemplateCollections", alternate = {"ManagementTemplateCollections"})
     @Expose
 	@Nullable
-    public ManagementTemplateCollectionObjectCollectionPage managementTemplateCollections;
+    public com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionObjectCollectionPage managementTemplateCollections;
 
     /**
      * The Management Templates.
@@ -46,7 +44,7 @@ public class ManagedTenant extends Entity implements IJsonBackedObject {
     @SerializedName(value = "managementTemplates", alternate = {"ManagementTemplates"})
     @Expose
 	@Nullable
-    public ManagementTemplateCollectionPage managementTemplates;
+    public com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionPage managementTemplates;
 
 
     /**
@@ -59,11 +57,11 @@ public class ManagedTenant extends Entity implements IJsonBackedObject {
 
 
         if (json.has("managementTemplateCollections")) {
-            managementTemplateCollections = serializer.deserializeObject(json.get("managementTemplateCollections"), ManagementTemplateCollectionObjectCollectionPage.class);
+            managementTemplateCollections = serializer.deserializeObject(json.get("managementTemplateCollections"), com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionObjectCollectionPage.class);
         }
 
         if (json.has("managementTemplates")) {
-            managementTemplates = serializer.deserializeObject(json.get("managementTemplates"), ManagementTemplateCollectionPage.class);
+            managementTemplates = serializer.deserializeObject(json.get("managementTemplates"), com.microsoft.graph.managedtenants.requests.ManagementTemplateCollectionPage.class);
         }
     }
 }

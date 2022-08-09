@@ -8,10 +8,6 @@ package com.microsoft.graph.requests;
 import com.microsoft.graph.http.IRequestBuilder;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.models.Schedule;
-import com.microsoft.graph.requests.TimeOffCollectionRequestBuilder;
-import com.microsoft.graph.requests.TimeOffRequestBuilder;
-import com.microsoft.graph.requests.TimeOffRequestCollectionRequestBuilder;
-import com.microsoft.graph.requests.TimeOffRequestRequestBuilder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
@@ -66,8 +62,8 @@ public class ScheduleRequestBuilder extends BaseRequestBuilder<Schedule> {
      * @return the collection request builder
      */
     @Nonnull
-    public TimeOffCollectionRequestBuilder timesOff() {
-        return new TimeOffCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("timesOff"), getClient(), null);
+    public com.microsoft.graph.requests.TimeOffCollectionRequestBuilder timesOff() {
+        return new com.microsoft.graph.requests.TimeOffCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("timesOff"), getClient(), null);
     }
 
     /**
@@ -77,8 +73,8 @@ public class ScheduleRequestBuilder extends BaseRequestBuilder<Schedule> {
      * @param id the item identifier
      */
     @Nonnull
-    public TimeOffRequestBuilder timesOff(@Nonnull final String id) {
-        return new TimeOffRequestBuilder(getRequestUrlWithAdditionalSegment("timesOff") + "/" + id, getClient(), null);
+    public com.microsoft.graph.requests.TimeOffRequestBuilder timesOff(@Nonnull final String id) {
+        return new com.microsoft.graph.requests.TimeOffRequestBuilder(getRequestUrlWithAdditionalSegment("timesOff") + "/" + id, getClient(), null);
     }
     /**
      *  Gets a request builder for the TimeOffRequest collection
@@ -86,8 +82,8 @@ public class ScheduleRequestBuilder extends BaseRequestBuilder<Schedule> {
      * @return the collection request builder
      */
     @Nonnull
-    public TimeOffRequestCollectionRequestBuilder timeOffRequests() {
-        return new TimeOffRequestCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("timeOffRequests"), getClient(), null);
+    public com.microsoft.graph.requests.TimeOffRequestCollectionRequestBuilder timeOffRequests() {
+        return new com.microsoft.graph.requests.TimeOffRequestCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("timeOffRequests"), getClient(), null);
     }
 
     /**
@@ -97,7 +93,7 @@ public class ScheduleRequestBuilder extends BaseRequestBuilder<Schedule> {
      * @param id the item identifier
      */
     @Nonnull
-    public TimeOffRequestRequestBuilder timeOffRequests(@Nonnull final String id) {
-        return new TimeOffRequestRequestBuilder(getRequestUrlWithAdditionalSegment("timeOffRequests") + "/" + id, getClient(), null);
+    public com.microsoft.graph.requests.TimeOffRequestRequestBuilder timeOffRequests(@Nonnull final String id) {
+        return new com.microsoft.graph.requests.TimeOffRequestRequestBuilder(getRequestUrlWithAdditionalSegment("timeOffRequests") + "/" + id, getClient(), null);
     }
 }
