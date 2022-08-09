@@ -34,8 +34,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                 case "Single":
                     typeStr = "number";
                     break;
-                case "Binary": // let binary: number = 0b1010;
-                    typeStr = "string";
+                case "Binary": 
+                    // base64 encoded binaries are strings.
+                    // https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-odata/b78348e6-44a3-4cc2-87fc-8f852c68f34d
+                    typeStr = "string"; 
                     break;
                 case "Guid":
                 case "Duration":
