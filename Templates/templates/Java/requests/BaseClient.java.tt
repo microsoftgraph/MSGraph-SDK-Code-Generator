@@ -160,8 +160,8 @@ foreach (var prop in model.EntityContainer.Properties)
     @Deprecated
 <# } #>
     @Nonnull
-    public <#=prop.TypeCollectionRequestBuilder()#> <#=prop.Name#>() {
-        return new <#=prop.TypeCollectionRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
+    public <#=prop.TypeCollectionRequestBuilderFullyQualified()#> <#=prop.Name#>() {
+        return new <#=prop.TypeCollectionRequestBuilderFullyQualified()#>(getServiceRoot() + "/<#=prop.Name#>", this, null);
     }
 
     /**
@@ -177,8 +177,8 @@ foreach (var prop in model.EntityContainer.Properties)
     @Deprecated
 <# } #>
     @Nonnull
-    public <#=prop.TypeRequestBuilder()#> <#=prop.Name#>(@Nonnull final String id) {
-        return new <#=prop.TypeRequestBuilder()#>(getServiceRoot() + "/<#=prop.Name#>/" + id, this, null);
+    public <#=prop.TypeRequestBuilderFullyQualified()#> <#=prop.Name#>(@Nonnull final String id) {
+        return new <#=prop.TypeRequestBuilderFullyQualified()#>(getServiceRoot() + "/<#=prop.Name#>/" + id, this, null);
     }
 <#
     }
