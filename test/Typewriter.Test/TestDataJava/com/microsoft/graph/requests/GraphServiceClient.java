@@ -162,8 +162,8 @@ public class GraphServiceClient<nativeRequestType> extends BaseClient<nativeRequ
      */
     @Deprecated
     @Nonnull
-    public EntityType3CollectionRequestBuilder testTypes() {
-        return new EntityType3CollectionRequestBuilder(getServiceRoot() + "/testTypes", this, null);
+    public com.microsoft.graph.requests.EntityType3CollectionRequestBuilder testTypes() {
+        return new com.microsoft.graph.requests.EntityType3CollectionRequestBuilder(getServiceRoot() + "/testTypes", this, null);
     }
 
     /**
@@ -175,8 +175,8 @@ public class GraphServiceClient<nativeRequestType> extends BaseClient<nativeRequ
      */
     @Deprecated
     @Nonnull
-    public EntityType3RequestBuilder testTypes(@Nonnull final String id) {
-        return new EntityType3RequestBuilder(getServiceRoot() + "/testTypes/" + id, this, null);
+    public com.microsoft.graph.requests.EntityType3RequestBuilder testTypes(@Nonnull final String id) {
+        return new com.microsoft.graph.requests.EntityType3RequestBuilder(getServiceRoot() + "/testTypes/" + id, this, null);
     }
 
     /**
