@@ -98,7 +98,7 @@ if (attributeStringBuilder.Length > 0) {
         }
         foreach(var property in entity.Properties)
         {
-            var propertyTypeString = property.GetTypeString(entity.Namespace.GetNamespaceName());
+            var propertyTypeString = property.GetTypeString(entity.Namespace.GetNamespaceName()).DisambiguateTypeName();
             var propertyType = property.IsTypeNullable() || property.IsCollection()
                     ? propertyTypeString
                     : propertyTypeString + "?";
