@@ -99,7 +99,7 @@ if (attributeStringBuilder.Length > 0) {
         foreach(var property in complex.Properties)
         {
 
-            var propertyTypeString = property.GetTypeString(complex.Namespace.GetNamespaceName());
+            var propertyTypeString = property.GetTypeString(complex.Namespace.GetNamespaceName()).DisambiguateTypeName();
             var propertyType = property.IsCollection ? string.Format("IEnumerable<{0}>", propertyTypeString) : propertyTypeString;
             var propertyName = isMethodResponse
                 ? property.Name.Substring(property.Name.IndexOf('.') + 1).ToCheckedCase()
