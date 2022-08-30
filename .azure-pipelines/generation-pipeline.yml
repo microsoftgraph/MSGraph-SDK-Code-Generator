@@ -466,7 +466,7 @@ stages:
         baseBranchName: 'feature/6.0'
         branchName: 'kiota/$(v1Branch)'
         targetClassName: "BaseGraphServiceClient"
-        targetNamespace: "Microsoft.Graph"
+        targetNamespace: "com.Microsoft.Graph"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/java-kiota.yml
