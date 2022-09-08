@@ -125,7 +125,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp
             return new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
                 "Microsoft.Graph.Security",
-                "Microsoft.Graph.IdentityGovernance"
+                "Microsoft.Graph.IdentityGovernance",
+                "Microsoft.Graph.DeviceManagement"
             };
         }
 
