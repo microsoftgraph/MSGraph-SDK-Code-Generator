@@ -33,7 +33,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.PHP
         private static readonly HashSet<string> ReservedNamespaces =
             new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
-                "Microsoft.Graph.Security"
+                "Microsoft.Graph.Security",
+                "Microsoft.Graph.IdentityGovernance",
+                "Microsoft.Graph.DeviceManagement",
             };
 
         private static readonly ICollection<string> SimpleTypes =
