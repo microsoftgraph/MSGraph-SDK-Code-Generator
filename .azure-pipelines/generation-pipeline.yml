@@ -358,7 +358,7 @@ stages:
         version: ''
         repoName: 'msgraph-sdk-go'
         branchName: $(v1Branch)
-        targetClassName: "GraphServiceClient"
+        targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-go/"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
@@ -385,7 +385,7 @@ stages:
         version: 'beta'
         repoName: 'msgraph-beta-sdk-go'
         branchName: $(betaBranch)
-        targetClassName: "GraphServiceClient"
+        targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-beta-sdk-go/"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
