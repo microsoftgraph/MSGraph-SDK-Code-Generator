@@ -188,7 +188,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @return <#=propertyTypeReference#>|null The <#=propertyName#>
+    * @return <#=(property.IsCollection()) ? "array" : propertyTypeReference#>|null The <#=propertyName#>
     */
     public function get<#=propertyName.ToCheckedCase()#>()
     {
@@ -216,7 +216,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
     * <#=property.GetSanitizedLongDescription()#>
 <# } #>
     *
-    * @param <#=propertyTypeReference#> $val The <#=propertyName#>
+    * @param <#=(property.IsCollection()) ? $"{propertyTypeReference}[]" : propertyTypeReference#> $val The <#=propertyName#>
     *
     * @return <#=entityName.ToCheckedCase()#>
     */
