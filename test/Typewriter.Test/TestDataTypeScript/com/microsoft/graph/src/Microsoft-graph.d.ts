@@ -18,6 +18,7 @@ export interface Entity {
 }
 export interface TestType extends Entity {
     propertyAlpha?: NullableOption<DerivedComplexTypeRequest>;
+    primitiveCollection?: NullableOption<string[]>;
 }
 export interface Print {
     settings?: NullableOption<string>;

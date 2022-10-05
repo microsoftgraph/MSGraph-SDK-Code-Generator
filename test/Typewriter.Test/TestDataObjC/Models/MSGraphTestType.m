@@ -15,6 +15,7 @@
 @interface MSGraphTestType()
 {
     MSGraphDerivedComplexTypeRequest* _propertyAlpha;
+    NSArray* _primitiveCollection;
 }
 @end
 
@@ -39,6 +40,20 @@
 {
     _propertyAlpha = val;
     self.dictionary[@"propertyAlpha"] = val;
+}
+
+- (NSArray*) primitiveCollection
+{
+    if([[NSNull null] isEqual:self.dictionary[@"primitiveCollection"]])
+    {
+        return nil;
+    }   
+    return self.dictionary[@"primitiveCollection"];
+}
+
+- (void) setPrimitiveCollection: (NSArray*) val
+{
+    self.dictionary[@"primitiveCollection"] = val;
 }
 
 
