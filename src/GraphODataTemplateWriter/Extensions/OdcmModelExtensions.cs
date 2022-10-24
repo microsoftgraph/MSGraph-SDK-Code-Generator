@@ -730,10 +730,10 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
                 throw new InvalidOperationException("This extension method is intended " +
                                                     "to only be called on a composable function.");
 
-            return (odcmMethod.ReturnType as OdcmClass).Properties
+            return (odcmMethod.ReturnType as OdcmClass)?.Properties
                                                        .Where(p => p.IsLink)
                                                        .OrderBy(p => p.Name)
-                                                       .ToList();
+                                                       .ToList() ?? new List<OdcmProperty>();
         }
 
         /// <summary>
