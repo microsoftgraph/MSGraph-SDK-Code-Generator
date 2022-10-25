@@ -10,6 +10,7 @@
             </EntityType>
             <EntityType Name="testType" BaseType="graph.entity">
                 <Property Name="propertyAlpha" Type="graph.derivedComplexTypeRequest" />
+                <Property Name="primitiveCollection" Type="Collection(Edm.String)" />
             </EntityType>
             <EnumType Name="enum1">
                 <Member Name="value0" Value="0" />
