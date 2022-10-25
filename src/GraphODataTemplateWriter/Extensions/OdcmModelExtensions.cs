@@ -733,7 +733,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             return (odcmMethod.ReturnType as OdcmClass)?.Properties
                                                        .Where(p => p.IsLink)
                                                        .OrderBy(p => p.Name)
-                                                       .ToList() ?? new List<OdcmProperty>();
+                                                       .ToList() ?? new List<OdcmProperty>(); // default to empty list
         }
 
         /// <summary>
