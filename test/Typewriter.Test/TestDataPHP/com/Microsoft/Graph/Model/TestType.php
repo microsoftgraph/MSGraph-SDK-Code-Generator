@@ -55,4 +55,31 @@ class TestType extends Entity
         return $this;
     }
 
+    /**
+    * Gets the primitiveCollection
+    *
+    * @return array|null The primitiveCollection
+    */
+    public function getPrimitiveCollection()
+    {
+        if (array_key_exists("primitiveCollection", $this->_propDict)) {
+            return $this->_propDict["primitiveCollection"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the primitiveCollection
+    *
+    * @param string[] $val The primitiveCollection
+    *
+    * @return TestType
+    */
+    public function setPrimitiveCollection($val)
+    {
+        $this->_propDict["primitiveCollection"] = $val;
+        return $this;
+    }
+
 }

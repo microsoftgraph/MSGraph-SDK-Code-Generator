@@ -9,5 +9,6 @@
 @interface MSGraphTestType : MSGraphEntity
 
   @property (nullable, nonatomic, setter=setPropertyAlpha:, getter=propertyAlpha) MSGraphDerivedComplexTypeRequest* propertyAlpha;
+    @property (nullable, nonatomic, setter=setPrimitiveCollection:, getter=primitiveCollection) NSArray* primitiveCollection;
   
 @end
