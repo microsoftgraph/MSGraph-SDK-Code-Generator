@@ -85,7 +85,7 @@ import javax.annotation.Nonnull;
                 getRequestUrl(),
                 getClient(),
                 requestOptions);
-<#if(c.AsOdcmMethod().MethodHasParameters()) { #>
+<#if(c.AsOdcmMethod().WithOverloadsOfDistinctName().Any(x => x.MethodHasParameters())) { #>
 <# if (isAction) { #>
         request.body = this.body;
 <# } else { #>
