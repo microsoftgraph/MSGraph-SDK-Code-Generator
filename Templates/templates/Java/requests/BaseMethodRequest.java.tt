@@ -30,7 +30,7 @@ import <#=mainNamespace#>.<#=c.GetPackagePrefix()#>.<#=c.AsOdcmMethod().TypePara
     }
 
 <# if (c.AsOdcmMethod().IsAction()) { #>
-<# if(c.AsOdcmMethod().MethodHasParameters()) { #>
+<# if(c.AsOdcmMethod().WithOverloadsOfDistinctName().Any(x => x.MethodHasParameters())) { #>
 	/** The body for the method */
     @Nullable
     public <#=c.TypeParameterSet()#> body;
