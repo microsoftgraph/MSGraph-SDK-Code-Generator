@@ -12,7 +12,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    sourceFolder: '$(Build.SourcesDirectory)/src/Typewriter/bin/$(BuildConfiguration)/net6.0'
+    sourceFolder: '$(Build.SourcesDirectory)/src/Typewriter/bin/$(BuildConfiguration)/net7.0'
     contents: '**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: Copy Typewriter executable
