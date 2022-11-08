@@ -1,7 +1,7 @@
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET Core sdk 6 (kiota)'
+  displayName: 'Use .NET SDK'
   inputs:
     packageType: sdk
-    version: 6.0.100
+    version: 7.0.100
     installationPath: $(Agent.ToolsDirectory)/dotnet
