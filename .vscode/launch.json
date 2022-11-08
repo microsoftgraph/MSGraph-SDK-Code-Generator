@@ -6,7 +6,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -21,7 +21,7 @@
         "-e",
         "beta"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -30,7 +30,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -45,7 +45,7 @@
         "-e",
         "v1.0"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -54,7 +54,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -69,7 +69,7 @@
         "-e",
         "v1.0"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -78,7 +78,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -95,7 +95,7 @@
         "-p",
         "php.namespacePrefix:Beta"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -104,7 +104,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -121,7 +121,7 @@
         "-p",
         "php.namespacePrefix:Beta"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -130,7 +130,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -145,7 +145,7 @@
         "-e",
         "v1.0"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -154,7 +154,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -169,7 +169,7 @@
         "-e",
         "v1.0"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -178,7 +178,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -195,7 +195,7 @@
         "-p",
         "typescript.namespacePostfix:beta"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -204,7 +204,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -221,7 +221,7 @@
         "-p",
         "typescript.namespacePostfix:beta"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -230,7 +230,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -245,7 +245,7 @@
         "-e",
         "v1.0"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -254,7 +254,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -269,7 +269,7 @@
         "-e",
         "v1.0"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -278,7 +278,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -293,7 +293,7 @@
         "-e",
         "beta"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -302,7 +302,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -317,7 +317,7 @@
         "-e",
         "beta"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -326,7 +326,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -341,7 +341,7 @@
         "-e",
         "v1.0"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -350,7 +350,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -365,7 +365,7 @@
         "-e",
         "v1.0"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -374,7 +374,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -389,7 +389,7 @@
         "-e",
         "beta"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -398,7 +398,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -413,7 +413,7 @@
         "-e",
         "v1.0"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -422,7 +422,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -437,7 +437,7 @@
         "-e",
         "v1.0"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -446,7 +446,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0/Typewriter.dll",
+      "program": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0/Typewriter.dll",
       "args": [
         "-v",
         "Info",
@@ -467,7 +467,7 @@
         "-f",
         "cleanMetadataWithDescriptionsAndAnnotations"
       ],
-      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net6.0",
+      "cwd": "${workspaceFolder}/src/Typewriter/bin/Debug/net7.0",
       "console": "internalConsole",
       "stopAtEntry": false
     },
