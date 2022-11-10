@@ -737,7 +737,7 @@ stages:
       eq(dependencies.stage_beta_openapi.result, 'Succeeded')
     )
   jobs:
-  - job: go_beta
+  - job: python_beta
     steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
