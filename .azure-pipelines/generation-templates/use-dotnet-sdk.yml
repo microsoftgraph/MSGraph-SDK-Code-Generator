@@ -1,7 +1,12 @@
+parameters:
+- name: 'version'
+  type: string
+  default: "7.x"
+
 steps:
 - task: UseDotNet@2
   displayName: 'Use .NET SDK'
   inputs:
     packageType: sdk
-    version: 7.0.100
+    version: ${{ parameters.version }}
     installationPath: $(Agent.ToolsDirectory)/dotnet
