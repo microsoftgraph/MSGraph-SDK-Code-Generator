@@ -3,6 +3,11 @@ parameters:
     type: string
 
 steps:
+- pwsh: '$(scriptsDirectory)/clean-python-files.ps1'
+  displayName: 'Remove generated models and requests from the repo generated folder'
+  env:
+    RepoModelsDir: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/msgraph/generated'
+
 - pwsh: '$(scriptsDirectory)/copy-python-models.ps1'
   displayName: 'Update models'
   env:
