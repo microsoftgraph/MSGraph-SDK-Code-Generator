@@ -719,7 +719,7 @@ stages:
         repoName: 'msgraph-sdk-python'
         branchName: $(v1Branch)
         targetClassName: "BaseGraphServiceClient"
-        targetNamespace: "github.com/microsoftgraph/msgraph-sdk-python/"
+        targetNamespace: "msgraph.generated"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/python.yml
@@ -746,7 +746,7 @@ stages:
         repoName: 'msgraph-beta-sdk-python'
         branchName: $(betaBranch)
         targetClassName: "BaseGraphServiceClient"
-        targetNamespace: "github.com/microsoftgraph/msgraph-beta-sdk-python/"
+        targetNamespace: "msgraph.generated"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/python.yml
