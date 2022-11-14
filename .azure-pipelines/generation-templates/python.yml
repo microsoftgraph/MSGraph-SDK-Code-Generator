@@ -4,17 +4,14 @@ parameters:
 
 steps:
 - pwsh: '$(scriptsDirectory)/clean-python-files.ps1'
-  displayName: 'Remove generated models and requests from the repo src folder'
+  displayName: 'Remove generated models and requests from the repo generated folder'
   env:
-    MainDirectory: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/src/'
+    RepoModelsDir: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/msgraph/generated'
 
 - pwsh: '$(scriptsDirectory)/copy-python-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(kiotaDirectory)/output/*
-    RepoModelsDir: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/src/'
+    RepoModelsDir: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/msgraph/generated'
 
-- pwsh : $(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts/incrementMinorVersion.ps1
-  displayName: 'Increment minor version number'
-  workingDirectory: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts'
