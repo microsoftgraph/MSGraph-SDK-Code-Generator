@@ -24,6 +24,8 @@ steps:
 - template: checkout-metadata.yml
 - template: set-user-config.yml
 - template: use-dotnet-sdk.yml
+  parameters:
+    version: '6.x' # Hidi is released as an NET6 app
 
 - pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi --prerelease
   displayName: install hidi
