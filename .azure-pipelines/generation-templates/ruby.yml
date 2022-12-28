@@ -1,0 +1,24 @@
+parameters:
+  - name: repoName
+    type: string
+
+  - name: versionSuffix
+    type: string
+    default: ''
+
+steps:
+- pwsh: '$(scriptsDirectory)/clean-ruby-files.ps1'
+  displayName: 'Remove generated models and requests from the repo'
+  env:
+    MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/lib/microsoft_graph${{ parameters.versionSuffix }}/
+
+- pwsh : $(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts/incrementMinorVersion.ps1
+  displayName: 'Increment minor version number'
+  workingDirectory: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts'
+
+- pwsh: '$(scriptsDirectory)/copy-ruby-models.ps1'
+  displayName: 'Update models'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputFullPath: $(kiotaDirectory)/output/*
+    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/lib/microsoft_graph${{ parameters.versionSuffix }}/
