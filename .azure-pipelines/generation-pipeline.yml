@@ -68,6 +68,16 @@ resources:
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-beta-sdk-go
      ref: main
+   - repository: msgraph-sdk-ruby
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-sdk-ruby
+     ref: main
+   - repository: msgraph-beta-sdk-ruby
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-beta-sdk-ruby
+     ref: main
    - repository: msgraph-sdk-typescript
      type: github
      endpoint: microsoftgraph
