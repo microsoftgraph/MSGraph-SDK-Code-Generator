@@ -424,7 +424,7 @@ stages:
       eq(dependencies.stage_v1_openapi.result, 'Succeeded')
     )
   jobs:
-  - job: go_v1
+  - job: ruby_v1
     steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
@@ -438,9 +438,9 @@ stages:
         languageSpecificSteps:
         - template: generation-templates/ruby.yml
           parameters:
-            repoName: msgraph-sdk-go
+            repoName: msgraph-sdk-ruby
 
-- stage: stage_go_beta
+- stage: stage_ruby_beta
   dependsOn:
   - stage_build_and_publish_kiota
   - stage_beta_openapi
@@ -451,7 +451,7 @@ stages:
       eq(dependencies.stage_beta_openapi.result, 'Succeeded')
     )
   jobs:
-  - job: go_beta
+  - job: ruby_beta
     steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
