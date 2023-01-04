@@ -37,7 +37,7 @@ resources:
      type: github
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-typescript-typings
-     ref: master
+     ref: main
    - repository: msgraph-beta-typescript-typings
      type: github
      endpoint: microsoftgraph
@@ -67,6 +67,16 @@ resources:
      type: github
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-beta-sdk-go
+     ref: main
+   - repository: msgraph-sdk-ruby
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-sdk-ruby
+     ref: main
+   - repository: msgraph-beta-sdk-ruby
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-beta-sdk-ruby
      ref: main
    - repository: msgraph-sdk-typescript
      type: github
@@ -402,6 +412,62 @@ stages:
         - template: generation-templates/go.yml
           parameters:
             repoName: msgraph-beta-sdk-go
+
+- stage: stage_ruby_v1
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_v1_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+    )
+  jobs:
+  - job: ruby_v1
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'ruby'
+        version: ''
+        repoName: 'msgraph-sdk-ruby'
+        branchName: $(v1Branch)
+        targetClassName: "MicrosoftGraphBaseServiceClient"
+        targetNamespace: "MicrosoftGraph"
+        cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+        languageSpecificSteps:
+        - template: generation-templates/ruby.yml
+          parameters:
+            repoName: msgraph-sdk-ruby
+
+- stage: stage_ruby_beta
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_beta_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+    )
+  jobs:
+  - job: ruby_beta
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'ruby'
+        version: 'beta'
+        repoName: 'msgraph-beta-sdk-ruby'
+        branchName: $(betaBranch)
+        targetClassName: "MicrosoftGraphBaseServiceClient"
+        targetNamespace: "MicrosoftGraphBeta"
+        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        languageSpecificSteps:
+        - template: generation-templates/ruby.yml
+          parameters:
+            repoName: msgraph-beta-sdk-ruby
+            versionSuffix: _beta
+
 
 - stage: stage_java_v1
   dependsOn:
