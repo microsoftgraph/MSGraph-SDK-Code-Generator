@@ -466,7 +466,6 @@ stages:
         - template: generation-templates/ruby.yml
           parameters:
             repoName: msgraph-beta-sdk-ruby
-            versionSuffix: _beta
 
 
 - stage: stage_java_v1
