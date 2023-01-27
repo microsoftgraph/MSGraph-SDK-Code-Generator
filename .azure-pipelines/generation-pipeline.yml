@@ -439,6 +439,7 @@ stages:
         - template: generation-templates/ruby.yml
           parameters:
             repoName: msgraph-sdk-ruby
+            barrelFileName: microsoft_graph.rb
 
 - stage: stage_ruby_beta
   dependsOn:
@@ -466,6 +467,7 @@ stages:
         - template: generation-templates/ruby.yml
           parameters:
             repoName: msgraph-beta-sdk-ruby
+            barrelFileName: microsoft_graph_beta.rb
 
 
 - stage: stage_java_v1
