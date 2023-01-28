@@ -1,6 +1,8 @@
 parameters:
   - name: repoName
     type: string
+  - name: barrelFileName
+    type: string
 
 steps:
 - pwsh: '$(scriptsDirectory)/clean-ruby-files.ps1'
@@ -18,3 +20,8 @@ steps:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(kiotaDirectory)/output/*
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/lib/
+
+- pwsh: '$(scriptsDirectory)/update-ruby-barrel.ps1'
+  displayName: 'Update barrel file'
+  env:
+    BarrelFilePath: $(Build.SourcesDirectory)/${{ parameters.repoName }}/lib/${{ parameters.barrelFileName }}
