@@ -52,7 +52,7 @@ steps:
     artifactName: ${{ parameters.cleanMetadataFolder }}
 
 - pwsh: |
-    ./scripts/run-openapi-validation.ps1 -repoDirectory (Get-Location).Path
+    ./scripts/run-openapi-validation.ps1 -repoDirectory (Get-Location).Path -version "${{ parameters.endpoint }}"
   displayName: ensure that OpenAPI docs can be parsed
   workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
