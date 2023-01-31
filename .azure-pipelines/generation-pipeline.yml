@@ -432,7 +432,7 @@ stages:
         version: ''
         repoName: 'msgraph-sdk-ruby'
         branchName: $(v1Branch)
-        targetClassName: "MicrosoftGraphBaseServiceClient"
+        targetClassName: "GraphBaseServiceClient"
         targetNamespace: "MicrosoftGraph"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
@@ -460,7 +460,7 @@ stages:
         version: 'beta'
         repoName: 'msgraph-beta-sdk-ruby'
         branchName: $(betaBranch)
-        targetClassName: "MicrosoftGraphBaseServiceClient"
+        targetClassName: "GraphBaseServiceClient"
         targetNamespace: "MicrosoftGraphBeta"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
