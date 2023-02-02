@@ -40,8 +40,8 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the request builder for CallRecordItem.
         /// </summary>
-        /// <returns>The <see cref="ICallRecordItemRequestBuilder"/>.</returns>
-        ICallRecordItemRequestBuilder Item(
+        /// <returns>The <see cref="Microsoft.Graph2.CallRecords.ICallRecordItemRequestBuilder"/>.</returns>
+        Microsoft.Graph2.CallRecords.ICallRecordItemRequestBuilder Item(
             string name = null);
     }
 }

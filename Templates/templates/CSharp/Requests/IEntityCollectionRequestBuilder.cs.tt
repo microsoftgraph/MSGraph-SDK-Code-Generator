@@ -20,6 +20,6 @@ namespace <#=@namespace#>
 
         <#=this.GetCollectionIndexRequestBuilder(prop)#>
 
-        <#=this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true) #>
+        <#=this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true, @namespace) #>
     }
 }

@@ -43,7 +43,7 @@ namespace <#=@namespace#>
     {
     #>
 
-        <#=this.GetMethodProperties(entity, false)#>
+        <#=this.GetMethodProperties(entity, false, @namespace)#>
     <#
     }
     #>
