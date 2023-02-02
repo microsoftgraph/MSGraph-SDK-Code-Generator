@@ -132,7 +132,7 @@ public string GetRequestMethodWithOptions(string requestTypeName, string @namesp
 }
 
 // Creates the set of property definitions for OData method properties on the entity
-public string GetMethodProperties(OdcmClass entity, bool isCollection)
+public string GetMethodProperties(OdcmClass entity, bool isCollection, string namespaceContext)
 {
     var allMethods = new List<OdcmMethod>();
     foreach (var method in entity.Methods)
@@ -146,7 +146,7 @@ public string GetMethodProperties(OdcmClass entity, bool isCollection)
     {
 		if (method.IsBoundToCollection != isCollection)
 		{
-			continue; 
+			continue;
 		}
 
         var methodName = this.GetMethodName(method);
@@ -172,7 +172,7 @@ public string GetMethodProperties(OdcmClass entity, bool isCollection)
             foreach (var param in requiredParameters)
             {
                 var paramVariableName = param.Name.GetSanitizedParameterName();
-                var paramTypeString = param.Type.GetTypeString(entity.GetNamespaceName()).DisambiguateTypeName();
+                var paramTypeString = param.Type.GetTypeString(namespaceContext).DisambiguateTypeName();
 
                 if (param.IsCollection)
                 {
@@ -191,7 +191,7 @@ public string GetMethodProperties(OdcmClass entity, bool isCollection)
             foreach (var param in optionalParameters)
             {
                 var paramVariableName = param.Name.GetSanitizedParameterName();
-                var paramTypeString = param.Type.GetTypeString().DisambiguateTypeName();
+                var paramTypeString = param.Type.GetTypeString(namespaceContext).DisambiguateTypeName();
                 if (param.IsCollection)
                 {
                     paramTypeString = string.Format("IEnumerable<{0}>", paramTypeString);
@@ -222,12 +222,17 @@ public string GetMethodProperties(OdcmClass entity, bool isCollection)
             methodPropertiesStringBuilder.Append("        ");
         }
 
+        var namespacePrefix = namespaceContext.Equals(entity.GetNamespaceName(),StringComparison.OrdinalIgnoreCase) ?
+                                                string.Empty:
+                                                entity.GetNamespaceName() + ".";
+
         methodPropertiesStringBuilder.Append(
             this.GetMethodRequestBuilderMethod(
                 methodName,
                 baseName,
                 paramStringBuilder.ToString(),
-                builderInitializerStringBuilder.ToString()));
+                builderInitializerStringBuilder.ToString(),
+                namespacePrefix));
     }
 
     return methodPropertiesStringBuilder.ToString();
@@ -240,9 +245,10 @@ public string GetMethodRequestBuilderMethod(
     string methodName,
     string requestBuilderBaseString,
     string methodParamaterString,
-    string requestBuilderInitializerString)
+    string requestBuilderInitializerString,
+    string namespacePrefix)
 {
-    var requestBuilderTypeName = this.GetRequestBuilderString(requestBuilderBaseString);
+    var requestBuilderTypeName = namespacePrefix + this.GetRequestBuilderString(requestBuilderBaseString);
     var stringBuilder = new StringBuilder();
 
     stringBuilder.Append("/// <summary>");

@@ -11,7 +11,6 @@ var collectionRequestBuilderConstructor = this.GetCollectionRequestBuilderConstr
 var collectionRequestMethod = this.GetCollectionRequestMethod(prop);
 var collectionRequestMethodWithOptions = this.GetCollectionRequestMethodWithOptions(prop);
 var collectionIndexRequestBuilder = this.GetCollectionIndexRequestBuilder(prop);
-var methodProperties = this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true);
 
 #>
 namespace <#=@namespace#>
@@ -29,6 +28,6 @@ namespace <#=@namespace#>
 
         <#=this.GetCollectionIndexRequestBuilder(prop)#>
 
-        <#=this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true) #>
+        <#=this.GetMethodProperties(prop.Projection.Type.AsOdcmClass(), true, @namespace) #>
     }
 }

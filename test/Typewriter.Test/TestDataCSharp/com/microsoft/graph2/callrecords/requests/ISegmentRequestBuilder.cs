@@ -71,7 +71,7 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <returns>The <see cref="ISegmentTestActionRequestBuilder"/>.</returns>
         ISegmentTestActionRequestBuilder TestAction(
-            IdentitySet value = null);
+            Microsoft.Graph.IdentitySet value = null);
     
     }
 }
