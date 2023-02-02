@@ -124,7 +124,7 @@ namespace Microsoft.Graph2.CallRecords
         /// </summary>
         /// <returns>The <see cref="ISegmentTestActionRequestBuilder"/>.</returns>
         public ISegmentTestActionRequestBuilder TestAction(
-            IdentitySet value = null)
+            Microsoft.Graph.IdentitySet value = null)
         {
             return new SegmentTestActionRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph2.callRecords.testAction"),

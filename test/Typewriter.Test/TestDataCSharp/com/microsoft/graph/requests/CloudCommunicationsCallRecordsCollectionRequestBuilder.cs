@@ -64,11 +64,11 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the request builder for CallRecordItem.
         /// </summary>
-        /// <returns>The <see cref="ICallRecordItemRequestBuilder"/>.</returns>
-        public ICallRecordItemRequestBuilder Item(
+        /// <returns>The <see cref="Microsoft.Graph2.CallRecords.ICallRecordItemRequestBuilder"/>.</returns>
+        public Microsoft.Graph2.CallRecords.ICallRecordItemRequestBuilder Item(
             string name = null)
         {
-            return new CallRecordItemRequestBuilder(
+            return new Microsoft.Graph2.CallRecords.CallRecordItemRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph2.callRecords.item"),
                 this.Client,
                 name);
