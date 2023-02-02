@@ -13,9 +13,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
         // enum value string, ex: "low" | "normal" | "high"
         public static String GetEnumValues(this OdcmEnum _enum) {
-            return _enum?.Members?.Select(m => "\"" + m.Name + "\"").Aggregate((cur, next) =>  cur + " | " + next);
+            return _enum?.Members?.Select(m => "\"" + m.Name + "\"")?.Aggregate((cur, next) =>  cur + " | " + next);
         }
-
+        
         public static string GetTypeString(this OdcmProperty prop)
         {
             string typeStr = prop.Type.Name.UpperCaseFirstChar();

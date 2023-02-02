@@ -85,7 +85,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                         }
                         break;
                     case OdcmEnum e:
-                        if (e.Members != null || !e.Members.Any()) 
+                        if (e.Members == null || !e.Members.Any()) 
                         {
                             Logger.Info("Empty enum encountered"+ e?.Name);
                         }
@@ -139,7 +139,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         {
             var export = IsMainNamespace ? "export " : string.Empty;
             var enumTypeName = enumType.Name.UpperCaseFirstChar();
-            var enumValues = enumType.GetEnumValues();
+            var enumValues = enumType.Members !=null && enumType.Members.Any() ? enumType.GetEnumValues() : string.Empty;
             var exportTypeLength = (export + "type").Length + enumTypeName.Length + enumValues?.Length + 3;
             if (exportTypeLength < MaxLineLength)
             {
