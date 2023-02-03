@@ -67,9 +67,6 @@
     <Compile Remove="TestDataCSharp\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="TestDataPHPBeta\com\Beta\Microsoft\Graph\Model\EmptyEnum.php" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="TestDataJavaBeta\" />
   </ItemGroup>
 </Project>
