@@ -12,6 +12,7 @@ export as namespace microsoftgraph;
 
 export type NullableOption<T> = T | null;
 
+export type EmptyEnum = undefined;
 export type Enum1 = "value0" | "value1";
 export interface Entity {
     id?: string;
