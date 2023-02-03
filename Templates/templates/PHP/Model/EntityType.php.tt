@@ -291,7 +291,7 @@ foreach(var property in entity.Properties.Where(prop => prop.Type.GetTypeString(
                 $serializableProperties[$property] = $val->format(\DateTime::RFC3339);
             } else if (is_a($val, "\Microsoft\Graph\Core\Enum")) {
                 $serializableProperties[$property] = $val->value();
-            } else if (is_a($val, "\Entity")) {
+            } else if (is_a($val, self::class)) {
                 $serializableProperties[$property] = $val->jsonSerialize();
             } else if (is_a($val, "\GuzzleHttp\Psr7\Stream")) {
                 $serializableProperties[$property] = (string) $val;
