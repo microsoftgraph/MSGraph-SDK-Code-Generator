@@ -5,6 +5,7 @@
 #import "MSDate.h"
 #import "MSTimeOfDay.h"
 #import "MSDuration.h"
+#import "MSGraphEmptyEnum.h"
 #import "MSGraphEnum1.h"
 #import "MSGraphCallRecordsCallType.h"
 #import "MSGraphCallRecordsClientPlatform.h"

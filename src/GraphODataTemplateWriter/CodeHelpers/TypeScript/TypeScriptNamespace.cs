@@ -85,7 +85,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
                         }
                         break;
                     case OdcmEnum e:
-                        if (e.Members != null || !e.Members.Any()) 
+                        if (e.Members == null || !e.Members.Any()) 
                         {
                             Logger.Info("Empty enum encountered"+ e?.Name);
                         }

@@ -12,6 +12,7 @@
                 <Property Name="propertyAlpha" Type="graph.derivedComplexTypeRequest" />
                 <Property Name="primitiveCollection" Type="Collection(Edm.String)" />
             </EntityType>
+            <EnumType Name="EmptyEnum"/>
             <EnumType Name="enum1">
                 <Member Name="value0" Value="0" />
                 <Member Name="value1" Value="1" />
