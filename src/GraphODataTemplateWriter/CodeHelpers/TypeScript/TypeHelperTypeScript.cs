@@ -13,7 +13,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
 
         // enum value string, ex: "low" | "normal" | "high"
         public static String GetEnumValues(this OdcmEnum _enum) {
-            return _enum?.Members?.Select(m => "\"" + m.Name + "\"")?.Aggregate((cur, next) =>  cur + " | " + next);
+            if (_enum.Members != null && _enum.Members.Any()) 
+            {
+                return _enum?.Members?.Select(m => "\"" + m.Name + "\"")?.Aggregate((cur, next) => cur + " | " + next);       
+            }
+            return "undefined";
+
         }
         
         public static string GetTypeString(this OdcmProperty prop)

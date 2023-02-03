@@ -139,7 +139,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript
         {
             var export = IsMainNamespace ? "export " : string.Empty;
             var enumTypeName = enumType.Name.UpperCaseFirstChar();
-            var enumValues = enumType.Members !=null && enumType.Members.Any() ? enumType.GetEnumValues() : string.Empty;
+            var enumValues = enumType.GetEnumValues();
             var exportTypeLength = (export + "type").Length + enumTypeName.Length + enumValues?.Length + 3;
             if (exportTypeLength < MaxLineLength)
             {
