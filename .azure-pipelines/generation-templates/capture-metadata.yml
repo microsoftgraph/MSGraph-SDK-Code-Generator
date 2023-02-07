@@ -120,7 +120,7 @@ steps:
     version: '6.x' # verify tool is NET6 app
 
 # verify that generated metadata is parsable as an Edm model
-- pwsh: dotnet run --project $(Build.SourcesDirectory)/msgraph-metadata/tools/MetadataParser/MetadataParser.csproj -- ${{ parameters.cleanMetadataFileWithAnnotations }}
+- pwsh: $(Build.SourcesDirectory)/msgraph-metadata/scripts/run-metadata-validation.ps1 -repoDirectory "$(Build.SourcesDirectory)/msgraph-metadata/" -version "${{ parameters.endpoint }}"
   displayName: 'verify whether metadata is parsable as an Edm model'
 
 - pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
