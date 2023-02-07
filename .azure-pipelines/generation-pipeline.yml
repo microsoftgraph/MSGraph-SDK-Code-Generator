@@ -106,8 +106,7 @@ resources:
      endpoint: microsoftkiota
      name: microsoft/kiota
 
-pool:
-  vmImage: 'ubuntu-latest'
+pool: 1es-ubuntu-latest
 
 parameters:
   - name: v1BranchPrefix
