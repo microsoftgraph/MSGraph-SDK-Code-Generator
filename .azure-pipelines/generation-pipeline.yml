@@ -198,7 +198,6 @@ stages:
         endpoint: 'v1.0'
         inputMetadata: $(rawMetadataFileV1)
         outputPath: $(cleanMetadataFileV1OutputPath)
-        repoName: "msgraph-sdk-dotnet"
         cleanMetadataFile: $(cleanMetadataFileV1)
         cleanMetadataFolder: $(cleanMetadataFolderV1)
         cleanMetadataFileWithAnnotations: $(cleanMetadataFileWithAnnotationsV1)
@@ -217,7 +216,6 @@ stages:
         endpoint: 'beta'
         inputMetadata: $(rawMetadataFileBeta)
         outputPath: $(cleanMetadataFileBetaOutputPath)
-        repoName: "msgraph-beta-sdk-dotnet"
         cleanMetadataFile: $(cleanMetadataFileBeta)
         cleanMetadataFolder: $(cleanMetadataFolderBeta)
         cleanMetadataFileWithAnnotations: $(cleanMetadataFileWithAnnotationsBeta)

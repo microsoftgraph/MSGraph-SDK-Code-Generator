@@ -228,7 +228,21 @@
       </EntityType>
       <EnumType Name="roleEligibilityRequestFilterByCurrentUserOptions">
         <Member Name="principal" Value="1"/>
-        <Member Name="createdBy" Value="2"/>
+        <Member Name="createdBy" Value="2">
+          <Annotation Term="Org.OData.Core.V1.Revisions">
+            <Collection>
+              <Record>
+                <PropertyValue Date="2023-01-19" Property="Date" />
+                <PropertyValue Property="Description" String="The createdBy will be deprecated on April 30, 2023." />
+                <PropertyValue Property="Kind">
+                    <EnumMember>Org.OData.Core.V1.RevisionKind/Deprecated</EnumMember>
+                </PropertyValue>
+                <PropertyValue Date="2023-04-30" Property="RemovalDate" />
+                <PropertyValue Property="Version" String="2023-01/createdBy" />
+              </Record>
+            </Collection>
+          </Annotation>
+        </Member>
         <Member Name="approver" Value="3"/>
         <Member Name="unknownFutureValue" Value="4"/>
       </EnumType>

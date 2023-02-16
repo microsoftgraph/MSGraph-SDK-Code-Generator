@@ -17,7 +17,9 @@ public enum RoleEligibilityRequestFilterByCurrentUserOptions
     PRINCIPAL,
     /**
     * created By
+    * @deprecated The createdBy will be deprecated on April 30, 2023.
     */
+    @Deprecated
     CREATED_BY,
     /**
     * approver
