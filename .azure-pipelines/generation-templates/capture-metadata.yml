@@ -120,17 +120,6 @@ steps:
 - pwsh: $(Build.SourcesDirectory)/msgraph-metadata/scripts/run-metadata-validation.ps1 -repoDirectory "$(Build.SourcesDirectory)/msgraph-metadata/" -version "${{ parameters.endpoint }}"
   displayName: 'verify whether metadata is parsable as an Edm model'
 
-- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
-  env:
-    BuildConfiguration: $(buildConfiguration)
-    OutputPath: output
-    CleanMetadataFile: ${{ parameters.cleanMetadataFile }}
-    TypewriterExecutable: $(typewriterExecutable)
-    TypewriterDirectory: $(typewriterDirectory)
-    Language: 'CSharp'
-    Endpoint:  ${{ parameters.endpoint }}
-  displayName: 'generate ${{ parameters.endpoint }} files for .NET'
-
 # Checkin clean metadata into metadata repo or make it an artifact.
 - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
 
