@@ -10,6 +10,7 @@
 
 namespace Microsoft.Graph
 {
+    using System;
     using System.Text.Json.Serialization;
 
     /// <summary>
@@ -27,6 +28,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Created By
         /// </summary>
+        [Obsolete("The createdBy will be deprecated on April 30, 2023.")]
         CreatedBy = 2,
 	
         /// <summary>

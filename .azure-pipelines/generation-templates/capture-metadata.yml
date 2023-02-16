@@ -14,9 +14,6 @@ parameters:
 - name: 'outputPath'
   type: string
   default: $(System.ArtifactsDirectory)
-- name: 'repoName'
-  type: string
-  default: "msgraph-sdk-dotnet"
 - name: 'cleanMetadataFile'
   type: string
   default: $(cleanMetadataFileV1)
@@ -122,27 +119,6 @@ steps:
 # verify that generated metadata is parsable as an Edm model
 - pwsh: $(Build.SourcesDirectory)/msgraph-metadata/scripts/run-metadata-validation.ps1 -repoDirectory "$(Build.SourcesDirectory)/msgraph-metadata/" -version "${{ parameters.endpoint }}"
   displayName: 'verify whether metadata is parsable as an Edm model'
-
-- pwsh: '$(scriptsDirectory)/run-typewriter.ps1'
-  env:
-    BuildConfiguration: $(buildConfiguration)
-    OutputPath: output
-    CleanMetadataFile: ${{ parameters.cleanMetadataFile }}
-    TypewriterExecutable: $(typewriterExecutable)
-    TypewriterDirectory: $(typewriterDirectory)
-    Language: 'CSharp'
-    Endpoint:  ${{ parameters.endpoint }}
-  displayName: 'generate ${{ parameters.endpoint }} files for .NET'
-
-- checkout: ${{ parameters.repoName }}
-  displayName: checkout dotnet ${{ parameters.endpoint }}
-  fetchDepth: 1
-  persistCredentials: true
-
-- template: dotnet.yml
-  parameters:
-    repoName: ${{ parameters.repoName }}
-    dllName: Microsoft.Graph.dll
 
 # Checkin clean metadata into metadata repo or make it an artifact.
 - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
