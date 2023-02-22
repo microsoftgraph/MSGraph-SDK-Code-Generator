@@ -88,7 +88,7 @@ jobs:
     workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
   # Checkin clean metadata into metadata repo or make it an artifact.
-  - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1  -platformName "$(Name)"'
+  - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
 
     displayName: push clean ${{ parameters.endpoint }} OpenAPI description to msgraph-metadata repo
     env:
