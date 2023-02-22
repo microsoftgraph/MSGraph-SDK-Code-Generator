@@ -1,0 +1,17 @@
+{
+  "OpenApiConvertSettings": {
+    "AddEnumDescriptionExtension": true,
+    "AddSingleQuotesForStringParameters": true,
+    "EnableDiscriminatorValue": false,
+    "EnableDerivedTypesReferencesForRequestBody": false,
+    "EnableDerivedTypesReferencesForResponses": false,
+    "EnableKeyAsSegment": true,
+    "EnableOperationId": true,
+    "EnablePagination": true,
+    "ExpandDerivedTypesNavigationProperties": false,
+    "PrefixEntityTypeNameBeforeKey": true,
+    "TagDepth": 2,
+    "ShowLinks": true,
+    "ShowRootPath": true
+  }
+}
