@@ -237,7 +237,7 @@ stages:
   jobs:
   - template: generation-templates/capture-openapi.yml
     parameters:
-      endpoint: 'v1.0'
+      endpoint: 'beta'
       outputPath: $(cleanOpenAPIFileV1OutputPath)
       cleanMetadataFolder: $(cleanOpenAPIFolderV1)
 
