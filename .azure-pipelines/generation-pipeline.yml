@@ -154,7 +154,7 @@ variables:
   kiotaDirectory: '$(Build.SourcesDirectory)/kiota'
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
   scriptsDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts'
-  conversionSettingsDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/conversion-settings'
+  conversionSettingsDirectory: '$(Build.SourcesDirectory)/msgraph-metadata/conversion-settings'
   transformScript: '$(Build.SourcesDirectory)/msgraph-metadata/transforms/csdl/preprocess_csdl.xsl'
   docsDirectory: '$(Build.SourcesDirectory)/microsoft-graph-docs'
 
