@@ -13,55 +13,87 @@ parameters:
   default: $(System.ArtifactsDirectory)
 - name: 'cleanMetadataFolder'
   type: string
-steps:
 
-# We only need the scripts
-- checkout: self
-  displayName: checkout generator
-  fetchDepth: 1
-  persistCredentials: true
+jobs:
+- job: get_conversion_settings
+  displayName: "Get conversion settings"
+  steps:
+  - pwsh: |
+      $dirPath = "./conversion-settings"
+      $endpoint = "${{ parameters.endpoint }}"
+      Write-Host "endpoint: $endpoint"
+      Write-Host "directory path: $dirPath"
+      $jsonBase = @{}
+      foreach ($f in Get-ChildItem $dirPath -Recurse -Include *.json) {
+        $name = $f.Name.replace('.json','')
+        $data = @{"File"=$f.Name;"Name"=$name;}
+        $key = "$endpoint-$name"
+        $jsonBase.Add($key,$data)
+      }
+      $json = $jsonBase | ConvertTo-Json -Compress
+      Write-Host "##vso[task.setvariable variable=targets;isOutput=true]$json"
+    name: setTargets
+    workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
-- template: checkout-metadata.yml
-- template: set-user-config.yml
-- template: use-dotnet-sdk.yml
+  - script: echo $(setTargets.targets)
+    displayName: "Print settings"
 
-- pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi --prerelease
-  displayName: install hidi
+- job: publish_openapi
+  dependsOn: get_conversion_settings
+  displayName: Publish
+  strategy:
+    matrix: $[ dependencies.get_conversion_settings.outputs['setTargets.targets'] ]
+  variables:
+    targets: $[ dependencies.get_conversion_settings.outputs['setTargets.targets'] ]
 
-- pwsh: |
-    git fetch origin master
-    git switch master
-  displayName: ensure the generation happens from master latest
-  workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
+  steps:
+  # We only need the scripts
+  - checkout: self
+    displayName: checkout generator
+    fetchDepth: 1
+    persistCredentials: true
 
-- pwsh: '$(scriptsDirectory)/generate-open-api.ps1 -endpointVersion ${{ parameters.endpoint }}'
-  displayName: 'update ${{ parameters.endpoint }} open API description'
-  workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
+  - template: checkout-metadata.yml
+  - template: set-user-config.yml
+  - template: use-dotnet-sdk.yml
 
-# publish metadata as an artifact
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: ${{ parameters.outputPath }}
-    contents: '**/*'
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
-  displayName: Copy generated metadata
+  - pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi --prerelease
+    displayName: install hidi
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: ${{ parameters.cleanMetadataFolder }}
+  - pwsh: |
+      git fetch origin master
+      git switch master
+    displayName: ensure the generation happens from master latest
+    workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
-- pwsh: |
-    ./scripts/run-openapi-validation.ps1 -repoDirectory (Get-Location).Path -version "${{ parameters.endpoint }}"
-  displayName: ensure that OpenAPI docs can be parsed
-  workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
+  - pwsh: '$(scriptsDirectory)/generate-open-api.ps1 -endpointVersion ${{ parameters.endpoint }} -settings "$(conversionSettingsDirectory)/$(File)" -platformName "$(Name)"'
+    displayName: 'update ${{ parameters.endpoint }} open API description'
+    workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
-# Checkin clean metadata into metadata repo or make it an artifact.
-- pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
+  # publish metadata as an artifact
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: ${{ parameters.outputPath }}
+      contents: '**/*'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+    displayName: Copy generated metadata
 
-  displayName: push clean ${{ parameters.endpoint }} OpenAPI description to msgraph-metadata repo
-  env:
-    EndpointVersion: ${{ parameters.endpoint }}
-    PublishChanges: $(publishChanges)
-  workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'
-  enabled: true
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: ${{ parameters.cleanMetadataFolder }}
+
+  - pwsh: |
+      ./scripts/run-openapi-validation.ps1 -repoDirectory (Get-Location).Path -version "${{ parameters.endpoint }}" -platformName "$(Name)"
+    displayName: ensure that OpenAPI docs can be parsed
+    workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
+
+  # Checkin clean metadata into metadata repo or make it an artifact.
+  - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
+
+    displayName: push clean ${{ parameters.endpoint }} OpenAPI description to msgraph-metadata repo
+    env:
+      EndpointVersion: ${{ parameters.endpoint }}
+      PublishChanges: $(publishChanges)
+    workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'
+    enabled: true

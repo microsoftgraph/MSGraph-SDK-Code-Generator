@@ -154,6 +154,7 @@ variables:
   kiotaDirectory: '$(Build.SourcesDirectory)/kiota'
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
   scriptsDirectory: '$(Build.SourcesDirectory)/MSGraph-SDK-Code-Generator/scripts'
+  conversionSettingsDirectory: '$(Build.SourcesDirectory)/msgraph-metadata/conversion-settings'
   transformScript: '$(Build.SourcesDirectory)/msgraph-metadata/transforms/csdl/preprocess_csdl.xsl'
   docsDirectory: '$(Build.SourcesDirectory)/microsoft-graph-docs'
 
@@ -224,25 +225,21 @@ stages:
   dependsOn: stage_v1_metadata
   condition: in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
   jobs:
-  - job: v1_openapi
-    steps:
-    - template: generation-templates/capture-openapi.yml
-      parameters:
-        endpoint: 'v1.0'
-        outputPath: $(cleanOpenAPIFileV1OutputPath)
-        cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+  - template: generation-templates/capture-openapi.yml
+    parameters:
+      endpoint: 'v1.0'
+      outputPath: $(cleanOpenAPIFileV1OutputPath)
+      cleanMetadataFolder: $(cleanOpenAPIFolderV1)
 
 - stage: stage_beta_openapi
   dependsOn: stage_beta_metadata
   condition: in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped')
   jobs:
-  - job: beta_openapi
-    steps:
-    - template: generation-templates/capture-openapi.yml
-      parameters:
-        endpoint: 'beta'
-        outputPath: $(cleanOpenAPIFileBetaOutputPath)
-        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+  - template: generation-templates/capture-openapi.yml
+    parameters:
+      endpoint: 'beta'
+      outputPath: $(cleanOpenAPIFileV1OutputPath)
+      cleanMetadataFolder: $(cleanOpenAPIFolderV1)
 
 - stage: stage_csharp_v1
   dependsOn:

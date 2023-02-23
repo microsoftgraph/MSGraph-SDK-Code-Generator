@@ -1,5 +1,4 @@
-#<#
-#.Synopsis
+#<##.Synopsis
 #   Generate OpenAPI description from clean CSDL.
 #   Note: this script assumes it's running at the root of the msgraph-metadata repo.
 #
@@ -8,15 +7,25 @@
 #
 #.Parameter endpointVersion
 #   Specifies the metadata endpoint to target. Expected values are "v1.0" and "beta"
+#
+#.Parameter settings
+#   Specifies the configuration settings used to transform the csdl. Expected values are inside the configuration settings folder
+#
+#.Parameter platformName
+#   Specifies the file name of the configuration settings used to transform the csdl. Will be used to separate the different output folders
 #>
 
-param([parameter(Mandatory = $true)][String]$endpointVersion)
+param(
+    [parameter(Mandatory = $true)][String]$endpointVersion,
+    [parameter(Mandatory = $true)][String]$settings,
+    [parameter(Mandatory = $true)][String]$platformName
+    )
 
-$outputFile = Join-Path "./" "openapi" $endpointVersion "openapi.yaml"
+$outputFile = Join-Path "./" "openapi" $endpointVersion "$platformName.yaml"
 $oldOutputFile = "$outputFile.old"
 $cleanVersion = $endpointVersion.Replace(".", "")
 $inputFile = Join-Path "./" "clean_$($cleanVersion)_metadata" "cleanMetadataWithDescriptionsAndAnnotationsAndErrors$endpointVersion.xml"
-
+Write-Host "Settings: $settings"
 Write-Verbose "Generating OpenAPI description from $inputFile"
 Write-Verbose "Output file: $outputFile"
 
@@ -33,8 +42,11 @@ if(Test-Path $outputFile)
     Rename-Item $outputFile $oldFileName
 }
 
+$command = "hidi transform --csdl ""$inputFile"" --output ""$outputFile"" --settings-path ""$settings"" --version OpenApi3_0 --log-level Information --format yaml"
+Write-Host $command
+
 try {
-    Invoke-Expression "hidi transform --csdl ""$inputFile"" --output ""$outputFile"" --version OpenApi3_0 --log-level Information --format yaml"
+    Invoke-Expression "$command"
     # temporary fix for the server url https://github.com/microsoftgraph/msgraph-metadata/issues/124
     $content = get-content $outputFile
     $updatedContent = $content -replace "http://localhost", "https://graph.microsoft.com/$endpointVersion"
