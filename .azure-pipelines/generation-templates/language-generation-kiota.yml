@@ -31,6 +31,11 @@ parameters:
   type: string
   default: ''
 
+- name: generatePullRequest
+  default: false
+  type: boolean
+  displayName: Generate PR after publish changes?
+
 - name: customArguments
   type: string
   default: ''
@@ -80,4 +85,14 @@ steps:
     BranchName: ${{ parameters.branchName }}
     PublishChanges: $(publishChanges)
     OverrideSkipCI: $(overrideSkipCI)
+  workingDirectory: ${{ parameters.repoName }}
+
+- pwsh: '$(scriptsDirectory)/create-pull-request.ps1'
+  displayName: 'Create Pull Request for the generated build'
+  env:
+    Version: ${{ parameters.version }}
+    BaseBranch: ${{ parameters.baseBranchName}}
+    OverrideSkipCI: $(overrideSkipCI)
+    GITHUB_TOKEN: $(GithubAuthToken)
+    GeneratePullRequest: ${{ parameters.generatePullRequest}}
   workingDirectory: ${{ parameters.repoName }}
