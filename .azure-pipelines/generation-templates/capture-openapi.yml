@@ -33,6 +33,7 @@ jobs:
       $json = $jsonBase | ConvertTo-Json -Compress
       Write-Host "##vso[task.setvariable variable=targets;isOutput=true]$json"
     name: setTargets
+    workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
   - script: echo $(setTargets.targets)
     displayName: "Print settings"
