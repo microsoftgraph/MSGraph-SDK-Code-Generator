@@ -241,62 +241,6 @@ stages:
       outputPath: $(cleanOpenAPIFileBetaOutputPath)
       cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
 
-- stage: stage_csharp_v1
-  dependsOn:
-  - stage_build_and_publish_typewriter
-  - stage_v1_metadata
-  condition: |
-    and
-    (
-      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
-      in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
-    )
-  jobs:
-  - job: csharp_v1
-    steps:
-    - template: generation-templates/language-generation.yml
-      parameters:
-        language: 'CSharp'
-        version: ''
-        repoName: 'msgraph-sdk-dotnet'
-        branchName: $(v1Branch)
-        cleanMetadataFile: $(cleanMetadataFileV1)
-        cleanMetadataFolder: $(cleanMetadataFolderV1)
-        generatePullRequest: true
-        languageSpecificSteps:
-        - template: generation-templates/dotnet.yml
-          parameters:
-            repoName: msgraph-sdk-dotnet
-            dllName: Microsoft.Graph.dll
-
-- stage: stage_csharp_beta
-  dependsOn:
-  - stage_build_and_publish_typewriter
-  - stage_beta_metadata
-  condition: |
-    and
-    (
-      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
-      in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped')
-    )
-  jobs:
-  - job: csharp_beta
-    steps:
-    - template: generation-templates/language-generation.yml
-      parameters:
-        language: 'CSharp'
-        version: 'beta'
-        repoName: 'msgraph-beta-sdk-dotnet'
-        branchName: $(betaBranch)
-        cleanMetadataFile: $(cleanMetadataFileBeta)
-        cleanMetadataFolder: $(cleanMetadataFolderBeta)
-        generatePullRequest: true
-        languageSpecificSteps:
-        - template: generation-templates/dotnet.yml
-          parameters:
-            repoName: msgraph-beta-sdk-dotnet
-            dllName: Microsoft.Graph.Beta.dll
-
 - stage: stage_csharp_v1_kiota
   dependsOn:
   - stage_build_and_publish_kiota
@@ -315,7 +259,7 @@ stages:
         language: 'csharp'
         version: ''
         repoName: 'msgraph-sdk-dotnet'
-        baseBranchName : 'feature/5.0'
+        baseBranchName : 'dev'
         branchName: 'kiota/$(v1Branch)'
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "Microsoft.Graph"
@@ -345,7 +289,7 @@ stages:
         language: 'csharp'
         version: 'beta'
         repoName: 'msgraph-beta-sdk-dotnet'
-        baseBranchName : 'feature/5.0'
+        baseBranchName : 'master'
         branchName: 'kiota/$(betaBranch)'
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "Microsoft.Graph.Beta"
