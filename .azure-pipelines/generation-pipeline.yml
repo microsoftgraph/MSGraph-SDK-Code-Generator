@@ -238,8 +238,8 @@ stages:
   - template: generation-templates/capture-openapi.yml
     parameters:
       endpoint: 'beta'
-      outputPath: $(cleanOpenAPIFileV1OutputPath)
-      cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+      outputPath: $(cleanOpenAPIFileBetaOutputPath)
+      cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
 
 - stage: stage_csharp_v1
   dependsOn:
