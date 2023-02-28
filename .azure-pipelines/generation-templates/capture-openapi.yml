@@ -18,6 +18,8 @@ jobs:
 - job: get_conversion_settings
   displayName: "Get conversion settings"
   steps:
+  - template: checkout-metadata.yml
+
   - pwsh: |
       $dirPath = "./conversion-settings"
       $endpoint = "${{ parameters.endpoint }}"
