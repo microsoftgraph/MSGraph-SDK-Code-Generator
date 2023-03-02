@@ -265,7 +265,6 @@ stages:
         targetNamespace: "Microsoft.Graph"
         customArguments: "-b" # Enable the backing store
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
-        generatePullRequest: true
         languageSpecificSteps:
         - template: generation-templates/dotnet-kiota.yml
           parameters:
@@ -295,7 +294,6 @@ stages:
         targetNamespace: "Microsoft.Graph.Beta"
         customArguments: "-b" # Enable the backing store
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
-        generatePullRequest: true
         languageSpecificSteps:
         - template: generation-templates/dotnet-kiota.yml
           parameters:
@@ -543,7 +541,6 @@ stages:
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
         cleanMetadataFolder: $(cleanMetadataFolderV1)
-        generatePullRequest: true
         languageSpecificSteps:
         - template: generation-templates/php-v1.yml
           parameters:
@@ -570,7 +567,6 @@ stages:
         branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
         cleanMetadataFolder: $(cleanMetadataFolderBeta)
-        generatePullRequest: true
         languageSpecificSteps:
         - template: generation-templates/php-beta.yml
           parameters:
@@ -602,7 +598,6 @@ stages:
             targetNamespace: 'Microsoft\\Graph\\Beta\\Generated'
             baseBranchName: 'dev'
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
-            generatePullRequest: true
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
                 parameters:
@@ -631,7 +626,6 @@ stages:
             targetNamespace: 'Microsoft\\Graph\\Generated'
             baseBranchName: 'feat/kiota-preview'
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
-            generatePullRequest: true
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
                 parameters:
@@ -658,7 +652,6 @@ stages:
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
         cleanMetadataFolder: $(cleanMetadataFolderV1)
-        generatePullRequest: true
         languageSpecificSteps:
         - template: generation-templates/typescript.yml
           parameters:
@@ -685,7 +678,6 @@ stages:
         branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
         cleanMetadataFolder: $(cleanMetadataFolderBeta)
-        generatePullRequest: true
         languageSpecificSteps:
         - template: generation-templates/typescript.yml
           parameters:
@@ -713,7 +705,6 @@ stages:
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-typescript/"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
-        generatePullRequest: true
         languageSpecificSteps:
         - template: generation-templates/typescript-sdk.yml
           parameters:
@@ -741,7 +732,6 @@ stages:
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "msgraph.generated"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
-        generatePullRequest: true
         languageSpecificSteps:
         - template: generation-templates/python.yml
           parameters:
@@ -769,7 +759,6 @@ stages:
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "msgraph.generated"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
-        generatePullRequest: true
         languageSpecificSteps:
         - template: generation-templates/python.yml
           parameters:
