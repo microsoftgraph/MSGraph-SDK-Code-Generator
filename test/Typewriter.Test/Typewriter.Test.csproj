@@ -60,7 +60,7 @@
       <Version>3.13.3</Version>
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter">
-      <Version>4.3.1</Version>
+      <Version>4.4.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

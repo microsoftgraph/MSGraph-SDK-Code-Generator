@@ -32,7 +32,7 @@ parameters:
   default: ''
 
 - name: generatePullRequest
-  default: false
+  default: true
   type: boolean
   displayName: Generate PR after publish changes?
 
