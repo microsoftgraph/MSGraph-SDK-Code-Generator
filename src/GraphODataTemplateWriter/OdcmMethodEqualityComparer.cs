@@ -26,7 +26,7 @@ namespace Microsoft.Graph.ODataTemplateWriter
         private static readonly OdcmParameterCollectionEqualityComparer paramComparer = new OdcmParameterCollectionEqualityComparer();
         public bool Equals(OdcmMethod x, OdcmMethod y)
         {
-            return x.FullName == y.FullName && 
+            return x.FullName == y.FullName && x.Class.FullName == y.Class.FullName &&
                 (!CompareParameters || paramComparer.Equals(y?.Parameters, x?.Parameters)) &&
                 (!CompareParametersCount || y?.Parameters?.Count == x?.Parameters?.Count) &&
                 (!CompareHasParameters || y?.Parameters?.Any() == x?.Parameters?.Any()) &&

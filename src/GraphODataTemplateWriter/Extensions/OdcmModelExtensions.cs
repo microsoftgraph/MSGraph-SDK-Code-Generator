@@ -703,7 +703,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             CompareParameters = false,
             CompareParametersCount = false,
             CompareHasParameters = true,
-            CompareReturnType = true
+            CompareReturnType = true,
         };
         public static IEnumerable<OdcmMethod> MethodsAndOverloadsWithDistinctName(this OdcmClass odcmClass)
         {

@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 import javax.annotation.Nonnull;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.BaseRequestBuilder;
+import com.microsoft.graph.models.UserValidatePropertiesParameterSet;
 import com.microsoft.graph.models.UserDeltaParameterSet;
 import com.microsoft.graph.models.DirectoryObjectDeltaParameterSet;
 
@@ -59,6 +60,16 @@ public class UserRequestBuilder extends BaseRequestBuilder<User> {
     }
 
 
+
+    /**
+     * Gets a builder to execute the method
+     * @return the request builder
+     * @param parameters the parameters for the service method
+     */
+    @Nonnull
+    public UserValidatePropertiesRequestBuilder validateProperties(@Nonnull final UserValidatePropertiesParameterSet parameters) {
+        return new UserValidatePropertiesRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.validateProperties"), getClient(), null, parameters);
+    }
 
     /**
      * Gets a builder to execute the method
