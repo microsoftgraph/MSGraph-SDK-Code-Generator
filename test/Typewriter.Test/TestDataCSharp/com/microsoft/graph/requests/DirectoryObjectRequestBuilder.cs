@@ -50,5 +50,33 @@ namespace Microsoft.Graph
             return new DirectoryObjectRequest(this.RequestUrl, this.Client, options);
         }
     
+        /// <summary>
+        /// Gets the request builder for DirectoryObjectDelta.
+        /// </summary>
+        /// <returns>The <see cref="IDirectoryObjectDeltaRequestBuilder"/>.</returns>
+        public IDirectoryObjectDeltaRequestBuilder Delta(
+            string token = null,
+            string secondToken = null)
+        {
+            return new DirectoryObjectDeltaRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
+                this.Client,
+                token,
+                secondToken);
+        }
+
+        /// <summary>
+        /// Gets the request builder for DirectoryObjectDelta.
+        /// </summary>
+        /// <returns>The <see cref="IDirectoryObjectDeltaRequestBuilder"/>.</returns>
+        public IDirectoryObjectDeltaRequestBuilder Delta(
+            string token = null)
+        {
+            return new DirectoryObjectDeltaRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
+                this.Client,
+                token);
+        }
+    
     }
 }

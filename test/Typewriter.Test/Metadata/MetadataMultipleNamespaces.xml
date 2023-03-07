@@ -223,6 +223,17 @@
         <Parameter Name="token" Type="Edm.String" Unicode="false"/>
         <ReturnType Type="Collection(graph.user)"/>
       </Function>
+      <Function Name="delta" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.directoryObject"/>
+        <Parameter Name="token" Type="Edm.String" Unicode="false"/>
+        <Parameter Name="secondToken" Type="Edm.String" Unicode="false"/>
+        <ReturnType Type="Collection(graph.directoryObject)"/>
+      </Function>
+      <Function Name="delta" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.directoryObject"/>
+        <Parameter Name="token" Type="Edm.String" Unicode="false"/>
+        <ReturnType Type="Collection(graph.directoryObject)"/>
+      </Function>
       <EntityType Name="unifiedRoleEligibilityRequest">
         <Property Name="action" Type="Edm.String"/>
       </EntityType>

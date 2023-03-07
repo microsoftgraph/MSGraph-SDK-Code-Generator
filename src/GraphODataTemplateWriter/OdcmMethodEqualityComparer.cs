@@ -19,13 +19,18 @@ namespace Microsoft.Graph.ODataTemplateWriter
         {
             get; set;
         } = false;
+        public bool CompareReturnType
+        {
+            get; set;
+        } = false;
         private static readonly OdcmParameterCollectionEqualityComparer paramComparer = new OdcmParameterCollectionEqualityComparer();
         public bool Equals(OdcmMethod x, OdcmMethod y)
         {
             return x.FullName == y.FullName && 
                 (!CompareParameters || paramComparer.Equals(y?.Parameters, x?.Parameters)) &&
                 (!CompareParametersCount || y?.Parameters?.Count == x?.Parameters?.Count) &&
-                (!CompareHasParameters || y?.Parameters?.Any() == x?.Parameters?.Any());
+                (!CompareHasParameters || y?.Parameters?.Any() == x?.Parameters?.Any()) &&
+                (!CompareReturnType || y?.ReturnType?.FullName == x?.ReturnType?.FullName);
         }
         public int GetHashCode(OdcmMethod obj)
         {
