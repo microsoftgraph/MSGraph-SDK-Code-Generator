@@ -701,7 +701,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         }
         private static readonly OdcmMethodEqualityComparer methodNameAndParametersCountComparer = new OdcmMethodEqualityComparer {
             CompareParameters = false,
-            CompareParametersCount = false,
+            CompareParametersCount = true,
             CompareHasParameters = true,
         };
         public static IEnumerable<OdcmMethod> MethodsAndOverloadsWithDistinctName(this OdcmClass odcmClass)
