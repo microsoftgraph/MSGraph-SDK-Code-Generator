@@ -32,6 +32,15 @@ namespace Microsoft.Graph
         new IUserRequest Request(IEnumerable<Option> options);
     
         /// <summary>
+        /// Gets the request builder for UserValidateProperties.
+        /// </summary>
+        /// <returns>The <see cref="IUserValidatePropertiesRequestBuilder"/>.</returns>
+        IUserValidatePropertiesRequestBuilder ValidateProperties(
+            string displayName = null,
+            string mailNickname = null,
+            Guid? onBehalfOfUserId = null);
+
+        /// <summary>
         /// Gets the request builder for UserDelta.
         /// </summary>
         /// <returns>The <see cref="IUserDeltaRequestBuilder"/>.</returns>
