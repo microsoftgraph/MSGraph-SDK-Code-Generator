@@ -61,6 +61,15 @@ public class DirectoryObjectRequestBuilder extends BaseRequestBuilder<DirectoryO
     /**
      * Gets a builder to execute the method
      * @return the request builder collection
+     */
+    @Nonnull
+    public DirectoryObjectDeltaCollectionRequestBuilder delta() {
+        return new DirectoryObjectDeltaCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.delta"), getClient(), null);
+    }
+
+    /**
+     * Gets a builder to execute the method
+     * @return the request builder collection
      * @param parameters the parameters for the service method
      */
     @Nonnull

@@ -89,14 +89,4 @@ public class UserRequestBuilder extends BaseRequestBuilder<User> {
     public UserDeltaCollectionRequestBuilder delta(@Nonnull final UserDeltaParameterSet parameters) {
         return new UserDeltaCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.delta"), getClient(), null, parameters);
     }
-
-    /**
-     * Gets a builder to execute the method
-     * @return the request builder collection
-     * @param parameters the parameters for the service method
-     */
-    @Nonnull
-    public DirectoryObjectDeltaCollectionRequestBuilder delta(@Nonnull final DirectoryObjectDeltaParameterSet parameters) {
-        return new DirectoryObjectDeltaCollectionRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.delta"), getClient(), null, parameters);
-    }
 }

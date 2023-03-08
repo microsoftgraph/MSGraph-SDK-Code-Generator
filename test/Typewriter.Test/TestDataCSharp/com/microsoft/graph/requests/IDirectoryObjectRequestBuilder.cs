@@ -35,6 +35,12 @@ namespace Microsoft.Graph
         /// Gets the request builder for DirectoryObjectDelta.
         /// </summary>
         /// <returns>The <see cref="IDirectoryObjectDeltaRequestBuilder"/>.</returns>
+        IDirectoryObjectDeltaRequestBuilder Delta();
+
+        /// <summary>
+        /// Gets the request builder for DirectoryObjectDelta.
+        /// </summary>
+        /// <returns>The <see cref="IDirectoryObjectDeltaRequestBuilder"/>.</returns>
         IDirectoryObjectDeltaRequestBuilder Delta(
             string token = null,
             string secondToken = null);

@@ -219,6 +219,10 @@
         <ReturnType Type="Collection(graph.user)"/>
       </Function>
       <Function Name="delta" IsBound="true">
+        <Parameter Name="bindingParameter" Type="graph.directoryObject"/>
+        <ReturnType Type="Collection(graph.directoryObject)"/>
+      </Function>
+      <Function Name="delta" IsBound="true">
         <Parameter Name="bindingParameter" Type="graph.user"/>
         <Parameter Name="token" Type="Edm.String" Unicode="false"/>
         <ReturnType Type="Collection(graph.user)"/>

@@ -23,6 +23,19 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        public DirectoryObjectDeltaRequestBuilder(
+            string requestUrl,
+            IBaseClient client)
+            : base(requestUrl, client)
+        {
+            this.SetFunctionParameters();
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="DirectoryObjectDeltaRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         /// <param name="token">A token parameter for the OData method call.</param>
         /// <param name="secondToken">A secondToken parameter for the OData method call.</param>
         public DirectoryObjectDeltaRequestBuilder(
