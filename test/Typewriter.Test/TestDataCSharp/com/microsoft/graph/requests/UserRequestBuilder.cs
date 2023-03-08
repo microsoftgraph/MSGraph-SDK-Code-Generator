@@ -51,6 +51,23 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for UserValidateProperties.
+        /// </summary>
+        /// <returns>The <see cref="IUserValidatePropertiesRequestBuilder"/>.</returns>
+        public IUserValidatePropertiesRequestBuilder ValidateProperties(
+            string displayName = null,
+            string mailNickname = null,
+            Guid? onBehalfOfUserId = null)
+        {
+            return new UserValidatePropertiesRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.validateProperties"),
+                this.Client,
+                displayName,
+                mailNickname,
+                onBehalfOfUserId);
+        }
+
+        /// <summary>
         /// Gets the request builder for UserDelta.
         /// </summary>
         /// <returns>The <see cref="IUserDeltaRequestBuilder"/>.</returns>
