@@ -244,6 +244,11 @@
         <Parameter Name="mailNickname" Type="Edm.String" Unicode="false" />
         <Parameter Name="onBehalfOfUserId" Type="Edm.Guid" />
       </Action>
+      <Action Name="validateProperties" IsBound="true">
+        <Parameter Name="bindingParameter" Type="Collection(graph.user)" Nullable="false" />
+        <Parameter Name="displayName" Type="Edm.String" Unicode="false" />
+        <Parameter Name="mailNickname" Type="Edm.String" Unicode="false" />
+      </Action>
       <Action Name="validateProperties" IsBound="true" EntitySetPath="bindingParameter">
         <Parameter Name="bindingParameter" Type="Collection(graph.directoryObject)" Nullable="false" />
         <Parameter Name="entityType" Type="Edm.String" Unicode="false" />

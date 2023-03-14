@@ -19,10 +19,15 @@ namespace Microsoft.Graph.ODataTemplateWriter
         {
             get; set;
         } = false;
+        public bool CompareBoundToCollection
+        {
+            get; set;
+        } = true;
         private static readonly OdcmParameterCollectionEqualityComparer paramComparer = new OdcmParameterCollectionEqualityComparer();
         public bool Equals(OdcmMethod x, OdcmMethod y)
         {
-            return x.FullName == y.FullName && x.IsBoundToCollection == y.IsBoundToCollection &&
+            return x.FullName == y.FullName && 
+                 (!CompareBoundToCollection || x.IsBoundToCollection == y.IsBoundToCollection) &&
                 (!CompareParameters || paramComparer.Equals(y?.Parameters, x?.Parameters)) &&
                 (!CompareParametersCount || y?.Parameters?.Count == x?.Parameters?.Count) &&
                 (!CompareHasParameters || y?.Parameters?.Any() == x?.Parameters?.Any());
