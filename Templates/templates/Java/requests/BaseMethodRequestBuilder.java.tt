@@ -36,7 +36,7 @@ import javax.annotation.Nonnull;
 <#if(c.AsOdcmMethod().WithOverloadsOfDistinctName().Any(x => x.MethodHasParameters()) && isAction) { #>
     private <#=c.AsOdcmMethod().TypeParameterSet() #> body;
 <# } #>
-<# foreach(var method in c.AsOdcmMethod().WithOverloadsOfDistinctName()) { #>
+<# foreach(var method in c.AsOdcmMethod().WithOverloadsOfDistinctNameIgnoringCollectionBinding()) { #>
     /**
      * The request builder for this <#=c.TypeName()#>
      *

@@ -704,6 +704,12 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
             CompareParametersCount = false,
             CompareHasParameters = true
         };
+        private static readonly OdcmMethodEqualityComparer methodNameAndParametersCountAndIgnoreCollectionBindingComparer = new OdcmMethodEqualityComparer {
+            CompareParameters = false,
+            CompareParametersCount = false,
+            CompareHasParameters = true,
+            CompareBoundToCollection = false
+        };
         public static IEnumerable<OdcmMethod> MethodsAndOverloadsWithDistinctName(this OdcmClass odcmClass)
         {
             return odcmClass
@@ -715,6 +721,11 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         public static IEnumerable<OdcmMethod> WithOverloadsOfDistinctName(this OdcmMethod m)
         {
             return m?.WithOverloads()?.Distinct(methodNameAndParametersCountComparer) ?? Enumerable.Empty<OdcmMethod>();
+        }
+        
+        public static IEnumerable<OdcmMethod> WithOverloadsOfDistinctNameIgnoringCollectionBinding(this OdcmMethod m)
+        {
+            return m?.WithOverloads()?.Distinct(methodNameAndParametersCountAndIgnoreCollectionBindingComparer) ?? Enumerable.Empty<OdcmMethod>();
         }
 
         /// <summary>
