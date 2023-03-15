@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
 import com.microsoft.graph.requests.UserCollectionRequestBuilder;
 import com.microsoft.graph.requests.UserRequestBuilder;
 import com.microsoft.graph.requests.UserCollectionRequest;
-import com.microsoft.graph.requests.DirectoryObjectValidatePropertiesRequestBuilder;
+import com.microsoft.graph.requests.UserValidatePropertiesRequestBuilder;
 import com.microsoft.graph.http.BaseCollectionRequestBuilder;
 import com.microsoft.graph.core.IBaseClient;
 import com.microsoft.graph.http.PrimitiveRequestBuilder;
@@ -52,8 +52,8 @@ public class UserCollectionRequestBuilder extends BaseCollectionRequestBuilder<U
      * @param parameters the parameters for the service method
      */
     @Nonnull
-    public DirectoryObjectValidatePropertiesRequestBuilder validateProperties(@Nonnull final DirectoryObjectValidatePropertiesParameterSet parameters) {
-        return new DirectoryObjectValidatePropertiesRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.validateProperties"), getClient(), null, parameters);
+    public UserValidatePropertiesRequestBuilder validateProperties(@Nonnull final UserValidatePropertiesParameterSet parameters) {
+        return new UserValidatePropertiesRequestBuilder(getRequestUrlWithAdditionalSegment("microsoft.graph.validateProperties"), getClient(), null, parameters);
     }
 
     /**
