@@ -81,7 +81,7 @@ jobs:
   - task: CopyFiles@2
     inputs:
       sourceFolder: ${{ parameters.outputPath }}
-      contents: '**/*'
+      contents: '**/$(Name).yaml'
       targetFolder: '$(Build.ArtifactStagingDirectory)'
     displayName: Copy generated metadata
 
