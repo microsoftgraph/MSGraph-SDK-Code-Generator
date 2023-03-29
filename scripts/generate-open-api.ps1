@@ -29,7 +29,6 @@ $cleanVersion = $endpointVersion.Replace(".", "")
 $baseFileName = "cleanMetadataWithDescriptionsAndAnnotations";
 if($platformName -eq "openapi")
 {
-    # append "AndErrors" to $baseFileName for openapi
     $baseFileName += "AndErrors";
 }
 $fileName = "$baseFileName$endpointVersion.xml";
