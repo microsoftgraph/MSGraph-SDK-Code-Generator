@@ -24,7 +24,17 @@ param(
 $outputFile = Join-Path "./" "openapi" $endpointVersion "$platformName.yaml"
 $oldOutputFile = "$outputFile.old"
 $cleanVersion = $endpointVersion.Replace(".", "")
-$inputFile = Join-Path "./" "clean_$($cleanVersion)_metadata" "cleanMetadataWithDescriptionsAndAnnotationsAndErrors$endpointVersion.xml"
+
+# The clean metadata file name is different for openapi and other versions
+$baseFileName = "cleanMetadataWithDescriptionsAndAnnotations";
+$suffix = "";
+if($platformName -eq "openapi")
+{
+    $suffix = "AndErrors";
+}
+$fileName = "$baseFileName$suffix$endpointVersion.xml";
+
+$inputFile = Join-Path "./" "clean_$($cleanVersion)_metadata" "$fileName"
 Write-Host "Settings: $settings"
 Write-Verbose "Generating OpenAPI description from $inputFile"
 Write-Verbose "Output file: $outputFile"
