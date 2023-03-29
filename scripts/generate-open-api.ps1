@@ -27,12 +27,12 @@ $cleanVersion = $endpointVersion.Replace(".", "")
 
 # The clean metadata file name is different for openapi and other versions
 $baseFileName = "cleanMetadataWithDescriptionsAndAnnotations";
-$suffix = "";
 if($platformName -eq "openapi")
 {
-    $suffix = "AndErrors";
+    # append "AndErrors" to $baseFileName for openapi
+    $baseFileName += "AndErrors";
 }
-$fileName = "$baseFileName$suffix$endpointVersion.xml";
+$fileName = "$baseFileName$endpointVersion.xml";
 
 $inputFile = Join-Path "./" "clean_$($cleanVersion)_metadata" "$fileName"
 Write-Host "Settings: $settings"
