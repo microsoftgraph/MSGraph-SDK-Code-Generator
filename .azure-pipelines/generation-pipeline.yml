@@ -325,7 +325,7 @@ stages:
         branchName: $(v1Branch)
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-go/"
-        customArguments: "-b -e '**/me' -e '**/me/**'" # Exclude me and Enable the backing store
+        customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and Enable the backing store
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/go.yml
@@ -353,7 +353,7 @@ stages:
         branchName: $(betaBranch)
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-beta-sdk-go/"
-        customArguments: "-b -e '**/me' -e '**/me/**'" # Exclude me and Enable the backing store
+        customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and Enable the backing store
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/go.yml
