@@ -1,0 +1,19 @@
+parameters:
+  - name: repoName
+    type: string
+
+steps:
+- pwsh: '$(scriptsDirectory)/copy-cli-models-kiota.ps1'
+  displayName: 'Update models'
+  env:
+    BuildConfiguration: $(buildConfiguration)
+    OutputFullPath: $(kiotaDirectory)/output/*
+    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/generated/
+
+- pwsh: 'dotnet restore'
+  displayName: Restore dependencies for ${{ parameters.repoName }}
+  workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}
+
+- pwsh: 'dotnet build --configuration $(buildConfiguration) --no-restore ./msgraph-cli.csproj --runtime linux-x64'
+  displayName: Build project ${{ parameters.repoName }}
+  workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src
