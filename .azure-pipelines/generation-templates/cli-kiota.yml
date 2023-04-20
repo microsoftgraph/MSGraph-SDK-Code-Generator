@@ -1,6 +1,9 @@
 parameters:
   - name: repoName
     type: string
+  - name: vstsFeedName
+    type: string
+    default: "Graph Developer Experiences/microsoft-graph-packages" # Format projectName/feedName
 
 steps:
 - pwsh: '$(scriptsDirectory)/copy-cli-models-kiota.ps1'
@@ -10,9 +13,17 @@ steps:
     OutputFullPath: $(kiotaDirectory)/output/*
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/generated/
 
-- pwsh: 'dotnet restore'
-  displayName: Restore dependencies for ${{ parameters.repoName }}
-  workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}
+- task: DotNetCoreCLI@2
+  displayName: Restore packages (Cache enabled)
+  inputs:
+    command: restore
+    ${{ if gt(length(parameters.vstsFeedName), 0) }}:
+      feedsToUse: select
+      feedRestore: ${{parameters.vstsFeedName}}
+    includeNuGetOrg: true
+    workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}
+    restoreArguments: --use-lock-file --locked-mode ${{parameters.extraRestoreArgs}}
+    restoreDirectory: ${{parameters.restorePath}}
 
 - pwsh: 'dotnet build --configuration $(buildConfiguration) --no-restore ./msgraph-cli.csproj --runtime linux-x64'
   displayName: Build project ${{ parameters.repoName }}
