@@ -61,7 +61,6 @@ jobs:
     persistCredentials: true
 
   - template: checkout-metadata.yml
-  - template: set-user-config.yml
   - template: use-dotnet-sdk.yml
 
   - pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi --prerelease
@@ -106,6 +105,8 @@ jobs:
     fetchDepth: 1
     persistCredentials: true
 
+  - template: checkout-metadata.yml
+  - template: set-user-config.yml
   - task: DownloadPipelineArtifact@2
     inputs:
       path: $(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}
