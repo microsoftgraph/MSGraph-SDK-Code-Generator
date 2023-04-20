@@ -99,9 +99,6 @@ jobs:
 - job: publish_openapi
   dependsOn: convert_openapi
   displayName: Publish
-  variables:
-    targets: $[ dependencies.get_conversion_settings.outputs['setTargets.targets'] ]
-
   steps:
   # We only need the scripts
   - checkout: self
