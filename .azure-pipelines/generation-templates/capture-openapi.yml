@@ -45,9 +45,9 @@ jobs:
   - script: echo $(setTargets.targets)
     displayName: "Print settings"
 
-- job: publish_openapi
+- job: convert_openapi
   dependsOn: get_conversion_settings
-  displayName: Publish
+  displayName: Convert
   strategy:
     matrix: $[ dependencies.get_conversion_settings.outputs['setTargets.targets'] ]
   variables:
@@ -94,6 +94,25 @@ jobs:
       ./scripts/run-openapi-validation.ps1 -repoDirectory (Get-Location).Path -version "${{ parameters.endpoint }}" -platformName "$(Name)"
     displayName: ensure that OpenAPI docs can be parsed
     workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
+
+
+- job: publish_openapi
+  dependsOn: convert_openapi
+  displayName: Publish
+  variables:
+    targets: $[ dependencies.get_conversion_settings.outputs['setTargets.targets'] ]
+
+  steps:
+  # We only need the scripts
+  - checkout: self
+    displayName: checkout generator
+    fetchDepth: 1
+    persistCredentials: true
+
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      path: $(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}
+      artifact: ${{ parameters.cleanMetadataFolder }}
 
   # Checkin clean metadata into metadata repo or make it an artifact.
   - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
