@@ -736,6 +736,7 @@ stages:
         branchName: $(v1Branch)
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "msgraph.generated"
+        customArguments: "-e '/me' -e '/me/**'" # Exclude me
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/python.yml
@@ -763,6 +764,7 @@ stages:
         branchName: $(betaBranch)
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "msgraph.generated"
+        customArguments: "-e '/me' -e '/me/**'" # Exclude me
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/python.yml
