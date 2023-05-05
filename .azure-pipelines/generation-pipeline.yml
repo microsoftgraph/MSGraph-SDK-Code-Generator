@@ -607,7 +607,7 @@ stages:
               - template: generation-templates/php-kiota.yml
                 parameters:
                   repoName: msgraph-beta-sdk-php
-            customArguments: '-b' # Enable the backing store
+            customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and Enable the backing store
 - stage: stage_php_v1_kiota
   dependsOn:
     - stage_build_and_publish_kiota
@@ -635,7 +635,7 @@ stages:
               - template: generation-templates/php-kiota.yml
                 parameters:
                   repoName: msgraph-sdk-php
-            customArguments: '-b' # Enable the backing store
+            customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and Enable the backing store
 - stage: stage_typescript_v1
   dependsOn:
   - stage_build_and_publish_typewriter
