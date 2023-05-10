@@ -259,6 +259,7 @@ stages:
         language: 'CSharp'
         version: ''
         repoName: 'msgraph-sdk-dotnet'
+        baseBranchName : 'support/4.x'
         branchName: $(v1Branch)
         cleanMetadataFile: $(cleanMetadataFileV1)
         cleanMetadataFolder: $(cleanMetadataFolderV1)
@@ -287,6 +288,7 @@ stages:
         language: 'CSharp'
         version: 'beta'
         repoName: 'msgraph-beta-sdk-dotnet'
+        baseBranchName : 'support/4.x'
         branchName: $(betaBranch)
         cleanMetadataFile: $(cleanMetadataFileBeta)
         cleanMetadataFolder: $(cleanMetadataFolderBeta)
