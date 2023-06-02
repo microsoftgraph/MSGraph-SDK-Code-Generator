@@ -18,7 +18,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>3.0.3</Version>
+      <Version>3.0.4</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
       <Version>3.0.3</Version>
