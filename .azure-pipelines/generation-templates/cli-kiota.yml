@@ -2,10 +2,10 @@ parameters:
   - name: repoName
     type: string
   - name: restorePath
-    type: "string"
+    type: string
     default:
   - name: extraRestoreArgs
-    type: "string"
+    type: string
     default:
 steps:
 - pwsh: '$(scriptsDirectory)/copy-cli-models-kiota.ps1'
