@@ -492,6 +492,7 @@ stages:
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "com.Microsoft.Graph"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+        customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and Enable the backing store
         languageSpecificSteps:
         - template: generation-templates/java-kiota.yml
           parameters:
