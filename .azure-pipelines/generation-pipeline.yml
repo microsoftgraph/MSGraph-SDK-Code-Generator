@@ -492,6 +492,7 @@ stages:
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "com.Microsoft.Graph"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+        customArguments: "-e '/me' -e '/me/**'" # Exclude /me 
         languageSpecificSteps:
         - template: generation-templates/java-kiota.yml
           parameters:
@@ -520,6 +521,7 @@ stages:
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "com.Microsoft.Graph"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        customArguments: "-e '/me' -e '/me/**'" # Exclude /me
         languageSpecificSteps:
         - template: generation-templates/java-kiota.yml
           parameters:
@@ -736,6 +738,7 @@ stages:
         branchName: $(v1Branch)
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "msgraph.generated"
+        customArguments: "-e '/me' -e '/me/**'" # Exclude me
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/python.yml
@@ -763,6 +766,7 @@ stages:
         branchName: $(betaBranch)
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "msgraph.generated"
+        customArguments: "-e '/me' -e '/me/**'" # Exclude me
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/python.yml
