@@ -492,7 +492,7 @@ stages:
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "com.Microsoft.Graph"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
-        customArguments: "-e '/me' -e '/me/**'" # Exclude /me 
+        customArguments: "-e '/me' -e '/me/**'" # Exclude /me
         languageSpecificSteps:
         - template: generation-templates/java-kiota.yml
           parameters:
@@ -788,7 +788,7 @@ stages:
     steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
-        language: 'shell'
+        language: 'cli'
         version: ''
         repoName: 'msgraph-cli'
         baseBranchName : 'main'
