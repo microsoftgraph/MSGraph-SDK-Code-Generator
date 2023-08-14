@@ -4,6 +4,9 @@ parameters:
   - name: restorePath
     type: string
     default:
+  - name: projectFile
+    type: string
+    default:
   - name: extraRestoreArgs
     type: string
     default:
@@ -24,6 +27,6 @@ steps:
     restoreArguments: --use-lock-file --locked-mode ${{parameters.extraRestoreArgs}}
     restoreDirectory: ${{parameters.restorePath}}
 
-- pwsh: 'dotnet build --configuration $(buildConfiguration) --no-restore ./msgraph-cli.csproj --runtime linux-x64'
+- pwsh: 'dotnet build --configuration $(buildConfiguration) --no-restore ${{ parameters.restorePath }} --runtime linux-x64'
   displayName: Build project ${{ parameters.repoName }}
   workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src
