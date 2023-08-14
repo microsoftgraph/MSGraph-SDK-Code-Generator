@@ -98,6 +98,11 @@ resources:
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-cli
      ref: main
+   - repository: msgraph-beta-cli
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-beta-cli
+     ref: main
    - repository: msgraph-metadata
      type: github
      endpoint: microsoftgraph
@@ -801,6 +806,37 @@ stages:
         - template: generation-templates/cli-kiota.yml
           parameters:
             repoName: msgraph-cli
+            projectFile: ./msgraph-cli.csproj
+
+- stage: stage_cli_beta_kiota
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_beta_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+    )
+  jobs:
+  - job: cli_beta_kiota
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'cli'
+        version: ''
+        repoName: 'msgraph-cli'
+        baseBranchName : 'main'
+        branchName: 'kiota/$(betaBranch)'
+        targetClassName: "GraphClient"
+        targetNamespace: "ApiSdk"
+        customArguments: "-e '/me' -e '/me/**'"
+        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        languageSpecificSteps:
+        - template: generation-templates/cli-kiota.yml
+          parameters:
+            repoName: msgraph-beta-cli
+            projectFile: ./msgraph-beta-cli.csproj
 
 # - stage: stage_objc_v1
 #   dependsOn:
