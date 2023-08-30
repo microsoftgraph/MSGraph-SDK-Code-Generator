@@ -806,7 +806,7 @@ stages:
         - template: generation-templates/cli-kiota.yml
           parameters:
             repoName: msgraph-cli
-            projectFile: ./msgraph-cli.csproj
+            projectFile: ./src/msgraph-cli.csproj
 
 - stage: stage_cli_beta_kiota
   dependsOn:
@@ -836,7 +836,7 @@ stages:
         - template: generation-templates/cli-kiota.yml
           parameters:
             repoName: msgraph-beta-cli
-            projectFile: ./msgraph-beta-cli.csproj
+            projectFile: ./src/msgraph-beta-cli.csproj
 
 # - stage: stage_objc_v1
 #   dependsOn:

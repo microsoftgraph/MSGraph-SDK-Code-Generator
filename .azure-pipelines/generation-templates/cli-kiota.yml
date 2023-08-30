@@ -26,6 +26,7 @@ steps:
     workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}
     restoreArguments: --use-lock-file --locked-mode ${{parameters.extraRestoreArgs}}
     restoreDirectory: ${{parameters.restorePath}}
+    projects: ${{parameters.projectFile}}
 
 - pwsh: 'dotnet build --configuration $(buildConfiguration) --no-restore ${{ parameters.restorePath }} --runtime linux-x64'
   displayName: Build project ${{ parameters.repoName }}
