@@ -206,9 +206,19 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
         {
             return this.FilterOdcmEnumerable(templateInfo, methods)
                     .Select(method => method as OdcmMethod)
-                    .Select(odcmMethod => this.ProcessTemplate(templateInfo, odcmMethod,
-                                                                    className: odcmMethod.Class.Name,
-                                                                    methodName: odcmMethod.Name));
+                    .Select(odcmMethod =>
+                    {
+                        if (odcmMethod.Class.Name.Equals("CloudPC",StringComparison.OrdinalIgnoreCase))
+                        {
+                            return this.ProcessTemplate(templateInfo, odcmMethod,
+                                className: "CloudPCs",
+                                methodName: odcmMethod.Name);
+                        }
+
+                        return this.ProcessTemplate(templateInfo, odcmMethod,
+                            className: odcmMethod.Class.Name,
+                            methodName: odcmMethod.Name);
+                    });
         }
 
         protected virtual IEnumerable<OdcmMethod> NonCollectionMethods()
