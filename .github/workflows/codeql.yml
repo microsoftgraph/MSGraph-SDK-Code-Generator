@@ -18,7 +18,7 @@ on:
     # The branches below must be a subset of the branches above
     branches: [ "dev" ]
   schedule:
-    - cron: '44 19 * * 0'
+    - cron: '1 * * * 1' # At minute 0 on Monday
 
 jobs:
   analyze:
@@ -65,6 +65,7 @@ jobs:
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Autobuild
       uses: github/codeql-action/autobuild@v2
+      working-directory: ${{ github.workspace }}/src/typewriter
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
