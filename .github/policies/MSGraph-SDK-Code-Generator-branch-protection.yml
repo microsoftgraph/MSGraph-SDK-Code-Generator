@@ -10,7 +10,7 @@ configuration:
   branchProtectionRules:
 
   - branchNamePattern: dev
-    # This branch pattern applies to the following branches as of 06/12/2023 10:31:12:
+    # This branch pattern applies to the following branches:
     # dev
 
     # Specifies whether this branch can be deleted. boolean
@@ -30,21 +30,22 @@ configuration:
     # Are commits required to be signed. boolean. TODO: all contributors must have commit signing on local machines.
     requiresCommitSignatures: false
     # Are conversations required to be resolved before merging? boolean
-    requiresConversationResolution: false
+    requiresConversationResolution: true
     # Are merge commits prohibited from being pushed to this branch. boolean
     requiresLinearHistory: false
     # Required status checks to pass before merging. Values can be any string, but if the value does not correspond to any existing status check, the status check will be stuck on pending for status since nothing exists to push an actual status
     requiredStatusChecks:
     - build
+    - CodeQL
     # Require branches to be up to date before merging. Requires requiredStatusChecks. boolean
-    requiresStrictStatusChecks: false
+    requiresStrictStatusChecks: true
     # Indicates whether there are restrictions on who can push. boolean. Should be set with whoCanPush.
     restrictsPushes: false
     # Restrict who can dismiss pull request reviews. boolean
     restrictsReviewDismissals: false
 
   - branchNamePattern: main
-    # This branch pattern applies to the following branches as of 06/12/2023 10:31:12:
+    # This branch pattern applies to the following branches:
     # main
 
     # Specifies whether this branch can be deleted. boolean
@@ -64,14 +65,15 @@ configuration:
     # Are commits required to be signed. boolean. TODO: all contributors must have commit signing on local machines.
     requiresCommitSignatures: false
     # Are conversations required to be resolved before merging? boolean
-    requiresConversationResolution: false
+    requiresConversationResolution: true
     # Are merge commits prohibited from being pushed to this branch. boolean
     requiresLinearHistory: false
     # Required status checks to pass before merging. Values can be any string, but if the value does not correspond to any existing status check, the status check will be stuck on pending for status since nothing exists to push an actual status
     requiredStatusChecks:
     - build
-    # Require branches to be up to date before merging. Requires requiredStatusChecks. boolean
-    requiresStrictStatusChecks: false
+    - CodeQL
+    # Require branches to be up to date before merging. boolean
+    requiresStrictStatusChecks: true
     # Indicates whether there are restrictions on who can push. boolean. Should be set with whoCanPush.
     restrictsPushes: false
     # Restrict who can dismiss pull request reviews. boolean
