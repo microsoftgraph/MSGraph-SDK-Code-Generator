@@ -770,11 +770,11 @@ stages:
         repoName: 'msgraph-beta-sdk-python'
         branchName: $(betaBranch)
         targetClassName: "BaseGraphServiceClient"
-        targetNamespace: "msgraph.generated"
+        targetNamespace: "msgraph_beta.generated"
         customArguments: "-b -e '/me' -e '/me/**'" # Enable backing store, Exclude me
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
-        - template: generation-templates/python.yml
+        - template: generation-templates/python-beta.yml
           parameters:
             repoName: msgraph-beta-sdk-python
 
