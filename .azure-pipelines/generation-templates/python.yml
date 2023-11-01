@@ -2,16 +2,19 @@ parameters:
   - name: repoName
     type: string
 
+  - name: baseDirectory
+    type: string
+
 steps:
 - pwsh: '$(scriptsDirectory)/clean-python-files.ps1'
   displayName: 'Remove generated models and requests from the repo generated folder'
   env:
-    RepoModelsDir: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/msgraph/generated'
+    RepoModelsDir: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/${{ parameters.baseDirectory }}/generated'
 
 - pwsh: '$(scriptsDirectory)/copy-python-models.ps1'
   displayName: 'Update models'
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(kiotaDirectory)/output/*
-    RepoModelsDir: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/msgraph/generated'
+    RepoModelsDir: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/${{ parameters.baseDirectory }}/generated'
 

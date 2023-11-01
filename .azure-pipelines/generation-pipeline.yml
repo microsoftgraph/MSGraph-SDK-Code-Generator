@@ -749,6 +749,7 @@ stages:
         - template: generation-templates/python.yml
           parameters:
             repoName: msgraph-sdk-python
+            baseDirectory: msgraph
 
 - stage: stage_python_beta
   dependsOn:
@@ -770,13 +771,14 @@ stages:
         repoName: 'msgraph-beta-sdk-python'
         branchName: $(betaBranch)
         targetClassName: "BaseGraphServiceClient"
-        targetNamespace: "msgraph.generated"
+        targetNamespace: "msgraph_beta.generated"
         customArguments: "-b -e '/me' -e '/me/**'" # Enable backing store, Exclude me
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/python.yml
           parameters:
             repoName: msgraph-beta-sdk-python
+            baseDirectory: msgraph_beta
 
 - stage: stage_cli_v1_kiota
   dependsOn:
