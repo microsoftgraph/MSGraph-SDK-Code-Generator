@@ -9,3 +9,11 @@ Write-Host "Removed the existing generated files in the repo." -ForegroundColor 
 New-Item -ItemType directory -Path $env:RepoModelsDir
 Move-Item $env:OutputFullPath $env:RepoModelsDir
 Write-Host "Moved the models from $modelsDirectory into the local repo." -ForegroundColor Green
+
+$helpUpdateScript = Join-Path -Path $env:WorkspaceRootDir -ChildPath .azure-pipelines/powershell/HelpUpdate.ps1
+. $helpUpdateScript
+
+Update-UsersMeAlias -WorkspaceRootDir $env:WorkspaceRootDir
+Update-MeUserIdHelp -WorkspaceRootDir $env:WorkspaceRootDir
+
+Write-Host "Updated 'me' help content in $env:RepoModelsDir" -ForegroundColor Green
