@@ -497,7 +497,7 @@ stages:
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "com.Microsoft.Graph"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
-        customArguments: "-e '/me' -e '/me/**'" # Exclude /me
+        customArguments: "-b -e '/me' -e '/me/**'" # Exclude /me/** and enable backing store
         languageSpecificSteps:
         - template: generation-templates/java-kiota.yml
           parameters:
@@ -526,7 +526,7 @@ stages:
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "com.Microsoft.Graph"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
-        customArguments: "-e '/me' -e '/me/**'" # Exclude /me
+        customArguments: "-b -e '/me' -e '/me/**'" # Exclude /me/** and enable backing store
         languageSpecificSteps:
         - template: generation-templates/java-kiota.yml
           parameters:
@@ -749,6 +749,7 @@ stages:
         - template: generation-templates/python.yml
           parameters:
             repoName: msgraph-sdk-python
+            baseDirectory: msgraph
 
 - stage: stage_python_beta
   dependsOn:
@@ -770,13 +771,14 @@ stages:
         repoName: 'msgraph-beta-sdk-python'
         branchName: $(betaBranch)
         targetClassName: "BaseGraphServiceClient"
-        targetNamespace: "msgraph.generated"
+        targetNamespace: "msgraph_beta.generated"
         customArguments: "-b -e '/me' -e '/me/**'" # Enable backing store, Exclude me
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/python.yml
           parameters:
             repoName: msgraph-beta-sdk-python
+            baseDirectory: msgraph_beta
 
 - stage: stage_cli_v1_kiota
   dependsOn:

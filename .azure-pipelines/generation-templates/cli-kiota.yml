@@ -17,6 +17,7 @@ steps:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(kiotaDirectory)/output/*
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/generated/
+    WorkspaceRootDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}
 
 - task: DotNetCoreCLI@2
   displayName: Restore packages
