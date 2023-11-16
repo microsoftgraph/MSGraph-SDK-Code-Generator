@@ -1,5 +1,7 @@
 steps:
 - template: use-dotnet-sdk.yml
+  parameters:
+    version: '8.x' # Kiota is a NET8 app
 
 - checkout: kiota
   displayName: checkout kiota
