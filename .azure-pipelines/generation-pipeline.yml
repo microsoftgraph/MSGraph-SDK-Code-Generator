@@ -107,6 +107,7 @@ resources:
      type: github
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-metadata
+     ref: is/metadata-pipeline-test
    - repository: microsoft-graph-docs
      type: github
      endpoint: microsoftgraph
