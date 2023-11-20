@@ -22,6 +22,9 @@ parameters:
 - name: 'cleanMetadataFileWithAnnotations'
   type: string
   default: $(cleanMetadataFileWithAnnotationsV1)
+- name: 'metadataSource'
+  type: string
+  default: $(metadataSourceBeta)
 
 steps:
 
