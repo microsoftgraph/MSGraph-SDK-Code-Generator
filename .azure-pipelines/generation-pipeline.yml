@@ -774,7 +774,7 @@ stages:
       parameters:
         language: 'cli'
         version: ''
-        repoName: 'msgraph-cli'
+        repoName: 'msgraph-beta-cli'
         baseBranchName : 'main'
         branchName: 'kiota/$(betaBranch)'
         targetClassName: "GraphClient"
