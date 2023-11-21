@@ -50,6 +50,7 @@ steps:
     errorOnNoChange: 1
     endpointVersion: ${{ parameters.endpoint }}
     targetBranch: 'is/metadata-pipeline-test'
+    metadataSourcePath: ${{ parameters.metadataSource}}
   enabled: true
 
 - template: download-typewriter.yml
