@@ -532,61 +532,6 @@ stages:
           parameters:
             repoName: msgraph-beta-sdk-java
 
-- stage: stage_php_v1
-  dependsOn:
-  - stage_build_and_publish_typewriter
-  - stage_v1_metadata
-  condition: |
-    and
-    (
-      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
-      in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
-    )
-  jobs:
-  - job: php_v1
-    steps:
-    - template: generation-templates/language-generation.yml
-      parameters:
-        language: 'PHP'
-        version: ''
-        repoName: 'msgraph-sdk-php'
-        branchName: $(v1Branch)
-        cleanMetadataFile: $(cleanMetadataFileV1)
-        cleanMetadataFolder: $(cleanMetadataFolderV1)
-        languageSpecificSteps:
-        - template: generation-templates/php-v1.yml
-          parameters:
-             repoName: 'msgraph-sdk-php'
-
-- stage: stage_php_beta
-  dependsOn:
-  - stage_build_and_publish_typewriter
-  - stage_beta_metadata
-  condition: |
-    and
-    (
-      eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
-      in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped')
-    )
-  jobs:
-  - job: php_beta
-    steps:
-    - template: generation-templates/language-generation.yml
-      parameters:
-        language: 'PHP'
-        version: 'beta'
-        repoName: 'msgraph-sdk-php'
-        branchName: $(betaBranch)
-        cleanMetadataFile: $(cleanMetadataFileBeta)
-        cleanMetadataFolder: $(cleanMetadataFolderBeta)
-        languageSpecificSteps:
-        - template: generation-templates/php-beta.yml
-          parameters:
-             phpBetaGenerationDirectory: $(Build.SourcesDirectory)/msgraph-sdk-php/src/Beta/
-             repoName: 'msgraph-sdk-php'
-             migration: false
-             pathToCopy: '/com/Beta/*'
-
 - stage: stage_php_beta_kiota
   dependsOn:
     - stage_build_and_publish_kiota
@@ -615,6 +560,7 @@ stages:
                 parameters:
                   repoName: msgraph-beta-sdk-php
             customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and Enable the backing store
+
 - stage: stage_php_v1_kiota
   dependsOn:
     - stage_build_and_publish_kiota
@@ -636,13 +582,14 @@ stages:
             branchName: 'kiota/$(v1Branch)'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Generated'
-            baseBranchName: 'feat/kiota-preview'
+            baseBranchName: 'dev'
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
                 parameters:
                   repoName: msgraph-sdk-php
             customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and Enable the backing store
+
 - stage: stage_typescript_v1
   dependsOn:
   - stage_build_and_publish_typewriter
