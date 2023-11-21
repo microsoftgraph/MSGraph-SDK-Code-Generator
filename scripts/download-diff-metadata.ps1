@@ -53,11 +53,12 @@ if ($branch -ne $env:targetBranch) {
 $url = "https://graph.microsoft.com/{0}/`$metadata" -f $env:endpointVersion:
 $metadataFileName = "{0}_metadata.xml" -f $env:endpointVersion
 $pathToLiveMetadata = Join-Path -Path ($pwd).path -ChildPath $metadataFileName
-$metadataSourcePath = "https://graph.microsoft.com/{0}/`$metadata" -f $env:endpointVersion
+$metadataSourcePath = $env:metadataSource
 
 if ($env:endpointVersion -eq "beta"){
-    $content = Format-Xml (Get-Content $metadataSourcePath)
-    Write-Host "Retrieved metadata from $metadataSourcePath" -ForegroundColor DarkGreen
+    Write-Host "Retrieving metadata from $env:metadataSource" -ForegroundColor DarkGreen
+    $content = Format-Xml (Get-Content $env:metadataSource)
+    Write-Host "Retrieved metadata from $env:metadataSource" -ForegroundColor DarkGreen
 }
 else{
     $client = new-object System.Net.WebClient
