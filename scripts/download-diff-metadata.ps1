@@ -53,23 +53,30 @@ if ($branch -ne $env:targetBranch) {
 $url = "https://graph.microsoft.com/{0}/`$metadata" -f $env:endpointVersion:
 $metadataFileName = "{0}_metadata.xml" -f $env:endpointVersion
 $pathToLiveMetadata = Join-Path -Path ($pwd).path -ChildPath $metadataFileName
-# $metadataSourcePath = $env:metadataSource
+$client = new-object System.Net.WebClient
+$client.Encoding = [System.Text.Encoding]::UTF8
+Write-Host "Attempting to downloaded metadata from $url to $pathToLiveMetadata" -ForegroundColor DarkGreen
+$client.DownloadFile($url, $pathToLiveMetadata)
+Write-Host "Downloaded metadata from $url to $pathToLiveMetadata" -ForegroundColor DarkGreen
 
-if ($env:endpointVersion -eq "beta"){
-    Write-Host "Retrieving metadata from $env:metadataSourcePath" -ForegroundColor DarkGreen
-    $content = Format-Xml (Get-Content $env:metadataSourcePath)
-    Write-Host "Retrieved metadata from $env:metadataSourcePath" -ForegroundColor DarkGreen
-}
-else{
-    $client = new-object System.Net.WebClient
-    $client.Encoding = [System.Text.Encoding]::UTF8
-    Write-Host "Attempting to downloaded metadata from $url to $pathToLiveMetadata" -ForegroundColor DarkGreen
-    $client.DownloadFile($url, $pathToLiveMetadata)
-    Write-Host "Downloaded metadata from $url to $pathToLiveMetadata" -ForegroundColor DarkGreen
+# Format the metadata to make it easy for us hoomans to read and perform non-markup line based diffs.
+$content = Format-Xml (Get-Content $pathToLiveMetadata)
 
-    # Format the metadata to make it easy for us hoomans to read and perform non-markup line based diffs.
-    $content = Format-Xml (Get-Content $pathToLiveMetadata)
-}
+# if ($env:endpointVersion -eq "beta"){
+#     Write-Host "Retrieving metadata from $env:metadataSourcePath" -ForegroundColor DarkGreen
+#     $content = Format-Xml (Get-Content $env:metadataSourcePath)
+#     Write-Host "Retrieved metadata from $env:metadataSourcePath" -ForegroundColor DarkGreen
+# }
+# else{
+#     $client = new-object System.Net.WebClient
+#     $client.Encoding = [System.Text.Encoding]::UTF8
+#     Write-Host "Attempting to downloaded metadata from $url to $pathToLiveMetadata" -ForegroundColor DarkGreen
+#     $client.DownloadFile($url, $pathToLiveMetadata)
+#     Write-Host "Downloaded metadata from $url to $pathToLiveMetadata" -ForegroundColor DarkGreen
+
+#     # Format the metadata to make it easy for us hoomans to read and perform non-markup line based diffs.
+#     $content = Format-Xml (Get-Content $pathToLiveMetadata)
+# }
 
 [IO.File]::WriteAllLines($pathToLiveMetadata, $content)
 Write-Host "Wrote $metadataFileName to disk. Now git will tell us whether there are changes." -ForegroundColor DarkGreen
