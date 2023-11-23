@@ -155,7 +155,6 @@ variables:
   cleanOpenAPIFileBetaOutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/beta/'
   cleanMetadataFileV1OutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/'
   cleanMetadataFileBetaOutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/'
-  metadataSourceBeta: '$(Build.SourcesDirectory)/msgraph-metadata/schemas/beta-Prod.csdl'
   cleanMetadataFolderBeta: 'clean_beta_metadata'
   cleanMetadataFolderV1: 'clean_v10_metadata'
   cleanOpenAPIFolderBeta: 'clean_beta_openapi'
@@ -232,7 +231,6 @@ stages:
         cleanMetadataFile: $(cleanMetadataFileBeta)
         cleanMetadataFolder: $(cleanMetadataFolderBeta)
         cleanMetadataFileWithAnnotations: $(cleanMetadataFileWithAnnotationsBeta)
-        metadataSource: $(metadataSourceBeta)
 
 - stage: stage_v1_openapi
   dependsOn: stage_v1_metadata

@@ -51,6 +51,7 @@ steps:
     endpointVersion: ${{ parameters.endpoint }}
     targetBranch: 'is/metadata-pipeline-test'
     metadataSourcePath: ${{ parameters.metadataSource}}
+    InputMetadataFile: ${{ parameters.inputMetadata }}
   enabled: true
 
 - template: download-typewriter.yml
