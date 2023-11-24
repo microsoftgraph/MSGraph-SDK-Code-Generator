@@ -64,12 +64,7 @@ if ($branch -ne $env:targetBranch) {
 # [IO.File]::WriteAllLines($pathToLiveMetadata, $content)
 # Write-Host "Wrote $metadataFileName to disk. Now git will tell us whether there are changes." -ForegroundColor DarkGreen
 
-if ($env:endpointVersion -eq "beta"){
-    Write-Host "Retrieving metadata from $env:InputMetadataFile" -ForegroundColor DarkGreen
-    $content = Format-Xml (Get-Content $env:InputMetadataFile)
-    Write-Host "Retrieved metadata from $env:InputMetadataFile" -ForegroundColor DarkGreen
-}
-else{ 
+if ($env:InputMetadataFile.StartsWith("https")){
     # v1.0
     # Download the metadata from livesite.
     $url = "https://graph.microsoft.com/{0}/`$metadata" -f $env:endpointVersion
@@ -85,6 +80,11 @@ else{
     $content = Format-Xml (Get-Content $pathToLiveMetadata)
     [IO.File]::WriteAllLines($pathToLiveMetadata, $content)
     Write-Host "Wrote $metadataFileName to disk. Now git will tell us whether there are changes." -ForegroundColor DarkGreen
+}
+else{ 
+    Write-Host "Retrieving metadata from $env:InputMetadataFile" -ForegroundColor DarkGreen
+    $content = Format-Xml (Get-Content $env:InputMetadataFile)
+    Write-Host "Retrieved metadata from $env:InputMetadataFile" -ForegroundColor DarkGreen
 }
 
 # Discover if there are changes between the downloaded file and what is in git.
