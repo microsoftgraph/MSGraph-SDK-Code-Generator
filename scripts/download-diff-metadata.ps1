@@ -49,7 +49,7 @@ if ($branch -ne $env:targetBranch) {
     git pull origin $env:targetBranch --ff-only | Write-Host
 }
 
-if ($env:inputMetadataFile.StartsWith("http")){    
+if ($env:inputMetadataFile.StartsWith("http", [StringComparison]::OrdinalIgnoreCase)){    
     # Download metadata from livesite.
     $url = "https://graph.microsoft.com/{0}/`$metadata" -f $env:endpointVersion
     $metadataFileName = "{0}_metadata.xml" -f $env:endpointVersion
