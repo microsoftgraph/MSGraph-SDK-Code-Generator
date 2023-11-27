@@ -47,6 +47,7 @@ steps:
     errorOnNoChange: 1
     endpointVersion: ${{ parameters.endpoint }}
     targetBranch: 'master'
+    inputMetadataFile: ${{ parameters.inputMetadata }}
   enabled: true
 
 - template: download-typewriter.yml
