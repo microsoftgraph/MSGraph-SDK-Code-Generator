@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NUnit.Framework.Legacy;
 
 namespace Typewriter.Test
 {
@@ -94,7 +95,7 @@ namespace Typewriter.Test
             var outputDirectoryInfo = new DirectoryInfo(outputDirectory);
             var dataDirectoryInfo = new DirectoryInfo(dataDirectory);
 
-            Assert.AreEqual(dataDirectoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length,
+            ClassicAssert.AreEqual(dataDirectoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length,
                 outputDirectoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length,
                 $@"Number of generated files don't match with number of expected files! Compare these two folders:
 {dataDirectory}
