@@ -663,6 +663,7 @@ stages:
         branchName: $(v1Branch)
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-typescript/"
+        customArguments: "-e '/me' -e '/me/**'" # Exclude me
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/typescript-sdk.yml
