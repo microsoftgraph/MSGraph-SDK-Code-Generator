@@ -502,6 +502,7 @@ stages:
         - template: generation-templates/java-kiota.yml
           parameters:
             repoName: msgraph-sdk-java
+            pathToGeneratedModels: src/main/java/com/microsoft/graph/generated/ 
 
 - stage: stage_java_beta_kiota
   dependsOn:
@@ -524,13 +525,15 @@ stages:
         baseBranchName: 'feature/6.0'
         branchName: 'kiota/$(betaBranch)'
         targetClassName: "BaseGraphServiceClient"
-        targetNamespace: "com.Microsoft.Graph"
+        targetNamespace: "com.Microsoft.Graph.Beta"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         customArguments: "-b -e '/me' -e '/me/**'" # Exclude /me/** and enable backing store
         languageSpecificSteps:
         - template: generation-templates/java-kiota.yml
           parameters:
             repoName: msgraph-beta-sdk-java
+            pathToGeneratedModels: src/main/java/com/microsoft/graph/beta/generated/
+
 
 - stage: stage_php_beta_kiota
   dependsOn:
