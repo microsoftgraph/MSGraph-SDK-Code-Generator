@@ -1,18 +1,18 @@
 parameters: 
 - name: repoName 
   type: string
-- name: pathToGeneratedModels
+- name: namespacePath
   type: string
 
 steps:
 - pwsh: '$(scriptsDirectory)/clean-java-files-kiota.ps1'
   displayName: 'Remove generated models and requests from the repo'
   env:
-    MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/${{ parameters.pathToGeneratedModels }}
+    MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/java/${{ parameters.namespacePath }}/generated/
 
 - pwsh: '$(scriptsDirectory)/copy-java-models-kiota.ps1'
   displayName: 'Update with new models'
   env: 
     BuildConfiguration: $(buildConfiguration) 
-    OutputFullPath: $(kiotaDirectory)/output/*
-    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/${{ parameters.pathToGeneratedModels }}
+    OutputFullPath: $(kiotaDirectory)/output/${{ parameters.namespacePath }}/*
+    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/java/${{ parameters.namespacePath }}/generated/

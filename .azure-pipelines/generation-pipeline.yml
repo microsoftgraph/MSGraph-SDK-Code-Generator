@@ -502,7 +502,7 @@ stages:
         - template: generation-templates/java-kiota.yml
           parameters:
             repoName: msgraph-sdk-java
-            pathToGeneratedModels: src/main/java/com/microsoft/graph/generated/ 
+            namespacePath: com/microsoft/graph
 
 - stage: stage_java_beta_kiota
   dependsOn:
@@ -532,7 +532,7 @@ stages:
         - template: generation-templates/java-kiota.yml
           parameters:
             repoName: msgraph-beta-sdk-java
-            pathToGeneratedModels: src/main/java/com/microsoft/graph/beta/generated/
+            namespacePath: com/microsoft/graph/beta
 
 
 - stage: stage_php_beta_kiota
