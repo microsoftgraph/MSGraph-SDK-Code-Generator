@@ -387,6 +387,7 @@ stages:
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "MicrosoftGraph"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+        customArguments: "-e '/me' -e '/me/**'" # Exclude me
         languageSpecificSteps:
         - template: generation-templates/ruby.yml
           parameters:
@@ -415,6 +416,7 @@ stages:
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "MicrosoftGraphBeta"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        customArguments: "-e '/me' -e '/me/**'" # Exclude me
         languageSpecificSteps:
         - template: generation-templates/ruby.yml
           parameters:
