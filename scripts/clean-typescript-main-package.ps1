@@ -8,6 +8,6 @@ if ($targetDirectory -eq $null) {
     Exit 1
 }
 Push-Location $targetDirectory
-Remove-Item *.ts -Verbose -Exclude "index.ts"
+Remove-Item *.ts -Verbose -Exclude "index.ts", "graphServiceClient.ts"
 Get-ChildItem -Directory -Exclude models | ForEach-Object {Remove-Item -r $_.FullName}
 Pop-Location
