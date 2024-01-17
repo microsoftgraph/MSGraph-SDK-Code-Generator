@@ -16,7 +16,7 @@ if (Test-Path .\models) {
 $fluentAPIFiles = Get-ChildItem -File -Filter *.ts -Recurse
 foreach($fluentAPIFile in $fluentAPIFiles) {
     $content = Get-Content $fluentAPIFile -raw
-    $content = $content -replace "from '[^']*/models/([^;]*)';", "from '$packageName/src/models/`$1';"
+    $content = $content -replace "from '[^']*/models/([^;]*)';", "from '$packageName/models/`$1';"
     Set-Content $fluentAPIFile -Value $content
 }
 Pop-Location
