@@ -28,7 +28,7 @@ foreach($file in $filesToCopy) {
 $indexTsContent = Get-Content -Path "$sourceLocation/index.ts" -Raw
 $indexTsContent = $indexTsContent.Replace("AppCatalogs", $rootPathSegment.Substring(0,1).ToUpper() + $rootPathSegment.Substring(1))
 $indexTsContent = $indexTsContent.Replace("appCatalogs", $rootPathSegment)
-Set-Content -Path "$($packagesDirectory.FullName)\index.ts" -Value $indexTsContent
+Set-Content -Path "$($packagesDirectory.FullName)\index.ts" -Value $indexTsContent -NoNewline
 
 $directoriesToRemove = @(
     "lib",
@@ -50,7 +50,7 @@ $targetPackageJson.scripts = $sourcePackageJson.scripts
 $targetPackageJson.version = $sourcePackageJson.version
 $targetPackageJson | add-member -Name "types" -value $sourcePackageJson.types -MemberType NoteProperty
 
-Set-Content -Path "$targetLocation/package.json" -Value ($targetPackageJson | ConvertTo-Json -Depth 100)
+Set-Content -Path "$targetLocation/package.json" -Value ($targetPackageJson | ConvertTo-Json -Depth 100) -NoNewline
 
 $dependencies = @(
     $packageName.ToLower(),
