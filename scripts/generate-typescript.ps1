@@ -15,9 +15,9 @@ param (
 )
 $modelsPackageDirectoryName = $packageName.Split('/')[1]
 $rootSegments = Get-ChildItem -Directory -Exclude $modelsPackageDirectoryName -Path $targetDirectory | Select-Object -ExpandProperty Name | % { $_.Substring($modelsPackageDirectoryName.Length + 1)}
-foreach($rootSegment in $rootSegments) {
-    $fluentAPIPackageDirectoryPath = "$targetDirectory/$modelsPackageDirectoryName-$rootSegment"
-    Invoke-Expression "$kiotaPath generate -o $fluentAPIPackageDirectoryPath -d $descriptionPath -c $($rootSegment.Substring(0,1).ToUpper() + $rootSegment.Substring(1))ServiceClient -l TypeScript -n github.com/microsoftgraph/msgraph-sdk-typescript/ -e '/me' -e '/me/**' -i '/$rootSegment' -i '/$rootSegment/**'$additionalArguments"
+$rootSegments | Foreach-Object -ThrottleLimit 10  -Parallel {
+    $fluentAPIPackageDirectoryPath = "$targetDirectory/$modelsPackageDirectoryName-$_"
+    Invoke-Expression "$kiotaPath generate -o $fluentAPIPackageDirectoryPath -d $descriptionPath -c $($_.Substring(0,1).ToUpper() + $_.Substring(1))ServiceClient -l TypeScript -n github.com/microsoftgraph/msgraph-sdk-typescript/ -e '/me' -e '/me/**' -i '/$_' -i '/$_/**'$additionalArguments"
     .\scripts\clean-typescript-fluent-package.ps1 -targetDirectory $fluentAPIPackageDirectoryPath -packageName $packageName
 }
 Invoke-Expression "$kiotaPath generate -o $fluentAPIPackageDirectoryPath -d $descriptionPath -c $clientName -l TypeScript -n github.com/microsoftgraph/msgraph-sdk-typescript/ -e '/me' -e '/me/**' $additionalArguments"
