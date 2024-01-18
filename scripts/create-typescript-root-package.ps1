@@ -24,6 +24,12 @@ $filesToCopy = @(
 foreach($file in $filesToCopy) {
     Copy-Item "$sourceLocation/$file" $targetLocation
 }
+
+$indexTsContent = Get-Content -Path "$sourceLocation/index.ts" -Raw
+$indexTsContent = $indexTsContent.Replace("AppCatalogs", $rootPathSegment.Substring(0,1).ToUpper() + $rootPathSegment.Substring(1))
+$indexTsContent = $indexTsContent.Replace("appCatalogs", $rootPathSegment)
+Set-Content -Path "$($packagesDirectory.FullName)\index.ts" -Value $indexTsContent
+
 $directoriesToRemove = @(
     "lib",
     "__tests__"
