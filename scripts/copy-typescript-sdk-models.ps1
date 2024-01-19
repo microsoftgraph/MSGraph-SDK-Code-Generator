@@ -19,7 +19,7 @@ $packagesDirectories = Get-ChildItem $targetDirectory -Directory -Exclude $mainP
 foreach ($directory in $packagesDirectories) {
     $packageName = $directory.Name.Replace("$mainPackageDirectoryName-", "")
     Copy-Item (Join-Path $sourceDirectory -ChildPath $packageName) -Destination $directory.FullName -Recurse -Force
-    Invoke-Expression "$PSScriptRoot\fix-typescript-fluent-packages-imports.ps1 -targetDirectory $directory.FullName -packageName $packageName"
+    Invoke-Expression "$PSScriptRoot\fix-typescript-fluent-packages-imports.ps1 -targetDirectory $($directory.FullName) -packageName $packageName"
 }
 
 Write-Host "Copied the generated files into the repo. From: $env:OutputFullPath to: $env:RepoModelsDir" -ForegroundColor Green
