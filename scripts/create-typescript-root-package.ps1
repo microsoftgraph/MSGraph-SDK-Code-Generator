@@ -1,3 +1,9 @@
+<#
+.Synopsis
+    Script meant to help create a new root segment package in the repo
+.Description
+    This scritp is not meant to be used by CI, but only for manual additions of new root segments.
+#>
 param (
     [Parameter(Mandatory = $true)]
     [string]
@@ -5,12 +11,15 @@ param (
     [Parameter(Mandatory = $true)]
     [string]
     $targetDirectory,
+    [Parameter(Mandatory = $true)]
+    [string]
+    $sourcePathSegment = "appCatalogs",
     [string]
     $packageName = "@microsoft/msgraph-sdk-javascript"
 )
 Push-Location $targetDirectory
 $finalPackageName = "$packageName-$rootPathSegment"
-$sourceLocation = "packages/$($packageName.Split('/')[1])-appCatalogs/"
+$sourceLocation = "packages/$($packageName.Split('/')[1])-$sourcePathSegment/"
 $targetLocation = "packages/$($finalPackageName.Split('/')[1])/"
 npx lerna create $finalPackageName --yes
 $filesToCopy = @(
@@ -26,8 +35,8 @@ foreach($file in $filesToCopy) {
 }
 
 $indexTsContent = Get-Content -Path "$sourceLocation/index.ts" -Raw
-$indexTsContent = $indexTsContent.Replace("AppCatalogs", $rootPathSegment.Substring(0,1).ToUpper() + $rootPathSegment.Substring(1))
-$indexTsContent = $indexTsContent.Replace("appCatalogs", $rootPathSegment)
+$indexTsContent = $indexTsContent.Replace($sourcePathSegment.Substring(0,1).ToUpper() + $sourcePathSegment.Substring(1), $rootPathSegment.Substring(0,1).ToUpper() + $rootPathSegment.Substring(1))
+$indexTsContent = $indexTsContent.Replace($sourcePathSegment, $rootPathSegment)
 Set-Content -Path "$($packagesDirectory.FullName)\index.ts" -Value $indexTsContent -NoNewline
 
 $directoriesToRemove = @(
@@ -37,7 +46,6 @@ $directoriesToRemove = @(
 foreach($directory in $directoriesToRemove) {
     Remove-Item -r "$targetLocation/$directory"
 }
-# TODO update references in index.ts
 
 $sourcePackageJson = Get-Content -Raw "$sourceLocation/package.json" | ConvertFrom-Json
 $targetPackageJson = Get-Content -Raw "$targetLocation/package.json" | ConvertFrom-Json

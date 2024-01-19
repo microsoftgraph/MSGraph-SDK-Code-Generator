@@ -1,3 +1,9 @@
+<#
+.Synopsis
+    Script meant for local generation of all the typescript splat packages
+.Description
+    This scritp is not meant to be used by CI, but when running local tests.
+#>
 param (
     [Parameter(Mandatory = $true)]
     [string]

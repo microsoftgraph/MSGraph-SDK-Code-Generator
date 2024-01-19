@@ -668,7 +668,7 @@ stages:
         branchName: $(v1Branch)
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-typescript/"
-        # Me is excluded by default for typescript
+        customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and enable backing store
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/typescript-sdk.yml
