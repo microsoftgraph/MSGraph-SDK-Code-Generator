@@ -13,13 +13,13 @@ Write-Host "Path to repo models directory: $targetDirectory"
 $mainPackageDirectoryName = $packageName.Split("/")[1]
 $modelsPackagePath = Join-Path $targetDirectory -ChildPath $mainPackageDirectoryName
 Copy-Item (Join-Path $sourceDirectory -ChildPath "models") -Destination $modelsPackagePath -Recurse -Force
-.\scripts\remove-typescript-fluent-api-from-main-package.ps1 -targetDirectory $modelsPackagePath
+Invoke-Expression "$PSScriptRoot\remove-typescript-fluent-api-from-main-package.ps1 -targetDirectory $modelsPackagePath"
 
 $packagesDirectories = Get-ChildItem $targetDirectory -Directory -Exclude $mainPackageDirectoryName
 foreach ($directory in $packagesDirectories) {
     $packageName = $directory.Name.Replace("$mainPackageDirectoryName-", "")
     Copy-Item (Join-Path $sourceDirectory -ChildPath $packageName) -Destination $directory.FullName -Recurse -Force
-    .\scripts\fix-typescript-fluent-packages-imports.ps1 -targetDirectory $directory.FullName -packageName $packageName
+    Invoke-Expression "$PSScriptRoot\fix-typescript-fluent-packages-imports.ps1 -targetDirectory $directory.FullName -packageName $packageName"
 }
 
 Write-Host "Copied the generated files into the repo. From: $env:OutputFullPath to: $env:RepoModelsDir" -ForegroundColor Green
