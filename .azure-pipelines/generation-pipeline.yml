@@ -159,7 +159,7 @@ variables:
   cleanOpenAPIFolderBeta: 'clean_beta_openapi'
   cleanOpenAPIFolderV1: 'clean_v10_openapi'
   rawMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/schemas/beta-Prod.csdl'
-  rawMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/schemas/v1.0-Prod.csdl'
+  rawMetadataFileV1: 'https://graph.microsoft.com/v1.0/$metadata' # We want to run against the metadata we have captured.
   typewriterDirectory: '$(Build.SourcesDirectory)/typewriter'
   kiotaDirectory: '$(Build.SourcesDirectory)/kiota'
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
