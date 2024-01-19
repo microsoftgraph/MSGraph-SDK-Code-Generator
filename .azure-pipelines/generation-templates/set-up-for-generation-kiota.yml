@@ -25,8 +25,8 @@ steps:
 - pwsh: |
     md $(Build.SourcesDirectory)/msgraph-metadata/clean_v10_openapi
     md $(Build.SourcesDirectory)/msgraph-metadata/clean_beta_openapi
-    Move-Item -Path $(Build.SourcesDirectory)/msgraph-metadata/openapi/v1.0/openapi.yaml -Destination $(Build.SourcesDirectory)/msgraph-metadata-kiota/clean_v10_openapi/
-    Move-Item -Path $(Build.SourcesDirectory)/msgraph-metadata/openapi/beta/openapi.yaml -Destination $(Build.SourcesDirectory)/msgraph-metadata-kiota/clean_beta_openapi/
+    Move-Item -Path $(Build.SourcesDirectory)/msgraph-metadata/openapi/v1.0/openapi.yaml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_v10_openapi/
+    Move-Item -Path $(Build.SourcesDirectory)/msgraph-metadata/openapi/beta/openapi.yaml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_beta_openapi/
   displayName: Move metadata to expected location
   condition: or(eq(variables.skipMetadataCaptureAndClean, true), eq(variables.skipOpenApiCaptureAndClean, true))
 
