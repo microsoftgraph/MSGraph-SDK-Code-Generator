@@ -20,7 +20,7 @@ $directories = Get-ChildItem -Directory -Exclude $mainPackageDirectoryName
 foreach ($directory in $directories) {
     Push-Location $directory.FullName
     Get-ChildItem -Directory | ForEach-Object {Remove-Item -r $_.FullName}
-	Remove-Item *.ts -Exclude "index.ts"
+	Remove-Item *.ts -Exclude "index.ts", "*ServiceClient.ts"
     Remove-Item $kiotaLockFileName
     Pop-Location
 }
