@@ -17,8 +17,8 @@ Invoke-Expression "$PSScriptRoot\remove-typescript-fluent-api-from-main-package.
 
 $packagesDirectories = Get-ChildItem $targetDirectory -Directory -Exclude $mainPackageDirectoryName
 foreach ($directory in $packagesDirectories) {
-    $packageName = $directory.Name.Replace("$mainPackageDirectoryName-", "")
-    Copy-Item (Join-Path $sourceDirectory -ChildPath $packageName) -Destination $directory.FullName -Recurse -Force
+    $fluentAPISegmentName = $directory.Name.Replace("$mainPackageDirectoryName-", "")
+    Copy-Item (Join-Path $sourceDirectory -ChildPath $fluentAPISegmentName) -Destination $directory.FullName -Recurse -Force
     Invoke-Expression "$PSScriptRoot\fix-typescript-fluent-packages-imports.ps1 -targetDirectory $($directory.FullName) -packageName $packageName"
 }
 
