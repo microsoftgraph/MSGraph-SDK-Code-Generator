@@ -1,12 +1,32 @@
-$directories = Get-ChildItem -Path $env:MainDirectory  -Directory -Exclude @("graphclient")
+param (
+    [Parameter(Mandatory = $true)]
+    [string]
+    $targetDirectory,
+    [string]
+    $packageName = "@microsoft/msgraph-sdk-javascript"
+)
+if ($targetDirectory -eq $null) {
+    Write-Error "Target directory is required"
+    Exit 1
+}
+Push-Location $targetDirectory
+
+$kiotaLockFileName = "kiota-lock.json"
+$mainPackageDirectoryName = $packageName.Split("/")[1]
+$mainPackageDirectoryPath = Join-Path $targetDirectory -ChildPath $mainPackageDirectoryName
+
+Push-Location $mainPackageDirectoryPath
+Get-ChildItem -Directory | ForEach-Object { Remove-Item -r $_.FullName }
+Remove-Item $kiotaLockFileName
+Pop-Location
+
+$directories = Get-ChildItem -Directory -Exclude $mainPackageDirectoryName
 foreach ($directory in $directories) {
-	Remove-Item -Path $directory.FullName -Recurse -Force -Verbose
+    Push-Location $directory.FullName
+    Get-ChildItem -Directory | ForEach-Object {Remove-Item -r $_.FullName}
+	Remove-Item -Filter *.ts -Exclude "index.ts"
+    Remove-Item -ChildPath $kiotaLockFileName
+    Pop-Location
 }
-
-$files = Get-ChildItem -Path $env:MainDirectory -File  -Filter "*.ts"
-foreach ($file in $files) {
-  Remove-Item -Path $file.FullName -Force
-}
-
-
-Write-Host "Removed the existing generated files in the repo's main directory: $env:MainDirectory" -ForegroundColor Green
+Pop-Location
+Write-Host "Removed the existing generated files in the repo's main directory: $targetDirectory" -ForegroundColor Green

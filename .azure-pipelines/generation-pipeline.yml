@@ -668,12 +668,13 @@ stages:
         branchName: $(v1Branch)
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-typescript/"
-        customArguments: "-e '/me' -e '/me/**'" # Exclude me
+        # Me is excluded by default for typescript
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/typescript-sdk.yml
           parameters:
             repoName: msgraph-sdk-typescript
+            packageName: '@microsoft/msgraph-sdk-javascript'
 
 - stage: stage_python_v1
   dependsOn:
