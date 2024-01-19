@@ -5,10 +5,6 @@ param (
     [string]
     $packageName = "@microsoft/msgraph-sdk-javascript"
 )
-if ($targetDirectory -eq $null) {
-    Write-Error "Target directory is required"
-    Exit 1
-}
 Push-Location $targetDirectory
 if (Test-Path .\models) {
     Remove-Item -r .\models\

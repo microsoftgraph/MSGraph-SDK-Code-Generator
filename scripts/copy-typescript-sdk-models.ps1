@@ -8,10 +8,6 @@ param (
     [string]
     $packageName = "@microsoft/msgraph-sdk-javascript"
 )
-if ($targetDirectory -eq $null) {
-    Write-Error "Target directory is required"
-    Exit 1
-}
 
 Write-Host "Path to repo models directory: $targetDirectory"
 $mainPackageDirectoryName = $packageName.Split("/")[1]
