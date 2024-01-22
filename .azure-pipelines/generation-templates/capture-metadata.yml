@@ -46,7 +46,7 @@ steps:
   env:
     errorOnNoChange: 1
     endpointVersion: ${{ parameters.endpoint }}
-    targetBranch: 'master'
+    targetBranch: 'is/metadata-pipeline-test'
     inputMetadataFile: ${{ parameters.inputMetadata }}
   enabled: true
 

@@ -48,7 +48,7 @@ if ($branch -ne $env:targetBranch) {
     Write-Host "Current branch: $branch"
     git pull origin $env:targetBranch --ff-only | Write-Host
 }
-
+Write-Host "inputMetadataFile: $inputMetadataFile" -ForegroundColor DarkGreen
 if ($env:inputMetadataFile.StartsWith("http", [StringComparison]::OrdinalIgnoreCase)){    
     # Download metadata from livesite.
     $url = "https://graph.microsoft.com/{0}/`$metadata" -f $env:endpointVersion

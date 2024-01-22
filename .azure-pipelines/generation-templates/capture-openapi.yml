@@ -67,9 +67,9 @@ jobs:
     displayName: install hidi
 
   - pwsh: |
-      git fetch origin master
-      git switch master
-    displayName: ensure the generation happens from master latest
+      git fetch origin is/test-generation-pipeline-2
+      git switch is/test-generation-pipeline-2
+    displayName: ensure the generation happens from is/test-generation-pipeline-2 latest
     workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
   - pwsh: '$(scriptsDirectory)/generate-open-api.ps1 -endpointVersion ${{ parameters.endpoint }} -settings "$(conversionSettingsDirectory)/$(File)" -platformName "$(Name)"'
