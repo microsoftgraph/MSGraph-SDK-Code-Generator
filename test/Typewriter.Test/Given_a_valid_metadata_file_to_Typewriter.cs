@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}Microsoft-graph.d.ts");
-            Assert.IsTrue(fileInfo.Exists, $"Expected {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected {fileInfo.FullName}. File was not found.");
         }
 
         [Test]
@@ -60,7 +61,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + @$"{Path.DirectorySeparatorChar}com{Path.DirectorySeparatorChar}Beta{Path.DirectorySeparatorChar}Microsoft{Path.DirectorySeparatorChar}Graph{Path.DirectorySeparatorChar}Model{Path.DirectorySeparatorChar}Entity.php");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the namespace applied at the CLI was added to the document.
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -73,7 +74,7 @@ namespace Typewriter.Test
                     break;
                 }
             } 
-            Assert.IsTrue(isExpectedNamespaceSet, $"The expected namespace, {testNamespace}, was not set in the generated test file.");
+            ClassicAssert.IsTrue(isExpectedNamespaceSet, $"The expected namespace, {testNamespace}, was not set in the generated test file.");
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}TimeOffRequestCollectionRequest.java");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the namespace applied at the CLI was added to the document.
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
@@ -108,7 +109,7 @@ namespace Typewriter.Test
                     break;
                 }
             }
-            Assert.IsTrue(isExpectedImportStatementFound, $"The expected statement was not found. Expected: {expected}");
+            ClassicAssert.IsTrue(isExpectedImportStatementFound, $"The expected statement was not found. Expected: {expected}");
         }
 
         [Test]
@@ -127,7 +128,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}GraphServiceClient.cs");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the beta endpoint was set as the default endpoint. Otherwise it uses v1.0.
             // https://github.com/microsoftgraph/msgraph-sdk-dotnet/blob/dev/src/Microsoft.Graph/Requests/Generated/GraphServiceClient.cs#L25
@@ -142,7 +143,7 @@ namespace Typewriter.Test
                     break;
                 }
             }
-            Assert.IsTrue(hasFoundBetaUrl, $"The expected default base URL, {betaUrl}, was not set in the generated test file.");
+            ClassicAssert.IsTrue(hasFoundBetaUrl, $"The expected default base URL, {betaUrl}, was not set in the generated test file.");
         }
 
 
@@ -161,7 +162,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}OnenotePage.cs");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             // Check that the test string is found in the output file. Converting "&#xD;&#xA; Test token string" to "/// Test token string" is what we are testing.
             // We are making sure that the documentation annotation is handled correctly for this scenario.
@@ -176,7 +177,7 @@ namespace Typewriter.Test
                     break;
                 }
             }
-            Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We are not correctly handling the \r\n coming from the annotations.");
+            ClassicAssert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We are not correctly handling the \r\n coming from the annotations.");
         }
 
         [Test]
@@ -194,7 +195,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}Thumbnail.cs");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool hasTestString = false;
@@ -213,8 +214,8 @@ namespace Typewriter.Test
                 }
             }
 
-            Assert.IsFalse(hasTestString, $"The expected test token string, '{testString}', was set in the generated test file. We didn't properly generate the setter code in the cstor.");
-            Assert.IsFalse(hasCstorString, $"The expected test token cstor string, '{testCstorString}', was set in the generated test file. We didn't properly generate the cstor code.");
+            ClassicAssert.IsFalse(hasTestString, $"The expected test token string, '{testString}', was set in the generated test file. We didn't properly generate the setter code in the cstor.");
+            ClassicAssert.IsFalse(hasCstorString, $"The expected test token cstor string, '{testCstorString}', was set in the generated test file. We didn't properly generate the cstor code.");
         }
 
         [Test]
@@ -232,7 +233,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}EmptyComplexType.cs");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool hasTestString = false;
@@ -246,7 +247,7 @@ namespace Typewriter.Test
                 }
             }
 
-            Assert.IsFalse(hasTestString, $"The unexpected test token string, '{testString}', was set in the generated test file. We incorrectly generated the setter code in the cstor.");
+            ClassicAssert.IsFalse(hasTestString, $"The unexpected test token string, '{testString}', was set in the generated test file. We incorrectly generated the setter code in the cstor.");
         }
 
 
@@ -265,7 +266,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}TestType.cs");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool hasTestString = false;
@@ -278,7 +279,7 @@ namespace Typewriter.Test
                     break;
                 }
             }
-            Assert.False(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
+            ClassicAssert.False(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
         }
 
         [Test]
@@ -296,7 +297,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}TestType4.cs");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool hasTestString = false;
@@ -309,7 +310,7 @@ namespace Typewriter.Test
                     break;
                 }
             }
-            Assert.True(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
+            ClassicAssert.True(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
         }
 
         [Test]
@@ -327,7 +328,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}Entity.cs");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool hasTestString = false;
@@ -345,8 +346,8 @@ namespace Typewriter.Test
                     hasTestODataInitString = true;
                 }
             }
-            Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
-            Assert.IsFalse(hasTestODataInitString, $"The unexpected test token string, '{testODataInitString}', was set in the generated test file. We didn't properly generate the cstor code.");
+            ClassicAssert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the cstor code.");
+            ClassicAssert.IsFalse(hasTestODataInitString, $"The unexpected test token string, '{testODataInitString}', was set in the generated test file. We didn't properly generate the cstor code.");
         }
 
         [Test]
@@ -364,7 +365,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}EmptyBaseComplexTypeRequest.cs");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool hasTestString = false;
@@ -385,7 +386,7 @@ namespace Typewriter.Test
                 }
             }
 
-            Assert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the type declaration code.");
+            ClassicAssert.IsTrue(hasTestString, $"The expected test token string, '{testString}', was not set in the generated test file. We didn't properly generate the type declaration code.");
         }
 
         [Test]
@@ -403,7 +404,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}model{Path.DirectorySeparatorChar}DerivedComplexTypeRequest.cs");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool hasTestTypeDeclaration = false;
@@ -433,9 +434,9 @@ namespace Typewriter.Test
                 }
             }
 
-            Assert.IsTrue(hasTestTypeDeclaration, $"The expected test token string, '{testTypeDeclaration}', was not set in the generated test file. We didn't properly generate the type declaration code.");
-            Assert.IsTrue(hasTestTypeCstor, $"The expected test token string, '{testTypeCstor}', was not set in the generated test file. We didn't properly generate the cstor code.");
-            Assert.IsTrue(hasTestOdataType, $"The expected test token string, '{testOdataType}', was not set in the generated test file. We didn't properly generate the initialized odata.type code.");
+            ClassicAssert.IsTrue(hasTestTypeDeclaration, $"The expected test token string, '{testTypeDeclaration}', was not set in the generated test file. We didn't properly generate the type declaration code.");
+            ClassicAssert.IsTrue(hasTestTypeCstor, $"The expected test token string, '{testTypeCstor}', was not set in the generated test file. We didn't properly generate the cstor code.");
+            ClassicAssert.IsTrue(hasTestOdataType, $"The expected test token string, '{testOdataType}', was not set in the generated test file. We didn't properly generate the initialized odata.type code.");
         }
 
         [Test]
@@ -453,7 +454,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}TestTypeQueryRequestBuilder.cs");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool hasTestParameter = false;
@@ -470,7 +471,7 @@ namespace Typewriter.Test
                 }
             }
 
-            Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
+            ClassicAssert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
         }
 
         [Test]
@@ -488,7 +489,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}TestTypeRequestBuilder.cs");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
 
@@ -505,7 +506,7 @@ namespace Typewriter.Test
                 }
             }
 
-            Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
+            ClassicAssert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
         }
 
         [Test]
@@ -523,7 +524,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}ITestTypeRequestBuilder.cs");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
 
@@ -540,7 +541,7 @@ namespace Typewriter.Test
                 }
             }
 
-            Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
+            ClassicAssert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the parameter.");
         }
 
         [Test]
@@ -559,7 +560,7 @@ namespace Typewriter.Test
             Generator.Transform(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + @$"{Path.DirectorySeparatorChar}cleanMetadata.xml");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
 
@@ -584,9 +585,9 @@ namespace Typewriter.Test
                 }
             }
 
-            Assert.IsTrue(hasThumbnailAnnotationBeenAdded, $"The expected LongDescription annotation wasn't set in the transformed cleaned metadata.");
-            Assert.IsFalse(hasHasStreamAttribute, $"The HasStream attribute was't removed from the metadata.");
-            Assert.IsTrue(hasContainsTargetBeenSet, $"The expected ContainsTarget attribute wasn't set in the transformed cleaned metadata.");
+            ClassicAssert.IsTrue(hasThumbnailAnnotationBeenAdded, $"The expected LongDescription annotation wasn't set in the transformed cleaned metadata.");
+            ClassicAssert.IsFalse(hasHasStreamAttribute, $"The HasStream attribute was't removed from the metadata.");
+            ClassicAssert.IsTrue(hasContainsTargetBeenSet, $"The expected ContainsTarget attribute wasn't set in the transformed cleaned metadata.");
         }
 
         [Test]
@@ -612,13 +613,13 @@ namespace Typewriter.Test
             Generator.Transform(testMetadata, options);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + @$"{Path.DirectorySeparatorChar}{outputBaseFileName}.xml");
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
 
             bool hasCapabilityAnnotations = lines.Any(x => x.Contains("Org.OData.Capabilities")); // Expect false
 
-            Assert.AreEqual(shouldFindCapabilityAnnotation, hasCapabilityAnnotations, $"Expected to find capability annotations: {shouldFindCapabilityAnnotation}. Actually found capability annotations: {hasCapabilityAnnotations}");
+            ClassicAssert.AreEqual(shouldFindCapabilityAnnotation, hasCapabilityAnnotations, $"Expected to find capability annotations: {shouldFindCapabilityAnnotation}. Actually found capability annotations: {hasCapabilityAnnotations}");
         }
 
         [Test]
@@ -640,7 +641,7 @@ namespace Typewriter.Test
             Generator.GenerateFiles(testMetadata, optionsCSharp);
 
             FileInfo fileInfo = new FileInfo(outputDirectory + generatedOutputUrl + @$"{Path.DirectorySeparatorChar}requests{Path.DirectorySeparatorChar}" + outputFileName);
-            Assert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
+            ClassicAssert.IsTrue(fileInfo.Exists, $"Expected: {fileInfo.FullName}. File was not found.");
 
             IEnumerable<string> lines = File.ReadLines(fileInfo.FullName);
             bool hasTestParameter = false;
@@ -655,7 +656,7 @@ namespace Typewriter.Test
                 }
             }
 
-            Assert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the SendAsync method.");
+            ClassicAssert.IsTrue(hasTestParameter, $"The expected test token string, '{testParameter}', was not set in the generated test file. We didn't properly generate the SendAsync method.");
         }
     }
 }

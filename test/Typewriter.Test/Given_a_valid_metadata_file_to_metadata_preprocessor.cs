@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using NUnit.Framework.Legacy;
 
 namespace Typewriter.Test
 {
@@ -35,7 +36,7 @@ namespace Typewriter.Test
                     .Where(x => x.Attribute("Name").Value.Equals(entityToProcess))
                     .Where(x => x.Attribute("HasStream").Value.Equals("true")).Any();
 
-            Assert.IsTrue(hasStreamBefore, "Expected: HasStream is present. Actual: HasStream was not found.");
+            ClassicAssert.IsTrue(hasStreamBefore, "Expected: HasStream is present. Actual: HasStream was not found.");
 
             MetadataPreprocessor.RemoveHasStream(entityToProcess);
 
@@ -44,7 +45,7 @@ namespace Typewriter.Test
                     .Where(x => x.Attribute("Name").Value.Equals(entityToProcess))
                     .Where(x => x.Attribute("HasStream") != null).Any();
 
-            Assert.IsFalse(hasStreamAfter, "Expected: The HasStream aatribute is not present. Actual: HasStream is present.");
+            ClassicAssert.IsFalse(hasStreamAfter, "Expected: The HasStream aatribute is not present. Actual: HasStream is present.");
         }
 
         [Test]
@@ -59,7 +60,7 @@ namespace Typewriter.Test
                     .Where(x => x.Attribute("Type").Value == $"Collection(microsoft.graph.{navPropTypeToProcess})")
                     .Any();
 
-            Assert.IsTrue(doesntContainTargetBefore, "Expected: ContainsTarget is false. Actual: ContainsTarget is true");
+            ClassicAssert.IsTrue(doesntContainTargetBefore, "Expected: ContainsTarget is false. Actual: ContainsTarget is true");
 
             MetadataPreprocessor.AddContainsTarget(navPropTypeToProcess);
 
@@ -70,7 +71,7 @@ namespace Typewriter.Test
                     .Where(x => x.Attribute("Type").Value == $"Collection(microsoft.graph.{navPropTypeToProcess})")
                     .Any();
 
-            Assert.IsTrue(doesContainTargetAfter, "Expected: ContainsTarget is true. Actual: ContainsTarget is false");
+            ClassicAssert.IsTrue(doesContainTargetAfter, "Expected: ContainsTarget is true. Actual: ContainsTarget is false");
         }
 
         [Test]
@@ -86,8 +87,8 @@ namespace Typewriter.Test
                     .Where(x => (string)x.Name.LocalName == "Annotation")
                     .Where(x => x.Attribute("Term").Value.StartsWith("Org.OData.Capabilities")).Any();
 
-            Assert.IsTrue(hasCapabilityAnnotationsBefore, "Expected: find capability annotations. Actual: found none."); // because the test data has capa annotations.
-            Assert.IsFalse(hasCapabilityAnnotationsAfter, "Expected: false, there should be no elements returned. Actual: there are capability annotations."); // 
+            ClassicAssert.IsTrue(hasCapabilityAnnotationsBefore, "Expected: find capability annotations. Actual: found none."); // because the test data has capa annotations.
+            ClassicAssert.IsFalse(hasCapabilityAnnotationsAfter, "Expected: false, there should be no elements returned. Actual: there are capability annotations."); // 
         }
 
         [Test]
@@ -100,8 +101,8 @@ namespace Typewriter.Test
 
             bool foundAnnotationBefore = thumbnailComplexTypeBefore.Descendants("{http://docs.oasis-open.org/odata/ns/edm}Annotation").Any();
 
-            Assert.IsNotNull(thumbnailComplexTypeBefore, "Expected: thumbnailComplexType is not null as the metadata contains this element. Actual: this element was not found in the metadata.");
-            Assert.IsFalse(foundAnnotationBefore, "Expected: no annotation set before the addlong description rule. Actual: it has already been added");
+            ClassicAssert.IsNotNull(thumbnailComplexTypeBefore, "Expected: thumbnailComplexType is not null as the metadata contains this element. Actual: this element was not found in the metadata.");
+            ClassicAssert.IsFalse(foundAnnotationBefore, "Expected: no annotation set before the addlong description rule. Actual: it has already been added");
 
             MetadataPreprocessor.AddLongDescriptionToThumbnail();
 
@@ -113,7 +114,7 @@ namespace Typewriter.Test
             bool foundAnnotationAfter = thumbnailComplexTypeAfter.Descendants("{http://docs.oasis-open.org/odata/ns/edm}Annotation")
                 .Where(x => x.Attribute("String").Value.Equals("navigable")).Any();
 
-            Assert.IsTrue(foundAnnotationAfter, "Expected: thumbnailComplexType set with an annotation. Actual: annotation wasn't found.");
+            ClassicAssert.IsTrue(foundAnnotationAfter, "Expected: thumbnailComplexType set with an annotation. Actual: annotation wasn't found.");
         }
 
         /// <summary>
@@ -160,13 +161,13 @@ namespace Typewriter.Test
                     .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
                         .SequenceEqual(newParameterOrder));
 
-            Assert.IsFalse(isTargetDefinitionInMetadataBefore);
+            ClassicAssert.IsFalse(isTargetDefinitionInMetadataBefore);
             // Added multiple elements with the same binding parameter - we want to make sure there is only one in the results.
-            Assert.IsTrue(results.Count() == 1, $"Expected: A single result item. Actual: found {results.Count()} items.");
-            Assert.AreEqual(newParameterOrder.Count(),
+            ClassicAssert.IsTrue(results.Count() == 1, $"Expected: A single result item. Actual: found {results.Count()} items.");
+            ClassicAssert.AreEqual(newParameterOrder.Count(),
                 results.FirstOrDefault().Elements().Count(),
                 "The reordered element list doesn't match the count of elements in the input new order list.");
-            Assert.IsTrue(results.FirstOrDefault()
+            ClassicAssert.IsTrue(results.FirstOrDefault()
                                  .Elements()
                                  .Select(a => a.Attribute("Name").Value)
                                  .SequenceEqual(newParameterOrder),
@@ -219,12 +220,12 @@ namespace Typewriter.Test
                     .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
                         .SequenceEqual(newParameterOrder));
 
-            Assert.IsFalse(isTargetDefinitionInMetadataBefore);
-            Assert.IsTrue(results.Count() == 1, $"Expected: A single result item. Actual: found {results.Count()} items.");
-            Assert.AreEqual(newParameterOrder.Count(),
+            ClassicAssert.IsFalse(isTargetDefinitionInMetadataBefore);
+            ClassicAssert.IsTrue(results.Count() == 1, $"Expected: A single result item. Actual: found {results.Count()} items.");
+            ClassicAssert.AreEqual(newParameterOrder.Count(),
                             results.FirstOrDefault().Elements().Count(),
                             "The reordered element list doesn't match the count of elements in the input new order list.");
-            Assert.IsTrue(results.FirstOrDefault().Elements().Select(a => a.Attribute("Name").Value).SequenceEqual(newParameterOrder), 
+            ClassicAssert.IsTrue(results.FirstOrDefault().Elements().Select(a => a.Attribute("Name").Value).SequenceEqual(newParameterOrder), 
                           "The element list was not reordered as expected.");
         }
 
@@ -266,7 +267,7 @@ namespace Typewriter.Test
                     .Where(el => el.Elements().Select(a => a.Attribute("Name").Value)
                         .SequenceEqual(newParameterOrder));
 
-            Assert.IsTrue(results.Count() == 0, 
+            ClassicAssert.IsTrue(results.Count() == 0, 
                           $"Expected: Zero results. Actual: found {results.Count()} items.");
         }
     }
