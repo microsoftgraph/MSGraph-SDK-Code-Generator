@@ -65,12 +65,12 @@ $dependencies = @(
     $packageName.ToLower(),
     "tslib",
     "guid-typescript",
-    "D:\github\kiota-typescript\packages\abstractions",
-    "D:\github\kiota-typescript\packages\http\fetch",
-    "D:\github\kiota-typescript\packages\serialization\form",
-    "D:\github\kiota-typescript\packages\serialization\json",
-    "D:\github\kiota-typescript\packages\serialization\multipart",
-    "D:\github\kiota-typescript\packages\serialization\text"
+    "@microsoft/kiota-abstractions",
+    "@microsoft/kiota-http-fetch",
+    "@microsoft/kiota-serialization-form",
+    "@microsoft/kiota-serialization-json",
+    "@microsoft/kiota-serialization-multipart",
+    "@microsoft/kiota-serialization-text"
 )
 foreach($dependency in $dependencies) {
     npm i $dependency -w $finalPackageName -S
