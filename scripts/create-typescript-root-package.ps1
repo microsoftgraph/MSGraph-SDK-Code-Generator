@@ -66,7 +66,6 @@ $dependencies = @(
     "tslib",
     "guid-typescript",
     "@microsoft/kiota-abstractions",
-    "@microsoft/kiota-http-fetch",
     "@microsoft/kiota-serialization-form",
     "@microsoft/kiota-serialization-json",
     "@microsoft/kiota-serialization-multipart",
