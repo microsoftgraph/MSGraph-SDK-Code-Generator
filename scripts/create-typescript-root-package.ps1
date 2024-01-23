@@ -54,6 +54,7 @@ $targetPackageJson.description = $sourcePackageJson.description
 $targetPackageJson.keywords = $sourcePackageJson.keywords
 $targetPackageJson.license = $sourcePackageJson.license
 $targetPackageJson.main = $sourcePackageJson.main
+$targetPackageJson.name = $finalPackageName.ToLower() #doing this here to the directory name follows the original name casing
 $targetPackageJson.scripts = $sourcePackageJson.scripts
 $targetPackageJson.version = $sourcePackageJson.version
 $targetPackageJson | add-member -Name "types" -value $sourcePackageJson.types -MemberType NoteProperty
