@@ -2,7 +2,7 @@
 .Synopsis
     Script meant to help create a new root segment package in the repo
 .Description
-    This scritp is not meant to be used by CI, but only for manual additions of new root segments.
+    This script is not meant to be used by CI, but only for manual additions of new root segments.
 #>
 param (
     [Parameter(Mandatory = $true)]
