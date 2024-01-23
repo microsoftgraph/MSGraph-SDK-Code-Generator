@@ -16,7 +16,7 @@ Get-ChildItem -Directory | ForEach-Object { Remove-Item -r $_.FullName }
 Remove-Item $kiotaLockFileName
 Pop-Location
 
-$directories = Get-ChildItem -Directory -Exclude $mainPackageDirectoryName
+$directories = Get-ChildItem -Directory -Exclude $mainPackageDirectoryName | Where-Object { -not($_.Name.EndsWith("-tests")) }
 foreach ($directory in $directories) {
     Push-Location $directory.FullName
     Get-ChildItem -Directory | ForEach-Object {Remove-Item -r $_.FullName}
