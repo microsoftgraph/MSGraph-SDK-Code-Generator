@@ -73,16 +73,13 @@ $dependencies = @(
     "@microsoft/kiota-serialization-text"
 )
 foreach($dependency in $dependencies) {
-    npm i $dependency -w $finalPackageName -S
-    npm i $dependency -w $finalPackageName -S
+    npm i -S $dependency -w $finalPackageName
 }
 
 $devDependencies = @("typescript")
 
 foreach($dependency in $devDependencies) {
-    npm i $dependency -w $finalPackageName -D
-    npm i $dependency -w $finalPackageName -D
+    npm i -D $dependency -w $finalPackageName
 }
-#doing it twice otherwise the dependency is not saved for som reason
 
 Pop-Location
