@@ -9,7 +9,7 @@ param (
     [string]
     $targetDirectory,
     [string]
-    $packageName = "@microsoft/msgraph-sdk-javascript",
+    $packageName = "@microsoft/msgraph-sdk",
     [string]
     $kiotaPath = "kiota",
     [string]

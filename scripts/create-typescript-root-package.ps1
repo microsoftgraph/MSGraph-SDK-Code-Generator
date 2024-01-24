@@ -15,7 +15,7 @@ param (
     [string]
     $sourcePathSegment = "appCatalogs",
     [string]
-    $packageName = "@microsoft/msgraph-sdk-javascript"
+    $packageName = "@microsoft/msgraph-sdk"
 )
 Push-Location $targetDirectory
 $finalPackageName = "$packageName-$rootPathSegment"

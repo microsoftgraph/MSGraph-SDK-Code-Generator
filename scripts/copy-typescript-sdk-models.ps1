@@ -6,7 +6,7 @@ param (
     [string]
     $sourceDirectory,
     [string]
-    $packageName = "@microsoft/msgraph-sdk-javascript"
+    $packageName = "@microsoft/msgraph-sdk"
 )
 
 Write-Host "Path to repo models directory: $targetDirectory"
