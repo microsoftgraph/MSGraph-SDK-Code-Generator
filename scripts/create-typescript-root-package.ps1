@@ -72,13 +72,13 @@ $dependencies = @(
     "@microsoft/kiota-serialization-text"
 )
 foreach($dependency in $dependencies) {
-    npm i -S $dependency -w $finalPackageName
+    npm i -S $dependency -w $finalPackageName.ToLower()
 }
 
 $devDependencies = @("typescript")
 
 foreach($dependency in $devDependencies) {
-    npm i -D $dependency -w $finalPackageName
+    npm i -D $dependency -w $finalPackageName.ToLower()
 }
 
 Pop-Location
