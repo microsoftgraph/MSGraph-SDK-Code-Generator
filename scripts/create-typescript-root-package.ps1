@@ -11,7 +11,6 @@ param (
     [Parameter(Mandatory = $true)]
     [string]
     $targetDirectory,
-    [Parameter(Mandatory = $true)]
     [string]
     $sourcePathSegment = "appCatalogs",
     [string]
