@@ -6,11 +6,11 @@ $lines = @(
 )
 if ($content.Length -eq 0) {
     Write-Host "inserting lines into $env:BarrelFilePath"
-    $lines | Set-Content -Path $env:BarrelFilePath -Verbose
+    $lines | Set-Content -Path $env:BarrelFilePath -Verbose -NoNewline
 } elseif ($content[0] -ne $lines[0]) {
     Write-Host "inserting lines into $env:BarrelFilePath"
     $updatedContent = $lines + $content
-    $updatedContent | Set-Content -Path $env:BarrelFilePath -Verbose
+    $updatedContent | Set-Content -Path $env:BarrelFilePath -Verbose -NoNewline
 } else {
     Write-Host "barrel file is up to date"
 }

@@ -1,19 +1,16 @@
 parameters:
   - name: repoName
     type: string
+  - name: packageName
+    type: string
+    default: '@microsoft/msgraph-sdk-javascript'
 
 steps:
-- pwsh: '$(scriptsDirectory)/clean-typescript-files.ps1'
-  displayName: 'Remove generated models and requests from the repo src folder'
-  env:
-    MainDirectory: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/src/'
+- pwsh: '$(scriptsDirectory)/clean-typescript-files.ps1 -targetDirectory "$(Build.SourcesDirectory)/${{ parameters.repoName }}/packages/" -packageName "${{ parameters.packageName }}"'
+  displayName: 'Remove generated models and requests from the repo folder'
 
-- pwsh: '$(scriptsDirectory)/copy-typescript-sdk-models.ps1'
+- pwsh: '$(scriptsDirectory)/copy-typescript-sdk-models.ps1 -sourceDirectory "$(kiotaDirectory)/output/" -targetDirectory "$(Build.SourcesDirectory)/${{ parameters.repoName }}/packages/" -packageName "${{ parameters.packageName }}"'
   displayName: 'Update models'
-  env:
-    BuildConfiguration: $(buildConfiguration)
-    OutputFullPath: $(kiotaDirectory)/output/*
-    RepoModelsDir: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/src/'
 
 - pwsh : $(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts/incrementMinorVersion.ps1
   displayName: 'Increment minor version number'
