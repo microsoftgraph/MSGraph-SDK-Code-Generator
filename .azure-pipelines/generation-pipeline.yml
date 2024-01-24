@@ -132,6 +132,11 @@ parameters:
     displayName: Skip metadata capture and clean
     type: boolean
 
+  - name: skipOpenApiCaptureAndClean
+    default: false
+    displayName: Skip OpenAPI capture and clean
+    type: boolean
+
   - name: publishChanges
     default: true
     type: boolean
@@ -159,7 +164,7 @@ variables:
   cleanOpenAPIFolderBeta: 'clean_beta_openapi'
   cleanOpenAPIFolderV1: 'clean_v10_openapi'
   rawMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/schemas/beta-Prod.csdl'
-  rawMetadataFileV1: 'https://graph.microsoft.com/v1.0/$metadata' # We want to run against the metadata we have captured.
+  rawMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/schemas/v1.0-Prod.csdl'
   typewriterDirectory: '$(Build.SourcesDirectory)/typewriter'
   kiotaDirectory: '$(Build.SourcesDirectory)/kiota'
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
@@ -174,6 +179,7 @@ variables:
   publishChanges: ${{ parameters.publishChanges }}
   overrideSkipCI: ${{ parameters.overrideSkipCI }}
   skipMetadataCaptureAndClean: ${{ parameters.skipMetadataCaptureAndClean }}
+  skipOpenApiCaptureAndClean: ${{ parameters.skipOpenApiCaptureAndClean }}
   phpVersion: 7.2
 
 # This stage is the core dependency for all other stages.
@@ -233,7 +239,7 @@ stages:
 
 - stage: stage_v1_openapi
   dependsOn: stage_v1_metadata
-  condition: in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
+  condition: and(in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped'), eq( ${{ parameters.skipOpenApiCaptureAndClean }}, false))
   jobs:
   - template: generation-templates/capture-openapi.yml
     parameters:
@@ -243,7 +249,7 @@ stages:
 
 - stage: stage_beta_openapi
   dependsOn: stage_beta_metadata
-  condition: in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped')
+  condition: and(in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped'), eq( ${{ parameters.skipOpenApiCaptureAndClean }}, false))
   jobs:
   - template: generation-templates/capture-openapi.yml
     parameters:
@@ -259,7 +265,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+      in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: csharp_v1_kiota
@@ -288,7 +294,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+      in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: csharp_beta_kiota
@@ -317,7 +323,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+      in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: go_v1
@@ -345,7 +351,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+      in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: go_beta
@@ -373,7 +379,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+      in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: ruby_v1
@@ -402,7 +408,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+      in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: ruby_beta
@@ -484,7 +490,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+      in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: java_v1_kiota
@@ -514,7 +520,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+      in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: java_beta_kiota
@@ -545,7 +551,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+      in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
     - job: php_beta_kiota
@@ -574,7 +580,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+      in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
     - job: php_v1_kiota
@@ -655,7 +661,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+      in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: typescript_sdk_v1
@@ -668,12 +674,13 @@ stages:
         branchName: $(v1Branch)
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-typescript/"
-        customArguments: "-e '/me' -e '/me/**'" # Exclude me
+        customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and enable backing store
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/typescript-sdk.yml
           parameters:
             repoName: msgraph-sdk-typescript
+            packageName: '@microsoft/msgraph-sdk-javascript'
 
 - stage: stage_python_v1
   dependsOn:
@@ -683,7 +690,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+      in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: python_v1
@@ -712,7 +719,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+      in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: python_beta
@@ -741,7 +748,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+      in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: cli_v1_kiota
@@ -771,7 +778,7 @@ stages:
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+      in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: cli_beta_kiota

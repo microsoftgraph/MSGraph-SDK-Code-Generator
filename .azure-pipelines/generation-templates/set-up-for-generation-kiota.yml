@@ -14,11 +14,31 @@ steps:
     version: '8.x' # Kiota is a NET8 app
 - ${{ parameters.downloadSteps }}
 
-#Download the openAPI artifacts
+# checkout metadata repo if capture and clean step is skipped
+- checkout: msgraph-metadata
+  displayName: checkout metadata
+  fetchDepth: 1
+  persistCredentials: true
+  submodules: recursive
+  condition: or(eq(variables.skipMetadataCaptureAndClean, true), eq(variables.skipOpenApiCaptureAndClean, true))
+
+- pwsh: |
+    md $(Build.SourcesDirectory)/msgraph-metadata/clean_v10_openapi
+    md $(Build.SourcesDirectory)/msgraph-metadata/clean_beta_openapi
+    Move-Item -Path $(Build.SourcesDirectory)/msgraph-metadata/openapi/v1.0/openapi.yaml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_v10_openapi/
+    Move-Item -Path $(Build.SourcesDirectory)/msgraph-metadata/openapi/beta/openapi.yaml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_beta_openapi/
+  displayName: Move metadata to expected location
+  condition: or(eq(variables.skipMetadataCaptureAndClean, true), eq(variables.skipOpenApiCaptureAndClean, true))
+
+# if capture and clean step is not skipped
+# then download the artifact from capture and clean steps
+# follow the same folder structure as msgraph-metadata repo
+# so that metadata reference path is always the same
 - task: DownloadBuildArtifacts@0
   inputs:
     buildType: 'current'
     downloadType: 'single'
     artifactName: ${{ parameters.cleanMetadataFolder }}
     downloadPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+  condition: and(eq(variables.skipMetadataCaptureAndClean, false), eq(variables.skipOpenApiCaptureAndClean, false))
   displayName: Downloading metadata from artifacts

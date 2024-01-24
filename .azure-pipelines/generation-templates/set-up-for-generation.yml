@@ -18,7 +18,7 @@ steps:
   fetchDepth: 1
   persistCredentials: true
   submodules: recursive
-  condition: eq(variables.skipMetadataCaptureAndClean, true)
+  condition: or(eq(variables.skipMetadataCaptureAndClean, true), eq(variables.skipOpenApiCaptureAndClean, true))
 
 # if capture and clean step is not skipped
 # then download the artifact from capture and clean steps
@@ -30,5 +30,5 @@ steps:
     downloadType: 'single'
     artifactName: ${{ parameters.cleanMetadataFolder }}
     downloadPath: '$(Build.SourcesDirectory)/msgraph-metadata'
-  condition: eq(variables.skipMetadataCaptureAndClean, false)
+  condition: and(eq(variables.skipMetadataCaptureAndClean, false), eq(variables.skipOpenApiCaptureAndClean, false))
   displayName: Downloading metadata from artifacts
