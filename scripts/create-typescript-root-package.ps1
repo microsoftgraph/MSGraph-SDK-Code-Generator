@@ -50,8 +50,9 @@ foreach($directory in $directoriesToRemove) {
 $sourcePackageJson = Get-Content -Raw "$sourceLocation/package.json" | ConvertFrom-Json
 $targetPackageJson = Get-Content -Raw "$targetLocation/package.json" | ConvertFrom-Json
 $targetPackageJson = $targetPackageJson | Select-Object -ExcludeProperty "directories", "files"
-$targetPackageJson.description = $sourcePackageJson.description
-$targetPackageJson.keywords = $sourcePackageJson.keywords
+$targetPackageJson.author = "Microsoft <graphsdkpub+javascript@microsoft.com>"
+$targetPackageJson.description = "$($rootPathSegment.Substring(0, 1).ToUpper())$($rootPathSegment.Substring(1)) fluent API for Microsoft Graph"
+$targetPackageJson.keywords = @("Microsoft", "Graph", "msgraph", "API", "SDK", $rootPathSegment)
 $targetPackageJson.license = $sourcePackageJson.license
 $targetPackageJson.main = $sourcePackageJson.main
 $targetPackageJson.name = $finalPackageName.ToLower() #doing this here to the directory name follows the original name casing
