@@ -17,7 +17,7 @@ param (
     $packageName = "@microsoft/msgraph-sdk"
 )
 Push-Location $targetDirectory
-$finalPackageName = "$packageName-$rootPathSegment"
+$finalPackageName = "$packageName-$($rootPathSegment.Substring(0, 1).ToLower())$($rootPathSegment.Substring(1))"
 $sourceLocation = "packages/$($packageName.Split('/')[1])-$sourcePathSegment/"
 $targetLocation = "packages/$($finalPackageName.Split('/')[1])/"
 npx lerna create $finalPackageName --yes
