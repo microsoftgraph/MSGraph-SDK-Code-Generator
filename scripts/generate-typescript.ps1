@@ -26,8 +26,8 @@ foreach($rootSegment in $rootSegments) {
     $fluentAPIPackageDirectoryPath = "$targetDirectory/$modelsPackageDirectoryName-$rootSegment"
     Write-Host "generating segment $rootSegment"
     Invoke-Expression "$kiotaPath generate -o $fluentAPIPackageDirectoryPath -d $descriptionPath -c $($rootSegment.Substring(0,1).ToUpper() + $rootSegment.Substring(1))ServiceClient -l TypeScript -n github.com/microsoftgraph/msgraph-sdk-typescript/ -e '/me' -e '/me/**' -i '/$rootSegment' -i '/$rootSegment/**' $additionalArguments"
-    .\scripts\fix-typescript-fluent-packages-imports.ps1 -targetDirectory $fluentAPIPackageDirectoryPath -packageName $packageName
+    . "$PSScriptRoot\scripts\fix-typescript-fluent-packages-imports.ps1 -targetDirectory $fluentAPIPackageDirectoryPath -packageName $packageName"
 }
 $modelsPackagePath = "$targetDirectory/$modelsPackageDirectoryName"
 Invoke-Expression "$kiotaPath generate -o $modelsPackagePath -d $descriptionPath -c $clientName -l TypeScript -n github.com/microsoftgraph/msgraph-sdk-typescript/ -e '/me' -e '/me/**' $additionalArguments"
-.\scripts\remove-typescript-fluent-api-from-main-package.ps1 -targetDirectory $modelsPackagePath
+. "$PSScriptRoot\scripts\remove-typescript-fluent-api-from-main-package.ps1 -targetDirectory $modelsPackagePath"
