@@ -680,7 +680,7 @@ stages:
         - template: generation-templates/typescript-sdk.yml
           parameters:
             repoName: msgraph-sdk-typescript
-            packageName: '@microsoft/msgraph-sdk-javascript'
+            packageName: '@microsoft/msgraph-sdk'
 
 - stage: stage_python_v1
   dependsOn:

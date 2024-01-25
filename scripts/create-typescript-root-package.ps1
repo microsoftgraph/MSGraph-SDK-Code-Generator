@@ -11,14 +11,13 @@ param (
     [Parameter(Mandatory = $true)]
     [string]
     $targetDirectory,
-    [Parameter(Mandatory = $true)]
     [string]
     $sourcePathSegment = "appCatalogs",
     [string]
-    $packageName = "@microsoft/msgraph-sdk-javascript"
+    $packageName = "@microsoft/msgraph-sdk"
 )
 Push-Location $targetDirectory
-$finalPackageName = "$packageName-$rootPathSegment"
+$finalPackageName = "$packageName-$($rootPathSegment.Substring(0, 1).ToLower())$($rootPathSegment.Substring(1))"
 $sourceLocation = "packages/$($packageName.Split('/')[1])-$sourcePathSegment/"
 $targetLocation = "packages/$($finalPackageName.Split('/')[1])/"
 npx lerna create $finalPackageName --yes
@@ -50,8 +49,9 @@ foreach($directory in $directoriesToRemove) {
 $sourcePackageJson = Get-Content -Raw "$sourceLocation/package.json" | ConvertFrom-Json
 $targetPackageJson = Get-Content -Raw "$targetLocation/package.json" | ConvertFrom-Json
 $targetPackageJson = $targetPackageJson | Select-Object -ExcludeProperty "directories", "files"
-$targetPackageJson.description = $sourcePackageJson.description
-$targetPackageJson.keywords = $sourcePackageJson.keywords
+$targetPackageJson.author = "Microsoft <graphsdkpub+javascript@microsoft.com>"
+$targetPackageJson.description = "$($rootPathSegment.Substring(0, 1).ToUpper())$($rootPathSegment.Substring(1)) fluent API for Microsoft Graph"
+$targetPackageJson.keywords = @("Microsoft", "Graph", "msgraph", "API", "SDK", $rootPathSegment)
 $targetPackageJson.license = $sourcePackageJson.license
 $targetPackageJson.main = $sourcePackageJson.main
 $targetPackageJson.name = $finalPackageName.ToLower() #doing this here to the directory name follows the original name casing
@@ -72,16 +72,13 @@ $dependencies = @(
     "@microsoft/kiota-serialization-text"
 )
 foreach($dependency in $dependencies) {
-    npm i $dependency -w $finalPackageName -S
-    npm i $dependency -w $finalPackageName -S
+    npm i -S $dependency -w $finalPackageName.ToLower()
 }
 
 $devDependencies = @("typescript")
 
 foreach($dependency in $devDependencies) {
-    npm i $dependency -w $finalPackageName -D
-    npm i $dependency -w $finalPackageName -D
+    npm i -D $dependency -w $finalPackageName.ToLower()
 }
-#doing it twice otherwise the dependency is not saved for som reason
 
 Pop-Location
