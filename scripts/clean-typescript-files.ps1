@@ -3,7 +3,7 @@ param (
     [string]
     $targetDirectory,
     [string]
-    $packageName = "@microsoft/msgraph-sdk-javascript"
+    $packageName = "@microsoft/msgraph-sdk"
 )
 Push-Location $targetDirectory
 
@@ -13,7 +13,7 @@ $mainPackageDirectoryPath = Join-Path $targetDirectory -ChildPath $mainPackageDi
 
 Push-Location $mainPackageDirectoryPath
 Get-ChildItem -Directory | ForEach-Object { Remove-Item -r $_.FullName }
-Remove-Item $kiotaLockFileName
+Remove-Item $kiotaLockFileName -ErrorAction SilentlyContinue -Verbose
 Pop-Location
 
 $directories = Get-ChildItem -Directory -Exclude $mainPackageDirectoryName | Where-Object { -not($_.Name.EndsWith("-tests")) }
@@ -21,7 +21,7 @@ foreach ($directory in $directories) {
     Push-Location $directory.FullName
     Get-ChildItem -Directory | ForEach-Object {Remove-Item -r $_.FullName}
 	Remove-Item *.ts -Exclude "index.ts", "*ServiceClient.ts"
-    Remove-Item $kiotaLockFileName
+    Remove-Item $kiotaLockFileName -ErrorAction SilentlyContinue -Verbose
     Pop-Location
 }
 Pop-Location

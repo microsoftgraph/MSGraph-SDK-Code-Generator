@@ -83,6 +83,11 @@ resources:
      endpoint: microsoftgraph
      name: microsoftgraph/msgraph-sdk-typescript
      ref: dev
+   - repository: msgraph-beta-sdk-typescript
+     type: github
+     endpoint: microsoftgraph
+     name: microsoftgraph/msgraph-beta-sdk-typescript
+     ref: main
    - repository: msgraph-sdk-python
      type: github
      endpoint: microsoftgraph
@@ -680,7 +685,36 @@ stages:
         - template: generation-templates/typescript-sdk.yml
           parameters:
             repoName: msgraph-sdk-typescript
-            packageName: '@microsoft/msgraph-sdk-javascript'
+            packageName: '@microsoft/msgraph-sdk'
+
+- stage: stage_typescript_sdk_beta
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_beta_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
+    )
+  jobs:
+  - job: typescript_sdk_beta
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'typescript'
+        version: 'beta'
+        repoName: 'msgraph-beta-sdk-typescript'
+        branchName: $(betaBranch)
+        targetClassName: "GraphBetaBaseServiceClient"
+        targetNamespace: "github.com/microsoftgraph/msgraph-sdk-typescript/"
+        customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and enable backing store
+        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        languageSpecificSteps:
+        - template: generation-templates/typescript-sdk.yml
+          parameters:
+            repoName: msgraph-beta-sdk-typescript
+            packageName: '@microsoft/msgraph-beta-sdk'
 
 - stage: stage_python_v1
   dependsOn:

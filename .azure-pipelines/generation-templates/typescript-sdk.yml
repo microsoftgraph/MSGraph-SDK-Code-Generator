@@ -3,7 +3,7 @@ parameters:
     type: string
   - name: packageName
     type: string
-    default: '@microsoft/msgraph-sdk-javascript'
+    default: '@microsoft/msgraph-sdk'
 
 steps:
 - pwsh: '$(scriptsDirectory)/clean-typescript-files.ps1 -targetDirectory "$(Build.SourcesDirectory)/${{ parameters.repoName }}/packages/" -packageName "${{ parameters.packageName }}"'
