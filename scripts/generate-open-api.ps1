@@ -57,7 +57,7 @@ Write-Host $command
 try {
     Invoke-Expression "$command"
     # temporary fix for the server url https://github.com/microsoftgraph/msgraph-metadata/issues/124
-    $content = get-content $outputFile
+    $content = Get-Content $outputFile -Raw
     $updatedContent = $content -replace "http://localhost", "https://graph.microsoft.com/$endpointVersion"
     Set-Content $outputFile $updatedContent -NoNewline
     if(Test-Path $oldOutputFile)

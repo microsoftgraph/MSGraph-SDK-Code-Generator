@@ -46,6 +46,11 @@ foreach($directory in $directoriesToRemove) {
     Remove-Item -r "$targetLocation/$directory"
 }
 
+$indexFilePath = Join-Path $targetLocation -ChildPath "index.ts"
+$indexFileContent = Get-Content $indexFilePath -Raw
+$indexFileContent = $indexFileContent.Replace($sourcePathSegment, $rootPathSegment).Replace("$($sourcePathSegment.Substring(0,1).ToUpper())$($sourcePathSegment.Substring(1))", "$($rootPathSegment.Substring(0,1).ToUpper())$($rootPathSegment.Substring(1))")
+$indexFileContent | Set-Content $indexFilePath -NoNewLine
+
 $sourcePackageJson = Get-Content -Raw "$sourceLocation/package.json" | ConvertFrom-Json
 $targetPackageJson = Get-Content -Raw "$targetLocation/package.json" | ConvertFrom-Json
 $targetPackageJson = $targetPackageJson | Select-Object -ExcludeProperty "directories", "files"
