@@ -703,7 +703,7 @@ stages:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
         language: 'typescript'
-        version: ''
+        version: 'beta'
         repoName: 'msgraph-beta-sdk-typescript'
         branchName: $(betaBranch)
         targetClassName: "GraphBetaBaseServiceClient"
