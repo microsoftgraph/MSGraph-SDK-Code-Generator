@@ -89,7 +89,7 @@ steps:
     BranchName: ${{ parameters.branchName }}
     PublishChanges: $(publishChanges)
     OverrideSkipCI: $(overrideSkipCI)
-    CommitMessagePrefix: $(commitMessagePrefix)
+    CommitMessagePrefix: ${{ parameters.commitMessagePrefix }}
   workingDirectory: ${{ parameters.repoName }}
 
 - pwsh: '$(scriptsDirectory)/create-pull-request.ps1'
