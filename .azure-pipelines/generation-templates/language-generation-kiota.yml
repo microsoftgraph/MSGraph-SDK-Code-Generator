@@ -40,6 +40,10 @@ parameters:
   type: string
   default: ''
 
+- name: commitMessagePrefix
+  type: string
+  default: ''
+
 steps:
 - template: set-up-for-generation-kiota.yml
   parameters:
@@ -85,6 +89,7 @@ steps:
     BranchName: ${{ parameters.branchName }}
     PublishChanges: $(publishChanges)
     OverrideSkipCI: $(overrideSkipCI)
+    CommitMessagePrefix: $(commitMessagePrefix)
   workingDirectory: ${{ parameters.repoName }}
 
 - pwsh: '$(scriptsDirectory)/create-pull-request.ps1'

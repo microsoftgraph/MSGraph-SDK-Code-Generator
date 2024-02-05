@@ -798,6 +798,7 @@ stages:
         targetNamespace: "ApiSdk"
         customArguments: "-e '/me' -e '/me/**'"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+        commitMessagePrefix: "gen: update request builders and models\n\n"
         languageSpecificSteps:
         - template: generation-templates/cli-kiota.yml
           parameters:
