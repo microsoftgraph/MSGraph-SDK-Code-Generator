@@ -12,14 +12,28 @@ if ($env:OverrideSkipCI -eq $True)
 }
 
 git add . | Write-Host
-commitMessage = "${env:CommitMessagePrefix}Update generated files with build $env:BUILD_BUILDID"
+$commitMessage = "Update generated files with build $env:BUILD_BUILDID"
 if (($env:OverrideSkipCI -eq $False) -and ($env:BUILD_REASON -eq 'Manual')) # Skip CI if manually running this pipeline.
 {
-    git commit -m "${commitMessage} [skip ci]" | Write-Host
+    if ($env:CommitMessagePrefix)
+    {
+        git commit -m "$env:CommitMessagePrefix" -m "$commitMessage [skip ci]" | Write-Host
+    }
+    else
+    {
+        git commit -m "$commitMessage [skip ci]" | Write-Host
+    }
 }
 else
 {
-    git commit -m $commitMessage | Write-Host
+    if ($env:CommitMessagePrefix)
+    {
+        git commit -m "$env:CommitMessagePrefix" -m "$commitMessage" | Write-Host
+    }
+    else
+    {
+        git commit -m "$commitMessage" | Write-Host
+    }
 }
 
 Write-Host "Added and commited generated files." -ForegroundColor Green
