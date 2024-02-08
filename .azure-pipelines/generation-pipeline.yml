@@ -15,106 +15,106 @@ resources:
  repositories:
    - repository: msgraph-sdk-dotnet
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-dotnet
      ref: master
    - repository: msgraph-beta-sdk-dotnet
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-sdk-dotnet
      ref: master
    - repository: msgraph-sdk-php
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-php
      ref: dev
    - repository: msgraph-beta-sdk-php
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-sdk-php
      ref: main
    - repository: msgraph-typescript-typings
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-typescript-typings
      ref: main
    - repository: msgraph-beta-typescript-typings
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-typescript-typings
      ref: main
    - repository: msgraph-sdk-objc-models
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-objc-models
      ref: dev
    - repository: msgraph-sdk-java
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-java
      ref: dev
    - repository: msgraph-beta-sdk-java
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-sdk-java
      ref: dev
    - repository: msgraph-sdk-go
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-go
      ref: main
    - repository: msgraph-beta-sdk-go
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-sdk-go
      ref: main
    - repository: msgraph-sdk-ruby
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-ruby
      ref: main
    - repository: msgraph-beta-sdk-ruby
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-sdk-ruby
      ref: main
    - repository: msgraph-sdk-typescript
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-typescript
      ref: dev
    - repository: msgraph-beta-sdk-typescript
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-sdk-typescript
      ref: main
    - repository: msgraph-sdk-python
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-python
      ref: main
    - repository: msgraph-beta-sdk-python
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-sdk-python
      ref: main
    - repository: msgraph-cli
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-cli
      ref: main
    - repository: msgraph-beta-cli
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-cli
      ref: main
    - repository: msgraph-metadata
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-metadata
    - repository: microsoft-graph-docs
      type: github
-     endpoint: microsoftgraph
+     endpoint: microsoftgraph (22)
      name: microsoftgraph/microsoft-graph-docs
    - repository: kiota
      type: github
