@@ -1,5 +1,5 @@
-parameters: 
-- name: repoName 
+parameters:
+- name: repoName
   type: string
 - name: namespacePath
   type: string
@@ -10,9 +10,13 @@ steps:
   env:
     MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/java/${{ parameters.namespacePath }}/generated/
 
+- pwsh : $(Build.SourcesDirectory)/${{ parameters.repoName }}/Scripts/incrementMinorVersion.ps1
+  displayName: 'Increment minor version number'
+  workingDirectory: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/Scripts'
+
 - pwsh: '$(scriptsDirectory)/copy-java-models-kiota.ps1'
   displayName: 'Update with new models'
-  env: 
-    BuildConfiguration: $(buildConfiguration) 
+  env:
+    BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(kiotaDirectory)/output/${{ parameters.namespacePath }}/*
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/java/${{ parameters.namespacePath }}/generated/
