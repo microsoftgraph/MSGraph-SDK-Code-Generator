@@ -18,7 +18,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4.0.0
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore ./Typewriter.sln
     - name: Build
@@ -30,16 +30,16 @@ jobs:
       if: ${{ failure() }}
       with:
         name: languages-test-output
-        path: 'test/Typewriter.Test/bin/Debug/net7.0/OutputDirectory*/**'
+        path: 'test/Typewriter.Test/bin/Debug/net8.0/OutputDirectory*/**'
     - name: Upload unit test output on failure
       uses: actions/upload-artifact@v4
       if: ${{ failure() }}
       with:
         name: unit-test-output
-        path: test/Typewriter.Test/bin/Debug/net7.0/output/
+        path: test/Typewriter.Test/bin/Debug/net8.0/output/
     - name: Upload unit test java output on failure
       uses: actions/upload-artifact@v4
       if: ${{ failure() }}
       with:
         name: unit-test-output-java
-        path: test/Typewriter.Test/bin/Debug/net7.0/outputJava/
+        path: test/Typewriter.Test/bin/Debug/net8.0/outputJava/
