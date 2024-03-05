@@ -10,8 +10,7 @@ parameters:
 steps:
 - template: set-user-config.yml
 - template: use-dotnet-sdk.yml
-  parameters:
-    version: '8.x' # Kiota is a NET8 app
+
 - ${{ parameters.downloadSteps }}
 
 # checkout metadata repo if capture and clean step is skipped
