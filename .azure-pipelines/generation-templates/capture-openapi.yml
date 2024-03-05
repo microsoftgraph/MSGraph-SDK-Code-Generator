@@ -62,6 +62,8 @@ jobs:
 
   - template: checkout-metadata.yml
   - template: use-dotnet-sdk.yml
+    parameters:
+    version: '7.x' # Hidi tool is NET7 app
 
   - pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi --prerelease
     displayName: install hidi
