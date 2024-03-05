@@ -115,7 +115,7 @@ steps:
 
 - template: use-dotnet-sdk.yml
   parameters:
-    version: '6.x' # verify tool is NET6 app
+    version: '7.x' # Hidi tool is NET7 app
 
 # verify that generated metadata is parsable as an Edm model
 - pwsh: $(Build.SourcesDirectory)/msgraph-metadata/scripts/run-metadata-validation.ps1 -repoDirectory "$(Build.SourcesDirectory)/msgraph-metadata/" -version "${{ parameters.endpoint }}"
