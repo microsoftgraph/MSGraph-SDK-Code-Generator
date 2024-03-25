@@ -764,6 +764,7 @@ stages:
     )
   jobs:
   - job: cli_beta_kiota
+    timeoutInMinutes: 120
     steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
