@@ -15,6 +15,6 @@ steps:
 # but we should use a setup task to install the right version of PHP
 # however, there does not seem to exist a setup-php task (equivalent to UseDotnet)
 
-- pwsh: 'php $(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts/BumpStableSdkVersion.ps1'
+- pwsh: 'php $(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts/BumpStableSdkVersion.php'
   displayName: Bump minor version for ${{ parameters.repoName }}
   workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/
