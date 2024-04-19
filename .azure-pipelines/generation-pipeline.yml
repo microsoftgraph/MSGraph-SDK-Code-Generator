@@ -458,6 +458,7 @@ stages:
         targetNamespace: "com.Microsoft.Graph"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         customArguments: "-b -e '/me' -e '/me/**'" # Exclude /me/** and enable backing store
+        commitMessagePrefix: "feat(generation): update request builders and models"
         languageSpecificSteps:
         - template: generation-templates/java-kiota.yml
           parameters:
