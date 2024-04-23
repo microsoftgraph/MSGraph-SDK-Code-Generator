@@ -734,6 +734,10 @@ stages:
     )
   jobs:
   - job: cli_v1_kiota
+    timeoutInMinutes: 60
+    pool:
+      name: 1es-ubuntu-latest-ado-cli-mem
+      os: linux
     steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
@@ -765,7 +769,10 @@ stages:
     )
   jobs:
   - job: cli_beta_kiota
-    timeoutInMinutes: 120
+    timeoutInMinutes: 60
+    pool:
+      name: 1es-ubuntu-latest-ado-cli-mem
+      os: linux
     steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
