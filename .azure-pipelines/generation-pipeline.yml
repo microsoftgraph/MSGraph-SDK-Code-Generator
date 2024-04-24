@@ -734,6 +734,10 @@ stages:
     )
   jobs:
   - job: cli_v1_kiota
+    timeoutInMinutes: 60
+    pool:
+      name: 1es-ubuntu-latest-ado-cli-mem
+      os: linux
     steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
@@ -765,6 +769,10 @@ stages:
     )
   jobs:
   - job: cli_beta_kiota
+    timeoutInMinutes: 60
+    pool:
+      name: 1es-ubuntu-latest-ado-cli-mem
+      os: linux
     steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
@@ -777,6 +785,7 @@ stages:
         targetNamespace: "ApiSdk"
         customArguments: "-e '/me' -e '/me/**'"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        commitMessagePrefix: "feat(generation): update request builders and models"
         languageSpecificSteps:
         - template: generation-templates/cli-kiota.yml
           parameters:
