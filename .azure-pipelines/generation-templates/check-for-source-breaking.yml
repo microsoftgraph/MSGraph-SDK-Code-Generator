@@ -1,0 +1,33 @@
+parameters:
+  jdPath: "foo"
+  # https://github.com/josephburnett/jd
+  # TODO figure out a way to install the tool
+  originalExportPath: "bar"
+  newExportPath: "baz"
+  version: "v1"
+  language: "csharp"
+
+steps:
+- pwsh: |
+    $patch = . "${{ parameters.jdPath }}" -f=patch  "${{ parameters.originalExportPath }}" "${{ parameters.newExportPath }}" | ConvertFrom-json
+    $breakingChanges = $patch | ? {$_.op -ne "add"}
+    $breakingChangesCount = $breakingChanges | measure | select -ExpandProperty Count
+    if ($breakingChanges -gt 0) {
+      Write-Error "Breaking changes detected"
+      foreach ($change in $breakingChanges) {
+        Write-Warning "Change: $($change.op) $($change.path)"
+      }
+      exit 1
+    }
+    else
+    {
+      Write-Host "No breaking changes detected"
+      cp "${{ parameters.newExportPath }}" "${{ parameters.originalExportPath }}" -Force -Verbose
+    }
+  displayName: 'Check for source breaking changes'
+
+- task: PublishBuildArtifacts@1
+  condition: failed()
+  inputs:
+    pathToPublish: '${{ parameters.newExportPath }}'
+    artifactName: 'kiota-dom-patch-${{ parameters.version }}-${{ parameters.language }}'
