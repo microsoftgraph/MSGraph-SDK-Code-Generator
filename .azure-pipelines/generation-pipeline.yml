@@ -27,7 +27,7 @@ resources:
      type: github
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-php
-     ref: dev
+     ref: main
    - repository: msgraph-beta-sdk-php
      type: github
      endpoint: microsoftgraph (22)
