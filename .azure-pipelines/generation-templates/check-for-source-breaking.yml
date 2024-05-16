@@ -6,25 +6,35 @@ parameters:
   newExportPath: "baz"
   version: "v1"
   language: "csharp"
+  failOnBreakingChanges: true
 
 steps:
 - pwsh: |
-    $patch = . "${{ parameters.jdPath }}" -f=patch  "${{ parameters.originalExportPath }}" "${{ parameters.newExportPath }}" | ConvertFrom-json
+    $patch = . "$Env:JD_PATH" -f=patch  "$Env:ORIGINAL_EXPORT_PATH" "$Env:NEW_EXPORT_PATH" | ConvertFrom-json
     $breakingChanges = $patch | ? {$_.op -ne "add"}
     $breakingChangesCount = $breakingChanges | measure | select -ExpandProperty Count
     if ($breakingChanges -gt 0) {
-      Write-Error "Breaking changes detected"
       foreach ($change in $breakingChanges) {
         Write-Warning "Change: $($change.op) $($change.path)"
       }
-      exit 1
+      if ($true -eq $Env:FAIL_ON_BREAKING_CHANGES) {
+        Write-Error "Breaking changes detected"
+        exit 1
+      } else {
+        Write-Warning "Breaking changes detected but failing the build was disabled"
+      }
     }
     else
     {
       Write-Host "No breaking changes detected"
-      cp "${{ parameters.newExportPath }}" "${{ parameters.originalExportPath }}" -Force -Verbose
+      cp "$Env:NEW_EXPORT_PATH" "$Env:ORIGINAL_EXPORT_PATH" -Force -Verbose
     }
   displayName: 'Check for source breaking changes'
+  env:
+    FAIL_ON_BREAKING_CHANGES: ${{ parameters.failOnBreakingChanges }}
+    ORIGINAL_EXPORT_PATH: ${{ parameters.originalExportPath }}
+    NEW_EXPORT_PATH: ${{ parameters.newExportPath }}
+    JD_PATH: ${{ parameters.jdPath }}
 
 - task: PublishBuildArtifacts@1
   condition: failed()
