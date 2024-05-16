@@ -517,7 +517,6 @@ stages:
             branchName: 'kiota/$(betaBranch)'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Beta\\Generated'
-            baseBranchName: 'dev'
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
@@ -546,7 +545,6 @@ stages:
             branchName: 'kiota/$(v1Branch)'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Generated'
-            baseBranchName: 'dev'
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
