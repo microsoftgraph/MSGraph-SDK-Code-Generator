@@ -514,6 +514,7 @@ stages:
             language: 'php'
             version: 'beta'
             repoName: 'msgraph-beta-sdk-php'
+            baseBranchName: 'main'
             branchName: 'kiota/$(betaBranch)'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Beta\\Generated'
@@ -543,6 +544,7 @@ stages:
             version: ''
             repoName: 'msgraph-sdk-php'
             branchName: 'kiota/$(v1Branch)'
+            baseBranchName: 'main'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Generated'
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
