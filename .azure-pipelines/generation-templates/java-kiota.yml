@@ -10,11 +10,6 @@ steps:
   env:
     MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/java/${{ parameters.namespacePath }}/generated/
 
-- pwsh : $(Build.SourcesDirectory)/${{ parameters.repoName }}/Scripts/incrementMinorVersion.ps1
-  displayName: 'Increment minor version number'
-  workingDirectory: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/Scripts'
-  condition: ne( '${{ parameters.repoName }}' , 'msgraph-sdk-java') # The msgraph-sdk-java repo already has a versioning strategy
-
 - pwsh: '$(scriptsDirectory)/copy-java-models-kiota.ps1'
   displayName: 'Update with new models'
   env:
