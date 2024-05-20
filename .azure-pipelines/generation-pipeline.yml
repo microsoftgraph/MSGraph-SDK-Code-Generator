@@ -27,7 +27,7 @@ resources:
      type: github
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-php
-     ref: dev
+     ref: main
    - repository: msgraph-beta-sdk-php
      type: github
      endpoint: microsoftgraph (22)
@@ -517,7 +517,7 @@ stages:
             branchName: 'kiota/$(betaBranch)'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Beta\\Generated'
-            baseBranchName: 'dev'
+            baseBranchName: 'main'
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
@@ -546,7 +546,7 @@ stages:
             branchName: 'kiota/$(v1Branch)'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Generated'
-            baseBranchName: 'dev'
+            baseBranchName: 'main'
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
