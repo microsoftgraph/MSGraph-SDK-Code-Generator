@@ -52,12 +52,12 @@ resources:
      type: github
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-java
-     ref: dev
+     ref: main
    - repository: msgraph-beta-sdk-java
      type: github
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-sdk-java
-     ref: dev
+     ref: main
    - repository: msgraph-sdk-go
      type: github
      endpoint: microsoftgraph (22)
