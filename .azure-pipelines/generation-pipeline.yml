@@ -27,7 +27,7 @@ resources:
      type: github
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-php
-     ref: dev
+     ref: main
    - repository: msgraph-beta-sdk-php
      type: github
      endpoint: microsoftgraph (22)
@@ -52,12 +52,12 @@ resources:
      type: github
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-java
-     ref: dev
+     ref: main
    - repository: msgraph-beta-sdk-java
      type: github
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-sdk-java
-     ref: dev
+     ref: main
    - repository: msgraph-sdk-go
      type: github
      endpoint: microsoftgraph (22)
@@ -342,6 +342,7 @@ stages:
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-go/"
         customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and Enable the backing store
+        commitMessagePrefix: "feat(generation): update request builders and models"
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
         - template: generation-templates/go.yml
@@ -370,6 +371,7 @@ stages:
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-beta-sdk-go/"
         customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and Enable the backing store
+        commitMessagePrefix: "feat(generation): update request builders and models"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/go.yml
@@ -452,7 +454,7 @@ stages:
         language: 'java'
         version: ''
         repoName: 'msgraph-sdk-java'
-        baseBranchName: 'dev'
+        baseBranchName: 'main'
         branchName: '$(v1Branch)'
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "com.Microsoft.Graph"
@@ -483,12 +485,13 @@ stages:
         language: 'java'
         version: 'beta'
         repoName: 'msgraph-beta-sdk-java'
-        baseBranchName: 'dev'
+        baseBranchName: 'main'
         branchName: '$(betaBranch)'
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "com.Microsoft.Graph.Beta"
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         customArguments: "-b -e '/me' -e '/me/**'" # Exclude /me/** and enable backing store
+        commitMessagePrefix: "feat(generation): update request builders and models"
         languageSpecificSteps:
         - template: generation-templates/java-kiota.yml
           parameters:
@@ -517,12 +520,8 @@ stages:
             branchName: 'kiota/$(betaBranch)'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Beta\\Generated'
-<<<<<<< Updated upstream
-            baseBranchName: 'dev'
-=======
             baseBranchName: 'main'
             commitMessagePrefix: "feat(generation): update request builders and models"
->>>>>>> Stashed changes
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
@@ -551,12 +550,8 @@ stages:
             branchName: 'kiota/$(v1Branch)'
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Generated'
-<<<<<<< Updated upstream
-            baseBranchName: 'dev'
-=======
             baseBranchName: 'main'
             commitMessagePrefix: "feat(generation): update request builders and models"
->>>>>>> Stashed changes
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml

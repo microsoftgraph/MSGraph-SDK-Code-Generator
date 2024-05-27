@@ -8,10 +8,6 @@ steps:
   env:
     MainDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/
 
-- pwsh : $(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts/incrementMinorVersion.ps1
-  displayName: 'Increment minor version number'
-  workingDirectory: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts'
-
 - pwsh: '$(scriptsDirectory)/copy-go-models.ps1'
   displayName: 'Update models'
   env:
