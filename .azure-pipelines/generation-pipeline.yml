@@ -521,6 +521,7 @@ stages:
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Beta\\Generated'
             baseBranchName: 'main'
+            commitMessagePrefix: "feat(generation): update request builders and models"
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml
@@ -550,6 +551,7 @@ stages:
             targetClassName: "BaseGraphClient"
             targetNamespace: 'Microsoft\\Graph\\Generated'
             baseBranchName: 'main'
+            commitMessagePrefix: "feat(generation): update request builders and models"
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             languageSpecificSteps:
               - template: generation-templates/php-kiota.yml

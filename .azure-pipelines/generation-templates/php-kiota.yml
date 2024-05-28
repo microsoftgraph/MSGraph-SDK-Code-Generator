@@ -9,12 +9,3 @@ steps:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(kiotaDirectory)/output/*
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Generated/
-
-# right now the script runs fine with PHP 8.1 which is what is installed by default on the agent
-# https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
-# but we should use a setup task to install the right version of PHP
-# however, there does not seem to exist a setup-php task (equivalent to UseDotnet)
-
-- pwsh: 'php $(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts/BumpStableSdkVersion.php'
-  displayName: Bump minor version for ${{ parameters.repoName }}
-  workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/
