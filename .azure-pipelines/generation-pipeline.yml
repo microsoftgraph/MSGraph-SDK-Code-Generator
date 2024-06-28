@@ -82,7 +82,7 @@ resources:
      type: github
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-typescript
-     ref: dev
+     ref: main
    - repository: msgraph-beta-sdk-typescript
      type: github
      endpoint: microsoftgraph (22)
@@ -629,6 +629,7 @@ stages:
         language: 'typescript'
         version: ''
         repoName: 'msgraph-sdk-typescript'
+        baseBranchName : 'main'
         branchName: $(v1Branch)
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-typescript/"
@@ -658,6 +659,7 @@ stages:
         language: 'typescript'
         version: 'beta'
         repoName: 'msgraph-beta-sdk-typescript'
+        baseBranchName : 'main'
         branchName: $(betaBranch)
         targetClassName: "GraphBetaBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-typescript/"
