@@ -18,6 +18,3 @@ steps:
   displayName: Build dll for ${{ parameters.repoName }}
   workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Graph/
 
-- pwsh: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts/IncrementMinorVersion.ps1'
-  displayName: Bump minor version for ${{ parameters.repoName }}
-  workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/
