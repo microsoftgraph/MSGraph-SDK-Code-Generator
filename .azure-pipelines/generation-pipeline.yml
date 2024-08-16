@@ -17,12 +17,12 @@ resources:
      type: github
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-dotnet
-     ref: master
+     ref: main
    - repository: msgraph-beta-sdk-dotnet
      type: github
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-sdk-dotnet
-     ref: master
+     ref: main
    - repository: msgraph-sdk-php
      type: github
      endpoint: microsoftgraph (22)
