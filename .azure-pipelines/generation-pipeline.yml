@@ -17,12 +17,12 @@ resources:
      type: github
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-sdk-dotnet
-     ref: master
+     ref: main
    - repository: msgraph-beta-sdk-dotnet
      type: github
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-sdk-dotnet
-     ref: master
+     ref: main
    - repository: msgraph-sdk-php
      type: github
      endpoint: microsoftgraph (22)
@@ -280,10 +280,11 @@ stages:
         language: 'csharp'
         version: ''
         repoName: 'msgraph-sdk-dotnet'
-        baseBranchName : 'dev'
+        baseBranchName : 'main'
         branchName: 'kiota/$(v1Branch)'
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "Microsoft.Graph"
+        commitMessagePrefix: "feat(generation): update request builders and models"
         customArguments: "-b" # Enable the backing store
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
         languageSpecificSteps:
@@ -309,10 +310,11 @@ stages:
         language: 'csharp'
         version: 'beta'
         repoName: 'msgraph-beta-sdk-dotnet'
-        baseBranchName : 'master'
+        baseBranchName : 'main'
         branchName: 'kiota/$(betaBranch)'
         targetClassName: "BaseGraphServiceClient"
         targetNamespace: "Microsoft.Graph.Beta"
+        commitMessagePrefix: "feat(generation): update request builders and models"
         customArguments: "-b" # Enable the backing store
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
