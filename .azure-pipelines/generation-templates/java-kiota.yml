@@ -16,3 +16,8 @@ steps:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(kiotaDirectory)/output/${{ parameters.namespacePath }}/*
     RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/java/${{ parameters.namespacePath }}/generated/
+
+- pwsh: |
+    Move-Item -Path "*.txt","*.json" -Destination $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/main/java/${{ parameters.namespacePath }}/generated/
+  displayName: Move kiota specific metadata to expected location (txt for export file, json for lock or workspace file)
+  workingDirectory: $(kiotaDirectory)/output/
