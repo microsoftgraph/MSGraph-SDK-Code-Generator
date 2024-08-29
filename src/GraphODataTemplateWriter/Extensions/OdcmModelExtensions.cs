@@ -189,13 +189,8 @@ namespace Microsoft.Graph.ODataTemplateWriter.Extensions
         /// is in models.generated output namespace (in the generated file, not in the metadata).
         /// This method should support multiple namespaces.
         /// This currently (6/2020) applies to the following templates:
-        ///   BaseEntityCollectionRequest.java.tt
-        ///   IBaseEntityCollectionRequest.java.tt
-        ///   IBaseEntityCollectionPage.java.tt
         /// This currently unintentionally applies to the following templates when the disambiguation condition is met.
         /// This is not an issue as there is already a wild card import for the namespace that we should address first.
-        ///   IBaseEntityCollectionRequestBuilder.java.tt
-        ///   BaseEntityCollectionRequestBuilder.java.tt
         /// </summary>
         /// <param name="host">The T4Host that orchestrates applying templates to the OdcmModel.</param>
         /// <returns>A string that represents the import statement of the fully qualified name of the current type.</returns>

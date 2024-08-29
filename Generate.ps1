@@ -12,7 +12,7 @@ Invoke-WebRequest $metadata -outfile metadata.xml
 apidoc publish-edmx --path 'docs\api-reference\v1.0' --source metadata.xml --output finalmetadata --skip-generation
 
 # Generate new Types from metadata
-typewriter -v Info -l CSharp -m 'finalmetadata/metadata.xml' -o generated
+typewriter -v Info -l TypeScript -m 'finalmetadata/metadata.xml' -o generated
 
 # Based on Language pull repo 
 git clone --depth 1 https://github.com/microsoftgraph/msgraph-sdk-dotnet.git source

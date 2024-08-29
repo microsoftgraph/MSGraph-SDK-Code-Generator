@@ -37,9 +37,3 @@ jobs:
       with:
         name: unit-test-output
         path: test/Typewriter.Test/bin/Debug/net8.0/output/
-    - name: Upload unit test java output on failure
-      uses: actions/upload-artifact@v4
-      if: ${{ failure() }}
-      with:
-        name: unit-test-output-java
-        path: test/Typewriter.Test/bin/Debug/net8.0/outputJava/

@@ -56,7 +56,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             get {
                 return this.pathWriterClassNameFormatString ??
                        (this.pathWriterClassNameFormatString =
-                           typeof(CSharpPathWriter).FullName.Replace("CSharp", "{0}"));
+                           typeof(TypeScriptPathWriter).FullName.Replace("TypeScript", "{0}"));
             }
         }
 

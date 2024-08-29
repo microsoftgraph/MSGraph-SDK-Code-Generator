@@ -16,7 +16,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
     using Vipr.Core;
     using Vipr.Core.CodeModel;
     using NLog;
-    using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
     using Microsoft.Graph.ODataTemplateWriter.Settings;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis;
@@ -170,10 +169,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
 
         protected virtual IEnumerable<TextFile> ProcessMethodsWithBody(ITemplateInfo templateInfo)
         {
-            if (templateInfo.TemplateLanguage == "Java") 
-                return new List<TextFile>();
-            else
-                return this.ProcessMethods(templateInfo, this.MethodsWithBody);
+            return this.ProcessMethods(templateInfo, this.MethodsWithBody);
         }
 
         protected virtual IEnumerable<TextFile> ProcessCollectionMethods(ITemplateInfo templateInfo)
@@ -379,25 +375,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
                     @namespace = t.Namespace.GetNamespaceName();
                     break;
                 case OdcmProperty p:
-                    if (templateInfo.TemplateLanguage.Equals("java", StringComparison.OrdinalIgnoreCase))
-                    {
-                        @namespace = p.Type.Namespace.Name;
-                        if (@namespace == "Edm")
-                        {
-                            if (p.Type.Name.Equals("Stream", StringComparison.OrdinalIgnoreCase))
-                            {
-                                @namespace = p.Class.Namespace.Name;
-                            }
-                            else
-                            {
-                                @namespace = "Microsoft.Graph";
-                            }
-                        }
-                    }
-                    else
-                    {
-                        @namespace = p?.Class.Namespace.GetNamespaceName();
-                    }
+                    @namespace = p?.Class.Namespace.GetNamespaceName();
                     break;
                 default:
                     break;

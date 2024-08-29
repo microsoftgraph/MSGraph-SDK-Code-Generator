@@ -149,7 +149,7 @@ namespace Typewriter
         /// Generates code files from an edmx file.
         /// </summary>
         /// <param name="edmxString">The EDMX file as a string.</param>
-        /// <param name="targetLanguage">Specifies the target language. Possible values are csharp, php, etc.</param>
+        /// <param name="targetLanguage">Specifies the target language. Possible values are typescript, etc.</param>
         /// <returns></returns>
         static private IEnumerable<TextFile> MetadataToClientSource(string edmxString, string targetLanguage, IEnumerable<string> properties, string endpointVersion = "v1.0")
         {
@@ -158,7 +158,7 @@ namespace Typewriter
 
             var reader = new OdcmReader
             {
-                AddCastPropertiesForNavigationProperties = targetLanguage.Equals("java", StringComparison.InvariantCultureIgnoreCase)
+                AddCastPropertiesForNavigationProperties = false,
             };
             var writer = new TemplateWriter(targetLanguage, properties, endpointVersion);
             writer.SetConfigurationProvider(new ConfigurationProvider());

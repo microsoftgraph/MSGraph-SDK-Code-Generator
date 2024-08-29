@@ -7,12 +7,8 @@
 Source code writers for [VIPR][vipr-source-repo] utilizing T4 templates. The GraphODataTemplateWriter receives an OdcmModel from VIPR and uses it to fill in a T4 template located within this repository.
 
 Currently the following target languages are supported by this writer:
-- CSharp
-- Java
-- Objective-C
-- Python
+
 - TypeScript
-- PHP
 
 # Contents
 - [Prerequisites](#prerequisites)
@@ -39,7 +35,7 @@ For more information on submodules read [this chapter](http://git-scm.com/book/e
 
 Typewriter is a new solution for generating code files using the GraphODataTemplateWriter and VIPR. It is an executable that is intended to simplify the generation of code files. Build the solution to find the typewriter executable in `\MSGraph-SDK-Code-Generator\src\Typewriter\bin\Release`. The typewriter run options are:
 
-* **-l**, **-language**:  The target language for the generated code files. The values can be: `Java`, `ObjC`, `CSharp`, `PHP`, `Python`, `TypeScript`, or `GraphEndpointList`. The default value is `CSharp`. This is not applicable when only generating clean and annotated metadata as specified by the `-generationmode Metadata` option.
+* **-l**, **-language**:  The target language for the generated code files. The values can be: `TypeScript`, or `GraphEndpointList`. The default value is `TypeScript`. This is not applicable when only generating clean and annotated metadata as specified by the `-generationmode Metadata` option.
 * **-m**, **-metadata**: The local file path or URL to the target input metadata. The default value is `https://graph.microsoft.com/v1.0/$metadata`. This value is required.
 * **-v**, **-verbosity**: The log verbosity level. The values can be: `Minimal`, `Info`, `Debug`, or `Trace`. The default value is `Minimal`.
 * **-o**, **-output**: Specifies the path to the output folder. The default value is the directory that contains typewriter.exe. The structure and contents of the output directory will be different based on the `-generationmode` and `-language` options.
@@ -47,7 +43,7 @@ Typewriter is a new solution for generating code files using the GraphODataTempl
 * **-g**, **-generationmode**: Specifies the generation mode. The values can be: `Full`, `Metadata`, `Files`, `Transform` or `TransformWithDocs`. `Full` (default) generation mode produces the output code files by cleaning the input metadata, parsing the documentation, and adding annotations before generating the output files. `Metadata` generation mode produces an output metadata file by cleaning metadata, documentation parsing, and adding documentation annotations. `Files` generation mode produces code files from an input metadata and bypasses the cleaning, documentation parsing, and adding documentation annotations. `Transform` generation mode processes the metadata according to the XSLT provided with the -t option. `TransformWithDocs` generation mode processes the metadata according to the XSLT and adds documentation annotations. `Transform` and `TransformWithDocs` require the -t argument to specify the XSLT file.
 * **-f**, **-outputMetadataFileName**: The base output metadata filename. Only applicable for `-generationmode Metadata`. The default value is `cleanMetadataWithDescriptions` which is used with the value of the `-endpointVersion` to generate a metadata file named `cleanMetadataWithDescriptionsv1.0.xml`.
 * **-e**, **-endpointVersion**: The endpoint version used when naming a metadata file. Expected values are `v1.0` and `beta`. Only applicable for `-generationmode Metadata`.
-* **-p**, **-properties**: Specify properties to support generation logic in the T4 templates. Properties must take the form of *key-string:value-string*. Multiple properties can be specified by setting a space in between property. The only property currently supported is the *php.namespace* property to specify the generated model file namespace. This property is optional.
+* **-p**, **-properties**: Specify properties to support generation logic in the T4 templates. Properties must take the form of *key-string:value-string*. Multiple properties can be specified by setting a space in between property. The only property currently supported is the *typescript.namespacePostfix* property to specify the generated model file namespace. This property is optional.
 * **-t**, **-transform**: Specify the URI to the XSLT that will preprocess the metadata. Only applicable for `-generationmode Transform` or `-generationmode TransformWitDocs`.
 * **-r**, **-removeannotations**: Specifies whether to remove capability annotations from the metadata. The default value is `true`. Only applicable for `-generationmode Transform` or `-generationmode TransformWithDocs`.
 
@@ -81,11 +77,11 @@ The output metadata file will go in to the `output2` directory. The output metad
 
 The output C# code files will go in to the `output` directory.
 
-`.\typewriter.exe -v Info -m D:\v1.0_2018_10_23_source.xml -o output -l CSharp -d D:\repos\microsoft-graph-docs -g Full`
+`.\typewriter.exe -v Info -m D:\v1.0_2018_10_23_source.xml -o output -l TypeScript -d D:\repos\microsoft-graph-docs -g Full`
 
 ## Use/debug Typewriter in VSCode
 - Prerequisite is that `msgraph-metadata` is checked out at the same root folder as `MSGraph-SDK-Code-Generator`.
-- `launch.json` file contains main generation scenarios for each language/endpoint pair. Running Typewriter using one of those generation scenarios (e.g. `Generate CSharp beta`) will output the corresponding models into a folder, which will be a sibling to `MSGraph-SDK-Code-Generator`. The folder will be named as `generator-output-<language>-<endpoint>` e.g. `generator-output-CSharp-beta`.
+- `launch.json` file contains main generation scenarios for each language/endpoint pair. Running Typewriter using one of those generation scenarios (e.g. `Generate TypeScript beta`) will output the corresponding models into a folder, which will be a sibling to `MSGraph-SDK-Code-Generator`. The folder will be named as `generator-output-<language>-<endpoint>` e.g. `generator-output-TypeScript-beta`.
 
 ## Use Typewriter to test your beta metadata
 
@@ -120,7 +116,7 @@ By default, output source code will be put in a folder named "output" next to th
 ## Template Writer Settings
 ### Available Languages
 
-There are five languages to choose from at the moment.  Java, ObjC, CSharp, TypeScript and Python.  Specify which language you want to generate in the `TargetLanguage` setting.
+There is one language to choose from at the moment. TypeScript. Specify which language you want to generate in the `TargetLanguage` setting.
 
 ### Templates
 You must specify a template directory under the `TemplatesDirectory` Settings.  The directory can be a full path or relative to the running directory.  The directory must contain a sub directory for each platform you want to generate code for. See the Templates directory for an example.
