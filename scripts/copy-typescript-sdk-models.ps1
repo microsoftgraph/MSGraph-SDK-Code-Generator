@@ -22,4 +22,4 @@ foreach ($directory in $packagesDirectories) {
     Invoke-Expression "$PSScriptRoot\fix-typescript-fluent-packages-imports.ps1 -targetDirectory $($directory.FullName) -packageName $packageName"
 }
 
-Write-Host "Copied the generated files into the repo. From: $env:OutputFullPath to: $env:RepoModelsDir" -ForegroundColor Green
+Write-Host "Copied the generated files into the repo. From: $sourceDirectory to: $targetDirectory" -ForegroundColor Green

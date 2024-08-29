@@ -15,3 +15,9 @@ steps:
 - pwsh : $(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts/incrementMinorVersion.ps1
   displayName: 'Increment minor version number'
   workingDirectory: '$(Build.SourcesDirectory)/${{ parameters.repoName }}/scripts'
+
+
+- pwsh: |
+    Move-Item -Path "*.txt","*.json" -Destination "$(Build.SourcesDirectory)/${{ parameters.repoName }}/packages/"
+  displayName: Move kiota specific metadata to expected location (txt for export file, json for lock or workspace file)
+  workingDirectory: $(kiotaDirectory)/output/
