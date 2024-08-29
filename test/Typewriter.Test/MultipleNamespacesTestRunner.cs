@@ -11,11 +11,7 @@ namespace Typewriter.Test
     // supported test languages
     public enum TestLanguage
     {
-        CSharp,
-        Java,
         TypeScript,
-        PHP,
-        ObjC
     }
 
     public static class MultipleNamespacesTestRunner
@@ -24,11 +20,8 @@ namespace Typewriter.Test
         private const string TestDataDirectoryPrefix = "TestData";
         private const string MetadataDirectoryName = "Metadata";
 
-        // contains microsoft.graph and microsoft.graph2.callRecords namespaces
-        private const string MetadataMultipleNamespacesFile = "MetadataMultipleNamespaces.xml";
-
         // contains microsoft.graph and microsoft.graph.callRecords
-        // TypeScript, ObjC and PHP rely on the assumption that all namespaces will be a subnamespace to microsoft.graph
+        // TypeScript rely on the assumption that all namespaces will be a subnamespace to microsoft.graph
         // and generation process creates a single file with nested namespaces
         private const string MetadataWithSubNamespacesFile = "MetadataWithSubNamespaces.xml";
 
@@ -38,12 +31,7 @@ namespace Typewriter.Test
             {
                 switch (testLanguage)
                 {
-                    case TestLanguage.CSharp:
-                    case TestLanguage.Java:
-                        return MetadataMultipleNamespacesFile;
                     case TestLanguage.TypeScript:
-                    case TestLanguage.PHP:
-                    case TestLanguage.ObjC:
                         return MetadataWithSubNamespacesFile;
                     default:
                         throw new ArgumentException("unexpected test language", nameof(testLanguage));
@@ -69,15 +57,10 @@ namespace Typewriter.Test
                 GenerationMode = GenerationMode.Files,
                 Language = languageStr
             };
-            options.EndpointVersion = isBeta ? "beta" : "v1.0"; // fixes java generation test as the endpoint contains the version and the default options are not applied in this testing mode
+            options.EndpointVersion = isBeta ? "beta" : "v1.0"; // fixes generation test as the endpoint contains the version and the default options are not applied in this testing mode
 
             if (isBeta)
             {
-                if (TestLanguage.PHP == language)
-                {
-                    options.Properties = new List<string> { "php.namespacePrefix:Beta" };
-                }
-
                 if (TestLanguage.TypeScript == language)
                 {
                     options.Properties = new List<string> { "typescript.namespacePostfix:beta" };
@@ -158,29 +141,16 @@ namespace Typewriter.Test
         /// converts expected file paths into actual output file paths as well for a later diff.
         /// </summary>
         /// <param name="dataDirectory">Data directory full path</param>
-        /// <param name="testDataDirectoryName">test data directory name, e.g. TestDataCSharp</param>
-        /// <param name="outputDirectoryName">output directory name, e.g. OutputDirectoryCSharp</param>
+        /// <param name="testDataDirectoryName">test data directory name, e.g. TestDataTypeScript</param>
+        /// <param name="outputDirectoryName">output directory name, e.g. OutputDirectoryTypeScript</param>
         /// <returns></returns>
         private static IEnumerable<(string, string)> GetFilePaths(TestLanguage language, string dataDirectory, string testDataDirectoryName, string outputDirectoryName)
         {
             HashSet<string> extensions = new HashSet<string>();
             switch (language)
             {
-                case TestLanguage.CSharp:
-                    extensions.Add(".cs");
-                    break;
-                case TestLanguage.Java:
-                    extensions.Add(".java");
-                    break;
                 case TestLanguage.TypeScript:
                     extensions.Add(".ts");
-                    break;
-                case TestLanguage.PHP:
-                    extensions.Add(".php");
-                    break;
-                case TestLanguage.ObjC:
-                    extensions.Add(".m");
-                    extensions.Add(".h");
                     break;
                 default:
                     throw new ArgumentException("unexpected test language", nameof(language));

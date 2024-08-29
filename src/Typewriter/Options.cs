@@ -45,7 +45,7 @@ namespace Typewriter
 
     public class Options
     {
-        [Option('l', "language", Default = "CSharp", HelpText = "The target language for the generated code files. The values can be: Java, ObjC, CSharp, PHP, Python, TypeScript, or GraphEndpointList")]
+        [Option('l', "language", Default = "TypeScript", HelpText = "The target language for the generated code files. The values can be: TypeScript, or GraphEndpointList")]
         public string Language { get; set; }
 
         [Option('m', "metadata", Default = "https://graph.microsoft.com/v1.0/$metadata", HelpText = "Location of metadata.  Local file path or URL")]
@@ -75,7 +75,7 @@ namespace Typewriter
 
         [Option('p', "properties",  HelpText = "A space separated list of properties in the form of 'key:value'. These properties can be accessed in the " +
             "templates from the TemplateWriterSettings object returned by ConfigurationService.Settings. The suggested convention for specifying a key should be " +
-            "the targeted template language name and the property name. For example, php.namespacePrefix:Beta would be a property to be consumed in the PHP templates.")]
+            "the targeted template language name and the property name. For example, typescript.namespacePostfix:Beta would be a property to be consumed in the TypeScript templates.")]
         public IEnumerable<string> Properties { get; set; }
 
         [Option('t', "transform", HelpText = "Specify the URI to the XSLT that will preprocess the metadata. Overrides the" +

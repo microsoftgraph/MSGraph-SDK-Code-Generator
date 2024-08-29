@@ -24,14 +24,7 @@ function createCommandLineArgs
 
     if ($endpoint -eq "beta")
     {
-        if ($language -eq "PHP")
-        {
-            $commandLineArgs += @(
-                "-p",
-                "php.namespacePrefix:Beta"
-            )
-        }
-        elseif ($language -eq "TypeScript")
+        if ($language -eq "TypeScript")
         {
             $commandLineArgs += @(
                 "-p",
@@ -68,8 +61,8 @@ $obj = [ordered]@{
     configurations = @()
 }
 
-$languages = "CSharp","PHP","TypeScript","Java","ObjC"
-$endpoints = "beta","v1.0"
+$languages = @("TypeScript")
+$endpoints = @("beta","v1.0")
 $prodMetadata = @{
     "beta" = "`${workspaceFolder}/../msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml";
     "v1.0" = "`${workspaceFolder}/../msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml"
@@ -79,16 +72,12 @@ $metadataMultipleNamespacesFile = "`${workspaceFolder}/test/Typewriter.Test/Meta
 $metadataWithSubNamespacesFile = "`${workspaceFolder}/test/Typewriter.Test/Metadata/MetadataWithSubNamespaces.xml"
 
 $testMetadata = @{
-    CSharp = $metadataMultipleNamespacesFile
-    Java = $metadataMultipleNamespacesFile
     TypeScript = $metadataWithSubNamespacesFile
-    PHP = $metadataWithSubNamespacesFile
-    ObjC = $metadataWithSubNamespacesFile
 }
 
 $testData = @{
-    "beta" = "Java","PHP","TypeScript"
-    "v1.0" = "CSharp","Java","ObjC","PHP","TypeScript"
+    "beta" = @("TypeScript")
+    "v1.0" = @("TypeScript")
 }
 
 foreach($language in $languages)

@@ -8,11 +8,7 @@ Push-Location -Path $env:TypewriterDirectory
 
 if ($env:Endpoint -eq "beta")
 {
-  if ($env:Language -eq "PHP")
-  {
-    & $env:TypewriterExecutable -v Info -m $env:CleanMetadataFile -o $env:OutputPath -g Files -l $env:Language -e beta -p php.namespacePrefix:Beta
-  }
-  elseif ($env:Language -eq "TypeScript")
+  if ($env:Language -eq "TypeScript")
   {
     & $env:TypewriterExecutable -v Info -m $env:CleanMetadataFile -o $env:OutputPath -g Files -l $env:Language -e beta -p typescript.namespacePostfix:beta
   }
