@@ -44,6 +44,10 @@ parameters:
   type: string
   default: ''
 
+- name: exportDom
+  type: boolean
+  default: true
+
 steps:
 - template: set-up-for-generation-kiota.yml
   parameters:
@@ -80,6 +84,8 @@ steps:
 
 - bash: '$(kiotaDirectory)/kiota generate --openapi $(Build.SourcesDirectory)/msgraph-metadata/${{ parameters.cleanMetadataFolder }}/openapi.yaml --language ${{ parameters.language }} -o $(kiotaDirectory)/output -n ${{ parameters.targetNamespace }} -c ${{ parameters.targetClassName }} ${{ parameters.customArguments }}'
   displayName: 'Run Kiota for ${{ parameters.language }} ${{ parameters.version }}'
+  env:
+    KIOTA_GENERATION:EXPORTPUBLICAPI: ${{ parameters.exportDom }}
 
 - ${{ parameters.languageSpecificSteps }}
 
