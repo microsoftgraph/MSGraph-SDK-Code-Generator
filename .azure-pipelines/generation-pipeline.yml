@@ -696,6 +696,7 @@ stages:
         targetNamespace: "msgraph.generated"
         customArguments: "-b -e '/me' -e '/me/**'" # Enable backing store, Exclude me
         cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+        commitMessagePrefix: "feat(generation): update request builders and models"
         languageSpecificSteps:
         - template: generation-templates/python.yml
           parameters:
@@ -725,6 +726,7 @@ stages:
         targetNamespace: "msgraph_beta.generated"
         customArguments: "-b -e '/me' -e '/me/**'" # Enable backing store, Exclude me
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        commitMessagePrefix: "feat(generation): update request builders and models"
         languageSpecificSteps:
         - template: generation-templates/python.yml
           parameters:
