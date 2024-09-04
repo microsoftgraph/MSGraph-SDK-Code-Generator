@@ -1,5 +1,5 @@
-﻿using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
-using Microsoft.Graph.ODataTemplateWriter.Settings;
+﻿using Microsoft.Graph.ODataTemplateWriter.Settings;
+using Microsoft.Graph.ODataTemplateWriter.Extensions;
 using NLog;
 using System;
 using System.Collections.Generic;

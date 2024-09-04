@@ -10,11 +10,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
     {
         private readonly Dictionary<string, List<Dictionary<string, string>>> templateMapping;
 
-        //TODO: Differentiate between Java and Obj-C
         public TemplateWriterSettings()
         {
             // defaults
-            this.AvailableLanguages = new List<string> { "Java", "ObjC" };
             this.PrimaryNamespaceName = "";
             this.NamespacePrefix = "MS";
             this.StaticCodePrefix = "MS";
@@ -38,14 +36,6 @@ namespace Microsoft.Graph.ODataTemplateWriter.Settings
                 if (value != null)
                     property.SetValue(this, value, null);
             }
-        }
-
-        /// <summary>
-        /// Target languages provided via templates.
-        /// </summary>
-        public IList<string> AvailableLanguages
-        {
-            get; set;
         }
 
         /// <summary>

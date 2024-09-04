@@ -9,24 +9,6 @@
     <Content Include="Metadata\MetadataWithSubNamespaces.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestDataCSharp\**\*.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDataJava\**\*.java">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDataJavaBeta\**\*.java">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDataObjC\**\*.m">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDataObjC\**\*.h">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDataPHP*\**\*.php">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="TestDataTypeScript*\**\*.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -62,11 +44,5 @@
     <PackageReference Include="NUnit3TestAdapter">
       <Version>4.6.0</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="TestDataCSharp\**\*.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TestDataJavaBeta\" />
   </ItemGroup>
 </Project>

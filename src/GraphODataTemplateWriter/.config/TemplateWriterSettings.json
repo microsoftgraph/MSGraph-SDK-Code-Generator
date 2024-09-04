@@ -1,6 +1,6 @@
 {
-  "AvailableLanguages": [ "Java", "ObjC", "CSharp", "PHP", "Python", "TypeScript", "GraphEndpointList" ],
-  "TargetLanguage": "CSharp",
+  "AvailableLanguages": [ "TypeScript", "GraphEndpointList" ],
+  "TargetLanguage": "TypeScript",
   "Plugins": [],
   "PrimaryNamespaceName": "microsoft.graph",
   "NamespacePrefix": "com",
@@ -9,7 +9,6 @@
   "NamespaceOverride": "",
   "TemplatesDirectory": "templates",
   "DefaultFileCasing": "UpperCamel",
-  "CustomFlags": [ "python2" ],
   "LicenseHeader": [
     "Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information."
   ],

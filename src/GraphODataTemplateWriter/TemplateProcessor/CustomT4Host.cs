@@ -11,8 +11,9 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
     using System.Reflection;
     using System.Text;
     using Microsoft.Graph.ODataTemplateWriter.CodeHelpers;
-    using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.CSharp;
     using Microsoft.Graph.ODataTemplateWriter.Settings;
+    using Microsoft.Graph.ODataTemplateWriter.Extensions;
+    using Microsoft.Graph.ODataTemplateWriter.CodeHelpers.TypeScript;
     using Microsoft.VisualStudio.TextTemplating;
     using Vipr.Core.CodeModel;
 
@@ -51,7 +52,7 @@ namespace Microsoft.Graph.ODataTemplateWriter.TemplateProcessor
             {
                 if (this._codeWriter == null)
                 {
-                    var codeWriterFormatString = typeof(CodeWriterCSharp).FullName.Replace("CSharp", "{0}");
+                    var codeWriterFormatString = typeof(CodeWriterTypeScript).FullName.Replace("TypeScript", "{0}");
                     var writerClassName = string.Format(codeWriterFormatString, ConfigurationService.Settings.TargetLanguage);
                     var type = Type.GetType(writerClassName);
                     if (type == null)
