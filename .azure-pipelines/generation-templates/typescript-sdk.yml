@@ -18,6 +18,6 @@ steps:
 
 
 - pwsh: |
-    Move-Item -Path "*.txt","*.json" -Destination "$(Build.SourcesDirectory)/${{ parameters.repoName }}/packages/"
+    Move-Item -Path "*.txt","*.json" -Destination "$(Build.SourcesDirectory)/${{ parameters.repoName }}/packages/" -Force
   displayName: Move kiota specific metadata to expected location (txt for export file, json for lock or workspace file)
   workingDirectory: $(kiotaDirectory)/output/
