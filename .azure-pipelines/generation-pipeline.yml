@@ -633,6 +633,7 @@ stages:
         repoName: 'msgraph-sdk-typescript'
         baseBranchName : 'main'
         branchName: $(v1Branch)
+        commitMessagePrefix: "feat(generation): update request builders and models"
         targetClassName: "GraphBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-typescript/"
         customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and enable backing store
@@ -663,6 +664,7 @@ stages:
         repoName: 'msgraph-beta-sdk-typescript'
         baseBranchName : 'main'
         branchName: $(betaBranch)
+        commitMessagePrefix: "feat(generation): update request builders and models"
         targetClassName: "GraphBetaBaseServiceClient"
         targetNamespace: "github.com/microsoftgraph/msgraph-sdk-typescript/"
         customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and enable backing store
