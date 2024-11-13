@@ -63,7 +63,7 @@ jobs:
   - template: checkout-metadata.yml
   - template: use-dotnet-sdk.yml
 
-  - pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi --prerelease
+  - pwsh: dotnet tool install --global Microsoft.OpenApi.Hidi --version 1.4.14
     displayName: install hidi
 
   - pwsh: |
