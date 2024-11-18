@@ -18,8 +18,13 @@ Invoke-Expression "$PSScriptRoot\remove-typescript-fluent-api-from-main-package.
 $packagesDirectories = Get-ChildItem $targetDirectory -Directory -Exclude $mainPackageDirectoryName | Where-Object { -not($_.Name.EndsWith("-tests")) }
 foreach ($directory in $packagesDirectories) {
     $fluentAPISegmentName = $directory.Name.Replace("$mainPackageDirectoryName-", "")
-    Copy-Item (Join-Path $sourceDirectory -ChildPath $fluentAPISegmentName) -Destination $directory.FullName -Recurse -Force
-    Invoke-Expression "$PSScriptRoot\fix-typescript-fluent-packages-imports.ps1 -targetDirectory $($directory.FullName) -packageName $packageName"
+    if (Test-Path -Path (Join-Path $sourceDirectory -ChildPath $fluentAPISegmentName)) {
+        Copy-Item (Join-Path $sourceDirectory -ChildPath $fluentAPISegmentName) -Destination $directory.FullName -Recurse -Force
+        Invoke-Expression "$PSScriptRoot\fix-typescript-fluent-packages-imports.ps1 -targetDirectory $($directory.FullName) -packageName $packageName"
+    }
+    else {
+        Write-Host "Skipping the fluent API segment: $fluentAPISegmentName as it does not exist in the generated models" -ForegroundColor Yellow
+    }
 }
 
 Write-Host "Copied the generated files into the repo. From: $sourceDirectory to: $targetDirectory" -ForegroundColor Green
