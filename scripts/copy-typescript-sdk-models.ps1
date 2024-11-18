@@ -23,7 +23,8 @@ foreach ($directory in $packagesDirectories) {
         Invoke-Expression "$PSScriptRoot\fix-typescript-fluent-packages-imports.ps1 -targetDirectory $($directory.FullName) -packageName $packageName"
     }
     else {
-        Write-Host "Skipping the fluent API segment: $fluentAPISegmentName as it does not exist in the generated models" -ForegroundColor Yellow
+        Remove-Item $directory.FullName -Force -Recurse -ErrorAction SilentlyContinue
+        Write-Host "Removing folder for the fluent API segment: $fluentAPISegmentName as it does not exist in the generated models" -ForegroundColor Yellow
     }
 }
 
