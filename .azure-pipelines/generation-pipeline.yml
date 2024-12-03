@@ -121,7 +121,7 @@ resources:
      endpoint: microsoftkiota
      name: microsoft/kiota
 
-pool: 1es-ubuntu-latest
+pool: 1es-ubuntu-latest-m
 
 parameters:
   - name: v1BranchPrefix
