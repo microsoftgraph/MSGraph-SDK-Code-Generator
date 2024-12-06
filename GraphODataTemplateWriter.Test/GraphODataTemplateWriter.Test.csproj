@@ -21,7 +21,7 @@
       <Version>3.6.3</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>3.6.3</Version>
+      <Version>3.6.4</Version>
     </PackageReference>
   </ItemGroup>
 </Project>
