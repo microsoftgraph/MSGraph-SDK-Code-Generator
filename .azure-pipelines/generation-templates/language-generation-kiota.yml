@@ -104,6 +104,6 @@ steps:
     Version: ${{ parameters.version }}
     BaseBranch: ${{ parameters.baseBranchName}}
     OverrideSkipCI: $(overrideSkipCI)
-    GITHUB_TOKEN: $(GithubAuthToken)
     GeneratePullRequest: ${{ parameters.generatePullRequest}}
+    RepoName: 'microsoftgraph/${{ parameters.repoName}}' # the assumption is that repo in the microsoftgraph org
   workingDirectory: ${{ parameters.repoName }}

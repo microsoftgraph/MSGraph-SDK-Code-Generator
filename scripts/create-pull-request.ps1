@@ -19,6 +19,11 @@ if (![string]::IsNullOrEmpty($env:BaseBranch))
     $baseBranchParameter = "-B $env:BaseBranch" # optionally pass the base branch if provided as the PR will target the default branch otherwise
 }
 
+# The installed application is required to have the following permissions: read/write on pull requests/
+$appId = "appid" #TODO Fetch application private Key from KeyVault 
+$privateKeyPath = ".\private.pem" #TODO Fetch application id from KeyVault
+$env:GITHUB_TOKEN = & .\Generate-Github-Token.ps1 -AppClientId $appId -AppPrivateKeyPath $privateKeyPath -Repository $env:RepoName
+
  # No need to specify reviewers as code owners should be added automatically.
 Invoke-Expression "gh auth login" # login to GitHub
 Invoke-Expression "gh pr create -t ""$title"" -b ""$body"" $baseBranchParameter | Write-Host"
