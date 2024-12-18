@@ -120,6 +120,7 @@ resources:
      type: github
      endpoint: microsoftkiota
      name: microsoft/kiota
+     ref: fix/go-unused-import
 
 pool: 1es-ubuntu-latest-m
 
