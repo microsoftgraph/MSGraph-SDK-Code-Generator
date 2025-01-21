@@ -10,6 +10,8 @@ parameters:
 steps:
 - template: set-user-config.yml
 - template: use-dotnet-sdk.yml
+  parameters:
+    version: "9.x" #kiota uses a net9 target
 
 - ${{ parameters.downloadSteps }}
 
