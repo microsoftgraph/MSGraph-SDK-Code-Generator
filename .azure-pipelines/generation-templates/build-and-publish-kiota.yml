@@ -12,7 +12,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    sourceFolder: '$(Build.SourcesDirectory)/src/kiota/bin/$(BuildConfiguration)/net8.0'
+    sourceFolder: '$(Build.SourcesDirectory)/src/kiota/bin/$(BuildConfiguration)/net9.0'
     contents: '**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: Copy Kiota executable
