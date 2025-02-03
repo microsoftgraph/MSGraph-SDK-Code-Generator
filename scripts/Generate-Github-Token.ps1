@@ -5,7 +5,7 @@ param (
     $AppClientId,
     [Parameter(Mandatory = $true)]
     [string]
-    $AppPrivateKeyPath,
+    $AppPrivateKeyContents,
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$', ErrorMessage = "Repository must be in the format 'owner/repo' (e.g. 'octocat/hello-world')")]
     [string]
@@ -19,7 +19,7 @@ function Generate-AppToken {
         [string]
         $ClientId,
         [string]
-        $PrivateKeyPath
+        $PrivateKeyContents
     )
 
     $header = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes((ConvertTo-Json -InputObject @{
@@ -34,7 +34,7 @@ function Generate-AppToken {
                 }))).TrimEnd('=').Replace('+', '-').Replace('/', '_');
 
     $rsa = [System.Security.Cryptography.RSA]::Create()
-    $rsa.ImportFromPem((Get-Content $PrivateKeyPath -Raw))
+    $rsa.ImportFromPem($PrivateKeyContents)
 
     $signature = [Convert]::ToBase64String($rsa.SignData([System.Text.Encoding]::UTF8.GetBytes("$header.$payload"), [System.Security.Cryptography.HashAlgorithmName]::SHA256, [System.Security.Cryptography.RSASignaturePadding]::Pkcs1)).TrimEnd('=').Replace('+', '-').Replace('/', '_')
     $jwt = "$header.$payload.$signature"
@@ -192,7 +192,7 @@ function Get-InstallationId {
 
 $owner, $repo = $Repository -split '/'
 
-$AppToken = Generate-AppToken -ClientId $AppClientId -PrivateKeyPath $AppPrivateKeyPath
+$AppToken = Generate-AppToken -ClientId $AppClientId -PrivateKeyContents $AppPrivateKeyContents
 
 $InstallationId = Get-InstallationId -AppToken $AppToken -Owner $owner -Repo $repo
 
