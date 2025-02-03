@@ -116,5 +116,6 @@ steps:
     BaseBranch: ${{ parameters.baseBranchName}}
     OverrideSkipCI: $(overrideSkipCI)
     GeneratePullRequest: ${{ parameters.generatePullRequest}}
+    ScriptsDirectory: $(scriptsDirectory)
     RepoName: 'microsoftgraph/${{ parameters.repoName}}' # the assumption is that repo in the microsoftgraph org
   workingDirectory: ${{ parameters.repoName }}
