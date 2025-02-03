@@ -20,7 +20,8 @@ if (![string]::IsNullOrEmpty($env:BaseBranch))
 }
 
 # The installed application is required to have the following permissions: read/write on pull requests/
-$env:GITHUB_TOKEN = & ..\scripts\Generate-Github-Token.ps1 -AppClientId $env:microsoft-graph-devx-bot-appid -AppPrivateKeyContents $env:microsoft-graph-devx-bot-privatekey -Repository $env:RepoName
+$tokenGenerationScript = "$env:scriptsDirectory\Generate-Github-Token.ps1"
+$env:GITHUB_TOKEN = & $tokenGenerationScript -AppClientId $env:microsoft-graph-devx-bot-appid -AppPrivateKeyContents $env:microsoft-graph-devx-bot-privatekey -Repository $env:RepoName
 
  # No need to specify reviewers as code owners should be added automatically.
 Invoke-Expression "gh auth login" # login to GitHub
