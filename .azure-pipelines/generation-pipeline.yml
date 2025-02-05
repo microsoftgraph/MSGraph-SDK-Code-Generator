@@ -805,26 +805,3 @@ stages:
             repoName: msgraph-beta-cli
             projectFile: src/msgraph-beta-cli.csproj
 
-# - stage: stage_objc_v1
-#   dependsOn:
-#   - stage_build_and_publish_typewriter
-#   - stage_v1_metadata
-#   condition: |
-#     and
-#     (
-#       eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
-#       in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
-#     )
-#   jobs:
-#   - job: objc_v1
-#     steps:
-#     - template: generation-templates/language-generation.yml
-#       parameters:
-#         language: 'ObjC'
-#         version: ''
-#         repoName: 'msgraph-sdk-objc-models'
-#         branchName: $(v1Branch)
-#         cleanMetadataFile: $(cleanMetadataFileV1)
-#         cleanMetadataFolder: $(cleanMetadataFolderV1)
-#         languageSpecificSteps:
-#         - template: generation-templates/objc.yml
