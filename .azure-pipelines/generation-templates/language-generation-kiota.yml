@@ -117,7 +117,7 @@ steps:
     GhAppId: $(microsoft-graph-devx-bot-appid)
     GhAppKey: $(microsoft-graph-devx-bot-privatekey)
     OverrideSkipCI: $(overrideSkipCI)
-    RepoName: ${{ parameters.repoName }}
+    RepoName: 'microsoftgraph/${{ parameters.repoName}}' # the assumption is that repo in the microsoftgraph org
     ScriptsDirectory: $(scriptsDirectory)
     Version: ${{ parameters.version }}
   workingDirectory: ${{ parameters.repoName }}
