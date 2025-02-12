@@ -812,12 +812,12 @@ stages:
 - stage: stage_ccs_csharp_beta
   dependsOn:
   - stage_build_and_publish_kiota
-  - stage_v1_openapi
+  - stage_beta_openapi
   condition: |
     and
     (
       eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
+      in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
   - job: csharp_beta_ccs
