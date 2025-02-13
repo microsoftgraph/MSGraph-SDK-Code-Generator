@@ -68,13 +68,7 @@ Set-Content -Path "$targetLocation/package.json" -Value ($targetPackageJson | Co
 
 $dependencies = @(
     $packageName.ToLower(),
-    "tslib",
-    "guid-typescript",
-    "@microsoft/kiota-abstractions",
-    "@microsoft/kiota-serialization-form",
-    "@microsoft/kiota-serialization-json",
-    "@microsoft/kiota-serialization-multipart",
-    "@microsoft/kiota-serialization-text"
+    "tslib"
 )
 foreach($dependency in $dependencies) {
     npm i -S $dependency -w $finalPackageName.ToLower()
