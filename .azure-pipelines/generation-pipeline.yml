@@ -836,10 +836,12 @@ stages:
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         pathExclusionArguments: '' 
         # Uncomment when the project files are updated.
+        languageSpecificSteps:
+        steps:
+          - pwsh: |
+              Write-Host "TODO add appropriate steps"
         # - template: generation-templates/dotnet-kiota.yml
         #   parameters:
         #     repoName: msgraph-sdk-dotnet
-        languageSpecificSteps:
-        steps:
-        - pwsh: |
-          Write-Host 'TODO add the appropriate dotnet steps'
+
+
