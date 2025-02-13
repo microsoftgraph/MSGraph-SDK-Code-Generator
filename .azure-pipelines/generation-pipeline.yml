@@ -839,5 +839,3 @@ stages:
         - template: generation-templates/dotnet-kiota.yml
           parameters:
             repoName: ccs-beta-sdk-dotnet
-
-
