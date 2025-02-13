@@ -837,8 +837,9 @@ stages:
         pathExclusionArguments: '' 
         # Uncomment when the project files are updated.
         languageSpecificSteps:
-          - pwsh: |
-              Write-Output "To update language specific steps"
+          steps:
+            - pwsh: |
+                Write-Output "To update language specific steps"
         # - template: generation-templates/dotnet-kiota.yml
         #   parameters:
         #     repoName: msgraph-sdk-dotnet
