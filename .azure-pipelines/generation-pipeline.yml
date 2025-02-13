@@ -839,7 +839,7 @@ stages:
         languageSpecificSteps:
           steps:
             - pwsh: |
-                Write-Output "To update language specific steps"
+              Write-Host "TODO add appropriate steps"
         # - template: generation-templates/dotnet-kiota.yml
         #   parameters:
         #     repoName: msgraph-sdk-dotnet
