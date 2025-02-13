@@ -838,8 +838,8 @@ stages:
         # Uncomment when the project files are updated.
         languageSpecificSteps:
         steps:
-          - pwsh: |
-              Write-Host "TODO add appropriate steps"
+        - pwsh: |
+            Write-Host "TODO add appropriate steps"
         # - template: generation-templates/dotnet-kiota.yml
         #   parameters:
         #     repoName: msgraph-sdk-dotnet
