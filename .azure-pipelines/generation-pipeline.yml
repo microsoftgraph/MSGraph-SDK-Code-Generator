@@ -838,6 +838,8 @@ stages:
         # Uncomment when the project files are updated.
         languageSpecificSteps:
         - template: generation-templates/test-pipeline-kiota.yml
+          parameters:
+            repoName: ccs-beta-sdk-dotnet
         # - template: generation-templates/dotnet-kiota.yml
         #   parameters:
         #     repoName: msgraph-sdk-dotnet
