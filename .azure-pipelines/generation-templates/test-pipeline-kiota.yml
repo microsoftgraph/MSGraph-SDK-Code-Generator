@@ -1,8 +1,0 @@
-parameters:
-  - name: repoName
-    type: string
-
-steps:
-- pwsh: |
-    Write-Host "Testing step for languageSpecificSteps."
-    Write-Host "TODO: add the appropriate steps for ${{ parameters.repoName }}"

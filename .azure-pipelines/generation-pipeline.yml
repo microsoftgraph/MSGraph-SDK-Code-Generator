@@ -835,13 +835,9 @@ stages:
         customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         pathExclusionArguments: '' 
-        # Uncomment when the project files are updated.
         languageSpecificSteps:
-        - template: generation-templates/test-pipeline-kiota.yml
+        - template: generation-templates/dotnet-kiota.yml
           parameters:
             repoName: ccs-beta-sdk-dotnet
-        # - template: generation-templates/dotnet-kiota.yml
-        #   parameters:
-        #     repoName: msgraph-sdk-dotnet
 
 
