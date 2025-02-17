@@ -25,7 +25,7 @@ $rootSegments = Get-ChildItem -Directory -Exclude $modelsPackageDirectoryName -P
 foreach($rootSegment in $rootSegments) {
     $fluentAPIPackageDirectoryPath = "$targetDirectory/$modelsPackageDirectoryName-$rootSegment"
     Write-Host "generating segment $rootSegment"
-    Invoke-Expression "$kiotaPath generate -o $fluentAPIPackageDirectoryPath -d $descriptionPath -c $($rootSegment.Substring(0,1).ToUpper() + $rootSegment.Substring(1))ServiceClient -l TypeScript -n github.com/microsoftgraph/msgraph-sdk-typescript/ -e '/me' -e '/me/**' -i '/$rootSegment' -i '/$rootSegment/**' $additionalArguments"
+    Invoke-Expression "$kiotaPath generate -o $fluentAPIPackageDirectoryPath -d $descriptionPath -c $($rootSegment.Substring(0,1).ToUpper() + $rootSegment.Substring(1))ServiceClient -l TypeScript -n github.com/microsoftgraph/msgraph-sdk-typescript/ -e '/me' -e '/me/**' -i '/$rootSegment' -i '/$rootSegment/**' -s none --ds none $additionalArguments"
     Invoke-Expression "$PSScriptRoot\fix-typescript-fluent-packages-imports.ps1 -targetDirectory '$fluentAPIPackageDirectoryPath' -packageName '$packageName'"
 }
 $modelsPackagePath = "$targetDirectory/$modelsPackageDirectoryName"
