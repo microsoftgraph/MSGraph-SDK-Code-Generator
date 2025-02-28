@@ -3,8 +3,5 @@ parameters:
     type: string
 
 steps:
-  - pwsh: "$(scriptsDirectory)/copy-ccs-typescript-sdk-models.ps1"
+  - pwsh: '$(scriptsDirectory)/copy-ccs-typescript-sdk-models.ps1 -sourceDirectory "$(kiotaDirectory)/output/" -targetDirectory "$(Build.SourcesDirectory)/${{ parameters.repoName }}/packages/"'
     displayName: "Update models"
-    env:
-      OutputFullPath: $(kiotaDirectory)
-      RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/packages/

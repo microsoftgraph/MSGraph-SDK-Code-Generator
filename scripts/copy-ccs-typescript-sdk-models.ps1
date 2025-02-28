@@ -1,8 +1,15 @@
-Write-Host "Path of new models: $env:OutputFullPath"
-Write-Host "Path to repo models directory: $env:RepoModelsDir"
- 
-#copy new modes
-# Create a dest folder explicitly https://github.com/PowerShell/PowerShell/issues/13352#issuecomment-669025179
-New-Item -ItemType directory -Path $env:RepoModelsDir -Force
-Move-Item $env:OutputFullPath $env:RepoModelsDir -Force
-Write-Host "Moved the models from $env:OutputFullPath into the local repo $env:RepoModelsDir." -ForegroundColor Green
+param (
+    [Parameter(Mandatory = $true)]
+    [string]
+    $targetDirectory,
+    [Parameter(Mandatory = $true)]
+    [string]
+    $sourceDirectory,
+    [string]
+    $packageName = "@microsoft/copilot-beta-sdk"
+)
+
+Write-Host "Path to repo models directory: $targetDirectory"
+$mainPackageDirectoryName = $packageName.Split("/")[1]
+$modelsPackagePath = Join-Path $targetDirectory -ChildPath $mainPackageDirectoryName
+Copy-Item (Join-Path $sourceDirectory -ChildPath "models") -Destination $modelsPackagePath -Recurse -Force
