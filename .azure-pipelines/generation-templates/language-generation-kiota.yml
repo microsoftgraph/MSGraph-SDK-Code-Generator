@@ -121,7 +121,7 @@ steps:
     GhAppId: $(microsoft-graph-devx-bot-appid)
     GhAppKey: $(microsoft-graph-devx-bot-privatekey)
     OverrideSkipCI: $(overrideSkipCI)
-    RepoName: '{{ parameters.orgName }}/${{ parameters.repoName}}'
+    RepoName: '${{ parameters.orgName }}/${{ parameters.repoName}}'
     ScriptsDirectory: $(scriptsDirectory)
     Version: ${{ parameters.version }}
   workingDirectory: ${{ parameters.repoName }}
