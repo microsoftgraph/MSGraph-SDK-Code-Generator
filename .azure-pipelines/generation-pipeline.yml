@@ -902,11 +902,11 @@ stages:
         branchName: 'ccs/$(betaBranch)'
         commitMessagePrefix: "feat(generation): update request builders and models"
         targetClassName: "BaseCopilotControlSystemsClient"
-        targetNamespace: "github.com/microsoft/ccs-sdk-typescript/"
+        targetNamespace: "github.com/microsoft/ccs-beta-sdk-typescript/"
         customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         languageSpecificSteps:
         - template: generation-templates/typescript-sdk.yml
           parameters:
-            repoName: msgraph-beta-sdk-typescript
+            repoName: ccs-beta-sdk-typescript
             packageName: '@microsoft/copilot-beta-sdk'
