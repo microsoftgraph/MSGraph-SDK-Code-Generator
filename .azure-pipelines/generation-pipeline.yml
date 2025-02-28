@@ -912,7 +912,6 @@ stages:
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         pathExclusionArguments: ''
         languageSpecificSteps:
-        - template: generation-templates/typescript-sdk.yml
+        - template: generation-templates/ccs-typescript-sdk.yml
           parameters:
             repoName: ccs-beta-sdk-typescript
-            packageName: '@microsoft/copilot-beta-sdk'
