@@ -882,7 +882,7 @@ stages:
             repoName: ccs-beta-sdk-python
             baseDirectory: copilot
 
-- stage: stage_ccs_typescript_sdk_beta
+- stage: stage_ccs_typescript_beta
   dependsOn:
   - stage_build_and_publish_kiota
   - stage_beta_openapi
