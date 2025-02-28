@@ -120,6 +120,10 @@ resources:
      type: github
      endpoint: microsoftkiota
      name: microsoft/kiota
+  - repository: ccs-beta-sdk-dotnet
+     type: github
+     endpoint: microsoftkiota
+     name: microsoft/ccs-beta-sdk-dotnet
 
 pool: 1es-ubuntu-latest-m
 
@@ -805,3 +809,33 @@ stages:
             repoName: msgraph-beta-cli
             projectFile: src/msgraph-beta-cli.csproj
 
+- stage: stage_ccs_csharp_beta
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_beta_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
+    )
+  jobs:
+  - job: csharp_beta_ccs
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'csharp'
+        version: 'beta'
+        repoName: 'ccs-beta-sdk-dotnet'
+        baseBranchName : 'main'
+        branchName: 'ccs/$(betaBranch)'
+        targetClassName: "BaseCopilotControlClient"
+        targetNamespace: "Microsoft.Copilot"
+        commitMessagePrefix: "feat(generation): update request builders and models"
+        customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
+        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        pathExclusionArguments: '' 
+        languageSpecificSteps:
+        - template: generation-templates/ccs-dotnet-kiota.yml
+          parameters:
+            repoName: ccs-beta-sdk-dotnet
