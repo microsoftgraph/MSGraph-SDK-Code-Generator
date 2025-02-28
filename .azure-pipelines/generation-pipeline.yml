@@ -836,6 +836,6 @@ stages:
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         pathExclusionArguments: '' 
         languageSpecificSteps:
-        - template: generation-templates/dotnet-kiota.yml
+        - template: generation-templates/ccs-dotnet-kiota.yml
           parameters:
             repoName: ccs-beta-sdk-dotnet
