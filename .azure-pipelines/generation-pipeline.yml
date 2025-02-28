@@ -128,6 +128,11 @@ resources:
      type: github
      endpoint: microsoftkiota
      name: microsoft/ccs-beta-sdk-python
+   - repository: ccs-beta-sdk-typescript
+     type: github
+     endpoint: microsoftkiota
+     name: microsoft/ccs-beta-sdk-typescript
+
 
 pool: 1es-ubuntu-latest-m
 
@@ -873,3 +878,34 @@ stages:
           parameters:
             repoName: ccs-beta-sdk-python
             baseDirectory: copilot
+
+- stage: stage_ccs_typescript_sdk_beta
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_beta_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
+    )
+  jobs:
+  - job: typescript_sdk_beta_ccs
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'typescript'
+        version: 'beta'
+        repoName: 'ccs-beta-sdk-typescript'
+        baseBranchName : 'main'
+        branchName: $(betaBranch)
+        commitMessagePrefix: "feat(generation): update request builders and models"
+        targetClassName: "BaseCopilotServiceClient"
+        targetNamespace: "github.com/microsoft/ccs-sdk-typescript/"
+        customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
+        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        languageSpecificSteps:
+        - template: generation-templates/typescript-sdk.yml
+          parameters:
+            repoName: msgraph-beta-sdk-typescript
+            packageName: '@microsoft/copilot-beta-sdk'
