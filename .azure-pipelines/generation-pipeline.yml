@@ -843,7 +843,8 @@ stages:
         commitMessagePrefix: "feat(generation): update request builders and models"
         customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
-        pathExclusionArguments: '' 
+        pathExclusionArguments: ''
+        packageName: Microsoft.Copilot.ControlSystems
         languageSpecificSteps:
         - template: generation-templates/dotnet-kiota.yml
           parameters:
