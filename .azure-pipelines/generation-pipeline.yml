@@ -835,6 +835,7 @@ stages:
       parameters:
         language: 'csharp'
         version: 'beta'
+        orgName: 'microsoft'
         repoName: 'ccs-beta-sdk-dotnet'
         baseBranchName : 'main'
         branchName: 'ccs/$(betaBranch)'
@@ -867,6 +868,7 @@ stages:
       parameters:
         language: 'python'
         version: 'beta'
+        orgName: 'microsoft'
         repoName: 'ccs-beta-sdk-python'
         baseBranchName : 'main'
         branchName: 'ccs/$(betaBranch)'
@@ -899,6 +901,7 @@ stages:
       parameters:
         language: 'typescript'
         version: 'beta'
+        orgName: 'microsoft'
         repoName: 'ccs-beta-sdk-typescript'
         baseBranchName : 'main'
         branchName: 'ccs/$(betaBranch)'
