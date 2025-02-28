@@ -893,7 +893,7 @@ stages:
       in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
     )
   jobs:
-  - job: typescript_sdk_beta_ccs
+  - job: typescript_beta_ccs
     steps:
     - template: generation-templates/language-generation-kiota.yml
       parameters:
