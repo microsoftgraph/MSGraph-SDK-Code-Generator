@@ -844,7 +844,6 @@ stages:
         customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         pathExclusionArguments: ''
-        packageName: Microsoft.Copilot.ControlSystems
         languageSpecificSteps:
         - template: generation-templates/dotnet-kiota.yml
           parameters:
