@@ -839,15 +839,16 @@ stages:
         baseBranchName : 'main'
         branchName: 'ccs/$(betaBranch)'
         targetClassName: "BaseCopilotControlClient"
-        targetNamespace: "Microsoft.Copilot"
+        targetNamespace: "Microsoft.Copilot.ControlSystems"
         commitMessagePrefix: "feat(generation): update request builders and models"
         customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         pathExclusionArguments: '' 
         languageSpecificSteps:
-        - template: generation-templates/ccs-dotnet-kiota.yml
+        - template: generation-templates/dotnet-kiota.yml
           parameters:
             repoName: ccs-beta-sdk-dotnet
+            packageName: Microsoft.Copilot.ControlSystems
 
 - stage: stage_ccs_python_beta
   dependsOn:
@@ -867,8 +868,8 @@ stages:
         language: 'python'
         version: 'beta'
         repoName: 'ccs-beta-sdk-python'
-        branchName: $(betaBranch)
-        targetClassName: "BaseCopilotServiceClient"
+        branchName: 'ccs/$(betaBranch)'
+        targetClassName: "BaseCopilotControlSystemsClient"
         targetNamespace: "copilot.generated"
         customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
@@ -898,9 +899,9 @@ stages:
         version: 'beta'
         repoName: 'ccs-beta-sdk-typescript'
         baseBranchName : 'main'
-        branchName: $(betaBranch)
+        branchName: 'ccs/$(betaBranch)'
         commitMessagePrefix: "feat(generation): update request builders and models"
-        targetClassName: "BaseCopilotServiceClient"
+        targetClassName: "BaseCopilotControlSystemsClient"
         targetNamespace: "github.com/microsoft/ccs-sdk-typescript/"
         customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
