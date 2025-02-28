@@ -868,6 +868,7 @@ stages:
         language: 'python'
         version: 'beta'
         repoName: 'ccs-beta-sdk-python'
+        baseBranchName : 'main'
         branchName: 'ccs/$(betaBranch)'
         targetClassName: "BaseCopilotControlSystemsClient"
         targetNamespace: "copilot.generated"
