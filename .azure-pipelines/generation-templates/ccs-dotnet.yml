@@ -11,7 +11,7 @@ steps:
   env:
     BuildConfiguration: $(buildConfiguration)
     OutputFullPath: $(typewriterDirectory)/output
-    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Copilot/Generated/
+    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Copilot.ControlSystems/Generated/
 
-- pwsh: dotnet build ${{ parameters.repoName }}/src/Microsoft.Copilot/ --configuration $(buildConfiguration)
+- pwsh: dotnet build ${{ parameters.repoName }}/src/Microsoft.Copilot/ControlSystems/ --configuration $(buildConfiguration)
   displayName: smoke test - build dll for ${{ parameters.dllName }}
