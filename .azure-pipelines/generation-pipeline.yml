@@ -874,6 +874,7 @@ stages:
         customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         commitMessagePrefix: "feat(generation): update request builders and models"
+        pathExclusionArguments: ''
         languageSpecificSteps:
         - template: generation-templates/python.yml
           parameters:
@@ -905,6 +906,7 @@ stages:
         targetNamespace: "github.com/microsoft/ccs-beta-sdk-typescript/"
         customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        pathExclusionArguments: ''
         languageSpecificSteps:
         - template: generation-templates/typescript-sdk.yml
           parameters:
