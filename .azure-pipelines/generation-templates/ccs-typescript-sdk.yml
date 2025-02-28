@@ -6,5 +6,5 @@ steps:
   - pwsh: "$(scriptsDirectory)/copy-ccs-typescript-sdk-models.ps1"
     displayName: "Update models"
     env:
-      OutputFullPath: $(kiotaDirectory)/output/
+      OutputFullPath: $(kiotaDirectory)
       RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/packages/
