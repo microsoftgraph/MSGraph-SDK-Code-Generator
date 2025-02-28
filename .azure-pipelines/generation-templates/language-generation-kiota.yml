@@ -16,7 +16,7 @@ parameters:
   type: string
 
 - name: orgName
-  types: string
+  type: string
   default: microsoftgraph # the assumption is that repo is in the microsoftgraph org
 
 - name: branchName
