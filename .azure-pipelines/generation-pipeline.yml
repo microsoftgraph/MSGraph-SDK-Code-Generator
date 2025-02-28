@@ -829,7 +829,7 @@ stages:
         repoName: 'ccs-beta-sdk-python'
         branchName: $(betaBranch)
         targetClassName: "BaseCopilotServiceClient"
-        targetNamespace: "copilot_beta.generated"
+        targetNamespace: "copilot.generated"
         customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         commitMessagePrefix: "feat(generation): update request builders and models"
@@ -837,4 +837,4 @@ stages:
         - template: generation-templates/python.yml
           parameters:
             repoName: ccs-beta-sdk-python
-            baseDirectory: copilot_beta
+            baseDirectory: copilot
