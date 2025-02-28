@@ -120,6 +120,10 @@ resources:
      type: github
      endpoint: microsoftkiota
      name: microsoft/kiota
+   - repository: ccs-beta-sdk-python
+     type: github
+     endpoint: microsoftkiota
+     name: microsoft/ccs-beta-sdk-python
 
 pool: 1es-ubuntu-latest-m
 
@@ -805,3 +809,32 @@ stages:
             repoName: msgraph-beta-cli
             projectFile: src/msgraph-beta-cli.csproj
 
+- stage: stage_ccs_python_beta
+  dependsOn:
+  - stage_build_and_publish_kiota
+  - stage_beta_openapi
+  condition: |
+    and
+    (
+      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+      in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
+    )
+  jobs:
+  - job: python_beta_ccs
+    steps:
+    - template: generation-templates/language-generation-kiota.yml
+      parameters:
+        language: 'python'
+        version: 'beta'
+        repoName: 'ccs-beta-sdk-python'
+        branchName: $(betaBranch)
+        targetClassName: "BaseCopilotServiceClient"
+        targetNamespace: "copilot_beta.generated"
+        customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
+        cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+        commitMessagePrefix: "feat(generation): update request builders and models"
+        languageSpecificSteps:
+        - template: generation-templates/python.yml
+          parameters:
+            repoName: ccs-beta-sdk-python
+            baseDirectory: copilot_beta
