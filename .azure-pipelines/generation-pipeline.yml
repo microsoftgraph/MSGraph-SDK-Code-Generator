@@ -841,7 +841,7 @@ stages:
         targetClassName: "BaseCopilotControlClient"
         targetNamespace: "Microsoft.Copilot.ControlSystems"
         commitMessagePrefix: "feat(generation): update request builders and models"
-        customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
+        customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         pathExclusionArguments: ''
         languageSpecificSteps:
@@ -872,7 +872,7 @@ stages:
         branchName: 'ccs/$(betaBranch)'
         targetClassName: "BaseCopilotControlSystemsClient"
         targetNamespace: "copilot.generated"
-        customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
+        customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         commitMessagePrefix: "feat(generation): update request builders and models"
         pathExclusionArguments: ''
@@ -905,7 +905,7 @@ stages:
         commitMessagePrefix: "feat(generation): update request builders and models"
         targetClassName: "BaseCopilotControlSystemsClient"
         targetNamespace: "github.com/microsoft/ccs-beta-sdk-typescript/"
-        customArguments: "-b -i '/copilot' -i '/copilot/**'" # Enable the backing store, include only copilot paths
+        customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         pathExclusionArguments: ''
         languageSpecificSteps:
