@@ -839,7 +839,7 @@ stages:
         repoName: 'ccs-beta-sdk-dotnet'
         baseBranchName : 'main'
         branchName: 'ccs/$(betaBranch)'
-        targetClassName: "BaseCopilotControlClient"
+        targetClassName: "BaseCopilotControlSystemsClient"
         targetNamespace: "Microsoft.Copilot.ControlSystems"
         commitMessagePrefix: "feat(generation): update request builders and models"
         customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
