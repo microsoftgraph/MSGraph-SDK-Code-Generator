@@ -6,6 +6,8 @@ parameters:
     default:
     - pwsh: |
         Write-Error "No download step is provided"
+  - name: isCopilotGeneration
+    type: boolean
 
 steps:
 - template: set-user-config.yml
@@ -23,13 +25,29 @@ steps:
   submodules: recursive
   condition: or(eq(variables.skipMetadataCaptureAndClean, true), eq(variables.skipOpenApiCaptureAndClean, true))
 
+- checkout: ccs-beta-sdk-dotnet
+  displayName: checkout ccs-beta-sdk-dotnet to grab the openapi.yaml
+  fetchDepth: 1
+  persistCredentials: true
+  submodules: recursive
+  condition: ${{ eq(parameters.isCopilotGeneration, true) }}
+
+- pwsh: |
+    md $(Build.SourcesDirectory)/msgraph-metadata/clean_v10_openapi
+    md $(Build.SourcesDirectory)/msgraph-metadata/clean_beta_openapi
+    Copy-Item -Path $(Build.SourcesDirectory)/ccs-beta-sdk-dotnet/openApiDocs/ccs-beta-review-openapi.yml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_v10_openapi/openapi.yaml
+    Copy-Item -Path $(Build.SourcesDirectory)/ccs-beta-sdk-dotnet/openApiDocs/ccs-beta-review-openapi.yml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_beta_openapi/openapi.yaml
+  displayName: Move Custom CCS metadata to expected location
+  condition: ${{ eq(parameters.isCopilotGeneration, true) }}
+
+
 - pwsh: |
     md $(Build.SourcesDirectory)/msgraph-metadata/clean_v10_openapi
     md $(Build.SourcesDirectory)/msgraph-metadata/clean_beta_openapi
     Move-Item -Path $(Build.SourcesDirectory)/msgraph-metadata/openapi/v1.0/openapi.yaml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_v10_openapi/
     Move-Item -Path $(Build.SourcesDirectory)/msgraph-metadata/openapi/beta/openapi.yaml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_beta_openapi/
   displayName: Move metadata to expected location
-  condition: or(eq(variables.skipMetadataCaptureAndClean, true), eq(variables.skipOpenApiCaptureAndClean, true))
+  condition: and(or(eq(variables.skipMetadataCaptureAndClean, true), eq(variables.skipOpenApiCaptureAndClean, true)), ${{ eq(parameters.isCopilotGeneration, false) }})
 
 # if capture and clean step is not skipped
 # then download the artifact from capture and clean steps
@@ -41,5 +59,5 @@ steps:
     downloadType: 'single'
     artifactName: ${{ parameters.cleanMetadataFolder }}
     downloadPath: '$(Build.SourcesDirectory)/msgraph-metadata'
-  condition: and(eq(variables.skipMetadataCaptureAndClean, false), eq(variables.skipOpenApiCaptureAndClean, false))
+  condition: and(eq(variables.skipMetadataCaptureAndClean, false), eq(variables.skipOpenApiCaptureAndClean, false), ${{ eq(parameters.isCopilotGeneration, false) }})
   displayName: Downloading metadata from artifacts

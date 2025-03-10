@@ -40,6 +40,10 @@ parameters:
   type: boolean
   displayName: Generate PR after publish changes?
 
+- name: isCopilotGeneration
+  default: false
+  type: boolean
+
 - name: customArguments
   type: string
   default: ''
@@ -60,6 +64,7 @@ steps:
 - template: set-up-for-generation-kiota.yml
   parameters:
     cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
+    isCopilotGeneration: ${{ parameters.isCopilotGeneration }}
     downloadSteps:
     - template: download-kiota.yml
 
