@@ -866,9 +866,9 @@ stages:
         language: 'python'
         version: 'beta'
         orgName: 'microsoft'
-        repoName: 'ccs-beta-sdk-python'
+        repoName: 'Agents-M365Copilot'
         baseBranchName : 'main'
-        branchName: 'ccs/$(betaBranch)'
+        branchName: 'ccs-python/$(betaBranch)'
         targetClassName: "BaseCopilotControlSystemsClient"
         targetNamespace: "copilot_control_systems.generated"
         customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
@@ -879,7 +879,7 @@ stages:
         languageSpecificSteps:
         - template: generation-templates/python.yml
           parameters:
-            repoName: ccs-beta-sdk-python
+            repoName: 'Agents-M365Copilot/python'
             baseDirectory: copilot_control_systems
 
 - stage: stage_ccs_typescript_beta
@@ -900,9 +900,9 @@ stages:
         language: 'typescript'
         version: 'beta'
         orgName: 'microsoft'
-        repoName: 'ccs-beta-sdk-typescript'
+        repoName: 'Agents-M365Copilot'
         baseBranchName : 'main'
-        branchName: 'ccs/$(betaBranch)'
+        branchName: 'ccs-typescript/$(betaBranch)'
         commitMessagePrefix: "feat(generation): update request builders and models for typescript"
         targetClassName: "BaseCopilotControlSystemsClient"
         targetNamespace: "github.com/microsoft/ccs-beta-sdk-typescript/"
@@ -913,4 +913,4 @@ stages:
         languageSpecificSteps:
         - template: generation-templates/ccs-typescript-sdk.yml
           parameters:
-            repoName: ccs-beta-sdk-typescript
+            repoName: 'Agents-M365Copilot/typescript'
