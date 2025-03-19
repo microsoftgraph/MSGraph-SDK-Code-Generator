@@ -124,14 +124,10 @@ resources:
      type: github
      endpoint: microsoftkiota
      name: microsoft/ccs-beta-sdk-dotnet
-   - repository: ccs-beta-sdk-python
+   - repository: Agents-M365Copilot
      type: github
      endpoint: microsoftkiota
-     name: microsoft/ccs-beta-sdk-python
-   - repository: ccs-beta-sdk-typescript
-     type: github
-     endpoint: microsoftkiota
-     name: microsoft/ccs-beta-sdk-typescript
+     name: microsoft/Agents-M365Copilot
 
 
 pool: 1es-ubuntu-latest-m
@@ -836,12 +832,12 @@ stages:
         language: 'csharp'
         version: 'beta'
         orgName: 'microsoft'
-        repoName: 'ccs-beta-sdk-dotnet'
+        repoName: 'Agents-M365Copilot'
         baseBranchName : 'main'
-        branchName: 'ccs/$(betaBranch)'
-        targetClassName: "BaseCopilotControlSystemsClient"
-        targetNamespace: "Microsoft.Copilot.ControlSystems"
-        commitMessagePrefix: "feat(generation): update request builders and models"
+        branchName: 'ccs-dotnet/$(betaBranch)'
+        targetClassName: "BaseM365CopilotClient"
+        targetNamespace: "Microsoft.Agents.M365Copilot.Beta"
+        commitMessagePrefix: "feat(generation): update request builders and models for dotnet"
         customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         pathExclusionArguments: ''
@@ -849,8 +845,8 @@ stages:
         languageSpecificSteps:
         - template: generation-templates/dotnet-kiota.yml
           parameters:
-            repoName: ccs-beta-sdk-dotnet
-            packageName: Microsoft.Copilot.ControlSystems
+            repoName: 'Agents-M365Copilot/dotnet'
+            packageName: Microsoft.Agents.M365Copilot.Beta
 
 - stage: stage_ccs_python_beta
   dependsOn:
@@ -877,7 +873,7 @@ stages:
         targetNamespace: "copilot_control_systems.generated"
         customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
-        commitMessagePrefix: "feat(generation): update request builders and models"
+        commitMessagePrefix: "feat(generation): update request builders and models for python"
         pathExclusionArguments: ''
         isCopilotGeneration: true
         languageSpecificSteps:
@@ -907,7 +903,7 @@ stages:
         repoName: 'ccs-beta-sdk-typescript'
         baseBranchName : 'main'
         branchName: 'ccs/$(betaBranch)'
-        commitMessagePrefix: "feat(generation): update request builders and models"
+        commitMessagePrefix: "feat(generation): update request builders and models for typescript"
         targetClassName: "BaseCopilotControlSystemsClient"
         targetNamespace: "github.com/microsoft/ccs-beta-sdk-typescript/"
         customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
