@@ -4,6 +4,15 @@ updates:
   directory: "/"
   schedule:
     interval: daily
+  groups:
+    MSTestFramework:
+      patterns:
+        - "Microsoft.NET.Test*"
+        - "MSTest.*"
+    NUnitTestFramework:
+      patterns:
+        - "NUnit*"
+
   open-pull-requests-limit: 10
 - package-ecosystem: github-actions
   directory: "/"
