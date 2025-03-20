@@ -880,7 +880,7 @@ stages:
         - template: generation-templates/python.yml
           parameters:
             repoName: 'Agents-M365Copilot/python'
-            baseDirectory: copilot_control_systems
+            baseDirectory: microsoft_agents_m365copilot_beta
 
 - stage: stage_ccs_typescript_beta
   dependsOn:
@@ -914,3 +914,4 @@ stages:
         - template: generation-templates/ccs-typescript-sdk.yml
           parameters:
             repoName: 'Agents-M365Copilot/typescript'
+            packageName: '@microsoft/agents-m365copilot-beta'
