@@ -43,11 +43,6 @@ resources:
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-typescript-typings
      ref: main
-   - repository: msgraph-sdk-objc-models
-     type: github
-     endpoint: microsoftgraph (22)
-     name: microsoftgraph/msgraph-sdk-objc-models
-     ref: dev
    - repository: msgraph-sdk-java
      type: github
      endpoint: microsoftgraph (22)
