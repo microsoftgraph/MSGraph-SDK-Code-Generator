@@ -61,7 +61,11 @@ jobs:
     persistCredentials: true
 
   - template: checkout-metadata.yml
+
+  # required for the hidi installation validation
   - template: use-dotnet-sdk.yml
+    parameters:
+      version: '9.x'
 
   - pwsh: dotnet tool install --global Microsoft.OpenApi.Hidi
     displayName: install hidi
