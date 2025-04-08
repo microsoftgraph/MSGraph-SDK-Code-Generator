@@ -52,7 +52,10 @@ steps:
 
 - template: download-typewriter.yml
 
+# required for typewriter
 - template: use-dotnet-sdk.yml
+  parameters:
+    version: '8.x'
 
 ## Only run if the previous step was successful
 - pwsh: '$(scriptsDirectory)/run-typewriter-clean-metadata.ps1'
@@ -113,7 +116,13 @@ steps:
 
 # Use the clean metadata from the last step to generate DotNet files.
 
+# required for the hidi installation validation
 - template: use-dotnet-sdk.yml
+  parameters:
+    version: '9.x'
+
+- pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi
+  displayName: 'Install hidi tool'
 
 # verify that generated metadata is parsable as an Edm model
 - pwsh: $(Build.SourcesDirectory)/msgraph-metadata/scripts/run-metadata-validation.ps1 -repoDirectory "$(Build.SourcesDirectory)/msgraph-metadata/" -version "${{ parameters.endpoint }}"
