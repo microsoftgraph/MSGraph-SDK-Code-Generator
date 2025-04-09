@@ -62,6 +62,11 @@ jobs:
 
   - template: checkout-metadata.yml
 
+  # required for the hidi to run
+  - template: use-dotnet-sdk.yml
+    parameters:
+      version: '8.x'
+
   # required for the hidi installation validation
   - template: use-dotnet-sdk.yml
     parameters:
