@@ -7,18 +7,17 @@ parameters:
     default: Microsoft.Graph
 
 steps:
-- pwsh: '$(scriptsDirectory)/copy-dotnet-models-kiota.ps1'
-  displayName: 'Update models'
-  env:
-    BuildConfiguration: $(buildConfiguration)
-    OutputFullPath: $(kiotaDirectory)/output/*
-    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/${{ parameters.packageName }}/Generated/
+  - pwsh: "$(scriptsDirectory)/copy-dotnet-models-kiota.ps1"
+    displayName: "Update models"
+    env:
+      BuildConfiguration: $(buildConfiguration)
+      OutputFullPath: $(kiotaDirectory)/output/*
+      RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/${{ parameters.packageName }}/Generated/
 
-- pwsh: 'dotnet restore'
-  displayName: Restore dependencies for ${{ parameters.repoName }}
-  workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}
+  - pwsh: "dotnet restore"
+    displayName: Restore dependencies for ${{ parameters.repoName }}
+    workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}
 
-- pwsh: 'dotnet build --configuration $(buildConfiguration) -f netstandard2.0 --no-restore'
-  displayName: Build dll for ${{ parameters.repoName }}
-  workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/${{ parameters.packageName }}/
-
+  - pwsh: "dotnet build --configuration $(buildConfiguration) -f netstandard2.0 --no-restore"
+    displayName: Build dll for ${{ parameters.repoName }}
+    workingDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/${{ parameters.packageName }}/
