@@ -110,10 +110,6 @@ resources:
      type: github
      endpoint: microsoftkiota
      name: microsoft/kiota
-   - repository: ccs-beta-sdk-dotnet
-     type: github
-     endpoint: microsoftkiota
-     name: microsoft/ccs-beta-sdk-dotnet
    - repository: Agents-M365Copilot
      type: github
      endpoint: microsoftkiota
