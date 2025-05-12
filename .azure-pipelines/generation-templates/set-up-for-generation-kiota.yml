@@ -25,8 +25,8 @@ steps:
   submodules: recursive
   condition: or(eq(variables.skipMetadataCaptureAndClean, true), eq(variables.skipOpenApiCaptureAndClean, true))
 
-- checkout: ccs-beta-sdk-dotnet
-  displayName: checkout ccs-beta-sdk-dotnet to grab the openapi.yaml
+- checkout: Agents-M365Copilot
+  displayName: checkout Agents-M365Copilot to get the OpenAPI file
   fetchDepth: 1
   persistCredentials: true
   submodules: recursive
@@ -35,8 +35,8 @@ steps:
 - pwsh: |
     md $(Build.SourcesDirectory)/msgraph-metadata/clean_v10_openapi
     md $(Build.SourcesDirectory)/msgraph-metadata/clean_beta_openapi
-    Copy-Item -Path $(Build.SourcesDirectory)/ccs-beta-sdk-dotnet/openApiDocs/ccs-beta-review-openapi.yml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_v10_openapi/openapi.yaml
-    Copy-Item -Path $(Build.SourcesDirectory)/ccs-beta-sdk-dotnet/openApiDocs/ccs-beta-review-openapi.yml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_beta_openapi/openapi.yaml
+    Copy-Item -Path $(Build.SourcesDirectory)/Agents-M365Copilot/openapi/ccs-beta-review-openapi.yml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_v10_openapi/openapi.yaml
+    Copy-Item -Path $(Build.SourcesDirectory)/Agents-M365Copilot/openapi/ccs-beta-review-openapi.yml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_beta_openapi/openapi.yaml
   displayName: Move Custom CCS metadata to expected location
   condition: ${{ eq(parameters.isCopilotGeneration, true) }}
 
