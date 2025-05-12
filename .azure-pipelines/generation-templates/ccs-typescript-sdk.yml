@@ -3,10 +3,10 @@ parameters:
     type: string
   - name: packageName
     type: string
-    default: '@microsoft/copilot-beta-sdk'
+    default: '@microsoft/agents-m365copilot'
 
 steps:
-  - pwsh: '$(scriptsDirectory)/clean-typescript-files.ps1 -targetDirectory "$(Build.SourcesDirectory)/${{ parameters.repoName }}/packages/" -packageName "${{ parameters.packageName }}"'
+  - pwsh: '$(scriptsDirectory)/clean-typescript-ccs-files.ps1 -targetDirectory "$(Build.SourcesDirectory)/${{ parameters.repoName }}/packages/" -packageName "${{ parameters.packageName }}"'
     displayName: 'Remove generated models and requests from the repo folder'
 
   - pwsh: '$(scriptsDirectory)/copy-ccs-typescript-sdk-models.ps1 -sourceDirectory "$(kiotaDirectory)/output/*" -targetDirectory "$(Build.SourcesDirectory)/${{ parameters.repoName }}/packages/" -packageName "${{ parameters.packageName }}"'
