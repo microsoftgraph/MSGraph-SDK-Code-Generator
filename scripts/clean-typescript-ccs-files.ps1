@@ -3,14 +3,13 @@ param (
     [string]
     $targetDirectory,
     [string]
-    $packageName = "@microsoft/agents-m365copilot",
-    [Parameter(Mandatory = $true)]
-    [string]
-    $folderToClean
+    $packageName = "@microsoft/agents-m365copilot"
 )
 Push-Location $targetDirectory
 
 $kiotaLockFileName = "kiota-lock.json"
+# Extract folder name from package name (the part after the slash)
+$folderToClean = $packageName.Split("/")[1]
 $folderToCleanPath = Join-Path $targetDirectory -ChildPath $folderToClean
 
 # Check if the folder to clean exists
@@ -26,4 +25,4 @@ if (Test-Path $folderToCleanPath) {
 }
 
 Pop-Location
-Write-Host "Cleaning operation completed for target: $folderToClean" -ForegroundColor Green
+Write-Host "Cleaning operation completed for target: $folderToClean derived from package: $packageName" -ForegroundColor Green
