@@ -11,5 +11,5 @@ param (
 
 Write-Host "Path to repo models directory: $targetDirectory"
 $mainPackageDirectoryName = $packageName.Split("/")[1]
-$modelsPackagePath = Join-Path $targetDirectory -ChildPath $mainPackageDirectoryName
+$modelsPackagePath = Join-Path $targetDirectory -ChildPath $mainPackageDirectoryName -AdditionalChildPath "generated"
 Copy-Item $sourceDirectory -Destination $modelsPackagePath -Recurse -Force

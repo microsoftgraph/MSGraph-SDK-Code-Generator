@@ -10,7 +10,7 @@ Push-Location $targetDirectory
 $kiotaLockFileName = "kiota-lock.json"
 # Extract folder name from package name (the part after the slash)
 $folderToClean = $packageName.Split("/")[1]
-$folderToCleanPath = Join-Path $targetDirectory -ChildPath $folderToClean
+$folderToCleanPath = Join-Path $targetDirectory -ChildPath $folderToClean -AdditionalChildPath "generated"
 
 # Check if the folder to clean exists
 if (Test-Path $folderToCleanPath) {
@@ -18,8 +18,8 @@ if (Test-Path $folderToCleanPath) {
     Push-Location $folderToCleanPath
     # Clean directories
     Get-ChildItem -Directory | ForEach-Object { Remove-Item -r $_.FullName }
-    # Clean TypeScript files except index.ts and *ServiceClient.ts
-    Remove-Item *.ts -Exclude "index.ts", "*ServiceClient.ts"
+    # Clean TypeScript files except index.ts
+    Remove-Item *.ts -Exclude "index.ts"
     # Remove kiota lock file
     Remove-Item $kiotaLockFileName -ErrorAction SilentlyContinue -Verbose
     Pop-Location
