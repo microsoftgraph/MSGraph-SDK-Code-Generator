@@ -836,7 +836,7 @@ stages:
         languageSpecificSteps:
         - template: generation-templates/python.yml
           parameters:
-            repoName: 'Agents-M365Copilot/python'
+            repoName: 'Agents-M365Copilot/python/packages'
             baseDirectory: microsoft_agents_m365copilot_beta
 
 - stage: stage_ccs_typescript_beta
