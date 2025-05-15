@@ -792,7 +792,7 @@ stages:
         repoName: 'Agents-M365Copilot'
         baseBranchName : 'main'
         branchName: 'ccs-dotnet/$(betaBranch)'
-        targetClassName: "BaseAgentsM365CopilotBetaSystemsClient"
+        targetClassName: "BaseAgentsM365CopilotBetaServiceClient"
         targetNamespace: "Microsoft.Agents.M365Copilot.Beta"
         commitMessagePrefix: "feat(generation): update request builders and models for dotnet beta"
         customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
@@ -826,7 +826,7 @@ stages:
         repoName: 'Agents-M365Copilot'
         baseBranchName : 'main'
         branchName: 'ccs-python/$(betaBranch)'
-        targetClassName: "BaseAgentsM365CopilotBetaSystemsClient"
+        targetClassName: "BaseAgentsM365CopilotBetaServiceClient"
         targetNamespace: "microsoft_agents_m365copilot_beta.generated"
         customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
@@ -861,7 +861,7 @@ stages:
         baseBranchName : 'main'
         branchName: 'ccs-typescript/$(betaBranch)'
         commitMessagePrefix: "feat(generation): update request builders and models for typescript beta"
-        targetClassName: "BaseAgentsM365CopilotBetaSystemsClient"
+        targetClassName: "BaseAgentsM365CopilotBetaServiceClient"
         targetNamespace: "github.com/microsoft/Agents-M365Copilot/typescript/"
         customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
