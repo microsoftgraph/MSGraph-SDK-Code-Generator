@@ -798,7 +798,6 @@ stages:
         customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         pathExclusionArguments: ''
-        isCopilotGeneration: true
         languageSpecificSteps:
         - template: generation-templates/dotnet-kiota.yml
           parameters:
@@ -832,7 +831,6 @@ stages:
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         commitMessagePrefix: "feat(generation): update request builders and models for python beta"
         pathExclusionArguments: ''
-        isCopilotGeneration: true
         languageSpecificSteps:
         - template: generation-templates/python.yml
           parameters:
@@ -866,7 +864,6 @@ stages:
         customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
         cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
         pathExclusionArguments: ''
-        isCopilotGeneration: true
         languageSpecificSteps:
         - template: generation-templates/ccs-typescript-sdk.yml
           parameters:
