@@ -15,6 +15,10 @@ parameters:
 - name: repoName
   type: string
 
+- name: orgName
+  type: string
+  default: microsoftgraph # the assumption is that repo is in the microsoftgraph org
+
 - name: branchName
   type: string
 
@@ -117,7 +121,7 @@ steps:
     GhAppId: $(microsoft-graph-devx-bot-appid)
     GhAppKey: $(microsoft-graph-devx-bot-privatekey)
     OverrideSkipCI: $(overrideSkipCI)
-    RepoName: 'microsoftgraph/${{ parameters.repoName}}' # the assumption is that repo in the microsoftgraph org
+    RepoName: '${{ parameters.orgName }}/${{ parameters.repoName}}'
     ScriptsDirectory: $(scriptsDirectory)
     Version: ${{ parameters.version }}
   workingDirectory: ${{ parameters.repoName }}

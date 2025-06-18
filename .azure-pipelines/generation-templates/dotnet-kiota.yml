@@ -2,11 +2,15 @@ parameters:
   - name: repoName
     type: string
 
+  - name: packageName
+    type: string
+    default: Microsoft.Graph
+
 steps:
-- pwsh: '$(scriptsDirectory)/copy-dotnet-models-kiota.ps1'
-  displayName: 'Update models'
-  env:
-    BuildConfiguration: $(buildConfiguration)
-    OutputFullPath: $(kiotaDirectory)/output/*
-    RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/Microsoft.Graph/Generated/
+  - pwsh: "$(scriptsDirectory)/copy-dotnet-models-kiota.ps1"
+    displayName: "Update models"
+    env:
+      BuildConfiguration: $(buildConfiguration)
+      OutputFullPath: $(kiotaDirectory)/output/*
+      RepoModelsDir: $(Build.SourcesDirectory)/${{ parameters.repoName }}/src/${{ parameters.packageName }}/Generated/
 
