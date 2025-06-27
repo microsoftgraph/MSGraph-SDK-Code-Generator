@@ -22,6 +22,18 @@ parameters:
 - name: 'cleanMetadataFileWithAnnotations'
   type: string
   default: $(cleanMetadataFileWithAnnotationsV1)
+- name: 'metadataTypeSpecAnnotationsSource'
+  type: string
+  default: $(metadataTypeSpecAnnotationsSource)
+- name: 'metadataTypeSpecAnnotationsOutputDir'
+  type: string
+  default: 'tsp-output'
+- name: metadataAnnotationsCopyScriptPath
+  type: string
+  default: '$(metadataTypeSpecAnnotationsSource)/../scripts/copy-annotations-to-csdl.ps1'
+
+variables:
+  sanitizedEndpoint: $[replace(parameters['endpoint'], '/', ''))]
 
 steps:
 
@@ -57,6 +69,23 @@ steps:
   parameters:
     version: '8.x'
 
+# required for TypeSpec
+- task: UseNode@1
+  inputs:
+    versionSpec: '22.x'
+    checkLatest: true
+
+- pwsh: 'npm install -g @typespec/compiler typescript'
+  displayName: 'install TypeSpec and TypeScript globally'
+
+- pwsh: 'npm ci'
+  displayName: 'install TypeSpec dependencies'
+  workingDirectory: '$(metadataTypeSpecAnnotationsSource)'
+
+- pwsh: 'tsc compile .'
+  displayName: 'compile TypeSpec annotations'
+  workingDirectory: '$(metadataTypeSpecAnnotationsSource)'
+
 ## Only run if the previous step was successful
 - pwsh: '$(scriptsDirectory)/run-typewriter-clean-metadata.ps1'
   env:
@@ -69,6 +98,8 @@ steps:
     Transform: $(transformScript)
     endpointVersion: ${{ parameters.endpoint }}
   displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata'
+
+- pwsh: '$(metadataAnnotationsCopyScriptPath) -targetCsdlPath "$(Build.SourcesDirectory)/msgraph-metadata/clean_$(sanitizedEndpoint)_metadata/cleanMetadataWithDescriptions${{ parameters.endpoint }}.xml" -sourceCsdlDirectoryPath "$(metadataTypeSpecAnnotationsSource)/$(metadataTypeSpecAnnotationsOutputDir)"'
 
   ## Only run if the previous step was successful
 - pwsh: '$(scriptsDirectory)/run-typewriter-clean-metadata.ps1'
@@ -85,6 +116,8 @@ steps:
     OutputMetadataFileName: 'cleanMetadataWithDescriptionsAndAnnotations'
   displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata and keep capability annotations'
 
+- pwsh: '$(metadataAnnotationsCopyScriptPath) -targetCsdlPath "$(Build.SourcesDirectory)/msgraph-metadata/clean_$(sanitizedEndpoint)_metadata/cleanMetadataWithDescriptionsAndAnnotations${{ parameters.endpoint }}.xml" -sourceCsdlDirectoryPath "$(metadataTypeSpecAnnotationsSource)/$(metadataTypeSpecAnnotationsOutputDir)"'
+
   ## Only run if the previous step was successful
 - pwsh: '$(scriptsDirectory)/run-typewriter-clean-metadata.ps1'
   env:
@@ -100,6 +133,9 @@ steps:
     AddInnerErrorDescription: 'true'
     OutputMetadataFileName: 'cleanMetadataWithDescriptionsAndAnnotationsAndErrors'
   displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata and keep capability annotations and include error information'
+
+- pwsh: '$(metadataAnnotationsCopyScriptPath) -targetCsdlPath "$(Build.SourcesDirectory)/msgraph-metadata/clean_$(sanitizedEndpoint)_metadata/cleanMetadataWithDescriptionsAndAnnotationsAndErrors${{ parameters.endpoint }}.xml" -sourceCsdlDirectoryPath "$(metadataTypeSpecAnnotationsSource)/$(metadataTypeSpecAnnotationsOutputDir)"'
+
 
 # publish metadata as an artifact
 - task: CopyFiles@2
