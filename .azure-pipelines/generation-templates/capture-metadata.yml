@@ -51,6 +51,23 @@ steps:
 - template: checkout-metadata.yml
 - template: set-user-config.yml
 
+# required for TypeSpec
+- task: UseNode@1
+  inputs:
+    versionSpec: '22.x'
+    checkLatest: true
+
+- pwsh: 'npm install -g @typespec/compiler typescript'
+  displayName: 'install TypeSpec and TypeScript globally'
+
+- pwsh: 'npm ci'
+  displayName: 'install TypeSpec dependencies'
+  workingDirectory: '$(metadataTypeSpecAnnotationsSource)'
+
+- pwsh: 'tsc compile .'
+  displayName: 'compile TypeSpec annotations'
+  workingDirectory: '$(metadataTypeSpecAnnotationsSource)'
+
 # Results in a raw metadata file written to microsoftgraph/msgraph-metadata if there are changes.
 # An error will cancel this step if there are no changes.
 - pwsh: '$(scriptsDirectory)/download-diff-metadata.ps1'
@@ -68,23 +85,6 @@ steps:
 - template: use-dotnet-sdk.yml
   parameters:
     version: '8.x'
-
-# required for TypeSpec
-- task: UseNode@1
-  inputs:
-    versionSpec: '22.x'
-    checkLatest: true
-
-- pwsh: 'npm install -g @typespec/compiler typescript'
-  displayName: 'install TypeSpec and TypeScript globally'
-
-- pwsh: 'npm ci'
-  displayName: 'install TypeSpec dependencies'
-  workingDirectory: '$(metadataTypeSpecAnnotationsSource)'
-
-- pwsh: 'tsc compile .'
-  displayName: 'compile TypeSpec annotations'
-  workingDirectory: '$(metadataTypeSpecAnnotationsSource)'
 
 ## Only run if the previous step was successful
 - pwsh: '$(scriptsDirectory)/run-typewriter-clean-metadata.ps1'
