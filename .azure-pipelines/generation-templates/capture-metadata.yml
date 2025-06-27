@@ -31,9 +31,9 @@ parameters:
 - name: metadataAnnotationsCopyScriptPath
   type: string
   default: '$(metadataTypeSpecAnnotationsSource)/../scripts/copy-annotations-to-csdl.ps1'
-
-variables:
-  sanitizedEndpoint: $[replace(parameters['endpoint'], '/', ''))]
+- name: sanitizedEndpoint
+  type: string
+  default: $[replace(parameters['endpoint'], '/', ''))]
 
 steps:
 
@@ -99,7 +99,7 @@ steps:
     endpointVersion: ${{ parameters.endpoint }}
   displayName: 'run Typewriter to clean ${{ parameters.endpoint }} metadata'
 
-- pwsh: '$(metadataAnnotationsCopyScriptPath) -targetCsdlPath "$(Build.SourcesDirectory)/msgraph-metadata/clean_$(sanitizedEndpoint)_metadata/cleanMetadataWithDescriptions${{ parameters.endpoint }}.xml" -sourceCsdlDirectoryPath "$(metadataTypeSpecAnnotationsSource)/$(metadataTypeSpecAnnotationsOutputDir)"'
+- pwsh: '$(metadataAnnotationsCopyScriptPath) -targetCsdlPath "$(Build.SourcesDirectory)/msgraph-metadata/clean_${{ parameters.sanitizedEndpoint }}_metadata/cleanMetadataWithDescriptions${{ parameters.endpoint }}.xml" -sourceCsdlDirectoryPath "$(metadataTypeSpecAnnotationsSource)/$(metadataTypeSpecAnnotationsOutputDir)"'
 
   ## Only run if the previous step was successful
 - pwsh: '$(scriptsDirectory)/run-typewriter-clean-metadata.ps1'
