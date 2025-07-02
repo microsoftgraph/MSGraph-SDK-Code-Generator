@@ -64,7 +64,7 @@ steps:
   displayName: 'install TypeSpec dependencies'
   workingDirectory: '$(metadataTypeSpecAnnotationsSource)'
 
-- pwsh: 'tsc compile .'
+- pwsh: 'tsp compile .'
   displayName: 'compile TypeSpec annotations'
   workingDirectory: '$(metadataTypeSpecAnnotationsSource)'
 
