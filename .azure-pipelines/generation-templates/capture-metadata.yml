@@ -54,7 +54,7 @@ steps:
 # required for TypeSpec
 - task: UseNode@1
   inputs:
-    versionSpec: '22.x'
+    version: '22.x'
     checkLatest: true
 
 - pwsh: 'npm install -g @typespec/compiler typescript'
