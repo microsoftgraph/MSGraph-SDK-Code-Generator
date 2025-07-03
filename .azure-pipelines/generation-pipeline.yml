@@ -159,6 +159,7 @@ variables:
   cleanOpenAPIFileBetaOutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/beta/'
   cleanMetadataFileV1OutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/'
   cleanMetadataFileBetaOutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/'
+  metadataTypeSpecAnnotationsSource: '$(Build.SourcesDirectory)/msgraph-metadata/additions/'
   cleanMetadataFolderBeta: 'clean_beta_metadata'
   cleanMetadataFolderV1: 'clean_v10_metadata'
   cleanOpenAPIFolderBeta: 'clean_beta_openapi'
@@ -218,6 +219,7 @@ stages:
         cleanMetadataFile: $(cleanMetadataFileV1)
         cleanMetadataFolder: $(cleanMetadataFolderV1)
         cleanMetadataFileWithAnnotations: $(cleanMetadataFileWithAnnotationsV1)
+        metadataTypeSpecAnnotationsSource: $(metadataTypeSpecAnnotationsSource)
 
 # Same description as stage_v1_metadata
 - stage: stage_beta_metadata
@@ -236,6 +238,7 @@ stages:
         cleanMetadataFile: $(cleanMetadataFileBeta)
         cleanMetadataFolder: $(cleanMetadataFolderBeta)
         cleanMetadataFileWithAnnotations: $(cleanMetadataFileWithAnnotationsBeta)
+        metadataTypeSpecAnnotationsSource: $(metadataTypeSpecAnnotationsSource)
 
 - stage: stage_v1_openapi
   dependsOn: stage_v1_metadata
