@@ -63,11 +63,6 @@ resources:
      endpoint: microsoftgraph (22)
      name: microsoftgraph/msgraph-beta-sdk-go
      ref: main
-   - repository: msgraph-sdk-ruby
-     type: github
-     endpoint: microsoftgraph (22)
-     name: microsoftgraph/msgraph-sdk-ruby
-     ref: main
    - repository: msgraph-sdk-typescript
      type: github
      endpoint: microsoftgraph (22)
@@ -367,35 +362,6 @@ stages:
         - template: generation-templates/go.yml
           parameters:
             repoName: msgraph-beta-sdk-go
-
-- stage: stage_ruby_v1
-  dependsOn:
-  - stage_build_and_publish_kiota
-  - stage_v1_openapi
-  condition: |
-    and
-    (
-      eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-      in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
-    )
-  jobs:
-  - job: ruby_v1
-    steps:
-    - template: generation-templates/language-generation-kiota.yml
-      parameters:
-        language: 'ruby'
-        version: ''
-        repoName: 'msgraph-sdk-ruby'
-        branchName: $(v1Branch)
-        targetClassName: "GraphBaseServiceClient"
-        targetNamespace: "MicrosoftGraph"
-        cleanMetadataFolder: $(cleanOpenAPIFolderV1)
-        customArguments: "-e '/me' -e '/me/**'" # Exclude me
-        languageSpecificSteps:
-        - template: generation-templates/ruby.yml
-          parameters:
-            repoName: msgraph-sdk-ruby
-            barrelFileName: microsoft_graph.rb
 
 - stage: stage_java_v1_kiota
   dependsOn:
