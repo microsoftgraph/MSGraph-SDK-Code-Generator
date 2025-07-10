@@ -51,7 +51,7 @@ if(Test-Path $outputFile)
     Rename-Item $outputFile $oldFileName
 }
 
-$command = "hidi transform --csdl ""$inputFile"" --output ""$outputFile"" --settings-path ""$settings"" --version OpenApi3_0 --metadata-version ""$endpointVersion"" --log-level Information --format yaml"
+$command = "hidi transform --csdl ""$inputFile"" --output ""$outputFile"" --settings-path ""$settings"" --version ""3.0"" --metadata-version ""$endpointVersion"" --log-level Information --format yaml"
 Write-Host $command
 
 try {
