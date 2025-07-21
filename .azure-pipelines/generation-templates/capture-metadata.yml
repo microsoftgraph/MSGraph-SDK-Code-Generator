@@ -166,7 +166,7 @@ steps:
   parameters:
     version: '9.x'
 
-- pwsh: dotnet tool install -g Microsoft.OpenApi.Hidi
+- pwsh: dotnet tool install --global Microsoft.OpenApi.Hidi --version 1.6.24 
   displayName: 'Install hidi tool'
 
 # verify that generated metadata is parsable as an Edm model
