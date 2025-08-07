@@ -307,7 +307,7 @@ extends:
             customArguments: "-b" # Enable the backing store
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             languageSpecificSteps:
-            - template: /.azure-pipelines/generation-templates/generation-templates/dotnet-kiota.yml@self
+            - template: /.azure-pipelines/generation-templates/dotnet-kiota.yml@self
               parameters:
                 repoName: msgraph-sdk-dotnet
 
