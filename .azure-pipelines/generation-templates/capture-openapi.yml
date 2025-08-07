@@ -45,7 +45,7 @@ jobs:
   templateContext:
     outputs:
     - output: pipelineArtifact
-      targetPath: '$(Build.ArtifactStagingDirectory)'
+      targetPath: '$(outputPath)'
       artifactName: ${{ parameters.cleanMetadataFolder }}
   steps:
   - checkout: self
