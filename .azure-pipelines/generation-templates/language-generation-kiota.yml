@@ -57,11 +57,9 @@ parameters:
   default: "-e '/copilot' -e '/copilot/**'"
 
 steps:
-- template: set-up-for-generation-kiota.yml
+- template: /.azure-pipelines/generation-templates/set-up-for-generation-kiota.yml@self
   parameters:
     cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
-    downloadSteps:
-    - template: download-kiota.yml
 
 - checkout: ${{ parameters.repoName }}
   displayName: 'checkout ${{ parameters.repoName }}'

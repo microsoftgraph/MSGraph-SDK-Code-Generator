@@ -1,15 +1,10 @@
 parameters:
   - name: cleanMetadataFolder
     type: string
-  - name: downloadSteps
-    type: stepList
-    default:
-    - pwsh: |
-        Write-Error "No download step is provided"
 
 steps:
-- template: set-user-config.yml
-- template: use-dotnet-sdk.yml
+- template: /.azure-pipelines/generation-templates/set-user-config.yml@self
+- template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
 - ${{ parameters.downloadSteps }}
 
 # checkout metadata repo if capture and clean step is skipped
@@ -19,16 +14,3 @@ steps:
   persistCredentials: true
   submodules: recursive
   condition: or(eq(variables.skipMetadataCaptureAndClean, true), eq(variables.skipOpenApiCaptureAndClean, true))
-
-# if capture and clean step is not skipped
-# then download the artifact from capture and clean steps
-# follow the same folder structure as msgraph-metadata repo
-# so that metadata reference path is always the same
-- task: DownloadBuildArtifacts@0
-  inputs:
-    buildType: 'current'
-    downloadType: 'single'
-    artifactName: ${{ parameters.cleanMetadataFolder }}
-    downloadPath: '$(Build.SourcesDirectory)/msgraph-metadata'
-  condition: and(eq(variables.skipMetadataCaptureAndClean, false), eq(variables.skipOpenApiCaptureAndClean, false))
-  displayName: Downloading metadata from artifacts
