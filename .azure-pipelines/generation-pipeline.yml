@@ -165,7 +165,7 @@ extends:
   parameters:
     sdl:
       sourceRepositoriesToScan:
-        include:
+        exclude:
         - repository: msgraph-sdk-dotnet
         - repository: msgraph-beta-sdk-dotnet
         - repository: msgraph-sdk-php
@@ -183,8 +183,7 @@ extends:
         - repository: msgraph-metadata
         - repository: microsoft-graph-docs
         - repository: kiota
-        - repository: Agents-M365Copilot
-        exclude:
+        - repository: Agents-M365Copilot      
         - repository: 1ESPipelineTemplates
     pool:
       name: Azure-Pipelines-1ESPT-ExDShared
