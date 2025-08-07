@@ -231,7 +231,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'typewriter'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(Build.ArtifactStagingDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/capture-metadata.yml@self
           parameters:
@@ -260,7 +260,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'typewriter'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(Build.ArtifactStagingDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/capture-metadata.yml@self
           parameters:
