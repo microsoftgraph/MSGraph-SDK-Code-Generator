@@ -163,6 +163,29 @@ variables:
 extends:
   template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
+    sdl:
+      sourceRepositoriesToScan:
+        include:
+        - repository: msgraph-sdk-dotnet
+        - repository: msgraph-beta-sdk-dotnet
+        - repository: msgraph-sdk-php
+        - repository: msgraph-beta-sdk-php
+        - repository: msgraph-typescript-typings
+        - repository: msgraph-beta-typescript-typings
+        - repository: msgraph-sdk-java
+        - repository: msgraph-beta-sdk-java
+        - repository: msgraph-sdk-go
+        - repository: msgraph-beta-sdk-go
+        - repository: msgraph-sdk-typescript
+        - repository: msgraph-beta-sdk-typescript
+        - repository: msgraph-sdk-python
+        - repository: msgraph-beta-sdk-python
+        - repository: msgraph-metadata
+        - repository: microsoft-graph-docs
+        - repository: kiota
+        - repository: Agents-M365Copilot
+        exclude:
+        - repository: 1ESPipelineTemplates
     pool:
       name: Azure-Pipelines-1ESPT-ExDShared
       vmImage: ubuntu-latest
