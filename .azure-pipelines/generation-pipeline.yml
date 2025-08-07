@@ -200,7 +200,7 @@ extends:
           outputs:
           - output: pipelineArtifact
             targetPath: '$(Build.ArtifactStagingDirectory)'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanMetadataFolderV1)
           inputs:
           - input: pipelineArtifact
             buildType: 'current'
@@ -229,7 +229,7 @@ extends:
           outputs:
           - output: pipelineArtifact
             targetPath: '$(Build.ArtifactStagingDirectory)'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanMetadataFolderBeta)
           inputs:
           - input: pipelineArtifact
             buildType: 'current'
@@ -283,7 +283,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderV1)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -324,7 +324,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderBeta)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -365,7 +365,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderV1)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -404,7 +404,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderBeta)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -443,7 +443,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderV1)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -484,7 +484,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderBeta)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -525,7 +525,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderBeta)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -566,7 +566,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderV1)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -611,7 +611,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanMetadataFolderV1)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation.yml@self
@@ -648,7 +648,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanMetadataFolderBeta)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation.yml@self
@@ -681,7 +681,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderV1)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -723,7 +723,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderBeta)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -765,7 +765,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderV1)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -805,7 +805,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderBeta)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -845,7 +845,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderBeta)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -888,7 +888,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderBeta)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
@@ -931,7 +931,7 @@ extends:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
-            artifactName: ${{ parameters.cleanMetadataFolder }}
+            artifactName: $(cleanOpenAPIFolderBeta)
             targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
           - input: pipelineArtifact
             buildType: 'current'
