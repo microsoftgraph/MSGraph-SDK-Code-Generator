@@ -307,7 +307,7 @@ extends:
             customArguments: "-b" # Enable the backing store
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             languageSpecificSteps:
-            - template: generation-templates/dotnet-kiota.yml
+            - template: /.azure-pipelines/generation-templates/generation-templates/dotnet-kiota.yml@self
               parameters:
                 repoName: msgraph-sdk-dotnet
 
@@ -348,7 +348,7 @@ extends:
             customArguments: "-b" # Enable the backing store
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             languageSpecificSteps:
-            - template: generation-templates/dotnet-kiota.yml
+            - template: /.azure-pipelines/generation-templates/dotnet-kiota.yml@self
               parameters:
                 repoName: msgraph-beta-sdk-dotnet
 
@@ -388,7 +388,7 @@ extends:
             commitMessagePrefix: "feat(generation): update request builders and models"
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             languageSpecificSteps:
-            - template: generation-templates/go.yml
+            - template: /.azure-pipelines/generation-templates/go.yml@self
               parameters:
                 repoName: msgraph-sdk-go
     - stage: stage_go_beta
@@ -427,7 +427,7 @@ extends:
             commitMessagePrefix: "feat(generation): update request builders and models"
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             languageSpecificSteps:
-            - template: generation-templates/go.yml
+            - template: /.azure-pipelines/generation-templates/go.yml@self
               parameters:
                 repoName: msgraph-beta-sdk-go
     - stage: stage_java_v1_kiota
@@ -467,7 +467,7 @@ extends:
             customArguments: "-b -e '/me' -e '/me/**'" # Exclude /me/** and enable backing store
             commitMessagePrefix: "feat(generation): update request builders and models"
             languageSpecificSteps:
-            - template: generation-templates/java-kiota.yml
+            - template: /.azure-pipelines/generation-templates/java-kiota.yml@self
               parameters:
                 repoName: msgraph-sdk-java
                 namespacePath: com/microsoft/graph
@@ -508,7 +508,7 @@ extends:
             customArguments: "-b -e '/me' -e '/me/**'"  # Exclude /me/** and enable backing store
             commitMessagePrefix: "feat(generation): update request builders and models"
             languageSpecificSteps:
-            - template: generation-templates/java-kiota.yml
+            - template: /.azure-pipelines/generation-templates/java-kiota.yml@self
               parameters:
                 repoName: msgraph-beta-sdk-java
                 namespacePath: com/microsoft/graph/beta
@@ -548,7 +548,7 @@ extends:
             commitMessagePrefix: "feat(generation): update request builders and models"
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             languageSpecificSteps:
-            - template: generation-templates/php-kiota.yml
+            - template: /.azure-pipelines/generation-templates/php-kiota.yml@self
               parameters:
                 repoName: msgraph-beta-sdk-php
             customArguments: "-b -e '/me' -e '/me/**'"  # Exclude /me/** and enable backing store
@@ -589,7 +589,7 @@ extends:
             commitMessagePrefix: "feat(generation): update request builders and models"
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             languageSpecificSteps:
-            - template: generation-templates/php-kiota.yml
+            - template: /.azure-pipelines/generation-templates/php-kiota.yml@self
               parameters:
                 repoName: msgraph-sdk-php
             customArguments: "-b -e '/me' -e '/me/**'"  # Exclude /me/** and enable backing store
@@ -627,7 +627,7 @@ extends:
             cleanMetadataFile: $(cleanMetadataFileV1)
             cleanMetadataFolder: $(cleanMetadataFolderV1)
             languageSpecificSteps:
-            - template: generation-templates/typescript.yml
+            - template: /.azure-pipelines/generation-templates/typescript.yml@self
               parameters:
                 repoName: 'msgraph-typescript-typings'
 
@@ -664,7 +664,7 @@ extends:
             cleanMetadataFile: $(cleanMetadataFileBeta)
             cleanMetadataFolder: $(cleanMetadataFolderBeta)
             languageSpecificSteps:
-            - template: generation-templates/typescript.yml
+            - template: /.azure-pipelines/generation-templates/typescript.yml@self
               parameters:
                 repoName: 'msgraph-beta-typescript-typings'
 
@@ -705,7 +705,7 @@ extends:
             customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and enable backing store
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             languageSpecificSteps:
-            - template: generation-templates/typescript-sdk.yml
+            - template: /.azure-pipelines/generation-templates/typescript-sdk.yml@self
               parameters:
                 repoName: msgraph-sdk-typescript
                 packageName: '@microsoft/msgraph-sdk'
@@ -747,7 +747,7 @@ extends:
             customArguments: "-b -e '/me' -e '/me/**'" # Exclude me and enable backing store
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             languageSpecificSteps:
-            - template: generation-templates/typescript-sdk.yml
+            - template: /.azure-pipelines/generation-templates/typescript-sdk.yml@self
               parameters:
                 repoName: msgraph-beta-sdk-typescript
                 packageName: '@microsoft/msgraph-beta-sdk'
@@ -788,7 +788,7 @@ extends:
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             commitMessagePrefix: "feat(generation): update request builders and models"
             languageSpecificSteps:
-            - template: generation-templates/python.yml
+            - template: /.azure-pipelines/generation-templates/python.yml@self
               parameters:
                 repoName: msgraph-sdk-python
                 baseDirectory: msgraph
@@ -828,7 +828,7 @@ extends:
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             commitMessagePrefix: "feat(generation): update request builders and models"
             languageSpecificSteps:
-            - template: generation-templates/python.yml
+            - template: /.azure-pipelines/generation-templates/python.yml@self
               parameters:
                 repoName: msgraph-beta-sdk-python
                 baseDirectory: msgraph_beta
@@ -871,7 +871,7 @@ extends:
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             pathExclusionArguments: ''
             languageSpecificSteps:
-            - template: generation-templates/dotnet-kiota.yml
+            - template: /.azure-pipelines/generation-templates/dotnet-kiota.yml@self
               parameters:
                 repoName: 'Agents-M365Copilot/dotnet'
                 packageName: Microsoft.Agents.M365Copilot.Beta
@@ -914,7 +914,7 @@ extends:
             commitMessagePrefix: "feat(generation): update request builders and models for python beta"
             pathExclusionArguments: ''
             languageSpecificSteps:
-            - template: generation-templates/python.yml
+            - template: /.azure-pipelines/generation-templates/python.yml@self
               parameters:
                 repoName: 'Agents-M365Copilot/python/packages'
                 baseDirectory: microsoft_agents_m365copilot_beta
@@ -957,7 +957,7 @@ extends:
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             pathExclusionArguments: ''
             languageSpecificSteps:
-            - template: generation-templates/ccs-typescript-sdk.yml
+            - template: /.azure-pipelines/generation-templates/ccs-typescript-sdk.yml@self
               parameters:
                 repoName: 'Agents-M365Copilot/typescript'
                 packageName: '@microsoft/agents-m365copilot-beta'
