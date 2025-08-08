@@ -95,6 +95,19 @@ jobs:
   dependsOn: convert_openapi
   displayName: Publish
   templateContext:
+    inputs:
+    - input: pipelineArtifact
+      artifactName: '${{ parameters.cleanMetadataFolder }}-default'
+      targetPath: '$(Build.SourcesDirectory)/artifacts'
+    - input: pipelineArtifact
+      artifactName: '${{ parameters.cleanMetadataFolder }}-graphexplorer'
+      targetPath: '$(Build.SourcesDirectory)/artifacts'
+    - input: pipelineArtifact
+      artifactName: '${{ parameters.cleanMetadataFolder }}-openapi'
+      targetPath: '$(Build.SourcesDirectory)/artifacts'
+    - input: pipelineArtifact
+      artifactName: '${{ parameters.cleanMetadataFolder }}-powershell_v2'
+      targetPath: '$(Build.SourcesDirectory)/artifacts'
     outputs:
     - output: pipelineArtifact
       targetPath: '$(Build.ArtifactStagingDirectory)/publish'
@@ -108,7 +121,7 @@ jobs:
     # Copy files from the maxtrix artifacts to a single folder
   - task: CopyFiles@2
     inputs:
-      sourceFolder: '$(Build.ArtifactStagingDirectory)'
+      sourceFolder: '$(Build.ArtifactStagingDirectory)/artifacts'
       contents: '**/*.yaml'
       targetFolder: '$(Build.ArtifactStagingDirectory)/publish'
       displayName: Copy artifact metadata
