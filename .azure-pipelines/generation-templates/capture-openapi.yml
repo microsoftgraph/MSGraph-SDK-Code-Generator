@@ -110,7 +110,7 @@ jobs:
       targetPath: '$(Build.SourcesDirectory)/artifacts'
     outputs:
     - output: pipelineArtifact
-      targetPath: '$(Build.ArtifactStagingDirectory)/publish'
+      targetPath: '$(Build.ArtifactStagingDirectory)'
       artifactName: ${{ parameters.cleanMetadataFolder }}
   steps:
   # We only need the scripts
@@ -121,14 +121,14 @@ jobs:
     # Copy files from the maxtrix artifacts to a single folder
   - task: CopyFiles@2
     inputs:
-      sourceFolder: '$(Build.ArtifactStagingDirectory)/artifacts'
+      sourceFolder: '$(Build.SourcesDirectory)/artifacts'
       contents: '**/*.yaml'
-      targetFolder: '$(Build.ArtifactStagingDirectory)/publish'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
       displayName: Copy artifact metadata
     # Copy files from the target path where artifacts should be downloaded
   - task: CopyFiles@2
     inputs:
-      sourceFolder: '$(Build.ArtifactStagingDirectory)/publish'
+      sourceFolder: '$(Build.ArtifactStagingDirectory)'
       contents: '**/*.yaml'
       targetFolder: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}'
     displayName: Copy downloaded metadata
