@@ -42,11 +42,6 @@ jobs:
     matrix: $[ dependencies.get_conversion_settings.outputs['setTargets.targets'] ]
   variables:
     targets: $[ dependencies.get_conversion_settings.outputs['setTargets.targets'] ]
-  templateContext:
-    outputs:
-    - output: pipelineArtifact
-      targetPath: '${{ parameters.outputPath }}'
-      artifactName: ${{ parameters.cleanMetadataFolder }}
   steps:
   - checkout: self
     displayName: checkout generator
@@ -95,9 +90,9 @@ jobs:
   dependsOn: convert_openapi
   displayName: Publish
   templateContext:
-    inputs:
-    - input: pipelineArtifact
-      targetPath: $(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}
+    outputs:
+    - output: pipelineArtifact
+      targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}'
       artifactName: ${{ parameters.cleanMetadataFolder }}
   steps:
   # We only need the scripts
