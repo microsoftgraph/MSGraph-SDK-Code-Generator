@@ -42,6 +42,11 @@ jobs:
     matrix: $[ dependencies.get_conversion_settings.outputs['setTargets.targets'] ]
   variables:
     targets: $[ dependencies.get_conversion_settings.outputs['setTargets.targets'] ]
+  templateContext:
+    outputs:
+    - output: pipelineArtifact
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      artifactName: '${{ parameters.cleanMetadataFolder }}-$(Name)'
   steps:
   - checkout: self
     displayName: checkout generator
@@ -73,6 +78,13 @@ jobs:
     displayName: 'update ${{ parameters.endpoint }} open API description'
     workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
+  # publish metadata as an artifact
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: ${{ parameters.outputPath }}
+      contents: '**/$(Name).yaml'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+    displayName: Copy generated metadata
   - pwsh: |
       ./scripts/run-openapi-validation.ps1 -repoDirectory (Get-Location).Path -version "${{ parameters.endpoint }}" -platformName "$(Name)"
     displayName: ensure that OpenAPI docs can be parsed
@@ -83,23 +95,28 @@ jobs:
   dependsOn: convert_openapi
   displayName: Publish
   templateContext:
+    inputs:
+    # Download all artifacts from matrix jobs
+    - input: pipelineArtifact
+      patterns: '${{ parameters.cleanMetadataFolder }}-*'
+      targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}'
     outputs:
     - output: pipelineArtifact
       targetPath: '$(Build.ArtifactStagingDirectory)'
       artifactName: ${{ parameters.cleanMetadataFolder }}
   steps:
-  # publish metadata as an artifact
-  - task: CopyFiles@2
-    inputs:
-      sourceFolder: ${{ parameters.outputPath }}
-      contents: '**/*.yaml'
-      targetFolder: '$(Build.ArtifactStagingDirectory)'
-    displayName: Copy generated metadata
   # We only need the scripts
   - checkout: self
     displayName: checkout generator
     fetchDepth: 1
     persistCredentials: true
+    # publish metadata as an artifact
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: ${{ parameters.outputPath }}
+      contents: '**/*.yaml'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+    displayName: Copy downloaded metadata
   - template: /.azure-pipelines/generation-templates/checkout-metadata.yml@self
   - template: /.azure-pipelines/generation-templates/set-user-config.yml@self
   - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
