@@ -45,7 +45,7 @@ jobs:
   templateContext:
     outputs:
     - output: pipelineArtifact
-      targetPath: '$(Build.ArtifactStagingDirectory)'
+      targetPath: '$(Build.ArtifactStagingDirectory)/$(Name)'
       artifactName: '${{ parameters.cleanMetadataFolder }}-$(Name)'
   steps:
   - checkout: self
@@ -95,14 +95,9 @@ jobs:
   dependsOn: convert_openapi
   displayName: Publish
   templateContext:
-    inputs:
-    # Download all artifacts from matrix jobs
-    - input: pipelineArtifact
-      patterns: '${{ parameters.cleanMetadataFolder }}-*'
-      targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}'
     outputs:
     - output: pipelineArtifact
-      targetPath: '$(Build.ArtifactStagingDirectory)'
+      targetPath: '$(Build.ArtifactStagingDirectory)/publish'
       artifactName: ${{ parameters.cleanMetadataFolder }}
   steps:
   # We only need the scripts
@@ -110,6 +105,21 @@ jobs:
     displayName: checkout generator
     fetchDepth: 1
     persistCredentials: true
+    # Copy files from the maxtrix artifacts to a single folder
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.ArtifactStagingDirectory)'
+      contents: '**/*.yaml'
+      targetFolder: '$(Build.ArtifactStagingDirectory)/publish'
+      displayName: Copy artifact metadata
+    # Copy files from the target path where artifacts should be downloaded
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.ArtifactStagingDirectory)/publish'
+      contents: '**/*.yaml'
+      targetFolder: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}'
+    displayName: Copy downloaded metadata
+
     # publish metadata as an artifact
   - task: CopyFiles@2
     inputs:
