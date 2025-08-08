@@ -83,7 +83,7 @@ jobs:
     inputs:
       sourceFolder: ${{ parameters.outputPath }}
       contents: '**/$(Name).yaml'
-      targetFolder: '$(Build.ArtifactStagingDirectory)'
+      targetFolder: '$(Build.ArtifactStagingDirectory)/$(Name)'
     displayName: Copy generated metadata
   - pwsh: |
       ./scripts/run-openapi-validation.ps1 -repoDirectory (Get-Location).Path -version "${{ parameters.endpoint }}" -platformName "$(Name)"
