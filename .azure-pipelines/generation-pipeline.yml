@@ -310,7 +310,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderV1)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderV1)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -351,7 +351,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderBeta)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderBeta)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -392,7 +392,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderV1)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderV1)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -431,7 +431,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderBeta)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderBeta)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -470,7 +470,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderV1)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderV1)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -511,7 +511,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderBeta)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderBeta)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -552,7 +552,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderBeta)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderBeta)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -593,7 +593,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderV1)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderV1)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -638,7 +638,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanMetadataFolderV1)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanMetadataFolderBeta)'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanMetadataFolderV1)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation.yml@self
           parameters:
@@ -708,7 +708,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderV1)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderV1)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -750,7 +750,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderBeta)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderBeta)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -792,7 +792,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderV1)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderV1)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -832,7 +832,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderBeta)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderBeta)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -872,7 +872,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderBeta)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderBeta)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -915,7 +915,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderBeta)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderBeta)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
@@ -958,7 +958,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanOpenAPIFolderBeta)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderBeta)'
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
