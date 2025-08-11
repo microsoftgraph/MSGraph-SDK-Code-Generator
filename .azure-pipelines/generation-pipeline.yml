@@ -675,7 +675,7 @@ extends:
             displayName: 'Downloading metadata from artifacts'
             buildType: 'current'
             artifactName: $(cleanMetadataFolderBeta)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata'
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanMetadataFolderBeta)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation.yml@self
           parameters:
