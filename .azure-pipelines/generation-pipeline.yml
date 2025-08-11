@@ -314,7 +314,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -355,7 +355,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -396,7 +396,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -435,7 +435,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -474,7 +474,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -515,7 +515,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -556,7 +556,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -597,7 +597,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -712,7 +712,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -754,7 +754,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -796,7 +796,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -836,7 +836,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -876,7 +876,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -919,7 +919,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
@@ -962,7 +962,7 @@ extends:
           - input: pipelineArtifact
             buildType: 'current'
             artifactName: 'kiota'
-            targetPath: '$(Build.SourcesDirectory)'
+            targetPath: '$(kiotaDirectory)'
         steps:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
