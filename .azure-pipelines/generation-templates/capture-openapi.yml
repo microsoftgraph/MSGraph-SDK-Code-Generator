@@ -43,8 +43,6 @@ jobs:
   variables:
     targets: $[ dependencies.get_conversion_settings.outputs['setTargets.targets'] ]
   templateContext:
-    type: releaseJob
-    isProduction: true
     outputs:
     - output: pipelineArtifact
       targetPath: '$(Build.ArtifactStagingDirectory)/$(Name)'
@@ -97,8 +95,6 @@ jobs:
   dependsOn: convert_openapi
   displayName: Publish
   templateContext:
-    type: releaseJob
-    isProduction: true
     inputs:
     - input: pipelineArtifact
       artifactName: '${{ parameters.cleanMetadataFolder }}-default'

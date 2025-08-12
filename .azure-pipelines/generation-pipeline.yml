@@ -195,8 +195,6 @@ extends:
       jobs:
       - job: build_and_publish_typewriter
         templateContext:
-          type: releaseJob
-          isProduction: true
           outputs:
           - output: pipelineArtifact
             targetPath: '$(Build.ArtifactStagingDirectory)'
@@ -208,8 +206,6 @@ extends:
       jobs:
       - job: build_and_publish_kiota
         templateContext:
-          type: releaseJob
-          isProduction: true
           outputs:
           - output: pipelineArtifact
             targetPath: '$(Build.ArtifactStagingDirectory)'
@@ -228,8 +224,6 @@ extends:
       jobs:
       - job: v1_metadata
         templateContext:
-          type: releaseJob
-          isProduction: true
           outputs:
           - output: pipelineArtifact
             targetPath: '$(Build.ArtifactStagingDirectory)'
@@ -259,8 +253,6 @@ extends:
       jobs:
       - job: beta_metadata
         templateContext:
-          type: releaseJob
-          isProduction: true
           outputs:
           - output: pipelineArtifact
             targetPath: '$(Build.ArtifactStagingDirectory)'
@@ -314,8 +306,6 @@ extends:
       jobs:
       - job: csharp_v1_kiota
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -357,8 +347,6 @@ extends:
       jobs:
       - job: csharp_beta_kiota
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -400,8 +388,6 @@ extends:
       jobs:
       - job: go_v1
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -441,8 +427,6 @@ extends:
       jobs:
       - job: go_beta
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -482,8 +466,6 @@ extends:
       jobs:
       - job: java_v1_kiota
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -525,8 +507,6 @@ extends:
       jobs:
       - job: java_beta_kiota
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -568,8 +548,6 @@ extends:
       jobs:
       - job: php_beta_kiota
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -611,8 +589,6 @@ extends:
       jobs:
       - job: php_v1_kiota
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -654,8 +630,6 @@ extends:
       jobs:
       - job: typescript_v1
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             buildType: 'current'
@@ -693,8 +667,6 @@ extends:
       jobs:
       - job: typescript_beta
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             buildType: 'current'
@@ -732,8 +704,6 @@ extends:
       jobs:
       - job: typescript_sdk_v1
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -776,8 +746,6 @@ extends:
       jobs:
       - job: typescript_sdk_beta
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -820,8 +788,6 @@ extends:
       jobs:
       - job: python_v1
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -862,8 +828,6 @@ extends:
       jobs:
       - job: python_beta
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -904,8 +868,6 @@ extends:
       jobs:
       - job: csharp_beta_ccs
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -949,8 +911,6 @@ extends:
       jobs:
       - job: python_beta_ccs
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
@@ -994,8 +954,6 @@ extends:
       jobs:
       - job: typescript_beta_ccs
         templateContext:
-          type: releaseJob
-          isProduction: true
           inputs:
           - input: pipelineArtifact
             displayName: 'Downloading metadata from artifacts'
