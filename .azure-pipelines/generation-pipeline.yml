@@ -165,6 +165,8 @@ extends:
   parameters:
     sdl:
       sourceRepositoriesToScan:
+        include:
+        - repository: kiota
         exclude:
         - repository: msgraph-sdk-dotnet
         - repository: msgraph-beta-sdk-dotnet
@@ -182,7 +184,6 @@ extends:
         - repository: msgraph-beta-sdk-python
         - repository: msgraph-metadata
         - repository: microsoft-graph-docs
-        - repository: kiota
         - repository: Agents-M365Copilot      
         - repository: 1ESPipelineTemplates
     pool:
