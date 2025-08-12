@@ -1,5 +1,6 @@
 # Copyright (c) Microsoft Corporation. All Rights Reserved. Licensed under the MIT License. See License in the project root for license information.
 # The following template creates multiple artifacts from a matrix, this is the intended behavior to follow the same workflow before the governance migration
+
 # For more information please refer to: https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/pull/1377#discussion_r2271024012
 parameters:
 - name: 'endpoint'
