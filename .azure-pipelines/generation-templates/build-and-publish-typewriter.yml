@@ -1,6 +1,5 @@
 steps:
-- template: use-dotnet-sdk.yml
-
+- template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
 - checkout: self
   displayName: checkout generator
   fetchDepth: 1
@@ -16,8 +15,3 @@ steps:
     contents: '**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: Copy Typewriter executable
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: typewriter
