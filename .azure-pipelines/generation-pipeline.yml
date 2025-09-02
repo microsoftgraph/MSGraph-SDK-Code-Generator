@@ -937,7 +937,7 @@ extends:
             languageSpecificSteps:
             - template: /.azure-pipelines/generation-templates/python.yml@self
               parameters:
-                repoName: 'Agents-M365Copilot/python/packages'
+                repoName: 'Agents-M365Copilot/python/packages/microsoft_agents_m365copilot_beta'
                 baseDirectory: microsoft_agents_m365copilot_beta
     - stage: stage_ccs_typescript_beta
       dependsOn:
