@@ -1,5 +1,5 @@
 steps:
-- template: use-dotnet-sdk.yml
+- template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
   parameters:
     version: "9.x" #kiota uses a net9 target
 
@@ -16,8 +16,3 @@ steps:
     contents: '**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: Copy Kiota executable
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: kiota
