@@ -57,11 +57,9 @@ parameters:
   default: "-e '/copilot' -e '/copilot/**'"
 
 steps:
-- template: set-up-for-generation-kiota.yml
+- template: /.azure-pipelines/generation-templates/set-up-for-generation-kiota.yml@self
   parameters:
     cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
-    downloadSteps:
-    - template: download-kiota.yml
 
 - checkout: ${{ parameters.repoName }}
   displayName: 'checkout ${{ parameters.repoName }}'
@@ -89,8 +87,16 @@ steps:
     RepoDirectory: $(Build.SourcesDirectory)/${{ parameters.repoName }}
     BranchName: ${{ parameters.branchName }}
   workingDirectory: ${{ parameters.repoName }}
-
-- bash: '$(kiotaDirectory)/kiota generate --openapi $(Build.SourcesDirectory)/msgraph-metadata/${{ parameters.cleanMetadataFolder }}/openapi.yaml --language ${{ parameters.language }} -o $(kiotaDirectory)/output -n ${{ parameters.targetNamespace }} -c ${{ parameters.targetClassName }} ${{ parameters.customArguments }} ${{ parameters.pathExclusionArguments }}'
+- pwsh: |
+    Write-Host "=== Files in Kiota Directory ==="
+    Write-Host "Kiota Directory: $(kiotaDirectory)"
+    if (Test-Path "$(kiotaDirectory)") {
+        Get-ChildItem "$(kiotaDirectory)" -Recurse | Format-Table Name, FullName, Length, LastWriteTime -AutoSize
+    } else {
+        Write-Warning "Kiota directory not found: $(kiotaDirectory)"
+    }
+  displayName: 'List files in Kiota directory'
+- pwsh: '& "$(kiotaDirectory)/kiota.exe" generate --openapi "$(Build.SourcesDirectory)/msgraph-metadata/${{ parameters.cleanMetadataFolder }}/openapi.yaml" --language "${{ parameters.language }}" -o "$(kiotaDirectory)/output" -n "${{ parameters.targetNamespace }}" -c "${{ parameters.targetClassName }}" ${{ parameters.customArguments }} ${{ parameters.pathExclusionArguments }}'
   displayName: 'Run Kiota for ${{ parameters.language }} ${{ parameters.version }}'
   env:
     KIOTA_GENERATION:EXPORTPUBLICAPI: ${{ parameters.exportDom }}
