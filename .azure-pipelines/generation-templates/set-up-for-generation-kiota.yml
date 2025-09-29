@@ -1,19 +1,12 @@
 parameters:
-  - name: cleanMetadataFolder
-    type: string
-  - name: downloadSteps
-    type: stepList
-    default:
-    - pwsh: |
-        Write-Error "No download step is provided"
+- name: cleanMetadataFolder
+  type: string
 
 steps:
-- template: set-user-config.yml
-- template: use-dotnet-sdk.yml
+- template: /.azure-pipelines/generation-templates/set-user-config.yml@self
+- template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
   parameters:
     version: "9.x" #kiota uses a net9 target
-
-- ${{ parameters.downloadSteps }}
 
 # checkout metadata repo if capture and clean step is skipped
 - checkout: msgraph-metadata
@@ -30,16 +23,3 @@ steps:
     Move-Item -Path $(Build.SourcesDirectory)/msgraph-metadata/openapi/beta/openapi.yaml -Destination $(Build.SourcesDirectory)/msgraph-metadata/clean_beta_openapi/
   displayName: Move metadata to expected location
   condition: or(eq(variables.skipMetadataCaptureAndClean, true), eq(variables.skipOpenApiCaptureAndClean, true))
-
-# if capture and clean step is not skipped
-# then download the artifact from capture and clean steps
-# follow the same folder structure as msgraph-metadata repo
-# so that metadata reference path is always the same
-- task: DownloadBuildArtifacts@0
-  inputs:
-    buildType: 'current'
-    downloadType: 'single'
-    artifactName: ${{ parameters.cleanMetadataFolder }}
-    downloadPath: '$(Build.SourcesDirectory)/msgraph-metadata'
-  condition: and(eq(variables.skipMetadataCaptureAndClean, false), eq(variables.skipOpenApiCaptureAndClean, false))
-  displayName: Downloading metadata from artifacts

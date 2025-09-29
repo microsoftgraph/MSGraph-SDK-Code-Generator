@@ -34,12 +34,9 @@ parameters:
   displayName: Generate PR after publish changes?
 
 steps:
-- template: set-up-for-generation.yml
+- template: /.azure-pipelines/generation-templates/set-up-for-generation.yml@self
   parameters:
     cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
-    downloadSteps:
-    - template: download-typewriter.yml
-
 - checkout: ${{ parameters.repoName }}
   displayName: 'checkout ${{ parameters.repoName }}'
   fetchDepth: 1
@@ -67,7 +64,7 @@ steps:
     TypewriterExecutable: $(typewriterExecutable)
     TypewriterDirectory: $(typewriterDirectory)
     Language: ${{ parameters.language }}
-    Endpoint:  ${{ parameters.version }}
+    Endpoint: ${{ parameters.version }}
   displayName: 'Run Typewriter for ${{ parameters.language }} ${{ parameters.version }}'
 
 - ${{ parameters.languageSpecificSteps }}
