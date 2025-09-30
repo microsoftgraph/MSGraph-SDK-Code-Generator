@@ -9,8 +9,16 @@ if (($env:GeneratePullRequest -eq $False)) { # Skip CI if manually running this 
     return;
 }
 
+# Special case for beta typings as it uses a non-conforming preview versioning.
+if ($env:RepoName.Contains("msgraph-beta-typescript-typings"))
+{
+    $title = "feat: generated $version models and request builders"    
+}
+else {
+    $title = "Generated $version models and request builders"
+}
+
 $version = $env:Version
-$title = "Generated $version models and request builders"
 $body = ":bangbang:**_Important_**:bangbang: <br> Check for unexpected deletions or changes in this PR and ensure relevant CI checks are passing. <br><br> **Note:** This pull request was automatically created by Azure pipelines."
 $baseBranchParameter = ""
 
