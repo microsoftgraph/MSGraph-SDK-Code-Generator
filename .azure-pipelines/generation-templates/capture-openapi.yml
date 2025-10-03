@@ -1,9 +1,7 @@
-# Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
-# contains an end to end validation pipeline using C# compilation tests for staging beta metadata
+# Copyright (c) Microsoft Corporation. All Rights Reserved. Licensed under the MIT License. See License in the project root for license information.
+# The following template creates multiple artifacts from a matrix, this is the intended behavior to follow the same workflow before the governance migration
 
-# capture-metadata.yml will result in the capture and cleaning of the metadata
-# with the artifacts posted to GitHub.
-
+# For more information please refer to: https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/pull/1377#discussion_r2271024012
 parameters:
 - name: 'endpoint'
   type: string
@@ -13,7 +11,6 @@ parameters:
   default: $(System.ArtifactsDirectory)
 - name: 'cleanMetadataFolder'
   type: string
-
 jobs:
 - job: get_conversion_settings
   displayName: "Get conversion settings"
@@ -23,8 +20,7 @@ jobs:
     fetchDepth: 1
     persistCredentials: true
 
-  - template: checkout-metadata.yml
-
+  - template: /.azure-pipelines/generation-templates/checkout-metadata.yml@self
   - pwsh: |
       $dirPath = "./conversion-settings"
       $endpoint = "${{ parameters.endpoint }}"
@@ -41,10 +37,8 @@ jobs:
       Write-Host "##vso[task.setvariable variable=targets;isOutput=true]$json"
     name: setTargets
     workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
-
   - script: echo $(setTargets.targets)
     displayName: "Print settings"
-
 - job: convert_openapi
   dependsOn: get_conversion_settings
   displayName: Convert
@@ -52,27 +46,30 @@ jobs:
     matrix: $[ dependencies.get_conversion_settings.outputs['setTargets.targets'] ]
   variables:
     targets: $[ dependencies.get_conversion_settings.outputs['setTargets.targets'] ]
-
+  templateContext:
+    outputs:
+    - output: pipelineArtifact
+      targetPath: '$(Build.ArtifactStagingDirectory)/$(Name)'
+      artifactName: '${{ parameters.cleanMetadataFolder }}-$(Name)'
   steps:
-  # We only need the scripts
   - checkout: self
     displayName: checkout generator
     fetchDepth: 1
     persistCredentials: true
 
-  - template: checkout-metadata.yml
+  - template: /.azure-pipelines/generation-templates/checkout-metadata.yml@self
 
   # required for the hidi to run
-  - template: use-dotnet-sdk.yml
+  - template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
     parameters:
       version: '8.x'
 
-  # required for the hidi installation validation
-  - template: use-dotnet-sdk.yml
+# required for the hidi installation validation
+  - template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
     parameters:
       version: '9.x'
 
-  - pwsh: dotnet tool install --global Microsoft.OpenApi.Hidi --version 1.6.24 
+  - pwsh: dotnet tool install --global Microsoft.OpenApi.Hidi --version 1.6.24
     displayName: install hidi
 
   - pwsh: |
@@ -90,14 +87,8 @@ jobs:
     inputs:
       sourceFolder: ${{ parameters.outputPath }}
       contents: '**/$(Name).yaml'
-      targetFolder: '$(Build.ArtifactStagingDirectory)'
+      targetFolder: '$(Build.ArtifactStagingDirectory)/$(Name)'
     displayName: Copy generated metadata
-
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathToPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: ${{ parameters.cleanMetadataFolder }}
-
   - pwsh: |
       ./scripts/run-openapi-validation.ps1 -repoDirectory (Get-Location).Path -version "${{ parameters.endpoint }}" -platformName "$(Name)"
     displayName: ensure that OpenAPI docs can be parsed
@@ -107,21 +98,55 @@ jobs:
 - job: publish_openapi
   dependsOn: convert_openapi
   displayName: Publish
+  ## If there's new settings added please add them here too
+  templateContext:
+    inputs:
+    - input: pipelineArtifact
+      artifactName: '${{ parameters.cleanMetadataFolder }}-default'
+      targetPath: '$(Build.SourcesDirectory)/artifacts'
+    - input: pipelineArtifact
+      artifactName: '${{ parameters.cleanMetadataFolder }}-graphexplorer'
+      targetPath: '$(Build.SourcesDirectory)/artifacts'
+    - input: pipelineArtifact
+      artifactName: '${{ parameters.cleanMetadataFolder }}-openapi'
+      targetPath: '$(Build.SourcesDirectory)/artifacts'
+    - input: pipelineArtifact
+      artifactName: '${{ parameters.cleanMetadataFolder }}-powershell_v2'
+      targetPath: '$(Build.SourcesDirectory)/artifacts'
+    outputs:
+    - output: pipelineArtifact
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      artifactName: ${{ parameters.cleanMetadataFolder }}
   steps:
   # We only need the scripts
   - checkout: self
     displayName: checkout generator
     fetchDepth: 1
     persistCredentials: true
-
-  - template: checkout-metadata.yml
-  - template: set-user-config.yml
-  - task: DownloadPipelineArtifact@2
+    # Copy files from the maxtrix artifacts to a single folder
+  - task: CopyFiles@2
     inputs:
-      path: $(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}
-      artifact: ${{ parameters.cleanMetadataFolder }}
+      sourceFolder: '$(Build.SourcesDirectory)/artifacts'
+      contents: '**/*.yaml'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+      displayName: Copy artifact metadata
+    # Copy files from the target path where artifacts should be downloaded
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.ArtifactStagingDirectory)'
+      contents: '**/*.yaml'
+      targetFolder: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}'
+    displayName: Copy downloaded metadata
 
-  # Checkin clean metadata into metadata repo or make it an artifact.
+    # publish metadata as an artifact
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: ${{ parameters.outputPath }}
+      contents: '**/*.yaml'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+    displayName: Copy downloaded metadata
+  - template: /.azure-pipelines/generation-templates/checkout-metadata.yml@self
+  - template: /.azure-pipelines/generation-templates/set-user-config.yml@self
   - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
 
     displayName: push clean ${{ parameters.endpoint }} OpenAPI description to msgraph-metadata repo
