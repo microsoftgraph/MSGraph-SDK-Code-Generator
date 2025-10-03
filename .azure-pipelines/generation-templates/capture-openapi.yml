@@ -69,7 +69,7 @@ jobs:
     parameters:
       version: '9.x'
 
-  - pwsh: dotnet tool install --global Microsoft.OpenApi.Hidi --version 1.6.24
+  - pwsh: dotnet tool install --global Microsoft.OpenApi.Hidi --version 1.6.24 
     displayName: install hidi
 
   - pwsh: |
