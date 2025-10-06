@@ -3,6 +3,12 @@
 trigger: none
 pr: none
 schedules:
+
+# Minute: 0 → At the start of the hour.
+# Hour: 10 → 10:00 AM UTC.
+# Day of Month: 1-7,15-21 → On the 1st–7th and 15th–21st.
+# Month: * → Every month.
+# Weekday: TUE → Only on Tuesdays.
 - cron: '0 10 1-7,15-21 * TUE'
   displayName: Bi-weekly Tuesday generation (1st and 3rd Tuesday, PST 2am, EST 5am, EAT 3pm)
   branches:
