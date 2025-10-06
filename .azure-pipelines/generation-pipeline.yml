@@ -9,6 +9,7 @@ schedules:
 # Day of Month: 1-7,15-21 → On the 1st–7th and 15th–21st.
 # Month: * → Every month.
 # Weekday: TUE → Only on Tuesdays.
+# This cron will run bi-weekly unless the month has 5 Tuesdays, in which case it will skip the 5th Tuesday (won't be bi-weekly that month).
 - cron: '0 10 1-7,15-21 * TUE'
   displayName: Bi-weekly Tuesday generation (1st and 3rd Tuesday, PST 2am, EST 5am, EAT 3pm)
   branches:
