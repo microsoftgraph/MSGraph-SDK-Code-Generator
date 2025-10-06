@@ -3,8 +3,8 @@
 trigger: none
 pr: none
 schedules:
-- cron: '0 10 * * TUE'
-  displayName: Tuesday generation (PST 2am, EST 5am, EAT 3pm)
+- cron: '0 10 1-7,15-21 * TUE'
+  displayName: Bi-weekly Tuesday generation (1st and 3rd Tuesday, PST 2am, EST 5am, EAT 3pm)
   branches:
     include:
     - main
