@@ -185,5 +185,6 @@ jobs:
       OverrideSkipCI: false
       RepoName: 'microsoftgraph/msgraph-metadata'
       ScriptsDirectory: $(scriptsDirectory)
+      # Version is intentionally left empty for OpenAPI PRs as versioning is not applicable in this context.
       Version: ''
     workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'
