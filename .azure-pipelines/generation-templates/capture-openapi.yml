@@ -155,18 +155,18 @@ jobs:
       targetFolder: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}'
     displayName: Copy OpenAPI files to local msgraph-metadata repo
 
-  # Push changes to msgraph-metadata repo
+  # Push changes to msgraph-metadata repo and create PR
   - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
-    displayName: push clean ${{ parameters.endpoint }} OpenAPI description to msgraph-metadata repo
+    displayName: PR for ${{ parameters.endpoint }} OpenAPI description in msgraph-metadata repo
     env:
-      CreatePR: True      
+      CreatePR: True
       EndpointVersion: ${{ parameters.endpoint }}
       PublishChanges: $(publishChanges)
     workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'
     enabled: true
 
-  # Create PR - note that this PR is not used for gating. It's just for discovery purposes. Library generation PRs will still
-  # be created based on the OpenAPI files.
+  # Create PR - note that this PR is not used for gating. It's just for discovery purposes. 
+  # Library generation PRs will still be created based on the OpenAPI files.
 
   - task: AzureKeyVault@2
     displayName: "Azure Key Vault: Get Secrets"
