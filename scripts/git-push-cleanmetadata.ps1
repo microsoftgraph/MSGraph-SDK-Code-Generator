@@ -11,7 +11,7 @@
 
 if ($env:PublishChanges -eq $False)
 {
-    Write-Host "Not publishing changes per the run parameter!" -ForegroundColor Red
+    Write-Host "Not publishing changes per the run parameter!" -ForegroundColor Yellow
     return;
 }
 
