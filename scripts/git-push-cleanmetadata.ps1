@@ -2,6 +2,10 @@
 # Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the 
 # project root for license information.
 
+# Referenced by:
+# capture-metadata.yml
+# capture-openapi.yml
+
 # This script stashes any changes, checks out the latest master branch, applies the stashed changes, commits, and 
 # pushes the changes back to the remote repository.
 
@@ -31,6 +35,12 @@ git stash pop | Write-Host -ForegroundColor Yellow
 Write-Host "`nGet status:" -ForegroundColor Green
 git status | Write-Host -ForegroundColor Yellow
 
+if ($env:CreatePR -eq $True)
+{
+    Write-Host "`nCreate branch: $env:BUILD_BUILDID/updateOpenAPI" -ForegroundColor Green
+    git checkout -B $env:BUILD_BUILDID/updateOpenAPI | Write-Host -ForegroundColor Yellow
+}
+
 Write-Host "`nStaging clean $env:EndpointVersion metadata files....." -ForegroundColor Green
 git add . | Write-Host -ForegroundColor Yellow
 
@@ -51,11 +61,21 @@ else
 Write-Host "`nGet status:" -ForegroundColor Green
 git status | Write-Host -ForegroundColor Yellow
 
-Write-Host "`nRunning: git pull origin master --rebase..." -ForegroundColor Green
-# sync branch before pushing
-# this is especially important while running v1 and beta in parallel
-# and one process goes out of sync because of the other's check-in
-git pull origin master --rebase | Write-Host -ForegroundColor Yellow
+if ($env:CreatePR -eq $True)
+{
+    Write-Host "`nPushing branch for PR creation" -ForegroundColor Green
 
-Write-Host "`nRunning: git push --set-upstream origin master ..." -ForegroundColor Green
-git push --set-upstream origin master | Write-Host -ForegroundColor Yellow
+    Write-Host "`ngit push --set-upstream origin $env:BUILD_BUILDID/updateOpenAPI:" -ForegroundColor Green
+    git push --set-upstream origin $env:BUILD_BUILDID/updateOpenAPI | Write-Host -ForegroundColor Yellow
+}
+else # original behavior: push to master
+{
+    Write-Host "`nRunning: git pull origin master --rebase..." -ForegroundColor Green
+    # sync branch before pushing
+    # this is especially important while running v1 and beta in parallel
+    # and one process goes out of sync because of the other's check-in
+    git pull origin master --rebase | Write-Host -ForegroundColor Yellow
+
+    Write-Host "`nRunning: git push --set-upstream origin master ..." -ForegroundColor Green
+    git push --set-upstream origin master | Write-Host -ForegroundColor Yellow
+}
