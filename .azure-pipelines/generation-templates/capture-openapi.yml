@@ -66,12 +66,11 @@ jobs:
   - template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
     parameters:
       version: '8.x'
-    displayName: use dotnet sdk 8.x
+
   # required for the hidi installation validation
   - template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
     parameters:
       version: '9.x'
-    displayName: use dotnet sdk 9.x
 
   - pwsh: dotnet tool install --global Microsoft.OpenApi.Hidi --version 1.6.24
     displayName: install hidi
