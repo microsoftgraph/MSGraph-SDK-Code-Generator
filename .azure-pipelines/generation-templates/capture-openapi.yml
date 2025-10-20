@@ -152,9 +152,8 @@ jobs:
       sourceFolder: '$(Build.ArtifactStagingDirectory)'
       contents: '**/*.yaml'
       targetFolder: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}'
+      overwrite: true
     displayName: Copy OpenAPI files to local msgraph-metadata repo
-    overwrite: true
-
 
   # Push changes to msgraph-metadata repo and create PR
   - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
