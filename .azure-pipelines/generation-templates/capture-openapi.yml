@@ -76,17 +76,17 @@ jobs:
     displayName: install hidi
 
   - pwsh: |
-      git fetch origin master | Write-Host -ForegroundColor Yellow
-      git switch master | Write-Host -ForegroundColor Yellow
+      git fetch origin master
+      git switch master
     displayName: ensure the generation happens from master latest
     workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
   - pwsh: |
-      Write-Host "`nGet status before generation:" -ForegroundColor Green
-      git status | Write-Host -ForegroundColor Yellow
+      Write-Host "`ngit status before generation:"
+      git status
       $(scriptsDirectory)/generate-open-api.ps1 -endpointVersion ${{ parameters.endpoint }} -settings "$(conversionSettingsDirectory)/$(File)" -platformName "$(Name)"
-      Write-Host "`nGet status after generation:" -ForegroundColor Green
-      git status | Write-Host -ForegroundColor Yellow
+      Write-Host "`ngit status after generation:"
+      git status
     displayName: 'generate ${{ parameters.endpoint }} open API description'
     workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
@@ -153,6 +153,8 @@ jobs:
       contents: '**/*.yaml'
       targetFolder: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}'
     displayName: Copy OpenAPI files to local msgraph-metadata repo
+    overwrite: true
+
 
   # Push changes to msgraph-metadata repo and create PR
   - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
@@ -163,6 +165,7 @@ jobs:
       PublishChanges: $(publishChanges)
     workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'
     enabled: true
+    
 
   # Create PR - note that this PR is not used for gating. It's just for discovery purposes. 
   # Library generation PRs will still be created based on the OpenAPI files.

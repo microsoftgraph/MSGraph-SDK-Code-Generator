@@ -11,71 +11,71 @@
 
 if ($env:PublishChanges -eq $False)
 {
-    Write-Host "Not publishing changes per the run parameter!" -ForegroundColor Yellow
+    Write-Host "Not publishing changes per the run parameter!"
     return;
 }
 
-Write-Host "`nGet status:" -ForegroundColor Green
-git status | Write-Host -ForegroundColor Yellow
+Write-Host "`ngit status:"
+git status | Write-Host
 
-Write-Host "`nStash the update metadata files.....`nRunning: git stash" -ForegroundColor Green
-git stash | Write-Host -ForegroundColor Yellow
+Write-Host "`nStash the update metadata files.....`nRunning: git stash"
+git stash | Write-Host
 
-Write-Host "`nFetching latest master branch to ensure we are up to date..." -ForegroundColor Green
-git fetch origin master | Write-Host -ForegroundColor Yellow
+Write-Host "`nFetching latest master branch to ensure we are up to date..."
+git fetch origin master | Write-Host
 # checkout master to move from detached HEAD mode
-git switch master | Write-Host -ForegroundColor Yellow
+git switch master | Write-Host
 
-Write-Host "`nGet status:" -ForegroundColor Green
-git status | Write-Host -ForegroundColor Yellow
+Write-Host "`ngit status:"
+git status | Write-Host
 
-Write-Host "`nApply stashed metadata files...`nRunning: git stash pop" -ForegroundColor Green
-git stash pop | Write-Host -ForegroundColor Yellow
+Write-Host "`nApply stashed metadata files...`nRunning: git stash pop"
+git stash pop | Write-Host
 
-Write-Host "`nGet status:" -ForegroundColor Green
-git status | Write-Host -ForegroundColor Yellow
+Write-Host "`ngit status:"
+git status | Write-Host
 
 if ($env:CreatePR -eq $True)
 {
-    Write-Host "`nCreate branch: $env:BUILD_BUILDID/updateOpenAPI" -ForegroundColor Green
-    git checkout -B $env:BUILD_BUILDID/updateOpenAPI | Write-Host -ForegroundColor Yellow
+    Write-Host "`nCreate branch: $env:BUILD_BUILDID/updateOpenAPI"
+    git checkout -B $env:BUILD_BUILDID/updateOpenAPI | Write-Host
 }
 
-Write-Host "`nStaging clean $env:EndpointVersion metadata files....." -ForegroundColor Green
-git add . | Write-Host -ForegroundColor Yellow
+Write-Host "`nStaging clean $env:EndpointVersion metadata files.....`nRunning: git add ."
+git add . | Write-Host
 
-Write-Host "`nGet status:" -ForegroundColor Green
-git status | Write-Host -ForegroundColor Yellow
+Write-Host "`ngit status:"
+git status | Write-Host
 
-Write-Host "`nAttempting to commit clean $env:EndpointVersion metadata files....." -ForegroundColor Green
+Write-Host "`nAttempting to commit clean $env:EndpointVersion metadata files....."
 
 if ($env:BUILD_REASON -eq 'Manual') # Skip CI if manually running this pipeline.
 {
-    git commit -m "Update clean metadata file with $env:BUILD_BUILDID [skip ci]" | Write-Host -ForegroundColor Yellow
+    git commit -m "Update clean metadata file with $env:BUILD_BUILDID [skip ci]" | Write-Host
 }
 else
 {
-    git commit -m "Update clean metadata file with $env:BUILD_BUILDID" | Write-Host -ForegroundColor Yellow
+    git commit -m "Update clean metadata file with $env:BUILD_BUILDID" | Write-Host
 }
 
-Write-Host "`nGet status:" -ForegroundColor Green
-git status | Write-Host -ForegroundColor Yellow
+Write-Host "`ngit status:"
+git status | Write-Host
 
 if ($env:CreatePR -eq $True)
 {
-    Write-Host "`nPushing branch for PR creation" -ForegroundColor Green
+    Write-Host "`nPushing branch for PR creation"
 
-    Write-Host "`ngit push --set-upstream origin $env:BUILD_BUILDID/updateOpenAPI:" -ForegroundColor Green
-    git push --set-upstream origin $env:BUILD_BUILDID/updateOpenAPI | Write-Host -ForegroundColor Yellow
+    Write-Host "`ngit push --set-upstream origin $env:BUILD_BUILDID/updateOpenAPI:"
+    git push --set-upstream origin $env:BUILD_BUILDID/updateOpenAPI | Write-Host
 }
 else # original behavior: push to master
 {
-    Write-Host "`nRunning: git pull origin master --rebase..." -ForegroundColor Green
+    Write-Host "`nRunning: git pull origin master --rebase..."
     # sync branch before pushing
     # this is especially important while running v1 and beta in parallel
     # and one process goes out of sync because of the other's check-in
-    git pull origin master --rebase | Write-Host -ForegroundColor Yellow
+    git pull origin master --rebase | Write-Host
 
-    Write-Host "`nRunning: git push --set-upstream origin master ..." -ForegroundColor Green
-    git push --set-upstream origin master | Write-Host -ForegroundColor Yellow
+    Write-Host "`nRunning: git push --set-upstream origin master ..."
+    git push --set-upstream origin master | Write-Host
 }
