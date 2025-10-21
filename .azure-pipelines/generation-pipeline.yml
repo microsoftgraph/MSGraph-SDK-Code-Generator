@@ -657,7 +657,6 @@ extends:
       dependsOn:
       - stage_build_and_publish_typewriter
       - stage_v1_metadata
-      - open_api_approval
       condition: |
         and
         (
@@ -695,7 +694,6 @@ extends:
       dependsOn:
       - stage_build_and_publish_typewriter
       - stage_beta_metadata
-      - open_api_approval
       condition: |
         and
         (
