@@ -159,7 +159,7 @@ jobs:
   - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
     displayName: PR for ${{ parameters.endpoint }} OpenAPI description in msgraph-metadata repo
     env:
-      CreatePR: True
+      CreateOpenAPIPR: True
       EndpointVersion: ${{ parameters.endpoint }}
       PublishChanges: $(publishChanges)
     workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'

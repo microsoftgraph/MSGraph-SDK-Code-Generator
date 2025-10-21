@@ -35,7 +35,7 @@ git stash pop | Write-Host
 Write-Host "`ngit status:"
 git status | Write-Host
 
-if ($env:CreatePR -eq $True)
+if ($env:CreateOpenAPIPR -eq $True)
 {
     Write-Host "`nCreate branch: $env:BUILD_BUILDID/updateOpenAPI"
     git checkout -B $env:BUILD_BUILDID/updateOpenAPI | Write-Host
@@ -61,7 +61,7 @@ else
 Write-Host "`ngit status:"
 git status | Write-Host
 
-if ($env:CreatePR -eq $True)
+if ($env:CreateOpenAPIPR -eq $True)
 {
     Write-Host "`nPushing branch for PR creation"
 

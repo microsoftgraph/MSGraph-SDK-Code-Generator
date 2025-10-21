@@ -168,7 +168,7 @@ steps:
 - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
   displayName: push clean ${{ parameters.endpoint }} CSDL metadata to msgraph-metadata repo
   env:
-    CreatePR: False
+    CreateOpenAPIPR: False
     EndpointVersion: ${{ parameters.endpoint }}
     PublishChanges: $(publishChanges)
   workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'
