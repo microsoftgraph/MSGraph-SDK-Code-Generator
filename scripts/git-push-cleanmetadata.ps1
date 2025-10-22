@@ -15,67 +15,71 @@ if ($env:PublishChanges -eq $False)
     return;
 }
 
-Write-Host "`ngit status:"
+Write-Host "`n1. git status:"
 git status | Write-Host
 
-Write-Host "`nStash the update metadata files.....`nRunning: git stash"
+Write-Host "`n2. Stash the update metadata files.....`n3. Running: git stash"
 git stash | Write-Host
 
-Write-Host "`nFetching latest master branch to ensure we are up to date..."
+Write-Host "`n4. Fetching latest master branch to ensure we are up to date..."
 git fetch origin master | Write-Host
 # checkout master to move from detached HEAD mode
 git switch master | Write-Host
 
-Write-Host "`ngit status:"
+
+
+Write-Host "`n5. git status:"
 git status | Write-Host
 
-Write-Host "`nApply stashed metadata files...`nRunning: git stash pop"
+Write-Host "`n6. Apply stashed metadata files...`n7. Running: git stash pop"
 git stash pop | Write-Host
 
-Write-Host "`ngit status:"
+Write-Host "`n8. git status:"
 git status | Write-Host
+
+$branch = "$env:EndpointVersion/$env:BUILD_BUILDID/updateOpenAPI"
 
 if ($env:CreateOpenAPIPR -eq $True)
 {
-    Write-Host "`nCreate branch: $env:BUILD_BUILDID/updateOpenAPI"
-    git checkout -B $env:BUILD_BUILDID/updateOpenAPI | Write-Host
+    Write-Host "`n9. Create branch: $branch"
+    git checkout -B $branch | Write-Host
 }
 
-Write-Host "`nStaging clean $env:EndpointVersion metadata files.....`nRunning: git add ."
+Write-Host "`n10. Staging clean $env:EndpointVersion metadata files.....`n11. Running: git add ."
 git add . | Write-Host
 
-Write-Host "`ngit status:"
+Write-Host "`n12. git status:"
 git status | Write-Host
 
-Write-Host "`nAttempting to commit clean $env:EndpointVersion metadata files....."
+Write-Host "`n13. Attempting to commit clean $env:EndpointVersion metadata files....."
 
 if ($env:BUILD_REASON -eq 'Manual') # Skip CI if manually running this pipeline.
 {
-    git commit -m "Update clean metadata file with $env:BUILD_BUILDID [skip ci]" | Write-Host
+    git commit -m "Update clean $env:EndpointVersion metadata file with $env:BUILD_BUILDID [skip ci]" | Write-Host
 }
 else
 {
-    git commit -m "Update clean metadata file with $env:BUILD_BUILDID" | Write-Host
+    git commit -m "Update clean $env:EndpointVersion metadata file with $env:BUILD_BUILDID" | Write-Host
 }
 
-Write-Host "`ngit status:"
+Write-Host "`n14. git status:"
 git status | Write-Host
 
 if ($env:CreateOpenAPIPR -eq $True)
 {
-    Write-Host "`nPushing branch for PR creation"
+    Write-Host "`n15a. Pushing branch for PR creation"
 
-    Write-Host "`ngit push --set-upstream origin $env:BUILD_BUILDID/updateOpenAPI:"
-    git push --set-upstream origin $env:BUILD_BUILDID/updateOpenAPI | Write-Host
+    Write-Host "`n15b. Running: git push --set-upstream origin $branch"
+    git push --set-upstream origin $branch | Write-Host
 }
 else # original behavior: push to master
 {
-    Write-Host "`nRunning: git pull origin master --rebase..."
+    Write-Host "`n15c. Running: git pull origin master --rebase..."
     # sync branch before pushing
     # this is especially important while running v1 and beta in parallel
     # and one process goes out of sync because of the other's check-in
     git pull origin master --rebase | Write-Host
 
-    Write-Host "`nRunning: git push --set-upstream origin master ..."
+    Write-Host "`n15d. Running: git push --set-upstream origin master ..."
     git push --set-upstream origin master | Write-Host
 }
