@@ -14,6 +14,10 @@ if ($env:RepoName.Contains("msgraph-beta-typescript-typings"))
 {
     $title = "feat: generated $env:Version models and request builders"    
 }
+elseif ($env:RepoName.Contains("msgraph-metadata")) # we are only generating OpenAPI PRs for the metadata repo
+{
+    $title = "Generated $env:Version OpenAPI descriptions"
+}
 else {
     $title = "Generated $env:Version models and request builders"
 }
