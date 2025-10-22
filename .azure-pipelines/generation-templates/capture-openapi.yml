@@ -155,9 +155,9 @@ jobs:
       overwrite: true
     displayName: Copy OpenAPI files to local msgraph-metadata repo
 
-  # Push changes to msgraph-metadata repo and create PR
+  # Push changes to msgraph-metadata repo
   - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
-    displayName: PR for ${{ parameters.endpoint }} OpenAPI description in msgraph-metadata repo
+    displayName: Publish ${{ parameters.endpoint }} OpenAPI description to msgraph-metadata repo
     env:
       CreateOpenAPIPR: True
       EndpointVersion: ${{ parameters.endpoint }}

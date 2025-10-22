@@ -37,7 +37,7 @@ git stash pop | Write-Host
 Write-Host "`n8. git status:"
 git status | Write-Host
 
-$branch = "$env:EndpointVersion/$env:BUILD_BUILDID/updateOpenAPI"
+$branch = "publish-open-api-files/$env:BUILD_BUILDID/$env:EndpointVersion"
 
 if ($env:CreateOpenAPIPR -eq $True)
 {
