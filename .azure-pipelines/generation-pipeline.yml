@@ -298,10 +298,45 @@ extends:
           outputPath: $(cleanOpenAPIFileBetaOutputPath)
           cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
 
+    # Approval stage for v1 OpenAPI generation. All subsequent stages depending on OpenAPI generation
+    # will be blocked until approval is granted. Any new stages depending on OpenAPI generation
+    # should also depend on this approval stage.
+    - stage: open_api_v1_approval
+      dependsOn:
+      - stage_v1_openapi
+      condition: eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+      jobs:
+      - deployment: OpenApiApproval
+        displayName: 'OpenAPI v1.0 Generation Review'
+        environment: 'openapi-generation-review'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - script: echo "OpenAPI generation approved."
+
+    # Approval stage for beta OpenAPI generation. All subsequent stages depending on OpenAPI generation
+    # will be blocked until approval is granted. Any new stages depending on OpenAPI generation
+    # should also depend on this approval stage.
+    - stage: open_api_beta_approval
+      dependsOn:
+      - stage_beta_openapi
+      condition: eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+      jobs:
+      - deployment: OpenApiApproval
+        displayName: 'OpenAPI Beta Generation Review'
+        environment: 'openapi-generation-review'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - script: echo "OpenAPI generation approved."              
+
     - stage: stage_csharp_v1_kiota
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
@@ -343,6 +378,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
@@ -384,6 +420,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
@@ -423,6 +460,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
@@ -462,6 +500,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
@@ -503,6 +542,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
@@ -544,6 +584,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
@@ -585,6 +626,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
@@ -700,6 +742,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
@@ -742,6 +785,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
@@ -784,6 +828,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
@@ -824,6 +869,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (

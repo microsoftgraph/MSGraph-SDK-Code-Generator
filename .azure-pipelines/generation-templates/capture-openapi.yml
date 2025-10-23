@@ -1,3 +1,4 @@
+# capture-openapi.yml
 # Copyright (c) Microsoft Corporation. All Rights Reserved. Licensed under the MIT License. See License in the project root for license information.
 # The following template creates multiple artifacts from a matrix, this is the intended behavior to follow the same workflow before the governance migration
 
@@ -21,6 +22,7 @@ jobs:
     persistCredentials: true
 
   - template: /.azure-pipelines/generation-templates/checkout-metadata.yml@self
+
   - pwsh: |
       $dirPath = "./conversion-settings"
       $endpoint = "${{ parameters.endpoint }}"
@@ -37,8 +39,10 @@ jobs:
       Write-Host "##vso[task.setvariable variable=targets;isOutput=true]$json"
     name: setTargets
     workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
+
   - script: echo $(setTargets.targets)
     displayName: "Print settings"
+
 - job: convert_openapi
   dependsOn: get_conversion_settings
   displayName: Convert
@@ -58,13 +62,12 @@ jobs:
     persistCredentials: true
 
   - template: /.azure-pipelines/generation-templates/checkout-metadata.yml@self
-
   # required for the hidi to run
   - template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
     parameters:
       version: '8.x'
 
-# required for the hidi installation validation
+  # required for the hidi installation validation
   - template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
     parameters:
       version: '9.x'
@@ -78,8 +81,13 @@ jobs:
     displayName: ensure the generation happens from master latest
     workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
-  - pwsh: '$(scriptsDirectory)/generate-open-api.ps1 -endpointVersion ${{ parameters.endpoint }} -settings "$(conversionSettingsDirectory)/$(File)" -platformName "$(Name)"'
-    displayName: 'update ${{ parameters.endpoint }} open API description'
+  - pwsh: |
+      Write-Host "`ngit status before generation:"
+      git status
+      $(scriptsDirectory)/generate-open-api.ps1 -endpointVersion ${{ parameters.endpoint }} -settings "$(conversionSettingsDirectory)/$(File)" -platformName "$(Name)"
+      Write-Host "`ngit status after generation:"
+      git status
+    displayName: 'generate ${{ parameters.endpoint }} open API description'
     workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
 
   # publish metadata as an artifact
@@ -88,16 +96,16 @@ jobs:
       sourceFolder: ${{ parameters.outputPath }}
       contents: '**/$(Name).yaml'
       targetFolder: '$(Build.ArtifactStagingDirectory)/$(Name)'
-    displayName: Copy generated metadata
+    displayName: Copy generated OpenAPI yaml file to ArtifactStagingDirectory
+
   - pwsh: |
       ./scripts/run-openapi-validation.ps1 -repoDirectory (Get-Location).Path -version "${{ parameters.endpoint }}" -platformName "$(Name)"
-    displayName: ensure that OpenAPI docs can be parsed
+    displayName: Validate that OpenAPI docs can be parsed
     workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
-
 
 - job: publish_openapi
   dependsOn: convert_openapi
-  displayName: Publish
+  displayName: Publish OpenAPI files
   ## If there's new settings added please add them here too
   templateContext:
     inputs:
@@ -123,35 +131,61 @@ jobs:
     displayName: checkout generator
     fetchDepth: 1
     persistCredentials: true
-    # Copy files from the maxtrix artifacts to a single folder
+
+  #  Note that msgraph-metadata repo has detached HEAD
+  - template: /.azure-pipelines/generation-templates/checkout-metadata.yml@self    
+
+  - template: /.azure-pipelines/generation-templates/set-user-config.yml@self  
+
+  # Copy OpenAPI files from the matrix artifacts to the ArtifactStagingDirectory
+  # This is used for library generation later
   - task: CopyFiles@2
     inputs:
       sourceFolder: '$(Build.SourcesDirectory)/artifacts'
       contents: '**/*.yaml'
       targetFolder: '$(Build.ArtifactStagingDirectory)'
-      displayName: Copy artifact metadata
-    # Copy files from the target path where artifacts should be downloaded
+    displayName: Copy OpenAPI input artifacts to artifact staging directory
+    
+  # Copy OpenAPI files from ArtifactStagingDirectory to local msgraph-metadata repo
   - task: CopyFiles@2
     inputs:
       sourceFolder: '$(Build.ArtifactStagingDirectory)'
       contents: '**/*.yaml'
       targetFolder: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/${{ parameters.endpoint }}'
-    displayName: Copy downloaded metadata
+      overwrite: true
+    displayName: Copy OpenAPI files to local msgraph-metadata repo
 
-    # publish metadata as an artifact
-  - task: CopyFiles@2
-    inputs:
-      sourceFolder: ${{ parameters.outputPath }}
-      contents: '**/*.yaml'
-      targetFolder: '$(Build.ArtifactStagingDirectory)'
-    displayName: Copy downloaded metadata
-  - template: /.azure-pipelines/generation-templates/checkout-metadata.yml@self
-  - template: /.azure-pipelines/generation-templates/set-user-config.yml@self
+  # Push changes to msgraph-metadata repo
   - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
-
-    displayName: push clean ${{ parameters.endpoint }} OpenAPI description to msgraph-metadata repo
+    displayName: Publish ${{ parameters.endpoint }} OpenAPI description to msgraph-metadata repo
     env:
+      CreateOpenAPIPR: True
       EndpointVersion: ${{ parameters.endpoint }}
       PublishChanges: $(publishChanges)
     workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'
     enabled: true
+    
+
+  # Create PR - note that this PR is not used for gating. It's just for discovery purposes. 
+  # Library generation PRs will still be created based on the OpenAPI files.
+
+  - task: AzureKeyVault@2
+    displayName: "Azure Key Vault: Get Secrets"
+    inputs:
+      azureSubscription: "Federated AKV Managed Identity Connection"
+      KeyVaultName: akv-prod-eastus
+      SecretsFilter: "microsoft-graph-devx-bot-appid,microsoft-graph-devx-bot-privatekey"
+
+  - pwsh: '$(scriptsDirectory)/create-pull-request.ps1'
+    displayName: 'Create Pull Request for the generated OpenAPI files for msgraph-metadata'
+    env:
+      BaseBranch: master
+      GeneratePullRequest: true
+      GhAppId: $(microsoft-graph-devx-bot-appid)
+      GhAppKey: $(microsoft-graph-devx-bot-privatekey)
+      OverrideSkipCI: false
+      RepoName: 'microsoftgraph/msgraph-metadata'
+      ScriptsDirectory: $(scriptsDirectory)
+      # Version is intentionally left empty for OpenAPI PRs as versioning is not applicable in this context.
+      Version: ''
+    workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'

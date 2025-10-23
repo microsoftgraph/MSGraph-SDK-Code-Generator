@@ -5,7 +5,7 @@ parameters:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET SDK'
+  displayName: 'Use .NET SDK ${{ parameters.version }}'
   inputs:
     packageType: sdk
     version: ${{ parameters.version }}
