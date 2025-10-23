@@ -21,6 +21,8 @@ param(
     [parameter(Mandatory = $true)][String]$platformName
     )
 
+Write-Host "Starting $endpointVersion OpenAPI generation for $platformName using generate-open-api.ps1"
+
 $outputFile = Join-Path "./" "openapi" $endpointVersion "$platformName.yaml"
 $oldOutputFile = "$outputFile.old"
 $cleanVersion = $endpointVersion.Replace(".", "")
@@ -34,16 +36,16 @@ if($platformName -eq "openapi")
 $fileName = "$baseFileName$endpointVersion.xml";
 
 $inputFile = Join-Path "./" "clean_$($cleanVersion)_metadata" "$fileName"
-Write-Host "Settings: $settings"
-Write-Verbose "Generating OpenAPI description from $inputFile"
-Write-Verbose "Output file: $outputFile"
+Write-Host "`nSettings: $settings"
+Write-Host "Generating OpenAPI description from $inputFile"
+Write-Host "Output file: $outputFile"
 
 if(Test-Path $outputFile)
 {
-    Write-Verbose "Removing existing output file"
+    Write-Host "`nRemoving existing output file"
     if(Test-Path $oldOutputFile)
     {
-        Write-Verbose "Removing existing old output file"
+        Write-Host "Removing existing old output file: $oldOutputFile"
         Remove-Item $oldOutputFile -Force
     }
     $oldFileName = Split-Path $outputFile -leaf
@@ -51,6 +53,7 @@ if(Test-Path $outputFile)
     Rename-Item $outputFile $oldFileName
 }
 
+Write-Host "`nGenerating OpenAPI description using hidi..."
 $command = "hidi transform --csdl ""$inputFile"" --output ""$outputFile"" --settings-path ""$settings"" --version ""3.0"" --metadata-version ""$endpointVersion"" --log-level Information --format yaml"
 Write-Host $command
 
@@ -62,16 +65,18 @@ try {
     Set-Content $outputFile $updatedContent -NoNewline
     if(Test-Path $oldOutputFile)
     {
-        Write-Verbose "Removing existing old output file"
+        Write-Host "`nRemoving existing old output file: $oldOutputFile"
         Remove-Item $oldOutputFile -Force
     }
+    Write-Host "Completed generating OpenAPI description using hidi"
 } catch {
     if(Test-Path $oldOutputFile)
     {
-        Write-Warning "Restoring old output file"
+        Write-Host "`nRestoring old output file: $oldOutputFile"
         $originalFileName = Split-Path $outputFile -leaf
         Rename-Item $oldOutputFile $originalFileName
     }
     Write-Error "Error generating OpenAPI description: $_"
     throw $_
 }
+

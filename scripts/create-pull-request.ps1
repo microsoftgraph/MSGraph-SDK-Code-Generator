@@ -1,24 +1,27 @@
 if (($env:OverrideSkipCI -eq $False) -and ($env:BUILD_REASON -eq 'Manual')) # Skip CI if manually running this pipeline.
 {
-    Write-Host "Skipping pull request creation due Skip CI." -ForegroundColor Green
+    Write-Host "Skipping pull request creation due Skip CI."
     return;
 }
 
 if (($env:GeneratePullRequest -eq $False)) { # Skip CI if manually running this pipeline.
-    Write-Host "Skipping pull request creation due this repository being disabled" -ForegroundColor Green
+    Write-Host "Skipping pull request creation due this repository being disabled"
     return;
 }
 
-# Special case for beta typings as it uses a non-conforming preview versioning.
+# Special case for beta typings as it uses a non-conforming preview versioning. Helps with triggering Release Please.
 if ($env:RepoName.Contains("msgraph-beta-typescript-typings"))
 {
-    $title = "feat: generated $version models and request builders"    
+    $title = "feat: generated $env:Version models and request builders"    
+}
+elseif ($env:RepoName.Contains("msgraph-metadata")) # we are only generating OpenAPI PRs for the metadata repo
+{
+    $title = "Generated $env:Version OpenAPI descriptions"
 }
 else {
-    $title = "Generated $version models and request builders"
+    $title = "Generated $env:Version models and request builders"
 }
 
-$version = $env:Version
 $body = ":bangbang:**_Important_**:bangbang: <br> Check for unexpected deletions or changes in this PR and ensure relevant CI checks are passing. <br><br> **Note:** This pull request was automatically created by Azure pipelines."
 $baseBranchParameter = ""
 
@@ -30,10 +33,10 @@ if (![string]::IsNullOrEmpty($env:BaseBranch))
 # The installed application is required to have the following permissions: read/write on pull requests/
 $tokenGenerationScript = "$env:ScriptsDirectory\Generate-Github-Token.ps1"
 $env:GITHUB_TOKEN = & $tokenGenerationScript -AppClientId $env:GhAppId -AppPrivateKeyContents $env:GhAppKey -Repository $env:RepoName
-Write-Host "Fetched Github Token for PR generation and set as environment variable." -ForegroundColor Green
+Write-Host "Fetched Github Token for PR generation and set as environment variable."
 
 # No need to specify reviewers as code owners should be added automatically.
 Invoke-Expression "gh auth login" # login to GitHub
 Invoke-Expression "gh pr create -t ""$title"" -b ""$body"" $baseBranchParameter | Write-Host"
 
-Write-Host "Pull Request Created successfully." -ForegroundColor Green
+Write-Host "Pull Request Created successfully."
