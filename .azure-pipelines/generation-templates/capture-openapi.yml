@@ -22,7 +22,6 @@ jobs:
     persistCredentials: true
 
   - template: /.azure-pipelines/generation-templates/checkout-metadata.yml@self
-
   - pwsh: |
       $dirPath = "./conversion-settings"
       $endpoint = "${{ parameters.endpoint }}"
@@ -39,10 +38,8 @@ jobs:
       Write-Host "##vso[task.setvariable variable=targets;isOutput=true]$json"
     name: setTargets
     workingDirectory: $(Build.SourcesDirectory)/msgraph-metadata
-
   - script: echo $(setTargets.targets)
     displayName: "Print settings"
-
 - job: convert_openapi
   dependsOn: get_conversion_settings
   displayName: Convert
