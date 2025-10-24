@@ -341,6 +341,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_v1_approval.result, 'Succeeded'),
           in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -383,6 +384,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_beta_approval.result, 'Succeeded'),
           in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -425,6 +427,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_v1_approval.result, 'Succeeded'),          
           in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -465,6 +468,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_beta_approval.result, 'Succeeded'),
           in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -505,6 +509,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_v1_approval.result, 'Succeeded'),
           in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -547,6 +552,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_beta_approval.result, 'Succeeded'),
           in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -589,6 +595,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_beta_approval.result, 'Succeeded'),
           in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -631,6 +638,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_v1_approval.result, 'Succeeded'),
           in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -672,6 +680,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
+          eq(dependencies.open_api_v1_approval.result, 'Succeeded'),
           in(dependencies.stage_v1_metadata.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -709,6 +718,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_typewriter.result, 'Succeeded'),
+          eq(dependencies.open_api_beta_approval.result, 'Succeeded'),
           in(dependencies.stage_beta_metadata.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -747,6 +757,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_v1_approval.result, 'Succeeded'),
           in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -790,6 +801,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_beta_approval.result, 'Succeeded'),
           in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -833,6 +845,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_v1_approval.result, 'Succeeded'),
           in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -874,6 +887,7 @@ extends:
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_beta_approval.result, 'Succeeded'),
           in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -906,7 +920,7 @@ extends:
               parameters:
                 repoName: msgraph-beta-sdk-python
                 baseDirectory: msgraph_beta
-    - stage: stage_ccs_csharp_beta
+    - stage: stage_agents_m365copilot_csharp_beta
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
@@ -917,7 +931,7 @@ extends:
           in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
-      - job: csharp_beta_ccs
+      - job: csharp_beta_agents_m365copilot
         templateContext:
           inputs:
           - input: pipelineArtifact
@@ -949,7 +963,7 @@ extends:
               parameters:
                 repoName: 'Agents-M365Copilot/dotnet'
                 packageName: Microsoft.Agents.M365Copilot.Beta
-    - stage: stage_ccs_python_beta
+    - stage: stage_agents_m365copilot_python_beta
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
@@ -960,7 +974,7 @@ extends:
           in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
-      - job: python_beta_ccs
+      - job: python_beta_agents_m365copilot
         templateContext:
           inputs:
           - input: pipelineArtifact
@@ -992,7 +1006,7 @@ extends:
               parameters:
                 repoName: 'Agents-M365Copilot/python/packages'
                 baseDirectory: microsoft_agents_m365copilot_beta/microsoft_agents_m365copilot_beta
-    - stage: stage_ccs_typescript_beta
+    - stage: stage_agents_m365copilot_typescript_beta
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
@@ -1003,7 +1017,7 @@ extends:
           in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
-      - job: typescript_beta_ccs
+      - job: typescript_beta_agents_m365copilot
         templateContext:
           inputs:
           - input: pipelineArtifact
