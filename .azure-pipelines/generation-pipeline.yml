@@ -879,6 +879,7 @@ extends:
               parameters:
                 repoName: msgraph-sdk-python
                 baseDirectory: msgraph
+
     - stage: stage_python_beta
       dependsOn:
       - stage_build_and_publish_kiota
@@ -921,6 +922,51 @@ extends:
               parameters:
                 repoName: msgraph-beta-sdk-python
                 baseDirectory: msgraph_beta
+
+    - stage: stage_agents_m365copilot_csharp_v1
+      dependsOn:
+      - stage_build_and_publish_kiota
+      - stage_v1_openapi
+      condition: |
+        and
+        (
+          eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
+        )
+      jobs:
+      - job: csharp_v1_agents_m365copilot
+        templateContext:
+          inputs:
+          - input: pipelineArtifact
+            displayName: 'Downloading metadata from artifacts'
+            buildType: 'current'
+            artifactName: $(cleanOpenAPIFolderV1)
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderV1)'
+          - input: pipelineArtifact
+            buildType: 'current'
+            artifactName: 'kiota'
+            targetPath: '$(kiotaDirectory)'
+        steps:
+        - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
+          parameters:
+            language: 'csharp'
+            version: ''
+            orgName: 'microsoft'
+            repoName: 'Agents-M365Copilot'
+            baseBranchName: 'main'
+            branchName: 'ccs-dotnet/$(v1Branch)'
+            targetClassName: "BaseAgentsM365CopilotServiceClient"
+            targetNamespace: "Microsoft.Agents.M365Copilot"
+            commitMessagePrefix: "feat(generation): update request builders and models for dotnet v1"
+            customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
+            cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+            pathExclusionArguments: ''
+            languageSpecificSteps:
+            - template: /.azure-pipelines/generation-templates/dotnet-kiota.yml@self
+              parameters:
+                repoName: 'Agents-M365Copilot/dotnet'
+                packageName: Microsoft.Agents.M365Copilot
+
     - stage: stage_agents_m365copilot_csharp_beta
       dependsOn:
       - stage_build_and_publish_kiota
@@ -964,6 +1010,7 @@ extends:
               parameters:
                 repoName: 'Agents-M365Copilot/dotnet'
                 packageName: Microsoft.Agents.M365Copilot.Beta
+
     - stage: stage_agents_m365copilot_python_beta
       dependsOn:
       - stage_build_and_publish_kiota
