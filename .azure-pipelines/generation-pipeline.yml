@@ -3,8 +3,15 @@
 trigger: none
 pr: none
 schedules:
-- cron: '0 10 * * TUE'
-  displayName: Tuesday generation (PST 2am, EST 5am, EAT 3pm)
+
+# Minute: 0 → At the start of the hour.
+# Hour: 10 → 10:00 AM UTC.
+# Day of Month: 1-7,15-21 → On the 1st–7th and 15th–21st.
+# Month: * → Every month.
+# Weekday: TUE → Only on Tuesdays.
+# This cron will run bi-weekly unless the month has 5 Tuesdays, in which case it will skip the 5th Tuesday (won't be bi-weekly that month).
+- cron: '0 10 1-7,15-21 * TUE'
+  displayName: Bi-weekly Tuesday generation (1st and 3rd Tuesday, PST 2am, EST 5am, EAT 3pm)
   branches:
     include:
     - main
@@ -291,10 +298,45 @@ extends:
           outputPath: $(cleanOpenAPIFileBetaOutputPath)
           cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
 
+    # Approval stage for v1 OpenAPI generation. All subsequent stages depending on OpenAPI generation
+    # will be blocked until approval is granted. Any new stages depending on OpenAPI generation
+    # should also depend on this approval stage.
+    - stage: open_api_v1_approval
+      dependsOn:
+      - stage_v1_openapi
+      condition: eq(dependencies.stage_v1_openapi.result, 'Succeeded')
+      jobs:
+      - deployment: OpenApiApproval
+        displayName: 'OpenAPI v1.0 Generation Review'
+        environment: 'openapi-generation-review'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - script: echo "OpenAPI generation approved."
+
+    # Approval stage for beta OpenAPI generation. All subsequent stages depending on OpenAPI generation
+    # will be blocked until approval is granted. Any new stages depending on OpenAPI generation
+    # should also depend on this approval stage.
+    - stage: open_api_beta_approval
+      dependsOn:
+      - stage_beta_openapi
+      condition: eq(dependencies.stage_beta_openapi.result, 'Succeeded')
+      jobs:
+      - deployment: OpenApiApproval
+        displayName: 'OpenAPI Beta Generation Review'
+        environment: 'openapi-generation-review'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - script: echo "OpenAPI generation approved."              
+
     - stage: stage_csharp_v1_kiota
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
@@ -336,6 +378,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
@@ -377,6 +420,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
@@ -416,6 +460,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
@@ -455,6 +500,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
@@ -496,6 +542,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
@@ -537,6 +584,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
@@ -578,6 +626,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
@@ -693,6 +742,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
@@ -735,6 +785,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
@@ -777,6 +828,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
@@ -817,6 +869,7 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
