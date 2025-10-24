@@ -586,48 +586,6 @@ extends:
               parameters:
                 repoName: msgraph-beta-sdk-java
                 namespacePath: com/microsoft/graph/beta
-    - stage: stage_php_beta_kiota
-      dependsOn:
-      - stage_build_and_publish_kiota
-      - stage_beta_openapi
-      - open_api_beta_approval
-      condition: |
-        and
-        (
-          eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
-          eq(dependencies.open_api_beta_approval.result, 'Succeeded'),
-          in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
-        )
-      jobs:
-      - job: php_beta_kiota
-        templateContext:
-          inputs:
-          - input: pipelineArtifact
-            displayName: 'Downloading metadata from artifacts'
-            buildType: 'current'
-            artifactName: $(cleanOpenAPIFolderBeta)
-            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderBeta)'
-          - input: pipelineArtifact
-            buildType: 'current'
-            artifactName: 'kiota'
-            targetPath: '$(kiotaDirectory)'
-        steps:
-        - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
-          parameters:
-            language: 'php'
-            version: 'beta'
-            repoName: 'msgraph-beta-sdk-php'
-            branchName: 'kiota/$(betaBranch)'
-            targetClassName: "BaseGraphClient"
-            targetNamespace: 'Microsoft\\Graph\\Beta\\Generated'
-            baseBranchName: 'main'
-            commitMessagePrefix: "feat(generation): update request builders and models"
-            cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
-            languageSpecificSteps:
-            - template: /.azure-pipelines/generation-templates/php-kiota.yml@self
-              parameters:
-                repoName: msgraph-beta-sdk-php
-            customArguments: "-b -e '/me' -e '/me/**'"  # Exclude /me/** and enable backing store
 
     - stage: stage_php_v1_kiota
       dependsOn:
@@ -670,6 +628,49 @@ extends:
             - template: /.azure-pipelines/generation-templates/php-kiota.yml@self
               parameters:
                 repoName: msgraph-sdk-php
+            customArguments: "-b -e '/me' -e '/me/**'"  # Exclude /me/** and enable backing store
+
+    - stage: stage_php_beta_kiota
+      dependsOn:
+      - stage_build_and_publish_kiota
+      - stage_beta_openapi
+      - open_api_beta_approval
+      condition: |
+        and
+        (
+          eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_beta_approval.result, 'Succeeded'),
+          in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
+        )
+      jobs:
+      - job: php_beta_kiota
+        templateContext:
+          inputs:
+          - input: pipelineArtifact
+            displayName: 'Downloading metadata from artifacts'
+            buildType: 'current'
+            artifactName: $(cleanOpenAPIFolderBeta)
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderBeta)'
+          - input: pipelineArtifact
+            buildType: 'current'
+            artifactName: 'kiota'
+            targetPath: '$(kiotaDirectory)'
+        steps:
+        - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
+          parameters:
+            language: 'php'
+            version: 'beta'
+            repoName: 'msgraph-beta-sdk-php'
+            branchName: 'kiota/$(betaBranch)'
+            targetClassName: "BaseGraphClient"
+            targetNamespace: 'Microsoft\\Graph\\Beta\\Generated'
+            baseBranchName: 'main'
+            commitMessagePrefix: "feat(generation): update request builders and models"
+            cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+            languageSpecificSteps:
+            - template: /.azure-pipelines/generation-templates/php-kiota.yml@self
+              parameters:
+                repoName: msgraph-beta-sdk-php
             customArguments: "-b -e '/me' -e '/me/**'"  # Exclude /me/** and enable backing store
 
     - stage: stage_typescript_v1
