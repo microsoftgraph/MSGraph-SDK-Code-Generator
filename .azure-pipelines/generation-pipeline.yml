@@ -950,7 +950,7 @@ extends:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
             language: 'csharp'
-            version: ''
+            version: 'v1'
             orgName: 'microsoft'
             repoName: 'Agents-M365Copilot'
             baseBranchName: 'main'
