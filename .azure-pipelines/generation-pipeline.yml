@@ -958,7 +958,7 @@ extends:
             targetClassName: "BaseAgentsM365CopilotServiceClient"
             targetNamespace: "Microsoft.Agents.M365Copilot"
             commitMessagePrefix: "feat(generation): update request builders and models for dotnet v1"
-            customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
+            customArguments: "-i '**/copilot/**'" # include only copilot paths
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             pathExclusionArguments: ''
             languageSpecificSteps:
@@ -1002,7 +1002,7 @@ extends:
             targetClassName: "BaseAgentsM365CopilotBetaServiceClient"
             targetNamespace: "Microsoft.Agents.M365Copilot.Beta"
             commitMessagePrefix: "feat(generation): update request builders and models for dotnet beta"
-            customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
+            customArguments: "-i '**/copilot/**'" # include only copilot paths
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             pathExclusionArguments: ''
             languageSpecificSteps:
@@ -1010,6 +1010,50 @@ extends:
               parameters:
                 repoName: 'Agents-M365Copilot/dotnet'
                 packageName: Microsoft.Agents.M365Copilot.Beta
+
+    - stage: stage_agents_m365copilot_python_v1
+      dependsOn:
+      - stage_build_and_publish_kiota
+      - stage_v1_openapi
+      condition: |
+        and
+        (
+          eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
+        )
+      jobs:
+      - job: python_v1_agents_m365copilot
+        templateContext:
+          inputs:
+          - input: pipelineArtifact
+            displayName: 'Downloading metadata from artifacts'
+            buildType: 'current'
+            artifactName: $(cleanOpenAPIFolderV1)
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderV1)'
+          - input: pipelineArtifact
+            buildType: 'current'
+            artifactName: 'kiota'
+            targetPath: '$(kiotaDirectory)'
+        steps:
+        - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
+          parameters:
+            language: 'python'
+            version: 'v1'
+            orgName: 'microsoft'
+            repoName: 'Agents-M365Copilot'
+            baseBranchName: 'main'
+            branchName: 'ccs-python/$(v1Branch)'
+            targetClassName: "BaseAgentsM365CopilotServiceClient"
+            targetNamespace: "microsoft_agents_m365copilot.generated"
+            customArguments: "-i '**/copilot/**'" # include only copilot paths
+            cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+            commitMessagePrefix: "feat(generation): update request builders and models for python v1"
+            pathExclusionArguments: ''
+            languageSpecificSteps:
+            - template: /.azure-pipelines/generation-templates/python.yml@self
+              parameters:
+                repoName: 'Agents-M365Copilot/python/packages'
+                baseDirectory: microsoft_agents_m365copilot/microsoft_agents_m365copilot
 
     - stage: stage_agents_m365copilot_python_beta
       dependsOn:
@@ -1045,7 +1089,7 @@ extends:
             branchName: 'ccs-python/$(betaBranch)'
             targetClassName: "BaseAgentsM365CopilotBetaServiceClient"
             targetNamespace: "microsoft_agents_m365copilot_beta.generated"
-            customArguments: "-b -i '**/copilot/**'" # Enable the backing store, include only copilot paths
+            customArguments: "-i '**/copilot/**'" # include only copilot paths
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             commitMessagePrefix: "feat(generation): update request builders and models for python beta"
             pathExclusionArguments: ''
@@ -1054,6 +1098,51 @@ extends:
               parameters:
                 repoName: 'Agents-M365Copilot/python/packages'
                 baseDirectory: microsoft_agents_m365copilot_beta/microsoft_agents_m365copilot_beta
+
+    - stage: stage_agents_m365copilot_typescript_v1
+      dependsOn:
+      - stage_build_and_publish_kiota
+      - stage_v1_openapi
+      condition: |
+        and
+        (
+          eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
+        )
+      jobs:
+      - job: typescript_beta_agents_m365copilot
+        templateContext:
+          inputs:
+          - input: pipelineArtifact
+            displayName: 'Downloading metadata from artifacts'
+            buildType: 'current'
+            artifactName: $(cleanOpenAPIFolderV1)
+            targetPath: '$(Build.SourcesDirectory)/msgraph-metadata/$(cleanOpenAPIFolderV1)'
+          - input: pipelineArtifact
+            buildType: 'current'
+            artifactName: 'kiota'
+            targetPath: '$(kiotaDirectory)'
+        steps:
+        - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
+          parameters:
+            language: 'typescript'
+            version: 'beta'
+            orgName: 'microsoft'
+            repoName: 'Agents-M365Copilot'
+            baseBranchName: 'main'
+            branchName: 'ccs-typescript/$(v1Branch)'
+            commitMessagePrefix: "feat(generation): update request builders and models for typescript v1"
+            targetClassName: "BaseAgentsM365CopilotServiceClient"
+            targetNamespace: "github.com/microsoft/Agents-M365Copilot/typescript/"
+            customArguments: "-i '**/copilot/**'"
+            cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+            pathExclusionArguments: ''
+            languageSpecificSteps:
+            - template: /.azure-pipelines/generation-templates/ccs-typescript-sdk.yml@self
+              parameters:
+                repoName: 'Agents-M365Copilot/typescript'
+                packageName: '@microsoft/agents-m365copilot'
+
     - stage: stage_agents_m365copilot_typescript_beta
       dependsOn:
       - stage_build_and_publish_kiota
@@ -1089,7 +1178,7 @@ extends:
             commitMessagePrefix: "feat(generation): update request builders and models for typescript beta"
             targetClassName: "BaseAgentsM365CopilotBetaServiceClient"
             targetNamespace: "github.com/microsoft/Agents-M365Copilot/typescript/"
-            customArguments: "-b -i '**/copilot/**'"
+            customArguments: "-i '**/copilot/**'"
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             pathExclusionArguments: ''
             languageSpecificSteps:
