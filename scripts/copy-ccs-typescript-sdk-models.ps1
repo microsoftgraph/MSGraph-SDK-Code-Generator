@@ -5,8 +5,9 @@ param (
     [Parameter(Mandatory = $true)]
     [string]
     $sourceDirectory,
+    [Parameter(Mandatory = $true)]
     [string]
-    $packageName = "@microsoft/copilot-beta-sdk"
+    $packageName
 )
 
 Write-Host "Path to repo models directory: $targetDirectory"
