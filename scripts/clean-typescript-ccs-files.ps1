@@ -2,10 +2,13 @@ param (
     [Parameter(Mandatory = $true)]
     [string]
     $targetDirectory,
+    [Parameter(Mandatory = $true)]
     [string]
-    $packageName = "@microsoft/agents-m365copilot"
+    $packageName
 )
 Push-Location $targetDirectory
+
+Write-Host "Starting cleaning operation in target directory: $targetDirectory"
 
 $kiotaLockFileName = "kiota-lock.json"
 # Extract folder name from package name (the part after the slash)
