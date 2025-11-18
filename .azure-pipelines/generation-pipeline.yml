@@ -620,7 +620,7 @@ extends:
             repoName: 'msgraph-sdk-php'
             branchName: 'kiota/$(v1Branch)'
             targetClassName: "BaseGraphClient"
-            targetNamespace: 'Microsoft\\Graph\\Generated'
+            targetNamespace: 'Microsoft\Graph\Generated'
             baseBranchName: 'main'
             commitMessagePrefix: "feat(generation): update request builders and models"
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
@@ -663,7 +663,7 @@ extends:
             repoName: 'msgraph-beta-sdk-php'
             branchName: 'kiota/$(betaBranch)'
             targetClassName: "BaseGraphClient"
-            targetNamespace: 'Microsoft\\Graph\\Beta\\Generated'
+            targetNamespace: 'Microsoft\Graph\Beta\Generated'
             baseBranchName: 'main'
             commitMessagePrefix: "feat(generation): update request builders and models"
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
@@ -1110,7 +1110,7 @@ extends:
           in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
-      - job: typescript_beta_agents_m365copilot
+      - job: typescript_v1_agents_m365copilot
         templateContext:
           inputs:
           - input: pipelineArtifact
@@ -1126,7 +1126,7 @@ extends:
         - template: /.azure-pipelines/generation-templates/language-generation-kiota.yml@self
           parameters:
             language: 'typescript'
-            version: 'beta'
+            version: 'v1'
             orgName: 'microsoft'
             repoName: 'Agents-M365Copilot'
             baseBranchName: 'main'
