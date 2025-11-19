@@ -168,6 +168,7 @@ variables:
   overrideSkipCI: ${{ parameters.overrideSkipCI }}
   skipMetadataCaptureAndClean: ${{ parameters.skipMetadataCaptureAndClean }}
   skipOpenApiCaptureAndClean: ${{ parameters.skipOpenApiCaptureAndClean }}
+  skipOpenAPIPRGeneration: ${{ parameters.skipOpenAPIPRGeneration }}
   phpVersion: 7.2
 extends:
   template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
@@ -291,7 +292,7 @@ extends:
           endpoint: 'v1.0'
           outputPath: $(cleanOpenAPIFileV1OutputPath)
           cleanMetadataFolder: $(cleanOpenAPIFolderV1)
-          skipOpenAPIPRGeneration: ${{ parameters.skipOpenAPIPRGeneration }}
+          skipOpenAPIPRGeneration: $(skipOpenAPIPRGeneration)
 
     - stage: stage_beta_openapi
       dependsOn: stage_beta_metadata
@@ -302,7 +303,7 @@ extends:
           endpoint: 'beta'
           outputPath: $(cleanOpenAPIFileBetaOutputPath)
           cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
-          skipOpenAPIPRGeneration: ${{ parameters.skipOpenAPIPRGeneration }}
+          skipOpenAPIPRGeneration: $(skipOpenAPIPRGeneration)
 
     # Approval stage for v1 OpenAPI generation. All subsequent stages depending on OpenAPI generation
     # will be blocked until approval is granted. Any new stages depending on OpenAPI generation
