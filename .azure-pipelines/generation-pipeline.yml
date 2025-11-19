@@ -132,6 +132,10 @@ parameters:
   default: false
   type: boolean
   displayName: Override [skip ci]? Checking this box will generate the SDK PRs
+- name: skipOpenAPIPRGeneration
+  default: false
+  type: boolean
+  displayName: Skip Open API PR Generation.
 variables:
   buildConfiguration: 'Release'
   cleanMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml'
@@ -287,6 +291,7 @@ extends:
           endpoint: 'v1.0'
           outputPath: $(cleanOpenAPIFileV1OutputPath)
           cleanMetadataFolder: $(cleanOpenAPIFolderV1)
+          skipOpenAPIPRGeneration: ${{ parameters.skipOpenAPIPRGeneration }}
 
     - stage: stage_beta_openapi
       dependsOn: stage_beta_metadata
@@ -297,6 +302,7 @@ extends:
           endpoint: 'beta'
           outputPath: $(cleanOpenAPIFileBetaOutputPath)
           cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
+          skipOpenAPIPRGeneration: ${{ parameters.skipOpenAPIPRGeneration }}
 
     # Approval stage for v1 OpenAPI generation. All subsequent stages depending on OpenAPI generation
     # will be blocked until approval is granted. Any new stages depending on OpenAPI generation
