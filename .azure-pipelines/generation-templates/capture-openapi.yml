@@ -12,6 +12,8 @@ parameters:
   default: $(System.ArtifactsDirectory)
 - name: 'cleanMetadataFolder'
   type: string
+- name: 'skipOpenAPIPRGeneration'
+  type: boolean
 jobs:
 - job: get_conversion_settings
   displayName: "Get conversion settings"
