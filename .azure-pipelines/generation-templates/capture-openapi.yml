@@ -103,6 +103,7 @@ jobs:
 - job: publish_openapi
   dependsOn: convert_openapi
   displayName: Publish OpenAPI files
+  condition: eq('${{ parameters.skipOpenAPIPRGeneration }}', false)
   ## If there's new settings added please add them here too
   templateContext:
     inputs:
