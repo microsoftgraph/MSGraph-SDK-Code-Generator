@@ -44,7 +44,7 @@
     <PackageReference Include="NLog.Config">
       <Version>4.7.15</Version>
     </PackageReference>
-    <PackageReference Include="System.CodeDom" Version="9.0.4" />
+    <PackageReference Include="System.CodeDom" Version="10.0.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
   </ItemGroup>
