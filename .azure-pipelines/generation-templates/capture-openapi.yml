@@ -159,7 +159,7 @@ jobs:
     condition: not('${{ parameters.skipOpenAPIPRGeneration }}')
     displayName: Publish ${{ parameters.endpoint }} OpenAPI description to msgraph-metadata repo
     env:
-      CreateOpenAPIPR: true
+      CreateOpenAPIPR: True
       EndpointVersion: ${{ parameters.endpoint }}
       PublishChanges: $(publishChanges)
     workingDirectory: '$(Build.SourcesDirectory)/msgraph-metadata'
