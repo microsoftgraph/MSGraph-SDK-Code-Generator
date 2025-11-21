@@ -292,7 +292,7 @@ extends:
           endpoint: 'v1.0'
           outputPath: $(cleanOpenAPIFileV1OutputPath)
           cleanMetadataFolder: $(cleanOpenAPIFolderV1)
-          skipOpenAPIPRGeneration: $(skipOpenAPIPRGeneration)
+          skipOpenAPIPRGeneration: ${{ parameters.skipOpenAPIPRGeneration}}
 
     - stage: stage_beta_openapi
       dependsOn: stage_beta_metadata
@@ -303,7 +303,7 @@ extends:
           endpoint: 'beta'
           outputPath: $(cleanOpenAPIFileBetaOutputPath)
           cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
-          skipOpenAPIPRGeneration: $(skipOpenAPIPRGeneration)
+          skipOpenAPIPRGeneration: ${{ parameters.skipOpenAPIPRGeneration}}
 
     # Approval stage for v1 OpenAPI generation. All subsequent stages depending on OpenAPI generation
     # will be blocked until approval is granted. Any new stages depending on OpenAPI generation

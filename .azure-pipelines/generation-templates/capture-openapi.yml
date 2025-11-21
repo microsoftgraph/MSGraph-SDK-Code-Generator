@@ -12,6 +12,8 @@ parameters:
   default: $(System.ArtifactsDirectory)
 - name: 'cleanMetadataFolder'
   type: string
+- name: 'skipOpenAPIPRGeneration'
+  type: boolean
 jobs:
 - job: get_conversion_settings
   displayName: "Get conversion settings"
@@ -103,7 +105,6 @@ jobs:
 - job: publish_openapi
   dependsOn: convert_openapi
   displayName: Publish OpenAPI files
-  condition: eq('${{ parameters.skipOpenAPIPRGeneration }}', false)
   ## If there's new settings added please add them here too
   templateContext:
     inputs:
@@ -155,6 +156,7 @@ jobs:
 
   # Push changes to msgraph-metadata repo
   - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
+    condition: not('${{ parameters.skipOpenAPIPRGeneration }}')
     displayName: Publish ${{ parameters.endpoint }} OpenAPI description to msgraph-metadata repo
     env:
       CreateOpenAPIPR: True
@@ -175,6 +177,7 @@ jobs:
       SecretsFilter: "microsoft-graph-devx-bot-appid,microsoft-graph-devx-bot-privatekey"
 
   - pwsh: '$(scriptsDirectory)/create-pull-request.ps1'
+    condition: not('${{ parameters.skipOpenAPIPRGeneration }}')
     displayName: 'Create Pull Request for the generated OpenAPI files for msgraph-metadata'
     env:
       BaseBranch: master
