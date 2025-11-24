@@ -156,7 +156,7 @@ jobs:
 
   # Push changes to msgraph-metadata repo
   - pwsh: '$(scriptsDirectory)/git-push-cleanmetadata.ps1'
-    condition: not('${{ parameters.skipOpenAPIPRGeneration }}')
+    condition: eq('${{ parameters.skipOpenAPIPRGeneration }}', false)
     displayName: Publish ${{ parameters.endpoint }} OpenAPI description to msgraph-metadata repo
     env:
       CreateOpenAPIPR: True
@@ -177,7 +177,7 @@ jobs:
       SecretsFilter: "microsoft-graph-devx-bot-appid,microsoft-graph-devx-bot-privatekey"
 
   - pwsh: '$(scriptsDirectory)/create-pull-request.ps1'
-    condition: not('${{ parameters.skipOpenAPIPRGeneration }}')
+    condition: eq('${{ parameters.skipOpenAPIPRGeneration }}', false)
     displayName: 'Create Pull Request for the generated OpenAPI files for msgraph-metadata'
     env:
       BaseBranch: master
