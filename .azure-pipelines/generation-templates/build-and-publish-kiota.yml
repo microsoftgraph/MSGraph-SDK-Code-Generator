@@ -1,7 +1,7 @@
 steps:
 - template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
   parameters:
-    version: "9.x" #kiota uses a net9 target
+    version: "10.x" #kiota uses a net10 target
 
 - checkout: kiota
   displayName: checkout kiota
@@ -12,7 +12,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    sourceFolder: '$(Build.SourcesDirectory)/src/kiota/bin/$(BuildConfiguration)/net9.0'
+    sourceFolder: '$(Build.SourcesDirectory)/src/kiota/bin/$(BuildConfiguration)/net10.0'
     contents: '**/*'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: Copy Kiota executable
