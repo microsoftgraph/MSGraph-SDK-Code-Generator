@@ -97,10 +97,6 @@ resources:
     type: github
     endpoint: microsoftgraph (22)
     name: microsoftgraph/microsoft-graph-docs
-  - repository: kiota
-    type: github
-    endpoint: microsoftkiota
-    name: microsoft/kiota
   - repository: Agents-M365Copilot
     type: github
     endpoint: microsoftkiota
@@ -175,8 +171,6 @@ extends:
   parameters:
     sdl:
       sourceRepositoriesToScan:
-        include:
-        - repository: kiota
         exclude:
         - repository: msgraph-sdk-dotnet
         - repository: msgraph-beta-sdk-dotnet
