@@ -1,7 +1,14 @@
 steps:
 - bash: |
-    LATEST_TAG=$(curl -sL -o /dev/null -w "%{url_effective}" "https://github.com/microsoft/kiota/releases/latest" | rev | cut -d'/' -f1 | rev)
+    RELEASE_JSON=$(curl -s "https://api.github.com/repos/microsoft/kiota/releases/latest")
+    LATEST_TAG=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
+    ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("linux-x64")) | .browser_download_url')
     echo "Downloading Kiota $LATEST_TAG"
-    curl -L "https://github.com/microsoft/kiota/releases/download/${LATEST_TAG}/linux-x64.zip" -o kiota.zip
-    unzip kiota.zip -d $(Build.ArtifactStagingDirectory)
+    echo "Asset URL: $ASSET_URL"
+    curl -L "$ASSET_URL" -o kiota_download
+    if [[ "$ASSET_URL" == *.zip ]]; then
+      unzip kiota_download -d $(Build.ArtifactStagingDirectory)
+    else
+      tar -xzf kiota_download -C $(Build.ArtifactStagingDirectory)
+    fi
   displayName: 'Download latest Kiota from GitHub'
