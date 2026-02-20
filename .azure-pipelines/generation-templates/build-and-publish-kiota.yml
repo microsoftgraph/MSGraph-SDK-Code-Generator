@@ -16,9 +16,11 @@ steps:
     } else {
       tar -xzf $downloadPath -C $extractPath
     }
-    $kiotaBin = Get-ChildItem -Path $extractPath -Filter "kiota" -Recurse -File | Select-Object -First 1
+    # Match 'kiota' or 'kiota.exe' via BaseName
+    $kiotaBin = Get-ChildItem -Path $extractPath -Recurse -File | Where-Object { $_.BaseName -eq "kiota" } | Select-Object -First 1
     Write-Host "Found Kiota binary at: $($kiotaBin.FullName)"
     $stagingDir = "$(Build.ArtifactStagingDirectory)"
     New-Item -ItemType Directory -Force -Path $stagingDir | Out-Null
+    # Always copy as 'kiota' (no extension) so downstream steps are platform-agnostic
     Copy-Item -Path $kiotaBin.FullName -Destination (Join-Path $stagingDir "kiota")
   displayName: 'Download latest Kiota from GitHub'
