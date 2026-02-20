@@ -1,26 +1,19 @@
 steps:
-- pwsh: |
-    $releaseJson = Invoke-RestMethod "https://api.github.com/repos/microsoft/kiota/releases/latest"
-    $latestTag = $releaseJson.tag_name
-    $platform = if ($IsLinux) { "linux-x64" } elseif ($IsMacOS) { "osx-x64" } else { "win-x64" }
-    $asset = $releaseJson.assets | Where-Object { $_.name -match $platform } | Select-Object -First 1
-    Write-Host "Downloading Kiota $latestTag"
-    Write-Host "Asset URL: $($asset.browser_download_url)"
-    $tmpDir = [System.IO.Path]::GetTempPath()
-    $downloadPath = Join-Path $tmpDir "kiota_download"
-    $extractPath = Join-Path $tmpDir "kiota_extract"
-    New-Item -ItemType Directory -Force -Path $extractPath | Out-Null
-    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $downloadPath
-    if ($asset.name -match "\.zip$") {
-      Expand-Archive -Path $downloadPath -DestinationPath $extractPath -Force
-    } else {
-      tar -xzf $downloadPath -C $extractPath
-    }
-    # Match 'kiota' or 'kiota.exe' via BaseName
-    $kiotaBin = Get-ChildItem -Path $extractPath -Recurse -File | Where-Object { $_.BaseName -eq "kiota" } | Select-Object -First 1
-    Write-Host "Found Kiota binary at: $($kiotaBin.FullName)"
-    $stagingDir = "$(Build.ArtifactStagingDirectory)"
-    New-Item -ItemType Directory -Force -Path $stagingDir | Out-Null
-    # Always copy as 'kiota' (no extension) so downstream steps are platform-agnostic
-    Copy-Item -Path $kiotaBin.FullName -Destination (Join-Path $stagingDir "kiota")
+- bash: |
+    RELEASE_JSON=$(curl -s "https://api.github.com/repos/microsoft/kiota/releases/latest")
+    LATEST_TAG=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
+    ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("linux-x64")) | .browser_download_url')
+    echo "Downloading Kiota $LATEST_TAG"
+    echo "Asset URL: $ASSET_URL"
+    curl -L "$ASSET_URL" -o kiota_download
+    mkdir -p /tmp/kiota_extract
+    if [[ "$ASSET_URL" == *.zip ]]; then
+      unzip kiota_download -d /tmp/kiota_extract
+    else
+      tar -xzf kiota_download -C /tmp/kiota_extract
+    fi
+    KIOTA_BIN=$(find /tmp/kiota_extract -name kiota -type f | head -1)
+    echo "Found Kiota binary at: $KIOTA_BIN"
+    mkdir -p "$(Build.ArtifactStagingDirectory)"
+    cp "$KIOTA_BIN" "$(Build.ArtifactStagingDirectory)/kiota"
   displayName: 'Download latest Kiota from GitHub'
