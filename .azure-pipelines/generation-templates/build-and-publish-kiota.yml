@@ -1,7 +1,7 @@
 steps:
-- template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
-  parameters:
-    version: "10.x"
-
-- bash: dotnet tool install Microsoft.OpenApi.Kiota --tool-path $(Build.ArtifactStagingDirectory)
-  displayName: 'Install latest Kiota from NuGet'
+- bash: |
+    LATEST_TAG=$(curl -sL -o /dev/null -w "%{url_effective}" "https://github.com/microsoft/kiota/releases/latest" | rev | cut -d'/' -f1 | rev)
+    echo "Downloading Kiota $LATEST_TAG"
+    curl -L "https://github.com/microsoft/kiota/releases/download/${LATEST_TAG}/linux-x64.zip" -o kiota.zip
+    unzip kiota.zip -d $(Build.ArtifactStagingDirectory)
+  displayName: 'Download latest Kiota from GitHub'
