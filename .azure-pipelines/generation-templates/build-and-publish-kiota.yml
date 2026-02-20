@@ -6,9 +6,15 @@ steps:
     echo "Downloading Kiota $LATEST_TAG"
     echo "Asset URL: $ASSET_URL"
     curl -L "$ASSET_URL" -o kiota_download
+    mkdir -p /tmp/kiota_extract
     if [[ "$ASSET_URL" == *.zip ]]; then
-      unzip kiota_download -d $(Build.ArtifactStagingDirectory)
+      unzip kiota_download -d /tmp/kiota_extract
     else
-      tar -xzf kiota_download -C $(Build.ArtifactStagingDirectory)
+      tar -xzf kiota_download -C /tmp/kiota_extract
     fi
+    echo "=== Extracted contents ==="
+    find /tmp/kiota_extract -type f
+    KIOTA_BIN=$(find /tmp/kiota_extract -name kiota -type f | head -1)
+    echo "Found Kiota binary at: $KIOTA_BIN"
+    cp "$KIOTA_BIN" $(Build.ArtifactStagingDirectory)/kiota
   displayName: 'Download latest Kiota from GitHub'
