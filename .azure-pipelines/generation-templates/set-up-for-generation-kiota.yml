@@ -8,7 +8,17 @@ steps:
   parameters:
     version: "10.x"
 
-- bash: chmod +x $(kiotaDirectory)/kiota
+- bash: |
+    KIOTA_BIN=$(find "$(kiotaDirectory)" -name "kiota" -type f | head -1)
+    if [ -z "$KIOTA_BIN" ]; then
+      echo "ERROR: kiota binary not found under $(kiotaDirectory)"
+      echo "Directory contents:"
+      ls -laR "$(kiotaDirectory)" || echo "Directory does not exist"
+      exit 1
+    fi
+    chmod +x "$KIOTA_BIN"
+    echo "Kiota binary ready at: $KIOTA_BIN"
+    echo "##vso[task.setvariable variable=kiotaExecutable]$KIOTA_BIN"
   displayName: 'Make Kiota executable'
 
 # checkout metadata repo if capture and clean step is skipped
