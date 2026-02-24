@@ -1,24 +1,8 @@
 steps:
 - pwsh: |
-    $releaseJson = Invoke-RestMethod "https://api.github.com/repos/microsoft/kiota/releases/latest"
-    $latestTag = $releaseJson.tag_name
-    $asset = $releaseJson.assets | Where-Object { $_.name -match "linux-x64" } | Select-Object -First 1
-    Write-Host "Downloading Kiota $latestTag"
-    Write-Host "Asset URL: $($asset.browser_download_url)"
-
-    $extractDir = Join-Path ([System.IO.Path]::GetTempPath()) "kiota_extract_$([System.IO.Path]::GetRandomFileName())"
-    New-Item -ItemType Directory -Force -Path $extractDir | Out-Null
-    $downloadPath = Join-Path $extractDir "kiota_download.zip"
-
-    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $downloadPath
-    Expand-Archive -Path $downloadPath -DestinationPath $extractDir -Force
-
-    Write-Host "=== Extracted contents ==="
-    Get-ChildItem $extractDir -Recurse | Select-Object FullName
-
-    $kiotaBin = Get-ChildItem -Path $extractDir -Recurse -File | Where-Object { $_.BaseName -eq "kiota" } | Select-Object -First 1
-    Write-Host "Found Kiota binary at: $($kiotaBin.FullName)"
-
+    dotnet tool install --global Microsoft.OpenApi.Kiota
+    $kiotaPath = Join-Path $HOME ".dotnet" "tools" "kiota"
+    Write-Host "Kiota installed at: $kiotaPath"
     New-Item -ItemType Directory -Force -Path "$(Build.ArtifactStagingDirectory)" | Out-Null
-    Copy-Item -Path $kiotaBin.FullName -Destination (Join-Path "$(Build.ArtifactStagingDirectory)" "kiota")
-  displayName: 'Download latest Kiota from GitHub'
+    Copy-Item -Path $kiotaPath -Destination (Join-Path "$(Build.ArtifactStagingDirectory)" "kiota")
+  displayName: 'Install Kiota via dotnet tool'
