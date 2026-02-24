@@ -8,17 +8,16 @@ steps:
   parameters:
     version: "10.x"
 
-- bash: |
-    KIOTA_BIN=$(find "$(kiotaDirectory)" -name "kiota" -type f | head -1)
-    if [ -z "$KIOTA_BIN" ]; then
-      echo "ERROR: kiota binary not found under $(kiotaDirectory)"
-      echo "Directory contents:"
-      ls -laR "$(kiotaDirectory)" || echo "Directory does not exist"
+- pwsh: |
+    $kiotaBin = Get-ChildItem -Path "$(kiotaDirectory)" -Recurse -File | Where-Object { $_.BaseName -eq "kiota" } | Select-Object -First 1
+    if (-not $kiotaBin) {
+      Write-Error "Kiota binary not found under $(kiotaDirectory)"
+      Get-ChildItem "$(kiotaDirectory)" -Recurse -ErrorAction SilentlyContinue | Select-Object FullName
       exit 1
-    fi
-    chmod +x "$KIOTA_BIN"
-    echo "Kiota binary ready at: $KIOTA_BIN"
-    echo "##vso[task.setvariable variable=kiotaExecutable]$KIOTA_BIN"
+    }
+    chmod +x $kiotaBin.FullName
+    Write-Host "Kiota binary ready at: $($kiotaBin.FullName)"
+    Write-Host "##vso[task.setvariable variable=kiotaExecutable]$($kiotaBin.FullName)"
   displayName: 'Make Kiota executable'
 
 # checkout metadata repo if capture and clean step is skipped

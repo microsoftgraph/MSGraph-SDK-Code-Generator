@@ -1,19 +1,24 @@
 steps:
-- bash: |
-    RELEASE_JSON=$(curl -s "https://api.github.com/repos/microsoft/kiota/releases/latest")
-    LATEST_TAG=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
-    ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("linux-x64")) | .browser_download_url')
-    echo "Downloading Kiota $LATEST_TAG"
-    echo "Asset URL: $ASSET_URL"
-    curl -L "$ASSET_URL" -o kiota_download
-    mkdir -p /tmp/kiota_extract
-    if [[ "$ASSET_URL" == *.zip ]]; then
-      unzip kiota_download -d /tmp/kiota_extract
-    else
-      tar -xzf kiota_download -C /tmp/kiota_extract
-    fi
-    KIOTA_BIN=$(find /tmp/kiota_extract -name kiota -type f | head -1)
-    echo "Found Kiota binary at: $KIOTA_BIN"
-    mkdir -p "$(Build.ArtifactStagingDirectory)"
-    cp "$KIOTA_BIN" "$(Build.ArtifactStagingDirectory)/kiota"
+- pwsh: |
+    $releaseJson = Invoke-RestMethod "https://api.github.com/repos/microsoft/kiota/releases/latest"
+    $latestTag = $releaseJson.tag_name
+    $asset = $releaseJson.assets | Where-Object { $_.name -match "linux-x64" } | Select-Object -First 1
+    Write-Host "Downloading Kiota $latestTag"
+    Write-Host "Asset URL: $($asset.browser_download_url)"
+
+    $extractDir = Join-Path ([System.IO.Path]::GetTempPath()) "kiota_extract_$([System.IO.Path]::GetRandomFileName())"
+    New-Item -ItemType Directory -Force -Path $extractDir | Out-Null
+    $downloadPath = Join-Path $extractDir "kiota_download.zip"
+
+    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $downloadPath
+    Expand-Archive -Path $downloadPath -DestinationPath $extractDir -Force
+
+    Write-Host "=== Extracted contents ==="
+    Get-ChildItem $extractDir -Recurse | Select-Object FullName
+
+    $kiotaBin = Get-ChildItem -Path $extractDir -Recurse -File | Where-Object { $_.BaseName -eq "kiota" } | Select-Object -First 1
+    Write-Host "Found Kiota binary at: $($kiotaBin.FullName)"
+
+    New-Item -ItemType Directory -Force -Path "$(Build.ArtifactStagingDirectory)" | Out-Null
+    Copy-Item -Path $kiotaBin.FullName -Destination (Join-Path "$(Build.ArtifactStagingDirectory)" "kiota")
   displayName: 'Download latest Kiota from GitHub'
