@@ -1,8 +1,5 @@
 steps:
 - pwsh: |
-    dotnet tool install --global Microsoft.OpenApi.Kiota
-    $kiotaPath = Join-Path $HOME ".dotnet" "tools" "kiota"
-    Write-Host "Kiota installed at: $kiotaPath"
-    New-Item -ItemType Directory -Force -Path "$(Build.ArtifactStagingDirectory)" | Out-Null
-    Copy-Item -Path $kiotaPath -Destination (Join-Path "$(Build.ArtifactStagingDirectory)" "kiota")
+    dotnet tool install Microsoft.OpenApi.Kiota `
+          --tool-path "$(Build.ArtifactStagingDirectory)"
   displayName: 'Install Kiota via dotnet tool'

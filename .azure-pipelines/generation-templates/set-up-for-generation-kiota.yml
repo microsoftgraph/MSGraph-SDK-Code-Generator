@@ -8,16 +8,7 @@ steps:
   parameters:
     version: "10.x"
 
-- pwsh: |
-    $kiotaBin = Get-ChildItem -Path "$(kiotaDirectory)" -Recurse -File | Where-Object { $_.BaseName -eq "kiota" } | Select-Object -First 1
-    if (-not $kiotaBin) {
-      Write-Error "Kiota binary not found under $(kiotaDirectory)"
-      Get-ChildItem "$(kiotaDirectory)" -Recurse -ErrorAction SilentlyContinue | Select-Object FullName
-      exit 1
-    }
-    chmod +x $kiotaBin.FullName
-    Write-Host "Kiota binary ready at: $($kiotaBin.FullName)"
-    Write-Host "##vso[task.setvariable variable=kiotaExecutable]$($kiotaBin.FullName)"
+- pwsh: chmod +x "$(kiotaDirectory)/kiota"
   displayName: 'Make Kiota executable'
 
 # checkout metadata repo if capture and clean step is skipped
