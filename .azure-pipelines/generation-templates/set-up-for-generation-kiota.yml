@@ -6,7 +6,10 @@ steps:
 - template: /.azure-pipelines/generation-templates/set-user-config.yml@self
 - template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
   parameters:
-    version: "10.x" #kiota uses a net10 target
+    version: "10.x"
+
+- pwsh: chmod +x "$(kiotaDirectory)/kiota"
+  displayName: 'Make Kiota executable'
 
 # checkout metadata repo if capture and clean step is skipped
 - checkout: msgraph-metadata

@@ -1,18 +1,5 @@
 steps:
-- template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
-  parameters:
-    version: "10.x" #kiota uses a net10 target
-
-- checkout: kiota
-  displayName: checkout kiota
-  fetchDepth: 1
-
-- pwsh: dotnet build $(Build.SourcesDirectory)/src/kiota/kiota.csproj --configuration $(buildConfiguration)
-  displayName: 'Build Kiota'
-
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)/src/kiota/bin/$(BuildConfiguration)/net10.0'
-    contents: '**/*'
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
-  displayName: Copy Kiota executable
+- pwsh: |
+    dotnet tool install Microsoft.OpenApi.Kiota `
+          --tool-path "$(Build.ArtifactStagingDirectory)"
+  displayName: 'Install Kiota via dotnet tool'
