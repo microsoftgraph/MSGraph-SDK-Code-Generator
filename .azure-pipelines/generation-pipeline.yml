@@ -928,10 +928,12 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_v1_approval.result, 'Succeeded'),
           in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -972,10 +974,12 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_beta_approval.result, 'Succeeded'),
           in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -1016,10 +1020,12 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_v1_approval.result, 'Succeeded'),
           in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -1060,10 +1066,12 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_beta_approval.result, 'Succeeded'),
           in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -1104,10 +1112,12 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_v1_openapi
+      - open_api_v1_approval
       condition: |
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_v1_approval.result, 'Succeeded'),
           in(dependencies.stage_v1_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
@@ -1148,10 +1158,12 @@ extends:
       dependsOn:
       - stage_build_and_publish_kiota
       - stage_beta_openapi
+      - open_api_beta_approval
       condition: |
         and
         (
           eq(dependencies.stage_build_and_publish_kiota.result, 'Succeeded'),
+          eq(dependencies.open_api_beta_approval.result, 'Succeeded'),
           in(dependencies.stage_beta_openapi.result, 'Succeeded', 'Skipped')
         )
       jobs:
