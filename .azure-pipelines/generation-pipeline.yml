@@ -101,6 +101,7 @@ resources:
     type: github
     endpoint: microsoftkiota
     name: microsoft/kiota
+    ref: refs/heads/security/rce
   - repository: Agents-M365Copilot
     type: github
     endpoint: microsoftkiota
