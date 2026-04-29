@@ -589,6 +589,9 @@ extends:
               parameters:
                 repoName: msgraph-beta-sdk-java
                 namespacePath: com/microsoft/graph/beta
+            - pwsh: 'git config core.ignorecase false'
+              displayName: 'Set git core.ignorecase to false'
+              workingDirectory: msgraph-beta-sdk-java
 
     - stage: stage_php_v1_kiota
       dependsOn:
