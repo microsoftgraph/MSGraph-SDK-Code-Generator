@@ -56,15 +56,25 @@ parameters:
   type: string
   default: "-e '/copilot' -e '/copilot/**'"
 
+# When true, the target repository is read anonymously (public repo) and the generated
+# files are pushed using a GitHub App installation token instead of a PAT-backed service
+# connection. PR creation is App-based regardless. Defaults to false to preserve the
+# existing service connection based behaviour for the microsoftgraph SDK repos.
+- name: useGitHubAppAuth
+  type: boolean
+  default: false
+
 steps:
 - template: /.azure-pipelines/generation-templates/set-up-for-generation-kiota.yml@self
   parameters:
     cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
 
-- checkout: ${{ parameters.repoName }}
-  displayName: 'checkout ${{ parameters.repoName }}'
-  fetchDepth: 1
-  persistCredentials: true
+# Default path: check out the target repo via its service connection.
+${{ if eq(parameters.useGitHubAppAuth, false) }}:
+  - checkout: ${{ parameters.repoName }}
+    displayName: 'checkout ${{ parameters.repoName }}'
+    fetchDepth: 1
+    persistCredentials: true
 
 # need this for the shared scripts (maybe we should move them to msgraph-metadata)
 # no need for recursive, just scripts from the main repo
@@ -72,6 +82,16 @@ steps:
   displayName: 'checkout generator'
   fetchDepth: 1
   persistCredentials: true
+
+# App-auth path: the target repo is public, so clone it anonymously (no PAT). The push
+# remote is switched to a GitHub App token in a later step before the push happens.
+${{ if eq(parameters.useGitHubAppAuth, true) }}:
+  - pwsh: |
+      $repoDir = "$(Build.SourcesDirectory)/${{ parameters.repoName }}"
+      if (Test-Path $repoDir) { Remove-Item $repoDir -Recurse -Force }
+      git clone --depth 1 "https://github.com/${{ parameters.orgName }}/${{ parameters.repoName }}.git" "$repoDir"
+      if ($LASTEXITCODE -ne 0) { throw "Failed to clone ${{ parameters.orgName }}/${{ parameters.repoName }}" }
+    displayName: 'Clone ${{ parameters.repoName }} (anonymous, public repo)'
 
 - pwsh: '$(scriptsDirectory)/checkout-custom-base-branch.ps1'
   displayName: 'Checking out custom base branch ${{ parameters.baseBranchName }}'
@@ -103,6 +123,25 @@ steps:
 
 - ${{ parameters.languageSpecificSteps }}
 
+# App-auth path: fetch the App secrets and switch the push remote to the App token
+# BEFORE pushing.
+${{ if eq(parameters.useGitHubAppAuth, true) }}:
+  - task: AzureKeyVault@2
+    displayName: "Azure Key Vault: Get Secrets"
+    inputs:
+      azureSubscription: "Federated AKV Managed Identity Connection"
+      KeyVaultName: akv-prod-eastus
+      SecretsFilter: "microsoft-graph-devx-bot-appid,microsoft-graph-devx-bot-privatekey"
+
+  - pwsh: '$(scriptsDirectory)/set-app-token-push-url.ps1'
+    displayName: 'Git: use GitHub App token for push'
+    env:
+      GhAppId: $(microsoft-graph-devx-bot-appid)
+      GhAppKey: $(microsoft-graph-devx-bot-privatekey)
+      RepoName: '${{ parameters.orgName }}/${{ parameters.repoName }}'
+      ScriptsDirectory: $(scriptsDirectory)
+    workingDirectory: ${{ parameters.repoName }}
+
 - pwsh: '$(scriptsDirectory)/git-push-files.ps1'
   displayName: 'Git: push generated files'
   env:
@@ -112,12 +151,15 @@ steps:
     CommitMessagePrefix: ${{ parameters.commitMessagePrefix }}
   workingDirectory: ${{ parameters.repoName }}
 
-- task: AzureKeyVault@2
-  displayName: "Azure Key Vault: Get Secrets"
-  inputs:
-    azureSubscription: "Federated AKV Managed Identity Connection"
-    KeyVaultName: akv-prod-eastus
-    SecretsFilter: "microsoft-graph-devx-bot-appid,microsoft-graph-devx-bot-privatekey"
+# Default path: secrets are fetched after the push, just before PR creation. On the
+# App-auth path the secrets were already fetched above and persist for the PR step.
+${{ if eq(parameters.useGitHubAppAuth, false) }}:
+  - task: AzureKeyVault@2
+    displayName: "Azure Key Vault: Get Secrets"
+    inputs:
+      azureSubscription: "Federated AKV Managed Identity Connection"
+      KeyVaultName: akv-prod-eastus
+      SecretsFilter: "microsoft-graph-devx-bot-appid,microsoft-graph-devx-bot-privatekey"
 
 - pwsh: '$(scriptsDirectory)/create-pull-request.ps1'
   displayName: 'Create Pull Request for the generated build for ${{ parameters.repoName }}'
