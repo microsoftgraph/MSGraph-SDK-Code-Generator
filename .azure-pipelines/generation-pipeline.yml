@@ -97,10 +97,6 @@ resources:
     type: github
     endpoint: microsoftgraph (22)
     name: microsoftgraph/microsoft-graph-docs
-  - repository: Agents-M365Copilot
-    type: github
-    endpoint: microsoftkiota
-    name: microsoft/Agents-M365Copilot
   - repository: 1ESPipelineTemplates
     type: git
     name: 1ESPipelineTemplates/1ESPipelineTemplates
@@ -190,7 +186,6 @@ extends:
         - repository: msgraph-beta-sdk-python
         - repository: msgraph-metadata
         - repository: microsoft-graph-docs
-        - repository: Agents-M365Copilot      
         - repository: 1ESPipelineTemplates
     pool:
       name: Azure-Pipelines-1ESPT-ExDShared
@@ -963,6 +958,7 @@ extends:
             targetClassName: "BaseAgentsM365CopilotServiceClient"
             targetNamespace: "Microsoft.Agents.M365Copilot"
             commitMessagePrefix: "feat(generation): update request builders and models for dotnet v1"
+            useGitHubAppAuth: true
             customArguments: "-i '**/copilot/**'" # include only copilot paths
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             pathExclusionArguments: ''
@@ -1009,6 +1005,7 @@ extends:
             targetClassName: "BaseAgentsM365CopilotBetaServiceClient"
             targetNamespace: "Microsoft.Agents.M365Copilot.Beta"
             commitMessagePrefix: "feat(generation): update request builders and models for dotnet beta"
+            useGitHubAppAuth: true
             customArguments: "-i '**/copilot/**'" # include only copilot paths
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             pathExclusionArguments: ''
@@ -1057,6 +1054,7 @@ extends:
             customArguments: "-i '**/copilot/**'" # include only copilot paths
             cleanMetadataFolder: $(cleanOpenAPIFolderV1)
             commitMessagePrefix: "feat(generation): update request builders and models for python v1"
+            useGitHubAppAuth: true
             pathExclusionArguments: ''
             languageSpecificSteps:
             - template: /.azure-pipelines/generation-templates/python.yml@self
@@ -1103,6 +1101,7 @@ extends:
             customArguments: "-i '**/copilot/**'" # include only copilot paths
             cleanMetadataFolder: $(cleanOpenAPIFolderBeta)
             commitMessagePrefix: "feat(generation): update request builders and models for python beta"
+            useGitHubAppAuth: true
             pathExclusionArguments: ''
             languageSpecificSteps:
             - template: /.azure-pipelines/generation-templates/python.yml@self
@@ -1145,6 +1144,7 @@ extends:
             baseBranchName: 'main'
             branchName: 'ccs-typescript/$(v1Branch)'
             commitMessagePrefix: "feat(generation): update request builders and models for typescript v1"
+            useGitHubAppAuth: true
             targetClassName: "BaseAgentsM365CopilotServiceClient"
             targetNamespace: "github.com/microsoft/Agents-M365Copilot/typescript/"
             customArguments: "-i '**/copilot/**'"
@@ -1191,6 +1191,7 @@ extends:
             baseBranchName: 'main'
             branchName: 'ccs-typescript/$(betaBranch)'
             commitMessagePrefix: "feat(generation): update request builders and models for typescript beta"
+            useGitHubAppAuth: true
             targetClassName: "BaseAgentsM365CopilotBetaServiceClient"
             targetNamespace: "github.com/microsoft/Agents-M365Copilot/typescript/"
             customArguments: "-i '**/copilot/**'"
