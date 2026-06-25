@@ -59,7 +59,7 @@ parameters:
 # When true, the target repository is read anonymously (public repo) and the generated
 # files are pushed using a GitHub App installation token instead of a PAT-backed service
 # connection. PR creation is App-based regardless. Defaults to false to preserve the
-# existing PAT-based behaviour for the microsoftgraph SDK repos.
+# existing service connection based behaviour for the microsoftgraph SDK repos.
 - name: useGitHubAppAuth
   type: boolean
   default: false
@@ -69,7 +69,7 @@ steps:
   parameters:
     cleanMetadataFolder: ${{ parameters.cleanMetadataFolder }}
 
-# Default (PAT) path: check out the target repo via its service connection.
+# Default path: check out the target repo via its service connection.
 ${{ if eq(parameters.useGitHubAppAuth, false) }}:
   - checkout: ${{ parameters.repoName }}
     displayName: 'checkout ${{ parameters.repoName }}'
@@ -124,7 +124,7 @@ ${{ if eq(parameters.useGitHubAppAuth, true) }}:
 - ${{ parameters.languageSpecificSteps }}
 
 # App-auth path: fetch the App secrets and switch the push remote to the App token
-# BEFORE pushing, so the push never uses a PAT.
+# BEFORE pushing.
 ${{ if eq(parameters.useGitHubAppAuth, true) }}:
   - task: AzureKeyVault@2
     displayName: "Azure Key Vault: Get Secrets"
