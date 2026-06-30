@@ -89,6 +89,7 @@ steps:
   - pwsh: |
       $repoDir = "$(Build.SourcesDirectory)/${{ parameters.repoName }}"
       if (Test-Path $repoDir) { Remove-Item $repoDir -Recurse -Force }
+      git config --global core.longpaths true
       git clone --depth 1 "https://github.com/${{ parameters.orgName }}/${{ parameters.repoName }}.git" "$repoDir"
       if ($LASTEXITCODE -ne 0) { throw "Failed to clone ${{ parameters.orgName }}/${{ parameters.repoName }}" }
     displayName: 'Clone ${{ parameters.repoName }} (anonymous, public repo)'
