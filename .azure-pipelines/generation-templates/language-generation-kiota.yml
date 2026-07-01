@@ -166,6 +166,7 @@ steps:
   displayName: 'Create Pull Request for the generated build for ${{ parameters.repoName }}'
   env:
     BaseBranch: ${{ parameters.baseBranchName}}
+    BranchName: ${{ parameters.branchName }}
     GeneratePullRequest: ${{ parameters.generatePullRequest}}
     GhAppId: $(microsoft-graph-devx-bot-appid)
     GhAppKey: $(microsoft-graph-devx-bot-privatekey)
