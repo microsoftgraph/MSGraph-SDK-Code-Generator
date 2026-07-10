@@ -6,10 +6,8 @@
 # App identity (the same one that opens the PRs), which removes the need for a dedicated
 # PAT when the repo isn't covered by the pipeline's shared service connection.
 #
-# Only the push URL is changed; the fetch URL is left untouched. That is a deliberate
-# optimization for public repos (their initial clone was anonymous, so reads never needed
-# a credential) - it is not a requirement of using App auth.
-#
+# Only the push URL is changed; the fetch URL is left untouched (repos are public hence reads  
+# can be maintained as anonymous). 
 # Required environment variables:
 #   GhAppId          - GitHub App client ID (from AKV)
 #   GhAppKey         - GitHub App private key (from AKV)
