@@ -56,10 +56,13 @@ parameters:
   type: string
   default: "-e '/copilot' -e '/copilot/**'"
 
-# When true, the target repository is read anonymously (public repo) and the generated
-# files are pushed using a GitHub App installation token instead of a PAT-backed service
-# connection. PR creation is App-based regardless. Defaults to false to preserve the
-# existing service connection based behaviour for the microsoftgraph SDK repos.
+# Set this to true for target repos that live in a different GitHub org than the shared
+# service connection covers. Those repos can't ride on that connection and historically
+# needed their own separate PAT-backed one. This flag removes that PAT by reusing the
+# GitHub App identity (which already creates the PRs) for the push as well.
+#
+# Defaults to false, which keeps the other SDK repos on their existing service-connection
+# checkout/push flow, unchanged.
 - name: useGitHubAppAuth
   type: boolean
   default: false
@@ -83,8 +86,9 @@ steps:
   fetchDepth: 1
   persistCredentials: true
 
-# App-auth path: the target repo is public, so clone it anonymously (no PAT). The push
-# remote is switched to a GitHub App token in a later step before the push happens.
+# App-auth path: read the target with no credential. This is possible because the repo is
+# public - it is not why App auth is used (see the useGitHubAppAuth param notes). The push
+# remote is switched to a GitHub App token in a later step, before the push happens.
 - ${{ if eq(parameters.useGitHubAppAuth, true) }}:
   - pwsh: |
       $repoDir = "$(Build.SourcesDirectory)/${{ parameters.repoName }}"
