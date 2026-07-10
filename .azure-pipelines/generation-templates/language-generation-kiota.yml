@@ -61,12 +61,6 @@ parameters:
 # needed their own separate PAT-backed one. This flag removes that PAT by reusing the
 # GitHub App identity (which already creates the PRs) for the push as well.
 #
-# NOTE: repo visibility is NOT what selects this path - the SDK repos on the default path
-# are public too. Visibility only affects HOW the target is read: when the repo is public
-# we can clone it anonymously and avoid needing any read credential at all, leaving the
-# App token needed only for the push. A private repo could still use App auth, but would
-# need a read credential instead of an anonymous clone.
-#
 # Defaults to false, which keeps the other SDK repos on their existing service-connection
 # checkout/push flow, unchanged.
 - name: useGitHubAppAuth
