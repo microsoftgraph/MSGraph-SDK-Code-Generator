@@ -2,8 +2,13 @@
 # Licensed under the MIT License.
 
 # Configure the 'origin' push URL of an already-cloned repository to authenticate with a
-# GitHub App installation token instead of a PAT. The fetch URL is left untouched so reads
-# stay anonymous for public repositories.
+# GitHub App installation token instead of a PAT. This lets a repo be pushed to using the
+# App identity (the same one that opens the PRs), which removes the need for a dedicated
+# PAT when the repo isn't covered by the pipeline's shared service connection.
+#
+# Only the push URL is changed; the fetch URL is left untouched. That is a deliberate
+# optimization for public repos (their initial clone was anonymous, so reads never needed
+# a credential) - it is not a requirement of using App auth.
 #
 # Required environment variables:
 #   GhAppId          - GitHub App client ID (from AKV)
