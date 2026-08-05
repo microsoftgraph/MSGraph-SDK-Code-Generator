@@ -48,6 +48,11 @@ steps:
 - template: /.azure-pipelines/generation-templates/checkout-metadata.yml@self
 - template: /.azure-pipelines/generation-templates/set-user-config.yml@self
 
+# Route NuGet and npm through the CFS central feed for 1ES network isolation (CFSClean).
+# Placed after all checkouts so the generated config files are not wiped by a checkout clean.
+- template: /.azure-pipelines/generation-templates/create-cfs-nuget-config.yml@self
+- template: /.azure-pipelines/generation-templates/create-cfs-npmrc.yml@self
+
 # required for TypeSpec
 - task: UseNode@1
   inputs:
@@ -153,7 +158,7 @@ steps:
   parameters:
     version: '9.x'
 
-- pwsh: dotnet tool install --global Microsoft.OpenApi.Hidi --version 1.*
+- pwsh: dotnet tool install --global Microsoft.OpenApi.Hidi --version 1.* --configfile "$(Agent.TempDirectory)/nuget.config"
   displayName: 'Install hidi tool'
 
 # verify that generated metadata is parsable as an Edm model

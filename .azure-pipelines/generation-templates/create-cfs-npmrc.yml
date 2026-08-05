@@ -1,0 +1,20 @@
+# Routes npm through the CFS central feed (GraphDeveloperExperiences_Public, which upstreams
+# npmjs.org) instead of hitting registry.npmjs.org directly, for 1ES network isolation (CFSClean).
+# The authenticated .npmrc is copied to the user profile so both global (`npm install -g`) and
+# project (`npm ci`) commands pick up the registry + credentials without per-step configuration.
+steps:
+- pwsh: |
+    @"
+    registry=https://microsoftgraph.pkgs.visualstudio.com/0985d294-5762-4bc2-a565-161ef349ca3e/_packaging/GraphDeveloperExperiences_Public/npm/registry/
+    always-auth=true
+    "@ | Set-Content -Path "$(Agent.TempDirectory)/.npmrc" -Encoding UTF8
+  displayName: 'Create .npmrc (CFS central feed)'
+
+- task: npmAuthenticate@0
+  displayName: 'Authenticate npm to CFS feed'
+  inputs:
+    workingFile: '$(Agent.TempDirectory)/.npmrc'
+
+- pwsh: |
+    Copy-Item -Path "$(Agent.TempDirectory)/.npmrc" -Destination (Join-Path $HOME '.npmrc') -Force
+  displayName: 'Apply CFS .npmrc to user profile'

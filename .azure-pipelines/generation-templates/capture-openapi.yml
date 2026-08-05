@@ -61,6 +61,9 @@ jobs:
     persistCredentials: true
 
   - template: /.azure-pipelines/generation-templates/checkout-metadata.yml@self
+  # Route NuGet through the CFS central feed for 1ES network isolation (CFSClean).
+  # Placed after all checkouts so the generated config is not wiped by a checkout clean.
+  - template: /.azure-pipelines/generation-templates/create-cfs-nuget-config.yml@self
   # required for the hidi to run
   - template: /.azure-pipelines/generation-templates/use-dotnet-sdk.yml@self
     parameters:
@@ -71,7 +74,7 @@ jobs:
     parameters:
       version: '9.x'
 
-  - pwsh: dotnet tool install --global Microsoft.OpenApi.Hidi --version 1.*
+  - pwsh: dotnet tool install --global Microsoft.OpenApi.Hidi --version 1.* --configfile "$(Agent.TempDirectory)/nuget.config"
     displayName: install hidi
 
   - pwsh: |

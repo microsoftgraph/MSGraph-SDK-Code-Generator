@@ -1,0 +1,20 @@
+# Routes dotnet/NuGet restore and tool installs through the CFS central package feed
+# (GraphDeveloperExperiences_Public) instead of public nuget.org, for 1ES network isolation
+# (CFSClean). The config is written to $(Agent.TempDirectory) so it survives any subsequent
+# `checkout` step (which cleans the sources directory and would wipe a config placed there).
+# Consumers must pass `--configfile "$(Agent.TempDirectory)/nuget.config"` to dotnet commands.
+steps:
+- task: NuGetAuthenticate@1
+  displayName: 'Authenticate to Azure Artifacts (CFS feed)'
+
+- pwsh: |
+    @"
+    <?xml version="1.0" encoding="utf-8"?>
+    <configuration>
+      <packageSources>
+        <clear />
+        <add key="GraphDeveloperExperiences_Public" value="https://microsoftgraph.pkgs.visualstudio.com/0985d294-5762-4bc2-a565-161ef349ca3e/_packaging/GraphDeveloperExperiences_Public/nuget/v3/index.json" />
+      </packageSources>
+    </configuration>
+    "@ | Set-Content -Path "$(Agent.TempDirectory)/nuget.config" -Encoding UTF8
+  displayName: 'Create nuget.config (CFS central feed)'
