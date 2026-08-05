@@ -26,13 +26,13 @@ jobs:
     - name: Test
       run: dotnet test ./Typewriter.sln --no-build --verbosity normal
     - name: Upload languages test output on failure
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       if: ${{ failure() }}
       with:
         name: languages-test-output
         path: 'test/Typewriter.Test/bin/Debug/net8.0/OutputDirectory*/**'
     - name: Upload unit test output on failure
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       if: ${{ failure() }}
       with:
         name: unit-test-output
