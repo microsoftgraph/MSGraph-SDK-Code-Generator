@@ -1,5 +1,6 @@
 steps:
 - pwsh: |
     dotnet tool install Microsoft.OpenApi.Kiota `
-          --tool-path "$(Build.ArtifactStagingDirectory)"
+          --tool-path "$(Build.ArtifactStagingDirectory)" `
+          --configfile "$(Agent.TempDirectory)/nuget.config"
   displayName: 'Install Kiota via dotnet tool'

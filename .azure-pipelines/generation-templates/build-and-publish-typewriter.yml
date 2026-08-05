@@ -6,7 +6,11 @@ steps:
   submodules: recursive
   persistCredentials: true
 
-- pwsh: dotnet build $(Build.SourcesDirectory)/src/Typewriter/Typewriter.csproj --configuration $(buildConfiguration)
+# Create the CFS nuget.config AFTER checkout (a checkout clean would wipe a config written
+# into the sources dir) and restore against it, so dotnet build does not reach nuget.org.
+- template: /.azure-pipelines/generation-templates/create-cfs-nuget-config.yml@self
+
+- pwsh: dotnet build $(Build.SourcesDirectory)/src/Typewriter/Typewriter.csproj --configuration $(buildConfiguration) -p:RestoreConfigFile="$(Agent.TempDirectory)/nuget.config"
   displayName: 'Build Typewriter'
 
 - task: CopyFiles@2

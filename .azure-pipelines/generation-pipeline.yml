@@ -130,6 +130,14 @@ parameters:
   displayName: Skip Open API PR Generation.
 variables:
   buildConfiguration: 'Release'
+  # dotnet CLI hygiene for 1ES network isolation (CFSClean): stop the CLI from reaching the
+  # public .NET CDN (builds.dotnet.microsoft.com) for workload/advertising-manifest and
+  # first-run/telemetry checks that piggyback on any `dotnet` invocation (e.g. the hidi tool
+  # install). Pipeline variables are surfaced as environment variables to every step.
+  DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE: 'true'
+  DOTNET_SKIP_WORKLOAD_INTEGRITY_CHECK: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+  DOTNET_NOLOGO: 'true'
   cleanMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/clean_beta_metadata/cleanMetadataWithDescriptionsbeta.xml'
   cleanMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsv1.0.xml'
   cleanMetadataFileWithAnnotationsV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_metadata/cleanMetadataWithDescriptionsAndAnnotationsv1.0.xml'
@@ -201,20 +209,6 @@ extends:
             targetPath: '$(Build.ArtifactStagingDirectory)'
             artifactName: typewriter
         steps:
-        - task: NuGetAuthenticate@1
-          displayName: 'Authenticate to Azure Artifacts'
-
-        - pwsh: |
-            @"
-            <?xml version="1.0" encoding="utf-8"?>
-            <configuration>
-              <packageSources>
-                <clear />
-                <add key="GraphDeveloperExperiences_Public" value="https://microsoftgraph.pkgs.visualstudio.com/0985d294-5762-4bc2-a565-161ef349ca3e/_packaging/GraphDeveloperExperiences_Public/nuget/v3/index.json" />
-              </packageSources>
-            </configuration>
-            "@ | Set-Content -Path "$(Build.SourcesDirectory)/nuget.config" -Encoding UTF8
-          displayName: 'Create nuget.config (central feed)'
         - template: /.azure-pipelines/generation-templates/build-and-publish-typewriter.yml@self
     - stage: stage_build_and_publish_kiota
       dependsOn: [] # remove the implicit dependency to any previous stage
@@ -226,20 +220,7 @@ extends:
             targetPath: '$(Build.ArtifactStagingDirectory)'
             artifactName: kiota
         steps:
-        - task: NuGetAuthenticate@1
-          displayName: 'Authenticate to Azure Artifacts'
-
-        - pwsh: |
-            @"
-            <?xml version="1.0" encoding="utf-8"?>
-            <configuration>
-              <packageSources>
-                <clear />
-                <add key="GraphDeveloperExperiences_Public" value="https://microsoftgraph.pkgs.visualstudio.com/0985d294-5762-4bc2-a565-161ef349ca3e/_packaging/GraphDeveloperExperiences_Public/nuget/v3/index.json" />
-              </packageSources>
-            </configuration>
-            "@ | Set-Content -Path "$(Build.SourcesDirectory)/nuget.config" -Encoding UTF8
-          displayName: 'Create nuget.config (central feed)'
+        - template: /.azure-pipelines/generation-templates/create-cfs-nuget-config.yml@self
         - template: /.azure-pipelines/generation-templates/build-and-publish-kiota.yml@self
 # Downloads the latest public beta metadata. If there are changes, we checkin
 # the public metadata into microsoftgraph/msgraph-metadata, and then run the
