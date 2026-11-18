@@ -313,14 +313,14 @@ extends:
       - stage_v1_openapi
       condition: eq(dependencies.stage_v1_openapi.result, 'Succeeded')
       jobs:
-      - deployment: OpenApiApproval
+      - job: OpenApiApproval
         displayName: 'OpenAPI v1.0 Generation Review'
-        environment: 'openapi-generation-review'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-              - script: echo "OpenAPI generation approved."
+        templateContext:
+          type: releaseJob
+          isProduction: false
+          environment: 'openapi-generation-review'
+        steps:
+        - script: echo "OpenAPI generation approved."
 
     # Approval stage for beta OpenAPI generation. All subsequent stages depending on OpenAPI generation
     # will be blocked until approval is granted. Any new stages depending on OpenAPI generation
@@ -330,14 +330,14 @@ extends:
       - stage_beta_openapi
       condition: eq(dependencies.stage_beta_openapi.result, 'Succeeded')
       jobs:
-      - deployment: OpenApiApproval
+      - job: OpenApiApproval
         displayName: 'OpenAPI Beta Generation Review'
-        environment: 'openapi-generation-review'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-              - script: echo "OpenAPI generation approved."              
+        templateContext:
+          type: releaseJob
+          isProduction: false
+          environment: 'openapi-generation-review'
+        steps:
+        - script: echo "OpenAPI generation approved."
 
     - stage: stage_csharp_v1_kiota
       dependsOn:
