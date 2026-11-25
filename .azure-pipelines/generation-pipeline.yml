@@ -155,6 +155,13 @@ variables:
   cleanOpenAPIFolderV1: 'clean_v10_openapi'
   rawMetadataFileBeta: '$(Build.SourcesDirectory)/msgraph-metadata/schemas/beta-Prod.csdl'
   rawMetadataFileV1: '$(Build.SourcesDirectory)/msgraph-metadata/schemas/v1.0-Prod.csdl'
+  rawMetadataFileFairfaxV1: '$(Build.SourcesDirectory)/msgraph-metadata/schemas/v1.0-Fairfax.csdl'
+  cleanMetadataFolderFairfaxV1: 'clean_v10_fairfax_metadata'
+  cleanMetadataFileFairfaxV1OutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_fairfax_metadata/'
+  cleanMetadataFileFairfaxV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_fairfax_metadata/cleanMetadataWithDescriptionsv1.0.xml'
+  cleanMetadataFileWithAnnotationsFairfaxV1: '$(Build.SourcesDirectory)/msgraph-metadata/clean_v10_fairfax_metadata/cleanMetadataWithDescriptionsAndAnnotationsv1.0.xml'
+  cleanOpenAPIFolderFairfaxV1: 'clean_v10_fairfax_openapi'
+  cleanOpenAPIFileFairfaxV1OutputPath: '$(Build.SourcesDirectory)/msgraph-metadata/openapi/fairfax/v1.0/'
   typewriterDirectory: '$(Build.SourcesDirectory)/typewriter'
   kiotaDirectory: '$(Build.SourcesDirectory)/kiota'
   typewriterExecutable: '$(typewriterDirectory)/Typewriter'
@@ -282,6 +289,54 @@ extends:
             cleanMetadataFolder: $(cleanMetadataFolderBeta)
             cleanMetadataFileWithAnnotations: $(cleanMetadataFileWithAnnotationsBeta)
             metadataTypeSpecAnnotationsSource: $(metadataTypeSpecAnnotationsSource)
+
+    - stage: stage_fairfax_v1_metadata
+      dependsOn: stage_build_and_publish_typewriter
+      condition: |
+        and(succeeded('stage_build_and_publish_typewriter'),
+            eq( ${{ parameters.skipMetadataCaptureAndClean }}, false))
+      jobs:
+      - job: fairfax_v1_metadata
+        templateContext:
+          outputs:
+          - output: pipelineArtifact
+            targetPath: '$(Build.ArtifactStagingDirectory)'
+            artifactName: $(cleanMetadataFolderFairfaxV1)
+          inputs:
+          - input: pipelineArtifact
+            buildType: 'current'
+            artifactName: 'typewriter'
+            targetPath: '$(Build.SourcesDirectory)/typewriter'
+        steps:
+        - template: /.azure-pipelines/generation-templates/capture-metadata.yml@self
+          parameters:
+            endpoint: 'v1.0'
+            cloud: Fairfax
+            inputMetadata: $(rawMetadataFileFairfaxV1)
+            outputPath: $(cleanMetadataFileFairfaxV1OutputPath)
+            cleanMetadataFile: $(cleanMetadataFileFairfaxV1)
+            cleanMetadataFolder: $(cleanMetadataFolderFairfaxV1)
+            cleanMetadataFileWithAnnotations: $(cleanMetadataFileWithAnnotationsFairfaxV1)
+            metadataTypeSpecAnnotationsSource: $(metadataTypeSpecAnnotationsSource)
+
+    - stage: stage_fairfax_v1_openapi
+      dependsOn: stage_fairfax_v1_metadata
+      condition: and(in(dependencies.stage_fairfax_v1_metadata.result, 'Succeeded', 'Skipped'), eq( ${{ parameters.skipOpenApiCaptureAndClean }}, false))
+      jobs:
+      - template: /.azure-pipelines/generation-templates/capture-openapi.yml@self
+        parameters:
+          endpoint: 'v1.0'
+          cloud: Fairfax
+          outputPath: $(cleanOpenAPIFileFairfaxV1OutputPath)
+          cleanMetadataFolder: $(cleanOpenAPIFolderFairfaxV1)
+          ${{ if eq(parameters.skipMetadataCaptureAndClean, false) }}:
+            metadataArtifact: $(cleanMetadataFolderFairfaxV1)
+            metadataDirectory: '$(Pipeline.Workspace)/$(cleanMetadataFolderFairfaxV1)'
+          ${{ else }}:
+            metadataDirectory: $(cleanMetadataFileFairfaxV1OutputPath)
+          serviceRoot: 'https://graph.microsoft.us/v1.0'
+          publishPath: 'openapi/fairfax/v1.0'
+          skipOpenAPIPRGeneration: ${{ parameters.skipOpenAPIPRGeneration }}
 
     - stage: stage_v1_openapi
       dependsOn: stage_v1_metadata

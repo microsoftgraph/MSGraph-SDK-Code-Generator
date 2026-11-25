@@ -15,6 +15,58 @@ if ($env:PublishChanges -eq $False)
     return;
 }
 
+# Cloud outputs may be new directories. Stash and stage only their generated files.
+if (![string]::IsNullOrWhiteSpace($env:PublishPath))
+{
+    function Invoke-PublicationGit {
+        param([string[]]$Arguments)
+        & git @Arguments | Write-Host
+        if ($LASTEXITCODE -ne 0) {
+            throw "Git publication command '$($Arguments -join ' ')' failed with exit code $LASTEXITCODE."
+        }
+    }
+
+    if ([string]::IsNullOrWhiteSpace($env:PublicationIdentifier)) {
+        throw "PublicationIdentifier is required when PublishPath is specified."
+    }
+
+    $changes = & git status --porcelain -- $env:PublishPath
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to inspect generated files for publication."
+    }
+    if (!$changes) {
+        Write-Host "No changes to publish in $env:PublishPath."
+        Write-Host "##vso[task.setvariable variable=publicationHasChanges]false"
+        return
+    }
+
+    Invoke-PublicationGit -Arguments @('stash', 'push', '--include-untracked', '--', $env:PublishPath)
+    Invoke-PublicationGit -Arguments @('fetch', 'origin', 'master')
+    Invoke-PublicationGit -Arguments @('switch', 'master')
+    Invoke-PublicationGit -Arguments @('stash', 'pop')
+
+    $branch = "publish-open-api-files/$env:BUILD_BUILDID/$env:PublicationIdentifier"
+    if ($env:CreateOpenAPIPR -eq $True) {
+        Invoke-PublicationGit -Arguments @('checkout', '-B', $branch)
+    }
+
+    Invoke-PublicationGit -Arguments @('add', '--', $env:PublishPath)
+    $message = "Update clean $env:PublicationIdentifier metadata file with $env:BUILD_BUILDID"
+    if ($env:BUILD_REASON -eq 'Manual') {
+        $message += " [skip ci]"
+    }
+    Invoke-PublicationGit -Arguments @('commit', '-m', $message)
+    if ($env:CreateOpenAPIPR -eq $True) {
+        Invoke-PublicationGit -Arguments @('push', '--set-upstream', 'origin', $branch)
+    }
+    else {
+        Invoke-PublicationGit -Arguments @('pull', 'origin', 'master', '--rebase')
+        Invoke-PublicationGit -Arguments @('push', '--set-upstream', 'origin', 'master')
+    }
+    Write-Host "##vso[task.setvariable variable=publicationHasChanges]true"
+    return
+}
+
 Write-Host "`n1. git status:"
 git status | Write-Host
 

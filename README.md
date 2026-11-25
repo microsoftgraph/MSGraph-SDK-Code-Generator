@@ -83,6 +83,16 @@ The output C# code files will go in to the `output` directory.
 - Prerequisite is that `msgraph-metadata` is checked out at the same root folder as `MSGraph-SDK-Code-Generator`.
 - `launch.json` file contains main generation scenarios for each language/endpoint pair. Running Typewriter using one of those generation scenarios (e.g. `Generate TypeScript beta`) will output the corresponding models into a folder, which will be a sibling to `MSGraph-SDK-Code-Generator`. The folder will be named as `generator-output-<language>-<endpoint>` e.g. `generator-output-TypeScript-beta`.
 
+## Generator pipeline
+
+`.azure-pipelines/generation-pipeline.yml` cleans CSDL and generates OpenAPI descriptions for Prod v1.0, Prod beta, and Fairfax v1.0. Fairfax uses `schemas/v1.0-Fairfax.csdl` from `microsoftgraph/msgraph-metadata`, the same Typewriter transforms, documentation and TypeSpec annotations, and Hidi conversion profiles (`default`, `graphexplorer`, `openapi`, and `powershell_v2`) as Prod.
+
+Fairfax cleaned CSDL is published under `clean_v10_fairfax_metadata`; OpenAPI descriptions are published under `openapi/fairfax/v1.0` with the service URL `https://graph.microsoft.us/v1.0`. Its pipeline artifacts are `clean_v10_fairfax_metadata` and `clean_v10_fairfax_openapi` (plus one OpenAPI artifact per profile). The OpenAPI stage consumes the current run's cleaned CSDL artifact even when publication is disabled. No Fairfax SDK generation stages are included.
+
+The existing `skipMetadataCaptureAndClean`, `skipOpenApiCaptureAndClean`, `publishChanges`, and `skipOpenAPIPRGeneration` controls also apply to Fairfax. Skipping metadata capture requires previously published Fairfax cleaned CSDL in the metadata repository. Cleaned CSDL is pushed to metadata master; OpenAPI publication uses a separate `publish-open-api-files/<build-id>/Fairfax/v1.0` discovery PR branch. As with Prod, manual runs skip discovery PR creation. `publishChanges: false` produces artifacts without publishing Fairfax changes or creating its PR.
+
+Run the focused generation and publication regression checks with `pwsh -File test/scripts/FairfaxPipeline.Tests.ps1`. Hidi is mocked for these checks; publication uses temporary local Git repositories.
+
 ## Use Typewriter to test your beta metadata
 
 We assume that the metadata you are using is based off the beta metadata file.
